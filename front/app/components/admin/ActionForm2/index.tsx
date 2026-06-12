@@ -9,19 +9,25 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
+
 import AccessSection from './AccessSection';
 import {
-  DEFAULT_CONFIG,
+  DEFAULT_CUSTOM_FIELDS,
+  DEFAULT_PERMISSION,
   DEFAULT_PLATFORM_SETTINGS,
 } from './data';
 import DataSection from './DataSection';
-import { buildSummary, normalize } from './logic';
-import { AccessConfig, PlatformSettings } from './types';
+import { buildSummary, normalize, normalizeCustomFields } from './logic';
+import { PlatformSettings } from './types';
 import { Chip } from './ui';
 
 interface Props {
-  /** Initial configuration. Falls back to a sensible default. */
-  initialConfig?: AccessConfig;
+  /** Initial phase permission. Falls back to a sensible default. */
+  initialPermission?: IPhasePermissionData;
+  /** Initial demographic questions (permission custom fields). */
+  initialCustomFields?: IPermissionsPhaseCustomFieldData[];
   defaultOpen?: boolean;
 }
 
@@ -29,6 +35,10 @@ interface Props {
  * "Participation requirements" — a single, collapsible panel that captures
  * everything a participant must satisfy before they can take an action:
  * authentication, group membership, personal info and demographic questions.
+ *
+ * It edits the real API shapes directly: an `IPhasePermissionData` for the
+ * access rights + data-collection settings, and a list of
+ * `IPermissionsPhaseCustomFieldData` for the demographic questions.
  *
  * Design notes (see the chat for the full rationale):
  *  - One panel, two groups: *who can participate* (access) and *what we ask*
@@ -39,22 +49,31 @@ interface Props {
  *    the email method disables; etc.
  */
 const AccessRightsDesign = ({
-  initialConfig = DEFAULT_CONFIG,
+  initialPermission = DEFAULT_PERMISSION,
+  initialCustomFields = DEFAULT_CUSTOM_FIELDS,
   defaultOpen = true,
 }: Props) => {
   // In the real component these come from the AppConfiguration settings.
   const settings: PlatformSettings = DEFAULT_PLATFORM_SETTINGS;
-  const [config, setConfig] = useState<AccessConfig>(
-    normalize(initialConfig, settings)
+  const [permission, setPermission] = useState<IPhasePermissionData>(
+    normalize(initialPermission, settings)
   );
+  const [customFields, setCustomFields] = useState<
+    IPermissionsPhaseCustomFieldData[]
+  >(normalizeCustomFields(initialPermission, initialCustomFields));
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
-  const handleConfigChange = (next: AccessConfig) =>
-    setConfig(normalize(next, settings));
+  const handlePermissionChange = (next: IPhasePermissionData) => {
+    const normalized = normalize(next, settings);
+    setPermission(normalized);
+    setCustomFields((fields) => normalizeCustomFields(normalized, fields));
+  };
 
-  const summary = buildSummary(config);
+  const summary = buildSummary(permission, customFields);
+  const isAdmins = permission.attributes.permitted_by === 'admins_moderators';
   const passwordAvailable =
-    settings.passwordLoginEnabled && config.methods.email.enabled;
+    settings.passwordLoginEnabled &&
+    permission.attributes.require_confirmed_email;
 
   return (
     <Box maxWidth="760px" my="24px">
@@ -105,21 +124,23 @@ const AccessRightsDesign = ({
             <Divider mt="0" mb="20px" />
 
             <AccessSection
-              config={config}
+              permission={permission}
               settings={settings}
-              onChange={handleConfigChange}
+              onChange={handlePermissionChange}
             />
 
             {/* Admins-only is a closed gate — nothing else applies. For the
                 other modes, demographics can be collected (the account-only
                 parts hide themselves inside DataSection). */}
-            {config.mode !== 'admins' && (
+            {!isAdmins && (
               <>
                 <Divider my="24px" />
                 <DataSection
-                  config={config}
+                  permission={permission}
+                  customFields={customFields}
                   passwordAvailable={passwordAvailable}
-                  onChange={handleConfigChange}
+                  onChange={handlePermissionChange}
+                  onChangeCustomFields={setCustomFields}
                 />
               </>
             )}

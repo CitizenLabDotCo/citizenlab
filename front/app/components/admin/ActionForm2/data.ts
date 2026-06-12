@@ -1,14 +1,16 @@
 // Design prototype – mock data + defaults so the panel is self-contained and
 // runnable without a backend. In the real component these would come from
-// `useGroups`, the global user-custom-fields API and the AppConfiguration.
+// `useGroups`, the global user-custom-fields API and the AppConfiguration; the
+// permission + custom fields themselves would come from `usePhasePermissions`
+// and `usePermissionsPhaseCustomFields`.
 
 import { SupportedLocale } from 'typings';
 
 import {
-  AccessConfig,
   AuthMethodKey,
+  IPermissionsPhaseCustomFieldData,
+  IPhasePermissionData,
   PlatformSettings,
-  TimeUnit,
 } from './types';
 
 // Locales configured on the platform (would come from AppConfiguration).
@@ -63,7 +65,8 @@ export interface DemographicField {
   title: string;
 }
 
-// Globally configured demographic fields, shared across all actions.
+// Globally configured demographic fields, shared across all actions. These are
+// the pool the admin picks from; each pick becomes a permission custom field.
 export const DEMOGRAPHIC_FIELDS: DemographicField[] = [
   { id: 'gender', title: 'Gender' },
   { id: 'birthyear', title: 'Year of birth' },
@@ -72,47 +75,83 @@ export const DEMOGRAPHIC_FIELDS: DemographicField[] = [
   { id: 'languages', title: 'Languages spoken' },
 ];
 
-export const TIME_UNIT_LABELS: Record<TimeUnit, string> = {
-  days: 'days',
-  weeks: 'weeks',
-  months: 'months',
-};
-
 export const AUTH_METHOD_LABELS: Record<AuthMethodKey, string> = {
   email: 'Confirmed email',
-  phone: 'Confirmed phone number',
   verification: 'Identity verification',
 };
 
 export const DEFAULT_PLATFORM_SETTINGS: PlatformSettings = {
   passwordLoginEnabled: true,
-  phoneConfirmationAllowed: true,
   verificationAllowed: true,
   verificationMethodName: 'FranceConnect',
 };
 
-export const DEFAULT_CONFIG: AccessConfig = {
-  mode: 'account',
-  methods: {
-    email: { enabled: true, recency: null },
-    phone: { enabled: false, recency: null },
-    verification: { enabled: false, recency: null },
+// A permission custom field (a demographic question attached to the permission).
+// Built locally for the prototype; in the real app the API returns these.
+export const buildCustomField = (
+  customFieldId: string,
+  ordering: number,
+  required = true
+): IPermissionsPhaseCustomFieldData => ({
+  id: customFieldId,
+  type: 'permissions_custom_field',
+  attributes: {
+    created_at: '',
+    lock: null,
+    ordering,
+    persisted: false,
+    required,
+    updated_at: '',
   },
-  groupIds: [],
-  accessDeniedMultiloc: {},
-  pii: { name: false, password: false },
-  demographics: [],
-  demographicsPlacement: 'registration',
-  dataCollection: 'all_data',
+  relationships: {
+    permission: { data: { id: 'default-permission', type: 'permission' } },
+    custom_field: { data: { id: customFieldId, type: 'custom_field' } },
+  },
+});
+
+// A sensible default permission: require sign-in via confirmed email.
+export const DEFAULT_PERMISSION: IPhasePermissionData = {
+  id: 'default-permission',
+  type: 'permission',
+  attributes: {
+    access_denied_explanation_multiloc: {},
+    action: 'posting_idea',
+    confirmed_email_expiry: null,
+    created_at: '',
+    everyone_tracking_enabled: false,
+    global_custom_fields: false,
+    permitted_by: 'users',
+    permitted_by_everyone_allowed: true,
+    require_confirmed_email: true,
+    require_name: false,
+    require_password: false,
+    require_verification: false,
+    updated_at: '',
+    user_data_collection: 'all_data',
+    user_fields_in_form_descriptor: {
+      value: false,
+      locked: false,
+      explanation: null,
+    },
+    verification_enabled: true,
+    verification_expiry: null,
+  },
+  relationships: {
+    permission_scope: { data: { id: 'default-phase', type: 'phase' } },
+    groups: { data: [] },
+  },
 };
 
-// The Stadt Wien Konto variant has a single fixed sign-in method, so there are
-// no per-method toggles — `methods` stay off and sign-in is implied by `mode`.
-export const DEFAULT_CONFIG_WIEN_KONTO: AccessConfig = {
-  ...DEFAULT_CONFIG,
-  methods: {
-    email: { enabled: false, recency: null },
-    phone: { enabled: false, recency: null },
-    verification: { enabled: false, recency: null },
+export const DEFAULT_CUSTOM_FIELDS: IPermissionsPhaseCustomFieldData[] = [];
+
+// The Stadt Wien Konto variant has a single fixed SSO sign-in method, so none of
+// the per-method `require_*` toggles are set — sign-in is implied by requiring
+// an account (`permitted_by: 'users'`).
+export const DEFAULT_PERMISSION_WIEN_KONTO: IPhasePermissionData = {
+  ...DEFAULT_PERMISSION,
+  attributes: {
+    ...DEFAULT_PERMISSION.attributes,
+    require_confirmed_email: false,
+    require_verification: false,
   },
 };

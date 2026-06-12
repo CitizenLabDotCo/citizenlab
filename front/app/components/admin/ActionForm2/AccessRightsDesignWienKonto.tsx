@@ -9,20 +9,26 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
+
 import AccessSectionWienKonto from './AccessSectionWienKonto';
 import {
-  DEFAULT_CONFIG_WIEN_KONTO,
+  DEFAULT_CUSTOM_FIELDS,
+  DEFAULT_PERMISSION_WIEN_KONTO,
   DEFAULT_PLATFORM_SETTINGS,
   STADT_WIEN_KONTO_NAME,
 } from './data';
 import DataSection from './DataSection';
-import { buildSummaryWienKonto, normalize } from './logic';
-import { AccessConfig, PlatformSettings } from './types';
+import { buildSummaryWienKonto, normalize, normalizeCustomFields } from './logic';
+import { PlatformSettings } from './types';
 import { Chip } from './ui';
 
 interface Props {
-  /** Initial configuration. Falls back to a sensible default. */
-  initialConfig?: AccessConfig;
+  /** Initial phase permission. Falls back to a sensible default. */
+  initialPermission?: IPhasePermissionData;
+  /** Initial demographic questions (permission custom fields). */
+  initialCustomFields?: IPermissionsPhaseCustomFieldData[];
   defaultOpen?: boolean;
 }
 
@@ -30,27 +36,39 @@ interface Props {
  * Stadt Wien Konto variant of the participation-requirements panel.
  *
  * Identical to the standard panel except for the sign-in choice: instead of
- * picking between confirmed email / phone / identity verification, "require
- * sign-in" means a single fixed SSO method — the Stadt Wien Konto — with no
- * further options. This covers configurations that mandate one specific city
- * account. Everything downstream (groups, personal info, demographics,
- * anonymity) behaves the same, except the password requirement is dropped
- * since SSO accounts have no platform password.
+ * picking between confirmed email / identity verification, "require sign-in"
+ * means a single fixed SSO method — the Stadt Wien Konto — with no further
+ * options. This covers configurations that mandate one specific city account.
+ * Everything downstream (groups, personal info, demographics, anonymity)
+ * behaves the same, except the password requirement is dropped since SSO
+ * accounts have no platform password.
  */
 const AccessRightsDesignWienKonto = ({
-  initialConfig = DEFAULT_CONFIG_WIEN_KONTO,
+  initialPermission = DEFAULT_PERMISSION_WIEN_KONTO,
+  initialCustomFields = DEFAULT_CUSTOM_FIELDS,
   defaultOpen = true,
 }: Props) => {
   const settings: PlatformSettings = DEFAULT_PLATFORM_SETTINGS;
-  const [config, setConfig] = useState<AccessConfig>(
-    normalize(initialConfig, settings)
+  const [permission, setPermission] = useState<IPhasePermissionData>(
+    normalize(initialPermission, settings)
   );
+  const [customFields, setCustomFields] = useState<
+    IPermissionsPhaseCustomFieldData[]
+  >(normalizeCustomFields(initialPermission, initialCustomFields));
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
-  const handleConfigChange = (next: AccessConfig) =>
-    setConfig(normalize(next, settings));
+  const handlePermissionChange = (next: IPhasePermissionData) => {
+    const normalized = normalize(next, settings);
+    setPermission(normalized);
+    setCustomFields((fields) => normalizeCustomFields(normalized, fields));
+  };
 
-  const summary = buildSummaryWienKonto(config, STADT_WIEN_KONTO_NAME);
+  const summary = buildSummaryWienKonto(
+    permission,
+    customFields,
+    STADT_WIEN_KONTO_NAME
+  );
+  const isAdmins = permission.attributes.permitted_by === 'admins_moderators';
 
   return (
     <Box maxWidth="760px" my="24px">
@@ -99,16 +117,21 @@ const AccessRightsDesignWienKonto = ({
           <Box px="20px" pb="20px">
             <Divider mt="0" mb="20px" />
 
-            <AccessSectionWienKonto config={config} onChange={handleConfigChange} />
+            <AccessSectionWienKonto
+              permission={permission}
+              onChange={handlePermissionChange}
+            />
 
-            {config.mode !== 'admins' && (
+            {!isAdmins && (
               <>
                 <Divider my="24px" />
                 <DataSection
-                  config={config}
+                  permission={permission}
+                  customFields={customFields}
                   passwordAvailable={false}
                   showPassword={false}
-                  onChange={handleConfigChange}
+                  onChange={handlePermissionChange}
+                  onChangeCustomFields={setCustomFields}
                 />
               </>
             )}

@@ -9,33 +9,31 @@ import {
   IconNames,
   Toggle,
   Input,
-  Select,
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
+
+import { PermittedBy } from 'api/phase_permissions/types';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import {
-  AUTH_METHOD_LABELS,
-  MOCK_GROUPS,
-  TIME_UNIT_LABELS,
-} from './data';
+import { AUTH_METHOD_LABELS, MOCK_GROUPS } from './data';
 import ErrorMessageModal from './ErrorMessageModal';
 import {
+  getGroupIds,
+  getMethod,
   groupsSummary,
   hasEnabledMethod,
   isMethodAvailable,
   requiresAccount,
+  setGroupIds,
+  setMethod,
 } from './logic';
 import {
-  AccessConfig,
-  AccessMode,
   AuthMethodKey,
-  AuthMethodState,
+  IPhasePermissionData,
   PlatformSettings,
-  Recency,
-  TimeUnit,
 } from './types';
 import { SectionHeader, Hint, Expander, ModeCard } from './ui';
 import VerificationFieldsModal from './VerificationFieldsModal';
@@ -47,10 +45,6 @@ const METHOD_META: Record<
   email: {
     icon: 'email',
     description: 'Participant confirms an email address with a one-time code.',
-  },
-  phone: {
-    icon: 'comment',
-    description: 'Participant confirms a phone number via an SMS one-time code.',
   },
   verification: {
     icon: 'shield-checkered',
@@ -64,16 +58,19 @@ const linkStyle: React.CSSProperties = {
   color: colors.teal700,
 };
 
+// Default recency to require when an admin first switches it on, in days.
+const DEFAULT_EXPIRY_DAYS = 30;
+
 const RecencyControl = ({
-  recency,
+  expiry,
   verb,
   onChange,
 }: {
-  recency: Recency;
+  expiry: number | null; // days; `null` = confirm once, ever
   verb: string; // "Re-confirm" / "Re-verify"
-  onChange: (recency: Recency) => void;
+  onChange: (expiry: number | null) => void;
 }) => {
-  if (!recency) {
+  if (expiry === null) {
     return (
       <Text
         as="span"
@@ -82,7 +79,7 @@ const RecencyControl = ({
         style={linkStyle}
         role="button"
         tabIndex={0}
-        onClick={() => onChange({ value: 6, unit: 'months' })}
+        onClick={() => onChange(DEFAULT_EXPIRY_DAYS)}
       >
         + Require recent {verb === 'Re-verify' ? 'verification' : 'confirmation'}
       </Text>
@@ -94,28 +91,18 @@ const RecencyControl = ({
       <Text as="span" m="0" fontSize="xs" color="coolGrey700">
         {verb} if older than
       </Text>
-      <Box width="56px">
+      <Box width="64px">
         <Input
           type="number"
           size="small"
           min="1"
-          value={String(recency.value)}
-          onChange={(value) =>
-            onChange({ ...recency, value: Math.max(1, Number(value) || 1) })
-          }
+          value={String(expiry)}
+          onChange={(value) => onChange(Math.max(1, Number(value) || 1))}
         />
       </Box>
-      <Box width="110px">
-        <Select
-          size="small"
-          value={recency.unit}
-          options={(Object.keys(TIME_UNIT_LABELS) as TimeUnit[]).map((u) => ({
-            value: u,
-            label: TIME_UNIT_LABELS[u],
-          }))}
-          onChange={(option) => onChange({ ...recency, unit: option.value })}
-        />
-      </Box>
+      <Text as="span" m="0" fontSize="xs" color="coolGrey700">
+        days
+      </Text>
       <Text
         as="span"
         m="0"
@@ -133,28 +120,30 @@ const RecencyControl = ({
 
 const MethodRow = ({
   methodKey,
-  state,
+  enabled: stateEnabled,
+  expiry,
   available,
   unavailableReason,
   onChange,
   onShowReturnedFields,
 }: {
   methodKey: AuthMethodKey;
-  state: AuthMethodState;
+  enabled: boolean;
+  expiry: number | null;
   available: boolean;
   unavailableReason: string;
-  onChange: (state: AuthMethodState) => void;
+  onChange: (next: { enabled: boolean; expiry: number | null }) => void;
   onShowReturnedFields?: () => void;
 }) => {
   const meta = METHOD_META[methodKey];
-  const enabled = available && state.enabled;
+  const enabled = available && stateEnabled;
 
   return (
     <Box py="10px">
       <Toggle
         checked={enabled}
         disabled={!available}
-        onChange={() => onChange({ ...state, enabled: !state.enabled })}
+        onChange={() => onChange({ enabled: !stateEnabled, expiry })}
         label={
           <Box ml="8px">
             <Box display="flex" alignItems="center" gap="6px">
@@ -198,9 +187,11 @@ const MethodRow = ({
       {enabled && (
         <Box ml="42px" mt="6px">
           <RecencyControl
-            recency={state.recency}
+            expiry={expiry}
             verb={methodKey === 'verification' ? 'Re-verify' : 'Re-confirm'}
-            onChange={(recency) => onChange({ ...state, recency })}
+            onChange={(nextExpiry) =>
+              onChange({ enabled: stateEnabled, expiry: nextExpiry })
+            }
           />
         </Box>
       )}
@@ -209,13 +200,13 @@ const MethodRow = ({
 };
 
 interface Props {
-  config: AccessConfig;
+  permission: IPhasePermissionData;
   settings: PlatformSettings;
-  onChange: (config: AccessConfig) => void;
+  onChange: (permission: IPhasePermissionData) => void;
 }
 
-const AccessSection = ({ config, settings, onChange }: Props) => {
-  const hasAccount = requiresAccount(config);
+const AccessSection = ({ permission, settings, onChange }: Props) => {
+  const hasAccount = requiresAccount(permission);
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
@@ -223,13 +214,27 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
     if (key === 'email') {
       return 'Unavailable: password login is turned off for this platform.';
     }
-    if (key === 'phone') {
-      return 'Unavailable: phone confirmation is not set up for this platform.';
-    }
     return 'Unavailable: no identity verification method is configured.';
   };
 
-  const setMode = (mode: AccessMode) => onChange({ ...config, mode });
+  const setMode = (permitted_by: PermittedBy) =>
+    onChange({
+      ...permission,
+      attributes: { ...permission.attributes, permitted_by },
+    });
+
+  const setAccessDeniedMultiloc = (
+    access_denied_explanation_multiloc: Multiloc
+  ) =>
+    onChange({
+      ...permission,
+      attributes: {
+        ...permission.attributes,
+        access_denied_explanation_multiloc,
+      },
+    });
+
+  const methodKeys: AuthMethodKey[] = ['email', 'verification'];
 
   return (
     <Box>
@@ -245,26 +250,28 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
           icon="user-circle"
           title="Anyone"
           description="No account needed."
-          selected={config.mode === 'anyone'}
-          onClick={() => setMode('anyone')}
+          selected={permission.attributes.permitted_by === 'everyone'}
+          onClick={() => setMode('everyone')}
         />
         <ModeCard
           icon="shield-checkered"
           title="Require sign-in"
           description="Must prove who they are first."
-          selected={config.mode === 'account'}
-          onClick={() => setMode('account')}
+          selected={permission.attributes.permitted_by === 'users'}
+          onClick={() => setMode('users')}
         />
         <ModeCard
           icon="lock"
           title="Admins & managers only"
           description="Restricted to staff."
-          selected={config.mode === 'admins'}
-          onClick={() => setMode('admins')}
+          selected={
+            permission.attributes.permitted_by === 'admins_moderators'
+          }
+          onClick={() => setMode('admins_moderators')}
         />
       </Box>
 
-      {config.mode === 'admins' && (
+      {permission.attributes.permitted_by === 'admins_moderators' && (
         <Hint>
           Only admins and managers can take this action. No other requirements
           apply.
@@ -275,24 +282,23 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
         <>
           {/* Authentication methods (the primary decision — always shown) */}
           <Box>
-            {(Object.keys(config.methods) as AuthMethodKey[]).map((key) => (
-              <MethodRow
-                key={key}
-                methodKey={key}
-                state={config.methods[key]}
-                available={isMethodAvailable(key, settings)}
-                unavailableReason={unavailableReason(key)}
-                onChange={(state) =>
-                  onChange({
-                    ...config,
-                    methods: { ...config.methods, [key]: state },
-                  })
-                }
-                onShowReturnedFields={() => setReturnedFieldsOpen(true)}
-              />
-            ))}
+            {methodKeys.map((key) => {
+              const { enabled, expiry } = getMethod(permission, key);
+              return (
+                <MethodRow
+                  key={key}
+                  methodKey={key}
+                  enabled={enabled}
+                  expiry={expiry}
+                  available={isMethodAvailable(key, settings)}
+                  unavailableReason={unavailableReason(key)}
+                  onChange={(next) => onChange(setMethod(permission, key, next))}
+                  onShowReturnedFields={() => setReturnedFieldsOpen(true)}
+                />
+              );
+            })}
 
-            {!hasEnabledMethod(config) && (
+            {!hasEnabledMethod(permission) && (
               <Box mt="8px">
                 <Hint>
                   Pick at least one method, otherwise participants have no way to
@@ -307,20 +313,20 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
             <Expander
               icon="group"
               title="Limit to groups"
-              summary={groupsSummary(config)}
+              summary={groupsSummary(permission)}
             >
               <Text as="p" mt="0" mb="8px" fontSize="xs" color="coolGrey600">
                 Participant must be in any one of the selected groups.
               </Text>
               <Box maxWidth="440px">
                 <MultipleSelect
-                  value={config.groupIds}
+                  value={getGroupIds(permission)}
                   options={MOCK_GROUPS.map((g) => ({
                     value: g.id,
                     label: g.title,
                   }))}
                   onChange={(options) =>
-                    onChange({ ...config, groupIds: options.map((o) => o.value) })
+                    onChange(setGroupIds(permission, options.map((o) => o.value)))
                   }
                   placeholder="All participants (no group restriction)"
                 />
@@ -343,11 +349,11 @@ const AccessSection = ({ config, settings, onChange }: Props) => {
 
       <ErrorMessageModal
         opened={errorMessageOpen}
-        valueMultiloc={config.accessDeniedMultiloc}
-        onClose={() => setErrorMessageOpen(false)}
-        onChange={(accessDeniedMultiloc) =>
-          onChange({ ...config, accessDeniedMultiloc })
+        valueMultiloc={
+          permission.attributes.access_denied_explanation_multiloc
         }
+        onClose={() => setErrorMessageOpen(false)}
+        onChange={setAccessDeniedMultiloc}
       />
       <VerificationFieldsModal
         opened={returnedFieldsOpen}

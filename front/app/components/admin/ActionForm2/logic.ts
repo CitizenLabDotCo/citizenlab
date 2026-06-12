@@ -1,12 +1,68 @@
 // Design prototype – the "rules engine". All the cross-setting dependencies the
-// brief calls out live here, in one place, so the UI components stay dumb.
+// brief calls out live here, in one place, so the UI components stay dumb. Every
+// helper reads from / writes to the real `IPhasePermissionData` shape (plus the
+// separate list of permission custom fields that holds the demographics).
+
+import { UserDataCollection } from 'api/phase_permissions/types';
 
 import { AUTH_METHOD_LABELS, DEMOGRAPHIC_FIELDS } from './data';
 import {
-  AccessConfig,
   AuthMethodKey,
+  IPermissionsPhaseCustomFieldData,
+  IPhasePermissionData,
+  METHOD_FIELDS,
   PlatformSettings,
 } from './types';
+
+type Attributes = IPhasePermissionData['attributes'];
+
+/** Immutably patch a permission's attributes. */
+const updateAttributes = (
+  permission: IPhasePermissionData,
+  attrs: Partial<Attributes>
+): IPhasePermissionData => ({
+  ...permission,
+  attributes: { ...permission.attributes, ...attrs },
+});
+
+/** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
+export const getMethod = (
+  permission: IPhasePermissionData,
+  key: AuthMethodKey
+): { enabled: boolean; expiry: number | null } => {
+  const fields = METHOD_FIELDS[key];
+  return {
+    enabled: permission.attributes[fields.enabled],
+    expiry: permission.attributes[fields.expiry],
+  };
+};
+
+export const setMethod = (
+  permission: IPhasePermissionData,
+  key: AuthMethodKey,
+  { enabled, expiry }: { enabled: boolean; expiry: number | null }
+): IPhasePermissionData => {
+  const fields = METHOD_FIELDS[key];
+  return updateAttributes(permission, {
+    [fields.enabled]: enabled,
+    [fields.expiry]: expiry,
+  } as Partial<Attributes>);
+};
+
+/** Group ids the action is limited to (OR semantics). */
+export const getGroupIds = (permission: IPhasePermissionData): string[] =>
+  permission.relationships.groups.data.map((g) => g.id);
+
+export const setGroupIds = (
+  permission: IPhasePermissionData,
+  ids: string[]
+): IPhasePermissionData => ({
+  ...permission,
+  relationships: {
+    ...permission.relationships,
+    groups: { data: ids.map((id) => ({ id, type: 'group' })) },
+  },
+});
 
 /** Is a given authentication method offered by the platform at all? */
 export const isMethodAvailable = (
@@ -17,71 +73,86 @@ export const isMethodAvailable = (
     case 'email':
       // Confirmed email needs password login (email/OTP infra) enabled.
       return settings.passwordLoginEnabled;
-    case 'phone':
-      return settings.phoneConfirmationAllowed;
     case 'verification':
       return settings.verificationAllowed;
   }
 };
 
-/** Does participation require an account? Driven by the explicit top choice. */
-export const requiresAccount = (config: AccessConfig): boolean =>
-  config.mode === 'account';
+/** Does participation require an account? Driven by `permitted_by`. */
+export const requiresAccount = (permission: IPhasePermissionData): boolean =>
+  permission.attributes.permitted_by === 'users';
 
 /** With an account required, has the user actually picked a method yet? */
-export const hasEnabledMethod = (config: AccessConfig): boolean =>
-  config.methods.email.enabled ||
-  config.methods.phone.enabled ||
-  config.methods.verification.enabled;
+export const hasEnabledMethod = (permission: IPhasePermissionData): boolean =>
+  permission.attributes.require_confirmed_email ||
+  permission.attributes.require_verification;
 
-/** Only 'anyone' forces demographics onto a form page; others allow either. */
-export const placementLocked = (config: AccessConfig): boolean =>
-  config.mode === 'anyone';
+/** Only "everyone" forces demographics onto a form page; others allow either. */
+export const placementLocked = (permission: IPhasePermissionData): boolean =>
+  permission.attributes.permitted_by === 'everyone';
 
 /**
- * Force a config into a valid state given the current platform settings.
+ * Force a permission into a valid state given the current platform settings.
  * This encodes the "tricky parts" from the brief:
  *  - methods the platform doesn't offer are switched off;
  *  - access controls (methods, groups, PII, anonymity) need an account, so
- *    they clear when the action is open to anyone or limited to admins;
- *  - admins-only is a closed gate: nothing else applies, so demographics clear
- *    too. In the open ("anyone") mode demographics survive, but can only be
- *    asked on a form page, not in registration;
- *  - a password only makes sense alongside the confirmed-email account.
+ *    they clear when the action is open to everyone or limited to admins;
+ *  - in the open ("everyone") mode demographics survive, but can only be asked
+ *    on a form page, not in registration;
+ *  - a password only makes sense alongside the confirmed-email method.
  */
 export const normalize = (
-  config: AccessConfig,
+  permission: IPhasePermissionData,
   settings: PlatformSettings
-): AccessConfig => {
-  const hasAccount = config.mode === 'account';
+): IPhasePermissionData => {
+  const { permitted_by } = permission.attributes;
+  const hasAccount = permitted_by === 'users';
 
-  const methods = { ...config.methods };
-  (Object.keys(methods) as AuthMethodKey[]).forEach((key) => {
-    // No account => no methods; otherwise drop methods the platform can't offer.
+  let next = permission;
+
+  // No account => no methods; otherwise drop methods the platform can't offer.
+  (Object.keys(METHOD_FIELDS) as AuthMethodKey[]).forEach((key) => {
     if (!hasAccount || !isMethodAvailable(key, settings)) {
-      methods[key] = { enabled: false, recency: null };
+      next = setMethod(next, key, { enabled: false, expiry: null });
     }
   });
 
-  return {
-    ...config,
-    methods,
+  const emailEnabled = next.attributes.require_confirmed_email;
+
+  next = updateAttributes(next, {
     // Account-only settings: nobody to restrict, store PII against, or
     // anonymise without an account.
-    groupIds: hasAccount ? config.groupIds : [],
-    pii: {
-      name: hasAccount ? config.pii.name : false,
-      // Password requires the email/password account specifically.
-      password: hasAccount && methods.email.enabled ? config.pii.password : false,
-    },
-    dataCollection: hasAccount ? config.dataCollection : 'all_data',
-    // Demographics survive the open/account modes, but admins-only clears them.
-    demographics: config.mode === 'admins' ? [] : config.demographics,
-    // In the open mode demographics can only be asked on a form page.
-    demographicsPlacement:
-      config.mode === 'anyone' ? 'form_page' : config.demographicsPlacement,
-  };
+    require_name: hasAccount ? next.attributes.require_name : false,
+    // Password requires the confirmed-email account specifically.
+    require_password:
+      hasAccount && emailEnabled ? next.attributes.require_password : false,
+    user_data_collection: hasAccount
+      ? next.attributes.user_data_collection
+      : 'all_data',
+    // In the open mode demographics can only be asked on a form page, and that
+    // choice is locked; otherwise the radio is editable.
+    user_fields_in_form_descriptor:
+      permitted_by === 'everyone'
+        ? { value: true, locked: true, explanation: null }
+        : { ...next.attributes.user_fields_in_form_descriptor, locked: false },
+  });
+
+  // Groups need an account to restrict.
+  if (!hasAccount) {
+    next = setGroupIds(next, []);
+  }
+
+  return next;
 };
+
+/** Admins-only is a closed gate: demographic questions don't apply there. */
+export const normalizeCustomFields = (
+  permission: IPhasePermissionData,
+  customFields: IPermissionsPhaseCustomFieldData[]
+): IPermissionsPhaseCustomFieldData[] =>
+  permission.attributes.permitted_by === 'admins_moderators'
+    ? []
+    : customFields;
 
 // ---- Human-readable summary, used both for the collapsed header and a11y ----
 
@@ -93,9 +164,11 @@ export interface SummaryChip {
 }
 
 // Demographic questions can be collected in every mode, so this chip is shared.
-const demographicsChip = (config: AccessConfig): SummaryChip[] => {
-  if (config.demographics.length === 0) return [];
-  const n = config.demographics.length;
+const demographicsChip = (
+  customFields: IPermissionsPhaseCustomFieldData[]
+): SummaryChip[] => {
+  if (customFields.length === 0) return [];
+  const n = customFields.length;
   return [
     {
       key: 'demographics',
@@ -106,8 +179,13 @@ const demographicsChip = (config: AccessConfig): SummaryChip[] => {
   ];
 };
 
-export const buildSummary = (config: AccessConfig): SummaryChip[] => {
-  if (config.mode === 'admins') {
+export const buildSummary = (
+  permission: IPhasePermissionData,
+  customFields: IPermissionsPhaseCustomFieldData[]
+): SummaryChip[] => {
+  const { attributes } = permission;
+
+  if (attributes.permitted_by === 'admins_moderators') {
     return [
       {
         key: 'admins',
@@ -118,21 +196,20 @@ export const buildSummary = (config: AccessConfig): SummaryChip[] => {
     ];
   }
 
-  if (!requiresAccount(config)) {
+  if (!requiresAccount(permission)) {
     return [
       { key: 'open', label: 'Anyone can participate', icon: 'user-circle', tone: 'open' },
-      ...demographicsChip(config),
+      ...demographicsChip(customFields),
     ];
   }
 
   const chips: SummaryChip[] = [];
   const methodIcon: Record<AuthMethodKey, SummaryChip['icon']> = {
     email: 'email',
-    phone: 'comment',
     verification: 'shield-checkered',
   };
-  (Object.keys(config.methods) as AuthMethodKey[]).forEach((key) => {
-    if (config.methods[key].enabled) {
+  (Object.keys(METHOD_FIELDS) as AuthMethodKey[]).forEach((key) => {
+    if (getMethod(permission, key).enabled) {
       chips.push({
         key,
         label: AUTH_METHOD_LABELS[key],
@@ -143,7 +220,7 @@ export const buildSummary = (config: AccessConfig): SummaryChip[] => {
   });
 
   // Account required but no method chosen yet.
-  if (!hasEnabledMethod(config)) {
+  if (!hasEnabledMethod(permission)) {
     chips.push({
       key: 'account',
       label: 'Sign-in required',
@@ -152,28 +229,32 @@ export const buildSummary = (config: AccessConfig): SummaryChip[] => {
     });
   }
 
-  if (config.groupIds.length > 0) {
+  const groupIds = getGroupIds(permission);
+  if (groupIds.length > 0) {
     chips.push({
       key: 'groups',
-      label: `${config.groupIds.length} group${config.groupIds.length > 1 ? 's' : ''}`,
+      label: `${groupIds.length} group${groupIds.length > 1 ? 's' : ''}`,
       icon: 'group',
       tone: 'access',
     });
   }
 
-  if (config.pii.name) {
+  if (attributes.require_name) {
     chips.push({ key: 'name', label: 'Name', icon: 'user-circle', tone: 'data' });
   }
-  if (config.pii.password) {
+  if (attributes.require_password) {
     chips.push({ key: 'password', label: 'Password', icon: 'lock', tone: 'data' });
   }
 
-  chips.push(...demographicsChip(config));
+  chips.push(...demographicsChip(customFields));
 
-  if (config.dataCollection !== 'all_data') {
+  if (attributes.user_data_collection !== 'all_data') {
     chips.push({
       key: 'anonymity',
-      label: config.dataCollection === 'anonymous' ? 'Anonymous' : 'PII excluded',
+      label:
+        attributes.user_data_collection === 'anonymous'
+          ? 'Anonymous'
+          : 'PII excluded',
       icon: 'user-circle',
       tone: 'data',
     });
@@ -185,10 +266,13 @@ export const buildSummary = (config: AccessConfig): SummaryChip[] => {
 // Summary for the Stadt Wien Konto variant: the sign-in method is fixed, so the
 // per-method chips are replaced by a single "Stadt Wien Konto" chip.
 export const buildSummaryWienKonto = (
-  config: AccessConfig,
+  permission: IPhasePermissionData,
+  customFields: IPermissionsPhaseCustomFieldData[],
   signInLabel: string
 ): SummaryChip[] => {
-  if (config.mode === 'admins') {
+  const { attributes } = permission;
+
+  if (attributes.permitted_by === 'admins_moderators') {
     return [
       {
         key: 'admins',
@@ -199,32 +283,36 @@ export const buildSummaryWienKonto = (
     ];
   }
 
-  if (config.mode === 'anyone') {
+  if (attributes.permitted_by === 'everyone') {
     return [
       { key: 'open', label: 'Anyone can participate', icon: 'user-circle', tone: 'open' },
-      ...demographicsChip(config),
+      ...demographicsChip(customFields),
     ];
   }
 
   const chips: SummaryChip[] = [
     { key: 'signin', label: signInLabel, icon: 'shield-checkered', tone: 'access' },
   ];
-  if (config.groupIds.length > 0) {
+  const groupIds = getGroupIds(permission);
+  if (groupIds.length > 0) {
     chips.push({
       key: 'groups',
-      label: `${config.groupIds.length} group${config.groupIds.length > 1 ? 's' : ''}`,
+      label: `${groupIds.length} group${groupIds.length > 1 ? 's' : ''}`,
       icon: 'group',
       tone: 'access',
     });
   }
-  if (config.pii.name) {
+  if (attributes.require_name) {
     chips.push({ key: 'name', label: 'Name', icon: 'user-circle', tone: 'data' });
   }
-  chips.push(...demographicsChip(config));
-  if (config.dataCollection !== 'all_data') {
+  chips.push(...demographicsChip(customFields));
+  if (attributes.user_data_collection !== 'all_data') {
     chips.push({
       key: 'anonymity',
-      label: config.dataCollection === 'anonymous' ? 'Anonymous' : 'PII excluded',
+      label:
+        attributes.user_data_collection === 'anonymous'
+          ? 'Anonymous'
+          : 'PII excluded',
       icon: 'user-circle',
       tone: 'data',
     });
@@ -232,33 +320,36 @@ export const buildSummaryWienKonto = (
   return chips;
 };
 
+/** The id of the global demographic field a permission custom field points at. */
+export const customFieldId = (field: IPermissionsPhaseCustomFieldData): string =>
+  field.relationships.custom_field.data.id;
+
 export const demographicTitle = (fieldId: string): string =>
   DEMOGRAPHIC_FIELDS.find((f) => f.id === fieldId)?.title ?? fieldId;
 
 // ---- One-line summaries shown on the collapsed setting rows ----
 
-export const groupsSummary = (config: AccessConfig): string => {
-  const n = config.groupIds.length;
+export const groupsSummary = (permission: IPhasePermissionData): string => {
+  const n = getGroupIds(permission).length;
   if (n === 0) return 'Everyone who signs in';
   return `${n} group${n > 1 ? 's' : ''}`;
 };
 
-export const piiSummary = (config: AccessConfig): string => {
+export const piiSummary = (permission: IPhasePermissionData): string => {
   const parts: string[] = [];
-  if (config.pii.name) parts.push('Name');
-  if (config.pii.password) parts.push('Password');
+  if (permission.attributes.require_name) parts.push('Name');
+  if (permission.attributes.require_password) parts.push('Password');
   return parts.length ? parts.join(' · ') : 'Nothing extra';
 };
 
-export const demographicsSummary = (config: AccessConfig): string => {
-  const n = config.demographics.length;
+export const demographicsSummary = (
+  customFields: IPermissionsPhaseCustomFieldData[]
+): string => {
+  const n = customFields.length;
   return n === 0 ? 'None' : `${n} question${n > 1 ? 's' : ''}`;
 };
 
-export const DATA_COLLECTION_SUMMARY: Record<
-  AccessConfig['dataCollection'],
-  string
-> = {
+export const DATA_COLLECTION_SUMMARY: Record<UserDataCollection, string> = {
   all_data: 'Linked to profile',
   demographics_only: 'PII excluded from results',
   anonymous: 'Fully anonymous',

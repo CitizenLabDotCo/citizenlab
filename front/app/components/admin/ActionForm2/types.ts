@@ -1,66 +1,41 @@
 // Design prototype – data model for the "Participation requirements" panel.
 //
-// Note on the model: the live backend bundles these settings into a single
-// `permitted_by` enum (everyone / everyone_confirmed_email / users / verified).
-// This prototype deliberately uses an *independent, composable* model — each
-// authentication method, each PII field and each demographic question is its
-// own switch — because that is what the brief describes (choose "zero, one or
-// more" methods, toggle name and password separately, etc.). See index.tsx for
-// where the two models meet and the README note in the chat for the trade-off.
+// This prototype is wired directly to the real API types: the panel edits an
+// `IPhasePermissionData` (the phase-permission resource) plus the list of
+// `IPermissionsPhaseCustomFieldData` that represents the demographic questions
+// attached to that permission. There is intentionally no bespoke "AccessConfig"
+// model anymore — the shapes below only describe things that are *not* part of
+// the permission resource (platform settings, the auth-method enumeration, and
+// the mock global demographic fields the admin can pick from).
 
-import { Multiloc } from 'typings';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
+import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
 
-export type TimeUnit = 'days' | 'weeks' | 'months';
+export type { IPhasePermissionData, PermittedBy };
+export type { IPermissionsPhaseCustomFieldData };
 
-// `null` means "confirmation never expires" (confirm once, ever).
-export type Recency = { value: number; unit: TimeUnit } | null;
+// The authentication methods still offered after dropping "confirmed phone":
+// each one maps onto a `require_*` boolean + `*_expiry` pair on the permission.
+export type AuthMethodKey = 'email' | 'verification';
 
-export type AuthMethodKey = 'email' | 'phone' | 'verification';
-
-export interface AuthMethodState {
-  enabled: boolean;
-  recency: Recency;
-}
-
-export interface DemographicSelection {
-  fieldId: string;
-  required: boolean;
-}
-
-// Explicit top-level choice: anyone, require an account, or staff only.
-export type AccessMode = 'anyone' | 'account' | 'admins';
-
-// How collected data is associated with the submission / results.
-// Mirrors the backend `user_data_collection` enum. This is about *linking*,
-// not *collecting*: you can ask for a name yet keep the submission anonymous.
-export type DataCollection = 'all_data' | 'demographics_only' | 'anonymous';
-
-// Where demographic questions are asked:
-//  - 'registration': as a step before the user participates (in the sign-in flow)
-//  - 'form_page':    as an extra page appended to the end of the form itself
-export type DemographicsPlacement = 'registration' | 'form_page';
-
-export interface AccessConfig {
-  mode: AccessMode;
-  methods: Record<AuthMethodKey, AuthMethodState>;
-  groupIds: string[];
-  // Override for the "you don't meet the requirements" message, per locale.
-  accessDeniedMultiloc: Multiloc;
-  pii: {
-    name: boolean; // first + last name, toggled as a pair
-    password: boolean;
-  };
-  demographics: DemographicSelection[];
-  demographicsPlacement: DemographicsPlacement;
-  dataCollection: DataCollection;
-}
+// Maps an auth method onto the permission attributes that back it. Keeping this
+// in one place lets the UI stay generic over "methods".
+export const METHOD_FIELDS = {
+  email: {
+    enabled: 'require_confirmed_email',
+    expiry: 'confirmed_email_expiry',
+  },
+  verification: {
+    enabled: 'require_verification',
+    expiry: 'verification_expiry',
+  },
+} as const;
 
 // Platform-level settings that constrain what is *available* in the panel.
 // In the real app these come from the AppConfiguration settings schema
 // (e.g. `password_login`) and from the configured verification method.
 export interface PlatformSettings {
   passwordLoginEnabled: boolean;
-  phoneConfirmationAllowed: boolean;
   verificationAllowed: boolean;
   verificationMethodName: string;
 }

@@ -16,20 +16,19 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { DEMOGRAPHIC_FIELDS } from './data';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
+import { UserDataCollection } from 'api/phase_permissions/types';
+
+import { buildCustomField, DEMOGRAPHIC_FIELDS } from './data';
 import {
+  customFieldId,
   DATA_COLLECTION_SUMMARY,
   demographicTitle,
   demographicsSummary,
   piiSummary,
   placementLocked,
 } from './logic';
-import {
-  AccessConfig,
-  DataCollection,
-  DemographicSelection,
-  DemographicsPlacement,
-} from './types';
+import { IPhasePermissionData } from './types';
 import { SectionHeader, Expander, Hint } from './ui';
 
 const PiiToggle = ({
@@ -75,56 +74,57 @@ const PiiToggle = ({
 );
 
 const DemographicRow = ({
-  selection,
-  onChange,
+  field,
+  onChangeRequired,
   onRemove,
 }: {
-  selection: DemographicSelection;
-  onChange: (selection: DemographicSelection) => void;
+  field: IPermissionsPhaseCustomFieldData;
+  onChangeRequired: (required: boolean) => void;
   onRemove: () => void;
-}) => (
-  <Box
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    gap="8px"
-    py="6px"
-    px="10px"
-    mb="4px"
-    borderRadius="6px"
-    bgColor={colors.grey50}
-  >
-    <Text as="span" m="0" fontSize="s" color="primary">
-      {demographicTitle(selection.fieldId)}
-    </Text>
-    <Box display="flex" alignItems="center" gap="4px">
-      <Box width="130px">
-        <Select
-          size="small"
-          value={selection.required ? 'required' : 'optional'}
-          options={[
-            { value: 'required', label: 'Required' },
-            { value: 'optional', label: 'Optional' },
-          ]}
-          onChange={(option) =>
-            onChange({ ...selection, required: option.value === 'required' })
-          }
+}) => {
+  const title = demographicTitle(customFieldId(field));
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      gap="8px"
+      py="6px"
+      px="10px"
+      mb="4px"
+      borderRadius="6px"
+      bgColor={colors.grey50}
+    >
+      <Text as="span" m="0" fontSize="s" color="primary">
+        {title}
+      </Text>
+      <Box display="flex" alignItems="center" gap="4px">
+        <Box width="130px">
+          <Select
+            size="small"
+            value={field.attributes.required ? 'required' : 'optional'}
+            options={[
+              { value: 'required', label: 'Required' },
+              { value: 'optional', label: 'Optional' },
+            ]}
+            onChange={(option) => onChangeRequired(option.value === 'required')}
+          />
+        </Box>
+        <IconButton
+          iconName="delete"
+          onClick={onRemove}
+          a11y_buttonActionMessage={`Remove ${title}`}
+          iconColor={colors.coolGrey500}
+          iconColorOnHover={colors.red500}
+          iconWidth="18px"
         />
       </Box>
-      <IconButton
-        iconName="delete"
-        onClick={onRemove}
-        a11y_buttonActionMessage={`Remove ${demographicTitle(selection.fieldId)}`}
-        iconColor={colors.coolGrey500}
-        iconColorOnHover={colors.red500}
-        iconWidth="18px"
-      />
     </Box>
-  </Box>
-);
+  );
+};
 
 const ANONYMITY_OPTIONS: {
-  value: DataCollection;
+  value: UserDataCollection;
   label: string;
   warning?: string;
 }[] = [
@@ -146,44 +146,66 @@ const ANONYMITY_OPTIONS: {
   },
 ];
 
-const PLACEMENT_OPTIONS: { value: DemographicsPlacement; label: string }[] = [
+// Demographics placement is stored as a boolean on the permission:
+//  - false => ask in the registration flow, before the user participates;
+//  - true  => add a new page to the end of the form itself.
+const PLACEMENT_OPTIONS: { value: boolean; label: string }[] = [
   {
-    value: 'registration',
+    value: false,
     label: 'Ask demographic questions before the user participates',
   },
   {
-    value: 'form_page',
+    value: true,
     label: 'Collect demographics by adding a new page to the end of the form',
   },
 ];
 
 interface Props {
-  config: AccessConfig;
+  permission: IPhasePermissionData;
+  customFields: IPermissionsPhaseCustomFieldData[];
   passwordAvailable: boolean;
   // The password requirement is specific to email/password accounts; SSO-only
   // variants (e.g. Stadt Wien Konto) hide it entirely.
   showPassword?: boolean;
-  onChange: (config: AccessConfig) => void;
+  onChange: (permission: IPhasePermissionData) => void;
+  onChangeCustomFields: (
+    customFields: IPermissionsPhaseCustomFieldData[]
+  ) => void;
 }
 
 const DataSection = ({
-  config,
+  permission,
+  customFields,
   passwordAvailable,
   showPassword = true,
   onChange,
+  onChangeCustomFields,
 }: Props) => {
+  const { attributes } = permission;
   // PII and anonymity need an account; demographics are collected in any mode.
-  const showAccountParts = config.mode === 'account';
-  const lockPlacement = placementLocked(config);
+  const showAccountParts = attributes.permitted_by === 'users';
+  const lockPlacement = placementLocked(permission);
+  const placement = attributes.user_fields_in_form_descriptor.value;
 
-  const selectedIds = config.demographics.map((d) => d.fieldId);
+  const selectedIds = customFields.map(customFieldId);
   const addableFields = DEMOGRAPHIC_FIELDS.filter(
     (f) => !selectedIds.includes(f.id)
   );
 
   const activeWarning = ANONYMITY_OPTIONS.find(
-    (o) => o.value === config.dataCollection
+    (o) => o.value === attributes.user_data_collection
   )?.warning;
+
+  const patch = (attrs: Partial<IPhasePermissionData['attributes']>) =>
+    onChange({ ...permission, attributes: { ...attributes, ...attrs } });
+
+  const setPlacement = (value: boolean) =>
+    patch({
+      user_fields_in_form_descriptor: {
+        ...attributes.user_fields_in_form_descriptor,
+        value,
+      },
+    });
 
   return (
     <Box>
@@ -199,19 +221,14 @@ const DataSection = ({
           <Expander
             icon="user-circle"
             title="Personal info"
-            summary={piiSummary(config)}
+            summary={piiSummary(permission)}
           >
             <PiiToggle
               icon="user-circle"
               title="Full name"
               description="Ask for first and last name."
-              checked={config.pii.name}
-              onChange={() =>
-                onChange({
-                  ...config,
-                  pii: { ...config.pii, name: !config.pii.name },
-                })
-              }
+              checked={attributes.require_name}
+              onChange={() => patch({ require_name: !attributes.require_name })}
             />
             {showPassword && (
               <PiiToggle
@@ -222,13 +239,10 @@ const DataSection = ({
                     ? 'Require a password on the account.'
                     : 'Requires the “Confirmed email” method to be enabled.'
                 }
-                checked={config.pii.password}
+                checked={attributes.require_password}
                 disabled={!passwordAvailable}
                 onChange={() =>
-                  onChange({
-                    ...config,
-                    pii: { ...config.pii, password: !config.pii.password },
-                  })
+                  patch({ require_password: !attributes.require_password })
                 }
               />
             )}
@@ -244,24 +258,22 @@ const DataSection = ({
           <Expander
             icon="user-data"
             title="Demographic questions"
-            summary={demographicsSummary(config)}
+            summary={demographicsSummary(customFields)}
           >
             {/* Where the questions are asked. */}
             <Text as="p" mt="0" mb="6px" fontSize="xs" fontWeight="bold" color="coolGrey600">
               When to ask
             </Text>
             {PLACEMENT_OPTIONS.map((option) => {
-              const disabled = lockPlacement && option.value === 'registration';
+              const disabled = lockPlacement && option.value === false;
               return (
-                <Box key={option.value} mb="2px">
+                <Box key={String(option.value)} mb="2px">
                   <Radio
                     name="demographics-placement"
                     value={option.value}
-                    currentValue={config.demographicsPlacement}
+                    currentValue={placement}
                     disabled={disabled}
-                    onChange={(value: DemographicsPlacement) =>
-                      onChange({ ...config, demographicsPlacement: value })
-                    }
+                    onChange={setPlacement}
                     label={
                       <Text
                         as="span"
@@ -290,31 +302,29 @@ const DataSection = ({
             <Text as="p" mt="0" mb="8px" fontSize="xs" fontWeight="bold" color="coolGrey600">
               Questions
             </Text>
-            {config.demographics.length === 0 && (
+            {customFields.length === 0 && (
               <Text as="p" mt="0" mb="8px" fontSize="s" color="coolGrey500">
                 No demographic questions asked.
               </Text>
             )}
 
-            {config.demographics.map((selection) => (
+            {customFields.map((field) => (
               <DemographicRow
-                key={selection.fieldId}
-                selection={selection}
-                onChange={(updated) =>
-                  onChange({
-                    ...config,
-                    demographics: config.demographics.map((d) =>
-                      d.fieldId === updated.fieldId ? updated : d
-                    ),
-                  })
+                key={field.id}
+                field={field}
+                onChangeRequired={(required) =>
+                  onChangeCustomFields(
+                    customFields.map((f) =>
+                      f.id === field.id
+                        ? { ...f, attributes: { ...f.attributes, required } }
+                        : f
+                    )
+                  )
                 }
                 onRemove={() =>
-                  onChange({
-                    ...config,
-                    demographics: config.demographics.filter(
-                      (d) => d.fieldId !== selection.fieldId
-                    ),
-                  })
+                  onChangeCustomFields(
+                    customFields.filter((f) => f.id !== field.id)
+                  )
                 }
               />
             ))}
@@ -330,13 +340,10 @@ const DataSection = ({
                     label: f.title,
                   }))}
                   onChange={(option) =>
-                    onChange({
-                      ...config,
-                      demographics: [
-                        ...config.demographics,
-                        { fieldId: option.value, required: true },
-                      ],
-                    })
+                    onChangeCustomFields([
+                      ...customFields,
+                      buildCustomField(option.value, customFields.length),
+                    ])
                   }
                 />
               </Box>
@@ -350,7 +357,7 @@ const DataSection = ({
           <Expander
             icon="shield-checkered"
             title="Anonymity in results"
-            summary={DATA_COLLECTION_SUMMARY[config.dataCollection]}
+            summary={DATA_COLLECTION_SUMMARY[attributes.user_data_collection]}
           >
             <Text as="p" mt="0" mb="10px" fontSize="xs" color="coolGrey600">
               Independent of what you ask above: you can collect a name yet still
@@ -361,9 +368,9 @@ const DataSection = ({
                 <Radio
                   name="data-collection"
                   value={option.value}
-                  currentValue={config.dataCollection}
-                  onChange={(value: DataCollection) =>
-                    onChange({ ...config, dataCollection: value })
+                  currentValue={attributes.user_data_collection}
+                  onChange={(value: UserDataCollection) =>
+                    patch({ user_data_collection: value })
                   }
                   label={
                     <Text as="span" m="0" fontSize="s" color="primary">
