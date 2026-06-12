@@ -93,17 +93,5 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
     end
-
-    private
-
-    # Assign through setters (not write_attribute) so any custom setter/normalization runs.
-    # `*_multiloc` fields merge per-locale (locales the caller didn't pass are kept); others replace.
-    def apply_attributes(record, attributes)
-      attributes.each do |key, value|
-        current = record.public_send(key)
-        merge = key.to_s.end_with?('_multiloc') && current.is_a?(Hash) && value.is_a?(Hash)
-        record.public_send(:"#{key}=", merge ? current.merge(value) : value)
-      end
-    end
   end
 end
