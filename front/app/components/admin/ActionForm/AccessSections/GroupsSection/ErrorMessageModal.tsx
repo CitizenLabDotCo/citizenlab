@@ -18,7 +18,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import Modal from 'components/UI/Modal';
 
-import { DEFAULT_ACCESS_DENIED_MESSAGE } from './data';
+import { DEFAULT_ACCESS_DENIED_MESSAGE } from '../../data';
 
 interface Props {
   opened: boolean;

@@ -16,7 +16,7 @@ import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 
 import { requiresAccount, ssoMethodName } from '../logic';
 import { SectionHeader } from '../ui';
-import VerificationFieldsModal from '../VerificationFieldsModal';
+import VerificationFieldsModal from './VerificationFieldsModal';
 
 import GroupsSection from './GroupsSection';
 import ModeCards from './ModeCards';

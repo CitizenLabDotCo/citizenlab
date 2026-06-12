@@ -16,12 +16,13 @@ import {
 } from '../logic';
 import { AuthMethodKey } from '../types';
 import { SectionHeader, Hint } from '../ui';
-import VerificationFieldsModal from '../VerificationFieldsModal';
+
 
 import GroupsSection from './GroupsSection';
 import MethodRow from './MethodRow';
 import ModeCards from './ModeCards';
 import { AccessSectionProps } from './shared';
+import VerificationFieldsModal from './VerificationFieldsModal';
 
 const METHOD_KEYS: AuthMethodKey[] = ['email', 'verification'];
 

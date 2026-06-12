@@ -24,7 +24,6 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 import { UserDataCollection } from 'api/phase_permissions/types';
 
-import FieldSelectionModal from '../FieldSelectionModal';
 import {
   DATA_COLLECTION_SUMMARY,
   demographicsSummary,
@@ -35,6 +34,7 @@ import { Changes, IPhasePermissionData } from '../types';
 import { SectionHeader, Expander, Hint } from '../ui';
 
 import DemographicRow from './DemographicRow';
+import FieldSelectionModal from './FieldSelectionModal';
 import PiiToggle from './PiiToggle';
 
 const ANONYMITY_OPTIONS: {
@@ -42,23 +42,23 @@ const ANONYMITY_OPTIONS: {
   label: string;
   warning?: string;
 }[] = [
-  {
-    value: 'all_data',
-    label: 'Link submissions to the participant’s profile (recommended)',
-  },
-  {
-    value: 'demographics_only',
-    label: 'Keep demographics in results, but unlink personal info',
-    warning:
-      'Personal info will not be stored with submissions and cannot be recovered later.',
-  },
-  {
-    value: 'anonymous',
-    label: 'Fully anonymous — unlink personal info and demographics',
-    warning:
-      'Neither personal info nor demographics will be stored with submissions, and cannot be recovered later.',
-  },
-];
+    {
+      value: 'all_data',
+      label: 'Link submissions to the participant’s profile (recommended)',
+    },
+    {
+      value: 'demographics_only',
+      label: 'Keep demographics in results, but unlink personal info',
+      warning:
+        'Personal info will not be stored with submissions and cannot be recovered later.',
+    },
+    {
+      value: 'anonymous',
+      label: 'Fully anonymous — unlink personal info and demographics',
+      warning:
+        'Neither personal info nor demographics will be stored with submissions, and cannot be recovered later.',
+    },
+  ];
 
 // Demographics placement is stored as a boolean on the permission:
 //  - false => ask in the registration flow, before the user participates;
@@ -136,11 +136,11 @@ const DataSection = ({
       field.attributes.persisted
         ? { id: field.id, required }
         : {
-            id: field.id,
-            permission_id: field.relationships.permission.data.id,
-            custom_field_id: field.relationships.custom_field.data.id,
-            required,
-          }
+          id: field.id,
+          permission_id: field.relationships.permission.data.id,
+          custom_field_id: field.relationships.custom_field.data.id,
+          required,
+        }
     );
 
   const removeField = (field: IPermissionsPhaseCustomFieldData) =>
@@ -295,36 +295,36 @@ const DataSection = ({
 
         {/* Anonymity / data linking — only with an account to link against. */}
         {showAccountParts && (
-        <Box borderTop={`1px solid ${colors.divider}`}>
-          <Expander
-            icon="shield-checkered"
-            title="Anonymity in results"
-            summary={DATA_COLLECTION_SUMMARY[attributes.user_data_collection]}
-          >
-            <Text as="p" mt="0" mb="10px" fontSize="xs" color="coolGrey600">
-              Independent of what you ask above: you can collect a name yet still
-              keep the submission unlinked from the participant’s profile.
-            </Text>
-            {ANONYMITY_OPTIONS.map((option) => (
-              <Box key={option.value} mb="4px">
-                <Radio
-                  name="data-collection"
-                  value={option.value}
-                  currentValue={attributes.user_data_collection}
-                  onChange={(value: UserDataCollection) =>
-                    onChange({ user_data_collection: value })
-                  }
-                  label={
-                    <Text as="span" m="0" fontSize="s" color="primary">
-                      {option.label}
-                    </Text>
-                  }
-                />
-              </Box>
-            ))}
-            {activeWarning && <Error text={activeWarning} />}
-          </Expander>
-        </Box>
+          <Box borderTop={`1px solid ${colors.divider}`}>
+            <Expander
+              icon="shield-checkered"
+              title="Anonymity in results"
+              summary={DATA_COLLECTION_SUMMARY[attributes.user_data_collection]}
+            >
+              <Text as="p" mt="0" mb="10px" fontSize="xs" color="coolGrey600">
+                Independent of what you ask above: you can collect a name yet still
+                keep the submission unlinked from the participant’s profile.
+              </Text>
+              {ANONYMITY_OPTIONS.map((option) => (
+                <Box key={option.value} mb="4px">
+                  <Radio
+                    name="data-collection"
+                    value={option.value}
+                    currentValue={attributes.user_data_collection}
+                    onChange={(value: UserDataCollection) =>
+                      onChange({ user_data_collection: value })
+                    }
+                    label={
+                      <Text as="span" m="0" fontSize="s" color="primary">
+                        {option.label}
+                      </Text>
+                    }
+                  />
+                </Box>
+              ))}
+              {activeWarning && <Error text={activeWarning} />}
+            </Expander>
+          </Box>
         )}
       </Box>
     </Box>
