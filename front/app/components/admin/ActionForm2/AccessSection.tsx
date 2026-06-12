@@ -14,7 +14,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { PermittedBy } from 'api/phase_permissions/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
@@ -25,16 +28,10 @@ import {
   getMethod,
   groupsSummary,
   hasEnabledMethod,
-  isMethodAvailable,
+  methodChange,
   requiresAccount,
-  setGroupIds,
-  setMethod,
 } from './logic';
-import {
-  AuthMethodKey,
-  IPhasePermissionData,
-  PlatformSettings,
-} from './types';
+import { AuthMethodKey, Changes, IPhasePermissionData } from './types';
 import { SectionHeader, Hint, Expander, ModeCard } from './ui';
 import VerificationFieldsModal from './VerificationFieldsModal';
 
@@ -201,14 +198,30 @@ const MethodRow = ({
 
 interface Props {
   permission: IPhasePermissionData;
-  settings: PlatformSettings;
-  onChange: (permission: IPhasePermissionData) => void;
+  // Whether the "Anyone" option is offered (derived from
+  // `permitted_by_everyone_allowed` by the parent).
+  showAnyone: boolean;
+  onChange: (changes: Changes) => void;
 }
 
-const AccessSection = ({ permission, settings, onChange }: Props) => {
+const AccessSection = ({ permission, showAnyone, onChange }: Props) => {
   const hasAccount = requiresAccount(permission);
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
+
+  // Which authentication methods the platform offers comes from live config:
+  // confirmed email needs password login; identity verification needs a
+  // configured verification method.
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+  const { data: verificationMethod } = useVerificationMethod();
+  const verificationMetadata =
+    verificationMethod?.data.attributes.method_metadata;
+  const verificationMethodName = verificationMetadata?.name ?? '';
+
+  const isAvailable: Record<AuthMethodKey, boolean> = {
+    email: passwordLoginEnabled,
+    verification: !!verificationMetadata,
+  };
 
   const unavailableReason = (key: AuthMethodKey): string => {
     if (key === 'email') {
@@ -217,22 +230,11 @@ const AccessSection = ({ permission, settings, onChange }: Props) => {
     return 'Unavailable: no identity verification method is configured.';
   };
 
-  const setMode = (permitted_by: PermittedBy) =>
-    onChange({
-      ...permission,
-      attributes: { ...permission.attributes, permitted_by },
-    });
+  const setMode = (permitted_by: PermittedBy) => onChange({ permitted_by });
 
   const setAccessDeniedMultiloc = (
     access_denied_explanation_multiloc: Multiloc
-  ) =>
-    onChange({
-      ...permission,
-      attributes: {
-        ...permission.attributes,
-        access_denied_explanation_multiloc,
-      },
-    });
+  ) => onChange({ access_denied_explanation_multiloc });
 
   const methodKeys: AuthMethodKey[] = ['email', 'verification'];
 
@@ -246,13 +248,15 @@ const AccessSection = ({ permission, settings, onChange }: Props) => {
 
       {/* The explicit top-level choice that gates everything below it. */}
       <Box display="flex" flexWrap="wrap" gap="8px" mb="16px">
-        <ModeCard
-          icon="user-circle"
-          title="Anyone"
-          description="No account needed."
-          selected={permission.attributes.permitted_by === 'everyone'}
-          onClick={() => setMode('everyone')}
-        />
+        {showAnyone && (
+          <ModeCard
+            icon="user-circle"
+            title="Anyone"
+            description="No account needed."
+            selected={permission.attributes.permitted_by === 'everyone'}
+            onClick={() => setMode('everyone')}
+          />
+        )}
         <ModeCard
           icon="shield-checkered"
           title="Require sign-in"
@@ -290,9 +294,9 @@ const AccessSection = ({ permission, settings, onChange }: Props) => {
                   methodKey={key}
                   enabled={enabled}
                   expiry={expiry}
-                  available={isMethodAvailable(key, settings)}
+                  available={isAvailable[key]}
                   unavailableReason={unavailableReason(key)}
-                  onChange={(next) => onChange(setMethod(permission, key, next))}
+                  onChange={(next) => onChange(methodChange(key, next))}
                   onShowReturnedFields={() => setReturnedFieldsOpen(true)}
                 />
               );
@@ -326,7 +330,7 @@ const AccessSection = ({ permission, settings, onChange }: Props) => {
                     label: g.title,
                   }))}
                   onChange={(options) =>
-                    onChange(setGroupIds(permission, options.map((o) => o.value)))
+                    onChange({ group_ids: options.map((o) => o.value) })
                   }
                   placeholder="All participants (no group restriction)"
                 />
@@ -357,7 +361,7 @@ const AccessSection = ({ permission, settings, onChange }: Props) => {
       />
       <VerificationFieldsModal
         opened={returnedFieldsOpen}
-        methodName={settings.verificationMethodName}
+        methodName={verificationMethodName}
         onClose={() => setReturnedFieldsOpen(false)}
       />
     </Box>

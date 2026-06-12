@@ -1,6 +1,6 @@
-// Design prototype – "Who can participate" for the Stadt Wien Konto variant.
-// Same shape as AccessSection, but "Require sign-in" is a single fixed SSO
-// method (Stadt Wien Konto) with no per-method options to configure.
+// Design prototype – "Who can participate" for the SSO variant. Same shape as
+// AccessSection, but "Require sign-in" is a single fixed single-sign-on method
+// with no per-method options to configure.
 
 import React, { useState } from 'react';
 
@@ -11,14 +11,10 @@ import { PermittedBy } from 'api/phase_permissions/types';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import {
-  MOCK_GROUPS,
-  STADT_WIEN_KONTO_NAME,
-  STADT_WIEN_KONTO_RETURNED_FIELDS,
-} from './data';
+import { MOCK_GROUPS, SSO_METHOD_NAME, SSO_RETURNED_FIELDS } from './data';
 import ErrorMessageModal from './ErrorMessageModal';
-import { getGroupIds, groupsSummary, requiresAccount, setGroupIds } from './logic';
-import { IPhasePermissionData } from './types';
+import { getGroupIds, groupsSummary, requiresAccount } from './logic';
+import { Changes, IPhasePermissionData } from './types';
 import { SectionHeader, Hint, Expander, ModeCard } from './ui';
 import VerificationFieldsModal from './VerificationFieldsModal';
 
@@ -30,51 +26,45 @@ const linkStyle: React.CSSProperties = {
 
 interface Props {
   permission: IPhasePermissionData;
-  onChange: (permission: IPhasePermissionData) => void;
+  // Whether the "Anyone" option is offered (derived from
+  // `permitted_by_everyone_allowed` by the parent).
+  showAnyone: boolean;
+  onChange: (changes: Changes) => void;
 }
 
-const AccessSectionWienKonto = ({ permission, onChange }: Props) => {
+const AccessSectionSSO = ({ permission, showAnyone, onChange }: Props) => {
   const hasAccount = requiresAccount(permission);
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
-  const setMode = (permitted_by: PermittedBy) =>
-    onChange({
-      ...permission,
-      attributes: { ...permission.attributes, permitted_by },
-    });
+  const setMode = (permitted_by: PermittedBy) => onChange({ permitted_by });
 
   const setAccessDeniedMultiloc = (
     access_denied_explanation_multiloc: Multiloc
-  ) =>
-    onChange({
-      ...permission,
-      attributes: {
-        ...permission.attributes,
-        access_denied_explanation_multiloc,
-      },
-    });
+  ) => onChange({ access_denied_explanation_multiloc });
 
   return (
     <Box>
       <SectionHeader
         icon="user-circle"
         title="Who can participate"
-        tooltip="Decide whether an account is needed. Sign-in is handled by the Stadt Wien Konto."
+        tooltip="Decide whether an account is needed. Sign-in is handled by single sign-on."
       />
 
       <Box display="flex" flexWrap="wrap" gap="8px" mb="16px">
-        <ModeCard
-          icon="user-circle"
-          title="Anyone"
-          description="No account needed."
-          selected={permission.attributes.permitted_by === 'everyone'}
-          onClick={() => setMode('everyone')}
-        />
+        {showAnyone && (
+          <ModeCard
+            icon="user-circle"
+            title="Anyone"
+            description="No account needed."
+            selected={permission.attributes.permitted_by === 'everyone'}
+            onClick={() => setMode('everyone')}
+          />
+        )}
         <ModeCard
           icon="shield-checkered"
-          title="Require sign-in with Stadt Wien Konto"
-          description="Sign in via the city account."
+          title="Require single sign-on"
+          description="Sign in via the configured SSO account."
           selected={permission.attributes.permitted_by === 'users'}
           onClick={() => setMode('users')}
         />
@@ -116,7 +106,7 @@ const AccessSectionWienKonto = ({ permission, onChange }: Props) => {
             />
             <Box display="flex" flexDirection="column" gap="2px">
               <Text as="span" m="0" fontSize="s" fontWeight="semi-bold" color="primary">
-                Participants sign in with their {STADT_WIEN_KONTO_NAME}
+                Participants sign in with their {SSO_METHOD_NAME}
               </Text>
               <Text
                 as="span"
@@ -147,7 +137,7 @@ const AccessSectionWienKonto = ({ permission, onChange }: Props) => {
                   value={getGroupIds(permission)}
                   options={MOCK_GROUPS.map((g) => ({ value: g.id, label: g.title }))}
                   onChange={(options) =>
-                    onChange(setGroupIds(permission, options.map((o) => o.value)))
+                    onChange({ group_ids: options.map((o) => o.value) })
                   }
                   placeholder="All participants (no group restriction)"
                 />
@@ -178,12 +168,12 @@ const AccessSectionWienKonto = ({ permission, onChange }: Props) => {
       />
       <VerificationFieldsModal
         opened={returnedFieldsOpen}
-        methodName={STADT_WIEN_KONTO_NAME}
-        fields={STADT_WIEN_KONTO_RETURNED_FIELDS}
+        methodName={SSO_METHOD_NAME}
+        fields={SSO_RETURNED_FIELDS}
         onClose={() => setReturnedFieldsOpen(false)}
       />
     </Box>
   );
 };
 
-export default AccessSectionWienKonto;
+export default AccessSectionSSO;

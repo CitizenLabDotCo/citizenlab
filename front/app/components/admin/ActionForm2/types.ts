@@ -1,25 +1,56 @@
 // Design prototype – data model for the "Participation requirements" panel.
 //
-// This prototype is wired directly to the real API types: the panel edits an
-// `IPhasePermissionData` (the phase-permission resource) plus the list of
-// `IPermissionsPhaseCustomFieldData` that represents the demographic questions
-// attached to that permission. There is intentionally no bespoke "AccessConfig"
-// model anymore — the shapes below only describe things that are *not* part of
-// the permission resource (platform settings, the auth-method enumeration, and
-// the mock global demographic fields the admin can pick from).
+// The panel is a *stateless*, controlled view, mirroring `ActionForm`: it
+// receives an `IPhasePermissionData` and emits granular `Changes` through
+// `onChange`; the parent owns the state and persists it. The demographic
+// questions are not passed in — they are read straight from
+// `usePermissionsPhaseCustomFields` (and mutated through its sibling hooks),
+// exactly like `ActionForm/Fields`.
 
-import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
-import { IPhasePermissionData, PermittedBy } from 'api/phase_permissions/types';
+import { Multiloc } from 'typings';
 
-export type { IPhasePermissionData, PermittedBy };
-export type { IPermissionsPhaseCustomFieldData };
+import {
+  IPhasePermissionData,
+  PermittedBy,
+  UserDataCollection,
+} from 'api/phase_permissions/types';
+
+export type { IPhasePermissionData, PermittedBy, UserDataCollection };
+
+// The set of edits the panel can emit. A superset of `ActionForm`'s `Changes`,
+// extended with the composable `require_*` / `*_expiry` fields this design edits
+// directly (the old form bundled these into the `permitted_by` enum instead).
+export type Changes = {
+  permitted_by?: PermittedBy;
+  group_ids?: string[];
+  require_confirmed_email?: boolean;
+  confirmed_email_expiry?: number | null;
+  require_verification?: boolean;
+  verification_expiry?: number | null;
+  require_name?: boolean;
+  require_password?: boolean;
+  access_denied_explanation_multiloc?: Multiloc;
+  everyone_tracking_enabled?: boolean;
+  user_data_collection?: UserDataCollection;
+  user_fields_in_form?: boolean;
+};
+
+// Same props as `ActionForm`, with two differences: `permissionData` is an
+// `IPhasePermissionData`, and there is no `showAnyone` prop — whether the
+// "Anyone" option is offered is derived from `permitted_by_everyone_allowed`.
+export type Props = {
+  phaseId?: string;
+  permissionData: IPhasePermissionData;
+  onChange: (changes: Changes) => Promise<void>;
+  onReset: () => void;
+};
 
 // The authentication methods still offered after dropping "confirmed phone":
 // each one maps onto a `require_*` boolean + `*_expiry` pair on the permission.
 export type AuthMethodKey = 'email' | 'verification';
 
-// Maps an auth method onto the permission attributes that back it. Keeping this
-// in one place lets the UI stay generic over "methods".
+// Maps an auth method onto the permission attributes (and matching change keys)
+// that back it. Keeping this in one place lets the UI stay generic over methods.
 export const METHOD_FIELDS = {
   email: {
     enabled: 'require_confirmed_email',
@@ -30,12 +61,3 @@ export const METHOD_FIELDS = {
     expiry: 'verification_expiry',
   },
 } as const;
-
-// Platform-level settings that constrain what is *available* in the panel.
-// In the real app these come from the AppConfiguration settings schema
-// (e.g. `password_login`) and from the configured verification method.
-export interface PlatformSettings {
-  passwordLoginEnabled: boolean;
-  verificationAllowed: boolean;
-  verificationMethodName: string;
-}

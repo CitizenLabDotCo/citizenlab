@@ -1,5 +1,10 @@
 // Design prototype – "What we collect": personal info, demographic questions,
 // and how the collected data is linked to the submission (anonymity).
+//
+// The demographic questions are read straight from
+// `usePermissionsPhaseCustomFields` and mutated through its sibling hooks,
+// mirroring `ActionForm/Fields`. The rest of the panel is controlled: it reads
+// `permission` and reports edits through `onChange` as granular `Changes`.
 
 import React from 'react';
 
@@ -17,9 +22,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
+import useAddPermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useAddPermissionsPhaseCustomField';
+import useDeletePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useDeletePermissionsPhaseCustomField';
+import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
+import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 import { UserDataCollection } from 'api/phase_permissions/types';
 
-import { buildCustomField, DEMOGRAPHIC_FIELDS } from './data';
+import useLocalize from 'hooks/useLocalize';
+
+import { DEMOGRAPHIC_FIELDS } from './data';
 import {
   customFieldId,
   DATA_COLLECTION_SUMMARY,
@@ -28,7 +39,7 @@ import {
   piiSummary,
   placementLocked,
 } from './logic';
-import { IPhasePermissionData } from './types';
+import { Changes, IPhasePermissionData } from './types';
 import { SectionHeader, Expander, Hint } from './ui';
 
 const PiiToggle = ({
@@ -82,7 +93,10 @@ const DemographicRow = ({
   onChangeRequired: (required: boolean) => void;
   onRemove: () => void;
 }) => {
-  const title = demographicTitle(customFieldId(field));
+  const localize = useLocalize();
+  const title =
+    localize(field.attributes.title_multiloc) ||
+    demographicTitle(customFieldId(field));
   return (
     <Box
       display="flex"
@@ -162,26 +176,45 @@ const PLACEMENT_OPTIONS: { value: boolean; label: string }[] = [
 
 interface Props {
   permission: IPhasePermissionData;
-  customFields: IPermissionsPhaseCustomFieldData[];
+  phaseId?: string;
   passwordAvailable: boolean;
   // The password requirement is specific to email/password accounts; SSO-only
-  // variants (e.g. Stadt Wien Konto) hide it entirely.
+  // variants hide it entirely.
   showPassword?: boolean;
-  onChange: (permission: IPhasePermissionData) => void;
-  onChangeCustomFields: (
-    customFields: IPermissionsPhaseCustomFieldData[]
-  ) => void;
+  onChange: (changes: Changes) => void;
 }
 
 const DataSection = ({
   permission,
-  customFields,
+  phaseId,
   passwordAvailable,
   showPassword = true,
   onChange,
-  onChangeCustomFields,
 }: Props) => {
   const { attributes } = permission;
+  const { action } = attributes;
+
+  const { data: permissionFields } = usePermissionsPhaseCustomFields({
+    phaseId,
+    action,
+  });
+  const { mutate: addCustomField } = useAddPermissionsPhaseCustomField({
+    phaseId,
+    action,
+  });
+  const { mutate: updateCustomField } = useUpdatePermissionsPhaseCustomField({
+    phaseId,
+    action,
+  });
+  const { mutate: deleteCustomField } = useDeletePermissionsPhaseCustomField({
+    phaseId,
+    action,
+  });
+
+  if (!permissionFields) return null;
+
+  const customFields = permissionFields.data;
+
   // PII and anonymity need an account; demographics are collected in any mode.
   const showAccountParts = attributes.permitted_by === 'users';
   const lockPlacement = placementLocked(permission);
@@ -196,15 +229,31 @@ const DataSection = ({
     (o) => o.value === attributes.user_data_collection
   )?.warning;
 
-  const patch = (attrs: Partial<IPhasePermissionData['attributes']>) =>
-    onChange({ ...permission, attributes: { ...attributes, ...attrs } });
-
   const setPlacement = (value: boolean) =>
-    patch({
-      user_fields_in_form_descriptor: {
-        ...attributes.user_fields_in_form_descriptor,
-        value,
-      },
+    onChange({ user_fields_in_form: value });
+
+  // A field is only "real" in the DB once persisted; before that the backend
+  // needs the permission + custom-field ids to create it on first edit.
+  const setRequired = (
+    field: IPermissionsPhaseCustomFieldData,
+    required: boolean
+  ) =>
+    updateCustomField(
+      field.attributes.persisted
+        ? { id: field.id, required }
+        : {
+            id: field.id,
+            permission_id: field.relationships.permission.data.id,
+            custom_field_id: field.relationships.custom_field.data.id,
+            required,
+          }
+    );
+
+  const removeField = (field: IPermissionsPhaseCustomFieldData) =>
+    deleteCustomField({
+      id: field.id,
+      permission_id: field.relationships.permission.data.id,
+      custom_field_id: field.relationships.custom_field.data.id,
     });
 
   return (
@@ -228,7 +277,9 @@ const DataSection = ({
               title="Full name"
               description="Ask for first and last name."
               checked={attributes.require_name}
-              onChange={() => patch({ require_name: !attributes.require_name })}
+              onChange={() =>
+                onChange({ require_name: !attributes.require_name })
+              }
             />
             {showPassword && (
               <PiiToggle
@@ -242,7 +293,7 @@ const DataSection = ({
                 checked={attributes.require_password}
                 disabled={!passwordAvailable}
                 onChange={() =>
-                  patch({ require_password: !attributes.require_password })
+                  onChange({ require_password: !attributes.require_password })
                 }
               />
             )}
@@ -312,20 +363,8 @@ const DataSection = ({
               <DemographicRow
                 key={field.id}
                 field={field}
-                onChangeRequired={(required) =>
-                  onChangeCustomFields(
-                    customFields.map((f) =>
-                      f.id === field.id
-                        ? { ...f, attributes: { ...f.attributes, required } }
-                        : f
-                    )
-                  )
-                }
-                onRemove={() =>
-                  onChangeCustomFields(
-                    customFields.filter((f) => f.id !== field.id)
-                  )
-                }
+                onChangeRequired={(required) => setRequired(field, required)}
+                onRemove={() => removeField(field)}
               />
             ))}
 
@@ -340,10 +379,12 @@ const DataSection = ({
                     label: f.title,
                   }))}
                   onChange={(option) =>
-                    onChangeCustomFields([
-                      ...customFields,
-                      buildCustomField(option.value, customFields.length),
-                    ])
+                    addCustomField({
+                      custom_field_id: option.value,
+                      required: false,
+                      phaseId,
+                      action,
+                    })
                   }
                 />
               </Box>
@@ -370,7 +411,7 @@ const DataSection = ({
                   value={option.value}
                   currentValue={attributes.user_data_collection}
                   onChange={(value: UserDataCollection) =>
-                    patch({ user_data_collection: value })
+                    onChange({ user_data_collection: value })
                   }
                   label={
                     <Text as="span" m="0" fontSize="s" color="primary">
