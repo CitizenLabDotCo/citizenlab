@@ -21,6 +21,7 @@ class ApiError < StandardError
   end
 
   def self.from_record(record, status: 422)
+    # :validation_failed is just the exception message; client gets errors.details
     new(:validation_failed, status: status, payload: { errors: record.errors.details })
   end
 end
