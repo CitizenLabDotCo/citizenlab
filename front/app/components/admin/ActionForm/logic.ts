@@ -50,12 +50,6 @@ export const hasEnabledMethod = (permission: IPhasePermissionData): boolean =>
   permission.attributes.require_confirmed_email ||
   permission.attributes.require_verification;
 
-/** Only "everyone" forces demographics onto a form page; others allow either. */
-export const placementLocked = (permission: IPhasePermissionData): boolean =>
-  permission.attributes.permitted_by === 'everyone';
-
-// ---- Human-readable summary, used both for the collapsed header and a11y ----
-
 export interface SummaryChip {
   key: string;
   label: string;

@@ -37,7 +37,7 @@ export type Changes = {
 };
 
 export type Props = {
-  phaseId?: string;
+  phaseId: string;
   permissionData: IPhasePermissionData;
   // Heading shown in the panel's collapse header (e.g. the action subtitle).
   title: ReactNode;

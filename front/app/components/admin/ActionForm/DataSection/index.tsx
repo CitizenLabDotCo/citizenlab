@@ -6,16 +6,18 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+import usePhase from 'api/phases/usePhase';
+
 import { Changes, IPhasePermissionData } from '../types';
 import { SectionHeader } from '../ui';
 
 import AnonymitySection from './AnonymitySection';
-import DemographicSection from './DemographicsSection/DemographicSection';
+import DemographicSection from './DemographicSection';
 import PersonalInfoSection from './PersonalInfoSection';
 
 interface Props {
   permission: IPhasePermissionData;
-  phaseId?: string;
+  phaseId: string;
   passwordAvailable: boolean;
   // The password requirement is specific to email/password accounts; SSO-only
   // variants hide it entirely.
@@ -31,9 +33,16 @@ const DataSection = ({
   onChange,
 }: Props) => {
   const { attributes } = permission;
+  const { data: phase } = usePhase(phaseId);
 
-  // PII and anonymity need an account; demographics are collected in any mode.
-  const showAccountParts = attributes.permitted_by === 'users';
+  // PII only make sense if there is an account
+  const showPIISection = attributes.permitted_by === 'users';
+
+  const permissionHasForm = attributes.action === 'posting_idea';
+  const isNativeSurveyPhase = phase?.data.attributes.participation_method === 'native_survey';
+
+  // The anonymity settings are only implemented for native surveys atm.
+  const isNativeSurveySubmission = permissionHasForm && isNativeSurveyPhase;
 
   return (
     <Box>
@@ -44,8 +53,7 @@ const DataSection = ({
       />
 
       <Box border={`1px solid ${colors.borderLight}`} borderRadius="8px" px="14px">
-        {/* Personal info — only meaningful when there's an account. */}
-        {showAccountParts && (
+        {showPIISection && (
           <PersonalInfoSection
             permission={permission}
             passwordAvailable={passwordAvailable}
@@ -57,18 +65,18 @@ const DataSection = ({
         {/* Demographics — available in every mode. */}
         <Box
           borderTop={
-            showAccountParts ? `1px solid ${colors.divider}` : undefined
+            showPIISection ? `1px solid ${colors.divider}` : undefined
           }
         >
           <DemographicSection
             permission={permission}
             phaseId={phaseId}
+            permissionHasForm={permissionHasForm}
             onChange={onChange}
           />
         </Box>
 
-        {/* Anonymity / data linking — only with an account to link against. */}
-        {showAccountParts && (
+        {isNativeSurveySubmission && (
           <Box borderTop={`1px solid ${colors.divider}`}>
             <AnonymitySection permission={permission} onChange={onChange} />
           </Box>
