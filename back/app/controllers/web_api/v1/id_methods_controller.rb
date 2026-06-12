@@ -30,6 +30,12 @@ module WebApi
         respond_with(method)
       end
 
+      def first_enabled_authentication_method
+        method = ::AuthenticationService.new.first_method_enabled
+        authorize method, policy_class: IdMethodPolicy
+        respond_with(method)
+      end
+
       private
 
       def respond_with(method)

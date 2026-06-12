@@ -21,6 +21,10 @@ class AuthenticationService
     end
   end
 
+  def first_method_enabled
+    active_methods(AppConfiguration.instance).first
+  end
+
   def logout_url(provider, user)
     auth_method = @id_method_service.method_by_name(provider)
     return unless supports_logout?(provider)
