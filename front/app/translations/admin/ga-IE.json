@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Gan aon bhaill} one {1 bhall} other {{count} baill}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Líon isteach an cur síos i ngach teanga le do thoil",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Líon isteach an teideal i ngach teanga le do thoil",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Ní thaispeántar aon rud, mar nach bhfuil aon ghníomhartha is féidir leis an úsáideoir a dhéanamh sa tionscadal seo.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Ní féidir ach le riarthóirí ceist nua a chruthú.",
   "app.containers.AdminPage.groups.permissions.option1": "Rogha 1",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Cé a fhéadann nótaí a chur leis an doiciméad?",

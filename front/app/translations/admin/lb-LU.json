@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {No members} one {1 member} other {{count} members}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Fëllt wgl. d'Beschreiwung an alle Sproochen aus",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Fëllt wgl. den Titel an alle Sproochen aus",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nothing is shown, because there are no actions the user can take in this project.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Nëmmen Adminne kënnen eng nei Fro erstellen.",
   "app.containers.AdminPage.groups.permissions.option1": "Optioun 1",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Wien däerf d'Dokument annotéieren?",

@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Κανένα μέλος} one {1 μέλος} other {{count} μέλη}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Παρακαλούμε συμπληρώστε την περιγραφή σε όλες τις γλώσσες",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Παρακαλούμε συμπληρώστε τον τίτλο σε όλες τις γλώσσες",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Δεν εμφανίζεται τίποτα, επειδή δεν υπάρχουν ενέργειες που μπορεί να κάνει ο χρήστης σε αυτό το έργο.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Μόνο οι διαχειριστές μπορούν να δημιουργήσουν μια νέα ερώτηση.",
   "app.containers.AdminPage.groups.permissions.option1": "Επιλογή 1",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Ποιος μπορεί να σχολιάσει το έγγραφο;",

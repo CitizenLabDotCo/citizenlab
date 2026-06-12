@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Sense membres} one {1 membre} other {{count} membres}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Emplena la descripció en tots els idiomes",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Emplena el títol en tots els idiomes",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "No es mostra res, perquè no hi ha accions que l'usuari pugui dur a terme en aquest projecte.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Només els administradors poden crear una pregunta nova.",
   "app.containers.AdminPage.groups.permissions.option1": "opció 1",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Qui pot anotar el document?",

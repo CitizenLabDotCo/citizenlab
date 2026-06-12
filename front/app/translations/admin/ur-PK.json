@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {کوئی ممبر نہیں} one {1 ممبر} other {{count} ممبران}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "براہ کرم تمام زبانوں میں تفصیل پُر کریں۔",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "براہ کرم تمام زبانوں میں عنوان بھریں۔",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "کچھ بھی نہیں دکھایا گیا ہے، کیوں کہ صارف اس پروجیکٹ میں کوئی کارروائی نہیں کر سکتا۔",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "صرف ایڈمن ہی نیا سوال بنا سکتے ہیں۔",
   "app.containers.AdminPage.groups.permissions.option1": "آپشن 1",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "کون دستاویز کی تشریح کر سکتا ہے؟",
