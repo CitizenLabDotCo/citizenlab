@@ -10,7 +10,6 @@ import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
@@ -293,12 +292,12 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 
       const projectFilesPromise = projectFileAttachments
         ? syncProjectFiles({
-            attachableId: projectId,
-            attachableType: 'Project',
-            fileAttachments: projectFileAttachments,
-            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-            fileAttachmentOrdering: initialFileAttachmentOrdering,
-          })
+          attachableId: projectId,
+          attachableType: 'Project',
+          fileAttachments: projectFileAttachments,
+          fileAttachmentsToRemove: projectFileAttachmentsToRemove,
+          fileAttachmentOrdering: initialFileAttachmentOrdering,
+        })
         : undefined;
 
       await Promise.all([
@@ -311,9 +310,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       setProjectFileAttachmentsToRemove([]);
       setProcessing(false);
 
-      queryClient.invalidateQueries({
-        queryKey: projectPermissionKeys.list({ projectId }),
-      });
       queryClient.invalidateQueries({
         queryKey: projectsKeys.item({ slug: project.data.attributes.slug }),
       });
@@ -353,10 +349,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const validateForm = () => {
     const titleError = !isNilOrError(appConfigLocales)
       ? validateTitle(
-          appConfigLocales,
-          projectAttrs.title_multiloc,
-          formatMessage(messages.noTitleErrorMessage)
-        )
+        appConfigLocales,
+        projectAttrs.title_multiloc,
+        formatMessage(messages.noTitleErrorMessage)
+      )
       : null;
     const hasTitleError = !isEmpty(titleError);
     setTitleError(hasTitleError ? titleError : null);
