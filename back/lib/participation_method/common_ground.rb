@@ -76,6 +76,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_permitted_by_everyone?
+      true
+    end
+
     def use_reactions_as_votes?
       true
     end
