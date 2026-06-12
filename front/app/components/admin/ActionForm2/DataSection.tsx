@@ -6,13 +6,14 @@
 // mirroring `ActionForm/Fields`. The rest of the panel is controlled: it reads
 // `permission` and reports edits through `onChange` as granular `Changes`.
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
   Text,
   Icon,
   IconNames,
+  Button,
   Toggle,
   Select,
   Radio,
@@ -27,12 +28,12 @@ import useDeletePermissionsPhaseCustomField from 'api/permissions_phase_custom_f
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 import { UserDataCollection } from 'api/phase_permissions/types';
-import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
 
+import FieldSelectionModal from 'components/admin/ActionForm/Fields/FieldSelectionModal';
+
 import {
-  customFieldId,
   DATA_COLLECTION_SUMMARY,
   demographicsSummary,
   piiSummary,
@@ -190,18 +191,14 @@ const DataSection = ({
 }: Props) => {
   const { attributes } = permission;
   const { action } = attributes;
-  const localize = useLocalize();
+  const [showSelectionModal, setShowSelectionModal] = useState(false);
 
   const { data: permissionFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action,
   });
-  // The pool the admin can add from: the platform's global registration fields.
-  const { data: globalCustomFields } = useUserCustomFields();
-  const { mutate: addCustomField } = useAddPermissionsPhaseCustomField({
-    phaseId,
-    action,
-  });
+  const { mutate: addCustomField, isLoading: isAddingField } =
+    useAddPermissionsPhaseCustomField({ phaseId, action });
   const { mutate: updateCustomField } = useUpdatePermissionsPhaseCustomField({
     phaseId,
     action,
@@ -219,11 +216,6 @@ const DataSection = ({
   const showAccountParts = attributes.permitted_by === 'users';
   const lockPlacement = placementLocked(permission);
   const placement = attributes.user_fields_in_form_descriptor.value;
-
-  const selectedIds = customFields.map(customFieldId);
-  const addableFields = (globalCustomFields?.data ?? []).filter(
-    (f) => !selectedIds.includes(f.id)
-  );
 
   const activeWarning = ANONYMITY_OPTIONS.find(
     (o) => o.value === attributes.user_data_collection
@@ -368,27 +360,34 @@ const DataSection = ({
               />
             ))}
 
-            {addableFields.length > 0 && (
-              <Box mt="8px" maxWidth="280px">
-                <Select
-                  size="small"
-                  value={null}
-                  placeholder="+ Add a demographic question"
-                  options={addableFields.map((f) => ({
-                    value: f.id,
-                    label: localize(f.attributes.title_multiloc),
-                  }))}
-                  onChange={(option) =>
-                    addCustomField({
-                      custom_field_id: option.value,
-                      required: false,
-                      phaseId,
-                      action,
-                    })
-                  }
-                />
-              </Box>
-            )}
+            <Box mt="8px">
+              <Button
+                buttonStyle="secondary-outlined"
+                size="s"
+                icon="plus-circle"
+                onClick={() => setShowSelectionModal(true)}
+              >
+                Add a demographic question
+              </Button>
+            </Box>
+
+            {/* The shared modal lets the admin pick an existing global field or
+                create a brand-new one. Adding a field creates the matching
+                permission custom field on this action. */}
+            <FieldSelectionModal
+              showSelectionModal={showSelectionModal}
+              setShowSelectionModal={setShowSelectionModal}
+              selectedFields={customFields}
+              handleAddField={(customField) =>
+                addCustomField({
+                  custom_field_id: customField.id,
+                  required: false,
+                  phaseId,
+                  action,
+                })
+              }
+              isLoading={isAddingField}
+            />
           </Expander>
         </Box>
 
