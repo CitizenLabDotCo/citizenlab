@@ -11,14 +11,9 @@ import React, { useState } from 'react';
 import {
   Box,
   Text,
-  Icon,
-  IconNames,
   Button,
-  Toggle,
-  Select,
   Radio,
   Error,
-  IconButton,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -29,110 +24,18 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 import { UserDataCollection } from 'api/phase_permissions/types';
 
-import useLocalize from 'hooks/useLocalize';
-
-import FieldSelectionModal from './FieldSelectionModal';
+import FieldSelectionModal from '../FieldSelectionModal';
 import {
   DATA_COLLECTION_SUMMARY,
   demographicsSummary,
   piiSummary,
   placementLocked,
-} from './logic';
-import { Changes, IPhasePermissionData } from './types';
-import { SectionHeader, Expander, Hint } from './ui';
+} from '../logic';
+import { Changes, IPhasePermissionData } from '../types';
+import { SectionHeader, Expander, Hint } from '../ui';
 
-const PiiToggle = ({
-  icon,
-  title,
-  description,
-  checked,
-  disabled,
-  onChange,
-}: {
-  icon: IconNames;
-  title: string;
-  description: string;
-  checked: boolean;
-  disabled?: boolean;
-  onChange: () => void;
-}) => (
-  <Box py="8px">
-    <Toggle
-      checked={checked}
-      disabled={disabled}
-      onChange={onChange}
-      label={
-        <Box ml="8px">
-          <Box display="flex" alignItems="center" gap="6px">
-            <Icon
-              name={icon}
-              width="16px"
-              height="16px"
-              fill={checked ? colors.teal500 : colors.coolGrey500}
-            />
-            <Text as="span" m="0" fontSize="s" fontWeight="semi-bold" color="primary">
-              {title}
-            </Text>
-          </Box>
-          <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-            {description}
-          </Text>
-        </Box>
-      }
-    />
-  </Box>
-);
-
-const DemographicRow = ({
-  field,
-  onChangeRequired,
-  onRemove,
-}: {
-  field: IPermissionsPhaseCustomFieldData;
-  onChangeRequired: (required: boolean) => void;
-  onRemove: () => void;
-}) => {
-  const localize = useLocalize();
-  const title = localize(field.attributes.title_multiloc);
-  return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      gap="8px"
-      py="6px"
-      px="10px"
-      mb="4px"
-      borderRadius="6px"
-      bgColor={colors.grey50}
-    >
-      <Text as="span" m="0" fontSize="s" color="primary">
-        {title}
-      </Text>
-      <Box display="flex" alignItems="center" gap="4px">
-        <Box width="130px">
-          <Select
-            size="small"
-            value={field.attributes.required ? 'required' : 'optional'}
-            options={[
-              { value: 'required', label: 'Required' },
-              { value: 'optional', label: 'Optional' },
-            ]}
-            onChange={(option) => onChangeRequired(option.value === 'required')}
-          />
-        </Box>
-        <IconButton
-          iconName="delete"
-          onClick={onRemove}
-          a11y_buttonActionMessage={`Remove ${title}`}
-          iconColor={colors.coolGrey500}
-          iconColorOnHover={colors.red500}
-          iconWidth="18px"
-        />
-      </Box>
-    </Box>
-  );
-};
+import DemographicRow from './DemographicRow';
+import PiiToggle from './PiiToggle';
 
 const ANONYMITY_OPTIONS: {
   value: UserDataCollection;
