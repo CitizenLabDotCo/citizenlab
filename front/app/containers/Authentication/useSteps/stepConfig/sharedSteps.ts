@@ -101,7 +101,7 @@ export const sharedSteps = (
         const { requirements, disabled_reason } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const { permitted_by } = requirements.authentication;
+        // const { permitted_by } = requirements.authentication;
 
         // This `disabled_reason === null` is a bit of a weird check,
         // because most of the times if there is no disabled reason,
@@ -111,13 +111,14 @@ export const sharedSteps = (
         const signedIn =
           disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
-        const isVerifiedActionFlow = permitted_by === 'verified';
-        const userRequiresVerification = requirements.verification;
+        // const isVerifiedActionFlow = permitted_by === 'verified';
+        // const userRequiresVerification = requirements.verification;
 
-        if (isVerifiedActionFlow && (!signedIn || userRequiresVerification)) {
-          setCurrentStep('sso-verification:sso-providers');
-          return;
-        }
+        // TODO: figure out what to do with verified actions flow
+        // if (isVerifiedActionFlow && (!signedIn || userRequiresVerification)) {
+        // setCurrentStep('sso-verification:sso-providers');
+        // return;
+        // }
 
         if (signedIn) {
           const missingDataStep = checkMissingData(
