@@ -747,7 +747,6 @@
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Success!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Your form has been saved!",
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Search the templates",
-  "app.containers.AdminPage.ProjectEdit.selectGroups": "Select group(s)",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Share information",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
