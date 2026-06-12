@@ -18,6 +18,10 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     permission.user_fields_in_form_descriptor
   end
 
+  attribute :permitted_by_everyone_allowed do |permission|
+    permission.permitted_by_everyone_allowed?
+  end
+
   belongs_to :permission_scope, polymorphic: true
   has_many :groups
   has_many :permissions_custom_fields

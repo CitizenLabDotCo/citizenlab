@@ -37,20 +37,21 @@ export interface IPhasePermissionData {
   attributes: {
     access_denied_explanation_multiloc: Multiloc;
     action: IPhasePermissionAction;
-    permitted_by: PermittedBy;
-    created_at: string;
-    updated_at: string;
-    global_custom_fields: boolean;
-    verification_enabled: boolean;
-    verification_expiry: number | null;
-    everyone_tracking_enabled: boolean;
-    user_data_collection: UserDataCollection;
-    user_fields_in_form_descriptor: UserFieldsInFormFrontendDescriptor;
-    require_confirmed_email: boolean;
     confirmed_email_expiry: number | null;
+    created_at: string;
+    everyone_tracking_enabled: boolean;
+    global_custom_fields: boolean;
+    permitted_by: PermittedBy;
+    permitted_by_everyone_allowed: boolean;
+    require_confirmed_email: boolean;
     require_name: boolean;
     require_password: boolean;
     require_verification: boolean;
+    updated_at: string;
+    user_data_collection: UserDataCollection;
+    user_fields_in_form_descriptor: UserFieldsInFormFrontendDescriptor;
+    verification_enabled: boolean;
+    verification_expiry: number | null;
   };
   relationships: {
     permission_scope: {

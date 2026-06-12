@@ -136,6 +136,13 @@ class Permission < ApplicationRecord
     !!user_fields_in_form_descriptor[:value]
   end
 
+  def permitted_by_everyone_allowed?
+    return false unless EVERYONE_PERMITTED_ACTIONS.include?(action)
+    return false unless permission_scope.respond_to?(:pmethod)
+
+    permission_scope.pmethod.supports_permitted_by_everyone?
+  end
+
   private
 
   def set_permitted_by_and_global_custom_fields
@@ -200,12 +207,5 @@ class Permission < ApplicationRecord
       :everyone_not_allowed_for_action,
       message: "permitted_by can only be 'everyone' when the action and participation method allow it."
     )
-  end
-
-  def permitted_by_everyone_allowed?
-    return false unless EVERYONE_PERMITTED_ACTIONS.include?(action)
-    return false unless permission_scope.respond_to?(:pmethod)
-
-    permission_scope.pmethod.supports_permitted_by_everyone?
   end
 end
