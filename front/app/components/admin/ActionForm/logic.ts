@@ -225,8 +225,8 @@ export const customFieldId = (field: IPermissionsPhaseCustomFieldData): string =
   field.relationships.custom_field.data.id;
 
 /** Readable name of the fixed SSO sign-in method, with a generic fallback. */
-export const ssoMethodName = (verificationMethod?: IdMethod): string =>
-  verificationMethod?.data.attributes.method_metadata?.name ?? 'SSO account';
+export const ssoMethodName = (authenticationMethod?: IdMethod): string =>
+  authenticationMethod?.data.attributes.method_metadata?.name ?? 'SSO account';
 
 // ---- One-line summaries shown on the collapsed setting rows ----
 

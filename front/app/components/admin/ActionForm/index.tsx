@@ -10,7 +10,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import useVerificationMethod from 'api/id_methods/useVerificationMethod';
+import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -70,7 +70,7 @@ const ActionForm = ({
     phaseId,
     action,
   });
-  const { data: verificationMethod } = useVerificationMethod();
+  const { data: authenticationMethod } = useAuthenticationMethod();
 
   if (!permissionsCustomFields) return null;
 
@@ -89,7 +89,7 @@ const ActionForm = ({
     : buildSummarySSO(
       permissionData,
       customFields,
-      ssoMethodName(verificationMethod)
+      ssoMethodName(authenticationMethod)
     );
 
   // Reset clears the account-only customisations (groups + persisted questions);
