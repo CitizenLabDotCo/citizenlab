@@ -10,20 +10,11 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import AccessSection from './AccessSections/AccessSection';
-import AccessSectionSSO from './AccessSections/AccessSectionSSO';
 import DataSection from './DataSection';
-import {
-  buildSummary,
-  buildSummarySSO,
-  getGroupIds,
-  ssoMethodName,
-} from './logic';
+import { buildSummary, getGroupIds } from './logic';
 import { Props } from './types';
 import { Chip } from './ui';
 
@@ -32,17 +23,11 @@ import { Chip } from './ui';
  * everything a participant must satisfy before they can take an action:
  * authentication, group membership, personal info and demographic questions.
  *
- * A *stateless* controlled component: it renders the `permissionData` it is
- * given and reports edits through `onChange`; the parent owns the state and
- * persists it. The demographic questions come straight from
- * `usePermissionsPhaseCustomFields` rather than from a prop.
- *
- * The access section adapts to the platform's `password_login` setting:
- *  - with password login, admins pick between confirmed email / identity
- *    verification (`AccessSection`);
- *  - without it, there is no email/password account, so "require sign-in" means
- *    a single fixed SSO method and the password requirement is dropped
- *    (`AccessSectionSSO`).
+ * The standard variant, used when password login is enabled. It is a *stateless*
+ * controlled component: it renders the `permissionData` it is given and reports
+ * edits through `onChange`; the parent owns the state and persists it. The
+ * demographic questions come straight from `usePermissionsPhaseCustomFields`
+ * rather than from a prop.
  *
  * Design notes:
  *  - One panel, two groups: *who can participate* (access) and *what we ask*
@@ -61,7 +46,6 @@ const ActionForm = ({
   onReset,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
 
   const { attributes } = permissionData;
   const { action } = attributes;
@@ -70,7 +54,6 @@ const ActionForm = ({
     phaseId,
     action,
   });
-  const { data: verificationMethod } = useVerificationMethod();
 
   if (!permissionsCustomFields) return null;
 
@@ -79,18 +62,11 @@ const ActionForm = ({
   // Whether the "Anyone" option is offered is a property of the permission.
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
-  // The password requirement only applies with password login enabled, and then
-  // only alongside the confirmed-email method.
-  const passwordAvailable =
-    passwordLoginEnabled && attributes.require_confirmed_email;
+  // This variant is only rendered when password login is enabled, so the
+  // password requirement just needs the confirmed-email method enabled.
+  const passwordAvailable = attributes.require_confirmed_email;
 
-  const summary = passwordLoginEnabled
-    ? buildSummary(permissionData, customFields)
-    : buildSummarySSO(
-      permissionData,
-      customFields,
-      ssoMethodName(verificationMethod)
-    );
+  const summary = buildSummary(permissionData, customFields);
 
   // Reset clears the account-only customisations (groups + persisted questions);
   // it has nothing to undo for the open / admins-only gates.
@@ -148,19 +124,11 @@ const ActionForm = ({
           <Box px="20px" pb="20px">
             <Divider mt="0" mb="20px" />
 
-            {passwordLoginEnabled ? (
-              <AccessSection
-                permission={permissionData}
-                showAnyone={showAnyone}
-                onChange={onChange}
-              />
-            ) : (
-              <AccessSectionSSO
-                permission={permissionData}
-                showAnyone={showAnyone}
-                onChange={onChange}
-              />
-            )}
+            <AccessSection
+              permission={permissionData}
+              showAnyone={showAnyone}
+              onChange={onChange}
+            />
 
             {/* Admins-only is a closed gate — nothing else applies. For the
                 other modes, demographics can be collected (the account-only
@@ -172,7 +140,6 @@ const ActionForm = ({
                   permission={permissionData}
                   phaseId={phaseId}
                   passwordAvailable={passwordAvailable}
-                  showPassword={passwordLoginEnabled}
                   onChange={onChange}
                 />
               </>

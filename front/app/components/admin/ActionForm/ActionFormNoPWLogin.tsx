@@ -13,46 +13,23 @@ import {
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import AccessSection from './AccessSections/AccessSection';
 import AccessSectionSSO from './AccessSections/AccessSectionSSO';
 import DataSection from './DataSection';
-import {
-  buildSummary,
-  buildSummarySSO,
-  getGroupIds,
-  ssoMethodName,
-} from './logic';
+import { buildSummarySSO, getGroupIds, ssoMethodName } from './logic';
 import { Props } from './types';
 import { Chip } from './ui';
 
 /**
- * "Participation requirements" — a single, collapsible panel that captures
- * everything a participant must satisfy before they can take an action:
- * authentication, group membership, personal info and demographic questions.
+ * The variant used when password login is disabled on the platform.
  *
- * A *stateless* controlled component: it renders the `permissionData` it is
- * given and reports edits through `onChange`; the parent owns the state and
- * persists it. The demographic questions come straight from
- * `usePermissionsPhaseCustomFields` rather than from a prop.
- *
- * The access section adapts to the platform's `password_login` setting:
- *  - with password login, admins pick between confirmed email / identity
- *    verification (`AccessSection`);
- *  - without it, there is no email/password account, so "require sign-in" means
- *    a single fixed SSO method and the password requirement is dropped
- *    (`AccessSectionSSO`).
- *
- * Design notes:
- *  - One panel, two groups: *who can participate* (access) and *what we ask*
- *    (data), splitting access-rights from data collection.
- *  - Collapses to a one-line summary of chips so several actions fit on a page.
- *  - The rules engine in logic.ts keeps invalid combinations impossible: turn
- *    off all auth and the data section greys out; turn off password login and
- *    the email method disables; etc.
+ * Without password login there is no email/password account, so instead of
+ * picking between confirmed email / identity verification, "require sign-in"
+ * means a single fixed SSO method (e.g. a city account) with no further
+ * options. Everything downstream (groups, personal info, demographics,
+ * anonymity) behaves the same, except the password requirement is dropped
+ * since SSO accounts have no platform password.
  */
-const ActionForm = ({
+const ActionFormNoPWLogin = ({
   phaseId,
   permissionData,
   title,
@@ -61,7 +38,6 @@ const ActionForm = ({
   onReset,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
 
   const { attributes } = permissionData;
   const { action } = attributes;
@@ -76,24 +52,15 @@ const ActionForm = ({
 
   const customFields = permissionsCustomFields.data;
 
-  // Whether the "Anyone" option is offered is a property of the permission.
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
-  // The password requirement only applies with password login enabled, and then
-  // only alongside the confirmed-email method.
-  const passwordAvailable =
-    passwordLoginEnabled && attributes.require_confirmed_email;
 
-  const summary = passwordLoginEnabled
-    ? buildSummary(permissionData, customFields)
-    : buildSummarySSO(
-      permissionData,
-      customFields,
-      ssoMethodName(verificationMethod)
-    );
+  const summary = buildSummarySSO(
+    permissionData,
+    customFields,
+    ssoMethodName(verificationMethod)
+  );
 
-  // Reset clears the account-only customisations (groups + persisted questions);
-  // it has nothing to undo for the open / admins-only gates.
   const showReset =
     getGroupIds(permissionData).length > 0 ||
     (!isAdmins &&
@@ -134,7 +101,6 @@ const ActionForm = ({
             </Title>
           </Box>
 
-          {/* When collapsed, the summary chips stand in for the whole panel. */}
           {!isOpen && (
             <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap" ml="4px">
               {summary.map((chip) => (
@@ -148,31 +114,20 @@ const ActionForm = ({
           <Box px="20px" pb="20px">
             <Divider mt="0" mb="20px" />
 
-            {passwordLoginEnabled ? (
-              <AccessSection
-                permission={permissionData}
-                showAnyone={showAnyone}
-                onChange={onChange}
-              />
-            ) : (
-              <AccessSectionSSO
-                permission={permissionData}
-                showAnyone={showAnyone}
-                onChange={onChange}
-              />
-            )}
+            <AccessSectionSSO
+              permission={permissionData}
+              showAnyone={showAnyone}
+              onChange={onChange}
+            />
 
-            {/* Admins-only is a closed gate — nothing else applies. For the
-                other modes, demographics can be collected (the account-only
-                parts hide themselves inside DataSection). */}
             {!isAdmins && (
               <>
                 <Divider my="24px" />
                 <DataSection
                   permission={permissionData}
                   phaseId={phaseId}
-                  passwordAvailable={passwordAvailable}
-                  showPassword={passwordLoginEnabled}
+                  passwordAvailable={false}
+                  showPassword={false}
                   onChange={onChange}
                 />
               </>
@@ -199,4 +154,4 @@ const ActionForm = ({
   );
 };
 
-export default ActionForm;
+export default ActionFormNoPWLogin;

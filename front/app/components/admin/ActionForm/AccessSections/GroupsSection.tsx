@@ -1,0 +1,80 @@
+// "Limit to groups" — a collapsible group selector plus the access-denied
+// error-message override. Shared, identical, by both access-section variants.
+
+import React, { useState } from 'react';
+
+import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
+
+import useGroups from 'api/groups/useGroups';
+
+import useLocalize from 'hooks/useLocalize';
+
+import MultipleSelect from 'components/UI/MultipleSelect';
+
+import ErrorMessageModal from '../ErrorMessageModal';
+import { getGroupIds, groupsSummary } from '../logic';
+import { Changes, IPhasePermissionData } from '../types';
+import { Expander } from '../ui';
+
+interface Props {
+  permission: IPhasePermissionData;
+  onChange: (changes: Changes) => void;
+}
+
+const GroupsSection = ({ permission, onChange }: Props) => {
+  const localize = useLocalize();
+  const { data: groups } = useGroups({});
+  const [errorMessageOpen, setErrorMessageOpen] = useState(false);
+
+  const setAccessDeniedMultiloc = (
+    access_denied_explanation_multiloc: Multiloc
+  ) => onChange({ access_denied_explanation_multiloc });
+
+  return (
+    <Box mt="8px" borderTop={`1px solid ${colors.divider}`}>
+      <Expander
+        icon="group"
+        title="Limit to groups"
+        summary={groupsSummary(permission)}
+      >
+        <Text as="p" mt="0" mb="8px" fontSize="xs" color="coolGrey600">
+          Participant must be in any one of the selected groups.
+        </Text>
+        <Box maxWidth="440px">
+          <MultipleSelect
+            value={getGroupIds(permission)}
+            options={(groups?.data ?? []).map((g) => ({
+              value: g.id,
+              label: localize(g.attributes.title_multiloc),
+            }))}
+            onChange={(options) =>
+              onChange({ group_ids: options.map((o) => o.value) })
+            }
+            placeholder="All participants (no group restriction)"
+          />
+        </Box>
+
+        <Box mt="12px">
+          <Button
+            buttonStyle="secondary-outlined"
+            size="s"
+            icon="edit"
+            onClick={() => setErrorMessageOpen(true)}
+          >
+            Customize error message
+          </Button>
+        </Box>
+      </Expander>
+
+      <ErrorMessageModal
+        opened={errorMessageOpen}
+        valueMultiloc={permission.attributes.access_denied_explanation_multiloc}
+        onClose={() => setErrorMessageOpen(false)}
+        onChange={setAccessDeniedMultiloc}
+      />
+    </Box>
+  );
+};
+
+export default GroupsSection;
