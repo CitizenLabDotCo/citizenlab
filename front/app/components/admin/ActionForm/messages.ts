@@ -27,10 +27,6 @@ export default defineMessages({
     defaultMessage:
       'Participants need to create a full account with their name, confirmed email and password.',
   },
-  ssoVerification: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.ssoVerification',
-    defaultMessage: 'SSO verification',
-  },
   ssoVerificationSubtitle: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.ssoVerificationSubtitle2',
     defaultMessage:

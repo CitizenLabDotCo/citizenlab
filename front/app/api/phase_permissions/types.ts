@@ -86,9 +86,7 @@ export type ResetPermissionParams = {
 export type PermittedBy =
   | 'everyone'
   | 'users'
-  | 'admins_moderators'
-  | 'everyone_confirmed_email'
-  | 'verified';
+  | 'admins_moderators';
 
 interface IPermissionUpdate {
   group_ids: string[];
