@@ -10,7 +10,7 @@ import { Changes, IPhasePermissionData } from '../types';
 import { SectionHeader } from '../ui';
 
 import AnonymitySection from './AnonymitySection';
-import DemographicSection from './DemographicSection';
+import DemographicSection from './DemographicsSection/DemographicSection';
 import PersonalInfoSection from './PersonalInfoSection';
 
 interface Props {

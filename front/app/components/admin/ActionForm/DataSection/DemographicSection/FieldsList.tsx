@@ -63,11 +63,11 @@ const FieldsList = ({
       field.attributes.persisted
         ? { id: fieldId, ordering }
         : {
-            id: fieldId,
-            permission_id: field.relationships.permission.data.id,
-            custom_field_id: field.relationships.custom_field.data.id,
-            ordering,
-          }
+          id: fieldId,
+          permission_id: field.relationships.permission.data.id,
+          custom_field_id: field.relationships.custom_field.data.id,
+          ordering,
+        }
     );
   };
 
@@ -79,7 +79,7 @@ const FieldsList = ({
     >
       {({ itemsList, handleDragRow, handleDropRow }) => (
         <>
-          {itemsList.map(
+          {(itemsList as any).map(
             (field: IPermissionsPhaseCustomFieldData, index: number) => (
               <SortableRow
                 key={field.id}

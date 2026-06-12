@@ -12,9 +12,9 @@ import useDeletePermissionsPhaseCustomField from 'api/permissions_phase_custom_f
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 
-import { demographicsSummary, placementLocked } from '../logic';
-import { Changes, IPhasePermissionData } from '../types';
-import { Expander, Hint } from '../ui';
+import { demographicsSummary, placementLocked } from '../../logic';
+import { Changes, IPhasePermissionData } from '../../types';
+import { Expander, Hint } from '../../ui';
 
 import FieldSelectionModal from './FieldSelectionModal';
 import FieldsList from './FieldsList';
@@ -78,11 +78,11 @@ const DemographicSection = ({ permission, phaseId, onChange }: Props) => {
       field.attributes.persisted
         ? { id: field.id, required }
         : {
-            id: field.id,
-            permission_id: field.relationships.permission.data.id,
-            custom_field_id: field.relationships.custom_field.data.id,
-            required,
-          }
+          id: field.id,
+          permission_id: field.relationships.permission.data.id,
+          custom_field_id: field.relationships.custom_field.data.id,
+          required,
+        }
     );
 
   const removeField = (field: IPermissionsPhaseCustomFieldData) =>
