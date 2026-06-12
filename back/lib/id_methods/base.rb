@@ -1,10 +1,47 @@
 # frozen_string_literal: true
 
-module OmniauthMethods
+module IdMethods
   class Base
+    def name
+      raise NotImplementedError
+    end
+
+    # Whether this method can be used to verify user identities.
+    def verification?
+      raise NotImplementedError
+    end
+
+    # Whether this method can be used for authentication
+    # (i.e. sign up and log in with SSO)
+    def authentication?
+      raise NotImplementedError
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(_configuration, _env)
       raise 'Subclass must implement this method'
+    end
+
+    # Public method, does not get overridden in practice.
+    # @return [Hash, nil]
+    def config
+      (AppConfiguration.instance.settings('id_config', 'id_methods') || [])
+        .find { |method| method['name'] == name }
+        .to_h # if find returns nil
+        .except('allowed', 'enabled')
+        .symbolize_keys
+        .presence
+    end
+
+    # It allows to migrate from one provider to another. See how it's overridden.
+    def name_for_hashing
+      name
+    end
+
+    def enabled_for_verified_actions?
+      return false if config.nil?
+
+      config[:enabled_for_verified_actions] || false
     end
 
     # Extracts user attributes from the Omniauth response auth.
@@ -43,10 +80,6 @@ module OmniauthMethods
 
     def email_always_present?
       true
-    end
-
-    def verification_prioritized?
-      raise NotImplementedError
     end
 
     def email_confirmed?(_auth)

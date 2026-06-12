@@ -1,8 +1,8 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'verification_method' };
+const baseKey = { type: 'id_method' };
 
-const verificationMethodsKeys = {
+const idMethodsKeys = {
   all: () => [baseKey],
   list: () => [{ ...baseKey, operation: 'list', parameters: {} }],
   item: ({ endpoint }: { endpoint: string }) => [
@@ -16,4 +16,4 @@ const verificationMethodsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default verificationMethodsKeys;
+export default idMethodsKeys;

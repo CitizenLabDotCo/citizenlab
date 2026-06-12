@@ -57,10 +57,10 @@ context 'Twoday verification (BankID - Helsingborg)' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'twoday',
         domain: 'some.test.domain.com',
         client_id: '12345',

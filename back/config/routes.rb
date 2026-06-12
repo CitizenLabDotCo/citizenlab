@@ -398,14 +398,14 @@ Rails.application.routes.draw do
 
       resources :ideas_phases, only: %i[show]
 
-      resources :verification_methods, module: 'verification', only: [:index] do
-        get :first_enabled, on: :collection
+      resources :id_methods, only: [:index] do
+        get :first_enabled_verification_method, on: :collection
         get :first_enabled_for_verified_actions, on: :collection
-        Verification::VerificationService.new
+        IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
-          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, defaults: { method_name: vm.name }
+          post "#{vm.name}/verification", to: 'verification/verifications#create', on: :collection, defaults: { method_name: vm.name }
         end
       end
 

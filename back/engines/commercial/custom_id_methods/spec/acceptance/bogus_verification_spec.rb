@@ -11,16 +11,16 @@ resource 'Verifications' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'bogus' }]
+      id_methods: [{ name: 'bogus' }]
     }
     create(:custom_field, key: 'gender')
     configuration.save!
   end
 
-  post 'web_api/v1/verification_methods/bogus/verification' do
+  post 'web_api/v1/id_methods/bogus/verification' do
     with_options scope: :verification do
       parameter :desired_error, "Let's you fake errors. Pick your flavour: no_match, not_entitled, taken. Leave empty for success.", required: false
     end

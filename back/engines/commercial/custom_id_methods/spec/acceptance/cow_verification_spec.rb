@@ -14,15 +14,15 @@ resource 'Verifications' do
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
+      id_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
     }
     configuration.save!
   end
 
-  post 'web_api/v1/verification_methods/cow/verification' do
+  post 'web_api/v1/id_methods/cow/verification' do
     with_options scope: :verification do
       parameter :run, 'The RUN number of the citizen', required: true
       parameter :id_serial, 'The ID card serial number of the citizen', required: true
