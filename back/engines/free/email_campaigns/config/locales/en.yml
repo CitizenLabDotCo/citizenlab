@@ -68,6 +68,7 @@ en:
         users_who_follow_the_input: Users who follow the input
         users_who_follow_the_project: Users who follow the project’s topic or area tags
         users_who_follow_the_proposal: Users who follow the proposal
+        users_who_follow_or_participated: Users who follow the project or have participated
       trigger:
         7_days_after_invite_is_sent: 7 days after invite is sent
         7_days_before_the_project_changes_phase: 7 days before the project changes phase
@@ -92,6 +93,7 @@ en:
         project_published: Project published
         project_review_request: Moderator requested a project review
         project_review_state_change: Reviewer approved the project
+        proposal_expired: A proposal expires without reaching the threshold
         proposal_gets_reported_as_spam: Proposal gets reported as spam
         proposal_is_assigned_to_admin: Proposal is assigned to admin
         proposal_is_published: Proposal is published
@@ -183,6 +185,7 @@ en:
       project_published: Project published
       project_review_request: Project review request
       project_review_state_change: Project approved
+      proposal_expired_for_admin: Proposal expired without reaching the voting threshold
       screening_digest: Weekly screening reminder
       space_moderation_rights_received: Space manager rights received
       status_change_on_idea_you_follow: Status change of an input that you follow
@@ -585,6 +588,11 @@ en:
       preheader: '%{reviewerName} approved the project "%{projectTitle}"'
       subject: '"%{projectTitle}" has been approved'
       title: '%{reviewerName} approved the project "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Review the expired input
+      preheader: An input expired without reaching the threshold
+      subject: '"%{input_title}" expired without reaching the threshold'
+      title: An input expired without reaching the voting threshold
     schedules:
       quarterly: Quarterly, on the first day of the quarter
       weekly:

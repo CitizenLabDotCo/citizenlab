@@ -1,6 +1,27 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Rails API mode drops :new and :edit from resourceful routes, so Doorkeeper's
+  # applications admin views can't resolve new_/edit_oauth_application_path. Add
+  # them back explicitly *before* use_doorkeeper so they win over its :id route.
+  scope 'oauth' do
+    get 'applications/new', to: 'doorkeeper/applications#new', as: :new_oauth_application
+    get 'applications/:id/edit', to: 'doorkeeper/applications#edit', as: :edit_oauth_application
+  end
+
+  use_doorkeeper
+
+  # RFC 7591 Dynamic Client Registration + RFC 8414 Authorization Server Metadata
+  # + RFC 9728 Protected Resource Metadata (with /mcp-suffixed variants that MCP
+  # clients try when the resource lives at a non-root path).
+  namespace :oauth do
+    resources :registrations, only: :create, format: :json
+  end
+  get '.well-known/oauth-authorization-server', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-authorization-server/mcp', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-protected-resource', to: 'oauth/metadata#protected_resource'
+  get '.well-known/oauth-protected-resource/mcp', to: 'oauth/metadata#protected_resource'
+
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
   mount Onboarding::Engine => '', as: 'onboarding'
@@ -106,11 +127,11 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
-      post 'user_token/unconfirmed' => 'user_token#user_token_unconfirmed'
 
       resources :users, only: %i[index create update destroy] do
         collection do
           get :me
+          get 'me/ping', action: 'ping'
           get :seats
           get :billed_admins
           get :billed_moderators
@@ -120,9 +141,7 @@ Rails.application.routes.draw do
           post 'reset_password' => 'reset_password#reset_password'
           post 'update_password'
           post 'check'
-          patch 'update_email_unconfirmed'
 
-          get 'by_slug/:slug', to: 'users#by_slug'
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
           get :check_if_exceeds_seats
@@ -147,11 +166,9 @@ Rails.application.routes.draw do
 
       scope path: 'user' do
         post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
-        post 'request_code_authenticated', to: 'request_codes#request_code_authenticated'
         post 'request_code_email_change', to: 'request_codes#request_code_email_change'
 
         post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
-        post 'confirm_code_authenticated', to: 'confirmations#confirm_code_authenticated'
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
@@ -372,7 +389,7 @@ Rails.application.routes.draw do
         get 'users'
       end
 
-      resources :baskets, except: [:index] do
+      resources :baskets, except: %i[index create] do
         resources :baskets_ideas, shallow: true
       end
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
@@ -381,14 +398,14 @@ Rails.application.routes.draw do
 
       resources :ideas_phases, only: %i[show]
 
-      resources :verification_methods, module: 'verification', only: [:index] do
-        get :first_enabled, on: :collection
+      resources :id_methods, only: [:index] do
+        get :first_enabled_verification_method, on: :collection
         get :first_enabled_for_verified_actions, on: :collection
-        Verification::VerificationService.new
+        IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
-          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, defaults: { method_name: vm.name }
+          post "#{vm.name}/verification", to: 'verification/verifications#create', on: :collection, defaults: { method_name: vm.name }
         end
       end
 

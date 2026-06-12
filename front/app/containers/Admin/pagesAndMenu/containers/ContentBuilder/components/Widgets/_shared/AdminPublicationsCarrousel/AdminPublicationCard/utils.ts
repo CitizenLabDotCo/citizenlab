@@ -1,10 +1,17 @@
-import { RouteType } from 'routes';
-
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
-export const getPublicationURL = (publication: IAdminPublicationData) => {
+export const getPublicationLinkProps = (publication: IAdminPublicationData) => {
   const { publication_slug } = publication.attributes;
   const publicationType = publication.relationships.publication.data.type;
 
-  return `/${publicationType}s/${publication_slug}` as RouteType;
+  if (publicationType === 'folder') {
+    return {
+      to: '/folders/$slug',
+      params: { slug: publication_slug },
+    } as const;
+  }
+  return {
+    to: '/projects/$slug',
+    params: { slug: publication_slug },
+  } as const;
 };

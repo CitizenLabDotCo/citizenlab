@@ -3,12 +3,10 @@ import React, { memo } from 'react';
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import BoringAvatar from 'boring-avatars';
 import { lighten } from 'polished';
-import { RouteType } from 'routes';
 import styled, { useTheme } from 'styled-components';
 
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import useUserById from 'api/users/useUserById';
-
-import FeatureFlag from 'components/FeatureFlag';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -53,12 +51,12 @@ export const AvatarImage = styled.img<{
 
     &:hover {
       border-color: ${({ borderHoverColor }) =>
-        borderHoverColor || 'transparent'};
+    borderHoverColor || 'transparent'};
     }
   }
 `;
 
-const AvatarIcon = styled(Icon)<{
+const AvatarIcon = styled(Icon) <{
   size: number;
   fillColor: string | undefined;
   fillHoverColor: string | undefined;
@@ -86,13 +84,13 @@ const AvatarIcon = styled(Icon)<{
 
     &:hover {
       border-color: ${({ borderHoverColor }) =>
-        borderHoverColor || 'transparent'};
+    borderHoverColor || 'transparent'};
       fill: ${({ fillHoverColor }) => fillHoverColor || ''};
     }
   }
 `;
 
-const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
+const BadgeIcon = styled(Icon) <{ size: number; fill: string }>`
   fill: ${({ fill }) => fill};
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
@@ -120,7 +118,7 @@ export interface Props {
 }
 
 const Avatar = memo(
-  ({ isLinkToProfile, userId, authorHash, ...props }: Props) => {
+  ({ isLinkToProfile, authorHash, userId, ...props }: Props) => {
     const { data: user } = useUserById(userId);
     if (isNilOrError(user)) {
       return (
@@ -133,15 +131,11 @@ const Avatar = memo(
       );
     }
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const slug = user?.data.attributes.slug;
-    const profileLink: RouteType = `/profile/${slug}`;
-    const hasValidProfileLink = profileLink !== '/profile/undefined';
+    const hasValidProfileLink = !!userId;
 
     if (isLinkToProfile && hasValidProfileLink) {
       return (
-        <Link to={profileLink} scrollToTop>
+        <Link to="/profile/$userId" params={{ userId }} scrollToTop>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.titleForAccessibility}
@@ -172,12 +166,13 @@ const AvatarInner = ({
   showModeratorStyles,
   className,
   addVerificationBadge,
-  userId,
   authorHash,
+  userId,
   ...props
 }: Props) => {
   const { data: user } = useUserById(userId);
   const theme = useTheme();
+  const { data: firstVerificationMethod } = useVerificationMethod();
 
   const avatarSize = props.size;
   const paddingValue = props.padding || 3;
@@ -218,12 +213,8 @@ const AvatarInner = ({
     }
   }
 
-  // In dev mode, slug is sometimes undefined,
-  // while !isNilOrError(user) passes... To be solved properly
-  const { slug, avatar, verified } = user.data.attributes;
-  const profileLink = `/profile/${slug}`;
-  const hasValidProfileLink = profileLink !== '/profile/undefined';
-  const hasHoverEffect = (isLinkToProfile && hasValidProfileLink) || false;
+  const { avatar, verified } = user.data.attributes;
+  const hasHoverEffect = (isLinkToProfile && !!userId) || false;
   const avatarSrc = avatar ? avatar[imageSizeLabel] : null;
 
   return (
@@ -263,14 +254,12 @@ const AvatarInner = ({
         <BadgeIcon name="cl-favicon" size={badgeSize} fill={colors.red600} />
       )}
 
-      {verified && addVerificationBadge && (
-        <FeatureFlag name="verification">
-          <BadgeIcon
-            name="check-circle"
-            size={badgeSize}
-            fill={colors.success}
-          />
-        </FeatureFlag>
+      {verified && addVerificationBadge && !!firstVerificationMethod && (
+        <BadgeIcon
+          name="check-circle"
+          size={badgeSize}
+          fill={colors.success}
+        />
       )}
     </Container>
   );

@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import 'quill/dist/quill.snow.css';
 import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
 
-import { configureQuill } from './configureQuill';
+import { configureQuill, setEmbeddedVideoTitle } from './configureQuill';
 import { createQuill } from './createQuill';
 import messages from './messages';
 import StyleContainer from './StyleContainer';
@@ -31,6 +31,7 @@ export interface Props {
   noVideos?: boolean;
   noAlign?: boolean;
   noLinks?: boolean;
+  withGifSupport?: boolean;
   limitedTextFormatting?: boolean;
   maxHeight?: string;
   minHeight?: string;
@@ -40,6 +41,9 @@ export interface Props {
   onBlur?: () => void;
   maxCharCount?: number;
   minCharCount?: number;
+  ariaLabelledBy?: string;
+  ariaDescribedBy?: string;
+  ariaInvalid?: boolean;
 }
 
 configureQuill();
@@ -53,6 +57,7 @@ const QuillEditor = ({
   noImages = false,
   noVideos = false,
   noLinks = false,
+  withGifSupport,
   limitedTextFormatting,
   maxHeight,
   minHeight,
@@ -62,6 +67,9 @@ const QuillEditor = ({
   onFocus,
   maxCharCount,
   minCharCount,
+  ariaLabelledBy,
+  ariaDescribedBy,
+  ariaInvalid,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
@@ -93,6 +101,8 @@ const QuillEditor = ({
       container.ownerDocument.createElement('div')
     );
 
+    setEmbeddedVideoTitle(formatMessage(messages.embeddedVideo));
+
     const quill = createQuill(editorContainer, {
       id,
       toolbarId,
@@ -100,11 +110,13 @@ const QuillEditor = ({
       noVideos,
       noAlign,
       noLinks,
+      withGifSupport,
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,
       altTextLabel: formatMessage(messages.altTextLabel),
       imageTitleLabel: formatMessage(messages.imageTitleLabel),
+      ariaLabelledBy,
     });
 
     setHTML(quill, value);
@@ -203,6 +215,25 @@ const QuillEditor = ({
   }, [editor]);
 
   const className = focussed ? 'focus' : '';
+
+  // Update aria attributes dynamically when they change
+  useEffect(() => {
+    if (!editor) return;
+
+    const editorElement = editor.root;
+
+    if (ariaInvalid) {
+      editorElement.setAttribute('aria-invalid', String(ariaInvalid));
+    } else {
+      editorElement.removeAttribute('aria-invalid');
+    }
+
+    if (ariaDescribedBy) {
+      editorElement.setAttribute('aria-describedby', ariaDescribedBy);
+    } else {
+      editorElement.removeAttribute('aria-describedby');
+    }
+  }, [editor, ariaInvalid, ariaDescribedBy]);
 
   return (
     <StyleContainer

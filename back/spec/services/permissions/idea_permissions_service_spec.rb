@@ -8,8 +8,6 @@ describe Permissions::IdeaPermissionsService do
   let(:user) { create(:user) }
   let(:reason) { service.denied_reason_for_action(action) }
 
-  before { SettingsService.new.activate_feature! 'user_confirmation' }
-
   describe '"commenting_idea" denied_reason_for_action' do
     let(:action) { 'commenting_idea' }
 

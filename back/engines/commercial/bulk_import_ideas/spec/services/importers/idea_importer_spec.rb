@@ -203,7 +203,7 @@ describe BulkImportIdeas::Importers::IdeaImporter do
       expect(project.ideas.first.submitted_at).to eq Time.parse('2024-11-01T11:22:33Z')
     end
 
-    it 'does not import a user if there is a problem with saving a named user' do
+    it 'raises an error and rolls back the import when a named user cannot be saved' do
       project = create(:project, title_multiloc: { 'en' => 'Project title' })
       idea_rows = [
         {
@@ -214,10 +214,30 @@ describe BulkImportIdeas::Importers::IdeaImporter do
           user_email: 'userimport@@citizenlab....co'
         }
       ]
-      service.import idea_rows
-      expect(project.ideas.first).not_to be_nil
-      expect(project.ideas.first.author).to be_nil
-      expect(User.count).to eq 1
+      expect { service.import idea_rows }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_user_not_valid'))
+      )
+      expect(project.ideas.count).to eq 0
+      expect(User.count).to eq 1 # only the admin
+    end
+
+    it 'raises an error when a user name contains @' do
+      project = create(:project, title_multiloc: { 'en' => 'Project title' })
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          body_multiloc: { 'en' => 'My idea description' },
+          project_id: project.id,
+          user_consent: true,
+          user_email: 'bob@example.com',
+          user_first_name: 'Bob',
+          user_last_name: 'bob@example.com'
+        }
+      ]
+      expect { service.import idea_rows }.to raise_error(
+        an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_user_not_valid'))
+      )
+      expect(project.ideas.count).to eq 0
     end
 
     it 'imports a user with no email if first name & consent are present' do

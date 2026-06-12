@@ -9,6 +9,7 @@ export const analysesData: IAnalysisData[] = [
       updated_at: '2021-06-01T08:00:00.000Z',
       participation_method: 'native_survey',
       show_insights: true,
+      auto_insights_too_many_fields: false,
     },
     relationships: {
       project: {

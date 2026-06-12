@@ -10,14 +10,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
 
 import {
   IFlatCreateCustomField,
   IFlatCustomField,
   IFlatCustomFieldWithIndex,
   ICustomFieldInputType,
+  ICustomFieldSettingsTab,
 } from 'api/custom_fields/types';
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
@@ -36,8 +35,11 @@ import FormFields from 'components/FormBuilder/components/FormFields';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useSearch } from 'utils/router';
 
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
@@ -66,7 +68,7 @@ type FormEditProps = {
   };
   builderConfig: FormBuilderConfig;
   totalSubmissions: number;
-  viewFormLink: RouteType;
+  viewFormLink: TypedLinkProps;
   phase: IPhaseData;
 };
 
@@ -81,8 +83,8 @@ const FormEdit = ({
   const projectId = phase.relationships.project.data.id;
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const [selectedField, setSelectedField] = useState<
-    IFlatCustomFieldWithIndex | undefined
+  const [selectedFieldInfo, setSelectedFieldInfo] = useState<
+    { index: number; defaultTab?: ICustomFieldSettingsTab } | undefined
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
@@ -134,6 +136,25 @@ const FormEdit = ({
     control,
   });
 
+  // Only the position is held in state; the field's data is read from the live
+  // form on each render so edits and server round-trips are reflected without
+  // a separate copy to maintain.
+  const liveCustomFields: IFlatCustomField[] = watch('customFields');
+  const selectedField: IFlatCustomFieldWithIndex | undefined =
+    selectedFieldInfo && liveCustomFields[selectedFieldInfo.index]
+      ? {
+          ...liveCustomFields[selectedFieldInfo.index],
+          index: selectedFieldInfo.index,
+          defaultTab: selectedFieldInfo.defaultTab,
+        }
+      : undefined;
+
+  const setSelectedField = (field: IFlatCustomFieldWithIndex | undefined) => {
+    setSelectedFieldInfo(
+      field ? { index: field.index, defaultTab: field.defaultTab } : undefined
+    );
+  };
+
   // This tracks form update. We isolate it to avoid setting data on other changes
   const [isUpdatingForm, setIsUpdatingForm] = useState(false);
   // This tracks form submission and update status
@@ -171,12 +192,11 @@ const FormEdit = ({
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearch({ strict: false });
 
   const resetCopyFrom = () => {
-    if (searchParams.has('copy_from')) {
-      searchParams.delete('copy_from');
-      setSearchParams(searchParams);
+    if (searchParams.copy_from !== undefined) {
+      updateSearchParams({ copy_from: undefined });
     }
   };
 
@@ -374,7 +394,7 @@ const FormEdit = ({
                     {selectedField && (
                       <Box>
                         <FormBuilderSettings
-                          key={selectedField.id}
+                          key={selectedFieldInfo?.index}
                           field={selectedField}
                           closeSettings={closeSettings}
                           builderConfig={builderConfig}
@@ -394,7 +414,7 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
-  viewFormLink: RouteType;
+  viewFormLink: TypedLinkProps;
 };
 
 const FormBuilderPage = ({
@@ -402,7 +422,7 @@ const FormBuilderPage = ({
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
-  const { phaseId } = useParams();
+  const { phaseId } = useParams({ strict: false });
   const { data: submissionCount } = useSubmissionsCount({
     phaseId,
   });

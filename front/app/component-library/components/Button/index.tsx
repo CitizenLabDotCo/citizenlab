@@ -375,6 +375,12 @@ function getButtonStyle(
       }
     }
 
+    &:focus-visible,
+    &.focus-visible {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
     &.fullWidth {
       flex: 1;
       width: 100%;
@@ -530,6 +536,7 @@ export interface Props extends ButtonContainerProps {
   as?: React.ElementType;
   tabIndex?: number;
   dataCy?: string;
+  ariaHasPopup?: string;
 }
 export type Ref = HTMLButtonElement;
 
@@ -606,6 +613,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
     tabIndex,
     as,
     dataCy,
+    ariaHasPopup,
     ...rest
   } = props;
 
@@ -714,6 +722,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
         tabIndex={tabIndex}
         ref={ref}
         data-cy={dataCy}
+        aria-haspopup={ariaHasPopup}
       >
         {childContent}
       </StyledButton>

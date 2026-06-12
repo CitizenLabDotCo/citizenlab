@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
-import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -16,12 +15,14 @@ import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 
+import CustomFieldsSignupHelperText from 'components/CustomFieldsForm/CustomFieldsSignupHelperText';
 import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { isPage } from 'utils/helperUtils';
+import { useLocation, useSearch } from 'utils/router';
 
 import CustomFields from '../CustomFields';
 import PageEsriDivider from '../Map/PageEsriDivider';
@@ -70,6 +71,10 @@ type SurveyPage = {
     formValues: FormValues;
     isSubmitPage: boolean;
   }) => Promise<void>;
+  // Called when this page unmounts via the Previous button so the parent can
+  // accumulate the user's in-progress answers. Forward navigation goes through
+  // onSubmit and doesn't need this callback.
+  onCapturePageValues?: (values: FormValues) => void;
   phase?: IPhaseData;
   defaultValues?: FormValues;
 };
@@ -83,6 +88,7 @@ const SurveyPage = ({
   ideaId: initialIdeaId,
   projectId,
   onSubmit,
+  onCapturePageValues,
   currentPageIndex,
   setCurrentPageIndex,
   userNavigationHistory,
@@ -102,8 +108,8 @@ const SurveyPage = ({
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
 
-  const [searchParams] = useSearchParams();
-  const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
+  const searchParams = useSearch({ strict: false });
+  const ideaId = (initialIdeaId || searchParams.idea_id) ?? undefined;
   const { data: idea } = useIdeaById(ideaId);
 
   const { methods, setShowFormFeedback, showFormFeedback } = usePageForm({
@@ -179,9 +185,11 @@ const SurveyPage = ({
   }, [methods, pages]);
 
   const onFormSubmit = async (formValues: FormValues) => {
-    // Go to the project page if this is the last page
+    // Go to the project page if this is the last page.
+    // Use replace to remove the survey URL from browser history,
+    // preventing back/forward navigation back into a completed survey.
     if (currentPageIndex === lastPageIndex) {
-      clHistory.push({
+      clHistory.replace({
         pathname: `/projects/${project?.data.attributes.slug}`,
       });
       return;
@@ -280,6 +288,9 @@ const SurveyPage = ({
   const handlePrevious = () => {
     pageRef.current?.scrollTo(0, 0);
     setShowSubmitConfirmation(false);
+    // Persist whatever the user has entered on this page so it survives the
+    // remount that the page transition triggers.
+    onCapturePageValues?.(methods.getValues());
     // Remove the current page from navigation history when going back
     setUserNavigationHistory((history) => history.slice(0, -1));
     setCurrentPageIndex(previousPageNumber);
@@ -342,6 +353,10 @@ const SurveyPage = ({
                   <Box p="24px" w="100%">
                     <Box display="flex" flexDirection="column">
                       <PageTitle page={page} />
+
+                      {page.key === 'user_page' && (
+                        <CustomFieldsSignupHelperText />
+                      )}
 
                       <CustomFields
                         questions={pageQuestions}

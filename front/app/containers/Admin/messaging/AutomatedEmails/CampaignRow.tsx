@@ -6,8 +6,6 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
-import { RouteType } from 'routes';
 
 import { CampaignContext } from 'api/campaigns/types';
 import useAddCampaign from 'api/campaigns/useAddCampaign';
@@ -20,6 +18,7 @@ import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 
@@ -80,14 +79,12 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
         },
         {
           onSuccess: (addedCampaign) => {
-            clHistory.push(
-              `${pathname}/${addedCampaign.data.id}/edit` as RouteType
-            );
+            clHistory.push(`${pathname}/${addedCampaign.data.id}/edit`);
           },
         }
       );
     } else {
-      clHistory.push(`${pathname}/${campaign.id}/edit` as RouteType);
+      clHistory.push(`${pathname}/${campaign.id}/edit`);
     }
   };
   const renderTooltip = (children) => {

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SettingsService
-  # Checks whether
   def dependencies_met?(settings, schema)
     missing_dependencies(settings, schema).empty?
   end
@@ -68,7 +67,6 @@ class SettingsService
   end
 
   def format_for_front_end(settings, schema)
-    settings = disable_verification_if_no_methods_enabled(settings)
     remove_private_settings(settings, schema)
   end
 
@@ -104,19 +102,6 @@ class SettingsService
         authentication_token_lifetime_in_days: 30
       }
     }
-  end
-
-  # Ensures the FE does not show verification if:
-  # a) There are no verification methods
-  # b) All verification methods are flagged as 'hide_from_profile'
-  def disable_verification_if_no_methods_enabled(settings)
-    return settings if !settings['verification'] || settings['verification']['enabled'] == false
-
-    enabled = settings['verification']['verification_methods'].present?
-    enabled = false if settings['verification']['verification_methods']&.pluck('hide_from_profile')&.all?(true)
-
-    settings['verification']['enabled'] = enabled
-    settings
   end
 
   private

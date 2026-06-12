@@ -20,7 +20,7 @@ module Frontend
         slug = model_instance.slug
       when User
         subroute = 'profile'
-        slug = model_instance.slug
+        slug = model_instance.id
       when Comment, OfficialFeedback # Comments and official feedback do not have a path yet, we return the idea path for now
         return model_to_path(model_instance.idea)
       when InternalComment # Internal comments are only implemented in the Back Office / Admin UI
@@ -86,6 +86,14 @@ module Frontend
       "#{home_url(options)}#{pathname}"
     end
 
+    def sign_in_url(return_to)
+      if return_to.present?
+        "#{home_url}/sign-in?return_to=#{CGI.escape(return_to)}"
+      else
+        "#{home_url}/sign-in"
+      end
+    end
+
     def invite_url(token, options = {})
       "#{home_url(options)}/invite?token=#{token}"
     end
@@ -115,7 +123,7 @@ module Frontend
     def unfollow_url(follower)
       locale = follower.user ? Locale.new(follower.user.locale) : nil
       url = model_to_url(follower.followable, locale: follower.user.presence && locale)
-      url || "#{home_url(locale: locale)}/profile/#{follower.user.slug}/following"
+      url || "#{home_url(locale: locale)}/profile/#{follower.user.id}/following"
     end
 
     def terms_conditions_url(configuration = app_config_instance)
@@ -176,8 +184,8 @@ module Frontend
       "#{home_url(options)}/reset-confirmation-code"
     end
 
-    def profile_surveys_url(user_slug, options = {})
-      "#{home_url(options)}/profile/#{user_slug}/surveys"
+    def profile_surveys_url(user_id, options = {})
+      "#{home_url(options)}/profile/#{user_id}/surveys"
     end
 
     private

@@ -4,8 +4,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   PRIVATE = proc { |object, params| view_private_attributes? object, params }
 
   # Public attributes
-  attributes :slug,
-    :locale,
+  attributes :locale,
     :bio_multiloc,
     :invite_status, # Cannot be private as there is no current_user when an invite is accepted
     :registration_completed_at,
@@ -65,6 +64,8 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :blocked, if: PRIVATE do |object|
     object.blocked?
   end
+
+  attribute :new_email, if: PRIVATE
 
   def self.name_service(params)
     UserDisplayNameService.new(AppConfiguration.instance, current_user(params))

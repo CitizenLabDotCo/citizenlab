@@ -5,7 +5,7 @@ import { definePermissionRule } from 'utils/permissions/permissions';
 
 import { isAdmin, isProjectModerator } from '../roles';
 
-const isAuthor = (idea: IIdeaData, user: IUser | undefined) => {
+const isAuthor = (idea: IIdeaData, user: IUser | undefined | null) => {
   return (
     user &&
     idea.relationships.author?.data &&
@@ -15,7 +15,10 @@ const isAuthor = (idea: IIdeaData, user: IUser | undefined) => {
   );
 };
 
-const isIdeaProjectModerator = (idea: IIdeaData, user: IUser | undefined) => {
+const isIdeaProjectModerator = (
+  idea: IIdeaData,
+  user: IUser | undefined | null
+) => {
   return user && isProjectModerator(user, idea.relationships.project.data.id);
 };
 

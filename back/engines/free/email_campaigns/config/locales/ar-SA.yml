@@ -67,6 +67,7 @@ ar-SA:
         user_with_unsubmitted_votes: المستخدم الذي لم يقدم أصواتهم
         users_who_engaged_but_not_voted: المستخدمون الذين شاركوا في المشروع لكنهم لم يصوتوا
         users_who_engaged_with_the_project: المستخدمون الذين شاركوا في المشروع
+        users_who_follow_or_participated: المستخدمون الذين يتابعون المشروع أو شاركوا فيه
         users_who_follow_the_input: المستخدمون الذين يتابعون الإدخال
         users_who_follow_the_project: المستخدمون الذين يتابعون المشروع
         users_who_follow_the_proposal: المستخدمون الذين يتابعون الاقتراح
@@ -94,6 +95,7 @@ ar-SA:
         project_published: تم نشر المشروع
         project_review_request: طلب المنسق مراجعة المشروع
         project_review_state_change: وافق المراجع على المشروع
+        proposal_expired: تنتهي صلاحية المقترح دون الوصول إلى الحد الأدنى
         proposal_gets_reported_as_spam: تم الإبلاغ عن الاقتراح باعتباره بريدًا عشوائيًا
         proposal_is_assigned_to_admin: يتم تعيين الاقتراح إلى المسؤول
         proposal_is_published: تم نشر الاقتراح
@@ -188,6 +190,7 @@ ar-SA:
       project_published: تم نشر المشروع
       project_review_request: طلب مراجعة المشروع
       project_review_state_change: تمت الموافقة على المشروع
+      proposal_expired_for_admin: انتهت صلاحية المقترح دون الوصول إلى الحد الأدنى للأصوات
       screening_digest: تذكير بالفحص الأسبوعي
       space_moderation_rights_received: تم استلام صلاحيات مدير المساحة
       status_change_on_idea_you_follow: تغيير حالة الفكرة التي تتابعها
@@ -591,6 +594,11 @@ ar-SA:
       preheader: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
       subject: تمت الموافقة على "%{projectTitle}"
       title: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: مراجعة المشاركة التي انتهت صلاحيتها
+      preheader: انتهت صلاحية مشاركة دون الوصول إلى الحد الأدنى
+      subject: انتهت صلاحية "%{input_title}" دون الوصول إلى الحد الأدنى
+      title: انتهت صلاحية مشاركة دون الوصول إلى الحد الأدنى للأصوات
     schedules:
       quarterly: ربع سنوي، في اليوم الأول من الربع
       weekly:

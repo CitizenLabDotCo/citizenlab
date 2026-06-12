@@ -1,6 +1,6 @@
 import { FormatMessage } from 'typings';
 
-import { MethodMetadata } from 'api/verification_methods/types';
+import { MethodMetadata } from 'api/id_methods/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -74,10 +74,6 @@ export const getVerifiedDataList = (
   ];
 
   return allAttributes;
-};
-
-export const enabledSteps = (...stepsEnabled: boolean[]) => {
-  return stepsEnabled.filter((stepEnabled) => stepEnabled).length;
 };
 
 export const getVerificationFrequencyExplanation = (

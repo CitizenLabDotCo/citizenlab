@@ -23,7 +23,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { commentAdded } from './events';
 import tracks from './tracks';
-import { getMentionRoles } from './utils';
 
 const Container = styled.div`
   display: flex;
@@ -235,7 +234,7 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
               border="none"
               boxShadow="none"
               getTextareaRef={setRef}
-              roles={getMentionRoles(true)}
+              adminsAndModerators
             />
             <ButtonWrapper className={focused || processing ? 'visible' : ''}>
               <CancelButton

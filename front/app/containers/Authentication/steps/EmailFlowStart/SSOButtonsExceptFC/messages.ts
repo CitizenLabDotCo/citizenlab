@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithHoplr',
     defaultMessage: 'Continue with Hoplr',
   },
-  continueWithNemlogIn: {
-    id: 'app.components.AuthProviders.continueWithNemlogIn',
-    defaultMessage: 'Continue with MitID',
-  },
   continueWithIdAustria: {
     id: 'app.components.AuthProviders.continueWithIdAustria',
     defaultMessage: 'Continue with ID Austria',

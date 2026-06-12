@@ -31,6 +31,7 @@ module BulkImportIdeas::Importers
       add_location idea_row, idea_attributes
       add_phase idea_row, idea_attributes
       add_input_topics idea_row, idea_attributes
+      add_proposed_budget idea_row, idea_attributes
       add_custom_fields idea_row, idea_attributes
       user_created = add_author idea_row, idea_attributes
 
@@ -85,11 +86,14 @@ module BulkImportIdeas::Importers
             email: idea_row[:user_email]
           }
           author = UserService.build_in_input_importer(user_params)
-          if author.save
-            @imported_users << author
-          else
-            author = nil
+          unless author.save
+            raise BulkImportIdeas::Error.new(
+              'bulk_import_user_not_valid',
+              value: author.errors.full_messages.join('; '),
+              row: idea_row[:id]
+            )
           end
+          @imported_users << author
         end
       end
 
@@ -176,6 +180,10 @@ module BulkImportIdeas::Importers
       end.compact_blank.map(&:id).uniq
 
       idea_attributes[:input_topic_ids] = input_topics_ids
+    end
+
+    def add_proposed_budget(idea_row, idea_attributes)
+      idea_attributes[:proposed_budget] = idea_row[:proposed_budget] if idea_row[:proposed_budget].present?
     end
 
     def add_custom_fields(idea_row, idea_attributes)

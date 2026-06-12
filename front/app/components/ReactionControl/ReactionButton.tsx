@@ -464,13 +464,6 @@ const ReactionButton = ({
               ) : (
                 <FormattedMessage {...messages.vote} />
               )}
-              <ScreenReaderOnly>
-                <FormattedMessage
-                  {...{ up: messages.like, down: messages.dislike }[
-                    buttonReactionMode
-                  ]}
-                />
-              </ScreenReaderOnly>
             </ButtonComponent>
           )}
           {variant === 'icon' && (

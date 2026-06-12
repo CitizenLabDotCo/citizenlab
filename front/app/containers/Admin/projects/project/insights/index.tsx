@@ -10,7 +10,6 @@ import {
   Badge,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -24,8 +23,8 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
+import { useParams } from 'utils/router';
 
 import { getAnalysisScope } from '../../_shared/components/AnalysisBanner/utils';
 
@@ -66,7 +65,7 @@ const hiddenContainerStyle: React.CSSProperties = {
 
 // Inner component that uses the export contexts (visible UI)
 const InsightsContent = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -78,6 +77,9 @@ const InsightsContent = () => {
     downloadPdf,
     isDownloading: isDownloadingPdf,
     error: pdfError,
+    status: pdfStatus,
+    progress: pdfProgress,
+    skippedSections: pdfSkippedSections,
   } = usePdfExportContext();
 
   const {
@@ -109,6 +111,22 @@ const InsightsContent = () => {
     }
   };
 
+  const getPdfStatusText = () => {
+    switch (pdfStatus) {
+      case 'preparing':
+        return formatMessage(wordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(wordMessages.exportCapturing, {
+          completed: pdfProgress.completed,
+          total: pdfProgress.total,
+        });
+      case 'generating':
+        return formatMessage(wordMessages.exportGenerating);
+      default:
+        return null;
+    }
+  };
+
   const toggleDropdown = (value?: boolean) => () => {
     setDropdownOpened(value ?? !dropdownOpened);
   };
@@ -126,10 +144,6 @@ const InsightsContent = () => {
   };
 
   const participationMethod = phase?.data.attributes.participation_method;
-  const { start_at, end_at } = phase?.data.attributes || {};
-  const isFuturePhase = start_at
-    ? pastPresentOrFuture([start_at, end_at ?? null]) === 'future'
-    : false;
   const supportsAiAnalysis =
     participationMethod &&
     AI_ANALYSIS_SUPPORTED_METHODS.includes(participationMethod);
@@ -275,16 +289,23 @@ const InsightsContent = () => {
                     {getExportStatusText()}
                   </Text>
                 )}
+                {isDownloadingPdf && getPdfStatusText() && (
+                  <Text fontSize="s" color="textSecondary" m="0px">
+                    {getPdfStatusText()}
+                  </Text>
+                )}
                 {exportError && (
                   <Text fontSize="s" color="error" m="0px">
                     {exportError}
                   </Text>
                 )}
-                {captureWarnings.length > 0 && !isDownloading && (
-                  <Text fontSize="s" color="orange500" m="0px">
-                    {formatMessage(wordMessages.exportCaptureWarning)}
-                  </Text>
-                )}
+                {(captureWarnings.length > 0 ||
+                  pdfSkippedSections.length > 0) &&
+                  !isDownloading && (
+                    <Text fontSize="s" color="orange500" m="0px">
+                      {formatMessage(wordMessages.exportCaptureWarning)}
+                    </Text>
+                  )}
               </Box>
             )}
           </Box>
@@ -295,24 +316,18 @@ const InsightsContent = () => {
             <ParticipationMetrics phase={phase.data} />
           </PageBreakBox>
 
-          {!isFuturePhase && (
-            <>
-              <PageBreakBox>
-                <ParticipantsTimeline phaseId={phase.data.id} />
-              </PageBreakBox>
+          <PageBreakBox>
+            <ParticipantsTimeline phaseId={phase.data.id} />
+          </PageBreakBox>
 
-              <DemographicsSection phase={phase.data} />
+          <DemographicsSection phase={phase.data} />
 
-              <PageBreakBox>
-                <MethodSpecificInsights
-                  phaseId={phase.data.id}
-                  participationMethod={
-                    phase.data.attributes.participation_method
-                  }
-                />
-              </PageBreakBox>
-            </>
-          )}
+          <PageBreakBox>
+            <MethodSpecificInsights
+              phaseId={phase.data.id}
+              participationMethod={phase.data.attributes.participation_method}
+            />
+          </PageBreakBox>
         </Box>
       </Box>
 
@@ -329,7 +344,7 @@ const InsightsContent = () => {
 
 // Main component that wraps with PdfExportProvider
 const AdminPhaseInsights = () => {
-  const { phaseId } = useParams() as {
+  const { phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

@@ -129,8 +129,10 @@ class Invites::Service
   end
 
   def check_duplicate_emails(invitees)
+    # Group case-insensitively (like User.find_by_cimail), otherwise case variants
+    # of the same email slip past this check and only collide at save! time.
     emails_indexes = invitees.each_with_object(Hash.new { [] }).with_index do |(invitee, object), index|
-      object[invitee.email] += [index]
+      object[invitee.email&.downcase] += [index]
     end
     duplicated_emails_indexes = emails_indexes.select { |email, row_indexes| email && row_indexes.size > 1 }
     duplicated_emails_indexes.each do |email, row_indexes|
@@ -150,6 +152,10 @@ class Invites::Service
           add_error(:invalid_email, row: @current_row, value: error_descriptor[:value], raw_error: e)
         elsif field == :email && error_descriptor[:code] == 'zrb-43'
           add_error(:email_banned, row: @current_row, value: error_descriptor[:value], raw_error: e)
+        elsif field == :first_name && error_descriptor[:error] == :invalid
+          add_error(:invalid_first_name, row: @current_row, value: error_descriptor[:value], raw_error: e)
+        elsif field == :last_name && error_descriptor[:error] == :invalid
+          add_error(:invalid_last_name, row: @current_row, value: error_descriptor[:value], raw_error: e)
         # :taken and :taken_by_invite should not happen after 662da0dc85
         # ToDo: remove these two elsif branches and the `ignore` option of `add_error`.
         elsif field == :email && error_descriptor[:error] == :taken

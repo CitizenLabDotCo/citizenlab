@@ -5,10 +5,6 @@ require 'rails_helper'
 describe Permissions::UserRequirementsService do
   let(:service) { described_class.new }
 
-  before do
-    SettingsService.new.activate_feature! 'user_confirmation'
-  end
-
   describe '#requirements' do
     before do
       create(:custom_field_birthyear, required: true)
@@ -60,9 +56,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'permits a light unconfirmed resident' do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
-          requirements = service.requirements(permission, nil)
+          user = create(:unconfirmed_user)
+          requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq expected_requirements
         end
@@ -106,8 +101,7 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a light unconfirmed resident' do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user = create(:unconfirmed_user)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -139,7 +133,7 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a fully registered unconfirmed resident' do # https://citizenlabco.slack.com/archives/C04FX2ATE5B/p1677170928400679
-          user.reset_confirmation_and_counts
+          user.update!(email_confirmed_at: nil, confirmation_required: true)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -171,7 +165,7 @@ describe Permissions::UserRequirementsService do
 
         it 'does not permit an unconfirmed admin' do
           user.add_role 'admin'
-          user.reset_confirmation_and_counts
+          user.update!(email_confirmed_at: nil, confirmation_required: true)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -296,7 +290,7 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a fully registered unconfirmed resident' do
-          user.reset_confirmation_and_counts
+          user.update!(email_confirmed_at: nil, confirmation_required: true)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -347,7 +341,7 @@ describe Permissions::UserRequirementsService do
 
         it 'does not permit an unconfirmed admin' do
           user.add_role 'admin'
-          user.reset_confirmation_and_counts
+          user.update!(email_confirmed_at: nil, confirmation_required: true)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -422,94 +416,6 @@ describe Permissions::UserRequirementsService do
             requirements = service.requirements(permission, nil)
             expect(requirements[:custom_fields]).to be_empty
           end
-        end
-      end
-
-      context 'when permitted_by is set to admins_moderators and user confirmation feature is off' do
-        let(:permission) { create(:permission, permitted_by: 'admins_moderators', global_custom_fields: false) }
-
-        before { SettingsService.new.deactivate_feature! 'user_confirmation' }
-
-        it 'does not permit a visitor' do
-          requirements = service.requirements(permission, nil)
-          expect(service.permitted?(requirements)).to be false
-          expect(requirements).to eq({
-            authentication: {
-              permitted_by: 'admins_moderators',
-              missing_user_attributes: %i[first_name last_name email confirmation password]
-            },
-            verification: false,
-            custom_fields: {},
-            onboarding: true,
-            group_membership: false
-          })
-        end
-
-        it 'does not permit a light unconfirmed resident' do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
-          requirements = service.requirements(permission, user)
-          expect(service.permitted?(requirements)).to be false
-          expect(requirements).to eq({
-            authentication: {
-              permitted_by: 'admins_moderators',
-              missing_user_attributes: %i[first_name password]
-            },
-            verification: false,
-            custom_fields: {},
-            onboarding: true,
-            group_membership: false
-          })
-        end
-
-        # TODO: JS - should this be true?
-        it 'permits a fully registered unconfirmed resident' do
-          user.reset_confirmation_and_counts
-          requirements = service.requirements(permission, user)
-          expect(service.permitted?(requirements)).to be true
-          expect(requirements).to eq({
-            authentication: {
-              permitted_by: 'admins_moderators',
-              missing_user_attributes: []
-            },
-            verification: false,
-            custom_fields: {},
-            onboarding: true,
-            group_membership: false
-          })
-        end
-
-        it 'permits an unconfirmed admin' do
-          user.add_role 'admin'
-          user.reset_confirmation_and_counts
-          requirements = service.requirements(permission, user)
-          expect(service.permitted?(requirements)).to be true
-          expect(requirements).to eq({
-            authentication: {
-              permitted_by: 'admins_moderators',
-              missing_user_attributes: []
-            },
-            verification: false,
-            custom_fields: {},
-            onboarding: true,
-            group_membership: false
-          })
-        end
-
-        it 'permits a confirmed admin' do
-          user.add_role 'admin'
-          requirements = service.requirements(permission, user)
-          expect(service.permitted?(requirements)).to be true
-          expect(requirements).to eq({
-            authentication: {
-              permitted_by: 'admins_moderators',
-              missing_user_attributes: []
-            },
-            verification: false,
-            custom_fields: {},
-            onboarding: true,
-            group_membership: false
-          })
         end
       end
     end
@@ -604,7 +510,8 @@ describe Permissions::UserRequirementsService do
 
       before do
         # To allow permitted_by 'verified' we need to enable at least one verification method
-        SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.save!
       end
 
       context 'there is no user' do
@@ -719,7 +626,7 @@ describe Permissions::UserRequirementsService do
       end
 
       context 'a user is verified and has email, but is not confirmed' do
-        let(:user) { create(:user_with_confirmation, verified: true) }
+        let(:user) { create(:unconfirmed_user, verified: true) }
 
         it 'requires email confirmation' do
           expect(user.confirmation_required?).to be true

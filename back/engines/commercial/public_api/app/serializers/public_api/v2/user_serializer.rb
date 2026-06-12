@@ -25,6 +25,14 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
     object.active? ? 'active' : 'incomplete'
   end
 
+  # Preserves the v2 API shape: previously a column on users, now lives on the
+  # active confirmation row (new_email_confirmation if a change is in flight,
+  # otherwise email_confirmation).
+  def email_confirmation_code_sent_at
+    active = object.new_email.present? ? object.new_email_confirmation : object.email_confirmation
+    active&.code_sent_at
+  end
+
   def bio
     multiloc_service.t(object.bio_multiloc)
   end

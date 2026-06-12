@@ -1,7 +1,14 @@
 import { colors, Locale } from '@citizenlab/cl2-component-library';
+import { FormatMessage } from 'typings';
 
 import { CommunityMonitorSentimentScoreAttributes } from 'api/community_monitor_scores/types';
 
+import {
+  Column,
+  Row,
+} from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/A11yTable';
+
+import messages from './messages';
 import { QuarterlyScores } from './types';
 
 export const categoryColors = {
@@ -12,9 +19,12 @@ export const categoryColors = {
   other: colors.coolGrey500,
 };
 
-export const generateEmptyChartData = (search: URLSearchParams) => {
-  const year = getYearFilter(search);
-  const quarter = getQuarterFilter(search);
+export const generateEmptyChartData = (
+  yearParam: string | undefined,
+  quarterParam: string | undefined
+) => {
+  const year = getYearFilter(yearParam);
+  const quarter = getQuarterFilter(quarterParam);
 
   return [
     {
@@ -77,8 +87,7 @@ export function transformSentimentScoreData(
 
 // getYearFilter:
 // Get the current year based on the date. If a year is provided in the URL, use that instead.
-export const getYearFilter = (search?: URLSearchParams) => {
-  const year = search?.get('year');
+export const getYearFilter = (year?: string) => {
   if (year) {
     return year;
   }
@@ -89,8 +98,7 @@ export const getYearFilter = (search?: URLSearchParams) => {
 
 // getQuarterFilter:
 // Get the current quarter based on the date. If a quarter is provided in the URL, use that instead.
-export const getQuarterFilter = (search?: URLSearchParams) => {
-  const quarter = search?.get('quarter');
+export const getQuarterFilter = (quarter?: string) => {
   if (quarter) {
     return quarter;
   }
@@ -145,5 +153,44 @@ export const filterDataBySelectedQuarter = (
     overallHealthScores: filteredOverallHealthScores,
     categoryHealthScores: filteredCategoryHealthScores,
     totalHealthScoreCounts: filteredTotalHealthScoreCounts,
+  };
+};
+
+// buildHealthScoreA11yTable:
+export const buildHealthScoreA11yTable = (
+  sentimentScores: QuarterlyScores | null,
+  formatMessage: FormatMessage
+): { columns: Column[]; data: Row[] } => {
+  const periods =
+    sentimentScores?.overallHealthScores.map((s) => s.period) || [];
+
+  const columns: Column[] = [
+    { key: 'category', label: formatMessage(messages.categoryColumn) },
+    ...periods.map((period) => ({
+      key: period,
+      label: period.replace('-', ` ${formatMessage(messages.quarter)} `),
+    })),
+  ];
+
+  const scoresByPeriod = (scores?: { period: string; score: number }[]) =>
+    scores?.reduce<Record<string, number>>((acc, s) => {
+      acc[s.period] = s.score;
+      return acc;
+    }, {}) ?? {};
+
+  const overallRow: Row = {
+    category: formatMessage(messages.overallHealthScore),
+    ...scoresByPeriod(sentimentScores?.overallHealthScores),
+  };
+
+  const categoryRows: Row[] =
+    sentimentScores?.categoryHealthScores.map((categoryScore) => ({
+      category: categoryScore.localizedLabel,
+      ...scoresByPeriod(categoryScore.scores),
+    })) || [];
+
+  return {
+    columns,
+    data: [overallRow, ...categoryRows],
   };
 };

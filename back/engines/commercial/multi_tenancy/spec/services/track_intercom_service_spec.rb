@@ -17,7 +17,12 @@ describe TrackIntercomService do
   end
 
   describe 'identify_user' do
-    it "creates a company in Intercom if it didn't exist yet" do
+    # Tenant attributes are deliberately not written to Intercom contacts:
+    # Intercom requires CDA names to be globally unique across Contact and
+    # Company models, and the tenant_* names are claimed by the Company side
+    # (see identify_tenant). Tenant context on a contact is provided via the
+    # Company association added by add_company_to_contact.
+    it 'does not write tenant properties to the contact on create' do
       user = create(:admin)
       contacts_api = double
       zero_contacts = { count: 0 }
@@ -28,7 +33,7 @@ describe TrackIntercomService do
 
       contact = double.as_null_object
       expect(contacts_api).to receive(:create) do |payload|
-        expect(payload[:custom_attributes]).to include(expected_tenant_props)
+        expect(payload[:custom_attributes].keys).not_to include(*expected_tenant_props.keys)
       end.and_return(contact)
 
       service.identify_user(user)
@@ -55,7 +60,7 @@ describe TrackIntercomService do
       service.identify_user(user)
     end
 
-    it 'includes tenant properties when updating a new contact' do
+    it 'does not write tenant properties to the contact on update' do
       user = create(:admin)
 
       contacts_api = double
@@ -66,7 +71,7 @@ describe TrackIntercomService do
       allow(contacts_api).to receive(:search).and_return(search_result)
 
       expect(contact).to receive(:custom_attributes=) do |attrs|
-        expect(attrs).to include(expected_tenant_props)
+        expect(attrs.keys).not_to include(*expected_tenant_props.keys)
       end
       expect(contacts_api).to receive(:save).with(contact)
 

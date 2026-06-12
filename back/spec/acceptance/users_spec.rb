@@ -66,28 +66,26 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/:id' do
-      context 'when confirmation is turned on' do
-        before do
-          @user = create(:user)
-          SettingsService.new.activate_feature! 'user_confirmation'
-          settings = AppConfiguration.instance.settings
-          settings['password_login'] = {
-            'allowed' => true,
-            'enabled' => true,
-            'enable_signup' => true,
-            'minimum_length' => 6
-          }
-        end
+      before do
+        @user = create(:user)
+        create(:idea, author: @user) # without participation the user cannot be seen
+        settings = AppConfiguration.instance.settings
+        settings['password_login'] = {
+          'allowed' => true,
+          'enabled' => true,
+          'enable_signup' => true,
+          'minimum_length' => 6
+        }
+      end
 
-        let(:id) { @user.id }
+      let(:id) { @user.id }
 
-        example 'Get a non-authenticated user does not expose the email', document: false do
-          do_request
+      example 'Get a non-authenticated user does not expose the email', document: false do
+        do_request
 
-          assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :email)).to be_nil
-        end
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :email)).to be_nil
       end
     end
 
@@ -96,9 +94,8 @@ resource 'Users' do
         parameter :email, 'E-mail address to check', required: true
       end
 
-      context 'when confirmation is turned on' do
+      context 'when password_login is turned on' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
         end
 
@@ -114,11 +111,10 @@ resource 'Users' do
         context 'when a user exists without a password and has email confirmed', document: false do
           context 'when the user has not requested any codes yet' do
             before do
-              @user = create(:user_no_password, email: 'test@test.com')
-              @user.confirm
-              @user.save!
+              @user = create(:unconfirmed_user, email: 'test@test.com')
+              @user.email_confirmation.confirm!
 
-              allow(RequestConfirmationCodeJob).to receive(:perform_now)
+              allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
             end
 
             let(:email) { 'test@test.com' }
@@ -127,19 +123,17 @@ resource 'Users' do
               expect(@user.password_digest).to be_nil
               assert_status 200
               expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-              expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
+              expect(RequestEmailConfirmationCodeJob).to have_received(:perform_now).with(@user)
             end
           end
 
           context 'when the user has already requested a code' do
             before do
-              @user = create(:user_no_password, email: 'test@test.com')
-              @user.confirm
-              @user.save!
+              @user = create(:unconfirmed_user, email: 'test@test.com')
 
-              RequestConfirmationCodeJob.perform_now @user
+              RequestEmailConfirmationCodeJob.perform_now @user
 
-              allow(RequestConfirmationCodeJob).to receive(:perform_now)
+              allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
             end
 
             let(:email) { 'test@test.com' }
@@ -148,13 +142,13 @@ resource 'Users' do
               expect(@user.password_digest).to be_nil
               assert_status 200
               expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-              expect(RequestConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
+              expect(RequestEmailConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
             end
           end
         end
 
         context 'when a user exists without a password and does not have email confirmed' do
-          before { @user = create(:user_no_password, email: 'test@email.com') }
+          before { @user = create(:unconfirmed_user, email: 'test@email.com') }
 
           let(:email) { 'test@email.com' }
 
@@ -181,8 +175,8 @@ resource 'Users' do
 
         context 'when a user exists with a password and does not have email confirmed', document: false do
           before do
-            @user = create(:user_with_confirmation, email: 'test@test.com')
-            allow(RequestConfirmationCodeJob).to receive(:perform_now)
+            @user = create(:unconfirmed_user, email: 'test@test.com', password_digest: 'super_secret')
+            allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
           end
 
           let(:email) { 'test@test.com' }
@@ -192,7 +186,7 @@ resource 'Users' do
             expect(@user.confirmation_required?).to be true
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
+            expect(RequestEmailConfirmationCodeJob).to have_received(:perform_now).with(@user)
           end
         end
 
@@ -226,57 +220,82 @@ resource 'Users' do
             expect(json_response_body[:data][:attributes][:action]).to eq('password')
           end
         end
-      end
 
-      context 'when user confirmation is turned off' do
-        before do
-          SettingsService.new.deactivate_feature! 'user_confirmation'
-          SettingsService.new.activate_feature! 'password_login'
+        context 'when user was created by SSO, has a password, email confirmed' do
+          let(:email) { create(:sso_user).email }
+
+          example_request 'Returns "password"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
         end
 
-        let(:email) { 'test@test.com' }
+        context 'when user was created by SSO, has a password, email unconfirmed' do
+          let(:user) { create(:unconfirmed_user, password_digest: 'super_secret', identities: [create(:facebook_identity)]) }
+          let(:email) { user.email }
 
-        example_request 'returns "terms" when user does not exist' do
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
         end
 
-        example 'returns "password" when user exists with a password' do
-          create(:user, email: 'test@test.com')
-          do_request
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('password')
+        context 'when user was created by SSO, no password, email confirmed' do
+          let(:email) { create(:sso_user, password_digest: nil).email }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
         end
 
-        example 'returns "token" when user exists without a password' do
-          create(:user, email: 'test2@email.com', password: nil)
-          do_request(user: { email: 'test2@email.com' })
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('token')
+        context 'when user was created by SSO, no password, email unconfirmed' do
+          let(:user) { create(:unconfirmed_user, identities: [create(:facebook_identity)]) }
+          let(:email) { user.email }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
         end
       end
 
       context 'when password_login is turned off' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
+          @super_admin = create(:super_admin)
+          @user = create(:user)
           SettingsService.new.deactivate_feature! 'password_login'
         end
 
-        let(:email) { 'test@test.com' }
-
-        example_request 'it also works (necessary for ?super_admin param)' do
+        example 'it works for super admins (necessary for ?super_admin param)' do
+          do_request({ user: { email: @super_admin.email } })
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
           assert_status 200
+        end
+
+        example 'it does not work for other users' do
+          do_request({ user: { email: @user.email } })
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('password_login_disabled')
+          assert_status 403
+        end
+
+        example 'it does not work if user does not exist' do
+          do_request({ user: { email: 'nonexisting@user.com' } })
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('password_login_disabled')
+          assert_status 403
         end
       end
 
       context 'when the email domain has SSO enforced' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
-          settings['azure_ad_login'] = {
-            'allowed' => true, 'enabled' => true,
-            'enforced_email_domains' => 'example.com'
+          settings['id_config'] = {
+            'allowed' => true,
+            'enabled' => true,
+            'id_methods' => [
+              { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
+            ]
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -305,12 +324,14 @@ resource 'Users' do
 
       context 'when the email domain has SSO enforced' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
-          settings['azure_ad_login'] = {
-            'allowed' => true, 'enabled' => true,
-            'enforced_email_domains' => 'example.com'
+          settings['id_config'] = {
+            'allowed' => true,
+            'enabled' => true,
+            'id_methods' => [
+              { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
+            ]
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -324,11 +345,10 @@ resource 'Users' do
         end
       end
 
-      context 'when confirmation is turned on' do
+      context 'when password_login is turned on' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
-          allow(RequestConfirmationCodeJob).to receive(:perform_now)
+          allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
         end
 
         let(:email) { Faker::Internet.email }
@@ -338,7 +358,7 @@ resource 'Users' do
           example_request 'User successfully created and requires confirmation' do
             assert_status 201
             user = User.order(:created_at).last
-            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+            expect(RequestEmailConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(user.confirmation_required?).to be(true)
           end
 
@@ -367,8 +387,8 @@ resource 'Users' do
         describe 'When there is an existing user' do
           context 'when there is an existing user that has no password' do
             example 'email taken error is returned and confirmation requirement is not reset' do
-              existing_user = create(:user_no_password, email: email)
-              existing_user.confirm!
+              existing_user = create(:unconfirmed_user, email: email)
+              existing_user.email_confirmation.confirm!
 
               do_request
               assert_status 422
@@ -380,8 +400,8 @@ resource 'Users' do
               let(:first_name) { Faker::Name.first_name }
 
               example 'email taken error is returned and confirmation requirement is not reset' do
-                existing_user = create(:user_no_password, email: email)
-                existing_user.confirm!
+                existing_user = create(:unconfirmed_user, email: email)
+                existing_user.email_confirmation.confirm!
 
                 do_request
                 assert_status 422
@@ -402,6 +422,12 @@ resource 'Users' do
             end
           end
         end
+      end
+    end
+
+    get 'web_api/v1/users/me/ping' do
+      example_request '[error] Ping without authentication' do
+        assert_status 401
       end
     end
   end
@@ -1180,20 +1206,6 @@ resource 'Users' do
         end
       end
 
-      get 'web_api/v1/users/by_slug/:slug' do
-        let(:user) { create(:user) }
-        let(:slug) { user.slug }
-
-        example_request 'Get one user by slug includes user block data' do
-          expect(status).to eq 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes)).to have_key(:blocked)
-          expect(json_response.dig(:data, :attributes)).to have_key(:block_start_at)
-          expect(json_response.dig(:data, :attributes)).to have_key(:block_end_at)
-          expect(json_response.dig(:data, :attributes)).to have_key(:block_reason)
-        end
-      end
-
       get 'web_api/v1/users/:id' do
         let(:user) { create(:user) }
         let(:id) { user.id }
@@ -1450,6 +1462,23 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :value)).to be(false)
         end
       end
+
+      get 'web_api/v1/users/me/ping' do
+        parameter :admin, 'Whether the user is on an admin route', required: false
+        context 'normal route' do
+          example_request 'Ping as an admin' do
+            assert_status 200
+          end
+        end
+
+        context 'admin route' do
+          let(:admin) { true }
+
+          example_request 'Ping as an admin with admin param' do
+            assert_status 200
+          end
+        end
+      end
     end
 
     context 'when non-admin' do
@@ -1482,7 +1511,11 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/:id' do
-        let(:user) { create(:user) }
+        let(:user) do
+          user = create(:user)
+          create(:idea, author: user) # without participation the user cannot be found by non-admins
+          user
+        end
         let(:id) { user.id }
 
         example_request 'Get a user by id does not include user block data' do
@@ -1502,54 +1535,6 @@ resource 'Users' do
           do_request
           json_response = json_parse response_body
           expect(json_response.dig(:data, :attributes, :email)).to eq @user.email
-        end
-      end
-
-      get 'web_api/v1/users/by_slug/:slug' do
-        let(:user) { create(:user) }
-        let(:slug) { user.slug }
-
-        example_request 'Get one user by slug' do
-          expect(status).to eq 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :id)).to eq user.id
-        end
-
-        example '[error] Get an unexisting user by slug', document: false do
-          do_request slug: 'unexisting-user'
-          expect(status).to eq 404
-        end
-
-        example_request 'Get a user by slug does not include user block data' do
-          expect(status).to eq 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes)).not_to have_key(:blocked)
-          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_start_at)
-          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_end_at)
-          expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
-        end
-
-        context 'when enhanced_user_profile_privacy feature is active' do
-          before do
-            settings = AppConfiguration.instance.settings
-            settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
-            AppConfiguration.instance.update!(settings: settings)
-          end
-
-          let(:slug) { user.id }
-
-          example 'Get one user by id when enhanced_user_profile_privacy is active and user has posted publicly', document: false do
-            create(:idea, author: user)
-            do_request
-            expect(status).to eq 200
-            expect(response_data[:id]).to eq user.id
-            expect(response_data.dig(:attributes, :slug)).to eq user.id
-          end
-
-          example 'Returns error when enhanced_user_profile_privacy is active and user has not posted', document: false do
-            do_request
-            expect(status).to eq 401
-          end
         end
       end
 
@@ -1884,44 +1869,6 @@ resource 'Users' do
         end
       end
 
-      patch 'web_api/v1/users/update_email_unconfirmed' do
-        with_options scope: :user do
-          parameter :email, required: true
-        end
-
-        context 'when user_confirmation is enabled' do
-          before do
-            SettingsService.new.activate_feature! 'user_confirmation'
-          end
-
-          describe do
-            let(:email) { 'new_email@example.com' }
-
-            example_request '[error] does not allow email change' do
-              @user.reload
-              expect(response_status).to eq 401
-              expect(@user.email).not_to eq email
-            end
-          end
-        end
-
-        context 'when user_confirmation is disabled' do
-          before do
-            SettingsService.new.deactivate_feature! 'user_confirmation'
-          end
-
-          describe do
-            let(:email) { 'new_email@example.com' }
-
-            example_request 'It allows email change' do
-              @user.reload
-              expect(response_status).to eq 200
-              expect(@user.email).to eq email
-            end
-          end
-        end
-      end
-
       delete 'web_api/v1/users/:id' do
         parameter :delete_participation_data, <<~DESC.squish, required: false
           When true, permanently deletes all participation data associated with the user
@@ -1932,12 +1879,12 @@ resource 'Users' do
         DESC
         parameter :ban_reason, 'Reason for banning the email (optional, only used when ban_email is true)', required: false
 
+        let(:id) { @subject_user.id }
+
         before do
           @user.update!(roles: [{ type: 'admin' }])
           @subject_user = create(:admin)
         end
-
-        let(:id) { @subject_user.id }
 
         example_request 'Delete a user' do
           expect(response_status).to eq 200
@@ -2024,6 +1971,47 @@ resource 'Users' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
+        end
+      end
+
+      get 'web_api/v1/users/me/ping' do
+        parameter :admin, 'Whether the user is on an admin route', required: false
+        context 'normal route' do
+          example_request 'Ping as a normal user' do
+            assert_status 200
+          end
+        end
+
+        context 'admin route' do
+          let(:admin) { true }
+
+          example_request 'Ping as a normal user with admin param' do
+            assert_status 403
+          end
+        end
+      end
+    end
+
+    context 'when project moderator' do
+      before do
+        project = create(:project)
+        @user.update!(roles: [{ type: 'project_moderator', project_id: project.id }])
+      end
+
+      get 'web_api/v1/users/me/ping' do
+        parameter :admin, 'Whether the user is on an admin route', required: false
+        context 'normal route' do
+          example_request 'Ping as a project moderator' do
+            assert_status 200
+          end
+        end
+
+        context 'admin route' do
+          let(:admin) { true }
+
+          example_request 'Ping as a project moderator with admin param' do
+            assert_status 200
+          end
         end
       end
     end

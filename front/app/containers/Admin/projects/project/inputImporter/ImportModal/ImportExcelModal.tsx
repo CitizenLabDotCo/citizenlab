@@ -9,11 +9,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 import { object, mixed } from 'yup';
 
-import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync from 'api/import_ideas/useAddImportedIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
@@ -26,6 +24,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { useParams } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
 import LocalePicker from './LocalePicker';
@@ -39,23 +38,27 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
-  onImport: (jobs: IBackgroundJobData[]) => void;
 }
 
-const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
+const ImportExcelModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
-  const { phaseId } = useParams();
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
   const { data: phase } = usePhase(phaseId);
-  const { projectId } = useParams() as {
-    projectId: string;
-  };
 
-  const downloadFormPath =
+  const downloadFormLink =
     phase?.data.attributes.participation_method === 'native_survey'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
-      : `/admin/projects/${projectId}/phases/${phaseId}/form`;
+      ? ({
+          to: '/admin/projects/$projectId/phases/$phaseId/survey-form',
+          params: { projectId, phaseId },
+        } as const)
+      : ({
+          to: '/admin/projects/$projectId/phases/$phaseId/form',
+          params: { projectId, phaseId },
+        } as const);
 
   const defaultValues = {
     locale,
@@ -77,7 +80,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
     if (!phaseId) return;
 
     try {
-      const response = await addOfflineIdeas({
+      await addOfflineIdeas({
         phase_id: phaseId,
         file: file.base64,
         format: 'xlsx',
@@ -85,7 +88,6 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
         locale,
       });
 
-      onImport(response.data);
       onClose();
       methods.reset();
     } catch (e) {
@@ -118,7 +120,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
                       <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                     ),
                     hereLink: (
-                      <Link to={{ pathname: downloadFormPath }}>
+                      <Link {...downloadFormLink}>
                         <FormattedMessage
                           {...messages.templateCanBeDownloadedHere}
                         />
@@ -132,7 +134,7 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" accept=".xlsx" />
+              <SingleFileUploader name="file" accept=".xlsx" shouldUnregister />
             </Box>
 
             <Box w="100%" display="flex" mt="32px">

@@ -43,10 +43,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        user_confirmation: {
-          enabled: true,
-          allowed: true
-        },
         permissions_custom_fields: {
           enabled: true,
           allowed: true
@@ -64,10 +60,6 @@ namespace :cl2_back do
           allowed: true
         },
         blocking_profanity: {
-          enabled: true,
-          allowed: true
-        },
-        widgets: {
           enabled: true,
           allowed: true
         },
@@ -163,18 +155,14 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        events_widget: {
-          enabled: true,
-          allowed: true
-        },
         polls: {
           enabled: true,
           allowed: true
         },
-        verification: {
-          enabled: true,
+        id_config: {
           allowed: true,
-          verification_methods: [
+          enabled: true,
+          id_methods: [
             {
               name: 'cow',
               api_username: 'fake_username',
@@ -320,8 +308,8 @@ namespace :cl2_back do
           allowed: true
         },
         project_scheduling: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         },
         platform_templates: {
           enabled: false,
@@ -367,7 +355,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        email_scheduling: {
+        mcp_server: {
           enabled: true,
           allowed: true
         }

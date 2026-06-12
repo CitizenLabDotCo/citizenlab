@@ -8,7 +8,6 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 
 import useABTest from 'api/experiments/useABTest';
 import { FollowableType } from 'api/follow_unfollow/types';
@@ -24,6 +23,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -139,45 +139,50 @@ const FollowUnfollow = ({
   };
 
   const getTooltipContent = () => {
+    const unsubscribeLink = (
+      <a
+        href={'/profile/edit'}
+        target="_blank"
+        rel="noreferrer"
+        tabIndex={0}
+        style={{ textDecoration: 'underline', color: colors.white }}
+      >
+        <FormattedMessage {...messages.unsubscribe} />
+      </a>
+    );
+
     if (toolTipType === 'input') {
       return (
         <FormattedMessage
           {...messages.followTooltipInputPage}
-          values={{
-            unsubscribeLink: (
-              <a
-                href={'/profile/edit'}
-                target="_blank"
-                rel="noreferrer"
-                style={{ textDecoration: 'underline', color: colors.white }}
-              >
-                <FormattedMessage {...messages.unsubscribe} />
-              </a>
-            ),
-          }}
+          values={{ unsubscribeLink }}
         />
       );
     } else if (toolTipType === 'projectOrFolder') {
       return (
         <FormattedMessage
           {...messages.followTooltipProjects}
-          values={{
-            unsubscribeLink: (
-              <a
-                href={'/profile/edit'}
-                target="_blank"
-                rel="noreferrer"
-                style={{ textDecoration: 'underline', color: colors.white }}
-              >
-                <FormattedMessage {...messages.unsubscribe} />
-              </a>
-            ),
-          }}
+          values={{ unsubscribeLink }}
         />
       );
     }
     return null;
   };
+
+  const buttonText = followersCount
+    ? `${followUnfollowText} (${followersCount})`
+    : followUnfollowText;
+
+  const tooltipSentence =
+    toolTipType === 'input'
+      ? formatMessage(messages.followTooltipInputPage, {
+          unsubscribeLink: formatMessage(messages.unsubscribe),
+        })
+      : toolTipType === 'projectOrFolder'
+      ? formatMessage(messages.followTooltipProjects, {
+          unsubscribeLink: formatMessage(messages.unsubscribe),
+        })
+      : undefined;
 
   return (
     <Tooltip
@@ -187,6 +192,7 @@ const FollowUnfollow = ({
       placement="bottom"
       content={getTooltipContent()}
       useContentWrapper={false}
+      role="presentation"
     >
       <Button
         buttonStyle={buttonStyle}
@@ -195,12 +201,13 @@ const FollowUnfollow = ({
         iconSize={iconSize}
         px="12px"
         processing={isLoading}
+        ariaLabel={
+          tooltipSentence ? `${buttonText}. ${tooltipSentence}` : undefined
+        }
         {...otherButtonProps}
         data-cy={isFollowing ? 'e2e-unfollow-button' : 'e2e-follow-button'}
       >
-        {followersCount
-          ? `${followUnfollowText} (${followersCount})`
-          : followUnfollowText}
+        {buttonText}
       </Button>
     </Tooltip>
   );

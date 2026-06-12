@@ -182,6 +182,11 @@ FactoryBot.define do
     idea_status
   end
 
+  factory :proposal_expired_for_admin, parent: :notification, class: 'Notifications::ProposalExpiredForAdmin' do
+    idea
+    idea_status
+  end
+
   factory :native_survey_not_submitted, parent: :notification, class: 'Notifications::NativeSurveyNotSubmitted' do
     idea
     project

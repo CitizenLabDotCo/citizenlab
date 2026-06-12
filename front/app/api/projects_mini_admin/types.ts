@@ -16,15 +16,18 @@ import {
 } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
-export type ProjectSortableParam =
-  | 'recently_viewed'
-  | 'phase_starting_or_ending_soon'
-  | 'recently_created_asc'
-  | 'recently_created_desc'
-  | 'alphabetically_asc'
-  | 'alphabetically_desc'
-  | 'participation_asc'
-  | 'participation_desc';
+export const projectSortableParams = [
+  'recently_viewed',
+  'phase_starting_or_ending_soon',
+  'recently_created_asc',
+  'recently_created_desc',
+  'alphabetically_asc',
+  'alphabetically_desc',
+  'participation_asc',
+  'participation_desc',
+] as const;
+
+export type ProjectSortableParam = (typeof projectSortableParams)[number];
 
 export type Parameters = {
   status?: PublicationStatus[];
@@ -71,11 +74,15 @@ export type ProjectMiniAdminData = {
     last_phase_end_date: string | null;
     listed: boolean;
     publication_status: PublicationStatus;
+    scheduled_at: string | null;
     title_multiloc: Multiloc;
     visible_to: Visibility;
   };
   relationships: {
     folder?: {
+      data: IRelationship | null;
+    };
+    space?: {
       data: IRelationship | null;
     };
     phases?: {

@@ -13,16 +13,21 @@ import {
 } from 'utils/permissions/rules/routePermissions';
 
 export function userModeratesFolder(
-  user: IUser | undefined,
-  projectFolderId: string
+  user: IUser | undefined | null,
+  projectFolderId: string,
+  folderSpaceId?: string | null
 ) {
   if (!user) return false;
 
-  return isAdmin(user) || isProjectFolderModerator(user, projectFolderId);
+  return (
+    isAdmin(user) ||
+    isProjectFolderModerator(user, projectFolderId) ||
+    (typeof folderSpaceId === 'string' && isSpaceModerator(user, folderSpaceId))
+  );
 }
 
 export const userModeratesSpace = (
-  user: IUser | undefined,
+  user: IUser | undefined | null,
   spaceId: string
 ) => {
   if (!user) return false;
@@ -35,7 +40,7 @@ export const userModeratesSpace = (
  * it checks if the user is a moderator of that folder specifically.
  */
 export function isProjectFolderModerator(
-  user?: IUser,
+  user?: IUser | null,
   folderId?: string | null
 ): boolean {
   const roles = user?.data.attributes.roles;
@@ -57,7 +62,7 @@ export function isProjectFolderModerator(
 // rules
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
-  user: IUser | undefined,
+  user: IUser | undefined | null,
   tenant: IAppConfigurationData
 ) => {
   const hasAdminFolderRouteAccess = user

@@ -8,6 +8,7 @@ import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import DeleteUser from 'components/admin/UserDeleteModal';
 
 import { ModalName } from '../types';
+import { Resources } from '../useAssignModerator';
 
 import SetAsModerator from './SetAsModerator';
 
@@ -16,6 +17,8 @@ interface Props {
   user: IUserData;
   closeModal: () => void;
   onAcceptIncreasedSeatLimitForAdmin: () => void;
+  onAssignModerator: (resources: Resources) => Promise<void>;
+  onAcceptIncreasedSeatLimitForModerator: () => void;
 }
 
 const Modals = ({
@@ -23,6 +26,8 @@ const Modals = ({
   user,
   closeModal,
   onAcceptIncreasedSeatLimitForAdmin,
+  onAssignModerator,
+  onAcceptIncreasedSeatLimitForModerator,
 }: Props) => {
   return (
     <>
@@ -39,12 +44,19 @@ const Modals = ({
         opened={modalOpened === 'set-moderator'}
         user={user}
         onClose={closeModal}
+        onAssign={onAssignModerator}
       />
       <SeatLimitReachedModal
         seatType="admin"
-        showModal={modalOpened === 'seat-limit-reached'}
+        showModal={modalOpened === 'seat-limit-reached-admin'}
         closeModal={closeModal}
         addModerators={onAcceptIncreasedSeatLimitForAdmin}
+      />
+      <SeatLimitReachedModal
+        seatType="moderator"
+        showModal={modalOpened === 'seat-limit-reached-moderator'}
+        closeModal={closeModal}
+        addModerators={onAcceptIncreasedSeatLimitForModerator}
       />
     </>
   );

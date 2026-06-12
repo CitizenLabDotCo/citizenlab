@@ -67,6 +67,7 @@ it-IT:
         user_with_unsubmitted_votes: Utente che non ha inviato i propri voti
         users_who_engaged_but_not_voted: Utenti che hanno partecipato al progetto ma non hanno votato
         users_who_engaged_with_the_project: Utenti che hanno partecipato al progetto
+        users_who_follow_or_participated: Utenti che seguono il progetto o hanno partecipato
         users_who_follow_the_input: Gli utenti che seguono il contributo
         users_who_follow_the_project: Utenti che seguono il progetto
         users_who_follow_the_proposal: Gli utenti che seguono la proposta
@@ -94,6 +95,7 @@ it-IT:
         project_published: Progetto pubblicato
         project_review_request: Il moderatore ha richiesto una revisione del progetto
         project_review_state_change: Il revisore ha approvato il progetto
+        proposal_expired: Una proposta scade senza raggiungere la soglia
         proposal_gets_reported_as_spam: La proposta viene segnalata come spam
         proposal_is_assigned_to_admin: La proposta è assegnata all'amministratore
         proposal_is_published: La proposta viene pubblicata
@@ -188,6 +190,7 @@ it-IT:
       project_published: Progetto pubblicato
       project_review_request: Richiesta di revisione del progetto
       project_review_state_change: Progetto approvato
+      proposal_expired_for_admin: Proposta scaduta senza raggiungere la soglia di voto
       screening_digest: Promemoria settimanale per lo screening
       space_moderation_rights_received: Permessi di manager d'area ricevuti
       status_change_on_idea_you_follow: Cambiamento di status di un contributo che seguo
@@ -284,7 +287,7 @@ it-IT:
     follow:
       unfollow_here: Hai ricevuto questa notifica a causa di un elemento che segui. <a href="%{unfollow_url}">Puoi smettere di seguirlo qui.</a>
     footer:
-      link_privacy_policy: Politica sulla privacy
+      link_privacy_policy: Informativa sulla privacy
       link_terms_conditions: Termini e condizioni
       link_unsubscribe: Annulla l'iscrizione
       powered_by: Alimentato da
@@ -465,8 +468,8 @@ it-IT:
       preheader: Non hai completato le risposte al sondaggio sulla piattaforma partecipativa di %{organizationName}
       subject: '%{organizationName}: Ci siamo quasi! Invia le tue risposte'
       submissions_close: Il sondaggio si concluderà il %{phaseEndDate}.
-      submissions_close_at_time: Le proposte chiuderanno il %{datetime}.
-      submissions_close_on_date: Le proposte chiudono alla fine del %{date}.
+      submissions_close_at_time: Le risposte al sondaggio chiuderanno il %{datetime}.
+      submissions_close_on_date: Le risposte al sondaggio chiudono alla fine del %{date}.
       title: Ci siamo quasi! Invia le tue risposte
     new_comment_for_admin:
       anonymous_user: Utente anonimo
@@ -591,6 +594,11 @@ it-IT:
       preheader: '%{reviewerName} ha approvato il progetto "%{projectTitle}"'
       subject: '"%{projectTitle}" è stato approvato'
       title: '%{reviewerName} ha approvato il progetto "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Esamina il contributo scaduto
+      preheader: Un contributo è scaduto senza raggiungere la soglia
+      subject: '"%{input_title}" è scaduto senza raggiungere la soglia'
+      title: Un contributo è scaduto senza raggiungere la soglia di voto
     schedules:
       quarterly: Trimestralmente, il primo giorno del trimestre
       weekly:

@@ -8,10 +8,11 @@ import adminPublicationsKeys from './keys';
 
 export type AdminPublicationsKeys = Keys<typeof adminPublicationsKeys>;
 
-export type ReviewState = 'pending' | 'approved';
+export const reviewStates = ['pending', 'approved'] as const;
+export type ReviewState = (typeof reviewStates)[number];
 
 export interface IQueryParameters {
-  globalTopicIds?: string[] | null;
+  globalTopics?: string[] | null;
   areaIds?: string[] | null;
   publicationStatusFilter?: PublicationStatus[];
   childrenOfId?: string;
@@ -45,6 +46,8 @@ export interface IAdminPublicationData {
     ordering: number;
     depth: number;
     publication_status: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
     visible_children_count: number;
     publication_title_multiloc: Multiloc;
     publication_description_multiloc: Multiloc;

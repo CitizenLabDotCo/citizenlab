@@ -63,6 +63,18 @@ RSpec.describe ParticipationMethod::CommonGround do
     end
   end
 
+  describe '#create_default_form!' do
+    it 'creates a phase-scoped custom form with the default fields' do
+      expect { participation_method.create_default_form! }.to change(CustomForm, :count).by(1)
+
+      form = phase.reload.custom_form
+      expect(form).to be_present
+      expect(form.participation_context).to eq(phase)
+      expect(form.custom_fields.pluck(:code)).to match_array(%w[title_page title_multiloc] + [nil])
+      expect(form.custom_fields.find_by(code: 'title_multiloc').input_type).to eq('text_multiloc')
+    end
+  end
+
   describe 'constraints' do
     it 'has no constraints' do
       expect(participation_method.constraints).to eq({})

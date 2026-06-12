@@ -7,7 +7,6 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
@@ -15,6 +14,8 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 import AvatarBubbles from 'components/AvatarBubbles';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
+
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -41,8 +42,10 @@ const TopicsContent = ({
   isMobile = false,
 }: Props) => {
   const { data: project } = useProjectBySlug(slug);
-  const [searchParams] = useSearchParams();
-  const phaseId = searchParams.get('phase_id');
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const phaseId = searchParams.phase_id;
   const { data: phase } = usePhase(phaseId);
   const projectId = project?.data.id;
 
@@ -64,7 +67,8 @@ const TopicsContent = ({
     <>
       <Box px="16px" mb="16px">
         <GoBackButton
-          linkTo={`/projects/${slug}`}
+          to="/projects/$slug"
+          params={{ slug }}
           size="s"
           customMessage={messages.back}
           iconSize="20px"

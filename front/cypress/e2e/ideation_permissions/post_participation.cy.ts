@@ -104,11 +104,9 @@ describe('Post Participation Signup: ideation', () => {
     cy.location('pathname').should('eq', `/en/ideas/${title}`);
 
     // Make sure that idea belongs to user
-    cy.get('.e2e-author-link').should(
-      'have.attr',
-      'href',
-      `/en/profile/${firstName}-${lastName}`
-    );
+    cy.get('.e2e-author-link')
+      .should('have.attr', 'href')
+      .and('match', /\/en\/profile\/[0-9a-f-]+/);
 
     // Confirm user's profile has been updated with correct custom field values
     confirmUserCustomFieldHasValue({

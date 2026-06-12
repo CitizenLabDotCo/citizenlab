@@ -20,18 +20,7 @@ describe Polls::ResponsePolicy do
     end
   end
 
-  context 'for a resident on response of another user' do
-    let(:user) { create(:user) }
-
-    it { is_expected.not_to permit(:create) }
-
-    it 'does not index the response' do
-      response.save!
-      expect(scope.resolve.size).to eq 0
-    end
-  end
-
-  context 'for a resident who owns the response' do
+  context 'for a resident' do
     let(:user) { response.user }
 
     it { is_expected.to permit(:create) }
@@ -42,10 +31,10 @@ describe Polls::ResponsePolicy do
     end
   end
 
-  context "for an admin that doesn't own the response" do
+  context 'for an admin' do
     let(:user) { create(:admin) }
 
-    it { is_expected.not_to permit(:create) }
+    it { is_expected.to permit(:create) }
 
     it 'indexes the response' do
       response.save!
@@ -66,10 +55,8 @@ describe Polls::ResponsePolicy do
     end
   end
 
-  context "for a moderator of the response's project that doesn't own the response" do
+  context "for a moderator of the response's project" do
     let(:user) { create(:project_moderator, projects: [phase.project]) }
-
-    it { is_expected.not_to permit(:create) }
 
     it 'indexes the response' do
       response.save!
@@ -77,11 +64,9 @@ describe Polls::ResponsePolicy do
     end
   end
 
-  context 'for a moderator of another project that owns the response' do
+  context 'for a moderator of another project' do
     let(:user) { create(:project_moderator) }
     let!(:response) { build(:poll_response, user: user, phase: phase) }
-
-    it { is_expected.to permit(:create) }
 
     it 'does not index the response' do
       response.save!

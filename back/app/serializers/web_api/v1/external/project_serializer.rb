@@ -6,7 +6,7 @@ class WebApi::V1::External::ProjectSerializer < ActiveModel::Serializer
   has_many :project_images, serializer: WebApi::V1::External::ImageSerializer
 
   def publication_status
-    object.admin_publication.publication_status
+    object.admin_publication.effective_publication_status
   end
 
   def header_bg

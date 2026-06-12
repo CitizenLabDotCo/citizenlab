@@ -28,6 +28,11 @@ module Analysis
   class Analysis < ApplicationRecord
     include Files::FileAttachable
 
+    # Arbitrary limit to avoid the curse of dimensionality when generating the
+    # auto-insights heatmap. Counts only fields that support submissions, so
+    # layout-only fields (pages/sections) do not push an analysis over the cap.
+    AUTO_INSIGHTS_FIELD_LIMIT = 50
+
     belongs_to :project, optional: true
     belongs_to :phase, optional: true
 
@@ -80,7 +85,15 @@ module Analysis
       ([main_custom_field] + additional_custom_fields).compact
     end
 
+    def auto_insights_too_many_fields?
+      submission_custom_fields.size > AUTO_INSIGHTS_FIELD_LIMIT
+    end
+
     private
+
+    def submission_custom_fields
+      associated_custom_fields.select(&:supports_submission?)
+    end
 
     def project_xor_phase_present
       return if phase.present? ^ project.present? # ^ on booleans is XOR
@@ -94,7 +107,7 @@ module Analysis
       # TODO: move-participation-method-logic
       allowed_project_methods = %w[ideation voting]
       project_or_nil = project || nil
-      if phase && %w[native_survey proposals community_monitor_survey].exclude?(phase.participation_method)
+      if phase && %w[native_survey proposals community_monitor_survey common_ground].exclude?(phase.participation_method)
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed phase is not associated with a form definition.')
       elsif project_or_nil&.phases&.none? { |phase| allowed_project_methods.include?(phase.participation_method) }
         errors.add(:base, :project_or_phase_form_context, message: 'An analysis should be associated with a valid form context. The passed project has no phases supporting a participation method that can hold inputs')

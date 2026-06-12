@@ -22,9 +22,12 @@ module BlockingProfanity
     attrs += EXTENDED_CLASS_ATTRS[object.class.name] || [] if AppConfiguration.instance.settings.dig('blocking_profanity', 'extended_blocking')
     attrs&.each do |atr|
       next if object[atr].blank?
+      next unless object.attribute_changed?(atr.to_s)
 
       values = if atr.to_s.ends_with? '_multiloc'
-        object[atr]
+        old_hash = object.attribute_was(atr.to_s) || {}
+        new_hash = object[atr] || {}
+        new_hash.reject { |locale, text| old_hash[locale] == text }
       else
         { nil => object[atr] }
       end

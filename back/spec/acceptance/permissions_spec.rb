@@ -11,7 +11,8 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
-    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.save!
   end
 
   let(:project_id) { @project.id }
@@ -256,14 +257,14 @@ resource 'Permissions' do
 
       context "'everyone_confirmed_email' permissions" do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
+          @user = create(:unconfirmed_user)
+          header_token_for @user
           @permission = @phase.permissions.first
           @permission.update!(permitted_by: 'everyone_confirmed_email')
           create(:custom_field_birthyear, required: true)
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
-          @user.reset_confirmation_and_counts
           @user.update!(
             first_name: 'Jack',
             last_name: nil,

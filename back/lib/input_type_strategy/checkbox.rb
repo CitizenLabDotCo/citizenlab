@@ -2,10 +2,6 @@
 
 module InputTypeStrategy
   class Checkbox < Base
-    def supports_pdf_import?
-      false
-    end
-
     def supports_reference_distribution?
       true
     end

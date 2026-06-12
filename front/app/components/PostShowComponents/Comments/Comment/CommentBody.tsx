@@ -15,9 +15,9 @@ import useLocalize from 'hooks/useLocalize';
 
 import Outlet from 'components/Outlet';
 import {
-  getCommentContent,
-  getEditableCommentContent,
-} from 'components/PostShowComponents/Comments/utils';
+  formatCommentContent,
+  formatEditableCommentContent,
+} from 'components/PostShowComponents/utils';
 import Error from 'components/UI/Error';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -37,6 +37,9 @@ const CommentWrapper = styled.div`
 
 export const CommentText = styled.div`
   display: inline;
+  .cl-mention-user {
+    font-style: italic;
+  }
 `;
 
 const StyledForm = styled.form`
@@ -96,9 +99,9 @@ const CommentBody = ({
       const localizedEditableCommentContent = localize(
         comment.data.attributes.body_multiloc
       );
-      setCommentContent(getCommentContent(localizedCommentContent));
+      setCommentContent(formatCommentContent(localizedCommentContent));
       setEditableCommentContent(
-        getEditableCommentContent(localizedEditableCommentContent)
+        formatEditableCommentContent(localizedEditableCommentContent)
       );
     }
   }, [comment, commentContent, localize]);
@@ -198,7 +201,9 @@ const CommentBody = ({
   const cancelEditing = (event: React.MouseEvent) => {
     event.preventDefault();
     setEditableCommentContent(
-      getEditableCommentContent(localize(comment.data.attributes.body_multiloc))
+      formatEditableCommentContent(
+        localize(comment.data.attributes.body_multiloc)
+      )
     );
     onCancelEditing();
   };
