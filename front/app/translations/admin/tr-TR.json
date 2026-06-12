@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Üye yok} one {1 üye} other {{count} üye}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Lütfen açıklamayı tüm dillerde doldurun",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Lütfen başlığı tüm dillerde doldurun",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Bu projede kullanıcının gerçekleştirebileceği hiçbir eylem olmadığından herhangi bir şey gösterilmiyor.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Yalnızca yöneticiler yeni bir soru oluşturabilir.",
   "app.containers.AdminPage.groups.permissions.option1": "Seçenek 1",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Belgeye kim açıklama ekleyebilir?",

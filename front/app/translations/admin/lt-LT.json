@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {narių nėra} one {1 narys} other {{count} nariai}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Užpildykite aprašymą visomis kalbomis",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Užpildykite pavadinimą visomis kalbomis",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nieko nerodoma, nes šiame projekte naudotojas negali atlikti jokių veiksmų.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Tik administratoriai gali sukurti naują klausimą.",
   "app.containers.AdminPage.groups.permissions.option1": "1 variantas",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kas gali komentuoti dokumentą?",

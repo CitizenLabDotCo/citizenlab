@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, zero {}=0 {Nav dalībnieku} one {1 dalībnieks} other {{count} biedri}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Lūdzu, aizpildiet aprakstu visās valodās",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Lūdzu, aizpildiet nosaukumu visās valodās",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nekas nav redzams, jo šajā projektā lietotājs nevar veikt nekādas darbības.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Tikai administratori var izveidot jaunu jautājumu.",
   "app.containers.AdminPage.groups.permissions.option1": "1. iespēja",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kas var pievienot anotācijas dokumentam?",

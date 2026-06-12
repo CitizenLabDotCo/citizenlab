@@ -3190,7 +3190,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Aucun membre} one {un membre} other {{count} membres}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Veuillez remplir la description dans toutes les langues",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Veuillez fournir le titre dans toutes les langues",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Rien n'est montré, car il n'y a pas d'actions que l'utilisateur peut entreprendre dans ce projet.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Seuls les administrateurs peuvent créer une nouvelle question.",
   "app.containers.AdminPage.groups.permissions.option1": "Option 1",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Qui peut annoter le document ?",

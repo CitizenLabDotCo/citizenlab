@@ -2990,7 +2990,6 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Nema članova} one {1 član} other {{count} članova}}",
   "app.containers.AdminPage.groups.permissions.missingDescriptionLocaleError": "Please fill in the description in all languages",
   "app.containers.AdminPage.groups.permissions.missingTitleLocaleError": "Молимо попуните наслов на свим језицима",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Ništa nije prikazano, jer nema akcija koje korisnici mogu preduzeti u ovom projektu.",
   "app.containers.AdminPage.groups.permissions.onlyAdminsCreateQuestion": "Only admins can create a new question.",
   "app.containers.AdminPage.groups.permissions.option1": "Опција 1",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Ко може да дода коментаре на документ?",
