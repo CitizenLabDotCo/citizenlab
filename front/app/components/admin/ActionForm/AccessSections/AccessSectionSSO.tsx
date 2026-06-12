@@ -12,7 +12,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import useVerificationMethod from 'api/id_methods/useVerificationMethod';
+import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 
 import { requiresAccount, ssoMethodName } from '../logic';
 import { SectionHeader } from '../ui';
@@ -30,8 +30,8 @@ const AccessSectionSSO = ({
   const hasAccount = requiresAccount(permission);
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
-  const { data: verificationMethod } = useVerificationMethod();
-  const methodName = ssoMethodName(verificationMethod);
+  const { data: authenticationMethod } = useAuthenticationMethod();
+  const methodName = ssoMethodName(authenticationMethod);
 
   return (
     <Box>
