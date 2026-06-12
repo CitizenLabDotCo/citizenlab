@@ -192,14 +192,9 @@ class WebApi::V1::IdeasController < ApplicationController
     sidefx.before_create(input, current_user)
 
     authorize input
-    if anonymous_not_allowed?(phase_for_input)
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
-      return
-    end
-    if idea_status_not_allowed?(input)
-      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
-      return
-    end
+    raise ApiError, :anonymous_participation_not_allowed if anonymous_not_allowed?(phase_for_input)
+    raise ApiError.new(:idea_status_not_allowed, field: :idea_status_id, value: input.idea_status_id) if idea_status_not_allowed?(input)
+
     verify_profanity input
 
     save_options = {}
@@ -222,28 +217,25 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     ActiveRecord::Base.transaction do
-      if input.save(**save_options)
-        update_file_upload_fields input, form, params_for_create
-        sidefx.after_create(input, current_user, phase_for_input)
-        write_everyone_tracking_cookie input
+      save_or_raise!(input, **save_options)
+      update_file_upload_fields input, form, params_for_create
+      sidefx.after_create(input, current_user, phase_for_input)
+      write_everyone_tracking_cookie input
 
-        permission = phase_for_input.permissions.find_by(action: 'posting_idea')
-        generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
+      permission = phase_for_input.permissions.find_by(action: 'posting_idea')
+      generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
 
-        if generate_claim_token
-          ClaimTokenService.generate(input)
-        end
-
-        serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
-
-        render json: WebApi::V1::IdeaSerializer.new(
-          input.reload,
-          params: serializer_params,
-          include: %i[author input_topics phases user_reaction idea_images]
-        ).serializable_hash, status: :created
-      else
-        render json: { errors: input.errors.details }, status: :unprocessable_entity
+      if generate_claim_token
+        ClaimTokenService.generate(input)
       end
+
+      serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
+
+      render json: WebApi::V1::IdeaSerializer.new(
+        input.reload,
+        params: serializer_params,
+        include: %i[author input_topics phases user_reaction idea_images]
+      ).serializable_hash, status: :created
     end
   end
 
@@ -252,10 +244,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     authorize input
 
-    if invalid_blank_author_for_update? input, params
-      render json: { errors: { author: [{ error: :blank }] } }, status: :unprocessable_entity
-      return
-    end
+    raise ApiError.new(:blank, field: :author) if invalid_blank_author_for_update?(input, params)
 
     extract_custom_field_values_from_params!(input.custom_form)
     # Map topic_ids to input_topic_ids for the new InputTopics system
@@ -324,23 +313,20 @@ class WebApi::V1::IdeasController < ApplicationController
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
 
     ActiveRecord::Base.transaction do
-      if input.save(**save_options)
-        sidefx.after_update(input, current_user)
-        update_file_upload_fields input, input.custom_form, update_params
+      save_or_raise!(input, **save_options)
+      sidefx.after_update(input, current_user)
+      update_file_upload_fields input, input.custom_form, update_params
 
-        if anonymize_user_at_the_end
-          input.author_id = nil
-          input.save!
-        end
-
-        render json: WebApi::V1::IdeaSerializer.new(
-          input.reload,
-          params: jsonapi_serializer_params,
-          include: %i[author input_topics user_reaction idea_images cosponsors]
-        ).serializable_hash, status: :ok
-      else
-        render json: { errors: input.errors.details }, status: :unprocessable_entity
+      if anonymize_user_at_the_end
+        input.author_id = nil
+        input.save!
       end
+
+      render json: WebApi::V1::IdeaSerializer.new(
+        input.reload,
+        params: jsonapi_serializer_params,
+        include: %i[author input_topics user_reaction idea_images cosponsors]
+      ).serializable_hash, status: :ok
     end
   end
 
