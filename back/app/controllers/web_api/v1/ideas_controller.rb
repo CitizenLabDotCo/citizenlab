@@ -310,23 +310,14 @@ class WebApi::V1::IdeasController < ApplicationController
       false
     end
 
-    update_errors = nil
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes(update_params)
       sidefx.before_update(input, current_user)
       input.phase_ids = phase_ids if phase_ids
 
       authorize(input)
-
-      update_errors = not_allowed_update_errors(input)
-      raise ActiveRecord::Rollback if update_errors
-
+      validate_update!(input)
       verify_profanity input
-    end
-
-    if update_errors
-      render json: update_errors, status: :unprocessable_entity
-      return
     end
 
     save_options = {}
@@ -665,23 +656,23 @@ class WebApi::V1::IdeasController < ApplicationController
     !input.participation_method_on_creation.supports_inputs_without_author?
   end
 
-  def not_allowed_update_errors(input)
+  def validate_update!(input)
     can_moderate = UserRoleService.new.can_moderate?(input.project, current_user)
 
     if !can_moderate && anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
-      return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
+      raise ApiError, :anonymous_participation_not_allowed
     end
 
     if idea_status_not_allowed?(input)
-      return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to this status', value: input.idea_status_id }] } }
+      raise ApiError.new(:idea_status_not_allowed, field: :idea_status_id, value: input.idea_status_id)
     end
 
     if !input.participation_method_on_creation.transitive? && input.project_id_changed?
-      return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
+      raise ApiError.new(:cannot_change_project, field: :project_id, value: input.project_id)
     end
 
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
-      { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
+      raise ApiError.new(:cannot_change_phases, field: :phase_ids, value: input.phase_ids)
     end
   end
 
