@@ -2,8 +2,15 @@ import React from 'react';
 
 import { Box, Text, Radio, colors } from '@citizenlab/cl2-component-library';
 
-import { Changes, IPhasePermissionData } from '../../types';
-import { Hint } from '../../ui';
+import { UserFieldsInFormFrontendDescriptor } from 'api/phase_permissions/types';
+
+import Warning from 'components/UI/Warning';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { Changes } from '../../types';
+
+import { EXPLANATION_MESSAGES } from './constants';
 
 // Demographics placement is stored as a boolean on the permission:
 //  - false => ask in the registration flow, before the user participates;
@@ -20,13 +27,20 @@ const PLACEMENT_OPTIONS: { value: boolean; label: string }[] = [
 ];
 
 interface Props {
-  permission: IPhasePermissionData;
+  user_fields_in_form_descriptor: UserFieldsInFormFrontendDescriptor;
   onChange: (changes: Changes) => void;
 }
 
-const DemographicsPlacement = ({ onChange }: Props) => {
-  const setPlacement = (value: boolean) =>
-    onChange({ user_fields_in_form: value });
+const DemographicsPlacement = ({
+  user_fields_in_form_descriptor,
+  onChange,
+}: Props) => {
+  const { formatMessage } = useIntl();
+
+  const { value, locked, explanation } = user_fields_in_form_descriptor;
+
+  const setPlacement = (userFieldsInForm: boolean) =>
+    onChange({ user_fields_in_form: userFieldsInForm });
 
   return (
     <Box>
@@ -34,42 +48,36 @@ const DemographicsPlacement = ({ onChange }: Props) => {
       <Text as="p" mt="0" mb="6px" fontSize="xs" fontWeight="bold" color="coolGrey600">
         When to ask
       </Text>
-      {PLACEMENT_OPTIONS.map((option) => {
-        const disabled = lockPlacement && option.value === false;
-        return (
-          <Box key={String(option.value)} mb="2px">
-            <Radio
-              name="demographics-placement"
-              value={option.value}
-              currentValue={placement}
-              disabled={disabled}
-              onChange={setPlacement}
-              label={
-                <Text
-                  as="span"
-                  m="0"
-                  fontSize="s"
-                  color={disabled ? 'coolGrey500' : 'primary'}
-                >
-                  {option.label}
-                </Text>
-              }
-            />
-          </Box>
-        );
-      })}
-      {lockPlacement && (
+      {PLACEMENT_OPTIONS.map((option) => (
+        <Box key={String(option.value)} mb="2px">
+          <Radio
+            name="demographics-placement"
+            value={option.value}
+            currentValue={value}
+            disabled={locked}
+            onChange={setPlacement}
+            label={
+              <Text
+                as="span"
+                m="0"
+                fontSize="s"
+                color={locked ? 'coolGrey500' : 'primary'}
+              >
+                {option.label}
+              </Text>
+            }
+          />
+        </Box>
+      ))}
+      {explanation && (
         <Box mb="10px">
-          <Hint>
-            With “Anyone” there is no sign-in step, so demographics can only be
-            asked on a form page.
-          </Hint>
+          <Warning>{formatMessage(EXPLANATION_MESSAGES[explanation])}</Warning>
         </Box>
       )}
 
       <Box mt="12px" mb="8px" borderTop={`1px solid ${colors.divider}`} />
     </Box>
-  )
+  );
 };
 
 export default DemographicsPlacement;

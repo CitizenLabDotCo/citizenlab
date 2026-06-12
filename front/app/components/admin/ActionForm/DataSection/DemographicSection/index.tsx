@@ -82,7 +82,12 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
       summary={demographicsSummary(customFields)}
     >
       {permissionHasForm && (
-        <DemographicsPlacement onChange={onChange} />
+        <DemographicsPlacement
+          user_fields_in_form_descriptor={
+            attributes.user_fields_in_form_descriptor
+          }
+          onChange={onChange}
+        />
       )}
 
       <Text as="p" mt="0" mb="8px" fontSize="xs" fontWeight="bold" color="coolGrey600">
