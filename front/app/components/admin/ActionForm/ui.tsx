@@ -1,5 +1,5 @@
-// Design prototype – small presentational building blocks shared across the
-// panel. Kept here so the section components read top-to-bottom as layout.
+// Small presentational building blocks shared across the panel. Kept here so
+// the section components read top-to-bottom as layout.
 
 import React, { ReactNode, useState } from 'react';
 

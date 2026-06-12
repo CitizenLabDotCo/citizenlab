@@ -29,9 +29,9 @@ import { Chip } from './ui';
  * demographic questions come straight from `usePermissionsPhaseCustomFields`
  * rather than from a prop.
  *
- * Design notes (see the chat for the full rationale):
+ * Design notes:
  *  - One panel, two groups: *who can participate* (access) and *what we ask*
- *    (data). This mirrors the brief's own split of access-rights vs collection.
+ *    (data), splitting access-rights from data collection.
  *  - Collapses to a one-line summary of chips so several actions fit on a page.
  *  - The rules engine in logic.ts keeps invalid combinations impossible: turn
  *    off all auth and the data section greys out; turn off password login and

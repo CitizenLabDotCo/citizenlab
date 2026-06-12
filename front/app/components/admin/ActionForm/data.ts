@@ -1,7 +1,6 @@
-// Design prototype – static labels and default copy for the panel. All the
-// real data (locales, groups, demographic fields, the verification method and
-// the fields it returns) is fetched from the API by the components that need
-// it; nothing here is mocked.
+// Static labels and default copy for the panel. All the real data (locales,
+// groups, demographic fields, the verification method and the fields it
+// returns) is fetched from the API by the components that need it.
 
 import { AuthMethodKey } from './types';
 

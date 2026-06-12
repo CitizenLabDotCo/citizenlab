@@ -1,6 +1,6 @@
-// Design prototype – "Who can participate" for the SSO variant. Same shape as
-// AccessSection, but "Require sign-in" is a single fixed single-sign-on method
-// with no per-method options to configure.
+// "Who can participate" for the SSO variant. Same shape as AccessSection, but
+// "Require sign-in" is a single fixed single-sign-on method with no per-method
+// options to configure.
 
 import React, { useState } from 'react';
 

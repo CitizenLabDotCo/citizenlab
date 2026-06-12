@@ -1,4 +1,4 @@
-// Design prototype – "Who can participate": authentication methods + groups.
+// "Who can participate": authentication methods + groups.
 
 import React, { useState } from 'react';
 

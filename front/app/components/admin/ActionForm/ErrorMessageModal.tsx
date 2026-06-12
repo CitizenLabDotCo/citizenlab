@@ -1,5 +1,5 @@
-// Design prototype – override the "you don't meet the requirements" message,
-// per configured language. Mirrors AccessRestrictions/CustomizeErrorMessage.
+// Override the "you don't meet the requirements" message, per configured
+// language.
 
 import React from 'react';
 

@@ -1,8 +1,8 @@
-// Design prototype – the "rules engine". All the cross-setting dependencies the
-// brief calls out live here, in one place, so the UI components stay dumb. Every
-// helper reads from the real `IPhasePermissionData` shape (plus the list of
-// permission custom fields that holds the demographics). The panel is stateless,
-// so nothing here mutates: writes are expressed as `Changes` for `onChange`.
+// The "rules engine". All the cross-setting dependencies live here, in one
+// place, so the UI components stay dumb. Every helper reads from the
+// `IPhasePermissionData` shape (plus the list of permission custom fields that
+// holds the demographics). The panel is stateless, so nothing here mutates:
+// writes are expressed as `Changes` for `onChange`.
 
 import { IdMethod } from 'api/id_methods/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';

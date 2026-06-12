@@ -1,7 +1,6 @@
-// Design prototype – preview which fields the identity-verification method
-// hands back, and which of them are locked (not editable by the participant).
-// The fields and the method name come straight from the configured verification
-// method's metadata.
+// Preview which fields the identity-verification method hands back, and which
+// of them are locked (not editable by the participant). The fields and the
+// method name come straight from the configured verification method's metadata.
 
 import React from 'react';
 

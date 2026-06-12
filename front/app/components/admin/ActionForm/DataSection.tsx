@@ -1,10 +1,10 @@
-// Design prototype – "What we collect": personal info, demographic questions,
-// and how the collected data is linked to the submission (anonymity).
+// "What we collect": personal info, demographic questions, and how the
+// collected data is linked to the submission (anonymity).
 //
 // The demographic questions are read straight from
-// `usePermissionsPhaseCustomFields` and mutated through its sibling hooks,
-// mirroring `ActionForm/Fields`. The rest of the panel is controlled: it reads
-// `permission` and reports edits through `onChange` as granular `Changes`.
+// `usePermissionsPhaseCustomFields` and mutated through its sibling hooks. The
+// rest of the panel is controlled: it reads `permission` and reports edits
+// through `onChange` as granular `Changes`.
 
 import React, { useState } from 'react';
 
@@ -31,8 +31,7 @@ import { UserDataCollection } from 'api/phase_permissions/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import FieldSelectionModal from 'components/admin/ActionForm/Fields/FieldSelectionModal';
-
+import FieldSelectionModal from './FieldSelectionModal';
 import {
   DATA_COLLECTION_SUMMARY,
   demographicsSummary,

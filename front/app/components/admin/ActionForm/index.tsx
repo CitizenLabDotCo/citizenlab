@@ -1,60 +1,26 @@
 import React from 'react';
 
-import { ParticipationMethod } from 'api/phases/types';
-import usePhase from 'api/phases/usePhase';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import ActionFormDefault from './ActionFormDefault';
-import ActionFormIdeation from './ActionFormIdeation';
-import ActionFormSurvey from './ActionFormSurvey';
+import ActionForm from './ActionForm';
+import ActionFormNoPWLogin from './ActionFormNoPWLogin';
 import { Props } from './types';
 
-const SURVEY_METHODS: ParticipationMethod[] = [
-  'native_survey',
-  'community_monitor_survey',
-];
+/**
+ * Picks the right "Participation requirements" panel for the platform:
+ *  - with password login enabled, the standard panel lets admins pick between
+ *    confirmed email / identity verification;
+ *  - without it, there is no email/password account, so we fall back to the
+ *    single fixed SSO sign-in variant.
+ */
+const ActionFormIndex = (props: Props) => {
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
 
-const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
-  const { data: phase } = usePhase(phaseId);
-  const participation_method = phase?.data.attributes.participation_method;
-
-  if (!participation_method) return null;
-
-  const { action } = permissionData.attributes;
-
-  const showSurveyForm =
-    SURVEY_METHODS.includes(participation_method) && action === 'posting_idea';
-
-  if (showSurveyForm) {
-    return (
-      <ActionFormSurvey
-        permissionData={permissionData}
-        phaseId={phaseId}
-        {...props}
-      />
-    );
-  }
-
-  const showIdeationForm =
-    ['ideation', 'proposals'].includes(participation_method) &&
-    action === 'posting_idea';
-
-  if (showIdeationForm) {
-    return (
-      <ActionFormIdeation
-        permissionData={permissionData}
-        phaseId={phaseId}
-        {...props}
-      />
-    );
-  }
-
-  return (
-    <ActionFormDefault
-      permissionData={permissionData}
-      phaseId={phaseId}
-      {...props}
-    />
+  return passwordLoginEnabled ? (
+    <ActionForm {...props} />
+  ) : (
+    <ActionFormNoPWLogin {...props} />
   );
 };
 
-export default ActionForm;
+export default ActionFormIndex;
