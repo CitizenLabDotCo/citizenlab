@@ -114,9 +114,7 @@ const IdeasShowPage = () => {
               />
             </Box>
           </Box>
-          {showCTABar && isSmallerThanTablet && (
-            <ProjectCTABar projectId={project.data.id} />
-          )}
+          {showCTABar && <ProjectCTABar projectId={project.data.id} />}
         </VotingContext>
       </main>
     </>
