@@ -33,7 +33,7 @@ const ActionForms = ({ phaseId }: Props) => {
   if (permissions.data.length === 0) {
     return (
       <p>
-        <FormattedMessage {...messages.noActionsCanBeTakenInThisProject} />
+        <FormattedMessage {...messages.noActionsCanBeTakenInThisPhase} />
       </p>
     );
   }
