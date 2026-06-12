@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class PdfFileSplitter
-    MAX_TOTAL_PAGES = 100
+    MAX_TOTAL_PAGES = 500
 
     def initialize(project:, pages_per_form: nil)
       @project = project
