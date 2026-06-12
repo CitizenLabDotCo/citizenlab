@@ -23,7 +23,6 @@ import PageLoading from 'components/UI/PageLoading';
 import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
 
-import { Box } from './component-library';
 
 const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
@@ -75,11 +74,6 @@ const TanStackRouterDevtools =
         default: mod.TanStackRouterDevtools,
       }))
     );
-
-const AccessRightsDesign = lazy(() => import('components/AccessRightsDesign'));
-const AccessRightsDesignWienKonto = lazy(
-  () => import('components/AccessRightsDesign/AccessRightsDesignWienKonto')
-);
 
 // Root search schema — SSO/auth callback params that can appear on any route
 const rootSearchSchema = yup.object({
@@ -611,30 +605,6 @@ const disabledAccountRoute = createRoute({
   ),
 });
 
-const AccessRightsDesignRoute = createRoute({
-  getParentRoute: () => localeRoute,
-  path: 'access-rights-design',
-  component: () => (
-    <PageLoading>
-      <Box w="100%" display="flex" justifyContent="center">
-        <AccessRightsDesign />
-      </Box>
-    </PageLoading>
-  ),
-});
-
-const AccessRightsDesignWienKontoRoute = createRoute({
-  getParentRoute: () => localeRoute,
-  path: 'access-rights-design-wien-konto',
-  component: () => (
-    <PageLoading>
-      <Box w="100%" display="flex" justifyContent="center">
-        <AccessRightsDesignWienKonto />
-      </Box>
-    </PageLoading>
-  ),
-});
-
 // Build the route tree
 const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
   rootRoute.addChildren([
@@ -673,8 +643,6 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       emailSettingsRoute,
       reportPrintRoute,
       disabledAccountRoute,
-      AccessRightsDesignRoute,
-      AccessRightsDesignWienKontoRoute,
       createAdminRoutes(moduleRoutes),
     ]),
   ]);
