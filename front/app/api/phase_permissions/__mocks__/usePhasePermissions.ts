@@ -24,6 +24,7 @@ export const phasePermissionsData: IPhasePermissionData = {
     require_name: true,
     require_password: true,
     require_verification: false,
+    permitted_by_everyone_allowed: false,
   },
   relationships: {
     permission_scope: {
