@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class McpServer::Tools::GetForm < McpServer::BaseTool
+class McpServer::Tools::GetFormFields < McpServer::BaseTool
   CONTAINER_TYPES = {
     'phase' => Phase,
     'project' => Project
@@ -8,14 +8,15 @@ class McpServer::Tools::GetForm < McpServer::BaseTool
 
   SUPPORTED_METHODS = %w[native_survey ideation].freeze
 
-  def name = 'get_form'
+  def name = 'get_form_fields'
 
   def description
     <<~DESC.squish
-      Returns the full form (questions, options, matrix statements, logic, print metadata)
-      attached to a native_survey phase or an ideation project. For ideation, pass the
-      project_id; for native_survey, pass the phase_id. The response shape mirrors what
-      replace_form accepts, so you can round-trip: fetch, edit, replace.
+      Returns the ordered list of fields (questions, pages, options, matrix statements,
+      logic) for the form attached to a native_survey phase or an ideation project.
+      For ideation, pass the project_id; for native_survey, pass the phase_id. The
+      response shape mirrors what replace_form_fields accepts, so you can round-trip:
+      fetch, edit, replace.
     DESC
   end
 
@@ -30,6 +31,9 @@ class McpServer::Tools::GetForm < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
+    CONTAINER_TYPES = McpServer::Tools::GetFormFields::CONTAINER_TYPES
+    SUPPORTED_METHODS = McpServer::Tools::GetFormFields::SUPPORTED_METHODS
+
     def run
       container = CONTAINER_TYPES.fetch(params[:container_type]).find(params[:container_id])
       pmethod = container.pmethod
@@ -38,24 +42,15 @@ class McpServer::Tools::GetForm < McpServer::BaseTool
       custom_form = CustomForm.find_or_initialize_by(participation_context: container)
       fields = IdeaCustomFieldsService.new(custom_form).all_fields
 
-      serialized = ::WebApi::V1::CustomFieldSerializer.new(
-        fields,
-        params: { constraints: pmethod.constraints, supports_answer_visible_to: pmethod.supports_answer_visible_to? },
-        include: %i[options options.image matrix_statements]
-      ).serializable_hash
-
       ok(
-        "Form for #{params[:container_type]} #{container.id} (#{pmethod.class.method_str}): #{fields.size} field(s)",
+        "Form fields for #{params[:container_type]} #{container.id} (#{pmethod.class.method_str}): #{fields.size} field(s)",
         structured: {
           container_type: params[:container_type],
           container_id: container.id,
           participation_method: pmethod.class.method_str,
           fields_last_updated_at: custom_form.fields_last_updated_at,
-          print_start_multiloc: custom_form.print_start_multiloc,
-          print_end_multiloc: custom_form.print_end_multiloc,
-          print_personal_data_fields: custom_form.print_personal_data_fields,
           constraints: pmethod.constraints,
-          fields: serialized
+          fields: McpServer::Serializers::CustomField.serialize_all(fields, params: { constraints: nil })
         }
       )
     rescue ActiveRecord::RecordNotFound
@@ -64,13 +59,10 @@ class McpServer::Tools::GetForm < McpServer::BaseTool
 
     private
 
-    CONTAINER_TYPES = McpServer::Tools::GetForm::CONTAINER_TYPES
-    SUPPORTED_METHODS = McpServer::Tools::GetForm::SUPPORTED_METHODS
-
     def unsupported_error(pmethod)
       error(
         "Unsupported participation method: '#{pmethod.class.method_str}'. " \
-        "get_form only supports: #{SUPPORTED_METHODS.join(', ')}."
+        "get_form_fields only supports: #{SUPPORTED_METHODS.join(', ')}."
       )
     end
   end
