@@ -6,6 +6,8 @@
 // passed in — they are read straight from `usePermissionsPhaseCustomFields`
 // (and mutated through its sibling hooks).
 
+import { ReactNode } from 'react';
+
 import { Multiloc } from 'typings';
 
 import {
@@ -34,12 +36,13 @@ export type Changes = {
   user_fields_in_form?: boolean;
 };
 
-// Same props as `ActionForm`, with two differences: `permissionData` is an
-// `IPhasePermissionData`, and there is no `showAnyone` prop — whether the
-// "Anyone" option is offered is derived from `permitted_by_everyone_allowed`.
 export type Props = {
   phaseId?: string;
   permissionData: IPhasePermissionData;
+  // Heading shown in the panel's collapse header (e.g. the action subtitle).
+  title: ReactNode;
+  // Whether the panel starts expanded. Defaults to closed.
+  defaultOpen?: boolean;
   onChange: (changes: Changes) => Promise<void>;
   onReset: () => void;
 };

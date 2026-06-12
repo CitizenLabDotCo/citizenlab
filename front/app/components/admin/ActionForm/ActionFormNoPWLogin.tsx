@@ -32,10 +32,12 @@ import { Chip } from './ui';
 const ActionFormNoPWLogin = ({
   phaseId,
   permissionData,
+  title,
+  defaultOpen = false,
   onChange,
   onReset,
 }: Props) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
 
   const { attributes } = permissionData;
   const { action } = attributes;
@@ -66,7 +68,7 @@ const ActionFormNoPWLogin = ({
       customFields.some((field) => field.attributes.persisted));
 
   return (
-    <Box maxWidth="760px" my="24px">
+    <Box maxWidth="900px" my="16px">
       <Box
         border={`1px solid ${colors.borderLight}`}
         borderRadius={stylingConsts.borderRadius}
@@ -95,7 +97,7 @@ const ActionFormNoPWLogin = ({
           />
           <Box flex="0 0 auto">
             <Title variant="h4" as="h3" m="0" color="primary">
-              Who can submit inputs?
+              {title}
             </Title>
           </Box>
 
