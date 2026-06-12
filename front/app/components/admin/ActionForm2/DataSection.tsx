@@ -27,14 +27,13 @@ import useDeletePermissionsPhaseCustomField from 'api/permissions_phase_custom_f
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 import { UserDataCollection } from 'api/phase_permissions/types';
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { DEMOGRAPHIC_FIELDS } from './data';
 import {
   customFieldId,
   DATA_COLLECTION_SUMMARY,
-  demographicTitle,
   demographicsSummary,
   piiSummary,
   placementLocked,
@@ -94,9 +93,7 @@ const DemographicRow = ({
   onRemove: () => void;
 }) => {
   const localize = useLocalize();
-  const title =
-    localize(field.attributes.title_multiloc) ||
-    demographicTitle(customFieldId(field));
+  const title = localize(field.attributes.title_multiloc);
   return (
     <Box
       display="flex"
@@ -193,11 +190,14 @@ const DataSection = ({
 }: Props) => {
   const { attributes } = permission;
   const { action } = attributes;
+  const localize = useLocalize();
 
   const { data: permissionFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action,
   });
+  // The pool the admin can add from: the platform's global registration fields.
+  const { data: globalCustomFields } = useUserCustomFields();
   const { mutate: addCustomField } = useAddPermissionsPhaseCustomField({
     phaseId,
     action,
@@ -221,7 +221,7 @@ const DataSection = ({
   const placement = attributes.user_fields_in_form_descriptor.value;
 
   const selectedIds = customFields.map(customFieldId);
-  const addableFields = DEMOGRAPHIC_FIELDS.filter(
+  const addableFields = (globalCustomFields?.data ?? []).filter(
     (f) => !selectedIds.includes(f.id)
   );
 
@@ -376,7 +376,7 @@ const DataSection = ({
                   placeholder="+ Add a demographic question"
                   options={addableFields.map((f) => ({
                     value: f.id,
-                    label: f.title,
+                    label: localize(f.attributes.title_multiloc),
                   }))}
                   onChange={(option) =>
                     addCustomField({

@@ -10,12 +10,12 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
 import AccessSectionSSO from './AccessSectionSSO';
-import { SSO_METHOD_NAME } from './data';
 import DataSection from './DataSection';
-import { buildSummarySSO, getGroupIds } from './logic';
+import { buildSummarySSO, getGroupIds, ssoMethodName } from './logic';
 import { Props } from './types';
 import { Chip } from './ui';
 
@@ -44,6 +44,7 @@ const ActionFormNoPWLogin = ({
     phaseId,
     action,
   });
+  const { data: verificationMethod } = useVerificationMethod();
 
   if (!permissionsCustomFields) return null;
 
@@ -55,7 +56,7 @@ const ActionFormNoPWLogin = ({
   const summary = buildSummarySSO(
     permissionData,
     customFields,
-    SSO_METHOD_NAME
+    ssoMethodName(verificationMethod)
   );
 
   const showReset =

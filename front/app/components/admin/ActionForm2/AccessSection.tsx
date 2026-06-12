@@ -14,14 +14,16 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
+import useGroups from 'api/groups/useGroups';
 import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import { AUTH_METHOD_LABELS, MOCK_GROUPS } from './data';
+import { AUTH_METHOD_LABELS } from './data';
 import ErrorMessageModal from './ErrorMessageModal';
 import {
   getGroupIds,
@@ -209,6 +211,9 @@ const AccessSection = ({ permission, showAnyone, onChange }: Props) => {
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
+  const localize = useLocalize();
+  const { data: groups } = useGroups({});
+
   // Which authentication methods the platform offers comes from live config:
   // confirmed email needs password login; identity verification needs a
   // configured verification method.
@@ -216,7 +221,6 @@ const AccessSection = ({ permission, showAnyone, onChange }: Props) => {
   const { data: verificationMethod } = useVerificationMethod();
   const verificationMetadata =
     verificationMethod?.data.attributes.method_metadata;
-  const verificationMethodName = verificationMetadata?.name ?? '';
 
   const isAvailable: Record<AuthMethodKey, boolean> = {
     email: passwordLoginEnabled,
@@ -325,9 +329,9 @@ const AccessSection = ({ permission, showAnyone, onChange }: Props) => {
               <Box maxWidth="440px">
                 <MultipleSelect
                   value={getGroupIds(permission)}
-                  options={MOCK_GROUPS.map((g) => ({
+                  options={(groups?.data ?? []).map((g) => ({
                     value: g.id,
-                    label: g.title,
+                    label: localize(g.attributes.title_multiloc),
                   }))}
                   onChange={(options) =>
                     onChange({ group_ids: options.map((o) => o.value) })
@@ -361,7 +365,6 @@ const AccessSection = ({ permission, showAnyone, onChange }: Props) => {
       />
       <VerificationFieldsModal
         opened={returnedFieldsOpen}
-        methodName={verificationMethodName}
         onClose={() => setReturnedFieldsOpen(false)}
       />
     </Box>

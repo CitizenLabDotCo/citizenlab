@@ -7,13 +7,16 @@ import React, { useState } from 'react';
 import { Box, Text, Icon, Button, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
+import useGroups from 'api/groups/useGroups';
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import { PermittedBy } from 'api/phase_permissions/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import { MOCK_GROUPS, SSO_METHOD_NAME, SSO_RETURNED_FIELDS } from './data';
 import ErrorMessageModal from './ErrorMessageModal';
-import { getGroupIds, groupsSummary, requiresAccount } from './logic';
+import { getGroupIds, groupsSummary, requiresAccount, ssoMethodName } from './logic';
 import { Changes, IPhasePermissionData } from './types';
 import { SectionHeader, Hint, Expander, ModeCard } from './ui';
 import VerificationFieldsModal from './VerificationFieldsModal';
@@ -36,6 +39,11 @@ const AccessSectionSSO = ({ permission, showAnyone, onChange }: Props) => {
   const hasAccount = requiresAccount(permission);
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
+
+  const localize = useLocalize();
+  const { data: groups } = useGroups({});
+  const { data: verificationMethod } = useVerificationMethod();
+  const methodName = ssoMethodName(verificationMethod);
 
   const setMode = (permitted_by: PermittedBy) => onChange({ permitted_by });
 
@@ -106,7 +114,7 @@ const AccessSectionSSO = ({ permission, showAnyone, onChange }: Props) => {
             />
             <Box display="flex" flexDirection="column" gap="2px">
               <Text as="span" m="0" fontSize="s" fontWeight="semi-bold" color="primary">
-                Participants sign in with their {SSO_METHOD_NAME}
+                Participants sign in with their {methodName}
               </Text>
               <Text
                 as="span"
@@ -135,7 +143,10 @@ const AccessSectionSSO = ({ permission, showAnyone, onChange }: Props) => {
               <Box maxWidth="440px">
                 <MultipleSelect
                   value={getGroupIds(permission)}
-                  options={MOCK_GROUPS.map((g) => ({ value: g.id, label: g.title }))}
+                  options={(groups?.data ?? []).map((g) => ({
+                    value: g.id,
+                    label: localize(g.attributes.title_multiloc),
+                  }))}
                   onChange={(options) =>
                     onChange({ group_ids: options.map((o) => o.value) })
                   }
@@ -168,8 +179,6 @@ const AccessSectionSSO = ({ permission, showAnyone, onChange }: Props) => {
       />
       <VerificationFieldsModal
         opened={returnedFieldsOpen}
-        methodName={SSO_METHOD_NAME}
-        fields={SSO_RETURNED_FIELDS}
         onClose={() => setReturnedFieldsOpen(false)}
       />
     </Box>

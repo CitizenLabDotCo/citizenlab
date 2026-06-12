@@ -4,10 +4,11 @@
 // permission custom fields that holds the demographics). The panel is stateless,
 // so nothing here mutates: writes are expressed as `Changes` for `onChange`.
 
+import { IdMethod } from 'api/id_methods/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import { UserDataCollection } from 'api/phase_permissions/types';
 
-import { AUTH_METHOD_LABELS, DEMOGRAPHIC_FIELDS } from './data';
+import { AUTH_METHOD_LABELS } from './data';
 import {
   AuthMethodKey,
   Changes,
@@ -223,8 +224,9 @@ export const buildSummarySSO = (
 export const customFieldId = (field: IPermissionsPhaseCustomFieldData): string =>
   field.relationships.custom_field.data.id;
 
-export const demographicTitle = (fieldId: string): string =>
-  DEMOGRAPHIC_FIELDS.find((f) => f.id === fieldId)?.title ?? fieldId;
+/** Readable name of the fixed SSO sign-in method, with a generic fallback. */
+export const ssoMethodName = (verificationMethod?: IdMethod): string =>
+  verificationMethod?.data.attributes.method_metadata?.name ?? 'SSO account';
 
 // ---- One-line summaries shown on the collapsed setting rows ----
 

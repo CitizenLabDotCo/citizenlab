@@ -1,5 +1,7 @@
 // Design prototype – preview which fields the identity-verification method
 // hands back, and which of them are locked (not editable by the participant).
+// The fields and the method name come straight from the configured verification
+// method's metadata.
 
 import React from 'react';
 
@@ -12,77 +14,90 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import Modal from 'components/UI/Modal';
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 
-import { VERIFICATION_RETURNED_FIELDS, VerificationReturnedField } from './data';
+import useLocalize from 'hooks/useLocalize';
+
+import Modal from 'components/UI/Modal';
 
 interface Props {
   opened: boolean;
-  methodName: string;
-  fields?: VerificationReturnedField[];
   onClose: () => void;
 }
 
-const VerificationFieldsModal = ({
-  opened,
-  methodName,
-  fields = VERIFICATION_RETURNED_FIELDS,
-  onClose,
-}: Props) => (
-  <Modal
-    opened={opened}
-    close={onClose}
-    niceHeader
-    width="480px"
-    header={
-      <Title ml="20px" variant="h3" color="primary">
-        Fields returned by {methodName}
-      </Title>
-    }
-  >
-    <Box p="24px">
-      <Text mt="0" color="coolGrey600">
-        When a participant verifies through {methodName}, these fields are filled
-        in automatically. Locked fields come straight from the official register
-        and can’t be changed by the participant.
-      </Text>
+const VerificationFieldsModal = ({ opened, onClose }: Props) => {
+  const localize = useLocalize();
+  const { data: verificationMethod } = useVerificationMethod();
 
-      <Box mt="12px">
-        {fields.map((field) => (
-          <Box
-            key={field.label}
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            py="10px"
-            px="12px"
-            mb="6px"
-            borderRadius={stylingConsts.borderRadius}
-            bgColor={colors.grey50}
-          >
-            <Text m="0" color="primary">
-              {field.label}
-            </Text>
-            <Box display="flex" alignItems="center" gap="4px">
-              <Icon
-                name={field.locked ? 'lock' : 'edit'}
-                width="14px"
-                height="14px"
-                fill={field.locked ? colors.coolGrey600 : colors.teal500}
-              />
-              <Text
-                m="0"
-                fontSize="xs"
-                color={field.locked ? 'coolGrey600' : 'teal500'}
-              >
-                {field.locked ? 'Locked' : 'Editable'}
+  const metadata = verificationMethod?.data.attributes.method_metadata;
+  if (!metadata) return null;
+
+  const methodName = metadata.name;
+  // Locked fields come straight from the official register; the rest the
+  // participant can still edit.
+  const fields = [
+    ...metadata.locked_attributes.map((m) => ({ label: localize(m), locked: true })),
+    ...metadata.locked_custom_fields.map((m) => ({ label: localize(m), locked: true })),
+    ...metadata.other_attributes.map((m) => ({ label: localize(m), locked: false })),
+    ...metadata.other_custom_fields.map((m) => ({ label: localize(m), locked: false })),
+  ];
+
+  return (
+    <Modal
+      opened={opened}
+      close={onClose}
+      niceHeader
+      width="480px"
+      header={
+        <Title ml="20px" variant="h3" color="primary">
+          Fields returned by {methodName}
+        </Title>
+      }
+    >
+      <Box p="24px">
+        <Text mt="0" color="coolGrey600">
+          When a participant verifies through {methodName}, these fields are filled
+          in automatically. Locked fields come straight from the official register
+          and can’t be changed by the participant.
+        </Text>
+
+        <Box mt="12px">
+          {fields.map((field) => (
+            <Box
+              key={field.label}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              py="10px"
+              px="12px"
+              mb="6px"
+              borderRadius={stylingConsts.borderRadius}
+              bgColor={colors.grey50}
+            >
+              <Text m="0" color="primary">
+                {field.label}
               </Text>
+              <Box display="flex" alignItems="center" gap="4px">
+                <Icon
+                  name={field.locked ? 'lock' : 'edit'}
+                  width="14px"
+                  height="14px"
+                  fill={field.locked ? colors.coolGrey600 : colors.teal500}
+                />
+                <Text
+                  m="0"
+                  fontSize="xs"
+                  color={field.locked ? 'coolGrey600' : 'teal500'}
+                >
+                  {field.locked ? 'Locked' : 'Editable'}
+                </Text>
+              </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
-    </Box>
-  </Modal>
-);
+    </Modal>
+  );
+};
 
 export default VerificationFieldsModal;
