@@ -72,6 +72,7 @@ class Permission < ApplicationRecord
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
   validate :validate_require_verification
   validate :validate_require_confirmed_email
+  validate :validate_authentication_method_present
   validate :validate_verification_expiry
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
@@ -179,6 +180,21 @@ class Permission < ApplicationRecord
       :require_confirmed_email,
       :require_confirmed_email_not_allowed,
       message: 'A confirmed email can only be required when password login signup is enabled.'
+    )
+  end
+
+  # When an account is required, at least one authentication method must back it:
+  # a confirmed email, identity verification, or both. This only applies to
+  # 'users' permissions; 'everyone' has no sign-in and 'admins_moderators' are
+  # already authenticated, so their require_* flags are irrelevant.
+  def validate_authentication_method_present
+    return unless permitted_by == 'users'
+    return if require_confirmed_email || require_verification
+
+    errors.add(
+      :base,
+      :authentication_method_required,
+      message: 'At least one authentication method (confirmed email or verification) must be required.'
     )
   end
 

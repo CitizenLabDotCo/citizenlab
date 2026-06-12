@@ -127,24 +127,66 @@ RSpec.describe Permission do
   end
 
   describe 'require_confirmed_email' do
+    # A permission must always keep at least one authentication method, so these
+    # cases require verification while toggling the confirmed-email requirement.
+    before do
+      AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      AppConfiguration.instance.save!
+    end
+
     it 'can be required when password login signup is enabled' do
-      permission = create(:permission, :by_users, require_confirmed_email: false)
+      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
       permission.update!(require_confirmed_email: true)
       expect(permission.reload.require_confirmed_email).to be true
     end
 
     it 'cannot be required when the password_login feature is not activated' do
-      permission = create(:permission, :by_users, require_confirmed_email: false)
+      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
       SettingsService.new.deactivate_feature!('password_login')
       expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
     end
 
     it 'cannot be required when password login signup is disabled' do
-      permission = create(:permission, :by_users, require_confirmed_email: false)
+      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
       config = AppConfiguration.instance
       config.settings['password_login']['enable_signup'] = false
       config.save!
       expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
+
+  describe 'authentication method requirement' do
+    it 'is invalid when neither a confirmed email nor verification is required' do
+      permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: false)
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:base]).to include(error: :authentication_method_required)
+    end
+
+    it 'is valid when only a confirmed email is required' do
+      permission = build(:permission, :by_users, require_confirmed_email: true, require_verification: false)
+      expect(permission).to be_valid
+    end
+
+    context 'when a verification method is enabled' do
+      before do
+        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.save!
+      end
+
+      it 'is valid when only verification is required' do
+        permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: true)
+        expect(permission).to be_valid
+      end
+
+      it 'is valid when both are required' do
+        permission = build(:permission, :by_users, require_confirmed_email: true, require_verification: true)
+        expect(permission).to be_valid
+      end
+    end
+
+    it 'does not apply when participation does not require an account' do
+      expect(build(:permission, :by_everyone, require_confirmed_email: false, require_verification: false)).to be_valid
+      expect(build(:permission, :by_admins_moderators, require_confirmed_email: false, require_verification: false)).to be_valid
     end
   end
 
