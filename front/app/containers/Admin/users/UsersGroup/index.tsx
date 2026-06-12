@@ -9,7 +9,6 @@ import useGroup from 'api/groups/useGroup';
 import useUpdateGroup from 'api/groups/useUpdateGroup';
 import usersKeys from 'api/users/keys';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
@@ -32,7 +31,6 @@ import UsersGroupHeader from './UsersGroupHeader';
 
 const UsersGroup = () => {
   const queryClient = useQueryClient();
-  const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
   const { formatMessage } = useIntl();
   const { groupId } = useParams({ strict: false }) as { groupId: string };
   const { data: group } = useGroup(groupId);
@@ -60,17 +58,17 @@ const UsersGroup = () => {
 
   const handleSubmitForm =
     (groupId: string) =>
-    async ({
-      membership_type,
-      ...otherFormValues
-    }: NormalFormValues & { membership_type: MembershipType }) => {
-      await updateGroup({
-        id: groupId,
-        membership_type: membership_type as MembershipType,
-        ...otherFormValues,
-      });
-      closeGroupEditionModal();
-    };
+      async ({
+        membership_type,
+        ...otherFormValues
+      }: NormalFormValues & { membership_type: MembershipType }) => {
+        await updateGroup({
+          id: groupId,
+          membership_type: membership_type as MembershipType,
+          ...otherFormValues,
+        });
+        closeGroupEditionModal();
+      };
 
   const handleDeleteGroup = (groupId: string) => () => {
     const deleteMessage = formatMessage(messages.groupDeletionConfirmation);
@@ -163,7 +161,6 @@ const UsersGroup = () => {
               initialValues={group.data.attributes}
               type={groupEditionModal}
               onSubmit={handleSubmitForm(group.data.id)}
-              isVerificationEnabled={isVerificationEnabled}
             />
           </>
         </Modal>

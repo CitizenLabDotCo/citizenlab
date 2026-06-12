@@ -52,7 +52,6 @@
   "app.components.AuthProviders.continueWithHoplr": "Наставите са Хоплр",
   "app.components.AuthProviders.continueWithIdAustria": "Continue with ID Austria",
   "app.components.AuthProviders.continueWithLoginMechanism": "Наставите са {loginMechanismName}",
-  "app.components.AuthProviders.continueWithNemlogIn": "Continue with MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "Већ постоји налог са овом адресом е-поште.{br}{br}Не можете приступити платформи користећи ФранцеЦоннецт јер се лични подаци не поклапају. Да бисте се пријавили помоћу ФранцеЦоннецт-а, прво ћете морати да промените своје име или презиме на овој платформи како би одговарали вашим званичним подацима.{br}{br}Можете се пријавити као што то обично чините испод.",
   "app.components.AuthProviders.livesOutsideAreaAuthFailed": "You cannot login as your address is not in the area required.",
   "app.components.AuthProviders.livesOutsideAreaVerificationFailed": "You cannot be verified as your address is not in the area required.",

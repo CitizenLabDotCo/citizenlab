@@ -2,8 +2,6 @@
 
 module CustomIdMethods::Criipto
   module CriiptoVerification # rubocop:disable Metrics/ModuleLength
-    include Verification::VerificationMethod
-
     DK_MIT_ID = 'DK MitID'
     DEFAULT_UID_FIELD_PATTERN = '%{uuid}'
 
@@ -13,10 +11,6 @@ module CustomIdMethods::Criipto
 
     def id
       '5768eff0-05ce-5f55-a657-3284d38d102a'
-    end
-
-    def name
-      'criipto'
     end
 
     def ui_method_name

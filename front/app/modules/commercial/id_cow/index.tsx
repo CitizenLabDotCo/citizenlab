@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { TVerificationMethodName } from 'api/verification_methods/types';
-import { isLastVerificationMethod } from 'api/verification_methods/util';
+import { IdMethodName } from 'api/id_methods/types';
+import { isLastIdMethod } from 'api/id_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -10,21 +10,21 @@ const VerificationFormCOW = React.lazy(
   () => import('./components/VerificationFormCOW')
 );
 
-const verificationMethodName: TVerificationMethodName = 'cow';
+const verificationMethodName: IdMethodName = 'cow';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
-      verificationMethods,
+      idMethods,
       ...otherProps
     }) => {
-      const method = verificationMethods.find(
+      const method = idMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
       );
 
       if (method) {
-        const last = isLastVerificationMethod(
+        const last = isLastIdMethod(
           verificationMethodName,
-          verificationMethods
+          idMethods
         );
         return <CowButton last={last} method={method} {...otherProps} />;
       }

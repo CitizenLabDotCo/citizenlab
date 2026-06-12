@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useVerificationMethod from 'api/verification_methods/useVerificationMethod';
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 
 import useLocalize from 'hooks/useLocalize';
 
