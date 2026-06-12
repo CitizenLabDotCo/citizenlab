@@ -12,10 +12,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import ErrorMessageModal from '../ErrorMessageModal';
-import { getGroupIds, groupsSummary } from '../logic';
-import { Changes, IPhasePermissionData } from '../types';
-import { Expander } from '../ui';
+import { getGroupIds, groupsSummary } from '../../logic';
+import { Changes, IPhasePermissionData } from '../../types';
+import { Expander } from '../../ui';
+
+import ErrorMessageModal from './ErrorMessageModal';
 
 interface Props {
   permission: IPhasePermissionData;
