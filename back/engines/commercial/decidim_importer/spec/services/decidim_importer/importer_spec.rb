@@ -7,6 +7,16 @@ require_relative '../../fixtures/decidim_export_fixture'
 RSpec.describe DecidimImporter::Importer do
   let(:export_root) { DecidimImporter::DecidimExportFixture.csv_root }
 
+  # The imported proposals land in ideation phases, so the tenant needs the matching ideation
+  # idea_statuses (a real tenant seeds these at creation; resolve them by code at apply time).
+  before do
+    %w[proposed under_consideration accepted rejected].each do |code|
+      next if IdeaStatus.exists?(code: code, participation_method: 'ideation')
+
+      create(:idea_status, code: code, participation_method: 'ideation')
+    end
+  end
+
   describe '.from_directory' do
     it 'scans the known Decidim CSVs out of the export directory' do
       importer = described_class.from_directory(export_root)
@@ -64,6 +74,50 @@ RSpec.describe DecidimImporter::Importer do
       admin = User.find_by(unique_code: 'decidim-user-1')
       expect(admin.custom_field_values['phone_number']).to eq('+33124124124')
     end
+
+    context 'with a process that has a proposals component' do
+      before { described_class.from_directory(export_root, import_images: false).import }
+
+      let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'") }
+
+      it 'imports the proposals component as an ideation phase that does not overlap the steps' do
+        methods = project.phases.order(:start_at).pluck(:participation_method)
+        expect(methods).to eq(%w[information ideation])
+        # Sequential, non-overlapping: each phase starts on/after the previous one's end.
+        starts_ends = project.phases.order(:start_at).pluck(:start_at, :end_at)
+        starts_ends.each_cons(2) { |(_, prev_end), (next_start, _)| expect(next_start).to be >= prev_end }
+      end
+
+      it 'imports proposals as ideas with mapped statuses, in the ideation phase' do
+        ideation = project.phases.find_by(participation_method: 'ideation')
+        accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+
+        expect(accepted.idea_status.code).to eq('accepted')
+        expect(accepted.idea_status.participation_method).to eq('ideation')
+        expect(accepted.author.unique_code).to eq('decidim-user-1')
+        # Ideation is transitive: the idea links to the phase via ideas_phases, not creation_phase.
+        expect(accepted.phases).to include(ideation)
+        expect(accepted.creation_phase).to be_nil
+
+        evaluating = Idea.find_by(title_multiloc: { 'fr-FR' => 'Éclairage' })
+        # Its Decidim author (decidim-user-131) was filtered out, so the idea is author-less.
+        expect(evaluating.author).to be_nil
+        expect(evaluating.idea_status.code).to eq('under_consideration')
+      end
+
+      it 'imports the admin answer as official feedback and the comment thread' do
+        accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+        expect(accepted.official_feedbacks.first.body_multiloc['fr-FR']).to include('acceptée')
+
+        thread = accepted.comments.order(:created_at)
+        expect(thread.size).to eq(2)
+        expect(thread.last.parent).to eq(thread.first)
+
+        # A comment whose Decidim author was filtered out is imported author-less.
+        rejected = Idea.find_by(title_multiloc: { 'fr-FR' => 'Pistes cyclables' })
+        expect(rejected.comments.first.author).to be_nil
+      end
+    end
   end
 
   describe '.apply_template_file' do
@@ -82,6 +136,21 @@ RSpec.describe DecidimImporter::Importer do
       expect(CustomField.registration.find_by(key: 'phone_number')).to be_present
     ensure
       file&.unlink
+    end
+  end
+
+  describe '.strip_embedded_images!' do
+    it 'removes <img> tags from rich-text multilocs but keeps the surrounding text' do
+      template = { 'models' => { 'idea' => [{
+        'body_multiloc' => { 'fr-FR' => '<p>Avant</p><img src="http://dead/x.png" alt="x"><p>Après</p>' },
+        'title_multiloc' => { 'fr-FR' => 'Titre' }
+      }] } }
+
+      described_class.strip_embedded_images!(template)
+
+      body = template['models']['idea'].first['body_multiloc']['fr-FR']
+      expect(body).to eq('<p>Avant</p><p>Après</p>')
+      expect(template['models']['idea'].first['title_multiloc']['fr-FR']).to eq('Titre')
     end
   end
 

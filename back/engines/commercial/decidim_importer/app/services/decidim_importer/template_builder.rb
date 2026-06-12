@@ -18,6 +18,10 @@ module DecidimImporter
       project_folders/folder
       project
       phase
+      idea
+      ideas_phase
+      comment
+      official_feedback
     ].freeze
 
     def initialize(ref_map)

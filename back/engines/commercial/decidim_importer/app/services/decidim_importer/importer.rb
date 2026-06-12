@@ -30,6 +30,17 @@ module DecidimImporter
     PROCESS_FILE_GLOB = '*--participatory-process.csv'
     STEPS_FILE_GLOB = '*--steps.csv'
 
+    # Each process directory holds a `NN---components/` folder with one subdirectory per Decidim
+    # component, named `NN---decidim--component--N---<type>` (proposals, meetings, surveys, …). The
+    # type is the trailing path segment. Each component dir holds its own `01---component.csv` (the
+    # manifest) and, for proposals, `02---proposals.csv` + `03---comments.csv`. This iteration only
+    # proposals are consumed; other types are recorded (for skip-logging) but not imported.
+    COMPONENT_DIR_GLOB = '*components/*'
+    COMPONENT_FILE_GLOB = '*--component.csv'
+    PROPOSALS_FILE_GLOB = '*--proposals.csv'
+    COMMENTS_FILE_GLOB = '*--comments.csv'
+    PROPOSALS_COMPONENT = 'proposals'
+
     # Build an importer from a Decidim export zip. Extracts into a tempdir, parses every CSV into
     # memory, then tears the tempdir down.
     def self.from_zip(zip_path, **)
@@ -53,27 +64,54 @@ module DecidimImporter
       new(rows_by_model, **)
     end
 
-    # Reads every participatory-process directory, aggregating their process rows into `:projects`
-    # and their step rows into `:phases`. Because the steps CSV carries no process column, each step
-    # row is stamped with its process `uid` (under the key the {Extractors::PhasesExtractor}
-    # expects) so phases can be linked back to their project.
+    # Reads every participatory-process directory, aggregating their rows by model: process rows into
+    # `:projects`, step rows into `:phases`, and — from each process's components — proposals into
+    # `:proposals`, their comments into `:comments`, and every component manifest into `:components`
+    # (the latter drives ideation-phase titles and skip-logging of unconsumed component types).
+    #
+    # Several of these CSVs carry no foreign-key column — the directory *is* the association — so rows
+    # are stamped with their owning process (`decidim_participatory_process`) and, for proposals/
+    # comments, their component (`decidim_component`).
     def self.read_processes(root)
-      projects = []
-      phases = []
+      acc = { projects: [], phases: [], proposals: [], comments: [], components: [] }
       process_dirs(root).each do |dir|
         process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
         next unless process_file
 
         process_rows = CsvReader.read(process_file)
-        projects.concat(process_rows)
+        acc[:projects].concat(process_rows)
         process_uid = process_rows.first&.fetch('uid', nil)
 
         steps_file = Dir.glob(File.join(dir, STEPS_FILE_GLOB)).first
-        next unless steps_file
+        acc[:phases].concat(stamp(CsvReader.read(steps_file), 'decidim_participatory_process' => process_uid)) if steps_file
 
-        phases.concat(CsvReader.read(steps_file).map { |step| step.merge('decidim_participatory_process' => process_uid) })
+        read_components(dir, process_uid, acc)
       end
-      { projects: projects, phases: phases }
+      acc
+    end
+
+    # Walks a process's component directories, recording each manifest under `:components` and, for
+    # proposals components, their proposals and comments (stamped with process + component uid).
+    def self.read_components(process_dir, process_uid, acc)
+      component_dirs(process_dir).each do |comp_dir|
+        comp_file = Dir.glob(File.join(comp_dir, COMPONENT_FILE_GLOB)).first
+        comp_row = comp_file && CsvReader.read(comp_file).first
+        next unless comp_row
+
+        type = component_type(comp_dir)
+        acc[:components] << comp_row.merge('decidim_participatory_process' => process_uid, 'type' => type)
+        next unless type == PROPOSALS_COMPONENT
+
+        stamp = { 'decidim_participatory_process' => process_uid, 'decidim_component' => comp_row['uid'] }
+        proposals_file = Dir.glob(File.join(comp_dir, PROPOSALS_FILE_GLOB)).first
+        acc[:proposals].concat(stamp(CsvReader.read(proposals_file), stamp)) if proposals_file
+        comments_file = Dir.glob(File.join(comp_dir, COMMENTS_FILE_GLOB)).first
+        acc[:comments].concat(stamp(CsvReader.read(comments_file), stamp)) if comments_file
+      end
+    end
+
+    def self.stamp(rows, columns)
+      rows.map { |row| row.merge(columns) }
     end
 
     # A process directory is any subdirectory of `*participatory-processes/` that holds a
@@ -82,6 +120,16 @@ module DecidimImporter
       Dir.glob(File.join(root, PROCESS_DIR_GLOB)).select do |path|
         File.directory?(path) && Dir.glob(File.join(path, PROCESS_FILE_GLOB)).any?
       end
+    end
+
+    def self.component_dirs(process_dir)
+      Dir.glob(File.join(process_dir, COMPONENT_DIR_GLOB)).select { |path| File.directory?(path) }
+    end
+
+    # The component type is the trailing `---<type>` segment of the directory name, e.g.
+    # `01---decidim--component--21---proposals` → `proposals`.
+    def self.component_type(comp_dir)
+      File.basename(comp_dir).split('---').last
     end
 
     # Applies a previously dumped tenant-template YAML file to the current tenant, independent of
@@ -94,7 +142,11 @@ module DecidimImporter
     #   deserialize (no external HTTP), e.g. for exports whose image URLs are unreachable.
     def self.apply_template_file(path, import_images: true)
       template = YAML.load_file(path, aliases: true)
-      strip_remote_image_urls!(template) unless import_images
+      IdeaStatuses.resolve!(template)
+      unless import_images
+        strip_remote_image_urls!(template)
+        strip_embedded_images!(template)
+      end
       MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
     end
 
@@ -143,6 +195,23 @@ module DecidimImporter
       end
     end
 
+    # Removes `<img>` tags embedded in rich-text `*_multiloc` values. Decidim proposal/comment bodies
+    # embed images by URL pointing at the source Decidim host; the deserializer turns those into
+    # `TextImage`s it tries to download, which 404s (and aborts the all-or-nothing import) when image
+    # fetching is off or the host is unreachable. Stripping them keeps the text, drops the images —
+    # paired with {.strip_remote_image_urls!} whenever `import_images` is false.
+    def self.strip_embedded_images!(template)
+      template['models'].each_value do |records|
+        records.each do |attrs|
+          attrs.each do |key, value|
+            next unless key.is_a?(String) && key.end_with?('_multiloc') && value.is_a?(Hash)
+
+            value.transform_values! { |html| html.is_a?(String) ? html.gsub(/<img\b[^>]*>/i, '') : html }
+          end
+        end
+      end
+    end
+
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model
     #   (:users, :folders, :projects, :phases, :process_roles). Missing keys are treated as
     #   "model not in this export" and silently skipped.
@@ -167,12 +236,9 @@ module DecidimImporter
       run_users_extractor
       run_extractor(Extractors::FoldersExtractor, :folders)
       run_extractor(Extractors::ProjectsExtractor, :projects)
-      if @rows_by_model.key?(:phases)
-        @phases_extractor = Extractors::PhasesExtractor.new(
-          rows_for(:phases), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
-        )
-        @phases_extractor.run
-      end
+      run_phases
+      run_proposals
+      run_comments
       TemplateBuilder.new(ref_map)
     end
 
@@ -192,7 +258,11 @@ module DecidimImporter
       builder = build_template
       # Round-trip through YAML so we exercise the actual artifact the deserializer consumes.
       template = YAML.load(builder.to_yaml, aliases: true)
-      self.class.strip_remote_image_urls!(template) unless @import_images
+      IdeaStatuses.resolve!(template)
+      unless @import_images
+        self.class.strip_remote_image_urls!(template)
+        self.class.strip_embedded_images!(template)
+      end
       created_object_ids = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
       created_object_ids
@@ -203,7 +273,62 @@ module DecidimImporter
       @phases_extractor&.skipped || []
     end
 
+    # Proposals components that couldn't be placed as a phase (e.g. no datable proposals).
+    def skipped_components
+      @phase_projector&.skipped || []
+    end
+
+    # Proposals/comments that couldn't be imported (e.g. their phase or proposal wasn't created).
+    def skipped_participation
+      (@proposals_extractor&.skipped || []) + (@comments_extractor&.skipped || [])
+    end
+
     private
+
+    def run_phases
+      if @rows_by_model.key?(:phases)
+        @phases_extractor = Extractors::PhasesExtractor.new(
+          rows_for(:phases), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+        )
+        @phases_extractor.run
+      end
+      @phase_projector = PhaseProjector.new(ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale)
+      @phase_projector.run(step_rows: rows_for(:phases), proposal_components: proposal_components)
+    end
+
+    def run_proposals
+      return unless @rows_by_model.key?(:proposals)
+
+      @proposals_extractor = Extractors::ProposalsExtractor.new(
+        rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+      @proposals_extractor.run
+    end
+
+    def run_comments
+      return unless @rows_by_model.key?(:comments)
+
+      @comments_extractor = Extractors::CommentsExtractor.new(
+        rows_for(:comments), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+      @comments_extractor.run
+    end
+
+    # Groups the stamped proposal rows back into their components for {PhaseProjector} (which needs
+    # each component's proposals to date its ideation phase, and the component name for the title).
+    def proposal_components
+      names = component_name_map
+      rows_for(:proposals)
+        .group_by { |row| [row['decidim_participatory_process'], row['decidim_component']] }
+        .map do |(process_uid, component_uid), proposal_rows|
+          { process_uid: process_uid, component_uid: component_uid,
+            name: names[component_uid], proposal_rows: proposal_rows }
+        end
+    end
+
+    def component_name_map
+      rows_for(:components).each_with_object({}) { |row, acc| acc[row['uid']] = row['name'] }
+    end
 
     # Custom user fields are seeded from the organization's `extra_user_fields` config (if present)
     # and feed both the template (new `custom_field` records) and the users extractor (which keys to

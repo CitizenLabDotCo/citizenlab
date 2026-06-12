@@ -33,6 +33,8 @@ namespace :decidim_importer do
     Rails.logger.info "Wrote #{yaml_path}"
     log_model_summary(builder)
     importer.skipped_phases.each { |s| Rails.logger.warn "  skipped phase #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_components.each { |s| Rails.logger.warn "  skipped component #{s[:component]}: #{s[:reason]}" }
+    importer.skipped_participation.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
     write_app_config_json(importer, path)
   end
 
@@ -75,6 +77,10 @@ namespace :decidim_importer do
 
     begin
       tenant.switch do
+        # A throwaway tenant built from minimal settings carries no idea_statuses; imported proposals
+        # need the standard ideation ones. Real tenants seed these at creation, so this only fills the
+        # gap for the dry-run tenant.
+        seed_ideation_statuses
         # Images are skipped: verification is about structure, and exports often carry unreachable
         # `remote_*_url` hosts that would fail the fetch for reasons unrelated to the template.
         created = DecidimImporter::Importer.apply_template_file(file, import_images: false)
@@ -83,6 +89,22 @@ namespace :decidim_importer do
       puts "VERIFY OK — applied cleanly, tearing down #{host}"
     ensure
       tenant.destroy!
+    end
+  end
+
+  def seed_ideation_statuses
+    # The standard ideation idea_statuses (mirrors the base tenant template); the importer maps Decidim
+    # proposal states onto a subset of these.
+    codes = %w[prescreening proposed viewed under_consideration accepted implemented rejected ineligible]
+    locale = AppConfiguration.instance.settings('core', 'locales').first
+    codes.each do |code|
+      next if IdeaStatus.exists?(code: code, participation_method: 'ideation')
+
+      label = code.tr('_', ' ')
+      IdeaStatus.create!(
+        code: code, participation_method: 'ideation', color: '#687782',
+        title_multiloc: { locale => label }, description_multiloc: { locale => label }
+      )
     end
   end
 
