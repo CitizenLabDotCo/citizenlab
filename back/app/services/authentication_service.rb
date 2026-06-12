@@ -5,21 +5,19 @@ class AuthenticationService
     @id_method_service = IdMethodService.new
   end
 
-  class << self
-    # Returns true if SSO is enforced for this email's domain, false otherwise.
-    def sso_enforced_for_email?(email)
-      return false if email.blank?
+  def active_methods(app_configuration)
+    @id_method_service.configured_methods(app_configuration).select(&:authentication?)
+  end
 
-      domain = email.split('@').last&.strip&.downcase
-      return false if domain.blank?
+  # Returns true if SSO is enforced for this email's domain, false otherwise.
+  def sso_enforced_for_email?(email)
+    return false if email.blank?
 
-      configured_authentication_methods = IdMethodService.new
-        .configured_methods(AppConfiguration.instance)
-        .select(&:authentication?)
+    domain = email.split('@').last&.strip&.downcase
+    return false if domain.blank?
 
-      configured_authentication_methods.any? do |method|
-        method.enforced_email_domains.include?(domain)
-      end
+    active_methods(AppConfiguration.instance).any? do |method|
+      method.enforced_email_domains.include?(domain)
     end
   end
 
