@@ -54,6 +54,10 @@ const AccessSection = ({
     verification: !!verificationMetadata,
   };
 
+  const enabledMethodCount = METHOD_KEYS.filter(
+    (key) => getMethod(permission, key).enabled
+  ).length;
+
   return (
     <Box>
       <SectionHeader
@@ -76,6 +80,9 @@ const AccessSection = ({
           <Box>
             {METHOD_KEYS.map((key) => {
               const { enabled, expiry } = getMethod(permission, key);
+              // Don't let the last enabled method be turned off: a permission
+              // must always keep at least one (mirrors the backend validation).
+              const locked = enabled && enabledMethodCount === 1;
               return (
                 <MethodRow
                   key={key}
@@ -84,6 +91,7 @@ const AccessSection = ({
                   expiry={expiry}
                   available={isAvailable[key]}
                   unavailableReason={unavailableReason(key)}
+                  locked={locked}
                   onChange={(next) => onChange(methodChange(key, next))}
                   onShowReturnedFields={() => setReturnedFieldsOpen(true)}
                 />

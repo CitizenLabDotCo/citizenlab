@@ -9,6 +9,7 @@ import {
   Text,
   Icon,
   IconNames,
+  IconTooltip,
   Toggle,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -39,6 +40,9 @@ interface Props {
   expiry: number | null;
   available: boolean;
   unavailableReason: string;
+  // Locked on because it is the only method still enabled — a permission must
+  // always keep at least one. The toggle is disabled and explains why.
+  locked?: boolean;
   onChange: (next: { enabled: boolean; expiry: number | null }) => void;
   onShowReturnedFields?: () => void;
 }
@@ -49,6 +53,7 @@ const MethodRow = ({
   expiry,
   available,
   unavailableReason,
+  locked = false,
   onChange,
   onShowReturnedFields,
 }: Props) => {
@@ -59,7 +64,7 @@ const MethodRow = ({
     <Box py="10px">
       <Toggle
         checked={enabled}
-        disabled={!available}
+        disabled={!available || locked}
         onChange={() => onChange({ enabled: !stateEnabled, expiry })}
         label={
           <Box ml="8px">
@@ -79,6 +84,12 @@ const MethodRow = ({
               >
                 {AUTH_METHOD_LABELS[methodKey]}
               </Text>
+              {locked && (
+                <IconTooltip
+                  content="At least one authentication method must stay enabled, so this one can’t be turned off."
+                  iconSize="14px"
+                />
+              )}
             </Box>
             <Text as="span" m="0" fontSize="xs" color="coolGrey600">
               {available ? meta.description : unavailableReason}

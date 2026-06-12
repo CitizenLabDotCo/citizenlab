@@ -194,7 +194,7 @@ class Permission < ApplicationRecord
     errors.add(
       :base,
       :authentication_method_required,
-      message: 'At least one authentication method (confirmed email or verification) must be required.'
+      message: 'At least one authentication method (confirmed email or verification) is required.'
     )
   end
 
