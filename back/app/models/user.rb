@@ -35,6 +35,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  last_active_at            :datetime
 #  imported                  :boolean          default(FALSE), not null
 #  token_expiry_key          :string
+#  phone_number              :string
 #
 # Indexes
 #
@@ -158,6 +159,7 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?
   before_validation :sanitize_last_name, if: :last_name_changed?
+  before_validation :normalize_phone_number, if: :phone_number_changed?
 
   # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false,
   # which is a condition for complete_registration to set registration_completed_at
@@ -189,6 +191,8 @@ class User < ApplicationRecord
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :phone_number, uniqueness: true, allow_nil: true
+  validate :validate_phone_number_format
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
@@ -361,6 +365,20 @@ class User < ApplicationRecord
     return if duplicate_user.id == id
 
     errors.add(:email, :taken, value: new_email)
+  end
+
+  # Store phone numbers in canonical E.164 form so the uniqueness constraint and
+  # SMS delivery operate on a single normalized representation. Invalid/national
+  # input is left as-is for validate_phone_number_format to reject.
+  def normalize_phone_number
+    normalized = Phonelib.parse(phone_number).e164.presence
+    self.phone_number = normalized if normalized
+  end
+
+  def validate_phone_number_format
+    return if phone_number.blank? || Phonelib.valid?(phone_number)
+
+    errors.add(:phone_number, :invalid, value: phone_number)
   end
 
   def validate_not_duplicate_email
