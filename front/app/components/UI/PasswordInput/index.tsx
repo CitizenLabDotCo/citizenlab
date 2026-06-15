@@ -38,9 +38,8 @@ export function hasPasswordMinimumLength(
 }
 
 // Returns true when the password meets the configured minimum zxcvbn strength
-// score (0-4). A falsy threshold (0 or undefined) disables the check, which
-// preserves the current behavior. zxcvbn is imported lazily to keep it out of
-// the main bundle (it is already loaded for the strength meter).
+// score (0-4). A falsy threshold (0 or undefined) disables the check.
+// zxcvbn is large, so it is imported lazily to keep it out of the main bundle.
 export async function passwordMeetsStrength(
   password: string,
   minimumStrength: number | undefined
