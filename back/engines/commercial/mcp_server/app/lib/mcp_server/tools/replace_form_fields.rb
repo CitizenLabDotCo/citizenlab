@@ -50,19 +50,17 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    CONTAINER_TYPES = McpServer::Tools::ReplaceFormFields::CONTAINER_TYPES
-    SUPPORTED_METHODS = McpServer::Tools::ReplaceFormFields::SUPPORTED_METHODS
-
     def run
       container = CONTAINER_TYPES.fetch(params[:container_type]).find(params[:container_id])
       pmethod = container.pmethod
       return unsupported_error(pmethod) unless SUPPORTED_METHODS.include?(pmethod.class.method_str)
 
       if container.ideas_count.to_i.positive?
-        return error(
-          "Cannot replace form fields: #{container.ideas_count} response(s) already submitted to this " \
-          "#{params[:container_type]}. Replacing the fields would orphan their answers."
-        )
+        return error(<<~MSG.squish)
+          Cannot replace form fields: #{container.ideas_count} response(s) already
+          submitted to this #{params[:container_type]}. Replacing the fields would
+          orphan their answers.
+        MSG
       end
 
       custom_form = CustomForm.find_or_initialize_by(participation_context: container)
@@ -110,10 +108,10 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     end
 
     def unsupported_error(pmethod)
-      error(
-        "Unsupported participation method: '#{pmethod.class.method_str}'. " \
-        "replace_form_fields only supports: #{SUPPORTED_METHODS.join(', ')}."
-      )
+      error(<<~MSG.squish)
+        Unsupported participation method: '#{pmethod.class.method_str}'.
+        `replace_form_fields` only supports: #{SUPPORTED_METHODS.join(', ')}.
+      MSG
     end
   end
 end

@@ -101,11 +101,18 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       },
       input_type: {
         type: 'string',
-        description: 'Field type. Allowed set depends on the participation method.',
+        description: <<~DESC.squish,
+          Field type. The set of types you can use for new fields depends on the
+          participation method. The types `text_multiloc`, `html_multiloc`, `image_files`,
+          `files`, and `topic_ids` are reserved for built-in ideation fields and cannot be
+          used for new fields.
+        DESC
         enum: %w[
           page number linear_scale rating text multiline_text select multiselect
           multiselect_image file_upload shapefile_upload point line polygon
           ranking matrix_linear_scale sentiment_linear_scale
+
+          text_multiloc html_multiloc image_files files topic_ids
         ]
       },
       title_multiloc: multiloc_schema,
