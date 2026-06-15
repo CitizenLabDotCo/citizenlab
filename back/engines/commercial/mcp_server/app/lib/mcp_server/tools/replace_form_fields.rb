@@ -43,7 +43,7 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
   private
 
   def field_schema
-     McpServer::Tools::FormFieldsSchemaBuilder.new(
+    McpServer::Tools::FormFieldsSchemaBuilder.new(
       mode: :input,
       multiloc_schema: multiloc_schema
     ).field_schema
@@ -106,7 +106,7 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     # UpdateAllService reads field params with a mix of string and symbol keys (e.g. it uses
     # field_params['code'] but field_params[:id]). Normalize to a HashWithIndifferentAccess.
     def normalize_fields(fields)
-      Array(fields).map { |f| f.with_indifferent_access }
+      Array(fields).map(&:with_indifferent_access)
     end
 
     def unsupported_error(pmethod)
@@ -116,5 +116,4 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       )
     end
   end
-
 end

@@ -37,5 +37,4 @@ module McpServer::Jsonapi
       end
     end
   end
-
 end

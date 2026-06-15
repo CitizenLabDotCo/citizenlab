@@ -79,7 +79,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
             Stale-data guard. Pass back to `replace_form_fields` to abort if anyone else
             modified the form fields in the meantime.
           DESC
-        },
+        }
       },
       required: %w[container_type container_id participation_method fields]
     }
@@ -127,10 +127,10 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
     private
 
     def unsupported_error(pmethod)
-      error(
-        "Unsupported participation method: '#{pmethod.class.method_str}'. " \
-          "get_form_fields only supports: #{SUPPORTED_METHODS.join(', ')}."
-      )
+      error(<<~MSG.squish)
+        Unsupported participation method: '#{pmethod.class.method_str}'.
+        `get_form_fields` only supports: #{SUPPORTED_METHODS.join(', ')}.
+      MSG
     end
   end
 end
