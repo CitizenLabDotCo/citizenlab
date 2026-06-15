@@ -612,7 +612,7 @@ de-AT:
     screening_digest:
       cta_button: Beiträge überprüfen
       event_description: Diese Beiträge müssen freigegeben werden, bevor sie für die Öffentlichkeit sichtbar sind. Sie können sie im plattformweiten Beitragsmanager oder im Beitragsmanager der einzelnen Phasen überprüfen.
-      inputs_awaiting_screening: zu überprüfende Beiträge
+      inputs_awaiting_screening: zu überprüfender Beitrag / überprüfende Beiträge
       preheader: Beiträge überprüfen für %{organizationName}
       subject: '%{count} Beiträge, die zur Überprüfung anstehen'
       title: '%{firstName}, Beiträge warten darauf, überprüft zu werden'
