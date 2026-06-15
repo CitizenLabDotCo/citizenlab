@@ -11,8 +11,10 @@ module Sms
     def send(to:, body:, user_id: nil, provider: DEFAULT_PROVIDER)
       provider_instance = build_provider(provider)
 
-      normalized_to = Sms::PhoneNormalizer.normalize(to)
-      raise Sms::Error, "Invalid phone number: #{to}" unless Sms::PhoneNormalizer.valid?(normalized_to)
+      parsed_to = Phonelib.parse(to)
+      raise Sms::Error, "Invalid phone number: #{to}" unless parsed_to.valid?
+
+      normalized_to = parsed_to.e164
 
       delivery = Delivery.create!(
         user_id: user_id,
