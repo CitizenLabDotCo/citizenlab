@@ -26,15 +26,12 @@ class WebApi::V1::PermissionsCustomFieldsController < ApplicationController
     ActiveRecord::Base.transaction do
       sidefx.before_create permissions_custom_field, current_user
       Permissions::PermissionsCustomFieldsService.new.persist_default_fields permission
-      if permissions_custom_field.save
-        sidefx.after_create permissions_custom_field, current_user
-        render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
-          permissions_custom_field,
-          params: jsonapi_serializer_params
-        ).serializable_hash, status: :created
-      else
-        render json: { errors: permissions_custom_field.errors.details }, status: :unprocessable_entity
-      end
+      save_or_raise!(permissions_custom_field)
+      sidefx.after_create permissions_custom_field, current_user
+      render json: WebApi::V1::PermissionsCustomFieldSerializer.new(
+        permissions_custom_field,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
     end
   end
 

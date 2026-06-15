@@ -61,7 +61,7 @@ class SideFxCommentService
     disallowed_reason = Permissions::IdeaPermissionsService.new(comment.idea, user).denied_reason_for_action('commenting_idea')
     return unless disallowed_reason
 
-    raise ClErrors::TransactionError.new(error_key: disallowed_reason)
+    raise ApiError, disallowed_reason
   end
 
   def process_mentions(comment)
