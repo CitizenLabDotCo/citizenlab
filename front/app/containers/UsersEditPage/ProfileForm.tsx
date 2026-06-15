@@ -41,6 +41,7 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { preventEnterSubmit } from 'utils/preventEnterSubmit';
 import validateLocale from 'utils/yup/validateLocale';
 
 import messages from './messages';
@@ -212,7 +213,7 @@ const ProfileForm = () => {
   return (
     <FormSection>
       <FormProvider {...methods}>
-        <form onSubmit={handleDisclaimer}>
+        <form onSubmit={handleDisclaimer} onKeyDownCapture={preventEnterSubmit}>
           <FormSectionTitle
             message={messages.h1}
             subtitleMessage={messages.h1sub}
