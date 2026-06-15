@@ -322,7 +322,7 @@ de-AT:
         contribution: Zum Beitrag
         idea: Zur Idee
         initiative: Zur Initiative
-        issue: Zum Problem
+        issue: Zum Mangel
         option: Zur Option
         petition: Zur Petition
         post: Zu Ihrem Beitrag
@@ -355,7 +355,7 @@ de-AT:
         contribution: Ihr Beitrag wurde veröffentlicht
         idea: Ihre Idee wurde veröffentlicht
         initiative: Initiative wurde veröffentlicht
-        issue: Ihr Problem wurde veröffentlicht
+        issue: Ihr Mangel wurde veröffentlicht
         option: Ihre Option wurde veröffentlicht
         petition: Ihre Petition wurde veröffentlicht
         post: Beitrag wurde veröffentlicht
@@ -720,7 +720,7 @@ de-AT:
         contribution: Ihr Beitrag ist in "%{prescreening_status_title}"
         idea: Ihr Beitrag ist in "%{prescreening_status_title}"
         initiative: Ihre Initiative ist in "%{prescreening_status_title}"
-        issue: Ihr Problem ist in "%{prescreening_status_title}"
+        issue: Ihr Mangel ist in "%{prescreening_status_title}"
         option: Ihre Option ist in "%{prescreening_status_title}"
         petition: Ihre Petition ist in "%{prescreening_status_title}"
         post: Ihr Beitrag ist in "%{prescreening_status_title}"
