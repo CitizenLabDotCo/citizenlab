@@ -8,6 +8,33 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
 
   SUPPORTED_METHODS = %w[native_survey ideation].freeze
 
+  CONSTRAINTS_SCHEMA = {
+    type: 'object',
+    description: <<~DESC.squish,
+      Form-wide constraints keyed by field `code`. Marks built-in fields (e.g. ideation's
+      `title_multiloc`) that cannot be deleted or have certain attributes changed.
+    DESC
+    additionalProperties: {
+      type: 'object',
+      properties: {
+        locks: {
+          type: 'object',
+          properties: {
+            attributes: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Attribute names that cannot be modified for this field (e.g. ["title_multiloc", "required"]).'
+            },
+            deletion: {
+              type: 'boolean',
+              description: 'If true, this field cannot be removed from the form.'
+            }
+          }
+        }
+      }
+    }
+  }.freeze
+
   def name = 'get_form_fields'
 
   def description
@@ -22,9 +49,6 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
       move through fields in display order, but logic rules can skip ahead to a specific
       page, either based on the answer to a question or at the end of a page.
 
-      The response also includes the participation method's constraints, which mark
-      built-in fields that can't be deleted or have certain attributes changed.
-
       The response shape matches what `replace_form_fields` accepts, so you can round-trip:
       fetch fields → edit → replace.
     DESC
@@ -38,6 +62,36 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
       },
       required: %w[container_type container_id]
     }
+  end
+
+  def output_schema
+    {
+      type: 'object',
+      properties: {
+        container_type: { type: 'string', enum: CONTAINER_TYPES.keys },
+        container_id: { type: 'string' },
+        participation_method: { type: 'string', enum: SUPPORTED_METHODS },
+        constraints: CONSTRAINTS_SCHEMA,
+        fields: { type: 'array', items: field_schema },
+        fields_last_updated_at: {
+          type: %w[string null],
+          description: <<~DESC.squish
+            Stale-data guard. Pass back to `replace_form_fields` to abort if anyone else
+            modified the form fields in the meantime.
+          DESC
+        },
+      },
+      required: %w[container_type container_id participation_method fields]
+    }
+  end
+
+  private
+
+  def field_schema
+    McpServer::Tools::FormFieldsSchemaBuilder.new(
+      mode: :output,
+      multiloc_schema: multiloc_schema
+    ).field_schema
   end
 
   class Runner < McpServer::BaseTool::Runner

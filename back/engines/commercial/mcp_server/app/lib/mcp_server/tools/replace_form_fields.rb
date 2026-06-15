@@ -40,6 +40,15 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     }
   end
 
+  private
+
+  def field_schema
+     McpServer::Tools::FormFieldsSchemaBuilder.new(
+      mode: :input,
+      multiloc_schema: multiloc_schema
+    ).field_schema
+  end
+
   class Runner < McpServer::BaseTool::Runner
     CONTAINER_TYPES = McpServer::Tools::ReplaceFormFields::CONTAINER_TYPES
     SUPPORTED_METHODS = McpServer::Tools::ReplaceFormFields::SUPPORTED_METHODS
@@ -108,98 +117,4 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     end
   end
 
-  private
-
-  # JSON Schema for a single field. Mirrors the strong_params shape from
-  # IdeaCustomFields::WebApi::V1::IdeaCustomFieldsController#update_all_params. Kept loose
-  # on purpose — UpdateAllService + CustomFieldsValidationService enforce the real rules
-  # (allowed input types per participation method, locked attributes, page/section structure).
-  def field_schema
-    {
-      type: 'object',
-      properties: {
-        id: { type: 'string', description: 'UUID of an existing field to update. Omit for new fields.' },
-        temp_id: { type: 'string', description: 'Client-side temp ID for a new field. Reference it from another field\'s logic.' },
-        code: { type: %w[string null], description: 'Reserved code for built-in fields (e.g. title_multiloc on ideation). Do not invent codes.' },
-        key: { type: 'string', description: 'Stable slug. Auto-generated from title if omitted on new fields.' },
-        input_type: { type: 'string', description: 'e.g. page, text, multiline_text, select, multiselect, linear_scale, rating, ranking, matrix_linear_scale, file_upload, point, line, polygon. The set of allowed types depends on the participation method.' },
-        required: { type: 'boolean' },
-        enabled: { type: 'boolean' },
-        title_multiloc: multiloc_schema_loose,
-        description_multiloc: multiloc_schema_loose,
-        page_layout: { type: 'string', description: "Only for input_type='page'. e.g. 'default', 'map'." },
-        page_button_label_multiloc: multiloc_schema_loose,
-        page_button_link: { type: 'string' },
-        dropdown_layout: { type: 'boolean', description: 'For select fields: render as a dropdown.' },
-        maximum: { type: 'integer', description: 'Max value for linear_scale / rating (1..11).' },
-        min_characters: { type: 'integer' },
-        max_characters: { type: 'integer' },
-        select_count_enabled: { type: 'boolean' },
-        minimum_select_count: { type: 'integer' },
-        maximum_select_count: { type: 'integer' },
-        random_option_ordering: { type: 'boolean' },
-        ask_follow_up: { type: 'boolean' },
-        question_category: { type: 'string' },
-        include_in_printed_form: { type: 'boolean' },
-        map_config_id: { type: 'string', description: 'Existing CustomMaps::MapConfig UUID for geographic fields (point/line/polygon/shapefile_upload). This tool does not create map configs — they must already exist.' },
-        linear_scale_label_1_multiloc: multiloc_schema_loose,
-        linear_scale_label_2_multiloc: multiloc_schema_loose,
-        linear_scale_label_3_multiloc: multiloc_schema_loose,
-        linear_scale_label_4_multiloc: multiloc_schema_loose,
-        linear_scale_label_5_multiloc: multiloc_schema_loose,
-        linear_scale_label_6_multiloc: multiloc_schema_loose,
-        linear_scale_label_7_multiloc: multiloc_schema_loose,
-        linear_scale_label_8_multiloc: multiloc_schema_loose,
-        linear_scale_label_9_multiloc: multiloc_schema_loose,
-        linear_scale_label_10_multiloc: multiloc_schema_loose,
-        linear_scale_label_11_multiloc: multiloc_schema_loose,
-        options: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              temp_id: { type: 'string' },
-              key: { type: 'string' },
-              image_id: { type: 'string' },
-              other: { type: 'boolean', description: '"Other, please specify" option.' },
-              title_multiloc: multiloc_schema_loose
-            }
-          }
-        },
-        matrix_statements: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' },
-              temp_id: { type: 'string' },
-              key: { type: 'string' },
-              title_multiloc: multiloc_schema_loose
-            }
-          }
-        },
-        logic: {
-          type: 'object',
-          description: <<~DESC.squish
-            Conditional jump rules. Native_survey only. Shape:
-            { "rules": [{ "if": "<option_id|temp_id|'any_other_answer'|'no_answer'>",
-            "goto_page_id": "<page_id|temp_id>" }] } on selection fields, or
-            { "next_page_id": "<page_id|temp_id>" } on pages. Temp IDs are remapped to real IDs after save.
-          DESC
-        }
-      }
-    }
-  end
-
-  # Looser multiloc schema for nested field payloads — avoids tying every nested multiloc
-  # to the tenant locale enum, which would reject legitimate locale codes when the call
-  # happens mid-locale-config-change.
-  def multiloc_schema_loose
-    {
-      type: 'object',
-      description: 'Localized text: { "<locale>": "<string>" }.',
-      additionalProperties: { type: 'string' }
-    }
-  end
 end
