@@ -1208,6 +1208,7 @@
   "app.components.screenReaderCurrency.currency": "Para Birimi",
   "app.components.trendIndicator.comparedToLastQuarter": "geçen çeyreğe göre",
   "app.components.trendIndicator.lastQuarter2": "son çeyrek",
+  "app.components.trendIndicator.trendDecreased": "{percentage}% azaldı",
   "app.components.trendIndicator.trendNoChange": "Değişiklik yok",
   "app.containers.AccessibilityStatement.applicability": "Bu erişilebilirlik beyanı, bu web sitesini temsil eden bir {demoPlatformLink} için geçerlidir. Aynı kaynak kodunu kullanır ve aynı şekilde çalışır.",
   "app.containers.AccessibilityStatement.assesmentMethodsTitle": "Değerlendirme yöntemi",
