@@ -29,8 +29,7 @@ class McpServer::Tools::ListPollQuestions < McpServer::BaseTool
         'poll questions',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id phase_id title_multiloc question_type max_options ordering],
-        include: { options: { only: %i[id title_multiloc ordering] } }
+        serializer: McpServer::Serializers::PollQuestion
       )
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")

@@ -50,7 +50,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
           participation_method: pmethod.class.method_str,
           fields_last_updated_at: custom_form.fields_last_updated_at,
           constraints: pmethod.constraints,
-          fields: McpServer::Serializers::CustomField.serialize_all(fields, params: { constraints: nil })
+          fields: McpServer::Serializers::CustomField.serialize(fields, params: { constraints: nil })
         }
       )
     rescue ActiveRecord::RecordNotFound
