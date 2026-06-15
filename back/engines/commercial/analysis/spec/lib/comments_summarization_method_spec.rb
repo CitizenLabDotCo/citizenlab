@@ -29,7 +29,7 @@ RSpec.describe Analysis::CommentsSummarizationMethod do
 
       comments_summary = create(:comments_summary, idea: input, summary: nil)
 
-      mock_llm = Analysis::LLM::GPT41.new
+      mock_llm = Analysis::LLM::GPT54.new
       summarization_method = Analysis::CommentsSummarizationMethod::OnePassLLM.new(comments_summary, llm: mock_llm)
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include('a very good idea')
@@ -40,7 +40,7 @@ RSpec.describe Analysis::CommentsSummarizationMethod do
       expect { summarization_method.execute }
         .to change { comments_summary.summary }.from(nil).to('Complete summary')
         .and change { comments_summary.prompt }.from(nil).to(kind_of(String))
-        .and change { comments_summary.accuracy }.from(nil).to(0.8)
+        .and change { comments_summary.accuracy }.from(nil).to(0.9)
         .and change { comments_summary.reload.generated_at }.from(nil).to(be_present)
 
       expect(comments_summary.background_task).to have_attributes({
