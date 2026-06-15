@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { IGroupData, MembershipType } from 'api/groups/types';
 import useAddGroup from 'api/groups/useAddGroup';
 
-
 import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';

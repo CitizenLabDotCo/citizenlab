@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-  IdMethodName,
-  IDLookupMethod,
-} from 'api/id_methods/types';
+import { IdMethodName, IDLookupMethod } from 'api/id_methods/types';
 import { isLastIdMethod } from 'api/id_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -27,10 +24,7 @@ const configuration: ModuleConfiguration = {
       );
 
       if (method) {
-        const last = isLastIdMethod(
-          verificationMethodName,
-          idMethods
-        );
+        const last = isLastIdMethod(verificationMethodName, idMethods);
         return (
           <IdCardLookupButton
             last={last}

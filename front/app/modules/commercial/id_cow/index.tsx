@@ -22,10 +22,7 @@ const configuration: ModuleConfiguration = {
       );
 
       if (method) {
-        const last = isLastIdMethod(
-          verificationMethodName,
-          idMethods
-        );
+        const last = isLastIdMethod(verificationMethodName, idMethods);
         return <CowButton last={last} method={method} {...otherProps} />;
       }
 
