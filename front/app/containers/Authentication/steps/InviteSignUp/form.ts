@@ -43,12 +43,11 @@ export const getPasswordSchema = (
 ) =>
   string()
     .required(formatMessage(sharedMessages.noPasswordError))
-    .test(
-      '',
+    .min(
+      minimumPasswordLength,
       formatMessage(passwordInputMessages.minimumPasswordLengthError, {
         minimumPasswordLength,
-      }),
-      (value) => !!(value && value.length >= minimumPasswordLength)
+      })
     )
     .test(
       'password-strength',
