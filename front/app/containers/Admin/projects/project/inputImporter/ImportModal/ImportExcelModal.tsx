@@ -27,6 +27,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { useParams } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
+import { IDEA_IMPORT_FILE_MAX_SIZE_MB } from './constants';
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 
@@ -134,7 +135,12 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" accept=".xlsx" shouldUnregister />
+              <SingleFileUploader
+                name="file"
+                accept=".xlsx"
+                maxSizeMb={IDEA_IMPORT_FILE_MAX_SIZE_MB}
+                shouldUnregister
+              />
             </Box>
 
             <Box w="100%" display="flex" mt="32px">

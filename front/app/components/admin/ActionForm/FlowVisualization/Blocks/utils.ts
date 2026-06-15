@@ -1,6 +1,6 @@
 import { FormatMessage } from 'typings';
 
-import { MethodMetadata } from 'api/verification_methods/types';
+import { MethodMetadata } from 'api/id_methods/types';
 
 import { Localize } from 'hooks/useLocalize';
 

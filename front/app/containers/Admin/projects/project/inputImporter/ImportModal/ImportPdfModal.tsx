@@ -29,6 +29,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { useParams } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
+import { IDEA_IMPORT_FILE_MAX_SIZE_MB } from './constants';
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 
@@ -176,7 +177,12 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" accept=".pdf" shouldUnregister />
+              <SingleFileUploader
+                name="file"
+                accept=".pdf"
+                maxSizeMb={IDEA_IMPORT_FILE_MAX_SIZE_MB}
+                shouldUnregister
+              />
             </Box>
 
             <Box mt="24px">

@@ -329,12 +329,15 @@ class User < ApplicationRecord
 
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
-    # either by posting ideas or comments in phases with public participation methods.
+    # either by posting ideas or comments in phases with public participation methods,
+    # or by accepting an invitation to co-sponsor a proposal.
     # This is to avoid exposing personal data of users who have not actively used the platform.
     ideas
       .joins(:ideas_phases)
       .joins(:phases)
-      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) || comments.exists?
+      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) ||
+      comments.exists? ||
+      cosponsorships.exists?(status: 'accepted')
   end
 
   private
@@ -342,26 +345,36 @@ class User < ApplicationRecord
   def validate_not_duplicate_new_email
     return unless new_email
 
-    if User.find_by_cimail(new_email)
-      errors.add(:email, :taken, value: new_email)
-    elsif errors[:new_email].present?
+    # If there is a validation error:
+    # Rename the error from new_email to email (for some reason this is important)
+    if errors.of_kind?(:new_email, :invalid)
       ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
       errors.add(:email, :invalid, value: new_email)
     end
+
+    duplicate_user = User.find_by_cimail(new_email)
+
+    # If nobody is using this email, return
+    return unless duplicate_user
+
+    # Return if duplicate user is same as current user.
+    return if duplicate_user.id == id
+
+    errors.add(:email, :taken, value: new_email)
   end
 
   def validate_not_duplicate_email
-    return unless email && (duplicate_user = User.find_by_cimail(email)).present? && duplicate_user.id != id
+    return unless email
 
-    if duplicate_user.invite_pending?
-      ErrorsService.new.remove errors, :email, :taken, value: email
-      errors.add(:email, :taken_by_invite, value: email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
-    elsif duplicate_user.email != email
-      # We're only checking this case, as the other case is covered
-      # by the uniqueness constraint which can "cleverly" distinguish
-      # true duplicates from the record itself.
-      errors.add(:email, :taken, value: email)
-    end
+    duplicate_user = User.find_by_cimail(email)
+
+    # If nobody is using this email, return
+    return unless duplicate_user
+
+    # Return if duplicate user is same as current user.
+    return if duplicate_user.id == id
+
+    errors.add(:email, :taken, value: email)
   end
 
   def validate_can_update_email

@@ -68,13 +68,13 @@ RSpec.describe Analysis::SummarizationMethod do
       expect(plan).to have_attributes({
         summarization_method_class: Analysis::SummarizationMethod::OnePassLLM,
         llm: kind_of(Analysis::LLM::Base),
-        accuracy: 0.8,
+        accuracy: 0.9,
         include_id: true,
         shorten_labels: false,
         include_comments: true
       })
 
-      mock_llm = instance_double(Analysis::LLM::GPT41)
+      mock_llm = instance_double(Analysis::LLM::GPT54)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt, &block|
         expect(prompt).to include(inputs[2].id)
@@ -85,7 +85,7 @@ RSpec.describe Analysis::SummarizationMethod do
       expect { plan.summarization_method_class.new(summary).execute(plan) }
         .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
         .and change { summarization_task.summary.prompt }.from(nil).to(kind_of(String))
-        .and change { summarization_task.summary.accuracy }.from(nil).to(0.8)
+        .and change { summarization_task.summary.accuracy }.from(nil).to(0.9)
         .and change { summarization_task.summary.inputs_ids }.from(nil).to(contain_exactly(inputs[1].id, inputs[2].id))
 
       expect(summarization_task.reload).to have_attributes({
@@ -98,7 +98,7 @@ RSpec.describe Analysis::SummarizationMethod do
       create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
 
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
-      mock_llm = instance_double(Analysis::LLM::GPT41)
+      mock_llm = instance_double(Analysis::LLM::GPT54)
       plan.llm = mock_llm
       expect(mock_llm).to receive(:chat_async).with(kind_of(String)) do |prompt|
         expect(prompt).to include('I want to comment on that')

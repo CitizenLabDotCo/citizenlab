@@ -9,11 +9,9 @@
 #  import_user_id  :uuid
 #  file_id         :uuid
 #  user_created    :boolean          default(FALSE)
-#  required        :boolean          default(FALSE)
 #  approved_at     :datetime
 #  page_range      :text             default([]), is an Array
 #  locale          :string
-#  string          :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  user_consent    :boolean          default(FALSE), not null
@@ -34,6 +32,9 @@
 module BulkImportIdeas
   class IdeaImport < ApplicationRecord
     self.table_name = 'idea_imports'
+
+    # Accidental columns scheduled for removal; ignored so AR stops caching/writing them.
+    self.ignored_columns += %w[string required]
 
     belongs_to :file, class_name: 'BulkImportIdeas::IdeaImportFile', optional: true
     belongs_to :idea

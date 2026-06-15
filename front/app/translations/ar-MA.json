@@ -52,7 +52,6 @@
   "app.components.AuthProviders.continueWithHoplr": "تواصل مع Hoplr",
   "app.components.AuthProviders.continueWithIdAustria": "متابعة مع ID النمسا",
   "app.components.AuthProviders.continueWithLoginMechanism": "تواصل مع {loginMechanismName}",
-  "app.components.AuthProviders.continueWithNemlogIn": "متابعة مع MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "يوجد بالفعل حساب يحمل عنوان البريد الإلكتروني هذا.{br}{br}لا يمكنك الوصول إلى المنصة باستخدام FranceConnect بسبب عدم تطابق البيانات الشخصية. لتسجيل الدخول باستخدام FranceConnect, سيتعين عليك تغيير اسمك الأول أو اسمك الأخير في هذه المنصة ليطابق بياناتك الرسمية.{br}{br}يمكنك تسجيل الدخول كالمعتاد أدناه.",
   "app.components.AuthProviders.livesOutsideAreaAuthFailed": "لا يمكنك تسجيل الدخول لأن عنوانك ليس في المنطقة المطلوبة.",
   "app.components.AuthProviders.livesOutsideAreaVerificationFailed": "لا يمكن التحقق من عنوانك لأن عنوانك ليس في المنطقة المطلوبة.",
