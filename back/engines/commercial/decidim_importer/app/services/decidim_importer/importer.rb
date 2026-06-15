@@ -40,6 +40,7 @@ module DecidimImporter
     PROPOSALS_FILE_GLOB = '*--proposals.csv'
     COMMENTS_FILE_GLOB = '*--comments.csv'
     PROPOSALS_COMPONENT = 'proposals'
+    SURVEYS_COMPONENT = 'surveys'
 
     # Build an importer from a Decidim export zip. Extracts into a tempdir, parses every CSV into
     # memory, then tears the tempdir down.
@@ -239,6 +240,7 @@ module DecidimImporter
       run_phases
       run_proposals
       run_comments
+      run_surveys
       TemplateBuilder.new(ref_map)
     end
 
@@ -283,6 +285,11 @@ module DecidimImporter
       (@proposals_extractor&.skipped || []) + (@comments_extractor&.skipped || [])
     end
 
+    # Surveys/questions that couldn't be imported (e.g. an unsupported question type).
+    def skipped_surveys
+      @surveys_extractor&.skipped || []
+    end
+
     private
 
     def run_phases
@@ -293,7 +300,7 @@ module DecidimImporter
         @phases_extractor.run
       end
       @phase_projector = PhaseProjector.new(ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale)
-      @phase_projector.run(step_rows: rows_for(:phases), proposal_components: proposal_components)
+      @phase_projector.run(step_rows: rows_for(:phases), participation_components: participation_components)
     end
 
     def run_proposals
@@ -314,16 +321,43 @@ module DecidimImporter
       @comments_extractor.run
     end
 
-    # Groups the stamped proposal rows back into their components for {PhaseProjector} (which needs
-    # each component's proposals to date its ideation phase, and the component name for the title).
+    def run_surveys
+      return if survey_component_rows.empty?
+
+      @surveys_extractor = Extractors::SurveysExtractor.new(
+        survey_component_rows, ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+      @surveys_extractor.run
+    end
+
+    # The phase-generating components fed to {PhaseProjector}: proposals → ideation phases (dated by
+    # their proposals' published_at), surveys → native_survey phases (dated by the component's
+    # publication date — the export carries no survey responses to date them by).
+    def participation_components
+      proposal_components + survey_phase_components
+    end
+
     def proposal_components
       names = component_name_map
       rows_for(:proposals)
         .group_by { |row| [row['decidim_participatory_process'], row['decidim_component']] }
         .map do |(process_uid, component_uid), proposal_rows|
-          { process_uid: process_uid, component_uid: component_uid,
-            name: names[component_uid], proposal_rows: proposal_rows }
+          { process_uid: process_uid, component_uid: component_uid, name: names[component_uid],
+            method: 'ideation', dates: proposal_rows.pluck('published_at') }
         end
+    end
+
+    def survey_phase_components
+      survey_component_rows.map do |row|
+        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
+          name: SurveyParser.title(row['specific_data']) || row['name'],
+          method: 'native_survey', dates: [row['published_at']] }
+      end
+    end
+
+    # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).
+    def survey_component_rows
+      @survey_component_rows ||= rows_for(:components).select { |row| row['type'] == SURVEYS_COMPONENT }
     end
 
     def component_name_map

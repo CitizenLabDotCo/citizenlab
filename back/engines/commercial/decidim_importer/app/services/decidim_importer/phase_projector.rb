@@ -9,19 +9,21 @@ module DecidimImporter
   # `step_settings` are empty; a step's `cta_path` references a component in only one process), so the
   # only signal tying a component's activity to a window is the `published_at` of its items.
   #
-  # This iteration the only phase-generating participation is **proposals** (meetings → events, pages
-  # ignored, the rest deferred), which keeps the projection simple:
+  # Phase-generating components so far are **proposals** (→ ideation, dated by the proposals'
+  # published_at window) and **surveys** (→ native_survey, dated by the component's publication date).
+  # The projection stays simple:
   #
   #   * the step → information phases stay the timeline backbone (hardened to be date-granular and
   #     non-overlapping — real steps overlap and overshoot the process span);
-  #   * each proposals component becomes one **ideation** phase, dated by its proposals' published_at
-  #     window, appended *after* the information backbone and sequenced so nothing overlaps.
+  #   * each participation component becomes one phase, appended *after* the information backbone and
+  #     sequenced so nothing overlaps.
   #
-  # Placing ideation after the backbone (rather than interleaving) keeps the step narrative intact; the
-  # ordering is an explicit approximation since the source has no reliable activation window.
+  # Placing participation after the backbone (rather than interleaving) keeps the step narrative
+  # intact; the ordering is an explicit approximation since the source has no reliable activation
+  # window.
   #
-  # The projector only touches processes that have at least one proposals component — component-less
-  # processes keep the {Extractors::PhasesExtractor} output verbatim.
+  # Processes with steps are always hardened; processes with only participation get just their
+  # participation phases.
   class PhaseProjector
     MIN_DURATION = 1 # day; Go Vocal rejects zero-length phases (Phase::MIN_DURATION)
 
@@ -38,14 +40,16 @@ module DecidimImporter
 
     # @param step_rows [Array<Hash>] the flat, process-stamped step rows (to find which information
     #   phase records belong to which process).
-    # @param proposal_components [Array<Hash>] one entry per proposals component:
-    #   `{ process_uid:, component_uid:, name:, proposal_rows: [...] }`.
-    def run(step_rows:, proposal_components:)
-      components_by_process = proposal_components.group_by { |component| component[:process_uid] }
+    # @param participation_components [Array<Hash>] one entry per phase-generating component:
+    #   `{ process_uid:, component_uid:, name:, method: 'ideation'|'native_survey', dates: [<date str>] }`.
+    #   `dates` are the timestamps used to date the phase (proposals' published_at; a survey's
+    #   publication date) — the phase spans their [min, max].
+    def run(step_rows:, participation_components:)
+      components_by_process = participation_components.group_by { |component| component[:process_uid] }
 
       # Every process with steps is hardened (Decidim steps overlap and overshoot the process span,
-      # which Go Vocal rejects), even when it has no proposals — so iterate the union, not just the
-      # processes that gained an ideation phase.
+      # which Go Vocal rejects), even when it has no participation — so iterate the union, not just the
+      # processes that gained a participation phase.
       process_uids = step_rows.pluck('decidim_participatory_process')
       process_uids = (process_uids + components_by_process.keys).compact.uniq
 
@@ -74,11 +78,11 @@ module DecidimImporter
         .filter_map { |s| ref_map.fetch(present(s['uid'])) }
     end
 
-    # Lays out a process's information + ideation phases as one non-overlapping, date-granular,
+    # Lays out a process's information + participation phases as one non-overlapping, date-granular,
     # start-ascending sequence and writes the result back (mutating information records in place,
-    # registering new ideation records).
+    # registering new participation records).
     def sequence(project, info_records, components)
-      intents = info_intents(info_records) + ideation_intents(project, components)
+      intents = info_intents(info_records) + participation_intents(project, components)
       return if intents.empty?
 
       cursor = nil
@@ -100,31 +104,28 @@ module DecidimImporter
       intents.select { |intent| intent[:start] }.sort_by { |intent| intent[:start] }
     end
 
-    # One ideation intent per proposals component, ordered by its proposals' published window. A
-    # component whose proposals carry no usable date is skipped (logged) rather than guessing a date.
-    def ideation_intents(project, components)
+    # One intent per participation component, ordered by its activity window. A component with no
+    # usable date is skipped (logged) rather than guessing a date.
+    def participation_intents(project, components)
       intents = components.filter_map do |component|
-        window = proposal_window(component[:proposal_rows])
+        window = window_from(component[:dates])
         unless window
-          skip(component, 'no datable proposals')
+          skip(component, 'no datable activity')
           next
         end
 
-        { kind: :ideation, project: project, component: component,
+        { kind: :participation, project: project, component: component,
           start: window.first, end: window.last }
       end
       intents.sort_by { |intent| intent[:start] }
     end
 
-    # @return [Array(Date, Date), nil] [min, max] of the proposals' published_at (or created_at as a
-    #   fallback), at date granularity.
-    def proposal_window(proposal_rows)
-      dates = proposal_rows.filter_map do |row|
-        to_date(row['published_at']) || to_date(row['created_at'])
-      end
-      return nil if dates.empty?
+    # @return [Array(Date, Date), nil] [min, max] of the given timestamp strings, at date granularity.
+    def window_from(dates)
+      parsed = Array(dates).filter_map { |date| to_date(date) }
+      return nil if parsed.empty?
 
-      dates.minmax
+      parsed.minmax
     end
 
     # The phase's end date. Non-last phases must be concrete and at least a day long; the very last
@@ -144,24 +145,38 @@ module DecidimImporter
         intent[:record].attributes['start_at'] = start_at.iso8601
         intent[:record].attributes['end_at'] = end_at&.iso8601
       else
-        register_ideation_phase(intent, start_at, end_at)
+        register_participation_phase(intent, start_at, end_at)
       end
     end
 
-    def register_ideation_phase(intent, start_at, end_at)
-      record = Record.new('phase', {
-        'title_multiloc' => ideation_title(intent[:component]),
-        'participation_method' => 'ideation',
+    # Default phase title per method when the component has no usable name.
+    DEFAULT_TITLES = { 'ideation' => 'Propositions', 'native_survey' => 'Questionnaire' }.freeze
+
+    def register_participation_phase(intent, start_at, end_at)
+      component = intent[:component]
+      method = component[:method]
+      title = participation_title(component, method)
+
+      attributes = {
+        'title_multiloc' => title,
+        'participation_method' => method,
         'start_at' => start_at.iso8601,
         'end_at' => end_at&.iso8601
-      })
+      }
+      # Native-survey phases require these two multilocs (Phase validates their presence).
+      if method == 'native_survey'
+        attributes['native_survey_title_multiloc'] = title
+        attributes['native_survey_button_multiloc'] = title.keys.index_with { 'Submit' }
+      end
+
+      record = Record.new('phase', attributes)
       record.reference('project', intent[:project])
-      ref_map.register(intent[:component][:component_uid], record)
+      ref_map.register(component[:component_uid], record)
     end
 
-    def ideation_title(component)
+    def participation_title(component, method)
       title = multiloc(component[:name])
-      title.empty? ? { primary_locale => 'Propositions' } : title
+      title.empty? ? { primary_locale => DEFAULT_TITLES.fetch(method, 'Participation') } : title
     end
 
     # — small parsing helpers (kept local so the projector doesn't depend on BaseExtractor) —

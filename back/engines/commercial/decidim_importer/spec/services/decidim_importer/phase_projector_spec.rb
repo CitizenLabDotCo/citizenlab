@@ -25,11 +25,8 @@ RSpec.describe DecidimImporter::PhaseProjector do
     ref_map.register(uid, record)
   end
 
-  def component(uid, dates, name: '{"fr":"Propositions"}')
-    {
-      process_uid: process_uid, component_uid: uid, name: name,
-      proposal_rows: dates.map { |d| { 'published_at' => d } }
-    }
+  def component(uid, dates, method: 'ideation', name: '{"fr":"Propositions"}')
+    { process_uid: process_uid, component_uid: uid, name: name, method: method, dates: dates }
   end
 
   # All registered phase records for the project, sorted by start, as [method, start, end] tuples.
@@ -41,7 +38,7 @@ RSpec.describe DecidimImporter::PhaseProjector do
   end
 
   it 'projects a proposals component in a process with no steps as one ideation phase over its window' do
-    projector.run(step_rows: [], proposal_components: [component('c1', %w[2023-02-10 2023-02-25])])
+    projector.run(step_rows: [], participation_components: [component('c1', %w[2023-02-10 2023-02-25])])
 
     expect(phases).to eq([%w[ideation 2023-02-10 2023-02-25]])
     expect(ref_map.fetch('c1').attributes['title_multiloc']).to eq('fr-FR' => 'Propositions')
@@ -51,7 +48,7 @@ RSpec.describe DecidimImporter::PhaseProjector do
     register_info_phase('s1', '2023-01-01 01:00:00 +0100', '2023-02-01 01:00:00 +0100')
     step_rows = [{ 'uid' => 's1', 'decidim_participatory_process' => process_uid }]
 
-    projector.run(step_rows: step_rows, proposal_components: [component('c1', %w[2023-02-10 2023-02-25])])
+    projector.run(step_rows: step_rows, participation_components: [component('c1', %w[2023-02-10 2023-02-25])])
 
     expect(phases).to eq([
       %w[information 2023-01-01 2023-02-01],
@@ -61,7 +58,7 @@ RSpec.describe DecidimImporter::PhaseProjector do
 
   it 'lays out two same-window components as back-to-back sequential ideation phases' do
     components = [component('c1', %w[2023-03-01 2023-03-10]), component('c2', %w[2023-03-01 2023-03-10])]
-    projector.run(step_rows: [], proposal_components: components)
+    projector.run(step_rows: [], participation_components: components)
 
     layout = phases
     expect(layout.map(&:first)).to eq(%w[ideation ideation])
@@ -74,16 +71,26 @@ RSpec.describe DecidimImporter::PhaseProjector do
     register_info_phase('s2', '2023-02-01', '2023-04-01') # overlaps s1
     step_rows = %w[s1 s2].map { |u| { 'uid' => u, 'decidim_participatory_process' => process_uid } }
 
-    projector.run(step_rows: step_rows, proposal_components: [component('c1', %w[2023-05-01 2023-05-10])])
+    projector.run(step_rows: step_rows, participation_components: [component('c1', %w[2023-05-01 2023-05-10])])
 
     info = phases.select { |(method, _, _)| method == 'information' }
     info.each_cons(2) { |(_, _, prev_end), (_, next_start, _)| expect(next_start).to be >= prev_end }
   end
 
   it 'skips a component whose proposals carry no usable date' do
-    result = projector.run(step_rows: [], proposal_components: [component('c1', [nil, ''])])
+    result = projector.run(step_rows: [], participation_components: [component('c1', [nil, ''])])
 
     expect(phases).to be_empty
     expect(result.skipped.first).to include(component: 'c1')
+  end
+
+  it 'creates a native_survey phase with the required survey title/button multilocs' do
+    survey = component('c1', %w[2023-04-01], method: 'native_survey', name: '{"fr":"Questionnaire"}')
+    projector.run(step_rows: [], participation_components: [survey])
+
+    phase = ref_map.fetch('c1').attributes
+    expect(phase['participation_method']).to eq('native_survey')
+    expect(phase['native_survey_title_multiloc']).to eq('fr-FR' => 'Questionnaire')
+    expect(phase['native_survey_button_multiloc']).to eq('fr-FR' => 'Submit')
   end
 end

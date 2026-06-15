@@ -12,12 +12,13 @@ module DecidimImporter
     # Records that may be referenced must be listed before their referrers. Anything not listed is
     # appended afterwards in registration order.
     MODEL_ORDER = %w[
-      custom_field
-      custom_field_option
       user
       project_folders/folder
       project
       phase
+      custom_form
+      custom_field
+      custom_field_option
       idea
       ideas_phase
       comment

@@ -80,12 +80,26 @@ RSpec.describe DecidimImporter::Importer do
 
       let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'") }
 
-      it 'imports the proposals component as an ideation phase that does not overlap the steps' do
+      it 'lays out the step, survey and proposals components as non-overlapping phases' do
         methods = project.phases.order(:start_at).pluck(:participation_method)
-        expect(methods).to eq(%w[information ideation])
+        expect(methods).to eq(%w[information native_survey ideation])
         # Sequential, non-overlapping: each phase starts on/after the previous one's end.
         starts_ends = project.phases.order(:start_at).pluck(:start_at, :end_at)
         starts_ends.each_cons(2) { |(_, prev_end), (next_start, _)| expect(next_start).to be >= prev_end }
+      end
+
+      it 'rebuilds the surveys component as a native_survey phase with a custom form' do
+        survey_phase = project.phases.find_by(participation_method: 'native_survey')
+        form = survey_phase.custom_form
+        expect(form).to be_present
+
+        fields = form.custom_fields.order(:ordering)
+        expect(fields.first.input_type).to eq('page') # opens with a page
+        expect(fields.last.input_type).to eq('page') # closes with a page
+        expect(fields.map(&:input_type)).to include('text', 'select', 'multiselect', 'multiline_text')
+
+        select = fields.find { |field| field.input_type == 'select' }
+        expect(select.options.order(:ordering).map { |o| o.title_multiloc['fr-FR'] }).to eq(%w[Oui Non])
       end
 
       it 'imports proposals as ideas with mapped statuses, in the ideation phase' do
