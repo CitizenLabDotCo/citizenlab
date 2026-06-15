@@ -20,13 +20,10 @@ import messages from 'containers/DescriptionBuilder/messages';
 
 import NewLabel from 'components/UI/NewLabel';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Warning from 'components/UI/Warning';
 
 import { injectIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
-
-// Messages
 
 type DescriptionBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
@@ -64,24 +61,25 @@ const DescriptionBuilderToggle = ({
     contentBuildableType === 'folder'
       ? params.projectFolderId
       : params.projectId;
-  const { data: DescriptionBuilderLayout } = useContentBuilderLayout(
+  const { data: descriptionBuilderLayout } = useContentBuilderLayout(
     contentBuildableType,
     contentBuildableId,
     featureEnabled
   );
 
-  const [descriptionBuilderLinkVisible, setDescriptionBuilderLinkVisible] =
-    useState<boolean | null>(null);
+  const [descriptionBuilderEnabled, setDescriptionBuilderEnabled] = useState<
+    boolean | null
+  >(null);
   const { mutateAsync: addDescriptionBuilderLayout } =
     useAddContentBuilderLayout();
 
   useEffect(() => {
-    if (DescriptionBuilderLayout) {
-      const DescriptionBuilderEnabled =
-        DescriptionBuilderLayout.data.attributes.enabled;
-      setDescriptionBuilderLinkVisible(DescriptionBuilderEnabled);
+    if (descriptionBuilderLayout) {
+      setDescriptionBuilderEnabled(
+        descriptionBuilderLayout.data.attributes.enabled
+      );
     }
-  }, [DescriptionBuilderLayout]);
+  }, [descriptionBuilderLayout]);
 
   if (!featureEnabled) {
     return null;
@@ -98,30 +96,16 @@ const DescriptionBuilderToggle = ({
           params: { folderId: contentBuildableId },
         } as const);
 
-  // Project descriptions are edited exclusively in the Content Builder: the
-  // builder-vs-WYSIWYG toggle and the inline Quill editor are gone — we only
-  // surface the link into the builder. (Folders still use the toggle below,
-  // pending the rework that makes their description optional at creation.)
-  if (contentBuildableType === 'project') {
-    return (
-      <Box data-testid="descriptionBuilderToggle">
-        <StyledLink id="e2e-project-description-builder-link" {...linkProps}>
-          {formatMessage(messages.linkText)}
-        </StyledLink>
-      </Box>
-    );
-  }
-
-  const toggledescriptionBuilderLinkVisible = () => {
-    toggleLayoutEnabledStatus(!descriptionBuilderLinkVisible);
-    setDescriptionBuilderLinkVisible(!descriptionBuilderLinkVisible);
-  };
-
-  const toggleLayoutEnabledStatus = async (enabled: boolean) => {
+  // Once a description is on the Content Builder it is edited there exclusively:
+  // the toggle locks ON and can no longer be switched back to the WYSIWYG
+  // editor. Descriptions not yet on the Content Builder keep the toggle and the
+  // WYSIWYG editor until they are migrated.
+  const enableDescriptionBuilder = async () => {
+    setDescriptionBuilderEnabled(true);
     await addDescriptionBuilderLayout({
       contentBuildableId,
       contentBuildableType,
-      enabled,
+      enabled: true,
     });
   };
 
@@ -134,31 +118,20 @@ const DescriptionBuilderToggle = ({
       >
         <StyledToggle
           id="e2e-toggle-enable-project-description-builder"
-          checked={!!descriptionBuilderLinkVisible}
+          checked={!!descriptionBuilderEnabled}
+          disabled={!!descriptionBuilderEnabled}
           label={formatMessage(messages.toggleLabel)}
-          onChange={toggledescriptionBuilderLinkVisible}
+          onChange={enableDescriptionBuilder}
         />
         <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
         <NewLabel ml="4px" expiryDate={new Date('2026-01-01')} />
       </Box>
 
-      {descriptionBuilderLinkVisible && (
-        <>
-          <StyledLink id="e2e-project-description-builder-link" {...linkProps}>
-            {formatMessage(messages.linkText)}
-          </StyledLink>
-          <Box mt="10px">
-            <Warning>
-              {formatMessage(
-                contentBuildableType === 'folder'
-                  ? messages.folderLayoutBuilderWarning
-                  : messages.projectLayoutBuilderWarning
-              )}
-            </Warning>
-          </Box>
-        </>
-      )}
-      {!descriptionBuilderLinkVisible && (
+      {descriptionBuilderEnabled ? (
+        <StyledLink id="e2e-project-description-builder-link" {...linkProps}>
+          {formatMessage(messages.linkText)}
+        </StyledLink>
+      ) : (
         <QuillMultilocWithLocaleSwitcher
           id="e2e-project-description-multiloc-module-active"
           valueMultiloc={valueMultiloc}
