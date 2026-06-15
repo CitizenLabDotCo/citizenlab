@@ -6,9 +6,10 @@ module UserPasswordValidations
   included do
     validates :password, length: { maximum: 72 }, allow_nil: true
     # Custom validation is required to deal with the
-    # dynamic nature of the minimum password length.
+    # dynamic nature of the minimum password length and strength.
     validate :validate_minimum_password_length
     validate :validate_password_not_common
+    validate :validate_password_strength
   end
 
   private
@@ -26,6 +27,24 @@ module UserPasswordValidations
 
   def password_min_length
     AppConfiguration.instance.settings('password_login', 'minimum_length') || 0
+  end
+
+  # Enforces a minimum zxcvbn strength score (0-4) when configured, in line with
+  # NCSC guidance (strength via unpredictability, not composition rules).
+  def validate_password_strength
+    return unless password
+    return if password_min_strength.zero?
+    return if Zxcvbn.test(password, [email, first_name, last_name].compact).score >= password_min_strength
+
+    errors.add(
+      :password,
+      :too_weak,
+      message: 'The chosen password is too weak (too easy to guess)'
+    )
+  end
+
+  def password_min_strength
+    AppConfiguration.instance.settings('password_login', 'minimum_strength') || 0
   end
 
   def validate_password_not_common

@@ -20,7 +20,8 @@ const _if = (condition: boolean, key: string, value: any) => {
 export const getSchema = (
   minimumPasswordLength: number,
   formatMessage: FormatMessage,
-  requirements: AuthenticationRequirements
+  requirements: AuthenticationRequirements,
+  minimumStrength?: number
 ) => {
   const missingAttributes = new Set(
     requirements.requirements.authentication.missing_user_attributes
@@ -48,7 +49,7 @@ export const getSchema = (
     ..._if(
       missingAttributes.has('password'),
       'password',
-      getPasswordSchema(minimumPasswordLength, formatMessage)
+      getPasswordSchema(minimumPasswordLength, formatMessage, minimumStrength)
     ),
   });
 

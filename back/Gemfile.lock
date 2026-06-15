@@ -1221,6 +1221,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.3)
+    zxcvbn-ruby (2.0.0)
 
 PLATFORMS
   aarch64-linux
@@ -1389,6 +1390,7 @@ DEPENDENCIES
   volunteering!
   webhooks!
   webmock (~> 3.23)
+  zxcvbn-ruby (~> 2.0)
 
 RUBY VERSION
    ruby 3.4.7p58

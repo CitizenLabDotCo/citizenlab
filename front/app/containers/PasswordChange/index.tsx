@@ -22,6 +22,8 @@ import {
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
+import { passwordMeetsStrength } from 'components/UI/PasswordInput';
+import passwordInputMessages from 'components/UI/PasswordInput/messages';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -55,30 +57,32 @@ const ChangePassword = () => {
 
   const minimumPasswordLength =
     tenant?.data.attributes.settings.password_login?.minimum_length || 0;
+  const minimumStrength =
+    tenant?.data.attributes.settings.password_login?.minimum_strength;
+
+  const passwordSchema = string()
+    .required(formatMessage(messages.newPasswordRequired))
+    .min(
+      minimumPasswordLength,
+      formatMessage(messages.minimumPasswordLengthError, {
+        minimumPasswordLength,
+      })
+    )
+    .test(
+      'password-strength',
+      formatMessage(passwordInputMessages.passwordStrengthError),
+      (value) => passwordMeetsStrength(value, minimumStrength)
+    );
 
   const schemaPreviousPasswordExists = object({
     current_password: string().required(
       formatMessage(messages.currentPasswordRequired)
     ),
-    password: string()
-      .required(formatMessage(messages.newPasswordRequired))
-      .min(
-        minimumPasswordLength,
-        formatMessage(messages.minimumPasswordLengthError, {
-          minimumPasswordLength,
-        })
-      ),
+    password: passwordSchema,
   });
 
   const schemaNoPreviousPassword = object({
-    password: string()
-      .required(formatMessage(messages.newPasswordRequired))
-      .min(
-        minimumPasswordLength,
-        formatMessage(messages.minimumPasswordLengthError, {
-          minimumPasswordLength,
-        })
-      ),
+    password: passwordSchema,
   });
 
   const schema = userHasPreviousPassword

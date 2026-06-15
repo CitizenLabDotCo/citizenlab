@@ -49,8 +49,13 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??
     DEFAULT_MINIMUM_PASSWORD_LENGTH;
+  const minimumStrength = appConfigSettings?.password_login?.minimum_strength;
 
-  const schema = getSchema(minimumPasswordLength, formatMessage);
+  const schema = getSchema(
+    minimumPasswordLength,
+    formatMessage,
+    minimumStrength
+  );
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',

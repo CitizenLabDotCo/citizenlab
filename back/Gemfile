@@ -13,6 +13,7 @@ gem 'pg', '~> 1.5.6'
 gem 'strong_migrations', '~> 2.5'
 gem 'puma', '~> 7.2.1'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
+gem 'zxcvbn-ruby', '~> 2.0', require: 'zxcvbn' # Password strength estimation (NCSC-aligned), v4-compatible with the FE meter
 gem 'csv', '~> 3.3.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible

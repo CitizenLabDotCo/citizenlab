@@ -24,12 +24,12 @@ export type IAppConfigurationSettingsCore = {
   organization_site?: string;
   organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
   lifecycle_stage:
-  | 'trial'
-  | 'expired_trial'
-  | 'demo'
-  | 'active'
-  | 'churned'
-  | 'not_applicable';
+    | 'trial'
+    | 'expired_trial'
+    | 'demo'
+    | 'active'
+    | 'churned'
+    | 'not_applicable';
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
@@ -77,6 +77,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     enable_signup: boolean;
     minimum_length?: number;
+    minimum_strength?: number;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -206,7 +207,10 @@ export interface IAppConfigurationSettings {
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
-export type TAppConfigurationSetting = Exclude<keyof IAppConfigurationSettings, 'verification'>;
+export type TAppConfigurationSetting = Exclude<
+  keyof IAppConfigurationSettings,
+  'verification'
+>;
 
 export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {

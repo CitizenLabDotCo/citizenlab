@@ -59,11 +59,13 @@ const BuiltInFields = ({
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??
     DEFAULT_MINIMUM_PASSWORD_LENGTH;
+  const minimumStrength = appConfigSettings?.password_login?.minimum_strength;
 
   const schema = getSchema(
     minimumPasswordLength,
     formatMessage,
-    authenticationRequirements
+    authenticationRequirements,
+    minimumStrength
   );
 
   const methods = useForm({

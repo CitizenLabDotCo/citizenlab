@@ -37,6 +37,19 @@ export function hasPasswordMinimumLength(
     : password.length < DEFAULT_MINIMUM_PASSWORD_LENGTH;
 }
 
+// Returns true when the password meets the configured minimum zxcvbn strength
+// score (0-4). A falsy threshold (0 or undefined) disables the check, which
+// preserves the current behavior. zxcvbn is imported lazily to keep it out of
+// the main bundle (it is already loaded for the strength meter).
+export async function passwordMeetsStrength(
+  password: string,
+  minimumStrength: number | undefined
+): Promise<boolean> {
+  if (!minimumStrength) return true;
+  const { default: zxcvbn } = await import('zxcvbn');
+  return zxcvbn(password).score >= minimumStrength;
+}
+
 const PasswordInput = ({
   id,
   password,
