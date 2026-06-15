@@ -1,5 +1,6 @@
 import { passwordMeetsStrength } from './';
 
+// NOTE: These tests match the backend tests found in back/spec/models/user_spec.rb
 describe('passwordMeetsStrength', () => {
   it('returns true when no minimum strength is configured (undefined)', async () => {
     expect(await passwordMeetsStrength('aaaaaaaaaaaa', undefined)).toBe(true);

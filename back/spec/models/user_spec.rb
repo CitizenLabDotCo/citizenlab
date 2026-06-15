@@ -439,6 +439,7 @@ RSpec.describe User do
       expect(u).to be_invalid
     end
 
+    # NOTE: These tests match the frontend tests found in front/app/components/UI/PasswordInput/passwordMeetsStrength.test.ts
     it 'does not enforce password strength when minimum_strength is 0 (default)' do
       # A long but weak password passes when the strength check is disabled.
       u = build(:user, password: 'aaaaaaaaaaaaaaaa')
