@@ -646,7 +646,7 @@ resource 'Ideas' do
           example '[error] Move a proposal to a different phase', document: false do
             do_request
             assert_status 422
-            expect(json_response_body).to include_response_error(:phase_ids, 'Cannot change the phases of non-transitive inputs')
+            expect(json_response_body).to include_response_error(:phase_ids, 'cannot_change_phases')
             expect(input.reload.phase_ids).not_to include phase.id
           end
         end
@@ -658,7 +658,7 @@ resource 'Ideas' do
           example '[error] Move a proposal to a different project', document: false do
             do_request
             assert_status 422
-            expect(json_response_body).to include_response_error(:project_id, 'Cannot change the project of non-transitive inputs')
+            expect(json_response_body).to include_response_error(:project_id, 'cannot_change_project')
             expect(input.reload.project_id).not_to eq project_id
           end
         end

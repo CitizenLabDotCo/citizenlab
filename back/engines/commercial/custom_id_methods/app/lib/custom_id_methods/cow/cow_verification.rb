@@ -1,8 +1,18 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Cow
-  class CowVerification
-    include Verification::VerificationMethod
+  class CowVerification < IdMethods::Base
+    def name
+      'cow'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      false
+    end
 
     SHARED_SAVON_CONFIG = {
       wsdl: 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl',
@@ -23,10 +33,6 @@ module CustomIdMethods::Cow
 
     def id
       '7ccd453d-0eaf-412a-94a2-ae703b1b3e3f'
-    end
-
-    def name
-      'cow'
     end
 
     def config_parameters

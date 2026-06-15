@@ -93,7 +93,7 @@ resource 'Summaries' do
           },
           inputs_count: 0,
           custom_field_ids: { main_custom_field_id: main_field.id, additional_custom_field_ids: [additional_field.id] },
-          accuracy: 0.8,
+          accuracy: 0.9,
           missing_inputs_count: 0,
           created_at: kind_of(String),
           updated_at: kind_of(String),
@@ -150,7 +150,7 @@ resource 'Summaries' do
           filters: { reactions_from: 5 },
           inputs_count: 0,
           custom_field_ids: {},
-          accuracy: 0.8,
+          accuracy: 0.9,
           missing_inputs_count: 0,
           created_at: kind_of(String),
           updated_at: kind_of(String),
@@ -231,7 +231,7 @@ resource 'Summaries' do
         id: kind_of(String),
         type: 'summary_pre_check',
         attributes: {
-          accuracy: 0.8,
+          accuracy: 0.9,
           impossible_reason: nil
         }
       })

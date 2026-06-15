@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { isLastVerificationMethod } from 'api/verification_methods/util';
+import { isLastIdMethod } from 'api/id_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -13,17 +13,17 @@ const verificationMethodName = 'bogus';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
-      verificationMethods,
+      idMethods,
       ...otherProps
     }) => {
-      const method = verificationMethods.find(
+      const method = idMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
       );
 
       if (method) {
-        const last = isLastVerificationMethod(
+        const last = isLastIdMethod(
           verificationMethodName,
-          verificationMethods
+          idMethods
         );
 
         return <BogusButton last={last} method={method} {...otherProps} />;

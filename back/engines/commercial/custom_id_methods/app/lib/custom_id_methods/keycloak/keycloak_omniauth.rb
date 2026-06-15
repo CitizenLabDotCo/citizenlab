@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Keycloak
-  class KeycloakOmniauth < OmniauthMethods::Base
+  class KeycloakOmniauth < IdMethods::Base
     include KeycloakVerification
+
+    def name
+      'keycloak'
+    end
+
+    def verification?
+      config[:provider] == 'idporten'
+    end
+
+    def authentication?
+      true
+    end
 
     def profile_to_user_attrs(auth)
       {
@@ -15,7 +27,12 @@ module CustomIdMethods::Keycloak
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.active?(configuration, name)
+      # Gate on whether the method is configured rather than on
+      # VerificationService#active?, which only covers verification-capable
+      # methods. The rheinbahn provider is authentication-only (verification?
+      # is false for it), so the active? guard would bail before setting
+      # client_options and the strategy would crash with a missing identifier.
+      return unless IdMethodService.new.configured?(configuration, name)
 
       options = env['omniauth.strategy'].options
 
@@ -39,10 +56,6 @@ module CustomIdMethods::Keycloak
 
     def email_always_present?
       config[:provider] == 'rheinbahn'
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def email_confirmed?(auth)

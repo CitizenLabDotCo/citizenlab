@@ -52,7 +52,6 @@
   "app.components.AuthProviders.continueWithHoplr": "Folytassa a Hoplr-rel",
   "app.components.AuthProviders.continueWithIdAustria": "Folytassa az ID Austria-val",
   "app.components.AuthProviders.continueWithLoginMechanism": "Folytassa a következővel: {loginMechanismName}",
-  "app.components.AuthProviders.continueWithNemlogIn": "Folytassa a MitID-vel",
   "app.components.AuthProviders.franceConnectMergingFailed": "Már létezik fiók ezzel az e-mail címmel.{br}{br}Nem férhet hozzá a platformhoz a FranceConnect használatával, mivel a személyes adatok nem egyeznek. A FranceConnect használatával történő bejelentkezéshez először meg kell változtatnia keresztnevét vagy vezetéknevét ezen a platformon, hogy megfeleljen hivatalos adatainak.{br}{br}Az alábbiakban a szokásos módon bejelentkezhet.",
   "app.components.AuthProviders.livesOutsideAreaAuthFailed": "Nem tudsz bejelentkezni, mert a címed nem a megadott területen található.",
   "app.components.AuthProviders.livesOutsideAreaVerificationFailed": "Nem tudjuk ellenőrizni, mivel a címed nem a kért területen található.",

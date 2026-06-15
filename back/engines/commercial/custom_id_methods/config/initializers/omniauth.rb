@@ -4,6 +4,35 @@
 # keeps its own setup proc and OmniAuth::Builder block (mirroring the previously
 # separate id_* engines) so the registration behaviour is unchanged.
 
+FACEBOOK_SETUP_PROC = lambda do |env|
+  CustomIdMethods::Facebook::FacebookOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :facebook, setup: FACEBOOK_SETUP_PROC
+end
+
+GOOGLE_SETUP_PROC = lambda do |env|
+  CustomIdMethods::Google::GoogleOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :google_oauth2, setup: GOOGLE_SETUP_PROC, name: 'google'
+end
+
+OmniAuth.config.add_camelization 'azure_activedirectory', 'AzureActiveDirectory'
+AZURE_AD_SETUP_PROC = lambda do |env|
+  CustomIdMethods::AzureActiveDirectory::AzureActiveDirectoryOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC
+end
+
+AZURE_AD_B2C_SETUP_PROC = lambda do |env|
+  CustomIdMethods::AzureActiveDirectoryB2c::AzureActiveDirectoryB2cOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: AZURE_AD_B2C_SETUP_PROC, name: 'azureactivedirectory_b2c'
+end
+
 ACM_SETUP_PROC = lambda do |env|
   CustomIdMethods::Acm::AcmOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end
