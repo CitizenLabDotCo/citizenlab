@@ -11,12 +11,22 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   def name = 'get_form_fields'
 
   def description
-    <<~DESC.squish
-      Returns the ordered list of fields (questions, pages, options, matrix statements,
-      logic) for the form attached to a native_survey phase or an ideation project.
-      For ideation, pass the project_id; for native_survey, pass the phase_id. The
-      response shape mirrors what replace_form_fields accepts, so you can round-trip:
-      fetch, edit, replace.
+    <<~DESC
+      Returns the fields (questions and page breaks) in display order for the form
+      attached to a native-survey phase, or for a project's ideation form. The same
+      ideation form is shared across all ideation phases of a project, so the container is
+      the project (`container_type: 'project'`). Native-survey forms are specific to a
+      single phase, so the container is the phase (`container_type: 'phase'`).
+
+      In native-survey forms, fields can carry branching logic. By default, participants
+      move through fields in display order, but logic rules can skip ahead to a specific
+      page, either based on the answer to a question or at the end of a page.
+
+      The response also includes the participation method's constraints, which mark
+      built-in fields that can't be deleted or have certain attributes changed.
+
+      The response shape matches what `replace_form_fields` accepts, so you can round-trip:
+      fetch fields → edit → replace.
     DESC
   end
 
@@ -31,25 +41,28 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    CONTAINER_TYPES = McpServer::Tools::GetFormFields::CONTAINER_TYPES
-    SUPPORTED_METHODS = McpServer::Tools::GetFormFields::SUPPORTED_METHODS
-
     def run
-      container = CONTAINER_TYPES.fetch(params[:container_type]).find(params[:container_id])
+      container = CONTAINER_TYPES
+        .fetch(params[:container_type])
+        .find(params[:container_id])
+
       pmethod = container.pmethod
       return unsupported_error(pmethod) unless SUPPORTED_METHODS.include?(pmethod.class.method_str)
 
       custom_form = CustomForm.find_or_initialize_by(participation_context: container)
       fields = IdeaCustomFieldsService.new(custom_form).all_fields
+      participation_method = pmethod.class.method_str
 
       ok(
-        "Form fields for #{params[:container_type]} #{container.id} (#{pmethod.class.method_str}): #{fields.size} field(s)",
+        "Found #{fields.size} field(s) for #{participation_method} form",
         structured: {
           container_type: params[:container_type],
           container_id: container.id,
-          participation_method: pmethod.class.method_str,
+          participation_method:,
           fields_last_updated_at: custom_form.fields_last_updated_at,
           constraints: pmethod.constraints,
+          # Dropping the constraints from the fields, as they are already included in the
+          # constraints field.
           fields: McpServer::Serializers::CustomField.serialize(fields, params: { constraints: nil })
         }
       )
@@ -62,7 +75,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
     def unsupported_error(pmethod)
       error(
         "Unsupported participation method: '#{pmethod.class.method_str}'. " \
-        "get_form_fields only supports: #{SUPPORTED_METHODS.join(', ')}."
+          "get_form_fields only supports: #{SUPPORTED_METHODS.join(', ')}."
       )
     end
   end
