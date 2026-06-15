@@ -4844,6 +4844,16 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": {
+    "state": "verified",
+    "verified_at": "2026-06-15T07:52:18.748298Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": {
+    "state": "verified",
+    "verified_at": "2026-06-15T07:52:18.748298Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.communityMonitor.settings": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
