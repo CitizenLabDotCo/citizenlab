@@ -4831,12 +4831,12 @@
   },
   "app.containers.Admin.communityMonitor.scoreNotAvailable": {
     "state": "verified",
-    "verified_at": "2026-06-15T12:31:09.223606Z",
+    "verified_at": "2026-06-15T12:48:26.637819Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.communityMonitor.scoreOutOfFive": {
     "state": "verified",
-    "verified_at": "2026-06-15T12:31:09.223606Z",
+    "verified_at": "2026-06-15T12:48:26.637819Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.communityMonitor.settings": {

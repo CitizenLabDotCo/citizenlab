@@ -6051,7 +6051,7 @@
   },
   "app.components.trendIndicator.comparedToLastQuarter": {
     "state": "verified",
-    "verified_at": "2026-06-15T12:31:09.178326Z",
+    "verified_at": "2026-06-15T12:48:26.587367Z",
     "verified_by": "Cindy EB"
   },
   "app.components.trendIndicator.lastQuarter2": {
@@ -6061,17 +6061,17 @@
   },
   "app.components.trendIndicator.trendDecreased": {
     "state": "verified",
-    "verified_at": "2026-06-15T12:31:09.178326Z",
+    "verified_at": "2026-06-15T12:48:26.587367Z",
     "verified_by": "Cindy EB"
   },
   "app.components.trendIndicator.trendIncreased": {
     "state": "verified",
-    "verified_at": "2026-06-15T12:31:09.178326Z",
+    "verified_at": "2026-06-15T12:48:26.587367Z",
     "verified_by": "Cindy EB"
   },
   "app.components.trendIndicator.trendNoChange": {
     "state": "verified",
-    "verified_at": "2026-06-15T12:31:09.178326Z",
+    "verified_at": "2026-06-15T12:48:26.587367Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.AccessibilityStatement.applicability": {
