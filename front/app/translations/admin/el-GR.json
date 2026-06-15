@@ -933,6 +933,8 @@
   "app.containers.Admin.communityMonitor.quarterChartLabel": "Τ{quarter} {year}",
   "app.containers.Admin.communityMonitor.quarterYearCondensed": "Τ{quarterNumber} {year}",
   "app.containers.Admin.communityMonitor.reports": "Αναφορές",
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": "Δεν βρέθηκαν δεδομένα.",
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": "{score} στα 5.",
   "app.containers.Admin.communityMonitor.settings": "Ρυθμίσεις",
   "app.containers.Admin.communityMonitor.settings.acceptingSubmissions": "Η Έρευνα Παρακολούθησης Κοινότητας δέχεται υποβολές.",
   "app.containers.Admin.communityMonitor.settings.accessRights3": "Πρόσβαση και δεδομένα χρήστη",
