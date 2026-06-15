@@ -1244,8 +1244,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Felhasználó által generált tartalom",
   "app.containers.AccessibilityStatement.workshops": "Workshopok",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Gépeléssel kereshet projekteket",
-  "app.containers.AdminPage.ProjectDescription.folderLayoutBuilderWarning": "A Tartalomszerkesztő használata fejlettebb elrendezési beállításokat tesz lehetővé. Azokon a nyelveken, ahol nem érhető el tartalom a tartalomszerkesztőben, a szokásos mappaleírás jelenik meg.",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "A Content Builder használatával fejlettebb elrendezési beállításokat használhat. Azokon a nyelveken, ahol nem érhető el tartalom a tartalomkészítőben, helyette a szokásos projektleírási tartalom jelenik meg.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Szerkessze a leírást a Content Builderben",
   "app.containers.AdminPage.ProjectDescription.saveError": "Hiba történt a projektleírás mentése közben.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "A leíráshoz használja a Tartalomkészítőt",

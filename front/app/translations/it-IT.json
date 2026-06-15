@@ -1244,8 +1244,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Contenuti generati dagli utenti",
   "app.containers.AccessibilityStatement.workshops": "Laboratori",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Digita per cercare i progetti",
-  "app.containers.AdminPage.ProjectDescription.folderLayoutBuilderWarning": "Utilizzando il Generatore di contenuti potrai utilizzare opzioni di layout più avanzate. Per le lingue in cui non è disponibile alcun contenuto nel Generatore di contenuti, verrà visualizzato il normale contenuto della descrizione della cartella.",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Utilizzando il Generatore di contenuti potrai utilizzare opzioni di layout più avanzate. Per le lingue in cui non è disponibile alcun contenuto nel Generatore di contenuti, verrà visualizzato il normale contenuto della descrizione del progetto.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Modifica la descrizione nel Generatore di contenuti",
   "app.containers.AdminPage.ProjectDescription.saveError": "Qualcosa è andato storto durante il salvataggio della descrizione del progetto.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Usa il Content Builder per la descrizione",

@@ -1244,8 +1244,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Conteúdo gerado pelo utilizador",
   "app.containers.AccessibilityStatement.workshops": "Seminário",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Digite para pesquisar projetos",
-  "app.containers.AdminPage.ProjectDescription.folderLayoutBuilderWarning": "Usar o Content Builder permitirá que você use opções de layout mais avançadas. Nos idiomas em que não houver conteúdo disponível no Content Builder, será exibido o conteúdo normal da descrição da pasta.",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Usar o Content Builder permitirá que você use opções de layout mais avançadas. Nos idiomas em que não houver conteúdo disponível no Content Builder, será exibido o conteúdo normal da descrição do projeto.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Editar descrição no Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Algo deu errado ao salvar a descrição do projeto.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Use o Content Builder para descrição",

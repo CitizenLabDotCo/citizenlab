@@ -1244,8 +1244,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Brugergenereret indhold",
   "app.containers.AccessibilityStatement.workshops": "Værksted",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Skriv for at søge projekter",
-  "app.containers.AdminPage.ProjectDescription.folderLayoutBuilderWarning": "Hvis du bruger Content Builder, kan du bruge mere avancerede layoutmuligheder. På sprog, hvor der ikke er noget indhold tilgængeligt i Content Builder, vises den almindelige projektbeskrivelse i stedet.",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Hvis du bruger Content Builder, kan du bruge mere avancerede layoutmuligheder. På sprog, hvor der ikke er noget indhold tilgængeligt i content builderen, vises den almindelige projektbeskrivelse i stedet.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Rediger beskrivelse i Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Noget gik galt, da jeg gemte projektbeskrivelsen.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Brug Content Builder til beskrivelse",

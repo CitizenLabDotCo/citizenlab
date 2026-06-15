@@ -1244,8 +1244,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Ábhar a ghintear ag úsáideoirí",
   "app.containers.AccessibilityStatement.workshops": "Ceardlanna",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Clóscríobh chun tionscadail a chuardach",
-  "app.containers.AdminPage.ProjectDescription.folderLayoutBuilderWarning": "Trí úsáid a bhaint as an Tógálaí Ábhair, beidh tú in ann roghanna leagan amach níos forbartha a úsáid. I gcás teangacha nach bhfuil aon ábhar ar fáil iontu sa thógálaí ábhair, taispeánfar an gnáthábhar cur síos fillteáin ina ionad.",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Trí úsáid a bhaint as an Tógálaí Ábhair, beidh tú in ann roghanna leagan amach níos forbartha a úsáid. I gcás teangacha nach bhfuil aon ábhar ar fáil iontu sa thógálaí ábhair, taispeánfar an gnáthábhar cur síos tionscadail ina ionad.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Cuir an cur síos in eagar sa Tógálaí Ábhair",
   "app.containers.AdminPage.ProjectDescription.saveError": "Tharla fadhb agus cur síos an tionscadail á shábháil.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Úsáid an Tógálaí Ábhair le haghaidh cur síos",
