@@ -6,10 +6,24 @@ RSpec.describe Sms::Sender do
   let(:twilio_provider) { instance_double(Sms::Providers::Twilio) }
 
   before do
+    SettingsService.new.activate_feature!('sms', settings: {
+      'twilio_account_sid' => 'AC_test',
+      'twilio_auth_token' => 'token',
+      'twilio_phone_number' => '+15005550006'
+    })
     allow(Sms::Providers::Twilio).to receive(:new).and_return(twilio_provider)
   end
 
   describe '#send' do
+    it 'raises Sms::Error and creates no delivery when the SMS feature is disabled' do
+      SettingsService.new.deactivate_feature!('sms')
+
+      expect(twilio_provider).not_to receive(:send)
+      expect { described_class.new.send(to: '+14155552671', body: 'hi') }
+        .to raise_error(Sms::Error, /not enabled/)
+      expect(Sms::Delivery.count).to eq(0)
+    end
+
     it 'creates a delivery, sends via Twilio by default, stores the returned status, and returns it' do
       allow(twilio_provider).to receive(:send).and_return(message_sid: 'SM_abc', status: 'queued')
 

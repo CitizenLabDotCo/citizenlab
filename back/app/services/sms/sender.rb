@@ -9,6 +9,10 @@ module Sms
     DEFAULT_PROVIDER = :twilio
 
     def send(to:, body:, user_id: nil, provider: DEFAULT_PROVIDER)
+      unless AppConfiguration.instance.feature_activated?('sms')
+        raise Sms::Error, 'SMS feature is not enabled for this tenant'
+      end
+
       provider_instance = build_provider(provider)
 
       parsed_to = Phonelib.parse(to)

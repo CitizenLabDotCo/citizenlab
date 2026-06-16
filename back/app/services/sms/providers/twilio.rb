@@ -15,7 +15,7 @@ module Sms
 
       def send(to:, body:)
         message = client.api.v2010.messages.create(
-          from: ENV.fetch('TWILIO_PHONE_NUMBER'),
+          **from_params,
           to: to,
           body: body,
           status_callback: callback_url
@@ -29,7 +29,7 @@ module Sms
       end
 
       def verify_signature(request)
-        validator = ::Twilio::Security::RequestValidator.new(ENV.fetch('TWILIO_AUTH_TOKEN'))
+        validator = ::Twilio::Security::RequestValidator.new(config['twilio_auth_token'])
         signature = request.headers['X-Twilio-Signature']
         validator.validate(callback_url, request.request_parameters, signature)
       end
@@ -47,11 +47,27 @@ module Sms
 
       private
 
+      # The Messaging Service SID takes precedence over the phone number when
+      # both are configured. At least one must be set.
+      def from_params
+        messaging_service_sid = config['twilio_messaging_service_sid'].presence
+        return { messaging_service_sid: messaging_service_sid } if messaging_service_sid
+
+        phone_number = config['twilio_phone_number'].presence
+        raise Error, 'No Twilio sender configured (set a phone number or messaging service SID)' unless phone_number
+
+        { from: phone_number }
+      end
+
       def client
         @client ||= ::Twilio::REST::Client.new(
-          ENV.fetch('TWILIO_ACCOUNT_SID'),
-          ENV.fetch('TWILIO_AUTH_TOKEN')
+          config['twilio_account_sid'],
+          config['twilio_auth_token']
         )
+      end
+
+      def config
+        AppConfiguration.instance.settings('sms') || {}
       end
     end
   end
