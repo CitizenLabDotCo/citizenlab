@@ -32,8 +32,8 @@ import { filterForCommunityMonitorQuarter } from './utils';
 // Minimum number of (non-empty) text responses before the analysis is created
 // automatically (which in turn triggers its default summary). Used by both the
 // auto-create guard and the info box that explains it, so the two can't drift.
-// The summary-generation stage has its own threshold (AUTO_SUMMARY_MIN_INPUTS
-// in ./AnalysisInsights), which guards a different quantity.
+// The summary-generation stage has its own threshold (an inlined input-count
+// check in ./AnalysisInsights), which guards a different quantity.
 const AUTO_ANALYSIS_MIN_RESPONSES = 10;
 
 type Props = {

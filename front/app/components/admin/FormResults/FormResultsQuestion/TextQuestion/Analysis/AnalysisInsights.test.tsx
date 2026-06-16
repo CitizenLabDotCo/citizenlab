@@ -7,10 +7,10 @@ import { render, waitFor } from 'utils/testUtils/rtl';
 
 import AnalysisInsights from './AnalysisInsights';
 
-// The summary-generation threshold lives in this component as
-// AUTO_SUMMARY_MIN_INPUTS (= 10). These tests pin the behaviour around it: the
-// default summary is only auto-generated when the analysis has more than 10
-// inputs, and the "other" filter is applied only for select/multiselect "other".
+// The summary-generation threshold (an input count of 10) is inlined in this
+// component. These tests pin the behaviour around it: the default summary is
+// only auto-generated when the analysis has more than 10 inputs, and the
+// "other" filter is applied only for select/multiselect "other".
 
 let mockInputCount = 0;
 const mockAddSummary = jest.fn();
