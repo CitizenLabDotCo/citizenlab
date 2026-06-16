@@ -27,7 +27,7 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def survey_submissions?
+  def survey_responses_pdf?
     active_moderator?
   end
 

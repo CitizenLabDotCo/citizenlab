@@ -1,0 +1,66 @@
+# frozen_string_literal: true
+
+module Export
+  module Pdf
+    # Builds the "survey responses" PDF: a branded cover page followed by one
+    # card per response. Answers are formatted with the shared export field
+    # visitor (so every question type is supported consistently with the xlsx
+    # export), and rendered to PDF via Gotenberg (HTML -> Chromium).
+    class SurveyResponsesGenerator
+      def initialize(phase, cover:, redacted_field_keys: [])
+        @phase = phase
+        @cover = cover
+        @redacted_field_keys = Array(redacted_field_keys).to_set
+      end
+
+      def generate_pdf
+        GotenbergClient.new.render_html_to_pdf(render_html)
+      end
+
+      private
+
+      attr_reader :phase, :cover
+
+      def fields
+        @fields ||= IdeaCustomFieldsService
+          .new(phase.custom_form)
+          .xlsx_exportable_fields
+          .filter_map do |field|
+            next if field.input_type == 'page' || @redacted_field_keys.include?(field.key)
+
+            Export::CustomFieldForExport.new(field, Export::Pdf::ValueVisitor)
+          end
+      end
+
+      def inputs
+        phase.ideas.supports_survey.published
+          .order(created_at: :asc)
+          .includes(:idea_files, :file_attachments)
+      end
+
+      def respondents
+        inputs.map.with_index do |input, index|
+          {
+            number: index + 1,
+            date: I18n.l(input.created_at.to_date),
+            answers: fields.map do |field|
+              { question: field.column_header, answer: field.value_from(input).to_s }
+            end
+          }
+        end
+      end
+
+      def render_html
+        ActionController::Base.new.render_to_string(
+          template: 'export/pdf/survey_responses',
+          layout: false,
+          locals: {
+            cover: cover,
+            respondents: respondents,
+            total: inputs.size
+          }
+        )
+      end
+    end
+  end
+end

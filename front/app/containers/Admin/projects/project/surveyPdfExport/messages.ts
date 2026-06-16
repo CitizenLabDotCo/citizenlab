@@ -102,16 +102,13 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# response} other {# responses}} will be exported.',
   },
-  respondentLabel: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.respondentLabel',
-    defaultMessage: 'Respondent {number}',
+  exportError: {
+    id: 'app.containers.Admin.projects.project.surveyPdfExport.exportError',
+    defaultMessage:
+      'Something went wrong generating the PDF. Please try again.',
   },
-  noAnswer: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.noAnswer',
-    defaultMessage: '(No answer)',
-  },
-  pdfFooter: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.pdfFooter',
+  coverResponseCount: {
+    id: 'app.containers.Admin.projects.project.surveyPdfExport.coverResponseCount',
     defaultMessage: '{count, plural, one {# response} other {# responses}}',
   },
 });

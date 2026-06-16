@@ -4,7 +4,7 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results survey_submissions sentiment_by_quarter
+    show show_mini update destroy survey_results survey_responses_pdf sentiment_by_quarter
     submission_count index_xlsx delete_inputs show_progress common_ground_results
   ]
 
@@ -83,16 +83,27 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: raw_json(results)
   end
 
-  # Lists native survey responses (with their answers) for export.
-  def survey_submissions
-    ideas = @phase.ideas.supports_survey.published.order(created_at: :asc)
-    ideas = paginate ideas
+  # Generates a PDF of native survey responses (cover page + one card per
+  # response). Field-level PII redaction is driven by `redacted_field_keys`.
+  def survey_responses_pdf
+    cover = {
+      include: ActiveModel::Type::Boolean.new.cast(params.dig(:cover, :include)),
+      title: params.dig(:cover, :title).to_s,
+      subtitle: params.dig(:cover, :subtitle).to_s,
+      date: params.dig(:cover, :date).to_s,
+      prepared_by: params.dig(:cover, :prepared_by).to_s,
+      notes: params.dig(:cover, :notes).to_s
+    }
 
-    render json: linked_json(
-      ideas,
-      WebApi::V1::SurveySubmissionSerializer,
-      params: jsonapi_serializer_params
-    )
+    pdf = I18n.with_locale(current_user.locale) do
+      Export::Pdf::SurveyResponsesGenerator.new(
+        @phase,
+        cover: cover,
+        redacted_field_keys: params[:redacted_field_keys] || []
+      ).generate_pdf
+    end
+
+    send_data pdf.read, type: 'application/pdf', filename: 'survey_responses.pdf'
   end
 
   def common_ground_results
