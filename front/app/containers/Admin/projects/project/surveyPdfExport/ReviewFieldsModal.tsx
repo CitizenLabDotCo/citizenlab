@@ -3,46 +3,32 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Text,
-  Title,
   Toggle,
   Button,
   Badge,
   CheckboxWithLabel,
   colors,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { ContentMatch, ContentPiiType } from './contentScan';
 import messages from './messages';
 import { PiiField } from './piiDetection';
 
 type Props = {
   opened: boolean;
   initialFields: PiiField[];
-  contentMatches: ContentMatch[];
   responseCount: number;
   processing: boolean;
   onClose: () => void;
   onGenerate: (redactedKeys: Set<string>) => void;
 };
 
-const CONTENT_TYPE_MESSAGES: Record<
-  ContentPiiType,
-  (typeof messages)['contentTypeEmail']
-> = {
-  email: messages.contentTypeEmail,
-  phone: messages.contentTypePhone,
-  postcode: messages.contentTypePostcode,
-};
-
 const ReviewFieldsModal = ({
   opened,
   initialFields,
-  contentMatches,
   responseCount,
   processing,
   onClose,
@@ -157,48 +143,6 @@ const ReviewFieldsModal = ({
             </Box>
           ))}
         </Box>
-
-        {/* Content scanning */}
-        {contentMatches.length > 0 && (
-          <Box
-            border={`1px solid ${colors.orange500}`}
-            background={colors.orange100}
-            borderRadius={stylingConsts.borderRadius}
-            p="16px"
-            mb="24px"
-          >
-            <Title variant="h6" as="h3" mt="0px" mb="4px">
-              <FormattedMessage {...messages.contentScanTitle} />
-            </Title>
-            <Text fontSize="s" color="textSecondary" mt="0px" mb="12px">
-              <FormattedMessage {...messages.contentScanDescription} />
-            </Text>
-            {contentMatches.map((match) => (
-              <Box key={match.type} mb="8px">
-                <Text m="0px" fontSize="xs" fontWeight="bold">
-                  {formatMessage(CONTENT_TYPE_MESSAGES[match.type])} (
-                  {match.values.length})
-                </Text>
-                <Box display="flex" flexWrap="wrap" gap="6px" mt="4px">
-                  {match.values.map((value) => (
-                    <Box
-                      key={value}
-                      px="8px"
-                      py="2px"
-                      background={colors.white}
-                      border={`1px solid ${colors.borderLight}`}
-                      borderRadius={stylingConsts.borderRadius}
-                    >
-                      <Text m="0px" fontSize="xs">
-                        {value}
-                      </Text>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            ))}
-          </Box>
-        )}
 
         {/* Consent */}
         <CheckboxWithLabel

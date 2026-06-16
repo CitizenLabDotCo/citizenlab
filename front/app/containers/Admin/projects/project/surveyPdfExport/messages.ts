@@ -93,27 +93,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.surveyPdfExport.generateButton',
     defaultMessage: 'Generate PDF',
   },
-  contentScanTitle: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.contentScanTitle',
-    defaultMessage: 'Content scanning',
-  },
-  contentScanDescription: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.contentScanDescription',
-    defaultMessage:
-      'The following values detected in answer text will be replaced with [REDACTED]:',
-  },
-  contentTypeEmail: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.contentTypeEmail',
-    defaultMessage: 'Email addresses',
-  },
-  contentTypePhone: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.contentTypePhone',
-    defaultMessage: 'Phone numbers',
-  },
-  contentTypePostcode: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.contentTypePostcode',
-    defaultMessage: 'Postcodes',
-  },
   noResponses: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.noResponses',
     defaultMessage: 'There are no survey responses to export yet.',

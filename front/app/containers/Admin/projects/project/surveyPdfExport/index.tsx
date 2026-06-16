@@ -24,7 +24,6 @@ import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
-import { scanContent, redactContent } from './contentScan';
 import {
   buildSurveyResponsesPdf,
   generateSurveyResponsesPdf,
@@ -104,19 +103,6 @@ const AdminPhaseSurveyPdfExport = () => {
       ),
     [answerableFields, localize]
   );
-
-  // PII values found inside free-text answers (shown in the modal, redacted on export).
-  const contentMatches = useMemo(() => {
-    const texts: string[] = [];
-    responses.forEach((submission) => {
-      Object.values(submission.attributes.custom_field_values).forEach(
-        (value) => {
-          if (typeof value === 'string') texts.push(value);
-        }
-      );
-    });
-    return scanContent(texts);
-  }, [responses]);
 
   // Cover page state, prefilled once from the phase/project.
   const [cover, setCover] = useState<PdfCover>({
@@ -200,8 +186,7 @@ const AdminPhaseSurveyPdfExport = () => {
       base = base ? `${base} — ${relatedAnswer}` : String(relatedAnswer);
     }
 
-    // Strip any PII values detected within the answer text.
-    return redactContent(base);
+    return base;
   };
 
   const handleGenerate = async (redactedKeys: Set<string>) => {
@@ -467,7 +452,6 @@ const AdminPhaseSurveyPdfExport = () => {
       <ReviewFieldsModal
         opened={modalOpen}
         initialFields={detectedFields}
-        contentMatches={contentMatches}
         responseCount={responses.length}
         processing={isGenerating}
         onClose={() => setModalOpen(false)}
