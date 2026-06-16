@@ -31,6 +31,14 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def survey_response_fields?
+    active_moderator?
+  end
+
+  def survey_cover_preview?
+    active_moderator?
+  end
+
   def common_ground_results?
     policy_for(record.project).show?
   end

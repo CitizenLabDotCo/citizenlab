@@ -2,166 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <style>
-      @page { size: A4; margin: 16mm; }
-
-      * { box-sizing: border-box; }
-
-      body {
-        font-family: Helvetica, Arial, sans-serif;
-        color: #1E155D;
-        margin: 0;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      /* ---- Cover ---- */
-      .cover {
-        background: #1E155D;
-        color: #FFFFFF;
-        border-radius: 8px;
-        padding: 40px 36px;
-        min-height: 258mm; /* fill the page within @page margins */
-        display: flex;
-        flex-direction: column;
-        page-break-after: always;
-      }
-      .cover-label {
-        font-size: 11px;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        color: #FF3E52;
-        font-weight: 700;
-        margin-bottom: 32px;
-      }
-      .cover-title {
-        font-size: 32px;
-        font-weight: 300;
-        line-height: 1.2;
-        letter-spacing: -0.01em;
-        margin-bottom: 8px;
-        word-break: break-word;
-      }
-      .cover-subtitle {
-        font-size: 16px;
-        font-weight: 300;
-        color: rgba(255, 255, 255, 0.6);
-      }
-      .cover-spacer { flex: 1; }
-      .cover-meta {
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
-        padding-top: 16px;
-        margin-top: 16px;
-        display: flex;
-        gap: 48px;
-      }
-      .cover-meta-label {
-        font-size: 9px;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.35);
-        margin-bottom: 4px;
-      }
-      .cover-meta-value { font-size: 13px; }
-      .cover-count { font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-top: 14px; }
-      .cover-notes {
-        margin-top: 16px;
-        background: rgba(255, 255, 255, 0.06);
-        border-radius: 6px;
-        padding: 10px 14px;
-        font-size: 12px;
-        line-height: 1.6;
-        color: rgba(255, 255, 255, 0.6);
-        word-break: break-word;
-      }
-
-      /* ---- Response cards ---- */
-      .card {
-        border: 1px solid #E1DEF5;
-        border-radius: 6px;
-        overflow: hidden;
-        margin-bottom: 14px;
-        page-break-inside: avoid;
-      }
-      .card-header {
-        background: #1E155D;
-        color: #FFFFFF;
-        padding: 6px 12px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .card-header-label {
-        font-size: 9px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-      }
-      .card-header-date { font-size: 8px; color: rgba(255, 255, 255, 0.75); }
-      .card-body { padding: 10px 12px; }
-      .qa { margin-bottom: 8px; }
-      .qa:last-child { margin-bottom: 0; }
-      .qa-question {
-        background: #F0EEFA;
-        color: #43369B;
-        font-size: 8px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        padding: 4px 8px;
-        border-radius: 3px;
-      }
-      .qa-answer {
-        border: 1px solid #E1DEF5;
-        border-radius: 3px;
-        padding: 6px 8px;
-        margin-top: 3px;
-        font-size: 11px;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-      .qa-answer.empty { color: #968BDD; }
-      .footer {
-        text-align: center;
-        font-size: 8px;
-        color: #968BDD;
-        margin-top: 8px;
-      }
-    </style>
+    <style>@page { size: A4; margin: 16mm; }</style>
+    <%= render 'export/pdf/styles' %>
   </head>
   <body>
     <% if cover[:include] %>
-      <section class="cover">
-        <div class="cover-label">Survey response report</div>
-        <div class="cover-title"><%= cover[:title] %></div>
-        <% if cover[:subtitle].present? %>
-          <div class="cover-subtitle"><%= cover[:subtitle] %></div>
-        <% end %>
-        <div class="cover-spacer"></div>
-        <div class="cover-meta">
-          <% if cover[:date].present? %>
-            <div>
-              <div class="cover-meta-label">Date</div>
-              <div class="cover-meta-value"><%= cover[:date] %></div>
-            </div>
-          <% end %>
-          <% if cover[:prepared_by].present? %>
-            <div>
-              <div class="cover-meta-label">Prepared by</div>
-              <div class="cover-meta-value"><%= cover[:prepared_by] %></div>
-            </div>
-          <% end %>
-        </div>
-        <div class="cover-count"><%= total %> <%= total == 1 ? 'response' : 'responses' %></div>
-        <% if cover[:notes].present? %>
-          <div class="cover-notes"><%= cover[:notes] %></div>
-        <% end %>
-      </section>
+      <%= render 'export/pdf/cover', cover: cover, total: total %>
     <% end %>
 
     <% respondents.each do |respondent| %>
       <div class="card">
         <div class="card-header">
-          <span class="card-header-label">RESPONDENT <%= format('%03d', respondent[:number]) %></span>
+          <span class="card-header-label"><%= t('pdf_export.survey_responses.respondent', number: format('%03d', respondent[:number])) %></span>
           <span class="card-header-date"><%= respondent[:date] %></span>
         </div>
         <div class="card-body">
@@ -171,7 +23,7 @@
               <% if answer[:answer].present? %>
                 <div class="qa-answer"><%= answer[:answer] %></div>
               <% else %>
-                <div class="qa-answer empty">(No answer)</div>
+                <div class="qa-answer empty"><%= t('pdf_export.survey_responses.no_answer') %></div>
               <% end %>
             </div>
           <% end %>
@@ -179,6 +31,6 @@
       </div>
     <% end %>
 
-    <div class="footer"><%= total %> <%= total == 1 ? 'response' : 'responses' %></div>
+    <div class="footer"><%= t('pdf_export.survey_responses.response_count', count: total) %></div>
   </body>
 </html>

@@ -12,10 +12,10 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';
+import useSurveyResponseFields from 'api/survey_response_fields/useSurveyResponseFields';
 import {
   generateSurveyResponsesPdf,
   SurveyPdfCover,
@@ -28,12 +28,7 @@ import { useParams } from 'utils/router';
 
 import CoverPreview from './CoverPreview';
 import messages from './messages';
-import { detectPiiFields } from './piiDetection';
-import ReviewFieldsModal from './ReviewFieldsModal';
-
-// Input types that don't represent an answerable survey question, so they're
-// not offered for redaction in the review modal.
-const NON_ANSWER_INPUT_TYPES: ReadonlySet<string> = new Set(['page']);
+import ReviewFieldsModal, { PiiField } from './ReviewFieldsModal';
 
 const sanitizeFilename = (name: string) =>
   `${
@@ -53,28 +48,25 @@ const AdminPhaseSurveyPdfExport = () => {
 
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
-  const { data: customFields } = useCustomFields({ phaseId });
+  const { data: surveyFields } = useSurveyResponseFields({ phaseId });
   const { data: submissionCount } = useSubmissionCount({ phaseId });
 
   const responseCount = submissionCount?.data.attributes.totalSubmissions ?? 0;
 
-  // Survey questions, in form order — the fields offered for PII review.
-  const detectedFields = useMemo(() => {
-    const answerable = (customFields ?? [])
-      .filter(
-        (field) =>
-          !field.code &&
-          field.enabled !== false &&
-          !NON_ANSWER_INPUT_TYPES.has(field.input_type)
-      )
-      .sort((a, b) => a.ordering - b.ordering);
-    return detectPiiFields(
-      answerable.map((field) => ({
-        key: field.key,
-        label: localize(field.title_multiloc),
-      }))
-    );
-  }, [customFields, localize]);
+  // The exact fields the backend will export, in order; registration/personal-
+  // data fields are pre-flagged for redaction.
+  const detectedFields: PiiField[] = useMemo(
+    () =>
+      (surveyFields?.data ?? []).map((field) => ({
+        key: field.id,
+        label: localize(field.attributes.title_multiloc),
+        reason: field.attributes.personal_data
+          ? formatMessage(messages.personalDataReason)
+          : null,
+        redact: field.attributes.personal_data,
+      })),
+    [surveyFields, localize, formatMessage]
+  );
 
   // Cover page state, prefilled once from the phase/project.
   const [cover, setCover] = useState<SurveyPdfCover>({
@@ -130,7 +122,7 @@ const AdminPhaseSurveyPdfExport = () => {
     return null;
   }
 
-  const isLoading = !phase || !customFields || !submissionCount;
+  const isLoading = !phase || !surveyFields || !submissionCount;
 
   return (
     <Box maxWidth="1200px">
@@ -220,16 +212,13 @@ const AdminPhaseSurveyPdfExport = () => {
             <Button
               buttonStyle="admin-dark"
               icon="download"
-              onClick={() => setModalOpen(true)}
+              onClick={() => {
+                setError(false);
+                setModalOpen(true);
+              }}
             >
               <FormattedMessage {...messages.exportButton} />
             </Button>
-
-            {error && (
-              <Text color="red600" mt="12px" mb="0px" fontSize="s">
-                <FormattedMessage {...messages.exportError} />
-              </Text>
-            )}
           </Box>
 
           {/* Right: live cover preview (no response data) */}
@@ -257,7 +246,7 @@ const AdminPhaseSurveyPdfExport = () => {
               overflow="hidden"
               style={{ aspectRatio: '210 / 297' }}
             >
-              <CoverPreview cover={cover} responseCount={responseCount} />
+              <CoverPreview cover={cover} phaseId={phaseId} />
             </Box>
           </Box>
         </Box>
@@ -268,6 +257,7 @@ const AdminPhaseSurveyPdfExport = () => {
         initialFields={detectedFields}
         responseCount={responseCount}
         processing={isGenerating}
+        error={error}
         onClose={() => setModalOpen(false)}
         onGenerate={handleGenerate}
       />

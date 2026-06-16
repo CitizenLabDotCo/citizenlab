@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -15,13 +15,21 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { PiiField } from './piiDetection';
+
+export type PiiField = {
+  key: string;
+  label: string;
+  // A localized reason shown when the field is pre-flagged, or null.
+  reason: string | null;
+  redact: boolean;
+};
 
 type Props = {
   opened: boolean;
   initialFields: PiiField[];
   responseCount: number;
   processing: boolean;
+  error: boolean;
   onClose: () => void;
   onGenerate: (redactedKeys: Set<string>) => void;
 };
@@ -31,6 +39,7 @@ const ReviewFieldsModal = ({
   initialFields,
   responseCount,
   processing,
+  error,
   onClose,
   onGenerate,
 }: Props) => {
@@ -38,13 +47,18 @@ const ReviewFieldsModal = ({
   const [fields, setFields] = useState<PiiField[]>(initialFields);
   const [consent, setConsent] = useState(false);
 
-  // Reset the working copy each time the modal opens.
+  // Read the latest detected fields without making them an effect dependency,
+  // so a background refetch of the form schema can't reset in-progress toggles.
+  const initialFieldsRef = useRef(initialFields);
+  initialFieldsRef.current = initialFields;
+
+  // Reset the working copy only when the modal transitions to open.
   useEffect(() => {
     if (opened) {
-      setFields(initialFields);
+      setFields(initialFieldsRef.current);
       setConsent(false);
     }
-  }, [opened, initialFields]);
+  }, [opened]);
 
   const flaggedCount = fields.filter((field) => field.redact).length;
 
@@ -124,10 +138,7 @@ const ReviewFieldsModal = ({
                   </Text>
                   {field.reason && (
                     <Text m="0px" fontSize="xs" color="textSecondary">
-                      <FormattedMessage
-                        {...messages.detectedReason}
-                        values={{ reason: field.reason }}
-                      />
+                      {field.reason}
                     </Text>
                   )}
                 </Box>
@@ -154,6 +165,12 @@ const ReviewFieldsModal = ({
             </Text>
           }
         />
+
+        {error && (
+          <Text color="red600" mt="12px" mb="0px" fontSize="s">
+            <FormattedMessage {...messages.exportError} />
+          </Text>
+        )}
       </Box>
     </Modal>
   );

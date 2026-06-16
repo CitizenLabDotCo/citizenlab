@@ -22,20 +22,19 @@ module Export
       attr_reader :phase, :cover
 
       def fields
-        @fields ||= IdeaCustomFieldsService
-          .new(phase.custom_form)
-          .xlsx_exportable_fields
+        @fields ||= Export::Pdf::SurveyFields.new(phase).fields
           .filter_map do |field|
-            next if field.input_type == 'page' || @redacted_field_keys.include?(field.key)
+            next if @redacted_field_keys.include?(field.key)
 
             Export::CustomFieldForExport.new(field, Export::Pdf::ValueVisitor)
           end
       end
 
       def inputs
-        phase.ideas.supports_survey.published
+        @inputs ||= phase.ideas.supports_survey.published
           .order(created_at: :asc)
-          .includes(:idea_files, :file_attachments)
+          .includes(:idea_files, file_attachments: :file)
+          .to_a
       end
 
       def respondents

@@ -262,6 +262,16 @@ en:
       message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
       subject: '%{organizationName}: Reset your password'
       title_reset_your_password: 'Choose a new password'
+  pdf_export:
+    survey_responses:
+      report_label: 'Survey response report'
+      date: 'Date'
+      prepared_by: 'Prepared by'
+      respondent: 'Respondent %{number}'
+      no_answer: '(No answer)'
+      response_count:
+        one: '%{count} response'
+        other: '%{count} responses'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:

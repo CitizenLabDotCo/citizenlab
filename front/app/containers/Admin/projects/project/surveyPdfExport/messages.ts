@@ -52,9 +52,9 @@ export default defineMessages({
     defaultMessage:
       'No fields were automatically flagged as personal data. Toggle any field to exclude it from the export.',
   },
-  detectedReason: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.detectedReason',
-    defaultMessage: 'Possible {reason}',
+  personalDataReason: {
+    id: 'app.containers.Admin.projects.project.surveyPdfExport.personalDataReason',
+    defaultMessage: 'Registration data — excluded by default',
   },
   includeStatus: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.includeStatus',
@@ -106,9 +106,5 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.surveyPdfExport.exportError',
     defaultMessage:
       'Something went wrong generating the PDF. Please try again.',
-  },
-  coverResponseCount: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.coverResponseCount',
-    defaultMessage: '{count, plural, one {# response} other {# responses}}',
   },
 });
