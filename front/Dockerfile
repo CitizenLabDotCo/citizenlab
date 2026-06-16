@@ -1,8 +1,8 @@
 
-ARG NODE_VERSION='24.16.0'
+ARG NODE_VERSION='24.14.0'
 ARG CHROME_VERSION='149.0.7827.114-1'
 
-FROM cypress/factory:4.1.0
+FROM cypress/factory:8.1.0
 
 WORKDIR /
 
