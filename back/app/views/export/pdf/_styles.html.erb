@@ -3,7 +3,7 @@
 
   body {
     font-family: Helvetica, Arial, sans-serif;
-    color: #1E155D;
+    color: <%= colors[:text] %>;
     margin: 0;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -11,8 +11,8 @@
 
   /* ---- Cover ---- */
   .cover {
-    background: #1E155D;
-    color: #FFFFFF;
+    background: <%= colors[:primary] %>;
+    color: <%= colors[:on_primary] %>;
     border-radius: 8px;
     padding: 40px 36px;
     min-height: 258mm; /* fill the page within the 16mm page margin */
@@ -24,7 +24,7 @@
     font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #FF3E52;
+    color: <%= colors[:secondary] %>;
     font-weight: 700;
     margin-bottom: 32px;
   }
@@ -39,11 +39,11 @@
   .cover-subtitle {
     font-size: 16px;
     font-weight: 300;
-    color: rgba(255, 255, 255, 0.6);
+    color: <%= colors[:on_primary_muted] %>;
   }
   .cover-spacer { flex: 1; }
   .cover-meta {
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid <%= colors[:on_primary_divider] %>;
     padding-top: 16px;
     margin-top: 16px;
     display: flex;
@@ -53,33 +53,33 @@
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.35);
+    color: <%= colors[:on_primary_faint] %>;
     margin-bottom: 4px;
   }
   .cover-meta-value { font-size: 13px; }
-  .cover-count { font-size: 12px; color: rgba(255, 255, 255, 0.6); margin-top: 14px; }
+  .cover-count { font-size: 12px; color: <%= colors[:on_primary_muted] %>; margin-top: 14px; }
   .cover-notes {
     margin-top: 16px;
-    background: rgba(255, 255, 255, 0.06);
+    background: <%= colors[:on_primary_panel] %>;
     border-radius: 6px;
     padding: 10px 14px;
     font-size: 12px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.6);
+    color: <%= colors[:on_primary_muted] %>;
     word-break: break-word;
   }
 
   /* ---- Response cards ---- */
   .card {
-    border: 1px solid #E1DEF5;
+    border: 1px solid <%= colors[:primary_border] %>;
     border-radius: 6px;
     overflow: hidden;
     margin-bottom: 14px;
     page-break-inside: avoid;
   }
   .card-header {
-    background: #1E155D;
-    color: #FFFFFF;
+    background: <%= colors[:primary] %>;
+    color: <%= colors[:on_primary] %>;
     padding: 6px 12px;
     display: flex;
     justify-content: space-between;
@@ -91,13 +91,13 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  .card-header-date { font-size: 8px; color: rgba(255, 255, 255, 0.75); }
+  .card-header-date { font-size: 8px; color: <%= colors[:on_primary_muted] %>; }
   .card-body { padding: 10px 12px; }
   .qa { margin-bottom: 8px; }
   .qa:last-child { margin-bottom: 0; }
   .qa-question {
-    background: #F0EEFA;
-    color: #43369B;
+    background: <%= colors[:primary_tint] %>;
+    color: <%= colors[:primary] %>;
     font-size: 8px;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -106,19 +106,20 @@
     border-radius: 3px;
   }
   .qa-answer {
-    border: 1px solid #E1DEF5;
+    border: 1px solid <%= colors[:primary_border] %>;
     border-radius: 3px;
     padding: 6px 8px;
     margin-top: 3px;
     font-size: 11px;
+    color: <%= colors[:text] %>;
     white-space: pre-wrap;
     word-break: break-word;
   }
-  .qa-answer.empty { color: #968BDD; }
+  .qa-answer.empty { color: <%= colors[:text_muted] %>; }
   .footer {
     text-align: center;
     font-size: 8px;
-    color: #968BDD;
+    color: <%= colors[:text_muted] %>;
     margin-top: 8px;
   }
 </style>

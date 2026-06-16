@@ -56,7 +56,8 @@ module Export
           locals: {
             cover: cover,
             respondents: respondents,
-            total: inputs.size
+            total: inputs.size,
+            colors: Export::Pdf::BrandColors.palette
           }
         )
       end

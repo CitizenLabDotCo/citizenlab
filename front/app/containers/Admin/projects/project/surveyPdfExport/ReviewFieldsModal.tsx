@@ -19,8 +19,6 @@ import messages from './messages';
 export type PiiField = {
   key: string;
   label: string;
-  // A localized reason shown when the field is pre-flagged, or null.
-  reason: string | null;
   redact: boolean;
 };
 
@@ -136,11 +134,6 @@ const ReviewFieldsModal = ({
                   <Text m="0px" fontWeight="bold">
                     {field.label}
                   </Text>
-                  {field.reason && (
-                    <Text m="0px" fontSize="xs" color="textSecondary">
-                      {field.reason}
-                    </Text>
-                  )}
                 </Box>
               </Box>
               <Badge

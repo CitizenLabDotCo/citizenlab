@@ -21,7 +21,7 @@ export const fetchCoverPreviewHtml = async ({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Accept: 'text/html',
+        Accept: 'application/json',
         Authorization: `Bearer ${getJwt()}`,
       },
       body: JSON.stringify({
@@ -41,5 +41,6 @@ export const fetchCoverPreviewHtml = async ({
     throw new Error(`Cover preview failed: ${response.status}`);
   }
 
-  return response.text();
+  const { html } = await response.json();
+  return html;
 };

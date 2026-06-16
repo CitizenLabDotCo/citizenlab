@@ -52,10 +52,6 @@ export default defineMessages({
     defaultMessage:
       'No fields were automatically flagged as personal data. Toggle any field to exclude it from the export.',
   },
-  personalDataReason: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.personalDataReason',
-    defaultMessage: 'Registration data — excluded by default',
-  },
   includeStatus: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.includeStatus',
     defaultMessage: 'Included',

@@ -18,13 +18,6 @@ module Export
           .xlsx_exportable_fields
           .reject { |field| field.input_type == 'page' }
       end
-
-      # Registration/user fields merged into a survey form have their code nil'd
-      # and their key prefixed with 'u_' (see UserFieldsInFormService). That
-      # prefix is a language-independent signal that a field holds personal data.
-      def self.personal_data?(field)
-        field.key.start_with?('u_')
-      end
     end
   end
 end

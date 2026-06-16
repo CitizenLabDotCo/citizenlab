@@ -88,13 +88,14 @@ class WebApi::V1::PhasesController < ApplicationController
   # registration/personal-data fields so the UI can pre-select them for
   # redaction. Source of truth for the export's field set.
   def survey_response_fields
+    detector = Export::Pdf::PiiDetector.new
     data = Export::Pdf::SurveyFields.new(@phase).fields.map do |field|
       {
         id: field.key,
         type: 'survey_response_field',
         attributes: {
           title_multiloc: field.title_multiloc,
-          personal_data: Export::Pdf::SurveyFields.personal_data?(field)
+          personal_data: detector.personal_data?(field)
         }
       }
     end
@@ -128,11 +129,17 @@ class WebApi::V1::PhasesController < ApplicationController
       ActionController::Base.new.render_to_string(
         template: 'export/pdf/cover',
         layout: false,
-        locals: { cover: cover_from_params, total: total }
+        locals: {
+          cover: cover_from_params,
+          total: total,
+          colors: Export::Pdf::BrandColors.palette
+        }
       )
     end
 
-    render html: html.html_safe # rubocop:disable Rails/OutputSafety
+    # Returned as JSON (not text/html) so dev middleware like rack-mini-profiler
+    # doesn't inject a <script> the sandboxed preview iframe would block.
+    render json: { html: html }
   end
 
   def common_ground_results

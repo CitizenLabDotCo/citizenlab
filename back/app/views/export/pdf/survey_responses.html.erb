@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <style>@page { size: A4; margin: 16mm; }</style>
-    <%= render 'export/pdf/styles' %>
+    <%= render 'export/pdf/styles', colors: colors %>
   </head>
   <body>
     <% if cover[:include] %>

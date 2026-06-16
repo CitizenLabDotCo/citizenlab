@@ -60,12 +60,9 @@ const AdminPhaseSurveyPdfExport = () => {
       (surveyFields?.data ?? []).map((field) => ({
         key: field.id,
         label: localize(field.attributes.title_multiloc),
-        reason: field.attributes.personal_data
-          ? formatMessage(messages.personalDataReason)
-          : null,
         redact: field.attributes.personal_data,
       })),
-    [surveyFields, localize, formatMessage]
+    [surveyFields, localize]
   );
 
   // Cover page state, prefilled once from the phase/project.

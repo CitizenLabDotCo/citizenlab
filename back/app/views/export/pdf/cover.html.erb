@@ -14,7 +14,7 @@
         background: #FFFFFF;
       }
     </style>
-    <%= render 'export/pdf/styles' %>
+    <%= render 'export/pdf/styles', colors: colors %>
   </head>
   <body>
     <%= render 'export/pdf/cover', cover: cover, total: total %>
