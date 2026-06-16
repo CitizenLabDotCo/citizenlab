@@ -87,11 +87,16 @@ module MultiTenancy
         MultiTenancy::TenantService.new.finalize_creation(Tenant.current)
       end
 
-      # Seeds an empty localhost tenant. It contains only the absolute minimum of records
+      # Seeds an empty localhost tenant: only the platform scaffold (settings, nav bar, pages, idea
+      # statuses, topics, registration fields) and the admin user — no content. The base template ships
+      # a sample project (with a phase + events); drop it so the tenant starts genuinely empty, ready to
+      # receive an import.
       def seed_empty_localhost_tenant
         return unless Apartment::Tenant.current == 'empty_localhost'
 
         MultiTenancy::Templates::ApplyService.new.apply_internal_template('base')
+        ::Project.destroy_all
+        ::ProjectFolders::Folder.destroy_all
         MultiTenancy::Seeds::Users.new(runner: self).run
       end
 

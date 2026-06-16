@@ -68,9 +68,10 @@ describe 'db/seeds.rb' do
       expect(GlobalTopic.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Area.count).to be 0
-      expect(Project.count).to be 1
-      expect(Phase.count).to be 1
-      expect(Event.count).to be 4
+      # Empty of content: the base template's sample project (+ its phase and events) is dropped.
+      expect(Project.count).to be 0
+      expect(Phase.count).to be 0
+      expect(Event.count).to be 0
       expect(Idea.count).to be 0
       expect(Comment.count).to be 0
       expect(Group.count).to be 0
