@@ -369,20 +369,21 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       .reject(&:abstract_class?)
       .reject { |m| m.name.to_s.start_with?('HABTM_', 'ActiveRecord::', 'ActiveStorage::') }
       .select { |m| base_tables.include?(m.table_name) }
-      .reject { |m| defined_inside_job?(m) }
+      .reject { |m| defined_inside_throwaway?(m) }
       .map(&:base_class)
       .uniq
   end
 
-  # True for throwaway AR classes defined *inside* a job (e.g. a data-migration job
-  # that re-maps an existing table via `self.table_name =` to bypass callbacks).
-  # These aren't domain models — the real model owning the table is enumerated
-  # separately — so they're skipped structurally rather than allowlisted by name.
-  def defined_inside_job?(model)
+  # True for throwaway AR classes defined *inside* a job or migration (e.g. a
+  # data-migration job/migration that re-maps an existing table via
+  # `self.table_name =` to bypass callbacks). These aren't domain models — the
+  # real model owning the table is enumerated separately — so they're skipped
+  # structurally rather than allowlisted by name.
+  def defined_inside_throwaway?(model)
     namespaces = model.name.to_s.split('::')[0...-1]
     namespaces.length.downto(1).any? do |i|
       enclosing = namespaces[0...i].join('::').safe_constantize
-      enclosing.is_a?(Class) && enclosing < ActiveJob::Base
+      enclosing.is_a?(Class) && (enclosing < ActiveJob::Base || enclosing < ActiveRecord::Migration)
     end
   end
 
