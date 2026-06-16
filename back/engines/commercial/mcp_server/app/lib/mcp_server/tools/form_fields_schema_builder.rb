@@ -105,9 +105,12 @@ class McpServer::Tools::FormFieldsSchemaBuilder
     @common_field_properties ||= {
       code: {
         type: %w[string null],
+        # Also includes user-profile codes, but it should not be a problem. They just
+        # won't show up in responses.
+        enum: [*CustomField::CODES, nil],
         description: <<~DESC.squish
-          Reserved code for built-in fields (e.g. `title_multiloc` on ideation). null for
-          custom-added fields. Do not invent codes.
+          Reserved code for built-in fields. On existing fields, echo the code received 
+          from get_form_fields or omit it. When creating a new field, use null.
         DESC
       },
       key: {
