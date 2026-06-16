@@ -25,6 +25,13 @@ import Question from './Question';
 import Summary from './Summary';
 import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
 
+// Minimum number of inputs (total submissions) in an analysis before its default
+// AI summary is generated automatically. Distinct from the response-count
+// threshold that gates creating the analysis itself (AUTO_ANALYSIS_MIN_RESPONSES
+// in ./index): this one guards spending an LLM call, and applies regardless of
+// how the analysis was created (including manually).
+const AUTO_SUMMARY_MIN_INPUTS = 10;
+
 const AnalysisInsights = ({
   analysis,
   hasOtherResponses,
@@ -63,7 +70,7 @@ const AnalysisInsights = ({
       analysis.id &&
       insights?.data.length === 0 &&
       !automaticSummaryCreated &&
-      inputCount > 10
+      inputCount > AUTO_SUMMARY_MIN_INPUTS
     ) {
       setAutomaticSummaryCreated(true);
       preCheck(

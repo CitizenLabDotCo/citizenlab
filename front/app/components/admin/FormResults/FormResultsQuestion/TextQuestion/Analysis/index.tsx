@@ -29,10 +29,12 @@ import messages from '../../../messages';
 import AnalysisInsights from './AnalysisInsights';
 import { filterForCommunityMonitorQuarter } from './utils';
 
-// Minimum number of (non-empty) text responses before an analysis/summary is
-// created automatically. Used both by the auto-create guard and by the info box
-// that explains the auto-generation, so the two can't drift apart.
-const AUTO_SUMMARY_MIN_RESPONSES = 10;
+// Minimum number of (non-empty) text responses before the analysis is created
+// automatically (which in turn triggers its default summary). Used by both the
+// auto-create guard and the info box that explains it, so the two can't drift.
+// The summary-generation stage has its own threshold (AUTO_SUMMARY_MIN_INPUTS
+// in ./AnalysisInsights), which guards a different quantity.
+const AUTO_ANALYSIS_MIN_RESPONSES = 10;
 
 type Props = {
   customFieldId: string;
@@ -117,7 +119,7 @@ const Analysis = ({
       analyses &&
       customFieldId &&
       !relevantAnalysis &&
-      textResponsesCount > AUTO_SUMMARY_MIN_RESPONSES
+      textResponsesCount > AUTO_ANALYSIS_MIN_RESPONSES
     ) {
       addAnalysis({
         projectId: phaseId ? undefined : projectId,
@@ -152,7 +154,7 @@ const Analysis = ({
   const showAutoSummaryInfo =
     noInsights &&
     hasOtherResponses &&
-    textResponsesCount <= AUTO_SUMMARY_MIN_RESPONSES;
+    textResponsesCount <= AUTO_ANALYSIS_MIN_RESPONSES;
 
   const goToAnalysis = () => {
     if (relevantAnalysis?.id) {
