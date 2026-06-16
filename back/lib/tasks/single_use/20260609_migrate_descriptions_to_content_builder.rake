@@ -2,13 +2,13 @@
 
 require_relative 'services/description_to_content_builder_migration_service'
 
-# Wraps each project/folder `description_multiloc` (legacy WYSIWYG) into a single
-# Content Builder "bridge" widget (RichTextMultiloc) at full fidelity, so the
-# citizen page renders the description through the Content Builder. The legacy
-# `description_multiloc` is left untouched.
+# Moves every project/folder description onto the Content Builder. Non-blank
+# `description_multiloc` (legacy WYSIWYG) is wrapped in a single bridge widget
+# (RichTextMultiloc) at full fidelity; blank descriptions get the default layout.
+# The legacy `description_multiloc` is left untouched.
 #
-# - Skips blank descriptions and buildables already on the Content Builder, so it
-#   is idempotent and resumable.
+# - Skips buildables already on the Content Builder, so it is idempotent and
+#   resumable.
 # - Use DRY_RUN=true to analyse without writing. Use HOST=<host> to limit to one
 #   tenant.
 #
@@ -47,7 +47,8 @@ namespace :single_use do
       Rails.logger.info "   📊 #{verb}: #{stats[:migrated]} (projects: #{stats[:projects_migrated]}, folders: #{stats[:folders_migrated]})"
       Rails.logger.info "      ├─ new layouts: #{stats[:created]}"
       Rails.logger.info "      └─ re-enabled disabled layouts: #{stats[:remigrated_disabled]} (of which had builder content: #{stats[:remigrated_disabled_with_content]})"
-      Rails.logger.info "   ⏭️  Skipped — blank: #{stats[:skipped_blank]}, already on builder: #{stats[:skipped_existing]}"
+      Rails.logger.info "      └─ blank descriptions given a default layout: #{stats[:created_blank]}"
+      Rails.logger.info "   ⏭️  Skipped — already on builder: #{stats[:skipped_existing]}"
       Rails.logger.info "   ⚠️  ERRORS: #{stats[:errors]}" if stats[:errors] > 0
     end
 
@@ -56,7 +57,7 @@ namespace :single_use do
     Rails.logger.info "   #{dry_run ? 'Would migrate' : 'Migrated'}: #{totals[:migrated]} (projects: #{totals[:projects_migrated]}, folders: #{totals[:folders_migrated]})"
     Rails.logger.info "      New layouts: #{totals[:created]}"
     Rails.logger.info "      Re-enabled disabled layouts: #{totals[:remigrated_disabled]} (of which had builder content: #{totals[:remigrated_disabled_with_content]})"
-    Rails.logger.info "   Skipped (blank description): #{totals[:skipped_blank]}"
+    Rails.logger.info "      Blank descriptions given a default layout: #{totals[:created_blank]}"
     Rails.logger.info "   Skipped (already on builder): #{totals[:skipped_existing]}"
     Rails.logger.info "   Errors: #{totals[:errors]}"
 
