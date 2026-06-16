@@ -164,20 +164,7 @@ describe('Native survey CTA bar', () => {
   if (phaseId) {
     // delete created ideas in the test, otherwise the project cannot be deleted because of the foreign key constraint
     // between ideas and phases
-    cy.request({
-      method: 'GET',
-      url: `/web_api/v1/ideas`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => {
-      const ideas = response.body.data
-      if(ideas.length !== 0) {
-        ideas.forEach((idea: any) => {
-          cy.apiRemoveIdea(idea.id);
-        });
-      }
-    }).then(() => {
+    cy.apiRemoveIdeas().then(() => {
       if (projectId) {
         cy.apiRemoveProject(projectId);
       }

@@ -77,32 +77,7 @@ describe('Event show page', () => {
   afterEach(() => {
     if (eventIdNoCoordinates) {
       // delete participant added during the first test
-      cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-        const adminJwt = response.body.jwt;
-
-        cy.request({
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${adminJwt}`,
-          },
-          method: 'GET',
-          url: `web_api/v1/events/${eventIdNoCoordinates}/attendances`,
-        }).then((response) => {
-          const attendances = response.body.data;
-          if (attendances.length !== 0){
-            attendances.forEach((attendance: any) => {
-              cy.request({
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${adminJwt}`,
-                },
-                method: 'DELETE',
-                url: `web_api/v1/event_attendances/${attendance.id}`,
-              });
-            });
-          }
-        });
-      });
+      cy.deleteEventAttendances('admin@govocal.com', 'democracy2.0', eventIdNoCoordinates);
     }
   });
 
