@@ -59,6 +59,7 @@ import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
+import HtmlBlockMultiloc, { htmlBlockMultilocTitle } from './HtmlBlockMultiloc';
 
 export const WIDGETS = {
   // Shared widgets
@@ -85,6 +86,7 @@ export const WIDGETS = {
   ProjectsAndFoldersLegacy,
   TextMultiloc,
   VideoEmbed,
+  HtmlBlockMultiloc,
 
   // RENAMED (TODO rename in migration)
   Highlight: CallToAction,
@@ -129,6 +131,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ProjectsAndFoldersLegacy: projectsAndFoldersLegacyTitle,
   TextMultiloc: textMultilocTitle,
   VideoEmbed: videoEmbedTitle,
+  HtmlBlockMultiloc: htmlBlockMultilocTitle,
 
   // RENAMED
   Highlight: callToActionTitle,
