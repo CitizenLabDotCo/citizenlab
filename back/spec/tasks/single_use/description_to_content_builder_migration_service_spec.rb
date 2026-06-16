@@ -133,10 +133,15 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
     context 'with a blank description' do
       let(:project) { create(:project, description_multiloc: { 'en' => '<p></p>' }) }
 
-      it 'skips it' do
+      it 'provisions an enabled default (empty) layout so it still lives on the Content Builder' do
         service.migrate_buildable(project, persist: true)
-        expect(project.content_builder_layouts.count).to eq(0)
-        expect(service.stats).to include(skipped_blank: 1)
+
+        layout = project.content_builder_layouts.find_by(code: 'project_description')
+        expect(layout).to be_present
+        expect(layout.enabled).to be(true)
+        expect(bridge_node(layout)).to be_nil
+        expect(layout.craftjs_json).to have_key('ROOT')
+        expect(service.stats).to include(migrated: 1, created_blank: 1, projects_migrated: 1)
       end
     end
 
@@ -178,6 +183,20 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
         layout = folder.content_builder_layouts.find_by(code: 'project_folder_description')
         expect(node_types(layout)).to include('FolderTitle', 'RichTextMultiloc', 'Published')
         expect(bridge_node(layout)['props']['text']).to eq(description)
+      end
+
+      context 'when the description is blank' do
+        let(:folder) { create(:project_folder, description_multiloc: { 'en' => '' }) }
+
+        it 'provisions the default folder layout (title + published projects) with no bridge node' do
+          service.migrate_buildable(folder, persist: true)
+
+          layout = folder.content_builder_layouts.find_by(code: 'project_folder_description')
+          expect(layout.enabled).to be(true)
+          expect(bridge_node(layout)).to be_nil
+          expect(node_types(layout)).to include('FolderTitle', 'Published')
+          expect(service.stats).to include(created_blank: 1, folders_migrated: 1)
+        end
       end
     end
   end
