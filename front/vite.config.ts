@@ -81,6 +81,16 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [
+      {
+        name: 'browser-external-empty-stub',
+        enforce: 'pre',
+        load(id) {
+          if (id.includes('browser-external')) {
+            return 'module.exports = {};';
+          }
+          return null;
+        },
+      },
       react(),
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
