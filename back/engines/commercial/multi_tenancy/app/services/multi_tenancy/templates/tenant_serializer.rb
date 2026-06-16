@@ -77,6 +77,7 @@ module MultiTenancy
             )
           ),
           CustomFieldOptionImage => serialize_records(CustomFieldOptionImage),
+          CustomFieldMatrixStatement => serialize_records(CustomFieldMatrixStatement),
 
           # Custom maps
           CustomMaps::Layer => serialize_records(CustomMaps::Layer),

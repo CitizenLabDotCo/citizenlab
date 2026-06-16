@@ -44,16 +44,12 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       ], # REVIEW
 
       'CustomField' => %w[
-        hidden
         logic
-      ], # REVIEW
+      ], # Logic cannot be easily serialized
 
       'CustomForm' => %w[
         fields_last_updated_at
-        print_end_multiloc
-        print_personal_data_fields
-        print_start_multiloc
-      ], # REVIEW: (except fields_last_updated_at)
+      ], # bookkeeping timestamp; the form's print settings are serialized
 
       'DefaultInputTopic' => %w[
         parent_id
@@ -106,20 +102,11 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
 
       'Project' => %w[
         default_assignee_id
-        header_bg_alt_text_multiloc
         listed
         live_auto_input_topics_enabled
         preview_token
         track_participation_location
       ], # REVIEW: (except default_assignee_id, preview_token)
-
-      'ProjectImage' => %w[
-        alt_text_multiloc
-      ], # REVIEW
-
-      'EventImage' => %w[
-        alt_text_multiloc
-      ], # REVIEW
 
       'User' => %w[
         block_end_at
@@ -143,14 +130,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         title_multiloc
       ], # REVIEW
 
-      'ProjectFolders::Folder' => %w[
-        header_bg_alt_text_multiloc
-      ], # REVIEW
-
-      'ProjectFolders::Image' => %w[
-        alt_text_multiloc
-      ], # REVIEW
-
       'ReportBuilder::Report' => %w[
         community_monitor
         quarter
@@ -158,22 +137,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       ] # REVIEW
     }.freeze
   end
-
-  # Cache/derived columns excluded from coverage checks across ALL models.
-  # `*_count` matches any column ending in `_count`
-  let(:ignored_cache_columns) do
-    %w[
-      *_count
-      weglot_data
-    ].freeze
-  end
-
-  def cache_columns_for(model)
-    model.column_names.select do |col|
-      ignored_cache_columns.any? { |pat| pat.start_with?('*') ? col.end_with?(pat[1..]) : col == pat }
-    end
-  end
-
   # Persisted models that intentionally have no tenant serializer, keyed by reason
   let(:excluded_models) do
     {
@@ -305,9 +268,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
 
       # REVIEW: these look like they may belong in tenant templates. Listed to keep
       # the baseline green pending a human decision on whether to serialize them.
-      # What even is EmailSnippet??? Very old model
       review: %w[
-        CustomFieldMatrixStatement
         EmailCampaigns::CampaignsGroup
         EmailCampaigns::Consent
         ProjectReview
@@ -315,8 +276,22 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       ]
     }.freeze
   end
-
   let(:excluded_model_names) { excluded_models.values.flatten.to_set.freeze }
+
+  # Cache/derived columns excluded from coverage checks across ALL models.
+  # `*_count` matches any column ending in `_count`
+  let(:ignored_cache_columns) do
+    %w[
+      *_count
+      weglot_data
+    ].freeze
+  end
+
+  def cache_columns_for(model)
+    model.column_names.select do |col|
+      ignored_cache_columns.any? { |pat| pat.start_with?('*') ? col.end_with?(pat[1..]) : col == pat }
+    end
+  end
 
   # Bookkeeping/cache columns detected by introspection — never template content,
   # so they're excluded globally rather than listed per model.

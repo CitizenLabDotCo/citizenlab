@@ -43,6 +43,22 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
+    it 'round-trips a custom field with its matrix statements into a new tenant' do
+      create(:custom_field_matrix_linear_scale, :for_custom_form)
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        matrix_field = CustomField.find_by(input_type: 'matrix_linear_scale')
+        expect(matrix_field).to be_present
+        statements = matrix_field.matrix_statements.order(:ordering)
+        expect(statements.pluck(:key)).to eq(%w[send_more_animals_to_space ride_bicycles_more_often])
+        expect(statements.first.title_multiloc).to eq('en' => 'We should send more animals into space')
+      end
+    end
+
     it "doesn't include title_multiloc for NavBarItems without custom copy" do
       create(:nav_bar_item, code: 'home', title_multiloc: nil)
       template = tenant_serializer.run(deserializer_format: true)
