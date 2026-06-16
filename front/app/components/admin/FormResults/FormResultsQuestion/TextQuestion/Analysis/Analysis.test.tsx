@@ -13,13 +13,10 @@ import Analysis from '.';
 // (= 10). These tests pin the behaviour around it: at/below the threshold the info
 // box is shown and no analysis is created; above it, an analysis is auto-created.
 
-// Hooks with a manual mock (api/.../__mocks__) -> bare jest.mock + per-test
-// mockReturnValue overrides, matching the convention used elsewhere.
 jest.mock('api/analyses/useAnalyses');
 jest.mock('api/analysis_insights/useAnalysisInsights');
 jest.mock('api/app_configuration/useAppConfiguration');
 
-// Hooks without a manual mock -> inline factory.
 const mockAddAnalysis = jest.fn();
 jest.mock('api/analyses/useAddAnalysis', () =>
   jest.fn(() => ({ mutate: mockAddAnalysis, isLoading: false }))
