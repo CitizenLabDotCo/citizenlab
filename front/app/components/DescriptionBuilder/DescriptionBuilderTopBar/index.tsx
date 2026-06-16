@@ -67,9 +67,13 @@ const DescriptionBuilderTopBar = ({
   };
 
   const handleSave = async () => {
+    // Always enable the layout on save: descriptions are edited exclusively in
+    // the Content Builder, so saving a description makes it the live one. This
+    // also self-heals any buildable that somehow has no enabled layout yet.
     addContentBuilderLayout({
       contentBuildableId,
       contentBuildableType,
+      enabled: true,
       craftjs_json: query.getSerializedNodes(),
     });
   };
