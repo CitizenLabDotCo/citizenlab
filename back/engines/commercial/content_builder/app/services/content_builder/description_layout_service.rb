@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Puts project/folder descriptions on the Content Builder. Used in three places:
-  # - the SideFx creation hook, so a brand-new buildable gets an (empty) layout;
+  # Puts project/folder descriptions on the Content Builder. Used in three places,
+  # all sharing the same content-aware building:
+  # - the SideFx creation/copy hook, so a new (or copied/imported) buildable gets a
+  #   layout wrapping its description, or an empty layout when it has none;
   # - the after-template hook, so every project/folder in a freshly created tenant
   #   is on the builder regardless of which template it came from;
   # - the one-time WYSIWYG migration (delegates its craftjs building here).
@@ -35,21 +37,16 @@ module ContentBuilder
       }
     }.freeze
 
-    # --- Creation hook (brand-new buildables) ---------------------------------
+    # --- Creation/copy hook (new or copied/imported buildables) ----------------
 
-    # Idempotently provisions an enabled, empty description layout, gated on the
-    # feature. Safe to call on every creation: no-op when the feature is off or a
-    # layout already exists.
+    # Idempotently provisions an enabled description layout — wrapping the
+    # buildable's description if it has one (so a copied/imported description is
+    # never hidden behind an empty frame), or an empty layout otherwise. Gated on
+    # the feature; no-op when it is off or a layout already exists.
     def provision_for(buildable)
       return unless feature_activated?
 
-      ensure_enabled_default_layout!(buildable)
-    end
-
-    def ensure_enabled_default_layout!(buildable)
-      return if buildable.content_builder_layouts.exists?
-
-      create_layout!(buildable, default_craftjs_json(buildable))
+      ensure_on_content_builder!(buildable)
     end
 
     # --- After-template hook (every buildable in a new tenant) -----------------
@@ -119,6 +116,19 @@ module ContentBuilder
       description_multiloc.values.all? { |html| description_html_blank?(html) }
     end
 
+    # Picks the layout for a description by content: blank -> default; inline media
+    # -> lossless bridge; plain/rich text -> native TextMultiloc.
+    def content_aware_craftjs_json(buildable)
+      multiloc = buildable.description_multiloc
+      if description_blank?(multiloc)
+        default_craftjs_json(buildable)
+      elsif description_has_media?(multiloc)
+        bridge_craftjs_json(buildable)
+      else
+        text_craftjs_json(buildable)
+      end
+    end
+
     private
 
     def feature_activated?
@@ -129,17 +139,6 @@ module ContentBuilder
       ensure_on_content_builder!(buildable)
     rescue StandardError => e
       ErrorReporter.report(e, extra: { buildable_type: buildable.class.name, buildable_id: buildable.id })
-    end
-
-    def content_aware_craftjs_json(buildable)
-      multiloc = buildable.description_multiloc
-      if description_blank?(multiloc)
-        default_craftjs_json(buildable)
-      elsif description_has_media?(multiloc)
-        bridge_craftjs_json(buildable)
-      else
-        text_craftjs_json(buildable)
-      end
     end
 
     # NB: create via Layout (not buildable.content_builder_layouts) so the
