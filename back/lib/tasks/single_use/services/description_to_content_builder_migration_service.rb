@@ -8,26 +8,22 @@ module Tasks
       # the citizen page renders the description through the Content Builder. The
       # legacy `description_multiloc` is left untouched.
       #
-      # After running, every buildable with a (non-blank) description is on the
-      # Content Builder:
-      # - no layout yet         -> creates an enabled bridge layout;
-      # - disabled layout       -> a "straggler" (admin toggled the builder on then
-      #                            off, so citizens currently see the WYSIWYG
-      #                            description; the disabled layout is an abandoned,
-      #                            non-live draft). We re-point it at the bridge and
-      #                            enable it. The prior craftjs_json is logged first
-      #                            so the overwrite is recoverable;
-      # - enabled layout        -> already on the builder, left untouched.
+      # After running, EVERY buildable is on the Content Builder:
+      # - non-blank description  -> creates an enabled bridge layout wrapping the
+      #                             legacy HTML;
+      # - blank description       -> creates an enabled default layout (empty canvas
+      #                             for projects, title + published projects for
+      #                             folders) so there is no off-builder description;
+      # - disabled layout        -> a "straggler" (admin toggled the builder on then
+      #                             off). We re-point it at the chosen layout and
+      #                             enable it. The prior craftjs_json is logged first
+      #                             so the overwrite is recoverable;
+      # - enabled layout         -> already on the builder, left untouched.
       #
-      # Skips blank descriptions. Idempotent and resumable (a second run finds an
-      # enabled layout and skips). Operates on the current tenant; the rake task
-      # switches tenants and aggregates the per-tenant stats.
+      # Idempotent and resumable (a second run finds an enabled layout and skips).
+      # Operates on the current tenant; the rake task switches tenants and
+      # aggregates the per-tenant stats.
       class DescriptionToContentBuilderMigrationService
-        LAYOUT_CODE_BY_TYPE = {
-          'Project' => 'project_description',
-          'ProjectFolders::Folder' => 'project_folder_description'
-        }.freeze
-
         def initialize
           @stats = Hash.new(0)
         end
@@ -43,14 +39,7 @@ module Tasks
 
         # Migrates a single buildable. Safe to call repeatedly.
         def migrate_buildable(buildable, persist:)
-          code = LAYOUT_CODE_BY_TYPE[buildable.class.name]
-          raise ArgumentError, "Unsupported buildable: #{buildable.class.name}" unless code
-
-          if description_blank?(buildable.description_multiloc)
-            @stats[:skipped_blank] += 1
-            return
-          end
-
+          code = description_layout_service.layout_code(buildable)
           existing = buildable.content_builder_layouts.find_by(code: code)
 
           # Already on the Content Builder — nothing to do.
@@ -59,22 +48,33 @@ module Tasks
             return
           end
 
+          # Non-blank descriptions are wrapped in the lossless bridge widget; blank
+          # ones get the default layout so they too live on the Content Builder.
+          blank = description_blank?(buildable.description_multiloc)
+          craftjs = blank ? description_layout_service.default_craftjs_json(buildable) : build_craftjs_json(buildable)
+
           if existing
-            migrate_straggler(buildable, existing, persist: persist)
+            migrate_straggler(buildable, existing, craftjs, persist: persist)
           else
-            create_layout(buildable, code, persist: persist)
+            create_layout(buildable, code, craftjs, persist: persist)
           end
 
           @stats[:migrated] += 1
+          @stats[:created_blank] += 1 if blank
           @stats[buildable.is_a?(Project) ? :projects_migrated : :folders_migrated] += 1
         rescue StandardError => e
           @stats[:errors] += 1
-          Rails.logger.info "   ❌ Error migrating #{buildable.class.name} #{buildable.id}: #{e.message}"
+          Rails.logger.error "   ❌ Error migrating #{buildable.class.name} #{buildable.id}: #{e.message}"
+          ErrorReporter.report(e, extra: { buildable_type: buildable.class.name, buildable_id: buildable.id })
         end
 
         private
 
-        def create_layout(buildable, code, persist:)
+        def description_layout_service
+          @description_layout_service ||= ContentBuilder::DescriptionLayoutService.new
+        end
+
+        def create_layout(buildable, code, craftjs, persist:)
           @stats[:created] += 1
           return unless persist
 
@@ -85,15 +85,15 @@ module Tasks
             content_buildable: buildable,
             code: code,
             enabled: true,
-            craftjs_json: build_craftjs_json(buildable)
+            craftjs_json: craftjs
           )
         end
 
-        # Re-points a disabled (abandoned) layout at the bridge and enables it.
-        # The previous craftjs_json is logged first (only when it holds real
+        # Re-points a disabled (abandoned) layout at the chosen layout and enables
+        # it. The previous craftjs_json is logged first (only when it holds real
         # content) so any overwrite is recoverable; `description_multiloc`, the
         # live content, is never touched.
-        def migrate_straggler(buildable, layout, persist:)
+        def migrate_straggler(buildable, layout, craftjs, persist:)
           had_content = layout_has_content?(layout)
           @stats[:remigrated_disabled] += 1
           @stats[:remigrated_disabled_with_content] += 1 if had_content
@@ -107,7 +107,7 @@ module Tasks
             )
           end
 
-          layout.update!(enabled: true, craftjs_json: build_craftjs_json(buildable))
+          layout.update!(enabled: true, craftjs_json: craftjs)
         end
 
         # A layout holds admin-built content when it has any node beyond the ROOT
