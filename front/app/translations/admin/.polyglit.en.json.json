@@ -3,5 +3,10 @@
     "state": "verified",
     "verified_at": "2026-04-23T10:20:16.810916Z",
     "verified_by": "Nola Moreau"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
+    "state": "verified",
+    "verified_at": "2026-06-02T16:02:58.222932Z",
+    "verified_by": "Nola Moreau"
   }
 }

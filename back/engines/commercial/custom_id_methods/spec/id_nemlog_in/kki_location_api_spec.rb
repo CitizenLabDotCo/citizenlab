@@ -11,10 +11,10 @@ describe CustomIdMethods::NemlogIn::KkiLocationApi do
   before do
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [
+      id_methods: [
         {
           name: 'nemlog_in',
           kki_uri: base_uri,

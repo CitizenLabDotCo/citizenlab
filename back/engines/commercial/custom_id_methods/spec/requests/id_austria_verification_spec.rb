@@ -65,10 +65,10 @@ context 'id_austria verification' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'id_austria',
         client_id: '12345',
         client_secret: '78910',
@@ -277,7 +277,7 @@ context 'id_austria verification' do
       expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(1)
 
-      post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
+      post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
       expect(response).to have_http_status(:ok)
       expect(user.reload.confirmation_required?).to be(false)
       expect(user).to have_attributes({ email: 'newcoolemail@example.org' })

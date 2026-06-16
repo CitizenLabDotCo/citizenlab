@@ -1,10 +1,10 @@
 import React from 'react';
 
 import {
-  TVerificationMethod,
-  TVerificationMethodName,
+  IdMethodData,
+  IdMethodName,
   IDAuth0Method,
-} from 'api/verification_methods/types';
+} from 'api/id_methods/types';
 
 import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 
@@ -15,7 +15,7 @@ import FranceConnectVerificationButton from './FranceConnectVerificationButton';
 // SSO verification methods rendered by this centralized component. The
 // remaining (form-based, manual) methods are still rendered through the
 // `app.components.VerificationModal.buttons` outlet by their own modules.
-const CENTRALIZED_METHODS: TVerificationMethodName[] = [
+const CENTRALIZED_METHODS: IdMethodName[] = [
   'acm',
   'auth0',
   'clave_unica',
@@ -29,17 +29,17 @@ const CENTRALIZED_METHODS: TVerificationMethodName[] = [
   'twoday',
 ];
 
-export const isCentralizedSSOMethod = (method: TVerificationMethod) =>
+export const isCentralizedSSOMethod = (method: IdMethodData) =>
   method.attributes.verification_method &&
   CENTRALIZED_METHODS.includes(method.attributes.name);
 
 interface Props {
-  verificationMethods: TVerificationMethod[];
-  onClick: (method: TVerificationMethod) => void;
+  idMethods: IdMethodData[];
+  onClick: (method: IdMethodData) => void;
 }
 
-const SSOVerificationButtons = ({ verificationMethods, onClick }: Props) => {
-  const methods = verificationMethods.filter(isCentralizedSSOMethod);
+const SSOVerificationButtons = ({ idMethods, onClick }: Props) => {
+  const methods = idMethods.filter(isCentralizedSSOMethod);
 
   return (
     <>

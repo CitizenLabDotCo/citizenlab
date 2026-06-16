@@ -2,18 +2,12 @@
 
 module CustomIdMethods::IdAustria
   module IdAustriaVerification
-    include Verification::VerificationMethod
-
     def verification_method_type
       :omniauth
     end
 
     def id
       '91068f8a-c4a5-4fc8-ab3e-ca2eb74f9c3c'
-    end
-
-    def name
-      'id_austria'
     end
 
     def ui_method_name

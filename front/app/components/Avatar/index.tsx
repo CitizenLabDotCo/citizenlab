@@ -5,9 +5,8 @@ import BoringAvatar from 'boring-avatars';
 import { lighten } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 import useUserById from 'api/users/useUserById';
-
-import FeatureFlag from 'components/FeatureFlag';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -173,6 +172,7 @@ const AvatarInner = ({
 }: Props) => {
   const { data: user } = useUserById(userId);
   const theme = useTheme();
+  const { data: firstVerificationMethod } = useVerificationMethod();
 
   const avatarSize = props.size;
   const paddingValue = props.padding || 3;
@@ -254,14 +254,8 @@ const AvatarInner = ({
         <BadgeIcon name="cl-favicon" size={badgeSize} fill={colors.red600} />
       )}
 
-      {verified && addVerificationBadge && (
-        <FeatureFlag name="verification">
-          <BadgeIcon
-            name="check-circle"
-            size={badgeSize}
-            fill={colors.success}
-          />
-        </FeatureFlag>
+      {verified && addVerificationBadge && !!firstVerificationMethod && (
+        <BadgeIcon name="check-circle" size={badgeSize} fill={colors.success} />
       )}
     </Container>
   );

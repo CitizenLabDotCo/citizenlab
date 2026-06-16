@@ -2,18 +2,12 @@
 
 module CustomIdMethods::Acm
   module AcmVerification
-    include Verification::VerificationMethod
-
     def verification_method_type
       :omniauth
     end
 
     def id
       'e8f3a1b2-9c4d-4e5f-a6b7-c8d9e0f1a2b3'
-    end
-
-    def name
-      'acm'
     end
 
     def config_parameters

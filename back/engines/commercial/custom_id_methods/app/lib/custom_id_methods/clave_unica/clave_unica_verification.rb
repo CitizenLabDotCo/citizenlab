@@ -2,18 +2,12 @@
 
 module CustomIdMethods::ClaveUnica
   module ClaveUnicaVerification
-    include Verification::VerificationMethod
-
     def verification_method_type
       :omniauth
     end
 
     def id
       'f06ddcf6-38c5-495d-a319-0863a7f3e073'
-    end
-
-    def name
-      'clave_unica'
     end
 
     def config_parameters

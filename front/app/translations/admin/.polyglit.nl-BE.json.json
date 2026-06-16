@@ -3944,6 +3944,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:24:24.254178Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -16426,7 +16431,7 @@
   },
   "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": {
     "state": "verified",
-    "verified_at": "2026-04-23T17:17:59.339755Z",
+    "verified_at": "2026-06-05T14:57:05.005153Z",
     "verified_by": "Luuc"
   },
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": {
@@ -17189,6 +17194,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.Insights.summarizeUpsellMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:51.948548Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.projects.project.analysis.Insights.summaryFor": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -17271,8 +17281,8 @@
   },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
     "state": "verified",
-    "verified_at": "2026-03-18T11:49:32.517997Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-06-05T14:57:05.005153Z",
+    "verified_by": "Luuc"
   },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": {
     "state": "verified",
@@ -20109,6 +20119,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.modules.navbar.admin.containers.navBarMaxItemsNumber1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:24:24.254178Z",
+    "verified_by": "Luuc"
+  },
   "app.modules.navbar.admin.containers.pageHeader": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -20118,6 +20133,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:34:36.160245Z",
     "verified_by": "Admin"
+  },
+  "app.modules.navbar.admin.containers.pageSubtitle1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:24:24.254178Z",
+    "verified_by": "Luuc"
   },
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": {
     "state": "verified",

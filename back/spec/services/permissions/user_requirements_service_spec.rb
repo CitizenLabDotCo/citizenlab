@@ -56,9 +56,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'permits a light unconfirmed resident' do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
-          requirements = service.requirements(permission, nil)
+          user = create(:unconfirmed_user)
+          requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq expected_requirements
         end
@@ -102,8 +101,7 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a light unconfirmed resident' do
-          user.reset_confirmation_and_counts
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user = create(:unconfirmed_user)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -135,7 +133,7 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a fully registered unconfirmed resident' do # https://citizenlabco.slack.com/archives/C04FX2ATE5B/p1677170928400679
-          user.reset_confirmation_and_counts
+          user.update!(email_confirmed_at: nil, confirmation_required: true)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -167,7 +165,7 @@ describe Permissions::UserRequirementsService do
 
         it 'does not permit an unconfirmed admin' do
           user.add_role 'admin'
-          user.reset_confirmation_and_counts
+          user.update!(email_confirmed_at: nil, confirmation_required: true)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -292,7 +290,7 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a fully registered unconfirmed resident' do
-          user.reset_confirmation_and_counts
+          user.update!(email_confirmed_at: nil, confirmation_required: true)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -343,7 +341,7 @@ describe Permissions::UserRequirementsService do
 
         it 'does not permit an unconfirmed admin' do
           user.add_role 'admin'
-          user.reset_confirmation_and_counts
+          user.update!(email_confirmed_at: nil, confirmation_required: true)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
@@ -512,7 +510,8 @@ describe Permissions::UserRequirementsService do
 
       before do
         # To allow permitted_by 'verified' we need to enable at least one verification method
-        SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.save!
       end
 
       context 'there is no user' do

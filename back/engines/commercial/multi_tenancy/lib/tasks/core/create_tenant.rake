@@ -63,10 +63,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        widgets: {
-          enabled: true,
-          allowed: true
-        },
         granular_permissions: {
           enabled: true,
           allowed: true
@@ -159,18 +155,14 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        events_widget: {
-          enabled: true,
-          allowed: true
-        },
         polls: {
           enabled: true,
           allowed: true
         },
-        verification: {
-          enabled: true,
+        id_config: {
           allowed: true,
-          verification_methods: [
+          enabled: true,
+          id_methods: [
             {
               name: 'cow',
               api_username: 'fake_username',
@@ -363,11 +355,7 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        email_scheduling: {
-          enabled: true,
-          allowed: true
-        },
-        phase_datetime_setup: {
+        mcp_server: {
           enabled: true,
           allowed: true
         }

@@ -22,7 +22,7 @@ definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
   return isAdmin(user);
 });
 
-const canReview = (project: IProjectData, user: IUser | undefined) => {
+const canReview = (project: IProjectData, user: IUser | undefined | null) => {
   if (isAdmin(user)) return true;
 
   if (project.attributes.folder_id) {
@@ -55,7 +55,7 @@ definePermissionRule(
 
 export function canModerateProject(
   project: IProjectData,
-  user: IUser | undefined
+  user: IUser | undefined | null
 ) {
   const projectId = project.id;
   const folderId = project.attributes.folder_id;
@@ -78,7 +78,7 @@ export const canModerateProjectByIds = ({
   projectId: string;
   folderId?: string | null;
   spaceId?: string | null;
-  user: IUser | undefined;
+  user: IUser | undefined | null;
 }) => {
   if (!user) return false;
 

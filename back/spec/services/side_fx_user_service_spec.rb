@@ -67,7 +67,7 @@ describe SideFxUserService do
       let(:invitee) { create(:invited_user) }
 
       it 'does not send a confirmation code email' do
-        expect(RequestConfirmationCodeJob).not_to receive(:perform_now)
+        expect(RequestEmailConfirmationCodeJob).not_to receive(:perform_now)
         service.after_create(invitee, current_user)
       end
     end
