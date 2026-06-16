@@ -1791,6 +1791,7 @@
   "app.containers.Admin.projects.project.surveyPdfExport.pageSubtitle": "Generate a PDF document with every survey response laid out as an individual record.",
   "app.containers.Admin.projects.project.surveyPdfExport.pageTitle": "Export survey responses to PDF",
   "app.containers.Admin.projects.project.surveyPdfExport.preparedByLabel": "Prepared by",
+  "app.containers.Admin.projects.project.surveyPdfExport.previewError": "Could not load the preview.",
   "app.containers.Admin.projects.project.surveyPdfExport.previewLabel": "Cover preview",
   "app.containers.Admin.projects.project.surveyPdfExport.reportSubtitleLabel": "Subtitle",
   "app.containers.Admin.projects.project.surveyPdfExport.reportTitleLabel": "Report title",
