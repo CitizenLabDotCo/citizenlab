@@ -20,7 +20,7 @@
 module ContentBuilder
   class Layout < ApplicationRecord
     include Files::FileAttachable
-    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc].freeze
+    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc HtmlBlockMultiloc].freeze
 
     belongs_to :content_buildable, polymorphic: true, optional: true
 
