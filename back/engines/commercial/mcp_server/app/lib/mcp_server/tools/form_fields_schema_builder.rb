@@ -214,20 +214,15 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       # Scale family
       maximum: {
         type: 'integer',
-        minimum: 2,
-        maximum: 11,
+        minimum: CustomField::LINEAR_SCALE_MAX_RANGE.min,
+        maximum: CustomField::LINEAR_SCALE_MAX_RANGE.max,
         description: <<~DESC.squish
           Only for linear_scale / rating / sentiment_linear_scale / matrix_linear_scale.
-          Top of the scale (2..11).
+          The scale runs from 1 to this value; label slots beyond it are ignored. Set
+          labels for the slots in use using `linear_scale_label_<n>_multiloc` attributes.
         DESC
       },
-      linear_scale_label_1_multiloc: {
-        **multiloc_schema,
-        description: <<~DESC.squish
-          Only for linear_scale / sentiment_linear_scale / matrix_linear_scale. Labels
-          1..11 — only indices in 1..maximum are meaningful.
-        DESC
-      },
+      linear_scale_label_1_multiloc: multiloc_schema,
       linear_scale_label_2_multiloc: multiloc_schema,
       linear_scale_label_3_multiloc: multiloc_schema,
       linear_scale_label_4_multiloc: multiloc_schema,
