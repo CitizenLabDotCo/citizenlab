@@ -41,10 +41,9 @@ import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
@@ -76,7 +75,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
-  const { formatMessage } = useIntl();
   const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
   const syncProjectFolderFiles = useSyncFolderFiles();
 
@@ -103,10 +101,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { mutateAsync: addProjectFolder } = useAddProjectFolder();
   const { mutateAsync: updateProjectFolder } = useUpdateProjectFolder();
 
+  // A folder must exist before its description can be authored in the Content
+  // Builder, so the builder link only shows once the folder is created (edit
+  // mode). At creation the description is left empty and added afterwards.
   const showDescriptionBuilder =
     useFeatureFlag({
       name: 'project_description_builder',
-    }) && projectFolder; // description builder cannot be used when creating a folder
+    }) && projectFolder;
 
   /*
     ==============
@@ -315,11 +316,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     let valid = false;
 
     if (!isNilOrError(tenantLocales)) {
-      // check that all fields have content for all tenant locales
+      // The main description is optional and authored in the Content Builder
+      // after the folder is created, so only title and short description are
+      // required for all tenant locales here.
       valid = tenantLocales.every(
         (locale) =>
           !isEmpty(titleMultiloc?.[locale]) &&
-          !isEmpty(descriptionMultiloc?.[locale]) &&
           !isEmpty(shortDescriptionMultiloc?.[locale])
       );
     }
@@ -337,7 +339,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [
     tenantLocales,
     titleMultiloc,
-    descriptionMultiloc,
     shortDescriptionMultiloc,
     authUser,
     spaceId,
@@ -348,15 +349,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       setSubmitState('loading');
       if (mode === 'new') {
         try {
-          if (
-            titleMultiloc &&
-            descriptionMultiloc &&
-            shortDescriptionMultiloc
-          ) {
+          if (titleMultiloc && shortDescriptionMultiloc) {
             const projectFolder = await addProjectFolder({
               title_multiloc: titleMultiloc,
               slug,
-              description_multiloc: descriptionMultiloc,
+              ...(descriptionMultiloc && {
+                description_multiloc: descriptionMultiloc,
+              }),
               description_preview_multiloc: shortDescriptionMultiloc,
               header_bg: headerBgBase64,
               header_bg_alt_text_multiloc: headerImageAltText,
@@ -596,33 +595,20 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SectionField>
-          <SubSectionTitle>
-            <FormattedMessage {...messages.folderDescription} />
-          </SubSectionTitle>
-          {showDescriptionBuilder ? (
-            <Highlighter fragmentId="description-multiloc">
-              <DescriptionBuilderToggle
-                valueMultiloc={descriptionMultiloc}
-                onChange={getHandler(setDescriptionMultiloc)}
-                label={formatMessage(messages.descriptionInputLabel)}
-                contentBuildableType="folder"
+          {showDescriptionBuilder && (
+            <>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.folderDescription} />
+              </SubSectionTitle>
+              <Highlighter fragmentId="description-multiloc">
+                <DescriptionBuilderToggle contentBuildableType="folder" />
+              </Highlighter>
+              <Error
+                fieldName="description_multiloc"
+                apiErrors={errors.description_multiloc}
               />
-            </Highlighter>
-          ) : (
-            <Box data-cy="e2e-project-folder-description">
-              <QuillMutilocWithLocaleSwitcher
-                id="description"
-                valueMultiloc={descriptionMultiloc}
-                onChange={getHandler(setDescriptionMultiloc)}
-                label={<FormattedMessage {...messages.descriptionInputLabel} />}
-                withCTAButton
-              />
-            </Box>
+            </>
           )}
-          <Error
-            fieldName="description_multiloc"
-            apiErrors={errors.description_multiloc}
-          />
           <Box mt="35px" data-cy="e2e-project-folder-short-description">
             <TextAreaMultilocWithLocaleSwitcher
               valueMultiloc={shortDescriptionMultiloc}
