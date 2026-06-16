@@ -60,6 +60,76 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
       end
     end
 
+    context 'with a disabled (straggler) layout' do
+      let(:description) { { 'en' => '<p>Live description</p>' } }
+      let(:project) { create(:project, description_multiloc: description) }
+
+      let(:layout_with_content) do
+        {
+          'ROOT' => {
+            'type' => 'div', 'isCanvas' => true, 'props' => {},
+            'displayName' => 'div', 'nodes' => ['text1'], 'linkedNodes' => {}
+          },
+          'text1' => {
+            'type' => { 'resolvedName' => 'TextMultiloc' }, 'isCanvas' => false,
+            'props' => { 'text' => { 'en' => '<p>old builder draft</p>' } },
+            'displayName' => 'TextMultiloc', 'parent' => 'ROOT', 'nodes' => [], 'linkedNodes' => {}
+          }
+        }
+      end
+
+      def description_layout
+        project.content_builder_layouts.find_by(code: 'project_description')
+      end
+
+      it 're-enables an empty disabled layout and points it at the bridge' do
+        create(:layout, content_buildable: project, code: 'project_description', enabled: false, craftjs_json: {})
+
+        service.migrate_buildable(project, persist: true)
+
+        expect(description_layout.enabled).to be(true)
+        expect(bridge_node(description_layout)['props']['text']).to eq(description)
+        expect(project.content_builder_layouts.where(code: 'project_description').count).to eq(1)
+        expect(service.stats).to include(migrated: 1, remigrated_disabled: 1)
+        expect(service.stats[:remigrated_disabled_with_content]).to eq(0)
+      end
+
+      it 'overwrites a disabled layout that held builder content and flags it' do
+        create(
+          :layout,
+          content_buildable: project, code: 'project_description', enabled: false, craftjs_json: layout_with_content
+        )
+
+        service.migrate_buildable(project, persist: true)
+
+        expect(description_layout.enabled).to be(true)
+        expect(bridge_node(description_layout)['props']['text']).to eq(description)
+        expect(service.stats).to include(remigrated_disabled: 1, remigrated_disabled_with_content: 1)
+      end
+
+      it 'leaves an already-enabled layout untouched' do
+        create(
+          :layout,
+          content_buildable: project, code: 'project_description', enabled: true, craftjs_json: layout_with_content
+        )
+
+        service.migrate_buildable(project, persist: true)
+
+        expect(description_layout.craftjs_json).to eq(layout_with_content)
+        expect(service.stats).to include(skipped_existing: 1)
+        expect(service.stats).not_to include(remigrated_disabled: 1)
+      end
+
+      it 'does not write when persist is false but still counts the straggler' do
+        create(:layout, content_buildable: project, code: 'project_description', enabled: false, craftjs_json: {})
+
+        service.migrate_buildable(project, persist: false)
+
+        expect(description_layout.enabled).to be(false)
+        expect(service.stats).to include(remigrated_disabled: 1)
+      end
+    end
+
     context 'with a blank description' do
       let(:project) { create(:project, description_multiloc: { 'en' => '<p></p>' }) }
 
