@@ -4,7 +4,7 @@ import { useParams } from '@tanstack/react-router';
 
 import { render, screen } from 'utils/testUtils/rtl';
 
-import DescriptionBuilderToggle from '.';
+import DescriptionBuilderLink from '.';
 
 (useParams as jest.Mock).mockReturnValue({ projectId: 'projectId' });
 
@@ -15,10 +15,10 @@ const renderComponent = (
   contentBuildableType: 'project' | 'folder' = 'project'
 ) =>
   render(
-    <DescriptionBuilderToggle contentBuildableType={contentBuildableType} />
+    <DescriptionBuilderLink contentBuildableType={contentBuildableType} />
   );
 
-describe('DescriptionBuilderToggle', () => {
+describe('DescriptionBuilderLink', () => {
   beforeEach(() => {
     mockFeatureFlagData = true;
   });
@@ -37,7 +37,7 @@ describe('DescriptionBuilderToggle', () => {
     renderComponent();
 
     expect(
-      screen.queryByTestId('descriptionBuilderToggle')
+      screen.queryByTestId('descriptionBuilderLink')
     ).not.toBeInTheDocument();
   });
 });

@@ -13,7 +13,7 @@ import { injectIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
-type DescriptionBuilderToggleProps = {
+type DescriptionBuilderLinkProps = {
   contentBuildableType: ContentBuildableType;
 } & WrappedComponentProps;
 
@@ -25,10 +25,10 @@ const StyledLink = typedStyled(Link)`
 // so this renders just the "Edit description in Content Builder" link. New
 // buildables are provisioned with a Content Builder layout on creation and
 // existing ones are migrated, so there is no longer an inline WYSIWYG editor.
-const DescriptionBuilderToggle = ({
+const DescriptionBuilderLink = ({
   intl: { formatMessage },
   contentBuildableType,
-}: DescriptionBuilderToggleProps) => {
+}: DescriptionBuilderLinkProps) => {
   const params = useParams({ strict: false }) as Record<string, string>;
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
@@ -55,7 +55,7 @@ const DescriptionBuilderToggle = ({
         } as const);
 
   return (
-    <Box data-testid="descriptionBuilderToggle">
+    <Box data-testid="descriptionBuilderLink">
       <StyledLink id="e2e-project-description-builder-link" {...linkProps}>
         {formatMessage(messages.linkText)}
       </StyledLink>
@@ -63,4 +63,4 @@ const DescriptionBuilderToggle = ({
   );
 };
 
-export default injectIntl(DescriptionBuilderToggle);
+export default injectIntl(DescriptionBuilderLink);

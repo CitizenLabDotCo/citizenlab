@@ -36,7 +36,7 @@ import {
 import SlugInput from 'components/admin/SlugInput';
 import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
@@ -601,7 +601,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 <FormattedMessage {...messages.folderDescription} />
               </SubSectionTitle>
               <Highlighter fragmentId="description-multiloc">
-                <DescriptionBuilderToggle contentBuildableType="folder" />
+                <DescriptionBuilderLink contentBuildableType="folder" />
               </Highlighter>
               <Error
                 fieldName="description_multiloc"

@@ -19,7 +19,7 @@ describe('ProjectFolderForm', () => {
         screen.queryByText('Edit description in Content Builder')
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByTestId('descriptionBuilderToggle')
+        screen.queryByTestId('descriptionBuilderLink')
       ).not.toBeInTheDocument();
     });
 

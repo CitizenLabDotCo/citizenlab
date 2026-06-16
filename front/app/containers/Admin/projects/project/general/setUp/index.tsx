@@ -39,7 +39,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -417,7 +417,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           {/* Main Description */}
           <SectionField>
             <Highlighter fragmentId="description-multiloc">
-              <DescriptionBuilderToggle contentBuildableType="project" />
+              <DescriptionBuilderLink contentBuildableType="project" />
             </Highlighter>
             <Error
               fieldName="description_multiloc"
