@@ -77,6 +77,49 @@ module ContentBuilder
       end
     end
 
+    def description_blank?(description_multiloc)
+      return true if description_multiloc.blank?
+
+      description_multiloc.values.all? { |html| description_html_blank?(html) }
+    end
+
+    # Picks the layout for a description by content: blank -> default; inline media
+    # -> lossless bridge; plain/rich text -> native TextMultiloc.
+    def content_aware_craftjs_json(buildable)
+      multiloc = buildable.description_multiloc
+      if description_blank?(multiloc)
+        default_craftjs_json(buildable)
+      elsif description_has_media?(multiloc)
+        bridge_craftjs_json(buildable)
+      else
+        text_craftjs_json(buildable)
+      end
+    end
+
+    # NB: create via Layout (not buildable.content_builder_layouts) so the
+    # polymorphic content_buildable_type is set — the has_many lacks `as:`, and a
+    # NULL type is invisible to the controller's find_by!.
+    def create_layout!(buildable, craftjs_json)
+      ContentBuilder::Layout.create!(
+        content_buildable: buildable,
+        code: layout_code(buildable),
+        enabled: true,
+        craftjs_json: craftjs_json
+      )
+    end
+
+    private
+
+    def feature_activated?
+      AppConfiguration.instance.feature_activated?('project_description_builder')
+    end
+
+    def safely_ensure_on_content_builder(buildable)
+      ensure_on_content_builder!(buildable)
+    rescue StandardError => e
+      ErrorReporter.report(e, extra: { buildable_type: buildable.class.name, buildable_id: buildable.id })
+    end
+
     def default_craftjs_json(buildable)
       if buildable.is_a?(ProjectFolders::Folder)
         ContentBuilder::Craftjs::DefaultLayoutService.new
@@ -108,49 +151,6 @@ module ContentBuilder
       else
         single_node_project_craftjs(text_node(buildable.description_multiloc))
       end
-    end
-
-    def description_blank?(description_multiloc)
-      return true if description_multiloc.blank?
-
-      description_multiloc.values.all? { |html| description_html_blank?(html) }
-    end
-
-    # Picks the layout for a description by content: blank -> default; inline media
-    # -> lossless bridge; plain/rich text -> native TextMultiloc.
-    def content_aware_craftjs_json(buildable)
-      multiloc = buildable.description_multiloc
-      if description_blank?(multiloc)
-        default_craftjs_json(buildable)
-      elsif description_has_media?(multiloc)
-        bridge_craftjs_json(buildable)
-      else
-        text_craftjs_json(buildable)
-      end
-    end
-
-    private
-
-    def feature_activated?
-      AppConfiguration.instance.feature_activated?('project_description_builder')
-    end
-
-    def safely_ensure_on_content_builder(buildable)
-      ensure_on_content_builder!(buildable)
-    rescue StandardError => e
-      ErrorReporter.report(e, extra: { buildable_type: buildable.class.name, buildable_id: buildable.id })
-    end
-
-    # NB: create via Layout (not buildable.content_builder_layouts) so the
-    # polymorphic content_buildable_type is set — the has_many lacks `as:`, and a
-    # NULL type is invisible to the controller's find_by!.
-    def create_layout!(buildable, craftjs_json)
-      ContentBuilder::Layout.create!(
-        content_buildable: buildable,
-        code: layout_code(buildable),
-        enabled: true,
-        craftjs_json: craftjs_json
-      )
     end
 
     # A ROOT canvas wrapping a single description node (project layouts).
