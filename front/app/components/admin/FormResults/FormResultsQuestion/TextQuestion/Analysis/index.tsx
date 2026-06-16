@@ -151,10 +151,11 @@ const Analysis = ({
 
   // Below the auto-summary threshold, no summary exists yet: let the admin know
   // a summary will be generated automatically once enough responses come in.
+  // Applies to every textual case routed through this component (open text
+  // question responses, select/multiselect "other" responses, and sentiment
+  // follow-ups), since they all share the same auto-creation threshold.
   const showAutoSummaryInfo =
-    noInsights &&
-    hasOtherResponses &&
-    textResponsesCount <= AUTO_ANALYSIS_MIN_RESPONSES;
+    noInsights && textResponsesCount <= AUTO_ANALYSIS_MIN_RESPONSES;
 
   const goToAnalysis = () => {
     if (relevantAnalysis?.id) {
