@@ -112,7 +112,7 @@ export default defineConfig(({ mode }) => {
         input: path.resolve(__dirname, 'app/index.html'),
         output: {
           entryFileNames: '[name].[hash].min.js', // Generate the main.*.min.js file
-          chunkFileNames: '[name].[hash].chunk.js',
+          chunkFileNames: 'assets/[name].[hash].chunk.js',
           assetFileNames: '[name].[ext]',
         },
       },
