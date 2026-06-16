@@ -1790,7 +1790,6 @@
   "app.containers.Admin.projects.project.surveyPdfExport.notesLabel": "Additional notes (optional)",
   "app.containers.Admin.projects.project.surveyPdfExport.pageSubtitle": "Generate a PDF document with every survey response laid out as an individual record.",
   "app.containers.Admin.projects.project.surveyPdfExport.pageTitle": "Export survey responses to PDF",
-  "app.containers.Admin.projects.project.surveyPdfExport.personalDataReason": "Registration data — excluded by default",
   "app.containers.Admin.projects.project.surveyPdfExport.preparedByLabel": "Prepared by",
   "app.containers.Admin.projects.project.surveyPdfExport.previewLabel": "Cover preview",
   "app.containers.Admin.projects.project.surveyPdfExport.reportSubtitleLabel": "Subtitle",
