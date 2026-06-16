@@ -9,6 +9,7 @@ module MultiTenancy
         attributes %i[
           description_multiloc
           description_preview_multiloc
+          header_bg_alt_text_multiloc
           include_all_areas
           internal_role
           title_multiloc
