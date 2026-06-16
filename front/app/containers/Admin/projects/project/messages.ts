@@ -664,6 +664,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.insights',
     defaultMessage: 'Insights',
   },
+  surveyPdfExportTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.surveyPdfExportTab',
+    defaultMessage: 'Export to PDF',
+  },
   lockedTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',
     defaultMessage:

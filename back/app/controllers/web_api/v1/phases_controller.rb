@@ -4,7 +4,7 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results sentiment_by_quarter
+    show show_mini update destroy survey_results survey_submissions sentiment_by_quarter
     submission_count index_xlsx delete_inputs show_progress common_ground_results
   ]
 
@@ -81,6 +81,18 @@ class WebApi::V1::PhasesController < ApplicationController
     end
 
     render json: raw_json(results)
+  end
+
+  # Lists native survey responses (with their answers) for export.
+  def survey_submissions
+    ideas = @phase.ideas.supports_survey.published.order(created_at: :asc)
+    ideas = paginate ideas
+
+    render json: linked_json(
+      ideas,
+      WebApi::V1::SurveySubmissionSerializer,
+      params: jsonapi_serializer_params
+    )
   end
 
   def common_ground_results
