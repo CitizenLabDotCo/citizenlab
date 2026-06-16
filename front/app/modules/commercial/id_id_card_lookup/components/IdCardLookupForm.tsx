@@ -8,7 +8,7 @@ import { WrappedComponentProps } from 'react-intl';
 import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import usersKeys from 'api/users/keys';
-import { IDLookupMethod } from 'api/verification_methods/types';
+import { IDLookupMethod } from 'api/id_methods/types';
 
 import {
   FormContainer,

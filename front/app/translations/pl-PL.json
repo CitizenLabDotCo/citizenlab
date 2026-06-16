@@ -52,7 +52,6 @@
   "app.components.AuthProviders.continueWithHoplr": "Kontynuuj z Hoplr",
   "app.components.AuthProviders.continueWithIdAustria": "Kontynuuj z ID Austria",
   "app.components.AuthProviders.continueWithLoginMechanism": "Kontynuuj z {loginMechanismName}",
-  "app.components.AuthProviders.continueWithNemlogIn": "Kontynuuj z MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "Konto z tym adresem e-mail już istnieje.{br}{br}Nie można uzyskać dostępu do platformy za pomocą FranceConnect, ponieważ dane osobowe nie pasują. Aby zalogować się za pomocą FranceConnect, należy najpierw zmienić imię lub nazwisko na tej platformie, aby dopasować swoje oficjalne dane.{br}{br}Poniżej można się zalogować jak zwykle.",
   "app.components.AuthProviders.livesOutsideAreaAuthFailed": "Nie możesz się zalogować, ponieważ Twój adres nie znajduje się w wymaganym obszarze.",
   "app.components.AuthProviders.livesOutsideAreaVerificationFailed": "Nie możesz zostać zweryfikowany, ponieważ Twój adres nie znajduje się w wymaganym obszarze.",

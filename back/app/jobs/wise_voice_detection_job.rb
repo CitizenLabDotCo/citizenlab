@@ -39,6 +39,6 @@ class WiseVoiceDetectionJob < ApplicationJob
   end
 
   def llm
-    Analysis::LLM::GPT41.new
+    Analysis::LLM::GPT54.new
   end
 end

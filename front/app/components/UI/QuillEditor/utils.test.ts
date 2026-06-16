@@ -116,6 +116,25 @@ describe('Quill Character Count Consistency', () => {
       const html = getHTML(editor);
       expect(html).toContain('New Content');
     });
+
+    it('should treat an empty heading as empty content', () => {
+      // An empty line formatted as a heading renders as `<h2><br></h2>`,
+      // which is visually empty and must not count as filled content.
+      const editor = createEditor('<h2><br></h2>');
+      expect(getHTML(editor)).toBe('');
+    });
+
+    it('should treat an empty subtitle as empty content', () => {
+      const editor = createEditor('<h3><br></h3>');
+      expect(getHTML(editor)).toBe('');
+    });
+
+    it('should not treat image-only content as empty', () => {
+      const editor = createEditor(
+        '<p><img src="https://example.com/a.png"></p>'
+      );
+      expect(getHTML(editor)).not.toBe('');
+    });
   });
 
   describe('Performance and Memory', () => {

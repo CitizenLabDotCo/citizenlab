@@ -78,37 +78,6 @@ export interface IAppConfigurationSettings {
     enable_signup: boolean;
     minimum_length?: number;
   };
-  facebook_login?: {
-    allowed: boolean;
-    app_id: string;
-    app_secret?: string;
-    enabled: boolean;
-  };
-  google_login?: {
-    allowed: boolean;
-    client_id: string;
-    enabled: boolean;
-  };
-  azure_ad_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    tenant: string;
-    client_id: string;
-    logo_url: string;
-    login_mechanism_name: string;
-    visibility?: 'show' | 'link' | 'hide';
-    enforced_email_domain_error_multiloc?: Multiloc;
-  };
-  azure_ad_b2c_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    tenant_name: string;
-    tenant_id: string;
-    policy_name: string;
-    client_id: string;
-    logo_url: string;
-    login_mechanism_name: string;
-  };
   custom_accessibility_statement_link: {
     allowed: boolean;
     enabled: boolean;
@@ -121,8 +90,6 @@ export interface IAppConfigurationSettings {
     enabled_fragments: string[];
   };
   verification?: {
-    allowed: boolean;
-    enabled: boolean;
     verification_methods: string[];
   };
   smart_groups?: AppConfigurationFeature;
@@ -239,7 +206,10 @@ export interface IAppConfigurationSettings {
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
-export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = Exclude<
+  keyof IAppConfigurationSettings,
+  'verification'
+>;
 
 export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {
