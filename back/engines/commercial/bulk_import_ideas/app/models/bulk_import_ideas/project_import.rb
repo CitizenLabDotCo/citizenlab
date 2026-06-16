@@ -10,7 +10,6 @@
 #  import_id      :uuid
 #  log            :string           default([]), is an Array
 #  locale         :string
-#  string         :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  import_type    :string
@@ -28,6 +27,9 @@
 module BulkImportIdeas
   class ProjectImport < ApplicationRecord
     self.table_name = 'project_imports'
+
+    # Accidental column scheduled for removal; ignored so AR stops caching/writing it.
+    self.ignored_columns += %w[string]
 
     IMPORT_TYPES = %w[project user preview project_copy].freeze
 

@@ -65,10 +65,10 @@ context 'id_austria verification' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'id_austria',
         client_id: '12345',
         client_secret: '78910',

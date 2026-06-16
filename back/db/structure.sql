@@ -394,7 +394,6 @@ DROP INDEX IF EXISTS public.index_event_files_on_event_id;
 DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedding;
 DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedded_attributes;
 DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embeddable;
-DROP INDEX IF EXISTS public.index_email_snippets_on_email_and_snippet_and_locale;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_token;
 DROP INDEX IF EXISTS public.index_email_campaigns_examples_on_recipient_id;
@@ -605,7 +604,6 @@ ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS e
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS event_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS event_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.embeddings_similarities DROP CONSTRAINT IF EXISTS embeddings_similarities_pkey;
-ALTER TABLE IF EXISTS ONLY public.email_snippets DROP CONSTRAINT IF EXISTS email_snippets_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_unsubscription_tokens DROP CONSTRAINT IF EXISTS email_campaigns_unsubscription_tokens_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS email_campaigns_examples_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_deliveries DROP CONSTRAINT IF EXISTS email_campaigns_deliveries_pkey;
@@ -736,7 +734,6 @@ DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
 DROP TABLE IF EXISTS public.embeddings_similarities;
-DROP TABLE IF EXISTS public.email_snippets;
 DROP TABLE IF EXISTS public.email_campaigns_unsubscription_tokens;
 DROP TABLE IF EXISTS public.email_campaigns_examples;
 DROP TABLE IF EXISTS public.email_campaigns_consents;
@@ -2537,21 +2534,6 @@ CREATE TABLE public.email_campaigns_unsubscription_tokens (
 
 
 --
--- Name: email_snippets; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.email_snippets (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    email character varying,
-    snippet character varying,
-    locale character varying,
-    body text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: embeddings_similarities; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2905,11 +2887,9 @@ CREATE TABLE public.idea_imports (
     import_user_id uuid,
     file_id uuid,
     user_created boolean DEFAULT false,
-    required boolean DEFAULT false,
     approved_at timestamp without time zone,
     page_range text[] DEFAULT '{}'::text[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_consent boolean DEFAULT false NOT NULL,
@@ -3570,7 +3550,6 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -4351,14 +4330,6 @@ ALTER TABLE ONLY public.email_campaigns_examples
 
 ALTER TABLE ONLY public.email_campaigns_unsubscription_tokens
     ADD CONSTRAINT email_campaigns_unsubscription_tokens_pkey PRIMARY KEY (id);
-
-
---
--- Name: email_snippets email_snippets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.email_snippets
-    ADD CONSTRAINT email_snippets_pkey PRIMARY KEY (id);
 
 
 --
@@ -5922,13 +5893,6 @@ CREATE INDEX index_email_campaigns_unsubscription_tokens_on_token ON public.emai
 --
 
 CREATE INDEX index_email_campaigns_unsubscription_tokens_on_user_id ON public.email_campaigns_unsubscription_tokens USING btree (user_id);
-
-
---
--- Name: index_email_snippets_on_email_and_snippet_and_locale; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_email_snippets_on_email_and_snippet_and_locale ON public.email_snippets USING btree (email, snippet, locale);
 
 
 --
@@ -8794,8 +8758,11 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260611000000'),
+('20260602120000'),
 ('20260528180000'),
 ('20260528120000'),
+('20260522000000'),
 ('20260521120000'),
 ('20260519150520'),
 ('20260519142440'),

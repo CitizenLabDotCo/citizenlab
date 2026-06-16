@@ -60,10 +60,10 @@ context 'hoplr authentication' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [
+      id_methods: [
         {
           name: 'hoplr',
           environment: 'test',

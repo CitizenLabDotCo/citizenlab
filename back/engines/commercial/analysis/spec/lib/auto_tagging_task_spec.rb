@@ -129,7 +129,7 @@ RSpec.describe Analysis::AutoTaggingTask do
         - planets
         - bananas
       RESPONSE
-      expect_any_instance_of(Analysis::LLM::GPT41)
+      expect_any_instance_of(Analysis::LLM::GPT54)
         .to receive(:chat)
         .and_return(topics_response)
 
@@ -157,7 +157,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     describe '#fit_inputs_in_context_window' do
       it 'recudes the inputs to fit in the context window' do
         stubbed_context_window = 1000
-        expect_any_instance_of(Analysis::LLM::GPT41)
+        expect_any_instance_of(Analysis::LLM::GPT54)
           .to receive(:usable_context_window)
           .at_least(:once)
           .and_return(stubbed_context_window)
@@ -167,11 +167,11 @@ RSpec.describe Analysis::AutoTaggingTask do
 
         # Take token size of the prompt with one input + one returned topic
         ideas = [create(:idea, project: project)]
-        min_size = Analysis::LLM::GPT41.new.token_count(model.send(:inputs_prompt, ideas, project.title_multiloc.values.first)) + Analysis::AutoTaggingMethod::NLPTopic::TOKENS_PER_TOPIC
+        min_size = Analysis::LLM::GPT54.new.token_count(model.send(:inputs_prompt, ideas, project.title_multiloc.values.first)) + Analysis::AutoTaggingMethod::NLPTopic::TOKENS_PER_TOPIC
 
         # Check how many more inputs can fit and triple that amount
         remaining_tokens = stubbed_context_window - min_size
-        tokens_per_input = Analysis::LLM::GPT41.new.token_count(Analysis::InputToText.new(analysis.associated_custom_fields).format_all(ideas))
+        tokens_per_input = Analysis::LLM::GPT54.new.token_count(Analysis::InputToText.new(analysis.associated_custom_fields).format_all(ideas))
         fit_ideas_count = (remaining_tokens / tokens_per_input.to_f).ceil
         ideas += create_list(:idea, (fit_ideas_count * 3), project: project)
 
@@ -257,9 +257,9 @@ RSpec.describe Analysis::AutoTaggingTask do
       idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
       create(:tagging, input: idea3, tag: tags[0])
 
-      mock_llm = instance_double(Analysis::LLM::GPT41)
+      mock_llm = instance_double(Analysis::LLM::GPT54)
 
-      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:gpt4).and_return(mock_llm)
+      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:gpt5).and_return(mock_llm)
       expect(mock_llm).to receive(:chat) do |prompt|
         expect(prompt).to include(tags[0].name, tags[1].name, 'other')
         expect(prompt).to include('other')
