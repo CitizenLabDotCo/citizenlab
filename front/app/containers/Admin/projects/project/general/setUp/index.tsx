@@ -133,9 +133,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
 
   // Description state
-  const [descriptionMultiloc, setDescriptionMultiloc] = useState<Multiloc>(
-    project.data.attributes.description_multiloc
-  );
   const [descriptionPreviewMultiloc, setDescriptionPreviewMultiloc] =
     useState<Multiloc | null>(
       project.data.attributes.description_preview_multiloc
@@ -243,11 +240,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 
   const handleTopicsChange = (topicIds: string[]) => {
     handleProjectAttributeDiffOnChange({ global_topic_ids: topicIds });
-  };
-
-  const handleDescriptionChange = (description_multiloc: Multiloc) => {
-    setDescriptionMultiloc(description_multiloc);
-    handleProjectAttributeDiffOnChange({ description_multiloc });
   };
 
   const handleDescriptionPreviewChange = (
@@ -425,12 +417,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           {/* Main Description */}
           <SectionField>
             <Highlighter fragmentId="description-multiloc">
-              <DescriptionBuilderToggle
-                valueMultiloc={descriptionMultiloc}
-                onChange={handleDescriptionChange}
-                label={formatMessage(messages.descriptionLabel)}
-                contentBuildableType="project"
-              />
+              <DescriptionBuilderToggle contentBuildableType="project" />
             </Highlighter>
             <Error
               fieldName="description_multiloc"
