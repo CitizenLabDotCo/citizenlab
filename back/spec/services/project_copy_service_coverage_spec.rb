@@ -23,87 +23,6 @@ require 'rails_helper'
 #      for every new model).
 describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/DescribeClass
   let(:service_path) { Rails.root.join('app/services/project_copy_service.rb') }
-
-  # Real (non-derived) columns that are intentionally NOT carried over by
-  # ProjectCopyService#export, keyed by model name. `# REVIEW` marks fields
-  # that look like they might actually belong in the export (the bug class
-  # this spec exists to catch) — allowlisted for now to keep the baseline
-  # green, pending a human call.
-  let(:ignored_columns) do
-    {
-      # AdminPublication is exported as nested `admin_publication_attributes` on
-      # Project, with only `publication_status` (the rest is either derived
-      # nested-set bookkeeping or tenant-wide publication scheduling state).
-      # Listed here for completeness even though AdminPublication has no
-      # dedicated yml_method.
-      'AdminPublication' => %w[
-        children_allowed
-        first_published_at
-        ordering
-        parent_id
-        publication_id
-        scheduled_at
-        scheduled_by_id
-        scheduled_status
-      ],
-
-      'BasketsIdea' => %w[
-        created_at
-        updated_at
-      ], # join-table timestamps, not content
-
-      'CustomField' => %w[
-        logic
-      ], # Logic cannot be easily serialized
-
-      'CustomForm' => %w[
-        fields_last_updated_at
-      ],
-
-      'Idea' => %w[
-        assigned_at
-        assignee_id
-        idea_status_id
-      ], # status/moderation operational state
-
-      'Project' => %w[
-        default_assignee_id
-        preview_token
-      ], # admin reference / regenerated token
-
-      # User auth/session/role state — deliberately not exported (privacy/security)
-      'User' => %w[
-        confirmation_required
-        email_confirmed_at
-        imported
-        invite_status
-        last_active_at
-        new_email
-        onboarding
-        reset_password_token
-        roles
-        token_expiry_key
-      ]
-    }.freeze
-  end
-
-  # Cache/derived columns excluded from coverage checks across all models. A
-  # leading `*` is a suffix glob (`*_count` matches any column ending in
-  # `_count`); other entries are exact column names. Centralized so every
-  # name-based "regenerated cache, never content" rule is visible in one place.
-  let(:ignored_cache_columns) do
-    %w[
-      *_count
-      weglot_data
-    ].freeze
-  end
-
-  def cache_columns_for(model)
-    model.column_names.select do |col|
-      ignored_cache_columns.any? { |pat| pat.start_with?('*') ? col.end_with?(pat[1..]) : col == pat }
-    end
-  end
-
   # Persisted models that intentionally have no `yml_<x>` method in ProjectCopyService,
   # keyed by reason.
   let(:excluded_models) do
@@ -319,8 +238,87 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       ]
     }.freeze
   end
-
   let(:excluded_model_names) { excluded_models.values.flatten.to_set.freeze }
+
+  # Real (non-derived) columns that are intentionally NOT carried over by
+  # ProjectCopyService#export, keyed by model name. `# REVIEW` marks fields
+  # that look like they might actually belong in the export (the bug class
+  # this spec exists to catch) — allowlisted for now to keep the baseline
+  # green, pending a human call.
+  let(:ignored_columns) do
+    {
+      # AdminPublication is exported as nested `admin_publication_attributes` on
+      # Project, with only `publication_status` (the rest is either derived
+      # nested-set bookkeeping or tenant-wide publication scheduling state).
+      # Listed here for completeness even though AdminPublication has no
+      # dedicated yml_method.
+      'AdminPublication' => %w[
+        children_allowed
+        first_published_at
+        ordering
+        parent_id
+        publication_id
+        scheduled_at
+        scheduled_by_id
+        scheduled_status
+      ],
+
+      'BasketsIdea' => %w[
+        created_at
+        updated_at
+      ], # join-table timestamps, not content
+
+      'CustomField' => %w[
+        logic
+      ], # Logic cannot be easily serialized
+
+      'CustomForm' => %w[
+        fields_last_updated_at
+      ],
+
+      'Idea' => %w[
+        assigned_at
+        assignee_id
+        idea_status_id
+      ], # status/moderation operational state
+
+      'Project' => %w[
+        default_assignee_id
+        preview_token
+      ], # admin reference / regenerated token
+
+      # User auth/session/role state — deliberately not exported (privacy/security)
+      'User' => %w[
+        confirmation_required
+        email_confirmed_at
+        imported
+        invite_status
+        last_active_at
+        new_email
+        onboarding
+        reset_password_token
+        roles
+        token_expiry_key
+      ]
+    }.freeze
+  end
+
+  # Cache/derived columns excluded from coverage checks across all models. A
+  # leading `*` is a suffix glob (`*_count` matches any column ending in
+  # `_count`); other entries are exact column names. Centralized so every
+  # name-based "regenerated cache, never content" rule is visible in one place.
+  let(:ignored_cache_columns) do
+    %w[
+      *_count
+      weglot_data
+    ].freeze
+  end
+
+  def cache_columns_for(model)
+    model.column_names.select do |col|
+      ignored_cache_columns.any? { |pat| pat.start_with?('*') ? col.end_with?(pat[1..]) : col == pat }
+    end
+  end
 
   # Bookkeeping/cache columns detected by introspection — never template content,
   # so they're excluded globally rather than listed per model.
