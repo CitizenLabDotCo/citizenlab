@@ -174,6 +174,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'code' => field.code,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
+        'min_characters' => field.min_characters,
+        'max_characters' => field.max_characters,
         'ask_follow_up' => field.ask_follow_up,
         'question_category' => field.question_category,
         'include_in_printed_form' => field.include_in_printed_form,
@@ -278,6 +280,10 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'include_all_areas' => @project.include_all_areas,
       'hidden' => @project.hidden,
       'live_auto_input_topics_enabled' => @project.live_auto_input_topics_enabled,
+      'header_bg_alt_text_multiloc' => @project.header_bg_alt_text_multiloc,
+      'internal_role' => @project.internal_role,
+      'listed' => @project.listed,
+      'track_participation_location' => @project.track_participation_location,
       'space_id' => @local_copy ? @project.space_id : nil
     }
     yml_project['slug'] = new_slug if new_slug.present?
@@ -354,7 +360,18 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
         'prescreening_mode' => phase.prescreening_mode,
         'expire_days_limit' => phase.expire_days_limit,
-        'reacting_threshold' => phase.reacting_threshold
+        'reacting_threshold' => phase.reacting_threshold,
+        'allow_anonymous_participation' => phase.allow_anonymous_participation,
+        'draft_description_multiloc' => phase.draft_description_multiloc,
+        'manual_voters_amount' => phase.manual_voters_amount,
+        'manual_voters_last_updated_at' => shift_timestamp(phase.manual_voters_last_updated_at, shift_timestamps)&.iso8601,
+        'manual_voters_last_updated_by_ref' => lookup_ref(phase.manual_voters_last_updated_by_id, :user),
+        'similarity_enabled' => phase.similarity_enabled,
+        'similarity_threshold_body' => phase.similarity_threshold_body,
+        'similarity_threshold_title' => phase.similarity_threshold_title,
+        'voting_filtering_enabled' => phase.voting_filtering_enabled,
+        'voting_term_plural_multiloc' => phase.voting_term_plural_multiloc,
+        'voting_term_singular_multiloc' => phase.voting_term_singular_multiloc
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -580,6 +597,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'address_2_multiloc' => event.address_2_multiloc,
         'using_url' => event.using_url,
         'attend_button_multiloc' => event.attend_button_multiloc,
+        'maximum_attendees' => event.maximum_attendees,
         'created_at' => shift_timestamp(event.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(event.updated_at, shift_timestamps)&.iso8601,
         'text_images_attributes' => event.text_images.map do |text_image|
@@ -666,6 +684,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'proposed_budget' => idea.proposed_budget,
         'baskets_count' => idea.baskets_count,
         'votes_count' => idea.votes_count,
+        'manual_votes_amount' => idea.manual_votes_amount,
+        'manual_votes_last_updated_at' => shift_timestamp(idea.manual_votes_last_updated_at, shift_timestamps)&.iso8601,
+        'manual_votes_last_updated_by_ref' => lookup_ref(idea.manual_votes_last_updated_by_id, :user),
         'text_images_attributes' => idea.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,

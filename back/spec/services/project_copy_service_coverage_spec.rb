@@ -54,49 +54,22 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
       'CustomField' => %w[
         logic
-        max_characters
-        min_characters
-      ], # REVIEW: (especially min_characters/max_characters — likely real gap)
+      ], # Logic cannot be easily serialized
 
       'CustomForm' => %w[
         fields_last_updated_at
       ],
 
-      'Event' => %w[
-        maximum_attendees
-      ], # REVIEW
-
       'Idea' => %w[
         assigned_at
         assignee_id
         idea_status_id
-        manual_votes_amount
-        manual_votes_last_updated_at
-        manual_votes_last_updated_by_id
-      ], # status/moderation/manual-vote operational state
-
-      'Phase' => %w[
-        allow_anonymous_participation
-        draft_description_multiloc
-        manual_voters_amount
-        manual_voters_last_updated_at
-        manual_voters_last_updated_by_id
-        similarity_enabled
-        similarity_threshold_body
-        similarity_threshold_title
-        voting_filtering_enabled
-        voting_term_plural_multiloc
-        voting_term_singular_multiloc
-      ], # REVIEW: (except manual_voters_* operational state)
+      ], # status/moderation operational state
 
       'Project' => %w[
         default_assignee_id
-        header_bg_alt_text_multiloc
-        internal_role
-        listed
         preview_token
-        track_participation_location
-      ], # REVIEW: (except default_assignee_id, preview_token, internal_role)
+      ], # admin reference / regenerated token
 
       # User auth/session/role state — deliberately not exported (privacy/security)
       'User' => %w[
