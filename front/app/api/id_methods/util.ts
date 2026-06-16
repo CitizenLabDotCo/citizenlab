@@ -5,9 +5,7 @@ export function isLastIdMethod(
   idMethods: IdMethodData[]
 ) {
   return (
-    idMethods
-      .map((vm) => vm.attributes.name)
-      .indexOf(idMethodName) ===
+    idMethods.map((vm) => vm.attributes.name).indexOf(idMethodName) ===
     idMethods.length - 1
   );
 }
