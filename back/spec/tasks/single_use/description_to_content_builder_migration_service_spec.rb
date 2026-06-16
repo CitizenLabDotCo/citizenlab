@@ -82,12 +82,32 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
     end
 
     context 'with a folder' do
-      let(:folder) { create(:project_folder, description_multiloc: { 'en' => '<p>Folder</p>' }) }
+      let(:description) { { 'en' => '<p>Folder</p>' } }
+      let(:folder) { create(:project_folder, description_multiloc: description) }
+
+      def node_types(layout)
+        layout.craftjs_json.values.filter_map do |node|
+          next unless node.is_a?(Hash)
+
+          node['type'].is_a?(Hash) ? node['type']['resolvedName'] : node['type']
+        end
+      end
 
       it 'creates a project_folder_description layout' do
         service.migrate_buildable(folder, persist: true)
         expect(folder.content_builder_layouts.find_by(code: 'project_folder_description')).to be_present
         expect(service.stats).to include(migrated: 1, folders_migrated: 1)
+      end
+
+      it 'wraps the description in a bridge node while keeping the folder title and published-projects widgets' do
+        # A folder on the Content Builder renders only its craftjs layout, so the
+        # migration must preserve the published-projects list rather than produce
+        # a description-only layout.
+        service.migrate_buildable(folder, persist: true)
+
+        layout = folder.content_builder_layouts.find_by(code: 'project_folder_description')
+        expect(node_types(layout)).to include('FolderTitle', 'RichTextMultiloc', 'Published')
+        expect(bridge_node(layout)['props']['text']).to eq(description)
       end
     end
   end
