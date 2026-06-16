@@ -25,6 +25,8 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
+
 import FolderFiles, {
   folderFilesTitle,
 } from 'components/DescriptionBuilder/Widgets/FolderFiles';
@@ -155,6 +157,12 @@ const FolderDescriptionBuilderToolbox = ({
           component={<TextMultiloc />}
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-html-block"
+          component={<HtmlBlockMultiloc />}
+          icon="code"
+          label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-button"

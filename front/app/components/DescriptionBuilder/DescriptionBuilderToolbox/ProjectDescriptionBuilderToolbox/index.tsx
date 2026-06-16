@@ -17,6 +17,7 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 
 import { useIntl } from 'utils/cl-intl';
 const ProjectDescriptionBuilderToolbox = () => {
@@ -68,6 +69,12 @@ const ProjectDescriptionBuilderToolbox = () => {
           component={<TextMultiloc />}
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-html-block"
+          component={<HtmlBlockMultiloc />}
+          icon="code"
+          label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-button"

@@ -74,6 +74,7 @@ import Spotlight, {
 } from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
+import HtmlBlockMultiloc, { htmlBlockMultilocTitle } from '../Widgets/HtmlBlockMultiloc';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 
@@ -241,6 +242,12 @@ const HomepageBuilderToolbox = () => {
           component={<TextMultiloc text={{}} />}
           icon="text"
           label={formatMessage(textMultilocTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-html-block-multiloc"
+          component={<HtmlBlockMultiloc html={{}} />}
+          icon="code"
+          label={formatMessage(htmlBlockMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-white-space"
