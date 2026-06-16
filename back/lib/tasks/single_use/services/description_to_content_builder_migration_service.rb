@@ -3,16 +3,17 @@
 module Tasks
   module SingleUse
     module Services
-      # Wraps a project/folder's legacy WYSIWYG `description_multiloc` into a single
-      # Content Builder "bridge" widget (RichTextMultiloc), enabling the layout so
-      # the citizen page renders the description through the Content Builder. The
+      # Moves a project/folder's legacy WYSIWYG `description_multiloc` onto the
+      # Content Builder, enabling the layout so the citizen page renders it. The
       # legacy `description_multiloc` is left untouched.
       #
-      # After running, EVERY buildable is on the Content Builder:
-      # - non-blank description  -> creates an enabled bridge layout wrapping the
-      #                             legacy HTML;
-      # - blank description       -> creates an enabled default layout (empty canvas
-      #                             for projects, title + published projects for
+      # After running, EVERY buildable is on the Content Builder (the widget is
+      # chosen by content, consistent with new-buildable/template provisioning —
+      # see ContentBuilder::DescriptionLayoutService):
+      # - text-only description  -> native TextMultiloc widget;
+      # - description with media -> lossless RichTextMultiloc "bridge" widget;
+      # - blank description       -> enabled default layout (empty canvas for
+      #                             projects, title + published projects for
       #                             folders) so there is no off-builder description;
       # - disabled layout        -> a "straggler" (admin toggled the builder on then
       #                             off). We re-point it at the chosen layout and
@@ -48,15 +49,10 @@ module Tasks
             return
           end
 
-          # Non-blank descriptions are wrapped in the lossless bridge widget; blank
-          # ones get the default layout so they too live on the Content Builder.
+          # Content-aware layout: text -> TextMultiloc, media -> bridge, blank ->
+          # default. `blank` is still tracked for the summary stat.
           blank = description_layout_service.description_blank?(buildable.description_multiloc)
-          craftjs =
-            if blank
-              description_layout_service.default_craftjs_json(buildable)
-            else
-              description_layout_service.bridge_craftjs_json(buildable)
-            end
+          craftjs = description_layout_service.content_aware_craftjs_json(buildable)
 
           if existing
             migrate_straggler(buildable, existing, craftjs, persist: persist)
