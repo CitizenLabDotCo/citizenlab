@@ -31,14 +31,20 @@ module Export
       private
 
       # One regex per translated term, across all of the tenant's locales.
+      # Blank or missing translations are dropped: an empty term would build
+      # /\b\b/i, which matches almost any title and would flag every field.
       def build_term_regexes
         locales = AppConfiguration.instance.settings('core', 'locales')
         terms = locales.flat_map do |locale|
           I18n.with_locale(locale) do
-            TERM_KEYS.map { |key| I18n.t("pdf_export.pii_terms.#{key}") }
+            TERM_KEYS.map { |key| I18n.t("pdf_export.pii_terms.#{key}", default: '') }
           end
         end
-        terms.uniq.map { |term| /\b#{Regexp.escape(term)}\b/i }
+        terms
+          .map { |term| term.to_s.strip }
+          .reject(&:empty?)
+          .uniq
+          .map { |term| /\b#{Regexp.escape(term)}\b/i }
       end
     end
   end

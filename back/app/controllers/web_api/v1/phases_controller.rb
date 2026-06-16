@@ -8,6 +8,9 @@ class WebApi::V1::PhasesController < ApplicationController
     survey_cover_preview sentiment_by_quarter submission_count index_xlsx delete_inputs
     show_progress common_ground_results
   ]
+  before_action :ensure_survey_form, only: %i[
+    survey_responses_pdf survey_response_fields survey_cover_preview
+  ]
 
   def index
     @phases = policy_scope(Phase)
@@ -106,10 +109,6 @@ class WebApi::V1::PhasesController < ApplicationController
   # Generates a PDF of native survey responses (cover page + one card per
   # response). Field-level PII redaction is driven by `redacted_field_keys`.
   def survey_responses_pdf
-    unless @phase.pmethod.supports_survey_form?
-      return head :unprocessable_entity
-    end
-
     pdf = I18n.with_locale(current_user.locale) do
       Export::Pdf::SurveyResponsesGenerator.new(
         @phase,
@@ -124,17 +123,10 @@ class WebApi::V1::PhasesController < ApplicationController
   # Renders just the cover page as HTML for the live preview, using the same
   # template the PDF uses (single source of truth, no response data, no PII).
   def survey_cover_preview
-    total = @phase.ideas.supports_survey.published.count
     html = I18n.with_locale(current_user.locale) do
-      ActionController::Base.new.render_to_string(
-        template: 'export/pdf/cover',
-        layout: false,
-        locals: {
-          cover: cover_from_params,
-          total: total,
-          colors: Export::Pdf::BrandColors.palette
-        }
-      )
+      Export::Pdf::SurveyResponsesGenerator
+        .new(@phase, cover: cover_from_params)
+        .render_cover_html
     end
 
     # Returned as JSON (not text/html) so dev middleware like rack-mini-profiler
@@ -205,6 +197,10 @@ class WebApi::V1::PhasesController < ApplicationController
   def set_phase
     @phase = Phase.find params[:id]
     authorize @phase
+  end
+
+  def ensure_survey_form
+    head :unprocessable_entity unless @phase.pmethod.supports_survey_form?
   end
 
   def cover_from_params

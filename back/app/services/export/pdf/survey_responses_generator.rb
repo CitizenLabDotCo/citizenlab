@@ -17,6 +17,17 @@ module Export
         GotenbergClient.new.render_html_to_pdf(render_html)
       end
 
+      # Renders just the cover page as HTML for the live preview, reusing the
+      # same template/locals as the full PDF (single source of truth).
+      def render_cover_html
+        render_template(
+          'export/pdf/cover',
+          cover: cover,
+          total: published_count,
+          colors: palette
+        )
+      end
+
       private
 
       attr_reader :phase, :cover
@@ -50,16 +61,30 @@ module Export
       end
 
       def render_html
-        ActionController::Base.new.render_to_string(
-          template: 'export/pdf/survey_responses',
-          layout: false,
-          locals: {
-            cover: cover,
-            respondents: respondents,
-            total: inputs.size,
-            colors: Export::Pdf::BrandColors.palette
-          }
+        render_template(
+          'export/pdf/survey_responses',
+          cover: cover,
+          respondents: respondents,
+          total: inputs.size,
+          colors: palette
         )
+      end
+
+      def render_template(template, **locals)
+        ActionController::Base.new.render_to_string(
+          template: template,
+          layout: false,
+          locals: locals
+        )
+      end
+
+      def palette
+        Export::Pdf::BrandColors.palette
+      end
+
+      # Cheap count for the cover preview (avoids loading every response).
+      def published_count
+        phase.ideas.supports_survey.published.count
       end
     end
   end

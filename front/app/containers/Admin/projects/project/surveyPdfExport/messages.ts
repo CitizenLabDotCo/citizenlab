@@ -77,6 +77,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.surveyPdfExport.coverDisabledPreview',
     defaultMessage: 'The cover page is turned off.',
   },
+  previewError: {
+    id: 'app.containers.Admin.projects.project.surveyPdfExport.previewError',
+    defaultMessage: 'Could not load the preview.',
+  },
   reviewModalTitle: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.reviewModalTitle',
     defaultMessage: 'Review fields before export',

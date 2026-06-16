@@ -21,9 +21,9 @@ module Export
         ''
       end
 
-      def visit_image_files(_field)
-        built_in_file_names
-      end
+      # visit_image_files is intentionally not overridden: idea images aren't
+      # the same as the file attachments handled here, so we keep the parent's
+      # behaviour rather than render unrelated document names.
 
       private
 
@@ -39,7 +39,7 @@ module Export
 
       def built_in_file_names
         names = model.idea_files.map(&:name) +
-                model.file_attachments.map { |attachment| attachment.file.name }
+                model.file_attachments.filter_map { |attachment| attachment.file&.name }
         names.join("\n")
       end
     end

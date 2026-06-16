@@ -26,7 +26,10 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
   const [width, setWidth] = useState(0);
   const [html, setHtml] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
+  // Re-attach the observer when the cover toggles off→on, since the observed
+  // node is unmounted by the `!cover.include` early return.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return undefined;
@@ -35,7 +38,7 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
     });
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [cover.include]);
 
   // Debounced fetch of the rendered cover whenever its content changes.
   const signature = JSON.stringify(cover);
@@ -43,10 +46,13 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
     if (!cover.include) return undefined;
     let cancelled = false;
     setLoading(true);
+    setError(false);
     const timer = setTimeout(async () => {
       try {
         const result = await fetchCoverPreviewHtml({ phaseId, cover });
         if (!cancelled) setHtml(result);
+      } catch {
+        if (!cancelled) setError(true);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -102,7 +108,25 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
           }}
         />
       )}
-      {(loading || !html) && (
+      {!loading && error && (
+        <Box
+          position="absolute"
+          top="0"
+          left="0"
+          w="100%"
+          h="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          p="24px"
+          style={{ background: 'rgba(255, 255, 255, 0.9)' }}
+        >
+          <Text color="textSecondary" textAlign="center" m="0px">
+            <FormattedMessage {...messages.previewError} />
+          </Text>
+        </Box>
+      )}
+      {(loading || (!html && !error)) && (
         <Box
           position="absolute"
           top="0"
