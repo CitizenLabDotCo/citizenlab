@@ -7,11 +7,11 @@
 class McpServer::Tools::FormFieldsSchemaBuilder
   MODES = %i[input output].freeze
 
-  def initialize(mode:, multiloc_schema:)
+  def initialize(mode:, tenant_locales:)
     raise ArgumentError, "invalid mode #{mode.inspect}, expected one of #{MODES.inspect}" unless mode.in?(MODES)
 
     @mode = mode
-    @multiloc_schema = multiloc_schema
+    @tenant_locales = tenant_locales
   end
 
   def field_schema
@@ -58,9 +58,20 @@ class McpServer::Tools::FormFieldsSchemaBuilder
 
   private
 
-  attr_reader :multiloc_schema
+  attr_reader :tenant_locales
 
   def input? = @mode == :input
+
+  def multiloc_schema
+    @multiloc_schema ||= {
+      type: 'object',
+      description: <<~DESC.squish,
+        Localized text. An object mapping locale codes to their translations. The tenant's
+        active locales are #{tenant_locales.join(', ')}.
+      DESC
+      additionalProperties: { type: 'string' }
+    }
+  end
 
   def id_properties
     if input?
@@ -79,10 +90,14 @@ class McpServer::Tools::FormFieldsSchemaBuilder
   def output_only_field_properties
     return {} if input?
 
+    # `created_at`/`updated_at` are null for default forms (fields returned from
+    # `default_fields` are unsaved `CustomField.new(...)` objects).`resource_id`
+    # is nil only when the parent `CustomForm` itself was never saved either
+    # (a never-touched form, before its first save).
     {
-      created_at: { type: 'string', description: 'ISO 8601 timestamp.' },
-      updated_at: { type: 'string', description: 'ISO 8601 timestamp.' },
-      resource_id: { type: 'string', description: 'UUID of the parent CustomForm.' }
+      created_at: { type: %w[string null], description: 'ISO 8601 timestamp.' },
+      updated_at: { type: %w[string null], description: 'ISO 8601 timestamp.' },
+      resource_id: { type: %w[string null], description: 'UUID of the parent CustomForm.' }
     }
   end
 
@@ -96,8 +111,11 @@ class McpServer::Tools::FormFieldsSchemaBuilder
         DESC
       },
       key: {
-        type: 'string',
-        description: 'Stable slug. Auto-generated from title if omitted on new fields.'
+        type: %w[string null],
+        description: <<~DESC.squish
+          Stable slug. Auto-generated from title if omitted on new fields. null for page
+          break fields.
+        DESC
       },
       input_type: {
         type: 'string',
@@ -119,7 +137,11 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       description_multiloc: { **multiloc_schema, description: 'Localized HTML. On output, embedded image references are resolved to URLs.' },
       required: { type: 'boolean' },
       enabled: { type: 'boolean' },
-      ordering: { type: 'integer' },
+      # null only for the form_end page on a default (unsaved) form.
+      ordering: {
+        type: %w[integer null],
+        description: 'Position in the form.'
+      },
       random_option_ordering: {
         type: 'boolean',
         description: <<~DESC.squish
@@ -168,8 +190,8 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       # Select / multiselect family
       dropdown_layout: { type: 'boolean', description: 'Only for select / multiselect. Render as a dropdown rather than radio buttons / checkboxes.' },
       select_count_enabled: { type: 'boolean', description: 'Only for multiselect / multiselect_image. Enable min/max select-count enforcement.' },
-      minimum_select_count: { type: 'integer' },
-      maximum_select_count: { type: 'integer' },
+      minimum_select_count: { type: %w[integer null] },
+      maximum_select_count: { type: %w[integer null] },
 
       # Sentiment
       ask_follow_up: {

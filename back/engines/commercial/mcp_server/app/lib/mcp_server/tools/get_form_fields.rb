@@ -90,7 +90,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   def field_schema
     McpServer::Tools::FormFieldsSchemaBuilder.new(
       mode: :output,
-      multiloc_schema: multiloc_schema
+      tenant_locales: AppConfiguration.instance.settings.dig('core', 'locales')
     ).field_schema
   end
 
