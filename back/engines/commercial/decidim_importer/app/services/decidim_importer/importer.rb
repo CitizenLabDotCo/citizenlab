@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'tmpdir'
+require 'net/http'
 
 module DecidimImporter
   # Orchestrates a Decidim → Go Vocal import for the base scaffold (users, folders, projects,
@@ -144,11 +145,18 @@ module DecidimImporter
     def self.apply_template_file(path, import_images: true)
       template = YAML.load_file(path, aliases: true)
       IdeaStatuses.resolve!(template)
-      unless import_images
-        strip_remote_image_urls!(template)
-        strip_embedded_images!(template)
-      end
-      MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+      prepare_images!(template, import_images: import_images)
+      created = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+      reconcile_permissions!
+      created
+    end
+
+    # The deserializer creates phases/projects directly, bypassing the SideFx that normally generates
+    # their `Permission` records — so imported phases would have none (e.g. `posting_idea`), and a
+    # native-survey phase's `posting_permission` would be nil, 500ing the admin endpoints. Reconciling
+    # all permissions (idempotent) backfills the missing ones.
+    def self.reconcile_permissions!
+      Permissions::PermissionsUpdateService.new.update_all_permissions
     end
 
     # Applies an AppConfiguration patch JSON (the companion artifact `dump_yaml` writes) to the
@@ -166,16 +174,11 @@ module DecidimImporter
     def self.apply_app_config(patch, import_images: true)
       config = AppConfiguration.instance
       settings = patch['settings']
-      if settings.is_a?(Hash)
-        merged = config.settings.deep_merge(settings)
-        if (incoming_locales = settings.dig('core', 'locales'))
-          # Union, not replace: the tenant must keep supporting every locale its existing users
-          # already use while gaining the imported content's locales (deep_merge would overwrite the
-          # array, dropping locales and failing AppConfiguration's `validate_locales`).
-          merged['core']['locales'] = (config.settings('core', 'locales') || []) | incoming_locales
-        end
-        config.settings = merged
-      end
+      # `deep_merge` overwrites array values, so the patch's `core.locales` *replaces* the tenant's
+      # rather than unioning with it — the imported content's locales become the tenant's exact set.
+      # (A locale still used by an existing user but absent from the patch will fail
+      # `AppConfiguration#validate_locales`; prune or re-locale those users first.)
+      config.settings = config.settings.deep_merge(settings) if settings.is_a?(Hash)
 
       if import_images
         patch.slice('remote_logo_url', 'remote_favicon_url').each do |attr, value|
@@ -187,27 +190,100 @@ module DecidimImporter
       config
     end
 
+    # Prepares the loaded template's images before deserialize.
+    #
+    # With fetching **off**, every image is dropped — `remote_*_url` attachment attributes and the
+    # `<img>` tags embedded in rich-text bodies — so the deserializer performs no HTTP.
+    #
+    # With fetching **on**, images that are still reachable are kept and only the unreachable ones are
+    # dropped — both `remote_*_url` attachments (avatars, hero images) and the `<img>` tags embedded in
+    # rich-text bodies. Decidim references the source platform's storage, where a since-deleted image
+    # 404s on download and would abort the all-or-nothing import; probing each URL once (shared cache)
+    # and dropping only the dead ones keeps the import robust without losing images that are still
+    # there.
+    def self.prepare_images!(template, import_images:)
+      if import_images
+        reachability = {}
+        prune_unreachable_remote_urls!(template, reachability)
+        prune_unreachable_embedded_images!(template, reachability)
+      else
+        strip_remote_image_urls!(template)
+        strip_embedded_images!(template)
+      end
+    end
+
     # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
     def self.strip_remote_image_urls!(template)
       template['models'].each_value do |records|
+        records.each { |attrs| attrs.delete_if { |key, _| remote_image_url?(key) } }
+      end
+    end
+
+    # Removes every `<img>` tag embedded in a rich-text `*_multiloc` value (text kept, images dropped).
+    def self.strip_embedded_images!(template)
+      rewrite_multiloc_html!(template) { |html| html.gsub(/<img\b[^>]*>/i, '') }
+    end
+
+    # Drops each `remote_*_url` attachment attribute whose URL can't be reached, leaving the reachable
+    # ones for CarrierWave to fetch.
+    def self.prune_unreachable_remote_urls!(template, reachability = {})
+      template['models'].each_value do |records|
         records.each do |attrs|
-          attrs.delete_if { |k, _| k.is_a?(String) && k.start_with?('remote_') && k.end_with?('_url') }
+          attrs.reject! do |key, value|
+            next false unless remote_image_url?(key) && value.is_a?(String)
+
+            reachability[value] = image_reachable?(value) unless reachability.key?(value)
+            !reachability[value]
+          end
         end
       end
     end
 
-    # Removes `<img>` tags embedded in rich-text `*_multiloc` values. Decidim proposal/comment bodies
-    # embed images by URL pointing at the source Decidim host; the deserializer turns those into
-    # `TextImage`s it tries to download, which 404s (and aborts the all-or-nothing import) when image
-    # fetching is off or the host is unreachable. Stripping them keeps the text, drops the images —
-    # paired with {.strip_remote_image_urls!} whenever `import_images` is false.
-    def self.strip_embedded_images!(template)
+    def self.remote_image_url?(key)
+      key.is_a?(String) && key.start_with?('remote_') && key.end_with?('_url')
+    end
+
+    # Drops only the embedded `<img>` tags whose remote source can't be reached, keeping the rest.
+    # Each distinct URL is probed once (cache shared with the attachment pass).
+    def self.prune_unreachable_embedded_images!(template, reachability = {})
+      rewrite_multiloc_html!(template) do |html|
+        html.gsub(/<img\b[^>]*>/i) do |tag|
+          src = tag[%r{\bsrc\s*=\s*["']?(https?://[^"' >]+)}i, 1]
+          next tag if src.nil? # base64 / relative sources are left untouched
+
+          reachability[src] = image_reachable?(src) unless reachability.key?(src)
+          reachability[src] ? tag : ''
+        end
+      end
+    end
+
+    # True only when the URL resolves to a 2xx (following redirects); any non-success or error → false,
+    # so a missing image is dropped rather than risking a download failure mid-import. Uses HEAD so the
+    # image body isn't pulled.
+    def self.image_reachable?(url, redirects_left = 5)
+      uri = URI.parse(url)
+      return false unless uri.is_a?(URI::HTTP)
+
+      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https',
+        open_timeout: 5, read_timeout: 5) { |http| http.head(uri.request_uri) }
+      case response
+      when Net::HTTPSuccess then true
+      when Net::HTTPRedirection
+        redirects_left.positive? && image_reachable?(URI.join(url, response['location']).to_s, redirects_left - 1)
+      else false
+      end
+    rescue StandardError
+      false
+    end
+
+    # Rewrites every rich-text `*_multiloc` HTML string in the template through the given block.
+    def self.rewrite_multiloc_html!(template)
       template['models'].each_value do |records|
         records.each do |attrs|
           attrs.each do |key, value|
             next unless key.is_a?(String) && key.end_with?('_multiloc') && value.is_a?(Hash)
 
-            value.transform_values! { |html| html.is_a?(String) ? html.gsub(/<img\b[^>]*>/i, '') : html }
+            value.transform_values! { |html| html.is_a?(String) ? yield(html) : html }
           end
         end
       end
@@ -265,12 +341,10 @@ module DecidimImporter
       # Round-trip through YAML so we exercise the actual artifact the deserializer consumes.
       template = YAML.load(builder.to_yaml, aliases: true)
       IdeaStatuses.resolve!(template)
-      unless @import_images
-        self.class.strip_remote_image_urls!(template)
-        self.class.strip_embedded_images!(template)
-      end
+      self.class.prepare_images!(template, import_images: @import_images)
       created_object_ids = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
+      self.class.reconcile_permissions!
       created_object_ids
     end
 

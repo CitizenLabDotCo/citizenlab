@@ -102,6 +102,13 @@ RSpec.describe DecidimImporter::Importer do
         expect(select.options.order(:ordering).map { |o| o.title_multiloc['fr-FR'] }).to eq(%w[Oui Non])
       end
 
+      it 'backfills phase permissions so a native_survey phase has its posting permission' do
+        survey_phase = project.phases.find_by(participation_method: 'native_survey')
+        # Without this the admin projects endpoint 500s (posting_permission delegated to nil).
+        expect(Permission.find_by(permission_scope: survey_phase, action: 'posting_idea')).to be_present
+        expect { survey_phase.pmethod.user_data_collection }.not_to raise_error
+      end
+
       it 'imports proposals as ideas with mapped statuses, in the ideation phase' do
         ideation = project.phases.find_by(participation_method: 'ideation')
         accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
@@ -168,6 +175,50 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe '.prune_unreachable_embedded_images!' do
+    it 'drops only the embedded images whose source is unreachable, keeping the rest and the text' do
+      allow(described_class).to receive(:image_reachable?).with('http://live/ok.png').and_return(true)
+      allow(described_class).to receive(:image_reachable?).with('http://dead/gone.png').and_return(false)
+      template = { 'models' => { 'idea' => [{
+        'body_multiloc' => { 'fr-FR' => '<p>A</p><img src="http://live/ok.png"><img src="http://dead/gone.png"><p>B</p>' }
+      }] } }
+
+      described_class.prune_unreachable_embedded_images!(template)
+
+      expect(template['models']['idea'].first['body_multiloc']['fr-FR'])
+        .to eq('<p>A</p><img src="http://live/ok.png"><p>B</p>')
+    end
+
+    it 'leaves base64 images untouched and probes each distinct url only once' do
+      allow(described_class).to receive(:image_reachable?).and_return(true)
+      template = { 'models' => { 'idea' => [
+        { 'body_multiloc' => { 'fr-FR' => '<img src="http://x/a.png"><img src="data:image/png;base64,AAAA">' } },
+        { 'body_multiloc' => { 'en' => '<img src="http://x/a.png">' } }
+      ] } }
+
+      described_class.prune_unreachable_embedded_images!(template)
+
+      expect(template['models']['idea'].first['body_multiloc']['fr-FR']).to include('data:image/png;base64,AAAA')
+      expect(described_class).to have_received(:image_reachable?).once # memoised across records/locales
+    end
+  end
+
+  describe '.prune_unreachable_remote_urls!' do
+    it 'drops only the remote_*_url attachments that are unreachable' do
+      allow(described_class).to receive(:image_reachable?).with('http://live/a.png').and_return(true)
+      allow(described_class).to receive(:image_reachable?).with('http://dead/b.png').and_return(false)
+      template = { 'models' => {
+        'user' => [{ 'email' => 'a@b.co', 'remote_avatar_url' => 'http://dead/b.png' }],
+        'project' => [{ 'remote_header_bg_url' => 'http://live/a.png' }]
+      } }
+
+      described_class.prune_unreachable_remote_urls!(template)
+
+      expect(template['models']['user'].first).not_to have_key('remote_avatar_url')
+      expect(template['models']['project'].first['remote_header_bg_url']).to eq('http://live/a.png')
+    end
+  end
+
   describe '.apply_app_config_file' do
     it 'deep-merges the patch settings into the tenant AppConfiguration' do
       file = Tempfile.new(['decidim', '.app_config.json'])
@@ -187,15 +238,14 @@ RSpec.describe DecidimImporter::Importer do
       expect(described_class.apply_app_config_file('/no/such.app_config.json')).to be(false)
     end
 
-    it 'unions locales with the existing ones rather than dropping them' do
-      existing = AppConfiguration.instance.settings('core', 'locales')
-      expect(existing).not_to be_empty
-      new_locale = 'fr-FR'
+    it 'replaces the tenant locales with exactly the imported ones (no merge)' do
+      # The default tenant supports several locales; importing only 'en' should drop the rest.
+      expect(AppConfiguration.instance.settings('core', 'locales').size).to be > 1
+      User.update_all(locale: 'en') # so the dropped locales aren't still in use (validate_locales)
 
-      described_class.apply_app_config({ 'settings' => { 'core' => { 'locales' => [new_locale] } } })
+      described_class.apply_app_config({ 'settings' => { 'core' => { 'locales' => ['en'] } } })
 
-      locales = AppConfiguration.instance.settings('core', 'locales')
-      expect(locales).to include(*existing, new_locale)
+      expect(AppConfiguration.instance.settings('core', 'locales')).to eq(['en'])
     end
   end
 end

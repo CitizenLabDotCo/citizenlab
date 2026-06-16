@@ -66,9 +66,12 @@ namespace :decidim_importer do
   end
 
   desc 'Applies a dumped template YAML to a throwaway tenant to confirm it deserializes, then destroys it.'
-  task :verify, %i[file locales] => [:environment] do |_t, args|
+  task :verify, %i[file locales import_images] => [:environment] do |_t, args|
     file = args.fetch(:file)
     locales = (args[:locales] || 'fr-FR,en').split(/[,\s]+/).compact_blank.uniq
+    # Images are skipped by default (verification is about structure); pass import_images=true to also
+    # exercise the image-fetching path (reachable images are downloaded, unreachable ones pruned).
+    import_images = args[:import_images].to_s.strip.downcase == 'true'
 
     name = "decidim-verify-#{SecureRandom.hex(4)}"
     host = "#{name}.localhost"
@@ -86,9 +89,7 @@ namespace :decidim_importer do
         # need the standard ideation ones. Real tenants seed these at creation, so this only fills the
         # gap for the dry-run tenant.
         seed_ideation_statuses
-        # Images are skipped: verification is about structure, and exports often carry unreachable
-        # `remote_*_url` hosts that would fail the fetch for reasons unrelated to the template.
-        created = DecidimImporter::Importer.apply_template_file(file, import_images: false)
+        created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
         created.each { |klass, ids| puts "  created #{ids.size} #{klass}" }
       end
       puts "VERIFY OK — applied cleanly, tearing down #{host}"
