@@ -1246,8 +1246,6 @@
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Clóscríobh chun tionscadail a chuardach",
   "app.containers.AdminPage.ProjectDescription.linkText": "Cuir an cur síos in eagar sa Tógálaí Ábhair",
   "app.containers.AdminPage.ProjectDescription.saveError": "Tharla fadhb agus cur síos an tionscadail á shábháil.",
-  "app.containers.AdminPage.ProjectDescription.toggleLabel": "Úsáid an Tógálaí Ábhair le haghaidh cur síos",
-  "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Trí úsáid a bhaint as an Tógálaí Ábhair, beidh tú in ann roghanna leagan amach níos forbartha a úsáid.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Féach ar an tionscadal",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Deireadh an tsuirbhé",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Cruthaigh grúpa cliste",

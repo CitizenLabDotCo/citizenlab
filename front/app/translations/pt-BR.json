@@ -1246,8 +1246,6 @@
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Digite para pesquisar projetos",
   "app.containers.AdminPage.ProjectDescription.linkText": "Editar descrição no Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Algo deu errado ao salvar a descrição do projeto.",
-  "app.containers.AdminPage.ProjectDescription.toggleLabel": "Use o Content Builder para descrição",
-  "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Usar o Content Builder permitirá que você use opções de layout mais avançadas.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Exibir projeto",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Fim da pesquisa",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Criar um grupo inteligente",

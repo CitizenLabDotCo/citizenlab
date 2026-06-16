@@ -1246,8 +1246,6 @@
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Upišite tekst za pretraživanje projekata",
   "app.containers.AdminPage.ProjectDescription.linkText": "Uredite opis u Content Builderu",
   "app.containers.AdminPage.ProjectDescription.saveError": "Nešto nije u redu prilikom spremanja opisa projekta.",
-  "app.containers.AdminPage.ProjectDescription.toggleLabel": "Koristite Content Builder za opis",
-  "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Korištenje Content Buildera omogućit će vam korištenje naprednijih opcija izgleda.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Pogledaj projekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Završetak upitnika",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Kreirajte pametnu grupu",

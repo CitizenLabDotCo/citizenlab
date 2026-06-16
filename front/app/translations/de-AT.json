@@ -1246,8 +1246,6 @@
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Tippen, um Projekte zu suchen",
   "app.containers.AdminPage.ProjectDescription.linkText": "Beschreibung im Content Builder bearbeiten",
   "app.containers.AdminPage.ProjectDescription.saveError": "Beim Speichern der Projektbeschreibung ist ein Fehler aufgetreten.",
-  "app.containers.AdminPage.ProjectDescription.toggleLabel": "Content Builder für Beschreibung verwenden",
-  "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Mit dem Content Builder können Sie erweiterte Layout-Optionen nutzen.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Projekt ansehen",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Ende der Umfrage",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Erstellen einer intelligenten Gruppe",
