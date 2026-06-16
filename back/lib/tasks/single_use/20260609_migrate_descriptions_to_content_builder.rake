@@ -45,6 +45,8 @@ namespace :single_use do
 
       verb = dry_run ? 'WOULD MIGRATE' : 'MIGRATED'
       Rails.logger.info "   📊 #{verb}: #{stats[:migrated]} (projects: #{stats[:projects_migrated]}, folders: #{stats[:folders_migrated]})"
+      Rails.logger.info "      ├─ new layouts: #{stats[:created]}"
+      Rails.logger.info "      └─ re-enabled disabled layouts: #{stats[:remigrated_disabled]} (of which had builder content: #{stats[:remigrated_disabled_with_content]})"
       Rails.logger.info "   ⏭️  Skipped — blank: #{stats[:skipped_blank]}, already on builder: #{stats[:skipped_existing]}"
       Rails.logger.info "   ⚠️  ERRORS: #{stats[:errors]}" if stats[:errors] > 0
     end
@@ -52,6 +54,8 @@ namespace :single_use do
     Rails.logger.info "\n#{'=' * 80}"
     Rails.logger.info(dry_run ? '📊 DRY RUN SUMMARY (all tenants):' : '📊 MIGRATION SUMMARY (all tenants):')
     Rails.logger.info "   #{dry_run ? 'Would migrate' : 'Migrated'}: #{totals[:migrated]} (projects: #{totals[:projects_migrated]}, folders: #{totals[:folders_migrated]})"
+    Rails.logger.info "      New layouts: #{totals[:created]}"
+    Rails.logger.info "      Re-enabled disabled layouts: #{totals[:remigrated_disabled]} (of which had builder content: #{totals[:remigrated_disabled_with_content]})"
     Rails.logger.info "   Skipped (blank description): #{totals[:skipped_blank]}"
     Rails.logger.info "   Skipped (already on builder): #{totals[:skipped_existing]}"
     Rails.logger.info "   Errors: #{totals[:errors]}"
