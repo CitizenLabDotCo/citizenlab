@@ -33,3 +33,11 @@ etc. land in later iterations.
 
 > The expected XLSX column headers (see `Extractors::*`) are **assumptions** pending real Decidim
 > exports. Override them via each extractor's `COLUMNS` mapping when the real headers are known.
+
+## Running locally
+
+To import into an empty local tenant, run the following commands:
+```
+docker compose down; docker compose run --rm -e SEED_EMPTY_TENANT=true web bin/rails db:reset
+rake "decidim_importer:import[<file>.template.yml,empty.localhost]"
+```

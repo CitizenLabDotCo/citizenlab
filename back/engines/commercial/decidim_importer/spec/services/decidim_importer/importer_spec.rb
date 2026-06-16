@@ -238,14 +238,15 @@ RSpec.describe DecidimImporter::Importer do
       expect(described_class.apply_app_config_file('/no/such.app_config.json')).to be(false)
     end
 
-    it 'replaces the tenant locales with exactly the imported ones (no merge)' do
-      # The default tenant supports several locales; importing only 'en' should drop the rest.
-      expect(AppConfiguration.instance.settings('core', 'locales').size).to be > 1
-      User.update_all(locale: 'en') # so the dropped locales aren't still in use (validate_locales)
+    it 'replaces the tenant locales with the imported ones, migrating users off dropped locales' do
+      # The default tenant supports several locales (incl. fr-FR); importing only 'en' drops the rest.
+      expect(AppConfiguration.instance.settings('core', 'locales')).to include('fr-FR')
+      user = create(:user, locale: 'fr-FR')
 
       described_class.apply_app_config({ 'settings' => { 'core' => { 'locales' => ['en'] } } })
 
       expect(AppConfiguration.instance.settings('core', 'locales')).to eq(['en'])
+      expect(user.reload.locale).to eq('en') # migrated to the first new locale
     end
   end
 end

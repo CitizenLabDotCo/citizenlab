@@ -174,11 +174,14 @@ module DecidimImporter
     def self.apply_app_config(patch, import_images: true)
       config = AppConfiguration.instance
       settings = patch['settings']
-      # `deep_merge` overwrites array values, so the patch's `core.locales` *replaces* the tenant's
-      # rather than unioning with it — the imported content's locales become the tenant's exact set.
-      # (A locale still used by an existing user but absent from the patch will fail
-      # `AppConfiguration#validate_locales`; prune or re-locale those users first.)
-      config.settings = config.settings.deep_merge(settings) if settings.is_a?(Hash)
+      if settings.is_a?(Hash)
+        # `deep_merge` overwrites array values, so the patch's `core.locales` *replaces* the tenant's
+        # rather than unioning with it — the imported content's locales become the tenant's exact set.
+        # Any existing user still on a now-removed locale is migrated to the first of the new locales,
+        # otherwise `AppConfiguration#validate_locales` would reject dropping a locale still in use.
+        migrate_users_to_first_locale(settings.dig('core', 'locales'))
+        config.settings = config.settings.deep_merge(settings)
+      end
 
       if import_images
         patch.slice('remote_logo_url', 'remote_favicon_url').each do |attr, value|
@@ -188,6 +191,15 @@ module DecidimImporter
       end
       config.save!
       config
+    end
+
+    # Moves every user whose locale isn't among the incoming `locales` onto the first of them, so the
+    # subsequent `core.locales` replacement doesn't strand a user on a removed locale. No-op for a
+    # blank locale list. Bulk `update_all` (no callbacks) — a locale switch needs none.
+    def self.migrate_users_to_first_locale(locales)
+      return if locales.blank?
+
+      User.where.not(locale: locales).update_all(locale: locales.first)
     end
 
     # Prepares the loaded template's images before deserialize.
