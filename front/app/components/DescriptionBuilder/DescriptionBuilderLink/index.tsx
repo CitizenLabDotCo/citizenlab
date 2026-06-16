@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, fontSizes } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps } from 'react-intl';
 
 import { ContentBuildableType } from 'api/content_builder/types';
 
@@ -9,13 +8,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import messages from 'containers/DescriptionBuilder/messages';
 
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 type DescriptionBuilderLinkProps = {
   contentBuildableType: ContentBuildableType;
-} & WrappedComponentProps;
+};
 
 const StyledLink = typedStyled(Link)`
   font-size: ${fontSizes.base}px;
@@ -26,9 +25,9 @@ const StyledLink = typedStyled(Link)`
 // buildables are provisioned with a Content Builder layout on creation and
 // existing ones are migrated, so there is no longer an inline WYSIWYG editor.
 const DescriptionBuilderLink = ({
-  intl: { formatMessage },
   contentBuildableType,
 }: DescriptionBuilderLinkProps) => {
+  const { formatMessage } = useIntl();
   const params = useParams({ strict: false }) as Record<string, string>;
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
@@ -63,4 +62,4 @@ const DescriptionBuilderLink = ({
   );
 };
 
-export default injectIntl(DescriptionBuilderLink);
+export default DescriptionBuilderLink;
