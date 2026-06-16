@@ -23,14 +23,18 @@
 # applying the template, so the tenant's locales/branding are in place for the imported records.
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
-  task :dump_yaml, %i[path primary_locale] => [:environment] do |_t, args|
+  task :dump_yaml, %i[path primary_locale production] => [:environment] do |_t, args|
     path = args.fetch(:path)
-    importer = build_importer(path, primary_locale: args[:primary_locale] || 'fr-FR')
+    # Default to anonymising user names + emails; pass `production=true` to keep the real values.
+    production = args[:production].to_s.strip.downcase == 'true'
+    importer = build_importer(
+      path, primary_locale: args[:primary_locale] || 'fr-FR', anonymize_users: !production
+    )
     builder = importer.build_template
 
     yaml_path = output_path(path, 'template.yml')
     File.write(yaml_path, builder.to_yaml)
-    Rails.logger.info "Wrote #{yaml_path}"
+    Rails.logger.info "Wrote #{yaml_path} (users #{production ? 'untouched (production)' : 'anonymised'})"
     log_model_summary(builder)
     importer.skipped_phases.each { |s| Rails.logger.warn "  skipped phase #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_components.each { |s| Rails.logger.warn "  skipped component #{s[:component]}: #{s[:reason]}" }

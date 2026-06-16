@@ -38,9 +38,14 @@ module DecidimImporter
       # @param extra_text_field_keys [Array<String>] `extended_data` keys that the organization's
       #   `extra_user_fields` config exposes as free-text Go Vocal custom fields (e.g.
       #   'phone_number'). Their raw values are copied verbatim onto `custom_field_values`.
-      def initialize(rows, ref_map, extra_text_field_keys: [], **)
+      # @param anonymize_users [Boolean] when true, each imported user's name and email are replaced
+      #   with fake values (a deterministic `*@example.org` address + a Faker name) — for non-production
+      #   dumps where real PII shouldn't leave the source. Accounts are still *filtered* on their real
+      #   email (spam domains), only the stored values are anonymised.
+      def initialize(rows, ref_map, extra_text_field_keys: [], anonymize_users: false, **)
         super(rows, ref_map, **)
         @extra_text_field_keys = extra_text_field_keys
+        @anonymize_users = anonymize_users
       end
 
       def run
@@ -73,6 +78,7 @@ module DecidimImporter
           'password' => SecureRandom.urlsafe_base64(32)
         }
         attributes.merge!(name_attributes(row))
+        anonymize_pii!(attributes, uid) if @anonymize_users
 
         roles = roles_for(row)
         attributes['roles'] = roles if roles.any?
@@ -97,6 +103,16 @@ module DecidimImporter
 
       def email_domain_blacklist
         @email_domain_blacklist ||= EmailDomainBlacklist.load.to_set
+      end
+
+      # Replaces the stored name and email with fake values. The email is derived from the (unique)
+      # Decidim uid so it stays unique across the dump and is reproducible; `example.org` is reserved
+      # and never blacklisted. Only `email`/`first_name`/`last_name` are touched — other fields
+      # (bio/personal URL, avatar, `custom_field_values`) are left as-is.
+      def anonymize_pii!(attributes, uid)
+        attributes['email'] = "user-#{Digest::SHA256.hexdigest(uid)[0, 12]}@example.org"
+        attributes['first_name'] = Faker::Name.first_name
+        attributes['last_name'] = Faker::Name.last_name
       end
 
       # Decidim stores a single display name; split into first/last (last token => last name).

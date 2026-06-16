@@ -76,6 +76,38 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     )
   end
 
+  it 'anonymises names and emails when asked, while still filtering on the real email' do
+    blacklisted = EmailDomainBlacklist.load.first
+    records = described_class.new(
+      [row('email' => 'marie.curie@example.fr'),
+        row('uid' => 'decidim-user-2', 'email' => "spam@#{blacklisted}")],
+      ref_map, locale_mapper: mapper, primary_locale: 'fr-FR', anonymize_users: true
+    ).run
+
+    # The spam account is still skipped based on its real (blacklisted) domain.
+    expect(records.size).to eq(1)
+    attrs = records.first.attributes
+    expect(attrs['email']).to match(/\Auser-[0-9a-f]{12}@example\.org\z/)
+    expect(attrs['email']).not_to include('marie.curie')
+    expect(attrs['first_name']).to be_present
+    expect(attrs['last_name']).to be_present
+    expect(attrs['unique_code']).to eq('decidim-user-1') # join key preserved
+  end
+
+  it 'derives a unique anonymised email per user (from the uid)' do
+    records = described_class.new(
+      [row('uid' => 'decidim-user-1'), row('uid' => 'decidim-user-2', 'email' => 'other@example.fr')],
+      ref_map, locale_mapper: mapper, primary_locale: 'fr-FR', anonymize_users: true
+    ).run
+    expect(records.map { |r| r.attributes['email'] }.uniq.size).to eq(2)
+  end
+
+  it 'leaves names and emails untouched by default' do
+    attrs = extract([row]).first.attributes
+    expect(attrs['email']).to eq('marie@example.fr')
+    expect(attrs['first_name']).to eq('Marie')
+  end
+
   context 'with the real Decidim export fixture' do
     let(:rows) do
       DecidimImporter::CsvReader.read(

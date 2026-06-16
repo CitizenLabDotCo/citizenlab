@@ -220,12 +220,16 @@ module DecidimImporter
     #   template before deserialize, so no external HTTP is performed. Useful for dry runs and for
     #   exports whose image URLs reference an unreachable host (e.g. the Decidim dev instance's
     #   `http://localhost/rails/active_storage/...` blob redirects).
-    def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {}, import_images: true)
+    # @param anonymize_users [Boolean] when true, imported users' names and emails are replaced with
+    #   fake values (for non-production dumps that shouldn't carry real PII).
+    def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {}, import_images: true,
+      anonymize_users: false)
       @rows_by_model = rows_by_model
       @primary_locale = primary_locale
       @locale_mapper = LocaleMapper.new(locale_mapping, fallback_locale: primary_locale)
       @ref_map = RefMap.new
       @import_images = import_images
+      @anonymize_users = anonymize_users
     end
 
     attr_reader :ref_map
@@ -379,7 +383,8 @@ module DecidimImporter
       Extractors::UsersExtractor.new(
         rows_for(:users), ref_map,
         locale_mapper: @locale_mapper, primary_locale: @primary_locale,
-        extra_text_field_keys: user_custom_fields.text_field_keys
+        extra_text_field_keys: user_custom_fields.text_field_keys,
+        anonymize_users: @anonymize_users
       ).run
     end
 
