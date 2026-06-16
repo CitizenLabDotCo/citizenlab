@@ -12,18 +12,30 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
     end
   end
 
+  # The description node regardless of widget (native TextMultiloc for text, or the
+  # RichTextMultiloc bridge for descriptions with inline media).
+  def description_node(layout)
+    widget_types = %w[TextMultiloc RichTextMultiloc]
+    layout.craftjs_json.values.find do |node|
+      node.is_a?(Hash) && node['type'].is_a?(Hash) &&
+        widget_types.include?(node['type']['resolvedName'])
+    end
+  end
+
   describe '#migrate_buildable' do
     context 'with a project that has a WYSIWYG description' do
       let(:description) { { 'en' => '<p>Hello</p>', 'nl-BE' => '<p>Hallo</p>' } }
       let(:project) { create(:project, description_multiloc: description) }
 
-      it 'creates an enabled project_description layout wrapping the description in a bridge node' do
+      it 'creates an enabled project_description layout wrapping text in a native TextMultiloc node' do
         service.migrate_buildable(project, persist: true)
 
         layout = project.content_builder_layouts.find_by(code: 'project_description')
         expect(layout).to be_present
         expect(layout.enabled).to be(true)
-        expect(bridge_node(layout)['props']['text']).to eq(description)
+        node = description_node(layout)
+        expect(node['type']['resolvedName']).to eq('TextMultiloc')
+        expect(node['props']['text']).to eq(description)
         expect(service.stats).to include(migrated: 1, projects_migrated: 1)
       end
 
@@ -82,13 +94,13 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
         project.content_builder_layouts.find_by(code: 'project_description')
       end
 
-      it 're-enables an empty disabled layout and points it at the bridge' do
+      it 're-enables an empty disabled layout and points it at the description' do
         create(:layout, content_buildable: project, code: 'project_description', enabled: false, craftjs_json: {})
 
         service.migrate_buildable(project, persist: true)
 
         expect(description_layout.enabled).to be(true)
-        expect(bridge_node(description_layout)['props']['text']).to eq(description)
+        expect(description_node(description_layout)['props']['text']).to eq(description)
         expect(project.content_builder_layouts.where(code: 'project_description').count).to eq(1)
         expect(service.stats).to include(migrated: 1, remigrated_disabled: 1)
         expect(service.stats[:remigrated_disabled_with_content]).to eq(0)
@@ -103,7 +115,7 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
         service.migrate_buildable(project, persist: true)
 
         expect(description_layout.enabled).to be(true)
-        expect(bridge_node(description_layout)['props']['text']).to eq(description)
+        expect(description_node(description_layout)['props']['text']).to eq(description)
         expect(service.stats).to include(remigrated_disabled: 1, remigrated_disabled_with_content: 1)
       end
 
@@ -145,13 +157,16 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
       end
     end
 
-    context 'with a description that only has an inline image (no text)' do
+    context 'with a description that has inline media (an image)' do
       let(:project) do
         create(:project, description_multiloc: { 'en' => '<p><img data-cl2-text-image-text-reference="abc"></p>' })
       end
 
-      it 'is treated as content and migrated' do
+      it 'wraps it in the lossless RichTextMultiloc bridge widget' do
         service.migrate_buildable(project, persist: true)
+
+        layout = project.content_builder_layouts.find_by(code: 'project_description')
+        expect(bridge_node(layout)).to be_present
         expect(service.stats).to include(migrated: 1)
       end
     end
@@ -174,15 +189,15 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
         expect(service.stats).to include(migrated: 1, folders_migrated: 1)
       end
 
-      it 'wraps the description in a bridge node while keeping the folder title and published-projects widgets' do
+      it 'wraps the text description in a TextMultiloc node while keeping the folder title and published-projects widgets' do
         # A folder on the Content Builder renders only its craftjs layout, so the
         # migration must preserve the published-projects list rather than produce
         # a description-only layout.
         service.migrate_buildable(folder, persist: true)
 
         layout = folder.content_builder_layouts.find_by(code: 'project_folder_description')
-        expect(node_types(layout)).to include('FolderTitle', 'RichTextMultiloc', 'Published')
-        expect(bridge_node(layout)['props']['text']).to eq(description)
+        expect(node_types(layout)).to include('FolderTitle', 'TextMultiloc', 'Published')
+        expect(description_node(layout)['props']['text']).to eq(description)
       end
 
       context 'when the description is blank' do
