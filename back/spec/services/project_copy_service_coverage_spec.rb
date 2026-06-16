@@ -37,171 +37,313 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       # Listed here for completeness even though AdminPublication has no
       # dedicated yml_method.
       'AdminPublication' => %w[
-        children_allowed first_published_at scheduled_status scheduled_at scheduled_by_id
-        publication_id ordering parent_id
+        children_allowed
+        first_published_at
+        ordering
+        parent_id
+        publication_id
+        scheduled_at
+        scheduled_by_id
+        scheduled_status
       ],
 
-      'BasketsIdea' => %w[created_at updated_at], # join-table timestamps, not content
+      'BasketsIdea' => %w[
+        created_at
+        updated_at
+      ], # join-table timestamps, not content
 
       'CustomField' => %w[
-        logic min_characters max_characters
+        logic
+        max_characters
+        min_characters
       ], # REVIEW: (especially min_characters/max_characters — likely real gap)
 
-      'CustomForm' => %w[fields_last_updated_at],
+      'CustomForm' => %w[
+        fields_last_updated_at
+      ],
 
-      'Event' => %w[maximum_attendees], # REVIEW
+      'Event' => %w[
+        maximum_attendees
+      ], # REVIEW
 
       'Idea' => %w[
-        idea_status_id assignee_id assigned_at
-        manual_votes_amount manual_votes_last_updated_by_id manual_votes_last_updated_at
+        assigned_at
+        assignee_id
+        idea_status_id
+        manual_votes_amount
+        manual_votes_last_updated_at
+        manual_votes_last_updated_by_id
       ], # status/moderation/manual-vote operational state
 
       'Phase' => %w[
-        manual_voters_amount manual_voters_last_updated_by_id manual_voters_last_updated_at
-        allow_anonymous_participation voting_term_singular_multiloc voting_term_plural_multiloc
-        similarity_threshold_title similarity_threshold_body
-        similarity_enabled voting_filtering_enabled draft_description_multiloc
+        allow_anonymous_participation
+        draft_description_multiloc
+        manual_voters_amount
+        manual_voters_last_updated_at
+        manual_voters_last_updated_by_id
+        similarity_enabled
+        similarity_threshold_body
+        similarity_threshold_title
+        voting_filtering_enabled
+        voting_term_plural_multiloc
+        voting_term_singular_multiloc
       ], # REVIEW: (except manual_voters_* operational state)
 
       'Project' => %w[
-        default_assignee_id preview_token
-        header_bg_alt_text_multiloc listed track_participation_location internal_role
+        default_assignee_id
+        header_bg_alt_text_multiloc
+        internal_role
+        listed
+        preview_token
+        track_participation_location
       ], # REVIEW: (except default_assignee_id, preview_token, internal_role)
 
       # User auth/session/role state — deliberately not exported (privacy/security)
       'User' => %w[
-        roles last_active_at imported onboarding
-        reset_password_token invite_status confirmation_required new_email token_expiry_key
-        email_confirmed_at email_confirmation_code email_confirmation_code_sent_at
+        confirmation_required
+        email_confirmed_at
+        imported
+        invite_status
+        last_active_at
+        new_email
+        onboarding
+        reset_password_token
+        roles
+        token_expiry_key
       ]
     }.freeze
   end
 
-  # Cache/derived columns with no shared concern or detectable convention, so they
-  # have to be named. Kept global (not per-model) because they are pure caches that
-  # are regenerated, never template content.
-  let(:regenerated_cache_columns) { %w[weglot_data].freeze }
+  # Cache/derived columns excluded from coverage checks across all models. A
+  # leading `*` is a suffix glob (`*_count` matches any column ending in
+  # `_count`); other entries are exact column names. Centralized so every
+  # name-based "regenerated cache, never content" rule is visible in one place.
+  let(:ignored_cache_columns) do
+    %w[
+      *_count
+      weglot_data
+    ].freeze
+  end
+
+  def cache_columns_for(model)
+    model.column_names.select do |col|
+      ignored_cache_columns.any? { |pat| pat.start_with?('*') ? col.end_with?(pat[1..]) : col == pat }
+    end
+  end
 
   # Persisted models that intentionally have no `yml_<x>` method in ProjectCopyService,
   # keyed by reason.
   let(:excluded_models) do
     {
       # The tenant itself and its global configuration — not project content.
-      tenant_infrastructure: %w[Tenant AppConfiguration Space],
+      tenant_infrastructure: %w[
+        AppConfiguration
+        Space
+        Tenant
+      ],
 
       # Analytics read models (the materialized/base-table ones; the view-backed
       # Analytics models are filtered out structurally). Derived from live data
       # and rebuilt downstream — never seeded from a project copy.
       analytics: %w[
-        Analytics::DimensionDate Analytics::DimensionLocale Analytics::DimensionLocalesFactVisits
-        Analytics::DimensionProjectsFactVisits Analytics::DimensionReferrerType
-        Analytics::DimensionType Analytics::FactVisit
+        Analytics::DimensionDate
+        Analytics::DimensionLocale
+        Analytics::DimensionLocalesFactVisits
+        Analytics::DimensionProjectsFactVisits
+        Analytics::DimensionReferrerType
+        Analytics::DimensionType
+        Analytics::FactVisit
       ],
 
       # AI analysis, insights and embeddings — derived from user content.
       analysis: %w[
-        Analysis::AdditionalCustomField Analysis::Analysis Analysis::BackgroundTask
-        Analysis::CommentsSummary Analysis::HeatmapCell Analysis::Insight
-        Analysis::Question Analysis::Summary Analysis::Tag Analysis::Tagging
-        AuthoringAssistanceResponse EmbeddingsSimilarity
+        Analysis::AdditionalCustomField
+        Analysis::Analysis
+        Analysis::BackgroundTask
+        Analysis::CommentsSummary
+        Analysis::HeatmapCell
+        Analysis::Insight
+        Analysis::Question
+        Analysis::Summary
+        Analysis::Tag
+        Analysis::Tagging
+        AuthoringAssistanceResponse
+        EmbeddingsSimilarity
       ],
 
       # Tenant-wide taxonomies that aren't project-scoped. Project copy does
       # export `input_topic` (the project's own topic tree), not the global ones.
-      tenant_taxonomy: %w[Area GlobalTopic DefaultInputTopic],
+      tenant_taxonomy: %w[
+        Area
+        DefaultInputTopic
+        GlobalTopic
+      ],
 
       # Groups / project membership — tenant-wide, not project-content.
       # `GroupsPermission` joins Group↔Permission: per-permission group lists;
       # since the groups themselves aren't carried over, the join isn't either.
-      groups: %w[Group GroupsProject GroupsPermission Membership],
+      groups: %w[
+        Group
+        GroupsPermission
+        GroupsProject
+        Membership
+      ],
 
       # Activity logs, telemetry and derived caches — runtime data, not content.
       tracking_and_caches: %w[
-        Activity IdeaExposure ParticipationLocation
-        ImpactTracking::Pageview ImpactTracking::Salt ImpactTracking::Session
-        MachineTranslations::MachineTranslation ReportBuilder::PublishedGraphDataUnit
-        Webhooks::Delivery Webhooks::Subscription
+        Activity
+        IdeaExposure
+        ImpactTracking::Pageview
+        ImpactTracking::Salt
+        ImpactTracking::Session
+        MachineTranslations::MachineTranslation
+        ParticipationLocation
+        ReportBuilder::PublishedGraphDataUnit
+        Webhooks::Delivery
+        Webhooks::Subscription
       ],
 
       # Per-user runtime objects regenerated through normal use.
-      user_runtime: %w[Notification Onboarding::CampaignDismissal],
+      user_runtime: %w[
+        Notification
+        Onboarding::CampaignDismissal
+      ],
 
       # Background-job / queue infrastructure.
-      jobs: %w[Jobs::Tracker Que::ActiveRecord::Model],
+      jobs: %w[
+        Jobs::Tracker
+        Que::ActiveRecord::Model
+      ],
 
       # Authentication, identity, verification and anti-abuse — per-user/security
       # state, never carried over by a project copy.
       auth_and_security: %w[
-        Identity Invite Verification::Verification ClaimToken EmailBan CommonPassword
-        PublicApi::ApiClient CustomIdMethods::IdCardLookup::IdCard
+        ClaimToken
+        CommonPassword
+        Confirmation
+        CustomIdMethods::IdCardLookup::IdCard
+        Doorkeeper::AccessGrant
+        Doorkeeper::AccessToken
+        EmailBan
+        Identity
+        Invite
+        PublicApi::ApiClient
+        Verification::Verification
       ],
 
       # Moderation / spam / content flags — per-tenant runtime moderation state.
       moderation: %w[
-        Moderation::ModerationStatus SpamReport
-        FlagInappropriateContent::InappropriateContentFlag WiseVoiceFlag
+        FlagInappropriateContent::InappropriateContentFlag
+        Moderation::ModerationStatus
+        SpamReport
+        WiseVoiceFlag
       ],
 
       # Bulk imported metadata, including BulkImportIdeas::ProjectImport which
       # is *created by* import (not exported).
       import: %w[
-        BulkImportIdeas::IdeaImport BulkImportIdeas::IdeaImportFile
-        BulkImportIdeas::ProjectImport InvitesImport
+        BulkImportIdeas::IdeaImport
+        BulkImportIdeas::IdeaImportFile
+        BulkImportIdeas::ProjectImport
+        InvitesImport
       ],
 
       # Project folders — a project copy doesn't carry its parent folder.
-      project_folders: %w[ProjectFolders::Folder ProjectFolders::File ProjectFolders::Image],
+      project_folders: %w[
+        ProjectFolders::File
+        ProjectFolders::Folder
+        ProjectFolders::Image
+      ],
 
       # Idea moderation / review state — recreated on import as needed.
-      idea_review: %w[IdeaStatus ProjectReview IdeaRelation],
+      idea_review: %w[
+        IdeaRelation
+        IdeaStatus
+        ProjectReview
+      ],
 
       # Survey responses — native survey responses are exported as ideas; this
       # is the (legacy/external) Surveys engine's response model.
-      surveys: %w[Surveys::Response],
+      surveys: %w[
+        Surveys::Response
+      ],
 
       # Email campaigns runtime — tenant-wide, not project-scoped.
       email_campaigns: %w[
-        EmailCampaigns::Campaign EmailCampaigns::CampaignEmailCommand
-        EmailCampaigns::CampaignsGroup EmailCampaigns::Consent EmailCampaigns::Delivery
-        EmailCampaigns::Example EmailCampaigns::UnsubscriptionToken
-        EmailSnippet
+        EmailCampaigns::Campaign
+        EmailCampaigns::CampaignEmailCommand
+        EmailCampaigns::CampaignsGroup
+        EmailCampaigns::Consent
+        EmailCampaigns::Delivery
+        EmailCampaigns::Example
+        EmailCampaigns::UnsubscriptionToken
       ],
 
       # Reports — tenant-wide reporting state, not project content.
-      reports: %w[ReportBuilder::Report],
+      reports: %w[
+        ReportBuilder::Report
+      ],
 
       # Pages and the home page — tenant-wide CMS content, not project content.
       pages: %w[
-        StaticPage StaticPageFile StaticPagesGlobalTopic
-        NavBarItem AreasProject AreasStaticPage IdeasInputTopic
+        AreasProject
+        AreasStaticPage
+        IdeasInputTopic
+        NavBarItem
+        StaticPage
+        StaticPageFile
+        StaticPagesGlobalTopic
       ],
 
       # Per-tenant admin moderation runtime (internal comments on ideas — not
       # part of project content surfaced to end users).
-      admin_runtime: %w[InternalComment],
+      admin_runtime: %w[
+        InternalComment
+      ],
 
       # Experiment / AB-test runtime.
-      experiments: %w[Experiment],
+      experiments: %w[
+        Experiment
+      ],
 
       # Representativeness reference distributions & custom-field value binning.
-      representativeness: %w[CustomFieldBin UserCustomFields::Representativeness::RefDistribution],
+      representativeness: %w[
+        CustomFieldBin
+        UserCustomFields::Representativeness::RefDistribution
+      ],
 
       # Files engine — separate cross-resource attachments.
-      files: %w[Files::File Files::FileAttachment Files::FilesProject Files::Preview Files::Transcript],
+      files: %w[
+        Files::File
+        Files::FileAttachment
+        Files::FilesProject
+        Files::Preview
+        Files::Transcript
+      ],
 
       # Polls anonymous responses — discardable, not exported.
-      polls_responses: %w[Polls::Response Polls::ResponseOption],
+      polls_responses: %w[
+        Polls::Response
+        Polls::ResponseOption
+      ],
 
       # Inline nested-attribute models — exported indirectly as `_attributes`
       # on their parent. Column coverage for them is checked via `ignored_columns`
       # against the parent's nested keys.
-      nested_attributes: %w[AdminPublication TextImage],
+      nested_attributes: %w[
+        AdminPublication
+        TextImage
+      ],
 
       # REVIEW: these look like they may belong in a project copy. Listed to
       # keep the baseline green pending a human decision on whether to export
       # them. `ProjectsGlobalTopic` and `Cosponsorship` are the most likely real
       # gaps; `PermissionsCustomField` is the per-permission custom-field link.
-      review: %w[Cosponsorship PermissionsCustomField ProjectsGlobalTopic]
+      review: %w[
+        Cosponsorship
+        PermissionsCustomField
+        ProjectsGlobalTopic
+      ]
     }.freeze
   end
 
@@ -218,10 +360,9 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
     end
     columns << (model.respond_to?(:slug_attribute) ? model.slug_attribute.to_s : 'slug') if model.respond_to?(:slug?) && model.slug?
     columns += %w[migrated_file_id migration_skipped_reason] if model.include?(FileMigratable)
-    columns += model.column_names.grep(/_count\z/)
     columns += model.columns.select { |c| c.sql_type == 'tsvector' }.map(&:name)
     columns += model.columns.select { |c| c.sql_type.to_s.match?(/geometry|geography/) }.map(&:name)
-    (columns.compact + regenerated_cache_columns).uniq
+    (columns.compact + cache_columns_for(model)).uniq
   end
 
   # Parse the service source file once. Returns a hash:

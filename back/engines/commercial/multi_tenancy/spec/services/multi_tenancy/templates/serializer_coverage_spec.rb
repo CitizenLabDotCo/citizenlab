@@ -31,139 +31,285 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
   let(:ignored_columns) do
     {
       'AdminPublication' => %w[
-        children_allowed first_published_at scheduled_status scheduled_at scheduled_by_id
+        children_allowed
+        first_published_at
+        scheduled_at
+        scheduled_by_id
+        scheduled_status
       ], # publication scheduling / operational state
-      'Area' => %w[custom_field_option_id include_in_onboarding], # REVIEW
-      'CustomField' => %w[hidden logic], # REVIEW
+
+      'Area' => %w[
+        custom_field_option_id
+        include_in_onboarding
+      ], # REVIEW
+
+      'CustomField' => %w[
+        hidden
+        logic
+      ], # REVIEW
+
       'CustomForm' => %w[
-        fields_last_updated_at print_start_multiloc print_end_multiloc print_personal_data_fields
+        fields_last_updated_at
+        print_end_multiloc
+        print_personal_data_fields
+        print_start_multiloc
       ], # REVIEW: (except fields_last_updated_at)
-      'DefaultInputTopic' => %w[parent_id], # flat list; default topics carry no hierarchy
+
+      'DefaultInputTopic' => %w[
+        parent_id
+      ], # flat list; default topics carry no hierarchy
+
       'Event' => %w[
-        address_1 address_2_multiloc online_link attend_button_multiloc using_url maximum_attendees
+        address_1
+        address_2_multiloc
+        attend_button_multiloc
+        maximum_attendees
+        online_link
+        using_url
       ], # REVIEW
-      'GlobalTopic' => %w[include_in_onboarding], # REVIEW
+
+      'GlobalTopic' => %w[
+        include_in_onboarding
+      ], # REVIEW
+
       'Idea' => %w[
-        assignee_id assigned_at
-        manual_votes_amount manual_votes_last_updated_by_id manual_votes_last_updated_at
+        assigned_at
+        assignee_id
+        manual_votes_amount
+        manual_votes_last_updated_at
+        manual_votes_last_updated_by_id
       ], # moderation / manual-vote operational state
+
       'Permission' => %w[
-        verification_expiry access_denied_explanation_multiloc everyone_tracking_enabled
-        user_fields_in_form user_data_collection
+        access_denied_explanation_multiloc
+        everyone_tracking_enabled
+        user_data_collection
+        user_fields_in_form
+        verification_expiry
       ], # REVIEW: (except verification_expiry)
+
       'Phase' => %w[
-        manual_voters_amount manual_voters_last_updated_by_id manual_voters_last_updated_at
-        allow_anonymous_participation voting_term_singular_multiloc voting_term_plural_multiloc
-        similarity_threshold_title similarity_threshold_body survey_popup_frequency
-        similarity_enabled voting_filtering_enabled available_views draft_description_multiloc
+        allow_anonymous_participation
+        available_views
+        draft_description_multiloc
+        manual_voters_amount
+        manual_voters_last_updated_at
+        manual_voters_last_updated_by_id
+        similarity_enabled
+        similarity_threshold_body
+        similarity_threshold_title
+        survey_popup_frequency
+        voting_filtering_enabled
+        voting_term_plural_multiloc
+        voting_term_singular_multiloc
       ], # REVIEW: (except manual_voters_* operational state)
+
       'Project' => %w[
-        default_assignee_id preview_token
-        header_bg_alt_text_multiloc listed track_participation_location live_auto_input_topics_enabled
+        default_assignee_id
+        header_bg_alt_text_multiloc
+        listed
+        live_auto_input_topics_enabled
+        preview_token
+        track_participation_location
       ], # REVIEW: (except default_assignee_id, preview_token)
-      'ProjectImage' => %w[alt_text_multiloc], # REVIEW
-      'EventImage' => %w[alt_text_multiloc], # REVIEW
-      'User' => %w[
-        roles last_active_at imported onboarding
-        reset_password_token invite_status confirmation_required block_end_at new_email token_expiry_key
-        email_confirmed_at email_confirmation_code email_confirmation_code_sent_at
-      ], # auth/session/role state — deliberately not templated (privacy/security)
-      'EmailCampaigns::Campaign' => %w[
-        reply_to schedule title_multiloc intro_multiloc button_text_multiloc
+
+      'ProjectImage' => %w[
+        alt_text_multiloc
       ], # REVIEW
-      'ProjectFolders::Folder' => %w[header_bg_alt_text_multiloc], # REVIEW
-      'ProjectFolders::Image' => %w[alt_text_multiloc], # REVIEW
-      'ReportBuilder::Report' => %w[year quarter community_monitor] # REVIEW
+
+      'EventImage' => %w[
+        alt_text_multiloc
+      ], # REVIEW
+
+      'User' => %w[
+        block_end_at
+        confirmation_required
+        email_confirmed_at
+        imported
+        invite_status
+        last_active_at
+        new_email
+        onboarding
+        reset_password_token
+        roles
+        token_expiry_key
+      ], # auth/session/role state — deliberately not templated (privacy/security)
+
+      'EmailCampaigns::Campaign' => %w[
+        button_text_multiloc
+        intro_multiloc
+        reply_to
+        schedule
+        title_multiloc
+      ], # REVIEW
+
+      'ProjectFolders::Folder' => %w[
+        header_bg_alt_text_multiloc
+      ], # REVIEW
+
+      'ProjectFolders::Image' => %w[
+        alt_text_multiloc
+      ], # REVIEW
+
+      'ReportBuilder::Report' => %w[
+        community_monitor
+        quarter
+        year
+      ] # REVIEW
     }.freeze
   end
 
-  # Cache/derived columns with no shared concern or detectable convention, so they
-  # have to be named. Kept global (not per-model) because they are pure caches that
-  # are regenerated, never template content.
-  let(:regenerated_cache_columns) { %w[weglot_data].freeze }
+  # Cache/derived columns excluded from coverage checks across ALL models.
+  # `*_count` matches any column ending in `_count`
+  let(:ignored_cache_columns) do
+    %w[
+      *_count
+      weglot_data
+    ].freeze
+  end
+
+  def cache_columns_for(model)
+    model.column_names.select do |col|
+      ignored_cache_columns.any? { |pat| pat.start_with?('*') ? col.end_with?(pat[1..]) : col == pat }
+    end
+  end
 
   # Persisted models that intentionally have no tenant serializer, keyed by reason
   let(:excluded_models) do
     {
       # The tenant itself and its global configuration — not in-tenant content.
-      tenant_infrastructure: %w[Tenant AppConfiguration],
+      tenant_infrastructure: %w[
+        AppConfiguration
+        Tenant
+      ],
 
       # Analytics read models (the materialized/base-table ones; the view-backed
       # Analytics models are filtered out structurally). Derived from live data and
       # rebuilt downstream — never seeded from a template.
       analytics: %w[
-        Analytics::DimensionDate Analytics::DimensionLocale Analytics::DimensionLocalesFactVisits
-        Analytics::DimensionProjectsFactVisits Analytics::DimensionReferrerType
-        Analytics::DimensionType Analytics::FactVisit
+        Analytics::DimensionDate
+        Analytics::DimensionLocale
+        Analytics::DimensionLocalesFactVisits
+        Analytics::DimensionProjectsFactVisits
+        Analytics::DimensionReferrerType
+        Analytics::DimensionType
+        Analytics::FactVisit
       ],
 
       # AI analysis, insights and embeddings — derived from user content.
       analysis: %w[
-        Analysis::AdditionalCustomField Analysis::Analysis Analysis::BackgroundTask
-        Analysis::CommentsSummary Analysis::HeatmapCell Analysis::Insight
-        Analysis::Question Analysis::Summary Analysis::Tag Analysis::Tagging
-        AuthoringAssistanceResponse EmbeddingsSimilarity
+        Analysis::AdditionalCustomField
+        Analysis::Analysis
+        Analysis::BackgroundTask
+        Analysis::CommentsSummary
+        Analysis::HeatmapCell
+        Analysis::Insight
+        Analysis::Question
+        Analysis::Summary
+        Analysis::Tag
+        Analysis::Tagging
+        AuthoringAssistanceResponse
+        EmbeddingsSimilarity
       ],
 
       # Generated or imported participation content
-      participation: %w[IdeaRelation Surveys::Response],
+      participation: %w[
+        IdeaRelation
+        Surveys::Response
+      ],
 
       # Activity logs, telemetry and derived caches — runtime data, not content.
       tracking_and_caches: %w[
-        Activity IdeaExposure ParticipationLocation
-        ImpactTracking::Pageview ImpactTracking::Salt ImpactTracking::Session
-        MachineTranslations::MachineTranslation ReportBuilder::PublishedGraphDataUnit
-        Webhooks::Delivery Webhooks::Subscription
+        Activity
+        IdeaExposure
+        ImpactTracking::Pageview
+        ImpactTracking::Salt
+        ImpactTracking::Session
+        MachineTranslations::MachineTranslation
+        ParticipationLocation
+        ReportBuilder::PublishedGraphDataUnit
+        Webhooks::Delivery
+        Webhooks::Subscription
       ],
 
       # Per-user runtime objects regenerated through normal use.
-      user_runtime: %w[Notification Onboarding::CampaignDismissal],
+      user_runtime: %w[
+        Notification
+        Onboarding::CampaignDismissal
+      ],
 
       # Background-job / queue infrastructure.
-      jobs: %w[Jobs::Tracker Que::ActiveRecord::Model],
+      jobs: %w[
+        Jobs::Tracker
+        Que::ActiveRecord::Model
+      ],
 
       # Authentication, identity, verification and anti-abuse — per-user / security
       # state, deliberately not templated.
       auth_and_security: %w[
-        Identity Invite Verification::Verification ClaimToken EmailBan CommonPassword
-        PublicApi::ApiClient CustomIdMethods::IdCardLookup::IdCard
+        ClaimToken
+        CommonPassword
+        Confirmation
+        CustomIdMethods::IdCardLookup::IdCard
+        Doorkeeper::AccessGrant
+        Doorkeeper::AccessToken
+        EmailBan
+        Identity
+        Invite
+        PublicApi::ApiClient
+        Verification::Verification
       ],
 
       # Moderation / spam / content flags — per-tenant runtime moderation state.
       moderation: %w[
-        Moderation::ModerationStatus SpamReport
-        FlagInappropriateContent::InappropriateContentFlag WiseVoiceFlag
+        FlagInappropriateContent::InappropriateContentFlag
+        Moderation::ModerationStatus
+        SpamReport
+        WiseVoiceFlag
       ],
 
       # Bulk imported metadata
       import: %w[
-        BulkImportIdeas::IdeaImport BulkImportIdeas::IdeaImportFile
-        BulkImportIdeas::ProjectImport InvitesImport
+        BulkImportIdeas::IdeaImport
+        BulkImportIdeas::IdeaImportFile
+        BulkImportIdeas::ProjectImport
+        InvitesImport
       ],
 
       # Email-campaign runtime (deliveries, consents, queued commands, examples).
       email_runtime: %w[
         EmailCampaigns::CampaignEmailCommand
-        EmailCampaigns::Delivery EmailCampaigns::Example
+        EmailCampaigns::Delivery
+        EmailCampaigns::Example
       ],
 
       # Experiment / AB-test runtime.
-      experiments: %w[Experiment],
+      experiments: %w[
+        Experiment
+      ],
 
       # Representativeness reference distributions & custom-field value binning (analytics).
-      representativeness: %w[CustomFieldBin UserCustomFields::Representativeness::RefDistribution],
+      representativeness: %w[
+        CustomFieldBin
+        UserCustomFields::Representativeness::RefDistribution
+      ],
 
       # Files
-      files: %w[Files::File Files::FileAttachment Files::FilesProject Files::Preview Files::Transcript],
+      files: %w[
+        Files::File
+        Files::FileAttachment
+        Files::FilesProject
+        Files::Preview
+        Files::Transcript
+      ],
 
       # REVIEW: these look like they may belong in tenant templates. Listed to keep
       # the baseline green pending a human decision on whether to serialize them.
       # What even is EmailSnippet??? Very old model
       review: %w[
-        EmailCampaigns::Consent
-        EmailCampaigns::CampaignsGroup
         CustomFieldMatrixStatement
-        EmailSnippet
+        EmailCampaigns::CampaignsGroup
+        EmailCampaigns::Consent
         ProjectReview
         ProjectsGlobalTopic
       ]
@@ -191,14 +337,14 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
     # File-migration bookkeeping (FileMigratable concern).
     columns += %w[migrated_file_id migration_skipped_reason] if model.include?(FileMigratable)
 
-    # Counter caches (`*_count`) and full-text search vectors (`*_tsvector`).
-    columns += model.column_names.grep(/_count\z/)
+    # Full-text search vectors (`*_tsvector`) — sql_type-detected.
     columns += model.columns.select { |c| c.sql_type == 'tsvector' }.map(&:name)
 
     # Derived geo columns (PostGIS point/geometry) — computed from the `*_geojson` value.
     columns += model.columns.select { |c| c.sql_type.to_s.match?(/geometry|geography/) }.map(&:name)
 
-    (columns.compact + regenerated_cache_columns).uniq
+    # Name-based caches (counter caches `*_count`, weglot translation caches, ...).
+    (columns.compact + cache_columns_for(model)).uniq
   end
 
   def serializer_classes
