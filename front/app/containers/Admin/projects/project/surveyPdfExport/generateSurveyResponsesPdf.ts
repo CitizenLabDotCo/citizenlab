@@ -155,10 +155,6 @@ export const buildSurveyResponsesPdf = async ({
       doc.text(noteLines, margin + 20, y + 7);
     }
 
-    doc.setFontSize(7);
-    doc.setTextColor(C.l4[0], C.l4[1], C.l4[2]);
-    doc.text('Generated with Go Vocal', margin + 16, pageHeight - margin - 8);
-
     if (coverOnly) return doc;
 
     doc.addPage();

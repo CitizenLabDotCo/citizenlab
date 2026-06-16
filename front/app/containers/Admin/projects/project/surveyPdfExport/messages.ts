@@ -133,7 +133,6 @@ export default defineMessages({
   },
   pdfFooter: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.pdfFooter',
-    defaultMessage:
-      '{count, plural, one {# response} other {# responses}} · Generated with Go Vocal',
+    defaultMessage: '{count, plural, one {# response} other {# responses}}',
   },
 });
