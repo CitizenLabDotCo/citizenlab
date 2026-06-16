@@ -13,12 +13,7 @@ const fetchIdMethods = () =>
   });
 
 const useIdMethods = () => {
-  return useQuery<
-    IdMethods,
-    CLErrors,
-    IdMethods,
-    IdMethodsKeys
-  >({
+  return useQuery<IdMethods, CLErrors, IdMethods, IdMethodsKeys>({
     queryKey: idMethodsKeys.list(),
     queryFn: () => fetchIdMethods(),
   });

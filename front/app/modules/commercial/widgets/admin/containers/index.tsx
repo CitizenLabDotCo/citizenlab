@@ -30,7 +30,8 @@ const AdminSettingsWidgets = () => {
   };
 
   const tabItems = [
-    { name: 'ideas', label: formatMessage(messages.tabIdeas) }, { name: 'projects', label: formatMessage(messages.tabProjects) }
+    { name: 'ideas', label: formatMessage(messages.tabIdeas) },
+    { name: 'projects', label: formatMessage(messages.tabProjects) },
   ];
 
   return (

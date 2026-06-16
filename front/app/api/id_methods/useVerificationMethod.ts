@@ -13,13 +13,10 @@ const fetchVerificationMethod = () =>
   });
 
 const useVerificationMethod = () => {
-  return useQuery<
-    IdMethod,
-    CLErrors,
-    IdMethod,
-    IdMethodsKeys
-  >({
-    queryKey: idMethodsKeys.item({ endpoint: 'first_enabled_verification_method' }),
+  return useQuery<IdMethod, CLErrors, IdMethod, IdMethodsKeys>({
+    queryKey: idMethodsKeys.item({
+      endpoint: 'first_enabled_verification_method',
+    }),
     queryFn: () => fetchVerificationMethod(),
   });
 };
