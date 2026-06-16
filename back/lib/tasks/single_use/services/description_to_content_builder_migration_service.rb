@@ -50,8 +50,13 @@ module Tasks
 
           # Non-blank descriptions are wrapped in the lossless bridge widget; blank
           # ones get the default layout so they too live on the Content Builder.
-          blank = description_blank?(buildable.description_multiloc)
-          craftjs = blank ? description_layout_service.default_craftjs_json(buildable) : build_craftjs_json(buildable)
+          blank = description_layout_service.description_blank?(buildable.description_multiloc)
+          craftjs =
+            if blank
+              description_layout_service.default_craftjs_json(buildable)
+            else
+              description_layout_service.bridge_craftjs_json(buildable)
+            end
 
           if existing
             migrate_straggler(buildable, existing, craftjs, persist: persist)
@@ -114,79 +119,6 @@ module Tasks
         # canvas (an empty/never-built layout is `{}` or ROOT-only).
         def layout_has_content?(layout)
           layout.craftjs_json.is_a?(Hash) && layout.craftjs_json.except('ROOT').present?
-        end
-
-        def description_blank?(description_multiloc)
-          return true if description_multiloc.blank?
-
-          description_multiloc.values.all? { |html| description_html_blank?(html) }
-        end
-
-        # Mirrors SanitizationService#with_content?: HTML counts as content when it
-        # has visible text or an inline image/iframe.
-        def description_html_blank?(html)
-          fragment = Nokogiri::HTML.fragment(html.to_s)
-          fragment.text.strip.empty? && %w[img iframe].none? { |tag| fragment.at(tag) }
-        end
-
-        def build_craftjs_json(buildable)
-          if buildable.is_a?(ProjectFolders::Folder)
-            build_folder_craftjs_json(buildable)
-          else
-            build_project_craftjs_json(buildable.description_multiloc)
-          end
-        end
-
-        # Wraps the description multiloc in a single RichTextMultiloc bridge node
-        # inside a ROOT canvas, matching the structure craftjs serialises (see the
-        # homepage migration precedent and the RichTextMultiloc frontend widget).
-        def build_project_craftjs_json(description_multiloc)
-          node_id = SecureRandom.alphanumeric(10)
-          {
-            'ROOT' => {
-              'type' => 'div',
-              'isCanvas' => true,
-              'props' => { 'id' => 'e2e-content-builder-frame' },
-              'displayName' => 'div',
-              'custom' => {},
-              'hidden' => false,
-              'nodes' => [node_id],
-              'linkedNodes' => {}
-            },
-            node_id => bridge_node(description_multiloc)
-          }
-        end
-
-        # A folder on the Content Builder renders ONLY its craftjs layout (its
-        # project listing is not rendered separately), so a description-only
-        # layout would drop the folder's published-projects list. We therefore
-        # reuse the canonical folder layout (folder title + published projects)
-        # and swap just its description node for the lossless bridge widget.
-        def build_folder_craftjs_json(folder)
-          craftjs = ContentBuilder::Craftjs::DefaultLayoutService.new
-            .default_layout(folder)
-            .deep_stringify_keys
-          craftjs['TEXT'] = bridge_node(folder.description_multiloc)
-          craftjs
-        end
-
-        def bridge_node(description_multiloc)
-          {
-            'type' => { 'resolvedName' => 'RichTextMultiloc' },
-            'isCanvas' => false,
-            'props' => { 'text' => description_multiloc },
-            'displayName' => 'RichTextMultiloc',
-            'custom' => {
-              'title' => {
-                'id' => 'app.containers.admin.ContentBuilder.richTextMultiloc',
-                'defaultMessage' => 'Rich text'
-              }
-            },
-            'parent' => 'ROOT',
-            'hidden' => false,
-            'nodes' => [],
-            'linkedNodes' => {}
-          }
         end
       end
     end
