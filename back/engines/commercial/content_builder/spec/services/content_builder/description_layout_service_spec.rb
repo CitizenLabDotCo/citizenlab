@@ -21,8 +21,8 @@ describe ContentBuilder::DescriptionLayoutService do
         AppConfiguration.instance.update!(settings: settings)
       end
 
-      it 'creates an enabled, empty description layout for a project' do
-        project = create(:project)
+      it 'creates an enabled, empty description layout for a project with no description' do
+        project = create(:project, description_multiloc: { 'en' => '<p></p>' })
 
         service.provision_for(project)
 
@@ -32,6 +32,18 @@ describe ContentBuilder::DescriptionLayoutService do
         expect(layout.content_buildable_type).to eq('Project')
         expect(layout.craftjs_json).to have_key('ROOT')
         expect(layout.craftjs_json['ROOT']['nodes']).to eq([])
+      end
+
+      it 'wraps an existing description so a copied/imported one is not hidden behind an empty frame' do
+        project = create(:project, description_multiloc: { 'en' => '<p>Carried over</p>' })
+
+        service.provision_for(project)
+
+        layout = project.content_builder_layouts.find_by(code: 'project_description')
+        node = layout.craftjs_json.values.find do |n|
+          n.is_a?(Hash) && n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TextMultiloc'
+        end
+        expect(node['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
       end
 
       it 'creates the default folder layout (title + published projects) for a folder' do
