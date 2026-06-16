@@ -57,7 +57,7 @@ module Tasks
           if existing
             migrate_straggler(buildable, existing, craftjs, persist: persist)
           else
-            create_layout(buildable, code, craftjs, persist: persist)
+            create_layout(buildable, craftjs, persist: persist)
           end
 
           @stats[:migrated] += 1
@@ -75,19 +75,11 @@ module Tasks
           @description_layout_service ||= ContentBuilder::DescriptionLayoutService.new
         end
 
-        def create_layout(buildable, code, craftjs, persist:)
+        def create_layout(buildable, craftjs, persist:)
           @stats[:created] += 1
           return unless persist
 
-          # NB: create via Layout (not buildable.content_builder_layouts) so the
-          # polymorphic content_buildable_type is set — the has_many lacks
-          # `as:`, and a NULL type is invisible to the controller's find_by!.
-          ContentBuilder::Layout.create!(
-            content_buildable: buildable,
-            code: code,
-            enabled: true,
-            craftjs_json: craftjs
-          )
+          description_layout_service.create_layout!(buildable, craftjs)
         end
 
         # Re-points a disabled (abandoned) layout at the chosen layout and enables
