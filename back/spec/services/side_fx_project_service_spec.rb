@@ -36,6 +36,13 @@ describe SideFxProjectService do
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
     end
+
+    it 'provisions an enabled Content Builder description layout (content_builder patch)' do
+      service.after_create(project, user)
+
+      layout = project.content_builder_layouts.find_by(code: 'project_description')
+      expect(layout&.enabled).to be(true)
+    end
   end
 
   describe 'after_update' do
