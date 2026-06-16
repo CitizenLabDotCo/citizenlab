@@ -70,4 +70,95 @@ describe ContentBuilder::DescriptionLayoutService do
       end
     end
   end
+
+  describe '#ensure_on_content_builder!' do
+    def description_node(layout)
+      widget_types = %w[TextMultiloc RichTextMultiloc]
+      layout.craftjs_json.values.find do |node|
+        node.is_a?(Hash) && node['type'].is_a?(Hash) &&
+          widget_types.include?(node['type']['resolvedName'])
+      end
+    end
+
+    it 'uses a native TextMultiloc widget for a text-only project description' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Hello <strong>world</strong></p>' })
+
+      service.ensure_on_content_builder!(project)
+
+      layout = project.content_builder_layouts.find_by(code: 'project_description')
+      expect(layout.enabled).to be(true)
+      node = description_node(layout)
+      expect(node['type']['resolvedName']).to eq('TextMultiloc')
+      expect(node['props']['text']).to eq({ 'en' => '<p>Hello <strong>world</strong></p>' })
+    end
+
+    it 'uses the RichTextMultiloc bridge for a description with an inline image' do
+      project = create(:project, description_multiloc: { 'en' => '<p><img data-cl2-text-image-text-reference="abc"></p>' })
+
+      service.ensure_on_content_builder!(project)
+
+      node = description_node(project.content_builder_layouts.find_by(code: 'project_description'))
+      expect(node['type']['resolvedName']).to eq('RichTextMultiloc')
+    end
+
+    it 'uses the bridge for a description with a video embed' do
+      project = create(:project, description_multiloc: { 'en' => '<iframe src="https://youtube.com/embed/x"></iframe>' })
+
+      service.ensure_on_content_builder!(project)
+
+      node = description_node(project.content_builder_layouts.find_by(code: 'project_description'))
+      expect(node['type']['resolvedName']).to eq('RichTextMultiloc')
+    end
+
+    it 'creates an empty default layout for a blank description' do
+      project = create(:project, description_multiloc: { 'en' => '<p></p>' })
+
+      service.ensure_on_content_builder!(project)
+
+      layout = project.content_builder_layouts.find_by(code: 'project_description')
+      expect(layout.enabled).to be(true)
+      expect(description_node(layout)).to be_nil
+      expect(layout.craftjs_json['ROOT']['nodes']).to eq([])
+    end
+
+    it 'keeps a text-only folder description in the default TextMultiloc layout' do
+      folder = create(:project_folder, description_multiloc: { 'en' => '<p>About this folder</p>' })
+
+      service.ensure_on_content_builder!(folder)
+
+      layout = folder.content_builder_layouts.find_by(code: 'project_folder_description')
+      expect(node_types(layout)).to include('FolderTitle', 'TextMultiloc', 'Published')
+    end
+
+    it 'is idempotent — skips when a layout already exists' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Hi</p>' })
+      create(:layout, content_buildable: project, code: 'project_description', enabled: true)
+
+      expect { service.ensure_on_content_builder!(project) }
+        .not_to change { project.content_builder_layouts.count }
+    end
+  end
+
+  describe '#provision_all_descriptions!' do
+    it 'puts every project and folder description on the Content Builder' do
+      project = create(:project, description_multiloc: { 'en' => '<p>P</p>' })
+      folder = create(:project_folder, description_multiloc: { 'en' => '<p>F</p>' })
+
+      service.provision_all_descriptions!
+
+      expect(project.content_builder_layouts.find_by(code: 'project_description')&.enabled).to be(true)
+      expect(folder.content_builder_layouts.find_by(code: 'project_folder_description')&.enabled).to be(true)
+    end
+
+    it 'does nothing when the feature is disabled' do
+      settings = AppConfiguration.instance.settings
+      settings['project_description_builder'] = { 'enabled' => false, 'allowed' => false }
+      AppConfiguration.instance.update!(settings: settings)
+      create(:project, description_multiloc: { 'en' => '<p>P</p>' })
+
+      service.provision_all_descriptions!
+
+      expect(ContentBuilder::Layout.where(code: 'project_description').count).to eq(0)
+    end
+  end
 end
