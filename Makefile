@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup configure-worktree migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -30,6 +30,18 @@ reset-dev-env:
 	docker compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
 
 claude-setup:
+	@bin/setup-claude
+
+# For git worktrees: seed the gitignored *-secret.env files from the main checkout then run the Claude overlay setup
+# Only works if the worktree is created in the same folder as the main checkout (../citizenlab)
+configure-worktree:
+	@for f in $$(cd ../citizenlab/env_files && ls *-secret.env 2>/dev/null); do \
+		if [ ! -e env_files/$$f ]; then \
+			cp ../citizenlab/env_files/$$f env_files/$$f && echo "Copied env_files/$$f from ../citizenlab"; \
+		else \
+			echo "Skipping env_files/$$f (already exists)"; \
+		fi; \
+	done
 	@bin/setup-claude
 
 migrate:
