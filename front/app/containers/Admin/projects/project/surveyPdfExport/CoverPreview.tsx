@@ -17,8 +17,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 const DEBOUNCE_MS = 600;
 
-// Scale the rendered page canvas to fill the column width (it keeps the A4
-// aspect ratio), with no border so the preview sits on plain white.
 const FullWidthPage = styled.div`
   .react-pdf__Page,
   .react-pdf__Page__canvas {
@@ -32,14 +30,12 @@ type Props = {
   phaseId: string;
 };
 
-// Renders the cover as the actual (cover-only) PDF the backend generates
+// Renders just the cover of the generated PDF
 const CoverPreview = ({ cover, phaseId }: Props) => {
   const [blob, setBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  // `cover` is useState, so its reference only changes when it's actually
-  // edited — safe to depend on directly (debounced below).
   useEffect(() => {
     if (!cover.include) return undefined;
     let cancelled = false;
@@ -61,7 +57,6 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
     };
   }, [cover, phaseId]);
 
-  // Stable file reference for react-pdf (re-parses only when the blob changes).
   const file = useMemo(() => blob, [blob]);
 
   if (!cover.include) {
@@ -126,7 +121,7 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          style={{ background: 'rgba(255, 255, 255, 0.6)' }}
+          style={{ background: colors.grey100 }}
         >
           <Spinner />
         </Box>

@@ -16,7 +16,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-export type SurveyFieldPiiFlag = {
+export type SurveyFieldWithRedactState = {
   key: string;
   label: string;
   redact: boolean;
@@ -24,7 +24,7 @@ export type SurveyFieldPiiFlag = {
 
 type Props = {
   opened: boolean;
-  initialFields: SurveyFieldPiiFlag[];
+  surveyFieldsWithRedactState: SurveyFieldWithRedactState[];
   responseCount: number;
   processing: boolean;
   error: boolean;
@@ -34,7 +34,7 @@ type Props = {
 
 const ReviewFieldsModal = ({
   opened,
-  initialFields,
+  surveyFieldsWithRedactState,
   responseCount,
   processing,
   error,
@@ -42,18 +42,20 @@ const ReviewFieldsModal = ({
   onGenerate,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [fields, setFields] = useState<SurveyFieldPiiFlag[]>(initialFields);
+  const [fields, setFields] = useState<SurveyFieldWithRedactState[]>(
+    surveyFieldsWithRedactState
+  );
   const [consent, setConsent] = useState(false);
 
   // Read the latest detected fields without making them an effect dependency,
   // so a background refetch of the form schema can't reset in-progress toggles.
-  const initialFieldsRef = useRef(initialFields);
-  initialFieldsRef.current = initialFields;
+  const surveyFieldsRef = useRef(surveyFieldsWithRedactState);
+  surveyFieldsRef.current = surveyFieldsWithRedactState;
 
   // Reset the working copy only when the modal transitions to open.
   useEffect(() => {
     if (opened) {
-      setFields(initialFieldsRef.current);
+      setFields(surveyFieldsRef.current);
       setConsent(false);
     }
   }, [opened]);

@@ -29,7 +29,7 @@ module Export
           .filter_map do |field|
             next if @redacted_field_keys.include?(field.key)
 
-            Export::CustomFieldForExport.new(field, Export::Pdf::ValueVisitor)
+            Export::CustomFieldForExport.new(field, Export::Xlsx::ValueVisitor)
           end
       end
 

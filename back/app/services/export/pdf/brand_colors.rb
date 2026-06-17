@@ -7,9 +7,6 @@ module Export
     # derivations (tints/shades of the brand colours) — no contrast/luminance
     # logic.
     class BrandColors
-      DEFAULT_PRIMARY = '#1E155D'
-      DEFAULT_SECONDARY = '#FF3E52'
-      DEFAULT_TEXT = '#1E155D'
       WHITE = '#FFFFFF'
       BLACK = '#000000'
 
@@ -18,9 +15,9 @@ module Export
       end
 
       def initialize(configuration = AppConfiguration.instance)
-        @primary = sanitize(configuration.settings('core', 'color_main'), DEFAULT_PRIMARY)
-        @secondary = sanitize(configuration.settings('core', 'color_secondary'), DEFAULT_SECONDARY)
-        @text = sanitize(configuration.settings('core', 'color_text'), DEFAULT_TEXT)
+        @primary = normalize_hex(configuration.settings('core', 'color_main'))
+        @secondary = normalize_hex(configuration.settings('core', 'color_secondary'))
+        @text = normalize_hex(configuration.settings('core', 'color_text'))
       end
 
       def palette
@@ -46,15 +43,12 @@ module Export
 
       private
 
-      def sanitize(value, fallback)
-        return fallback unless value.is_a?(String)
+      # The color_* settings are required and validated as hex, but may be
+      # shorthand (e.g. "#333") — expand to 6 digits so hex_to_rgb can parse.
+      def normalize_hex(hex)
+        return hex unless hex.match?(/\A#[0-9a-fA-F]{3}\z/)
 
-        hex = value.strip
-        # Expand shorthand hex (e.g. "#333" -> "#333333").
-        if hex.match?(/\A#[0-9a-fA-F]{3}\z/)
-          hex = "##{hex.delete('#').chars.map { |c| c * 2 }.join}"
-        end
-        hex.match?(/\A#[0-9a-fA-F]{6}\z/) ? hex : fallback
+        "##{hex.delete('#').chars.map { |c| c * 2 }.join}"
       end
 
       def hex_to_rgb(hex)
