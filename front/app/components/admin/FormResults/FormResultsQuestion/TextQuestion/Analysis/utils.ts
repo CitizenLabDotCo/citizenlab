@@ -12,6 +12,20 @@ import {
   getYearFilter,
 } from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils';
 
+// True when an insight (summary or Q&A) was generated scoped to a select
+// question's "other" option, i.e. its filters restrict inputs to that option
+// (input_custom_<questionFieldId> = ['other']). This is the signal that the
+// insight belongs in the phase-insights box shown next to the "other"
+// responses; insights generated over the whole question (e.g. on the Explore
+// page) lack it and must not be displayed there.
+export const isOtherFiltered = (
+  filters: IInputsFilterParams | undefined,
+  questionFieldId: string
+) => {
+  const value = filters?.[`input_custom_${questionFieldId}`];
+  return Array.isArray(value) ? value.includes('other') : value === 'other';
+};
+
 // Convert all values in the filters object to strings
 // This is necessary because the way we are storing arrays in the URL: we encode them as JSON values
 export const convertFilterValuesToString = (filters?: IInputsFilterParams) => {

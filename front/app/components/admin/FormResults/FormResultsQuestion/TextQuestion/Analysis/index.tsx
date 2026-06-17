@@ -13,6 +13,7 @@ import { stringify } from 'qs';
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -24,14 +25,15 @@ import clHistory from 'utils/cl-router/history';
 import { useParams, useSearch } from 'utils/router';
 
 import messages from '../../../messages';
+import { TextResponseSource } from '../utils';
 
 import AnalysisInsights from './AnalysisInsights';
-import { filterForCommunityMonitorQuarter } from './utils';
+import { filterForCommunityMonitorQuarter, isOtherFiltered } from './utils';
 
 type Props = {
   customFieldId: string;
   textResponsesCount: number;
-  hasOtherResponses?: boolean;
+  textResponseSource?: TextResponseSource;
   projectId?: string;
   phaseId?: string;
 };
@@ -39,7 +41,7 @@ type Props = {
 const Analysis = ({
   customFieldId,
   textResponsesCount,
-  hasOtherResponses,
+  textResponseSource,
   ...props
 }: Props) => {
   const search = useSearch({ strict: false });
@@ -105,6 +107,32 @@ const Analysis = ({
       })
     : insightsData;
 
+  // Only insights generated scoped to the "other" option belong in the box
+  // shown next to the "other" responses. Each insightable's stored filters are
+  // side-loaded on the insights response; drop any (summary or Q&A) generated
+  // over the whole question (e.g. on the Explore page).
+  const filtersByInsightableId: Record<
+    string,
+    IInputsFilterParams | undefined
+  > = {};
+  insightsData?.included?.forEach((included) => {
+    if (included.type === 'summary' || included.type === 'analysis_question') {
+      filtersByInsightableId[included.id] = included.attributes?.filters;
+    }
+  });
+
+  const displayedInsights =
+    textResponseSource === 'other_option'
+      ? {
+          data: (insights?.data ?? []).filter((insight) =>
+            isOtherFiltered(
+              filtersByInsightableId[insight.relationships.insightable.data.id],
+              customFieldId
+            )
+          ),
+        }
+      : insights;
+
   // Create an analysis if there are no analyses yet
   useEffect(() => {
     if (
@@ -139,7 +167,7 @@ const Analysis = ({
   const hideAnalysisInsights =
     relevantAnalysis && !relevantAnalysis.attributes.show_insights;
 
-  const noInsights = !relevantAnalysis || insights?.data.length === 0;
+  const noInsights = !relevantAnalysis || displayedInsights?.data.length === 0;
 
   const goToAnalysis = () => {
     if (relevantAnalysis?.id) {
@@ -243,8 +271,9 @@ const Analysis = ({
 
           <AnalysisInsights
             analysis={relevantAnalysis}
-            insights={insights}
-            hasOtherResponses={hasOtherResponses}
+            insights={displayedInsights}
+            textResponseSource={textResponseSource}
+            textResponsesCount={textResponsesCount}
           />
         </>
       )}

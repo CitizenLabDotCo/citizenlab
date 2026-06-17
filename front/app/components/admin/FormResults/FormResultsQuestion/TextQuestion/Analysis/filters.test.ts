@@ -1,4 +1,45 @@
-import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
+import {
+  getPublishedAtFromFilter,
+  getPublishedAtToFilter,
+  isOtherFiltered,
+} from './utils';
+
+const FIELD_ID = 'abc-123';
+const KEY = `input_custom_${FIELD_ID}` as const;
+
+describe('isOtherFiltered', () => {
+  it('is true when the question filter is an array containing "other"', () => {
+    expect(isOtherFiltered({ [KEY]: ['other'] }, FIELD_ID)).toBe(true);
+  });
+
+  it('is true when "other" is one of several selected values', () => {
+    expect(isOtherFiltered({ [KEY]: ['red', 'other'] }, FIELD_ID)).toBe(true);
+  });
+
+  it('is true when the question filter is the string "other"', () => {
+    expect(isOtherFiltered({ [KEY]: 'other' }, FIELD_ID)).toBe(true);
+  });
+
+  it('is false when the question is filtered to a non-other option', () => {
+    expect(isOtherFiltered({ [KEY]: ['red'] }, FIELD_ID)).toBe(false);
+  });
+
+  it('is false when there is no filter for this question (whole-question insight)', () => {
+    expect(
+      isOtherFiltered({ input_custom_field_no_empty_values: true }, FIELD_ID)
+    ).toBe(false);
+  });
+
+  it('is false when the "other" filter is for a different question', () => {
+    expect(
+      isOtherFiltered({ input_custom_other_id: ['other'] }, FIELD_ID)
+    ).toBe(false);
+  });
+
+  it('is false when filters are undefined', () => {
+    expect(isOtherFiltered(undefined, FIELD_ID)).toBe(false);
+  });
+});
 
 describe('getPublishedAtFromFilter', () => {
   it('returns correct start date for Q1', () => {

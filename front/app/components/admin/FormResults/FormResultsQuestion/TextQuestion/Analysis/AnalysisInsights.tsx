@@ -20,6 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
 
 import messages from '../../../messages';
+import { TextResponseSource } from '../utils';
 
 import Question from './Question';
 import Summary from './Summary';
@@ -27,11 +28,13 @@ import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
 
 const AnalysisInsights = ({
   analysis,
-  hasOtherResponses,
+  textResponseSource,
+  textResponsesCount,
   insights,
 }: {
   analysis: IAnalysisData;
-  hasOtherResponses?: boolean;
+  textResponseSource?: TextResponseSource;
+  textResponsesCount: number;
   insights?: IInsights;
 }) => {
   const search = useSearch({ strict: false });
@@ -57,13 +60,21 @@ const AnalysisInsights = ({
   const inputCount = inputs?.pages[0].meta.filtered_count || 0;
   const selectedInsight = insights?.data[selectedInsightIndex];
 
-  // Create a summary if there are no insights yet
+  // Auto-generate only when there are enough responses to summarise. For the
+  // "other" box that means >10 'other' responses specifically (textResponsesCount),
+  // not all responders to the question (inputCount).
+  const enoughResponses =
+    textResponseSource === 'other_option'
+      ? textResponsesCount > 10
+      : inputCount > 10;
+
+  // Create a summary if there are no (qualifying) insights yet
   useEffect(() => {
     if (
       analysis.id &&
       insights?.data.length === 0 &&
       !automaticSummaryCreated &&
-      inputCount > 10
+      enoughResponses
     ) {
       setAutomaticSummaryCreated(true);
       preCheck(
@@ -99,7 +110,7 @@ const AnalysisInsights = ({
                 ),
                 limit: !largeSummariesAllowed ? 30 : undefined,
               };
-              if (hasOtherResponses && customFieldId) {
+              if (textResponseSource === 'other_option' && customFieldId) {
                 filters[`input_custom_${customFieldId}`] = ['other'];
               }
               addAnalysisSummary({
@@ -116,10 +127,10 @@ const AnalysisInsights = ({
     addAnalysisSummary,
     insights,
     automaticSummaryCreated,
-    inputCount,
+    enoughResponses,
     largeSummariesAllowed,
     preCheck,
-    hasOtherResponses,
+    textResponseSource,
     analysis.relationships.main_custom_field?.data?.id,
     search,
   ]);
