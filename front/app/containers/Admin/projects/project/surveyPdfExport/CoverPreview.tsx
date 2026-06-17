@@ -1,46 +1,45 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Box, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
+import { pdfjs, Document, Page } from 'react-pdf';
+import styled from 'styled-components';
 
-import { fetchCoverPreviewHtml } from 'api/survey_responses_pdf/fetchCoverPreviewHtml';
-import { SurveyPdfCover } from 'api/survey_responses_pdf/generateSurveyResponsesPdf';
+import {
+  fetchCoverPreviewPdf,
+  SurveyPdfCover,
+} from 'api/survey_responses_pdf/generateSurveyResponsesPdf';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
-// The backend renders the cover (single source of truth) as a 210x297mm page;
-// we show it in an iframe scaled to the column width. mm -> px at 96dpi.
-const MM = 96 / 25.4;
-const PAGE_W = 210 * MM;
-const PAGE_H = 297 * MM;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.mjs`;
+
 const DEBOUNCE_MS = 600;
+
+// Scale the rendered page canvas to fill the column width (it keeps the A4
+// aspect ratio), with no border so the preview sits on plain white.
+const FullWidthPage = styled.div`
+  .react-pdf__Page,
+  .react-pdf__Page__canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+`;
 
 type Props = {
   cover: SurveyPdfCover;
   phaseId: string;
 };
 
+// Renders the cover as the actual (cover-only) PDF the backend generates, drawn
+// to a canvas via react-pdf — pixel-identical to the download, on white, with
+// none of the browser PDF viewer's chrome.
 const CoverPreview = ({ cover, phaseId }: Props) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
-  const [html, setHtml] = useState<string | null>(null);
+  const [blob, setBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  // Re-attach the observer when the cover toggles off→on, since the observed
-  // node is unmounted by the `!cover.include` early return.
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return undefined;
-    const observer = new ResizeObserver((entries) => {
-      setWidth(entries[0].contentRect.width);
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [cover.include]);
-
-  // Debounced fetch of the rendered cover whenever its content changes.
   const signature = JSON.stringify(cover);
   useEffect(() => {
     if (!cover.include) return undefined;
@@ -49,8 +48,8 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
     setError(false);
     const timer = setTimeout(async () => {
       try {
-        const result = await fetchCoverPreviewHtml({ phaseId, cover });
-        if (!cancelled) setHtml(result);
+        const result = await fetchCoverPreviewPdf({ phaseId, cover });
+        if (!cancelled) setBlob(result);
       } catch {
         if (!cancelled) setError(true);
       } finally {
@@ -63,6 +62,9 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signature, phaseId]);
+
+  // Stable file reference for react-pdf (re-parses only when the blob changes).
+  const file = useMemo(() => blob, [blob]);
 
   if (!cover.include) {
     return (
@@ -81,32 +83,23 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
     );
   }
 
-  const scale = width ? width / PAGE_W : 0;
-
   return (
-    <div
-      ref={containerRef}
-      style={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-        overflow: 'hidden',
-        background: '#FFFFFF',
-      }}
-    >
-      {scale > 0 && html && (
-        <iframe
-          title="cover-preview"
-          srcDoc={html}
-          sandbox=""
-          style={{
-            width: PAGE_W,
-            height: PAGE_H,
-            border: 'none',
-            transform: `scale(${scale})`,
-            transformOrigin: 'top left',
-          }}
-        />
+    <Box position="relative" w="100%" h="100%" background="#FFFFFF">
+      {file && !error && (
+        <FullWidthPage>
+          <Document
+            file={file}
+            loading={<></>}
+            error={<></>}
+            onLoadError={() => setError(true)}
+          >
+            <Page
+              pageNumber={1}
+              renderTextLayer={false}
+              renderAnnotationLayer={false}
+            />
+          </Document>
+        </FullWidthPage>
       )}
       {!loading && error && (
         <Box
@@ -119,14 +112,13 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
           alignItems="center"
           justifyContent="center"
           p="24px"
-          style={{ background: 'rgba(255, 255, 255, 0.9)' }}
         >
           <Text color="textSecondary" textAlign="center" m="0px">
             <FormattedMessage {...messages.previewError} />
           </Text>
         </Box>
       )}
-      {(loading || (!html && !error)) && (
+      {(loading || (!file && !error)) && (
         <Box
           position="absolute"
           top="0"
@@ -141,7 +133,7 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
           <Spinner />
         </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

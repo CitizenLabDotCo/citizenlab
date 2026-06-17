@@ -13,21 +13,21 @@ export type SurveyPdfCover = {
   notes: string;
 };
 
-type Params = {
+type RequestParams = {
   phaseId: string;
   cover: SurveyPdfCover;
-  redactedFieldKeys: string[];
-  fileName: string;
+  redactedFieldKeys?: string[];
+  coverOnly?: boolean;
 };
 
-// POSTs the cover settings + redacted field keys and downloads the PDF the
-// backend generates. Uses XHR (like requestBlob) to get a binary response.
-export const generateSurveyResponsesPdf = ({
+// POSTs to the survey_responses_pdf endpoint and resolves with the PDF blob.
+// Uses XHR (like utils/requestBlob) to enforce a binary response type.
+const requestPdfBlob = ({
   phaseId,
   cover,
-  redactedFieldKeys,
-  fileName,
-}: Params): Promise<void> =>
+  redactedFieldKeys = [],
+  coverOnly = false,
+}: RequestParams): Promise<Blob> =>
   new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open(
@@ -40,8 +40,7 @@ export const generateSurveyResponsesPdf = ({
     xhr.setRequestHeader('Authorization', `Bearer ${getJwt()}`);
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        saveAs(new Blob([xhr.response], { type: 'application/pdf' }), fileName);
-        resolve();
+        resolve(new Blob([xhr.response], { type: 'application/pdf' }));
       } else {
         reject(new Error(`Export failed: ${xhr.status}`));
       }
@@ -58,6 +57,29 @@ export const generateSurveyResponsesPdf = ({
           notes: cover.notes,
         },
         redacted_field_keys: redactedFieldKeys,
+        cover_only: coverOnly,
       })
     );
   });
+
+// Full export — downloads the PDF.
+export const generateSurveyResponsesPdf = async ({
+  phaseId,
+  cover,
+  redactedFieldKeys,
+  fileName,
+}: {
+  phaseId: string;
+  cover: SurveyPdfCover;
+  redactedFieldKeys: string[];
+  fileName: string;
+}): Promise<void> => {
+  const blob = await requestPdfBlob({ phaseId, cover, redactedFieldKeys });
+  saveAs(blob, fileName);
+};
+
+// Cover-only PDF — used for the live preview (rendered in an iframe).
+export const fetchCoverPreviewPdf = (params: {
+  phaseId: string;
+  cover: SurveyPdfCover;
+}): Promise<Blob> => requestPdfBlob({ ...params, coverOnly: true });

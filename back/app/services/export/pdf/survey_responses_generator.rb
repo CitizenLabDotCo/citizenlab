@@ -7,25 +7,17 @@ module Export
     # visitor (so every question type is supported consistently with the xlsx
     # export), and rendered to PDF via Gotenberg (HTML -> Chromium).
     class SurveyResponsesGenerator
-      def initialize(phase, cover:, redacted_field_keys: [])
+      # cover_only renders just the cover page (used by the live preview); it
+      # skips loading responses entirely.
+      def initialize(phase, cover:, redacted_field_keys: [], cover_only: false)
         @phase = phase
         @cover = cover
         @redacted_field_keys = Array(redacted_field_keys).to_set
+        @cover_only = cover_only
       end
 
       def generate_pdf
         GotenbergClient.new.render_html_to_pdf(render_html)
-      end
-
-      # Renders just the cover page as HTML for the live preview, reusing the
-      # same template/locals as the full PDF (single source of truth).
-      def render_cover_html
-        render_template(
-          'export/pdf/cover',
-          cover: cover,
-          total: published_count,
-          colors: palette
-        )
       end
 
       private
@@ -64,8 +56,9 @@ module Export
         render_template(
           'export/pdf/survey_responses',
           cover: cover,
-          respondents: respondents,
-          total: inputs.size,
+          respondents: @cover_only ? [] : respondents,
+          total: @cover_only ? published_count : inputs.size,
+          cover_only: @cover_only,
           colors: palette
         )
       end

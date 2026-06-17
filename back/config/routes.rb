@@ -233,7 +233,6 @@ Rails.application.routes.draw do
           get 'survey_results'
           get 'survey_response_fields'
           post 'survey_responses_pdf'
-          post 'survey_cover_preview'
           get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'

@@ -5,11 +5,11 @@ class WebApi::V1::PhasesController < ApplicationController
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
     show show_mini update destroy survey_results survey_responses_pdf survey_response_fields
-    survey_cover_preview sentiment_by_quarter submission_count index_xlsx delete_inputs
+    sentiment_by_quarter submission_count index_xlsx delete_inputs
     show_progress common_ground_results
   ]
   before_action :ensure_survey_form, only: %i[
-    survey_responses_pdf survey_response_fields survey_cover_preview
+    survey_responses_pdf survey_response_fields
   ]
 
   def index
@@ -108,30 +108,19 @@ class WebApi::V1::PhasesController < ApplicationController
 
   # Generates a PDF of native survey responses (cover page + one card per
   # response). Field-level PII redaction is driven by `redacted_field_keys`.
+  # `cover_only` returns just the cover page (used by the live preview).
   def survey_responses_pdf
+    cover_only = ActiveModel::Type::Boolean.new.cast(params[:cover_only])
     pdf = I18n.with_locale(current_user.locale) do
       Export::Pdf::SurveyResponsesGenerator.new(
         @phase,
         cover: cover_from_params,
-        redacted_field_keys: params[:redacted_field_keys] || []
+        redacted_field_keys: params[:redacted_field_keys] || [],
+        cover_only: cover_only
       ).generate_pdf
     end
 
     send_data pdf.read, type: 'application/pdf', filename: 'survey_responses.pdf'
-  end
-
-  # Renders just the cover page as HTML for the live preview, using the same
-  # template the PDF uses (single source of truth, no response data, no PII).
-  def survey_cover_preview
-    html = I18n.with_locale(current_user.locale) do
-      Export::Pdf::SurveyResponsesGenerator
-        .new(@phase, cover: cover_from_params)
-        .render_cover_html
-    end
-
-    # Returned as JSON (not text/html) so dev middleware like rack-mini-profiler
-    # doesn't inject a <script> the sandboxed preview iframe would block.
-    render json: { html: html }
   end
 
   def common_ground_results
