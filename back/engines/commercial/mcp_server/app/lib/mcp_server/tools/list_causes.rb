@@ -24,7 +24,8 @@ class McpServer::Tools::ListCauses < McpServer::BaseTool
         'causes',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id phase_id title_multiloc description_multiloc ordering volunteers_count]
+        serializer: McpServer::Serializers::Cause,
+        params: { current_user: current_user }
       )
     end
   end

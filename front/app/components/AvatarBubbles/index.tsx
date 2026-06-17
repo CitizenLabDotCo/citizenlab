@@ -36,7 +36,7 @@ export const AvatarImageBubble = styled.img<{
   object-position: center;
 `;
 
-export type AvatarBubblesContext = {
+type AvatarBubblesContext = {
   type: 'project' | 'group';
   id: string;
 };

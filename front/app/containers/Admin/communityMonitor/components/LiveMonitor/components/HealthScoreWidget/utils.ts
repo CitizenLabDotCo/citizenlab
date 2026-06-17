@@ -184,10 +184,12 @@ export const buildHealthScoreA11yTable = (
   };
 
   const categoryRows: Row[] =
-    sentimentScores?.categoryHealthScores.map((categoryScore) => ({
-      category: categoryScore.localizedLabel,
-      ...scoresByPeriod(categoryScore.scores),
-    })) || [];
+    sentimentScores?.categoryHealthScores
+      .filter((categoryScore) => categoryScore.category !== 'other')
+      .map((categoryScore) => ({
+        category: categoryScore.localizedLabel,
+        ...scoresByPeriod(categoryScore.scores),
+      })) || [];
 
   return {
     columns,
