@@ -752,7 +752,7 @@
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.noFilter": "Ce projet n'a pas de filtre de balise ou de zone, donc aucun projet ne sera affiché.",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle1": "Liste des projets et dossiers | {orgName}",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageSettingsLinkText": "paramètres de page",
-  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageTitle1": "Liste des projets et dossiers",
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageTitle1": "Projets et dossiers",
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.sectionDescription": "Les projets suivants seront affichés sur cette page en fonction de votre {pageSettingsLink}.",
   "app.containers.Admin.PagesAndMenu.defaultTag": "PAR DÉFAUT",
   "app.containers.Admin.PagesAndMenu.deleteButton": "Supprimer",
