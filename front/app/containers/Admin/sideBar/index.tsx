@@ -18,6 +18,8 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Outlet from 'components/Outlet';
 
 import { useIntl } from 'utils/cl-intl';
@@ -31,13 +33,18 @@ import MenuItem from './MenuItem';
 import messages from './messages';
 import defaultNavItems, { NavItem } from './navItems';
 import NotificationsPopup from './NotificationsPopup';
+import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
 
-const Menu = styled.div`
+// localStorage key for the user's collapse preference in the redesigned
+// project back office (collapsed by default).
+const ADMIN_SIDEBAR_COLLAPSED_KEY = 'adminSidebarCollapsed';
+
+const Menu = styled.div<{ $collapsed?: boolean }>`
   z-index: 10;
   flex: 0 0 auto;
-  width: 224px;
+  width: ${({ $collapsed }) => ($collapsed ? '80px' : '224px')};
 
   @media print {
     display: none;
@@ -60,9 +67,31 @@ const MenuInner = styled.nav`
   padding-bottom: 35px;
   background: #003349;
 
+  &.collapsed {
+    width: 80px;
+  }
+
   ${media.tablet`
     width: 80px;
   `}
+`;
+
+const ToggleButton = styled.button<{ $collapsed: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: ${({ $collapsed }) =>
+    $collapsed ? 'center' : 'flex-start'};
+  width: ${({ $collapsed }) => ($collapsed ? '56px' : '224px')};
+  padding: 10px 8px 10px 16px;
+  margin-bottom: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background-color 80ms ease-out;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
 `;
 
 const getTopAndBottomNavItems = (navItems: NavItem[]) => {
@@ -105,6 +134,41 @@ const Sidebar = ({ authUser }: Props) => {
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
 
+  // In the redesigned project back office the rail defaults to collapsed
+  // (icon-only) to leave room for the project sidebar; users can expand it and
+  // the choice is remembered. Elsewhere the rail is unchanged.
+  const parallelParticipation = useFeatureFlag({
+    name: 'parallel_participation',
+  });
+  const projectMatch = pathname.match(/\/admin\/projects\/([^/]+)/);
+  const inProjectBackOffice =
+    parallelParticipation && !!projectMatch && projectMatch[1] !== 'new';
+
+  const [collapsedPref, setCollapsedPref] = useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem(ADMIN_SIDEBAR_COLLAPSED_KEY);
+      return stored === null ? true : stored === 'true';
+    } catch {
+      return true;
+    }
+  });
+
+  const toggleCollapsed = () =>
+    setCollapsedPref((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem(ADMIN_SIDEBAR_COLLAPSED_KEY, String(next));
+      } catch {
+        // ignore storage failures (e.g. private browsing)
+      }
+      return next;
+    });
+
+  // `forceCollapsed` is the project-back-office collapse only; subcomponents OR
+  // it with their own tablet breakpoint. `collapsed` is the effective state.
+  const forceCollapsed = inProjectBackOffice && collapsedPref;
+  const collapsed = isSmallerThanPhone || forceCollapsed;
+
   useEffect(() => {
     setNavItems((prevNavItems) => {
       const updatedNavItems: NavItem[] = prevNavItems.map(
@@ -137,69 +201,100 @@ const Sidebar = ({ authUser }: Props) => {
   const [topNavItems, bottomNavItems] = getTopAndBottomNavItems(navItems);
 
   return (
-    <Menu>
-      <Outlet id="app.containers.Admin.sideBar.navItems" onData={handleData} />
-      <MenuInner
-        id="sidebar"
-        className="intercom-admin-general-navigation-side-bar"
-      >
-        <Box w="100%">
-          {/* The aria-label here is used when there is no clear
-           * 'text-like' element as a child of the Link component,
-           * making it unclear for screen readers what the link point to.
-           * https://stackoverflow.com/a/53765144/7237112
-           */}
-          <Link to="/" aria-label={formatMessage(messages.toPlatform)}>
-            <Box
-              height={
-                isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
-              }
-              background={colors.teal500}
-              mb="10px"
-              display="flex"
-              alignItems="center"
-              pr={isSmallerThanPhone ? '0px' : '8px'}
-              pl={isSmallerThanPhone ? '0px' : '16px'}
-              py="10px"
-              justifyContent={isSmallerThanPhone ? 'center' : undefined}
-            >
+    <SidebarCollapsedContext.Provider value={forceCollapsed}>
+      <Menu $collapsed={collapsed}>
+        <Outlet
+          id="app.containers.Admin.sideBar.navItems"
+          onData={handleData}
+        />
+        <MenuInner
+          id="sidebar"
+          className={`intercom-admin-general-navigation-side-bar${
+            collapsed ? ' collapsed' : ''
+          }`}
+        >
+          <Box w="100%">
+            {/* The aria-label here is used when there is no clear
+             * 'text-like' element as a child of the Link component,
+             * making it unclear for screen readers what the link point to.
+             * https://stackoverflow.com/a/53765144/7237112
+             */}
+            <Link to="/" aria-label={formatMessage(messages.toPlatform)}>
               <Box
+                height={
+                  isPagesAndMenuPage ? `${stylingConsts.menuHeight}px` : '60px'
+                }
+                background={colors.teal500}
+                mb="10px"
                 display="flex"
-                flex="0 0 auto"
                 alignItems="center"
-                justifyContent="center"
+                pr={collapsed ? '0px' : '8px'}
+                pl={collapsed ? '0px' : '16px'}
+                py="10px"
+                justifyContent={collapsed ? 'center' : undefined}
               >
-                <Icon
-                  name="arrow-left-circle"
-                  fill={colors.white}
-                  width="20px"
-                  height="20px"
-                />
+                <Box
+                  display="flex"
+                  flex="0 0 auto"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Icon
+                    name="arrow-left-circle"
+                    fill={colors.white}
+                    width="20px"
+                    height="20px"
+                  />
+                </Box>
+                {!collapsed && (
+                  <Text color="white" fontSize="s" ml="17.5px">
+                    {formatMessage({ ...messages.toPlatform })}
+                  </Text>
+                )}
               </Box>
-              {!isSmallerThanPhone && (
-                <Text color="white" fontSize="s" ml="17.5px">
-                  {formatMessage({ ...messages.toPlatform })}
+            </Link>
+          </Box>
+
+          {inProjectBackOffice && !isSmallerThanPhone && (
+            <ToggleButton
+              type="button"
+              onClick={toggleCollapsed}
+              $collapsed={collapsed}
+              aria-expanded={!collapsed}
+              aria-label={formatMessage(
+                collapsed ? messages.expandMenu : messages.collapseMenu
+              )}
+            >
+              <Icon
+                name={collapsed ? 'chevron-right' : 'chevron-left'}
+                fill={colors.white}
+                width="20px"
+                height="20px"
+              />
+              {!collapsed && (
+                <Text color="white" fontSize="s" ml="15px">
+                  {formatMessage(messages.collapseMenu)}
                 </Text>
               )}
-            </Box>
-          </Link>
-        </Box>
+            </ToggleButton>
+          )}
 
-        {topNavItems.map((navItem) => (
-          <MenuItem navItem={navItem} key={navItem.name} />
-        ))}
+          {topNavItems.map((navItem) => (
+            <MenuItem navItem={navItem} key={navItem.name} />
+          ))}
 
-        <Box display="flex" flexGrow={1} />
+          <Box display="flex" flexGrow={1} />
 
-        {bottomNavItems.map((navItem) => (
-          <MenuItem navItem={navItem} key={navItem.name} />
-        ))}
+          {bottomNavItems.map((navItem) => (
+            <MenuItem navItem={navItem} key={navItem.name} />
+          ))}
 
-        <NotificationsPopup />
-        <UserMenu />
-        <SupportMenu />
-      </MenuInner>
-    </Menu>
+          <NotificationsPopup />
+          <UserMenu />
+          <SupportMenu />
+        </MenuInner>
+      </Menu>
+    </SidebarCollapsedContext.Provider>
   );
 };
 
