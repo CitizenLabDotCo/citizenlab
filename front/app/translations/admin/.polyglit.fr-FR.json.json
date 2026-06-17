@@ -3764,6 +3764,11 @@
     "verified_at": "2026-06-17T13:56:00.910405Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItemsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-06-17T13:59:52.399317Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -3833,6 +3838,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpacesLabel": {
+    "state": "verified",
+    "verified_at": "2026-06-17T13:59:52.399317Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel": {
     "state": "verified",
