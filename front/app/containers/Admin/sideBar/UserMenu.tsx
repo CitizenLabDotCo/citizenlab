@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 
 import {
   Box,
@@ -23,12 +23,14 @@ import { getFullName } from 'utils/textUtils';
 import LanguageSelectorPopup from './LanguageSelectorPopup';
 import LocaleSelectorPopup from './LocaleSelectorPopup';
 import messages from './messages';
+import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { ItemMenu, StyledBox, StyledText } from './styles';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const forceCollapsed = useContext(SidebarCollapsedContext);
+  const isSmallerThanTablet = useBreakpoint('tablet') || forceCollapsed;
   const tenantLocales = !isNilOrError(appConfig)
     ? appConfig.data.attributes.settings.core.locales
     : [];
