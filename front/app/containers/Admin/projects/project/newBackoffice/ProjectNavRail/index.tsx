@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import NewLabel from 'components/UI/NewLabel';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useLocation } from 'utils/router';
 
 import projectMessages from '../../messages';
@@ -44,7 +44,7 @@ const ItemRow = styled.div<{ active: boolean }>`
 // The link covers the icon + label area; it sits inside ItemRow so that an
 // optional trailing control (the chevron) can live next to it as a sibling
 // rather than nested inside the anchor (which would be invalid markup).
-const RowLink = styled(Link)`
+const RowLink = typedStyled(Link)`
   display: flex;
   align-items: center;
   gap: 10px;
