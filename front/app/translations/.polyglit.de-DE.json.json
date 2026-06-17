@@ -6049,10 +6049,34 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.components.trendIndicator.comparedToLastQuarter": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.636740Z",
+    "verified_by": "Jelena"
+  },
   "app.components.trendIndicator.lastQuarter2": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.trendIndicator.trendDecreased": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.636740Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.trendIndicator.trendIncreased": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.636740Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.trendIndicator.trendNoChange": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.636740Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AccessibilityStatement.applicability": {
     "state": "verified",

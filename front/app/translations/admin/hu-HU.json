@@ -933,6 +933,8 @@
   "app.containers.Admin.communityMonitor.quarterChartLabel": "Q{quarter} {year}",
   "app.containers.Admin.communityMonitor.quarterYearCondensed": "Q{quarterNumber} {year}",
   "app.containers.Admin.communityMonitor.reports": "Jelentések",
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": "Adat nem található.",
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": "{score} az 5-ből.",
   "app.containers.Admin.communityMonitor.settings": "Beállítások",
   "app.containers.Admin.communityMonitor.settings.acceptingSubmissions": "A Közösségi Monitor felmérés fogadja a beküldéseket.",
   "app.containers.Admin.communityMonitor.settings.accessRights3": "Hozzáférés és felhasználói adatok",

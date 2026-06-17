@@ -104,6 +104,8 @@ declare global {
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
+      deleteEventAttendances: typeof deleteEventAttendances;
+      apiRemoveIdeas: typeof apiRemoveIdeas;
     }
   }
 }
@@ -2191,6 +2193,52 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`[data-cy="${dataCyValue}"]`);
 }
 
+function deleteEventAttendances(email: string, password: string, eventIdNoCoordinates: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'GET',
+      url: `web_api/v1/events/${eventIdNoCoordinates}/attendances`,
+    }).then((response) => {
+      const attendances = response.body.data;
+      if (attendances.length !== 0){
+        attendances.forEach((attendance: any) => {
+          cy.request({
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${adminJwt}`,
+            },
+            method: 'DELETE',
+            url: `web_api/v1/event_attendances/${attendance.id}`,
+          });
+        });
+      }
+    });
+  });
+}
+
+function apiRemoveIdeas() {
+  return cy.request({
+    method: 'GET',
+    url: `/web_api/v1/ideas`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((response) => {
+    const ideas = response.body.data
+    if(ideas.length !== 0) {
+      ideas.forEach((idea: any) => {
+        cy.apiRemoveIdea(idea.id);
+      });
+    }
+  });
+}
+
 Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
@@ -2308,6 +2356,8 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
+Cypress.Commands.add('deleteEventAttendances', deleteEventAttendances);
+Cypress.Commands.add('apiRemoveIdeas', apiRemoveIdeas);
 
 // ReactSelect helper function
 const selectReactSelectOption = (selector: string, label: string) => {
