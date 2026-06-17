@@ -86,12 +86,20 @@ RSpec.describe DecidimImporter::Importer do
 
       let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'") }
 
-      it 'lays out the step, survey and proposals components as non-overlapping phases' do
+      it 'lays out the step, survey, page and proposals components as non-overlapping phases' do
+        # step (information) → survey (native_survey) → page (information) → proposals (ideation),
+        # ordered by their component dates.
         methods = project.phases.order(:start_at).pluck(:participation_method)
-        expect(methods).to eq(%w[information native_survey ideation])
+        expect(methods).to eq(%w[information native_survey information ideation])
         # Sequential, non-overlapping: each phase starts on/after the previous one's end.
         starts_ends = project.phases.order(:start_at).pluck(:start_at, :end_at)
         starts_ends.each_cons(2) { |(_, prev_end), (next_start, _)| expect(next_start).to be >= prev_end }
+      end
+
+      it 'imports a Decidim page as an information phase carrying the page body' do
+        page = project.phases.find_by("title_multiloc->>'fr-FR' = 'La concertation'")
+        expect(page.participation_method).to eq('information')
+        expect(page.description_multiloc['fr-FR']).to include('Contenu de la page')
       end
 
       it 'rebuilds the surveys component as a native_survey phase with a custom form' do

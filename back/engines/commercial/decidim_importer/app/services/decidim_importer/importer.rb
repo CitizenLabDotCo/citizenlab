@@ -35,14 +35,16 @@ module DecidimImporter
     # Each process directory holds a `NN---components/` folder with one subdirectory per Decidim
     # component, named `NN---decidim--component--N---<type>` (proposals, meetings, surveys, …). The
     # type is the trailing path segment. Each component dir holds its own `01---component.csv` (the
-    # manifest) and, for proposals, `02---proposals.csv` + `03---comments.csv`. This iteration only
-    # proposals are consumed; other types are recorded (for skip-logging) but not imported.
+    # manifest) and, for proposals, `02---proposals.csv` + `03---comments.csv`. Proposals, surveys and
+    # pages are consumed (surveys/pages keep their content in the manifest's `specific_data`); other
+    # types are recorded for skip-logging but not yet imported.
     COMPONENT_DIR_GLOB = '*components/*'
     COMPONENT_FILE_GLOB = '*--component.csv'
     PROPOSALS_FILE_GLOB = '*--proposals.csv'
     COMMENTS_FILE_GLOB = '*--comments.csv'
     PROPOSALS_COMPONENT = 'proposals'
     SURVEYS_COMPONENT = 'surveys'
+    PAGES_COMPONENT = 'pages'
 
     # Build an importer from a Decidim export zip. Extracts into a tempdir, parses every CSV into
     # memory, then tears the tempdir down.
@@ -423,10 +425,10 @@ module DecidimImporter
     end
 
     # The phase-generating components fed to {PhaseProjector}: proposals → ideation phases (dated by
-    # their proposals' published_at), surveys → native_survey phases (dated by the component's
-    # publication date — the export carries no survey responses to date them by).
+    # their proposals' published_at), surveys → native_survey phases and pages → information phases
+    # (both dated by the component's publication date — the export carries no responses to date them by).
     def participation_components
-      proposal_components + survey_phase_components
+      proposal_components + survey_phase_components + page_phase_components
     end
 
     def proposal_components
@@ -444,6 +446,16 @@ module DecidimImporter
         { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
           name: SurveyParser.title(row['specific_data']) || row['name'],
           method: 'native_survey', dates: [row['published_at']] }
+      end
+    end
+
+    # Decidim pages → information phases: the component name is the phase title and the page body
+    # (the `body` multiloc inside `specific_data`) is the phase description.
+    def page_phase_components
+      rows_for(:components).select { |row| row['type'] == PAGES_COMPONENT }.map do |row|
+        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
+          name: row['name'], method: 'information', dates: [row['published_at']],
+          description: Parsing.parse_json(row['specific_data'])&.dig('body') }
       end
     end
 
