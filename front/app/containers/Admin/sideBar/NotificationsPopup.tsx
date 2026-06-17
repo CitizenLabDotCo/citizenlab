@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 
 import {
   Box,
@@ -20,11 +20,13 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
+import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { StyledBox, StyledText } from './styles';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const forceCollapsed = useContext(SidebarCollapsedContext);
+  const isSmallerThanTablet = useBreakpoint('tablet') || forceCollapsed;
   const { data: authUser } = useAuthUser();
   const { mutate: markAllAsRead } = useMarkAllAsRead();
   const iconDivRef = useRef<HTMLDivElement | null>(null);
