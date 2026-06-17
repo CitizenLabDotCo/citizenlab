@@ -146,12 +146,7 @@ const TimelinePhases = ({ projectId }: Props) => {
         {formatMessage(messages.timelinePhases)}
       </Text>
 
-      <Box
-        display="flex"
-        flexDirection="column"
-        maxHeight="40vh"
-        overflowY="auto"
-      >
+      <Box display="flex" flexDirection="column">
         {sortedPhases.map((phase, index) => {
           const status = phaseStatus(phase);
           const isSelected = phase.id === phaseId;
