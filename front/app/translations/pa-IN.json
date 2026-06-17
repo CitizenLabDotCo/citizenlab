@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 ਕਾਲਮ",
   "app.containers.admin.ContentBuilder.projectDescription": "ਪ੍ਰੋਜੈਕਟ ਦਾ ਵੇਰਵਾ",
   "app.containers.admin.ContentBuilder.publishedProjects": "ਪ੍ਰਕਾਸ਼ਿਤ ਪ੍ਰੋਜੈਕਟ",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "ਰਿੱਚ ਟੈਕਸਟ",
   "app.containers.admin.ContentBuilder.selectedProjects": "ਚੁਣੇ ਹੋਏ ਪ੍ਰੋਜੈਕਟ",
   "app.containers.app.navbar.admin": "ਪਲੇਟਫਾਰਮ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ",
   "app.containers.app.navbar.allProjects": "ਸਾਰੇ ਪ੍ਰੋਜੈਕਟ",

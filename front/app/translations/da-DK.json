@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeskrivelse",
   "app.containers.admin.ContentBuilder.publishedProjects": "Offentliggjorte projekter",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Formateret tekst",
   "app.containers.admin.ContentBuilder.selectedProjects": "Udvalgte projekter",
   "app.containers.app.navbar.admin": "Administrator",
   "app.containers.app.navbar.allProjects": "{tenantName, select, DeloitteDK {Alle verdensmål} other {Alle projekter}}",

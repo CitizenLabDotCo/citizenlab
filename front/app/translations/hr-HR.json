@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 stupac",
   "app.containers.admin.ContentBuilder.projectDescription": "Opis projekta",
   "app.containers.admin.ContentBuilder.publishedProjects": "Objavljeni projekti",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Obogaćeni tekst",
   "app.containers.admin.ContentBuilder.selectedProjects": "Odabrani projekti",
   "app.containers.app.navbar.admin": "Upravljanje platformom",
   "app.containers.app.navbar.allProjects": "Svi projekti",

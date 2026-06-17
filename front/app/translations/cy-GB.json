@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 golofn",
   "app.containers.admin.ContentBuilder.projectDescription": "Disgrifiad o'r prosiect",
   "app.containers.admin.ContentBuilder.publishedProjects": "Prosiectau cyhoeddedig",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Testun cyfoethog",
   "app.containers.admin.ContentBuilder.selectedProjects": "Prosiectau dethol",
   "app.containers.app.navbar.admin": "Rheoli platfform",
   "app.containers.app.navbar.allProjects": "Pob prosiect",

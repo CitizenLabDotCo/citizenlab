@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sleja",
   "app.containers.admin.ContentBuilder.projectDescription": "Projekta apraksts",
   "app.containers.admin.ContentBuilder.publishedProjects": "Publicētie projekti",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Bagātināts teksts",
   "app.containers.admin.ContentBuilder.selectedProjects": "Atsevišķi projekti",
   "app.containers.app.navbar.admin": "Pārvaldīt platformu",
   "app.containers.app.navbar.allProjects": "Visi projekti",

@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 stulpelis",
   "app.containers.admin.ContentBuilder.projectDescription": "Projekto aprašymas",
   "app.containers.admin.ContentBuilder.publishedProjects": "Paskelbti projektai",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Raiškusis tekstas",
   "app.containers.admin.ContentBuilder.selectedProjects": "Pasirinkti projektai",
   "app.containers.app.navbar.admin": "Valdyti platformą",
   "app.containers.app.navbar.allProjects": "Visi projektai",

@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 columna",
   "app.containers.admin.ContentBuilder.projectDescription": "Descripción del proyecto",
   "app.containers.admin.ContentBuilder.publishedProjects": "Proyectos publicados",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Texto enriquecido",
   "app.containers.admin.ContentBuilder.selectedProjects": "Proyectos seleccionados",
   "app.containers.app.navbar.admin": "Admin",
   "app.containers.app.navbar.allProjects": "Todos los proyectos",

@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 στήλη",
   "app.containers.admin.ContentBuilder.projectDescription": "Περιγραφή του έργου",
   "app.containers.admin.ContentBuilder.publishedProjects": "Δημοσιευμένα έργα",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Εμπλουτισμένο κείμενο",
   "app.containers.admin.ContentBuilder.selectedProjects": "Επιλεγμένα έργα",
   "app.containers.app.navbar.admin": "Διαχείριση πλατφόρμας",
   "app.containers.app.navbar.allProjects": "Δείτε εδώ",

@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "عمود واحد",
   "app.containers.admin.ContentBuilder.projectDescription": "وصف المشروع",
   "app.containers.admin.ContentBuilder.publishedProjects": "المشاريع المنشورة",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "نص غني",
   "app.containers.admin.ContentBuilder.selectedProjects": "مشاريع مختارة",
   "app.containers.app.navbar.admin": "إدارة المنصة",
   "app.containers.app.navbar.allProjects": "جميع المشاريع",

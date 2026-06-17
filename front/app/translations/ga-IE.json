@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 cholún",
   "app.containers.admin.ContentBuilder.projectDescription": "Cur síos ar an tionscadal",
   "app.containers.admin.ContentBuilder.publishedProjects": "Tionscadail fhoilsithe",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Téacs saibhir",
   "app.containers.admin.ContentBuilder.selectedProjects": "Tionscadail roghnaithe",
   "app.containers.app.navbar.admin": "Bainistigh an t-ardán",
   "app.containers.app.navbar.allProjects": "Gach tionscadal",

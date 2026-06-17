@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 oszlop",
   "app.containers.admin.ContentBuilder.projectDescription": "Projekt leírása",
   "app.containers.admin.ContentBuilder.publishedProjects": "Közzétett projektek",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Formázott szöveg",
   "app.containers.admin.ContentBuilder.selectedProjects": "Kiválasztott projektek",
   "app.containers.app.navbar.admin": "Platform kezelése",
   "app.containers.app.navbar.allProjects": "Minden projekt",

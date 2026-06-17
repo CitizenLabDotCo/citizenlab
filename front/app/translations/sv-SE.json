@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumn",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeskrivning",
   "app.containers.admin.ContentBuilder.publishedProjects": "Publicerade projekt",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Formaterad text",
   "app.containers.admin.ContentBuilder.selectedProjects": "Utvalda projekt",
   "app.containers.app.navbar.admin": "Hantera plattform",
   "app.containers.app.navbar.allProjects": "Alla projekt",

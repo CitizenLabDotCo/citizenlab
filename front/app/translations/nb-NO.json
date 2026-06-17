@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
   "app.containers.admin.ContentBuilder.projectDescription": "Prosjektbeskrivelse",
   "app.containers.admin.ContentBuilder.publishedProjects": "Publiserte prosjekter",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Formatert tekst",
   "app.containers.admin.ContentBuilder.selectedProjects": "Utvalgte prosjekter",
   "app.containers.app.navbar.admin": "Administrer plattform",
   "app.containers.app.navbar.allProjects": "Alle prosjekter",

@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 کالم",
   "app.containers.admin.ContentBuilder.projectDescription": "پروجیکٹ کی تفصیل",
   "app.containers.admin.ContentBuilder.publishedProjects": "شائع شدہ پروجیکٹس",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "رچ ٹیکسٹ",
   "app.containers.admin.ContentBuilder.selectedProjects": "منتخب منصوبے",
   "app.containers.app.navbar.admin": "پلیٹ فارم کا نظم کریں۔",
   "app.containers.app.navbar.allProjects": "تمام منصوبے",

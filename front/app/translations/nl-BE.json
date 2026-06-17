@@ -2330,6 +2330,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolom",
   "app.containers.admin.ContentBuilder.projectDescription": "Projectbeschrijving",
   "app.containers.admin.ContentBuilder.publishedProjects": "Gepubliceerde projecten",
+  "app.containers.admin.ContentBuilder.richTextMultiloc": "Opgemaakte tekst",
   "app.containers.admin.ContentBuilder.selectedProjects": "Geselecteerde projecten",
   "app.containers.app.navbar.admin": "Beheer platform",
   "app.containers.app.navbar.allProjects": "Alle projecten",
