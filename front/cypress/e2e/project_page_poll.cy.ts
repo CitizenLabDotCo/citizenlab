@@ -6,6 +6,12 @@ import {
 } from '../support/permitted_by_utils';
 
 describe('Existing single phase project with poll', () => {
+  before(() => {
+    cy.getProjectBySlug('the-big-poll').then((project) => {
+      cy.apiAddAboutBox(project.body.data.id);
+    });
+  });
+
   beforeEach(() => {
     cy.visit('/projects/the-big-poll');
     cy.get('#e2e-project-page');
@@ -15,6 +21,7 @@ describe('Existing single phase project with poll', () => {
   // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('#e2e-project-sidebar');
   });
 
   it('shows the poll', () => {
