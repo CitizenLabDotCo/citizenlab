@@ -12,6 +12,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';
@@ -25,6 +26,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
+import { getFullName } from 'utils/textUtils';
 
 import CoverPreview from './CoverPreview';
 import messages from './messages';
@@ -48,6 +50,7 @@ const AdminPhaseSurveyPdfExport = () => {
 
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
+  const { data: authUser } = useAuthUser();
   const { data: surveyFields } = useSurveyResponseFields({ phaseId });
   const { data: submissionCount } = useSubmissionCount({ phaseId });
 
@@ -65,7 +68,7 @@ const AdminPhaseSurveyPdfExport = () => {
     [surveyFields, localize]
   );
 
-  // Cover page state, prefilled once from the phase/project.
+  // Cover page state, prefilled once from the phase/project/current user.
   const [cover, setCover] = useState<SurveyPdfCover>({
     include: true,
     title: '',
@@ -76,16 +79,18 @@ const AdminPhaseSurveyPdfExport = () => {
   });
   const coverInitialized = useRef(false);
   useEffect(() => {
-    if (phase && project && !coverInitialized.current) {
+    if (phase && project && authUser && !coverInitialized.current) {
       coverInitialized.current = true;
       setCover((prev) => ({
         ...prev,
         title: localize(phase.data.attributes.title_multiloc),
         subtitle: localize(project.data.attributes.title_multiloc),
         date: new Date().toLocaleDateString(),
+        // Defaults to the current user; they can edit or clear it.
+        preparedBy: getFullName(authUser.data) || '',
       }));
     }
-  }, [phase, project, localize]);
+  }, [phase, project, authUser, localize]);
 
   const updateCover = (key: keyof SurveyPdfCover, value: string) =>
     setCover((prev) => ({ ...prev, [key]: value }));

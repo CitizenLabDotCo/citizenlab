@@ -113,8 +113,14 @@ const ReviewFieldsModal = ({
           )}
         </Text>
 
-        {/* Field-level review */}
-        <Box display="flex" flexDirection="column" mb="24px">
+        {/* Field-level review (fixed height, scrolls within the modal) */}
+        <Box
+          display="flex"
+          flexDirection="column"
+          mb="24px"
+          maxHeight="300px"
+          overflowY="auto"
+        >
           {fields.map((field) => (
             <Box
               key={field.key}
@@ -131,7 +137,7 @@ const ReviewFieldsModal = ({
                   onChange={() => toggleField(field.key)}
                 />
                 <Box>
-                  <Text m="0px" fontWeight="bold">
+                  <Text m="0px" color="textSecondary">
                     {field.label}
                   </Text>
                 </Box>
@@ -153,7 +159,7 @@ const ReviewFieldsModal = ({
           checked={consent}
           onChange={() => setConsent((prev) => !prev)}
           label={
-            <Text m="0px" fontSize="s">
+            <Text m="0px" fontSize="s" color="textSecondary">
               {formatMessage(messages.consentLabel)}
             </Text>
           }

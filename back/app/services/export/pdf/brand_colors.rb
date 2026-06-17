@@ -29,13 +29,16 @@ module Export
           primary: @primary,
           secondary: @secondary,
           text: @text,
-          text_muted: mix(@text, WHITE, 0.45),
-          # Foregrounds over the primary-coloured cover / card headers.
+          text_muted: mix(@text, WHITE, 0.4),
+          # Brand colours darkened just enough to read on a light background.
+          primary_text: readable_on_white(@primary),
+          secondary_text: readable_on_white(@secondary),
+          # A light primary wash (10%) for the cover background (always light, so
+          # dark text reads regardless of the tenant's brand colour).
+          cover_bg: mix(@primary, WHITE, 0.9),
+          # Foregrounds over the primary-coloured card headers.
           on_primary: on_primary,
           on_primary_muted: rgba(on_primary, 0.6),
-          on_primary_faint: rgba(on_primary, 0.35),
-          on_primary_divider: rgba(on_primary, 0.15),
-          on_primary_panel: rgba(on_primary, 0.06),
           # Light primary derivatives for question bars, borders and fills.
           primary_tint: mix(@primary, WHITE, 0.92),
           primary_border: mix(@primary, WHITE, 0.82)
@@ -78,6 +81,12 @@ module Export
       # White on dark brand colours, the (dark) text colour on light ones.
       def readable_on(hex)
         relative_luminance(hex) > 0.55 ? @text : WHITE
+      end
+
+      # Darken a brand colour that's too light to read on a light background,
+      # keeping its hue.
+      def readable_on_white(hex)
+        relative_luminance(hex) > 0.55 ? mix(hex, '#000000', 0.5) : hex
       end
 
       def rgba(hex, alpha)

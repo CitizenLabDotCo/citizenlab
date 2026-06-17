@@ -9,10 +9,11 @@
     print-color-adjust: exact;
   }
 
-  /* ---- Cover ---- */
+  /* ---- Cover (light primary wash, dark/brand text) ---- */
   .cover {
-    background: <%= colors[:primary] %>;
-    color: <%= colors[:on_primary] %>;
+    background: <%= colors[:cover_bg] %>;
+    color: <%= colors[:text] %>;
+    border: 1px solid <%= colors[:primary_border] %>;
     border-radius: 8px;
     padding: 40px 36px;
     min-height: 258mm; /* fill the page within the 16mm page margin */
@@ -24,26 +25,27 @@
     font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: <%= colors[:secondary] %>;
+    color: <%= colors[:secondary_text] %>;
     font-weight: 700;
     margin-bottom: 32px;
   }
   .cover-title {
     font-size: 32px;
-    font-weight: 300;
+    font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.01em;
     margin-bottom: 8px;
+    color: <%= colors[:primary_text] %>;
     word-break: break-word;
   }
   .cover-subtitle {
     font-size: 16px;
     font-weight: 300;
-    color: <%= colors[:on_primary_muted] %>;
+    color: <%= colors[:text_muted] %>;
   }
   .cover-spacer { flex: 1; }
   .cover-meta {
-    border-top: 1px solid <%= colors[:on_primary_divider] %>;
+    border-top: 1px solid <%= colors[:primary_border] %>;
     padding-top: 16px;
     margin-top: 16px;
     display: flex;
@@ -53,19 +55,20 @@
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: <%= colors[:on_primary_faint] %>;
+    color: <%= colors[:text_muted] %>;
     margin-bottom: 4px;
   }
-  .cover-meta-value { font-size: 13px; }
-  .cover-count { font-size: 12px; color: <%= colors[:on_primary_muted] %>; margin-top: 14px; }
+  .cover-meta-value { font-size: 13px; color: <%= colors[:text] %>; }
+  .cover-count { font-size: 12px; color: <%= colors[:text_muted] %>; margin-top: 14px; }
   .cover-notes {
-    margin-top: 16px;
-    background: <%= colors[:on_primary_panel] %>;
+    margin-top: 24px;
+    background: #FFFFFF;
+    border: 1px solid <%= colors[:primary_border] %>;
     border-radius: 6px;
     padding: 10px 14px;
     font-size: 12px;
     line-height: 1.6;
-    color: <%= colors[:on_primary_muted] %>;
+    color: <%= colors[:text] %>;
     word-break: break-word;
   }
 
