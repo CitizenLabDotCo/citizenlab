@@ -159,10 +159,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        verification: {
-          enabled: true,
+        id_config: {
           allowed: true,
-          verification_methods: [
+          enabled: true,
+          id_methods: [
             {
               name: 'cow',
               api_username: 'fake_username',
@@ -205,10 +205,6 @@ namespace :cl2_back do
               name: 'fake_sso'
             }
           ]
-        },
-        fake_sso: {
-          enabled: true,
-          allowed: true
         },
         project_preview_link: {
           enabled: true,

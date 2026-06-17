@@ -1,27 +1,30 @@
 import React from 'react';
 
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
+
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 
 interface Props {
   onSubmit: (values: RulesFormValues) => Promise<void>;
-  isVerificationEnabled: boolean;
   initialValues: Partial<RulesFormValues>;
 }
 
 const RulesGroupFormWithValidation = ({
   onSubmit,
-  isVerificationEnabled,
   initialValues = {
     rules: [{}],
     membership_type: 'rules',
     memberships_count: 0,
   },
 }: Props) => {
+  const { data: firstVerificationMethod, isLoading } = useVerificationMethod();
+  if (isLoading) return null;
+
   return (
     <RulesGroupForm
       defaultValues={initialValues}
       onSubmit={onSubmit}
-      isVerificationEnabled={isVerificationEnabled}
+      isVerificationEnabled={!!firstVerificationMethod}
     />
   );
 };

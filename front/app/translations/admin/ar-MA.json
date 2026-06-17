@@ -936,6 +936,8 @@
   "app.containers.Admin.communityMonitor.quarterChartLabel": "الربع {quarter} {year}",
   "app.containers.Admin.communityMonitor.quarterYearCondensed": "الربع {quarterNumber} {year}",
   "app.containers.Admin.communityMonitor.reports": "التقارير",
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": "مالقيناش البيانات.",
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": "{score} على 5.",
   "app.containers.Admin.communityMonitor.settings": "الإعدادات",
   "app.containers.Admin.communityMonitor.settings.acceptingSubmissions": "استبيان مراقب المجتمع يقبل المشاركات الآن.",
   "app.containers.Admin.communityMonitor.settings.accessRights3": "الوصول وبيانات المستخدم",

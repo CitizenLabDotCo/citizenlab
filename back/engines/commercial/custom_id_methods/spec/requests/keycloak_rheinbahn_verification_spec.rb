@@ -74,10 +74,10 @@ context 'keycloak verification (Rheinbahn)' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'keycloak',
         provider: 'rheinbahn',
         issuer: 'https://some.test.domain.com/auth/realms/example-realm',
@@ -92,8 +92,6 @@ context 'keycloak verification (Rheinbahn)' do
   def expect_user_to_not_be_verified(user)
     expect(user.reload).to have_attributes({
       verified: false,
-      first_name: 'Unøy-Aktig',
-      last_name: 'Kost Nost',
       custom_field_values: {}
     })
     expect(user.verifications.count).to eq 0
@@ -101,6 +99,10 @@ context 'keycloak verification (Rheinbahn)' do
 
   def expect_user_to_be_identified_not_verified(user)
     expect_user_to_not_be_verified(user)
+    expect(user).to have_attributes({
+      first_name: 'Unøy-Aktig',
+      last_name: 'Kost Nost'
+    })
     expect(user.identities.first).to have_attributes({
       provider: 'keycloak',
       user_id: user.id,

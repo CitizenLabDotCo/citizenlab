@@ -6049,10 +6049,30 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.trendIndicator.comparedToLastQuarter": {
+    "state": "verified",
+    "verified_at": "2026-06-14T08:19:37.147744Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.trendIndicator.lastQuarter2": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.trendIndicator.trendDecreased": {
+    "state": "verified",
+    "verified_at": "2026-06-14T08:19:37.147744Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.trendIndicator.trendIncreased": {
+    "state": "verified",
+    "verified_at": "2026-06-14T08:19:37.147744Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.trendIndicator.trendNoChange": {
+    "state": "verified",
+    "verified_at": "2026-06-14T08:19:37.147744Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.AccessibilityStatement.applicability": {
     "state": "verified",
