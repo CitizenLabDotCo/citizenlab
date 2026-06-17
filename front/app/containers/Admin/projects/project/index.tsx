@@ -43,12 +43,13 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
         data-cy="e2e-admin-projects-project-index"
         display="flex"
         flexDirection="column"
-        flexGrow={1}
+        height="100vh"
+        overflow="hidden"
       >
         <ProjectHeader projectId={projectId} />
-        <Box display="flex" flexGrow={1} minHeight="0">
+        <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
           <ProjectSidebar projectId={projectId} />
-          <Box flexGrow={1} minWidth="0">
+          <Box flexGrow={1} minWidth="0" overflowY="auto">
             <RouterOutlet />
           </Box>
         </Box>
