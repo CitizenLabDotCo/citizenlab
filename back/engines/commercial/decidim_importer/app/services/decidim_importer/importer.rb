@@ -148,10 +148,24 @@ module DecidimImporter
     def self.apply_template_file(path, import_images: true)
       template = YAML.load_file(path, aliases: true)
       IdeaStatuses.resolve!(template)
+      resolve_area_orderings!(template)
       prepare_images!(template, import_images: import_images)
       created = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
       reconcile_permissions!
       created
+    end
+
+    # Offsets each imported area's `ordering` past the tenant's existing areas. `Area#ordering` is
+    # uniquely indexed and the deserializer doesn't reposition (`acts_as_list_no_update`), so without
+    # this an import into a tenant that already has areas — or a re-import into the same tenant — would
+    # abort on a unique-ordering collision. Relative order is preserved. Run inside the target tenant.
+    def self.resolve_area_orderings!(template)
+      areas = template.dig('models', 'area')
+      return template if areas.blank?
+
+      base = (::Area.maximum(:ordering) || -1) + 1
+      areas.each { |attrs| attrs['ordering'] = base + attrs['ordering'] if attrs['ordering'] }
+      template
     end
 
     # The deserializer creates phases/projects directly, bypassing the SideFx that normally generates
@@ -357,6 +371,7 @@ module DecidimImporter
       # Round-trip through YAML so we exercise the actual artifact the deserializer consumes.
       template = YAML.load(builder.to_yaml, aliases: true)
       IdeaStatuses.resolve!(template)
+      self.class.resolve_area_orderings!(template)
       self.class.prepare_images!(template, import_images: @import_images)
       created_object_ids = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)

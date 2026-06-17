@@ -185,6 +185,38 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe '.resolve_area_orderings!' do
+    it "offsets imported area orderings past the tenant's existing areas" do
+      create(:area)
+      base = Area.maximum(:ordering) + 1
+      template = { 'models' => { 'area' => [{ 'ordering' => 0 }, { 'ordering' => 3 }] } }
+
+      described_class.resolve_area_orderings!(template)
+
+      expect(template['models']['area'].map { |a| a['ordering'] }).to eq([base, base + 3])
+    end
+
+    it 'is a no-op when there are no areas in the template' do
+      expect { described_class.resolve_area_orderings!({ 'models' => {} }) }.not_to raise_error
+    end
+  end
+
+  describe '#import (re-import safety)' do
+    before do
+      %w[proposed under_consideration accepted rejected].each do |code|
+        next if IdeaStatus.exists?(code: code, participation_method: 'ideation')
+
+        create(:idea_status, code: code, participation_method: 'ideation')
+      end
+    end
+
+    it 'imports areas even when the tenant already has areas (no ordering collision)' do
+      create(:area) # pre-existing area occupying an ordering
+      expect { described_class.from_directory(export_root, import_images: false).import }.not_to raise_error
+      expect(Area.find_by("title_multiloc->>'en' = 'Schambergerton'")).to be_present
+    end
+  end
+
   describe '.strip_embedded_images!' do
     it 'removes <img> tags from rich-text multilocs but keeps the surrounding text' do
       template = { 'models' => { 'idea' => [{
