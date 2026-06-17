@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IAnalysisData } from 'api/analyses/types';
-import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { IInsights } from 'api/analysis_insights/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
@@ -43,10 +42,6 @@ const AnalysisInsights = ({
 
   const { formatMessage } = useIntl();
 
-  const { data: inputs } = useInfiniteAnalysisInputs({
-    analysisId: analysis.id,
-  });
-
   const { mutate: addAnalysisSummary, isLoading: addSummaryIsLoading } =
     useAddAnalysisSummary();
   const { mutate: preCheck, isLoading: preCheckIsLoading } =
@@ -57,17 +52,12 @@ const AnalysisInsights = ({
     onlyCheckAllowed: true,
   });
 
-  const inputCount = inputs?.pages[0].meta.filtered_count || 0;
   const selectedInsight = insights?.data[selectedInsightIndex];
 
-  // Auto-generate only when there are enough responses to summarise. For the
-  // "other" and follow-up boxes that means >10 of *those* responses specifically
-  // (textResponsesCount), not all responders to the question (inputCount).
-  const scopedToTextResponses =
-    textResponseSource === 'other_option' || textResponseSource === 'follow_up';
-  const enoughResponses = scopedToTextResponses
-    ? textResponsesCount > 10
-    : inputCount > 10;
+  // Auto-generate only when this question has more than 10 responses — counting
+  // the responses shown in this box (the 'other'/follow-up free text, or the
+  // plain text answers), not all responders to the survey.
+  const enoughResponses = textResponsesCount > 10;
 
   // Create a summary if there are no (qualifying) insights yet
   useEffect(() => {
