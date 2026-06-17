@@ -67,7 +67,7 @@ const ProjectInfoSideBar = memo<Props>(
         (projectHasSurvey || projectHasVoting);
 
       return (
-        <Box id="e2e-project-sidebar" className={className || ''} w="100%">
+        <Box className={className || ''} w="100%">
           <StyledProjectActionButtons projectId={projectId} />
           {!hideParticipationAvatars && userAvatarsEnabled && (
             <Box
