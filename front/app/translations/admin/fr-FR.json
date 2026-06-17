@@ -684,7 +684,7 @@
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBanner": "Bannière principale",
   "app.containers.Admin.PagesAndMenu.SectionToggle.heroBannerTooltip": "Personnalisez l'image et le texte de la bannière de la page.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": "Liste des projets et dossiers",
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "Affichez les projets et dossiers en fonction des paramètres de votre page. Vous pouvez prévisualiser les projets et dossiers qui seront affichés.",
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": "Affichez les projets et dossiers associés à la page. Le contenu de cette section dépend des filtres configurés dans les paramètres de la page.",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSection": "Section d'information supérieure",
   "app.containers.Admin.PagesAndMenu.SectionToggle.topInfoSectionTooltip": "Ajoutez votre propre contenu dans la section personnalisable située en haut de la page.",
   "app.containers.Admin.PagesAndMenu.addButton": "Ajouter à la barre de navigation",
