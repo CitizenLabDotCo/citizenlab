@@ -20,6 +20,7 @@ module DecidimImporter
     FILE_PATTERNS = {
       organization: '*--organization.csv',
       users: '*--users.csv',
+      scopes: '*--scopes.csv',
       folders: '*participatory-processes/*--participatory-process-groups.csv'
     }.freeze
 
@@ -327,6 +328,7 @@ module DecidimImporter
     def build_template
       user_custom_fields.register!(ref_map)
       run_users_extractor
+      run_extractor(Extractors::ScopesExtractor, :scopes)
       run_extractor(Extractors::FoldersExtractor, :folders)
       run_extractor(Extractors::ProjectsExtractor, :projects)
       run_phases

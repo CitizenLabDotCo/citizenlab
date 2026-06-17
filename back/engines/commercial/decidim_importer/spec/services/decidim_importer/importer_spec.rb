@@ -27,6 +27,9 @@ RSpec.describe DecidimImporter::Importer do
       # Fixture has 108 user rows; the unconfirmed account (decidim-user-131) must be skipped.
       expect(template['user'].size).to eq(107)
       expect(template['user'].map { |u| u['unique_code'] }).not_to include('decidim-user-131')
+      # The 18 fixture scopes become flat areas with unique sequential orderings.
+      expect(template['area'].size).to eq(18)
+      expect(template['area'].map { |a| a['ordering'] }).to eq((0..17).to_a)
     end
 
     it 'adds a custom field for each enabled extra user field from the organization config' do
@@ -63,6 +66,9 @@ RSpec.describe DecidimImporter::Importer do
       parent_folder = ProjectFolders::Folder.find_by("title_multiloc->>'fr-FR' = 'Ipsa at non.'")
       expect(project.admin_publication.parent.publication).to eq(parent_folder)
       expect(project.phases.pluck(:participation_method)).to eq(%w[information information])
+
+      # Decidim scopes become flat Go Vocal areas.
+      expect(Area.find_by("title_multiloc->>'en' = 'Schambergerton'")).to be_present
     end
 
     it 'creates the extra user custom field and populates its value from extended_data' do

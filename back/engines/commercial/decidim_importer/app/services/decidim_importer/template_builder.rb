@@ -13,6 +13,7 @@ module DecidimImporter
     # appended afterwards in registration order.
     MODEL_ORDER = %w[
       user
+      area
       project_folders/folder
       project
       phase
