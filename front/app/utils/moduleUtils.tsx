@@ -183,10 +183,10 @@ export type RouteConfiguration = {
 
 type RecursivePartial<T> = {
   [P in keyof T]?: T[P] extends (infer U)[]
-  ? RecursivePartial<U>[]
-  : T[P] extends Record<string, any>
-  ? RecursivePartial<T[P]>
-  : T[P];
+    ? RecursivePartial<U>[]
+    : T[P] extends Record<string, any>
+    ? RecursivePartial<T[P]>
+    : T[P];
 };
 
 export interface Routes {
@@ -312,53 +312,53 @@ export const insertConfiguration =
     insertAfterName,
     insertBeforeName,
   }: InsertConfigurationOptions<T>) =>
-    (items: T[]): T[] => {
-      const itemsClone = cloneDeep(items);
-      const itemAlreadyInserted = itemsClone.some(
-        (item) => item.name === configuration.name
+  (items: T[]): T[] => {
+    const itemsClone = cloneDeep(items);
+    const itemAlreadyInserted = itemsClone.some(
+      (item) => item.name === configuration.name
+    );
+    // index of item where we need to insert before/after
+    const referenceIndex = itemsClone.findIndex(
+      (item) => item.name === (insertAfterName || insertBeforeName)
+    );
+    const insertIndex = clamp(
+      // if number is outside of lower and upper, it picks
+      // the closes value. If it's inside the ranges, the
+      // number is kept
+      insertAfterName ? referenceIndex + 1 : referenceIndex,
+      0,
+      itemsClone.length
+    );
+    const isItemInsertedBefore =
+      itemAlreadyInserted &&
+      insertBeforeName &&
+      insertIndex &&
+      insertIndex < itemsClone.length &&
+      itemsClone[insertIndex].name === insertBeforeName &&
+      itemsClone[insertIndex - 1].name === configuration.name;
+    const isItemInsertedAfter =
+      itemAlreadyInserted &&
+      insertAfterName &&
+      insertIndex < itemsClone.length &&
+      itemsClone[insertIndex].name === insertAfterName;
+
+    // If item is already inserted then let's not do anything
+    if (isItemInsertedBefore || isItemInsertedAfter) {
+      return itemsClone;
+    }
+
+    if (itemAlreadyInserted) {
+      itemsClone.splice(
+        itemsClone.findIndex((item) => item.name === configuration.name),
+        1
       );
-      // index of item where we need to insert before/after
-      const referenceIndex = itemsClone.findIndex(
-        (item) => item.name === (insertAfterName || insertBeforeName)
-      );
-      const insertIndex = clamp(
-        // if number is outside of lower and upper, it picks
-        // the closes value. If it's inside the ranges, the
-        // number is kept
-        insertAfterName ? referenceIndex + 1 : referenceIndex,
-        0,
-        itemsClone.length
-      );
-      const isItemInsertedBefore =
-        itemAlreadyInserted &&
-        insertBeforeName &&
-        insertIndex &&
-        insertIndex < itemsClone.length &&
-        itemsClone[insertIndex].name === insertBeforeName &&
-        itemsClone[insertIndex - 1].name === configuration.name;
-      const isItemInsertedAfter =
-        itemAlreadyInserted &&
-        insertAfterName &&
-        insertIndex < itemsClone.length &&
-        itemsClone[insertIndex].name === insertAfterName;
+    }
 
-      // If item is already inserted then let's not do anything
-      if (isItemInsertedBefore || isItemInsertedAfter) {
-        return itemsClone;
-      }
+    const newItems = [
+      ...itemsClone.slice(0, insertIndex),
+      configuration,
+      ...itemsClone.slice(insertIndex),
+    ];
 
-      if (itemAlreadyInserted) {
-        itemsClone.splice(
-          itemsClone.findIndex((item) => item.name === configuration.name),
-          1
-        );
-      }
-
-      const newItems = [
-        ...itemsClone.slice(0, insertIndex),
-        configuration,
-        ...itemsClone.slice(insertIndex),
-      ];
-
-      return newItems;
-    };
+    return newItems;
+  };

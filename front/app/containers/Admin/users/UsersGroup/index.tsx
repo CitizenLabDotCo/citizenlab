@@ -9,7 +9,6 @@ import useGroup from 'api/groups/useGroup';
 import useUpdateGroup from 'api/groups/useUpdateGroup';
 import usersKeys from 'api/users/keys';
 
-
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
 
@@ -58,17 +57,17 @@ const UsersGroup = () => {
 
   const handleSubmitForm =
     (groupId: string) =>
-      async ({
-        membership_type,
-        ...otherFormValues
-      }: NormalFormValues & { membership_type: MembershipType }) => {
-        await updateGroup({
-          id: groupId,
-          membership_type: membership_type as MembershipType,
-          ...otherFormValues,
-        });
-        closeGroupEditionModal();
-      };
+    async ({
+      membership_type,
+      ...otherFormValues
+    }: NormalFormValues & { membership_type: MembershipType }) => {
+      await updateGroup({
+        id: groupId,
+        membership_type: membership_type as MembershipType,
+        ...otherFormValues,
+      });
+      closeGroupEditionModal();
+    };
 
   const handleDeleteGroup = (groupId: string) => () => {
     const deleteMessage = formatMessage(messages.groupDeletionConfirmation);

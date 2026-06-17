@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-  IdMethodData,
-  IDAuth0Method,
-} from 'api/id_methods/types';
+import { IdMethodData, IDAuth0Method } from 'api/id_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 

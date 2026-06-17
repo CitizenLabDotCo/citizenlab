@@ -19,10 +19,7 @@ const configuration: ModuleConfiguration = {
       );
 
       if (method) {
-        const last = isLastIdMethod(
-          verificationMethodName,
-          idMethods
-        );
+        const last = isLastIdMethod(verificationMethodName, idMethods);
         return <BosaFasButton last={last} method={method} {...otherProps} />;
       }
 
