@@ -24,18 +24,21 @@ module Export
 
       def palette
         on_primary = readable_on(@primary)
+        primary_text = readable_on_white(@primary)
 
         {
           primary: @primary,
           secondary: @secondary,
           text: @text,
           text_muted: mix(@text, WHITE, 0.4),
-          # Brand colours darkened just enough to read on a light background.
-          primary_text: readable_on_white(@primary),
-          secondary_text: readable_on_white(@secondary),
-          # A light primary wash (10%) for the cover background (always light, so
-          # dark text reads regardless of the tenant's brand colour).
+          # Primary darkened enough to read on a light background, and a touch
+          # darker again for the cover eyebrow label.
+          primary_text: primary_text,
+          primary_dark: mix(primary_text, '#000000', 0.2),
+          # A light primary wash (10%) for the cover background.
           cover_bg: mix(@primary, WHITE, 0.9),
+          # A slightly-lighter primary for the cover divider line.
+          primary_light: mix(@primary, WHITE, 0.25),
           # Foregrounds over the primary-coloured card headers.
           on_primary: on_primary,
           on_primary_muted: rgba(on_primary, 0.6),
