@@ -413,6 +413,16 @@ const projectPhaseRoute = createRoute({
   ),
 });
 
+const projectPageShowRoute = createRoute({
+  getParentRoute: () => projectShowRoute,
+  path: 'pages/$pageSlug',
+  component: () => (
+    <PageLoading>
+      <CustomPageShow />
+    </PageLoading>
+  ),
+});
+
 // Ideas feed route
 const ideasFeedSearchSchema = yup.object({
   phase_id: yup.string().optional(),
@@ -629,6 +639,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
         projectShowIndexRoute,
         projectPhaseRoute,
         projectIdeasFeedRoute,
+        projectPageShowRoute,
       ]),
       foldersShowRoute,
       eventsIndexRoute,

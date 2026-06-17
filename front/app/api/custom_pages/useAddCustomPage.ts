@@ -10,6 +10,8 @@ import { ICustomPage } from './types';
 
 type AddCustomPage = {
   title_multiloc: Multiloc;
+  // Set to scope the new page to a single project (project-scoped page).
+  project_id?: string;
 };
 
 const addCustomPage = async (requestBody: AddCustomPage) =>

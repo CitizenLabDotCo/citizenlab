@@ -44,6 +44,7 @@ class NavBarItem < ApplicationRecord
   validates :static_page, presence: true, if: :page?
   validates :project, presence: true, if: :project?
   validates :project_folder, presence: true, if: :project_folder?
+  validate :static_page_not_project_scoped
 
   before_validation :set_code, on: :create
 
@@ -86,6 +87,14 @@ class NavBarItem < ApplicationRecord
   end
 
   private
+
+  # Project-scoped static pages live inside a single project and must never be
+  # added to the global navigation.
+  def static_page_not_project_scoped
+    return unless static_page&.project_id.present? || static_page&.project.present?
+
+    errors.add(:static_page, :project_scoped_not_allowed, message: 'cannot be a project-scoped page')
+  end
 
   def set_code
     self.code ||= 'custom'

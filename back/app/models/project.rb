@@ -93,6 +93,7 @@ class Project < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   has_one :nav_bar_item, dependent: :destroy
+  has_many :static_pages, dependent: :destroy
   has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
   has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy

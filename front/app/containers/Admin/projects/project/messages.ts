@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.filesTab2',
     defaultMessage: '360 Input',
   },
+  pagesTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.pagesTab',
+    defaultMessage: 'Pages',
+  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',

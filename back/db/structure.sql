@@ -90,6 +90,7 @@ ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails
 ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS fk_rails_98155ccbce;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_97eb4c3a35;
 ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS fk_rails_94bf1dac11;
+ALTER TABLE IF EXISTS ONLY public.static_pages DROP CONSTRAINT IF EXISTS fk_rails_938fbf3a5d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
@@ -208,6 +209,7 @@ DROP INDEX IF EXISTS public.index_tenants_on_creation_finalized_at;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_user_id;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_phase_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_slug;
+DROP INDEX IF EXISTS public.index_static_pages_on_project_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_code;
 DROP INDEX IF EXISTS public.index_static_pages_global_topics_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_pages_global_topics_on_global_topic_id;
@@ -3772,7 +3774,8 @@ CREATE TABLE public.static_pages (
     events_widget_enabled boolean DEFAULT false NOT NULL,
     bottom_info_section_enabled boolean DEFAULT false NOT NULL,
     bottom_info_section_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    header_bg character varying
+    header_bg character varying,
+    project_id uuid
 );
 
 
@@ -7198,6 +7201,13 @@ CREATE INDEX index_static_pages_on_code ON public.static_pages USING btree (code
 
 
 --
+-- Name: index_static_pages_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_static_pages_on_project_id ON public.static_pages USING btree (project_id);
+
+
+--
 -- Name: index_static_pages_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8104,6 +8114,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: static_pages fk_rails_938fbf3a5d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.static_pages
+    ADD CONSTRAINT fk_rails_938fbf3a5d FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: files_transcripts fk_rails_94bf1dac11; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8758,6 +8776,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260617120000'),
 ('20260611000000'),
 ('20260602120000'),
 ('20260528180000'),

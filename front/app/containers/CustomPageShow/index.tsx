@@ -73,10 +73,16 @@ const NoBannerContainer = styled(ContentContainer)`
 `;
 
 const CustomPageShow = () => {
-  const { slug } = useParams({ from: '/$locale/pages/$slug' });
+  // Rendered both at the global `/pages/:slug` route and the project-scoped
+  // `/projects/:slug/pages/:pageSlug` route, so accept either param.
+  const { slug, pageSlug } = useParams({ strict: false }) as {
+    slug?: string;
+    pageSlug?: string;
+  };
+  const pageSlugToUse = pageSlug ?? slug;
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
-  const { data: page, isError } = useCustomPageBySlug(slug);
+  const { data: page, isError } = useCustomPageBySlug(pageSlugToUse);
   const { data: remotePageFiles } = usePageFiles(
     page ? page.data.id : undefined
   );

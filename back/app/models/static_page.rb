@@ -28,11 +28,17 @@
 #  bottom_info_section_enabled  :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc :jsonb            not null
 #  header_bg                    :string
+#  project_id                   :uuid
 #
 # Indexes
 #
-#  index_static_pages_on_code  (code)
-#  index_static_pages_on_slug  (slug) UNIQUE
+#  index_static_pages_on_code        (code)
+#  index_static_pages_on_project_id  (project_id)
+#  index_static_pages_on_slug        (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (project_id => projects.id)
 #
 class StaticPage < ApplicationRecord
   include Files::FileAttachable
@@ -48,6 +54,8 @@ class StaticPage < ApplicationRecord
   has_many_text_images from: :bottom_info_section_multiloc, as: :bottom_info_section_text_images
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
+
+  belongs_to :project, optional: true
 
   has_one :nav_bar_item, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
@@ -71,6 +79,7 @@ class StaticPage < ApplicationRecord
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
   validate :validate_slug
+  validate :no_nav_bar_item_for_project_scoped
 
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout fixed_ratio_layout]
@@ -131,6 +140,10 @@ class StaticPage < ApplicationRecord
     code == 'custom'
   end
 
+  def project_scoped?
+    project_id.present? || project.present?
+  end
+
   def filter_projects(projects_scope)
     options =
       case projects_filter_type
@@ -158,6 +171,14 @@ class StaticPage < ApplicationRecord
 
   def validate_slug
     errors.add(:slug, 'reserved') if custom? && slug.in?(RESERVED_SLUGS)
+  end
+
+  # Project-scoped pages live inside a single project and are never added to the
+  # global navigation, so they must not have an associated nav bar item.
+  def no_nav_bar_item_for_project_scoped
+    return unless project_scoped? && nav_bar_item.present?
+
+    errors.add(:nav_bar_item, :not_allowed_for_project_page, message: 'cannot be set for a project page')
   end
 
   def set_code
