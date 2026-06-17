@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.survey.analysis.refresh": "{count} new responses",
   "app.containers.Admin.projects.project.survey.analysis.regenerate": "Regenerate",
   "app.containers.Admin.projects.project.survey.analysis.showInsights": "Show AI insights",
-  "app.containers.Admin.projects.project.survey.analysis.summarizeTextResponses": "Summarize text responses",
   "app.containers.Admin.projects.project.survey.analysis.tooltipTextLimit": "You can summarise a maximum of 30 inputs at a time on your current plan. Talk to your GovSuccess Manager or admin to unlock more.",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsForAnalysis": "Select related questions for analysis",
   "app.containers.Admin.projects.project.survey.analysisSelectQuestionsSubtitle": "Do you want to include any other related questions in your analysis of {question}?",
