@@ -46,7 +46,7 @@ const HtmlBlockMultilocSettings = () => {
   return (
     <StyledBox background="#ffffff" marginBottom="20px">
       <TextAreaMultilocWithLocaleSwitcher
-        id="html-block"
+        id="html-block-textarea"
         minRows={16}
         valueMultiloc={html}
         onChange={(value) => {
