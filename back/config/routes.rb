@@ -1,6 +1,27 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Rails API mode drops :new and :edit from resourceful routes, so Doorkeeper's
+  # applications admin views can't resolve new_/edit_oauth_application_path. Add
+  # them back explicitly *before* use_doorkeeper so they win over its :id route.
+  scope 'oauth' do
+    get 'applications/new', to: 'doorkeeper/applications#new', as: :new_oauth_application
+    get 'applications/:id/edit', to: 'doorkeeper/applications#edit', as: :edit_oauth_application
+  end
+
+  use_doorkeeper
+
+  # RFC 7591 Dynamic Client Registration + RFC 8414 Authorization Server Metadata
+  # + RFC 9728 Protected Resource Metadata (with /mcp-suffixed variants that MCP
+  # clients try when the resource lives at a non-root path).
+  namespace :oauth do
+    resources :registrations, only: :create, format: :json
+  end
+  get '.well-known/oauth-authorization-server', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-authorization-server/mcp', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-protected-resource', to: 'oauth/metadata#protected_resource'
+  get '.well-known/oauth-protected-resource/mcp', to: 'oauth/metadata#protected_resource'
+
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
   mount Onboarding::Engine => '', as: 'onboarding'
@@ -377,14 +398,14 @@ Rails.application.routes.draw do
 
       resources :ideas_phases, only: %i[show]
 
-      resources :verification_methods, module: 'verification', only: [:index] do
-        get :first_enabled, on: :collection
+      resources :id_methods, only: [:index] do
+        get :first_enabled_verification_method, on: :collection
         get :first_enabled_for_verified_actions, on: :collection
-        Verification::VerificationService.new
+        IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
-          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, defaults: { method_name: vm.name }
+          post "#{vm.name}/verification", to: 'verification/verifications#create', on: :collection, defaults: { method_name: vm.name }
         end
       end
 

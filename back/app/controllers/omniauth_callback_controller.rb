@@ -7,7 +7,7 @@ class OmniauthCallbackController < ApplicationController
   def create
     if auth_method && verification_method
       # If token is present, the user is already logged in, which means they try to verify not authenticate.
-      if omniauth_params['token'].present? && auth_method.verification_prioritized?
+      if omniauth_params['token'].present?
         # We need it only for providers that support both auth and ver except FC.
         # For FC, we never verify, only authenticate (even when user clicks "verify"). Not sure why.
         verification_callback(verification_method)
@@ -123,20 +123,13 @@ class OmniauthCallbackController < ApplicationController
 
       @identity.update(user: @user) unless @identity.user
 
-      # Same as above, but for non-invite users:
-      # If the user's email came from/matches the authver one,
-      # and the provider says it was confirmed: we mark the user's email as confirmed.
-      if user_has_email_confirmed_by_authver
-        @user.email_confirmation.confirm!
-      end
-
       if @user.invite_pending?
         @invite = @user.invitee_invite
         if !@invite || @invite.accepted_at
           signin_failure_redirect
           return
         end
-        UserService.assign_params_in_accept_invite(@user, user_attrs)
+        UserService.assign_params_in_accept_invite(@user, user_attrs, confirm_user: user_has_email_confirmed_by_authver)
 
         ActiveRecord::Base.transaction do
           SideFxInviteService.new.before_accept @invite
@@ -152,7 +145,7 @@ class OmniauthCallbackController < ApplicationController
 
       else # !@user.invite_pending?
         begin
-          update_user!(auth, @user, authver_method)
+          UserService.update_in_sso!(@user, auth, authver_method)
           update_identity!(auth, @identity, authver_method)
           SideFxUserService.new.after_update(@user, nil)
           ClaimTokenService.claim(@user, claim_tokens)
@@ -273,22 +266,6 @@ class OmniauthCallbackController < ApplicationController
     }
   end
 
-  # Updates the user with attributes from the auth response if `updateable_user_attrs` is set
-  # Overwrites current attributes by default unless `overwrite_attrs?` is set to false on the authver method
-  # @param [OmniauthMethods::Base] authver_method
-  # @param [User] user
-  def update_user!(auth, user, authver_method)
-    attrs = authver_method.updateable_user_attrs
-    sso_user_attrs = authver_method.profile_to_user_attrs(auth)
-    user_params = sso_user_attrs.slice(*attrs).compact
-    user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
-
-    sso_email_is_used = sso_user_attrs[:email].present? && (sso_user_attrs[:email] == (user_params[:email] || user.email))
-    confirm_user = authver_method.email_confirmed?(auth) && sso_email_is_used
-
-    UserService.update_in_sso!(user, user_params, confirm_user)
-  end
-
   # Updates the auth_hash in a users identity to ensure tokens are up to date for logout (mainly for FranceConnect)
   def update_identity!(auth, identity, authver_method)
     identity.update_auth_hash!(auth, authver_method)
@@ -323,14 +300,15 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def auth_method
-    @auth_method ||= authentication_service.method_by_provider(auth_provider)
+    @auth_method ||= begin
+      method = IdMethodService.new.method_by_name(auth_provider)
+      method if method&.authentication?
+    end
   end
 
   def handle_verification(auth, user)
     configuration = AppConfiguration.instance
-    return unless configuration.feature_activated?('verification')
     return unless verification_service.active?(configuration, auth.provider)
-    return unless verification_service.enabled?(auth.provider)
 
     verification_service.verify_omniauth(auth: auth, user: user)
   end
@@ -343,7 +321,7 @@ class OmniauthCallbackController < ApplicationController
       if @user&.invite_not_pending?
         begin
           handle_verification(auth, @user)
-          update_user!(auth, @user, verification_method)
+          UserService.update_in_sso!(@user, auth, verification_method)
           url = add_uri_params(
             Frontend::UrlService.new.verification_return_url(locale: Locale.new(@user.locale), pathname: omniauth_params['verification_pathname']),
             filter_omniauth_params.merge(verification_success: true)

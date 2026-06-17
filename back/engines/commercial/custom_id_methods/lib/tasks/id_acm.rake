@@ -29,7 +29,7 @@ namespace :id_acm do
 
     puts 'Adding field to configuration'
     config = AppConfiguration.instance
-    method = config.settings['verification']['verification_methods'].find { |m| m['name'] == 'acm' }
+    method = config.settings['id_config']['id_methods'].find { |m| m['name'] == 'acm' }
     method['rrn_result_custom_field_key'] = field.key
     config.save!
 

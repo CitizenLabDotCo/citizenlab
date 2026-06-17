@@ -55,6 +55,7 @@ class User < ApplicationRecord
   include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
+  include UserDoorkeeper
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
@@ -221,13 +222,6 @@ class User < ApplicationRecord
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
 
-  self.ignored_columns += %w[
-    email_confirmation_code
-    email_confirmation_retry_count
-    email_confirmation_code_reset_count
-    email_confirmation_code_sent_at
-  ]
-
   def update_merging_custom_fields!(attributes)
     attributes = attributes.deep_stringify_keys
     update!(
@@ -335,12 +329,15 @@ class User < ApplicationRecord
 
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
-    # either by posting ideas or comments in phases with public participation methods.
+    # either by posting ideas or comments in phases with public participation methods,
+    # or by accepting an invitation to co-sponsor a proposal.
     # This is to avoid exposing personal data of users who have not actively used the platform.
     ideas
       .joins(:ideas_phases)
       .joins(:phases)
-      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) || comments.exists?
+      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) ||
+      comments.exists? ||
+      cosponsorships.exists?(status: 'accepted')
   end
 
   private
@@ -348,32 +345,46 @@ class User < ApplicationRecord
   def validate_not_duplicate_new_email
     return unless new_email
 
-    if User.find_by_cimail(new_email)
-      errors.add(:email, :taken, value: new_email)
-    elsif errors[:new_email].present?
+    # If there is a validation error:
+    # Rename the error from new_email to email (for some reason this is important)
+    if errors.of_kind?(:new_email, :invalid)
       ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
       errors.add(:email, :invalid, value: new_email)
     end
+
+    duplicate_user = User.find_by_cimail(new_email)
+
+    # If nobody is using this email, return
+    return unless duplicate_user
+
+    # Return if duplicate user is same as current user.
+    return if duplicate_user.id == id
+
+    errors.add(:email, :taken, value: new_email)
   end
 
   def validate_not_duplicate_email
-    return unless email && (duplicate_user = User.find_by_cimail(email)).present? && duplicate_user.id != id
+    return unless email
 
-    if duplicate_user.invite_pending?
-      ErrorsService.new.remove errors, :email, :taken, value: email
-      errors.add(:email, :taken_by_invite, value: email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
-    elsif duplicate_user.email != email
-      # We're only checking this case, as the other case is covered
-      # by the uniqueness constraint which can "cleverly" distinguish
-      # true duplicates from the record itself.
-      errors.add(:email, :taken, value: email)
-    end
+    duplicate_user = User.find_by_cimail(email)
+
+    # If nobody is using this email, return
+    return unless duplicate_user
+
+    # Return if duplicate user is same as current user.
+    return if duplicate_user.id == id
+
+    errors.add(:email, :taken, value: email)
   end
 
   def validate_can_update_email
     return unless persisted? &&
                   (new_email_changed? || email_changed?) &&
                   email_was.present?
+
+    # Ignore changes that only differ in letter-case (e.g. accepting an invite with
+    # `small@big.com` for an address stored as `SMALL@BIG.COM`)
+    return if email_changed_only_in_case? && !new_email_changed?
 
     if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
@@ -411,6 +422,10 @@ class User < ApplicationRecord
 
   def email_or_new_email_changed?
     new_record? || email_changed? || new_email_changed?
+  end
+
+  def email_changed_only_in_case?
+    email_changed? && email.present? && email_was.present? && email.casecmp?(email_was)
   end
 
   def validate_email_domains_blacklist

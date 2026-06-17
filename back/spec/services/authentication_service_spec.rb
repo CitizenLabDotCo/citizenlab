@@ -12,12 +12,15 @@ describe AuthenticationService do
       end
     end
 
-    context 'when azure_ad_login has enforced domains' do
+    context 'when Azure AD has enforced domains' do
       before do
         settings = AppConfiguration.instance.settings
-        settings['azure_ad_login'] = {
-          'allowed' => true, 'enabled' => true,
-          'enforced_email_domains' => 'example.com,company.org'
+        settings['id_config'] = {
+          'allowed' => true,
+          'enabled' => true,
+          'id_methods' => [
+            { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com,company.org' }
+          ]
         }
         AppConfiguration.instance.update!(settings: settings)
       end

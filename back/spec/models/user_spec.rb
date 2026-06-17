@@ -128,6 +128,16 @@ RSpec.describe User do
       create(:comment, author: user, anonymous: true)
       expect(user.show_public_profile?).to be false
     end
+
+    it 'returns true when user has accepted a proposal co-sponsorship' do
+      create(:cosponsorship, user: user, status: 'accepted')
+      expect(user.show_public_profile?).to be true
+    end
+
+    it 'returns false when user only has a pending proposal co-sponsorship' do
+      create(:cosponsorship, user: user, status: 'pending')
+      expect(user.show_public_profile?).to be false
+    end
   end
 
   describe 'creating an invited user' do
@@ -870,9 +880,7 @@ RSpec.describe User do
     end
 
     it 'is set when an SSO user is created' do
-      u = create(:user)
-      facebook_identity = create(:facebook_identity)
-      u.identities << facebook_identity
+      u = create(:sso_user)
       expect(u.registration_completed_at).not_to be_nil
     end
   end

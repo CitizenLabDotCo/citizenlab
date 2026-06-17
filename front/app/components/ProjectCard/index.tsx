@@ -541,6 +541,12 @@ const ProjectCard = memo<InputProps>(
               onClick={() => {
                 handleCTAOnClick(project.data.id);
               }}
+              onFocus={(event) => {
+                event.currentTarget.scrollIntoView({
+                  block: 'center',
+                  behavior: 'smooth',
+                });
+              }}
               aria-label={formatMessage(messages.a11y_ctaForProject, {
                 cta: ctaMessage,
                 projectTitle: localize(project.data.attributes.title_multiloc),

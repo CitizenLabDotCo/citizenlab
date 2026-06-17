@@ -130,7 +130,6 @@ resource 'Users' do
           context 'when the user has already requested a code' do
             before do
               @user = create(:unconfirmed_user, email: 'test@test.com')
-              @user.email_confirmation.confirm!
 
               RequestEmailConfirmationCodeJob.perform_now @user
 
@@ -221,17 +220,69 @@ resource 'Users' do
             expect(json_response_body[:data][:attributes][:action]).to eq('password')
           end
         end
+
+        context 'when user was created by SSO, has a password, email confirmed' do
+          let(:email) { create(:sso_user).email }
+
+          example_request 'Returns "password"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
+        end
+
+        context 'when user was created by SSO, has a password, email unconfirmed' do
+          let(:user) { create(:unconfirmed_user, password_digest: 'super_secret', identities: [create(:facebook_identity)]) }
+          let(:email) { user.email }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
+        end
+
+        context 'when user was created by SSO, no password, email confirmed' do
+          let(:email) { create(:sso_user, password_digest: nil).email }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
+        end
+
+        context 'when user was created by SSO, no password, email unconfirmed' do
+          let(:user) { create(:unconfirmed_user, identities: [create(:facebook_identity)]) }
+          let(:email) { user.email }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
+        end
       end
 
       context 'when password_login is turned off' do
         before do
+          @super_admin = create(:super_admin)
+          @user = create(:user)
           SettingsService.new.deactivate_feature! 'password_login'
         end
 
-        let(:email) { 'test@test.com' }
-
-        example_request 'it also works (necessary for ?super_admin param)' do
+        example 'it works for super admins (necessary for ?super_admin param)' do
+          do_request({ user: { email: @super_admin.email } })
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
           assert_status 200
+        end
+
+        example 'it does not work for other users' do
+          do_request({ user: { email: @user.email } })
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('password_login_disabled')
+          assert_status 403
+        end
+
+        example 'it does not work if user does not exist' do
+          do_request({ user: { email: 'nonexisting@user.com' } })
+          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('password_login_disabled')
+          assert_status 403
         end
       end
 
@@ -239,9 +290,12 @@ resource 'Users' do
         before do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
-          settings['azure_ad_login'] = {
-            'allowed' => true, 'enabled' => true,
-            'enforced_email_domains' => 'example.com'
+          settings['id_config'] = {
+            'allowed' => true,
+            'enabled' => true,
+            'id_methods' => [
+              { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
+            ]
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -272,9 +326,12 @@ resource 'Users' do
         before do
           SettingsService.new.activate_feature! 'password_login'
           settings = AppConfiguration.instance.settings
-          settings['azure_ad_login'] = {
-            'allowed' => true, 'enabled' => true,
-            'enforced_email_domains' => 'example.com'
+          settings['id_config'] = {
+            'allowed' => true,
+            'enabled' => true,
+            'id_methods' => [
+              { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' }
+            ]
           }
           AppConfiguration.instance.update!(settings: settings)
         end

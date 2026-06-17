@@ -423,145 +423,6 @@
         }
       },
 
-      "facebook_login": {
-        "type": "object",
-        "title": "Facebook Login",
-        "description":	"Allow users to register and sign in through their Facebook account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "app_id": {
-            "title": "App ID",
-            "type": "string"
-          },
-          "app_secret": {
-            "title": "App Secret",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
-
-      "google_login": {
-        "type": "object",
-        "title": "Google Login",
-        "description":  "Allow users to register and sign in through their Google account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "client_id": {
-            "title": "Client ID",
-            "type": "string"
-          },
-          "client_secret": {
-            "title": "Client Secret",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
-
-      "azure_ad_login": {
-        "type": "object",
-        "title": "Azure AD Login",
-        "description":  "Allow users to register and sign in with Entra ID (fka Azure Active Directory).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "tenant": {
-            "title": "Directory (tenant) ID",
-            "type": "string",
-            "private": true
-          },
-          "client_id": {
-            "title": "Application (client) ID",
-            "description": "Sometimes also called 'application_id'",
-            "type": "string",
-            "private": true
-          },
-          "logo_url": {
-            "title": "Logo",
-            "type": "string",
-            "pattern": "^https:\/\/.+",
-            "description": "The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height."
-          },
-          "login_mechanism_name": {
-            "title": "Login Mechanism Name",
-            "type": "string",
-            "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
-          },
-          "visibility": {
-            "title": "Visibility",
-            "type": "string",
-            "enum": ["show", "link", "hide"],
-            "default": "show",
-            "description": "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
-          },
-          "enforced_email_domains": {
-            "title": "Enforced Domains",
-            "type": "string",
-            "description": "Comma-separated list of email domains (e.g. 'example.com,company.org'). Users with these email domains must sign in via Azure AD."
-          },
-          "enforced_email_domain_error_multiloc": {
-            "title": "Enforce Email Domain Error Message",
-            "$ref": "#/definitions/multiloc_string",
-            "description": "Custom error message shown to users who must sign in via Azure AD due to their email domain."
-          }
-        }
-      },
-
-      "azure_ad_b2c_login": {
-        "type": "object",
-        "title": "Azure AD B2C Login",
-        "description":  "Allow users to register and sign in with Azure AD B2C.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "tenant_name": {
-            "title": "Directory (tenant) Name",
-            "description": "The name of the Azure AD B2C tenant. The first part of the domain name. E.g. in citizenlabdevdemo.onmicrosoft.com, it's citizenlabdevdemo",
-            "type": "string",
-            "private": true
-          },
-          "tenant_id": {
-            "title": "Directory (tenant) ID",
-            "type": "string",
-            "private": true
-          },
-          "policy_name": {
-            "title": "Policy (User Flow, User Journey) Name",
-            "description": "The name of the policy (user flow, user journey) in the Azure AD B2C tenant. This is the policy that is used for sign-in and sign-up. tenant_name, tenant_id, and policy_name are used together to form such configuration URL https://{tenant_name}.b2clogin.com/tfp/{tenant_id}/{policy_name}/v2.0/.well-known/openid-configuration that returns JSON configuration.",
-            "type": "string",
-            "private": true
-          },
-          "client_id": {
-            "title": "Application (client) ID",
-            "description": "Sometimes also called 'application_id'",
-            "type": "string",
-            "private": true
-          },
-          "logo_url": {
-            "title": "Logo",
-            "type": "string",
-            "pattern": "^https:\/\/.+",
-            "description": "The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height."
-          },
-          "login_mechanism_name": {
-            "title": "Login Mechanism Name",
-            "type": "string",
-            "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
-          }
-        }
-      },
-
       "integration_onze_stad_app": {
         "type": "object",
         "description":  "Allow posting ideas to Onze StadApp as news.",
@@ -981,30 +842,6 @@
         }
       },
 
-      "widgets": {
-        "type": "object",
-        "title": "Widgets",
-        "description":  "Admins can generate platform widgets to embed on external websites.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "project_widget": {
-        "type": "object",
-        "title": "Project Widget",
-        "description": "Admins can generate a projects widget to embed on external websites.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "pages": {
         "type": "object",
         "title": "Custom Pages",
@@ -1014,19 +851,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "events_widget": {
-        "type": "object",
-        "title": "Events Landing Page Widget",
-        "description":	"Display a widget of the next upcoming events in your landing page.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": true},
-          "widget_title": {"$ref": "#/definitions/multiloc_string"}
         }
       },
 
@@ -1427,22 +1251,22 @@
         }
       },
 
-      "verification": {
+      "id_config": {
         "type": "object",
-        "title": "Custom verification and SSO",
-        "description": "Use a pre-defined list to verify user identities during registration.",
+        "title": "Id methods: authentication (SSO) and verification",
+        "description": "Use a pre-defined list to define authentication (SSO) and verification methods.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false },
-          "verification_methods": {
-            "title": "Verification Methods",
+          "id_methods": {
+            "title": "Id methods",
             "private": true,
             "type": "array",
             "default": [],
             "items": {
-              "anyOf": <%= ::Verification::VerificationService.new.all_methods_json_schema %>
+              "anyOf": <%= IdMethodService.new.all_methods_json_schema %>
             }
           }
         }
@@ -1629,30 +1453,6 @@
         }
       },
 
-      "email_scheduling": {
-        "type": "object",
-        "title": "Email scheduling",
-        "description": "Allow scheduling emails to be sent at a later time.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "phase_datetime_setup": {
-        "type": "object",
-        "title": "Phase datetime setup",
-        "description": "Allow to set up the start and end datetimes of a phase in the project timeline, in addition to just the dates.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "custom_smtp": {
         "type": "object",
         "title": "Custom SMTP Server",
@@ -1722,286 +1522,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-<%# DEPRECATED: the following `id_*` SSO/verification features have been %>
-<%# consolidated into the `verification` feature (their configuration now lives %>
-<%# in `verification.verification_methods`). They are kept here only so that %>
-<%# legacy data still validates and to allow a rollback. They are no longer %>
-<%# registered by their engines. Do not use them for new development. %>
-      "acm_login": {
-        "type": "object",
-        "title": "ACM Login (Oostende / itsme)",
-        "description": "Allow users to authenticate with itsme (Oostende).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "clave_unica_login": {
-        "type": "object",
-        "title": "ClaveUnica Login",
-        "description": "Allow users to authenticate and verify with a ClaveUnica account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "criipto_login": {
-        "type": "object",
-        "title": "MitID (Criipto) Login",
-        "description": "Allow users to authenticate with a MitID (via Criipto) account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "fake_sso": {
-        "type": "object",
-        "title": "Fake SSO",
-        "description": "Allow users to authenticate and verify through a fake SSO service.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "issuer": {
-            "title": "Issuer",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
-
-      "federa_login": {
-        "type": "object",
-        "title": "FedERa/SPID Single sign-on - DO NOT USE",
-        "description": "DO NOT USE YET!! Allow citizens to authenticate via FedERa (SPID/CIE/CNS) Italian SSO.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "franceconnect_login": {
-        "type": "object",
-        "title": "FranceConnect Login",
-        "description": "Allow users to authenticate and verify with a FranceConnect account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["environment", "identifier", "secret", "version", "scope"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "environment": {
-            "type": "string",
-            "title": "Environment",
-            "description": "Live on the production FranceConnect environment or still testing on their integration environment?",
-            "enum": ["production", "integration"],
-            "default": "production",
-            "private": true
-          },
-          "identifier": {
-            "title": "Identifier",
-            "type": "string",
-            "private": true
-          },
-          "secret": {
-            "title": "Secret Key",
-            "type": "string",
-            "private": true
-          },
-          "version": {
-            "title": "Version of FranceConnect API",
-            "type": "string",
-            "enum": ["v1", "v2"],
-            "default": "v1",
-            "private": true
-          },
-          "scope": {
-            "title": "Scope",
-            "description": "The data that will be requested from FranceConnect. See https://partenaires.franceconnect.gouv.fr/fcp/fournisseur-service#identite-pivot. Fields that can be saved: email, given_name, family_name, birthdate, gender.",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["email", "given_name", "family_name", "birthdate", "gender", "idp_birthdate", "birthplace", "birthcountry", "preferred_username", "profile", "birth", "identite_pivot"]
-            },
-            "uniqueItems": true,
-            "default": ["email", "given_name", "family_name"],
-            "private": true
-          }
-        }
-      },
-
-      "hoplr_login": {
-        "type": "object",
-        "title": "Hoplr Login",
-        "description": "Allow users to authenticate with a Hoplr account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["environment", "client_id", "client_secret"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "environment": {
-            "type": "string",
-            "title": "Environment",
-            "description": "Live on the production environment or still testing on their test environment?",
-            "enum": ["test", "production"],
-            "default": "production",
-            "private": true
-          },
-          "client_id": {
-            "title": "Client ID",
-            "type": "string",
-            "private": true
-          },
-          "client_secret": {
-            "title": "Client Secret",
-            "type": "string",
-            "private": true
-          },
-          "neighbourhood_custom_field_key": {
-            "private": true,
-            "type": "string",
-            "title": "Neighbourhood custom field key",
-            "description": "The `key` attribute of the custom field where the neighbourhood should be stored. Leave empty to not store the neighbourhood."
-          }
-        }
-      },
-
-      "id_austria_login": {
-        "type": "object",
-        "title": "ID Austria Login",
-        "description": "Allow users to authenticate with a ID Austria account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "keycloak_login": {
-        "type": "object",
-        "title": "Keycloak (ID-Porten) Login",
-        "description": "Allow users to authenticate with a Norwegian ID-Porten (via Keycloak) account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "nemlog_in_login": {
-        "type": "object",
-        "title": "MitID (NemlogIn) Login",
-        "description": "Allow users to authenticate and verify with a MitID (via NemlogIn) account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "twoday_login": {
-        "type": "object",
-        "title": "Twoday Login (Helsingborg BankID & Freja eID+)",
-        "description": "Allow users to authenticate with a Swedish BankID or Freja eID+ (via Twoday).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "vienna_citizen_login": {
-        "type": "object",
-        "title": "Vienna citizen Single sign-on",
-        "description": "Allow vienna citizens to authenticate via StandardPortal Single sign-on.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["environment"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "environment": {
-            "type": "string",
-            "title": "Environment",
-            "description": "Test environment or live production environment",
-            "enum": ["production", "test"],
-            "default": "production",
-            "private": true
-          }
-        }
-      },
-
-      "vienna_employee_login": {
-        "type": "object",
-        "title": "Vienna employee Single sign-on",
-        "description": "Allow vienna city employees to authenticate via Single sign-on.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["environment"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "environment": {
-            "type": "string",
-            "title": "Environment",
-            "description": "Test environment or live production environment",
-            "enum": ["production", "test"],
-            "default": "production",
-            "private": true
-          }
-        }
-      },
-
-      "kki_location_api": {
-        "type": "object",
-        "title": "Danish (Copenhagen) KKI location API",
-        "description": "Use Danish CPR number fetched from Nemlog-in (or potentially any other source) to get citizen's municipality code via Copenhagen KKI service.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["uri", "username", "password"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false },
-          "uri": {
-            "title": "API URI",
-            "type": "string",
-            "private": true
-          },
-          "username": {
-            "title": "Basic Auth username",
-            "type": "string",
-            "private": true
-          },
-          "password": {
-            "title": "Basic Auth password",
-            "type": "string",
-            "private": true
-          },
-          "custom_headers": {
-            "title": "Any custom headers in this format (no quotes): \"Ocp-Apim-Subscription-Key: 6c7924f0cfbde464d1ae2169c2a5eb84, HEADER2: VALUE2\"",
-            "type": "string",
-            "private": true
-          }
         }
       }
     },

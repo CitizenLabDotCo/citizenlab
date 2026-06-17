@@ -2,7 +2,6 @@ import requirementsKeys from 'api/authentication/authentication_requirements/key
 import meKeys from 'api/me/keys';
 import { HighestRole } from 'api/users/types';
 
-
 import { setJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';

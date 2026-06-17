@@ -45,21 +45,18 @@ const ModalHeaderOutlet = ({ type }: ModalHeaderOutletProps) => (
 interface ModalFormOutletProps {
   type: MembershipType;
   onSubmit: (values: NormalFormValues) => Promise<void>;
-  isVerificationEnabled: boolean;
   initialValues: RulesFormValues;
 }
 
 const ModalFormOutlet = ({
   type,
   onSubmit,
-  isVerificationEnabled,
   initialValues,
 }: ModalFormOutletProps) => (
   <RenderOnType type={type}>
     <RulesGroupFormWithValidation
       initialValues={initialValues}
       onSubmit={onSubmit}
-      isVerificationEnabled={isVerificationEnabled}
     />
   </RenderOnType>
 );

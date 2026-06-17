@@ -12,7 +12,7 @@ import {
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-// moment-timezone extends the regular moment library,
+// moment-timezone extends regular moment library,
 // so there's no need to import both moment and moment-timezone
 import moment from 'moment-timezone';
 import styled, { ThemeProvider } from 'styled-components';

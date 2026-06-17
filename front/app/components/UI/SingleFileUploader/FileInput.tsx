@@ -12,7 +12,7 @@ import { UploadFile } from 'typings';
 
 import messages from 'components/UI/FileUploader/messages';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 
 const Container = styled.div`
@@ -74,12 +74,23 @@ const Label = styled.label`
 
 interface Props {
   onAdd: (file: UploadFile) => void;
+  onError?: (message: string) => void;
   className?: string;
   id: string;
   accept?: string;
+  maxSizeMb?: number;
 }
 
-const SingleFileInput = ({ className, id, onAdd, accept }: Props) => {
+const SingleFileInput = ({
+  className,
+  id,
+  onAdd,
+  onError,
+  accept,
+  maxSizeMb,
+}: Props) => {
+  const { formatMessage } = useIntl();
+
   const onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
@@ -91,6 +102,11 @@ const SingleFileInput = ({ className, id, onAdd, accept }: Props) => {
 
     if (files && files.length > 0) {
       Array.from(files).forEach(async (file: UploadFile) => {
+        if (maxSizeMb && file.size / 1000000 > maxSizeMb) {
+          onError?.(formatMessage(messages.file_too_large, { maxSizeMb }));
+          return;
+        }
+
         const base64 = await getBase64FromFile(file);
         file.base64 = base64;
         file.filename = file.name;

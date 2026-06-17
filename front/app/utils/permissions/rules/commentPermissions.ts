@@ -50,10 +50,10 @@ definePermissionRule(
   (comment: ICommentData, user, _tenant, { projectId }) => {
     return user
       ? !(
-        isAuthor(comment, user) ||
-        isAdmin(user) ||
-        (typeof projectId === 'string' && isProjectModerator(user, projectId))
-      )
+          isAuthor(comment, user) ||
+          isAdmin(user) ||
+          (typeof projectId === 'string' && isProjectModerator(user, projectId))
+        )
       : false;
   }
 );

@@ -62,7 +62,10 @@ const isCommunityMonitorModerator = (
     : false;
 };
 
-const isModeratedProjectRoute = (item: IRouteItem, user: IUser | undefined | null) => {
+const isModeratedProjectRoute = (
+  item: IRouteItem,
+  user: IUser | undefined | null
+) => {
   const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];

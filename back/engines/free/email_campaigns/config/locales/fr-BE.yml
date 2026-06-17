@@ -67,6 +67,7 @@ fr-BE:
         user_with_unsubmitted_votes: Utilisateur qui n'a pas soumis ses votes
         users_who_engaged_but_not_voted: Utilisateurs ayant participé au projet, mais n'ayant pas voté
         users_who_engaged_with_the_project: Les utilisateurs qui ont participé au projet
+        users_who_follow_or_participated: Utilisateurs qui suivent le projet ou y ont participé
         users_who_follow_the_input: Les utilisateurs qui suivent la contribution
         users_who_follow_the_project: Les utilisateurs qui suivent le projet
         users_who_follow_the_proposal: Les utilisateurs qui suivent la proposition

@@ -1,6 +1,4 @@
-import {
-  updatePermission,
-} from '../../support/permitted_by_utils';
+import { updatePermission } from '../../support/permitted_by_utils';
 import { setSurvey } from './utils';
 import { randomString, randomEmail } from '../../support/commands';
 
@@ -24,7 +22,7 @@ describe('Native survey data collection', () => {
         return updatePermission({
           phaseId,
           permitted_by: 'everyone',
-          user_fields_in_form: false
+          user_fields_in_form: false,
         }).then(() => {
           return setSurvey(cy, phaseId).then((response) => {
             const data = response.body.data;
@@ -40,7 +38,7 @@ describe('Native survey data collection', () => {
             question1Option1Key = included[1].attributes.key;
             question2Option1Key = included[3].attributes.key;
           });
-        })
+        });
       });
     });
 
@@ -53,7 +51,10 @@ describe('Native survey data collection', () => {
         cy.visit(`/projects/${projectSlug}`);
 
         // Click take survey button
-        cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+        cy.get('.e2e-idea-button')
+          .first()
+          .find('button')
+          .click({ force: true });
 
         // Confirm we're in the survey now
         cy.location('pathname').should(
@@ -96,21 +97,21 @@ describe('Native survey data collection', () => {
         const email = randomEmail();
         const password = randomString();
 
-        cy.apiSignup(
-          randomString(),
-          randomString(),
-          email,
-          password
-        ).then(() => {
-          cy.setLoginCookie(email, password)
-        })
-      })
+        cy.apiSignup(randomString(), randomString(), email, password).then(
+          () => {
+            cy.setLoginCookie(email, password);
+          }
+        );
+      });
 
       it('saves all survey data', () => {
         cy.visit(`/projects/${projectSlug}`);
 
         // Click take survey button
-        cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+        cy.get('.e2e-idea-button')
+          .first()
+          .find('button')
+          .click({ force: true });
 
         // Confirm we're in the survey now
         cy.location('pathname').should(
