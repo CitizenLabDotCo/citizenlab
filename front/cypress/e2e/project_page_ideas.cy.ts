@@ -10,6 +10,7 @@ describe('New timeline project with ideation phase with default map view', () =>
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
+      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: 'Description preview',
       description: 'Description full',
@@ -58,6 +59,7 @@ describe('New timeline project with active ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
+          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: randomString(),
@@ -121,6 +123,7 @@ describe('New timeline project with active ideation phase', () => {
   // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('#e2e-project-sidebar');
   });
 
   it('shows the see-the-ideas button', () => {
@@ -184,6 +187,7 @@ describe('Archived timeline project with ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
+          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: randomString(),
@@ -268,6 +272,7 @@ describe('timeline project with no active ideation phase', () => {
   before(() => {
     return cy
       .apiCreateProject({
+        withAboutBox: true,
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
         description: randomString(),
@@ -345,6 +350,7 @@ describe('Ideation CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
+          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: description,
           description,
@@ -378,6 +384,7 @@ describe('Ideation CTA bar', () => {
           })
           .then(() => {
             return cy.apiCreateProject({
+              withAboutBox: true,
               title: projectTitle,
               descriptionPreview: description,
               description,
