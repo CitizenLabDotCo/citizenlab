@@ -345,35 +345,39 @@ const CustomPageSettingsForm = ({
                 </div>
               </Tooltip>
             )}
-            {methods.watch('projects_filter_type') === 'global_topics' && (
-              <SelectContainer mb="30px">
-                <MultipleSelect
-                  name="global_topic_ids"
-                  options={mapFilterEntityToOptions(topics.data)}
-                  label={formatMessage(messages.selectedTagsLabel)}
-                />
-              </SelectContainer>
+            {showAdvancedCustomPages && (
+              <>
+                {methods.watch('projects_filter_type') === 'global_topics' && (
+                  <SelectContainer mb="30px">
+                    <MultipleSelect
+                      name="global_topic_ids"
+                      options={mapFilterEntityToOptions(topics.data)}
+                      label={formatMessage(messages.selectedTagsLabel)}
+                    />
+                  </SelectContainer>
+                )}
+                {methods.watch('projects_filter_type') === 'areas' && (
+                  <SelectContainer mb="20px">
+                    <Select
+                      name="area_id"
+                      options={mapFilterEntityToOptions(areas.data)}
+                      label={formatMessage(messages.selectedAreasLabel)}
+                    />
+                  </SelectContainer>
+                )}
+                {isSpacesEnabled &&
+                  methods.watch('projects_filter_type') === 'spaces' &&
+                  spaces && (
+                    <SelectContainer mb="30px">
+                      <MultipleSelect
+                        name="space_ids"
+                        options={mapFilterEntityToOptions(spaces.data)}
+                        label={formatMessage(messages.selectedSpacesLabel)}
+                      />
+                    </SelectContainer>
+                  )}
+              </>
             )}
-            {methods.watch('projects_filter_type') === 'areas' && (
-              <SelectContainer mb="20px">
-                <Select
-                  name="area_id"
-                  options={mapFilterEntityToOptions(areas.data)}
-                  label={formatMessage(messages.selectedAreasLabel)}
-                />
-              </SelectContainer>
-            )}
-            {isSpacesEnabled &&
-              methods.watch('projects_filter_type') === 'spaces' &&
-              spaces && (
-                <SelectContainer mb="30px">
-                  <MultipleSelect
-                    name="space_ids"
-                    options={mapFilterEntityToOptions(spaces.data)}
-                    label={formatMessage(messages.selectedSpacesLabel)}
-                  />
-                </SelectContainer>
-              )}
           </SectionField>
         </SectionFormWrapper>
       </form>

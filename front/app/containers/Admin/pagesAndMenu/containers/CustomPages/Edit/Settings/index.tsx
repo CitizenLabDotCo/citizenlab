@@ -44,7 +44,7 @@ const EditCustomPageSettings = () => {
       const newFormValues = {
         ...formValues,
         ...(formValues.projects_filter_type === 'areas' && {
-          area_ids: [formValues.area_id],
+          area_ids: formValues.area_id ? [formValues.area_id] : [],
         }),
         // Clear space_ids when not in spaces mode so the backend removes the join records
         space_ids: isSpaces ? formValues.space_ids ?? [] : [],
