@@ -3561,7 +3561,7 @@
   },
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": {
     "state": "verified",
-    "verified_at": "2026-06-17T13:30:58.864060Z",
+    "verified_at": "2026-06-17T14:06:06.354350Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": {
@@ -3764,6 +3764,11 @@
     "verified_at": "2026-06-17T13:56:01.240863Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItemsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-06-17T13:59:52.578183Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -3833,6 +3838,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpacesLabel": {
+    "state": "verified",
+    "verified_at": "2026-06-17T13:59:52.578183Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel": {
     "state": "verified",
@@ -3911,7 +3921,7 @@
   },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle1": {
     "state": "verified",
-    "verified_at": "2026-06-17T13:30:58.864060Z",
+    "verified_at": "2026-06-17T14:06:06.354350Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageSettingsLinkText": {
@@ -3926,7 +3936,7 @@
   },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageTitle1": {
     "state": "verified",
-    "verified_at": "2026-06-17T13:30:58.864060Z",
+    "verified_at": "2026-06-17T14:06:06.354350Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.sectionDescription": {
