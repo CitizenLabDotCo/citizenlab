@@ -24,6 +24,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
+import BackToProjectLink from './BackToProjectLink';
 import CustomPageHeader from './CustomPageHeader';
 import AdminCustomPageEditButton from './CustomPageHeader/AdminCustomPageEditButton';
 import CustomPageProjectsAndEvents from './CustomPageProjectsAndEvents';
@@ -72,6 +73,17 @@ const NoBannerContainer = styled(ContentContainer)`
   `}
 `;
 
+// When a banner is shown, the back link sits above it sharing the same
+// horizontal padding, with little vertical space so it hugs the banner.
+const BackLinkContainer = styled(ContentContainer)`
+  background: #fff;
+  padding: 50px 50px 8px 50px;
+
+  ${media.tablet`
+    padding: 50px 20px 8px 20px;
+  `}
+`;
+
 const CustomPageShow = () => {
   // Rendered both at the global `/pages/:slug` route and the project-scoped
   // `/projects/:slug/pages/:pageSlug` route, so accept either param.
@@ -115,15 +127,30 @@ const CustomPageShow = () => {
       <main className={`e2e-page-${slug}`}>
         <Container>
           {pageAttributes.banner_enabled ? (
-            <Box background="#fff" width="100%">
-              <CustomPageHeader pageData={page.data} />
-            </Box>
+            <>
+              {pageAttributes.project_id && (
+                <BackLinkContainer>
+                  <BackToProjectLink projectId={pageAttributes.project_id} />
+                </BackLinkContainer>
+              )}
+              <Box background="#fff" width="100%">
+                <CustomPageHeader pageData={page.data} />
+              </Box>
+            </>
           ) : (
             <NoBannerContainer>
+              {pageAttributes.project_id && (
+                <Box mb="8px">
+                  <BackToProjectLink projectId={pageAttributes.project_id} />
+                </Box>
+              )}
               {/* show page text title if the banner is disabled */}
               <PageTitle>{localize(pageAttributes.title_multiloc)}</PageTitle>
               <Box zIndex="40000">
-                <AdminCustomPageEditButton pageId={page.data.id} />
+                <AdminCustomPageEditButton
+                  pageId={page.data.id}
+                  projectId={pageAttributes.project_id}
+                />
               </Box>
             </NoBannerContainer>
           )}

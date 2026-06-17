@@ -11,11 +11,13 @@ import { Multiloc } from 'typings';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useProjectFiles from 'api/project_files/useProjectFiles';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
+import ProjectPages from 'containers/ProjectsShowPage/shared/header/ProjectPages';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
@@ -46,6 +48,7 @@ const ProjectContentViewer = ({
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
+  const { data: project } = useProjectById(projectId);
   const { data: projectFiles } = useProjectFiles(projectId);
   const { data: descriptionBuilderLayout, isInitialLoading } =
     useContentBuilderLayout('project', projectId, featureEnabled && enabled);
@@ -85,6 +88,15 @@ const ProjectContentViewer = ({
               </Editor>
             </ContentBuilderLayoutProvider>
           </Box>
+
+          {project && (
+            <Box maxWidth="750px" mb="25px">
+              <ProjectPages
+                projectId={projectId}
+                projectSlug={project.data.attributes.slug}
+              />
+            </Box>
+          )}
 
           {projectFiles && (
             <Box maxWidth="750px" mb="25px">

@@ -12,6 +12,7 @@ import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachme
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
@@ -85,8 +86,14 @@ const ProjectDescriptionBuilderToolbox = () => {
         <DraggableElement
           id="e2e-draggable-file-attachment"
           component={<FileAttachment />}
-          icon="file"
+          icon="paperclip"
           label={formatMessage(FileAttachment.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-page-link"
+          component={<PageLink />}
+          icon="file"
+          label={formatMessage(PageLink.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-image"

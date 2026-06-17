@@ -100,18 +100,18 @@ const ProjectInfo = ({ projectId, className }: Props) => {
               />
             </Box>
 
-            {projectFiles && projectFiles.data.length > 0 && (
-              <Box mb="24px">
-                <FileAttachments files={projectFiles.data} />
-              </Box>
-            )}
-
             <Box mb="24px">
               <ProjectPages
                 projectId={projectId}
                 projectSlug={project.data.attributes.slug}
               />
             </Box>
+
+            {projectFiles && projectFiles.data.length > 0 && (
+              <Box mb="24px">
+                <FileAttachments files={projectFiles.data} />
+              </Box>
+            )}
           </Box>
         </Left>
         <Right>

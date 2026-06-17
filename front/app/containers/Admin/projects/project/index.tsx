@@ -93,7 +93,12 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
         />
         <Tab
           className="intercom-admin-project-pages-tab"
-          label={formatMessage(messages.pagesTab)}
+          label={
+            <Box display="flex" alignItems="center" gap="8px">
+              {formatMessage(messages.pagesTab)}
+              <NewLabel />
+            </Box>
+          }
           url={`/admin/projects/${projectId}/pages`}
           active={pathname.includes(`/admin/projects/${projectId}/pages`)}
         />

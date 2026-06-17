@@ -22,21 +22,29 @@ import messages from '../messages';
 
 interface Props {
   pageId: string;
+  // Set for project-scoped pages so editing routes to the project's page
+  // editor instead of the global pages & menu editor.
+  projectId?: string | null;
 }
 
 const AdminCustomPageEditButton = ({
   pageId,
+  projectId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { data: authUser } = useAuthUser();
 
   const userCanEditPage = !isNilOrError(authUser) && isAdmin(authUser);
 
+  const editLink = projectId
+    ? { linkTo: `/admin/projects/${projectId}/pages/${pageId}` }
+    : adminCustomPageContentLink(pageId);
+
   return userCanEditPage ? (
     <PositionWrapper>
       <ButtonWithLink
         icon="edit"
-        {...adminCustomPageContentLink(pageId)}
+        {...editLink}
         buttonStyle="secondary"
         bgColor={colors.white}
         padding="5px 8px"
