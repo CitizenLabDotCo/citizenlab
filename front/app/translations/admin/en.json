@@ -1981,7 +1981,7 @@
   "app.containers.Admin.tools.MCPAuthorizations.clientId": "Client ID",
   "app.containers.Admin.tools.MCPAuthorizations.clientName": "Client name",
   "app.containers.Admin.tools.MCPAuthorizations.noAuthorizations": "You have no MCP authorizations yet.",
-  "app.containers.Admin.tools.MCPAuthorizations.pageDescription2": "View and manage your client authorizations for MCP (Model Context Protocol) integrations.",
+  "app.containers.Admin.tools.MCPAuthorizations.pageDescription3": "View and manage client authorizations for your MCP (Model Context Protocol) integrations.",
   "app.containers.Admin.tools.MCPAuthorizations.pageTitle": "MCP authorizations",
   "app.containers.Admin.tools.MCPAuthorizations.revokeAccess": "Revoke access",
   "app.containers.Admin.tools.MCPAuthorizations.revokeConfirmation": "Revoke this integration’s access? It will need to be re-authorized before it can connect again.",
