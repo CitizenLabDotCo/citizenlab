@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IAnalysisData } from 'api/analyses/types';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { IInsights } from 'api/analysis_insights/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
@@ -23,7 +24,7 @@ import { TextResponseSource } from '../utils';
 
 import Question from './Question';
 import Summary from './Summary';
-import { buildScopedSummaryFilters, buildSummaryBaseFilters } from './utils';
+import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
 
 const AnalysisInsights = ({
   analysis,
@@ -68,29 +69,38 @@ const AnalysisInsights = ({
       enoughResponses
     ) {
       setAutomaticSummaryCreated(true);
+
+      // Only inputs that answered the question, within the selected quarter (if any).
+      const baseFilters: IInputsFilterParams = {
+        input_custom_field_no_empty_values: true,
+        published_at_from: getPublishedAtFromFilter(
+          search.year,
+          search.quarter
+        ),
+        published_at_to: getPublishedAtToFilter(search.year, search.quarter),
+      };
+
       preCheck(
-        {
-          analysisId: analysis.id,
-          filters: buildSummaryBaseFilters({
-            year: search.year,
-            quarter: search.quarter,
-          }),
-        },
+        { analysisId: analysis.id, filters: baseFilters },
         {
           onSuccess: (data) => {
-            if (!data.data.attributes.impossible_reason) {
-              addAnalysisSummary({
-                analysisId: analysis.id,
-                filters: buildScopedSummaryFilters({
-                  year: search.year,
-                  quarter: search.quarter,
-                  largeSummariesAllowed,
-                  textResponseSource,
-                  customFieldId:
-                    analysis.relationships.main_custom_field?.data?.id,
-                }),
-              });
+            if (data.data.attributes.impossible_reason) return;
+
+            // Scope the summary to this box's own responses.
+            const customFieldId =
+              analysis.relationships.main_custom_field?.data?.id;
+            const filters: IInputsFilterParams = {
+              ...baseFilters,
+              limit: largeSummariesAllowed ? undefined : 30,
+            };
+            if (textResponseSource === 'other_option' && customFieldId) {
+              filters[`input_custom_${customFieldId}`] = ['other'];
             }
+            if (textResponseSource === 'follow_up') {
+              filters.input_follow_up_not_empty = true;
+            }
+
+            addAnalysisSummary({ analysisId: analysis.id, filters });
           },
         }
       );

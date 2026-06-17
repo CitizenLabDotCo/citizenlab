@@ -11,8 +11,6 @@ import {
   getYearFilter,
 } from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils';
 
-import { TextResponseSource } from '../utils';
-
 // True when an insight (summary or Q&A) was generated scoped to a select
 // question's "other" option, i.e. its filters restrict inputs to that option
 // (input_custom_<questionFieldId> = ['other']). This is the signal that the
@@ -133,48 +131,4 @@ export const getPublishedAtToFilter = (
     return moment(new Date(year, quarter * 3, 0)).format('YYYY-MM-DD');
   }
   return undefined;
-};
-
-type SummaryFilterArgs = {
-  year: string | undefined;
-  quarter: Quarter | undefined;
-};
-
-// Base filters shared by every summary generated from a phase-insights box:
-// only inputs that answered the question, within the selected quarter (if any).
-export const buildSummaryBaseFilters = ({
-  year,
-  quarter,
-}: SummaryFilterArgs): IInputsFilterParams => ({
-  input_custom_field_no_empty_values: true,
-  published_at_from: getPublishedAtFromFilter(year, quarter),
-  published_at_to: getPublishedAtToFilter(year, quarter),
-});
-
-// Base filters plus the scope that restricts inputs to *this box's* own
-// responses ('other' option / non-empty follow-up text) and the size limit.
-// Shared by the auto-generator and the manual "Summarize text responses" button
-// so both paths produce identical filters.
-export const buildScopedSummaryFilters = ({
-  year,
-  quarter,
-  largeSummariesAllowed,
-  textResponseSource,
-  customFieldId,
-}: SummaryFilterArgs & {
-  largeSummariesAllowed: boolean;
-  textResponseSource?: TextResponseSource;
-  customFieldId?: string;
-}): IInputsFilterParams => {
-  const filters: IInputsFilterParams = {
-    ...buildSummaryBaseFilters({ year, quarter }),
-    limit: largeSummariesAllowed ? undefined : 30,
-  };
-  if (textResponseSource === 'other_option' && customFieldId) {
-    filters[`input_custom_${customFieldId}`] = ['other'];
-  }
-  if (textResponseSource === 'follow_up') {
-    filters.input_follow_up_not_empty = true;
-  }
-  return filters;
 };
