@@ -32,15 +32,14 @@ type Props = {
   phaseId: string;
 };
 
-// Renders the cover as the actual (cover-only) PDF the backend generates, drawn
-// to a canvas via react-pdf — pixel-identical to the download, on white, with
-// none of the browser PDF viewer's chrome.
+// Renders the cover as the actual (cover-only) PDF the backend generates
 const CoverPreview = ({ cover, phaseId }: Props) => {
   const [blob, setBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const signature = JSON.stringify(cover);
+  // `cover` is useState, so its reference only changes when it's actually
+  // edited — safe to depend on directly (debounced below).
   useEffect(() => {
     if (!cover.include) return undefined;
     let cancelled = false;
@@ -60,8 +59,7 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
       cancelled = true;
       clearTimeout(timer);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [signature, phaseId]);
+  }, [cover, phaseId]);
 
   // Stable file reference for react-pdf (re-parses only when the blob changes).
   const file = useMemo(() => blob, [blob]);

@@ -11,6 +11,7 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { snakeCase } from 'lodash-es';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
@@ -30,15 +31,7 @@ import { getFullName } from 'utils/textUtils';
 
 import CoverPreview from './CoverPreview';
 import messages from './messages';
-import ReviewFieldsModal, { PiiField } from './ReviewFieldsModal';
-
-const sanitizeFilename = (name: string) =>
-  `${
-    name
-      .replace(/[^a-zA-Z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .toLowerCase() || 'survey-responses'
-  }.pdf`;
+import ReviewFieldsModal, { SurveyFieldPiiFlag } from './ReviewFieldsModal';
 
 const AdminPhaseSurveyPdfExport = () => {
   const { projectId, phaseId } = useParams({ strict: false }) as {
@@ -58,7 +51,7 @@ const AdminPhaseSurveyPdfExport = () => {
 
   // The exact fields the backend will export, in order; registration/personal-
   // data fields are pre-flagged for redaction.
-  const detectedFields: PiiField[] = useMemo(
+  const detectedFields: SurveyFieldPiiFlag[] = useMemo(
     () =>
       (surveyFields?.data ?? []).map((field) => ({
         key: field.id,
@@ -110,7 +103,9 @@ const AdminPhaseSurveyPdfExport = () => {
         phaseId,
         cover,
         redactedFieldKeys: Array.from(redactedKeys),
-        fileName: sanitizeFilename(`survey-responses-${phaseTitle}`),
+        fileName: `${
+          snakeCase(`survey responses ${phaseTitle}`) || 'survey_responses'
+        }.pdf`,
       });
       setModalOpen(false);
     } catch {

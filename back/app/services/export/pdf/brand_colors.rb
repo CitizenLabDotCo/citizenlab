@@ -3,14 +3,15 @@
 module Export
   module Pdf
     # Builds the colour palette for the survey responses PDF from the tenant's
-    # branding (color_main / color_secondary / color_text), with derived tints,
-    # shades and contrast-aware foregrounds so the design holds up for any
-    # brand colour (light or dark).
+    # branding (color_main / color_secondary / color_text). Purely deterministic
+    # derivations (tints/shades of the brand colours) — no contrast/luminance
+    # logic.
     class BrandColors
       DEFAULT_PRIMARY = '#1E155D'
       DEFAULT_SECONDARY = '#FF3E52'
       DEFAULT_TEXT = '#1E155D'
       WHITE = '#FFFFFF'
+      BLACK = '#000000'
 
       def self.palette
         new.palette
@@ -23,25 +24,20 @@ module Export
       end
 
       def palette
-        on_primary = readable_on(@primary)
-        primary_text = readable_on_white(@primary)
-
         {
           primary: @primary,
           secondary: @secondary,
           text: @text,
           text_muted: mix(@text, WHITE, 0.4),
-          # Primary darkened enough to read on a light background, and a touch
-          # darker again for the cover eyebrow label.
-          primary_text: primary_text,
-          primary_dark: mix(primary_text, '#000000', 0.2),
+          # Slightly darker primary for the cover eyebrow label.
+          primary_dark: mix(@primary, BLACK, 0.2),
+          # Slightly lighter primary for the cover divider line.
+          primary_light: mix(@primary, WHITE, 0.25),
           # A light primary wash (10%) for the cover background.
           cover_bg: mix(@primary, WHITE, 0.9),
-          # A slightly-lighter primary for the cover divider line.
-          primary_light: mix(@primary, WHITE, 0.25),
-          # Foregrounds over the primary-coloured card headers.
-          on_primary: on_primary,
-          on_primary_muted: rgba(on_primary, 0.6),
+          # White foreground over the primary-coloured card headers.
+          on_primary: WHITE,
+          on_primary_muted: rgba(WHITE, 0.6),
           # Light primary derivatives for question bars, borders and fills.
           primary_tint: mix(@primary, WHITE, 0.92),
           primary_border: mix(@primary, WHITE, 0.82)
@@ -74,22 +70,6 @@ module Export
         a = hex_to_rgb(hex_a)
         b = hex_to_rgb(hex_b)
         rgb_to_hex(a.zip(b).map { |x, y| (x * (1 - weight)) + (y * weight) })
-      end
-
-      def relative_luminance(hex)
-        r, g, b = hex_to_rgb(hex).map { |c| c / 255.0 }
-        (0.2126 * r) + (0.7152 * g) + (0.0722 * b)
-      end
-
-      # White on dark brand colours, the (dark) text colour on light ones.
-      def readable_on(hex)
-        relative_luminance(hex) > 0.55 ? @text : WHITE
-      end
-
-      # Darken a brand colour that's too light to read on a light background,
-      # keeping its hue.
-      def readable_on_white(hex)
-        relative_luminance(hex) > 0.55 ? mix(hex, '#000000', 0.5) : hex
       end
 
       def rgba(hex, alpha)

@@ -16,7 +16,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-export type PiiField = {
+export type SurveyFieldPiiFlag = {
   key: string;
   label: string;
   redact: boolean;
@@ -24,7 +24,7 @@ export type PiiField = {
 
 type Props = {
   opened: boolean;
-  initialFields: PiiField[];
+  initialFields: SurveyFieldPiiFlag[];
   responseCount: number;
   processing: boolean;
   error: boolean;
@@ -42,7 +42,7 @@ const ReviewFieldsModal = ({
   onGenerate,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [fields, setFields] = useState<PiiField[]>(initialFields);
+  const [fields, setFields] = useState<SurveyFieldPiiFlag[]>(initialFields);
   const [consent, setConsent] = useState(false);
 
   // Read the latest detected fields without making them an effect dependency,

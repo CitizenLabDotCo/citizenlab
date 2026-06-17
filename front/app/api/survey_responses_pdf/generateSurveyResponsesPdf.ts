@@ -2,7 +2,7 @@ import { saveAs } from 'file-saver';
 
 import { API_PATH } from 'containers/App/constants';
 
-import { getJwt } from 'utils/auth/jwt';
+import { requestBlob } from 'utils/requestBlob';
 
 export type SurveyPdfCover = {
   include: boolean;
@@ -20,34 +20,21 @@ type RequestParams = {
   coverOnly?: boolean;
 };
 
-// POSTs to the survey_responses_pdf endpoint and resolves with the PDF blob.
-// Uses XHR (like utils/requestBlob) to enforce a binary response type.
+// POSTs the cover/redaction options to the survey_responses_pdf endpoint and
+// resolves with the PDF blob, via the shared requestBlob helper.
 const requestPdfBlob = ({
   phaseId,
   cover,
   redactedFieldKeys = [],
   coverOnly = false,
 }: RequestParams): Promise<Blob> =>
-  new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open(
-      'POST',
-      `${API_PATH}/phases/${phaseId}/survey_responses_pdf`,
-      true
-    );
-    xhr.responseType = 'blob';
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Authorization', `Bearer ${getJwt()}`);
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        resolve(new Blob([xhr.response], { type: 'application/pdf' }));
-      } else {
-        reject(new Error(`Export failed: ${xhr.status}`));
-      }
-    };
-    xhr.onerror = () => reject(new Error('Network error'));
-    xhr.send(
-      JSON.stringify({
+  requestBlob(
+    `${API_PATH}/phases/${phaseId}/survey_responses_pdf`,
+    'application/pdf',
+    undefined,
+    {
+      method: 'POST',
+      body: {
         cover: {
           include: cover.include,
           title: cover.title,
@@ -58,9 +45,9 @@ const requestPdfBlob = ({
         },
         redacted_field_keys: redactedFieldKeys,
         cover_only: coverOnly,
-      })
-    );
-  });
+      },
+    }
+  );
 
 // Full export — downloads the PDF.
 export const generateSurveyResponsesPdf = async ({
@@ -78,7 +65,7 @@ export const generateSurveyResponsesPdf = async ({
   saveAs(blob, fileName);
 };
 
-// Cover-only PDF — used for the live preview (rendered in an iframe).
+// Cover-only PDF — used for the live preview (rendered in an iframe/canvas).
 export const fetchCoverPreviewPdf = (params: {
   phaseId: string;
   cover: SurveyPdfCover;
