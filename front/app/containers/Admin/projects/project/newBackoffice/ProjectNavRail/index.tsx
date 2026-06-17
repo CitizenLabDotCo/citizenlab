@@ -123,7 +123,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
   ];
 
   return (
-    <Nav as="nav" p="12px">
+    <Nav as="nav" p="12px" flex="0 0 auto">
       <Box display="flex" flexDirection="column" gap="2px">
         {items.map((item) => {
           const active = pathname.includes(item.match);
