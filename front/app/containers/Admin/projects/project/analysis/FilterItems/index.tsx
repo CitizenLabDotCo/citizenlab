@@ -17,6 +17,7 @@ import Tag from '../Tags/Tag';
 
 import AuthorFieldFilterItem from './AuthorFieldFilterItem';
 import EllipsisFilterValue from './EllipsisFilterValue';
+import FollowUpFilterItem from './FollowUpFilterItem';
 import InputFieldFilterItem from './InputFieldFilterItem';
 import messages from './messages';
 
@@ -78,9 +79,6 @@ const translationKeys: Record<
   },
   input_custom_field_no_empty_values: {
     translationKey: messages.emptyCustomFields,
-  },
-  input_follow_up_not_empty: {
-    translationKey: messages.followUpNotEmpty,
   },
   limit: {
     translationKey: messages.limit,
@@ -148,6 +146,15 @@ const FilterItems = ({ filters, isEditable, analysisId }: FilterItemsProps) => {
                   />
                 ))}
             </>
+          );
+        } else if (key === 'input_follow_up_not_empty') {
+          return (
+            <FollowUpFilterItem
+              key={key}
+              filterKey={key}
+              isEditable={isEditable}
+              analysisId={analysisId}
+            />
           );
         } else {
           return (
