@@ -77,7 +77,7 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
   }
 
   return (
-    <Box position="relative" w="100%" h="100%" background="#FFFFFF">
+    <Box position="relative" w="100%" h="100%" background={colors.white}>
       {file && !error && (
         <FullWidthPage>
           <Document
