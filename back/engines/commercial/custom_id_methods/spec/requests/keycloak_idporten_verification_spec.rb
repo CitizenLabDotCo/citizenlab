@@ -74,10 +74,10 @@ context 'keycloak verification (ID-Porten - Oslo)' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'keycloak',
         provider: 'idporten',
         issuer: 'https://some.test.domain.com/auth/realms/example-realm',

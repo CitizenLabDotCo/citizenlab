@@ -4829,6 +4829,16 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:48:26.637819Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:48:26.637819Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.communityMonitor.settings": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -16419,6 +16429,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-11T08:17:57.686178Z",
+    "verified_by": "stephanie"
+  },
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -17263,6 +17278,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
+    "state": "verified",
+    "verified_at": "2026-06-11T08:17:57.686178Z",
+    "verified_by": "stephanie"
   },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": {
     "state": "verified",

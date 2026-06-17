@@ -924,6 +924,8 @@
   "app.containers.Admin.communityMonitor.quarterChartLabel": "Q{quarter} {year}",
   "app.containers.Admin.communityMonitor.quarterYearCondensed": "Q{quarterNumber} {year}",
   "app.containers.Admin.communityMonitor.reports": "Ziņojumi",
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": "Dati nav atrasti.",
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": "{score} no 5.",
   "app.containers.Admin.communityMonitor.settings": "Iestatījumi",
   "app.containers.Admin.communityMonitor.settings.acceptingSubmissions": "Tiek pieņemti iesniegumi Kopienas monitoringa apsekojumam.",
   "app.containers.Admin.communityMonitor.settings.accessRights3": "Piekļuve un lietotāja dati",

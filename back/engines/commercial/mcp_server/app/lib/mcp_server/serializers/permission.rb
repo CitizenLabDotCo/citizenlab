@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class McpServer::Serializers::Permission < McpServer::Serializers::Base
-  def attributes
+  def attributes(record)
     {
       action: record.action,
       permitted_by: record.permitted_by,

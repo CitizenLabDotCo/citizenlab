@@ -9,7 +9,6 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import TimeInput from 'components/admin/TimeSelection/TimeInput';
@@ -234,9 +233,6 @@ const Calendar = ({
   const timeZone = tenant?.data.attributes.settings.core.timezone;
   const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
 
-  const isPhaseDatetimeSetupEnabled = useFeatureFlag({
-    name: 'phase_datetime_setup',
-  });
   const { formatMessage } = useIntl();
 
   const startMonth = getStartMonth({
@@ -397,54 +393,53 @@ const Calendar = ({
         timeZone={userTimezone}
         className={className}
       />
-      {isPhaseDatetimeSetupEnabled &&
-        (isSingleDaySelection ? (
-          <Box mt="16px">
-            <Text m="0" mb="8px" fontSize="l">
-              {formatMessage(messages.sameDaySelection)}
-            </Text>
-            <Warning w="95%">
-              {formatMessage(messages.sameDaySelectionWarning, {
-                timezone: gmtOffset,
-              })}
-            </Warning>
+      {isSingleDaySelection ? (
+        <Box mt="16px">
+          <Text m="0" mb="8px" fontSize="l">
+            {formatMessage(messages.sameDaySelection)}
+          </Text>
+          <Warning w="95%">
+            {formatMessage(messages.sameDaySelectionWarning, {
+              timezone: gmtOffset,
+            })}
+          </Warning>
+        </Box>
+      ) : (
+        <TimeInputContainer>
+          <Box display="flex" gap="8px" alignItems="center">
+            <Text m="0">{formatMessage(messages.startTime)}</Text>
+            <TimeInput
+              selectedTime={displayStartTime}
+              onChange={handleStartTimeChange}
+              minTime={startTimeMinTime}
+            />
           </Box>
-        ) : (
-          <TimeInputContainer>
-            <Box display="flex" gap="8px" alignItems="center">
-              <Text m="0">{formatMessage(messages.startTime)}</Text>
+          <Box display="flex" gap="8px" alignItems="center">
+            <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
+              {formatMessage(messages.endTime)}
+            </Text>
+            {selectedRange.to ? (
               <TimeInput
-                selectedTime={displayStartTime}
-                onChange={handleStartTimeChange}
-                minTime={startTimeMinTime}
+                selectedTime={displayEndTime}
+                onChange={handleEndTimeChange}
+                maxTime={endTimeMaxTime}
               />
-            </Box>
-            <Box display="flex" gap="8px" alignItems="center">
-              <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
-                {formatMessage(messages.endTime)}
-              </Text>
-              {selectedRange.to ? (
-                <TimeInput
-                  selectedTime={displayEndTime}
-                  onChange={handleEndTimeChange}
-                  maxTime={endTimeMaxTime}
-                />
-              ) : (
-                <Box
-                  p="10px"
-                  bgColor={colors.grey100}
-                  border={`1px solid ${colors.grey300}`}
-                  borderRadius="4px"
-                  display="flex"
-                >
-                  <Text m="0" color="grey600">
-                    {formatMessage(messages.openEnded)}
-                  </Text>
-                </Box>
-              )}
-            </Box>
-          </TimeInputContainer>
-        ))}
+            ) : (
+              <Box
+                p="10px"
+                bgColor={colors.grey100}
+                border={`1px solid ${colors.grey300}`}
+                borderRadius="4px"
+                display="flex"
+              >
+                <Text m="0" color="grey600">
+                  {formatMessage(messages.openEnded)}
+                </Text>
+              </Box>
+            )}
+          </Box>
+        </TimeInputContainer>
+      )}
     </DayPickerStyles>
   );
 };

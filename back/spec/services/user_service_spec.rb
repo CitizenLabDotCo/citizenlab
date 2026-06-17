@@ -122,7 +122,7 @@ describe UserService do
       profile[:email] = sso_email if returns_email
 
       authver_method = instance_double(
-        OmniauthMethods::Base,
+        IdMethods::Base,
         updateable_user_attrs: updateable_user_attrs,
         profile_to_user_attrs: profile,
         email_confirmed?: email_confirmed

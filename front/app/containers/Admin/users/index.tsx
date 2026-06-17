@@ -6,8 +6,6 @@ import styled from 'styled-components';
 import { IGroupData, MembershipType } from 'api/groups/types';
 import useAddGroup from 'api/groups/useAddGroup';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
@@ -57,7 +55,6 @@ const UsersPage = () => {
   const { mutateAsync: addGroup } = useAddGroup();
   const [groupCreationModal, setGroupCreationModal] =
     useState<GroupCreationModal>(false);
-  const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
 
   const openGroupCreationModal = () => {
     setGroupCreationModal('step1');
@@ -134,7 +131,6 @@ const UsersPage = () => {
             id="app.containers.Admin.users.form"
             type={groupCreationModal}
             onSubmit={handleSubmitForm}
-            isVerificationEnabled={isVerificationEnabled}
           />
         </>
       </Modal>

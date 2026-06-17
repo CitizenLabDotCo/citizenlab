@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::ClaveUnica
-  class ClaveUnicaOmniauth < OmniauthMethods::Base
+  class ClaveUnicaOmniauth < IdMethods::Base
     include ClaveUnicaVerification
+
+    def name
+      'clave_unica'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
 
     def profile_to_user_attrs(auth)
       info = {
@@ -77,10 +89,6 @@ module CustomIdMethods::ClaveUnica
 
     def email_always_present?
       false
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def email_confirmed?(_auth)

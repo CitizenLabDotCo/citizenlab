@@ -10,10 +10,10 @@ resource 'Verifications' do
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'id_card_lookup',
         ui_method_name: 'By social security number',
         card_id: 'Social security number',
@@ -25,7 +25,7 @@ resource 'Verifications' do
     configuration.save!
   end
 
-  post 'web_api/v1/verification_methods/id_card_lookup/verification' do
+  post 'web_api/v1/id_methods/id_card_lookup/verification' do
     with_options scope: :verification do
       parameter :card_id
     end

@@ -326,7 +326,8 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'changes "verified" permissions to "user" permissions' do
-      SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      AppConfiguration.instance.save!
       create(:permission, :by_admins_moderators)
       create(:permission, :by_verified)
       template = tenant_serializer.run(deserializer_format: true)

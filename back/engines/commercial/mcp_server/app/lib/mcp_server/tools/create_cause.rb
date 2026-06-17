@@ -35,7 +35,7 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
 
       ok(
         "Created cause #{cause.id}",
-        structured: cause.as_json(only: %i[id phase_id title_multiloc description_multiloc ordering volunteers_count])
+        structured: McpServer::Serializers::Cause.serialize(cause, params: { current_user: current_user })
       )
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")

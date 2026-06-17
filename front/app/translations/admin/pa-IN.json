@@ -924,6 +924,8 @@
   "app.containers.Admin.communityMonitor.quarterChartLabel": "ਸਵਾਲ{quarter} {year}",
   "app.containers.Admin.communityMonitor.quarterYearCondensed": "ਸਵਾਲ{quarterNumber} {year}",
   "app.containers.Admin.communityMonitor.reports": "ਰਿਪੋਰਟਾਂ",
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": "ਡਾਟਾ ਨਹੀਂ ਮਿਲਿਆ।",
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": "5 ਵਿੱਚੋਂ {score}।",
   "app.containers.Admin.communityMonitor.settings": "ਸੈਟਿੰਗਾਂ",
   "app.containers.Admin.communityMonitor.settings.acceptingSubmissions": "ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਸਰਵੇਖਣ ਬੇਨਤੀਆਂ ਸਵੀਕਾਰ ਕਰ ਰਿਹਾ ਹੈ।",
   "app.containers.Admin.communityMonitor.settings.accessRights3": "ਪਹੁੰਚ ਅਤੇ ਉਪਭੋਗਤਾ ਡੇਟਾ",
