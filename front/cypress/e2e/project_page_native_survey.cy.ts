@@ -31,8 +31,7 @@ describe('New project with native survey', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
+    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
   });
 
   it('shows the survey buttons', () => {
@@ -161,16 +160,16 @@ describe('Native survey CTA bar', () => {
   });
 
   after(() => {
-  if (phaseId) {
-    // delete created ideas in the test, otherwise the project cannot be deleted because of the foreign key constraint
-    // between ideas and phases
-    cy.apiRemoveIdeas().then(() => {
-      if (projectId) {
-        cy.apiRemoveProject(projectId);
-      }
-    });
-  } else if(projectId) {
-    cy.apiRemoveProject(projectId);
-  }
- });
+    if (phaseId) {
+      // delete created ideas in the test, otherwise the project cannot be deleted because of the foreign key constraint
+      // between ideas and phases
+      cy.apiRemoveIdeas().then(() => {
+        if (projectId) {
+          cy.apiRemoveProject(projectId);
+        }
+      });
+    } else if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+  });
 });
