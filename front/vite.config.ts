@@ -86,6 +86,9 @@ export default defineConfig(({ mode }) => {
         enforce: 'pre',
         load(id) {
           if (id.includes('browser-external')) {
+            console.warn(
+              `Warning: Attempting to import a browser-external module (${id}) which is not supported in this environment. Returning an empty stub module instead.`
+            );
             return 'module.exports = {};';
           }
           return null;
