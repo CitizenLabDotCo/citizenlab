@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -23,6 +23,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
+import SectionHeader from '../SectionHeader';
 
 import type { LinkProps } from '@tanstack/react-router';
 
@@ -127,6 +128,9 @@ const TimelinePhases = ({ projectId }: Props) => {
   const { phaseId } = useParams({ strict: false }) as { phaseId?: string };
   const { data: phases } = usePhases(projectId);
 
+  // Timeline phases is the section that's open by default.
+  const [expanded, setExpanded] = useState(true);
+
   if (!phases) return null;
 
   const sortedPhases = sortBy(phases.data, (p) => p.attributes.start_at);
@@ -142,57 +146,78 @@ const TimelinePhases = ({ projectId }: Props) => {
 
   return (
     <Panel p="12px" borderTop={`1px solid ${colors.grey200}`}>
-      <Text m="0 0 8px 4px" fontSize="xs" fontWeight="bold" color="coolGrey600">
-        {formatMessage(messages.timelinePhases)}
-      </Text>
+      <SectionHeader
+        title={formatMessage(messages.timelinePhases)}
+        icon="timeline"
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+      />
 
-      <Box display="flex" flexDirection="column">
-        {sortedPhases.map((phase, index) => {
-          const status = phaseStatus(phase);
-          const isSelected = phase.id === phaseId;
-          const isLast = index === sortedPhases.length - 1;
-          const label = statusLabel(status);
-          const dateText = formatDateRange(
-            phase.attributes.start_at,
-            phase.attributes.end_at,
-            noEndLabel
-          );
+      {expanded && (
+        <>
+          <Box display="flex" flexDirection="column">
+            {sortedPhases.map((phase, index) => {
+              const status = phaseStatus(phase);
+              const isSelected = phase.id === phaseId;
+              const isLast = index === sortedPhases.length - 1;
+              const label = statusLabel(status);
+              const dateText = formatDateRange(
+                phase.attributes.start_at,
+                phase.attributes.end_at,
+                noEndLabel
+              );
 
-          return (
-            <Link
-              key={phase.id}
-              to={
-                `/admin/projects/${projectId}/phases/${
-                  phase.id
-                }/${getPhaseLandingTab(phase)}` as LinkProps['to']
-              }
-            >
-              <Row selected={isSelected} data-cy="e2e-new-project-phase-item">
-                <Box display="flex" flexDirection="column" alignItems="center">
-                  <Dot status={status} />
-                  {!isLast && <Connector />}
-                </Box>
-                <Box flexGrow={1} pb="4px">
-                  <PhaseTitle past={status === 'past'}>
-                    {localize(phase.attributes.title_multiloc)}
-                  </PhaseTitle>
-                  <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
-                    {dateText}
-                    {label ? ` · ${label}` : ''}
-                  </Text>
-                </Box>
-              </Row>
-            </Link>
-          );
-        })}
-      </Box>
+              return (
+                <Link
+                  key={phase.id}
+                  to={
+                    `/admin/projects/${projectId}/phases/${
+                      phase.id
+                    }/${getPhaseLandingTab(phase)}` as LinkProps['to']
+                  }
+                >
+                  <Row
+                    selected={isSelected}
+                    data-cy="e2e-new-project-phase-item"
+                  >
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      <Dot status={status} />
+                      {!isLast && <Connector />}
+                    </Box>
+                    <Box flexGrow={1} pb="4px">
+                      <PhaseTitle past={status === 'past'}>
+                        {localize(phase.attributes.title_multiloc)}
+                      </PhaseTitle>
+                      <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
+                        {dateText}
+                        {label ? ` · ${label}` : ''}
+                      </Text>
+                    </Box>
+                  </Row>
+                </Link>
+              );
+            })}
+          </Box>
 
-      <Link to={`/admin/projects/${projectId}/phases/new` as LinkProps['to']}>
-        <NewPhaseButton data-cy="e2e-new-project-new-phase">
-          <Icon name="plus" width="16px" height="16px" fill="currentColor" />
-          {formatMessage(messages.newPhase)}
-        </NewPhaseButton>
-      </Link>
+          <Link
+            to={`/admin/projects/${projectId}/phases/new` as LinkProps['to']}
+          >
+            <NewPhaseButton data-cy="e2e-new-project-new-phase">
+              <Icon
+                name="plus"
+                width="16px"
+                height="16px"
+                fill="currentColor"
+              />
+              {formatMessage(messages.newPhase)}
+            </NewPhaseButton>
+          </Link>
+        </>
+      )}
     </Panel>
   );
 };
