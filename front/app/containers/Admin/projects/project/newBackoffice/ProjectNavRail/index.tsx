@@ -24,17 +24,15 @@ const Nav = styled(Box)`
   a,
   a:hover {
     text-decoration: none;
-    display: block;
   }
 `;
 
 const ItemRow = styled.div<{ active: boolean }>`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   padding: 8px 10px;
   border-radius: 6px;
-  cursor: pointer;
   background: ${({ active }) => (active ? colors.grey200 : 'transparent')};
   transition: background 80ms ease-out;
 
@@ -43,10 +41,22 @@ const ItemRow = styled.div<{ active: boolean }>`
   }
 `;
 
+// The link covers the icon + label area; it sits inside ItemRow so that an
+// optional trailing control (the chevron) can live next to it as a sibling
+// rather than nested inside the anchor (which would be invalid markup).
+const RowLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+  min-width: 0;
+  cursor: pointer;
+`;
+
 const ChevronButton = styled.button`
   background: transparent;
   border: none;
-  padding: 0;
+  padding: 2px;
   display: flex;
   cursor: pointer;
 `;
@@ -59,7 +69,6 @@ interface NavItem {
   // Substring of the pathname that marks this item as active.
   match: string;
   badge?: React.ReactNode;
-  collapsible?: boolean;
 }
 
 interface Props {
@@ -70,20 +79,17 @@ const ProjectNavRail = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
 
-  // The "Project page" group is collapsed by default (per design).
-  const [projectPageExpanded, setProjectPageExpanded] = useState(false);
-
   const base = `/admin/projects/${projectId}`;
 
-  const items: NavItem[] = [
-    {
-      name: 'project-page',
-      label: messages.projectPageNav,
-      icon: 'page',
-      url: `${base}/project-page`,
-      match: `${base}/project-page`,
-      collapsible: true,
-    },
+  const projectPageItem: NavItem = {
+    name: 'project-page',
+    label: messages.projectPageNav,
+    icon: 'page',
+    url: `${base}/project-page`,
+    match: `${base}/project-page`,
+  };
+
+  const utilityItems: NavItem[] = [
     {
       name: 'audience',
       label: projectMessages.audienceTab,
@@ -122,69 +128,71 @@ const ProjectNavRail = ({ projectId }: Props) => {
     },
   ];
 
+  // "Project page" is a disclosure for the utility items below it (Audience,
+  // Messaging, Events, 360 Input, Settings). It's collapsed by default, but
+  // opens by default when the current route is the project page or one of those
+  // utility routes, so the active item is visible. Users can toggle it freely.
+  const sectionActive = [projectPageItem, ...utilityItems].some((item) =>
+    pathname.includes(item.match)
+  );
+  const [utilitiesExpanded, setUtilitiesExpanded] = useState(sectionActive);
+
+  const renderItem = (item: NavItem, trailing?: React.ReactNode) => {
+    const active = pathname.includes(item.match);
+
+    return (
+      <ItemRow active={active}>
+        <RowLink
+          to={item.url as LinkProps['to']}
+          data-cy={`e2e-new-project-nav-${item.name}`}
+        >
+          <Icon
+            name={item.icon}
+            width="20px"
+            height="20px"
+            fill={active ? colors.primary : colors.coolGrey600}
+          />
+          <Box flexGrow={1} minWidth="0">
+            <Text
+              m="0"
+              fontSize="s"
+              color={active ? 'primary' : 'coolGrey700'}
+              fontWeight={active ? 'semi-bold' : 'normal'}
+            >
+              {formatMessage(item.label)}
+            </Text>
+          </Box>
+          {item.badge}
+        </RowLink>
+        {trailing}
+      </ItemRow>
+    );
+  };
+
   return (
     <Nav as="nav" p="12px" flex="0 0 auto">
       <Box display="flex" flexDirection="column" gap="2px">
-        {items.map((item) => {
-          const active = pathname.includes(item.match);
+        {renderItem(
+          projectPageItem,
+          <ChevronButton
+            type="button"
+            aria-label="toggle-project-utilities"
+            aria-expanded={utilitiesExpanded}
+            onClick={() => setUtilitiesExpanded((v) => !v)}
+          >
+            <Icon
+              name={utilitiesExpanded ? 'chevron-down' : 'chevron-right'}
+              width="16px"
+              height="16px"
+              fill={colors.coolGrey600}
+            />
+          </ChevronButton>
+        )}
 
-          return (
-            <Box key={item.name}>
-              <Link to={item.url as LinkProps['to']}>
-                <ItemRow
-                  active={active}
-                  data-cy={`e2e-new-project-nav-${item.name}`}
-                >
-                  <Icon
-                    name={item.icon}
-                    width="20px"
-                    height="20px"
-                    fill={active ? colors.primary : colors.coolGrey600}
-                  />
-                  <Box flexGrow={1}>
-                    <Text
-                      m="0"
-                      fontSize="s"
-                      color={active ? 'primary' : 'coolGrey700'}
-                      fontWeight={active ? 'semi-bold' : 'normal'}
-                    >
-                      {formatMessage(item.label)}
-                    </Text>
-                  </Box>
-                  {item.badge}
-                  {item.collapsible && (
-                    <ChevronButton
-                      type="button"
-                      aria-label="toggle-project-page"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setProjectPageExpanded((v) => !v);
-                      }}
-                    >
-                      <Icon
-                        name={
-                          projectPageExpanded ? 'chevron-down' : 'chevron-right'
-                        }
-                        width="16px"
-                        height="16px"
-                        fill={colors.coolGrey600}
-                      />
-                    </ChevronButton>
-                  )}
-                </ItemRow>
-              </Link>
-
-              {item.collapsible && projectPageExpanded && (
-                <Box pl="38px" py="6px">
-                  <Text m="0" fontSize="xs" color="textSecondary">
-                    {formatMessage(messages.projectPagePlaceholder)}
-                  </Text>
-                </Box>
-              )}
-            </Box>
-          );
-        })}
+        {utilitiesExpanded &&
+          utilityItems.map((item) => (
+            <Box key={item.name}>{renderItem(item)}</Box>
+          ))}
       </Box>
     </Nav>
   );
