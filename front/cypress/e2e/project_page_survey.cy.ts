@@ -6,6 +6,12 @@ let projectId: string;
 let projectSlug: string;
 
 describe('Existing project with survey', () => {
+  before(() => {
+    cy.getProjectBySlug('charlie-crew-survey').then((project) => {
+      cy.apiAddAboutBox(project.body.data.id);
+    });
+  });
+
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/projects/charlie-crew-survey');
@@ -16,6 +22,7 @@ describe('Existing project with survey', () => {
   // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('#e2e-project-sidebar');
   });
 
   it('shows the survey', () => {
@@ -45,6 +52,7 @@ describe('New project with survey', () => {
 
   before(() => {
     cy.apiCreateProject({
+      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -87,6 +95,7 @@ describe('New project with survey', () => {
   // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('#e2e-project-sidebar');
   });
 
   it('shows event CTA button', () => {
@@ -123,6 +132,7 @@ describe('Timeline project with survey phase', () => {
 
   before(() => {
     cy.apiCreateProject({
+      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -181,6 +191,7 @@ describe('Timeline project with survey phase but not active', () => {
 
   before(() => {
     cy.apiCreateProject({
+      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -229,6 +240,7 @@ describe('Archived single phase project with survey', () => {
 
   before(() => {
     cy.apiCreateProject({
+      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -275,6 +287,7 @@ describe('Embedded survey CTA', () => {
   before(() => {
     cy.setAdminLoginCookie();
     cy.apiCreateProject({
+      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
