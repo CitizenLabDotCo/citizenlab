@@ -3734,6 +3734,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.bySpaceFilter": {
+    "state": "verified",
+    "verified_at": "2026-06-17T13:56:00.910405Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -3753,6 +3758,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItems": {
+    "state": "verified",
+    "verified_at": "2026-06-17T13:56:00.910405Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": {
     "state": "verified",
@@ -3808,6 +3818,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectASpace": {
+    "state": "verified",
+    "verified_at": "2026-06-17T13:56:00.910405Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectAnArea": {
     "state": "verified",
