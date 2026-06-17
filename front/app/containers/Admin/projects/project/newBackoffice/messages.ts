@@ -34,4 +34,20 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.phaseNoEndDate',
     defaultMessage: 'No end date',
   },
+  activities: {
+    id: 'app.containers.Admin.projects.project.activities',
+    defaultMessage: 'Activities',
+  },
+  newActivity: {
+    id: 'app.containers.Admin.projects.project.newActivity',
+    defaultMessage: 'New activity',
+  },
+  activityOngoing: {
+    id: 'app.containers.Admin.projects.project.activityOngoing',
+    defaultMessage: 'Ongoing',
+  },
+  activityHidden: {
+    id: 'app.containers.Admin.projects.project.activityHidden',
+    defaultMessage: 'Hidden',
+  },
 });
