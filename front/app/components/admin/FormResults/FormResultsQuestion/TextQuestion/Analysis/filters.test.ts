@@ -1,11 +1,28 @@
 import {
   getPublishedAtFromFilter,
   getPublishedAtToFilter,
+  isFollowUpFiltered,
   isOtherFiltered,
 } from './utils';
 
 const FIELD_ID = 'abc-123';
 const KEY = `input_custom_${FIELD_ID}` as const;
+
+describe('isFollowUpFiltered', () => {
+  it('is true when scoped to non-empty follow-up text', () => {
+    expect(isFollowUpFiltered({ input_follow_up_not_empty: true })).toBe(true);
+  });
+
+  it('is false when the flag is absent (whole-question insight)', () => {
+    expect(
+      isFollowUpFiltered({ input_custom_field_no_empty_values: true })
+    ).toBe(false);
+  });
+
+  it('is false when filters are undefined', () => {
+    expect(isFollowUpFiltered(undefined)).toBe(false);
+  });
+});
 
 describe('isOtherFiltered', () => {
   it('is true when the question filter is an array containing "other"', () => {

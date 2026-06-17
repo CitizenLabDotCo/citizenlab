@@ -26,6 +26,13 @@ export const isOtherFiltered = (
   return Array.isArray(value) ? value.includes('other') : value === 'other';
 };
 
+// True when an insight (summary or Q&A) was generated scoped to inputs that
+// actually have follow-up text (input_follow_up_not_empty). This is the signal
+// that it belongs in the box shown next to a sentiment question's follow-up
+// responses; insights generated over all scale responders lack it.
+export const isFollowUpFiltered = (filters: IInputsFilterParams | undefined) =>
+  filters?.input_follow_up_not_empty === true;
+
 // Convert all values in the filters object to strings
 // This is necessary because the way we are storing arrays in the URL: we encode them as JSON values
 export const convertFilterValuesToString = (filters?: IInputsFilterParams) => {

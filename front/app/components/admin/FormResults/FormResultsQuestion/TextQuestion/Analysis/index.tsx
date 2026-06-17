@@ -28,7 +28,11 @@ import messages from '../../../messages';
 import { TextResponseSource } from '../utils';
 
 import AnalysisInsights from './AnalysisInsights';
-import { filterForCommunityMonitorQuarter, isOtherFiltered } from './utils';
+import {
+  filterForCommunityMonitorQuarter,
+  isFollowUpFiltered,
+  isOtherFiltered,
+} from './utils';
 
 type Props = {
   customFieldId: string;
@@ -107,10 +111,11 @@ const Analysis = ({
       })
     : insightsData;
 
-  // Only insights generated scoped to the "other" option belong in the box
-  // shown next to the "other" responses. Each insightable's stored filters are
-  // side-loaded on the insights response; drop any (summary or Q&A) generated
-  // over the whole question (e.g. on the Explore page).
+  // Only insights generated scoped to *this box's* responses belong here — the
+  // "other" option for select questions, or non-empty follow-up text for
+  // sentiment questions. Each insightable's stored filters are side-loaded on
+  // the insights response; drop any (summary or Q&A) generated over the whole
+  // question (e.g. on the Explore page).
   const filtersByInsightableId: Record<
     string,
     IInputsFilterParams | undefined
@@ -121,17 +126,20 @@ const Analysis = ({
     }
   });
 
-  const displayedInsights =
-    textResponseSource === 'other_option'
-      ? {
-          data: (insights?.data ?? []).filter((insight) =>
-            isOtherFiltered(
-              filtersByInsightableId[insight.relationships.insightable.data.id],
-              customFieldId
-            )
-          ),
-        }
-      : insights;
+  const requiresScopedInsights =
+    textResponseSource === 'other_option' || textResponseSource === 'follow_up';
+
+  const displayedInsights = requiresScopedInsights
+    ? {
+        data: (insights?.data ?? []).filter((insight) => {
+          const filters =
+            filtersByInsightableId[insight.relationships.insightable.data.id];
+          return textResponseSource === 'other_option'
+            ? isOtherFiltered(filters, customFieldId)
+            : isFollowUpFiltered(filters);
+        }),
+      }
+    : insights;
 
   // Create an analysis if there are no analyses yet
   useEffect(() => {

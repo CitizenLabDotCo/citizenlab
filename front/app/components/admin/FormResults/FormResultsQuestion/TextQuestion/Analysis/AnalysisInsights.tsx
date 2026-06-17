@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IAnalysisData } from 'api/analyses/types';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import { IInsights } from 'api/analysis_insights/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
@@ -61,12 +62,13 @@ const AnalysisInsights = ({
   const selectedInsight = insights?.data[selectedInsightIndex];
 
   // Auto-generate only when there are enough responses to summarise. For the
-  // "other" box that means >10 'other' responses specifically (textResponsesCount),
-  // not all responders to the question (inputCount).
-  const enoughResponses =
-    textResponseSource === 'other_option'
-      ? textResponsesCount > 10
-      : inputCount > 10;
+  // "other" and follow-up boxes that means >10 of *those* responses specifically
+  // (textResponsesCount), not all responders to the question (inputCount).
+  const scopedToTextResponses =
+    textResponseSource === 'other_option' || textResponseSource === 'follow_up';
+  const enoughResponses = scopedToTextResponses
+    ? textResponsesCount > 10
+    : inputCount > 10;
 
   // Create a summary if there are no (qualifying) insights yet
   useEffect(() => {
@@ -98,7 +100,7 @@ const AnalysisInsights = ({
               analysis.relationships.main_custom_field?.data?.id;
 
             if (!data.data.attributes.impossible_reason) {
-              const filters = {
+              const filters: IInputsFilterParams = {
                 input_custom_field_no_empty_values: true,
                 published_at_from: getPublishedAtFromFilter(
                   search.year,
@@ -112,6 +114,9 @@ const AnalysisInsights = ({
               };
               if (textResponseSource === 'other_option' && customFieldId) {
                 filters[`input_custom_${customFieldId}`] = ['other'];
+              }
+              if (textResponseSource === 'follow_up') {
+                filters.input_follow_up_not_empty = true;
               }
               addAnalysisSummary({
                 analysisId: analysis.id,
