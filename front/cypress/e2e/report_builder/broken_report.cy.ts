@@ -110,6 +110,9 @@ describe('Broken report', () => {
   });
 
   after(() => {
+    if(reportPhaseId){
+      cy.apiRemovePhase(reportPhaseId);
+    }
     cy.apiRemoveProject(projectId);
     cy.apiRemoveUser(userId);
   });

@@ -161,8 +161,16 @@ describe('Native survey CTA bar', () => {
   });
 
   after(() => {
-    if (projectId) {
-      cy.apiRemoveProject(projectId);
-    }
-  });
+  if (phaseId) {
+    // delete created ideas in the test, otherwise the project cannot be deleted because of the foreign key constraint
+    // between ideas and phases
+    cy.apiRemoveIdeas().then(() => {
+      if (projectId) {
+        cy.apiRemoveProject(projectId);
+      }
+    });
+  } else if(projectId) {
+    cy.apiRemoveProject(projectId);
+  }
+ });
 });

@@ -4869,6 +4869,16 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:48:26.437439Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:48:26.437439Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.communityMonitor.settings": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
