@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import SectionHeader from '../SectionHeader';
 
 // NOTE: Activities are the back-office face of "floating" (non-timeline)
 // participation methods from the parallel-participation initiative. That
@@ -87,43 +88,57 @@ const NewActivityButton = styled.button`
 const Activities = () => {
   const { formatMessage } = useIntl();
 
+  // Activities is collapsed by default (Timeline phases is the open-by-default
+  // section). Once activities have real routes, open this when one is active.
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <Box p="12px" borderTop={`1px solid ${colors.grey200}`}>
-      <Text m="0 0 8px 4px" fontSize="xs" fontWeight="bold" color="coolGrey600">
-        {formatMessage(messages.activities)}
-      </Text>
+      <SectionHeader
+        title={formatMessage(messages.activities)}
+        icon="list"
+        expanded={expanded}
+        onToggle={() => setExpanded((v) => !v)}
+      />
 
-      <Box display="flex" flexDirection="column">
-        {MOCK_ACTIVITIES.map((activity) => (
-          <Row key={activity.id} data-cy="e2e-new-project-activity-item">
-            <Dot />
-            <Box flexGrow={1} pb="4px">
-              <Box display="flex" alignItems="center" gap="6px">
-                <ActivityTitle>{activity.title}</ActivityTitle>
-                {activity.hidden && (
-                  <Icon
-                    name="eye-off"
-                    width="14px"
-                    height="14px"
-                    fill={colors.coolGrey600}
-                  />
-                )}
-              </Box>
-              <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
-                {activity.meta}
-                {activity.hidden
-                  ? ` · ${formatMessage(messages.activityHidden)}`
-                  : ''}
-              </Text>
-            </Box>
-          </Row>
-        ))}
-      </Box>
+      {expanded && (
+        <>
+          <Box display="flex" flexDirection="column">
+            {MOCK_ACTIVITIES.map((activity) => (
+              <Row key={activity.id} data-cy="e2e-new-project-activity-item">
+                <Dot />
+                <Box flexGrow={1} pb="4px">
+                  <Box display="flex" alignItems="center" gap="6px">
+                    <ActivityTitle>{activity.title}</ActivityTitle>
+                    {activity.hidden && (
+                      <Icon
+                        name="eye-off"
+                        width="14px"
+                        height="14px"
+                        fill={colors.coolGrey600}
+                      />
+                    )}
+                  </Box>
+                  <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
+                    {activity.meta}
+                    {activity.hidden
+                      ? ` · ${formatMessage(messages.activityHidden)}`
+                      : ''}
+                  </Text>
+                </Box>
+              </Row>
+            ))}
+          </Box>
 
-      <NewActivityButton type="button" data-cy="e2e-new-project-new-activity">
-        <Icon name="plus" width="16px" height="16px" fill="currentColor" />
-        {formatMessage(messages.newActivity)}
-      </NewActivityButton>
+          <NewActivityButton
+            type="button"
+            data-cy="e2e-new-project-new-activity"
+          >
+            <Icon name="plus" width="16px" height="16px" fill="currentColor" />
+            {formatMessage(messages.newActivity)}
+          </NewActivityButton>
+        </>
+      )}
     </Box>
   );
 };
