@@ -11,6 +11,8 @@ describe('New project with native survey', () => {
       projectId = result.projectId;
       projectSlug = result.projectSlug;
 
+      cy.apiAddAboutBox(projectId);
+
       cy.apiCreateEvent({
         projectId,
         title: eventTitle,
@@ -32,6 +34,7 @@ describe('New project with native survey', () => {
   // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('#e2e-project-sidebar');
   });
 
   it('shows the survey buttons', () => {
@@ -94,6 +97,7 @@ describe('Native survey CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
+          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
