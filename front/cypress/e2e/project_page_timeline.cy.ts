@@ -17,8 +17,7 @@ describe('Existing Timeline project', () => {
 
     // shows the project header
     cy.get('#e2e-project-header-image');
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
+    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
     cy.get('#e2e-project-see-ideas-button');
     cy.get('#project-ideabutton');
     cy.get('.e2e-project-info')
