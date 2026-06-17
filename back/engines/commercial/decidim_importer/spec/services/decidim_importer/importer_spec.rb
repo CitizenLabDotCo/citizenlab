@@ -102,6 +102,17 @@ RSpec.describe DecidimImporter::Importer do
         expect(select.options.order(:ordering).map { |o| o.title_multiloc['fr-FR'] }).to eq(%w[Oui Non])
       end
 
+      it 'imports a matrix_single question as a matrix_linear_scale with scale labels and placeholder rows' do
+        survey_phase = project.phases.find_by(participation_method: 'native_survey')
+        matrix = survey_phase.custom_form.custom_fields.find_by(input_type: 'matrix_linear_scale')
+
+        expect(matrix).to be_present
+        expect(matrix.maximum).to eq(2)
+        expect(matrix.linear_scale_label_1_multiloc['fr-FR']).to eq('Souvent')
+        expect(matrix.matrix_statements.order(:ordering).map(&:key)).to eq(%w[statement_1 statement_2])
+        expect(matrix.matrix_statements.first.title_multiloc).to eq('fr-FR' => '[1]')
+      end
+
       it 'backfills phase permissions so a native_survey phase has its posting permission' do
         survey_phase = project.phases.find_by(participation_method: 'native_survey')
         # Without this the admin projects endpoint 500s (posting_permission delegated to nil).

@@ -19,6 +19,7 @@ module DecidimImporter
       custom_form
       custom_field
       custom_field_option
+      custom_field_matrix_statement
       idea
       ideas_phase
       comment

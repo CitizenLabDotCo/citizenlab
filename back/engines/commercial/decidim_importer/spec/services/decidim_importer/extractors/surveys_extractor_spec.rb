@@ -46,7 +46,7 @@ RSpec.describe DecidimImporter::Extractors::SurveysExtractor do
       question(14, 'sorting'),
       question(15, 'files'),
       question(16, 'title_and_description'),
-      question(17, 'matrix_single')
+      question(17, 'matrix_multiple')
     ])], ref_map, locale_mapper: mapper, primary_locale: 'fr-FR')
     extractor.run
 
@@ -58,14 +58,43 @@ RSpec.describe DecidimImporter::Extractors::SurveysExtractor do
     expect(by_key['field_14']['input_type']).to eq('ranking')
     expect(by_key['field_15']['input_type']).to eq('file_upload')
     expect(by_key['field_16']['input_type']).to eq('page')
-    expect(by_key).not_to have_key('field_17') # matrix_single has no template-safe equivalent
+    expect(by_key).not_to have_key('field_17') # matrix_multiple has no native-survey equivalent
 
     field11 = records('custom_field').find { |f| f.attributes['key'] == 'field_11' }
     field11_options = records('custom_field_option')
       .select { |o| o.attributes['custom_field_ref'].equal?(field11.attributes) }
     expect(field11_options.map { |o| o.attributes['title_multiloc']['fr-FR'] }).to eq(%w[Oui Non])
 
-    expect(extractor.skipped.first[:reason]).to include('matrix_single')
+    expect(extractor.skipped.first[:reason]).to include('matrix_multiple')
+  end
+
+  it 'maps matrix_single to a matrix_linear_scale: columns as scale points, rows as placeholders' do
+    columns = [{ 'id' => 1, 'body' => { 'fr' => 'Oui' } }, { 'id' => 2, 'body' => { 'fr' => 'Non' } }]
+    run([question(20, 'matrix_single', 'matrix_rows_count' => 3, 'answer_options' => columns)])
+
+    field = records('custom_field').find { |f| f.attributes['key'] == 'field_20' }
+    expect(field.attributes['input_type']).to eq('matrix_linear_scale')
+    expect(field.attributes['maximum']).to eq(2)
+    expect(field.attributes['linear_scale_label_1_multiloc']).to eq('fr-FR' => 'Oui')
+    expect(field.attributes['linear_scale_label_2_multiloc']).to eq('fr-FR' => 'Non')
+
+    statements = records('custom_field_matrix_statement')
+      .select { |s| s.attributes['custom_field_ref'].equal?(field.attributes) }
+    expect(statements.map { |s| s.attributes['key'] }).to eq(%w[statement_1 statement_2 statement_3])
+    # Row text isn't in the export, so rows are bracketed placeholders to relabel.
+    expect(statements.map { |s| s.attributes['title_multiloc'] })
+      .to eq([{ 'fr-FR' => '[1]' }, { 'fr-FR' => '[2]' }, { 'fr-FR' => '[3]' }])
+  end
+
+  it 'skips a matrix whose scale size is outside the supported range' do
+    extractor = described_class.new(
+      [component([question(21, 'matrix_single', 'answer_options' => [{ 'id' => 1, 'body' => { 'fr' => 'x' } }])])],
+      ref_map, locale_mapper: mapper, primary_locale: 'fr-FR'
+    )
+    extractor.run
+
+    expect(records('custom_field').map { |f| f.attributes['key'] }).not_to include('field_21')
+    expect(extractor.skipped.first[:reason]).to include('matrix scale')
   end
 
   it 'skips a survey whose phase was not created' do

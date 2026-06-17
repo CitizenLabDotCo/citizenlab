@@ -10,9 +10,10 @@ module DecidimImporter
     # the form off it. A Go Vocal survey form opens with a start `page` and closes with an end `page`
     # (mirroring `ParticipationMethod::NativeSurvey#default_fields`), with the questions in between.
     #
-    # Question types that have no faithful native-survey equivalent the template can carry — notably
-    # `matrix_single` (needs matrix-statement records with no template serializer) — are skipped and
-    # logged rather than dropped silently.
+    # `matrix_single` questions become `matrix_linear_scale` fields (answer options → scale points,
+    # rows → matrix statements); because the export omits the row *text*, the rows are imported as
+    # placeholders to relabel. Question types with no faithful native-survey equivalent (e.g.
+    # `matrix_multiple`) are skipped and logged rather than dropped silently.
     class SurveysExtractor < BaseExtractor
       QUESTION_TYPE_TO_INPUT_TYPE = {
         'short_answer' => 'text',
@@ -21,9 +22,13 @@ module DecidimImporter
         'multiple_option' => 'multiselect',
         'sorting' => 'ranking',
         'files' => 'file_upload',
-        'title_and_description' => 'page'
+        'title_and_description' => 'page',
+        'matrix_single' => 'matrix_linear_scale'
       }.freeze
       OPTION_INPUT_TYPES = %w[select multiselect ranking].freeze
+      MATRIX_INPUT_TYPE = 'matrix_linear_scale'
+      # Go Vocal linear/matrix scales support 2–11 scale points.
+      LINEAR_SCALE_RANGE = (2..11)
 
       attr_reader :skipped
 
@@ -75,12 +80,65 @@ module DecidimImporter
           return false
         end
 
+        return register_matrix_question(form, component_uid, question, ordering) if input_type == MATRIX_INPUT_TYPE
+
         field = Record.new('custom_field', question_attributes(input_type, question, ordering))
         field.reference('resource', form)
         ref_map.register("#{component_uid}-field-#{question['id']}", field)
 
         build_options(field, component_uid, question) if OPTION_INPUT_TYPES.include?(input_type)
         true
+      end
+
+      # Decidim `matrix_single` → Go Vocal `matrix_linear_scale`: the answer options become the scale
+      # points (labels + `maximum`), and the rows become matrix statements. The export omits the row
+      # *text* (only a `matrix_rows_count`), so the rows are created as placeholders for an admin to
+      # relabel once the real row content is available.
+      def register_matrix_question(form, component_uid, question, ordering)
+        columns = Array(question['answer_options'])
+        unless LINEAR_SCALE_RANGE.cover?(columns.size)
+          @skipped << { uid: "#{component_uid}-q#{question['id']}",
+                        reason: "matrix scale of #{columns.size} outside #{LINEAR_SCALE_RANGE}" }
+          return false
+        end
+
+        field = Record.new('custom_field', matrix_attributes(question, columns, ordering))
+        field.reference('resource', form)
+        ref_map.register("#{component_uid}-field-#{question['id']}", field)
+
+        build_matrix_statements(field, component_uid, question)
+        true
+      end
+
+      def matrix_attributes(question, columns, ordering)
+        attributes = question_attributes(MATRIX_INPUT_TYPE, question, ordering)
+        attributes['maximum'] = columns.size
+        columns.each_with_index do |column, index|
+          attributes["linear_scale_label_#{index + 1}_multiloc"] = multiloc(column['body'])
+        end
+        attributes
+      end
+
+      # Placeholder rows: the export carries the row count but not the row labels. One statement per
+      # row (at least one), titled with a bracketed index so it's obviously a placeholder to relabel.
+      def build_matrix_statements(field, component_uid, question)
+        count = [present_value(question['matrix_rows_count']).to_i, 1].max
+        locales = matrix_statement_locales(question)
+        count.times do |index|
+          attributes = {
+            'key' => "statement_#{index + 1}",
+            'ordering' => index,
+            'title_multiloc' => locales.index_with { "[#{index + 1}]" }
+          }
+          record = Record.new('custom_field_matrix_statement', attributes)
+          record.reference('custom_field', field)
+          ref_map.register("#{component_uid}-statement-#{question['id']}-#{index + 1}", record)
+        end
+      end
+
+      def matrix_statement_locales(question)
+        locales = multiloc(question['body']).keys
+        locales.empty? ? [primary_locale] : locales
       end
 
       def question_attributes(input_type, question, ordering)
