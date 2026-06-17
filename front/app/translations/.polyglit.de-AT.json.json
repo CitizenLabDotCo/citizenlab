@@ -11699,6 +11699,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.admin.ContentBuilder.richTextMultiloc": {
+    "state": "verified",
+    "verified_at": "2026-06-17T09:27:03.034167Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.admin.ContentBuilder.selectedProjects": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
