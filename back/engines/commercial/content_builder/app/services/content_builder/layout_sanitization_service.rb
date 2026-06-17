@@ -18,7 +18,7 @@ module ContentBuilder
           end
         elsif html_multiloc.is_a?(Hash)
           html_multiloc.transform_values! do |html|
-            HtmlBlockSanitizer.new.sanitize(html) if html
+            html_block_sanitizer.sanitize(html) if html
           end
         end
 
@@ -28,6 +28,10 @@ module ContentBuilder
 
     def html_sanitizer
       @html_sanitizer ||= ::SanitizationService.new
+    end
+
+    def html_block_sanitizer
+      @html_block_sanitizer ||= HtmlBlockSanitizerService.new
     end
   end
 end
