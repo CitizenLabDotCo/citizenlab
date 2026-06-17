@@ -57,6 +57,10 @@ module EmailCampaigns
       object.can_be_disabled?
     end
 
+    attribute :channel do |object|
+      object.channel
+    end
+
     attribute :schedule, if: proc { |object|
       schedulable?(object) && !object.manual?
     }
@@ -78,7 +82,7 @@ module EmailCampaigns
     attribute :delivery_stats, if: proc { |object|
       object.manual? && object.sent?
     } do |object|
-      Delivery.status_counts(object.id)
+      sms?(object) ? Sms::Delivery.status_counts(object.id) : Delivery.status_counts(object.id)
     end
 
     attribute :sender, if: proc { |object|
@@ -86,8 +90,10 @@ module EmailCampaigns
     }
 
     attribute :deliveries_count, if: proc { |object|
-      trackable? object
-    }
+      trackable?(object) || sms?(object)
+    } do |object|
+      sms?(object) ? object.sms_deliveries.count : object.deliveries_count
+    end
 
     # For customised emails
     attribute :reply_to, :subject_multiloc, :title_multiloc, :button_text_multiloc, if: proc { |object|
@@ -95,9 +101,13 @@ module EmailCampaigns
     }
 
     attribute :body_multiloc, if: proc { |object|
-      content_configurable? object
+      content_configurable?(object) || sms?(object)
     } do |object|
-      TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
+      if sms?(object)
+        object.body_multiloc
+      else
+        TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
+      end
     end
 
     attribute :intro_multiloc, if: proc { |object|
@@ -148,6 +158,10 @@ module EmailCampaigns
 
     def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
+    end
+
+    def self.sms?(object)
+      object.channel == :sms
     end
 
     def self.previewable?(object)

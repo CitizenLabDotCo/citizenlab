@@ -117,7 +117,7 @@ module EmailCampaigns
     def apply_recipient_filters(activity: nil, time: nil)
       current_class = self.class
 
-      users_scope = User.where.not(email: nil)
+      users_scope = recipients_base_scope
       while current_class <= ::EmailCampaigns::Campaign
         users_scope = current_class.recipient_filters.inject(users_scope) do |users_scope, action_symbol|
           send(action_symbol, users_scope, activity: activity, time: time)
@@ -182,6 +182,12 @@ module EmailCampaigns
       false
     end
 
+    # Communication channel for this campaign. Stand-in for a future DB column;
+    # SMS campaigns override this to :sms.
+    def channel
+      :email
+    end
+
     def activity_context(_activity)
       nil
     end
@@ -195,6 +201,12 @@ module EmailCampaigns
     end
 
     protected
+
+    # The starting set of users that recipient filters narrow down. SMS
+    # campaigns override this to seed from users with a phone number.
+    def recipients_base_scope
+      User.where.not(email: nil)
+    end
 
     def set_enabled
       self.enabled = true if enabled.nil?

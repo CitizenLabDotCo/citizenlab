@@ -265,6 +265,28 @@ resource 'Campaigns' do
             field: :body_multiloc
         end
       end
+
+      context 'SMS campaigns' do
+        before do
+          SettingsService.new.activate_feature!('sms', settings: {
+            'twilio_account_sid' => 'AC_test',
+            'twilio_auth_token' => 'token',
+            'twilio_phone_number' => '+15005550006'
+          })
+        end
+
+        let(:campaign_name) { 'sms_manual' }
+        let(:body_multiloc) { { 'en' => 'A short SMS update from your city.' } }
+
+        example_request 'Create an SMS campaign' do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :channel)).to eq 'sms'
+          expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+          expect(json_response.dig(:data, :attributes, :subject_multiloc)).to be_nil
+          expect(json_response.dig(:data, :attributes, :sender)).to be_nil
+        end
+      end
     end
 
     post 'web_api/v1/projects/:project_id/campaigns' do
@@ -557,6 +579,25 @@ resource 'Campaigns' do
         do_request
         assert_status 422
         expect(json_response_body).to include_response_error(:base, 'already_sent')
+      end
+
+      context 'SMS campaign' do
+        before do
+          SettingsService.new.activate_feature!('sms', settings: {
+            'twilio_account_sid' => 'AC_test',
+            'twilio_auth_token' => 'token',
+            'twilio_phone_number' => '+15005550006'
+          })
+          create(:user, phone_number: '+14155552671')
+        end
+
+        let(:campaign) { create(:sms_manual_campaign) }
+
+        example 'Send out the SMS campaign now' do
+          expect { do_request }.to have_enqueued_job(Sms::SendJob)
+          assert_status 200
+          expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
+        end
       end
     end
 

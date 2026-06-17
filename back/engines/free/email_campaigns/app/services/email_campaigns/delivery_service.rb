@@ -59,6 +59,7 @@ module EmailCampaigns
       @campaign_classes ||= begin
         classes = CAMPAIGN_CLASSES.deep_dup
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+        classes << Campaigns::SmsManual if AppConfiguration.instance.feature_activated?('sms')
         classes
       end
     end
@@ -97,6 +98,8 @@ module EmailCampaigns
     end
 
     def send_preview(campaign, recipient)
+      return if campaign.channel == :sms # SMS campaigns have no preview (no mailer)
+
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
       else
@@ -110,6 +113,8 @@ module EmailCampaigns
     end
 
     def preview_email(campaign, recipient)
+      return {} if campaign.channel == :sms
+
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
       else
@@ -182,7 +187,12 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
+      case campaign.channel
+      when :sms
+        send_command_sms(campaign, command)
+      else
+        send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
+      end
     end
 
     # This method is triggered when the given sending command should be sent
@@ -192,6 +202,25 @@ module EmailCampaigns
         .with(campaign: campaign, command: command)
         .campaign_mail
         .deliver_later(wait: command[:delay] || 0)
+    end
+
+    # Dispatches the command over SMS. The Sms::Delivery is created synchronously
+    # here (so the campaign's sent? guard sees it immediately), then the actual
+    # provider send happens asynchronously in Sms::SendJob.
+    def send_command_sms(campaign, command)
+      recipient = command[:recipient]
+      return if recipient.phone_number.blank?
+
+      body = MultilocService.new.t(command[:body_multiloc], recipient.locale)
+      return if body.blank?
+
+      delivery = Sms::Sender.new.create_delivery(
+        to: recipient.phone_number,
+        body: body,
+        user_id: recipient.id,
+        campaign_id: campaign.id
+      )
+      Sms::SendJob.perform_later(delivery.id)
     end
 
     def generate_commands(campaign, recipient, options = {})

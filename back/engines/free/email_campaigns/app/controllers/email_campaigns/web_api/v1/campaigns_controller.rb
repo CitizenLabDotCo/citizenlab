@@ -129,21 +129,24 @@ module EmailCampaigns
     end
 
     def deliveries
-      @deliveries = @campaign.deliveries
+      relation = @campaign.channel == :sms ? @campaign.sms_deliveries : @campaign.deliveries
+      @deliveries = relation
         .includes(:user)
         .order(:created_at)
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
+      serializer = @campaign.channel == :sms ? ::WebApi::V1::Sms::DeliverySerializer : WebApi::V1::DeliverySerializer
       render json: linked_json(
         @deliveries,
-        WebApi::V1::DeliverySerializer,
+        serializer,
         params: jsonapi_serializer_params,
         include: [:user]
       )
     end
 
     def stats
-      render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
+      counts = @campaign.channel == :sms ? Sms::Delivery.status_counts(@campaign.id) : EmailCampaigns::Delivery.status_counts(@campaign.id)
+      render json: raw_json(counts)
     end
 
     def supported_campaign_names
@@ -176,7 +179,17 @@ module EmailCampaigns
     end
 
     def campaign_params
+      return sms_campaign_params if @campaign.channel == :sms
+
       @campaign.manual? ? manual_campaign_params : automated_campaign_params
+    end
+
+    def sms_campaign_params
+      params.require(:campaign).permit(
+        :enabled,
+        group_ids: [],
+        body_multiloc: I18n.available_locales
+      )
     end
 
     def manual_campaign_params

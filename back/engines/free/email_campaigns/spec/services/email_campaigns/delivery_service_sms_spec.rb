@@ -1,0 +1,42 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe EmailCampaigns::DeliveryService do
+  subject(:service) { described_class.new }
+
+  before do
+    SettingsService.new.activate_feature!('sms', settings: {
+      'twilio_account_sid' => 'AC_test',
+      'twilio_auth_token' => 'token',
+      'twilio_phone_number' => '+15005550006'
+    })
+  end
+
+  describe '#send_now (SMS channel)' do
+    let(:campaign) { create(:sms_manual_campaign) }
+    let!(:recipient) { create(:user, phone_number: '+14155552671', locale: 'en') }
+
+    before { create(:user, phone_number: nil) } # phone-less user is not a recipient
+
+    it 'synchronously creates a pending campaign-linked Sms::Delivery per phone-having recipient' do
+      expect { service.send_now(campaign) }.to change(Sms::Delivery, :count).by(1)
+
+      delivery = campaign.sms_deliveries.sole
+      expect(delivery).to have_attributes(
+        user_id: recipient.id,
+        phone_number: '+14155552671',
+        body: 'A short SMS update from your city.',
+        status: 'pending'
+      )
+    end
+
+    it 'enqueues an Sms::SendJob for the created delivery and marks the campaign sent' do
+      service.send_now(campaign)
+
+      delivery = campaign.sms_deliveries.sole
+      expect(Sms::SendJob).to have_been_enqueued.with(delivery.id).exactly(:once)
+      expect(campaign.sent?).to be(true)
+    end
+  end
+end
