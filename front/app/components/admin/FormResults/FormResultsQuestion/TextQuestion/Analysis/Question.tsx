@@ -19,8 +19,6 @@ import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 
-import { convertFilterValuesToString } from './utils';
-
 const Question = ({
   questionId,
   analysisId,
@@ -124,7 +122,7 @@ const Question = ({
             to="/admin/projects/$projectId/analysis/$analysisId"
             params={{ projectId, analysisId }}
             search={{
-              ...convertFilterValuesToString(filters),
+              ...filters,
               phase_id: phaseId,
             }}
           >
