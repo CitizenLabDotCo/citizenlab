@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import {
   Icon,
@@ -17,6 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
+import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { ItemMenu, StyledBox, StyledText } from './styles';
 
 const StyledIcon = styled(Icon)`
@@ -28,7 +29,8 @@ const StyledIcon = styled(Icon)`
 export const SupportMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { formatMessage } = useIntl();
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const forceCollapsed = useContext(SidebarCollapsedContext);
+  const isSmallerThanTablet = useBreakpoint('tablet') || forceCollapsed;
   const { data: authUser } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
 
