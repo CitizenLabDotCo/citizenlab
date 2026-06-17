@@ -13509,6 +13509,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:47:10.868782Z",
+    "verified_by": "Cindy EB"
+  },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",

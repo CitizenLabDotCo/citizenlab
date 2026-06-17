@@ -32,7 +32,8 @@ const Messenger = ({
   };
 
   const facebookMethod = idMethods?.data.find(
-    (method): method is IDFacebookMethod => method.attributes.name === 'facebook'
+    (method): method is IDFacebookMethod =>
+      method.attributes.name === 'facebook'
   );
   const facebookAppId = facebookMethod?.attributes.app_id;
   const messengerHref = facebookAppId
