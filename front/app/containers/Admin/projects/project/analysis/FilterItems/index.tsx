@@ -79,6 +79,9 @@ const translationKeys: Record<
   input_custom_field_no_empty_values: {
     translationKey: messages.emptyCustomFields,
   },
+  input_follow_up_not_empty: {
+    translationKey: messages.followUpNotEmpty,
+  },
   limit: {
     translationKey: messages.limit,
     predicate: '=',

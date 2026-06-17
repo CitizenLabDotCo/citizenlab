@@ -15,8 +15,12 @@ import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
+import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
+import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -29,6 +33,8 @@ import { TextResponseSource } from '../utils';
 
 import AnalysisInsights from './AnalysisInsights';
 import {
+  buildScopedSummaryFilters,
+  buildSummaryBaseFilters,
   filterForCommunityMonitorQuarter,
   isFollowUpFiltered,
   isOtherFiltered,
@@ -55,6 +61,14 @@ const Analysis = ({
   const { mutate: addAnalysis, isLoading: isAddAnalysisLoading } =
     useAddAnalysis();
   const { mutate: updateAnalysis, isLoading } = useUpdateAnalysis();
+  const { mutate: addAnalysisSummary, isLoading: isAddSummaryLoading } =
+    useAddAnalysisSummary();
+  const { mutate: preCheckSummary, isLoading: isPreCheckLoading } =
+    useAddAnalysisSummaryPreCheck();
+  const largeSummariesAllowed = useFeatureFlag({
+    name: 'large_summaries',
+    onlyCheckAllowed: true,
+  });
 
   const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
     strict: false,
@@ -206,6 +220,54 @@ const Analysis = ({
     }
   };
 
+  // Generates the scoped ('other'/follow-up) summary in place, creating the
+  // analysis first if it doesn't exist yet. Used by the "Summarize text
+  // responses" button on scoped boxes when no qualifying summary exists.
+  const generateScopedSummary = (analysisId: string) => {
+    preCheckSummary(
+      {
+        analysisId,
+        filters: buildSummaryBaseFilters({
+          year: search.year,
+          quarter: search.quarter,
+        }),
+      },
+      {
+        onSuccess: (data) => {
+          if (data.data.attributes.impossible_reason) return;
+          addAnalysisSummary({
+            analysisId,
+            filters: buildScopedSummaryFilters({
+              year: search.year,
+              quarter: search.quarter,
+              largeSummariesAllowed,
+              textResponseSource,
+              customFieldId,
+            }),
+          });
+        },
+      }
+    );
+  };
+
+  const handleSummarize = () => {
+    if (relevantAnalysis?.id) {
+      generateScopedSummary(relevantAnalysis.id);
+    } else {
+      addAnalysis(
+        {
+          projectId: phaseId ? undefined : projectId,
+          phaseId,
+          mainCustomField: customFieldId,
+        },
+        { onSuccess: (response) => generateScopedSummary(response.data.id) }
+      );
+    }
+  };
+
+  const isSummarizing =
+    isAddAnalysisLoading || isPreCheckLoading || isAddSummaryLoading;
+
   if (isAnalysesLoading || (relevantAnalysis?.id && isInsightsLoading)) {
     return <Spinner />;
   }
@@ -214,14 +276,26 @@ const Analysis = ({
     <Box position="relative">
       {noInsights && (
         <Box display="flex">
-          <ButtonWithLink
-            processing={isAddAnalysisLoading}
-            onClick={goToAnalysis}
-            buttonStyle="secondary-outlined"
-            icon="stars"
-          >
-            {formatMessage(messages.createAIAnalysis)}
-          </ButtonWithLink>
+          {requiresScopedInsights ? (
+            <ButtonWithLink
+              processing={isSummarizing}
+              disabled={textResponsesCount === 0}
+              onClick={handleSummarize}
+              buttonStyle="secondary-outlined"
+              icon="stars"
+            >
+              {formatMessage(messages.summarizeTextResponses)}
+            </ButtonWithLink>
+          ) : (
+            <ButtonWithLink
+              processing={isAddAnalysisLoading}
+              onClick={goToAnalysis}
+              buttonStyle="secondary-outlined"
+              icon="stars"
+            >
+              {formatMessage(messages.createAIAnalysis)}
+            </ButtonWithLink>
+          )}
         </Box>
       )}
       {showAnalysisInsights && (

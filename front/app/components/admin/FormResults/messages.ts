@@ -149,6 +149,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysis.createAIAnalysis',
     defaultMessage: 'Open AI analysis',
   },
+  summarizeTextResponses: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.summarizeTextResponses',
+    defaultMessage: 'Summarize text responses',
+  },
   openAnalysisActions: {
     id: 'app.containers.Admin.projects.project.survey.analysis.openAnalysisActions',
     defaultMessage: 'Open analysis actions',
