@@ -17,6 +17,8 @@ export interface ICampaignData {
   attributes: {
     campaign_name: CampaignName;
     campaign_description_multiloc: Multiloc;
+    // Communication channel. 'email' for all email campaigns, 'sms' for SMS campaigns.
+    channel: 'email' | 'sms';
     // Only undefined for invite_received?
     enabled: boolean;
     can_be_disabled: boolean;
@@ -88,8 +90,14 @@ export interface EditableRegion {
   allow_blank_locales: boolean;
 }
 
+export interface SmsCampaignFormValues {
+  body_multiloc: Multiloc;
+  group_ids?: string[];
+}
+
 type CampaignUpdate =
   | CampaignFormValues
+  | SmsCampaignFormValues
   | {
       enabled: boolean;
     };
@@ -157,6 +165,7 @@ type AdminModeratorCampaignName =
 export type CampaignName =
   | 'manual'
   | 'manual_project_participants'
+  | 'sms_manual'
   | 'invite_received'
   | 'invite_reminder'
   | RegisterUserCampaignName

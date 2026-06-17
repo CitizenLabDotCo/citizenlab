@@ -39,4 +39,28 @@ describe EmailCampaigns::DeliveryService do
       expect(campaign.sent?).to be(true)
     end
   end
+
+  describe '#send_preview (SMS channel)' do
+    let(:campaign) { create(:sms_manual_campaign) }
+    let(:previewer) { create(:admin, phone_number: '+14155552672', locale: 'en') }
+
+    it 'sends a test SMS to the previewer without linking it to the campaign' do
+      expect { service.send_preview(campaign, previewer) }
+        .to change(Sms::Delivery, :count).by(1)
+
+      delivery = Sms::Delivery.last
+      expect(delivery).to have_attributes(
+        user_id: previewer.id,
+        phone_number: '+14155552672',
+        campaign_id: nil
+      )
+      expect(campaign.sent?).to be(false)
+      expect(Sms::SendJob).to have_been_enqueued.with(delivery.id)
+    end
+
+    it 'raises Sms::Error when the previewer has no phone number' do
+      previewer.update_columns(phone_number: nil)
+      expect { service.send_preview(campaign, previewer) }.to raise_error(Sms::Error)
+    end
+  end
 end

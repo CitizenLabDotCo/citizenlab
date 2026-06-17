@@ -323,4 +323,78 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.scheduled',
     defaultMessage: 'Scheduled',
   },
+  tabSms: {
+    id: 'app.containers.Admin.messaging.tabSms',
+    defaultMessage: 'SMS',
+  },
+  smsCampaigns: {
+    id: 'app.containers.Admin.messaging.smsCampaigns',
+    defaultMessage: 'SMS',
+  },
+  smsCampaignsDescription: {
+    id: 'app.containers.Admin.messaging.smsCampaignsDescription',
+    defaultMessage: 'Send text messages to your participants.',
+  },
+  noSmsCampaignsHeader: {
+    id: 'app.containers.Admin.messaging.noSmsCampaignsHeader',
+    defaultMessage: 'Send your first text message',
+  },
+  noSmsCampaignsDescription: {
+    id: 'app.containers.Admin.messaging.noSmsCampaignsDescription',
+    defaultMessage:
+      'Reach participants who shared a phone number with a short text message.',
+  },
+  addSmsCampaignButton: {
+    id: 'app.containers.Admin.messaging.addSmsCampaignButton',
+    defaultMessage: 'Create SMS',
+  },
+  addSmsCampaignTitle: {
+    id: 'app.containers.Admin.messaging.addSmsCampaignTitle',
+    defaultMessage: 'New SMS message',
+  },
+  fieldSmsBody: {
+    id: 'app.containers.Admin.messaging.fieldSmsBody',
+    defaultMessage: 'Message',
+  },
+  fieldSmsBodyError: {
+    id: 'app.containers.Admin.messaging.fieldSmsBodyError',
+    defaultMessage: 'Provide a message for all languages',
+  },
+  manageButtonLabel: {
+    id: 'app.containers.Admin.messaging.manageButtonLabel',
+    defaultMessage: 'Manage',
+  },
+  confirmSendSmsHeader: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsHeader',
+    defaultMessage:
+      'Send this text message to all participants with a phone number?',
+  },
+  editSmsCampaignTitle: {
+    id: 'app.containers.Admin.messaging.editSmsCampaignTitle',
+    defaultMessage: 'Edit SMS message',
+  },
+  sendSmsPreviewButton: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewButton',
+    defaultMessage: 'Send a preview',
+  },
+  sendSmsPreviewTooltip: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewTooltip',
+    defaultMessage: 'Sends a test text message to your own phone number.',
+  },
+  smsPreviewSentConfirmation: {
+    id: 'app.containers.Admin.messaging.smsPreviewSentConfirmation',
+    defaultMessage: 'A test text message was sent to your phone number.',
+  },
+  deleteSmsButton: {
+    id: 'app.containers.Admin.messaging.deleteSmsButton',
+    defaultMessage: 'Delete',
+  },
+  deleteSmsConfirmation: {
+    id: 'app.containers.Admin.messaging.deleteSmsConfirmation',
+    defaultMessage: 'Are you sure you want to delete this SMS message?',
+  },
+  cancelButton: {
+    id: 'app.containers.Admin.messaging.cancelButton',
+    defaultMessage: 'Cancel',
+  },
 });

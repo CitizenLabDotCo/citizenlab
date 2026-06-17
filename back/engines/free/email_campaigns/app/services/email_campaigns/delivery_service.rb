@@ -98,7 +98,7 @@ module EmailCampaigns
     end
 
     def send_preview(campaign, recipient)
-      return if campaign.channel == :sms # SMS campaigns have no preview (no mailer)
+      return send_sms_preview(campaign, recipient) if campaign.channel == :sms
 
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
@@ -110,6 +110,18 @@ module EmailCampaigns
       commands.each do |command|
         process_command(campaign, command)
       end
+    end
+
+    def send_sms_preview(campaign, recipient)
+      body = MultilocService.new.t(campaign.body_multiloc, recipient.locale)
+      return if body.blank?
+
+      delivery = Sms::Sender.new.create_delivery(
+        to: recipient.phone_number,
+        body: body,
+        user_id: recipient.id
+      )
+      Sms::SendJob.perform_later(delivery.id)
     end
 
     def preview_email(campaign, recipient)
