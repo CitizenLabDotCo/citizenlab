@@ -31,6 +31,12 @@ const Text = styled.div`
   ${media.tablet`
     display: none;
   `}
+
+  /* Force-collapsed (icon-only) rail, e.g. in the redesigned project back
+   * office — the ancestor nav carries the .collapsed class. */
+  .collapsed & {
+    display: none;
+  }
 `;
 
 const MenuItemLink = typedStyled(Link)`
@@ -80,6 +86,11 @@ const MenuItemLink = typedStyled(Link)`
     width: 56px;
     padding-right: 5px;
   `}
+
+  .collapsed & {
+    width: 56px;
+    padding-right: 5px;
+  }
 `;
 
 type Props = {
