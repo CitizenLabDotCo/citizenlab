@@ -39,4 +39,12 @@ export default defineMessages({
     id: 'app.containers.Admin.communityMonitor.quarter',
     defaultMessage: 'Quarter',
   },
+  scoreOutOfFive: {
+    id: 'app.containers.Admin.communityMonitor.scoreOutOfFive',
+    defaultMessage: '{score} out of 5. ',
+  },
+  scoreNotAvailable: {
+    id: 'app.containers.Admin.communityMonitor.scoreNotAvailable',
+    defaultMessage: 'Data not found. ',
+  },
 });

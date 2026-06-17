@@ -933,6 +933,8 @@
   "app.containers.Admin.communityMonitor.quarterChartLabel": "س{quarter} {year}",
   "app.containers.Admin.communityMonitor.quarterYearCondensed": "س{quarterNumber} {year}",
   "app.containers.Admin.communityMonitor.reports": "التقارير",
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": "لم يتم العثور على بيانات.",
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": "{score} من 5.",
   "app.containers.Admin.communityMonitor.settings": "إعدادات",
   "app.containers.Admin.communityMonitor.settings.acceptingSubmissions": "استطلاع رأي المجتمع يقبل المشاركات.",
   "app.containers.Admin.communityMonitor.settings.accessRights3": "بيانات الوصول والمستخدم",
