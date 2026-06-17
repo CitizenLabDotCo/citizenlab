@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe WebApi::V1::McpAuthorizationsController do
+describe McpServer::WebApi::V1::McpAuthorizationsController do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:app1) do

@@ -4,8 +4,8 @@ require 'rails_helper'
 
 # Request specs for the SPA-facing OAuth consent endpoint that replaced
 # Doorkeeper's HTML authorize screen. See
-# WebApi::V1::OauthAuthorizationsController.
-describe WebApi::V1::OauthAuthorizationsController do
+# McpServer::WebApi::V1::OauthAuthorizationsController.
+describe McpServer::WebApi::V1::OauthAuthorizationsController do
   let(:user) { create(:admin) }
   let(:application) do
     Doorkeeper::Application.create!(
