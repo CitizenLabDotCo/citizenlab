@@ -6,6 +6,7 @@
 #
 #  id            :uuid             not null, primary key
 #  user_id       :uuid
+#  campaign_id   :uuid
 #  phone_number  :string           not null
 #  body          :text             not null
 #  message_sid   :string
@@ -16,10 +17,12 @@
 #
 # Indexes
 #
-#  index_sms_deliveries_on_user_id  (user_id)
+#  index_sms_deliveries_on_campaign_id  (campaign_id)
+#  index_sms_deliveries_on_user_id      (user_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (campaign_id => email_campaigns_campaigns.id) ON DELETE => nullify
 #  fk_rails_...  (user_id => users.id)
 #
 module Sms
@@ -34,6 +37,8 @@ module Sms
     TERMINAL_STATUSES = %w[delivered undelivered failed].freeze
 
     belongs_to :user, optional: true
+    # The campaign that triggered this SMS, when sent as part of one.
+    belongs_to :campaign, class_name: 'EmailCampaigns::Campaign', optional: true
 
     validates :phone_number, presence: true
     validates :body, presence: true

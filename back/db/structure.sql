@@ -75,6 +75,7 @@ ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS fk_rails
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS fk_rails_ab74281536;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_aaf389f138;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a9aa810ecf;
+ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS fk_rails_a7e0804608;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_a7a91f1df3;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_a5c3527604;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_a3793c8571;
@@ -217,6 +218,7 @@ DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_user_id;
+DROP INDEX IF EXISTS public.index_sms_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
@@ -3702,6 +3704,7 @@ CREATE TABLE public.schema_migrations (
 CREATE TABLE public.sms_deliveries (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id uuid,
+    campaign_id uuid,
     phone_number character varying NOT NULL,
     body text NOT NULL,
     message_sid character varying,
@@ -7179,6 +7182,13 @@ CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_r
 
 
 --
+-- Name: index_sms_deliveries_on_campaign_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_deliveries_on_campaign_id ON public.sms_deliveries USING btree (campaign_id);
+
+
+--
 -- Name: index_sms_deliveries_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8266,6 +8276,14 @@ ALTER TABLE ONLY public.groups_permissions
 
 ALTER TABLE ONLY public.ideas
     ADD CONSTRAINT fk_rails_a7a91f1df3 FOREIGN KEY (author_id) REFERENCES public.users(id);
+
+
+--
+-- Name: sms_deliveries fk_rails_a7e0804608; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sms_deliveries
+    ADD CONSTRAINT fk_rails_a7e0804608 FOREIGN KEY (campaign_id) REFERENCES public.email_campaigns_campaigns(id) ON DELETE SET NULL;
 
 
 --

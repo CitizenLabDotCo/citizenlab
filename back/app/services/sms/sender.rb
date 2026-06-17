@@ -8,7 +8,7 @@ module Sms
 
     DEFAULT_PROVIDER = :twilio
 
-    def send(to:, body:, user_id: nil, provider: DEFAULT_PROVIDER)
+    def send(to:, body:, user_id: nil, campaign_id: nil, provider: DEFAULT_PROVIDER)
       unless AppConfiguration.instance.feature_activated?('sms')
         raise Sms::Error, 'SMS feature is not enabled for this tenant'
       end
@@ -22,6 +22,7 @@ module Sms
 
       delivery = Delivery.create!(
         user_id: user_id,
+        campaign_id: campaign_id,
         phone_number: normalized_to,
         body: body,
         status: 'pending'
