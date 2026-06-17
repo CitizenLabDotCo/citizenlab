@@ -3374,6 +3374,8 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Title": "Overdrivelse:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Text": "Vores system er optimeret til at håndtere 20-200 veldefinerede input for at opnå de mest præcise resultater. Når mængden af data stiger ud over dette interval, kan oversigten blive mere overordnet og generaliseret. Det betyder ikke, at AI'en bliver \"mindre præcis\", men snarere at den vil fokusere på bredere tendenser og mønstre. For at få en mere nuanceret indsigt anbefaler vi at bruge (auto)-tagging-funktionen til at segmentere større datasæt i mindre, mere håndterbare delmængder.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Title": "Datamængde og -nøjagtighed:",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": "Resultaterne kan indeholde forskellige former for bias. Disse kan f.eks. opstå som følge af ubalancerede data i modellens træning, forskelle i sprog og udtryksformer samt manglende kontekstuel forståelse. Især ironi, sarkasme, dialekt, ungdomsslange eller kontekstafhængige formuleringer kan blive fejlfortolket.",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": "Bias:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "Vi anbefaler at bruge AI-genererede resuméer som et udgangspunkt for at forstå store datasæt, men ikke som det endelige ord. Tjek altid resultatet!",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "Sådan arbejder du med AI",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "Tilføj valgte input til tag",

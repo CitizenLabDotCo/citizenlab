@@ -3374,6 +3374,8 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Title": "Exaggeration:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Text": "Our system is optimized for handling 20-200 well-defined inputs for the most accurate results. As the volume of data increases beyond this range, the summary may become more high-level and generalized. This does not mean the AI becomes \"less accurate\", but rather that it will focus on broader trends and patterns. For more nuanced insights, we recommend using the (auto)-tagging feature to segment larger datasets into smaller, more manageable subsets.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Title": "Data Volume and Accuracy:",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": "Results may contain various biases. These can arise, for example, from unbalanced data in the model’s training, differences in language and expression, and a lack of contextual understanding. In particular, irony, sarcasm, dialect, youth slang or context-sensitive phrasing may be misinterpreted.",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": "Biases:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "We recommend using AI-generated summaries as a starting point for understanding large datasets, but not as the final word.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "How to work with AI",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "Add selected inputs to tag",

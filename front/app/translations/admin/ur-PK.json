@@ -3374,6 +3374,8 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Title": "مبالغہ آرائی:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Text": "ہمارا نظام درست ترین نتائج کے لیے 20-200 اچھی طرح سے متعین کردہ ان پٹس کو ہینڈل کرنے کے لیے بہتر بنایا گیا ہے۔ جیسے جیسے ڈیٹا کا حجم اس حد سے بڑھتا ہے، خلاصہ زیادہ اعلیٰ سطحی اور عمومی شکل اختیار کر سکتا ہے۔ اس کا مطلب یہ نہیں ہے کہ AI \"کم درست\" ہو جائے گا، بلکہ یہ کہ یہ وسیع تر رجحانات اور نمونوں پر توجہ مرکوز کرے گا۔ مزید باریک بینی کے لیے، ہم بڑے ڈیٹاسیٹس کو چھوٹے، زیادہ قابل انتظام ذیلی سیٹوں میں تقسیم کرنے کے لیے (آٹو-ٹیگنگ فیچر) استعمال کرنے کی تجویز کرتے ہیں۔",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Title": "ڈیٹا کا حجم اور درستگی:",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": "نتائج میں مختلف تعصبات ہو سکتے ہیں۔ یہ، مثال کے طور پر، ماڈل کی تربیت میں غیر متوازن ڈیٹا، زبان اور اظہار میں فرق، اور سیاق و سباق کی سمجھ کی کمی سے پیدا ہو سکتے ہیں۔ خاص طور پر، طنز، استہزاء، علاقائی لہجہ، نوجوانوں کی عام بول چال یا سیاق و سباق کے لحاظ سے حساس جملوں کی غلط تشریح ہو سکتی ہے۔",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": "تعصبات:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "ہم بڑے ڈیٹا سیٹس کو سمجھنے کے لیے AI سے تیار کردہ خلاصے کو ایک نقطہ آغاز کے طور پر استعمال کرنے کی تجویز کرتے ہیں، لیکن حتمی لفظ کے طور پر نہیں۔",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "AI کے ساتھ کیسے کام کریں۔",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "ٹیگ میں منتخب ان پٹ شامل کریں۔",
