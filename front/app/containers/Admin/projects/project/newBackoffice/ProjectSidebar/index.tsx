@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+import Activities from '../Activities';
 import ProjectNavRail from '../ProjectNavRail';
 import TimelinePhases from '../TimelinePhases';
 
@@ -13,12 +14,14 @@ interface Props {
 
 /**
  * Left column of the redesigned project back office: the primary navigation
- * rail stacked on top of the vertical timeline-phases list. (The Activities
- * panel will be added below in a later step.)
+ * rail stacked on top of the vertical timeline-phases list and the Activities
+ * panel (floating, non-timeline methods).
  *
- * The sidebar is pinned (sticky) and always spans the full viewport height, so
- * it stays in place while the main content scrolls; anything that overflows
- * scrolls within the sidebar rather than with the page.
+ * The sidebar fills the full height of its (viewport-bounded) parent. The nav
+ * rail keeps its natural height at the top; everything below it (Timeline
+ * phases + Activities) shares the remaining space inside a single scroll
+ * region. That means at most one scrollbar in the sidebar — never nested — and
+ * none at all when the window is tall enough to show everything.
  */
 const ProjectSidebar = ({ projectId }: Props) => (
   <Box
@@ -28,14 +31,15 @@ const ProjectSidebar = ({ projectId }: Props) => (
     borderRight={`1px solid ${colors.grey200}`}
     display="flex"
     flexDirection="column"
-    position="sticky"
-    top="0"
-    alignSelf="flex-start"
-    height="100vh"
-    overflowY="auto"
+    height="100%"
+    minHeight="0"
+    overflow="hidden"
   >
     <ProjectNavRail projectId={projectId} />
-    <TimelinePhases projectId={projectId} />
+    <Box flex="1 1 auto" minHeight="0" overflowY="auto">
+      <TimelinePhases projectId={projectId} />
+      <Activities />
+    </Box>
   </Box>
 );
 
