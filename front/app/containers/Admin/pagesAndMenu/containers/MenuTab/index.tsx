@@ -32,6 +32,7 @@ const MenuTab = () => {
   const { mutate: reorderNavbarItem } = useReorderNavbarItem();
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [editItem, setEditItem] = useState<INavbarItem | undefined>(undefined);
 
   if (!navbarItems) {
     return null;
@@ -39,12 +40,24 @@ const MenuTab = () => {
 
   const navbarIsFull = navbarItems.data.length >= MAX_NAVBAR_ITEMS;
 
+  const openNewModal = () => {
+    setEditItem(undefined);
+    setModalOpen(true);
+  };
+
   const handleClickEdit = (navbarItem: Item) => () => {
     // Home redirects to the homepage builder.
     if (navbarItem.attributes.code === 'home') {
       clHistory.push(
         `${ADMIN_PAGES_MENU_PATH}/homepage-builder/?variant=signedOut`
       );
+      return;
+    }
+
+    // Dropdown ('menu') items are edited in the modal.
+    if (navbarItem.attributes.code === 'menu') {
+      setEditItem(navbarItem as INavbarItem);
+      setModalOpen(true);
       return;
     }
 
@@ -57,8 +70,11 @@ const MenuTab = () => {
         );
   };
 
-  const getViewButtonLink = (navbarItem: Item) =>
-    getNavbarItemSlug(navbarItem as INavbarItem) || '/';
+  const getViewButtonLink = (navbarItem: Item) => {
+    // Dropdowns aren't links, so they have no view button.
+    if (navbarItem.attributes.code === 'menu') return undefined;
+    return getNavbarItemSlug(navbarItem as INavbarItem) || '/';
+  };
 
   const handleClickRemove = (navbarItemId: string) => () => {
     removeNavbarItem(navbarItemId);
@@ -79,7 +95,7 @@ const MenuTab = () => {
                 buttonStyle="admin-dark"
                 icon="plus-circle"
                 id="e2e-new-menu-item"
-                onClick={() => setModalOpen(true)}
+                onClick={openNewModal}
                 disabled={navbarIsFull}
               >
                 {formatMessage(messages.newMenuItem)}
@@ -104,7 +120,9 @@ const MenuTab = () => {
                   >
                     <MenuItemRow
                       title={navbarItem.attributes.title_multiloc}
-                      isDefaultPage={navbarItem.attributes.code !== 'custom'}
+                      isDefaultPage={
+                        !['custom', 'menu'].includes(navbarItem.attributes.code)
+                      }
                       viewButtonLink={getViewButtonLink(navbarItem)}
                       onClickEditButton={handleClickEdit(navbarItem)}
                     />
@@ -122,7 +140,9 @@ const MenuTab = () => {
                   >
                     <MenuItemRow
                       title={navbarItem.attributes.title_multiloc}
-                      isDefaultPage={navbarItem.attributes.code !== 'custom'}
+                      isDefaultPage={
+                        !['custom', 'menu'].includes(navbarItem.attributes.code)
+                      }
                       viewButtonLink={getViewButtonLink(navbarItem)}
                       onClickEditButton={handleClickEdit(navbarItem)}
                       showRemoveButton
@@ -137,8 +157,13 @@ const MenuTab = () => {
       </SectionFormWrapper>
 
       <NewMenuItemModal
+        key={editItem?.id ?? 'new'}
         opened={modalOpen}
-        onClose={() => setModalOpen(false)}
+        editItem={editItem}
+        onClose={() => {
+          setModalOpen(false);
+          setEditItem(undefined);
+        }}
       />
     </PagesMenuTabs>
   );

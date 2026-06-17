@@ -12,6 +12,9 @@ export function getNavbarItemSlug({
   attributes: { code, slug },
   relationships,
 }: INavbarItem): string | null {
+  // Dropdown ('menu') items are not links themselves.
+  if (code === 'menu') return null;
+
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
   // TODO: Fix this the next time the file is edited.

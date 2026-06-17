@@ -48,9 +48,16 @@ function getPagesNotInNavbar(
   pages: ICustomPageData[]
 ): ICustomPageNotInNavbar[] {
   const pageIdsInNavbarItems = new Set<string>(
-    navbarItems.reduce((acc, navbarItem) => {
-      if (!navbarItem.relationships.static_page.data) return acc;
-      return [...acc, navbarItem.relationships.static_page.data.id];
+    navbarItems.reduce<string[]>((acc, navbarItem) => {
+      const ids = [...acc];
+      if (navbarItem.relationships.static_page.data) {
+        ids.push(navbarItem.relationships.static_page.data.id);
+      }
+      // Pages can also be nested inside a dropdown ('menu') item.
+      navbarItem.attributes.children?.forEach((child) => {
+        if (child.static_page_id) ids.push(child.static_page_id);
+      });
+      return ids;
     }, [])
   );
 

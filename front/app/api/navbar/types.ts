@@ -17,7 +17,18 @@ export type TDefaultNavbarItemCode =
   | 'all_input'
   | 'events';
 
-export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
+// 'menu' is a dropdown navbar item grouping child items under one entry.
+export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom' | 'menu';
+
+// A child of a dropdown ('menu') item, serialized inline on the parent.
+export interface INavbarChild {
+  id: string;
+  title_multiloc: Multiloc;
+  slug: string | null;
+  static_page_id: string | null;
+  project_id: string | null;
+  project_folder_id: string | null;
+}
 
 export interface INavbarItem {
   id: string;
@@ -27,6 +38,8 @@ export interface INavbarItem {
     code: TNavbarItemCode;
     slug: string | null;
     ordering: number;
+    // Only populated for 'menu' (dropdown) items.
+    children: INavbarChild[];
     created_at: string;
     updated_at: string;
   };
@@ -62,4 +75,19 @@ export interface INavbarItemAdd {
 export interface INavbarItemUpdate {
   id: string;
   title_multiloc?: Multiloc;
+}
+
+// A single child of a dropdown, referencing exactly one target.
+export interface INavbarDropdownChild {
+  static_page_id?: string;
+  project_id?: string;
+  project_folder_id?: string;
+}
+
+// Atomic create/update payload for a dropdown ('menu') item and its children.
+export interface INavbarDropdown {
+  // Present when updating an existing dropdown.
+  id?: string;
+  title_multiloc: Multiloc;
+  children: INavbarDropdownChild[];
 }

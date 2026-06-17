@@ -66,4 +66,53 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable',
     defaultMessage: 'There are no items of this type left to add.',
   },
+  dropdownSubtitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdownSubtitle',
+    defaultMessage:
+      'Creates a dropdown menu. Group custom pages, folders and projects under one navbar item.',
+  },
+  nameInNavbar: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.nameInNavbar',
+    defaultMessage: 'Name in navbar',
+  },
+  addItems: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItems',
+    defaultMessage: 'Add items',
+  },
+  addItemButton: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItemButton',
+    defaultMessage: 'Add',
+  },
+  upToFiveItems: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.upToFiveItems',
+    defaultMessage: 'A dropdown should contain up to 5 items.',
+  },
+  inThisMenu: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.inThisMenu',
+    defaultMessage: 'In this menu',
+  },
+  emptyDropdownError: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.emptyDropdownError',
+    defaultMessage: 'Add at least one item to the dropdown.',
+  },
+  removeItem: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem',
+    defaultMessage: 'Remove item',
+  },
+  saveButton: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.saveButton',
+    defaultMessage: 'Save',
+  },
+  pageTag: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag',
+    defaultMessage: 'Page',
+  },
+  projectTag: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag',
+    defaultMessage: 'Project',
+  },
+  folderTag: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.folderTag',
+    defaultMessage: 'Folder',
+  },
 });
