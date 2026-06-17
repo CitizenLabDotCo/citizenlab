@@ -14,8 +14,7 @@ describe('Existing single phase project with poll', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
+    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
   });
 
   it('shows the poll', () => {
