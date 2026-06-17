@@ -15,8 +15,7 @@ describe('Existing project with survey', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
+    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
   });
 
   it('shows the survey', () => {
@@ -87,8 +86,7 @@ describe('New project with survey', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
+    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
   });
 
   it('shows event CTA button', () => {
