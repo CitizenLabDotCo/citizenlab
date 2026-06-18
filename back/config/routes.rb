@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   # Doorkeeper serves only JSON here. Its HTML controllers are dropped:
-  # - authorizations: replaced by the SPA consent screen (WebApi::V1::OauthAuthorizationsController)
+  # - authorizations: replaced by the SPA consent screen (McpServer::WebApi::V1::OauthAuthorizationsController)
   # - applications / authorized_applications: client creation is handled by RFC 7591
   #   Dynamic Client Registration (oauth/registrations), so the admin HTML UI is unused.
   # This leaves the token/introspect/revoke endpoints, which are JSON.
@@ -32,9 +32,9 @@ Rails.application.routes.draw do
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
-      # OAuth 2.1 consent screen, served as JSON to the SPA (replaces Doorkeeper's
-      # HTML authorize page). See WebApi::V1::OauthAuthorizationsController.
-      resource :oauth_authorization, only: %i[show create], controller: 'oauth_authorizations'
+      # The OAuth consent screen and MCP authorization management endpoints live in
+      # the MCP engine. See McpServer::Engine routes and
+      # McpServer::WebApi::V1::{OauthAuthorizations,McpAuthorizations}Controller.
 
       concern :reactable do
         resources :reactions, except: [:update], shallow: true do
