@@ -63,11 +63,16 @@ describe 'google authentication' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['google_login'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      client_id: 'fakeclientid',
-      client_secret: 'fakeclientsecret'
+      id_methods: [
+        {
+          name: 'google',
+          client_id: 'fakeclientid',
+          client_secret: 'fakeclientsecret'
+        }
+      ]
     }
     configuration.save!
     host! 'example.org'

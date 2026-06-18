@@ -89,16 +89,12 @@ class WebApi::V1::ReactionsController < ApplicationController
           mode: mode
         )
         authorize @new_reaction, policy_class: @policy_class
-
-        if @new_reaction.save
-          SideFxReactionService.new.after_create(@new_reaction, current_user)
-          render json: WebApi::V1::ReactionSerializer.new(
-            @reaction,
-            params: jsonapi_serializer_params
-          ).serializable_hash, status: :created
-        else
-          render json: { errors: @new_reaction.errors.details }, status: :unprocessable_entity
-        end
+        save_or_raise!(@new_reaction)
+        SideFxReactionService.new.after_create(@new_reaction, current_user)
+        render json: WebApi::V1::ReactionSerializer.new(
+          @reaction,
+          params: jsonapi_serializer_params
+        ).serializable_hash, status: :created
       end
     end
   end

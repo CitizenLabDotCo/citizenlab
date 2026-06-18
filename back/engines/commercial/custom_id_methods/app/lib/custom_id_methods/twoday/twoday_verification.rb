@@ -2,18 +2,12 @@
 
 module CustomIdMethods::Twoday
   module TwodayVerification
-    include Verification::VerificationMethod
-
     def verification_method_type
       :omniauth
     end
 
     def id
       '535bc0d4-cc3a-44e8-a339-2595ec330759'
-    end
-
-    def name
-      'twoday'
     end
 
     def config_parameters

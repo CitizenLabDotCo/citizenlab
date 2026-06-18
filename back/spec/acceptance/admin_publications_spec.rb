@@ -45,6 +45,7 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
       parameter :review_state, 'Filter by project review status (pending, approved)', required: false
+      parameter :spaces, 'Filter by spaces (i.e. given an array of space ids). Filters both projects and folders by their space (AND)', required: false
       parameter :sort, 'Either title_multiloc or -title_multiloc to sort by title ascending or descending respectively. Defaults to ordering by order attribute if not specified.', required: false
 
       example_request 'List all admin publications' do
@@ -156,7 +157,10 @@ resource 'AdminPublication' do
         end
       end
 
-      ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
+      # `spaces` is excluded here because, unlike global_topics/areas (has_many), a project
+      # belongs_to a single :space, so it has no plural `spaces=` setter for this generic loop.
+      # It gets its own dedicated `spaces parameter` describe block below.
+      (ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS - [:spaces]).each do |filter_param|
         model_name_plural = filter_param.to_s
         model_name = model_name_plural.singularize
 
@@ -190,9 +194,44 @@ resource 'AdminPublication' do
         end
       end
 
+      describe '`spaces` parameter' do
+        example 'List all admin publications with the specified spaces' do
+          space_a = create(:space)
+          space_b = create(:space)
+
+          project_a = create(:project, space: space_a)
+          project_b = create(:project, space: space_b)
+
+          do_request(spaces: [space_a.id])
+
+          assert_status 200
+          # Only the top-level project in space_a is returned.
+          expect(publication_ids).to contain_exactly(project_a.id)
+          expect(publication_ids).not_to include(project_b.id)
+        end
+
+        example 'List admin publications representing folders that contain project(s) with the specified spaces' do
+          space_a = create(:space)
+          space_b = create(:space)
+
+          # A folder in space_a containing a project in the same space (a project's space must match
+          # its folder's space), and a folder in another space that must not be returned.
+          nested_project = create(:project, space: space_a)
+          folder_a = create(:project_folder, space: space_a, projects: [nested_project])
+          folder_b = create(:project_folder, space: space_b)
+
+          do_request(spaces: [space_a.id])
+
+          assert_status 200
+          # Both the folder in space_a and its nested project are returned.
+          expect(publication_ids).to contain_exactly(folder_a.id, nested_project.id)
+          expect(publication_ids).not_to include(folder_b.id)
+        end
+      end
+
       example 'List all admin publications with all specified model filters' do
         # add more model filters in this spec and change the next expect if it fails (it means the constant was changed)
-        expect(ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS).to eq(%i[global_topics areas])
+        expect(ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS).to eq(%i[global_topics areas spaces])
 
         topic = create(:global_topic)
         area = create(:area)

@@ -47,7 +47,7 @@ class UserService
     # Overwrites current attributes by default unless `overwrite_attrs?` is set to false on the authver method.
     # @param [User] user
     # @param auth the omniauth auth hash
-    # @param [OmniauthMethods::Base] authver_method
+    # @param [IdMethods::Base] authver_method
     def update_in_sso!(user, auth, authver_method)
       attrs = authver_method.updateable_user_attrs
       sso_user_attrs = authver_method.profile_to_user_attrs(auth)

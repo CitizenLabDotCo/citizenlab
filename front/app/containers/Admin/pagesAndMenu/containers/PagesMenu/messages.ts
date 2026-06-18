@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Pages & menu',
   },
   pageSubtitle: {
-    id: 'app.modules.navbar.admin.containers.pageSubtitle',
+    id: 'app.modules.navbar.admin.containers.pageSubtitle1',
     defaultMessage:
-      'Your navigation bar can display up to five pages in addition to the Home and All projects pages. You can rename and reorder items and add new pages with your own content.',
+      'Your navigation bar can display up to six pages in addition to the Home page. You can rename and reorder items and add new pages with your own content.',
   },
   createCustomPageButton: {
     id: 'app.modules.navbar.admin.containers.createCustomPageButton',
@@ -23,7 +23,7 @@ export default defineMessages({
     defaultMessage: 'Add project or folder to navbar',
   },
   navBarMaxItems: {
-    id: 'app.modules.navbar.admin.containers.navBarMaxItemsNumber',
-    defaultMessage: 'You can only add up to 5 items to the navigation bar',
+    id: 'app.modules.navbar.admin.containers.navBarMaxItemsNumber1',
+    defaultMessage: 'You can only add up to 6 items to the navigation bar',
   },
 });

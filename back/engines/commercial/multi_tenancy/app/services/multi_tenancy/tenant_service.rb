@@ -145,7 +145,7 @@ module MultiTenancy
       required_locales = ::MultiTenancy::Templates::Utils.new.required_locales(template_name)
 
       if required_locales.to_set > config_locales.to_set
-        raise ClErrors::TransactionError.new(error_key: :missing_locales)
+        raise ApiError, :missing_locales
       end
     end
 
