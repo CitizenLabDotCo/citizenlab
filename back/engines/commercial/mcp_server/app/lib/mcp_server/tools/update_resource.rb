@@ -65,7 +65,6 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      config = RESOURCES[params[:type]]
       return error("Unsupported resource type: #{params[:type]}") unless config
       return error('`attributes` must be an object.') unless params[:attributes].is_a?(Hash)
 
@@ -85,7 +84,7 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       apply_attributes(record, attributes)
       record.save!
       record.insert_at(ordering) if config[:reorder] && !ordering.nil?
-      config[:sidefx].new.after_update(record, current_user)
+      side_fx.after_update(record, current_user)
 
       ok("Updated #{params[:type]} #{record.id}")
     rescue ActiveRecord::RecordNotFound
@@ -95,6 +94,14 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     end
 
     private
+
+    def side_fx
+      @side_fx ||= config[:sidefx].new
+    end
+
+    def config
+      @config ||= RESOURCES[params[:type]]
+    end
 
     # Assign through setters (not write_attribute) so any custom setter/normalization runs.
     # `*_multiloc` fields merge per-locale (locales the caller didn't pass are kept); others replace.
