@@ -18,6 +18,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { sanitizeForClassname } from 'utils/JSONFormUtils';
+import { preventEnterToSubmit } from 'utils/preventEnterToSubmit';
 
 import CheckboxField from './Fields/CheckboxField';
 import CosponsorsField from './Fields/CosponsorsField';
@@ -333,7 +334,7 @@ const CustomFields = ({
                 </Text>
               )}
               <Box display="flex" alignItems="center" gap="8px">
-                <Box w="100%">
+                <Box w="100%" onKeyDown={preventEnterToSubmit}>
                   {renderField({
                     question,
                     projectId,
