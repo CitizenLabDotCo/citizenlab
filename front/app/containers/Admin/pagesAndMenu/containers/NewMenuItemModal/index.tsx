@@ -18,11 +18,12 @@ import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomPages from 'api/custom_pages/useCustomPages';
-import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import { INavbarDropdownChild, INavbarItem } from 'api/navbar/types';
+import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useUpsertNavbarDropdown from 'api/navbar/useUpsertNavbarDropdown';
 
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
@@ -36,7 +37,8 @@ import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import { isNilOrError } from 'utils/helperUtils';
+import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import {
   buildAvailableItems,
@@ -99,18 +101,29 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
 
   const flattenedAdminPublications: IAdminPublicationData[] =
     // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    adminPublications?.pages?.flatMap((page) => page.data) ?? [];
+    adminPublications?.pages.flatMap((page) => page.data) ?? [];
 
   const usedPublicationIds = useMemo(
     () => getUsedPublicationIds(navbarItems?.data ?? []),
     [navbarItems]
   );
 
+  const appLocales = useAppConfigurationLocales();
+  // A multiloc with every configured locale present but empty, so the title
+  // field always has locale keys for "at least one locale" validation.
+  const emptyTitleMultiloc = useMemo<Multiloc>(
+    () =>
+      (isNilOrError(appLocales) ? [] : appLocales).reduce(
+        (acc, locale) => ({ ...acc, [locale]: '' }),
+        {}
+      ),
+    [appLocales]
+  );
+
   const schema = object({
     type: string().required(),
     itemId: string().required(formatMessage(messages.emptyItemError)),
-    titleMultiloc: validateMultilocForEveryLocale(
+    titleMultiloc: validateAtLeastOneLocale(
       formatMessage(messages.emptyNameError)
     ),
   });
@@ -121,7 +134,7 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
     defaultValues: {
       type: 'custom_page' as MenuItemType,
       itemId: '',
-      titleMultiloc: {} as Multiloc,
+      titleMultiloc: emptyTitleMultiloc,
     },
   });
 
@@ -138,8 +151,14 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
       adminPublications: flattenedAdminPublications,
       usedPublicationIds,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type, navbarItems, removedDefaultItems, pages, usedPublicationIds]);
+  }, [
+    type,
+    navbarItems,
+    removedDefaultItems,
+    pages,
+    usedPublicationIds,
+    flattenedAdminPublications,
+  ]);
 
   // itemId holds the index into availableItems (as a string). Binding the
   // dropdown to the array index sidesteps any unreliable/duplicate data ids.
@@ -149,17 +168,14 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
   // Reset the item selection whenever the type changes.
   useEffect(() => {
     methods.setValue('itemId', '');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type]);
-
-  // When the selected item changes, prefill the name field with its title.
-  useEffect(() => {
-    methods.setValue('titleMultiloc', selectedItem?.titleMultiloc || {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemId]);
+  }, [type, methods]);
 
   const handleClose = () => {
-    methods.reset({ type: 'custom_page', itemId: '', titleMultiloc: {} });
+    methods.reset({
+      type: 'custom_page',
+      itemId: '',
+      titleMultiloc: emptyTitleMultiloc,
+    });
     setActiveTab(isEditing ? 'dropdown' : 'single');
     onClose();
   };
@@ -242,6 +258,18 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
               <form onSubmit={methods.handleSubmit(onSingleSubmit)}>
                 <Box display="flex" flexDirection="column" gap="24px">
                   <Box>
+                    <InputMultilocWithLocaleSwitcher
+                      name="titleMultiloc"
+                      label={formatMessage(messages.navbarItemName)}
+                    />
+                    {selectedItem && isProjectOrFolder && (
+                      <Text fontStyle="italic" mt="4px" mb="0px">
+                        {formatMessage(messages.resultingUrl)}: {previewUrl}
+                      </Text>
+                    )}
+                  </Box>
+
+                  <Box>
                     <Label htmlFor="type">
                       {formatMessage(messages.selectType)}
                     </Label>
@@ -303,18 +331,6 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
                     {itemOptions.length === 0 && (
                       <Text color="textSecondary" mt="8px" mb="0px">
                         {formatMessage(messages.noItemsAvailable)}
-                      </Text>
-                    )}
-                  </Box>
-
-                  <Box>
-                    <InputMultilocWithLocaleSwitcher
-                      name="titleMultiloc"
-                      label={formatMessage(messages.navbarItemName)}
-                    />
-                    {selectedItem && isProjectOrFolder && (
-                      <Text fontStyle="italic" mt="4px" mb="0px">
-                        {formatMessage(messages.resultingUrl)}: {previewUrl}
                       </Text>
                     )}
                   </Box>
