@@ -35,6 +35,12 @@ class ProjectsFilteringService
     areas ? scope.with_some_areas(areas).or(scope.with_all_areas) : scope
   end
 
+  HOMEPAGE_FILTER_PARAMS << :spaces
+  add_filter('by_spaces') do |scope, options|
+    spaces = options[:spaces]
+    spaces.present? ? scope.where(space_id: spaces) : scope
+  end
+
   add_filter('filter_ids') do |scope, options|
     keep_ids = options[:filter_ids]
     keep_ids ? scope.where(id: keep_ids) : scope
