@@ -11714,6 +11714,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ContentBuilder.richTextMultiloc": {
+    "state": "verified",
+    "verified_at": "2026-06-18T07:16:16.073683Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.admin.ContentBuilder.selectedProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
