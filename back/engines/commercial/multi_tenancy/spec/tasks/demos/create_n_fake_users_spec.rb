@@ -45,6 +45,14 @@ describe 'demos:create_n_fake_users rake task' do
       expect(users).to all(be_active)
     end
 
+    it 'creates the email confirmation records the after_create callback would' do
+      run_task(num_users: 2)
+
+      users = User.order(created_at: :desc).first(2)
+      expect(users.size).to eq(2)
+      expect(users).to all(have_attributes(email_confirmation: be_present, new_email_confirmation: be_present))
+    end
+
     it 'creates users with unique emails and slugs' do
       run_task(num_users: 5)
 

@@ -21,6 +21,9 @@
 # Notes:
 #   - Only works on demo platforms (lifecycle_stage = 'demo') or in local development.
 #   - Created users have no password, so they cannot sign in with one.
+#   - Each user gets the EmailConfirmation / NewEmailConfirmation records that the
+#     skipped after_create callback would normally create, so they behave like
+#     regular users.
 #   - Needs to be run with rake (not rails) so the full Rails environment loads.
 
 namespace :demos do
@@ -97,6 +100,16 @@ namespace :demos do
         result.failed_instances.each do |user|
           reporter.add_error(user.errors.full_messages, context: { email: user.email })
         end
+
+        # The after_create :create_confirmations callback is skipped by bulk import.
+        # Without these records, some confirmation/login code paths (e.g. the
+        # passwordless `users#check` flow) dereference a nil confirmation and 500,
+        # so create them here as the callback would. A bare record is valid (code
+        # is nullable, counters default to 0).
+        confirmations = result.ids.flat_map do |user_id|
+          [EmailConfirmation.new(user_id: user_id), NewEmailConfirmation.new(user_id: user_id)]
+        end
+        Confirmation.import(confirmations, validate: false)
 
         batch_created = users.size - result.failed_instances.size
         created += batch_created
