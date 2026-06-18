@@ -27,11 +27,6 @@
 namespace :demos do
   desc 'Create n fake users on a demo tenant'
   task :create_n_fake_users, %i[host num_users locale] => [:environment] do |_t, args|
-    # Reduce logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
-
     batch_size = 1_000
 
     host = args[:host]
