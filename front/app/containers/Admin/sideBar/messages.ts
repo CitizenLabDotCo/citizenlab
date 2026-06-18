@@ -5,14 +5,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.dashboard',
     defaultMessage: 'Dashboard',
   },
-  collapseMenu: {
-    id: 'app.containers.AdminPage.SideBar.collapseMenu',
-    defaultMessage: 'Collapse menu',
-  },
-  expandMenu: {
-    id: 'app.containers.AdminPage.SideBar.expandMenu',
-    defaultMessage: 'Expand menu',
-  },
   moderation: {
     id: 'app.containers.AdminPage.SideBar.moderation',
     defaultMessage: 'Moderation',
