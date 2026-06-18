@@ -81,8 +81,7 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       end
 
       record = config[:model].find(params[:id])
-      apply_attributes(record, attributes)
-      record.save!
+      record.update!(merge_multilocs(record, attributes))
       record.insert_at(ordering) if config[:reorder] && !ordering.nil?
       side_fx.after_update(record, current_user)
 
@@ -103,14 +102,18 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       @config ||= RESOURCES[params[:type]]
     end
 
-    # Assign through setters (not write_attribute) so any custom setter/normalization runs.
-    # `*_multiloc` fields merge per-locale (locales the caller didn't pass are kept); others replace.
-    def apply_attributes(record, attributes)
-      attributes.each do |key, value|
-        current = record.public_send(key)
-        merge = key.to_s.end_with?('_multiloc') && current.is_a?(Hash) && value.is_a?(Hash)
-        record.public_send(:"#{key}=", merge ? current.merge(value) : value)
+    # `*_multiloc` fields are deep-merged with the existing value:
+    #   {en: 'Hi', fr: 'Bonjour'} + {fr: 'Salut', es: 'Hola'} -> {en: 'Hi', fr: 'Salut', es: 'Hola'}
+    # Others attributes pass through as-is.
+    def merge_multilocs(record, attributes)
+      attributes.to_h do |key, value|
+        next [key, value] unless multiloc?(key)
+
+        current_value = record[key]
+        [key, current_value.blank? ? value : current_value.merge(value)]
       end
     end
+
+    def multiloc?(key) = key.to_s.end_with?('_multiloc')
   end
 end
