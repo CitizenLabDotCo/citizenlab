@@ -3,7 +3,9 @@ import React from 'react';
 import {
   Box,
   colors,
+  Divider,
   IconButton,
+  stylingConsts,
   Text,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
@@ -19,7 +21,6 @@ import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/Section
 import customPageMessages from 'containers/Admin/pagesAndMenu/containers/CustomPages/messages';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
 
-import { List, Row, TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -92,54 +93,67 @@ const PagesTab = () => {
             {formatMessage(messages.noPages)}
           </Text>
         ) : (
-          <List>
+          <Box>
             {customPages.map((page, i) => (
-              <Row key={page.id} isLastItem={i === customPages.length - 1}>
-                <TextCell className="expand">
-                  <T value={page.attributes.title_multiloc} />
-                </TextCell>
-                <Box display="flex" gap="12px" alignItems="center">
-                  <IconButton
-                    iconName="edit"
-                    onClick={() =>
-                      clHistory.push(
-                        `${ADMIN_PAGES_MENU_PATH}/pages/${page.id}/settings`
-                      )
-                    }
-                    a11y_buttonActionMessage={formatMessage(messages.editPage)}
-                    iconColor={colors.textSecondary}
-                    iconColorOnHover={colors.primary}
-                    iconWidth="20px"
-                    iconHeight="20px"
-                  />
-                  <Link to={`/pages/${page.attributes.slug}`} target="_blank">
+              <>
+                <Box
+                  key={page.id}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Text>
+                    <T value={page.attributes.title_multiloc} />
+                  </Text>
+                  <Box display="flex" gap="12px" alignItems="center">
                     <IconButton
-                      iconName="eye"
-                      onClick={() => {}}
+                      iconName="edit"
+                      onClick={() =>
+                        clHistory.push(
+                          `${ADMIN_PAGES_MENU_PATH}/pages/${page.id}/settings`
+                        )
+                      }
                       a11y_buttonActionMessage={formatMessage(
-                        messages.viewPage
+                        messages.editPage
                       )}
                       iconColor={colors.textSecondary}
                       iconColorOnHover={colors.primary}
-                      iconWidth="20px"
-                      iconHeight="20px"
+                      p="4px"
+                      border={`1px solid ${colors.borderLight}`}
+                      borderRadius={stylingConsts.borderRadius}
                     />
-                  </Link>
-                  <IconButton
-                    iconName="delete"
-                    onClick={handleClickDelete(page.id)}
-                    a11y_buttonActionMessage={formatMessage(
-                      messages.deletePage
-                    )}
-                    iconColor={colors.textSecondary}
-                    iconColorOnHover={colors.red600}
-                    iconWidth="20px"
-                    iconHeight="20px"
-                  />
+                    <Link to={`/pages/${page.attributes.slug}`} target="_blank">
+                      <IconButton
+                        iconName="eye"
+                        onClick={() => {}}
+                        a11y_buttonActionMessage={formatMessage(
+                          messages.viewPage
+                        )}
+                        iconColor={colors.textSecondary}
+                        iconColorOnHover={colors.primary}
+                        p="4px"
+                        border={`1px solid ${colors.borderLight}`}
+                        borderRadius={stylingConsts.borderRadius}
+                      />
+                    </Link>
+                    <IconButton
+                      iconName="delete"
+                      onClick={handleClickDelete(page.id)}
+                      a11y_buttonActionMessage={formatMessage(
+                        messages.deletePage
+                      )}
+                      iconColor={colors.textSecondary}
+                      iconColorOnHover={colors.red600}
+                      p="4px"
+                      border={`1px solid ${colors.borderLight}`}
+                      borderRadius={stylingConsts.borderRadius}
+                    />
+                  </Box>
                 </Box>
-              </Row>
+                <Divider />
+              </>
             ))}
-          </List>
+          </Box>
         )}
       </SectionFormWrapper>
     </PagesMenuTabs>
