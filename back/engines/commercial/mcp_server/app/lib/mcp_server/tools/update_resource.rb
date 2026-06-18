@@ -13,26 +13,22 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       attrs: %i[
         title_multiloc description_multiloc location_multiloc address_2_multiloc attend_button_multiloc
         start_at end_at online_link address_1 using_url maximum_attendees location_point_geojson
-      ],
-      reorder: false
+      ]
     },
     'cause' => {
       model: Volunteering::Cause,
       sidefx: Volunteering::SideFxCauseService,
-      attrs: %i[title_multiloc description_multiloc],
-      reorder: true
+      attrs: %i[title_multiloc description_multiloc ordering]
     },
     'poll_question' => {
       model: Polls::Question,
       sidefx: Polls::SideFxQuestionService,
-      attrs: %i[title_multiloc question_type max_options],
-      reorder: true
+      attrs: %i[title_multiloc question_type max_options ordering]
     },
     'poll_option' => {
       model: Polls::Option,
       sidefx: Polls::SideFxOptionService,
-      attrs: %i[title_multiloc],
-      reorder: true
+      attrs: %i[title_multiloc ordering]
     }
   }.freeze
 
@@ -43,9 +39,10 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       Updates an existing resource of one of these types: #{RESOURCES.keys.join(', ')}.
       Partial update — only the fields you pass change, and `*_multiloc` fields merge per
       locale (pass every locale you want to set). For each type's available fields, see the
-      matching create_<type> tool (e.g. create_poll_question); the same field names apply,
-      minus the parent id — a resource can't be moved to a different parent. Where supported,
-      pass `ordering` (0-based integer) to reposition the resource among its siblings.
+      matching create_<type> tool. The same field names apply, except the foreign key to
+      the parent (e.g. project_id, phase_id) is read-only: a resource can't be moved to a
+      different parent. Where supported, pass `ordering` (0-based integer) to reposition
+      the resource among its siblings.
     DESC
   end
 
@@ -69,10 +66,8 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       return error('`attributes` must be an object.') unless params[:attributes].is_a?(Hash)
 
       attributes = params[:attributes].symbolize_keys
-      ordering = attributes.delete(:ordering)&.to_i
 
       rejected = attributes.keys - config[:attrs]
-      rejected << :ordering unless ordering.nil? || config[:reorder]
       if rejected.any?
         return error(
           "These fields can't be updated on #{params[:type]}: #{rejected.join(', ')}. " \
@@ -82,7 +77,6 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
 
       record = config[:model].find(params[:id])
       record.update!(merge_multilocs(record, attributes))
-      record.insert_at(ordering) if config[:reorder] && !ordering.nil?
       side_fx.after_update(record, current_user)
 
       ok("Updated #{params[:type]} #{record.id}")
