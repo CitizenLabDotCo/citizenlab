@@ -34,7 +34,8 @@ const Input = ({
 
   const formatDateTime = (date: Date) => {
     return `${format(date, 'P', { locale: dateLocale })} ${format(date, 'p', {
-          locale: dateLocale,})}`
+      locale: dateLocale,
+    })}`;
   };
 
   return (

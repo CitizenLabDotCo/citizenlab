@@ -39,7 +39,7 @@ const VerificationBadge = ({ isVerified }: Props) => {
         <FormattedMessage {...messages.unverified} />
       )}
     </Badge>
-  )
+  );
 };
 
 export default VerificationBadge;

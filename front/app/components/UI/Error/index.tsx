@@ -246,12 +246,10 @@ const Error = (props: ErrorProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const ssoEnforcedForDomainMultiloc = idMethods?.data
-    .find(
-      (method): method is IDAzureAdMethod =>
-        method.attributes.name === 'azureactivedirectory'
-    )
-    ?.attributes.enforced_email_domain_error_multiloc;
+  const ssoEnforcedForDomainMultiloc = idMethods?.data.find(
+    (method): method is IDAzureAdMethod =>
+      method.attributes.name === 'azureactivedirectory'
+  )?.attributes.enforced_email_domain_error_multiloc;
 
   const {
     text,
@@ -341,7 +339,7 @@ const Error = (props: ErrorProps) => {
                       const errorMessage = customErrorMessage
                         ? customErrorMessage
                         : errorMessageDescriptor &&
-                        formatMessage(errorMessageDescriptor, values);
+                          formatMessage(errorMessageDescriptor, values);
 
                       if (!errorMessage) return null;
 
