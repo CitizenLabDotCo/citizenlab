@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
+import {
+  media,
+  colors,
+  Icon,
+  Box,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -9,7 +15,7 @@ import useFeatureFlags from 'hooks/useFeatureFlags';
 
 import CountBadge from 'components/UI/CountBadge';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
 import { isSuperAdmin } from 'utils/permissions/roles';
@@ -17,6 +23,8 @@ import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import { NavItem } from './navItems';
+import RailTooltip from './RailTooltip';
+import SidebarCollapsedContext from './SidebarCollapsedContext';
 
 const Text = styled.div`
   flex: 1;
@@ -98,12 +106,20 @@ type Props = {
 };
 
 const MenuItem = ({ navItem }: Props) => {
+  const { formatMessage } = useIntl();
   const featuresEnabled = useFeatureFlags({
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
   const { data: user } = useAuthUser();
   const { pathname } = useLocation();
+
+  // When the rail is collapsed (icon-only) the label is hidden, so surface it
+  // as a hover/focus tooltip instead. Collapsed = force-collapsed project back
+  // office OR the responsive tablet breakpoint.
+  const forceCollapsed = useContext(SidebarCollapsedContext);
+  const isSmallerThanPhone = useBreakpoint('tablet');
+  const collapsed = forceCollapsed || isSmallerThanPhone;
 
   const hasPermission = usePermission({
     action: 'access',
@@ -126,28 +142,33 @@ const MenuItem = ({ navItem }: Props) => {
     pathname.includes('/admin/inspiration-hub');
 
   return (
-    <MenuItemLink
-      to={navItem.link}
-      className={`intercom-admin-menu-item-${navItem.name}${
-        inspirationHubActive ? ' active' : ''
-      }`}
+    <RailTooltip
+      label={formatMessage(messages[navItem.message])}
+      disabled={!collapsed}
     >
-      <>
-        <Box
-          display="flex"
-          flex="0 0 auto"
-          alignItems="center"
-          justifyContent="center"
-          className={navItem.iconName}
-        >
-          <Icon name={navItem.iconName} height="20px" />
-        </Box>
-        <Text>
-          <FormattedMessage {...messages[navItem.message]} />
-          {!!navItem.count && <CountBadge count={navItem.count} />}
-        </Text>
-      </>
-    </MenuItemLink>
+      <MenuItemLink
+        to={navItem.link}
+        className={`intercom-admin-menu-item-${navItem.name}${
+          inspirationHubActive ? ' active' : ''
+        }`}
+      >
+        <>
+          <Box
+            display="flex"
+            flex="0 0 auto"
+            alignItems="center"
+            justifyContent="center"
+            className={navItem.iconName}
+          >
+            <Icon name={navItem.iconName} height="20px" />
+          </Box>
+          <Text>
+            <FormattedMessage {...messages[navItem.message]} />
+            {!!navItem.count && <CountBadge count={navItem.count} />}
+          </Text>
+        </>
+      </MenuItemLink>
+    </RailTooltip>
   );
 };
 
