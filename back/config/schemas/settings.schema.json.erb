@@ -1441,6 +1441,18 @@
         }
       },
 
+      "html_block_in_content_builder": {
+        "type": "object",
+        "title": "HTML block in content builder",
+        "description": "Allows the use of HTML blocks in the content builder.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "custom_smtp": {
         "type": "object",
         "title": "Custom SMTP Server",

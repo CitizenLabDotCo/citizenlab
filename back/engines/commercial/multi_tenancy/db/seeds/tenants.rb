@@ -425,7 +425,11 @@ module MultiTenancy
             mcp_server: {
               enabled: true,
               allowed: true
-            }
+            },
+            html_block_in_content_builder: {
+              enabled: true,
+              allowed: true
+            },
           })
         )
 
