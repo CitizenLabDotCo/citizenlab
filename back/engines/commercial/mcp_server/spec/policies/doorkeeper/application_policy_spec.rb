@@ -46,7 +46,7 @@ describe Doorkeeper::ApplicationPolicy do
       Doorkeeper::Application.create!(name: 'Urban Insights', redirect_uri: 'https://b.example.com/cb', confidential: false)
     end
 
-    it "returns the clients the user holds a non-revoked token for, one row each" do
+    it 'returns the clients the user holds a non-revoked token for, one row each' do
       create_token(user, application)
       create_token(user, application) # second token, same client -> still one row
       expect(resolved).to contain_exactly(application)
@@ -57,7 +57,7 @@ describe Doorkeeper::ApplicationPolicy do
       expect(resolved).to be_empty
     end
 
-    it "excludes clients only other users have authorized" do
+    it 'excludes clients only other users have authorized' do
       create_token(other_user, other_application)
       create_token(user, application)
       expect(resolved).to contain_exactly(application)
