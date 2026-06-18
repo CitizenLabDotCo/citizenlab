@@ -1,52 +1,21 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 
-import {
-  Box,
-  colors,
-  Label,
-  stylingConsts,
-  Text,
-} from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import ReactSelect from 'react-select';
-import styled, { useTheme } from 'styled-components';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { object, string } from 'yup';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCustomPages from 'api/custom_pages/useCustomPages';
 import { INavbarDropdownChild, INavbarItem } from 'api/navbar/types';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
-import useNavbarItems from 'api/navbar/useNavbarItems';
 import useUpsertNavbarDropdown from 'api/navbar/useUpsertNavbarDropdown';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
-
-import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Select from 'components/HookForm/Select';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
-import selectStyles from 'components/UI/MultipleSelect/styles';
-import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
-import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
-import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
+import { IItemNotInNavbar } from 'utils/navbar';
 
-import {
-  buildAvailableItems,
-  getUsedPublicationIds,
-  MenuItemType,
-} from './availableItems';
 import DropdownForm from './DropdownForm';
 import messages from './messages';
+import SingleItemForm from './SingleItemForm';
 
 const Tab = styled.button<{ active: boolean }>`
   flex: 1;
@@ -76,121 +45,25 @@ type Props = {
 
 const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
-  const locale = useLocale();
-  const theme = useTheme();
 
-  const { mutateAsync: addNavbarItem } = useAddNavbarItem();
+  const { mutateAsync: addNavbarItem, isLoading: singleProcessing } =
+    useAddNavbarItem();
   const { mutateAsync: upsertDropdown, isLoading: dropdownProcessing } =
     useUpsertNavbarDropdown();
-  const { data: navbarItems } = useNavbarItems();
-  const { data: removedDefaultItems } = useNavbarItems({
-    onlyRemovedDefaultItems: true,
-  });
-  const { data: pages } = useCustomPages();
-  const { data: appConfig } = useAppConfiguration();
-  const { data: adminPublications } = useAdminPublications({
-    remove_all_unlisted: true,
-    sort: 'title_multiloc',
-  });
 
   const isEditing = !!editItem;
   const [activeTab, setActiveTab] = React.useState<'single' | 'dropdown'>(
     isEditing ? 'dropdown' : 'single'
   );
 
-  const flattenedAdminPublications: IAdminPublicationData[] =
-    // TODO: Fix this the next time the file is edited.
-    adminPublications?.pages.flatMap((page) => page.data) ?? [];
-
-  const usedPublicationIds = useMemo(
-    () => getUsedPublicationIds(navbarItems?.data ?? []),
-    [navbarItems]
-  );
-
-  const appLocales = useAppConfigurationLocales();
-  // A multiloc with every configured locale present but empty, so the title
-  // field always has locale keys for "at least one locale" validation.
-  const emptyTitleMultiloc = useMemo<Multiloc>(
-    () =>
-      (isNilOrError(appLocales) ? [] : appLocales).reduce(
-        (acc, locale) => ({ ...acc, [locale]: '' }),
-        {}
-      ),
-    [appLocales]
-  );
-
-  const schema = object({
-    type: string().required(),
-    itemId: string().required(formatMessage(messages.emptyItemError)),
-    titleMultiloc: validateAtLeastOneLocale(
-      formatMessage(messages.emptyNameError)
-    ),
-  });
-
-  const methods = useForm({
-    mode: 'onBlur',
-    resolver: yupResolver(schema),
-    defaultValues: {
-      type: 'custom_page' as MenuItemType,
-      itemId: '',
-      titleMultiloc: emptyTitleMultiloc,
-    },
-  });
-
-  const type = methods.watch('type');
-  const itemId = methods.watch('itemId');
-
-  const availableItems = useMemo(() => {
-    if (!navbarItems || !removedDefaultItems || !pages) return [];
-    return buildAvailableItems({
-      type,
-      navbarItems: navbarItems.data,
-      removedDefaultItems: removedDefaultItems.data,
-      pages: pages.data,
-      adminPublications: flattenedAdminPublications,
-      usedPublicationIds,
-    });
-  }, [
-    type,
-    navbarItems,
-    removedDefaultItems,
-    pages,
-    usedPublicationIds,
-    flattenedAdminPublications,
-  ]);
-
-  // itemId holds the index into availableItems (as a string). Binding the
-  // dropdown to the array index sidesteps any unreliable/duplicate data ids.
-  const selectedItem =
-    itemId === '' ? undefined : availableItems[Number(itemId)];
-
-  // Reset the item selection whenever the type changes.
-  useEffect(() => {
-    methods.setValue('itemId', '');
-  }, [type, methods]);
-
   const handleClose = () => {
-    methods.reset({
-      type: 'custom_page',
-      itemId: '',
-      titleMultiloc: emptyTitleMultiloc,
-    });
     setActiveTab(isEditing ? 'dropdown' : 'single');
     onClose();
   };
 
-  const onSingleSubmit = async (formValues: { titleMultiloc: Multiloc }) => {
-    if (!selectedItem) return;
-    try {
-      await addNavbarItem({
-        ...selectedItem.item,
-        titleMultiloc: formValues.titleMultiloc,
-      });
-      handleClose();
-    } catch (error) {
-      handleHookFormSubmissionError(error, methods.setError);
-    }
+  const onSingleSubmit = async (item: IItemNotInNavbar) => {
+    await addNavbarItem(item);
+    handleClose();
   };
 
   const onDropdownSubmit = async (values: {
@@ -200,27 +73,6 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
     await upsertDropdown({ id: editItem?.id, ...values });
     handleClose();
   };
-
-  const typeOptions = [
-    { value: 'custom_page', label: formatMessage(messages.typeCustomPage) },
-    { value: 'default_page', label: formatMessage(messages.typeDefaultPage) },
-    { value: 'folder', label: formatMessage(messages.typeFolder) },
-    { value: 'project', label: formatMessage(messages.typeProject) },
-  ];
-
-  const itemOptions = availableItems.map((item, index) => ({
-    value: String(index),
-    label: localize(item.titleMultiloc),
-  }));
-
-  const isProjectOrFolder = type === 'project' || type === 'folder';
-  const hostName = appConfig?.data.attributes.host;
-  const previewUrl =
-    selectedItem && isProjectOrFolder
-      ? type === 'project'
-        ? `${hostName}/${locale}/projects/${selectedItem.slug}`
-        : `${hostName}/${locale}/folders/${selectedItem.slug}`
-      : '';
 
   return (
     <Modal
@@ -253,105 +105,10 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
         )}
 
         {activeTab === 'single' && !isEditing ? (
-          <Box mt="24px">
-            <FormProvider {...methods}>
-              <form onSubmit={methods.handleSubmit(onSingleSubmit)}>
-                <Box display="flex" flexDirection="column" gap="24px">
-                  <Box>
-                    <InputMultilocWithLocaleSwitcher
-                      name="titleMultiloc"
-                      label={formatMessage(messages.navbarItemName)}
-                    />
-                    {selectedItem && isProjectOrFolder && (
-                      <Text fontStyle="italic" mt="4px" mb="0px">
-                        {formatMessage(messages.resultingUrl)}: {previewUrl}
-                      </Text>
-                    )}
-                  </Box>
-
-                  <Box>
-                    <Label htmlFor="type">
-                      {formatMessage(messages.selectType)}
-                    </Label>
-                    <Box display="flex" gap="16px">
-                      <Box flex="1">
-                        <Select name="type" options={typeOptions} />
-                      </Box>
-                      <Box flex="1">
-                        <ReactSelect
-                          value={
-                            itemOptions.find((o) => o.value === itemId) ?? null
-                          }
-                          options={itemOptions}
-                          onChange={(option) =>
-                            methods.setValue('itemId', option?.value ?? '', {
-                              shouldValidate: true,
-                              shouldDirty: true,
-                            })
-                          }
-                          isSearchable
-                          isClearable
-                          blurInputOnSelect
-                          placeholder={formatMessage(
-                            messages.selectItemPlaceholder
-                          )}
-                          menuPosition="fixed"
-                          menuPlacement="auto"
-                          styles={{
-                            ...selectStyles(theme),
-                            menuPortal: (base) => ({ ...base, zIndex: 1001 }),
-                            control: (base, { isFocused }) => ({
-                              ...base,
-                              minHeight: `${stylingConsts.inputHeight}px`,
-                              borderWidth: isFocused ? '2px' : '1px',
-                              borderColor: isFocused
-                                ? theme.colors.tenantPrimary
-                                : colors.borderDark,
-                              boxShadow: 'none',
-                              '&:hover': {
-                                borderColor: isFocused
-                                  ? theme.colors.tenantPrimary
-                                  : colors.black,
-                              },
-                            }),
-                            placeholder: (base) => ({
-                              ...base,
-                              color: colors.placeholder,
-                            }),
-                          }}
-                        />
-                      </Box>
-                    </Box>
-                    {methods.formState.errors.itemId && (
-                      <Error
-                        marginTop="8px"
-                        text={methods.formState.errors.itemId.message}
-                      />
-                    )}
-                    {itemOptions.length === 0 && (
-                      <Text color="textSecondary" mt="8px" mb="0px">
-                        {formatMessage(messages.noItemsAvailable)}
-                      </Text>
-                    )}
-                  </Box>
-
-                  {isProjectOrFolder && (
-                    <Warning>{formatMessage(messages.accessWarning)}</Warning>
-                  )}
-
-                  <Box display="flex">
-                    <ButtonWithLink
-                      type="submit"
-                      icon="plus-circle"
-                      processing={methods.formState.isSubmitting}
-                    >
-                      {formatMessage(messages.addButton)}
-                    </ButtonWithLink>
-                  </Box>
-                </Box>
-              </form>
-            </FormProvider>
-          </Box>
+          <SingleItemForm
+            onSubmit={onSingleSubmit}
+            processing={singleProcessing}
+          />
         ) : (
           <DropdownForm
             editItem={editItem}

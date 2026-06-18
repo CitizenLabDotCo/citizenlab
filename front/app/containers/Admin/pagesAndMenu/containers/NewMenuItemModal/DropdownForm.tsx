@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 
 import {
   Box,
+  Button,
   colors,
   Icon,
   IconButton,
@@ -30,7 +31,6 @@ import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import T from 'components/T';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
@@ -430,12 +430,12 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
             )}
 
             <Box display="flex">
-              <ButtonWithLink
+              <Button
                 type="submit"
                 processing={processing || methods.formState.isSubmitting}
               >
                 {formatMessage(messages.saveButton)}
-              </ButtonWithLink>
+              </Button>
             </Box>
           </Box>
         </form>
