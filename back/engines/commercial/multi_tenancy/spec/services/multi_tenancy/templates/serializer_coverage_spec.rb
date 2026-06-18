@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # This spec guards against silent data loss in tenant template export/import
-# (and tenant cloning). Each templated model has a serializer under
+# Each templated model has a serializer under
 # MultiTenancy::Templates::Serializers. There are two examples:
 #
 #   1. Column coverage — for every model that HAS a serializer, every column is
@@ -22,6 +22,7 @@ require 'rails_helper'
 #   - `ignored_columns` holds the remaining *real* columns a model deliberately does
 #     not template (operational/auth state, etc.). Because the derived layer
 #     handles the noise, anything left here is a genuine, reviewable decision.
+
 describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/DescribeClass
   # Real (non-derived) columns that are intentionally not carried over by the
   # tenant serializers, keyed by model name. Every entry is a deliberate product
@@ -38,11 +39,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         scheduled_status
       ], # publication scheduling / operational state
 
-      'Area' => %w[
-        custom_field_option_id
-        include_in_onboarding
-      ], # REVIEW
-
       'CustomField' => %w[
         logic
       ], # Logic cannot be easily serialized
@@ -55,19 +51,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         parent_id
       ], # flat list; default topics carry no hierarchy
 
-      'Event' => %w[
-        address_1
-        address_2_multiloc
-        attend_button_multiloc
-        maximum_attendees
-        online_link
-        using_url
-      ], # REVIEW
-
-      'GlobalTopic' => %w[
-        include_in_onboarding
-      ], # REVIEW
-
       'Idea' => %w[
         assigned_at
         assignee_id
@@ -76,37 +59,16 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         manual_votes_last_updated_by_id
       ], # moderation / manual-vote operational state
 
-      'Permission' => %w[
-        access_denied_explanation_multiloc
-        everyone_tracking_enabled
-        user_data_collection
-        user_fields_in_form
-        verification_expiry
-      ], # REVIEW: (except verification_expiry)
-
       'Phase' => %w[
-        allow_anonymous_participation
-        available_views
-        draft_description_multiloc
         manual_voters_amount
         manual_voters_last_updated_at
         manual_voters_last_updated_by_id
-        similarity_enabled
-        similarity_threshold_body
-        similarity_threshold_title
-        survey_popup_frequency
-        voting_filtering_enabled
-        voting_term_plural_multiloc
-        voting_term_singular_multiloc
-      ], # REVIEW: (except manual_voters_* operational state)
+      ], # manual-vote operational state
 
       'Project' => %w[
         default_assignee_id
-        listed
-        live_auto_input_topics_enabled
         preview_token
-        track_participation_location
-      ], # REVIEW: (except default_assignee_id, preview_token)
+      ], # admin reference / regenerated token
 
       'User' => %w[
         block_end_at
@@ -120,23 +82,10 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         reset_password_token
         roles
         token_expiry_key
-      ], # auth/session/role state — deliberately not templated (privacy/security)
-
-      'EmailCampaigns::Campaign' => %w[
-        button_text_multiloc
-        intro_multiloc
-        reply_to
-        schedule
-        title_multiloc
-      ], # REVIEW
-
-      'ReportBuilder::Report' => %w[
-        community_monitor
-        quarter
-        year
-      ] # REVIEW
+      ] # auth/session/role state — deliberately not templated (privacy/security)
     }.freeze
   end
+
   # Persisted models that intentionally have no tenant serializer, keyed by reason
   let(:excluded_models) do
     {

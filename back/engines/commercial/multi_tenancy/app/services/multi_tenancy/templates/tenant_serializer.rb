@@ -64,6 +64,7 @@ module MultiTenancy
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
           Space => serialize_records(Space),
           StaticPagesGlobalTopic => serialize_records(StaticPagesGlobalTopic),
+          StaticPagesSpace => serialize_records(StaticPagesSpace),
           StaticPage => serialize_records(StaticPage),
           StaticPageFile => serialize_records(StaticPageFile),
           GlobalTopic => serialize_records(GlobalTopic),

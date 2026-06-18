@@ -4,7 +4,9 @@ module MultiTenancy
   module Templates
     module Serializers
       class Area < Base
-        attributes %i[description_multiloc title_multiloc ordering]
+        ref_attribute :custom_field_option
+
+        attributes %i[description_multiloc include_in_onboarding ordering title_multiloc]
       end
     end
   end

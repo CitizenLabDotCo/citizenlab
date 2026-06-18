@@ -185,6 +185,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         StaticPage
         StaticPageFile
         StaticPagesGlobalTopic
+        StaticPagesSpace
       ],
 
       # Per-tenant admin moderation runtime (internal comments on ideas — not
