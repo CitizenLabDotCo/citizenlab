@@ -8,8 +8,8 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
   # (≈ the create_<type> fields, minus the parent id — re-parenting is forbidden).
   RESOURCES = {
     'event' => {
-      model: 'Event',
-      sidefx: 'SideFxEventService',
+      model: Event,
+      sidefx: SideFxEventService,
       attrs: %i[
         title_multiloc description_multiloc location_multiloc address_2_multiloc attend_button_multiloc
         start_at end_at online_link address_1 using_url maximum_attendees location_point_geojson
@@ -17,20 +17,20 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       reorder: false
     },
     'cause' => {
-      model: 'Volunteering::Cause',
-      sidefx: 'Volunteering::SideFxCauseService',
+      model: Volunteering::Cause,
+      sidefx: Volunteering::SideFxCauseService,
       attrs: %i[title_multiloc description_multiloc],
       reorder: true
     },
     'poll_question' => {
-      model: 'Polls::Question',
-      sidefx: 'Polls::SideFxQuestionService',
+      model: Polls::Question,
+      sidefx: Polls::SideFxQuestionService,
       attrs: %i[title_multiloc question_type max_options],
       reorder: true
     },
     'poll_option' => {
-      model: 'Polls::Option',
-      sidefx: 'Polls::SideFxOptionService',
+      model: Polls::Option,
+      sidefx: Polls::SideFxOptionService,
       attrs: %i[title_multiloc],
       reorder: true
     }
@@ -81,11 +81,11 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
         )
       end
 
-      record = config[:model].constantize.find(params[:id])
+      record = config[:model].find(params[:id])
       apply_attributes(record, attributes)
       record.save!
       record.insert_at(ordering) if config[:reorder] && !ordering.nil?
-      config[:sidefx].constantize.new.after_update(record, current_user)
+      config[:sidefx].new.after_update(record, current_user)
 
       ok("Updated #{params[:type]} #{record.id}")
     rescue ActiveRecord::RecordNotFound
