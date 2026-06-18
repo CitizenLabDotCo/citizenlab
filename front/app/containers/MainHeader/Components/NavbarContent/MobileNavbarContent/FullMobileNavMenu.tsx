@@ -5,6 +5,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
+import { getNavbarChildLink } from 'api/navbar/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -110,8 +111,38 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
         </Box>
         <MenuItems>
           {navbarItemPropsArray.map((navbarItemProps) => {
-            const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
-              navbarItemProps;
+            const {
+              linkTo,
+              onlyActiveOnIndex,
+              navigationItemTitle,
+              navbarItem,
+            } = navbarItemProps;
+            // Dropdown ('menu') items have no link; flatten their children
+            // into the mobile menu so they stay reachable.
+            if (navbarItem) {
+              return navbarItem.attributes.children.map((child) => {
+                const link = getNavbarChildLink(child);
+                if (!link) return null;
+                return (
+                  <FullMobileNavMenuItem
+                    key={child.id}
+                    to={
+                      link.to as Parameters<
+                        typeof FullMobileNavMenuItem
+                      >[0]['to']
+                    }
+                    params={
+                      link.params as Parameters<
+                        typeof FullMobileNavMenuItem
+                      >[0]['params']
+                    }
+                    navigationItemTitle={localize(child.title_multiloc)}
+                    onClick={handleOnMenuItemClick(child.id)}
+                    scrollToTop
+                  />
+                );
+              });
+            }
             if (linkTo) {
               return (
                 <FullMobileNavMenuItem

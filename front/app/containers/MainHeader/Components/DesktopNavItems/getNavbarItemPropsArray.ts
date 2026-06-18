@@ -2,18 +2,22 @@ import { INavbarItem } from 'api/navbar/types';
 import { getNavbarItemSlug } from 'api/navbar/util';
 
 export default function getNavbarItemPropsArray(navbarItems: INavbarItem[]) {
-  return (
-    navbarItems
-      // Dropdown ('menu') items aren't rendered on the front office yet.
-      .filter((navbarItem) => navbarItem.attributes.code !== 'menu')
-      .map((navbarItem) => {
-        const linkTo = getNavbarItemSlug(navbarItem);
+  return navbarItems.map((navbarItem) => {
+    // Dropdown ('menu') items aren't links themselves; they render as a
+    // dropdown grouping their children, so they carry the navbar item instead
+    // of a linkTo.
+    const isMenu = navbarItem.attributes.code === 'menu';
+    const linkTo = isMenu ? null : getNavbarItemSlug(navbarItem);
 
-        const navigationItemTitle = navbarItem.attributes.title_multiloc;
+    const navigationItemTitle = navbarItem.attributes.title_multiloc;
 
-        const onlyActiveOnIndex = linkTo === '/';
+    const onlyActiveOnIndex = linkTo === '/';
 
-        return { linkTo, onlyActiveOnIndex, navigationItemTitle };
-      })
-  );
+    return {
+      linkTo,
+      onlyActiveOnIndex,
+      navigationItemTitle,
+      navbarItem: isMenu ? navbarItem : undefined,
+    };
+  });
 }

@@ -1,4 +1,4 @@
-import { TDefaultNavbarItemCode, INavbarItem } from './types';
+import { TDefaultNavbarItemCode, INavbarItem, INavbarChild } from './types';
 
 export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
   home: '/',
@@ -43,6 +43,26 @@ export function getNavbarItemSlug({
 
   // This is impossible, but I can't seem to make typescript understand
   // that. So just returning null here
+  return null;
+}
+
+// Resolves the front-office link target for a dropdown ('menu') child. The
+// `to`/`params` are passed to a typed router Link at the call site (cast there,
+// matching the existing navbar Link usage). Returns null when the child has no
+// usable slug.
+export function getNavbarChildLink(
+  child: INavbarChild
+): { to: string; params: { slug: string } } | null {
+  if (!child.slug) return null;
+  if (child.static_page_id) {
+    return { to: '/pages/$slug', params: { slug: child.slug } };
+  }
+  if (child.project_id) {
+    return { to: '/projects/$slug', params: { slug: child.slug } };
+  }
+  if (child.project_folder_id) {
+    return { to: '/folders/$slug', params: { slug: child.slug } };
+  }
   return null;
 }
 
