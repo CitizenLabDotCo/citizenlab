@@ -11,6 +11,10 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     it 'is invalid without a body' do
       expect(build(:sms_manual_campaign, body_multiloc: {})).not_to be_valid
     end
+
+    it 'is invalid without a title' do
+      expect(build(:sms_manual_campaign, title_multiloc: {})).not_to be_valid
+    end
   end
 
   describe 'channel and manual flags' do

@@ -14,6 +14,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { Section, SectionField } from 'components/admin/Section';
 import Feedback from 'components/HookForm/Feedback';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 
@@ -32,6 +33,7 @@ const StyledSectionField = styled(SectionField)`
 `;
 
 export interface FormValues {
+  title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   group_ids?: string[];
 }
@@ -52,6 +54,9 @@ const SmsCampaignForm = ({
   const localize = useLocalize();
 
   const schema = object({
+    title_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldSmsTitleError)
+    ),
     body_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldSmsBodyError)
     ),
@@ -85,6 +90,16 @@ const SmsCampaignForm = ({
         <StyledSection>
           <StyledSectionField>
             <Feedback onlyShowErrors={true} />
+          </StyledSectionField>
+          <StyledSectionField className="e2e-sms-campaign_title_multiloc">
+            <InputMultilocWithLocaleSwitcher
+              name="title_multiloc"
+              label={<FormattedMessage {...messages.fieldSmsTitle} />}
+              labelTooltipText={
+                <FormattedMessage {...messages.fieldSmsTitleTooltip} />
+              }
+              maxCharCount={80}
+            />
           </StyledSectionField>
           <StyledSectionField>
             <MultipleSelect

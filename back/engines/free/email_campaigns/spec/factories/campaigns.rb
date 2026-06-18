@@ -25,6 +25,11 @@ FactoryBot.define do
   factory :sms_manual_campaign, class: 'EmailCampaigns::Campaigns::SmsManual' do
     enabled { true }
     author
+    title_multiloc do
+      {
+        'en' => 'Town hall reminder'
+      }
+    end
     body_multiloc do
       {
         'en' => 'A short SMS update from your city.'

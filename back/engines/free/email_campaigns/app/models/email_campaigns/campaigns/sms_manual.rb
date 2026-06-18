@@ -49,7 +49,9 @@ module EmailCampaigns
     # trigger. It should only be sent through an explicit manual send.
     filter :only_manual_send
 
-    # SMS body is a single plain-text multiloc (no subject, no HTML).
+    # Admin-facing label so campaigns are easy to tell apart in the list
+    # (not sent to recipients). SMS body is a single plain-text multiloc.
+    validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
 
     def self.recipient_role_multiloc_key

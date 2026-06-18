@@ -91,6 +91,7 @@ export interface EditableRegion {
 }
 
 export interface SmsCampaignFormValues {
+  title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   group_ids?: string[];
 }
@@ -183,6 +184,7 @@ export interface CampaignAdd {
   campaign_name: string;
   context?: CampaignContext;
   enabled?: boolean;
+  title_multiloc?: Multiloc;
   subject_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   sender?: string;
