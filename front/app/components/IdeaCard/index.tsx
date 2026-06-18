@@ -16,7 +16,7 @@ import usePhase from 'api/phases/usePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { useSearch } from 'utils/router';
@@ -33,6 +33,16 @@ const TitleClamp = styled.div`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+`;
+
+const StyledLink = typedStyled(Link)`
+  display: block;
+
+  &.focus-visible,
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.tenantPrimary};
+    outline-offset: -2px;
+  }
 `;
 
 export interface Props {
@@ -134,7 +144,6 @@ const IdeaCard = ({
         // Height of 100% needed to extent the card to the bottom of the row when there
         // is a card with an image and a card without an image in the same row.
         h="100%"
-        overflowX="hidden"
       >
         <Box
           mb={
@@ -145,7 +154,7 @@ const IdeaCard = ({
               : '8px'
           }
         >
-          <Link
+          <StyledLink
             to="/ideas/$slug"
             params={{ slug }}
             search={{ go_back: 'true' }}
@@ -168,7 +177,7 @@ const IdeaCard = ({
               </TitleClamp>
             </Tooltip>
             {!hideBody && <Body idea={idea} />}
-          </Link>
+          </StyledLink>
         </Box>
         {/* marginTop used to push the interactions/footer to bottom of the card */}
         <Box marginTop="auto">

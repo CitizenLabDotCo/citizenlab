@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Criipto
-  class CriiptoOmniauth < OmniauthMethods::Base
+  class CriiptoOmniauth < IdMethods::Base
     include CriiptoVerification
+
+    def name
+      'criipto'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
 
     def profile_to_user_attrs(auth)
       case config[:identity_source]
@@ -69,10 +81,6 @@ module CustomIdMethods::Criipto
 
     def email_always_present?
       false
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def email_confirmed?(_auth)

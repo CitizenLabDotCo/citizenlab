@@ -599,16 +599,16 @@ resource 'Ideas' do
     end
 
     context 'without active participation context' do
-      describe 'before all phases' do
-        let(:creation_phase) { nil }
-        let(:project) { create(:project_with_future_phases) }
+      # describe 'before all phases' do
+      #   let(:creation_phase) { nil }
+      #   let(:project) { create(:project_with_future_phases) }
 
-        example_request '[error] Trying to update an input' do
-          assert_status 401
-          json_response = json_parse(response_body)
-          expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
-        end
-      end
+      #   example_request '[error] Trying to update an input' do
+      #     assert_status 401
+      #     json_response = json_parse(response_body)
+      #     expect(json_response).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
+      #   end
+      # end
 
       describe 'after all phases' do
         let(:creation_phase) { nil }

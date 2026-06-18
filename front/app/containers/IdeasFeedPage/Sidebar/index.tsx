@@ -12,6 +12,7 @@ import IdeasShow from 'containers/IdeasShow';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -19,6 +20,7 @@ import { useParams, useSearch } from 'utils/router';
 
 import BottomSheet from '../BottomSheet';
 import messages from '../messages';
+import tracks from '../tracks';
 
 import IdeaContent from './IdeaContent';
 import TopicsContent from './TopicsContent';
@@ -69,13 +71,16 @@ const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
+      trackEventByName(tracks.topicSelected);
       updateSearchParams({ topic: topicId });
     } else {
+      trackEventByName(tracks.topicDeselected);
       removeSearchParams(['topic', 'subtopic']);
     }
   };
 
   const handleCloseIdea = () => {
+    trackEventByName(tracks.ideaDetailClosed);
     removeSearchParams(['idea_id', 'sheet_open']);
   };
 

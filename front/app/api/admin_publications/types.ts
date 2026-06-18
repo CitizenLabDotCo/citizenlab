@@ -14,6 +14,7 @@ export type ReviewState = (typeof reviewStates)[number];
 export interface IQueryParameters {
   globalTopics?: string[] | null;
   areaIds?: string[] | null;
+  spaceIds?: string[] | null;
   publicationStatusFilter?: PublicationStatus[];
   childrenOfId?: string;
   search?: string | null;

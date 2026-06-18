@@ -7,7 +7,7 @@ module BulkImportIdeas
     end
 
     def size_range
-      (1.byte)..(50.megabytes)
+      (1.byte)..(75.megabytes)
     end
 
     def store_dir

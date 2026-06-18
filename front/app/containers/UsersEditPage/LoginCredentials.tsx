@@ -3,8 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
-import { TVerificationMethodName } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { IdMethodName } from 'api/id_methods/types';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -22,7 +22,7 @@ type PasswordChangeProps = {
 // SSO methods that don't return an email by default (email_always_present? ==
 // false): users authenticated through these need to be able to set/change their
 // email.
-const SSO_METHODS_WITHOUT_EMAIL: TVerificationMethodName[] = [
+const SSO_METHODS_WITHOUT_EMAIL: IdMethodName[] = [
   'clave_unica',
   'id_austria',
   'nemlog_in',
@@ -33,9 +33,9 @@ const SSO_METHODS_WITHOUT_EMAIL: TVerificationMethodName[] = [
 
 const LoginCredentials = ({ user }: PasswordChangeProps) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: idMethods } = useIdMethods();
 
-  const ssoWithoutEmailEnabled = !!verificationMethods?.data.some((method) =>
+  const ssoWithoutEmailEnabled = !!idMethods?.data.some((method) =>
     SSO_METHODS_WITHOUT_EMAIL.includes(method.attributes.name)
   );
 

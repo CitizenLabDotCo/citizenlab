@@ -5,7 +5,7 @@ module Analysis
     attr_reader :analysis, :task, :question, :input_to_text
 
     LLMS = [
-      LLM::GPT41.new,
+      LLM::GPT54.new,
       LLM::GPT4oMini.new
     ]
 

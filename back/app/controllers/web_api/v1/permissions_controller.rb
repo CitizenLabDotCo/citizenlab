@@ -35,13 +35,10 @@ class WebApi::V1::PermissionsController < ApplicationController
     authorize @permission
     ActiveRecord::Base.transaction do
       @permission.global_custom_fields = true
-      if @permission.save
-        @permission.permissions_custom_fields.destroy_all
-        @permission.groups_permissions.destroy_all
-        render json: serialize(@permission), status: :ok
-      else
-        render json: { errors: @permission.errors.details }, status: :unprocessable_entity
-      end
+      save_or_raise!(@permission)
+      @permission.permissions_custom_fields.destroy_all
+      @permission.groups_permissions.destroy_all
+      render json: serialize(@permission), status: :ok
     end
   end
 

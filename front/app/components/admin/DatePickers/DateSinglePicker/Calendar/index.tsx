@@ -11,6 +11,7 @@ import { userTimezone } from 'utils/dateUtils';
 
 import { getEndMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
+import { preventEnterToSubmit } from '../../_shared/preventEnterToSubmit';
 import { CalendarProps } from '../typings';
 
 const DayPickerStyles = styled.div`
@@ -45,7 +46,7 @@ const Calendar = ({
   const endMonth = getEndMonth({ endMonth: _endMonth, selectedDate });
 
   return (
-    <DayPickerStyles>
+    <DayPickerStyles onKeyDown={preventEnterToSubmit}>
       <DayPicker
         mode="single"
         captionLayout="dropdown"

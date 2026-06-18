@@ -87,56 +87,55 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   const maxWidth = usingMapView ? '1100px' : '700px';
   return (
     <>
-      <main id="e2e-idea-new-page">
-        <IdeasNewSurveyMeta
-          project={project}
-          surveyTitle={localize(phase.attributes.native_survey_title_multiloc)}
-        />
+      <IdeasNewSurveyMeta
+        project={project}
+        surveyTitle={localize(phase.attributes.native_survey_title_multiloc)}
+      />
+      <Box
+        w="100%"
+        bgColor={colors.grey100}
+        h="100vh"
+        position="fixed"
+        zIndex="1010"
+      >
         <Box
+          as="header"
+          mx="auto"
+          position="relative"
+          top={isSmallerThanPhone ? '0' : '40px'}
+          maxWidth={usingMapView ? '1100px' : '700px'}
+        >
+          <SurveyHeading
+            titleText={localize(phase.attributes.native_survey_title_multiloc)}
+            phaseId={phaseId}
+          />
+        </Box>
+        <Box
+          as="main"
+          id="e2e-idea-new-page"
+          display="flex"
+          justifyContent="center"
+          pt={isSmallerThanPhone ? '0' : '40px'}
           w="100%"
-          bgColor={colors.grey100}
-          h="100vh"
-          position="fixed"
-          zIndex="1010"
         >
           <Box
-            mx="auto"
-            position="relative"
-            top={isSmallerThanPhone ? '0' : '40px'}
-            maxWidth={usingMapView ? '1100px' : '700px'}
-          >
-            <SurveyHeading
-              titleText={localize(
-                phase.attributes.native_survey_title_multiloc
-              )}
-              phaseId={phaseId}
-            />
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="center"
-            pt={isSmallerThanPhone ? '0' : '40px'}
+            background={colors.white}
+            maxWidth={maxWidth}
             w="100%"
+            h={calculateDynamicHeight(isSmallerThanPhone)}
+            pb={isSmallerThanPhone ? '0' : '80px'}
+            display="flex"
           >
-            <Box
-              background={colors.white}
-              maxWidth={maxWidth}
-              w="100%"
-              h={calculateDynamicHeight(isSmallerThanPhone)}
-              pb={isSmallerThanPhone ? '0' : '80px'}
-              display="flex"
-            >
-              <Suspense>
-                <SurveyForm
-                  projectId={project.data.id}
-                  phaseId={phaseId}
-                  participationMethod={'native_survey'}
-                />
-              </Suspense>
-            </Box>
+            <Suspense>
+              <SurveyForm
+                projectId={project.data.id}
+                phaseId={phaseId}
+                participationMethod={'native_survey'}
+              />
+            </Suspense>
           </Box>
         </Box>
-      </main>
+      </Box>
     </>
   );
 };

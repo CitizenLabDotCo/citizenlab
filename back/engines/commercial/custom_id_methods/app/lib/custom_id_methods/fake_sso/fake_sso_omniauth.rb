@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::FakeSso
-  class FakeSsoOmniauth < OmniauthMethods::Base
+  class FakeSsoOmniauth < IdMethods::Base
     include FakeSsoVerification
+
+    def name
+      'fake_sso'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
 
     def profile_to_user_attrs(auth)
       {
@@ -58,10 +70,6 @@ module CustomIdMethods::FakeSso
       return 'https' if issuer_in_settings.present?
 
       'http'
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def email_always_present?
