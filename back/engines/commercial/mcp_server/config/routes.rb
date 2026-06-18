@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 McpServer::Engine.routes.draw do
-  # The MCP protocol endpoint (POST /mcp).
   post 'mcp', to: 'mcp#create', as: :mcp
 
-  # MCP authorization management, served as JSON to the SPA under /web_api/v1.
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       # OAuth 2.1 consent screen, served as JSON to the SPA (replaces Doorkeeper's
