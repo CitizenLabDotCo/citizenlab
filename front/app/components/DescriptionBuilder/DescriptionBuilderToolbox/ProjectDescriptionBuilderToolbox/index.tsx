@@ -19,9 +19,14 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { useIntl } from 'utils/cl-intl';
 const ProjectDescriptionBuilderToolbox = () => {
   const { formatMessage } = useIntl();
+  const projectStaticPagesEnabled = useFeatureFlag({
+    name: 'project_static_pages',
+  });
 
   return (
     <Container
@@ -89,12 +94,14 @@ const ProjectDescriptionBuilderToolbox = () => {
           icon="paperclip"
           label={formatMessage(FileAttachment.craft.custom.title)}
         />
-        <DraggableElement
-          id="e2e-draggable-page-link"
-          component={<PageLink />}
-          icon="file"
-          label={formatMessage(PageLink.craft.custom.title)}
-        />
+        {projectStaticPagesEnabled && (
+          <DraggableElement
+            id="e2e-draggable-page-link"
+            component={<PageLink />}
+            icon="file"
+            label={formatMessage(PageLink.craft.custom.title)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc />}

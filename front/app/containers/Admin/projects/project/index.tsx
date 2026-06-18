@@ -11,6 +11,8 @@ import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
 import NewLabel from 'components/UI/NewLabel';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
@@ -23,6 +25,9 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
+  const projectStaticPagesEnabled = useFeatureFlag({
+    name: 'project_static_pages',
+  });
   const projectId = project.id;
 
   if (!canModerateProject(project, authUser)) {
@@ -91,17 +96,19 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
           url={`/admin/projects/${projectId}/files`}
           active={pathname.includes(`/admin/projects/${projectId}/files`)}
         />
-        <Tab
-          className="intercom-admin-project-pages-tab"
-          label={
-            <Box display="flex" alignItems="center" gap="8px">
-              {formatMessage(messages.pagesTab)}
-              <NewLabel />
-            </Box>
-          }
-          url={`/admin/projects/${projectId}/pages`}
-          active={pathname.includes(`/admin/projects/${projectId}/pages`)}
-        />
+        {projectStaticPagesEnabled && (
+          <Tab
+            className="intercom-admin-project-pages-tab"
+            label={
+              <Box display="flex" alignItems="center" gap="8px">
+                {formatMessage(messages.pagesTab)}
+                <NewLabel />
+              </Box>
+            }
+            url={`/admin/projects/${projectId}/pages`}
+            active={pathname.includes(`/admin/projects/${projectId}/pages`)}
+          />
+        )}
       </NavigationTabs>
       <RouterOutlet />
     </Box>
