@@ -20,8 +20,12 @@ import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAc
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 
 import { useIntl } from 'utils/cl-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 const ProjectDescriptionBuilderToolbox = () => {
   const { formatMessage } = useIntl();
+  const isHtmlBlockMultilocEnabled = useFeatureFlag({
+    name: 'html_block_in_content_builder',
+  });
 
   return (
     <Container
@@ -70,12 +74,15 @@ const ProjectDescriptionBuilderToolbox = () => {
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
         />
-        <DraggableElement
-          id="e2e-draggable-html-block"
-          component={<HtmlBlockMultiloc />}
-          icon="code"
-          label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
-        />
+        { isHtmlBlockMultilocEnabled ? (
+          <DraggableElement
+            id="e2e-draggable-html-block"
+            component={<HtmlBlockMultiloc />}
+            icon="code"
+            label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
+          />
+          ) : null
+        }
         <DraggableElement
           id="e2e-draggable-button"
           component={

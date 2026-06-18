@@ -6,6 +6,8 @@ import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
 import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
 import Spotlight, {
@@ -52,6 +54,9 @@ const FolderDescriptionBuilderToolbox = ({
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
+  const isHtmlBlockMultilocEnabled = useFeatureFlag({
+    name: 'html_block_in_content_builder',
+  });
 
   if (!appConfigurationLocales || !formatMessageWithLocale) {
     return null;
@@ -158,12 +163,15 @@ const FolderDescriptionBuilderToolbox = ({
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
         />
-        <DraggableElement
-          id="e2e-draggable-html-block"
-          component={<HtmlBlockMultiloc />}
-          icon="code"
-          label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
-        />
+        { isHtmlBlockMultilocEnabled ? (
+          <DraggableElement
+            id="e2e-draggable-html-block"
+            component={<HtmlBlockMultiloc />}
+            icon="code"
+            label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
+          />
+          ) : null
+        }
         <DraggableElement
           id="e2e-draggable-button"
           component={

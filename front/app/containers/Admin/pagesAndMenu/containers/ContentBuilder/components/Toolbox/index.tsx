@@ -85,7 +85,9 @@ const HomepageBuilderToolbox = () => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const followEnabled = useFeatureFlag({ name: 'follow' });
   const communityMonitorEnabled = useFeatureFlag({ name: 'community_monitor' });
-
+  const isHtmlBlockMultilocEnabled = useFeatureFlag({
+    name: 'html_block_in_content_builder',
+  });
   const { data: appConfiguration } = useAppConfiguration();
 
   if (
@@ -243,12 +245,15 @@ const HomepageBuilderToolbox = () => {
           icon="text"
           label={formatMessage(textMultilocTitle)}
         />
-        <DraggableElement
-          id="e2e-draggable-html-block-multiloc"
-          component={<HtmlBlockMultiloc html={{}} />}
-          icon="code"
-          label={formatMessage(htmlBlockMultilocTitle)}
-        />
+        { isHtmlBlockMultilocEnabled ? (
+          <DraggableElement
+            id="e2e-draggable-html-block-multiloc"
+            component={<HtmlBlockMultiloc html={{}} />}
+            icon="code"
+            label={formatMessage(htmlBlockMultilocTitle)}
+          />
+          ) : null
+        }
         <DraggableElement
           id="e2e-draggable-white-space"
           component={<WhiteSpace size="small" />}
