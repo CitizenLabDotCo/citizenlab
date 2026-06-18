@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -11,21 +11,40 @@ import { sortBy } from 'lodash-es';
 import moment from 'moment';
 import styled from 'styled-components';
 
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { useIntl } from 'utils/cl-intl';
+import methodMessages from 'containers/Admin/inspirationHub/messages';
+
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
-import SectionHeader from '../SectionHeader';
 
 import type { LinkProps } from '@tanstack/react-router';
+
+// The prototype labels each phase by its participation method (e.g. "Ideation",
+// "Voting") rather than a past/upcoming status — status is conveyed by the dot
+// colour and the struck-through title instead. Reuse the canonical method
+// labels rather than re-defining them.
+const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
+  ideation: methodMessages.ideation,
+  proposals: methodMessages.proposals,
+  native_survey: methodMessages.survey,
+  community_monitor_survey: methodMessages.communityMonitorSurvey,
+  survey: methodMessages.externalSurvey,
+  information: methodMessages.information,
+  voting: methodMessages.voting,
+  poll: methodMessages.poll,
+  volunteering: methodMessages.volunteering,
+  common_ground: methodMessages.commonGround,
+  document_annotation: methodMessages.documentAnnotation,
+};
 
 type PhaseStatus = 'past' | 'present' | 'future';
 
@@ -90,6 +109,7 @@ const Row = styled.div<{ selected: boolean }>`
 const PhaseTitle = styled.span<{ past: boolean }>`
   font-size: ${fontSizes.s}px;
   color: ${({ past }) => (past ? colors.textSecondary : colors.textPrimary)};
+  text-decoration: ${({ past }) => (past ? 'line-through' : 'none')};
 `;
 
 const NewPhaseButton = styled.div`
@@ -128,96 +148,71 @@ const TimelinePhases = ({ projectId }: Props) => {
   const { phaseId } = useParams({ strict: false }) as { phaseId?: string };
   const { data: phases } = usePhases(projectId);
 
-  // Timeline phases is the section that's open by default.
-  const [expanded, setExpanded] = useState(true);
-
   if (!phases) return null;
 
   const sortedPhases = sortBy(phases.data, (p) => p.attributes.start_at);
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
 
-  const statusLabel = (status: PhaseStatus): string | null => {
-    if (status === 'past') return formatMessage(messages.phaseStatusPast);
-    if (status === 'future') {
-      return formatMessage(messages.phaseStatusUpcoming);
-    }
-    return null;
-  };
-
   return (
     <Panel p="12px" borderTop={`1px solid ${colors.grey200}`}>
-      <SectionHeader
-        title={formatMessage(messages.timelinePhases)}
-        icon="timeline"
-        expanded={expanded}
-        onToggle={() => setExpanded((v) => !v)}
-      />
+      <Text
+        m="0 0 8px 0"
+        px="2px"
+        fontSize="m"
+        fontWeight="bold"
+        color="textPrimary"
+      >
+        {formatMessage(messages.timeline)}
+      </Text>
 
-      {expanded && (
-        <>
-          <Box display="flex" flexDirection="column">
-            {sortedPhases.map((phase, index) => {
-              const status = phaseStatus(phase);
-              const isSelected = phase.id === phaseId;
-              const isLast = index === sortedPhases.length - 1;
-              const label = statusLabel(status);
-              const dateText = formatDateRange(
-                phase.attributes.start_at,
-                phase.attributes.end_at,
-                noEndLabel
-              );
+      <Box display="flex" flexDirection="column">
+        {sortedPhases.map((phase, index) => {
+          const status = phaseStatus(phase);
+          const isSelected = phase.id === phaseId;
+          const isLast = index === sortedPhases.length - 1;
+          const dateText = formatDateRange(
+            phase.attributes.start_at,
+            phase.attributes.end_at,
+            noEndLabel
+          );
+          const methodLabel = formatMessage(
+            METHOD_LABELS[phase.attributes.participation_method]
+          );
 
-              return (
-                <Link
-                  key={phase.id}
-                  to={
-                    `/admin/projects/${projectId}/phases/${
-                      phase.id
-                    }/${getPhaseLandingTab(phase)}` as LinkProps['to']
-                  }
-                >
-                  <Row
-                    selected={isSelected}
-                    data-cy="e2e-new-project-phase-item"
-                  >
-                    <Box
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="center"
-                    >
-                      <Dot status={status} />
-                      {!isLast && <Connector />}
-                    </Box>
-                    <Box flexGrow={1} pb="4px">
-                      <PhaseTitle past={status === 'past'}>
-                        {localize(phase.attributes.title_multiloc)}
-                      </PhaseTitle>
-                      <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
-                        {dateText}
-                        {label ? ` · ${label}` : ''}
-                      </Text>
-                    </Box>
-                  </Row>
-                </Link>
-              );
-            })}
-          </Box>
+          return (
+            <Link
+              key={phase.id}
+              to={
+                `/admin/projects/${projectId}/phases/${
+                  phase.id
+                }/${getPhaseLandingTab(phase)}` as LinkProps['to']
+              }
+            >
+              <Row selected={isSelected} data-cy="e2e-new-project-phase-item">
+                <Box display="flex" flexDirection="column" alignItems="center">
+                  <Dot status={status} />
+                  {!isLast && <Connector />}
+                </Box>
+                <Box flexGrow={1} pb="4px">
+                  <PhaseTitle past={status === 'past'}>
+                    {localize(phase.attributes.title_multiloc)}
+                  </PhaseTitle>
+                  <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
+                    {dateText} · {methodLabel}
+                  </Text>
+                </Box>
+              </Row>
+            </Link>
+          );
+        })}
+      </Box>
 
-          <Link
-            to={`/admin/projects/${projectId}/phases/new` as LinkProps['to']}
-          >
-            <NewPhaseButton data-cy="e2e-new-project-new-phase">
-              <Icon
-                name="plus"
-                width="16px"
-                height="16px"
-                fill="currentColor"
-              />
-              {formatMessage(messages.newPhase)}
-            </NewPhaseButton>
-          </Link>
-        </>
-      )}
+      <Link to={`/admin/projects/${projectId}/phases/new` as LinkProps['to']}>
+        <NewPhaseButton data-cy="e2e-new-project-new-phase">
+          <Icon name="plus" width="16px" height="16px" fill="currentColor" />
+          {formatMessage(messages.newPhase)}
+        </NewPhaseButton>
+      </Link>
     </Panel>
   );
 };
