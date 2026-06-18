@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, colors, IconButton } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  colors,
+  IconButton,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -8,7 +14,6 @@ import { INavbarChild } from 'api/navbar/types';
 
 import { TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -95,8 +100,9 @@ const MenuItemRow = ({
                     )}
                     iconColor={colors.textSecondary}
                     iconColorOnHover={colors.primary}
-                    iconWidth="16px"
-                    iconHeight="16px"
+                    p="4px"
+                    border={`1px solid ${colors.borderLight}`}
+                    borderRadius={stylingConsts.borderRadius}
                   />
                 </Box>
               </>
@@ -111,8 +117,9 @@ const MenuItemRow = ({
             a11y_buttonActionMessage={formatMessage(messages.editItem)}
             iconColor={colors.textSecondary}
             iconColorOnHover={colors.primary}
-            iconWidth="20px"
-            iconHeight="20px"
+            p="4px"
+            border={`1px solid ${colors.borderLight}`}
+            borderRadius={stylingConsts.borderRadius}
             className="intercom-admin-pages-menu-edit-button"
           />
 
@@ -124,22 +131,23 @@ const MenuItemRow = ({
                 a11y_buttonActionMessage={formatMessage(messages.viewItem)}
                 iconColor={colors.textSecondary}
                 iconColorOnHover={colors.primary}
-                iconWidth="20px"
-                iconHeight="20px"
+                p="4px"
+                border={`1px solid ${colors.borderLight}`}
+                borderRadius={stylingConsts.borderRadius}
                 className="intercom-admin-pages-menu-view-button"
               />
             </Link>
           )}
 
           {showRemoveButton && (
-            <ButtonWithLink
+            <Button
               buttonStyle="text"
               padding="0px"
               onClick={onClickRemoveButton}
               className="intercom-admin-pages-menu-remove-from-navbar-button"
             >
               <FormattedMessage {...messages.removeFromNavbar} />
-            </ButtonWithLink>
+            </Button>
           )}
         </Box>
       </Box>
