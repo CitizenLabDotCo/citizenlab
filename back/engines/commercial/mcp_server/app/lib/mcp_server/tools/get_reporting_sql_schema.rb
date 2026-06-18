@@ -18,14 +18,20 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
   REPORTING_TABLE_NAMES = REPORTING_TABLES.map(&:table_name).freeze
 
   def name = 'get_reporting_sql_schema'
-  def description = 'Gets the SQL schema for the tables to run reporting queries against with the `run_reporting_sql_query` tool. Optionally, specify the names of the tables to get the schema for those specific tables only.'
+
+  def description
+    <<~DOC.squish
+      Gets the SQL schema for the tables to run reporting queries against with the
+      `run_reporting_sql_query` tool.
+    DOC
+  end
 
   def input_schema
     {
       properties: {
         table_names: {
           type: 'array',
-          description: 'The names of the database tables to get the schema for (optional)',
+          description: 'The names of the database tables to get the schema for. Optional, defaults to all tables.',
           items: {
             type: 'string',
             enum: REPORTING_TABLE_NAMES

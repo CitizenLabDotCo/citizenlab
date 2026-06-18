@@ -24,7 +24,7 @@ module Analytics
       {
         'id' => 'User primary key. Target of fact dimension_user_id foreign keys.',
         'role' => <<~DOC.squish,
-          Highest role of the user, taken from the first entry of their roles. One of admin,
+          Highest role of the user. One of admin,
           project_moderator, project_folder_moderator or space_moderator, or citizen for ordinary
           users with no special role.
         DOC

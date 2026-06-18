@@ -5,7 +5,7 @@
 #
 #   Layer 1 (McpServer::SqlSandboxer): a pg_query AST validator that accepts only
 #   a single SELECT over unqualified analytics_fact_* / analytics_dimension_*
-#   views with allowlisted functions. Returns an actionable rejection the model
+#   views with allowlisted functions. Returns an actionable rejection the LLM
 #   can self-correct from.
 #
 #   Layer 2 (here): the real security boundary, enforced by Postgres. Each query

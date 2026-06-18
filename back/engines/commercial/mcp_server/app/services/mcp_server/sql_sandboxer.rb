@@ -7,8 +7,8 @@ module McpServer
   #
   # It is the fast, friendly filter that rejects malformed or out-of-scope queries
   # before they reach the database, returning an actionable reason the LLM can
-  # self-correct from. It is NOT the real security boundary: that is the
-  # `analytics_reader` Postgres role applied at execution time (layer 2). Because
+  # self-correct from. It is only a partial security boundary: the
+  # `analytics_reader` Postgres role applied at execution time (layer 2) is core. Because
   # layer 2 sits behind it, layer 1 errs on the side of rejecting anything it
   # cannot prove safe.
   #
