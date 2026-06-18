@@ -15,8 +15,9 @@ describe CustomIdMethods::Federa::FederaOmniauth do
           'credentials' => {},
           'extra' => {
             'raw_info' => {
-              'nome' => ['Mario'],
-              'cognome' => ['Rossi'],
+              # FedERa returns names in ALL CAPITALS; they should be proper-cased.
+              'nome' => ['MARIO'],
+              'cognome' => ['ROSSI'],
               'emailAddressPersonale' => ['mario.rossi@example.it'],
               'comuneDomicilio' => ['1234'],
               'dataNascita' => ['1980-01-01'],
@@ -57,8 +58,8 @@ describe CustomIdMethods::Federa::FederaOmniauth do
           'credentials' => {},
           'extra' => {
             'raw_info' => {
-              'nome' => ['Mario'],
-              'cognome' => ['Rossi'],
+              'nome' => ['MARIO'],
+              'cognome' => ['ROSSI'],
               'CodiceFiscale' => ['RSSMRA80A01H501U']
             },
             'response_object' => OneLogin::RubySaml::Response.new('fakeresponse')
@@ -120,12 +121,6 @@ describe CustomIdMethods::Federa::FederaOmniauth do
   describe '#email_always_present?' do
     it 'returns false' do
       expect(omniauth.email_always_present?).to be false
-    end
-  end
-
-  describe '#verification_prioritized?' do
-    it 'returns true' do
-      expect(omniauth.verification_prioritized?).to be true
     end
   end
 

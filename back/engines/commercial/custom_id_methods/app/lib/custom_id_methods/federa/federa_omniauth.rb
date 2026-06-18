@@ -3,8 +3,20 @@
 # NOTES: Domain partecipa.comune.modena.it
 
 module CustomIdMethods::Federa
-  class FederaOmniauth < OmniauthMethods::Base
+  class FederaOmniauth < IdMethods::Base
     include FederaVerification
+
+    def name
+      'federa'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
 
     ENVIRONMENTS = {
       'test' => {
@@ -42,8 +54,9 @@ module CustomIdMethods::Federa
       end
 
       {
-        first_name: attrs['nome'],
-        last_name: attrs['cognome'],
+        # FedERa returns names in ALL CAPITALS, so proper-case them.
+        first_name: attrs['nome']&.titleize,
+        last_name: attrs['cognome']&.titleize,
         email: attrs['emailAddressPersonale'],
         custom_field_values: custom_field_values
       }.compact
@@ -112,10 +125,6 @@ module CustomIdMethods::Federa
 
     def email_always_present?
       false
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def filter_auth_to_persist(auth)

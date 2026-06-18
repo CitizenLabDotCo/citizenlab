@@ -35,7 +35,7 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
 
       ok(
         "Created poll option #{option.id}",
-        structured: option.reload.as_json(only: %i[id question_id title_multiloc ordering])
+        structured: McpServer::Serializers::PollOption.serialize(option.reload)
       )
     rescue ActiveRecord::RecordNotFound
       error("Poll question not found: #{params[:question_id]}")

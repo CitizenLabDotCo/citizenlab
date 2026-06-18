@@ -29,13 +29,13 @@ RSpec.describe Analysis::QAndAMethod do
       expect(plan).to have_attributes({
         q_and_a_method_class: Analysis::QAndAMethod::OnePassLLM,
         llm: kind_of(Analysis::LLM::Base),
-        accuracy: 0.8,
+        accuracy: 0.9,
         include_id: true,
         shorten_labels: false,
         include_comments: true
       })
 
-      mock_llm = instance_double(Analysis::LLM::GPT41).tap do |llm|
+      mock_llm = instance_double(Analysis::LLM::GPT54).tap do |llm|
         expect(llm).to receive(:chat_async) do |message, &block|
           prompt = message.inputs.sole
           expect(prompt).to include(inputs[2].id)
@@ -51,7 +51,7 @@ RSpec.describe Analysis::QAndAMethod do
       expect { plan.q_and_a_method_class.new(question).execute(plan) }
         .to change { q_and_a_task.question.answer }.from(nil).to('Nothing else')
         .and change { q_and_a_task.question.prompt }.from(nil).to(kind_of(String))
-        .and change { q_and_a_task.question.accuracy }.from(nil).to(0.8)
+        .and change { q_and_a_task.question.accuracy }.from(nil).to(0.9)
         .and change { q_and_a_task.question.inputs_ids }.from(nil).to(contain_exactly(inputs[1].id, inputs[2].id))
 
       expect(q_and_a_task.reload).to have_attributes({
@@ -63,7 +63,7 @@ RSpec.describe Analysis::QAndAMethod do
     it 'includes the comments in the prompt' do
       create(:comment, idea: inputs[1], body_multiloc: { en: 'I want to comment on that' })
 
-      mock_llm = instance_double(Analysis::LLM::GPT41).tap do |llm|
+      mock_llm = instance_double(Analysis::LLM::GPT54).tap do |llm|
         expect(llm).to receive(:chat_async) do |message|
           prompt = message.inputs.sole
           expect(prompt).to include('I want to comment on that')

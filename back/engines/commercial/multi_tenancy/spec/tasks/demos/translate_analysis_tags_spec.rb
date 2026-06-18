@@ -89,7 +89,7 @@ describe 'demos:translate_analysis_tags rake task' do
 
     def stub_topic_modeling(topics:, classification:)
       topics_response = topics.map { |t| "- #{t}" }.join("\n")
-      allow_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return(topics_response)
+      allow_any_instance_of(Analysis::LLM::GPT54).to receive(:chat).and_return(topics_response)
       allow_any_instance_of(Analysis::LLM::GPT4oMini).to receive(:chat).and_return(*classification)
     end
 
@@ -109,7 +109,7 @@ describe 'demos:translate_analysis_tags rake task' do
       create(:tag, tag_type: 'nlp_topic', analysis: analysis, name: 'Affordable Housing')
 
       # The topic-modeling prompt instructs the LLM to write in the locale's language.
-      expect_any_instance_of(Analysis::LLM::GPT41)
+      expect_any_instance_of(Analysis::LLM::GPT54)
         .to receive(:chat).with(/Dutch/).and_return('- Betaalbare woningen')
       allow_any_instance_of(Analysis::LLM::GPT4oMini).to receive(:chat).and_return('Betaalbare woningen')
 
@@ -131,7 +131,7 @@ describe 'demos:translate_analysis_tags rake task' do
       create(:idea, project: project)
       create(:tag, tag_type: 'sentiment', analysis: analysis, name: 'sentiment +')
 
-      expect_any_instance_of(Analysis::LLM::GPT41).not_to receive(:chat)
+      expect_any_instance_of(Analysis::LLM::GPT54).not_to receive(:chat)
 
       run_task(execute: true)
     end

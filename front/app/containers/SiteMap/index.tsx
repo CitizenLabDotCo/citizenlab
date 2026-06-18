@@ -85,18 +85,6 @@ export const H4 = styled.h4`
   font-size: ${fontSizes.l}px !important;
 `;
 
-const NavItem = styled.a`
-  text-decoration: none !important;
-  color: ${colors.textPrimary} !important;
-  &:visited,
-  &:hover,
-  &:focus,
-  &:active {
-    color: ${colors.textPrimary};
-    text-decoration: none;
-  }
-`;
-
 const SiteMap = () => {
   const { data: navBarItems } = useNavbarItems();
   const localize = useLocalize();
@@ -143,24 +131,24 @@ const SiteMap = () => {
                     </Header>
                     <Ul>
                       <li>
-                        <NavItem href="#home-section">
+                        <a href="#home-section">
                           <FormattedMessage {...messages.homeSection} />
-                        </NavItem>
+                        </a>
                       </li>
                       <li>
-                        <NavItem href="#user-space-section">
+                        <a href="#user-space-section">
                           <FormattedMessage {...messages.userSpaceSection} />
-                        </NavItem>
+                        </a>
                       </li>
                       <li>
-                        <NavItem href="#projects-section">
+                        <a href="#projects-section">
                           <FormattedMessage {...messages.projectsSection} />
-                        </NavItem>
+                        </a>
                       </li>
                       <li>
-                        <NavItem href="#custom-pages-section">
+                        <a href="#custom-pages-section">
                           <FormattedMessage {...messages.customPageSection} />
-                        </NavItem>
+                        </a>
                       </li>
                     </Ul>
                   </TOC>

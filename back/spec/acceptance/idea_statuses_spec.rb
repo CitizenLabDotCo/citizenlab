@@ -154,7 +154,7 @@ resource 'IdeaStatuses' do
           example '[Error] Cannot create a locked status', document: false do
             expect { do_request }.not_to change(IdeaStatus, :count)
             assert_status 422
-            expect(json_parse(response_body)).to include_response_error(:code, 'Cannot create additional locked statuses', value: code)
+            expect(json_parse(response_body)).to include_response_error(:code, 'locked_status', value: code)
           end
         end
       end
@@ -260,7 +260,7 @@ resource 'IdeaStatuses' do
         example '[Error] Cannot reorder the proposed status', document: false do
           do_request
           assert_status 422
-          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder a locked status'
+          expect(json_parse(response_body)).to include_response_error(:base, 'cannot_reorder_locked_status')
         end
       end
 
@@ -283,7 +283,7 @@ resource 'IdeaStatuses' do
           example '[Error] Cannot reorder a locked status', document: false do
             do_request
             assert_status 422
-            expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder a locked status'
+            expect(json_parse(response_body)).to include_response_error(:base, 'cannot_reorder_locked_status')
           end
         end
 
@@ -294,7 +294,7 @@ resource 'IdeaStatuses' do
           example '[Error] Cannot reorder a proposals status into the locked status section', document: false do
             do_request
             assert_status 422
-            expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot reorder into the locked statuses section'
+            expect(json_parse(response_body)).to include_response_error(:base, 'cannot_reorder_into_locked_section')
           end
         end
       end
@@ -337,7 +337,7 @@ resource 'IdeaStatuses' do
 
         example_request '[Error] Cannot delete a locked status' do
           assert_status 422
-          expect(json_parse(response_body).dig(:errors, :base)).to eq 'Cannot delete a locked status'
+          expect(json_parse(response_body)).to include_response_error(:base, 'cannot_delete_locked_status')
         end
       end
     end

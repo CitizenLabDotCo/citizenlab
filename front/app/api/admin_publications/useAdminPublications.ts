@@ -23,6 +23,7 @@ export const fetchAdminPublications = (filters: IQueryParameters) => {
     childrenOfId,
     globalTopics,
     areaIds,
+    spaceIds,
     onlyProjects,
     ...queryParameters
   } = filters;
@@ -38,6 +39,7 @@ export const fetchAdminPublications = (filters: IQueryParameters) => {
       folder: childrenOfId,
       global_topics: globalTopics,
       areas: areaIds,
+      spaces: spaceIds,
       only_projects: onlyProjects,
       ...queryParameters,
     },

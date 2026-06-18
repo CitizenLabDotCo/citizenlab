@@ -5,8 +5,8 @@ module AdminApi
     before_action :authenticate_request
     around_action :switch_tenant
 
+    rescue_from ApiError, with: :render_api_error
     rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
-    rescue_from ClErrors::TransactionError, with: :transaction_error
 
     def authenticate_request
       return if request.headers['Authorization'] == ENV.fetch('ADMIN_API_TOKEN')
@@ -28,8 +28,8 @@ module AdminApi
       end
     end
 
-    def transaction_error(exception)
-      render json: { errors: { base: [{ error: exception.error_key, message: exception.message }] } }, status: exception.code
+    def render_api_error(exception)
+      render json: exception.payload, status: exception.status
     end
   end
 end

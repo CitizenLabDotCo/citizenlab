@@ -3434,6 +3434,16 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -3599,6 +3609,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.bySpaceFilter": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -3618,6 +3633,16 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItems": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItemsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": {
     "state": "verified",
@@ -3674,6 +3699,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectASpace": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectAnArea": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -3683,6 +3713,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpacesLabel": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel": {
     "state": "verified",
@@ -3759,6 +3794,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageSettingsLinkText": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -3768,6 +3808,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageTitle1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:42:56.083470Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.sectionDescription": {
     "state": "verified",
@@ -3823,6 +3868,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.PagesAndMenu.navBarMaxItemsNumber1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:43:36.792173Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.PagesAndMenu.pagesMenuMetaTitle": {
     "state": "verified",
@@ -4698,6 +4748,16 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.communityMonitor.scoreNotAvailable": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.879469Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.communityMonitor.scoreOutOfFive": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.879469Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.communityMonitor.settings": {
     "state": "verified",
@@ -17119,6 +17179,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:56:24.407249Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -19954,6 +20019,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.modules.navbar.admin.containers.navBarMaxItemsNumber1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:43:36.792173Z",
+    "verified_by": "Jelena"
+  },
   "app.modules.navbar.admin.containers.pageHeader": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -19963,6 +20033,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.modules.navbar.admin.containers.pageSubtitle1": {
+    "state": "verified",
+    "verified_at": "2026-06-09T07:43:36.792173Z",
+    "verified_by": "Jelena"
   },
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": {
     "state": "verified",
