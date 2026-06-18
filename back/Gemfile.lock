@@ -531,7 +531,7 @@ GEM
     erb (6.0.1.1)
     erubi (1.13.1)
     event_stream_parser (1.0.0)
-    excon (1.4.2)
+    excon (1.5.0)
       logger
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
