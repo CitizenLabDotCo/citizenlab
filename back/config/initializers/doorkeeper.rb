@@ -20,26 +20,12 @@ Doorkeeper.configure do
   #
   # See: https://guides.rubyonrails.org/active_record_multiple_databases.html#activating-automatic-role-switching
 
-  # This block will be called to check whether the resource owner is authenticated or not.
-  resource_owner_authenticator do
-    current_user || redirect_to(Frontend::UrlService.new.sign_in_url(request.fullpath))
-  end
-
-  # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
-  # file then you need to declare this block in order to restrict access to the web interface for
-  # adding oauth authorized applications. In other case it will return 403 Forbidden response
-  # every time somebody will try to access the admin web interface.
-  #
-  admin_authenticator do
-    # Put your admin authentication logic here.
-    # Example implementation:
-
-    if current_user
-      head :forbidden unless current_user.admin?
-    else
-      redirect_to(Frontend::UrlService.new.sign_in_url(request.fullpath))
-    end
-  end
+  # No resource_owner_authenticator / admin_authenticator blocks: the consent
+  # screen is the SPA (WebApi::V1::OauthAuthorizationsController supplies the
+  # resource owner from the JWT current_user), and the HTML applications admin
+  # controllers are skipped in routes.rb (client creation uses DCR). The only
+  # remaining Doorkeeper endpoints (token/introspect/revoke) authenticate the
+  # client, not a resource owner.
 
   # You can use your own model classes if you need to extend (or even override) default
   # Doorkeeper models such as `Application`, `AccessToken` and `AccessGrant.
@@ -132,16 +118,10 @@ Doorkeeper.configure do
   #
   # access_token_generator '::Doorkeeper::JWT'
 
-  # The controller +Doorkeeper::ApplicationController+ inherits from.
-  # Defaults to +ActionController::Base+ unless +api_only+ is set, which changes the default to
-  # +ActionController::API+. The return value of this option must be a stringified class name.
-  # See https://doorkeeper.gitbook.io/guides/configuration/other-configurations#custom-controllers
-  #
-  # The app's ApplicationController inherits from ActionController::API, which can't render the
-  # authorization views Doorkeeper needs. DoorkeeperBaseController inherits from
-  # ActionController::Base and pulls in AuthToken::Authenticable so current_user resolves in the
-  # blocks below.
-  base_controller 'DoorkeeperBaseController'
+  # No custom base_controller: the remaining Doorkeeper controllers (token/
+  # introspect/revoke) return JSON and need no views, so Doorkeeper's default
+  # (ActionController::Base) is fine. The former DoorkeeperBaseController existed
+  # only to render the HTML authorization screen, which the SPA now handles.
 
   # Reuse access token for the same resource owner within an application (disabled by default).
   #
