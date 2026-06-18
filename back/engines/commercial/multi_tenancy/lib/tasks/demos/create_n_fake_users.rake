@@ -10,14 +10,13 @@
 # stays fast.
 #
 # Usage:
-#   rake 'demos:create_n_fake_users[hostname.com,10]'         - 10 users, default locale (fr-FR)
 #   rake 'demos:create_n_fake_users[hostname.com,5000,nl-NL]' - 5000 users with locale nl-NL
 #
 # Parameters:
 #   - host: tenant hostname (e.g. localhost or demo.example.com)
 #   - num_users: number of users to create
-#   - locale: locale assigned to every user (optional, defaults to fr-FR);
-#     must be one of the tenant's configured locales
+#   - locale: locale assigned to every user; must be one of the tenant's
+#     configured locales
 #
 # Notes:
 #   - Only works on demo platforms (lifecycle_stage = 'demo') or in local development.
@@ -31,12 +30,12 @@ namespace :demos do
 
     host = args[:host]
     num_users = args[:num_users].to_i
-    locale = args[:locale].presence || 'fr-FR'
+    locale = args[:locale].presence
 
     puts "---------- STARTING TASK: Create #{num_users} fake users on '#{host}' ----------\n\n"
 
-    if host.blank? || num_users.zero?
-      puts 'ERROR! Both host and num_users arguments are required. Usage: rake demos:create_n_fake_users[example.com,10,fr-FR]'
+    if host.blank? || num_users.zero? || locale.blank?
+      puts 'ERROR! host, num_users and locale arguments are all required. Usage: rake demos:create_n_fake_users[example.com,10,fr-FR]'
       next
     end
 

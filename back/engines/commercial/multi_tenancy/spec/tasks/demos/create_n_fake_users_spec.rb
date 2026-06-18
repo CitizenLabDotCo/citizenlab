@@ -12,7 +12,7 @@ describe 'demos:create_n_fake_users rake task' do
     FileUtils.rm_f(Rails.root.join('create_n_fake_users.json'))
   end
 
-  def run_task(host: Tenant.current.host, num_users: 3, locale: nil)
+  def run_task(host: Tenant.current.host, num_users: 3, locale: 'fr-FR')
     Rake::Task['demos:create_n_fake_users'].invoke(host, num_users.to_s, locale)
   end
 
@@ -45,12 +45,6 @@ describe 'demos:create_n_fake_users rake task' do
       expect(users).to all(be_active)
     end
 
-    it 'defaults to the fr-FR locale when none is given' do
-      run_task(num_users: 1, locale: nil)
-
-      expect(User.order(created_at: :desc).first.locale).to eq('fr-FR')
-    end
-
     it 'creates users with unique emails and slugs' do
       run_task(num_users: 5)
 
@@ -78,12 +72,18 @@ describe 'demos:create_n_fake_users rake task' do
 
   describe 'argument validation' do
     it 'aborts when no host is given' do
-      expect { run_task(host: nil) }.to output(/host and num_users arguments are required/).to_stdout
+      expect { run_task(host: nil) }.to output(/host, num_users and locale arguments are all required/).to_stdout
     end
 
     it 'aborts when num_users is zero' do
       expect { run_task(num_users: 0) }
-        .to output(/host and num_users arguments are required/).to_stdout
+        .to output(/host, num_users and locale arguments are all required/).to_stdout
+        .and(not_change(User, :count))
+    end
+
+    it 'aborts when no locale is given' do
+      expect { run_task(locale: nil) }
+        .to output(/host, num_users and locale arguments are all required/).to_stdout
         .and(not_change(User, :count))
     end
 
