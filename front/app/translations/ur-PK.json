@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} رجسٹر کرنے والے",
   "app.containers.EventsShow.registrantsIconAltText": "رجسٹر کرنے والے",
   "app.containers.EventsShow.socialMediaSharingMessage": "اس تقریب میں شرکت کریں: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "گوگل میپس پر {location} دیکھیں (نئی ونڈو میں کھلتا ہے)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# شریک} other {# شرکاء}}",
   "app.containers.EventsViewer.allTime": "ہر وقت",
   "app.containers.EventsViewer.date": "تاریخ",

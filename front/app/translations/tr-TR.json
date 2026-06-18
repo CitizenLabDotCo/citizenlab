@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} kayıt yaptıranlar",
   "app.containers.EventsShow.registrantsIconAltText": "Kayıt yaptıranlar",
   "app.containers.EventsShow.socialMediaSharingMessage": "Bu etkinliğe katılın: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "{location} konumunu Google Haritalar'da görüntüle (yeni pencerede açılır)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# katılımcı} other {# katılımcılar}}",
   "app.containers.EventsViewer.allTime": "Her zaman",
   "app.containers.EventsViewer.date": "Tarih",
