@@ -20,6 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
+import RailTooltip from './RailTooltip';
 import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { StyledBox, StyledText } from './styles';
 
@@ -52,73 +53,78 @@ export const NotificationsPopup = () => {
   };
 
   return (
-    <StyledBox
-      as="button"
-      width={isSmallerThanTablet ? '56px' : '100%'}
-      display="flex"
-      justifyContent="flex-start"
-      onClick={handleOpenNotifications}
-      p="0px"
-      position="relative"
+    <RailTooltip
+      label={formatMessage(messages.notifications)}
+      disabled={!isSmallerThanTablet}
     >
-      <Box
+      <StyledBox
+        as="button"
+        width={isSmallerThanTablet ? '56px' : '100%'}
         display="flex"
-        alignItems="center"
-        w="100%"
-        p={isSmallerThanTablet ? '10px 0' : '10px 16px'}
-        justifyContent={isSmallerThanTablet ? 'center' : undefined}
+        justifyContent="flex-start"
+        onClick={handleOpenNotifications}
+        p="0px"
+        position="relative"
       >
         <Box
           display="flex"
-          flex="0 0 auto"
           alignItems="center"
-          justifyContent="center"
+          w="100%"
+          p={isSmallerThanTablet ? '10px 0' : '10px 16px'}
+          justifyContent={isSmallerThanTablet ? 'center' : undefined}
         >
-          <Icon
-            name="notification-outline"
-            fill={colors.blue400}
-            height="20px"
-          />
-        </Box>
-        {!isSmallerThanTablet && (
-          <>
-            <StyledText
-              color="white"
-              ml="15px"
-              textAlign="left"
-              my="0px"
-              w="100%"
-            >
-              {formatMessage({ ...messages.notifications })}
-            </StyledText>
-          </>
-        )}
-        <Box w="auto" h={isSmallerThanTablet ? '0' : '18px'} ref={iconDivRef}>
-          {unreadNotificationsCount > 0 && (
-            <Box
-              background={colors.red500}
-              p="0px 4px"
-              display="flex"
-              flexDirection="column"
-              alignItems="flex-start"
-              borderRadius="2px"
-            >
-              <Text color="white" my="0px" fontSize="xs">
-                {unreadNotificationsCount}
-              </Text>
-            </Box>
+          <Box
+            display="flex"
+            flex="0 0 auto"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Icon
+              name="notification-outline"
+              fill={colors.blue400}
+              height="20px"
+            />
+          </Box>
+          {!isSmallerThanTablet && (
+            <>
+              <StyledText
+                color="white"
+                ml="15px"
+                textAlign="left"
+                my="0px"
+                w="100%"
+              >
+                {formatMessage({ ...messages.notifications })}
+              </StyledText>
+            </>
           )}
+          <Box w="auto" h={isSmallerThanTablet ? '0' : '18px'} ref={iconDivRef}>
+            {unreadNotificationsCount > 0 && (
+              <Box
+                background={colors.red500}
+                p="0px 4px"
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-start"
+                borderRadius="2px"
+              >
+                <Text color="white" my="0px" fontSize="xs">
+                  {unreadNotificationsCount}
+                </Text>
+              </Box>
+            )}
+          </Box>
         </Box>
-      </Box>
-      <Dropdown
-        opened={isNotificationsPopupOpen}
-        content={<Notifications />}
-        onClickOutside={handleCloseNotifications}
-        left={isSmallerThanTablet ? '60px' : '200px'}
-        mobileLeft="60px"
-        top="-160px"
-      />
-    </StyledBox>
+        <Dropdown
+          opened={isNotificationsPopupOpen}
+          content={<Notifications />}
+          onClickOutside={handleCloseNotifications}
+          left={isSmallerThanTablet ? '60px' : '200px'}
+          mobileLeft="60px"
+          top="-160px"
+        />
+      </StyledBox>
+    </RailTooltip>
   );
 };
 
