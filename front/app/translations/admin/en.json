@@ -2027,7 +2027,7 @@
   "app.containers.Admin.tools.manageWebhooks": "Manage webhooks",
   "app.containers.Admin.tools.manageWidget": "Manage widget",
   "app.containers.Admin.tools.manageWorkshops": "Manage workshops",
-  "app.containers.Admin.tools.mcpAuthorizationsDescription": "View and manage authorizations for your Model Context Protocol (MCP) integrations. Control which AI agents can access the platform on your behalf.",
+  "app.containers.Admin.tools.mcpAuthorizationsDescription2": "View and manage authorizations for your Model Context Protocol (MCP) integrations. Control which AI agents can access the platform on your behalf.",
   "app.containers.Admin.tools.mcpAuthorizationsImage": "MCP authorizations image",
   "app.containers.Admin.tools.mcpAuthorizationsTitle": "Manage MCP Authorizations",
   "app.containers.Admin.tools.powerBIAPIImage": "Power BI image",
