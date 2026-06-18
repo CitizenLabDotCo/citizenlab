@@ -21,7 +21,7 @@ Doorkeeper.configure do
   # See: https://guides.rubyonrails.org/active_record_multiple_databases.html#activating-automatic-role-switching
 
   # No resource_owner_authenticator / admin_authenticator blocks: the consent
-  # screen is the SPA (WebApi::V1::OauthAuthorizationsController supplies the
+  # screen is the SPA (McpServer::WebApi::V1::OauthAuthorizationsController supplies the
   # resource owner from the JWT current_user), and the HTML applications admin
   # controllers are skipped in routes.rb (client creation uses DCR). The only
   # remaining Doorkeeper endpoints (token/introspect/revoke) authenticate the
