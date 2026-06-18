@@ -123,6 +123,8 @@ const MenuTab = () => {
                       isDefaultPage={
                         !['custom', 'menu'].includes(navbarItem.attributes.code)
                       }
+                      isDropdown={navbarItem.attributes.code === 'menu'}
+                      dropdownChildren={navbarItem.attributes.children}
                       viewButtonLink={getViewButtonLink(navbarItem)}
                       onClickEditButton={handleClickEdit(navbarItem)}
                     />
@@ -143,6 +145,8 @@ const MenuTab = () => {
                       isDefaultPage={
                         !['custom', 'menu'].includes(navbarItem.attributes.code)
                       }
+                      isDropdown={navbarItem.attributes.code === 'menu'}
+                      dropdownChildren={navbarItem.attributes.children}
                       viewButtonLink={getViewButtonLink(navbarItem)}
                       onClickEditButton={handleClickEdit(navbarItem)}
                       showRemoveButton
