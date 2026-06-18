@@ -1,9 +1,16 @@
 import { KeyboardEvent } from 'react';
 
 // prevent automatically submitting a form when pressing Enter in an input field
-const NON_SUBMITTING_INPUT_TYPES = ['submit', 'button', 'reset'];
+const NON_SUBMITTING_INPUT_TYPES = [
+  'submit',
+  'button',
+  'reset',
+  'email',
+  'password',
+  'search',
+];
 
-export const preventEnterToSubmit = (e: KeyboardEvent<HTMLFormElement>) => {
+export const preventEnterToSubmit = (e: KeyboardEvent<HTMLElement>) => {
   if (e.key !== 'Enter') return;
 
   const target = e.target as HTMLElement;

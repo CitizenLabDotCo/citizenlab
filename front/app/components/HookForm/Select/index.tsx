@@ -6,13 +6,24 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
 import { CLError, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
+
+import { preventEnterToSubmit } from 'utils/preventEnterToSubmit';
+
 interface Props extends Omit<SelectProps, 'onChange'> {
   name: string;
   scrollErrorIntoView?: boolean;
 }
+
+// Transparent wrapper (generates no layout box) used only to catch Enter
+// keydowns bubbling up from the native <select> and prevent an accidental
+// form submit.
+const ContentsWrapper = styled.div`
+  display: contents;
+`;
 
 const Select = ({ name, scrollErrorIntoView, ...rest }: Props) => {
   const {
@@ -32,7 +43,7 @@ const Select = ({ name, scrollErrorIntoView, ...rest }: Props) => {
     validationError || apiError ? `${name}-error` : undefined;
 
   return (
-    <>
+    <ContentsWrapper onKeyDown={preventEnterToSubmit}>
       <Controller
         name={name}
         control={control}
@@ -74,7 +85,7 @@ const Select = ({ name, scrollErrorIntoView, ...rest }: Props) => {
           scrollIntoView={scrollErrorIntoView}
         />
       )}
-    </>
+    </ContentsWrapper>
   );
 };
 

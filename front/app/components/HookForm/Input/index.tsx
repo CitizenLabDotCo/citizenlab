@@ -11,6 +11,8 @@ import { CLError, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
 
+import { preventEnterToSubmit } from 'utils/preventEnterToSubmit';
+
 export interface Props extends InputProps {
   name: string;
   fieldName?: TFieldName;
@@ -39,7 +41,7 @@ const Input = ({
     validationError || apiError ? `${name}-error` : undefined;
 
   return (
-    <Box width="100%">
+    <Box width="100%" onKeyDown={preventEnterToSubmit}>
       <Controller
         name={name}
         control={control}
