@@ -17,6 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
+import RailTooltip from './RailTooltip';
 import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { ItemMenu, StyledBox, StyledText } from './styles';
 
@@ -38,110 +39,117 @@ export const SupportMenu = () => {
     tenant?.data.attributes.settings.core.customer_portal_url;
 
   return (
-    <StyledBox
-      as="button"
-      width={isSmallerThanTablet ? '56px' : '100%'}
-      display="flex"
-      justifyContent="flex-start"
-      p="0px"
-      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-      position="relative"
+    <RailTooltip
+      label={formatMessage(messages.support)}
+      disabled={!isSmallerThanTablet}
     >
-      <Box
+      <StyledBox
+        as="button"
+        width={isSmallerThanTablet ? '56px' : '100%'}
         display="flex"
-        alignItems="center"
-        w="100%"
-        p={isSmallerThanTablet ? '10px 0' : '10px 8px 10px 16px'}
-        justifyContent={isSmallerThanTablet ? 'center' : undefined}
+        justifyContent="flex-start"
+        p="0px"
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        position="relative"
       >
         <Box
           display="flex"
-          flex="0 0 auto"
           alignItems="center"
-          justifyContent="center"
+          w="100%"
+          p={isSmallerThanTablet ? '10px 0' : '10px 8px 10px 16px'}
+          justifyContent={isSmallerThanTablet ? 'center' : undefined}
         >
-          <Icon name="help" fill={colors.green400} height="20px" />
-        </Box>
-        {!isSmallerThanTablet && (
-          <StyledText
-            color="white"
-            ml="15px"
-            fontSize="base"
-            textAlign="left"
-            my="0px"
-            w="100%"
+          <Box
+            display="flex"
+            flex="0 0 auto"
+            alignItems="center"
+            justifyContent="center"
           >
-            {formatMessage({ ...messages.support })}
-          </StyledText>
-        )}
-        <Box>
+            <Icon name="help" fill={colors.green400} height="20px" />
+          </Box>
           {!isSmallerThanTablet && (
-            <Icon name="chevron-right" fill={colors.white} />
+            <StyledText
+              color="white"
+              ml="15px"
+              fontSize="base"
+              textAlign="left"
+              my="0px"
+              w="100%"
+            >
+              {formatMessage({ ...messages.support })}
+            </StyledText>
           )}
-        </Box>
-      </Box>
-      <Dropdown
-        opened={isDropdownOpen}
-        onClickOutside={() => setIsDropdownOpen(false)}
-        left={isSmallerThanTablet ? '60px' : '200px'}
-        mobileLeft="60px"
-        top="-140px"
-        content={
           <Box>
-            <ItemMenu
-              linkTo={formatMessage(messages.linkToSupport)}
-              buttonStyle="text"
-              openLinkInNewTab
-            >
-              <Box display="flex" justifyContent="space-between" width="100%">
-                <Text my="0px" color="coolGrey600">
-                  {formatMessage({ ...messages.knowledgeBase })}
-                </Text>
-                <StyledIcon name="book" fill={colors.grey600} />
-              </Box>
-            </ItemMenu>
-            <ItemMenu
-              linkTo={formatMessage(messages.linkToChangelog2)}
-              buttonStyle="text"
-              openLinkInNewTab
-            >
-              <Box display="flex" justifyContent="space-between" width="100%">
-                <Text my="0px" color="coolGrey600">
-                  {formatMessage({ ...messages.productChangelog })}
-                </Text>
-                <StyledIcon name="survey-long-answer" fill={colors.grey600} />
-              </Box>
-            </ItemMenu>
-            <ItemMenu
-              linkTo={formatMessage(messages.linkToCommunityPlatform) as string}
-              buttonStyle="text"
-              openLinkInNewTab
-            >
-              <Box display="flex" justifyContent="space-between" w="100%">
-                <Text my="0px" color="coolGrey600">
-                  {formatMessage({ ...messages.communityPlatform })}
-                </Text>
-                <StyledIcon name="community" fill={colors.grey600} />
-              </Box>
-            </ItemMenu>
-
-            {customerPortalUrl && isAdmin(authUser) && (
+            {!isSmallerThanTablet && (
+              <Icon name="chevron-right" fill={colors.white} />
+            )}
+          </Box>
+        </Box>
+        <Dropdown
+          opened={isDropdownOpen}
+          onClickOutside={() => setIsDropdownOpen(false)}
+          left={isSmallerThanTablet ? '60px' : '200px'}
+          mobileLeft="60px"
+          top="-140px"
+          content={
+            <Box>
               <ItemMenu
-                linkTo={customerPortalUrl}
+                linkTo={formatMessage(messages.linkToSupport)}
+                buttonStyle="text"
+                openLinkInNewTab
+              >
+                <Box display="flex" justifyContent="space-between" width="100%">
+                  <Text my="0px" color="coolGrey600">
+                    {formatMessage({ ...messages.knowledgeBase })}
+                  </Text>
+                  <StyledIcon name="book" fill={colors.grey600} />
+                </Box>
+              </ItemMenu>
+              <ItemMenu
+                linkTo={formatMessage(messages.linkToChangelog2)}
+                buttonStyle="text"
+                openLinkInNewTab
+              >
+                <Box display="flex" justifyContent="space-between" width="100%">
+                  <Text my="0px" color="coolGrey600">
+                    {formatMessage({ ...messages.productChangelog })}
+                  </Text>
+                  <StyledIcon name="survey-long-answer" fill={colors.grey600} />
+                </Box>
+              </ItemMenu>
+              <ItemMenu
+                linkTo={
+                  formatMessage(messages.linkToCommunityPlatform) as string
+                }
                 buttonStyle="text"
                 openLinkInNewTab
               >
                 <Box display="flex" justifyContent="space-between" w="100%">
                   <Text my="0px" color="coolGrey600">
-                    {formatMessage({ ...messages.customerPortal })}
+                    {formatMessage({ ...messages.communityPlatform })}
                   </Text>
-                  <Icon name="users" fill={colors.grey600} />
+                  <StyledIcon name="community" fill={colors.grey600} />
                 </Box>
               </ItemMenu>
-            )}
-          </Box>
-        }
-      />
-    </StyledBox>
+
+              {customerPortalUrl && isAdmin(authUser) && (
+                <ItemMenu
+                  linkTo={customerPortalUrl}
+                  buttonStyle="text"
+                  openLinkInNewTab
+                >
+                  <Box display="flex" justifyContent="space-between" w="100%">
+                    <Text my="0px" color="coolGrey600">
+                      {formatMessage({ ...messages.customerPortal })}
+                    </Text>
+                    <Icon name="users" fill={colors.grey600} />
+                  </Box>
+                </ItemMenu>
+              )}
+            </Box>
+          }
+        />
+      </StyledBox>
+    </RailTooltip>
   );
 };
