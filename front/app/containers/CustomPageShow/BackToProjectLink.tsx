@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -16,6 +17,7 @@ interface Props {
 // the project the page belongs to. The link label is the project's own title.
 const BackToProjectLink = ({ projectId }: Props) => {
   const localize = useLocalize();
+  const theme = useTheme();
   const { data: project } = useProjectById(projectId);
 
   if (!project) {
@@ -42,7 +44,7 @@ const BackToProjectLink = ({ projectId }: Props) => {
         name="chevron-right"
         width="16px"
         height="16px"
-        fill={colors.tenantText}
+        fill={theme.colors.tenantText}
       />
     </Box>
   );

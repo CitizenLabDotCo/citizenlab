@@ -26,7 +26,9 @@ const useAddCustomPage = () => {
   return useMutation<ICustomPage, CLErrors, AddCustomPage>({
     mutationFn: addCustomPage,
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: customPagesKeys.lists() });
+      // `all()` (not `lists()`) so project-scoped lists, keyed with
+      // `parameters: { projectId }`, are also invalidated.
+      queryClient.invalidateQueries({ queryKey: customPagesKeys.all() });
       queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
     },
   });
