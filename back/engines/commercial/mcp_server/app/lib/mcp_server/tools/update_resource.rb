@@ -35,25 +35,34 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
   def name = 'update_resource'
 
   def description
-    <<~DESC.squish
-      Updates an existing resource of one of these types: #{RESOURCES.keys.join(', ')}.
-      Partial update — only the fields you pass change, and `*_multiloc` fields merge per
-      locale (pass every locale you want to set). For each type's available fields, see the
-      matching create_<type> tool. The same field names apply, except the foreign key to
-      the parent (e.g. project_id, phase_id) is read-only: a resource can't be moved to a
-      different parent. Where supported, pass `ordering` (0-based integer) to reposition
-      the resource among its siblings.
+    intro = <<~DESC.squish
+      Updates an existing resource. Partial update — only the fields you pass change.
+      `*_multiloc` fields are deep-merged with the existing value, so pass every locale
+      you want to set. For field shapes and semantics, see the matching create_<type>
+      tool.
     DESC
+
+    allowed = RESOURCES.map do |type, config|
+      "- #{type}: #{config[:attrs].join(', ')}"
+    end.join("\n")
+
+    "#{intro}\n\nAllowed `attributes` keys per type:\n#{allowed}"
   end
 
   def input_schema
     {
+      type: 'object',
       properties: {
         type: { type: 'string', enum: RESOURCES.keys, description: 'The type of resource to update.' },
         id: { type: 'string', description: 'The ID of the resource to update.' },
         attributes: {
           type: 'object',
-          description: 'The fields to update. See the matching create_<type> tool for field names and shapes.'
+          minProperties: 1,
+          propertyNames: { enum: RESOURCES.values.flat_map { |c| c[:attrs] }.uniq },
+          description: <<~DESC.squish
+            The fields to update. Allowed keys depend on `type` — see the tool description
+            for the per-type allowlist.
+          DESC
         }
       },
       required: %w[type id attributes]
@@ -62,20 +71,16 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      return error("Unsupported resource type: #{params[:type]}") unless config
-      return error('`attributes` must be an object.') unless params[:attributes].is_a?(Hash)
-
       attributes = params[:attributes].symbolize_keys
-
       rejected = attributes.keys - config[:attrs]
+
       if rejected.any?
-        return error(
-          "These fields can't be updated on #{params[:type]}: #{rejected.join(', ')}. " \
-          "See create_#{params[:type]} for the updatable fields."
-        )
+        return error <<~ERROR.squish
+          These fields can't be updated on #{params[:type]}: #{rejected.join(', ')}.
+          Refer to the tool description for the list of updatable fields.
+        ERROR
       end
 
-      record = config[:model].find(params[:id])
       record.update!(merge_multilocs(record, attributes))
       side_fx.after_update(record, current_user)
 
@@ -88,12 +93,14 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
 
     private
 
+    def record = config.fetch(:model).find(params[:id])
+
     def side_fx
-      @side_fx ||= config[:sidefx].new
+      @side_fx ||= config.fetch(:sidefx).new
     end
 
     def config
-      @config ||= RESOURCES[params[:type]]
+      @config ||= RESOURCES.fetch(params[:type])
     end
 
     # `*_multiloc` fields are deep-merged with the existing value:
