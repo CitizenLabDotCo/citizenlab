@@ -27,7 +27,7 @@ module Oauth
     # RFC 9728 OAuth 2.0 Protected Resource Metadata.
     def protected_resource
       render json: {
-        resource: mcp_server_url,
+        resource: mcp_server.mcp_url,
         resource_name: 'Go Vocal MCP Server',
         authorization_servers: [AppConfiguration.instance.base_backend_uri],
         bearer_methods_supported: ['header'],

@@ -10299,6 +10299,46 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.tools.MCPAuthorizations.actions": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.MCPAuthorizations.clientId": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.MCPAuthorizations.clientName": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.MCPAuthorizations.noAuthorizations": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.MCPAuthorizations.pageDescription3": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.MCPAuthorizations.pageTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.MCPAuthorizations.revokeAccess": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.MCPAuthorizations.revokeConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.tools.apiTokens.createTokenButton": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -10484,6 +10524,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.tools.manageMcpAuthorizations": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.tools.managePublicAPIKeys": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -10503,6 +10548,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.tools.mcpAuthorizationsDescription2": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.mcpAuthorizationsImage": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.tools.mcpAuthorizationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-18T15:27:39.534398Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.tools.powerBIAPIImage": {
     "state": "verified",
