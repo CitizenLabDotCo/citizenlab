@@ -18,6 +18,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.addNewPage',
     defaultMessage: 'Add new page to project',
   },
+  refreshPages: {
+    id: 'app.containers.admin.ContentBuilder.refreshPages',
+    defaultMessage: 'Refresh page list',
+  },
   pageMissing: {
     id: 'app.containers.admin.ContentBuilder.pageMissing',
     defaultMessage: 'Page missing. Select another page or remove this widget.',

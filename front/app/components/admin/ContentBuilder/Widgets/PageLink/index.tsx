@@ -5,6 +5,7 @@ import {
   colors,
   fontSizes,
   Icon,
+  IconButton,
   Select,
   Spinner,
   Text,
@@ -93,10 +94,16 @@ const PageLink = ({ pageId }: PageLinkProps) => {
   const projectId = page?.data.attributes.project_id;
   const { data: project } = useProjectById(projectId);
 
-  // Selected page resolved -> render the public link.
+  // Selected page resolved -> render the public link. Disable pointer events
+  // while in the builder (`enabled`) so clicking selects the widget instead of
+  // navigating away; the link stays clickable once published.
   if (page && project) {
     return (
-      <Box id="e2e-page-link" maxWidth="1200px">
+      <Box
+        id="e2e-page-link"
+        maxWidth="1200px"
+        pointerEvents={enabled ? 'none' : 'auto'}
+      >
         <PageLinkRow
           to="/projects/$slug/pages/$pageSlug"
           params={{
@@ -140,7 +147,11 @@ const PageLinkSettings = () => {
   const localize = useLocalize();
   const { projectId } = useParams({ strict: false });
 
-  const { data: pages, isFetching: isFetchingPages } = useCustomPages({
+  const {
+    data: pages,
+    isFetching: isFetchingPages,
+    refetch: refetchPages,
+  } = useCustomPages({
     projectId,
   });
 
@@ -153,7 +164,9 @@ const PageLinkSettings = () => {
     }));
   }, [pages, localize]);
 
-  if (isFetchingPages) {
+  // Only take over the whole panel on the initial load; background refetches
+  // (e.g. the refresh button below) keep the panel visible.
+  if (isFetchingPages && !pages) {
     return <Spinner />;
   }
 
@@ -182,15 +195,31 @@ const PageLinkSettings = () => {
       )}
 
       {projectId && (
-        <ButtonWithLink
-          to="/admin/projects/$projectId/pages/new"
-          params={{ projectId }}
-          buttonStyle="text"
-          icon="plus-circle"
-          openLinkInNewTab={true}
-        >
-          {formatMessage(messages.addNewPage)}
-        </ButtonWithLink>
+        <Box display="flex" alignItems="center" gap="4px">
+          <ButtonWithLink
+            to="/admin/projects/$projectId/pages/new"
+            params={{ projectId }}
+            buttonStyle="text"
+            icon="plus-circle"
+            openLinkInNewTab={true}
+          >
+            {formatMessage(messages.addNewPage)}
+          </ButtonWithLink>
+          {/* Refresh the list to pick up pages added in the other tab. */}
+          {isFetchingPages ? (
+            <Box p="4px" display="flex">
+              <Spinner size="20px" />
+            </Box>
+          ) : (
+            <IconButton
+              iconName="refresh"
+              onClick={() => refetchPages()}
+              a11y_buttonActionMessage={formatMessage(messages.refreshPages)}
+              iconColor={colors.textSecondary}
+              iconColorOnHover={colors.black}
+            />
+          )}
+        </Box>
       )}
     </Box>
   );
