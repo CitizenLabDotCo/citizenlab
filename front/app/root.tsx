@@ -26,9 +26,15 @@ import { initRouter, router } from './routes';
 // This must happen before any component renders.
 initRouter(modules.routes);
 
+// The prerender service crawls pages with a GPU-less headless Chrome that lacks
+// WebGL2, so the ArcGIS map widget fails to mount and floods Sentry with errors
+// that no real user ever hits. Don't report from prerender crawls.
+const isPrerender = /Prerender/.test(navigator.userAgent);
+
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: process.env.SENTRY_ENV,
+  enabled: !isPrerender,
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.tanstackRouterBrowserTracingIntegration(router),
