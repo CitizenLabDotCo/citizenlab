@@ -2,7 +2,6 @@
 
 module ContentBuilder
   class HtmlBlockSanitizerService
-
     def sanitize(html)
       return '' if html.blank?
 

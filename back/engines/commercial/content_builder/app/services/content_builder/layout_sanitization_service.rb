@@ -21,7 +21,6 @@ module ContentBuilder
             html_block_sanitizer.sanitize(html) if html
           end
         end
-
       end
       craftjson
     end
