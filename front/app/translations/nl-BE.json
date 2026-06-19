@@ -1426,7 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} geregistreerden",
   "app.containers.EventsShow.registrantsIconAltText": "Geregistreerden",
   "app.containers.EventsShow.socialMediaSharingMessage": "Woon dit evenement bij: {eventTitle}",
-  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Bekijk {location} op Google Maps (opent in een nieuw venster)",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Bekijk {location} in Google Maps (opent in een nieuw venster)",
   "app.containers.EventsShow.xParticipants": "{count, plural, no {# deelnemers} one {# deelnemer} other {# deelnemers}}",
   "app.containers.EventsViewer.allTime": "Altijd",
   "app.containers.EventsViewer.date": "Datum",
