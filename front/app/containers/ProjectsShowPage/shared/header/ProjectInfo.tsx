@@ -18,7 +18,6 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import ProjectArchivedIndicator from './ProjectArchivedIndicator';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
-import ProjectPages from './ProjectPages';
 import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
 const Container = styled.div`
@@ -97,13 +96,6 @@ const ProjectInfo = ({ projectId, className }: Props) => {
                     supportHtml
                   />
                 }
-              />
-            </Box>
-
-            <Box mb="24px">
-              <ProjectPages
-                projectId={projectId}
-                projectSlug={project.data.attributes.slug}
               />
             </Box>
 
