@@ -16,6 +16,9 @@ const PublicAPITokens = lazy(() => import('./PublicAPI/PublicAPITokens'));
 const WebhookSubscriptions = lazy(
   () => import('./Webhooks/WebhookSubscriptions')
 );
+const MCPAuthorizationsPage = lazy(
+  () => import('./MCPAuthorizations/MCPAuthorizationsPage')
+);
 const Tools = lazy(() => import('./'));
 
 const toolsRoute = createRoute({
@@ -79,6 +82,16 @@ const webhooksRoute = createRoute({
   ),
 });
 
+const mcpRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: 'mcp',
+  component: () => (
+    <PageLoading>
+      <MCPAuthorizationsPage />
+    </PageLoading>
+  ),
+});
+
 const createAdminToolsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
   return toolsRoute.addChildren([
     toolsIndexRoute,
@@ -86,6 +99,7 @@ const createAdminToolsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
     powerBiRoute,
     esriRoute,
     webhooksRoute,
+    mcpRoute,
     ...(parseModuleRoutes(moduleRoutes, toolsRoute) as never[]),
   ]);
 };
