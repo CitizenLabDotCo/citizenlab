@@ -165,4 +165,21 @@ export default defineMessages({
     defaultMessage:
       'Webhooks are not part of your current license. Contact your GovSuccess Manager if you want more info on this.',
   },
+  mcpAuthorizationsTitle: {
+    id: 'app.containers.Admin.tools.mcpAuthorizationsTitle',
+    defaultMessage: 'Manage MCP Authorizations',
+  },
+  mcpAuthorizationsDescription: {
+    id: 'app.containers.Admin.tools.mcpAuthorizationsDescription2',
+    defaultMessage:
+      'View and manage authorizations for your Model Context Protocol (MCP) integrations. Control which AI agents can access the platform on your behalf.',
+  },
+  manageMcpAuthorizations: {
+    id: 'app.containers.Admin.tools.manageMcpAuthorizations',
+    defaultMessage: 'Manage authorizations',
+  },
+  mcpAuthorizationsImage: {
+    id: 'app.containers.Admin.tools.mcpAuthorizationsImage',
+    defaultMessage: 'MCP authorizations image',
+  },
 });

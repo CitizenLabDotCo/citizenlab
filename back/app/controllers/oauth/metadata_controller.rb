@@ -9,7 +9,9 @@ module Oauth
     def authorization_server
       render json: {
         issuer: AppConfiguration.instance.base_backend_uri,
-        authorization_endpoint: oauth_authorization_url,
+        # The consent screen is rendered by the SPA (not Doorkeeper's HTML page),
+        # so we advertise the frontend page URL as the authorization endpoint.
+        authorization_endpoint: Frontend::UrlService.new.oauth_authorize_url,
         token_endpoint: oauth_token_url,
         registration_endpoint: oauth_registrations_url,
         revocation_endpoint: oauth_revoke_url,
@@ -25,7 +27,7 @@ module Oauth
     # RFC 9728 OAuth 2.0 Protected Resource Metadata.
     def protected_resource
       render json: {
-        resource: mcp_server_url,
+        resource: mcp_server.mcp_url,
         resource_name: 'Go Vocal MCP Server',
         authorization_servers: [AppConfiguration.instance.base_backend_uri],
         bearer_methods_supported: ['header'],

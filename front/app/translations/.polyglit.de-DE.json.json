@@ -13623,6 +13623,96 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "containers.OAuthAuthorize.authorizeButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.authorizeExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.authorizeHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.denyButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.inControlDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.inControlTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.invalidRequestExplanation": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.invalidRequestHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.pageTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.scopeFallbackDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.scopeFallbackTitle2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.scopeMcpAccessDetail": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.scopeMcpAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.signInButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
+
+  "containers.OAuthAuthorize.signInPrompt": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.507577Z",
+    "verified_by": "Jelena"
+  },
   "containers.SiteMap.allProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
