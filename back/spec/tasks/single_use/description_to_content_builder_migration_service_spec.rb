@@ -22,17 +22,28 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
     end
   end
 
+  def node_types(layout)
+    layout.craftjs_json.values.filter_map do |node|
+      next unless node.is_a?(Hash)
+
+      node['type'].is_a?(Hash) ? node['type']['resolvedName'] : node['type']
+    end
+  end
+
   describe '#migrate_buildable' do
     context 'with a project that has a WYSIWYG description' do
       let(:description) { { 'en' => '<p>Hello</p>', 'nl-BE' => '<p>Hallo</p>' } }
       let(:project) { create(:project, description_multiloc: description) }
 
-      it 'creates an enabled project_description layout wrapping text in a native TextMultiloc node' do
+      it 'creates an enabled project_description layout wrapping text beside the AboutBox sidebar' do
         service.migrate_buildable(project, persist: true)
 
         layout = project.content_builder_layouts.find_by(code: 'project_description')
         expect(layout).to be_present
         expect(layout.enabled).to be(true)
+        # The text sits in the left column of a 2-column layout, the participation
+        # AboutBox in the right, reproducing the legacy WYSIWYG sidebar.
+        expect(node_types(layout)).to include('TwoColumn', 'TextMultiloc', 'AboutBox')
         node = description_node(layout)
         expect(node['type']['resolvedName']).to eq('TextMultiloc')
         expect(node['props']['text']).to eq(description)
@@ -145,14 +156,17 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
     context 'with a blank description' do
       let(:project) { create(:project, description_multiloc: { 'en' => '<p></p>' }) }
 
-      it 'provisions an enabled default (empty) layout so it still lives on the Content Builder' do
+      it 'still shows the AboutBox sidebar, with an empty text widget on the left' do
+        # The legacy WYSIWYG page showed the participation sidebar even with no
+        # description, so a blank project keeps the AboutBox (empty TextMultiloc left).
         service.migrate_buildable(project, persist: true)
 
         layout = project.content_builder_layouts.find_by(code: 'project_description')
         expect(layout).to be_present
         expect(layout.enabled).to be(true)
         expect(bridge_node(layout)).to be_nil
-        expect(layout.craftjs_json).to have_key('ROOT')
+        expect(node_types(layout)).to include('TwoColumn', 'TextMultiloc', 'AboutBox')
+        expect(description_node(layout)['props']['text']).to eq({})
         expect(service.stats).to include(migrated: 1, created_blank: 1, projects_migrated: 1)
       end
     end
@@ -174,14 +188,6 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
     context 'with a folder' do
       let(:description) { { 'en' => '<p>Folder</p>' } }
       let(:folder) { create(:project_folder, description_multiloc: description) }
-
-      def node_types(layout)
-        layout.craftjs_json.values.filter_map do |node|
-          next unless node.is_a?(Hash)
-
-          node['type'].is_a?(Hash) ? node['type']['resolvedName'] : node['type']
-        end
-      end
 
       it 'creates a project_folder_description layout' do
         service.migrate_buildable(folder, persist: true)
