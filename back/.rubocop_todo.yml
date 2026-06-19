@@ -72,6 +72,7 @@ Naming/VariableNumber:
   Exclude:
     - 'app/controllers/web_api/v1/events_controller.rb'
     - 'app/serializers/web_api/v1/event_serializer.rb'
+    - 'engines/commercial/multi_tenancy/app/services/multi_tenancy/templates/serializers/event.rb'
     - 'db/migrate/20230811123114_rework_event_location_attributes.rb'
     - 'spec/acceptance/events_spec.rb'
 
