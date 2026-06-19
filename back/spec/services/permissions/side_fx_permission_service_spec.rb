@@ -19,7 +19,7 @@ describe Permissions::SideFxPermissionService do
           permission,
           'changed',
           user,
-          permission.updated_at.to_i,
+          anything,
           payload: {
             permission: clean_time_attributes(permission.attributes),
             change: sanitize_change(permission.saved_changes)
@@ -37,10 +37,26 @@ describe Permissions::SideFxPermissionService do
           permission,
           'changed_permitted_by',
           user,
-          permission.updated_at.to_i,
+          anything,
           payload: { change: %w[users everyone] },
           project_id: permission.permission_scope.project_id
         )
+    end
+
+    it 'logs the action time, not the (possibly stale) permission updated_at' do
+      # A group-only change updates the join table, not the permission row, so its
+      # updated_at stays stale. acted_at should still reflect when the change happened.
+      group = create(:group)
+      permission = travel_to(2.hours.ago) { create(:permission, permitted_by: 'users') }
+      old_group_ids = permission.group_ids
+      travel_to(1.hour.ago) { permission.update!(group_ids: [group.id]) }
+      expect(permission.updated_at).to be < 30.minutes.ago # guard: updated_at is stale
+
+      freeze_time do
+        expect { service.after_update(permission, user, old_group_ids) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(permission, 'changed', user, Time.now.to_i, payload: anything, project_id: anything)
+      end
     end
 
     it "does not log a 'changed_permitted_by' job when permitted_by is unchanged" do
@@ -71,7 +87,7 @@ describe Permissions::SideFxPermissionService do
           permission,
           'changed',
           user,
-          permission.updated_at.to_i,
+          anything,
           payload: hash_including(change: hash_including('group_ids' => [old_group_ids, [group.id]])),
           project_id: permission.permission_scope.project_id
         )

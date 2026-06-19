@@ -14,18 +14,23 @@ module Permissions
 
       return if change.blank?
 
+      # Use the actual action time rather than permission.updated_at: a group-only
+      # change updates the groups_permissions join, not the permission row, so its
+      # updated_at would be stale and the activity would show the wrong time.
+      acted_at = Time.now.to_i
+
       payload = { permission: clean_time_attributes(permission.attributes), change: change }
       LogActivityJob.perform_later(
-        permission, 'changed', user, permission.updated_at.to_i,
+        permission, 'changed', user, acted_at,
         payload: payload, project_id: project_id_for(permission)
       )
 
       # Dedicated activity, to make answering the following question easier;
-      # "who made what change to `permitted_by`, and when?"Aren't permsis
+      # "who made what change to `permitted_by`, and when?"
       return unless permission.saved_change_to_permitted_by?
 
       LogActivityJob.perform_later(
-        permission, 'changed_permitted_by', user, permission.updated_at.to_i,
+        permission, 'changed_permitted_by', user, acted_at,
         payload: { change: permission.saved_change_to_permitted_by },
         project_id: project_id_for(permission)
       )
