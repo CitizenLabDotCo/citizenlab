@@ -61,6 +61,8 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         return formatMessage(messages.folder);
       case 'idea':
         return formatMessage(messages.idea);
+      case 'permission':
+        return formatMessage(messages.permission);
     }
   };
 
@@ -111,7 +113,8 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
             <Text fontSize="s" m="0px">
               {getItemTranslation()}{' '}
               {(item.attributes.item_type === 'idea' ||
-                item.attributes.item_type === 'phase') &&
+                item.attributes.item_type === 'phase' ||
+                item.attributes.item_type === 'permission') &&
                 project && (
                   <FormattedMessage
                     {...messages.in}

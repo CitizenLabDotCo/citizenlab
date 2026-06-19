@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.idea',
     defaultMessage: 'Idea',
   },
+  permission: {
+    id: 'app.Admin.ManagementFeed.permission',
+    defaultMessage: 'Access rights',
+  },
   userPlaceholder: {
     id: 'app.Admin.ManagementFeed.userPlaceholder',
     defaultMessage: 'Select a user',

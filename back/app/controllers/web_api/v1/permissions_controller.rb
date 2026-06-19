@@ -22,9 +22,12 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def update
+    old_group_ids = @permission.group_ids
     @permission.assign_attributes(permission_params)
     authorize @permission
+    sidefx.before_update(@permission, current_user)
     if @permission.save
+      sidefx.after_update(@permission, current_user, old_group_ids)
       render json: serialize(@permission), status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
@@ -33,13 +36,16 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def reset
     authorize @permission
+    old_group_ids = @permission.group_ids
+    sidefx.before_update(@permission, current_user)
     ActiveRecord::Base.transaction do
       @permission.global_custom_fields = true
       save_or_raise!(@permission)
       @permission.permissions_custom_fields.destroy_all
       @permission.groups_permissions.destroy_all
-      render json: serialize(@permission), status: :ok
     end
+    sidefx.after_update(@permission, current_user, old_group_ids)
+    render json: serialize(@permission), status: :ok
   end
 
   def requirements
@@ -95,6 +101,10 @@ class WebApi::V1::PermissionsController < ApplicationController
       params: jsonapi_serializer_params,
       include: %i[permissions_custom_fields custom_fields]
     ).serializable_hash
+  end
+
+  def sidefx
+    @sidefx ||= Permissions::SideFxPermissionService.new
   end
 
   def permissions_update_service

@@ -16,7 +16,7 @@ export type IQueryParameters = {
 };
 type Sort = '-acted_at' | 'acted_at';
 
-type ItemType = 'project' | 'phase' | 'folder' | 'idea';
+type ItemType = 'project' | 'phase' | 'folder' | 'idea' | 'permission';
 
 type CommonAction = 'created' | 'changed' | 'deleted';
 type ProjectSpecificAction =
