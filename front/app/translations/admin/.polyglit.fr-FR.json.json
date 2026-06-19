@@ -17894,6 +17894,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.followUpNotEmpty": {
+    "state": "verified",
+    "verified_at": "2026-06-19T13:42:59.943001Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
