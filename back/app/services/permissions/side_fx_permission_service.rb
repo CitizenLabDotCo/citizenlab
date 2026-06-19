@@ -4,8 +4,6 @@ module Permissions
   class SideFxPermissionService
     include SideFxHelper
 
-    def before_update(_permission, _user); end
-
     # old_group_ids: snapshot of the permission's group_ids taken before the save,
     # since group changes go through the groups_permissions join and don't show up
     # in permission.saved_changes.

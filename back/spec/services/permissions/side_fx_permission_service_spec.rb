@@ -78,7 +78,7 @@ describe Permissions::SideFxPermissionService do
     end
 
     it 'does not enqueue a job when nothing meaningful changed' do
-      permission.reload
+      permission.update!(permitted_by: permission.permitted_by) # no-op save => empty saved_changes
 
       expect { service.after_update(permission, user, permission.group_ids) }
         .not_to have_enqueued_job(LogActivityJob)
