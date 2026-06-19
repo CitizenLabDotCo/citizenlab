@@ -61,6 +61,50 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.permission',
     defaultMessage: 'Access rights',
   },
+  permissionActionPostingIdea: {
+    id: 'app.Admin.ManagementFeed.permissionActionPostingIdea',
+    defaultMessage: 'Posting input',
+  },
+  permissionActionCommentingIdea: {
+    id: 'app.Admin.ManagementFeed.permissionActionCommentingIdea',
+    defaultMessage: 'Commenting',
+  },
+  permissionActionReactingIdea: {
+    id: 'app.Admin.ManagementFeed.permissionActionReactingIdea',
+    defaultMessage: 'Reacting',
+  },
+  permissionActionTakingSurvey: {
+    id: 'app.Admin.ManagementFeed.permissionActionTakingSurvey',
+    defaultMessage: 'Taking the survey',
+  },
+  permissionActionTakingPoll: {
+    id: 'app.Admin.ManagementFeed.permissionActionTakingPoll',
+    defaultMessage: 'Taking the poll',
+  },
+  permissionActionVoting: {
+    id: 'app.Admin.ManagementFeed.permissionActionVoting',
+    defaultMessage: 'Voting',
+  },
+  permissionActionVolunteering: {
+    id: 'app.Admin.ManagementFeed.permissionActionVolunteering',
+    defaultMessage: 'Volunteering',
+  },
+  permissionActionAnnotatingDocument: {
+    id: 'app.Admin.ManagementFeed.permissionActionAnnotatingDocument',
+    defaultMessage: 'Annotating the document',
+  },
+  permissionActionAttendingEvent: {
+    id: 'app.Admin.ManagementFeed.permissionActionAttendingEvent',
+    defaultMessage: 'Attending events',
+  },
+  permissionActionVisiting: {
+    id: 'app.Admin.ManagementFeed.permissionActionVisiting',
+    defaultMessage: 'Visiting',
+  },
+  permissionActionFollowing: {
+    id: 'app.Admin.ManagementFeed.permissionActionFollowing',
+    defaultMessage: 'Following',
+  },
   userPlaceholder: {
     id: 'app.Admin.ManagementFeed.userPlaceholder',
     defaultMessage: 'Select a user',

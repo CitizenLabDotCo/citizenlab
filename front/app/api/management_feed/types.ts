@@ -38,6 +38,9 @@ type BaseAttributes<TItemType, TAction> = {
   item_title_multiloc: Multiloc;
   change: Record<string, any[]> | null;
   item_exists: boolean;
+  // Only populated for permission activities: the action the permission governs
+  // (e.g. 'posting_idea', 'taking_survey').
+  permission_action: string | null;
 };
 
 type Attributes =

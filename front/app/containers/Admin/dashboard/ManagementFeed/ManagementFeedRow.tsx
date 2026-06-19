@@ -51,6 +51,28 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
     return formatMessage(actionMessages[action]) || action;
   };
 
+  const getPermissionActionLabel = () => {
+    const permissionAction = item.attributes.permission_action;
+    if (!permissionAction) return null;
+
+    const actionMessages: Partial<Record<string, MessageDescriptor>> = {
+      posting_idea: messages.permissionActionPostingIdea,
+      commenting_idea: messages.permissionActionCommentingIdea,
+      reacting_idea: messages.permissionActionReactingIdea,
+      taking_survey: messages.permissionActionTakingSurvey,
+      taking_poll: messages.permissionActionTakingPoll,
+      voting: messages.permissionActionVoting,
+      volunteering: messages.permissionActionVolunteering,
+      annotating_document: messages.permissionActionAnnotatingDocument,
+      attending_event: messages.permissionActionAttendingEvent,
+      visiting: messages.permissionActionVisiting,
+      following: messages.permissionActionFollowing,
+    };
+
+    const message = actionMessages[permissionAction];
+    return message ? formatMessage(message) : permissionAction;
+  };
+
   const getItemTranslation = () => {
     switch (item.attributes.item_type) {
       case 'project':
@@ -102,7 +124,9 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         </Td>
         <Td>
           <Box>
-            {getLink() && item.attributes.item_exists ? (
+            {item.attributes.item_type === 'permission' ? (
+              getPermissionActionLabel()
+            ) : getLink() && item.attributes.item_exists ? (
               <Link target="_blank" to={getLink()}>
                 {localize(item.attributes.item_title_multiloc)}
               </Link>

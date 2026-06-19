@@ -20,7 +20,8 @@ module Permissions
         payload: payload, project_id: project_id_for(permission)
       )
 
-      # Dedicated activity so "who opened this up, and when?" is directly queryable.
+      # Dedicated activity, to make answering the following question easier;
+      # "who made what change to `permitted_by`, and when?"Aren't permsis
       return unless permission.saved_change_to_permitted_by?
 
       LogActivityJob.perform_later(
