@@ -48,7 +48,7 @@ class StaticPage < ApplicationRecord
 
   slug from: proc { |page| page.title_multiloc&.values&.find(&:present?) }, except: RESERVED_SLUGS
 
-  enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', global_topics: 'topics' }
+  enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', global_topics: 'topics', spaces: 'spaces' }
 
   has_many_text_images from: :top_info_section_multiloc, as: :top_info_section_text_images
   has_many_text_images from: :bottom_info_section_multiloc, as: :bottom_info_section_text_images
@@ -64,6 +64,9 @@ class StaticPage < ApplicationRecord
 
   has_many :areas_static_pages, dependent: :destroy
   has_many :areas, through: :areas_static_pages
+
+  has_many :static_pages_spaces, dependent: :destroy
+  has_many :spaces, through: :static_pages_spaces
 
   accepts_nested_attributes_for :nav_bar_item
 
@@ -127,6 +130,18 @@ class StaticPage < ApplicationRecord
       global_topics? && !Current.loading_tenant_template
     end
   )
+  validates(
+    :spaces, length: { minimum: 1 },
+    if: lambda do
+      # The validation is skipped when loading a tenant template because it assumes the
+      # existence of StaticPagesSpace records that are not created yet. (When loading a
+      # tenant template, StaticPagesSpace records are created after StaticPage records
+      # because of their `belongs_to :static_page` association that references StaticPage
+      # records.)
+      # NOTE: `spaces?` refers to the projects_filter_type enum predicate.
+      spaces? && !Current.loading_tenant_template
+    end
+  )
 
   mount_base64_uploader :header_bg, HeaderBgUploader
 
@@ -151,6 +166,8 @@ class StaticPage < ApplicationRecord
         { areas: areas_static_pages.pluck(:area_id) }
       when 'global_topics'
         { global_topics: static_pages_global_topics.pluck(:global_topic_id) }
+      when 'spaces'
+        { spaces: static_pages_spaces.pluck(:space_id) }
       else
         {}
       end

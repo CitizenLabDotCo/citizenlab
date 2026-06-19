@@ -59,4 +59,5 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   has_many :text_images, serializer: :image
   has_many :global_topics, serializer: WebApi::V1::GlobalTopicSerializer
   has_many :areas
+  has_many :spaces
 end
