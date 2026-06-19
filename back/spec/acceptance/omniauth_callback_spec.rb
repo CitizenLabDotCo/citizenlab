@@ -216,6 +216,25 @@ resource 'Omniauth Callback', document: false do
             expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
         end
+
+        context 'when claim_tokens is passed as a Rack-parsed Hash (e.g. claim_tokens[0]=...)' do
+          before do
+            allow_any_instance_of(OmniauthCallbackController)
+              .to receive(:omniauth_params)
+              .and_return({ 'claim_tokens' => { '0' => claim_token.token } })
+          end
+
+          example 'still claims participation data without erroring' do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            assert_status(302)
+            user = User.find_by(email: 'billy_fixed@example.com')
+            expect(user).not_to be_nil
+            expect(idea.reload.author_id).to eq(user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
       end
 
       context 'when identity already exists and user has a confirmed email different from the SSO returned one' do
