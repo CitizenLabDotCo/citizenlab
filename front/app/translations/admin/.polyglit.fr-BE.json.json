@@ -17279,6 +17279,16 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": {
+    "state": "verified",
+    "verified_at": "2026-06-19T09:36:05.041755Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": {
+    "state": "verified",
+    "verified_at": "2026-06-19T09:36:05.041755Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
     "state": "verified",
     "verified_at": "2026-06-11T08:17:57.686178Z",
