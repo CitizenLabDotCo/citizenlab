@@ -3488,6 +3488,7 @@
   "app.containers.AdminPage.projects.project.analysis.files.save": "Kaydet",
   "app.containers.AdminPage.projects.project.analysis.filter": "Yalnızca bu değere sahip girdileri göster",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Cevapsız yanıtları gizle",
+  "app.containers.AdminPage.projects.project.analysis.followUpNotEmpty": "Takip metni var",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Otomatik içgörüler",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Bu analiz 50'den fazla soru içerdiği için otomatik içgörüler kullanılamıyor. Bu kadar çok soru olduğunda otomatik korelasyonlar güvenilmez hale gelir, bu nedenle bunları göstermiyoruz.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Sütun değerleri",

@@ -3488,6 +3488,7 @@
   "app.containers.AdminPage.projects.project.analysis.files.save": "ਸੇਵ ਕਰੋ",
   "app.containers.AdminPage.projects.project.analysis.filter": "ਸਿਰਫ਼ ਇਸ ਮੁੱਲ ਦੇ ਨਾਲ ਇਨਪੁੱਟ ਦਿਖਾਓ",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "ਬਿਨਾਂ ਜਵਾਬ ਦੇ ਜਵਾਬਾਂ ਨੂੰ ਲੁਕਾਓ",
+  "app.containers.AdminPage.projects.project.analysis.followUpNotEmpty": "ਅਗਲੇਰੀ ਲਿਖਤ ਹੈ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "ਸਵੈ-ਝਾਤਾਂ",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "ਆਟੋ-ਇਨਸਾਈਟਸ ਉਪਲਬਧ ਨਹੀਂ ਹਨ ਕਿਉਂਕਿ ਇਸ ਵਿਸ਼ਲੇਸ਼ਣ ਵਿੱਚ 50 ਤੋਂ ਵੱਧ ਸਵਾਲ ਸ਼ਾਮਲ ਹਨ। ਇੰਨੇ ਜ਼ਿਆਦਾ ਸਵਾਲਾਂ ਦੇ ਨਾਲ, ਸਵੈਚਲਿਤ ਸਹਿ-ਸੰਬੰਧ ਭਰੋਸੇਯੋਗ ਨਹੀਂ ਰਹਿੰਦੇ, ਇਸ ਲਈ ਅਸੀਂ ਉਹਨਾਂ ਨੂੰ ਨਹੀਂ ਦਿਖਾਉਂਦੇ।",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "ਕਾਲਮ ਮੁੱਲ",
