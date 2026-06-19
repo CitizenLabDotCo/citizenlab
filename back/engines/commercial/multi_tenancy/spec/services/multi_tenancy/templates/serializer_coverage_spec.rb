@@ -39,6 +39,10 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         scheduled_status
       ], # publication scheduling / operational state
 
+      'Area' => %w[
+        custom_field_option_id
+      ], # domicile CustomFieldOption is deliberately skipped in TenantSerializer
+
       'CustomField' => %w[
         logic
       ], # Logic cannot be easily serialized
