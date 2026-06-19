@@ -3503,6 +3503,7 @@
   "app.containers.AdminPage.projects.project.analysis.files.save": "Bewaar",
   "app.containers.AdminPage.projects.project.analysis.filter": "Toon alleen bijdragen met deze waarde",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Verberg reacties zonder antwoord",
+  "app.containers.AdminPage.projects.project.analysis.followUpNotEmpty": "Heeft vervolgtekst",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Auto-inzichten",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Auto-insights zijn niet beschikbaar omdat deze analyse meer dan 50 vragen bevat. Met zoveel vragen worden automatische correlaties onbetrouwbaar, daarom tonen we deze niet.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolomwaarden",

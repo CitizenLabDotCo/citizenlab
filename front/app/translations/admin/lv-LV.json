@@ -3503,6 +3503,7 @@
   "app.containers.AdminPage.projects.project.analysis.files.save": "Saglabāt",
   "app.containers.AdminPage.projects.project.analysis.filter": "Rādīt tikai ievades ar šo vērtību",
   "app.containers.AdminPage.projects.project.analysis.filterEmptyCustomFields": "Paslēpt atbildes bez atbildes",
+  "app.containers.AdminPage.projects.project.analysis.followUpNotEmpty": "Ir papildu teksts",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": "Automātiskās norādes",
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsightsTooManyFields2": "Automātiskie ieskati nav pieejami, jo šī analīze ietver vairāk nekā 50 jautājumus. Ar tik lielu jautājumu skaitu automātiskās korelācijas kļūst neuzticamas, tāpēc mēs tās nerādām.",
   "app.containers.AdminPage.projects.project.analysis.heatmap.columnValues": "Kolonnu vērtības",
