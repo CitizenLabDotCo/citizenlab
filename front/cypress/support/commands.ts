@@ -2164,6 +2164,10 @@ function createProjectWithNativeSurveyPhase({
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus,
+      // The project page renders via the Content Builder; add the AboutBox so the
+      // participation sidebar (survey / idea action button) is present for tests
+      // that visit the project page and click it.
+      withAboutBox: true,
     })
     .then((project) => {
       const projectId = project.body.data.id;
