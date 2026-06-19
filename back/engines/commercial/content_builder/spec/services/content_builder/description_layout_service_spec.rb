@@ -151,6 +151,20 @@ describe ContentBuilder::DescriptionLayoutService do
     end
   end
 
+  describe '#text_node / #bridge_node (generic builders reused by the migration)' do
+    it 'builds a TextMultiloc node carrying the multiloc' do
+      node = service.text_node({ 'en' => '<p>Hi</p>' })
+      expect(node['type']['resolvedName']).to eq('TextMultiloc')
+      expect(node['props']['text']).to eq({ 'en' => '<p>Hi</p>' })
+    end
+
+    it 'builds a RichTextMultiloc bridge node carrying the multiloc' do
+      node = service.bridge_node({ 'en' => '<p>Hi</p>' })
+      expect(node['type']['resolvedName']).to eq('RichTextMultiloc')
+      expect(node['props']['text']).to eq({ 'en' => '<p>Hi</p>' })
+    end
+  end
+
   describe '#provision_all_descriptions!' do
     it 'puts every project and folder description on the Content Builder' do
       project = create(:project, description_multiloc: { 'en' => '<p>P</p>' })
@@ -160,6 +174,15 @@ describe ContentBuilder::DescriptionLayoutService do
 
       expect(project.content_builder_layouts.find_by(code: 'project_description')&.enabled).to be(true)
       expect(folder.content_builder_layouts.find_by(code: 'project_folder_description')&.enabled).to be(true)
+    end
+
+    it 'does not add an AboutBox — that is the one-time migration\'s concern, not provisioning' do
+      project = create(:project, description_multiloc: { 'en' => '<p>P</p>' })
+
+      service.provision_all_descriptions!
+
+      expect(node_types(project.content_builder_layouts.find_by(code: 'project_description')))
+        .not_to include('AboutBox', 'TwoColumn')
     end
 
     it 'does nothing when the feature is disabled' do
