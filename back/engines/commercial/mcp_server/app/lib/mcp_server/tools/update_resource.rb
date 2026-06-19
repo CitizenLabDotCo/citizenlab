@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 # One generic update tool for the "simple" resources (minimal side effects, no
-# conditional immutability). Complex resources (project, phase) get dedicated tools.
+# conditional immutability). Complex resources (e.g. project, phase) get dedicated tools.
 # The LLM is pointed at the matching create_<type> tool to learn each type's fields.
 class McpServer::Tools::UpdateResource < McpServer::BaseTool
-  # type => updatable config. `attrs` is an intentional allowlist of MCP-updatable fields
-  # (≈ the create_<type> fields, minus the parent id — re-parenting is forbidden).
+  # type => updatable config. `attrs` is a hand-curated allowlist of MCP-updatable
+  # fields (we don't auto-derive from columns so new model fields stay opt-in).
+  # Mostly mirrors the matching create_<type> tool, minus the parent foreign key.
   RESOURCES = {
     'event' => {
       model: Event,
@@ -59,10 +60,7 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
           type: 'object',
           minProperties: 1,
           propertyNames: { enum: RESOURCES.values.flat_map { |c| c[:attrs] }.uniq },
-          description: <<~DESC.squish
-            The fields to update. Allowed keys depend on `type` — see the tool description
-            for the per-type allowlist.
-          DESC
+          description: 'The fields to update. Allowed keys depend on `type`.'
         }
       },
       required: %w[type id attributes]
@@ -93,7 +91,9 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
 
     private
 
-    def record = config.fetch(:model).find(params[:id])
+    def record
+      @record ||= config.fetch(:model).find(params[:id])
+    end
 
     def side_fx
       @side_fx ||= config.fetch(:sidefx).new
