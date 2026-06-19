@@ -262,7 +262,9 @@ describe SideFxProjectService do
 
     it 'wraps a carried-over description on the Content Builder rather than an empty frame' do
       # Regression: a copy/import whose source had a description but no layout must
-      # not get an empty enabled layout (which would hide the description).
+      # not get an empty enabled layout (which would hide the description). Provisioning
+      # only ensures the description is on the builder — it adds no AboutBox (that is
+      # the one-time migration's concern).
       copied_project.update!(description_multiloc: { 'en' => '<p>Carried over</p>' })
 
       service.after_copy(source_project, copied_project, user, Time.now)
