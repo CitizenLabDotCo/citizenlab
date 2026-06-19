@@ -8,13 +8,16 @@ module Tasks
       # legacy `description_multiloc` is left untouched.
       #
       # After running, EVERY buildable is on the Content Builder (the widget is
-      # chosen by content, consistent with new-buildable/template provisioning —
-      # see ContentBuilder::DescriptionLayoutService):
+      # chosen by content — see ContentBuilder::DescriptionLayoutService). A
+      # project's description is wrapped beside the participation AboutBox (in a
+      # "2 column" widget) so the legacy WYSIWYG sidebar is preserved; folders have
+      # no sidebar and keep the plain content-aware widget:
       # - text-only description  -> native TextMultiloc widget;
       # - description with media -> lossless RichTextMultiloc "bridge" widget;
-      # - blank description       -> enabled default layout (empty canvas for
-      #                             projects, title + published projects for
-      #                             folders) so there is no off-builder description;
+      # - blank description       -> for a project, the 2-column AboutBox layout with
+      #                             an empty text widget on the left; for a folder, the
+      #                             enabled default layout (title + published projects),
+      #                             so there is no off-builder description;
       # - disabled layout        -> a "straggler" (admin toggled the builder on then
       #                             off). We re-point it at the chosen layout and
       #                             enable it. The prior craftjs_json is logged first
@@ -49,10 +52,9 @@ module Tasks
             return
           end
 
-          # Content-aware layout: text -> TextMultiloc, media -> bridge, blank ->
-          # default. `blank` is still tracked for the summary stat.
+          # `blank` is still tracked for the summary stat.
           blank = description_layout_service.description_blank?(buildable.description_multiloc)
-          craftjs = description_layout_service.content_aware_craftjs_json(buildable)
+          craftjs = migrated_craftjs_json(buildable)
 
           if existing
             migrate_straggler(buildable, existing, craftjs, persist: persist)
@@ -71,8 +73,121 @@ module Tasks
 
         private
 
+        # The "2 column" ratio reproducing the legacy ~2/3 + 1/3 split (wide left
+        # description, narrow right sidebar). Mirrors the InfoWithAccordions widget.
+        ABOUT_BOX_COLUMN_LAYOUT = '2-1'
+
         def description_layout_service
           @description_layout_service ||= ContentBuilder::DescriptionLayoutService.new
+        end
+
+        # The craftjs the migration writes. A project's description is wrapped beside
+        # the participation AboutBox so the legacy WYSIWYG sidebar is preserved; a
+        # folder keeps the plain content-aware layout (it has no sidebar). This
+        # WYSIWYG-preservation lives here, in the single-use migration, rather than in
+        # the going-forward DescriptionLayoutService — once every buildable is on the
+        # Content Builder the distinction no longer exists.
+        def migrated_craftjs_json(buildable)
+          return description_layout_service.content_aware_craftjs_json(buildable) unless buildable.is_a?(Project)
+
+          about_box_project_craftjs(buildable.description_multiloc)
+        end
+
+        # A project layout: the description in the wide left column of a "2 column"
+        # widget, the participation AboutBox in the narrow right column. A blank
+        # description still gets the sidebar, with an empty TextMultiloc on the left.
+        def about_box_project_craftjs(description_multiloc)
+          description_node =
+            if description_layout_service.description_blank?(description_multiloc)
+              description_layout_service.text_node({})
+            elsif description_layout_service.description_has_media?(description_multiloc)
+              description_layout_service.bridge_node(description_multiloc)
+            else
+              description_layout_service.text_node(description_multiloc)
+            end
+          two_column_with_about_box(description_node)
+        end
+
+        # ROOT -> TwoColumn -> [left Container -> description, right Container -> AboutBox].
+        # Mirrors the craftjs the editor serialises for the InfoWithAccordions template.
+        def two_column_with_about_box(description_node)
+          two_column_id = SecureRandom.alphanumeric(10)
+          left_id = SecureRandom.alphanumeric(10)
+          right_id = SecureRandom.alphanumeric(10)
+          description_id = SecureRandom.alphanumeric(10)
+          about_box_id = SecureRandom.alphanumeric(10)
+
+          {
+            'ROOT' => {
+              'type' => 'div',
+              'isCanvas' => true,
+              'props' => { 'id' => 'e2e-content-builder-frame' },
+              'displayName' => 'div',
+              'custom' => {},
+              'hidden' => false,
+              'nodes' => [two_column_id],
+              'linkedNodes' => {}
+            },
+            two_column_id => two_column_node('ROOT', [left_id, right_id]),
+            left_id => column_container_node(two_column_id, 'left', [description_id]),
+            description_id => description_node.merge('parent' => left_id),
+            right_id => column_container_node(two_column_id, 'right', [about_box_id]),
+            about_box_id => about_box_node(right_id)
+          }
+        end
+
+        def two_column_node(parent_id, child_ids)
+          {
+            'type' => { 'resolvedName' => 'TwoColumn' },
+            'isCanvas' => false,
+            'props' => { 'columnLayout' => ABOUT_BOX_COLUMN_LAYOUT },
+            'displayName' => 'TwoColumn',
+            'custom' => {
+              'title' => {
+                'id' => 'app.containers.admin.ContentBuilder.twoColumnLayout',
+                'defaultMessage' => '2 column'
+              },
+              'hasChildren' => true
+            },
+            'parent' => parent_id,
+            'hidden' => false,
+            'nodes' => child_ids,
+            'linkedNodes' => {}
+          }
+        end
+
+        def column_container_node(parent_id, column_id, child_ids)
+          {
+            'type' => { 'resolvedName' => 'Container' },
+            'isCanvas' => true,
+            'props' => { 'id' => column_id },
+            'displayName' => 'Container',
+            'custom' => {},
+            'parent' => parent_id,
+            'hidden' => false,
+            'nodes' => child_ids,
+            'linkedNodes' => {}
+          }
+        end
+
+        def about_box_node(parent_id)
+          {
+            'type' => { 'resolvedName' => 'AboutBox' },
+            'isCanvas' => false,
+            'props' => { 'hideParticipationAvatars' => false },
+            'displayName' => 'AboutBox',
+            'custom' => {
+              'title' => {
+                'id' => 'app.containers.admin.ContentBuilder.participationBox',
+                'defaultMessage' => 'Participation Box'
+              },
+              'noPointerEvents' => true
+            },
+            'parent' => parent_id,
+            'hidden' => false,
+            'nodes' => [],
+            'linkedNodes' => {}
+          }
         end
 
         def create_layout(buildable, craftjs, persist:)
