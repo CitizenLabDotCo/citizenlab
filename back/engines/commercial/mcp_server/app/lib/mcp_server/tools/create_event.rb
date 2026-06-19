@@ -16,8 +16,8 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
         address_1: { type: 'string', description: 'Street address of the event location.' },
         address_2_multiloc: { **multiloc_schema, description: 'Additional address details (e.g. room or floor).' },
         attend_button_multiloc: { **multiloc_schema, description: 'Text for the event attendance/registration button.' },
-        online_link: { type: 'string', description: 'URL for online events' },
-        using_url: { type: 'boolean', description: 'Whether the event uses an online URL.' },
+        online_link: { type: 'string', description: 'URL where the online event takes place (e.g. Zoom, Google Meet). Used for online or hybrid events.' },
+        using_url: { type: 'string', description: 'External URL the "Attend" button links to (e.g. Eventbrite, Meetup). When set, replaces the platform default RSVP.' },
         maximum_attendees: {
           type: %w[integer null],
           minimum: 1,
