@@ -167,6 +167,54 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
+    it 'successfully copies over project reviews and project global topics' do
+      project = create(:project)
+      global_topic = create(:global_topic)
+      project.global_topics << global_topic
+      review = create(:project_review, :approved, project: project)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        new_project = Project.first
+        expect(new_project.global_topics.map(&:title_multiloc)).to eq [global_topic.title_multiloc]
+
+        new_review = new_project.review
+        expect(new_review).to be_present
+        expect(new_review.approved_at).to be_within(1.second).of(review.approved_at)
+        expect(new_review.requester.email).to eq review.requester.email
+        expect(new_review.reviewer.email).to eq review.reviewer.email
+      end
+    end
+
+    it 'successfully copies over email campaign consents and campaign groups' do
+      campaign = create(:manual_campaign)
+      group = create(:group)
+      create(:campaigns_group, campaign: campaign, group: group)
+      consent_user = create(:user, email: 'consenter@example.com')
+      create(:consent, user: consent_user, campaign_type: 'EmailCampaigns::Campaigns::Manual', consented: false)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(EmailCampaigns::CampaignsGroup.count).to be 1
+        campaigns_group = EmailCampaigns::CampaignsGroup.first
+        expect(campaigns_group.campaign.subject_multiloc).to eq campaign.subject_multiloc
+        expect(campaigns_group.group.title_multiloc).to eq group.title_multiloc
+
+        consent = EmailCampaigns::Consent.find_by(user: User.find_by(email: consent_user.email))
+        expect(consent.campaign_type).to eq 'EmailCampaigns::Campaigns::Manual'
+        expect(consent.consented).to be false
+      end
+    end
+
     it 'successfully copies over native surveys and responses' do
       create(:idea_status_proposed)
 

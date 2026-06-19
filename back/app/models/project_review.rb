@@ -33,8 +33,11 @@ class ProjectReview < ApplicationRecord
   # `dependent` is handled by the `before_destroy` callback.
   has_many :notifications # rubocop:disable Rails/HasManyOrHasOneDependent
 
-  validate :validate_create, on: :create
-  validate :validate_update, on: :update
+  # The create/update validations assert that the reviewer/requester hold the
+  # right moderation roles, but roles are not carried over by tenant templates,
+  # so these checks can't hold while a template is being loaded.
+  validate :validate_create, on: :create, unless: proc { Current.loading_tenant_template }
+  validate :validate_update, on: :update, unless: proc { Current.loading_tenant_template }
   validates :project_id, uniqueness: { case_sensitive: false } # UUIDs are case-insensitive
 
   def approved?

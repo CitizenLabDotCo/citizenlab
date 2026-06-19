@@ -335,6 +335,30 @@ describe ProjectCopyService do
       })
     end
 
+    it 'includes cosponsorships and their cosponsors' do
+      idea = create(:idea)
+      cosponsor = create(:user)
+      create(:cosponsorship, idea: idea, user: cosponsor, status: 'accepted')
+
+      template = service.export idea.project, anonymize_users: false, include_ideas: true
+
+      expect(template['models']['cosponsorship'].size).to eq 1
+      expect(template['models']['cosponsorship'].first).to match({
+        'status' => 'accepted',
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'idea_ref' => hash_including('title_multiloc' => idea.title_multiloc),
+        'user_ref' => hash_including(
+          'first_name' => cosponsor.first_name,
+          'last_name' => cosponsor.last_name,
+          'email' => cosponsor.email
+        )
+      })
+      # The cosponsor is neither author nor commenter, so it's only carried over
+      # because cosponsorships pull their users into the export.
+      expect(template['models']['user'].map { |u| u['email'] }).to include(cosponsor.email)
+    end
+
     it 'includes phases with no end date' do
       project = create(:project_with_active_ideation_phase)
       project.phases.last.update!(end_at: nil)

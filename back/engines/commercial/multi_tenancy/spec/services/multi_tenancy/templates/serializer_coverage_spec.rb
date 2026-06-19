@@ -26,9 +26,7 @@ require 'rails_helper'
 describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/DescribeClass
   # Real (non-derived) columns that are intentionally not carried over by the
   # tenant serializers, keyed by model name. Every entry is a deliberate product
-  # decision; `# REVIEW` marks fields that look like they might actually belong in
-  # the template (the bug class this spec exists to catch) — allowlisted for now to
-  # keep the baseline green, pending a human call. See TAN-7832.
+  # decision
   let(:ignored_columns) do
     {
       'AdminPublication' => %w[
@@ -169,6 +167,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         CustomIdMethods::IdCardLookup::IdCard
         Doorkeeper::AccessGrant
         Doorkeeper::AccessToken
+        Doorkeeper::Application
         EmailBan
         Identity
         Invite
@@ -217,15 +216,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         Files::FilesProject
         Files::Preview
         Files::Transcript
-      ],
-
-      # REVIEW: these look like they may belong in tenant templates. Listed to keep
-      # the baseline green pending a human decision on whether to serialize them.
-      review: %w[
-        EmailCampaigns::CampaignsGroup
-        EmailCampaigns::Consent
-        ProjectReview
-        ProjectsGlobalTopic
       ]
     }.freeze
   end

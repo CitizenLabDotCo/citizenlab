@@ -61,6 +61,8 @@ module MultiTenancy
           ProjectFolders::Folder => serialize_records(ProjectFolders::Folder),
           ProjectFolders::Image => serialize_records(ProjectFolders::Image),
           ProjectImage => serialize_records(ProjectImage),
+          ProjectReview => serialize_records(ProjectReview),
+          ProjectsGlobalTopic => serialize_records(ProjectsGlobalTopic),
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
           Space => serialize_records(Space),
           StaticPagesGlobalTopic => serialize_records(StaticPagesGlobalTopic),
@@ -115,6 +117,8 @@ module MultiTenancy
 
           # EmailCampaigns
           EmailCampaigns::Campaign => serialize_records(email_campaigns),
+          EmailCampaigns::CampaignsGroup => serialize_records(EmailCampaigns::CampaignsGroup.where(campaign: email_campaigns, group: groups)),
+          EmailCampaigns::Consent => serialize_records(EmailCampaigns::Consent.where(user: users)),
           EmailCampaigns::UnsubscriptionToken => serialize_records(EmailCampaigns::UnsubscriptionToken.where(user: users)),
 
           # Users
