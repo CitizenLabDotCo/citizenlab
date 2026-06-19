@@ -3752,6 +3752,8 @@
   "app.containers.admin.ContentBuilder.pageLink": "Page Link",
   "app.containers.admin.ContentBuilder.pageMissing": "Page missing. Select another page or remove this widget.",
   "app.containers.admin.ContentBuilder.participationBox": "Participation Box",
+  "app.containers.admin.ContentBuilder.refreshFiles": "Refresh file list",
+  "app.containers.admin.ContentBuilder.refreshPages": "Refresh page list",
   "app.containers.admin.ContentBuilder.selectFile2": "Select existing file",
   "app.containers.admin.ContentBuilder.selectFilePrompt": "No file selected.",
   "app.containers.admin.ContentBuilder.selectPage": "Select existing page",
