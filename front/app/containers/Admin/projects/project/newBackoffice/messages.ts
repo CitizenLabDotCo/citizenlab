@@ -9,10 +9,17 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.settingsNav',
     defaultMessage: 'Settings',
   },
-  projectPagePlaceholder: {
-    id: 'app.containers.Admin.projects.project.projectPagePlaceholder',
-    defaultMessage:
-      'Project page preview and content builder are coming in a later step.',
+  editPageContent: {
+    id: 'app.containers.Admin.projects.project.editPageContent',
+    defaultMessage: 'Edit page content',
+  },
+  editProjectPageInContentBuilder: {
+    id: 'app.containers.Admin.projects.project.editProjectPageInContentBuilder',
+    defaultMessage: 'Edit the project page in the content builder',
+  },
+  projectPagePreviewTitle: {
+    id: 'app.containers.Admin.projects.project.projectPagePreviewTitle',
+    defaultMessage: 'Project page preview',
   },
   timeline: {
     id: 'app.containers.Admin.projects.project.timeline',
