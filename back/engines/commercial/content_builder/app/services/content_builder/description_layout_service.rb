@@ -83,6 +83,15 @@ module ContentBuilder
       description_multiloc.values.all? { |html| description_html_blank?(html) }
     end
 
+    # True when any locale's HTML holds media the native text widget cannot render
+    # losslessly — inline images (need server-side TextImage rendering) — or richer
+    # embeds we keep on the bridge for guaranteed fidelity (videos, CTA buttons).
+    def description_has_media?(description_multiloc)
+      return false if description_multiloc.blank?
+
+      description_multiloc.values.any? { |html| html_has_media?(html) }
+    end
+
     # Picks the layout for a description by content: blank -> default; inline media
     # -> lossless bridge; plain/rich text -> native TextMultiloc.
     def content_aware_craftjs_json(buildable)
@@ -94,6 +103,24 @@ module ContentBuilder
       else
         text_craftjs_json(buildable)
       end
+    end
+
+    # --- Generic craftjs node builders (reused by the one-time WYSIWYG migration,
+    # which assembles its own description-beside-AboutBox project layout) -----------
+
+    # A native TextMultiloc node carrying the given multiloc HTML.
+    def text_node(description_multiloc)
+      content_node('TextMultiloc', description_multiloc)
+    end
+
+    # A lossless RichTextMultiloc "bridge" node carrying the given multiloc HTML.
+    def bridge_node(description_multiloc)
+      content_node('RichTextMultiloc', description_multiloc, custom: {
+        'title' => {
+          'id' => 'app.containers.admin.ContentBuilder.richTextMultiloc',
+          'defaultMessage' => 'Rich text'
+        }
+      })
     end
 
     # NB: create via Layout (not buildable.content_builder_layouts) so the
@@ -171,19 +198,6 @@ module ContentBuilder
       }
     end
 
-    def bridge_node(description_multiloc)
-      content_node('RichTextMultiloc', description_multiloc, custom: {
-        'title' => {
-          'id' => 'app.containers.admin.ContentBuilder.richTextMultiloc',
-          'defaultMessage' => 'Rich text'
-        }
-      })
-    end
-
-    def text_node(description_multiloc)
-      content_node('TextMultiloc', description_multiloc)
-    end
-
     def content_node(resolved_name, description_multiloc, custom: {})
       {
         'type' => { 'resolvedName' => resolved_name },
@@ -203,15 +217,6 @@ module ContentBuilder
     def description_html_blank?(html)
       fragment = Nokogiri::HTML.fragment(html.to_s)
       fragment.text.strip.empty? && %w[img iframe].none? { |tag| fragment.at(tag) }
-    end
-
-    # True when any locale's HTML holds media the native text widget cannot render
-    # losslessly — inline images (need server-side TextImage rendering) — or richer
-    # embeds we keep on the bridge for guaranteed fidelity (videos, CTA buttons).
-    def description_has_media?(description_multiloc)
-      return false if description_multiloc.blank?
-
-      description_multiloc.values.any? { |html| html_has_media?(html) }
     end
 
     def html_has_media?(html)
