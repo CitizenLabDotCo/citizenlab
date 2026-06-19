@@ -78,7 +78,10 @@ function setHref(
 ) {
   const { context } = authenticationData;
 
-  const pathname = window.location.pathname;
+  // Include the query string (e.g. ?phase_id=...&idea_id=...) so that
+  // participation params survive the SSO round-trip
+  // Encoded in sso_pathname as avoids re-encoding and any potential naming clashes.
+  const pathname = `${window.location.pathname}${window.location.search}`;
   const ssoParams: SSOParams = {
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
