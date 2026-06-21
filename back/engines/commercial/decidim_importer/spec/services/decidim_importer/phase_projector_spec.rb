@@ -25,9 +25,8 @@ RSpec.describe DecidimImporter::PhaseProjector do
     ref_map.register(uid, record)
   end
 
-  def component(uid, dates, method: 'ideation', name: '{"fr":"Propositions"}', description: nil)
-    { process_uid: process_uid, component_uid: uid, name: name, method: method, dates: dates,
-      description: description }
+  def component(uid, dates, method: 'ideation', name: '{"fr":"Propositions"}')
+    { process_uid: process_uid, component_uid: uid, name: name, method: method, dates: dates }
   end
 
   # All registered phase records for the project, sorted by start, as [method, start, end] tuples.
@@ -83,17 +82,6 @@ RSpec.describe DecidimImporter::PhaseProjector do
 
     expect(phases).to be_empty
     expect(result.skipped.first).to include(component: 'c1')
-  end
-
-  it 'creates an information phase for a page, with the page body as the description' do
-    page = component('c1', %w[2023-05-01], method: 'information',
-      name: '{"fr":"La concertation"}', description: { 'fr' => '<p>Bienvenue</p>' })
-    projector.run(step_rows: [], participation_components: [page])
-
-    phase = ref_map.fetch('c1').attributes
-    expect(phase['participation_method']).to eq('information')
-    expect(phase['title_multiloc']).to eq('fr-FR' => 'La concertation')
-    expect(phase['description_multiloc']).to eq('fr-FR' => '<p>Bienvenue</p>')
   end
 
   it 'creates a native_survey phase with the required survey title/button multilocs' do

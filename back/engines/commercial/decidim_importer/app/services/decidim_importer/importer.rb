@@ -351,6 +351,7 @@ module DecidimImporter
       run_proposals
       run_comments
       run_surveys
+      run_static_pages
       TemplateBuilder.new(ref_map)
     end
 
@@ -399,6 +400,11 @@ module DecidimImporter
       @surveys_extractor&.skipped || []
     end
 
+    # Pages that couldn't be imported as static pages (e.g. unpublished drafts, no owning project).
+    def skipped_pages
+      @static_pages_extractor&.skipped || []
+    end
+
     private
 
     def run_phases
@@ -439,11 +445,23 @@ module DecidimImporter
       @surveys_extractor.run
     end
 
+    # Decidim `pages` components → project-level static pages (not phases). Runs after the projects
+    # extractor so each page's `project_ref` resolves through the ref map.
+    def run_static_pages
+      return if page_component_rows.empty?
+
+      @static_pages_extractor = Extractors::StaticPagesExtractor.new(
+        page_component_rows, ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+      @static_pages_extractor.run
+    end
+
     # The phase-generating components fed to {PhaseProjector}: proposals → ideation phases (dated by
-    # their proposals' published_at), surveys → native_survey phases and pages → information phases
-    # (both dated by the component's publication date — the export carries no responses to date them by).
+    # their proposals' published_at) and surveys → native_survey phases (dated by the component's
+    # publication date — the export carries no responses to date them by). Pages are *not* here: they
+    # become project-level static pages via {Extractors::StaticPagesExtractor}.
     def participation_components
-      proposal_components + survey_phase_components + page_phase_components
+      proposal_components + survey_phase_components
     end
 
     def proposal_components
@@ -464,19 +482,14 @@ module DecidimImporter
       end
     end
 
-    # Decidim pages → information phases: the component name is the phase title and the page body
-    # (the `body` multiloc inside `specific_data`) is the phase description.
-    def page_phase_components
-      rows_for(:components).select { |row| row['type'] == PAGES_COMPONENT }.map do |row|
-        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
-          name: row['name'], method: 'information', dates: [row['published_at']],
-          description: Parsing.parse_json(row['specific_data'])&.dig('body') }
-      end
-    end
-
     # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).
     def survey_component_rows
       @survey_component_rows ||= rows_for(:components).select { |row| row['type'] == SURVEYS_COMPONENT }
+    end
+
+    # Component manifest rows whose type is `pages` (their body lives in `specific_data`).
+    def page_component_rows
+      @page_component_rows ||= rows_for(:components).select { |row| row['type'] == PAGES_COMPONENT }
     end
 
     def component_name_map

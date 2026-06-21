@@ -6,6 +6,10 @@ module MultiTenancy
       class StaticPage < Base
         upload_attribute :header_bg
 
+        # Project-scoped (project-level) static pages belong to a project; nil for global pages,
+        # in which case the ref is skipped.
+        ref_attribute :project
+
         attributes %i[
           banner_cta_button_multiloc
           banner_cta_button_type

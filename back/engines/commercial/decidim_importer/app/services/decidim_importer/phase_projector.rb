@@ -10,8 +10,9 @@ module DecidimImporter
   # only signal tying a component's activity to a window is the `published_at` of its items.
   #
   # Phase-generating components so far: **proposals** (→ ideation, dated by the proposals'
-  # published_at window), **surveys** (→ native_survey) and **pages** (→ information, the page body as
-  # the phase description) — both dated by the component's publication date. The projection stays simple:
+  # published_at window) and **surveys** (→ native_survey, dated by the component's publication date).
+  # (Decidim pages become project-level static pages, not phases, so they're handled elsewhere.) The
+  # projection stays simple:
   #
   #   * the step → information phases stay the timeline backbone (hardened to be date-granular and
   #     non-overlapping — real steps overlap and overshoot the process span);
@@ -151,7 +152,7 @@ module DecidimImporter
 
     # Default phase title per method when the component has no usable name.
     DEFAULT_TITLES = {
-      'ideation' => 'Propositions', 'native_survey' => 'Questionnaire', 'information' => 'Information'
+      'ideation' => 'Propositions', 'native_survey' => 'Questionnaire'
     }.freeze
 
     def register_participation_phase(intent, start_at, end_at)
@@ -165,8 +166,6 @@ module DecidimImporter
         'start_at' => start_at.iso8601,
         'end_at' => end_at&.iso8601
       }
-      # Pages carry their body as the phase description.
-      attributes['description_multiloc'] = multiloc(component[:description]) if component[:description]
       # Native-survey phases require these two multilocs (Phase validates their presence).
       if method == 'native_survey'
         attributes['native_survey_title_multiloc'] = title
