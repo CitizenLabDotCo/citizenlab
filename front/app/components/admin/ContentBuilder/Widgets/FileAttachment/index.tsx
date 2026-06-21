@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import {
   Box,
   colors,
+  IconButton,
   Select,
   Spinner,
   Text,
@@ -135,7 +136,11 @@ const FileAttachmentSettings = () => {
   const { projectId } = useParams({ strict: false });
 
   // Get files for project
-  const { data: files, isFetching: isFetchingFiles } = useFiles({
+  const {
+    data: files,
+    isFetching: isFetchingFiles,
+    refetch: refetchFiles,
+  } = useFiles({
     project: projectId ? [projectId] : [],
   });
 
@@ -167,7 +172,9 @@ const FileAttachmentSettings = () => {
     return !isFileUsed;
   });
 
-  if (isFetchingFiles) {
+  // Only take over the whole panel on the initial load; background refetches
+  // (e.g. the refresh button below) keep the panel visible.
+  if (isFetchingFiles && !files) {
     return <Spinner />;
   }
 
@@ -196,15 +203,31 @@ const FileAttachmentSettings = () => {
       )}
 
       {projectId && (
-        <ButtonWithLink
-          to="/admin/projects/$projectId/files"
-          params={{ projectId }}
-          buttonStyle="text"
-          icon="upload-file"
-          openLinkInNewTab={true}
-        >
-          {formatMessage(messages.uploadFiles)}
-        </ButtonWithLink>
+        <Box display="flex" alignItems="center" gap="4px">
+          <ButtonWithLink
+            to="/admin/projects/$projectId/files"
+            params={{ projectId }}
+            buttonStyle="text"
+            icon="upload-file"
+            openLinkInNewTab={true}
+          >
+            {formatMessage(messages.uploadFiles)}
+          </ButtonWithLink>
+          {/* Refresh the list to pick up files uploaded in the other tab. */}
+          {isFetchingFiles ? (
+            <Box p="4px" display="flex">
+              <Spinner size="20px" />
+            </Box>
+          ) : (
+            <IconButton
+              iconName="refresh"
+              onClick={() => refetchFiles()}
+              a11y_buttonActionMessage={formatMessage(messages.refreshFiles)}
+              iconColor={colors.textSecondary}
+              iconColorOnHover={colors.black}
+            />
+          )}
+        </Box>
       )}
     </Box>
   );

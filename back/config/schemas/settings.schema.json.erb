@@ -854,6 +854,18 @@
         }
       },
 
+      "project_static_pages": {
+        "type": "object",
+        "title": "Project Static Pages (Alpha)",
+        "description": "Allow static pages to be created and added to individual projects.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "redirects": {
         "type": "object",
         "title": "URL redirection rules",
