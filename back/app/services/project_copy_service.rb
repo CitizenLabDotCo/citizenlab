@@ -88,6 +88,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['ideas_phase']            = yml_ideas_phases exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['comment']                = yml_comments exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['official_feedback']      = yml_official_feedback exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['cosponsorship']          = yml_cosponsorships exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['reaction']               = yml_reactions exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['follower']               = yml_followers exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
@@ -526,6 +527,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
     user_ids += Basket.joins(:baskets_ideas).where(baskets_ideas: { idea_id: idea_ids }).pluck(:user_id)
     user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
+    user_ids += Cosponsorship.where(idea_id: idea_ids).pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id) unless limit_num_ideas
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
@@ -786,6 +788,18 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       }
       store_ref yml_official_feedback, o.id, :official_feedback
       yml_official_feedback
+    end
+  end
+
+  def yml_cosponsorships(exported_ideas, shift_timestamps: 0)
+    Cosponsorship.where(idea: exported_ideas).map do |c|
+      {
+        'idea_ref' => lookup_ref(c.idea_id, :idea),
+        'user_ref' => lookup_ref(c.user_id, :user),
+        'status' => c.status,
+        'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601
+      }
     end
   end
 

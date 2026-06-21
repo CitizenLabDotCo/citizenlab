@@ -6044,10 +6044,30 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.trendIndicator.comparedToLastQuarter": {
+    "state": "verified",
+    "verified_at": "2026-06-12T17:02:33.335232Z",
+    "verified_by": "Luuc"
+  },
   "app.components.trendIndicator.lastQuarter2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.trendIndicator.trendDecreased": {
+    "state": "verified",
+    "verified_at": "2026-06-12T17:02:33.335232Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.trendIndicator.trendIncreased": {
+    "state": "verified",
+    "verified_at": "2026-06-12T17:02:33.335232Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.trendIndicator.trendNoChange": {
+    "state": "verified",
+    "verified_at": "2026-06-12T17:02:33.335232Z",
+    "verified_by": "Luuc"
   },
   "app.containers.AccessibilityStatement.applicability": {
     "state": "verified",
@@ -13588,6 +13608,81 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "containers.OAuthAuthorize.authorizeButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.authorizeExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.authorizeHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.denyButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.inControlDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.inControlTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.invalidRequestExplanation": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.invalidRequestHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.pageTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.scopeFallbackDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.scopeFallbackTitle2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessDetail": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.signInButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.signInPrompt": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
   },
   "containers.SiteMap.allProjects": {
     "state": "verified",

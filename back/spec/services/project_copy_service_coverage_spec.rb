@@ -23,6 +23,66 @@ require 'rails_helper'
 #      for every new model).
 describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/DescribeClass
   let(:service_path) { Rails.root.join('app/services/project_copy_service.rb') }
+
+  # Real (non-derived) columns that are intentionally NOT carried over by
+  # ProjectCopyService#export, keyed by model name.
+  let(:ignored_columns) do
+    {
+      # AdminPublication is exported as nested `admin_publication_attributes` on
+      # Project, with only `publication_status` (the rest is either derived
+      # nested-set bookkeeping or tenant-wide publication scheduling state).
+      # Listed here for completeness even though AdminPublication has no
+      # dedicated yml_method.
+      'AdminPublication' => %w[
+        children_allowed
+        first_published_at
+        ordering
+        parent_id
+        publication_id
+        scheduled_at
+        scheduled_by_id
+        scheduled_status
+      ],
+
+      'BasketsIdea' => %w[
+        created_at
+        updated_at
+      ], # join-table timestamps, not content
+
+      'CustomField' => %w[
+        logic
+      ], # Logic cannot be easily serialized
+
+      'CustomForm' => %w[
+        fields_last_updated_at
+      ], # bookkeeping timestamp; the form's print settings are serialized
+
+      'Idea' => %w[
+        assigned_at
+        assignee_id
+        idea_status_id
+      ], # status/moderation operational state
+
+      'Project' => %w[
+        default_assignee_id
+        preview_token
+      ], # admin reference / regenerated token
+
+      'User' => %w[
+        confirmation_required
+        email_confirmed_at
+        imported
+        invite_status
+        last_active_at
+        new_email
+        onboarding
+        reset_password_token
+        roles
+        token_expiry_key
+      ] # auth/session/role state — deliberately not exported (privacy/security)
+    }.freeze
+  end
+
   # Persisted models that intentionally have no `yml_<x>` method in ProjectCopyService,
   # keyed by reason.
   let(:excluded_models) do
@@ -69,6 +129,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         Area
         DefaultInputTopic
         GlobalTopic
+        ProjectsGlobalTopic
       ],
 
       # Groups / project membership — tenant-wide, not project-content.
@@ -119,6 +180,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         EmailBan
         Identity
         Invite
+        PermissionsCustomField
         PublicApi::ApiClient
         Verification::Verification
       ],
@@ -185,6 +247,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         StaticPage
         StaticPageFile
         StaticPagesGlobalTopic
+        StaticPagesSpace
       ],
 
       # Per-tenant admin moderation runtime (internal comments on ideas — not
@@ -225,83 +288,10 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       nested_attributes: %w[
         AdminPublication
         TextImage
-      ],
-
-      # REVIEW: these look like they may belong in a project copy. Listed to
-      # keep the baseline green pending a human decision on whether to export
-      # them. `ProjectsGlobalTopic` and `Cosponsorship` are the most likely real
-      # gaps; `PermissionsCustomField` is the per-permission custom-field link.
-      review: %w[
-        Cosponsorship
-        PermissionsCustomField
-        ProjectsGlobalTopic
       ]
     }.freeze
   end
   let(:excluded_model_names) { excluded_models.values.flatten.to_set.freeze }
-
-  # Real (non-derived) columns that are intentionally NOT carried over by
-  # ProjectCopyService#export, keyed by model name. `# REVIEW` marks fields
-  # that look like they might actually belong in the export (the bug class
-  # this spec exists to catch) — allowlisted for now to keep the baseline
-  # green, pending a human call.
-  let(:ignored_columns) do
-    {
-      # AdminPublication is exported as nested `admin_publication_attributes` on
-      # Project, with only `publication_status` (the rest is either derived
-      # nested-set bookkeeping or tenant-wide publication scheduling state).
-      # Listed here for completeness even though AdminPublication has no
-      # dedicated yml_method.
-      'AdminPublication' => %w[
-        children_allowed
-        first_published_at
-        ordering
-        parent_id
-        publication_id
-        scheduled_at
-        scheduled_by_id
-        scheduled_status
-      ],
-
-      'BasketsIdea' => %w[
-        created_at
-        updated_at
-      ], # join-table timestamps, not content
-
-      'CustomField' => %w[
-        logic
-      ], # Logic cannot be easily serialized
-
-      'CustomForm' => %w[
-        fields_last_updated_at
-      ],
-
-      'Idea' => %w[
-        assigned_at
-        assignee_id
-        idea_status_id
-      ], # status/moderation operational state
-
-      'Project' => %w[
-        default_assignee_id
-        preview_token
-      ], # admin reference / regenerated token
-
-      # User auth/session/role state — deliberately not exported (privacy/security)
-      'User' => %w[
-        confirmation_required
-        email_confirmed_at
-        imported
-        invite_status
-        last_active_at
-        new_email
-        onboarding
-        reset_password_token
-        roles
-        token_expiry_key
-      ]
-    }.freeze
-  end
 
   # Cache/derived columns excluded from coverage checks across all models. A
   # leading `*` is a suffix glob (`*_count` matches any column ending in
