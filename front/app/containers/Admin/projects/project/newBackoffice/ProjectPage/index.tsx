@@ -16,7 +16,7 @@ import messages from '../messages';
 // A phone-shaped, scrollable preview of the public project page. Hovering (or
 // focusing the edit button) reveals an "Edit page content" call-to-action that
 // opens the content builder; the preview itself stays scrollable so the whole
-// page can be inspected. Mirrors the parallel-participation prototype.
+// page can be inspected.
 const PHONE_WIDTH = 375;
 const PHONE_HEIGHT = 720;
 
