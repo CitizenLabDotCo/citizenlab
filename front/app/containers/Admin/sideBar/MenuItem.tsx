@@ -40,8 +40,8 @@ const Text = styled.div`
     display: none;
   `}
 
-  /* Force-collapsed (icon-only) rail, e.g. in the redesigned project back
-   * office — the ancestor nav carries the .collapsed class. */
+  /* Force-collapsed (icon-only) rail — the ancestor nav carries the
+   * .collapsed class. */
   .collapsed & {
     display: none;
   }
