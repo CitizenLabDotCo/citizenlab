@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Post",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "Pob mewnbwn",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "Mae angen adolygiad gweinyddol ar bob mewnbwn cyn ei gyhoeddi. Ni fydd mewnbynnau i'w gweld nes bod gweinyddwr yn eu hadolygu a'u cymeradwyo. Ni all awduron olygu mewnbynnau ar ôl iddynt gael eu sgrinio neu ymateb iddynt.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "Mae angen i weinyddwr adolygu pob mewnbwn cyn ei gyhoeddi. Ni fydd mewnbynnau'n weladwy nes bod gweinyddwr yn eu hadolygu ac yn eu cymeradwyo. Ni all awduron olygu mewnbynnau ar ôl iddynt gael eu sgrinio neu ar ôl i rywun ymateb iddynt. Defnyddiwch ar gyfer achosion eithriadol yn unig. Gall rhag-sgrinio pob mewnbwn effeithio ar gyfranogiad democrataidd. Galluogwch hyn dim ond ar ôl ymgynghori â'ch rheolwr llwyddiant llywodraeth.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "Mewnbynnau wedi'u fflagio",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Dim ond mewnbynnau sydd wedi'u nodi fel cynnwys amhriodol sydd angen eu hadolygu cyn eu cyhoeddi. Cyhoeddir pob mewnbwn arall ar unwaith. Gall awduron olygu mewnbynnau ar ôl iddynt gael eu cyhoeddi.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "I ffwrdd",

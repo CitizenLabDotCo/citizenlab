@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Inlägg",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "Alla ingångar",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "Alla inmatningar kräver administratörsgranskning före publicering. Inmatningar kommer inte att vara synliga förrän en administratör har granskat och godkänt dem. Författare kan inte redigera inmatningar efter att de har granskats eller reagerat på.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "Alla bidrag kräver administratörsgranskning före publicering. Bidragen kommer inte att vara synliga förrän en administratör har granskat och godkänt dem. Författare kan inte redigera bidrag efter att de har granskats eller fått reaktioner. Använd endast i undantagsfall. Förhandsgranskning av alla bidrag kan påverka det demokratiska deltagandet. Aktivera endast efter att ha rådgjort med din Government Success Manager.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "Flaggade ingångar",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Endast inmatningar som flaggats för olämpligt innehåll behöver granskas före publicering. Alla andra inmatningar publiceras omedelbart. Författare kan redigera inmatningar efter att de har publicerats.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "Av",

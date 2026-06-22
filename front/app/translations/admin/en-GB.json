@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Post",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "All inputs",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "All inputs require admin review before publication. Inputs will not be visible until an admin reviews and approves them. Authors can't edit inputs after they are screened or reacted on.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "All inputs require admin review before publication. Inputs will not be visible until an admin reviews and approves them. Authors cannot edit inputs after they are screened or reacted to. Use for exceptional cases only. Pre-screening all inputs can impact democratic participation. Enable only after consulting your government success manager.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "Flagged inputs",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Only inputs flagged for inappropriate content require review before publication. All other inputs are published immediately. Authors can edit inputs after they are published.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "Off",

@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Opslag",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "Alle input",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "Alle input skal gennemgås af en administrator før offentliggørelse. Inputs vil ikke være synlige, før en administrator har gennemgået og godkendt dem. Forfattere kan ikke redigere input, efter at de er blevet screenet eller reageret på.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "Alle input kræver administratorgennemgang før offentliggørelse. Input vil ikke være synlige, før en administrator har gennemgået og godkendt dem. Forfattere kan ikke redigere input, efter de er blevet screenet eller reageret på. Bruges kun i undtagelsestilfælde. Forhåndsscreening af alle input kan påvirke den demokratiske deltagelse. Aktivér kun efter samråd med jeres platform administrator og Søren Kielgast, Go Vocal.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "Markerede input",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Kun input, der er markeret for upassende indhold, skal gennemgås før offentliggørelse. Alle andre input offentliggøres med det samme. Forfattere kan redigere input, efter at de er offentliggjort.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "Fra",
