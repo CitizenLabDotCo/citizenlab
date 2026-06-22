@@ -62,22 +62,18 @@ const MenuItemLink = typedStyled(Link)`
 
   &:not(.active) {
     .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.blue400};
-      }
+      .cl-icon-primary,
       .cl-icon-accent {
-        fill: ${colors.teal400};
+        fill: ${colors.coolGrey300};
       }
     }
   }
 
   &.active {
     .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.teal400};
-      }
+      .cl-icon-primary,
       .cl-icon-accent {
-        fill: ${colors.blue400};
+        fill: ${colors.teal400};
       }
     }
   }
