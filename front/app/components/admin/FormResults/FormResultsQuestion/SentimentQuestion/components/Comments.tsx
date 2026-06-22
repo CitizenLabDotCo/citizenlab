@@ -68,7 +68,7 @@ const Comments = ({
           <Box flexGrow={1}>
             <TextResponses
               textResponses={textResponses}
-              hasFollowUpResponses={true}
+              textResponseSource="follow_up"
             />
           </Box>
 
@@ -80,6 +80,7 @@ const Comments = ({
                 <Analysis
                   customFieldId={customFieldId}
                   textResponsesCount={textResponses.length}
+                  textResponseSource="follow_up"
                   projectId={projectId}
                   phaseId={phaseId}
                 />

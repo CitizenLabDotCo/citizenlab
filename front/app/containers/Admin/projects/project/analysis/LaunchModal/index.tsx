@@ -45,6 +45,10 @@ const LaunchModal = ({ onClose }: LaunchModalProps) => {
           <b>{formatMessage(messages.limitation3Title)}</b>{' '}
           {formatMessage(messages.limitation3Text)}
         </Text>
+        <Text>
+          <b>{formatMessage(messages.limitation4Title)}</b>{' '}
+          {formatMessage(messages.limitation4Text)}
+        </Text>
         <Text>{formatMessage(messages.description)}</Text>
       </Box>
       <Button id="e2e-analysis-launch-modal-agree-button" onClick={onClose}>

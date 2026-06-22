@@ -48,7 +48,11 @@ tr-TR:
         new_attendee: Yeni kayıtlı kullanıcı
         project_review_requester: Proje incelemesini talep eden kullanıcı
         project_reviewers: Proje gözden geçiricileri ve klasör yöneticileri
+        user_changing_email: E-posta adresini değiştiren kullanıcı
+        user_confirming_email: E-posta adresini doğrulayan kullanıcı
+        user_requesting_password_reset: Şifre sıfırlama talebinde bulunan kullanıcı
         user_who_commented: Yorum yapan kullanıcı
+        user_who_is_blocked: Hesabı engellenen kullanıcı
         user_who_is_invited_to_cosponsor_a_proposal: Bir teklife eş sponsorluk yapmaya davet edilen kullanıcı
         user_who_is_mentioned: Bahsi geçen kullanıcı
         user_who_is_receiving_admin_rights: Yönetici haklarını alan kullanıcı
@@ -105,9 +109,12 @@ tr-TR:
         registration_to_event: Bir etkinliğe kayıt
         survey_1_day_after_draft_saved: Kullanıcı anketi en son taslak olarak kaydettikten 1 gün sonra
         user_accepts_invitation_to_cosponsor_a_proposal: Kullanıcı bir teklife eş sponsorluk davetini kabul eder
+        user_changes_email: Kullanıcı e-posta adresini değiştiriyor
         user_comments: Kullanıcı yorumları
         user_comments_on_input: Giriş hakkında kullanıcı yorumları
         user_comments_on_proposal: Teklifle ilgili kullanıcı yorumları
+        user_confirms_email: Kullanıcı e-posta adresini onaylıyor
+        user_is_blocked: Kullanıcının hesabı engellendi
         user_is_given_admin_rights: Kullanıcıya yönetici hakları verilir
         user_is_given_folder_manager_rights: Kullanıcıya klasör yöneticisi yetkileri verildi
         user_is_given_folder_moderator_rights: Kullanıcıya klasör moderatörü hakları verilir
@@ -121,6 +128,7 @@ tr-TR:
         user_registers_for_the_first_time: Kullanıcı ilk kez kaydolur
         user_replies_to_comment: Kullanıcı yoruma yanıt veriyor
         user_replies_to_internal_comment: Kullanıcı dahili yoruma yanıt veriyor
+        user_requests_password_reset: Kullanıcı şifre sıfırlama talebinde bulunuyor
         voting_1_day_after_last_votes: Kullanıcı son oylamadan 1 gün sonra
         voting_2_days_before_phase_closes: Oylama aşamasının kapanmasına 2 gün kala
         voting_basket_submitted: Oylar teslim edildi
@@ -160,6 +168,7 @@ tr-TR:
       comment_on_your_comment: Yorumuma bir yanıt
       community_monitor_report: Topluluk gözlemci raporu
       cosponsor_of_your_idea: Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
+      email_confirmation: E-posta onay kodu
       event_registration_confirmation: Etkinlik kayıt onayı
       idea_marked_as_spam: Fikrin spam olarak bildirilmesi
       idea_published: Fikrimin yayımlanması
@@ -178,6 +187,7 @@ tr-TR:
       moderator_digest: Proje yöneticileri için haftalık genel bakış
       native_survey_not_submitted: Anket gönderilmedi
       new_comment_for_admin: Yönettiğim bir projede yeni yorum
+      new_email_confirmation: Yeni e-posta onay kodu
       new_idea_for_admin_prescreening: Ilımlı bir projede onay gerektiren yeni girdi
       new_idea_for_admin_published: Yönettiğim bir projede yeni yayınlanmış girdi
       official_feedback_on_idea_you_follow: Takip ettiğiniz bir fikir hakkında güncelleme
@@ -196,6 +206,7 @@ tr-TR:
       status_change_on_idea_you_follow: Takip ettiğiniz bir fikrin durum değişikliği
       survey_submitted: Anket gönderildi
       threshold_reached_for_admin: Öneri oylama eşiğine ulaştı
+      user_blocked: Hesap engellendi
       user_digest: Haftalık genel bakış
       voting_basket_not_submitted: Gönderilmeyen oylar
       voting_basket_submitted: Oylamanın onaylanması
@@ -271,6 +282,15 @@ tr-TR:
       preheader: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
       subject: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
       title: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
+    email_confirmation:
+      best_regards: Saygılarımızla,
+      event_description: 'Katılımınız için teşekkür ederiz. Lütfen bu onay kodunu %{organizationName} katılım platformundaki pencereye girin:'
+      expire_code: 'Bu kodun geçerlilik süresi:'
+      hours_24: 24 saat.
+      ignore_email: Eğer bir kod talep etmediyseniz, bu e-postayı güvenle görmezden gelebilirsiniz.
+      preheader: '%{organizationName} için e-posta adresinizi doğrulayın'
+      subject: '%{organizationName} katılım platformu için e-posta adresinizi onaylayın'
+      title: E-posta adresinizi onaylayın
     event_registration_confirmation:
       cta_add_to_calendar: Takviminize ekleyin
       cta_button: Etkinliği görüntüleyin
@@ -482,6 +502,15 @@ tr-TR:
       title: '%{firstName}, platformunuza yeni bir yorum gönderildi'
       today: Bugün
       yesterday: Dün
+    new_email_confirmation:
+      best_regards: Saygılarımızla,
+      event_description: 'Yeni e-posta adresinizi doğrulamak için lütfen bu doğrulama kodunu %{organizationName} katılım platformundaki pencereye girin:'
+      expire_code: 'Bu kodun geçerlilik süresi:'
+      hours_24: 24 saat.
+      ignore_email: Eğer bir kod talep etmediyseniz, bu e-postayı güvenle görmezden gelebilirsiniz.
+      preheader: '%{organizationName} için yeni e-posta adresinizi onaylayın'
+      subject: '%{organizationName} katılım platformu için yeni e-posta adresinizi onaylayın'
+      title: Yeni e-posta adresinizi doğrulayın
     new_idea_for_admin_prescreening:
       cta_button: Girdiyi gözden geçirin
       days_ago: '%{numberOfDays} günler önce'
@@ -507,6 +536,12 @@ tr-TR:
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: '"%{input_title}" adresinde bir güncelleme var.'
+    password_reset:
+      cta_button: Şifrenizi sıfırlayın
+      event_description: '%{organizationName} katılım platformu için şifre sıfırlama talebinde bulundunuz. Yeni ve güvenli bir şifre seçmek için aşağıdaki düğmeye tıklayın. Bağlantının süresi 1 saat içinde dolacaktır.'
+      preheader: '%{organizationName} için şifrenizi sıfırlayın'
+      subject: '%{organizationName}: Şifrenizi sıfırlayın'
+      title: Yeni bir şifre seçin
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -652,6 +687,14 @@ tr-TR:
       preheader: Sonraki adımları mutlaka gerçekleştirin
       subject: Bir girişim, platformunuzdaki oylama eşiğine ulaştı
       title: Bir teklif oylama eşiğine ulaştı!
+    user_blocked:
+      for_more_information: Bu konu hakkında daha fazla bilgi için %{termsAndConditionsPage} sayfasını inceleyebilirsiniz.
+      paragraph_1_with_reason: '%{organizationName} katılım platformundaki hesabınız aşağıdaki nedenle geçici olarak devre dışı bırakıldı:'
+      paragraph_1_without_reason: '%{organizationName} katılım platformundaki hesabınız, topluluk kurallarının ihlali nedeniyle geçici olarak devre dışı bırakıldı.'
+      preheader: '%{organizationName} katılım platformundaki hesabınız geçici olarak devre dışı bırakıldı'
+      subject: Hesabınız geçici olarak devre dışı bırakıldı
+      title: Hesabınız geçici olarak devre dışı bırakıldı
+      you_can_sign_in_again_from: '%{date} tarihinden itibaren tekrar giriş yapabilirsiniz'
     user_digest:
       commented: '%{authorFirstName} yorum yaptı:'
       cta_button: Platforma gidin

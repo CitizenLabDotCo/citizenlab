@@ -21,6 +21,9 @@ export type IInputsFilterParams = {
   comments_from?: number;
   comments_to?: number;
   input_custom_field_no_empty_values?: boolean;
+  // Restricts inputs to those with non-empty follow-up text on the analysis's
+  // main field (used to scope sentiment follow-up summaries).
+  input_follow_up_not_empty?: boolean;
   limit?: number;
 } & { [K in AuthorCustomFilterKey]?: string[] | string } & {
   [K in InputCustomFilterKey]?: string | string[] | boolean;
