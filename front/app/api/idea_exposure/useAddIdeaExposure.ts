@@ -7,13 +7,14 @@ import { IIdeaExposure } from './types';
 
 interface AddIdeaExposureParams {
   ideaId: string;
+  phaseId?: string;
 }
 
-const addIdeaExposure = async ({ ideaId }: AddIdeaExposureParams) =>
+const addIdeaExposure = async ({ ideaId, phaseId }: AddIdeaExposureParams) =>
   fetcher<IIdeaExposure>({
     path: `/ideas/${ideaId}/exposures`,
     action: 'post',
-    body: null,
+    body: phaseId ? { phase_id: phaseId } : null,
   });
 
 const useAddIdeaExposure = () => {
