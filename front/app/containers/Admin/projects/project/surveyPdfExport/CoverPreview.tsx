@@ -2,10 +2,11 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   Box,
-  Button,
+  IconButton,
   Spinner,
   Text,
   colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { pdfjs, Document, Page } from 'react-pdf';
 
@@ -123,32 +124,32 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
           top="8px"
           right="8px"
           display="flex"
-          gap="4px"
+          gap="8px"
+          p="6px"
           zIndex="2"
+          background={colors.white}
+          border={`1px solid ${colors.borderLight}`}
+          borderRadius={stylingConsts.borderRadius}
         >
-          <Button
-            icon="minus"
-            iconSize="16px"
-            buttonStyle="white"
+          <IconButton
+            iconName="minus"
+            iconWidth="20px"
+            iconHeight="20px"
             iconColor={colors.coolGrey600}
-            width="32px"
-            height="32px"
-            padding="0px"
+            iconColorOnHover={colors.black}
             disabled={zoom <= ZOOM_MIN}
             onClick={() => setZoom((z) => Math.max(ZOOM_MIN, z - ZOOM_STEP))}
-            aria-label={formatMessage(messages.zoomOut)}
+            a11y_buttonActionMessage={formatMessage(messages.zoomOut)}
           />
-          <Button
-            icon="plus"
-            iconSize="16px"
-            buttonStyle="white"
+          <IconButton
+            iconName="plus"
+            iconWidth="20px"
+            iconHeight="20px"
             iconColor={colors.coolGrey600}
-            width="32px"
-            height="32px"
-            padding="0px"
+            iconColorOnHover={colors.black}
             disabled={zoom >= ZOOM_MAX}
             onClick={() => setZoom((z) => Math.min(ZOOM_MAX, z + ZOOM_STEP))}
-            aria-label={formatMessage(messages.zoomIn)}
+            a11y_buttonActionMessage={formatMessage(messages.zoomIn)}
           />
         </Box>
       )}
