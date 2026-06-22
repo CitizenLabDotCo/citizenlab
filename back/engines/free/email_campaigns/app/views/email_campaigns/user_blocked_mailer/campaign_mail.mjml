@@ -1,0 +1,24 @@
+<mj-section padding="30px 25px">
+  <mj-column>
+    <mj-text color="black">
+      <% if recipient.block_reason.present? %>
+        <p style="margin-bottom: 40px;">
+          <%= format_message('paragraph_1_with_reason', values: { organizationName: organization_name }) %>
+        </p>
+        <p style="margin-bottom: 40px; font-weight: bold;"><%= recipient.block_reason %></p>
+        <p style="margin-bottom: 40px;">
+          <%= format_message('for_more_information', values: { termsAndConditionsPage: '' }) %>
+          <a style="color: rgb(111, 119, 125);" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
+        </p>
+      <% else %>
+        <p style="margin-bottom: 40px;">
+          <%= format_message('paragraph_1_without_reason', values: { organizationName: organization_name }) %> <%= format_message('for_more_information', values: { termsAndConditionsPage: '' }) %>
+          <a style="color: rgb(111, 119, 125);" href="<%= terms_conditions_url %>"><%= t('static_pages.terms_and_conditions_title') %></a>
+        </p>
+      <% end %>
+      <p style="margin-bottom: 40px;">
+        <%= format_message('you_can_sign_in_again_from', values: { date: recipient.block_end_at.strftime('%b %d, %Y') }) %>
+      </p>
+    </mj-text>
+  </mj-column>
+</mj-section>

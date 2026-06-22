@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Julkaisu",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "Kaikki syötteet",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "Kaikki syötteet vaativat ylläpitäjän tarkistuksen ennen julkaisemista. Syötteet eivät ole näkyvissä, ennen kuin ylläpitäjä on tarkistanut ja hyväksynyt ne. Kirjoittajat eivät voi muokata syötteitä sen jälkeen, kun ne on tarkastettu tai niihin on reagoitu.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "Kaikki syötteet vaativat ylläpitäjän tarkistuksen ennen julkaisua. Syötteet eivät ole näkyvissä ennen kuin ylläpitäjä on tarkistanut ja hyväksynyt ne. Kirjoittajat eivät voi muokata syötteitä sen jälkeen, kun ne on tarkistettu tai niihin on reagoitu. Käytä vain poikkeustapauksissa. Kaikkien syötteiden esitarkistus voi vaikuttaa demokraattiseen osallistumiseen. Ota käyttöön vasta keskusteltuasi oman government success managerisi kanssa.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "Merkityt syötteet",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Vain sopimattomaksi sisällöksi merkityt syötteet on tarkistettava ennen julkaisemista. Kaikki muut syötteet julkaistaan välittömästi. Kirjoittajat voivat muokata syötteitä niiden julkaisemisen jälkeen.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "Pois",

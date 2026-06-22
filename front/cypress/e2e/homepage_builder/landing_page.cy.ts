@@ -95,16 +95,22 @@ describe('Landing page - signed in', () => {
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
       userId = user.body.data.id;
-      cy.setLoginCookie(email, password);
-      cy.setConsentCookie();
     });
+  });
+
+  beforeEach(() => {
+    // Re-establish the auth cookies for every test attempt/retry. With Cypress
+    // test isolation, cookies set in a one-time before() hook can be cleared
+    // before the test runs, which intermittently renders the page signed-out
+    // and makes the signed-in header assertion flaky.
+    cy.setLoginCookie(email, password);
+    cy.setConsentCookie();
   });
 
   it('shows correct content', () => {
     cy.goToLandingPage();
     cy.injectAxe();
 
-    cy.wait(2000);
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
     cy.get(
