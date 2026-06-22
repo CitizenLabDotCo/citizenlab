@@ -1798,7 +1798,6 @@
   "app.containers.Admin.projects.project.surveyPdfExport.previewLabel": "Cover preview",
   "app.containers.Admin.projects.project.surveyPdfExport.reportSubtitleLabel": "Subtitle",
   "app.containers.Admin.projects.project.surveyPdfExport.reportTitleLabel": "Report title",
-  "app.containers.Admin.projects.project.surveyPdfExport.responsesFound": "{count, plural, one {# response} other {# responses}} will be exported.",
   "app.containers.Admin.projects.project.surveyPdfExport.zoomIn": "Zoom in",
   "app.containers.Admin.projects.project.surveyPdfExport.zoomOut": "Zoom out",
   "app.containers.Admin.projects.project.traffic.selectPeriod": "Select period",
