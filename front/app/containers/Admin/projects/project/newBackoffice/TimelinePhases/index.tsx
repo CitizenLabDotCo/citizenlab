@@ -1,14 +1,7 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Text,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
-import { sortBy } from 'lodash-es';
-import moment from 'moment';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { format, isSameMonth } from 'date-fns';
 import styled from 'styled-components';
 
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -18,6 +11,8 @@ import { getPhaseLandingTab } from 'api/phases/utils';
 import useLocalize from 'hooks/useLocalize';
 
 import methodMessages from 'containers/Admin/inspirationHub/messages';
+
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -52,18 +47,17 @@ const formatDateRange = (
   endAt: string | null,
   noEndLabel: string
 ): string => {
-  const start = moment(startAt);
+  const start = new Date(startAt);
 
   if (!endAt) {
-    return `${start.format('D MMM')} – ${noEndLabel}`;
+    return `${format(start, 'd MMM')} – ${noEndLabel}`;
   }
 
-  const end = moment(endAt);
-  const sameMonth = start.isSame(end, 'month') && start.isSame(end, 'year');
+  const end = new Date(endAt);
 
-  return sameMonth
-    ? `${start.format('D')} – ${end.format('D MMM')}`
-    : `${start.format('D MMM')} – ${end.format('D MMM')}`;
+  return isSameMonth(start, end)
+    ? `${format(start, 'd')} – ${format(end, 'd MMM')}`
+    : `${format(start, 'd MMM')} – ${format(end, 'd MMM')}`;
 };
 
 const dotStyle = (status: PhaseStatus) => {
@@ -91,26 +85,6 @@ const Row = styled.div<{ selected: boolean }>`
   }
 `;
 
-const NewPhaseButton = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px dashed ${colors.coolGrey300};
-  border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
-  color: ${colors.coolGrey600};
-  font-size: ${fontSizes.s}px;
-
-  &:hover {
-    border-color: ${colors.coolGrey500};
-    color: ${colors.primary};
-  }
-`;
-
 interface Props {
   projectId: string;
 }
@@ -123,7 +97,10 @@ const TimelinePhases = ({ projectId }: Props) => {
 
   if (!phases) return null;
 
-  const sortedPhases = sortBy(phases.data, (p) => p.attributes.start_at);
+  // Copy before sorting — phases.data is the react-query cache, don't mutate it.
+  const sortedPhases = [...phases.data].sort((a, b) =>
+    a.attributes.start_at.localeCompare(b.attributes.start_at)
+  );
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
 
   return (
@@ -161,7 +138,7 @@ const TimelinePhases = ({ projectId }: Props) => {
                 }/${getPhaseLandingTab(phase)}` as LinkProps['to']
               }
             >
-              <Row selected={isSelected} data-cy="e2e-new-project-phase-item">
+              <Row selected={isSelected}>
                 <Box display="flex" flexDirection="column" alignItems="center">
                   <Box
                     w="10px"
@@ -205,12 +182,15 @@ const TimelinePhases = ({ projectId }: Props) => {
         })}
       </Box>
 
-      <Link to={`/admin/projects/${projectId}/phases/new` as LinkProps['to']}>
-        <NewPhaseButton data-cy="e2e-new-project-new-phase">
-          <Icon name="plus" width="16px" height="16px" fill="currentColor" />
-          {formatMessage(messages.newPhase)}
-        </NewPhaseButton>
-      </Link>
+      <ButtonWithLink
+        linkTo={`/admin/projects/${projectId}/phases/new`}
+        buttonStyle="secondary-outlined"
+        icon="plus"
+        width="100%"
+        mt="4px"
+      >
+        {formatMessage(messages.newPhase)}
+      </ButtonWithLink>
     </Box>
   );
 };
