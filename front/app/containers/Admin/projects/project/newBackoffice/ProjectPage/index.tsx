@@ -12,19 +12,18 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
+import { devicePreviewSizes } from 'components/admin/ContentBuilder/EditModePreview/dimensions';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
-const PHONE_WIDTH = 375;
-const PHONE_HEIGHT = 720;
-
 const Card = styled.div`
   position: relative;
-  width: ${PHONE_WIDTH}px;
-  height: ${PHONE_HEIGHT}px;
+  width: ${devicePreviewSizes.mobile.frameWidth};
+  height: ${devicePreviewSizes.frameHeight};
   background: ${colors.white};
   border: 2px solid ${colors.grey300};
   border-radius: 24px;
