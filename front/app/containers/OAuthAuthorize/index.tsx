@@ -201,7 +201,7 @@ const OAuthAuthorize = () => {
 
           <Box display="flex" flexDirection="column" gap="8px">
             <Button
-              buttonStyle="primary"
+              buttonStyle="admin-dark"
               icon="lock"
               onClick={handleAuthorize}
               processing={authorizing}

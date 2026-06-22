@@ -37,6 +37,15 @@ export default defineMessages({
     defaultMessage:
       'Our system is optimized for handling 20-200 well-defined inputs for the most accurate results. As the volume of data increases beyond this range, the summary may become more high-level and generalized. This does not mean the AI becomes "less accurate", but rather that it will focus on broader trends and patterns. For more nuanced insights, we recommend using the (auto)-tagging feature to segment larger datasets into smaller, more manageable subsets.',
   },
+  limitation4Title: {
+    id: 'app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title',
+    defaultMessage: 'Biases:',
+  },
+  limitation4Text: {
+    id: 'app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text',
+    defaultMessage:
+      'Results may contain various biases. These can arise, for example, from unbalanced data in the model’s training, differences in language and expression, and a lack of contextual understanding. In particular, irony, sarcasm, dialect, youth slang or context-sensitive phrasing may be misinterpreted.',
+  },
   description: {
     id: 'app.containers.AdminPage.projects.project.analysis.LaunchModal.description',
     defaultMessage:

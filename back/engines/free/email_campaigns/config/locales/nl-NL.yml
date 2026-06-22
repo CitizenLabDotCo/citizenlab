@@ -156,13 +156,13 @@ nl-NL:
       assignee_digest: Weekoverzicht van toegewezen ideeën
       comment_deleted_by_admin: Verwijderen van mijn reactie
       comment_marked_as_spam: Reactie spammelding
-      comment_on_idea_you_follow: Een reactie op een idee dat je volgt
+      comment_on_idea_you_follow: Een reactie op een bijdrage dat je volgt
       comment_on_your_comment: Een antwoord op mijn reactie
       community_monitor_report: Verslag van de tevredenheidsmonitor
       cosponsor_of_your_idea: Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
       event_registration_confirmation: Bevestiging registratie activiteit
       idea_marked_as_spam: Idee spammelding
-      idea_published: Posten van mijn idee
+      idea_published: Posten van mijn bijdrage
       internal_comment_on_idea_assigned_to_you: Interne reactie op aan mij toegewezen bijdrage
       internal_comment_on_idea_you_commented_internally_on: Interne reactie op een bijdrage waarop ik intern heb gereageerd
       internal_comment_on_idea_you_moderate: Interne reactie op een bijdrage in een project of map die ik beheer
@@ -180,7 +180,7 @@ nl-NL:
       new_comment_for_admin: Nieuwe reactie in een project dat ik modereer
       new_idea_for_admin_prescreening: Nieuwe bijdrage die goedkeuring vereist in een project dat ik modereer
       new_idea_for_admin_published: Nieuwe gepubliceerde contributie in een project dat ik modereer
-      official_feedback_on_idea_you_follow: Update over een idee dat je volgt
+      official_feedback_on_idea_you_follow: Update over een bijdrage dat je volgt
       password_reset: Herstel wachtwoord
       project_folder_moderation_rights_received: Mapbeheerdersrechten ontvangen
       project_manager_rights_received: Projectbeheerdersrechten ontvangen
@@ -193,7 +193,7 @@ nl-NL:
       proposal_expired_for_admin: Voorstel verlopen zonder de stemdrempel te bereiken
       screening_digest: Wekelijkse screeningherinnering
       space_moderation_rights_received: Ruimtebeheerdersrechten ontvangen
-      status_change_on_idea_you_follow: Statuswijziging van een idee dat je volgt
+      status_change_on_idea_you_follow: Statuswijziging van een bijdrage dat je volgt
       survey_submitted: Vragenlijst ingediend
       threshold_reached_for_admin: Een voorstel bereikte het benodigd aantal stemmen
       user_digest: Weekoverzicht
@@ -203,7 +203,7 @@ nl-NL:
       voting_phase_started: Nieuwe projectfase met stemmen
       voting_results: Stemresultaten
       welcome: Na registratie
-      your_input_in_screening: Mijn input wacht op screening
+      your_input_in_screening: Mijn bijdrage wacht op screening
     comment_deleted_by_admin:
       cta_button: Bekijk dit idee
       event_description: '%{organizationName} verwijderde de reactie dat je bij een idee schreef.'
@@ -504,7 +504,7 @@ nl-NL:
     official_feedback_on_idea_you_follow:
       cta_button: Ga naar deze bijdrage
       event_description: "%{feedback_author_name} gaf een update op %{input_title}'."
-      preheader: Er is een update over een idee dat je volgt
+      preheader: Er is een update over een bijdrage dat je volgt
       subject: Er is officiële feedback geplaatst op "%{input_title}"
       title: Er is een update op "%{input_title}"
     preview_data:
