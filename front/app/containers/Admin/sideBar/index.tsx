@@ -18,7 +18,7 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import Outlet from 'components/Outlet';
 
@@ -111,13 +111,7 @@ const Sidebar = ({ authUser }: Props) => {
   const [navItems, setNavItems] = useState(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
-
-  // In the redesigned project back office the rail is always collapsed
-  // (icon-only) to leave room for the project sidebar — there is no expand
-  // toggle (matching the prototype). Elsewhere the rail is unchanged.
-  const parallelParticipation = useFeatureFlag({
-    name: 'parallel_participation',
-  });
+  const parallelParticipation = useParallelParticipation();
   const projectMatch = pathname.match(/\/admin\/projects\/([^/]+)/);
   const inProjectBackOffice =
     parallelParticipation && !!projectMatch && projectMatch[1] !== 'new';
