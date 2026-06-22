@@ -78,6 +78,7 @@ const captureWithTimeout = async (
 
 const sectionLabel = (section: HTMLElement, index: number): string => {
   const heading = section.querySelector('h1, h2, h3, h4');
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const text = heading?.textContent?.trim();
   if (text) return text.slice(0, 80);
   return `Section ${index + 1}`;

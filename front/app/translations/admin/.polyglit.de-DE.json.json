@@ -2959,6 +2959,61 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.formInputEditWarningModal.addOrReorder": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": {
+    "state": "verified",
+    "verified_at": "2026-06-05T08:13:40.392714Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.noCancel": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.title": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.yesContinue": {
+    "state": "verified",
+    "verified_at": "2026-06-01T07:57:31.243976Z",
+    "verified_by": "Jelena"
+  },
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -17438,6 +17493,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": {
+    "state": "verified",
+    "verified_at": "2026-06-17T10:16:30.269014Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": {
+    "state": "verified",
+    "verified_at": "2026-06-17T10:16:30.269014Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
     "state": "verified",
