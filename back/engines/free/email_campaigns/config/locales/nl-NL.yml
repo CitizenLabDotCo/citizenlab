@@ -48,7 +48,11 @@ nl-NL:
         new_attendee: Nieuw geregistreerde gebruiker
         project_review_requester: Gebruiker die de projectbeoordeling heeft aangevraagd
         project_reviewers: Projectbeoordelaars en mapmanagers
+        user_changing_email: Gebruiker die zijn e-mailadres wijzigt
+        user_confirming_email: Gebruiker die zijn of haar e-mailadres bevestigt
+        user_requesting_password_reset: Gebruiker die een nieuw wachtwoord heeft aangevraagd
         user_who_commented: Gebruiker die een reactie gaf
+        user_who_is_blocked: Gebruiker wiens account geblokkeerd is
         user_who_is_invited_to_cosponsor_a_proposal: Gebruiker die is uitgenodigd om een voorstel te steunen
         user_who_is_mentioned: Gebruiker die genoemd wordt
         user_who_is_receiving_admin_rights: Gebruiker die platformbeheerdersrechten krijgt
@@ -105,9 +109,12 @@ nl-NL:
         registration_to_event: Registratie voor een activiteit
         survey_1_day_after_draft_saved: 1 dag nadat de gebruiker de vragenlijst voor het laatst in concept heeft opgeslagen
         user_accepts_invitation_to_cosponsor_a_proposal: Gebruiker accepteert uitnodiging om een voorstel te steunen
+        user_changes_email: Gebruiker wijzigt zijn e-mailadres
         user_comments: Reacties van de gebruiker
         user_comments_on_input: Gebruiker reageert op bijdrage
         user_comments_on_proposal: Gebruiker reageert op het voorstel
+        user_confirms_email: Gebruiker bevestigt zijn e-mailadres
+        user_is_blocked: Het account van de gebruiker is geblokkeerd
         user_is_given_admin_rights: Gebruiker krijgt platformbeheerdersrechten
         user_is_given_folder_manager_rights: Gebruiker krijgt mapbeheerdersrechten
         user_is_given_folder_moderator_rights: Gebruiker krijgt mapbeheerdersrechten
@@ -121,6 +128,7 @@ nl-NL:
         user_registers_for_the_first_time: Gebruiker registreert zich voor het eerst
         user_replies_to_comment: Gebruiker reageert op reactie
         user_replies_to_internal_comment: Gebruiker reageert op interne reactie
+        user_requests_password_reset: Gebruiker vraagt een nieuw wachtwoord aan
         voting_1_day_after_last_votes: 1 dag nadat gebruiker voor het laatst heeft gestemd
         voting_2_days_before_phase_closes: 2 dagen voordat de stemmingsfase sluit
         voting_basket_submitted: Stemmen zijn ingediend
@@ -160,6 +168,7 @@ nl-NL:
       comment_on_your_comment: Een antwoord op mijn reactie
       community_monitor_report: Verslag van de tevredenheidsmonitor
       cosponsor_of_your_idea: Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
+      email_confirmation: E-mailbevestigingscode
       event_registration_confirmation: Bevestiging registratie activiteit
       idea_marked_as_spam: Idee spammelding
       idea_published: Posten van mijn bijdrage
@@ -178,6 +187,7 @@ nl-NL:
       moderator_digest: Weekoverzicht voor projectbeheerders
       native_survey_not_submitted: Vragenlijst niet ingediend
       new_comment_for_admin: Nieuwe reactie in een project dat ik modereer
+      new_email_confirmation: Nieuwe e-mailbevestigingscode
       new_idea_for_admin_prescreening: Nieuwe bijdrage die goedkeuring vereist in een project dat ik modereer
       new_idea_for_admin_published: Nieuwe gepubliceerde contributie in een project dat ik modereer
       official_feedback_on_idea_you_follow: Update over een bijdrage dat je volgt
@@ -196,6 +206,7 @@ nl-NL:
       status_change_on_idea_you_follow: Statuswijziging van een bijdrage dat je volgt
       survey_submitted: Vragenlijst ingediend
       threshold_reached_for_admin: Een voorstel bereikte het benodigd aantal stemmen
+      user_blocked: Account geblokkeerd
       user_digest: Weekoverzicht
       voting_basket_not_submitted: Niet-ingediende stemmen
       voting_basket_submitted: Bevestiging van stemming
@@ -271,6 +282,15 @@ nl-NL:
       preheader: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
       subject: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
       title: '%{cosponsorName} heeft je uitnodiging om je voorstel te ondersteunen geaccepteerd'
+    email_confirmation:
+      best_regards: Met vriendelijke groet,
+      event_description: 'Bedankt voor je deelname. Voer deze bevestigingscode in het venster op het participatieplatform van %{organizationName} in:'
+      expire_code: Deze code verloopt over
+      hours_24: 24 uur.
+      ignore_email: Als je geen code hebt aangevraagd, kun je deze e-mail veilig negeren.
+      preheader: Bevestig je e-mailadres voor %{organizationName}
+      subject: Bevestig je e-mailadres voor het participatieplatform van %{organizationName}
+      title: Bevestig je e-mailadres
     event_registration_confirmation:
       cta_add_to_calendar: Toevoegen aan je kalender
       cta_button: Bekijk de activiteit
@@ -482,6 +502,15 @@ nl-NL:
       title: '%{firstName}, er werd een nieuwe reactie geplaatst op je platform'
       today: Vandaag
       yesterday: Gisteren
+    new_email_confirmation:
+      best_regards: Met vriendelijke groet,
+      event_description: 'Voer deze bevestigingscode in het venster op het participatieplatform van %{organizationName} in om je nieuwe e-mailadres te bevestigen:'
+      expire_code: Deze code verloopt over
+      hours_24: 24 uur.
+      ignore_email: Als je geen code hebt aangevraagd, kun je deze e-mail veilig negeren.
+      preheader: Bevestig je nieuwe e-mailadres voor %{organizationName}
+      subject: Bevestig je nieuwe e-mailadres voor het participatieplatform van %{organizationName}
+      title: Bevestig je nieuwe e-mailadres
     new_idea_for_admin_prescreening:
       cta_button: Bekijk de bijdrage
       days_ago: '%{numberOfDays} dagen geleden'
@@ -507,6 +536,12 @@ nl-NL:
       preheader: Er is een update over een bijdrage dat je volgt
       subject: Er is officiële feedback geplaatst op "%{input_title}"
       title: Er is een update op "%{input_title}"
+    password_reset:
+      cta_button: Stel je wachtwoord opnieuw in
+      event_description: Je hebt een wachtwoordreset aangevraagd voor het participatieplatform van %{organizationName}. Klik op de onderstaande knop om een nieuw, veilig wachtwoord te kiezen. De link is 1 uur geldig.
+      preheader: Stel je wachtwoord voor %{organizationName} opnieuw in
+      subject: '%{organizationName}: Stel je wachtwoord opnieuw in'
+      title: Kies een nieuw wachtwoord
     preview_data:
       author_display_name: Emma de Vries
       author_first_name: Emma
@@ -654,6 +689,14 @@ nl-NL:
       preheader: Tijd om de volgende stappen te nemen
       subject: '"%{input_title}" heeft het benodigd aantal stemmen op je platform bereikt'
       title: Een voorstel bereikte het nodige aantal stemmen!
+    user_blocked:
+      for_more_information: Voor meer informatie hierover kun je de %{termsAndConditionsPage} raadplegen
+      paragraph_1_with_reason: 'Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:'
+      paragraph_1_without_reason: Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens een schending van de gemeenschapsrichtlijnen.
+      preheader: Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld
+      subject: Je account is tijdelijk uitgeschakeld
+      title: Je account is tijdelijk uitgeschakeld
+      you_can_sign_in_again_from: Je kunt opnieuw inloggen vanaf %{date}
     user_digest:
       commented: '%{authorFirstName} schreef:'
       cta_button: Ga naar het platform
