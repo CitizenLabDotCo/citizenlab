@@ -1,12 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import {
-  media,
-  colors,
-  Icon,
-  Box,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { media, colors, Icon, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -24,7 +18,7 @@ import { useLocation } from 'utils/router';
 import messages from './messages';
 import { NavItem } from './navItems';
 import RailTooltip from './RailTooltip';
-import SidebarCollapsedContext from './SidebarCollapsedContext';
+import useSidebarCollapsed from './useSidebarCollapsed';
 
 const Text = styled.div`
   flex: 1;
@@ -114,13 +108,7 @@ const MenuItem = ({ navItem }: Props) => {
   const { data: user } = useAuthUser();
   const { pathname } = useLocation();
 
-  // When the rail is collapsed (icon-only) the label is hidden, so surface it
-  // as a hover/focus tooltip instead. Collapsed = force-collapsed project back
-  // office OR the responsive tablet breakpoint.
-  const forceCollapsed = useContext(SidebarCollapsedContext);
-  const isSmallerThanPhone = useBreakpoint('tablet');
-  const collapsed = forceCollapsed || isSmallerThanPhone;
-
+  const collapsed = useSidebarCollapsed();
   const hasPermission = usePermission({
     action: 'access',
     item: { type: 'route', path: navItem.link },
