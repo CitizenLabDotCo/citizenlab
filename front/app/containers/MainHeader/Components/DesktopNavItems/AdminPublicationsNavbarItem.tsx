@@ -138,6 +138,13 @@ const ProjectsListFooter = typedStyled(Link)`
     background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
     text-decoration: none;
   }
+
+  &.focus-visible,
+  &:focus-visible {
+    outline: 3px solid ${({ theme }) => theme.colors.tenantSecondary};
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px #fff;
+  }
 `;
 
 interface Props {

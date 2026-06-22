@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} cláraithe",
   "app.containers.EventsShow.registrantsIconAltText": "Cláraitheoirí",
   "app.containers.EventsShow.socialMediaSharingMessage": "Freastal ar an ócáid seo: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Féach ar {location} ar Google Maps (osclaíonn sé i bhfuinneog nua)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# rannpháirtí} other {# rannpháirtithe}}",
   "app.containers.EventsViewer.allTime": "Gach am",
   "app.containers.EventsViewer.date": "Dáta",

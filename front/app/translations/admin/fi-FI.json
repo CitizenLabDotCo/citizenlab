@@ -3389,6 +3389,8 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Title": "Liioittelu:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Text": "Järjestelmämme on optimoitu käsittelemään 20-200 tarkasti määriteltyä syöttöä tarkimpien tulosten saamiseksi. Kun tiedon määrä kasvaa tämän alueen yli, yhteenveto voi tulla korkeatasoisempaa ja yleistyneempää. Tämä ei tarkoita, että tekoäly muuttuu \"vähemmän tarkaksi\", vaan pikemminkin sitä, että se keskittyy laajempiin trendeihin ja malleihin. Jos haluat tarkempia tietoja, suosittelemme käyttämään (automaattista) taggausominaisuutta suurempien tietojoukkojen segmentointiin pienempiin, paremmin hallittaviin osajoukkoon.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Title": "Tietojen määrä ja tarkkuus:",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": "Tulokset voivat sisältää erilaisia vinoumia. Nämä voivat johtua esimerkiksi mallin koulutusaineiston epätasapainosta, kieli- ja ilmaisutapaeroista sekä asiayhteyden ymmärtämisen puutteesta. Erityisesti ironia, sarkasmi, murteet, nuorisoslangi tai kontekstisidonnaiset ilmaisut saatetaan tulkita väärin.",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": "Vinoumat:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "Suosittelemme käyttämään tekoälyn luomia yhteenvetoja suurten tietojoukkojen ymmärtämisen lähtökohtana, mutta ei viimeisenä sanana.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "Kuinka työskennellä AI: n kanssa",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "Lisää valitut syötteet tunnisteeseen",

@@ -17239,6 +17239,16 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": {
+    "state": "verified",
+    "verified_at": "2026-06-17T10:16:30.432113Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": {
+    "state": "verified",
+    "verified_at": "2026-06-17T10:16:30.432113Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
     "state": "verified",
     "verified_at": "2026-06-09T13:56:24.407249Z",

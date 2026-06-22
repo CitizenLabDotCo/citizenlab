@@ -1,4 +1,4 @@
-import { MINIMAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 
 const stripPx = (str: any, attr: 'width' | 'height') => {
   if (typeof str?.[attr] !== 'string') throw new Error('');
