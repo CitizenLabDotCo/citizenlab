@@ -210,13 +210,23 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         UserCustomFields::Representativeness::RefDistribution
       ],
 
-      # Files
+      # Files engine — Preview/Transcript are derived artifacts (generated from the file),
+      # not template content. File/FileAttachment/FilesProject ARE serialized.
       files: %w[
-        Files::File
-        Files::FileAttachment
-        Files::FilesProject
         Files::Preview
         Files::Transcript
+      ],
+
+      # Legacy per-resource file models, fully migrated to the Files engine and now
+      # templated via Files::File / Files::FileAttachment / Files::FilesProject. Kept as
+      # AR models but no longer serialized directly.
+      legacy_files: %w[
+        EventFile
+        IdeaFile
+        PhaseFile
+        ProjectFile
+        ProjectFolders::File
+        StaticPageFile
       ]
     }.freeze
   end

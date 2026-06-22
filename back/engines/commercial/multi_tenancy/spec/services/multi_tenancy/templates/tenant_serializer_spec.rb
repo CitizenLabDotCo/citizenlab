@@ -167,6 +167,34 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
+    it 'successfully copies over Files engine files, projects and attachments' do
+      project = create(:single_phase_ideation_project)
+      phase = project.phases.first
+      idea = create(:idea, project: project, phases: [phase])
+
+      project_file = create(:file, name: 'project.pdf', projects: [project])
+      create(:file_attachment, file: project_file, attachable: project)
+      phase_file = create(:file, name: 'phase.pdf', projects: [project])
+      create(:file_attachment, file: phase_file, attachable: phase)
+      idea_file = create(:file, name: 'idea.pdf', projects: [project])
+      create(:file_attachment, file: idea_file, attachable: idea)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        new_project = Project.first
+        expect(new_project.files.pluck(:name)).to match_array(%w[project.pdf phase.pdf idea.pdf])
+        expect(new_project.attached_files.first.content.file).to be_present
+
+        expect(new_project.file_attachments.count).to eq 1
+        expect(new_project.phases.first.file_attachments.count).to eq 1
+        expect(Idea.first.file_attachments.count).to eq 1
+      end
+    end
+
     it 'successfully copies over project global topics' do
       project = create(:project)
       global_topic = create(:global_topic)
