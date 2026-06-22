@@ -2,22 +2,11 @@
 
 module Sms
   class Sender
-    PROVIDERS = {
-      twilio: Sms::Providers::Twilio
-    }.freeze
-
-    DEFAULT_PROVIDER = :twilio
-
-    # Creates the delivery and sends it in one go (used for ad-hoc sends).
-    def send_now(to:, body:, user_id: nil, campaign_id: nil, provider: DEFAULT_PROVIDER)
-      provider_instance = build_provider(provider)
+    def send_now(to:, body:, user_id: nil, campaign_id: nil)
       delivery = create_delivery(to: to, body: body, user_id: user_id, campaign_id: campaign_id)
-      dispatch(delivery, provider_instance)
+      dispatch(delivery)
     end
 
-    # Records a pending delivery synchronously, validating the feature flag and
-    # phone number. Lets a caller persist the delivery (e.g. for a campaign's
-    # sent? guard) before the actual send happens asynchronously via #deliver.
     def create_delivery(to:, body:, user_id: nil, campaign_id: nil)
       unless AppConfiguration.instance.feature_activated?('sms')
         raise Sms::Error, 'SMS feature is not enabled for this tenant'
@@ -36,14 +25,14 @@ module Sms
     end
 
     # Sends an already-created pending delivery through the provider.
-    def deliver(delivery, provider: DEFAULT_PROVIDER)
-      dispatch(delivery, build_provider(provider))
+    def deliver(delivery)
+      dispatch(delivery)
     end
 
     private
 
-    def dispatch(delivery, provider_instance)
-      result = provider_instance.send(to: delivery.phone_number, body: delivery.body)
+    def dispatch(delivery)
+      result = provider.send(to: delivery.phone_number, body: delivery.body)
       delivery.update!(message_sid: result[:message_sid], status: result[:status])
       delivery
     rescue Sms::Error => e
@@ -51,11 +40,8 @@ module Sms
       raise
     end
 
-    def build_provider(key)
-      klass = PROVIDERS.fetch(key.to_sym) do
-        raise Sms::Error, "Unknown SMS provider: #{key}"
-      end
-      klass.new
+    def provider
+      Sms::Providers::Twilio.new
     end
   end
 end
