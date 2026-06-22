@@ -76,7 +76,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
             type="button"
             aria-label="toggle-project-utilities"
             aria-expanded={utilitiesExpanded}
-            onClick={() => setUtilitiesExpanded((v) => !v)}
+            onClick={() => setUtilitiesExpanded((expanded) => !expanded)}
             background="transparent"
             border="none"
             p="2px"
