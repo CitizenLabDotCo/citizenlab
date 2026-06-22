@@ -50,6 +50,7 @@
 #  manual_voters_last_updated_by_id :uuid
 #  manual_voters_last_updated_at    :datetime
 #  vote_term                        :string           default("vote")
+#  placement_type                   :string           default("on_timeline"), not null
 #
 # Indexes
 #
@@ -70,6 +71,7 @@ class Phase < ApplicationRecord
 
   PRESCREENING_MODES = %w[flagged_only all].freeze
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
+  PLACEMENT_TYPES       = %w[on_timeline standalone].freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map feed].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
@@ -125,6 +127,7 @@ class Phase < ApplicationRecord
   validates :survey_popup_frequency, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+  validates :placement_type, inclusion: { in: PLACEMENT_TYPES }
   validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
   validate :validate_prescreening_mode, if: :prescreening_mode_changed?
 
@@ -222,6 +225,9 @@ class Phase < ApplicationRecord
     where('start_at <= ? AND (end_at IS NULL OR end_at > ?)', now, now)
   }
 
+  scope :on_timeline, -> { where(placement_type: 'on_timeline') }
+  scope :standalone, -> { where(placement_type: 'standalone') }
+
   def ends_before?(time)
     end_at.present? && end_at <= time
   end
@@ -296,6 +302,13 @@ class Phase < ApplicationRecord
       ParticipationMethod::CommonGround.new(self)
     else
       ParticipationMethod::None.new
+    end
+  end
+
+  def placement
+    @placement ||= case placement_type
+    when 'standalone' then PhasePlacement::Standalone.new
+    else PhasePlacement::OnTimeline.new
     end
   end
 
