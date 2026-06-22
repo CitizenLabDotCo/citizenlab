@@ -25,8 +25,6 @@ const descriptionMessages: Record<string, MessageDescriptor> = {
   disabled: messages.prescreeningModeOffDescription,
 };
 
-console.log(descriptionMessages);
-
 interface SelectProps {
   mode: PrescreeningMode | null | undefined;
   onChange: (mode: PrescreeningMode | null) => void;
