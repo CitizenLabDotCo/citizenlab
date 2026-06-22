@@ -54,7 +54,6 @@ const NavItemRow = ({
       <RowLink
         to={item.url as LinkProps['to']}
         className={active ? 'active' : undefined}
-        data-cy={`e2e-new-project-nav-${item.name}`}
       >
         <Box flexGrow={1} minWidth="0">
           <Text
