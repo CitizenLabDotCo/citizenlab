@@ -150,6 +150,7 @@ resource 'Files' do
           type: 'file',
           attributes: {
             name: file.name,
+            title_multiloc: {},
             description_multiloc: {},
             description_generation_status: nil,
             content: { url: file.content.url },
@@ -230,6 +231,7 @@ resource 'Files' do
           attributes: {
             name: name,
             content: { url: file.content.url },
+            title_multiloc: {},
             description_multiloc: {},
             description_generation_status: nil,
             ai_processing_allowed: false,
@@ -349,6 +351,7 @@ resource 'Files' do
     with_options scope: :file do
       parameter :name, 'The name of the file'
       parameter :ai_processing_allowed, 'Whether AI processing is allowed for this file'
+      parameter :title_multiloc, 'The title of the file, as a multiloc string'
       parameter :description_multiloc, 'The description of the file, as a multiloc string'
       parameter :category, "The category of the file (values: #{Files::File.categories.values.join(', ')})"
     end
@@ -361,6 +364,7 @@ resource 'Files' do
     let(:name) { "updated-#{file.name}" }
     let(:category) { 'other' }
     let(:ai_processing_allowed) { !file.ai_processing_allowed }
+    let(:title_multiloc) { { 'en' => 'Updated title' } }
     let(:description_multiloc) { { 'en' => 'Updated description' } }
 
     shared_examples 'update_file' do |document: false|
@@ -372,6 +376,7 @@ resource 'Files' do
           name: name,
           category: category,
           ai_processing_allowed: ai_processing_allowed,
+          title_multiloc: title_multiloc,
           description_multiloc: description_multiloc
         )
 
@@ -379,6 +384,7 @@ resource 'Files' do
         expect(file.name).to eq name
         expect(file.category).to eq category
         expect(file.ai_processing_allowed).to eq ai_processing_allowed
+        expect(file.title_multiloc).to eq title_multiloc
         expect(file.description_multiloc).to eq description_multiloc
       end
     end

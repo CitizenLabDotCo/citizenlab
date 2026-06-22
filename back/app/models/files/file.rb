@@ -14,6 +14,7 @@
 #  mime_type                                                                    :string
 #  category                                                                     :string           default("other"), not null
 #  description_multiloc                                                         :jsonb
+#  title_multiloc                                                               :jsonb
 #  tsvector                                                                     :tsvector
 #  ai_processing_allowed(whether consent was given to process the file with AI) :boolean          default(FALSE), not null
 #
@@ -128,6 +129,7 @@ module Files
     validates :content, presence: true, unless: proc { Current.loading_tenant_template }
     validates :size, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
     validates :description_multiloc, multiloc: { presence: false }
+    validates :title_multiloc, multiloc: { presence: false }
     validates :ai_processing_allowed, inclusion: { in: [true, false] }
 
     # It is not meant to be used directly. See `search` scope below.

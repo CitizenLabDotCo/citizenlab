@@ -2641,7 +2641,8 @@ CREATE TABLE public.files (
     category character varying DEFAULT 'other'::character varying NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
     tsvector tsvector GENERATED ALWAYS AS ((setweight(to_tsvector('simple'::regconfig, (COALESCE(name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('simple'::regconfig, COALESCE((description_multiloc)::text, ''::text)), 'B'::"char"))) STORED,
-    ai_processing_allowed boolean DEFAULT false NOT NULL
+    ai_processing_allowed boolean DEFAULT false NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -8841,6 +8842,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260622120000'),
 ('20260617131000'),
 ('20260617120000'),
 ('20260611000000'),

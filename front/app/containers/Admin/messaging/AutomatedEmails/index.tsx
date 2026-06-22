@@ -19,7 +19,12 @@ import {
   GroupedCampaignsEntry,
   SubGroupedCampaignsEntry,
 } from './types';
-import { groupBy, sortBy, stringifyCampaignFields } from './utils';
+import {
+  groupBy,
+  sortBy,
+  sortByCampaignOrdering,
+  stringifyCampaignFields,
+} from './utils';
 
 const AutomatedEmails = () => {
   const isInternalCommentingEnabled = useFeatureFlag({
@@ -55,7 +60,11 @@ const AutomatedEmails = () => {
           recipient_role,
           group
             .reduce(groupBy('content_type'), [])
-            .sort(sortBy('content_type')),
+            .sort(sortBy('content_type'))
+            .map(([content_type, contentTypeGroup]: GroupedCampaignsEntry) => [
+              content_type,
+              [...contentTypeGroup].sort(sortByCampaignOrdering),
+            ]),
         ]),
     [campaigns, localize]
   );

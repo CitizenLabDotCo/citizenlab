@@ -220,6 +220,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.fileDescriptionLabel',
     defaultMessage: 'Description',
   },
+  fileTitleLabel: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileTitleLabel',
+    defaultMessage: 'Title',
+  },
   askButton: {
     id: 'app.containers.AdminPage.ProjectFiles.askButton',
     defaultMessage: 'Ask',

@@ -11,12 +11,15 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
   def name = 'replace_form_fields'
 
   def description
-    <<~DESC.squish
+    <<~DESC
       Replaces the field list of the form attached to a native_survey phase or ideation
       project. The fields array is the complete new form — any existing field whose id is
       not in the array is deleted. New fields are created (use temp_id to reference them
-      from logic rules). Refuses if any responses (ideas) exist on the container. Call
-      get_form_fields first to see the current shape and the participation method's
+      from logic rules).
+
+      Fails if any responses (ideas) exist on the container. 
+
+      Call `get_form_fields` first to see the current shape and the participation method's
       constraints.
     DESC
   end
