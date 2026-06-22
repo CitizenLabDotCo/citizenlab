@@ -33,24 +33,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.phaseNoEndDate',
     defaultMessage: 'No end date',
   },
-  extras: {
-    id: 'app.containers.Admin.projects.project.extras',
-    defaultMessage: 'Extras',
-  },
-  extrasSubtitle: {
-    id: 'app.containers.Admin.projects.project.extrasSubtitle',
-    defaultMessage: 'Surveys that run outside your timeline',
-  },
-  newSurvey: {
-    id: 'app.containers.Admin.projects.project.newSurvey',
-    defaultMessage: 'New survey',
-  },
-  extraOngoing: {
-    id: 'app.containers.Admin.projects.project.extraOngoing',
-    defaultMessage: 'Ongoing',
-  },
-  extraNotOnPage: {
-    id: 'app.containers.Admin.projects.project.extraNotOnPage',
-    defaultMessage: 'Not on the project page',
-  },
 });
