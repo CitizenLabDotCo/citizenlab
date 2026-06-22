@@ -128,14 +128,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
     },
   ];
 
-  // "Project page" is a disclosure for the utility items below it (Audience,
-  // Messaging, Events, 360 Input, Settings). It's collapsed by default, but
-  // opens by default when the current route is the project page or one of those
-  // utility routes, so the active item is visible. Users can toggle it freely.
-  const sectionActive = [projectPageItem, ...utilityItems].some((item) =>
-    pathname.includes(item.match)
-  );
-  const [utilitiesExpanded, setUtilitiesExpanded] = useState(sectionActive);
+  const [utilitiesExpanded, setUtilitiesExpanded] = useState(true);
 
   const renderItem = (item: NavItem, trailing?: React.ReactNode) => {
     const active = pathname.includes(item.match);
