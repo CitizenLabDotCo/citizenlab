@@ -88,11 +88,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.surveyPdfExport.generateButton',
     defaultMessage: 'Generate PDF',
   },
-  responsesFound: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.responsesFound',
-    defaultMessage:
-      '{count, plural, one {# response} other {# responses}} will be exported.',
-  },
   exportError: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.exportError',
     defaultMessage:

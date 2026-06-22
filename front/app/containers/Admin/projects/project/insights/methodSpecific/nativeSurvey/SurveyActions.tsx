@@ -6,9 +6,7 @@ import {
   Button,
   Dropdown,
   colors,
-  Icon,
   Text,
-  DropdownListItem,
   Badge,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
@@ -41,6 +39,8 @@ import messages from '../../messages';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import wordMessages from '../../word/messages';
 import { useWordExportContext } from '../../word/WordExportContext';
+
+import ExportDropdownItem from './components/ExportDropdownItem';
 
 interface Props {
   phase: IPhaseData;
@@ -289,55 +289,41 @@ const SurveyActions = ({ phase }: Props) => {
               zIndex="10000"
               content={
                 <Box style={{ whiteSpace: 'nowrap' }}>
-                  <DropdownListItem
+                  <ExportDropdownItem
+                    label={formatMessage(messages.exportResponsesToPdf)}
                     onClick={() => {
                       setDropdownOpened(false);
                       setExportPdfModalOpened(true);
                     }}
-                  >
-                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                    <Text my="0px">
-                      {formatMessage(messages.exportResponsesToPdf)}
-                    </Text>
-                  </DropdownListItem>
-                  <DropdownListItem
+                  />
+                  <ExportDropdownItem
+                    label={formatMessage(messages.downloadInsightsPdf)}
                     onClick={async () => {
                       setDropdownOpened(false);
                       await captureAllMapScreenshots();
                       downloadPdf();
                     }}
-                  >
-                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                    <Text my="0px">
-                      {formatMessage(messages.downloadInsightsPdf)}
-                    </Text>
-                  </DropdownListItem>
-                  <DropdownListItem
+                  />
+                  <ExportDropdownItem
+                    label={formatMessage(messages.downloadWord)}
                     onClick={async () => {
                       setDropdownOpened(false);
                       await captureAllMapScreenshots();
                       downloadWord();
                     }}
-                  >
-                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                    <Box display="flex" alignItems="center" gap="6px">
-                      <Text my="0px">
-                        {formatMessage(messages.downloadWord)}
-                      </Text>
+                    badge={
                       <Badge color={colors.coolGrey600} className="inverse">
                         {formatMessage(projectFilesMessages.beta)}
                       </Badge>
-                    </Box>
-                  </DropdownListItem>
-                  <DropdownListItem
+                    }
+                  />
+                  <ExportDropdownItem
+                    label={`${formatMessage(
+                      messages.downloadSurveyResults
+                    )} (.xlsx)`}
                     onClick={handleDownloadXlsx}
                     data-cy="e2e-download-survey-results"
-                  >
-                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                    <Text my="0px">
-                      {formatMessage(messages.downloadSurveyResults)} (.xlsx)
-                    </Text>
-                  </DropdownListItem>
+                  />
                 </Box>
               }
             />

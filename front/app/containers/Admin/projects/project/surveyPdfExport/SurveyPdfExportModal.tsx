@@ -1,39 +1,33 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   Box,
   Text,
   Button,
-  Badge,
   CheckboxWithLabel,
-  Toggle as PlainToggle,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 
-import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
-import useSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useSurveyResponseFields from 'api/survey_response_fields/useSurveyResponseFields';
-import {
-  generateSurveyResponsesPdf,
-  SurveyPdfCover,
-} from 'api/survey_responses_pdf/generateSurveyResponsesPdf';
+import { generateSurveyResponsesPdf } from 'api/survey_responses_pdf/generateSurveyResponsesPdf';
 
 import useLocalize from 'hooks/useLocalize';
 
-import Input from 'components/HookForm/Input';
-import Toggle from 'components/HookForm/Toggle';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getFullName } from 'utils/textUtils';
 
+import CoverPageSettings from './components/CoverPageSettings';
+import FieldRedactionList from './components/FieldRedactionList';
+import SectionLabel from './components/SectionLabel';
 import CoverPreview from './CoverPreview';
 import messages from './messages';
+import { RedactionField } from './types';
+import useCoverForm from './useCoverForm';
 
 type Props = {
   projectId: string;
@@ -41,20 +35,6 @@ type Props = {
   opened: boolean;
   onClose: () => void;
 };
-
-type ReviewField = { key: string; label: string; redact: boolean };
-
-const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <Text
-    fontSize="s"
-    fontWeight="bold"
-    color="textSecondary"
-    m="0px"
-    style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}
-  >
-    {children}
-  </Text>
-);
 
 const SurveyPdfExportModal = ({
   projectId,
@@ -66,83 +46,30 @@ const SurveyPdfExportModal = ({
   const localize = useLocalize();
 
   const { data: phase } = usePhase(phaseId);
-  const { data: project } = useProjectById(projectId);
-  const { data: authUser } = useAuthUser();
   const { data: surveyFields } = useSurveyResponseFields({ phaseId });
-  const { data: submissionCount } = useSubmissionCount({ phaseId });
 
-  const responseCount = submissionCount?.data.attributes.totalSubmissions ?? 0;
+  const { methods, cover } = useCoverForm({ phaseId, projectId });
 
-  // The exact fields the backend will export, registration/personal-data ones
-  // pre-flagged for redaction.
-  const detectedFields: ReviewField[] = useMemo(
+  // Only the user's deviations; the field list itself is derived, not synced.
+  const [redactOverrides, setRedactOverrides] = useState<
+    Record<string, boolean>
+  >({});
+
+  // Personal-data fields are flagged for redaction by default.
+  const fields: RedactionField[] = useMemo(
     () =>
       (surveyFields?.data ?? []).map((field) => ({
         key: field.id,
         label: localize(field.attributes.title_multiloc),
-        redact: field.attributes.personal_data,
+        redact: redactOverrides[field.id] ?? field.attributes.personal_data,
       })),
-    [surveyFields, localize]
+    [surveyFields, localize, redactOverrides]
   );
 
-  // Working copy of the redaction state, initialized once the fields load.
-  const [fields, setFields] = useState<ReviewField[]>([]);
-  const fieldsInitialized = useRef(false);
-  useEffect(() => {
-    if (surveyFields && !fieldsInitialized.current) {
-      fieldsInitialized.current = true;
-      setFields(detectedFields);
-    }
-  }, [surveyFields, detectedFields]);
-
-  const toggleField = (key: string) =>
-    setFields((prev) =>
-      prev.map((field) =>
-        field.key === key ? { ...field, redact: !field.redact } : field
-      )
-    );
-
-  const flaggedCount = fields.filter((field) => field.redact).length;
-
-  // Cover page form, prefilled once from the phase/project/current user.
-  const methods = useForm<SurveyPdfCover>({
-    defaultValues: {
-      include: true,
-      title: '',
-      subtitle: '',
-      date: '',
-      preparedBy: '',
-      notes: '',
-    },
-  });
-  const { control, reset, getValues } = methods;
-
-  const coverInitialized = useRef(false);
-  useEffect(() => {
-    if (phase && project && authUser && !coverInitialized.current) {
-      coverInitialized.current = true;
-      reset({
-        include: true,
-        title: localize(phase.data.attributes.title_multiloc),
-        subtitle: localize(project.data.attributes.title_multiloc),
-        date: new Date().toLocaleDateString(),
-        preparedBy: getFullName(authUser.data) || '',
-        notes: '',
-      });
-    }
-  }, [phase, project, authUser, localize, reset]);
-
-  // Live cover values driving the preview (stable object — only changes on edit).
-  const include = useWatch({ control, name: 'include' });
-  const title = useWatch({ control, name: 'title' });
-  const subtitle = useWatch({ control, name: 'subtitle' });
-  const date = useWatch({ control, name: 'date' });
-  const preparedBy = useWatch({ control, name: 'preparedBy' });
-  const notes = useWatch({ control, name: 'notes' });
-  const cover = useMemo<SurveyPdfCover>(
-    () => ({ include, title, subtitle, date, preparedBy, notes }),
-    [include, title, subtitle, date, preparedBy, notes]
-  );
+  const toggleField = (key: string) => {
+    const current = fields.find((field) => field.key === key)?.redact ?? false;
+    setRedactOverrides((prev) => ({ ...prev, [key]: !current }));
+  };
 
   const [consent, setConsent] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -160,7 +87,7 @@ const SurveyPdfExportModal = ({
         : '';
       await generateSurveyResponsesPdf({
         phaseId,
-        cover: getValues(),
+        cover,
         redactedFieldKeys,
         fileName: `${
           snakeCase(`survey responses ${phaseTitle}`) || 'survey_responses'
@@ -199,112 +126,11 @@ const SurveyPdfExportModal = ({
     >
       <FormProvider {...methods}>
         <Box display="flex" gap="32px" p="24px" h="70vh">
-          {/* Left: cover settings + registration questions + consent (scrolls) */}
+          {/* Left: settings + questions + consent (scrolls) */}
           <Box flex="1 1 0" minWidth="0" h="100%" overflowY="auto" pr="8px">
-            {/* Cover page settings */}
-            <Box mb="8px">
-              <SectionLabel>
-                <FormattedMessage {...messages.coverSectionTitle} />
-              </SectionLabel>
-            </Box>
-            <Text color="textSecondary" mt="0px" mb="20px">
-              <FormattedMessage
-                {...messages.responsesFound}
-                values={{ count: responseCount }}
-              />
-            </Text>
-            <Box mb="24px">
-              <Box mb="16px">
-                <Toggle
-                  name="include"
-                  label={formatMessage(messages.includeCoverLabel)}
-                />
-              </Box>
-              {include && (
-                <Box display="flex" flexDirection="column" gap="12px">
-                  <Input
-                    type="text"
-                    name="title"
-                    label={formatMessage(messages.reportTitleLabel)}
-                  />
-                  <Input
-                    type="text"
-                    name="subtitle"
-                    label={formatMessage(messages.reportSubtitleLabel)}
-                  />
-                  <Box display="flex" gap="12px">
-                    <Box flex="1">
-                      <Input
-                        type="text"
-                        name="date"
-                        label={formatMessage(messages.dateLabel)}
-                      />
-                    </Box>
-                    <Box flex="1">
-                      <Input
-                        type="text"
-                        name="preparedBy"
-                        label={formatMessage(messages.preparedByLabel)}
-                      />
-                    </Box>
-                  </Box>
-                  <Input
-                    type="text"
-                    name="notes"
-                    label={formatMessage(messages.notesLabel)}
-                  />
-                </Box>
-              )}
-            </Box>
+            <CoverPageSettings />
 
-            {/* Registration / survey questions to include or redact */}
-            <Box mb="4px">
-              <SectionLabel>
-                <FormattedMessage {...messages.fieldReviewSectionTitle} />
-              </SectionLabel>
-            </Box>
-            <Text color="textSecondary" mt="0px" mb="12px">
-              {flaggedCount > 0 ? (
-                <FormattedMessage
-                  {...messages.fieldReviewWithFlags}
-                  values={{ flaggedCount }}
-                />
-              ) : (
-                <FormattedMessage {...messages.fieldReviewNoFlags} />
-              )}
-            </Text>
-
-            <Box display="flex" flexDirection="column" mb="24px">
-              {fields.map((field) => (
-                <Box
-                  key={field.key}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  gap="12px"
-                  py="8px"
-                  borderTop={`1px solid ${colors.borderLight}`}
-                >
-                  <Box display="flex" alignItems="center" gap="10px">
-                    <PlainToggle
-                      checked={!field.redact}
-                      onChange={() => toggleField(field.key)}
-                    />
-                    <Text m="0px" color="textSecondary">
-                      {field.label}
-                    </Text>
-                  </Box>
-                  <Badge
-                    color={field.redact ? colors.red600 : colors.success}
-                    className="inverse"
-                  >
-                    {field.redact
-                      ? formatMessage(messages.excludeStatus)
-                      : formatMessage(messages.includeStatus)}
-                  </Badge>
-                </Box>
-              ))}
-            </Box>
+            <FieldRedactionList fields={fields} onToggleField={toggleField} />
 
             <CheckboxWithLabel
               checked={consent}
@@ -323,7 +149,7 @@ const SurveyPdfExportModal = ({
             )}
           </Box>
 
-          {/* Right: live cover preview (fits the available height, never scrolls) */}
+          {/* Right: live cover preview */}
           <Box
             flex="1 1 0"
             minWidth="0"

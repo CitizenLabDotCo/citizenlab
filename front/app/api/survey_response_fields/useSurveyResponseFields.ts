@@ -10,10 +10,8 @@ import {
   SurveyResponseFieldsKeys,
 } from './types';
 
-// Returns the list of fields that will be exported for a given phase, and includes a flag
-// for whether the field is considered personal data (pre-selected for redaction).
-//
-// Used specifically for the PDF export of survey responses feature.
+// Fields exported for a phase, each flagged for personal data (pre-selected
+// for redaction). Used by the survey-responses PDF export.
 const useSurveyResponseFields = ({
   phaseId,
 }: ISurveyResponseFieldsParameters) =>

@@ -20,8 +20,7 @@ type RequestParams = {
   coverOnly?: boolean;
 };
 
-// POSTs the cover/redaction options to the survey_responses_pdf endpoint and
-// resolves with the PDF blob, via the shared requestBlob helper.
+// POSTs the cover/redaction options and resolves with the PDF blob.
 const requestPdfBlob = ({
   phaseId,
   cover,
@@ -65,7 +64,7 @@ export const generateSurveyResponsesPdf = async ({
   saveAs(blob, fileName);
 };
 
-// Cover-only PDF — used for the live preview (rendered in an iframe/canvas).
+// Cover-only PDF for the live preview.
 export const fetchCoverPreviewPdf = (params: {
   phaseId: string;
   cover: SurveyPdfCover;
