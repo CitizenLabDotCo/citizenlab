@@ -60,14 +60,15 @@ const formatDateRange = (
     : `${format(start, 'd MMM')} – ${format(end, 'd MMM')}`;
 };
 
-const dotStyle = (status: PhaseStatus) => {
-  if (status === 'present') return { background: colors.green500 };
-  if (status === 'past') return { background: colors.coolGrey500 };
-  return {
-    background: colors.white,
-    border: `2px solid ${colors.coolGrey300}`,
-  };
+const dotBackground = (status: PhaseStatus) => {
+  if (status === 'present') return colors.green500;
+  if (status === 'past') return colors.coolGrey500;
+  return colors.white;
 };
+
+// Future phases show as an outline ring; present/past are filled.
+const dotBorder = (status: PhaseStatus) =>
+  status === 'future' ? `2px solid ${colors.coolGrey300}` : undefined;
 
 const Row = styled.div<{ selected: boolean }>`
   display: flex;
@@ -95,9 +96,10 @@ const TimelinePhases = ({ projectId }: Props) => {
   const { phaseId } = useParams({ strict: false }) as { phaseId?: string };
   const { data: phases } = usePhases(projectId);
 
-  if (!phases) return null;
+  if (!phases) {
+    return null;
+  }
 
-  // Copy before sorting — phases.data is the react-query cache, don't mutate it.
   const sortedPhases = [...phases.data].sort((a, b) =>
     a.attributes.start_at.localeCompare(b.attributes.start_at)
   );
@@ -146,7 +148,8 @@ const TimelinePhases = ({ projectId }: Props) => {
                     borderRadius="50%"
                     flex="0 0 auto"
                     mt="3px"
-                    {...dotStyle(status)}
+                    background={dotBackground(status)}
+                    border={dotBorder(status)}
                   />
                   {!isLast && (
                     <Box
