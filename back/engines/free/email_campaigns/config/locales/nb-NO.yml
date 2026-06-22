@@ -285,7 +285,7 @@ nb-NO:
       subject: Du er inne! Din registrering for "%{eventTitle}" er bekreftet
       title: '%{firstName}, takk for at du registrerte deg for'
     follow:
-      unfollow_here: Du har mottatt dette varselet på grunn av et element du følger. <a href="%{unfollow_url}">Du kan slutte å følge det her.</a>
+      unfollow_here: Du har mottatt dette varselet på grunn av et prosjekt eller et område du følger. <a href="%{unfollow_url}">Du kan slutte å følge det her.</a>
     footer:
       link_privacy_policy: Personvernerklæring
       link_terms_conditions: Vilkår og betingelser

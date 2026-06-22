@@ -7,9 +7,10 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
-import { isAdmin } from 'utils/permissions/roles';
+import { isAdmin, isSuperAdmin } from 'utils/permissions/roles';
 
 import Esri from './Esri';
+import MCPAuthorizations from './MCPAuthorizations';
 import messages from './messages';
 import PowerBI from './PowerBI';
 import PublicAPI from './PublicAPI';
@@ -35,6 +36,7 @@ const Tools = () => {
             <PublicAPI />
             <Webhooks />
             <PowerBI />
+            {isSuperAdmin(authUser) && <MCPAuthorizations />}
           </>
         )}
       </Box>

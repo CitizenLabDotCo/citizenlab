@@ -77,12 +77,16 @@ describe('Event show page', () => {
   afterEach(() => {
     if (eventIdNoCoordinates) {
       // delete participant added during the first test
-      cy.deleteEventAttendances('admin@govocal.com', 'democracy2.0', eventIdNoCoordinates);
+      cy.deleteEventAttendances(
+        'admin@govocal.com',
+        'democracy2.0',
+        eventIdNoCoordinates
+      );
     }
   });
 
   after(() => {
-    if(projectId) {
+    if (projectId) {
       cy.apiRemoveProject(projectId);
     }
   });
