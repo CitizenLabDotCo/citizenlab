@@ -54,8 +54,9 @@ module CustomIdMethods::Federa
       end
 
       {
-        first_name: attrs['nome'],
-        last_name: attrs['cognome'],
+        # FedERa returns names in ALL CAPITALS, so proper-case them.
+        first_name: attrs['nome']&.titleize,
+        last_name: attrs['cognome']&.titleize,
         email: attrs['emailAddressPersonale'],
         custom_field_values: custom_field_values
       }.compact

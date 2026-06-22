@@ -19,6 +19,7 @@ import A11yTable from 'containers/Admin/reporting/components/ReportBuilder/Widge
 
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
 
@@ -113,11 +114,21 @@ const HealthScoreWidget = ({
               ml="4px"
               iconSize="16px"
               icon="info-outline"
+              placement={isMobileOrSmaller ? 'bottom' : 'right-end'}
+              maxTooltipWidth={isMobileOrSmaller ? 250 : undefined}
               content={formatMessage(messages.healthScoreDescription)}
             />
           </Box>
           <Box display="flex" mt="12px" ml="8px">
+            <ScreenReaderOnly>
+              {currentOverallHealthScore?.score
+                ? formatMessage(messages.scoreOutOfFive, {
+                    score: currentOverallHealthScore.score,
+                  })
+                : formatMessage(messages.scoreNotAvailable)}
+            </ScreenReaderOnly>
             <Text
+              aria-hidden
               m="0px"
               fontSize="xxxxl"
               mt="auto"
@@ -129,6 +140,7 @@ const HealthScoreWidget = ({
               {currentOverallHealthScore?.score || '-'}
             </Text>
             <Text
+              aria-hidden
               fontWeight="semi-bold"
               m="0px"
               mt="auto"

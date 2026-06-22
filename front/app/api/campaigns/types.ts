@@ -36,6 +36,7 @@ export interface ICampaignData {
     deliveries_count: number;
     content_type_multiloc: Multiloc;
     content_type_ordering: number;
+    campaign_ordering: number;
     recipient_role_multiloc: Multiloc;
     recipient_role_ordering: number;
     // Seems to be always defined, null for invite_received
@@ -116,15 +117,19 @@ type RegisterUserCampaignName =
   | 'comment_deleted_by_admin'
   | 'comment_on_idea_you_follow'
   | 'comment_on_your_comment'
+  | 'email_confirmation'
   | 'event_registration_confirmation'
+  | 'new_email_confirmation'
   | 'idea_published'
   | 'invitation_to_cosponsor'
   | 'mention_in_official_feedback'
   | 'official_feedback_on_idea_you_follow'
+  | 'password_reset'
   | 'project_phase_started'
   | 'project_phase_upcoming'
   | 'project_published'
   | 'status_change_on_idea_you_follow'
+  | 'user_blocked'
   | 'user_digest'
   | 'voting_basket_not_submitted'
   | 'voting_basket_submitted'

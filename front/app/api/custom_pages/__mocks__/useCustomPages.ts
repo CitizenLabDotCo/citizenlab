@@ -14,6 +14,9 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
+      spaces: {
+        data: [],
+      },
     },
     attributes: {
       title_multiloc: {
@@ -113,6 +116,9 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
+      spaces: {
+        data: [],
+      },
     },
   },
   {
@@ -171,6 +177,9 @@ export const customPagesData: ICustomPageData[] = [
         data: [],
       },
       areas: {
+        data: [],
+      },
+      spaces: {
         data: [],
       },
     },
@@ -233,6 +242,9 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
+      spaces: {
+        data: [],
+      },
     },
   },
 
@@ -291,6 +303,9 @@ export const customPagesData: ICustomPageData[] = [
       areas: {
         data: [],
       },
+      spaces: {
+        data: [],
+      },
     },
   },
   {
@@ -346,6 +361,9 @@ export const customPagesData: ICustomPageData[] = [
         data: [],
       },
       areas: {
+        data: [],
+      },
+      spaces: {
         data: [],
       },
     },

@@ -13,12 +13,20 @@ describe ResetPasswordService do
     end
   end
 
-  describe '#send_email_later' do
-    let(:user) { create(:user) }
-    let(:token) { 'token' }
+  describe '#send_email' do
+    let(:user) { create(:user, locale: 'en') }
+    let(:token) { 'sometoken' }
 
-    it 'schedules a ResetPasswordMailer job' do
-      expect { service.send_email_later(user, token) }.to have_enqueued_mail(ResetPasswordMailer, :send_reset_password)
+    it 'delivers the password reset email synchronously' do
+      expect { service.send_email(user, token) }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.to).to eq([user.email])
+      expect(mail.body.encoded).to include(token)
+    end
+
+    it 'records a delivery for the PasswordReset campaign' do
+      expect { service.send_email(user, token) }.to change(EmailCampaigns::Delivery, :count).by(1)
+      expect(EmailCampaigns::Delivery.order(:created_at).last.campaign).to be_a(EmailCampaigns::Campaigns::PasswordReset)
     end
   end
 

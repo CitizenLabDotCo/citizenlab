@@ -394,6 +394,7 @@ const projectAnalysisSearchSchema = yup.object({
     .string()
     .oneOf(['true', 'false'])
     .optional(),
+  input_follow_up_not_empty: yup.string().oneOf(['true', 'false']).optional(),
   // `[null]` is a deliberate sentinel meaning "filter to inputs without tags"
   tag_ids: yup.array().of(yup.string().nullable().defined()).optional(),
   reset_filters: yup.string().optional(),

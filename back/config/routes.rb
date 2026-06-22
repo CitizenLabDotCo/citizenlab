@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Rails API mode drops :new and :edit from resourceful routes, so Doorkeeper's
-  # applications admin views can't resolve new_/edit_oauth_application_path. Add
-  # them back explicitly *before* use_doorkeeper so they win over its :id route.
-  scope 'oauth' do
-    get 'applications/new', to: 'doorkeeper/applications#new', as: :new_oauth_application
-    get 'applications/:id/edit', to: 'doorkeeper/applications#edit', as: :edit_oauth_application
+  # Doorkeeper serves only JSON here. Its HTML controllers are dropped:
+  # - authorizations: replaced by the SPA consent screen (McpServer::WebApi::V1::OauthAuthorizationsController)
+  # - applications / authorized_applications: client creation is handled by RFC 7591
+  #   Dynamic Client Registration (oauth/registrations), so the admin HTML UI is unused.
+  # This leaves the token/introspect/revoke endpoints, which are JSON.
+  use_doorkeeper do
+    skip_controllers :authorizations, :applications, :authorized_applications
   end
-
-  use_doorkeeper
 
   # RFC 7591 Dynamic Client Registration + RFC 8414 Authorization Server Metadata
   # + RFC 9728 Protected Resource Metadata (with /mcp-suffixed variants that MCP
@@ -33,6 +32,10 @@ Rails.application.routes.draw do
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
+      # The OAuth consent screen and MCP authorization management endpoints live in
+      # the MCP engine. See McpServer::Engine routes and
+      # McpServer::WebApi::V1::{OauthAuthorizations,McpAuthorizations}Controller.
+
       concern :reactable do
         resources :reactions, except: [:update], shallow: true do
           post :up, on: :collection

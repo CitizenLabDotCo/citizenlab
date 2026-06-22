@@ -24,7 +24,7 @@ module Sms
         # back to `queued` for any status we don't explicitly map so the delivery
         # never lands on a non-vocabulary value.
         { message_sid: message.sid, status: STATUS_MAPPING.fetch(message.status, 'queued') }
-      rescue ::Twilio::REST::RestError => e
+      rescue ::Twilio::REST::TwilioError => e
         raise Error, e.message
       end
 
