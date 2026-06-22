@@ -9,7 +9,7 @@ module Sms
     DEFAULT_PROVIDER = :twilio
 
     # Creates the delivery and sends it in one go (used for ad-hoc sends).
-    def send(to:, body:, user_id: nil, campaign_id: nil, provider: DEFAULT_PROVIDER)
+    def send_now(to:, body:, user_id: nil, campaign_id: nil, provider: DEFAULT_PROVIDER)
       provider_instance = build_provider(provider)
       delivery = create_delivery(to: to, body: body, user_id: user_id, campaign_id: campaign_id)
       dispatch(delivery, provider_instance)

@@ -172,9 +172,7 @@ Rails.application.routes.draw do
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
-      post 'sms/sends', to: 'sms/sends#create' if Rails.env.development?
       post 'sms/callbacks/twilio', to: 'sms/callbacks#twilio'
-      post 'sms/callbacks/aws', to: 'sms/callbacks#aws'
 
       resources :global_topics do
         patch 'reorder', on: :member
