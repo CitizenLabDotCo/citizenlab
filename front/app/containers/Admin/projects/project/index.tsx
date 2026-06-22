@@ -7,7 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
@@ -26,7 +26,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const newBackoffice = useFeatureFlag({ name: 'parallel_participation' });
+  const newBackoffice = useParallelParticipation();
   const projectId = project.id;
 
   if (!canModerateProject(project, authUser)) {
