@@ -28,7 +28,7 @@ import messages from '../messages';
 
 import type { LinkProps } from '@tanstack/react-router';
 
-// The prototype labels each phase by its participation method (e.g. "Ideation",
+// Phases are labelled by their participation method (e.g. "Ideation",
 // "Voting") rather than a past/upcoming status — status is conveyed by the dot
 // colour and the struck-through title instead. Reuse the canonical method
 // labels rather than re-defining them.
