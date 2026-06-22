@@ -13,6 +13,8 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
     description: <<~DESC.squish,
       Form-wide constraints keyed by field `code`. Marks built-in fields (e.g. ideation's
       `title_multiloc`) that cannot be deleted or have certain attributes changed.
+      Locked attributes must be echoed back to `replace_form_fields` with the exact same
+      value as received, including any parts that look unfamiliar or extraneous.
     DESC
     additionalProperties: {
       type: 'object',

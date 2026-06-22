@@ -62,6 +62,9 @@ configure-worktree:
 	fi
 	make reset-dev-env
 
+clean-tenant-settings:
+	docker compose run --rm web bin/rails cl2back:clean_tenant_settings
+
 migrate:
 	docker compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated
 

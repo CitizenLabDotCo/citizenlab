@@ -7144,6 +7144,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": {
+    "state": "verified",
+    "verified_at": "2026-06-19T12:47:48.644010Z",
+    "verified_by": "Pauline"
+  },
   "app.containers.EventsShow.xParticipants": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -13608,6 +13613,81 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "containers.OAuthAuthorize.authorizeButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.authorizeExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.authorizeHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.denyButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.inControlDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.inControlTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.invalidRequestExplanation": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.invalidRequestHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.pageTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.scopeFallbackDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.scopeFallbackTitle2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessDetail": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.signInButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
+  },
+  "containers.OAuthAuthorize.signInPrompt": {
+    "state": "verified",
+    "verified_at": "2026-06-09T13:12:15.625699Z",
+    "verified_by": "Luuc"
   },
   "containers.SiteMap.allProjects": {
     "state": "verified",
