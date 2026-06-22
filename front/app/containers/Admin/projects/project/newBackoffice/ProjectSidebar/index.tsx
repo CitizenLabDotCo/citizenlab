@@ -12,14 +12,9 @@ interface Props {
 }
 
 /**
- * Left column of the redesigned project back office: the primary navigation
- * rail stacked on top of the vertical timeline-phases list.
- *
- * The sidebar fills the full height of its (viewport-bounded) parent. The nav
- * rail keeps its natural height at the top; the timeline-phases list below it
- * takes the remaining space inside a single scroll region. That means at most
- * one scrollbar in the sidebar — never nested — and none at all when the window
- * is tall enough to show everything.
+ * The nav rail stacked on top of the vertical timeline-phases list. The rail
+ * keeps its natural height; the phases list below it scrolls in the remaining
+ * space (one scrollbar, never nested).
  */
 const ProjectSidebar = ({ projectId }: Props) => (
   <Box
