@@ -934,6 +934,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.progressPercentage": {
+    "state": "verified",
+    "verified_at": "2026-06-01T12:45:43.556449Z",
+    "verified_by": "Roger"
+  },
   "app.components.CustomFieldsForm.removeAnswer": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -3203,6 +3208,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenu": {
+    "state": "verified",
+    "verified_at": "2026-06-15T14:06:22.748416Z",
+    "verified_by": "Roger"
   },
   "app.components.UI.MoreActionsMenu.actionsMenuTitle": {
     "state": "verified",
@@ -6029,10 +6039,30 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.trendIndicator.comparedToLastQuarter": {
+    "state": "verified",
+    "verified_at": "2026-06-15T07:52:18.695585Z",
+    "verified_by": "Roger"
+  },
   "app.components.trendIndicator.lastQuarter2": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.trendIndicator.trendDecreased": {
+    "state": "verified",
+    "verified_at": "2026-06-15T07:52:18.695585Z",
+    "verified_by": "Roger"
+  },
+  "app.components.trendIndicator.trendIncreased": {
+    "state": "verified",
+    "verified_at": "2026-06-15T07:52:18.695585Z",
+    "verified_by": "Roger"
+  },
+  "app.components.trendIndicator.trendNoChange": {
+    "state": "verified",
+    "verified_at": "2026-06-15T07:52:18.695585Z",
+    "verified_by": "Roger"
   },
   "app.containers.AccessibilityStatement.applicability": {
     "state": "verified",
@@ -7108,6 +7138,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": {
+    "state": "verified",
+    "verified_at": "2026-06-18T13:20:37.756136Z",
+    "verified_by": "Roger"
   },
   "app.containers.EventsShow.xParticipants": {
     "state": "verified",

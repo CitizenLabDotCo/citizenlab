@@ -51,10 +51,10 @@ context 'clave_unica verification' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'clave_unica', client_id: 'fake', client_secret: 'fake' }]
+      id_methods: [{ name: 'clave_unica', client_id: 'fake', client_secret: 'fake' }]
     }
     configuration.save!
     host! 'example.org'
@@ -231,7 +231,7 @@ context 'clave_unica verification' do
         expect(user.active?).to be(false)
         expect(ActionMailer::Base.deliveries.count).to eq(1)
 
-        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
+        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
@@ -254,7 +254,7 @@ context 'clave_unica verification' do
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: '2@example.org' })
 
-        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
+        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
         expect(user).to have_attributes({ email: '2@example.org' })

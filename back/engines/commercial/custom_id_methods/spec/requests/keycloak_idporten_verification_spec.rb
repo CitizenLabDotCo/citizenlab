@@ -74,10 +74,10 @@ context 'keycloak verification (ID-Porten - Oslo)' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'keycloak',
         provider: 'idporten',
         issuer: 'https://some.test.domain.com/auth/realms/example-realm',
@@ -268,7 +268,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       expect(user.active?).to be(false)
       expect(ActionMailer::Base.deliveries.count).to eq(1)
 
-      post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
+      post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
       expect(response).to have_http_status(:ok)
       expect(user.reload.confirmation_required?).to be(false)
       expect(user.active?).to be(true)

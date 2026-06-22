@@ -183,9 +183,17 @@ const normalizeListTags = (html: string): string => {
   return div.innerHTML;
 };
 
+const isEditorContentEmpty = (html: string): boolean => {
+  if (getPlainTextLengthFromHTML(html) > 0) return false;
+
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  return tempDiv.querySelector('img, video, iframe, audio, embed') === null;
+};
+
 export const getHTML = (editor: Quill) => {
   const html = editor.root.innerHTML;
-  if (!html || html === '<p><br></p>') return '';
+  if (!html || isEditorContentEmpty(html)) return '';
   return convertAlignmentToInlineStyles(normalizeListTags(html));
 };
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import FeatureFlag from 'components/FeatureFlag';
+import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -27,8 +27,11 @@ interface Props {
   isVerified: boolean;
 }
 
-const VerificationBadge = ({ isVerified }: Props) => (
-  <FeatureFlag name="verification">
+const VerificationBadge = ({ isVerified }: Props) => {
+  const { data: firstVerificationMethod } = useVerificationMethod();
+  if (!firstVerificationMethod) return null;
+
+  return (
     <Badge color={isVerified ? colors.success : colors.textSecondary}>
       {isVerified ? (
         <FormattedMessage {...messages.verified} />
@@ -36,7 +39,7 @@ const VerificationBadge = ({ isVerified }: Props) => (
         <FormattedMessage {...messages.unverified} />
       )}
     </Badge>
-  </FeatureFlag>
-);
+  );
+};
 
 export default VerificationBadge;

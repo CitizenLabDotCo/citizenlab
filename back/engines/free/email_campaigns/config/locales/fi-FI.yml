@@ -67,6 +67,7 @@ fi-FI:
         user_with_unsubmitted_votes: Käyttäjä, joka ei ole antanut ääniään
         users_who_engaged_but_not_voted: Käyttäjät, jotka osallistuivat projektiin, mutta eivät ole äänestäneet
         users_who_engaged_with_the_project: Käyttäjät, jotka osallistuivat projektiin
+        users_who_follow_or_participated: Käyttäjät, jotka seuraavat projektia tai ovat osallistuneet siihen
         users_who_follow_the_input: Käyttäjät, jotka seuraavat syötettä
         users_who_follow_the_project: Käyttäjät, jotka seuraavat projektia
         users_who_follow_the_proposal: Käyttäjät, jotka seuraavat ehdotusta

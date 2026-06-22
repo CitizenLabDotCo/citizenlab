@@ -107,15 +107,15 @@ de-AT:
         contribution:
           title: Was ist dein Beitrag?
         idea:
-          title: Was ist Ihre Idee?
+          title: Was ist deine Idee?
         initiative:
-          title: Was ist Ihre Initiative?
+          title: Was ist deine Initiative?
         issue:
           title: Was ist dein Kommentar?
         option:
-          title: Was ist Ihre Option?
+          title: Was ist deine Option?
         petition:
-          title: Was ist Ihre Petition?
+          title: Was ist deine Petition?
         post:
           title: Was ist dein Beitrag?
         project:
@@ -127,7 +127,7 @@ de-AT:
         response:
           title: Was ist deine Antwort?
         story:
-          title: Was ist Ihre Story?
+          title: Was ist deine Story?
         suggestion:
           title: Was ist dein Vorschlag?
         topic:
@@ -155,11 +155,11 @@ de-AT:
       by_checking_this_box: Durch Ankreuzen dieses Kästchens erkläre ich mich damit einverstanden, dass meine Daten verwendet werden, um ein Konto auf der Beteiligungsplattform %{organizationName} zu erstellen.
       choose_as_many: Beliebig viele auswählen
       choose_at_least: mindestens %{count} Optionen auswählen
-      choose_at_most: Wählen Sie höchstens %{count} Optionen
-      choose_between: Wählen Sie zwischen %{min} und %{max} Optionen
+      choose_at_most: Wähle höchstens %{count} Optionen
+      choose_between: Wähle zwischen %{min} und %{max} Optionen
       choose_exactly:
-        one: Wählen Sie genau %{count} Option
-        other: Wählen Sie genau %{count} Optionen
+        one: Wähle genau %{count} Option
+        other: Wähle genau %{count} Optionen
       date_print_description: Bitte geben Sie ein Datum im Format JJJJ-MM-TT ein.
       date_published: Veröffentlichungsdatum (TT-MM-JJJJ)
       email_address: E-Mail-Adresse
@@ -286,7 +286,7 @@ de-AT:
       message_you_reset_your_password: Du hast ein neues Passwort für die Beteiligungsplattform %{organizationName} beantragt. Klicke auf den Button unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.
       preheader: Passwort für %{organizationName} zurücksetzen
       subject: '%{organizationName}: Passwort zurücksetzen'
-      title_reset_your_password: Wählen Sie ein neues Passwort
+      title_reset_your_password: Wähle ein neues Passwort
   static_pages:
     faq_body: |-
       <h2 class="ql-align-justify">Wozu ist diese Plattform da?</h2><p class="ql-align-justify">Diese Plattform ist als zentrale Drehscheibe gedacht, um Informationen zu teilen und Input und Feedback zu erhalten. Aktuelle Beteiligungsprojekte werden auf der Homepage angezeigt – an den Projekten kannst du dich auf unterschiedliche Weise beteiligen: Das kann das Hinzufügen einer Idee, das Kommentieren eines Vorschlags, das Abstimmen über und Priorisieren von Projekten oder die Teilnahme an einer Umfrage sein.</p><h2 class="ql-align-justify">Wie kann ich teilnehmen?</h2><p class="ql-align-justify">Du kannst jederzeit öffentliche Projekte durchstöbern, aber du musst dich anmelden, um eine Aktion vorzunehmen. Auf diese Weise bleibt das Gemeinschaftsgefühl erhalten und die Legitimität des Beitrags ist sichergestellt, sodass zum Beispiel eine Person nicht mehrfach abstimmen kann.</p><h2 class="ql-align-justify">Welche Informationen über mich können andere sehen?</h2><p class="ql-align-justify">Dein Name, dein Foto und – wenn du einen hinzugefügt hast – auch dein Lebenslauf sind sichtbar. Du kannst dies jederzeit in deinen Einstellungen ändern.</p><h2 class="ql-align-justify">Warum kann ich keinen Beitrag posten oder einen Kommentar abgeben?</h2><p class="ql-align-justify">Das Posten, Kommentieren und Abstimmen ist manchmal nur für eine gewisse Zeit oder in bestimmten Phasen eines Projekts möglich. In manchen Fällen ist ein Projekt nur für Beiträge einer bestimmten Stakeholder-Gruppe offen.</p><p class="ql-align-justify">Wenn das Posten für ein Projekt momentan möglich ist, siehst du eine Schaltfläche, die dich auffordert, einen Beitrag zu schreiben. Alternativ kannst du auch in anderen aktuellen Projekten nach weiteren Beteiligungsmöglichkeiten suchen.</p><h2 class="ql-align-justify">Wie kann ich meinen Beitrag bearbeiten oder löschen?</h2><p class="ql-align-justify">Wenn du deinen Beitrag gepostet hast, ihn aber noch einmal bearbeiten oder löschen möchtest, findest du diese Option, wenn du auf die drei kleinen Punkte oben rechts über dem Beitrag klickst.</p><h2 class="ql-align-justify">Wie sehen die Community-Richtlinien und Moderationsrichtlinien aus?</h2><p class="ql-align-justify">Unsere Community-Richtlinien sollen sicherstellen, dass die Plattform ein sicherer Ort für alle ist, die mitmachen möchten. Bitte stelle sicher, dass deine Beiträge frei sind von:</p><ul>
@@ -446,7 +446,7 @@ de-AT:
       neutral_reactions_count: Unsicher
       participants: Teilnehmende
       picks: Auswahl
-      project: '{orgName, select, München {Bezirke} other {Projekte}}'
+      project: Projekt
       published_at: Veröffentlicht
       registration_completed_at: Registrierung abgeschlossen am
       status: Status

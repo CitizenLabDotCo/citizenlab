@@ -12,7 +12,7 @@ describe('Project description builder toggle', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       userId = user.body.data.id;
     });
   });

@@ -26,9 +26,12 @@ const SECTION_GAP_MM = 4;
 const CAPTURE_SCALE = 1;
 const SECTION_TIMEOUT_MS = 45_000;
 const CHARTS_READY_TIMEOUT_MS = 3_000;
-const FONTS_PRELOAD_TIMEOUT_MS = 5_000;
 const CONTAINER_MOUNT_TIMEOUT_MS = 3_000;
 const EMPTY_CAPTURE_RETRY_DELAY_MS = 200;
+// Give the browser time to finish any in-flight font/image fetches and the
+// font system time to decode glyphs before snapdom begins capturing. Mirrors
+// the 5s wait used by the PrintReport route, which avoids the same race.
+const PRE_CAPTURE_SETTLE_MS = 5_000;
 
 const sliceCanvas = (
   source: HTMLCanvasElement,
@@ -75,55 +78,10 @@ const captureWithTimeout = async (
 
 const sectionLabel = (section: HTMLElement, index: number): string => {
   const heading = section.querySelector('h1, h2, h3, h4');
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const text = heading?.textContent?.trim();
   if (text) return text.slice(0, 80);
   return `Section ${index + 1}`;
-};
-
-// snapdom's `embedFonts: true` issues its own `fetch()` for every @font-face
-// source URL (both woff2 and woff fallback) to inline them as data URIs in the
-// captured SVG. On the first export of a session those URLs aren't in the HTTP
-// cache yet — the `<link rel="preload">` tags in index.html only populate the
-// browser's preload cache, which is separate from the HTTP cache and is
-// discarded if not consumed quickly. `document.fonts.load()` doesn't help
-// either because snapdom bypasses the font system and fetches the URL
-// directly.
-//
-// To make the first attempt behave like later attempts, we explicitly fetch
-// every woff/woff2 URL ourselves before snapdom runs. Those fetches go through
-// the regular HTTP cache, so snapdom's subsequent fetches all hit cache and
-// embed instantly. The list mirrors the @font-face declarations in fonts.css.
-const PUBLIC_SANS_FONT_URLS: string[] = [
-  '/PublicSans-Light.woff2',
-  '/PublicSans-Light.woff',
-  '/PublicSans-LightItalic.woff2',
-  '/PublicSans-LightItalic.woff',
-  '/PublicSans-Regular.woff2',
-  '/PublicSans-Regular.woff',
-  '/PublicSans-Italic.woff2',
-  '/PublicSans-Italic.woff',
-  '/PublicSans-Medium.woff2',
-  '/PublicSans-Medium.woff',
-  '/PublicSans-MediumItalic.woff2',
-  '/PublicSans-MediumItalic.woff',
-  '/PublicSans-SemiBold.woff2',
-  '/PublicSans-SemiBold.woff',
-  '/PublicSans-SemiBoldItalic.woff2',
-  '/PublicSans-SemiBoldItalic.woff',
-  '/PublicSans-Bold.woff2',
-  '/PublicSans-Bold.woff',
-  '/PublicSans-BoldItalic.woff2',
-  '/PublicSans-BoldItalic.woff',
-];
-
-const preloadFonts = async (timeoutMs: number): Promise<void> => {
-  const fetches = PUBLIC_SANS_FONT_URLS.map((url) =>
-    fetch(url).catch(() => undefined)
-  );
-  await Promise.race([
-    Promise.allSettled(fetches),
-    new Promise((resolve) => setTimeout(resolve, timeoutMs)),
-  ]);
 };
 
 // `setIsDownloading(true)` triggers a re-render that mounts the hidden
@@ -237,16 +195,6 @@ export default function useInsightsPdfDownload({
         CONTAINER_MOUNT_TIMEOUT_MS
       );
 
-      // Kick off explicit loads for every Public Sans weight/style upfront,
-      // in parallel with the container mount and dynamic imports. Without
-      // this, weights that aren't above the fold on the visible UI (e.g.
-      // semi-bold used by matrix cells) only begin loading when the hidden
-      // tree mounts, and on the first ever export of a session their woff2
-      // files aren't HTTP-cached yet, so snapdom captures before they arrive.
-      // Subsequent exports hit cache, which is why the bug only surfaces on
-      // the first attempt and disappears after refresh.
-      const fontsPromise = preloadFonts(FONTS_PRELOAD_TIMEOUT_MS);
-
       const [{ snapdom, preCache }, { default: jsPDF }, container] =
         await Promise.all([
           import('@zumer/snapdom'),
@@ -259,12 +207,7 @@ export default function useInsightsPdfDownload({
       }
 
       await waitForLayout(container, CHARTS_READY_TIMEOUT_MS);
-      await fontsPromise;
 
-      // snapdom's font/style cache is cold on first capture in a fresh module
-      // instance, which makes the first 2–3 sections rasterize without text.
-      // Walk the subtree to populate the style/font cache for every face the
-      // hidden DOM uses.
       await preCache(container, { embedFonts: true });
 
       // Use the deepest markers — when an outer section contains inner ones,
@@ -284,19 +227,30 @@ export default function useInsightsPdfDownload({
         throw new Error('No PDF sections found in hidden container');
       }
 
-      // preCache populates style/font data but doesn't exercise the rasterizer
-      // pipeline. The first real toCanvas call still sometimes produces
-      // text-less output on a cold module. Run one throwaway capture on the
-      // first section so the SVG → Image → canvas path has run end-to-end
-      // before the real loop starts.
+      // Throwaway capture of a tiny element that contains text in every
+      // weight/style combination the PDF uses. snapdom embeds each font face
+      // exercised here, so the real loop never sees a fresh weight (which on
+      // a cold session would race against the font fetch and rasterize
+      // without glyphs — observed as bold rendering but regular missing).
+      const warmupTarget =
+        container.querySelector<HTMLElement>('[data-pdf-font-warmup="true"]') ??
+        sections[0];
       await captureWithTimeout(
         () =>
-          snapdom.toCanvas(sections[0], {
+          snapdom.toCanvas(warmupTarget, {
             scale: CAPTURE_SCALE,
             backgroundColor: colors.white,
             embedFonts: true,
           }),
         SECTION_TIMEOUT_MS
+      );
+
+      // snapdom's toCanvas resolves before its internal font fetches are
+      // actually finished — those continue in the background. Wait here so
+      // those fetches (and the browser's font-decode work) complete before
+      // the real capture loop starts.
+      await new Promise((resolve) =>
+        setTimeout(resolve, PRE_CAPTURE_SETTLE_MS)
       );
 
       safeSetStatus('capturing');

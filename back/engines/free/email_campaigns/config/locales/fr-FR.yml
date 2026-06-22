@@ -67,6 +67,7 @@ fr-FR:
         user_with_unsubmitted_votes: Utilisateur qui n'a pas soumis ses votes
         users_who_engaged_but_not_voted: Utilisateurs ayant participé au projet, mais n'ayant pas voté
         users_who_engaged_with_the_project: Les utilisateurs qui ont participé au projet
+        users_who_follow_or_participated: Utilisateurs qui suivent le projet ou y ont participé
         users_who_follow_the_input: Les utilisateurs qui suivent la contribution
         users_who_follow_the_project: Les utilisateurs qui suivent le projet
         users_who_follow_the_proposal: Les utilisateurs qui suivent la proposition
@@ -158,13 +159,13 @@ fr-FR:
       assignee_digest: Aperçu hebdomadaire des idées attribuées
       comment_deleted_by_admin: Suppression de mon commentaire
       comment_marked_as_spam: Commenter le rapport de spam
-      comment_on_idea_you_follow: Un commentaire sur une idée que vous suivez
+      comment_on_idea_you_follow: Un commentaire sur une contribution que vous suivez
       comment_on_your_comment: Une réponse à mon commentaire
       community_monitor_report: Rapport de l'Observatoire de communauté
       cosponsor_of_your_idea: Un utilisateur accepte de soutenir ma proposition
       event_registration_confirmation: "Confirmation de l'inscription à l'événement"
       idea_marked_as_spam: Rapport sur le spam d'idées
-      idea_published: Publication de mon idée
+      idea_published: Publication de ma contribution
       internal_comment_on_idea_assigned_to_you: Commentaire interne sur une contribution qui m'est attribuée
       internal_comment_on_idea_you_commented_internally_on: Commentaire interne sur une contribution que j'ai commentée en interne
       internal_comment_on_idea_you_moderate: Commentaire interne sur les contributions dans le projet ou le dossier que je gère
@@ -182,7 +183,7 @@ fr-FR:
       new_comment_for_admin: Nouveau commentaire dans un projet que je modère
       new_idea_for_admin_prescreening: Nouvelle contribution en attente d’approbation dans un projet que je modère
       new_idea_for_admin_published: Une nouvelle contribution a été publiée dans un projet que je modère
-      official_feedback_on_idea_you_follow: Mise à jour d'une idée que vous suivez
+      official_feedback_on_idea_you_follow: Mise à jour d'une contribution que vous suivez
       password_reset: Réinitialisation du mot de passe
       project_folder_moderation_rights_received: Droits d'administrateur de dossiers reçus
       project_manager_rights_received: Droits de gestionnaire de projet reçus
@@ -195,7 +196,7 @@ fr-FR:
       proposal_expired_for_admin: Proposition expirée sans atteindre le seuil de vote
       screening_digest: Rappel hebdomadaire de modération
       space_moderation_rights_received: Droits de gestionnaire d'espace reçus
-      status_change_on_idea_you_follow: Changement de statut d'une idée que vous suivez
+      status_change_on_idea_you_follow: Changement de statut d'une contribution que vous suivez
       survey_submitted: Enquête soumise
       threshold_reached_for_admin: La proposition a atteint le seuil de vote
       user_digest: Aperçu hebdomadaire

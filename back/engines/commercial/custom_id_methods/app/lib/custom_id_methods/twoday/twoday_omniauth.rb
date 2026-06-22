@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Twoday
-  class TwodayOmniauth < OmniauthMethods::Base
+  class TwodayOmniauth < IdMethods::Base
     include TwodayVerification
+
+    def name
+      'twoday'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
 
     def profile_to_user_attrs(auth)
       {
@@ -37,10 +49,6 @@ module CustomIdMethods::Twoday
 
     def email_always_present?
       false
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def email_confirmed?(_auth)

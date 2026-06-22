@@ -37,11 +37,11 @@ app.use(
 // Serve static files
 app.use(express.static('build'));
 
-app.use('/fragments/*', function (req, res) {
+app.use('/fragments/*splat', function (req, res) {
   res.sendStatus(404);
 });
 
-app.use('*', function (req, res) {
+app.use(function (req, res) {
   res.sendFile(path.resolve('build/index.html'));
 });
 

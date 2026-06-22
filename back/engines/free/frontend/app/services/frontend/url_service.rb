@@ -86,6 +86,14 @@ module Frontend
       "#{home_url(options)}#{pathname}"
     end
 
+    # OAuth 2.1 authorization (consent) screen, rendered by the SPA. The OAuth
+    # client appends the authorize query params (client_id, code_challenge, ...),
+    # so this is just the base page URL. Advertised as `authorization_endpoint`
+    # in the authorization-server metadata.
+    def oauth_authorize_url(options = {})
+      "#{home_url(options)}/oauth/authorize"
+    end
+
     def invite_url(token, options = {})
       "#{home_url(options)}/invite?token=#{token}"
     end

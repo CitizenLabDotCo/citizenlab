@@ -8,8 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { TVerificationMethod } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { IdMethodData } from 'api/id_methods/types';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useCopenhagenPlatformCheck from 'hooks/useCopenhagenPlatformCheck';
 
@@ -42,19 +42,19 @@ const ButtonsContainer = styled.div`
 `;
 
 interface Props {
-  onMethodSelected: (selectedMethod: TVerificationMethod) => void;
+  onMethodSelected: (selectedMethod: IdMethodData) => void;
   onSkipped?: () => void;
 }
 
 const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: idMethods } = useIdMethods();
   const isCopenhagenPlatform = useCopenhagenPlatformCheck();
 
-  const handleOnMethodSelected = (method: TVerificationMethod) => {
+  const handleOnMethodSelected = (method: IdMethodData) => {
     onMethodSelected(method);
   };
 
-  if (verificationMethods === undefined) {
+  if (idMethods === undefined) {
     return (
       <Centerer height="250px">
         <Spinner />
@@ -83,13 +83,13 @@ const VerificationMethods = memo<Props>(({ onMethodSelected }) => {
             form-based manual methods are still rendered by their own modules
             through the outlet below. */}
         <SSOVerificationButtons
-          verificationMethods={verificationMethods.data}
+          idMethods={idMethods.data}
           onClick={handleOnMethodSelected}
         />
         <Outlet
           id="app.components.VerificationModal.buttons"
           onClick={handleOnMethodSelected}
-          verificationMethods={verificationMethods.data.filter(
+          idMethods={idMethods.data.filter(
             (method) =>
               method.attributes.verification_method &&
               !isCentralizedSSOMethod(method)

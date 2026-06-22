@@ -2,18 +2,12 @@
 
 module CustomIdMethods::Keycloak
   module KeycloakVerification
-    include Verification::VerificationMethod
-
     def verification_method_type
       :omniauth
     end
 
     def id
       'd6938fe6-4bee-4490-b80c-b14dafb5da1b'
-    end
-
-    def name
-      'keycloak'
     end
 
     def config_parameters
@@ -83,11 +77,6 @@ module CustomIdMethods::Keycloak
       else
         name
       end
-    end
-
-    # Verification is only enabled for ID-Porten not Rheinbahn
-    def enabled?
-      config[:provider] == 'idporten'
     end
   end
 end

@@ -95,10 +95,15 @@ namespace :cl2back do
       # (when `de-AT` is absent or empty at that path).
       # View-backed models (e.g. Moderation::Moderation) cannot be written to;
       # they project from underlying tables that this task already updates.
+      # Audit-log models (Activity) are skipped: their payloads capture what
+      # values existed at a past point in time, so retroactively rewriting
+      # them would falsify history.
       view_table_names = ApplicationRecord.connection.views.to_set
+      skipped_model_names = %w[Activity].to_set
       models = ApplicationRecord.descendants.select do |m|
         !m.abstract_class? && m.table_exists? && m.descends_from_active_record? &&
           view_table_names.exclude?(m.table_name) &&
+          skipped_model_names.exclude?(m.name) &&
           m.columns.any? { |c| c.type == :jsonb }
       end
       puts "Found #{models.size} model(s) with JSONB columns.\n\n"
@@ -115,6 +120,10 @@ namespace :cl2back do
           # contains the literal "de-DE" anywhere. The walker then verifies
           # whether each occurrence is a real hash key.
           scope = model.where("#{attr}::text LIKE ?", '%"de-DE"%')
+          # Apartment-excluded models (e.g. Tenant) live in the public schema
+          # and ignore tenant.switch, so we must constrain them to the target
+          # tenant explicitly. Tenant.id matches AppConfiguration.id.
+          scope = scope.where(id: tenant.id) if Apartment.excluded_models.include?(model.name)
           count = scope.count
           next if count.zero?
 

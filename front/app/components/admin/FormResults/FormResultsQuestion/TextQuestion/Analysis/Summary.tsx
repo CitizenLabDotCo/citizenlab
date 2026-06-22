@@ -23,8 +23,6 @@ import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 
-import { convertFilterValuesToString } from './utils';
-
 const Summary = ({
   summaryId,
   analysisId,
@@ -71,10 +69,11 @@ const Summary = ({
   const backgroundTaskFailed = task?.data.attributes.state === 'failed';
   const showSpinner = !summary && !backgroundTaskFailed;
 
+  // The refresh button stays active even with 0 new responses, so admins can
+  // choose to re-trigger; only the hard capacity limit (too many inputs without
+  // large summaries) disables it.
   const refreshDisabled =
-    !backgroundTaskFailed &&
-    (missingInputsCount === 0 ||
-      (!largeSummariesAllowed && filteredInputCount > 30));
+    !backgroundTaskFailed && !largeSummariesAllowed && filteredInputCount > 30;
 
   return (
     <>
@@ -141,7 +140,7 @@ const Summary = ({
             to="/admin/projects/$projectId/analysis/$analysisId"
             params={{ projectId, analysisId }}
             search={{
-              ...convertFilterValuesToString(filters),
+              ...filters,
               phase_id: phaseId,
             }}
           >
