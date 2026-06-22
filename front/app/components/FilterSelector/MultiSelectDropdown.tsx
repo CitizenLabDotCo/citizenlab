@@ -124,6 +124,7 @@ const MultiSelectDropdown = ({
 }: Props) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
   const triggerRef = useRef<HTMLDivElement>(null);
+  const focusFirstItemOnOpen = useRef(false);
   const isPhoneOrSmaller = useBreakpoint('phone');
 
   const focusTrigger = () => {
@@ -185,6 +186,8 @@ const MultiSelectDropdown = ({
         if (value) {
           event.preventDefault();
           onChange(value);
+        } else if (!opened) {
+          focusFirstItemOnOpen.current = true;
         }
         break;
 
@@ -205,7 +208,14 @@ const MultiSelectDropdown = ({
   };
   useEffect(() => {
     if (opened) {
-      focusTrigger();
+      if (focusFirstItemOnOpen.current) {
+        focusFirstItemOnOpen.current = false;
+        tabsRef.current[0]?.focus();
+      } else {
+        focusTrigger();
+      }
+    } else {
+      focusFirstItemOnOpen.current = false;
     }
   }, [opened]);
 
@@ -227,6 +237,7 @@ const MultiSelectDropdown = ({
             onKeyDown={handleOnKeyDown}
             ariaExpanded={opened}
             ariaControls={baseID}
+            ariaHasPopup="true"
           >
             <Box display="flex" gap="8px">
               {currentTitle}
@@ -245,6 +256,7 @@ const MultiSelectDropdown = ({
             baseID={baseID}
             textColor={textColor}
             handleKeyDown={handleOnKeyDown}
+            ariaHasPopup="true"
           />
         )}
       </Box>

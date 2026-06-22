@@ -15,8 +15,10 @@ services:
     volumes:
       - "postgres:/var/lib/postgresql/data"
 
+  # NOTE: WORKTREE_PREFIX is an env var that can be set when running in a git worktree
+  # to allow independent containers per worktree (though they cannot run simultaneously due to port conflicts)
   web:
-    container_name: cl-back-web
+    container_name: ${WORKTREE_PREFIX:-cl}-back-web
     depends_on:
       - "postgres"
       - "mailcatcher"
@@ -47,7 +49,7 @@ services:
     stdin_open: true
 
   que:
-    container_name: cl-que
+    container_name: ${WORKTREE_PREFIX:-cl}-que
     depends_on:
       - "postgres"
       - "mailcatcher"
@@ -74,7 +76,7 @@ services:
     stdin_open: true
 
   rabbitmq:
-    container_name: cl-back-rabbit
+    container_name: ${WORKTREE_PREFIX:-cl}-back-rabbit
     image: "rabbitmq:3.8-management"
     ports:
       - "8088:15672"
@@ -95,7 +97,7 @@ services:
 
   # Open API documentation - Only starts if you run docker compose --profile openapi up
   openapi:
-    container_name: cl-open-api
+    container_name: ${WORKTREE_PREFIX:-cl}-open-api
     image: swaggerapi/swagger-ui
     ports:
       - 8080:8080
@@ -108,7 +110,7 @@ services:
 
   # For generating PDFs
   gotenberg:
-    container_name: cl-gotenberg
+    container_name: ${WORKTREE_PREFIX:-cl}-gotenberg
     image: gotenberg/gotenberg:8.21
     restart: always
 
@@ -125,7 +127,7 @@ services:
   fake_sso:
     # Distinct from the standalone fake_sso/docker-compose.yml (which uses
     # `cl-fake-sso`) so the two stacks can coexist without conflicting.
-    container_name: cl-fake-sso-app
+    container_name: ${WORKTREE_PREFIX:-cl}-fake-sso-app
     image: node:22-alpine
     working_dir: /app
     ports:
@@ -147,7 +149,7 @@ services:
 
   # Front-end dev server - Only starts if you run docker compose --profile frontend up
   front:
-    container_name: cl-front
+    container_name: ${WORKTREE_PREFIX:-cl}-front
     image: node:24.15.0
     working_dir: /citizenlab/front
     command: sh -c "npm install && npm start"
@@ -177,4 +179,4 @@ volumes:
 
 networks:
   default:
-    name: citizenlab
+    name: ${WORKTREE_PREFIX:-citizenlab}

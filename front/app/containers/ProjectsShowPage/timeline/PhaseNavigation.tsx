@@ -166,17 +166,20 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
       next: nextButtonRef,
     };
 
+    // keep the focus on the same nav tab after phase change
+    // to avoid the focus being lost
+    const actionButton = refsByAction[action].current;
+    if (actionButton) {
+      actionButton.focus();
+      return;
+    }
+
     const isEnabled = (el: HTMLButtonElement | null) =>
       !!el && el.getAttribute('aria-disabled') !== 'true';
 
-    const candidates = [
-      refsByAction[action].current,
-      previousButtonRef.current,
-      currentButtonRef.current,
-      nextButtonRef.current,
-    ];
-
-    candidates.find(isEnabled)?.focus();
+    [previousButtonRef.current, currentButtonRef.current, nextButtonRef.current]
+      .find(isEnabled)
+      ?.focus();
   }, [selectedPhase?.id]);
 
   if (phases && phases.data.length > 1) {
