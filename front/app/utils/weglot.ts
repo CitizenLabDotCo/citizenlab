@@ -73,6 +73,7 @@ async function weglotTranslateHtml(
   const walker = document.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
   let node: Node | null;
   while ((node = walker.nextNode())) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if ((node as Text).textContent?.trim()) {
       textNodes.push(node as Text);
     }

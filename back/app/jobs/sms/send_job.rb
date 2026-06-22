@@ -2,9 +2,9 @@
 
 module Sms
   class SendJob < ApplicationJob
-    def run(delivery_id, provider: Sms::Sender::DEFAULT_PROVIDER)
+    def run(delivery_id)
       delivery = Sms::Delivery.find(delivery_id)
-      Sms::Sender.new.deliver(delivery, provider: provider)
+      Sms::Sender.new.deliver(delivery)
     end
   end
 end

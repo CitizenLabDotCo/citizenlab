@@ -1,4 +1,10 @@
-import React, { KeyboardEvent, useRef, useState, useEffect } from 'react';
+import React, {
+  KeyboardEvent,
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+} from 'react';
 
 import {
   Box,
@@ -33,6 +39,8 @@ import tracks from './tracks';
 
 const MIN_PHASE_WIDTH_PX = 44;
 const CONTAINER_PADDING_PX = 20;
+
+let pendingFocusPhaseIndex: number | null = null;
 
 const grey = colors.textSecondary;
 const greenTransparent = '#CAE0CD';
@@ -134,6 +142,12 @@ const PhaseBar = styled.button<{
 
   &:hover ${BlinkingDot} {
     background-color: ${colors.white};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${colors.black};
+    outline-offset: 2px;
+    z-index: 3;
   }
 `;
 
@@ -293,6 +307,15 @@ const Timeline = ({
   const tabsRef = useRef<HTMLAnchorElement[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
+  // keep focus on the newly selected tab after the phase change re-renders
+  // (and remounts) the timeline, for a11y
+  useLayoutEffect(() => {
+    if (pendingFocusPhaseIndex === null) return;
+    const index = pendingFocusPhaseIndex;
+    pendingFocusPhaseIndex = null;
+    tabsRef.current[index]?.focus();
+  }, [selectedPhase?.id]);
+
   useEffect(() => {
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -324,8 +347,8 @@ const Timeline = ({
           currentPhaseIndex === phases.data.length - 1
             ? 0
             : currentPhaseIndex + 1;
+        pendingFocusPhaseIndex = selectedPhaseIndex;
         setSelectedPhase(phases.data[selectedPhaseIndex]);
-        tabsRef.current[selectedPhaseIndex].focus();
 
         // Move left
       } else if (arrowLeftPressed) {
@@ -335,8 +358,8 @@ const Timeline = ({
           currentPhaseIndex === 0
             ? phases.data.length - 1
             : currentPhaseIndex - 1;
+        pendingFocusPhaseIndex = selectedPhaseIndex;
         setSelectedPhase(phases.data[selectedPhaseIndex]);
-        tabsRef.current[selectedPhaseIndex].focus();
       }
     }
   };

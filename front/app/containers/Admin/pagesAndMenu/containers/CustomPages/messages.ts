@@ -62,14 +62,14 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.pageSettingsTab',
     defaultMessage: 'Page settings',
   },
-  linkedProjectsLabel: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel',
-    defaultMessage: 'Linked Projects',
+  linkedItems: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItems',
+    defaultMessage: 'Linked items',
   },
-  linkedProjectsTooltip: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsTooltip',
+  linkedItemsTooltip: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItemsTooltip',
     defaultMessage:
-      'Select which projects and related events can be displayed on the page.',
+      'Select which items and related events can be displayed on the page.',
   },
   noFilter: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.noFilter',
@@ -82,6 +82,10 @@ export default defineMessages({
   byTagsFilter: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter',
     defaultMessage: 'By tag(s)',
+  },
+  bySpaceFilter: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.bySpaceFilter',
+    defaultMessage: 'By space',
   },
   selectedTagsLabel: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedTagsLabel',
@@ -98,6 +102,14 @@ export default defineMessages({
   selectAnArea: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectAnArea',
     defaultMessage: 'Please select an area',
+  },
+  selectedSpacesLabel: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectedSpacesLabel',
+    defaultMessage: 'Selected spaces',
+  },
+  selectASpace: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.selectASpace',
+    defaultMessage: 'Please select at least one space',
   },
   editCustomPageMetaTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageMetaTitle',

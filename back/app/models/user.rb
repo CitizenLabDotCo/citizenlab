@@ -158,6 +158,7 @@ class User < ApplicationRecord
   has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
   has_many :files, class_name: 'Files::File', foreign_key: :uploader_id, inverse_of: :uploader, dependent: :nullify
   has_many :claim_tokens, foreign_key: :pending_claimer_id, inverse_of: :pending_claimer, dependent: :destroy
+  has_many :sms_deliveries, class_name: 'Sms::Delivery', dependent: :nullify
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?
@@ -377,6 +378,11 @@ class User < ApplicationRecord
   # SMS delivery operate on a single normalized representation. Invalid/national
   # input is left as-is for validate_phone_number_format to reject.
   def normalize_phone_number
+    if phone_number.blank?
+      self.phone_number = nil
+      return
+    end
+
     normalized = Phonelib.parse(phone_number).e164.presence
     self.phone_number = normalized if normalized
   end
