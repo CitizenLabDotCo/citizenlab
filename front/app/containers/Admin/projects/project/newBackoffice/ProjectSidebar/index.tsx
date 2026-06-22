@@ -11,11 +11,6 @@ interface Props {
   projectId: string;
 }
 
-/**
- * The nav rail stacked on top of the vertical timeline-phases list. The rail
- * keeps its natural height; the phases list below it scrolls in the remaining
- * space (one scrollbar, never nested).
- */
 const ProjectSidebar = ({ projectId }: Props) => (
   <Box
     flex={`0 0 ${SIDEBAR_WIDTH}`}
