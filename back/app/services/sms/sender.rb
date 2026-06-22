@@ -2,18 +2,10 @@
 
 module Sms
   class Sender
-    PROVIDERS = {
-      twilio: Sms::Providers::Twilio
-    }.freeze
-
-    DEFAULT_PROVIDER = :twilio
-
-    def send_now(to:, body:, user_id: nil, campaign_id: nil, provider: DEFAULT_PROVIDER)
+    def send_now(to:, body:, user_id: nil, campaign_id: nil)
       unless AppConfiguration.instance.feature_activated?('sms')
         raise Sms::Error, 'SMS feature is not enabled for this tenant'
       end
-
-      provider_instance = build_provider(provider)
 
       parsed_to = Phonelib.parse(to)
       raise Sms::Error, "Invalid phone number: #{to}" unless parsed_to.valid?
@@ -29,7 +21,7 @@ module Sms
       )
 
       begin
-        result = provider_instance.send(to: normalized_to, body: body)
+        result = provider.send(to: normalized_to, body: body)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
       rescue Sms::Error => e
         delivery.update!(status: 'failed', error_message: e.message)
@@ -41,11 +33,8 @@ module Sms
 
     private
 
-    def build_provider(key)
-      klass = PROVIDERS.fetch(key.to_sym) do
-        raise Sms::Error, "Unknown SMS provider: #{key}"
-      end
-      klass.new
+    def provider
+      Sms::Providers::Twilio.new
     end
   end
 end

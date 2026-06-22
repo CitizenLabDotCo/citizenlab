@@ -36,20 +36,6 @@ RSpec.describe Sms::Sender do
       expect(delivery.message_sid).to eq('SM_abc')
     end
 
-    it 'accepts the provider as a string' do
-      allow(twilio_provider).to receive(:send).and_return(message_sid: 'SM_2', status: 'queued')
-
-      delivery = described_class.new.send_now(to: '+14155552671', body: 'hi', provider: 'twilio')
-
-      expect(delivery.message_sid).to eq('SM_2')
-    end
-
-    it 'raises Sms::Error for an unknown provider' do
-      expect { described_class.new.send_now(to: '+14155552671', body: 'hi', provider: :carrier_pigeon) }
-        .to raise_error(Sms::Error, /Unknown SMS provider/)
-      expect(Sms::Delivery.count).to eq(0)
-    end
-
     it 'normalizes the phone number before storing' do
       allow(twilio_provider).to receive(:send).and_return(message_sid: 'SM_1', status: 'queued')
 
