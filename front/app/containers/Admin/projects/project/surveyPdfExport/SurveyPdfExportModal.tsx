@@ -50,7 +50,6 @@ const SurveyPdfExportModal = ({
 
   const { methods, cover } = useCoverForm({ phaseId, projectId });
 
-  // Only the user's deviations; the field list itself is derived, not synced.
   const [redactOverrides, setRedactOverrides] = useState<
     Record<string, boolean>
   >({});

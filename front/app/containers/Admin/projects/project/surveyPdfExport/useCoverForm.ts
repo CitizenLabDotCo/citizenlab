@@ -39,8 +39,6 @@ const useCoverForm = ({ phaseId, projectId }: Args): Result => {
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
 
-  // Stable until the source data changes, so `values` seeds the form once
-  // everything loads without clobbering the user's later edits.
   const coverValues = useMemo<SurveyPdfCover | undefined>(() => {
     if (!phase || !project || !authUser) return undefined;
     return {
