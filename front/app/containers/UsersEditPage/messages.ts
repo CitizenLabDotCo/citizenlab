@@ -256,6 +256,14 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.changePassword2',
     defaultMessage: 'Change password',
   },
+  changePhone: {
+    id: 'app.containers.UsersEditPage.changePhone',
+    defaultMessage: 'Change phone number',
+  },
+  addPhone: {
+    id: 'app.containers.UsersEditPage.addPhone',
+    defaultMessage: 'Add phone number',
+  },
   /*
    * Password change
    */

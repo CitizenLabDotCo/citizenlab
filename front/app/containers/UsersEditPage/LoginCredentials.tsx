@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IUserData } from 'api/users/types';
 import { IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
+import { IUserData } from 'api/users/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -33,6 +33,7 @@ const SSO_METHODS_WITHOUT_EMAIL: IdMethodName[] = [
 
 const LoginCredentials = ({ user }: PasswordChangeProps) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+  const smsEnabled = useFeatureFlag({ name: 'sms' });
   const { data: idMethods } = useIdMethods();
 
   const ssoWithoutEmailEnabled = !!idMethods?.data.some((method) =>
@@ -41,8 +42,9 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
 
   const showChangePassword = passwordLoginEnabled;
   const showChangeEmail = passwordLoginEnabled || ssoWithoutEmailEnabled;
+  const showChangePhone = smsEnabled;
 
-  if (!showChangeEmail && !showChangePassword) return null;
+  if (!showChangeEmail && !showChangePassword && !showChangePhone) return null;
 
   const userHasPreviousPassword = !user.attributes.no_password;
 
@@ -77,6 +79,21 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
             icon="lock"
           >
             <FormattedMessage {...passwordChangeButtonText} />
+          </ButtonWithLink>
+        )}
+        {showChangePhone && (
+          <ButtonWithLink
+            to="/profile/change-phone"
+            scrollToTop
+            width="auto"
+            justifyWrapper="left"
+            buttonStyle="secondary-outlined"
+          >
+            <FormattedMessage
+              {...(user.attributes.phone_number
+                ? messages.changePhone
+                : messages.addPhone)}
+            />
           </ButtonWithLink>
         )}
       </Box>
