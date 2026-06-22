@@ -3389,6 +3389,8 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Title": "المبالغة:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Text": "النظام ديالنا مخصص للتعامل مع 20-200 مدخل محدد بدقة للحصول على نتائج كتر دقة. ملي كيتجاوز حجم البيانات هاد النطاق، الملخص كيقدر يولي عام وشامل كتر. هادشي ما كيعنيش أن الذكاء الاصطناعي كيولي \"أقل دقة\"، ولكن كيعني أنه كيركز على التوجهات والأنماط العامة. للحصول على رؤى كتر تفصيل، كنصحو باستخدام ميزة الوسم التلقائي (auto-tagging) لتقسيم مجموعات البيانات الكبيرة لأجزاء أصغر وسهلة ف التدبير.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Title": "حجم البيانات ودقتها:",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": "يمكن أن تتضمن النتائج تحيزات مختلفة. يمكن أن تنجم هذه التحيزات، على سبيل المثال، عن بيانات غير متوازنة في تدريب النموذج، واختلافات في اللغة والتعبير، ونقص في فهم السياق. وبشكل خاص، قد يتم تفسير السخرية، أو التهكم، أو اللهجة، أو لغة الشباب، أو العبارات المرتبطة بالسياق بشكل خاطئ.",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": "التحيزات:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "نوصي باستخدام الملخصات المنشأة بواسطة الذكاء الاصطناعي كنقطة انطلاق لفهم مجموعات البيانات الكبيرة، ولكن ليس ككلمة نهائية.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "كيف تعمل مع الذكاء الاصطناعي",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "إضافة المدخلات المختارة للوسم",

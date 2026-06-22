@@ -3389,6 +3389,8 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Title": "Överdrivning:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Text": "Vårt system är optimerat för att hantera 20-200 väldefinierade indata för de mest exakta resultaten. När datavolymen ökar utöver detta intervall kan sammanfattningen bli mer övergripande och generaliserad. Detta innebär inte att AI blir \"mindre exakt\", utan snarare att den kommer att fokusera på bredare trender och mönster. För mer nyanserade insikter rekommenderar vi att du använder (auto)-taggningsfunktionen för att segmentera större datamängder i mindre, mer hanterbara delmängder.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Title": "Datavolym och noggrannhet:",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": "Resultaten kan innehålla olika typer av skevheter. Dessa kan till exempel uppstå på grund av obalanserad data i modellens träning, skillnader i språk och uttryckssätt samt bristande kontextuell förståelse. I synnerhet kan ironi, sarkasm, dialekter, ungdomsslang eller kontextkänsliga formuleringar feltolkas.",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": "Skevheter:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "Vi rekommenderar att AI-genererade sammanfattningar används som en utgångspunkt för att förstå stora datamängder, men inte som det slutgiltiga ordet.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "Hur man arbetar med AI",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "Lägg till valda indata till tagg",

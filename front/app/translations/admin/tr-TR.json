@@ -3389,6 +3389,8 @@
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation2Title": "Abartı:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Text": "Sistemimiz, en doğru sonuçlar için 20-200 iyi tanımlanmış girdiyi işlemek üzere optimize edilmiştir. Veri hacmi bu aralığın ötesine geçtikçe, özet daha üst düzey ve genelleştirilmiş hale gelebilir. Bu, yapay zekanın \"daha az doğru\" olduğu anlamına gelmez, daha ziyade daha geniş eğilimlere ve kalıplara odaklanacağı anlamına gelir. Daha incelikli içgörüler için, daha büyük veri kümelerini daha küçük, daha yönetilebilir alt kümelere ayırmak üzere (otomatik) etiketleme özelliğini kullanmanızı öneririz.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation3Title": "Veri Hacmi ve Doğruluğu:",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": "Sonuçlar çeşitli yanlılıklar içerebilir. Bunlar, örneğin modelin eğitimindeki dengesiz verilerden, dil ve ifade farklılıklarından ve bağlamsal anlayış eksikliğinden kaynaklanabilir. Özellikle ironi, alaycılık, lehçe, gençlik argosu veya bağlama duyarlı ifadeler yanlış yorumlanabilir.",
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": "Yanlılıklar:",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": "Yapay zeka tarafından oluşturulan özetleri, büyük veri kümelerini anlamak için bir başlangıç noktası olarak kullanmanızı öneririz, ancak son söz olarak değil.",
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.title": "Yapay zeka ile nasıl çalışılır?",
   "app.containers.AdminPage.projects.project.analysis.Tags.addInputToTag": "Seçilen girdileri etikete ekle",
