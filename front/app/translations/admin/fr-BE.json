@@ -572,7 +572,7 @@
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": "Reformuler une question",
   "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": "Vous corrigez une faute de frappe ? Cela n'affectera pas vos données de réponse.",
   "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": "Supprimer une question",
-  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": "Vous perdrez les données de réponse liées à cette question dans toutes les phases utilisant le même formulaire",
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": " Les réponses déjà collectées pour cette question seront perdues dans toutes les phases qui utilisent ce formulaire",
   "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": "Attention : les phases d'idéation, de vote et de budget participatif de ce projet partagent un seul formulaire de contribution. Toutes les modifications effectuées ici s'appliqueront à l'ensemble de ces phases.",
   "app.components.formBuilder.formInputEditWarningModal.noCancel": "Non, annuler",
   "app.components.formBuilder.formInputEditWarningModal.title": "Modifier le formulaire de contribution",
