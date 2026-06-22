@@ -70,26 +70,14 @@ const formatDateRange = (
     : `${start.format('D MMM')} – ${end.format('D MMM')}`;
 };
 
-const Dot = styled.div<{ status: PhaseStatus }>`
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex: 0 0 auto;
-  margin-top: 3px;
-  ${({ status }) => {
-    if (status === 'present') return `background: ${colors.green500};`;
-    if (status === 'past') return `background: ${colors.coolGrey500};`;
-    return `background: ${colors.white}; border: 2px solid ${colors.coolGrey300};`;
-  }}
-`;
-
-const Connector = styled.div`
-  width: 2px;
-  flex: 1 1 auto;
-  min-height: 8px;
-  background: ${colors.grey300};
-  margin: 4px 0;
-`;
+const dotStyle = (status: PhaseStatus) => {
+  if (status === 'present') return { background: colors.green500 };
+  if (status === 'past') return { background: colors.coolGrey500 };
+  return {
+    background: colors.white,
+    border: `2px solid ${colors.coolGrey300}`,
+  };
+};
 
 const Row = styled.div<{ selected: boolean }>`
   display: flex;
@@ -97,6 +85,7 @@ const Row = styled.div<{ selected: boolean }>`
   padding: 8px;
   border-radius: 6px;
   cursor: pointer;
+  text-decoration: none;
   background: ${({ selected }) => (selected ? colors.grey200 : 'transparent')};
   transition: background 80ms ease-out;
 
@@ -104,12 +93,6 @@ const Row = styled.div<{ selected: boolean }>`
     background: ${({ selected }) =>
       selected ? colors.grey200 : colors.grey100};
   }
-`;
-
-const PhaseTitle = styled.span<{ past: boolean }>`
-  font-size: ${fontSizes.s}px;
-  color: ${({ past }) => (past ? colors.textSecondary : colors.textPrimary)};
-  text-decoration: ${({ past }) => (past ? 'line-through' : 'none')};
 `;
 
 const NewPhaseButton = styled.div`
@@ -122,19 +105,13 @@ const NewPhaseButton = styled.div`
   border: 1px dashed ${colors.coolGrey300};
   border-radius: 6px;
   cursor: pointer;
+  text-decoration: none;
   color: ${colors.coolGrey600};
   font-size: ${fontSizes.s}px;
 
   &:hover {
     border-color: ${colors.coolGrey500};
     color: ${colors.primary};
-  }
-`;
-
-const Panel = styled(Box)`
-  a,
-  a:hover {
-    text-decoration: none;
   }
 `;
 
@@ -154,7 +131,7 @@ const TimelinePhases = ({ projectId }: Props) => {
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
 
   return (
-    <Panel p="12px" borderTop={`1px solid ${colors.grey200}`}>
+    <Box p="12px" borderTop={`1px solid ${colors.grey200}`}>
       <Text
         m="0 0 8px 0"
         px="2px"
@@ -190,13 +167,38 @@ const TimelinePhases = ({ projectId }: Props) => {
             >
               <Row selected={isSelected} data-cy="e2e-new-project-phase-item">
                 <Box display="flex" flexDirection="column" alignItems="center">
-                  <Dot status={status} />
-                  {!isLast && <Connector />}
+                  <Box
+                    w="10px"
+                    h="10px"
+                    borderRadius="50%"
+                    flex="0 0 auto"
+                    mt="3px"
+                    {...dotStyle(status)}
+                  />
+                  {!isLast && (
+                    <Box
+                      w="2px"
+                      flex="1 1 auto"
+                      minHeight="8px"
+                      background={colors.grey300}
+                      my="4px"
+                    />
+                  )}
                 </Box>
                 <Box flexGrow={1} pb="4px">
-                  <PhaseTitle past={status === 'past'}>
+                  <Text
+                    as="span"
+                    m="0"
+                    fontSize="s"
+                    color={status === 'past' ? 'textSecondary' : 'textPrimary'}
+                    style={
+                      status === 'past'
+                        ? { textDecoration: 'line-through' }
+                        : undefined
+                    }
+                  >
                     {localize(phase.attributes.title_multiloc)}
-                  </PhaseTitle>
+                  </Text>
                   <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
                     {dateText} · {methodLabel}
                   </Text>
@@ -213,7 +215,7 @@ const TimelinePhases = ({ projectId }: Props) => {
           {formatMessage(messages.newPhase)}
         </NewPhaseButton>
       </Link>
-    </Panel>
+    </Box>
   );
 };
 
