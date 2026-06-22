@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Icon, Spinner, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Spinner,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
@@ -13,10 +18,6 @@ import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
-// A phone-shaped, scrollable preview of the public project page. Hovering (or
-// focusing the edit button) reveals an "Edit page content" call-to-action that
-// opens the content builder; the preview itself stays scrollable so the whole
-// page can be inspected.
 const PHONE_WIDTH = 375;
 const PHONE_HEIGHT = 720;
 
@@ -35,13 +36,6 @@ const Card = styled.div`
     border-color: ${colors.teal400};
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
   }
-`;
-
-const PreviewIframe = styled.iframe`
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: none;
 `;
 
 const Overlay = styled.div`
@@ -63,21 +57,6 @@ const Overlay = styled.div`
     opacity: 1;
     visibility: visible;
   }
-`;
-
-const EditButton = styled.button`
-  pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  background: ${colors.teal500};
-  color: ${colors.white};
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
 `;
 
 const ProjectPage = () => {
@@ -119,20 +98,28 @@ const ProjectPage = () => {
       p="32px"
     >
       <Card data-cy="e2e-project-page-preview">
-        <PreviewIframe
+        <Box
+          as="iframe"
           src={previewSrc}
           title={formatMessage(messages.projectPagePreviewTitle)}
+          display="block"
+          w="100%"
+          h="100%"
+          border="none"
         />
         <Overlay>
-          <EditButton
-            type="button"
-            onClick={openContentBuilder}
-            aria-label={formatMessage(messages.editProjectPageInContentBuilder)}
-            data-cy="e2e-edit-page-content"
-          >
-            <Icon name="edit" width="20px" height="20px" fill={colors.white} />
-            {formatMessage(messages.editPageContent)}
-          </EditButton>
+          <Box pointerEvents="auto">
+            <Button
+              icon="edit"
+              bgColor={colors.teal500}
+              onClick={openContentBuilder}
+              ariaLabel={formatMessage(
+                messages.editProjectPageInContentBuilder
+              )}
+              dataCy="e2e-edit-page-content"
+              text={formatMessage(messages.editPageContent)}
+            />
+          </Box>
         </Overlay>
       </Card>
     </Box>
