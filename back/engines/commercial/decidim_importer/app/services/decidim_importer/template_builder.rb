@@ -17,6 +17,7 @@ module DecidimImporter
       project_folders/folder
       project
       static_page
+      project_file
       phase
       custom_form
       custom_field

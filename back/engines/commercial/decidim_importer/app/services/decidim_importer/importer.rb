@@ -31,6 +31,7 @@ module DecidimImporter
     PROCESS_DIR_GLOB = '*participatory-processes/*'
     PROCESS_FILE_GLOB = '*--participatory-process.csv'
     STEPS_FILE_GLOB = '*--steps.csv'
+    ATTACHMENTS_FILE_GLOB = '*--attachments.csv'
 
     # Each process directory holds a `NN---components/` folder with one subdirectory per Decidim
     # component, named `NN---decidim--component--N---<type>` (proposals, meetings, surveys, …). The
@@ -70,15 +71,16 @@ module DecidimImporter
     end
 
     # Reads every participatory-process directory, aggregating their rows by model: process rows into
-    # `:projects`, step rows into `:phases`, and — from each process's components — proposals into
-    # `:proposals`, their comments into `:comments`, and every component manifest into `:components`
-    # (the latter drives ideation-phase titles and skip-logging of unconsumed component types).
+    # `:projects`, step rows into `:phases`, attachment rows into `:attachments`, and — from each
+    # process's components — proposals into `:proposals`, their comments into `:comments`, and every
+    # component manifest into `:components` (the latter drives ideation-phase titles and skip-logging
+    # of unconsumed component types).
     #
     # Several of these CSVs carry no foreign-key column — the directory *is* the association — so rows
     # are stamped with their owning process (`decidim_participatory_process`) and, for proposals/
     # comments, their component (`decidim_component`).
     def self.read_processes(root)
-      acc = { projects: [], phases: [], proposals: [], comments: [], components: [] }
+      acc = { projects: [], phases: [], attachments: [], proposals: [], comments: [], components: [] }
       process_dirs(root).each do |dir|
         process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
         next unless process_file
@@ -86,9 +88,13 @@ module DecidimImporter
         process_rows = CsvReader.read(process_file)
         acc[:projects].concat(process_rows)
         process_uid = process_rows.first&.fetch('uid', nil)
+        process_stamp = { 'decidim_participatory_process' => process_uid }
 
         steps_file = Dir.glob(File.join(dir, STEPS_FILE_GLOB)).first
-        acc[:phases].concat(stamp(CsvReader.read(steps_file), 'decidim_participatory_process' => process_uid)) if steps_file
+        acc[:phases].concat(stamp(CsvReader.read(steps_file), process_stamp)) if steps_file
+
+        attachments_file = Dir.glob(File.join(dir, ATTACHMENTS_FILE_GLOB)).first
+        acc[:attachments].concat(stamp(CsvReader.read(attachments_file), process_stamp)) if attachments_file
 
         read_components(dir, process_uid, acc)
       end
@@ -150,6 +156,7 @@ module DecidimImporter
       IdeaStatuses.resolve!(template)
       resolve_area_orderings!(template)
       prepare_images!(template, import_images: import_images)
+      prune_fileless_attachments!(template)
       created = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
       reconcile_permissions!
       created
@@ -239,6 +246,16 @@ module DecidimImporter
         strip_remote_image_urls!(template)
         strip_embedded_images!(template)
       end
+    end
+
+    # Drops any `project_file` whose file URL was pruned (unreachable) or stripped (images off): a
+    # ProjectFile with no file is a broken, empty attachment, so the record is removed rather than
+    # imported. Runs after {.prepare_images!}, which is what removes the unreachable/stripped URLs.
+    def self.prune_fileless_attachments!(template)
+      files = template.dig('models', 'project_file')
+      return unless files
+
+      files.reject! { |attrs| attrs['remote_file_url'].blank? && attrs['file'].blank? }
     end
 
     # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
@@ -352,6 +369,7 @@ module DecidimImporter
       run_comments
       run_surveys
       run_static_pages
+      run_files
       TemplateBuilder.new(ref_map)
     end
 
@@ -374,6 +392,7 @@ module DecidimImporter
       IdeaStatuses.resolve!(template)
       self.class.resolve_area_orderings!(template)
       self.class.prepare_images!(template, import_images: @import_images)
+      self.class.prune_fileless_attachments!(template)
       created_object_ids = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
       self.class.reconcile_permissions!
@@ -403,6 +422,11 @@ module DecidimImporter
     # Pages that couldn't be imported as static pages (e.g. unpublished drafts, no owning project).
     def skipped_pages
       @static_pages_extractor&.skipped || []
+    end
+
+    # Attachments that couldn't be imported as project files (e.g. no file URL, no owning project).
+    def skipped_files
+      @files_extractor&.skipped || []
     end
 
     private
@@ -443,6 +467,17 @@ module DecidimImporter
         survey_component_rows, ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       )
       @surveys_extractor.run
+    end
+
+    # Decidim process attachments → project-level file attachments (`ProjectFile`). Runs after the
+    # projects extractor so each file's `project_ref` resolves through the ref map.
+    def run_files
+      return unless @rows_by_model.key?(:attachments)
+
+      @files_extractor = Extractors::FilesExtractor.new(
+        rows_for(:attachments), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+      @files_extractor.run
     end
 
     # Decidim `pages` components → project-level static pages (not phases). Runs after the projects

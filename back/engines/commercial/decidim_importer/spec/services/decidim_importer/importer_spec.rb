@@ -44,6 +44,16 @@ RSpec.describe DecidimImporter::Importer do
       expect(patch.dig('settings', 'core', 'locales')).to eq(%w[fr-FR en])
       expect(patch.dig('settings', 'core', 'organization_name')).to include('en' => 'Raynor, Heathcote and Moen')
     end
+
+    it 'imports a process\'s attachments as project file attachments' do
+      template = described_class.from_directory(export_root).build_template.models['models']
+
+      espaces_verts = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Espaces verts' }
+      files = template['project_file'].select { |f| f['project_ref'].equal?(espaces_verts) }
+      # The file name is the URL's decoded basename, with its extension preserved.
+      expect(files.map { |f| f['name'] }).to contain_exactly('Compte-rendu réunion.pdf', "Plan d'actions.pdf")
+      expect(files.map { |f| f['remote_file_url'] }).to all(start_with('http://example.org/files/redirect/'))
+    end
   end
 
   describe '#import' do
@@ -260,6 +270,23 @@ RSpec.describe DecidimImporter::Importer do
 
       expect(template['models']['idea'].first['body_multiloc']['fr-FR']).to include('data:image/png;base64,AAAA')
       expect(described_class).to have_received(:image_reachable?).once # memoised across records/locales
+    end
+  end
+
+  describe '.prune_fileless_attachments!' do
+    it 'drops project files whose file url was stripped/pruned, keeping the rest' do
+      template = { 'models' => { 'project_file' => [
+        { 'name' => 'kept.pdf', 'remote_file_url' => 'http://x/y.pdf' },
+        { 'name' => 'gone.pdf' }
+      ] } }
+
+      described_class.prune_fileless_attachments!(template)
+
+      expect(template['models']['project_file'].map { |f| f['name'] }).to eq(['kept.pdf'])
+    end
+
+    it 'is a no-op when the template has no project files' do
+      expect { described_class.prune_fileless_attachments!({ 'models' => {} }) }.not_to raise_error
     end
   end
 
