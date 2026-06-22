@@ -1,10 +1,9 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
   Box,
   Icon,
   Text,
-  useBreakpoint,
   colors,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
@@ -24,14 +23,13 @@ import LanguageSelectorPopup from './LanguageSelectorPopup';
 import LocaleSelectorPopup from './LocaleSelectorPopup';
 import messages from './messages';
 import RailTooltip from './RailTooltip';
-import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { ItemMenu, StyledBox, StyledText } from './styles';
+import useSidebarCollapsed from './useSidebarCollapsed';
 
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
-  const forceCollapsed = useContext(SidebarCollapsedContext);
-  const isSmallerThanTablet = useBreakpoint('tablet') || forceCollapsed;
+  const collapsed = useSidebarCollapsed();
   const tenantLocales = !isNilOrError(appConfig)
     ? appConfig.data.attributes.settings.core.locales
     : [];
@@ -64,13 +62,10 @@ export const UserMenu = () => {
   const roleMessage = getRoleMessage(authUser.data);
 
   return (
-    <RailTooltip
-      label={getFullName(authUser.data)}
-      disabled={!isSmallerThanTablet}
-    >
+    <RailTooltip label={getFullName(authUser.data)} disabled={!collapsed}>
       <StyledBox
         as="button"
-        width={isSmallerThanTablet ? '56px' : '100%'}
+        width={collapsed ? '56px' : '100%'}
         display="flex"
         justifyContent="flex-start"
         onClick={() => setIsUserMenuPopupOpen(true)}
@@ -81,20 +76,17 @@ export const UserMenu = () => {
           display="flex"
           alignItems="center"
           w="100%"
-          p={isSmallerThanTablet ? '10px 0' : '10px 8px 10px 16px'}
-          justifyContent={isSmallerThanTablet ? 'center' : undefined}
+          p={collapsed ? '10px 0' : '10px 8px 10px 16px'}
+          justifyContent={collapsed ? 'center' : undefined}
         >
           {/*
               Margins are needed to align with other icons/items in sidebar.
               Changes in Avatar component are needed so size prop behaves correctly.
             */}
-          <Box
-            ml={isSmallerThanTablet ? '0' : '-2px'}
-            mr={isSmallerThanTablet ? '0' : '6px'}
-          >
+          <Box ml={collapsed ? '0' : '-2px'} mr={collapsed ? '0' : '6px'}>
             <Avatar userId={authUser.data.id} size={20} />
           </Box>
-          {!isSmallerThanTablet && (
+          {!collapsed && (
             <Box
               display="flex"
               flex="1"
@@ -132,15 +124,13 @@ export const UserMenu = () => {
             </Box>
           )}
           <Box ref={iconDivRef}>
-            {!isSmallerThanTablet && (
-              <Icon name="chevron-right" fill={colors.white} />
-            )}
+            {!collapsed && <Icon name="chevron-right" fill={colors.white} />}
           </Box>
         </Box>
         <Dropdown
           opened={isUserMenuPopupOpen}
           onClickOutside={handleUserMenuPopupClose}
-          left={isSmallerThanTablet ? '60px' : '200px'}
+          left={collapsed ? '60px' : '200px'}
           mobileLeft="60px"
           top="-40px"
           content={
