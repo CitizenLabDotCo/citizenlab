@@ -112,8 +112,6 @@ const Sidebar = ({ authUser }: Props) => {
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
   const parallelParticipation = useParallelParticipation();
-  // `folders` and `new` share the `/admin/projects/:x` shape but aren't a
-  // single project, so exclude them.
   const projectSlug = pathname.match(/\/admin\/projects\/([^/]+)/)?.[1];
   const onProjectPage =
     parallelParticipation &&
@@ -121,8 +119,6 @@ const Sidebar = ({ authUser }: Props) => {
     projectSlug !== 'new' &&
     projectSlug !== 'folders';
 
-  // `forceCollapsed` ignores viewport; subcomponents OR it with their own
-  // tablet breakpoint. `collapsed` is the effective state.
   const forceCollapsed = onProjectPage;
   const collapsed = isSmallerThanPhone || forceCollapsed;
 
