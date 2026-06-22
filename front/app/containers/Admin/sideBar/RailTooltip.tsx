@@ -4,7 +4,6 @@ import { Tooltip } from '@citizenlab/cl2-component-library';
 
 interface Props {
   label: string;
-  // Pass true when the rail is expanded — the label is already visible.
   disabled: boolean;
   children: React.ReactElement;
 }
