@@ -79,7 +79,7 @@ export const NotificationsPopup = () => {
           >
             <Icon
               name="notification-outline"
-              fill={colors.blue400}
+              fill={colors.coolGrey300}
               height="20px"
             />
           </Box>
