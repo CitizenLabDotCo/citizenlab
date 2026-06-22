@@ -179,6 +179,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       moderation: %w[
         FlagInappropriateContent::InappropriateContentFlag
         Moderation::ModerationStatus
+        ProjectReview
         SpamReport
         WiseVoiceFlag
       ],

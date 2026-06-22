@@ -167,11 +167,10 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
-    it 'successfully copies over project reviews and project global topics' do
+    it 'successfully copies over project global topics' do
       project = create(:project)
       global_topic = create(:global_topic)
       project.global_topics << global_topic
-      review = create(:project_review, :approved, project: project)
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -182,12 +181,6 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(Project.count).to be 1
         new_project = Project.first
         expect(new_project.global_topics.map(&:title_multiloc)).to eq [global_topic.title_multiloc]
-
-        new_review = new_project.review
-        expect(new_review).to be_present
-        expect(new_review.approved_at).to be_within(1.second).of(review.approved_at)
-        expect(new_review.requester.email).to eq review.requester.email
-        expect(new_review.reviewer.email).to eq review.reviewer.email
       end
     end
 

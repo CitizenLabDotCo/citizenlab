@@ -61,7 +61,6 @@ module MultiTenancy
           ProjectFolders::Folder => serialize_records(ProjectFolders::Folder),
           ProjectFolders::Image => serialize_records(ProjectFolders::Image),
           ProjectImage => serialize_records(ProjectImage),
-          ProjectReview => serialize_records(ProjectReview),
           ProjectsGlobalTopic => serialize_records(ProjectsGlobalTopic),
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
           Space => serialize_records(Space),
