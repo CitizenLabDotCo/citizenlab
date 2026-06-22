@@ -42,6 +42,7 @@ const Content = styled.div<{ maxHeight: number }>`
   position: relative;
   max-height: ${(props) => props.maxHeight}px;
   overflow: clip;
+  overflow-clip-margin: 4px;
 
   &.expanded {
     max-height: none;
@@ -51,9 +52,8 @@ const Content = styled.div<{ maxHeight: number }>`
 
 const ReadMoreButton = styled(Button)`
   position: absolute;
-  // shifted 4px to make the focus ring visible
-  bottom: 4px;
-  left: 4px;
+  bottom: 0px;
+  left: 0px;
 `;
 
 interface Props {
