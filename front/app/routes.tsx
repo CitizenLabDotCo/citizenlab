@@ -108,10 +108,10 @@ const rootSearchSchema = yup.object({
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
   lat: yup.number().optional(),
   lng: yup.number().optional(),
-  // Opt into the redesigned project back office without the parallel_participation
-  // feature flag — `?parallel_participation=true`. Retained across navigation by
-  // the root route's search middleware so it sticks while moving between project
-  // sub-pages; lives only in the URL (no cookie/localStorage). See useParallelParticipation.
+  // Enables `parallel_participation` without the feature flag —
+  // `?parallel_participation=true`. Retained across navigation by the root
+  // route's search middleware so it sticks while moving between pages; lives
+  // only in the URL (no cookie/localStorage). See useParallelParticipation.
   parallel_participation: yup.string().optional(),
 });
 
@@ -139,8 +139,8 @@ const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),
   search: {
-    // Keep the back-office opt-in param in the URL across client-side
-    // navigations so it persists while moving between project sub-pages
+    // Keep `parallel_participation` in the URL across client-side navigations
+    // so it persists while moving between pages
     middlewares: [
       retainSearchParams(['parallel_participation']),
       normalizeParallelParticipation,
