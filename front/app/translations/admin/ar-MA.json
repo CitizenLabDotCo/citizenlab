@@ -3813,6 +3813,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "منح صلاحيات المسؤول",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "منح صلاحيات المدير",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "لقد وصلت إلى الحد الأقصى للمقاعد المضمنة في خطتك، سيتم إضافة مقعد إضافي واحد.",
+  "app.containers.admin.content_builder.html_block.label": "كتلة HTML",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "إضافة حالة",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "لا يمكن حذف الحالات الافتراضية.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "حذف",

@@ -3813,6 +3813,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "Conferisci i diritti di amministratore",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Concedi diritti di manager",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Hai raggiunto il limite di posti inclusi nel tuo piano, verrà aggiunto 1 posto aggiuntivo.",
+  "app.containers.admin.content_builder.html_block.label": "Blocco HTML",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Aggiungi status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Gli status predefiniti non possono essere eliminati.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Elimina",
