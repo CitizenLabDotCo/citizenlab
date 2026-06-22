@@ -45,7 +45,6 @@ module MultiTenancy
           CustomField => serialize_records(CustomField),
           CustomForm => serialize_records(CustomForm),
           Event => serialize_records(Event),
-          EventFile => serialize_records(EventFile),
           EventImage => serialize_records(EventImage),
           Events::Attendance => serialize_records(Events::Attendance),
           IdeaStatus => serialize_records(IdeaStatus),
@@ -54,21 +53,16 @@ module MultiTenancy
           Permission => serialize_records(Permission),
           PermissionsCustomField => serialize_records(PermissionsCustomField),
           Phase => serialize_records(Phase),
-          PhaseFile => serialize_records(PhaseFile),
           Project => serialize_records(Project),
-          ProjectFile => serialize_records(ProjectFile),
-          ProjectFolders::File => serialize_records(ProjectFolders::File),
           ProjectFolders::Folder => serialize_records(ProjectFolders::Folder),
           ProjectFolders::Image => serialize_records(ProjectFolders::Image),
           ProjectImage => serialize_records(ProjectImage),
-          ProjectReview => serialize_records(ProjectReview),
           ProjectsGlobalTopic => serialize_records(ProjectsGlobalTopic),
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
           Space => serialize_records(Space),
           StaticPagesGlobalTopic => serialize_records(StaticPagesGlobalTopic),
           StaticPagesSpace => serialize_records(StaticPagesSpace),
           StaticPage => serialize_records(StaticPage),
-          StaticPageFile => serialize_records(StaticPageFile),
           GlobalTopic => serialize_records(GlobalTopic),
 
           # It is not necessary to serialize the CustomFieldOption records for the
@@ -99,7 +93,6 @@ module MultiTenancy
           # Ideas
           Idea => serialize_records(ideas),
           BasketsIdea => serialize_records(BasketsIdea.where(idea: ideas)),
-          IdeaFile => serialize_records(IdeaFile.where(idea: ideas)),
           IdeaImage => serialize_records(IdeaImage.where(idea: ideas)),
           IdeasPhase => serialize_records(IdeasPhase.where(idea: ideas)),
           IdeasInputTopic => serialize_records(IdeasInputTopic.where(idea: ideas)),
@@ -109,6 +102,11 @@ module MultiTenancy
           Reaction => serialize_reactions(ideas),
           OfficialFeedback => serialize_records(OfficialFeedback),
           Cosponsorship => serialize_records(Cosponsorship.where(idea: ideas)),
+
+          # Files (the legacy per-resource *File models have been migrated into these).
+          Files::File => serialize_records(Files::File),
+          Files::FilesProject => serialize_records(Files::FilesProject),
+          Files::FileAttachment => serialize_file_attachments(ideas),
 
           # Groups
           Group => serialize_records(groups),
@@ -176,6 +174,13 @@ module MultiTenancy
         # the database, so serialized users don't hold references to CustomField.
         if graph.key?(User) && graph.key?(CustomField)
           graph[User] << CustomField
+        end
+
+        # FileAttachment#validate_file_belongs_to_project reads file.files_projects, so the
+        # FilesProject records must exist before FileAttachments are deserialized. They don't
+        # reference each other directly, so the edge has to be added manually.
+        if graph.key?(Files::FileAttachment) && graph.key?(Files::FilesProject)
+          graph[Files::FileAttachment] << Files::FilesProject
         end
 
         graph
@@ -262,6 +267,18 @@ module MultiTenancy
 
       def serialize_followers(users)
         serialize_records(Follower.where(user: users))
+      end
+
+      # Serialize FileAttachments whose attachable is itself templated. Analysis::* attachables
+      # aren't templated, and Idea attachables are restricted to the serialized ideas scope, so
+      # those attachments are skipped to avoid unresolvable references.
+      def serialize_file_attachments(ideas)
+        templated_types = Files::FileAttachment::ATTACHABLE_TYPES - %w[Analysis::Analysis Analysis::Question]
+        attachments = Files::FileAttachment
+          .where(attachable_type: templated_types)
+          .where.not(attachable_type: 'Idea')
+          .or(Files::FileAttachment.where(attachable: ideas))
+        serialize_records(attachments)
       end
 
       def serialize_input_topics

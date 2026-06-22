@@ -49,10 +49,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
     # TODO: deal with linking idea_statuses, custom field values and maybe areas and groups
     @template['models']['project']                       = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
-    @template['models']['project_file']                  = yml_project_files shift_timestamps: shift_timestamps
     @template['models']['project_image']                 = yml_project_images shift_timestamps: shift_timestamps
     @template['models']['phase']                         = yml_phases timeline_start_at: timeline_start_at, shift_timestamps: shift_timestamps
-    @template['models']['phase_file']                    = yml_phase_files shift_timestamps: shift_timestamps
     @template['models']['custom_form']                   = yml_custom_forms shift_timestamps: shift_timestamps
     @template['models']['custom_field']                  = yml_custom_fields shift_timestamps: shift_timestamps
     @template['models']['custom_field_option']           = yml_custom_field_options shift_timestamps: shift_timestamps
@@ -70,8 +68,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
 
     unless local_copy
-      @template['models']['event']      = yml_events shift_timestamps: shift_timestamps
-      @template['models']['event_file'] = yml_event_files shift_timestamps: shift_timestamps
+      @template['models']['event'] = yml_events shift_timestamps: shift_timestamps
       @template['models']['event_image'] = yml_event_images shift_timestamps: shift_timestamps
     end
 
@@ -83,7 +80,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['idea']                   = yml_ideas exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['basket']                 = yml_baskets shift_timestamps: shift_timestamps
       @template['models']['baskets_idea']           = yml_baskets_ideas exported_ideas
-      @template['models']['idea_file']              = yml_idea_files exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['idea_image']             = yml_idea_images exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['ideas_phase']            = yml_ideas_phases exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['comment']                = yml_comments exported_ideas, shift_timestamps: shift_timestamps
@@ -94,6 +90,15 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
       @template['models']['events/attendance']      = yml_attendances shift_timestamps: shift_timestamps
     end
+
+    # Files (the legacy per-resource *File models have been migrated into these). Emitted
+    # last so every possible attachable (project/phase/event/idea/layout) and uploader is
+    # already registered. file records first, then the join + attachments that reference them.
+    project_file_ids = Files::FilesProject.where(project: @project).pluck(:file_id)
+    @template['models']['files/file']            = yml_files project_file_ids, shift_timestamps: shift_timestamps
+    @template['models']['files/files_project']   = yml_files_projects shift_timestamps: shift_timestamps
+    @template['models']['files/file_attachment'] = yml_file_attachments project_file_ids, shift_timestamps: shift_timestamps
+
     @template
   end
 
@@ -292,19 +297,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     [yml_project]
   end
 
-  def yml_project_files(shift_timestamps: 0)
-    @project.project_files.map do |p|
-      {
-        'project_ref' => lookup_ref(p.project_id, :project),
-        'ordering' => p.ordering,
-        'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
-        'name' => p.name,
-        'remote_file_url' => p.file_url
-      }
-    end
-  end
-
   def yml_project_images(shift_timestamps: 0)
     @project.project_images.map do |p|
       {
@@ -401,19 +393,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
       store_ref yml_phase, phase.id, :phase
       yml_phase
-    end
-  end
-
-  def yml_phase_files(shift_timestamps: 0)
-    @project.phases.flat_map(&:phase_files).map do |p|
-      {
-        'phase_ref' => lookup_ref(p.phase_id, :phase),
-        'ordering' => p.ordering,
-        'name' => p.name,
-        'remote_file_url' => p.file_url,
-        'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
-      }
     end
   end
 
@@ -531,6 +510,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id) unless limit_num_ideas
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
+    user_ids += Files::File.where(id: Files::FilesProject.where(project: @project).select(:file_id)).pluck(:uploader_id)
 
     @user_ids = user_ids.uniq # set globally so we can restrict follower export later
     User.where(id: @user_ids).map do |user|
@@ -614,19 +594,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       }
       store_ref yml_event, event.id, :event
       yml_event
-    end
-  end
-
-  def yml_event_files(shift_timestamps: 0)
-    @project.events.flat_map(&:event_files).map do |e|
-      {
-        'event_ref' => lookup_ref(e.event_id, :event),
-        'name' => e.name,
-        'ordering' => e.ordering,
-        'remote_file_url' => e.file_url,
-        'created_at' => shift_timestamp(e.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601
-      }
     end
   end
 
@@ -716,19 +683,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
           'votes' => b.votes
         }
       end.compact
-    end
-  end
-
-  def yml_idea_files(exported_ideas, shift_timestamps: 0)
-    IdeaFile.where(idea: exported_ideas).map do |i|
-      {
-        'idea_ref' => lookup_ref(i.idea_id, :idea),
-        'name' => i.name,
-        'ordering' => i.ordering,
-        'remote_file_url' => i.file_url,
-        'created_at' => shift_timestamp(i.created_at, shift_timestamps)&.iso8601,
-        'updated_at' => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601
-      }
     end
   end
 
@@ -851,6 +805,56 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'attendee_ref' => lookup_ref(attendance.attendee_id, :user),
         'created_at' => shift_timestamp(attendance.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(attendance.updated_at, shift_timestamps)&.iso8601
+      }
+    end
+  end
+
+  # The Files engine records reachable from the project. A file belongs to at most one
+  # project (Files::FilesProject), and any file attached to a project resource must belong
+  # to that project, so the project's files are exactly those joined via files_projects.
+  def yml_files(file_ids, shift_timestamps: 0)
+    Files::File.where(id: file_ids).map do |file|
+      yml_file = {
+        'uploader_ref' => lookup_ref(file.uploader_id, :user),
+        'name' => file.name,
+        'size' => file.size,
+        'mime_type' => file.mime_type,
+        'category' => file.category,
+        'ai_processing_allowed' => file.ai_processing_allowed,
+        'description_multiloc' => file.description_multiloc,
+        'remote_content_url' => file.content_url,
+        'created_at' => shift_timestamp(file.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(file.updated_at, shift_timestamps)&.iso8601
+      }
+      store_ref yml_file, file.id, :file
+      yml_file
+    end
+  end
+
+  def yml_files_projects(shift_timestamps: 0)
+    Files::FilesProject.where(project: @project).map do |fp|
+      {
+        'file_ref' => lookup_ref(fp.file_id, :file),
+        'project_ref' => lookup_ref(fp.project_id, :project),
+        'created_at' => shift_timestamp(fp.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(fp.updated_at, shift_timestamps)&.iso8601
+      }
+    end
+  end
+
+  def yml_file_attachments(file_ids, shift_timestamps: 0)
+    Files::FileAttachment.where(file_id: file_ids).filter_map do |attachment|
+      # Skip attachments whose attachable isn't in the exported set (e.g. an Analysis, or
+      # an event/idea excluded from this copy) — its ref wouldn't resolve.
+      attachable_ref = lookup_ref(attachment.attachable_id, %i[project phase event idea content_builder_layout])
+      next unless attachable_ref
+
+      {
+        'file_ref' => lookup_ref(attachment.file_id, :file),
+        'attachable_ref' => attachable_ref,
+        'position' => attachment.position,
+        'created_at' => shift_timestamp(attachment.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(attachment.updated_at, shift_timestamps)&.iso8601
       }
     end
   end

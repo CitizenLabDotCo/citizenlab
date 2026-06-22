@@ -167,11 +167,38 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
-    it 'successfully copies over project reviews and project global topics' do
+    it 'successfully copies over Files engine files, projects and attachments' do
+      project = create(:single_phase_ideation_project)
+      phase = project.phases.first
+      idea = create(:idea, project: project, phases: [phase])
+
+      project_file = create(:file, name: 'project.pdf', projects: [project])
+      create(:file_attachment, file: project_file, attachable: project)
+      phase_file = create(:file, name: 'phase.pdf', projects: [project])
+      create(:file_attachment, file: phase_file, attachable: phase)
+      idea_file = create(:file, name: 'idea.pdf', projects: [project])
+      create(:file_attachment, file: idea_file, attachable: idea)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        new_project = Project.first
+        expect(new_project.files.pluck(:name)).to match_array(%w[project.pdf phase.pdf idea.pdf])
+        expect(new_project.attached_files.first.content.file).to be_present
+
+        expect(new_project.file_attachments.count).to eq 1
+        expect(new_project.phases.first.file_attachments.count).to eq 1
+        expect(Idea.first.file_attachments.count).to eq 1
+      end
+    end
+
+    it 'successfully copies over project global topics' do
       project = create(:project)
       global_topic = create(:global_topic)
       project.global_topics << global_topic
-      review = create(:project_review, :approved, project: project)
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -182,12 +209,6 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(Project.count).to be 1
         new_project = Project.first
         expect(new_project.global_topics.map(&:title_multiloc)).to eq [global_topic.title_multiloc]
-
-        new_review = new_project.review
-        expect(new_review).to be_present
-        expect(new_review.approved_at).to be_within(1.second).of(review.approved_at)
-        expect(new_review.requester.email).to eq review.requester.email
-        expect(new_review.reviewer.email).to eq review.reviewer.email
       end
     end
 
