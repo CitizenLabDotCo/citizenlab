@@ -17334,6 +17334,16 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": {
+    "state": "verified",
+    "verified_at": "2026-06-18T07:18:28.062185Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": {
+    "state": "verified",
+    "verified_at": "2026-06-18T07:18:28.062185Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
     "state": "verified",
     "verified_at": "2026-06-15T10:58:49.952575Z",

@@ -10,6 +10,9 @@
     "input_custom_field_no_empty_values": {
       "type": "boolean"
     },
+    "input_follow_up_not_empty": {
+      "type": "boolean"
+    },
     "reactions_from": {
       "type": "number"
     },
