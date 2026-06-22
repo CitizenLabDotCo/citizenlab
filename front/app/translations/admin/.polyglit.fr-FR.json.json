@@ -2954,6 +2954,26 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": {
+    "state": "verified",
+    "verified_at": "2026-06-22T09:36:04.852578Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.noCancel": {
+    "state": "verified",
+    "verified_at": "2026-06-22T09:36:04.852578Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.title": {
+    "state": "verified",
+    "verified_at": "2026-06-22T09:36:04.852578Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.yesContinue": {
+    "state": "verified",
+    "verified_at": "2026-06-22T09:36:04.852578Z",
+    "verified_by": "Adrien"
+  },
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
