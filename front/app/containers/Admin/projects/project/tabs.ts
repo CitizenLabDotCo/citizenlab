@@ -101,12 +101,6 @@ export const getTabs = (
         name: 'insights',
         className: 'intercom-phase-insights-tab',
       },
-    phase.attributes.participation_method === 'native_survey' && {
-      label: formatMessage(messages.surveyPdfExportTab),
-      url: 'pdf-export',
-      name: 'survey-pdf-export',
-      className: 'intercom-phase-pdf-export-tab',
-    },
     {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',

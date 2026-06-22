@@ -1,29 +1,29 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Box, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Spinner,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { pdfjs, Document, Page } from 'react-pdf';
-import styled from 'styled-components';
 
 import {
   fetchCoverPreviewPdf,
   SurveyPdfCover,
 } from 'api/survey_responses_pdf/generateSurveyResponsesPdf';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.mjs`;
 
 const DEBOUNCE_MS = 600;
-
-const FullWidthPage = styled.div`
-  .react-pdf__Page,
-  .react-pdf__Page__canvas {
-    width: 100% !important;
-    height: auto !important;
-  }
-`;
+const ZOOM_MIN = 1;
+const ZOOM_MAX = 3;
+const ZOOM_STEP = 0.25;
 
 type Props = {
   cover: SurveyPdfCover;
@@ -32,9 +32,24 @@ type Props = {
 
 // Renders just the cover of the generated PDF
 const CoverPreview = ({ cover, phaseId }: Props) => {
+  const { formatMessage } = useIntl();
   const [blob, setBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [zoom, setZoom] = useState(ZOOM_MIN);
+
+  // Width the page renders at: the container's width (fit) times the zoom.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [baseWidth, setBaseWidth] = useState<number | null>(null);
+  useEffect(() => {
+    const node = scrollRef.current;
+    if (!node) return undefined;
+    const observer = new ResizeObserver(([entry]) => {
+      setBaseWidth(entry.contentRect.width);
+    });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [blob]);
 
   useEffect(() => {
     if (!cover.include) return undefined;
@@ -78,8 +93,15 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
 
   return (
     <Box position="relative" w="100%" h="100%" background={colors.white}>
-      {file && !error && (
-        <FullWidthPage>
+      <Box
+        ref={scrollRef}
+        w="100%"
+        h="100%"
+        overflow="auto"
+        display="flex"
+        justifyContent={zoom > ZOOM_MIN ? 'flex-start' : 'center'}
+      >
+        {file && !error && baseWidth && (
           <Document
             file={file}
             loading={<></>}
@@ -88,11 +110,47 @@ const CoverPreview = ({ cover, phaseId }: Props) => {
           >
             <Page
               pageNumber={1}
+              width={baseWidth * zoom}
               renderTextLayer={false}
               renderAnnotationLayer={false}
             />
           </Document>
-        </FullWidthPage>
+        )}
+      </Box>
+      {file && !error && (
+        <Box
+          position="absolute"
+          top="8px"
+          right="8px"
+          display="flex"
+          gap="4px"
+          zIndex="2"
+        >
+          <Button
+            icon="minus"
+            iconSize="16px"
+            buttonStyle="white"
+            iconColor={colors.coolGrey600}
+            width="32px"
+            height="32px"
+            padding="0px"
+            disabled={zoom <= ZOOM_MIN}
+            onClick={() => setZoom((z) => Math.max(ZOOM_MIN, z - ZOOM_STEP))}
+            aria-label={formatMessage(messages.zoomOut)}
+          />
+          <Button
+            icon="plus"
+            iconSize="16px"
+            buttonStyle="white"
+            iconColor={colors.coolGrey600}
+            width="32px"
+            height="32px"
+            padding="0px"
+            disabled={zoom >= ZOOM_MAX}
+            onClick={() => setZoom((z) => Math.min(ZOOM_MAX, z + ZOOM_STEP))}
+            aria-label={formatMessage(messages.zoomIn)}
+          />
+        </Box>
       )}
       {!loading && error && (
         <Box

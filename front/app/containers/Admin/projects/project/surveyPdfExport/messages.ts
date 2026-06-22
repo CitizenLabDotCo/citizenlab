@@ -5,14 +5,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.surveyPdfExport.pageTitle',
     defaultMessage: 'Export survey responses to PDF',
   },
-  pageSubtitle: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.pageSubtitle',
-    defaultMessage:
-      'Generate a PDF document with every survey response laid out as an individual record.',
-  },
   coverSectionTitle: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.coverSectionTitle',
-    defaultMessage: 'Cover page',
+    defaultMessage: 'Cover settings',
   },
   includeCoverLabel: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.includeCoverLabel',
@@ -39,8 +34,8 @@ export default defineMessages({
     defaultMessage: 'Additional notes (optional)',
   },
   fieldReviewSectionTitle: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.fieldReviewSectionTitle',
-    defaultMessage: 'Review fields before exporting',
+    id: 'app.containers.Admin.projects.project.surveyPdfExport.fieldReviewSectionTitle2',
+    defaultMessage: 'Review fields for PII',
   },
   fieldReviewWithFlags: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.fieldReviewWithFlags',
@@ -65,10 +60,6 @@ export default defineMessages({
     defaultMessage:
       'I confirm I have the authority to process and export this data, including any personal data included above.',
   },
-  exportButton: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.exportButton',
-    defaultMessage: 'Export PDF',
-  },
   previewLabel: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.previewLabel',
     defaultMessage: 'Cover preview',
@@ -81,9 +72,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.surveyPdfExport.previewError',
     defaultMessage: 'Could not load the preview.',
   },
-  reviewModalTitle: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.reviewModalTitle',
-    defaultMessage: 'Review fields before export',
+  zoomIn: {
+    id: 'app.containers.Admin.projects.project.surveyPdfExport.zoomIn',
+    defaultMessage: 'Zoom in',
+  },
+  zoomOut: {
+    id: 'app.containers.Admin.projects.project.surveyPdfExport.zoomOut',
+    defaultMessage: 'Zoom out',
   },
   cancelButton: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.cancelButton',
@@ -92,10 +87,6 @@ export default defineMessages({
   generateButton: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.generateButton',
     defaultMessage: 'Generate PDF',
-  },
-  noResponses: {
-    id: 'app.containers.Admin.projects.project.surveyPdfExport.noResponses',
-    defaultMessage: 'There are no survey responses to export yet.',
   },
   responsesFound: {
     id: 'app.containers.Admin.projects.project.surveyPdfExport.responsesFound',
