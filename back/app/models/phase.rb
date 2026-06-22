@@ -370,7 +370,8 @@ class Phase < ApplicationRecord
   end
 
   def validate_end_at
-    return if end_at.present? || TimelineService.new.last_phase?(self)
+    return if end_at.present?
+    return if !placement.sequential? || TimelineService.new.last_phase?(self)
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
   end
@@ -382,6 +383,8 @@ class Phase < ApplicationRecord
   end
 
   def validate_no_other_overlapping_phases
+    return if !placement.sequential?
+
     ts = TimelineService.new
     ts.other_project_phases(self).each do |other_phase|
       # Skip open-ended phases that start before this phase as they have their own
@@ -395,6 +398,8 @@ class Phase < ApplicationRecord
   end
 
   def validate_previous_phase_can_be_closed
+    return if !placement.sequential?
+
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
 
@@ -405,6 +410,8 @@ class Phase < ApplicationRecord
   end
 
   def close_previous_open_phase
+    return if !placement.sequential?
+
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
 

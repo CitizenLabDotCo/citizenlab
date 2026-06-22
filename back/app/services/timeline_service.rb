@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TimelineService
+  # TODO: Some of these methods should filter on on_timeline phases only.
+
   def future_phases(project, time = Time.now)
     time = time.in_time_zone
     project.phases.select { |phase| phase.start_at > time }
