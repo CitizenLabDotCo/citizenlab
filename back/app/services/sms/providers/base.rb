@@ -17,10 +17,6 @@ module Sms
         raise NotImplementedError
       end
 
-      def callback_url
-        raise NotImplementedError
-      end
-
       # Normalises a provider callback into our own vocabulary.
       # @param params [ActionController::Parameters] the callback params
       # @return [Hash{Symbol => String, nil}] { message_sid:, status: } where

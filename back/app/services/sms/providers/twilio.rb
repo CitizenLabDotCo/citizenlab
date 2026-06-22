@@ -34,10 +34,6 @@ module Sms
         validator.validate(callback_url, request.request_parameters, signature)
       end
 
-      def callback_url
-        "#{AppConfiguration.instance.base_backend_uri}/web_api/v1/sms/callbacks/twilio"
-      end
-
       def parse_callback(params)
         {
           message_sid: params[:MessageSid],
@@ -46,6 +42,10 @@ module Sms
       end
 
       private
+
+      def callback_url
+        "#{AppConfiguration.instance.base_backend_uri}/web_api/v1/sms/callbacks/twilio"
+      end
 
       # The Messaging Service SID takes precedence over the phone number when
       # both are configured. At least one must be set.
