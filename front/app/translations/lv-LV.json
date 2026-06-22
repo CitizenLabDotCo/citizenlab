@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} reģistrējušies",
   "app.containers.EventsShow.registrantsIconAltText": "Reģistrētāji",
   "app.containers.EventsShow.socialMediaSharingMessage": "Apmeklējiet šo pasākumu: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Skatīt {location} Google Maps (atveras jaunā logā)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# dalībnieks} other {# dalībnieki}}",
   "app.containers.EventsViewer.allTime": "Visu laiku",
   "app.containers.EventsViewer.date": "Datums",

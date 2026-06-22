@@ -17369,6 +17369,16 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": {
+    "state": "verified",
+    "verified_at": "2026-06-19T09:36:04.873984Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": {
+    "state": "verified",
+    "verified_at": "2026-06-19T09:36:04.873984Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
     "state": "verified",
     "verified_at": "2026-06-11T08:17:57.495381Z",
@@ -17938,6 +17948,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.projects.project.analysis.followUpNotEmpty": {
+    "state": "verified",
+    "verified_at": "2026-06-19T13:42:59.943001Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": {
     "state": "verified",

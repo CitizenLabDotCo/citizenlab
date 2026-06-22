@@ -7149,6 +7149,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": {
+    "state": "verified",
+    "verified_at": "2026-06-19T09:35:34.178166Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.EventsShow.xParticipants": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
