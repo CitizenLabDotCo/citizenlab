@@ -472,6 +472,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Rašyti",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAll": "Visi įvesties duomenys",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescription": "Prieš publikuojant visus įvestus duomenis, juos turi peržiūrėti administratorius. Įvestys nebus matomos, kol jų neperžiūrės ir nepatvirtins administratorius. Autoriai negali redaguoti įvesties duomenų po to, kai jie buvo peržiūrėti arba į juos sureaguota.",
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": "Visiems įrašams reikalinga administratoriaus peržiūra prieš juos paskelbiant. Įrašai nebus matomi, kol administratorius jų neperžiūrės ir nepatvirtins. Autoriai negali redaguoti įrašų po to, kai jie yra peržiūrėti arba sulaukia reakcijų. Naudokite tik išskirtiniais atvejais. Visų įrašų išankstinė peržiūra gali turėti įtakos demokratiniam dalyvavimui. Įjunkite tik pasitarę su savo klientų sėkmės vadovu.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": "Įvestys su žyma",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnlyDescription": "Prieš publikuojant reikia peržiūrėti tik tuos įvesties duomenis, kurie pažymėti kaip netinkamo turinio. Visos kitos įvestys skelbiamos iš karto. Autoriai gali redaguoti įvestis po to, kai jos paskelbiamos.",
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeOff": "Išjungta",

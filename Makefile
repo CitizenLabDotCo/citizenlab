@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env claude-setup migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup configure-worktree migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -31,6 +31,36 @@ reset-dev-env:
 
 claude-setup:
 	@bin/setup-claude
+
+# For git worktrees: seed the gitignored *-secret.env files from the main checkout, install
+# front-end deps, write a root .env with WORKTREE_PREFIX (derived from this worktree's folder
+# name) so the stack gets its own container/network names and doesn't clash with other
+# worktrees, then reset the dev env (reset-dev-env handles the Claude overlay setup, image
+# build, and DB reset). Only works if the worktree is created in the same folder as the main
+# checkout (../citizenlab).
+configure-worktree:
+	@gitdir="$$(git rev-parse --git-dir 2>/dev/null)"; \
+	commondir="$$(git rev-parse --git-common-dir 2>/dev/null)"; \
+	if [ -z "$$gitdir" ]; then \
+		echo "configure-worktree: not inside a git repository. Aborting."; exit 1; \
+	elif [ "$$gitdir" = "$$commondir" ]; then \
+		echo "configure-worktree: this is the main checkout, not a linked git worktree. Aborting."; exit 1; \
+	fi
+	@for f in $$(cd ../citizenlab/env_files && ls *-secret.env 2>/dev/null); do \
+		if [ ! -e env_files/$$f ]; then \
+			cp ../citizenlab/env_files/$$f env_files/$$f && echo "Copied env_files/$$f from ../citizenlab"; \
+		else \
+			echo "Skipping env_files/$$f (already exists)"; \
+		fi; \
+	done
+	cd front && npm install
+	@prefix=$$(basename "$$PWD" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_-]/-/g'); \
+	if [ -f .env ] && grep -q '^WORKTREE_PREFIX=' .env; then \
+		sed -i.bak "s/^WORKTREE_PREFIX=.*/WORKTREE_PREFIX=$$prefix/" .env && rm -f .env.bak && echo "Updated WORKTREE_PREFIX=$$prefix in .env"; \
+	else \
+		echo "WORKTREE_PREFIX=$$prefix" >> .env && echo "Set WORKTREE_PREFIX=$$prefix in .env"; \
+	fi
+	make reset-dev-env
 
 clean-tenant-settings:
 	docker compose run --rm web bin/rails cl2back:clean_tenant_settings
@@ -211,12 +241,12 @@ sso-reset:
 # # or
 # make rails-console
 c rails-console:
-	docker compose run --rm web bin/rails c
+	docker compose exec web bin/rails c
 
 # Runs rails console in an existing web container. May be useful if you need to access localhost:4000 in the console.
 # E.g., this command works in this console `curl http://localhost:4000`
 rails-console-exec:
-	docker exec -it "$$(docker ps | awk '/cl-back-web/ {print $$1}' | head -1)" bin/rails c
+	docker compose exec web bin/rails c
 
 # search_path=localhost specifies the schema of localhost tenant
 psql:
@@ -238,7 +268,7 @@ r rspec:
 
 # SSH session onto the running web container.
 bash-exec:
-	docker exec -it cl-back-web /bin/bash
+	docker compose exec web /bin/bash
 
 # Usage examples:
 # make feature-flag feature=initiative_cosponsors enabled=true
