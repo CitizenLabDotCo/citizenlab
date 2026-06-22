@@ -50,15 +50,6 @@ class TimelineService
     project.phases.select { |phase| phase.pmethod.transitive? }&.last
   end
 
-  def current_and_future_phases(project, time = Time.now)
-    time = time.in_time_zone
-    project.phases.select { |phase| phase.end_at.nil? || phase.end_at > time }
-  end
-
-  def in_active_phase?(idea)
-    idea.phases.include?(current_phase(idea.project))
-  end
-
   def overlaps?(phase1, phase2)
     period1 = phase1.start_at...phase1.end_at
     period2 = phase2.start_at...phase2.end_at

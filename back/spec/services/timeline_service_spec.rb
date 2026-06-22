@@ -191,52 +191,6 @@ describe TimelineService do
     end
   end
 
-  describe 'current_and_future_phases' do
-    it 'returns an array of current and future phases' do
-      project = create(:project_with_current_phase)
-      expect(service.current_and_future_phases(project)).to match_array project.phases.drop(2)
-    end
-
-    it 'returns current and future phases when the last phase is open ended' do
-      project = create(:project)
-      _past_phase = create(:phase, project:, start_at: 10.days.ago, end_at: 3.days.ago)
-      current_phase = create(:phase, project:, start_at: 2.days.ago, end_at: 2.days.from_now)
-      future_phase = create(:phase, project:, start_at: 3.days.from_now, end_at: nil)
-
-      expect(service.current_and_future_phases(project)).to contain_exactly(current_phase, future_phase)
-    end
-
-    it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: '2019-09-02T00:00:00Z', end_at: '2019-09-10T00:00:00Z')
-      project = phase.project
-
-      # Same naive time, but the result depends on the tenant timezone.
-      # in Brussels: 2019-09-09T23:00:00+02:00 => 2019-09-09T21:00:00Z
-      # in Santiago: 2019-09-09T23:00:00-03:00 => 2019-09-10T02:00:00Z
-      t = '2019-09-09T23:00:00'
-
-      set_timezone('Europe/Brussels')
-      expect(service.current_and_future_phases(project, t)).to eq [phase]
-
-      set_timezone('America/Santiago')
-      expect(service.current_and_future_phases(project, t)).to be_empty
-    end
-  end
-
-  describe 'in_active_phase?' do
-    it 'returns truthy when the given idea is in the active phase' do
-      project = create(:project_with_current_phase)
-      idea = create(:idea, project: project, phases: [service.current_phase(project)])
-      expect(service.in_active_phase?(idea)).to be true
-    end
-
-    it 'returns falsy when the given idea is not in the active phase' do
-      project = create(:project_with_current_phase)
-      idea = create(:idea, project: project, phases: [project.phases.find { |p| p != service.current_phase(project) }])
-      expect(service).not_to be_in_active_phase(idea)
-    end
-  end
-
   describe 'timeline_active' do
     it 'returns nil for a project with no phases' do
       project = create(:project)
