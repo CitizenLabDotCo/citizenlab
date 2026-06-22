@@ -109,7 +109,7 @@ describe('<Analysis /> auto-analysis threshold', () => {
       <Analysis
         customFieldId={CUSTOM_FIELD_ID}
         textResponsesCount={5}
-        hasOtherResponses={false}
+        textResponseSource="free_text"
       />
     );
 

@@ -7,23 +7,18 @@ import { render, waitFor } from 'utils/testUtils/rtl';
 
 import AnalysisInsights from './AnalysisInsights';
 
-// The summary-generation threshold (an input count of 10) is inlined in this
-// component. These tests pin the behaviour around it: the default summary is
-// only auto-generated when the analysis has more than 10 inputs, and the
-// "other" filter is applied only for select/multiselect "other".
+// The summary-generation threshold (a response count of 10) is inlined in this
+// component, reading the textResponsesCount prop. These tests pin the behaviour
+// around it: the default summary is only auto-generated when there are more than
+// 10 responses, and the "other" filter is applied only for select/multiselect
+// "other".
 
-let mockInputCount = 0;
 const mockAddSummary = jest.fn();
 const mockPreCheck = jest.fn(
   (_vars: unknown, opts?: { onSuccess?: (data: unknown) => void }) =>
     opts?.onSuccess?.({ data: { attributes: { impossible_reason: null } } })
 );
 
-jest.mock('api/analysis_inputs/useInfiniteAnalysisInputs', () =>
-  jest.fn(() => ({
-    data: { pages: [{ meta: { filtered_count: mockInputCount } }] },
-  }))
-);
 jest.mock('api/analysis_summaries/useAddAnalysisSummary', () =>
   jest.fn(() => ({ mutate: mockAddSummary, isLoading: false }))
 );
@@ -60,13 +55,16 @@ const noInsights: IInsights = { data: [] };
 describe('<AnalysisInsights /> auto-summary threshold', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockInputCount = 0;
   });
 
-  it('does not auto-generate a summary at the threshold (10 inputs)', async () => {
-    mockInputCount = 10;
-
-    render(<AnalysisInsights analysis={analysis} insights={noInsights} />);
+  it('does not auto-generate a summary at the threshold (10 responses)', async () => {
+    render(
+      <AnalysisInsights
+        analysis={analysis}
+        insights={noInsights}
+        textResponsesCount={10}
+      />
+    );
 
     await waitFor(() => {
       expect(mockPreCheck).not.toHaveBeenCalled();
@@ -74,10 +72,14 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
     expect(mockAddSummary).not.toHaveBeenCalled();
   });
 
-  it('auto-generates a summary above the threshold (11 inputs)', async () => {
-    mockInputCount = 11;
-
-    render(<AnalysisInsights analysis={analysis} insights={noInsights} />);
+  it('auto-generates a summary above the threshold (11 responses)', async () => {
+    render(
+      <AnalysisInsights
+        analysis={analysis}
+        insights={noInsights}
+        textResponsesCount={11}
+      />
+    );
 
     await waitFor(() => {
       expect(mockPreCheck).toHaveBeenCalled();
@@ -87,14 +89,13 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
     );
   });
 
-  it('restricts the summary to "other" responses when hasOtherResponses is true', async () => {
-    mockInputCount = 11;
-
+  it('restricts the summary to "other" responses for an other_option source', async () => {
     render(
       <AnalysisInsights
         analysis={analysis}
         insights={noInsights}
-        hasOtherResponses
+        textResponsesCount={11}
+        textResponseSource="other_option"
       />
     );
 
@@ -106,9 +107,14 @@ describe('<AnalysisInsights /> auto-summary threshold', () => {
   });
 
   it('does not add the "other" filter for plain text questions', async () => {
-    mockInputCount = 11;
-
-    render(<AnalysisInsights analysis={analysis} insights={noInsights} />);
+    render(
+      <AnalysisInsights
+        analysis={analysis}
+        insights={noInsights}
+        textResponsesCount={11}
+        textResponseSource="free_text"
+      />
+    );
 
     await waitFor(() => {
       expect(mockAddSummary).toHaveBeenCalled();
