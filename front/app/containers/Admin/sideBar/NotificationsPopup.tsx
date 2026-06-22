@@ -1,11 +1,10 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
   Box,
   Icon,
   Text,
   colors,
-  useBreakpoint,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
 
@@ -21,13 +20,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import RailTooltip from './RailTooltip';
-import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { StyledBox, StyledText } from './styles';
+import useSidebarCollapsed from './useSidebarCollapsed';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
-  const forceCollapsed = useContext(SidebarCollapsedContext);
-  const isSmallerThanTablet = useBreakpoint('tablet') || forceCollapsed;
+  const collapsed = useSidebarCollapsed();
   const { data: authUser } = useAuthUser();
   const { mutate: markAllAsRead } = useMarkAllAsRead();
   const iconDivRef = useRef<HTMLDivElement | null>(null);
@@ -55,11 +53,11 @@ export const NotificationsPopup = () => {
   return (
     <RailTooltip
       label={formatMessage(messages.notifications)}
-      disabled={!isSmallerThanTablet}
+      disabled={!collapsed}
     >
       <StyledBox
         as="button"
-        width={isSmallerThanTablet ? '56px' : '100%'}
+        width={collapsed ? '56px' : '100%'}
         display="flex"
         justifyContent="flex-start"
         onClick={handleOpenNotifications}
@@ -70,8 +68,8 @@ export const NotificationsPopup = () => {
           display="flex"
           alignItems="center"
           w="100%"
-          p={isSmallerThanTablet ? '10px 0' : '10px 16px'}
-          justifyContent={isSmallerThanTablet ? 'center' : undefined}
+          p={collapsed ? '10px 0' : '10px 16px'}
+          justifyContent={collapsed ? 'center' : undefined}
         >
           <Box
             display="flex"
@@ -85,7 +83,7 @@ export const NotificationsPopup = () => {
               height="20px"
             />
           </Box>
-          {!isSmallerThanTablet && (
+          {!collapsed && (
             <>
               <StyledText
                 color="white"
@@ -98,7 +96,7 @@ export const NotificationsPopup = () => {
               </StyledText>
             </>
           )}
-          <Box w="auto" h={isSmallerThanTablet ? '0' : '18px'} ref={iconDivRef}>
+          <Box w="auto" h={collapsed ? '0' : '18px'} ref={iconDivRef}>
             {unreadNotificationsCount > 0 && (
               <Box
                 background={colors.red500}
@@ -119,7 +117,7 @@ export const NotificationsPopup = () => {
           opened={isNotificationsPopupOpen}
           content={<Notifications />}
           onClickOutside={handleCloseNotifications}
-          left={isSmallerThanTablet ? '60px' : '200px'}
+          left={collapsed ? '60px' : '200px'}
           mobileLeft="60px"
           top="-160px"
         />
