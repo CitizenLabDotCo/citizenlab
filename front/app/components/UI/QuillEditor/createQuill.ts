@@ -138,10 +138,12 @@ export const createQuill = (
       }
 
       fileInput.onchange = () => {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const files = fileInput?.files;
         if (files && files.length) {
           quill.uploader.upload(range, files);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (fileInput) fileInput.value = '';
       };
 
