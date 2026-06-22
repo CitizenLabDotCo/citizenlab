@@ -177,6 +177,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         CustomIdMethods::IdCardLookup::IdCard
         Doorkeeper::AccessGrant
         Doorkeeper::AccessToken
+        Doorkeeper::Application
         EmailBan
         Identity
         Invite
