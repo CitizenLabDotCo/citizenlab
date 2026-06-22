@@ -23,7 +23,10 @@ const STATIC_SCALAR_FILTERS: string[] = [
   'published_at_to',
 ];
 
-const STATIC_BOOLEAN_FILTERS: string[] = ['input_custom_field_no_empty_values'];
+const STATIC_BOOLEAN_FILTERS: string[] = [
+  'input_custom_field_no_empty_values',
+  'input_follow_up_not_empty',
+];
 
 const STATIC_ARRAY_FILTERS: string[] = ['tag_ids'];
 

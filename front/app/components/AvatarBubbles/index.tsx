@@ -36,7 +36,7 @@ export const AvatarImageBubble = styled.img<{
   object-position: center;
 `;
 
-export type AvatarBubblesContext = {
+type AvatarBubblesContext = {
   type: 'project' | 'group';
   id: string;
 };
@@ -80,6 +80,7 @@ export const AvatarBubbles = ({
   const avatarsWithIds = avatarsWithIdsQueries
     .filter((query) => query.data !== undefined)
     .map((query) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       return query.data?.data;
     }) as IAvatarData[];
 

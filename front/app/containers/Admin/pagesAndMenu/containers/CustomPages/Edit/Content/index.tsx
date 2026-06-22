@@ -72,9 +72,11 @@ const CustomPagesEditContent = () => {
     },
     {
       name: 'projects_enabled',
-      titleMessage: formatMessage(sectionToggleMessages.projectsList),
+      titleMessage: formatMessage(sectionToggleMessages.projectsAndFoldersList),
       tooltipMessage: (
-        <FormattedMessage {...sectionToggleMessages.projectsListTooltip} />
+        <FormattedMessage
+          {...sectionToggleMessages.projectsAndFoldersListTooltip}
+        />
       ),
       hideSection: hideProjects,
       linkToPath: 'projects',

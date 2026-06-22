@@ -13,6 +13,7 @@ import { stringify } from 'qs';
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -25,9 +26,14 @@ import clHistory from 'utils/cl-router/history';
 import { useParams, useSearch } from 'utils/router';
 
 import messages from '../../../messages';
+import { TextResponseSource } from '../utils';
 
 import AnalysisInsights from './AnalysisInsights';
-import { filterForCommunityMonitorQuarter } from './utils';
+import {
+  filterForCommunityMonitorQuarter,
+  isFollowUpFiltered,
+  isOtherFiltered,
+} from './utils';
 
 // Minimum number of (non-empty) text responses before the analysis is created
 // automatically (which in turn triggers its default summary). Used by both the
@@ -39,7 +45,7 @@ const AUTO_ANALYSIS_MIN_RESPONSES = 10;
 type Props = {
   customFieldId: string;
   textResponsesCount: number;
-  hasOtherResponses?: boolean;
+  textResponseSource?: TextResponseSource;
   projectId?: string;
   phaseId?: string;
 };
@@ -47,7 +53,7 @@ type Props = {
 const Analysis = ({
   customFieldId,
   textResponsesCount,
-  hasOtherResponses,
+  textResponseSource,
   ...props
 }: Props) => {
   const search = useSearch({ strict: false });
@@ -113,6 +119,36 @@ const Analysis = ({
       })
     : insightsData;
 
+  // Only insights generated scoped to *this box's* responses belong here — the
+  // "other" option for select questions, or non-empty follow-up text for
+  // sentiment questions. Each insightable's stored filters are side-loaded on
+  // the insights response; drop any (summary or Q&A) generated over the whole
+  // question (e.g. on the Explore page).
+  const filtersByInsightableId: Record<
+    string,
+    IInputsFilterParams | undefined
+  > = {};
+  insightsData?.included?.forEach((included) => {
+    if (included.type === 'summary' || included.type === 'analysis_question') {
+      filtersByInsightableId[included.id] = included.attributes?.filters;
+    }
+  });
+
+  const requiresScopedInsights =
+    textResponseSource === 'other_option' || textResponseSource === 'follow_up';
+
+  const displayedInsights = requiresScopedInsights
+    ? {
+        data: (insights?.data ?? []).filter((insight) => {
+          const filters =
+            filtersByInsightableId[insight.relationships.insightable.data.id];
+          return textResponseSource === 'other_option'
+            ? isOtherFiltered(filters, customFieldId)
+            : isFollowUpFiltered(filters);
+        }),
+      }
+    : insights;
+
   // Create an analysis if there are no analyses yet
   useEffect(() => {
     if (
@@ -147,7 +183,29 @@ const Analysis = ({
   const hideAnalysisInsights =
     relevantAnalysis && !relevantAnalysis.attributes.show_insights;
 
-  const noInsights = !relevantAnalysis || insights?.data.length === 0;
+  const noInsights = !relevantAnalysis || displayedInsights?.data.length === 0;
+
+  // When opening the analysis from a scoped box, carry that scope into the URL
+  // so the AI explore page applies the same 'other'/follow-up filter (matching
+  // the "Explore" button on an existing summary). Array values are JSON-encoded
+  // the way the explore page's parser (TanStack search + handleArraySearchParam)
+  // expects.
+  const scopeSearchParams: Record<string, string> = {};
+  if (textResponseSource === 'other_option') {
+    scopeSearchParams.input_custom_field_no_empty_values = 'true';
+    scopeSearchParams[`input_custom_${customFieldId}`] = JSON.stringify([
+      'other',
+    ]);
+  } else if (textResponseSource === 'follow_up') {
+    scopeSearchParams.input_custom_field_no_empty_values = 'true';
+    scopeSearchParams.input_follow_up_not_empty = 'true';
+  }
+
+  const analysisUrl = (analysisId: string) =>
+    `/admin/projects/${projectId}/analysis/${analysisId}?${stringify({
+      phase_id: phaseId,
+      ...scopeSearchParams,
+    })}`;
 
   // Below the auto-summary threshold, no summary exists yet: let the admin know
   // a summary will be generated automatically once enough responses come in.
@@ -159,13 +217,7 @@ const Analysis = ({
 
   const goToAnalysis = () => {
     if (relevantAnalysis?.id) {
-      clHistory.push(
-        `/admin/projects/${projectId}/analysis/${
-          relevantAnalysis.id
-        }?${stringify({
-          phase_id: phaseId,
-        })}`
-      );
+      clHistory.push(analysisUrl(relevantAnalysis.id));
     } else {
       addAnalysis(
         {
@@ -175,11 +227,7 @@ const Analysis = ({
         },
         {
           onSuccess: (response) => {
-            clHistory.push(
-              `/admin/projects/${projectId}/analysis/${
-                response.data.id
-              }?${stringify({ phase_id: phaseId })}`
-            );
+            clHistory.push(analysisUrl(response.data.id));
           },
         }
       );
@@ -264,8 +312,9 @@ const Analysis = ({
 
           <AnalysisInsights
             analysis={relevantAnalysis}
-            insights={insights}
-            hasOtherResponses={hasOtherResponses}
+            insights={displayedInsights}
+            textResponseSource={textResponseSource}
+            textResponsesCount={textResponsesCount}
           />
         </>
       )}

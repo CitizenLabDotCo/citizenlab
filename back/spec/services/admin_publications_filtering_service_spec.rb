@@ -64,4 +64,39 @@ describe AdminPublicationsFilteringService do
       expect(result.ids).to include(*AdminPublication.ids)
     end
   end
+
+  context 'when filtering by spaces' do
+    let(:base_scope) { AdminPublication.includes(:parent) }
+    let(:options) { { spaces: [space_a.id] } }
+
+    let_it_be(:space_a) { create(:space) }
+    let_it_be(:space_b) { create(:space) }
+
+    # Top-level projects, one per space
+    let_it_be(:project_a) { create(:project, space: space_a) }
+    let_it_be(:project_b) { create(:project, space: space_b) }
+
+    # A folder per space, each containing a project in the same space
+    let_it_be(:nested_project_a) { create(:project, space: space_a) }
+    let_it_be(:folder_a) { create(:project_folder, space: space_a, projects: [nested_project_a]) }
+    let_it_be(:nested_project_b) { create(:project, space: space_b) }
+    let_it_be(:folder_b) { create(:project_folder, space: space_b, projects: [nested_project_b]) }
+
+    it 'includes the projects and folders that belong to the given space' do
+      expect(result.map(&:publication_id)).to include(project_a.id, folder_a.id, nested_project_a.id)
+    end
+
+    it 'does not leak projects from other spaces' do
+      expect(result.map(&:publication_id)).not_to include(project_b.id, nested_project_b.id)
+    end
+
+    it 'does not leak folders from other spaces' do
+      expect(result.map(&:publication_id)).not_to include(folder_b.id)
+    end
+
+    it 'does not leak space-less publications from the mocked tree' do
+      space_less_ids = AdminPublication.where(publication_id: Project.where(space_id: nil)).ids
+      expect(result.ids).not_to include(*space_less_ids)
+    end
+  end
 end
