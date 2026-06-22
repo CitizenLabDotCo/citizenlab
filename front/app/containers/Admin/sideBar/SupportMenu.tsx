@@ -1,10 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 import {
   Icon,
   Box,
   Text,
-  useBreakpoint,
   colors,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
@@ -18,8 +17,8 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import RailTooltip from './RailTooltip';
-import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { ItemMenu, StyledBox, StyledText } from './styles';
+import useSidebarCollapsed from './useSidebarCollapsed';
 
 const StyledIcon = styled(Icon)`
   flex-shrink: 0;
@@ -30,8 +29,7 @@ const StyledIcon = styled(Icon)`
 export const SupportMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { formatMessage } = useIntl();
-  const forceCollapsed = useContext(SidebarCollapsedContext);
-  const isSmallerThanTablet = useBreakpoint('tablet') || forceCollapsed;
+  const collapsed = useSidebarCollapsed();
   const { data: authUser } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
 
@@ -39,13 +37,10 @@ export const SupportMenu = () => {
     tenant?.data.attributes.settings.core.customer_portal_url;
 
   return (
-    <RailTooltip
-      label={formatMessage(messages.support)}
-      disabled={!isSmallerThanTablet}
-    >
+    <RailTooltip label={formatMessage(messages.support)} disabled={!collapsed}>
       <StyledBox
         as="button"
-        width={isSmallerThanTablet ? '56px' : '100%'}
+        width={collapsed ? '56px' : '100%'}
         display="flex"
         justifyContent="flex-start"
         p="0px"
@@ -56,8 +51,8 @@ export const SupportMenu = () => {
           display="flex"
           alignItems="center"
           w="100%"
-          p={isSmallerThanTablet ? '10px 0' : '10px 8px 10px 16px'}
-          justifyContent={isSmallerThanTablet ? 'center' : undefined}
+          p={collapsed ? '10px 0' : '10px 8px 10px 16px'}
+          justifyContent={collapsed ? 'center' : undefined}
         >
           <Box
             display="flex"
@@ -67,7 +62,7 @@ export const SupportMenu = () => {
           >
             <Icon name="help" fill={colors.green400} height="20px" />
           </Box>
-          {!isSmallerThanTablet && (
+          {!collapsed && (
             <StyledText
               color="white"
               ml="15px"
@@ -80,15 +75,13 @@ export const SupportMenu = () => {
             </StyledText>
           )}
           <Box>
-            {!isSmallerThanTablet && (
-              <Icon name="chevron-right" fill={colors.white} />
-            )}
+            {!collapsed && <Icon name="chevron-right" fill={colors.white} />}
           </Box>
         </Box>
         <Dropdown
           opened={isDropdownOpen}
           onClickOutside={() => setIsDropdownOpen(false)}
-          left={isSmallerThanTablet ? '60px' : '200px'}
+          left={collapsed ? '60px' : '200px'}
           mobileLeft="60px"
           top="-140px"
           content={
