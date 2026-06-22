@@ -238,7 +238,6 @@ const projectIndexRoute = createRoute({
   component: ProjectIndexRedirect,
 });
 
-// --- Project page (gated by the parallel_participation flag) ---
 const projectPageRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'project-page',
