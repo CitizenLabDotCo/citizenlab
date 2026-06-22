@@ -178,6 +178,7 @@ en:
       new_idea_for_admin_published: New published input in a project I moderate
       official_feedback_on_idea_you_follow: Update on an input that you follow
       password_reset: Password reset
+      phone_confirmation: Phone number verification code
       project_folder_moderation_rights_received: Folder manager rights received
       project_manager_rights_received: Project manager rights received
       project_phase_started: New project phase
@@ -502,6 +503,8 @@ en:
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: There's an update on "%{input_title}"
+    phone_confirmation:
+      sms_body: 'Your verification code is %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

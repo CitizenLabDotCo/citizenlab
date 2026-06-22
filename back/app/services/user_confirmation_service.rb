@@ -57,13 +57,27 @@ class UserConfirmationService
     failure_result(e)
   end
 
+  # Confirms a pending phone-number change for an authenticated user.
+  # On success, NewPhoneConfirmation#confirm! promotes new_phone_number -> phone_number.
+  def validate_and_confirm_phone_change!(user, code)
+    validate_user!(user)
+    validate_phone!(user.new_phone_number)
+    # complete_claim is an email/signup concern (transferring anonymous activity),
+    # not relevant to confirming a phone number.
+    validate_and_confirm!(user, user.new_phone_confirmation, code, complete_claim: false)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
   private
 
-  def validate_and_confirm!(user, confirmation, code)
+  def validate_and_confirm!(user, confirmation, code, complete_claim: true)
     validate_retry_count!(confirmation, code)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
-    confirm_user!(user, confirmation)
+    confirm_user!(user, confirmation, complete_claim:)
   end
 
   def validate_password_login_enabled!
@@ -78,6 +92,10 @@ class UserConfirmationService
 
   def validate_email!(email)
     raise ValidationError.new(:user, :no_email) if email.blank?
+  end
+
+  def validate_phone!(phone_number)
+    raise ValidationError.new(:user, :no_phone) if phone_number.blank?
   end
 
   def validate_retry_count!(confirmation, code)
@@ -109,9 +127,9 @@ class UserConfirmationService
     raise ValidationError.new(:base, :confirmation_not_required)
   end
 
-  def confirm_user!(user, confirmation)
+  def confirm_user!(user, confirmation, complete_claim: true)
     if confirmation.confirm!
-      ClaimTokenService.complete(user)
+      ClaimTokenService.complete(user) if complete_claim
     else
       raise ValidationError.new(
         :user, :confirmation, message: 'Something went wrong.'

@@ -15,7 +15,7 @@ describe EmailCampaigns::DeliveryService do
 
   describe '#send_now (SMS channel)' do
     let(:campaign) { create(:sms_manual_campaign) }
-    let!(:recipient) { create(:user, phone_number: '+14155552671', locale: 'en') }
+    let!(:recipient) { create(:user, phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now, locale: 'en') }
 
     before { create(:user, phone_number: nil) } # phone-less user is not a recipient
 

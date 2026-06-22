@@ -48,6 +48,23 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
+  # This endpoint is used when a logged in user confirms a pending phone-number
+  # change. On success, new_phone_number is promoted to phone_number. The phone
+  # number isn't part of the auth token, so there's no JWT cookie to refresh.
+  def confirm_code_phone_change
+    result = user_confirmation_service.validate_and_confirm_phone_change!(
+      current_user,
+      confirm_code_params[:code]
+    )
+
+    if result.success?
+      SideFxUserService.new.after_update(current_user, current_user)
+      head :ok
+    else
+      render json: { errors: result.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def confirm_code_unauthenticated_params

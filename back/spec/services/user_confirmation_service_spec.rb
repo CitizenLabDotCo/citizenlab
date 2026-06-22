@@ -155,4 +155,84 @@ RSpec.describe UserConfirmationService do
       end
     end
   end
+
+  describe '#validate_and_confirm_phone_change!' do
+    let(:user) { create(:user) }
+    let(:confirmation) { user.new_phone_confirmation }
+
+    before do
+      SettingsService.new.activate_feature!('sms', settings: {
+        'twilio_account_sid' => 'AC_test',
+        'twilio_auth_token' => 'token',
+        'twilio_phone_number' => '+15005550006'
+      })
+      RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone_number: '+14155552671')
+    end
+
+    context 'when the code is correct' do
+      it 'promotes new_phone_number to phone_number and stamps it confirmed' do
+        result = service.validate_and_confirm_phone_change!(user, confirmation.code)
+
+        expect(result.success?).to be true
+        user.reload
+        expect(user.phone_number).to eq('+14155552671')
+        expect(user.new_phone_number).to be_nil
+        expect(user.phone_number_confirmed_at).to be_present
+      end
+
+      it 'does not complete pending claim tokens (an email/signup concern)' do
+        expect(ClaimTokenService).not_to receive(:complete)
+        service.validate_and_confirm_phone_change!(user, confirmation.code)
+      end
+    end
+
+    context 'when the user is nil' do
+      it 'returns a user blank error' do
+        result = service.validate_and_confirm_phone_change!(nil, '1234')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq({ user: [{ error: :blank }] })
+      end
+    end
+
+    context 'when the code is nil' do
+      it 'returns a code blank error' do
+        result = service.validate_and_confirm_phone_change!(user, nil)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq({ code: [{ error: :blank }] })
+      end
+    end
+
+    context 'when the code is incorrect' do
+      it 'returns a code invalid error' do
+        result = service.validate_and_confirm_phone_change!(user, 'failcode')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+    end
+
+    context 'when the code has expired' do
+      before { confirmation.update!(code_sent_at: 1.week.ago) }
+
+      it 'returns a code expired error' do
+        result = service.validate_and_confirm_phone_change!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :expired }])
+      end
+    end
+
+    context 'when the new phone number is blank' do
+      before { user.update_columns(new_phone_number: nil) }
+
+      it 'returns a no phone error' do
+        result = service.validate_and_confirm_phone_change!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :no_phone }])
+      end
+    end
+  end
 end

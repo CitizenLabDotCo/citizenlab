@@ -162,4 +162,68 @@ resource 'Request codes' do
       expect(NewEmailConfirmationMailer).not_to have_received(:with)
     end
   end
+
+  post 'web_api/v1/user/request_code_phone_change' do
+    with_options scope: :request_code do
+      parameter :phone_number, 'The phone number the user wants to verify.', required: true
+    end
+
+    before do
+      SettingsService.new.activate_feature!('sms', settings: {
+        'twilio_account_sid' => 'AC_test',
+        'twilio_auth_token' => 'token',
+        'twilio_phone_number' => '+15005550006'
+      })
+    end
+
+    example 'It works for an authenticated user and stores the pending number' do
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { phone_number: '+1 415 555 2671' })
+      expect(response_status).to eq 200
+      expect(user.reload.new_phone_number).to eq '+14155552671'
+      expect(Sms::Delivery.where(user_id: user.id).count).to eq 1
+    end
+
+    example 'It does not work if phone_number is blank' do
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { phone_number: '' })
+      expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:phone_number, 'cannot be blank')
+    end
+
+    example 'It does not work for an invalid phone number' do
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { phone_number: 'not-a-number' })
+      expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:phone_number, 'is invalid')
+    end
+
+    example 'It does not work if the phone number is already taken by another user' do
+      create(:user, phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now)
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { phone_number: '+14155552671' })
+      expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:phone_number, 'is already taken')
+    end
+
+    example 'It does not work if the user reached code_reset_count' do
+      user = create(:user)
+      user.new_phone_confirmation.update!(code_reset_count: 4)
+      header_token_for(user)
+      do_request(request_code: { phone_number: '+14155552671' })
+      expect(response_status).to eq 401
+    end
+
+    example 'It does not work if the SMS feature is disabled' do
+      SettingsService.new.deactivate_feature!('sms')
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { phone_number: '+14155552671' })
+      expect(response_status).to eq 401
+    end
+  end
 end

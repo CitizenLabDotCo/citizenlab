@@ -182,6 +182,12 @@ module EmailCampaigns
       false
     end
 
+    # Whether this campaign should be excluded from the admin campaigns UI.
+    # Transactional/internal campaigns (e.g. the phone-confirmation OTP) override this.
+    def hidden_from_admin?
+      false
+    end
+
     # Communication channel for this campaign. Stand-in for a future DB column;
     # SMS campaigns override this to :sms.
     def channel

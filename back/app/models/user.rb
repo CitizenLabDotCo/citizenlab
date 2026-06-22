@@ -36,10 +36,13 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  imported                  :boolean          default(FALSE), not null
 #  token_expiry_key          :string
 #  phone_number              :string
+#  new_phone_number          :string
+#  phone_number_confirmed_at :datetime
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
+#  index_users_on_phone_number               (phone_number) UNIQUE WHERE (phone_number IS NOT NULL)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
 #  index_users_on_token_expiry_key           (token_expiry_key)
@@ -160,6 +163,7 @@ class User < ApplicationRecord
   before_validation :sanitize_first_name, if: :first_name_changed?
   before_validation :sanitize_last_name, if: :last_name_changed?
   before_validation :normalize_phone_number, if: :phone_number_changed?
+  before_validation :normalize_new_phone_number, if: :new_phone_number_changed?
 
   # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false,
   # which is a condition for complete_registration to set registration_completed_at
@@ -175,6 +179,7 @@ class User < ApplicationRecord
   has_many :confirmations, dependent: :destroy
   has_one :email_confirmation, dependent: :destroy
   has_one :new_email_confirmation, dependent: :destroy
+  has_one :new_phone_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   after_create :create_confirmations
   before_destroy :destroy_baskets
@@ -193,6 +198,7 @@ class User < ApplicationRecord
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :phone_number, uniqueness: true, allow_nil: true
   validate :validate_phone_number_format
+  validate :validate_new_phone_number_format
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
@@ -375,10 +381,23 @@ class User < ApplicationRecord
     self.phone_number = normalized if normalized
   end
 
+  # The pending (not-yet-confirmed) phone number is normalized the same way as
+  # phone_number, so the confirmation flow compares and stores E.164 throughout.
+  def normalize_new_phone_number
+    normalized = Phonelib.parse(new_phone_number).e164.presence
+    self.new_phone_number = normalized if normalized
+  end
+
   def validate_phone_number_format
     return if phone_number.blank? || Phonelib.valid?(phone_number)
 
     errors.add(:phone_number, :invalid, value: phone_number)
+  end
+
+  def validate_new_phone_number_format
+    return if new_phone_number.blank? || Phonelib.valid?(new_phone_number)
+
+    errors.add(:new_phone_number, :invalid, value: new_phone_number)
   end
 
   def validate_not_duplicate_email
@@ -491,6 +510,7 @@ class User < ApplicationRecord
   def create_confirmations
     EmailConfirmation.create!(user: self)
     NewEmailConfirmation.create!(user: self)
+    NewPhoneConfirmation.create!(user: self)
   end
 
   def sso_user_without_email?

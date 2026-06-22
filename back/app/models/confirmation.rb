@@ -69,4 +69,14 @@ class Confirmation < ApplicationRecord
     User.where(id: other_user_ids).update_all(new_email: nil, updated_at: Time.zone.now)
     NewEmailConfirmation.where(user_id: other_user_ids).update_all(code: nil, updated_at: Time.zone.now)
   end
+
+  # Cancel pending phone-change requests on OTHER users that target `phone_number`,
+  # so they don't end up with an invalid (now-taken) new_phone_number.
+  def cancel_other_users_pending_phone_change(phone_number)
+    other_user_ids = User.where(new_phone_number: phone_number).where.not(id: user_id).pluck(:id)
+    return if other_user_ids.empty?
+
+    User.where(id: other_user_ids).update_all(new_phone_number: nil, updated_at: Time.zone.now)
+    NewPhoneConfirmation.where(user_id: other_user_ids).update_all(code: nil, updated_at: Time.zone.now)
+  end
 end

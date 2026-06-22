@@ -59,7 +59,10 @@ module EmailCampaigns
       @campaign_classes ||= begin
         classes = CAMPAIGN_CLASSES.deep_dup
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
-        classes << Campaigns::SmsManual if AppConfiguration.instance.feature_activated?('sms')
+        if AppConfiguration.instance.feature_activated?('sms')
+          classes << Campaigns::SmsManual
+          classes << Campaigns::PhoneConfirmation
+        end
         classes
       end
     end
@@ -70,6 +73,12 @@ module EmailCampaigns
 
     def manual_campaign_types
       campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
+    end
+
+    # Campaign types that should never surface in the admin campaigns UI
+    # (e.g. transactional/internal campaigns like the phone-confirmation OTP).
+    def hidden_campaign_types
+      campaign_classes.select { |campaign| campaign.new.hidden_from_admin? }.map(&:name)
     end
 
     def consentable_campaign_types_for(user)

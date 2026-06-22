@@ -51,16 +51,18 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
   describe 'apply_recipient_filters' do
     let(:campaign) { build(:sms_manual_campaign) }
 
-    it 'seeds recipients from users with a phone number and excludes phone-less users' do
-      with_phone = create(:user, phone_number: '+14155552671')
+    it 'seeds recipients from users with a confirmed phone number and excludes others' do
+      with_confirmed_phone = create(:user, :with_confirmed_phone)
+      with_unconfirmed_phone = create(:user, phone_number: '+14155552671', phone_number_confirmed_at: nil)
       without_phone = create(:user, phone_number: nil)
 
-      expect(campaign.apply_recipient_filters).to include(with_phone)
+      expect(campaign.apply_recipient_filters).to include(with_confirmed_phone)
+      expect(campaign.apply_recipient_filters).not_to include(with_unconfirmed_phone)
       expect(campaign.apply_recipient_filters).not_to include(without_phone)
     end
 
     it 'filters out invitees' do
-      invitee = create(:invited_user, phone_number: '+14155552672')
+      invitee = create(:invited_user, phone_number: '+14155552672', phone_number_confirmed_at: Time.zone.now)
 
       expect(campaign.apply_recipient_filters).not_to include(invitee)
     end

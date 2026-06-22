@@ -52,9 +52,11 @@ module EmailCampaigns
 
     protected
 
-    # SMS recipients are seeded from users with a phone number, not an email.
+    # SMS recipients are seeded from users with a *confirmed* phone number, not an
+    # email. Under the verification flow phone_number is only populated once the
+    # number is confirmed, so phone_number_confirmed_at is the authoritative guard.
     def recipients_base_scope
-      User.where.not(phone_number: nil)
+      User.where.not(phone_number_confirmed_at: nil)
     end
   end
 end

@@ -594,7 +594,7 @@ resource 'Campaigns' do
             'twilio_auth_token' => 'token',
             'twilio_phone_number' => '+15005550006'
           })
-          create(:user, phone_number: '+14155552671')
+          create(:user, phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now)
         end
 
         let(:campaign) { create(:sms_manual_campaign) }
