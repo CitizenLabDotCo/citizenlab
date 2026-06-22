@@ -13,6 +13,8 @@ import styled from 'styled-components';
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileById from 'api/files/useFileById';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
@@ -84,6 +86,7 @@ interface Props {
 
 const FileAttachmentDisplay = ({ fileAttachment, onDeleteClick }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const { data: file, error } = useFileById(
     fileAttachment.relationships.file.data.id
@@ -94,7 +97,14 @@ const FileAttachmentDisplay = ({ fileAttachment, onDeleteClick }: Props) => {
   }
 
   const url = file.data.attributes.content.url;
-  const { size, name: filename } = file.data.attributes;
+  const { size, name, title_multiloc } = file.data.attributes;
+
+  // When a title is set, display it with the file extension in brackets,
+  // e.g. a file "test.pdf" with title "Test file" shows as "Test file (.pdf)".
+  const title = localize(title_multiloc);
+  const finalDotIndex = name.lastIndexOf('.');
+  const extension = finalDotIndex !== -1 ? name.slice(finalDotIndex) : '';
+  const filename = title ? `${title} (${extension})` : name;
 
   return (
     <Container error={!!error}>
@@ -103,7 +113,7 @@ const FileAttachmentDisplay = ({ fileAttachment, onDeleteClick }: Props) => {
         <FileDownloadLink
           error={!!error}
           href={url}
-          download={filename}
+          download={name}
           target="_blank"
           rel="noopener noreferrer"
         >
