@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} registriranih",
   "app.containers.EventsShow.registrantsIconAltText": "Registranti",
   "app.containers.EventsShow.socialMediaSharingMessage": "Prisustvujte ovom događaju: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Prikaži {location} na Google kartama (otvara se u novom prozoru)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# sudionik} other {# sudionika}}",
   "app.containers.EventsViewer.allTime": "Cijelo vrijeme",
   "app.containers.EventsViewer.date": "Datum",
