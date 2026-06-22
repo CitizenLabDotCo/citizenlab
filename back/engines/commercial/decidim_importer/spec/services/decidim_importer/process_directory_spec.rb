@@ -20,7 +20,8 @@ RSpec.describe DecidimImporter::Importer do
 
       project = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Rue de demain' }
       expect(project).to be_present
-      expect(project['description_preview_multiloc']['fr-FR']).to include('Résumé')
+      # The preview is plain text: Decidim's `<p>Résumé</p>` short description has its HTML stripped.
+      expect(project['description_preview_multiloc']['fr-FR']).to eq('Résumé')
       expect(project['admin_publication_attributes']['publication_status']).to eq('published')
 
       phases = template['phase'].select { |ph| ph['project_ref'].equal?(project) }

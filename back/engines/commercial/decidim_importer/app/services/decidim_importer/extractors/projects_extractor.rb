@@ -37,7 +37,7 @@ module DecidimImporter
         attributes = {
           'title_multiloc' => multiloc(row[COLUMNS[:title]]),
           'description_multiloc' => multiloc(row[COLUMNS[:description]]),
-          'description_preview_multiloc' => multiloc(row[COLUMNS[:short_description]]),
+          'description_preview_multiloc' => plain_text_multiloc(row[COLUMNS[:short_description]]),
           'admin_publication_attributes' => admin_publication_attributes(row),
           'created_at' => timestamp(row[COLUMNS[:created_at]]),
           'updated_at' => timestamp(row[COLUMNS[:updated_at]])
@@ -46,6 +46,14 @@ module DecidimImporter
         attributes['remote_header_bg_url'] = hero if hero
 
         ref_map.register(uid, Record.new('project', attributes))
+      end
+
+      # Decidim's `short_description` is HTML, but Go Vocal's `description_preview_multiloc` is a
+      # plain-text teaser — strip all tags, dropping any locale left blank.
+      def plain_text_multiloc(value)
+        multiloc(value)
+          .transform_values { |html| ActionController::Base.helpers.strip_tags(html).strip }
+          .reject { |_, text| text.empty? }
       end
 
       def admin_publication_attributes(row)
