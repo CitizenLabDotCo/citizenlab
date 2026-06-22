@@ -26,8 +26,10 @@ module DecidimImporter
     #     'remote_logo_url' => 'https://…' }
     def patch
       result = {}
+      settings = feature_settings
       core = core_settings
-      result['settings'] = { 'core' => core } if core.any?
+      settings['core'] = core if core.any?
+      result['settings'] = settings if settings.any?
 
       logo = present_value(@row['logo'])
       favicon = present_value(@row['favicon'])
@@ -41,6 +43,13 @@ module DecidimImporter
     end
 
     private
+
+    # Feature flags the import always turns on, independent of the organization row. The importer
+    # creates project-level static pages from Decidim `pages` components, so `project_static_pages`
+    # must be allowed *and* enabled on the target tenant for those pages to be usable.
+    def feature_settings
+      { 'project_static_pages' => { 'allowed' => true, 'enabled' => true } }
+    end
 
     def core_settings
       core = {}

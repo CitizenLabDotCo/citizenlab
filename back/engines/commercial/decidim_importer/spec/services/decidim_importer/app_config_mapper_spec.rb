@@ -51,8 +51,16 @@ RSpec.describe DecidimImporter::AppConfigMapper do
     expect(patch['settings']['core'].keys).to contain_exactly('organization_name')
   end
 
-  it 'returns an empty patch for a missing organization row' do
-    expect(patch_for(nil)).to eq({})
+  it 'always allows and enables the project_static_pages feature' do
+    # Project-level static pages (imported from Decidim `pages` components) need the feature on.
+    expect(patch_for('name' => '{"fr":"X"}').dig('settings', 'project_static_pages'))
+      .to eq('allowed' => true, 'enabled' => true)
+  end
+
+  it 'still turns on project_static_pages when there is no organization row' do
+    expect(patch_for(nil)).to eq(
+      'settings' => { 'project_static_pages' => { 'allowed' => true, 'enabled' => true } }
+    )
   end
 
   context 'with the real Decidim export fixture' do
