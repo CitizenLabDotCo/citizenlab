@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} regisztrálók",
   "app.containers.EventsShow.registrantsIconAltText": "Regisztráltak",
   "app.containers.EventsShow.socialMediaSharingMessage": "Vegyen részt ezen az eseményen: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "{location} megtekintése a Google Térképen (új ablakban nyílik meg)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# résztvevő} other {# résztvevő}}",
   "app.containers.EventsViewer.allTime": "Minden alkalommal",
   "app.containers.EventsViewer.date": "Dátum",

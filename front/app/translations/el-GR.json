@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} εγγεγραμμένοι",
   "app.containers.EventsShow.registrantsIconAltText": "Καταχωρούμενοι",
   "app.containers.EventsShow.socialMediaSharingMessage": "Παρακολουθήστε αυτή την εκδήλωση: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Προβολή της τοποθεσίας {location} στους Χάρτες Google (ανοίγει σε νέο παράθυρο)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# participant} other {# participants}}",
   "app.containers.EventsViewer.allTime": "Όλη την ώρα",
   "app.containers.EventsViewer.date": "Ημερομηνία",
