@@ -2959,6 +2959,56 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.formInputEditWarningModal.addOrReorder": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.noCancel": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.title": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.yesContinue": {
+    "state": "verified",
+    "verified_at": "2026-06-15T10:56:25.950177Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
