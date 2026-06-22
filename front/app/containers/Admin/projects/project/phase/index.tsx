@@ -9,6 +9,7 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
@@ -45,11 +46,8 @@ const AdminProjectPhaseIndex = ({
       name: 'report_builder',
     }),
   };
-  // In the redesigned back office the phases are shown as a vertical list in the
-  // project sidebar, so the horizontal timeline bar is hidden here.
-  const parallelParticipation = useFeatureFlag({
-    name: 'parallel_participation',
-  });
+
+  const parallelParticipation = useParallelParticipation();
 
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
