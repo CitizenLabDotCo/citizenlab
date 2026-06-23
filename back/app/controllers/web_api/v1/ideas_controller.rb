@@ -266,6 +266,11 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
+    # Pull cosponsor_ids out of update_params so it can be assigned after before_update
+    # (below), like phase_ids. If it were assigned via assign_attributes, before_update
+    # would snapshot the already-updated cosponsor set, making the "newly added" diff
+    # empty and suppressing the invite notification for cosponsors added on update.
+    cosponsor_ids = update_params.delete(:cosponsor_ids) if update_params.key?(:cosponsor_ids)
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
@@ -303,6 +308,7 @@ class WebApi::V1::IdeasController < ApplicationController
       input.assign_attributes(update_params)
       sidefx.before_update(input, current_user)
       input.phase_ids = phase_ids if phase_ids
+      input.cosponsor_ids = cosponsor_ids unless cosponsor_ids.nil?
 
       authorize(input)
       validate_update!(input)
