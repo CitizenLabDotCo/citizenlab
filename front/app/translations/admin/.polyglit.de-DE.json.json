@@ -8934,6 +8934,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": {
+    "state": "verified",
+    "verified_at": "2026-06-23T11:13:00.397444Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
