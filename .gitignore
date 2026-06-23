@@ -2,6 +2,9 @@ back-secret.env
 front-secret.env
 .envrc
 
+# Per-worktree compose override (WORKTREE_PREFIX), written by `make configure-worktree`
+/.env
+
 # Legacy .env filenames
 .env-back
 .env-front
