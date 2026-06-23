@@ -48,7 +48,11 @@ ar-MA:
         new_attendee: مستخدم مسجل حديثا
         project_review_requester: المستخدم الذي طلب مراجعة المشروع
         project_reviewers: مراجعو المشاريع ومديرو المجلدات
+        user_changing_email: المستخدم الذي يقوم بتغيير عنوان بريده الإلكتروني
+        user_confirming_email: المستخدم الذي يؤكد عنوان بريده الإلكتروني
+        user_requesting_password_reset: المستخدم الذي طلب إعادة تعيين كلمة المرور
         user_who_commented: المستخدم الذي علق
+        user_who_is_blocked: المستخدم الذي تم حظر حسابه
         user_who_is_invited_to_cosponsor_a_proposal: المستخدم الذي تمت دعوته للمشاركة في رعاية اقتراح
         user_who_is_mentioned: المستخدم الذي تم ذكره
         user_who_is_receiving_admin_rights: المستخدم الذي يتلقى حقوق المسؤول
@@ -105,9 +109,12 @@ ar-MA:
         registration_to_event: التسجيل في هذا الحدث
         survey_1_day_after_draft_saved: يوم واحد بعد آخر حفظ للمستخدم للاستطلاع في المسودة
         user_accepts_invitation_to_cosponsor_a_proposal: يقبل المستخدم الدعوة للمشاركة في رعاية الاقتراح
+        user_changes_email: المستخدم يغير عنوان بريده الإلكتروني
         user_comments: تعليقات المستخدم
         user_comments_on_input: تعليقات المستخدم على المدخلات
         user_comments_on_proposal: تعليقات المستخدم على الاقتراح
+        user_confirms_email: المستخدم يؤكد عنوان بريده الإلكتروني
+        user_is_blocked: حساب المستخدم محظور
         user_is_given_admin_rights: يتم منح المستخدم حقوق المسؤول
         user_is_given_folder_manager_rights: تم منح المستخدم صلاحيات مسير مجلد
         user_is_given_folder_moderator_rights: يتم منح المستخدم حقوق وسيط المجلد
@@ -121,6 +128,7 @@ ar-MA:
         user_registers_for_the_first_time: يسجل المستخدم لأول مرة
         user_replies_to_comment: يرد المستخدم على التعليق
         user_replies_to_internal_comment: ردود المستخدم على التعليق الداخلي
+        user_requests_password_reset: مستخدم يطلب إعادة تعيين كلمة المرور
         voting_1_day_after_last_votes: يوم واحد بعد آخر تصويت للمستخدم
         voting_2_days_before_phase_closes: قبل يومين من انتهاء مرحلة التصويت
         voting_basket_submitted: يتم إرسال الأصوات
@@ -160,6 +168,7 @@ ar-MA:
       comment_on_your_comment: رد على تعليقي
       community_monitor_report: تقرير مراقبة المجتمع
       cosponsor_of_your_idea: يقبل المستخدم دعوتي للمشاركة في رعاية اقتراحي
+      email_confirmation: رمز تأكيد البريد الإلكتروني
       event_registration_confirmation: تأكيد تسجيل الحدث
       idea_marked_as_spam: الإبلاغ عن الفكرة كـإزعاج
       idea_published: نشر فكرتي
@@ -178,6 +187,7 @@ ar-MA:
       moderator_digest: نظرة عامة أسبوعية لمديري المشاريع
       native_survey_not_submitted: لم يتم إرسال الاستطلاع
       new_comment_for_admin: تعليق جديد في مشروع أُشرف عليه
+      new_email_confirmation: رمز تأكيد البريد الإلكتروني الجديد
       new_idea_for_admin_prescreening: مدخلات جديدة تتطلب الموافقة في مشروع أقوم بإدارته
       new_idea_for_admin_published: مدخلات منشورة جديدة في مشروع أقوم بإدارته
       official_feedback_on_idea_you_follow: تحديث على فكرة تتابعها
@@ -196,6 +206,7 @@ ar-MA:
       status_change_on_idea_you_follow: تغيير حالة الفكرة التي تتابعها
       survey_submitted: تم تقديم الاستطلاع
       threshold_reached_for_admin: بلغ المُقترح حد التصويت المطلوب
+      user_blocked: الحساب محظور
       user_digest: نظرة عامة أسبوعية
       voting_basket_not_submitted: لم يتم تقديم الأصوات
       voting_basket_submitted: تأكيد التصويت
@@ -271,6 +282,15 @@ ar-MA:
       preheader: لقد قبلت %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك
       subject: لقد قبلت %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك
       title: لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك
+    email_confirmation:
+      best_regards: مع أطيب التحيات،
+      event_description: 'شكراً لمشاركتك. يرجى إدخال رمز التأكيد هذا في النافذة على منصة المشاركة الخاصة بـ %{organizationName}:'
+      expire_code: ستنتهي صلاحية هذا الرمز خلال
+      hours_24: 24 ساعة.
+      ignore_email: إذا لم تطلب رمزاً، يمكنك تجاهل هذا البريد الإلكتروني بأمان.
+      preheader: أكد عنوان بريدك الإلكتروني لـ %{organizationName}
+      subject: أكد عنوان بريدك الإلكتروني لمنصة المشاركة الخاصة بـ %{organizationName}
+      title: أكد عنوان بريدك الإلكتروني
     event_registration_confirmation:
       cta_add_to_calendar: أضف إلى التقويم الخاص بك
       cta_button: مشاهدة الحدث
@@ -482,6 +502,15 @@ ar-MA:
       title: '%{firstName}، تم نشر تعليق جديد على منصتك'
       today: اليوم
       yesterday: الأمس
+    new_email_confirmation:
+      best_regards: مع أطيب التحيات،
+      event_description: 'يرجى إدخال رمز التأكيد هذا في النافذة على منصة المشاركة الخاصة بـ %{organizationName} لتأكيد عنوان بريدك الإلكتروني الجديد:'
+      expire_code: ستنتهي صلاحية هذا الرمز خلال
+      hours_24: 24 ساعة.
+      ignore_email: إذا لم تطلب رمزاً، يمكنك تجاهل هذا البريد الإلكتروني بأمان.
+      preheader: أكد عنوان بريدك الإلكتروني الجديد لـ %{organizationName}
+      subject: أكد عنوان بريدك الإلكتروني الجديد لمنصة المشاركة الخاصة بـ %{organizationName}
+      title: أكد عنوان بريدك الإلكتروني الجديد
     new_idea_for_admin_prescreening:
       cta_button: مراجعة المدخلات
       days_ago: '%{numberOfDays} منذ أيام'
@@ -507,6 +536,12 @@ ar-MA:
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: هناك تحديث على "%{input_title}"
+    password_reset:
+      cta_button: إعادة تعيين كلمة المرور الخاصة بك
+      event_description: لقد طلبت إعادة تعيين كلمة المرور لمنصة المشاركة الخاصة بـ %{organizationName}. اضغط على الزر أدناه لاختيار كلمة مرور جديدة وآمنة. تنتهي صلاحية الرابط خلال ساعة واحدة.
+      preheader: إعادة تعيين كلمة المرور الخاصة بك لـ %{organizationName}
+      subject: '%{organizationName}: إعادة تعيين كلمة المرور الخاصة بك'
+      title: اختر كلمة مرور جديدة
     preview_data:
       author_display_name: جين دو
       author_first_name: جين
@@ -652,6 +687,14 @@ ar-MA:
       preheader: تأكد من اتخاذ الخطوات التالية
       subject: بلغت المبادرة حد التصويت المطلوب على منصتك
       title: مقترح وصل إلى حد التصويت!
+    user_blocked:
+      for_more_information: لمزيد من المعلومات حول هذا الموضوع، يمكنك مراجعة %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'تم تعطيل حسابك على منصة المشاركة الخاصة بـ %{organizationName} مؤقتاً للسبب التالي:'
+      paragraph_1_without_reason: تم تعطيل حسابك على منصة المشاركة الخاصة بـ %{organizationName} مؤقتاً بسبب انتهاك قواعد المجتمع.
+      preheader: تم تعطيل حسابك على منصة المشاركة الخاصة بـ %{organizationName} مؤقتاً
+      subject: تم تعطيل حسابك مؤقتاً
+      title: تم تعطيل حسابك مؤقتاً
+      you_can_sign_in_again_from: يمكنك تسجيل الدخول مرة أخرى ابتداءً من %{date}
     user_digest:
       commented: 'علّق %{authorFirstName}:'
       cta_button: اذهب إلى المنصة
