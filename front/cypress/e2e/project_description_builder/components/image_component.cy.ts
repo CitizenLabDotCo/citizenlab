@@ -59,9 +59,14 @@ describe('Project description builder Image component', () => {
 
     cy.get('[alt="Image alt text."]').should('exist');
 
-    cy.wait(1000);
+    // Adding the image triggers an async re-fetch (convertUrlToUploadFile) that
+    // disables Save until it resolves. The button renders its disabled state via
+    // aria-disabled (not the native attribute), so wait on that rather than racing
+    // it with a fixed timeout.
+    cy.get('#e2e-content-builder-topbar-save')
+      .find('button')
+      .should('not.have.attr', 'aria-disabled', 'true');
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait(1000);
 
     cy.wait('@saveProjectDescriptionBuilder');
 
@@ -77,6 +82,16 @@ describe('Project description builder Image component', () => {
 
     cy.get('.e2e-image').parent().click();
     cy.get('#e2e-delete-button').click();
+    // Wait for the deletion to be reflected in the editor tree.
+    cy.get('.e2e-image').should('not.exist');
+    // Selecting the image kicks off an async re-fetch of the existing image
+    // (convertUrlToUploadFile), which disables Save until it resolves. The button
+    // uses aria-disabled (not the native attribute), so wait on that before
+    // clicking — otherwise the click lands while Save is still disabled and the
+    // upsert never fires (flaky/consistent failure on slower CI).
+    cy.get('#e2e-content-builder-topbar-save')
+      .find('button')
+      .should('not.have.attr', 'aria-disabled', 'true');
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
