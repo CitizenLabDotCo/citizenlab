@@ -43,7 +43,9 @@ const Label = styled.label<{ selected: boolean }>`
     }`}
 
   ${HiddenRadio}.focus-visible + & {
-    outline: 2px solid black;
+    outline: 2px solid ${colors.black};
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px ${colors.white};
   }
 `;
 
