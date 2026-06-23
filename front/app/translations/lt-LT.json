@@ -1422,6 +1422,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} registruotojų",
   "app.containers.EventsShow.registrantsIconAltText": "Registruotojai",
   "app.containers.EventsShow.socialMediaSharingMessage": "Dalyvaukite šiame renginyje: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Peržiūrėti {location} „Google“ žemėlapiuose (atsidaro naujame lange)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# dalyvis} other {# dalyviai}}",
   "app.containers.EventsViewer.allTime": "Visą laiką",
   "app.containers.EventsViewer.date": "Data",

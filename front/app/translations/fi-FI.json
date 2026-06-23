@@ -1422,6 +1422,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} rekisteröitynyttä",
   "app.containers.EventsShow.registrantsIconAltText": "Rekisteröityjä",
   "app.containers.EventsShow.socialMediaSharingMessage": "Osallistu tähän tapahtumaan: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Näytä {location} Google Mapsissa (avautuu uuteen ikkunaan)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# osallistuja} other {# osallistuja}}",
   "app.containers.EventsViewer.allTime": "Koko ajan",
   "app.containers.EventsViewer.date": "Päivämäärä",

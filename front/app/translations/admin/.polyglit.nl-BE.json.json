@@ -74,6 +74,66 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.Admin.ManagementFeed.permission": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionAnnotatingDocument": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionAttendingEvent": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionCommentingIdea": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionFollowing": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionPostingIdea": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionReactingIdea": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionTakingPoll": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionTakingSurvey": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionVisiting": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionVolunteering": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionVoting": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
   "app.Admin.ManagementFeed.phase": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -2479,6 +2539,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": {
+    "state": "verified",
+    "verified_at": "2026-06-09T19:19:09.178658Z",
+    "verified_by": "Luuc"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -2958,6 +3023,61 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.addOrReorder": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.addOrReorderDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.changeQuestionText": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.changeQuestionTextDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestion": {
+    "state": "verified",
+    "verified_at": "2026-06-04T12:50:52.484001Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deleteAQuestionDescription": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.deteleAQuestion": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.loseDataWarning": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.noCancel": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.title": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.formBuilder.formInputEditWarningModal.yesContinue": {
+    "state": "verified",
+    "verified_at": "2026-06-02T01:32:32.290363Z",
+    "verified_by": "Luuc"
   },
   "app.components.formBuilder.nativeSurvey.UserFieldsInFormNotice.accessRightsSettings": {
     "state": "verified",
@@ -17333,6 +17453,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Text": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:54:30.126609Z",
+    "verified_by": "Pauline"
+  },
+  "app.containers.AdminPage.projects.project.analysis.LaunchModal.limitation4Title": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:54:30.126609Z",
+    "verified_by": "Pauline"
   },
   "app.containers.AdminPage.projects.project.analysis.LaunchModal.subtitle": {
     "state": "verified",

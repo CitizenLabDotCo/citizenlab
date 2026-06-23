@@ -1,0 +1,12 @@
+{
+  // Dead-code detection (ts-prune) config.
+  // The main tsconfig uses moduleResolution "bundler" (required so TS reads the
+  // `exports` maps of vite 8 / Storybook 10). ts-prune resolves modules through
+  // ts-morph, whose compiler does not understand "bundler" and therefore fails to
+  // resolve any import, reporting every export as dead. Override back to classic
+  // "node" resolution here — it only affects ts-prune, not typecheck or the build.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "node"
+  }
+}

@@ -1422,6 +1422,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} cofrestrwyr",
   "app.containers.EventsShow.registrantsIconAltText": "Cofrestrwyr",
   "app.containers.EventsShow.socialMediaSharingMessage": "Mynychwch y digwyddiad hwn: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Gweld {location} ar Google Maps (yn agor mewn ffenestr newydd)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# cyfranogwr} other {# cyfranogwr}}",
   "app.containers.EventsViewer.allTime": "Trwy'r amser",
   "app.containers.EventsViewer.date": "Dyddiad",

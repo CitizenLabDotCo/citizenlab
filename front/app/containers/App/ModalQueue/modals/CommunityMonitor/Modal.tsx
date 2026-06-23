@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { set } from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
@@ -29,7 +29,7 @@ const CommunityMonitorModal = () => {
     const expirationDate = new Date();
     expirationDate.setMonth(expirationDate.getMonth() + 3);
 
-    set('community_monitor_modal_seen', 'true', {
+    Cookies.set('community_monitor_modal_seen', 'true', {
       expires: expirationDate,
     });
     removeModal('community-monitor');

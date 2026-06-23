@@ -1422,6 +1422,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} المسجلين",
   "app.containers.EventsShow.registrantsIconAltText": "المسجلين",
   "app.containers.EventsShow.socialMediaSharingMessage": "حضور هذا الحدث: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "عرض {location} على خرائط Google (يفتح في نافذة جديدة)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# مشارك} other {# مشاركون}}",
   "app.containers.EventsViewer.allTime": "كل الوقت",
   "app.containers.EventsViewer.date": "تاريخ",

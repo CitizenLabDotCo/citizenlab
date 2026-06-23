@@ -165,9 +165,10 @@ describe('Native survey CTA bar', () => {
 
   after(() => {
     if (phaseId) {
-      // delete created ideas in the test, otherwise the project cannot be deleted because of the foreign key constraint
-      // between ideas and phases
-      cy.apiRemoveIdeas().then(() => {
+      // delete this project's ideas (survey responses), otherwise the project cannot be deleted
+      // because of the foreign key constraint between ideas and phases. Scope to projectId so we
+      // don't wipe ideas from other projects (e.g. the seeded "Verified Idea") that other specs rely on.
+      cy.apiRemoveIdeas(projectId).then(() => {
         if (projectId) {
           cy.apiRemoveProject(projectId);
         }

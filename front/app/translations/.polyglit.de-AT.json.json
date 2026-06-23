@@ -7153,6 +7153,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": {
+    "state": "verified",
+    "verified_at": "2026-06-18T11:53:51.177677Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.EventsShow.xParticipants": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",

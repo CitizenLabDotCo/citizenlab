@@ -1422,6 +1422,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} partecipanti",
   "app.containers.EventsShow.registrantsIconAltText": "Partecipanti",
   "app.containers.EventsShow.socialMediaSharingMessage": "Partecipa a questo evento: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Visualizza {location} su Google Maps (si apre in una nuova finestra)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# partecipante} other {# partecipanti}}",
   "app.containers.EventsViewer.allTime": "Tutti gli eventi",
   "app.containers.EventsViewer.date": "Data",

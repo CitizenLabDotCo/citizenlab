@@ -7153,6 +7153,12 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": {
+    "state": "verified",
+    "verified_at": "2026-06-18T11:53:51.051174Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.EventsShow.xParticipants": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",

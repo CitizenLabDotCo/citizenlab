@@ -1422,6 +1422,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} Umeldungen",
   "app.containers.EventsShow.registrantsIconAltText": "Registréiert",
   "app.containers.EventsShow.socialMediaSharingMessage": "Bei dësem Event deelhuelen: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "{location} op Google Maps uweisen (mécht an enger neier Fënster op)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {#Participant} other {#Participanten}}",
   "app.containers.EventsViewer.allTime": "Ëmmer",
   "app.containers.EventsViewer.date": "Datum",
