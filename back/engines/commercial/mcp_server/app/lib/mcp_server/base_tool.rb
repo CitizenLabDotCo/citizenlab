@@ -41,12 +41,21 @@ class McpServer::BaseTool
     ) do |**kwargs|
       server_context = kwargs.delete(:server_context)
 
-      runner_class.new(
+      runner = runner_class.new(
         params: kwargs,
         server_context: server_context,
         current_user: current_user,
         token_scopes: token_scopes
-      ).run
+      )
+
+      runner.run
+    rescue Pundit::NotAuthorizedError => e
+      runner.error(McpServer::BaseTool.unauthorized_message(e))
     end
+  end
+
+  def self.unauthorized_message(error)
+    reason = error.respond_to?(:reason) ? error.reason : nil
+    "Not allowed: #{reason || 'authorization failed'}."
   end
 end

@@ -26,7 +26,9 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       question = Polls::Question.find(params[:question_id])
+
       option = Polls::Option.new(question: question, title_multiloc: params[:title_multiloc])
+      authorize(option, :create?)
 
       Polls::SideFxOptionService.new.before_create(option, current_user)
       option.save!

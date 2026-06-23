@@ -28,6 +28,7 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
 
       attributes = params.slice(:title_multiloc, :description_multiloc).compact
       cause = Volunteering::Cause.new(phase: phase, **attributes)
+      authorize(cause, :create?)
 
       Volunteering::SideFxCauseService.new.before_create(cause, current_user)
       cause.save!
