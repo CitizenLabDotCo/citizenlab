@@ -124,7 +124,7 @@ const CustomPageShow = () => {
           pageAttributes.title_multiloc
         )} | ${localizedOrgName}`}
       />
-      <main className={`e2e-page-${slug}`}>
+      <main className={`e2e-page-${pageSlugToUse}`}>
         <Container>
           {pageAttributes.banner_enabled ? (
             <>
