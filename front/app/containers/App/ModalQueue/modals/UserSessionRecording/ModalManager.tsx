@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { get } from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -14,7 +14,7 @@ const UserSessionRecordingModalManager = () => {
 
   useEffect(() => {
     const shouldShowModal = () => {
-      const hasSeenModal = get('user_session_recording_modal');
+      const hasSeenModal = Cookies.get('user_session_recording_modal');
       const show =
         userSessionRecodingFeatureFlag &&
         hasSeenModal !== 'true' &&

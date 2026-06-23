@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
-import { set } from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
@@ -12,7 +12,7 @@ const ProjectPreviewToken = () => {
     token: string;
   };
   useEffect(() => {
-    set('preview_token', token);
+    Cookies.set('preview_token', token);
     clHistory.push(`/projects/${slug}`);
   }, [token, slug]);
   return <Spinner />;
