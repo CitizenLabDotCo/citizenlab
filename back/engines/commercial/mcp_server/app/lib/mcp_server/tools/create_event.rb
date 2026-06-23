@@ -41,6 +41,7 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       event = Event.new(**params)
+      authorize_project!(event.project)
       authorize(event, :create?)
 
       event.save!

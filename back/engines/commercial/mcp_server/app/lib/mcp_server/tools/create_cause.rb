@@ -25,6 +25,7 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.find(params[:phase_id])
+      authorize_project!(phase.project)
 
       attributes = params.slice(:title_multiloc, :description_multiloc).compact
       cause = Volunteering::Cause.new(phase: phase, **attributes)

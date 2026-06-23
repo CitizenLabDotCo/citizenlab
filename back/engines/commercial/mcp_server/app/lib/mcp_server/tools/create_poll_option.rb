@@ -26,6 +26,7 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       question = Polls::Question.find(params[:question_id])
+      authorize_project!(question.phase.project)
 
       option = Polls::Option.new(question: question, title_multiloc: params[:title_multiloc])
       authorize(option, :create?)

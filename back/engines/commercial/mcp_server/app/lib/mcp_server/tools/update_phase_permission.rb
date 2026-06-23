@@ -82,6 +82,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.find(params[:phase_id])
+      authorize_project!(phase.project)
 
       permission = phase.permissions.find_by(action: params[:action])
       return invalid_action_response(phase, params[:action]) if permission.nil?
