@@ -18,9 +18,7 @@ const useDeleteCustomPage = () => {
   return useMutation({
     mutationFn: deleteCustomPage,
     onSuccess: async () => {
-      // Invalidate via `all()` rather than `lists()`: project-scoped lists are
-      // keyed with `parameters: { projectId }`, which a `lists()` (parameters:
-      // undefined) filter does not partially match.
+      // `all()` so project-scoped lists are also invalidated.
       queryClient.invalidateQueries({
         queryKey: customPagesKeys.all(),
       });

@@ -85,17 +85,6 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
           url={`/admin/projects/${projectId}/events`}
           active={pathname.includes(`/admin/projects/${projectId}/events`)}
         />
-        <Tab
-          className="intercom-admin-project-files-tab"
-          label={
-            <Box display="flex" alignItems="center" gap="8px">
-              {formatMessage(messages.filesTab)}
-              <NewLabel />
-            </Box>
-          }
-          url={`/admin/projects/${projectId}/files`}
-          active={pathname.includes(`/admin/projects/${projectId}/files`)}
-        />
         {projectStaticPagesEnabled && (
           <Tab
             className="intercom-admin-project-pages-tab"
@@ -109,6 +98,16 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
             active={pathname.includes(`/admin/projects/${projectId}/pages`)}
           />
         )}
+        <Tab
+          className="intercom-admin-project-files-tab"
+          label={
+            <Box display="flex" alignItems="center" gap="8px">
+              {formatMessage(messages.filesTab)}
+            </Box>
+          }
+          url={`/admin/projects/${projectId}/files`}
+          active={pathname.includes(`/admin/projects/${projectId}/files`)}
+        />
       </NavigationTabs>
       <RouterOutlet />
     </Box>

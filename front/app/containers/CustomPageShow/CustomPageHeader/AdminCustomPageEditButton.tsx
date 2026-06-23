@@ -22,8 +22,6 @@ import messages from '../messages';
 
 interface Props {
   pageId: string;
-  // Set for project-scoped pages so editing routes to the project's page
-  // editor instead of the global pages & menu editor.
   projectId?: string | null;
 }
 

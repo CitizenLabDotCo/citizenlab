@@ -32,7 +32,6 @@ type PageLinkProps = {
   pageId?: string;
 };
 
-// Mirrors the attachment styling so a page link reads like a file attachment.
 const PageLinkRow = typedStyled(Link)`
   display: flex;
   align-items: center;
