@@ -48,7 +48,12 @@ module DecidimImporter
     # creates project-level static pages from Decidim `pages` components, so `project_static_pages`
     # must be allowed *and* enabled on the target tenant for those pages to be usable.
     def feature_settings
-      { 'project_static_pages' => { 'allowed' => true, 'enabled' => true } }
+      {
+        'project_static_pages' => { 'allowed' => true, 'enabled' => true },
+        # The imported project descriptions are Content Builder layouts, which the platform only
+        # renders (instead of `description_multiloc`) when this feature is on.
+        'project_description_builder' => { 'allowed' => true, 'enabled' => true }
+      }
     end
 
     def core_settings

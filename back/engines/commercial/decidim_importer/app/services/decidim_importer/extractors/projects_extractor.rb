@@ -34,9 +34,11 @@ module DecidimImporter
         uid = present_value(row[COLUMNS[:uid]])
         return nil if uid.nil?
 
+        # The Decidim `description` is not imported into `description_multiloc`; it becomes the
+        # TextMultiloc block of a Content Builder project-description layout instead (see
+        # {DescriptionLayoutExtractor}). Only the plain-text preview is kept on the project.
         attributes = {
           'title_multiloc' => multiloc(row[COLUMNS[:title]]),
-          'description_multiloc' => multiloc(row[COLUMNS[:description]]),
           'description_preview_multiloc' => plain_text_multiloc(row[COLUMNS[:short_description]]),
           'admin_publication_attributes' => admin_publication_attributes(row),
           'created_at' => timestamp(row[COLUMNS[:created_at]]),

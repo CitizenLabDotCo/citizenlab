@@ -54,7 +54,10 @@ module DecidimImporter
         name = filename_for(url, row)
         return skip(uid, 'attachment has no derivable name') if name.nil?
 
+        # An explicit id so the project-description layout's FileAttachment block can reference this
+        # file (craftjs stores the file id verbatim; refs can't reach into the JSONB blob).
         file = Record.new('files/file', {
+          'id' => SecureRandom.uuid,
           'name' => name,
           'title_multiloc' => multiloc(row[COLUMNS[:title]]),
           'description_multiloc' => multiloc(row[COLUMNS[:description]]),

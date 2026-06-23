@@ -20,6 +20,7 @@ module DecidimImporter
       static_page
       files/file
       files/files_project
+      content_builder/layout
       files/file_attachment
       phase
       custom_form

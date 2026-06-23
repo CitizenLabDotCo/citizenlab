@@ -123,6 +123,20 @@ RSpec.describe DecidimImporter::Importer do
         expect(page.top_info_section_multiloc['fr-FR']).to include('Contenu de la page')
       end
 
+      it 'imports the project description as a Content Builder layout linking the static page' do
+        expect(project.description_multiloc).to eq({}) # description is in the layout, not here
+        layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_description')
+        expect(layout).to be_present
+        expect(layout.enabled).to be(true)
+
+        nodes = layout.craftjs_json['ROOT']['nodes'].map { |id| layout.craftjs_json[id]['type']['resolvedName'] }
+        expect(nodes).to include('TextMultiloc', 'PageLink')
+        # The PageLink references the imported static page by its id.
+        page = StaticPage.find_by("title_multiloc->>'fr-FR' = 'La concertation'")
+        page_link = layout.craftjs_json.values.find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'PageLink' }
+        expect(page_link['props']['pageId']).to eq(page.id)
+      end
+
       it 'rebuilds the surveys component as a native_survey phase with a custom form' do
         survey_phase = project.phases.find_by(participation_method: 'native_survey')
         form = survey_phase.custom_form
@@ -300,6 +314,26 @@ RSpec.describe DecidimImporter::Importer do
 
     it 'is a no-op when the template has no files' do
       expect { described_class.prune_fileless_attachments!({ 'models' => {} }) }.not_to raise_error
+    end
+
+    it 'strips the FileAttachment craft node of a pruned file from the project-description layout' do
+      gone = { 'id' => 'f-gone', 'name' => 'gone.pdf' } # content URL was stripped/pruned
+      kept = { 'id' => 'f-kept', 'name' => 'kept.pdf', 'remote_content_url' => 'http://x/k.pdf' }
+      craftjs = {
+        'ROOT' => { 'type' => 'div', 'nodes' => %w[file0 file1] },
+        'file0' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'f-gone' } },
+        'file1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'f-kept' } }
+      }
+      template = { 'models' => {
+        'files/file' => [gone, kept],
+        'content_builder/layout' => [{ 'craftjs_json' => craftjs }]
+      } }
+
+      described_class.prune_fileless_attachments!(template)
+
+      expect(craftjs).not_to have_key('file0')
+      expect(craftjs).to have_key('file1')
+      expect(craftjs['ROOT']['nodes']).to eq(['file1'])
     end
   end
 

@@ -267,6 +267,28 @@ module DecidimImporter
       %w[files/files_project files/file_attachment].each do |model|
         template.dig('models', model)&.reject! { |attrs| removed_ids.include?(attrs['file_ref'].object_id) }
       end
+      strip_layout_file_nodes!(template, removed.filter_map { |attrs| attrs['id'] }.to_set)
+    end
+
+    # Removes `FileAttachment` craft nodes whose file was pruned from every project-description layout
+    # (and from the ROOT child list). A node pointing at a non-existent file would make the layout's
+    # `sync_file_attachments` callback try to attach a missing file and fail the import.
+    def self.strip_layout_file_nodes!(template, removed_file_ids)
+      return if removed_file_ids.empty?
+
+      (template.dig('models', 'content_builder/layout') || []).each do |layout|
+        craftjs = layout['craftjs_json']
+        next unless craftjs.is_a?(Hash)
+
+        dangling = craftjs.select do |_id, node|
+          craftjs_resolved_name(node) == 'FileAttachment' && removed_file_ids.include?(node.dig('props', 'fileId'))
+        end.keys
+        next if dangling.empty?
+
+        dangling.each { |id| craftjs.delete(id) }
+        root = craftjs['ROOT']
+        root['nodes'] -= dangling if root.is_a?(Hash) && root['nodes'].is_a?(Array)
+      end
     end
 
     # Drops any `project_image` whose image URL was pruned (unreachable) or stripped (images off): an
@@ -353,17 +375,42 @@ module DecidimImporter
       false
     end
 
-    # Rewrites every rich-text `*_multiloc` HTML string in the template through the given block.
-    def self.rewrite_multiloc_html!(template)
+    # Rewrites every rich-text `*_multiloc` HTML string in the template through the given block,
+    # including the `TextMultiloc` text buried inside a Content Builder layout's `craftjs_json` (so the
+    # project description — now a craft block rather than a top-level multiloc — gets the same treatment).
+    def self.rewrite_multiloc_html!(template, &block)
       template['models'].each_value do |records|
         records.each do |attrs|
           attrs.each do |key, value|
-            next unless key.is_a?(String) && key.end_with?('_multiloc') && value.is_a?(Hash)
-
-            value.transform_values! { |html| html.is_a?(String) ? yield(html) : html }
+            if key.is_a?(String) && key.end_with?('_multiloc') && value.is_a?(Hash)
+              value.transform_values! { |html| html.is_a?(String) ? yield(html) : html }
+            elsif key == 'craftjs_json' && value.is_a?(Hash)
+              rewrite_craftjs_text!(value, &block)
+            end
           end
         end
       end
+    end
+
+    # Rewrites the `text` multiloc HTML of every `TextMultiloc` node in a craftjs tree.
+    def self.rewrite_craftjs_text!(craftjs)
+      craftjs.each_value do |node|
+        next unless craftjs_resolved_name(node) == 'TextMultiloc'
+
+        text = node.dig('props', 'text')
+        next unless text.is_a?(Hash)
+
+        text.transform_values! { |html| html.is_a?(String) ? yield(html) : html }
+      end
+    end
+
+    # The craft component name of a node, or nil. Guards against the ROOT node, whose `type` is the
+    # plain string `'div'` rather than a `{ 'resolvedName' => … }` hash.
+    def self.craftjs_resolved_name(node)
+      return nil unless node.is_a?(Hash)
+
+      type = node['type']
+      type['resolvedName'] if type.is_a?(Hash)
     end
 
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model
@@ -401,6 +448,7 @@ module DecidimImporter
       run_surveys
       run_static_pages
       run_files
+      run_description_layouts
       TemplateBuilder.new(ref_map)
     end
 
@@ -499,6 +547,16 @@ module DecidimImporter
         survey_component_rows, ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       )
       @surveys_extractor.run
+    end
+
+    # Builds a Content Builder project-description layout per project from the Decidim description, the
+    # project's static pages and its files. Runs last so those records (and their ids) are registered.
+    def run_description_layouts
+      return unless @rows_by_model.key?(:projects)
+
+      Extractors::DescriptionLayoutExtractor.new(
+        rows_for(:projects), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      ).run
     end
 
     # Decidim process attachments → project-level file attachments (`ProjectFile`). Runs after the

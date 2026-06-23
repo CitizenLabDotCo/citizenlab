@@ -46,7 +46,10 @@ module DecidimImporter
         title = multiloc(row[COLUMNS[:name]])
         return skip(uid, 'page has no title') if title.empty?
 
+        # An explicit id so the project-description layout's PageLink block can reference this page
+        # (craftjs stores the page id verbatim; refs can't reach into the JSONB blob).
         page = Record.new('static_page', {
+          'id' => SecureRandom.uuid,
           'title_multiloc' => title,
           'code' => 'custom',
           'top_info_section_enabled' => true,

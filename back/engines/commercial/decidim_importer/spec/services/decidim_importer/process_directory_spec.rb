@@ -31,6 +31,14 @@ RSpec.describe DecidimImporter::Importer do
       card_image = template['project_image'].find { |img| img['project_ref'].equal?(project) }
       expect(card_image).to include('remote_image_url' => 'http://example.org/hero.png', 'ordering' => 0)
 
+      # The Decidim description becomes a Content Builder project-description layout (a TextMultiloc
+      # block) rather than `description_multiloc`.
+      expect(project).not_to have_key('description_multiloc')
+      layout = template['content_builder/layout'].find { |l| l['content_buildable_ref'].equal?(project) }
+      expect(layout).to include('code' => 'project_description', 'enabled' => true)
+      text_node = layout['craftjs_json'].values.find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TextMultiloc' }
+      expect(text_node['props']['text']['fr-FR']).to include('Concertation')
+
       phases = template['phase'].select { |ph| ph['project_ref'].equal?(project) }
       expect(phases.map { |ph| ph['title_multiloc']['fr-FR'] }).to eq(['État des lieux', "Plan d'actions"])
       expect(phases.map { |ph| ph['participation_method'] }.uniq).to eq(['information'])
