@@ -86,7 +86,6 @@ const actionDisabledMessages: {
   },
   annotating_document: {
     project_inactive: messages.documentAnnotationDisabledProjectInactive,
-    project_not_visible: messages.documentAnnotationDisabledNotPermitted,
     not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
     user_not_active: messages.documentAnnotationDisabledNotActiveUser,
     user_not_verified: messages.documentAnnotationDisabledNotVerified,
@@ -97,7 +96,6 @@ const actionDisabledMessages: {
   },
   taking_survey: {
     project_inactive: messages.surveyDisabledProjectInactive,
-    project_not_visible: messages.surveyDisabledNotPermitted,
     not_survey: messages.surveyDisabledNotActivePhase,
     user_not_active: messages.surveyDisabledNotActiveUser,
     user_not_verified: messages.surveyDisabledNotVerified,
@@ -108,7 +106,6 @@ const actionDisabledMessages: {
   },
   taking_poll: {
     project_inactive: messages.pollDisabledProjectInactive,
-    project_not_visible: messages.pollDisabledNotPermitted,
     not_poll: messages.pollDisabledNotActivePhase,
     already_responded: messages.pollDisabledAlreadyResponded,
     user_not_permitted: messages.pollDisabledNotPermitted,

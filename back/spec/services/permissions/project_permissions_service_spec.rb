@@ -901,64 +901,6 @@ describe Permissions::ProjectPermissionsService do
     end
   end
 
-  describe 'project_visible_disabled_reason' do
-    context 'when the project is visible to admins' do
-      let(:project) { create(:project, visible_to: 'admins') }
-
-      context 'when a user is an admin' do
-        let(:user) { create(:admin) }
-
-        it 'returns nil' do
-          expect(service.send(:project_visible_disabled_reason)).to be_nil
-        end
-      end
-
-      it 'returns "project_not_visible" when a user is not admin' do
-        expect(service.send(:project_visible_disabled_reason)).to eq 'project_not_visible'
-      end
-
-      context 'when there is no logged in user' do
-        let(:user) { nil }
-
-        it 'returns "project_not_visible"' do
-          expect(service.send(:project_visible_disabled_reason)).to eq 'project_not_visible'
-        end
-      end
-    end
-
-    context 'when the project is visible to groups' do
-      let(:project) { create(:project, visible_to: 'groups', groups: [create(:group)]) }
-
-      it 'returns "project_not_visible" when a user is not in a project group' do
-        expect(service.send(:project_visible_disabled_reason)).to eq 'project_not_visible'
-      end
-
-      context 'when the user is in a project group' do
-        let(:user) { create(:user, manual_groups: [project.groups.first]) }
-
-        it 'returns nil' do
-          expect(service.send(:project_visible_disabled_reason)).to be_nil
-        end
-      end
-
-      context 'when the user is a project moderator' do
-        let(:user) { create(:user, roles: [{ type: 'project_moderator', project_id: project.id }]) }
-
-        it 'returns nil' do
-          expect(service.send(:project_visible_disabled_reason)).to be_nil
-        end
-      end
-
-      context 'when there is no logged in user' do
-        let(:user) { nil }
-
-        it 'returns "project_not_visible"' do
-          expect(service.send(:project_visible_disabled_reason)).to eq 'project_not_visible'
-        end
-      end
-    end
-  end
-
   describe 'action_descriptors' do
     it 'does not run more than 3 queries for 5 ideation projects with default user permissions' do
       user = create(:user)

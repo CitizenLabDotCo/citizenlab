@@ -13,10 +13,7 @@ export type UserDisabledReason =
   | DisabledReasonFixable
   | DisabledReasonUnfixable;
 
-export type ProjectDisabledReason =
-  | 'project_not_visible'
-  | 'project_inactive'
-  | UserDisabledReason;
+export type ProjectDisabledReason = 'project_inactive' | UserDisabledReason;
 
 export type ProjectPostingDisabledReason =
   | 'future_enabled' // Note: Not returned by backend but needed for posting
