@@ -116,7 +116,7 @@ const StickyNote: React.FC<Props> = ({
   // Track idea exposure when sticky note becomes centered. Record it against
   // the phase being browsed so it matches what the feed endpoint filters on.
   useEffect(() => {
-    if (isCentered) {
+    if (isCentered && phaseId) {
       addIdeaExposure({ ideaId, phaseId });
     }
   }, [isCentered, ideaId, phaseId, addIdeaExposure]);
