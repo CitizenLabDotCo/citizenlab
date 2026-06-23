@@ -230,6 +230,29 @@ RSpec.describe Analysis::AutoTaggingTask do
       })
     end
 
+    it 'staggers classification requests over time to avoid LLM rate limits' do
+      project = create(:single_phase_ideation_project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
+      create_list(:idea, 3, project: project)
+
+      allow_any_instance_of(Analysis::LLM::GPT4oMini)
+        .to receive(:chat)
+        .and_return(tags[0].name)
+      allow(Concurrent::ScheduledTask).to receive(:execute).and_call_original
+
+      att.execute
+
+      # Each input should be scheduled with an increasing delay (idx * TASK_INTERVAL)
+      # so the LLM requests are spread out rather than fired all at once.
+      interval = Analysis::AutoTaggingMethod::Base::TASK_INTERVAL
+      expect(Concurrent::ScheduledTask).to have_received(:execute).with(0 * interval, executor: anything)
+      expect(Concurrent::ScheduledTask).to have_received(:execute).with(1 * interval, executor: anything)
+      expect(Concurrent::ScheduledTask).to have_received(:execute).with(2 * interval, executor: anything)
+    end
+
     it 'includes the topics field for ideation' do
       topic = create(:input_topic, title_multiloc: { 'en' => 'Bananas' })
       project = create(:single_phase_ideation_project)
