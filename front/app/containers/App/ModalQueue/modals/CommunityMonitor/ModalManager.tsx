@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { get } from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAuthUser from 'api/me/useAuthUser';
@@ -35,7 +35,7 @@ const CommunityMonitorModalManager = () => {
   });
 
   // Check if we have already stored a cookie, indicating the user has seen the modal
-  const hasSeenModal = get('community_monitor_modal_seen');
+  const hasSeenModal = Cookies.get('community_monitor_modal_seen');
 
   // Get the community monitor project/phase & check if the survey is currently open
   const { data: project } = useCommunityMonitorProject({

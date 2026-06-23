@@ -86,13 +86,20 @@ describe('Landing page - URL sign in/up', () => {
 });
 
 describe('Landing page - signed in', () => {
-  const firstName = randomString();
-  const lastName = randomString();
-  const email = randomEmail();
-  const password = randomString();
   let userId: string;
 
-  before(() => {
+  beforeEach(() => {
+    // Create a fresh user for every test attempt. The test dismisses onboarding
+    // campaigns (skipping verification and "complete your profile"), and those
+    // dismissals persist on the backend. Cypress re-runs beforeEach on retries
+    // but not before(), so a user created once in before() would, on retry,
+    // skip straight to the "default" campaign and the verification step would
+    // never render. Signing up here keeps each attempt's onboarding state clean.
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
+
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
       userId = user.body.data.id;
       cy.setLoginCookie(email, password);
@@ -104,7 +111,6 @@ describe('Landing page - signed in', () => {
     cy.goToLandingPage();
     cy.injectAxe();
 
-    cy.wait(2000);
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
     cy.get(
@@ -136,7 +142,7 @@ describe('Landing page - signed in', () => {
     cy.checkA11y();
   });
 
-  after(() => {
+  afterEach(() => {
     cy.apiRemoveUser(userId);
   });
 });
