@@ -238,19 +238,33 @@ RSpec.describe Analysis::AutoTaggingTask do
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
       create_list(:idea, 3, project: project)
 
-      allow_any_instance_of(Analysis::LLM::GPT4oMini)
-        .to receive(:chat)
-        .and_return(tags[0].name)
+      # Record the (monotonic) time at which each LLM request actually fires from the
+      # pool threads, so we can assert concurrent-ruby honoured the scheduled delays.
+      mutex = Mutex.new
+      call_times = []
+      allow_any_instance_of(Analysis::LLM::GPT4oMini).to receive(:chat) do
+        mutex.synchronize { call_times << Process.clock_gettime(Process::CLOCK_MONOTONIC) }
+        tags[0].name
+      end
       allow(Concurrent::ScheduledTask).to receive(:execute).and_call_original
 
       att.execute
 
-      # Each input should be scheduled with an increasing delay (idx * TASK_INTERVAL)
-      # so the LLM requests are spread out rather than fired all at once.
       interval = Analysis::AutoTaggingMethod::Base::TASK_INTERVAL
+
+      # We scheduled each input with an increasing delay (idx * TASK_INTERVAL) so the
+      # LLM requests are spread out rather than fired all at once.
       expect(Concurrent::ScheduledTask).to have_received(:execute).with(0 * interval, executor: anything)
       expect(Concurrent::ScheduledTask).to have_received(:execute).with(1 * interval, executor: anything)
       expect(Concurrent::ScheduledTask).to have_received(:execute).with(2 * interval, executor: anything)
+
+      # ...and concurrent-ruby actually honoured those delays at runtime: the requests
+      # were genuinely spread out over time. A ScheduledTask never fires *before* its
+      # delay, so this lower bound is safe from timing flakiness. If a gem bump broke
+      # the delay semantics, all three would fire ~immediately and this would fail.
+      expect(call_times.size).to eq(3)
+      span = call_times.max - call_times.min
+      expect(span).to be >= (2 * interval * 0.9)
     end
 
     it 'includes the topics field for ideation' do
