@@ -2,19 +2,27 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim process attachments (`05---attachments.csv`) ──▶ Go Vocal project file attachments
-    # (`ProjectFile`).
+    # Decidim process attachments (`05---attachments.csv`) ──▶ Go Vocal files (the `Files::` engine).
+    #
+    # Each Decidim attachment becomes three records, mirroring how the app itself models a project
+    # file attachment:
+    #   * `Files::File` — the file itself (content fetched from `remote_content_url` at apply time),
+    #     carrying the Decidim title/description multilocs and a filename derived from the URL.
+    #   * `Files::FilesProject` — the ownership join placing the file in the project's file repository
+    #     (required: a file attached to a project resource must belong to that project).
+    #   * `Files::FileAttachment` — the polymorphic attachment (`attachable`: the project) that surfaces
+    #     the file as a project attachment, with `position` taken from the Decidim weight.
     #
     # The attachments CSV has no process column — the directory is the association — so the importer
     # stamps each row with its owning process (`decidim_participatory_process`) and the project is
-    # looked up in the ref map. The file itself is fetched from its `remote_file_url` at apply time
-    # (or pruned by the importer when the URL is unreachable / images are disabled). The display name
-    # is the URL's percent-decoded basename, which preserves the original extension; the attachment
-    # title is used as a fallback when the URL has no usable filename.
+    # looked up in the ref map. If a file's URL turns out to be unreachable (or images are disabled),
+    # the importer prunes the file *and* its join/attachment records before deserialize
+    # ({Importer.prune_fileless_attachments!}).
     class FilesExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',
         title: 'title',
+        description: 'description',
         weight: 'weight',
         file: 'file',
         process: 'decidim_participatory_process'
@@ -46,13 +54,35 @@ module DecidimImporter
         name = filename_for(url, row)
         return skip(uid, 'attachment has no derivable name') if name.nil?
 
-        file = Record.new('project_file', {
+        file = Record.new('files/file', {
           'name' => name,
-          'ordering' => ordering_for(row),
-          'remote_file_url' => url
+          'title_multiloc' => multiloc(row[COLUMNS[:title]]),
+          'description_multiloc' => multiloc(row[COLUMNS[:description]]),
+          'remote_content_url' => url
         })
-        file.reference('project', project)
         ref_map.register(uid, file)
+
+        register_files_project(uid, file, project)
+        register_file_attachment(uid, file, project, row)
+        file
+      end
+
+      # The ownership join: the file belongs to the project's file repository. Required before the
+      # attachment, whose `validate_file_belongs_to_project` checks the file's `files_projects`.
+      def register_files_project(uid, file, project)
+        files_project = Record.new('files/files_project', {})
+        files_project.reference('file', file)
+        files_project.reference('project', project)
+        ref_map.register("#{uid}-files-project", files_project)
+      end
+
+      # The attachment that surfaces the file on the project, preserving the Decidim weight as its
+      # position. `attachable` is a polymorphic ref pointing at the project record.
+      def register_file_attachment(uid, file, project, row)
+        attachment = Record.new('files/file_attachment', { 'position' => ordering_for(row) })
+        attachment.reference('file', file)
+        attachment.reference('attachable', project)
+        ref_map.register("#{uid}-file-attachment", attachment)
       end
 
       def ordering_for(row)

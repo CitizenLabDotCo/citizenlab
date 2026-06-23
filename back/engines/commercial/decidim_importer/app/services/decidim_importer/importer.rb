@@ -157,6 +157,7 @@ module DecidimImporter
       resolve_area_orderings!(template)
       prepare_images!(template, import_images: import_images)
       prune_fileless_attachments!(template)
+      prune_imageless_project_images!(template)
       created = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
       reconcile_permissions!
       created
@@ -248,14 +249,34 @@ module DecidimImporter
       end
     end
 
-    # Drops any `project_file` whose file URL was pruned (unreachable) or stripped (images off): a
-    # ProjectFile with no file is a broken, empty attachment, so the record is removed rather than
-    # imported. Runs after {.prepare_images!}, which is what removes the unreachable/stripped URLs.
+    # Drops any `Files::File` whose content URL was pruned (unreachable) or stripped (images off): a
+    # file with no content is a broken, empty attachment, so the record — and its dependent
+    # `files_project` ownership join and `file_attachment` — are removed rather than imported. Runs
+    # after {.prepare_images!}, which is what removes the unreachable/stripped `remote_content_url`s.
     def self.prune_fileless_attachments!(template)
-      files = template.dig('models', 'project_file')
+      files = template.dig('models', 'files/file')
       return unless files
 
-      files.reject! { |attrs| attrs['remote_file_url'].blank? && attrs['file'].blank? }
+      removed = files.reject { |attrs| attrs['remote_content_url'].present? || attrs['content'].present? }
+      return if removed.empty?
+
+      # Cross-record links share the exact attribute-hash object (preserved through the YAML
+      # anchors/aliases), so dependents are matched to removed files by object identity.
+      removed_ids = removed.to_set(&:object_id)
+      files.reject! { |attrs| removed_ids.include?(attrs.object_id) }
+      %w[files/files_project files/file_attachment].each do |model|
+        template.dig('models', model)&.reject! { |attrs| removed_ids.include?(attrs['file_ref'].object_id) }
+      end
+    end
+
+    # Drops any `project_image` whose image URL was pruned (unreachable) or stripped (images off): an
+    # image-less ProjectImage would surface as a broken/empty card image, so the record is removed.
+    # Runs after {.prepare_images!}. The project itself is untouched — only the card-image record goes.
+    def self.prune_imageless_project_images!(template)
+      images = template.dig('models', 'project_image')
+      return unless images
+
+      images.reject! { |attrs| attrs['remote_image_url'].blank? && attrs['image'].blank? }
     end
 
     # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
@@ -304,14 +325,24 @@ module DecidimImporter
     end
 
     # True only when the URL resolves to a 2xx (following redirects); any non-success or error → false,
-    # so a missing image is dropped rather than risking a download failure mid-import. Uses HEAD so the
-    # image body isn't pulled.
+    # so a missing file/image is dropped rather than risking a download failure mid-import.
+    #
+    # Uses a single-byte ranged GET (`Range: bytes=0-0`), not HEAD: Active Storage redirects to
+    # presigned S3 URLs that are signed for GET only and answer HEAD with 403, so a HEAD probe would
+    # wrongly mark a perfectly reachable file unreachable. The body is left unread (the request is
+    # streamed and the connection closed), so nothing is actually downloaded. A 206 Partial Content is
+    # a `Net::HTTPSuccess`, so it's covered alongside a 200 (servers that ignore the Range header).
     def self.image_reachable?(url, redirects_left = 5)
       uri = URI.parse(url)
       return false unless uri.is_a?(URI::HTTP)
 
-      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https',
-        open_timeout: 5, read_timeout: 5) { |http| http.head(uri.request_uri) }
+      response = nil
+      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https',
+        open_timeout: 5, read_timeout: 5) do |http|
+        request = Net::HTTP::Get.new(uri.request_uri)
+        request['Range'] = 'bytes=0-0'
+        http.request(request) { |res| response = res } # body intentionally left unread
+      end
       case response
       when Net::HTTPSuccess then true
       when Net::HTTPRedirection
@@ -393,6 +424,7 @@ module DecidimImporter
       self.class.resolve_area_orderings!(template)
       self.class.prepare_images!(template, import_images: @import_images)
       self.class.prune_fileless_attachments!(template)
+      self.class.prune_imageless_project_images!(template)
       created_object_ids = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
       self.class.reconcile_permissions!

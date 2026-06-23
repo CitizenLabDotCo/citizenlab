@@ -16,8 +16,11 @@ module DecidimImporter
       area
       project_folders/folder
       project
+      project_image
       static_page
-      project_file
+      files/file
+      files/files_project
+      files/file_attachment
       phase
       custom_form
       custom_field

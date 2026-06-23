@@ -45,14 +45,22 @@ RSpec.describe DecidimImporter::Importer do
       expect(patch.dig('settings', 'core', 'organization_name')).to include('en' => 'Raynor, Heathcote and Moen')
     end
 
-    it 'imports a process\'s attachments as project file attachments' do
+    it 'imports a process\'s attachments as Files engine files attached to the project' do
       template = described_class.from_directory(export_root).build_template.models['models']
 
       espaces_verts = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Espaces verts' }
-      files = template['project_file'].select { |f| f['project_ref'].equal?(espaces_verts) }
       # The file name is the URL's decoded basename, with its extension preserved.
-      expect(files.map { |f| f['name'] }).to contain_exactly('Compte-rendu réunion.pdf', "Plan d'actions.pdf")
-      expect(files.map { |f| f['remote_file_url'] }).to all(start_with('http://example.org/files/redirect/'))
+      expect(template['files/file'].map { |f| f['name'] })
+        .to contain_exactly('Compte-rendu réunion.pdf', "Plan d'actions.pdf")
+      expect(template['files/file'].map { |f| f['remote_content_url'] })
+        .to all(start_with('http://example.org/files/redirect/'))
+
+      # Each file is owned by (files_project) and attached to (file_attachment) the Espaces verts project.
+      expect(template['files/files_project'].map { |fp| fp['project_ref'] }).to all(be(espaces_verts))
+      expect(template['files/file_attachment'].map { |fa| fa['attachable_ref'] }).to all(be(espaces_verts))
+      files = template['files/file']
+      expect(template['files/files_project'].map { |fp| fp['file_ref'] }).to match_array(files)
+      expect(template['files/file_attachment'].map { |fa| fa['file_ref'] }).to match_array(files)
     end
   end
 
@@ -274,19 +282,65 @@ RSpec.describe DecidimImporter::Importer do
   end
 
   describe '.prune_fileless_attachments!' do
-    it 'drops project files whose file url was stripped/pruned, keeping the rest' do
-      template = { 'models' => { 'project_file' => [
-        { 'name' => 'kept.pdf', 'remote_file_url' => 'http://x/y.pdf' },
-        { 'name' => 'gone.pdf' }
-      ] } }
+    it 'drops content-less files and their dependent join/attachment records, keeping the rest' do
+      kept = { 'name' => 'kept.pdf', 'remote_content_url' => 'http://x/y.pdf' }
+      gone = { 'name' => 'gone.pdf' } # its content URL was stripped/pruned
+      template = { 'models' => {
+        'files/file' => [kept, gone],
+        'files/files_project' => [{ 'file_ref' => kept }, { 'file_ref' => gone }],
+        'files/file_attachment' => [{ 'file_ref' => kept }, { 'file_ref' => gone }]
+      } }
 
       described_class.prune_fileless_attachments!(template)
 
-      expect(template['models']['project_file'].map { |f| f['name'] }).to eq(['kept.pdf'])
+      expect(template['models']['files/file'].map { |f| f['name'] }).to eq(['kept.pdf'])
+      expect(template['models']['files/files_project'].map { |fp| fp['file_ref'] }).to eq([kept])
+      expect(template['models']['files/file_attachment'].map { |fa| fa['file_ref'] }).to eq([kept])
     end
 
-    it 'is a no-op when the template has no project files' do
+    it 'is a no-op when the template has no files' do
       expect { described_class.prune_fileless_attachments!({ 'models' => {} }) }.not_to raise_error
+    end
+  end
+
+  describe '.prune_imageless_project_images!' do
+    it 'drops project images whose image url was stripped/pruned, keeping the rest' do
+      template = { 'models' => { 'project_image' => [
+        { 'ordering' => 0, 'remote_image_url' => 'http://x/hero.png' },
+        { 'ordering' => 0 } # its image URL was stripped/pruned
+      ] } }
+
+      described_class.prune_imageless_project_images!(template)
+
+      expect(template['models']['project_image'].map { |i| i['remote_image_url'] }).to eq(['http://x/hero.png'])
+    end
+
+    it 'is a no-op when the template has no project images' do
+      expect { described_class.prune_imageless_project_images!({ 'models' => {} }) }.not_to raise_error
+    end
+  end
+
+  describe '.image_reachable?' do
+    it 'is reachable via a ranged GET even when HEAD is forbidden (presigned S3 URL)' do
+      # Active Storage redirects to presigned S3 URLs signed for GET only: HEAD → 403, GET → 200.
+      stub_request(:head, 'https://s3.example/file.pdf').to_return(status: 403)
+      stub_request(:get, 'https://s3.example/file.pdf').to_return(status: 200)
+
+      expect(described_class.image_reachable?('https://s3.example/file.pdf')).to be(true)
+    end
+
+    it 'follows redirects to the underlying blob (206 Partial Content counts as reachable)' do
+      stub_request(:get, 'https://app.example/redirect/file.pdf')
+        .to_return(status: 302, headers: { 'Location' => 'https://s3.example/blob.pdf' })
+      stub_request(:get, 'https://s3.example/blob.pdf').to_return(status: 206)
+
+      expect(described_class.image_reachable?('https://app.example/redirect/file.pdf')).to be(true)
+    end
+
+    it 'is false for a genuinely missing file' do
+      stub_request(:get, 'https://s3.example/gone.pdf').to_return(status: 404)
+
+      expect(described_class.image_reachable?('https://s3.example/gone.pdf')).to be(false)
     end
   end
 

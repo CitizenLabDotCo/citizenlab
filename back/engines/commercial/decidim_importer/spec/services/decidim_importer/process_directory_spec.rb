@@ -20,9 +20,16 @@ RSpec.describe DecidimImporter::Importer do
 
       project = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Rue de demain' }
       expect(project).to be_present
-      # The preview is plain text: Decidim's `<p>Résumé</p>` short description has its HTML stripped.
-      expect(project['description_preview_multiloc']['fr-FR']).to eq('Résumé')
+      # The preview is plain text: tags are removed and HTML entities decoded — `&eacute;` → é,
+      # `&amp;` → &, and `&nbsp;` collapses into a normal space.
+      expect(project['description_preview_multiloc']['fr-FR']).to eq('Résumé : rue & demain')
       expect(project['admin_publication_attributes']['publication_status']).to eq('published')
+
+      # The Decidim hero image becomes both the page header background and the project card image
+      # (a ProjectImage), so it shows on the project tile in listings.
+      expect(project['remote_header_bg_url']).to eq('http://example.org/hero.png')
+      card_image = template['project_image'].find { |img| img['project_ref'].equal?(project) }
+      expect(card_image).to include('remote_image_url' => 'http://example.org/hero.png', 'ordering' => 0)
 
       phases = template['phase'].select { |ph| ph['project_ref'].equal?(project) }
       expect(phases.map { |ph| ph['title_multiloc']['fr-FR'] }).to eq(['État des lieux', "Plan d'actions"])

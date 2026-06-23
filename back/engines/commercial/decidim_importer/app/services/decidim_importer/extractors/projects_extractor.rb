@@ -45,15 +45,34 @@ module DecidimImporter
         hero = present_value(row[COLUMNS[:hero_image]])
         attributes['remote_header_bg_url'] = hero if hero
 
-        ref_map.register(uid, Record.new('project', attributes))
+        project = ref_map.register(uid, Record.new('project', attributes))
+        register_card_image(uid, project, hero) if hero
+        project
+      end
+
+      # Decidim only ships one process image (the hero). Besides using it as the page header
+      # background (above), reuse it as the project's card image — the first `ProjectImage`, which is
+      # what the project card/tile in listings displays.
+      def register_card_image(uid, project, hero_url)
+        image = Record.new('project_image', { 'remote_image_url' => hero_url, 'ordering' => 0 })
+        image.reference('project', project)
+        ref_map.register("#{uid}-card-image", image)
       end
 
       # Decidim's `short_description` is HTML, but Go Vocal's `description_preview_multiloc` is a
-      # plain-text teaser — strip all tags, dropping any locale left blank.
+      # plain-text teaser — convert to plain text, dropping any locale left blank.
       def plain_text_multiloc(value)
         multiloc(value)
-          .transform_values { |html| ActionController::Base.helpers.strip_tags(html).strip }
+          .transform_values { |html| plain_text(html) }
           .reject { |_, text| text.empty? }
+      end
+
+      # Plain text from an HTML fragment. Parsing with Nokogiri (rather than a tag-stripper) decodes
+      # HTML entities — including named ones like `&nbsp;`/`&eacute;` that `strip_tags` leaves
+      # encoded — and the whitespace collapse turns the resulting non-breaking spaces and block-level
+      # line breaks into single spaces.
+      def plain_text(html)
+        Nokogiri::HTML.fragment(html.to_s).text.gsub(/[[:space:]]/, ' ').squeeze(' ').strip
       end
 
       def admin_publication_attributes(row)
