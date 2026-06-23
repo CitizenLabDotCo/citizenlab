@@ -19,9 +19,9 @@ describe McpServer::Tools::CreateEvent do
 
     it 'creates the event' do
       response = nil
-      expect {
+      expect do
         response = run_mcp_tool(described_class, params:, current_user:)
-      }.to change { project.reload.events.count }.by(1)
+      end.to change { project.reload.events.count }.by(1)
 
       expect(response).not_to be_error
     end

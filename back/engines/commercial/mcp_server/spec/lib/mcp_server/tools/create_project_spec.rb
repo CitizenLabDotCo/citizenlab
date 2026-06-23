@@ -12,9 +12,9 @@ describe McpServer::Tools::CreateProject do
 
   it 'creates a draft project' do
     response = nil
-    expect {
+    expect do
       response = run_mcp_tool(described_class, params:, current_user:)
-    }.to change { Project.count }.by(1)
+    end.to change(Project, :count).by(1)
 
     expect(response).not_to be_error
     expect(Project.last.admin_publication.publication_status).to eq('draft')

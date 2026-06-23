@@ -20,9 +20,9 @@ describe McpServer::Tools::CreatePhase do
 
     it 'creates the phase' do
       response = nil
-      expect {
+      expect do
         response = run_mcp_tool(described_class, params:, current_user:)
-      }.to change { project.reload.phases.count }.by(1)
+      end.to change { project.reload.phases.count }.by(1)
 
       expect(response).not_to be_error
     end
@@ -38,5 +38,4 @@ describe McpServer::Tools::CreatePhase do
       expect(project.reload.phases.count).to eq(0)
     end
   end
-
 end

@@ -18,9 +18,9 @@ describe McpServer::Tools::CreatePollQuestion do
 
     it 'creates the question' do
       response = nil
-      expect {
+      expect do
         response = run_mcp_tool(described_class, params:, current_user:)
-      }.to change { phase.reload.poll_questions.count }.by(1)
+      end.to change { phase.reload.poll_questions.count }.by(1)
 
       expect(response).not_to be_error
     end

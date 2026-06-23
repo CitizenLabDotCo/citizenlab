@@ -19,9 +19,9 @@ describe McpServer::Tools::CreatePollOption do
 
     it 'creates the option' do
       response = nil
-      expect {
+      expect do
         response = run_mcp_tool(described_class, params:, current_user:)
-      }.to change { question.reload.options.count }.by(1)
+      end.to change { question.reload.options.count }.by(1)
 
       expect(response).not_to be_error
     end

@@ -18,9 +18,9 @@ describe McpServer::Tools::CreateCause do
 
     it 'creates the cause' do
       response = nil
-      expect {
+      expect do
         response = run_mcp_tool(described_class, params:, current_user:)
-      }.to change { phase.reload.causes.count }.by(1)
+      end.to change { phase.reload.causes.count }.by(1)
 
       expect(response).not_to be_error
     end

@@ -38,7 +38,7 @@ RSpec::Matchers.define :be_unauthorized do |expected_message = nil|
   end
 
   def response_text(response)
-    response.content.map { |c| c[:text] }.compact.join(' / ')
+    response.content.filter_map { |c| c[:text] }.join(' / ')
   end
 end
 
