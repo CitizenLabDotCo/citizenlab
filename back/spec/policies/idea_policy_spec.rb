@@ -401,6 +401,12 @@ describe IdeaPolicy do
     let!(:folder) { create(:project_folder, projects: [project], space: space) }
     let!(:idea) { create(:idea, project: project) }
 
+    context "for the idea's author who can no longer see the project" do
+      let(:user) { idea.author }
+
+      it { is_expected.not_to permit(:update) }
+    end
+
     context 'for a visitor' do
       let(:user) { nil }
 

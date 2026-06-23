@@ -101,7 +101,7 @@ class IdeaPolicy < ApplicationPolicy
     posting_denied_reason = Permissions::IdeaPermissionsService.new(record, user).denied_reason_for_action permission_action
     raise_not_authorized(posting_denied_reason) if posting_denied_reason
 
-    true
+    policy_for(record.project).show?
   end
 
   def destroy?
