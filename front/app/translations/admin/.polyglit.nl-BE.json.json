@@ -74,6 +74,66 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.Admin.ManagementFeed.permission": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionAnnotatingDocument": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionAttendingEvent": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionCommentingIdea": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionFollowing": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionPostingIdea": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionReactingIdea": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionTakingPoll": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionTakingSurvey": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionVisiting": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionVolunteering": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
+  "app.Admin.ManagementFeed.permissionActionVoting": {
+    "state": "verified",
+    "verified_at": "2026-06-19T14:57:05.394234Z",
+    "verified_by": "Pauline"
+  },
   "app.Admin.ManagementFeed.phase": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -2478,6 +2538,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+  "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning": {
+    "state": "verified",
+    "verified_at": "2026-06-09T19:19:09.178658Z",
+    "verified_by": "Luuc"
   },
   "app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeFlaggedOnly": {
     "state": "verified",

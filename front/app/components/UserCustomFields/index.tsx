@@ -35,7 +35,10 @@ const UserCustomFieldsForm = ({
   useEffect(() => {
     if (triggerValidation && onValidationResult) {
       const validateForm = async () => {
-        const isValid = await methods.trigger();
+        // shouldFocus moves focus to the first invalid field on submit so the
+        // associated error (role="alert") is surfaced. trigger() does not honor
+        // the form-level shouldFocusError option, so it must be passed here.
+        const isValid = await methods.trigger(undefined, { shouldFocus: true });
         onValidationResult(isValid);
       };
       validateForm();
