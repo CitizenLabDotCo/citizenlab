@@ -89,9 +89,43 @@ module Permissions
       super(action, scope: phase)
     end
 
+    def action_descriptors
+      posting = denied_reason_for_action 'posting_idea'
+      commenting = denied_reason_for_action 'commenting_idea'
+      reacting = denied_reason_for_action 'reacting_idea'
+      liking = denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
+      disliking = denied_reason_for_action 'reacting_idea', reaction_mode: 'down'
+      annotating_document = denied_reason_for_action 'annotating_document'
+      taking_survey = denied_reason_for_action 'taking_survey'
+      taking_poll = denied_reason_for_action 'taking_poll'
+      voting = denied_reason_for_action 'voting'
+      attending_event = denied_reason_for_action 'attending_event'
+      volunteering = denied_reason_for_action 'volunteering'
+
+      {
+        posting_idea: descriptor(posting),
+        commenting_idea: descriptor(commenting),
+        reacting_idea: descriptor(reacting).merge(
+          up: descriptor(liking),
+          down: descriptor(disliking)
+        ),
+        comment_reacting_idea: descriptor(commenting), # You can react if you can comment.
+        annotating_document: descriptor(annotating_document),
+        taking_survey: descriptor(taking_survey),
+        taking_poll: descriptor(taking_poll),
+        voting: descriptor(voting),
+        attending_event: descriptor(attending_event),
+        volunteering: descriptor(volunteering)
+      }
+    end
+
     private
 
     attr_reader :phase, :request
+
+    def descriptor(reason)
+      { enabled: !reason, disabled_reason: reason }
+    end
 
     # Phase methods
     def posting_idea_denied_reason_for_action

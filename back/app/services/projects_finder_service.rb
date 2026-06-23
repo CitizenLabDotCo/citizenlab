@@ -47,7 +47,7 @@ class ProjectsFinderService
         project, @user, user_requirements_service: user_requirements_service
       )
       action_descriptors = service.action_descriptors
-      has_participation_possible = service.participation_possible?(action_descriptors)
+      has_participation_possible = Permissions::ActionDescriptorsService.new(action_descriptors).participation_possible?
       next unless has_participation_possible
 
       project_descriptor_pairs[project.id] = action_descriptors

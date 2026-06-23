@@ -4,12 +4,6 @@ module Permissions
       project_not_visible: 'project_not_visible'
     }.freeze
 
-    # Reasons that can be 'fixed' by the user. Somewhat subjective, and sometimes misleading,
-    # since 'fixing' a reason may subsequently reveal another 'unfixable' reason.
-    # Attempting to predict if a user could theoretically fix a 'stack' of denied reasons for an action
-    # is complex, could be slow, and in some cases impossible.
-    FIXABLE_DENIED_REASONS = %w[user_not_signed_in user_not_active user_not_verified user_missing_requirements].freeze
-
     def initialize(project, user, user_requirements_service: nil, request: nil, fallback_to_last_phase: false)
       @timeline_service = TimelineService.new
       phase = if fallback_to_last_phase
@@ -34,71 +28,14 @@ module Permissions
       end
     end
 
+    # The project's descriptors are its current phase's, plus a project-level
+    # future_enabled_at lookahead (when posting opens in a later phase).
     def action_descriptors
-      posting_disabled_reason = denied_reason_for_action 'posting_idea'
-      commenting_disabled_reason = denied_reason_for_action 'commenting_idea'
-      reacting_disabled_reason = denied_reason_for_action 'reacting_idea'
-      liking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
-      disliking_disabled_reason = denied_reason_for_action 'reacting_idea', reaction_mode: 'down'
-      annotating_document_disabled_reason = denied_reason_for_action 'annotating_document'
-      taking_survey_disabled_reason = denied_reason_for_action 'taking_survey'
-      taking_poll_disabled_reason = denied_reason_for_action 'taking_poll'
-      voting_disabled_reason = denied_reason_for_action 'voting'
-      attending_event_disabled_reason = denied_reason_for_action 'attending_event'
-      volunteering_disabled_reason = denied_reason_for_action 'volunteering'
-
-      {
-        posting_idea: {
-          enabled: !posting_disabled_reason,
-          disabled_reason: posting_disabled_reason,
-          future_enabled_at: posting_disabled_reason && future_enabled_phase('posting_idea')&.start_at
-        },
-        commenting_idea: {
-          enabled: !commenting_disabled_reason,
-          disabled_reason: commenting_disabled_reason
-        },
-        reacting_idea: {
-          enabled: !reacting_disabled_reason,
-          disabled_reason: reacting_disabled_reason,
-          up: {
-            enabled: !liking_disabled_reason,
-            disabled_reason: liking_disabled_reason
-          },
-          down: {
-            enabled: !disliking_disabled_reason,
-            disabled_reason: disliking_disabled_reason
-          }
-        },
-        comment_reacting_idea: {
-          # You can react if you can comment.
-          enabled: !commenting_disabled_reason,
-          disabled_reason: commenting_disabled_reason
-        },
-        annotating_document: {
-          enabled: !annotating_document_disabled_reason,
-          disabled_reason: annotating_document_disabled_reason
-        },
-        taking_survey: {
-          enabled: !taking_survey_disabled_reason,
-          disabled_reason: taking_survey_disabled_reason
-        },
-        taking_poll: {
-          enabled: !taking_poll_disabled_reason,
-          disabled_reason: taking_poll_disabled_reason
-        },
-        voting: {
-          enabled: !voting_disabled_reason,
-          disabled_reason: voting_disabled_reason
-        },
-        attending_event: {
-          enabled: !attending_event_disabled_reason,
-          disabled_reason: attending_event_disabled_reason
-        },
-        volunteering: {
-          enabled: !volunteering_disabled_reason,
-          disabled_reason: volunteering_disabled_reason
-        }
-      }
+      descriptors = super
+      posting_disabled_reason = descriptors[:posting_idea][:disabled_reason]
+      descriptors[:posting_idea][:future_enabled_at] =
+        posting_disabled_reason && future_enabled_phase('posting_idea')&.start_at
+      descriptors
     end
 
     def project_visible_disabled_reason
@@ -109,17 +46,6 @@ module Permissions
          (project&.visible_to == 'groups' && project.groups && !user&.in_any_groups?(project.groups))
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
-    end
-
-    def participation_possible?(action_descriptors)
-      # `attending_event` is not included, as we do not check if any ongoing/future events exist for the project,
-      # nor if user is already attending such an event, in the interests of performance and simplicity.
-      descriptors = action_descriptors.except(:attending_event)
-
-      return true if descriptors.values.any? { |d| d[:enabled] }
-      return true if descriptors.values.any? { |d| FIXABLE_DENIED_REASONS.include?(d[:disabled_reason]) }
-
-      false
     end
 
     private
