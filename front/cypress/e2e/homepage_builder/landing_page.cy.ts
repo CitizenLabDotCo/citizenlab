@@ -86,25 +86,25 @@ describe('Landing page - URL sign in/up', () => {
 });
 
 describe('Landing page - signed in', () => {
-  const firstName = randomString();
-  const lastName = randomString();
-  const email = randomEmail();
-  const password = randomString();
   let userId: string;
 
-  before(() => {
+  beforeEach(() => {
+    // Create a fresh user for every test attempt. The test dismisses onboarding
+    // campaigns (skipping verification and "complete your profile"), and those
+    // dismissals persist on the backend. Cypress re-runs beforeEach on retries
+    // but not before(), so a user created once in before() would, on retry,
+    // skip straight to the "default" campaign and the verification step would
+    // never render. Signing up here keeps each attempt's onboarding state clean.
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
+
     cy.apiSignup(firstName, lastName, email, password).then((user) => {
       userId = user.body.data.id;
+      cy.setLoginCookie(email, password);
+      cy.setConsentCookie();
     });
-  });
-
-  beforeEach(() => {
-    // Re-establish the auth cookies for every test attempt/retry. With Cypress
-    // test isolation, cookies set in a one-time before() hook can be cleared
-    // before the test runs, which intermittently renders the page signed-out
-    // and makes the signed-in header assertion flaky.
-    cy.setLoginCookie(email, password);
-    cy.setConsentCookie();
   });
 
   it('shows correct content', () => {
@@ -142,7 +142,7 @@ describe('Landing page - signed in', () => {
     cy.checkA11y();
   });
 
-  after(() => {
+  afterEach(() => {
     cy.apiRemoveUser(userId);
   });
 });
