@@ -46,14 +46,10 @@ class TimelineService
     project.phases.select { |phase| phase.pmethod.transitive? }&.last
   end
 
-  def overlaps?(phase1, phase2)
-    period1 = phase1.start_at...phase1.end_at
-    period2 = phase2.start_at...phase2.end_at
-    period1.overlap?(period2)
-  end
-
-  def other_project_phases(phase)
-    Phase.where(project_id: phase.project_id).all.reject { |p| p.id == phase.id }
+  def overlapping_phases(phase)
+    Phase.where(project_id: phase.project_id).where.not(id: phase.id).select do |other_phase|
+      overlaps?(phase, other_phase)
+    end
   end
 
   def timeline_active(project)
@@ -103,5 +99,11 @@ class TimelineService
     return false if !phase.start_at
 
     other_project_phases.maximum(:start_at) < phase.start_at
+  end
+
+  private
+
+  def overlaps?(phase1, phase2)
+    (phase1.start_at...phase1.end_at).overlap?(phase2.start_at...phase2.end_at)
   end
 end

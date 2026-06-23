@@ -261,50 +261,49 @@ describe TimelineService do
     end
   end
 
-  describe 'overlaps?' do
-    it 'returns false when a phase ends before the next starts' do
-      project = build(:project)
-      phase1 = build(:phase, project:, start_at: 5.days.ago, end_at: 2.days.from_now)
-      phase2 = build(:phase, project:, start_at: phase1.end_at, end_at: 12.days.from_now)
+  describe '#overlapping_phases' do
+    let(:project) { create(:project) }
 
-      expect(service.overlaps?(phase1, phase2)).to be false
-      expect(service.overlaps?(phase2, phase1)).to be false
+    it 'excludes the phase itself and non-overlapping phases' do
+      create(:phase, project:, start_at: 10.days.ago, end_at: 5.days.ago)
+      phase = create(:phase, project:, start_at: 2.days.ago, end_at: 2.days.from_now)
+
+      expect(service.overlapping_phases(phase)).to be_empty
     end
 
-    it 'returns true when a phase ends in between start and end of the next phase' do
-      project = build(:project)
-      phase1 = build(:phase, project:, start_at: 5.days.ago, end_at: 5.days.from_now)
-      phase2 = build(:phase, project:, start_at: 2.days.from_now, end_at: 12.days.from_now)
+    it 'is empty when a phase ends exactly when the other starts' do
+      existing = create(:phase, project:, start_at: 5.days.ago, end_at: 2.days.from_now)
+      phase = build(:phase, project:, start_at: existing.end_at, end_at: 12.days.from_now)
 
-      expect(service.overlaps?(phase1, phase2)).to be true
-      expect(service.overlaps?(phase2, phase1)).to be true
+      expect(service.overlapping_phases(phase)).to be_empty
     end
 
-    it 'returns true when a phase starts and ends inside the start-end period of the other phase' do
-      project = build(:project)
-      phase1 = build(:phase, project:, start_at: 5.days.ago, end_at: 12.days.from_now)
-      phase2 = build(:phase, project:, start_at: 2.days.from_now, end_at: 5.days.from_now)
+    it 'returns a phase that ends between the start and end of the given phase' do
+      existing = create(:phase, project:, start_at: 5.days.ago, end_at: 5.days.from_now)
+      phase = build(:phase, project:, start_at: 2.days.from_now, end_at: 12.days.from_now)
 
-      expect(service.overlaps?(phase1, phase2)).to be true
-      expect(service.overlaps?(phase2, phase1)).to be true
+      expect(service.overlapping_phases(phase)).to contain_exactly(existing)
     end
 
-    it 'returns false for a phase ending before a phase with no end date starts' do
-      project = build(:project)
-      phase1 = build(:phase, project:, start_at: 2.days.ago, end_at: 2.days.from_now)
-      phase2 = build(:phase, project:, start_at: 5.days.from_now, end_at: nil)
+    it 'returns a phase that starts and ends inside the given phase' do
+      existing = create(:phase, project:, start_at: 2.days.from_now, end_at: 5.days.from_now)
+      phase = build(:phase, project:, start_at: 5.days.ago, end_at: 12.days.from_now)
 
-      expect(service.overlaps?(phase1, phase2)).to be false
-      expect(service.overlaps?(phase2, phase1)).to be false
+      expect(service.overlapping_phases(phase)).to contain_exactly(existing)
     end
 
-    it 'returns true for a phase ending after a phase with no end date starts' do
-      project = build(:project)
-      phase1 = build(:phase, project:, start_at: 5.days.from_now, end_at: nil)
-      phase2 = build(:phase, project:, start_at: 2.days.from_now, end_at: 12.days.from_now)
+    it 'is empty for a phase ending before an open-ended phase starts' do
+      create(:phase, project:, start_at: 5.days.from_now, end_at: nil)
+      phase = build(:phase, project:, start_at: 2.days.ago, end_at: 2.days.from_now)
 
-      expect(service.overlaps?(phase1, phase2)).to be true
-      expect(service.overlaps?(phase2, phase1)).to be true
+      expect(service.overlapping_phases(phase)).to be_empty
+    end
+
+    it 'returns an open-ended phase that starts before the given phase ends' do
+      existing = create(:phase, project:, start_at: 2.days.from_now, end_at: nil)
+      phase = build(:phase, project:, start_at: 5.days.from_now, end_at: 12.days.from_now)
+
+      expect(service.overlapping_phases(phase)).to contain_exactly(existing)
     end
   end
 
