@@ -15,7 +15,6 @@ module DecidimImporter
       COLUMNS = {
         uid: 'uid',
         title: 'title',
-        description: 'description',
         short_description: 'short_description',
         hero_image: 'hero_image',
         group: 'participatory_process_group',

@@ -6,8 +6,6 @@ module DecidimImporter
     # (arrays of `{ column_header => value }` hashes, as produced by `XlsxService#xlsx_to_hash_array`)
     # and registers {Record}s into the shared {RefMap}.
     class BaseExtractor
-      TRUE_VALUES = %w[1 true t yes y x checked].freeze
-
       def initialize(rows, ref_map, locale_mapper:, primary_locale: 'fr-FR')
         @rows = rows || []
         @ref_map = ref_map
@@ -54,7 +52,7 @@ module DecidimImporter
       end
 
       def truthy?(value)
-        TRUE_VALUES.include?(value.to_s.strip.downcase)
+        Parsing.truthy?(value)
       end
 
       def present_value(value)

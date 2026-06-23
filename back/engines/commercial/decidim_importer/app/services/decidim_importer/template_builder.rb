@@ -43,14 +43,14 @@ module DecidimImporter
       grouped = @ref_map.records.group_by(&:model_name)
       ordered_names = MODEL_ORDER + (grouped.keys - MODEL_ORDER)
 
-      models = ordered_names.each_with_object({}) do |name, acc|
+      by_name = ordered_names.each_with_object({}) do |name, acc|
         records = grouped[name]
         next unless records
 
         acc[name] = records.map(&:attributes)
       end
 
-      { 'models' => models }
+      { 'models' => by_name }
     end
 
     # The YAML artifact. Shared attribute-hash objects are emitted as YAML anchors/aliases, so

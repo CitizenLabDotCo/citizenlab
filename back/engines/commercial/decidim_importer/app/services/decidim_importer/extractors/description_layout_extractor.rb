@@ -5,10 +5,11 @@ module DecidimImporter
     # Builds a Content Builder project-description layout (`ContentBuilder::Layout`, code
     # `project_description`) for each project, taking the place of the plain `description_multiloc`.
     #
-    # The layout's `craftjs_json` holds, in order: a `TextMultiloc` block (the Decidim description),
-    # one `PageLink` block per project static page, and one `FileAttachment` block per project file.
-    # The blocks reference pages/files by the explicit UUIDs the static-page and file records were
-    # assigned, so the ids resolve once those records are created. The layout's own `after_save`
+    # The layout's `craftjs_json` holds, in order: an optional `TextMultiloc` block linking back to the
+    # original Decidim project (only with `include_source_url`), a `TextMultiloc` block for the Decidim
+    # description, one `PageLink` block per project static page, and one `FileAttachment` block per
+    # project file. The blocks reference pages/files by the explicit UUIDs the static-page and file
+    # records were assigned, so the ids resolve once those records are created. The layout's own `after_save`
     # (`sync_file_attachments`) creates the layout's `Files::FileAttachment`s from the `FileAttachment`
     # nodes, so we don't emit those here.
     #
@@ -37,42 +38,45 @@ module DecidimImporter
         project = ref_map.fetch(uid)
         return nil if project.nil?
 
-        description = multiloc(row[COLUMNS[:description]])
-        source = source_multiloc(row, description)
-        page_ids = static_page_ids_for(project)
-        file_ids = file_ids_for(project)
-        return nil if source.nil? && description.empty? && page_ids.empty? && file_ids.empty?
+        blocks = content_blocks(row, project)
+        return nil if blocks.empty?
 
         layout = Record.new('content_builder/layout', {
           'code' => 'project_description',
           'enabled' => true,
-          'craftjs_json' => build_craftjs(source, description, page_ids, file_ids)
+          'craftjs_json' => craftjs_tree(blocks)
         })
         layout.reference('content_buildable', project)
         ref_map.register("#{uid}-description-layout", layout)
       end
 
-      # Assembles the craft.js node tree: a ROOT canvas holding (optionally) the import-source link,
-      # then the description text, then a link to each static page, then each file attachment.
-      def build_craftjs(source, description, page_ids, file_ids)
-        children = []
-        nodes = {}
-        add = lambda do |id, resolved_name, props|
-          children << id
-          nodes[id] = {
+      # The ordered `[id, component, props]` content blocks for the layout: the optional import-source
+      # link, the description, a link per static page, then a file attachment per file. An empty list
+      # means there's nothing to show, so no layout is built.
+      def content_blocks(row, project)
+        description = multiloc(row[COLUMNS[:description]])
+        source = source_multiloc(row, description)
+
+        blocks = []
+        blocks << ['source', 'TextMultiloc', { 'text' => source }] if source
+        blocks << ['description', 'TextMultiloc', { 'text' => description }] if description.present?
+        static_page_ids_for(project).each_with_index { |id, i| blocks << ["page#{i}", 'PageLink', { 'pageId' => id }] }
+        file_ids_for(project).each_with_index { |id, i| blocks << ["file#{i}", 'FileAttachment', { 'fileId' => id }] }
+        blocks
+      end
+
+      # Wraps the ordered `[id, component, props]` blocks in a craft.js ROOT canvas, preserving order.
+      def craftjs_tree(blocks)
+        nodes = blocks.to_h do |id, resolved_name, props|
+          [id, {
             'type' => { 'resolvedName' => resolved_name }, 'nodes' => [], 'props' => props,
             'custom' => {}, 'hidden' => false, 'parent' => 'ROOT', 'isCanvas' => false,
             'displayName' => resolved_name, 'linkedNodes' => {}
-          }
+          }]
         end
 
-        add.call('source', 'TextMultiloc', { 'text' => source }) if source
-        add.call('description', 'TextMultiloc', { 'text' => description }) unless description.empty?
-        page_ids.each_with_index { |id, i| add.call("page#{i}", 'PageLink', { 'pageId' => id }) }
-        file_ids.each_with_index { |id, i| add.call("file#{i}", 'FileAttachment', { 'fileId' => id }) }
-
         { 'ROOT' => {
-          'type' => 'div', 'nodes' => children, 'props' => FRAME_PROPS.dup, 'custom' => {},
+          'type' => 'div', 'nodes' => blocks.map(&:first), 'props' => FRAME_PROPS.dup, 'custom' => {},
           'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {}
         } }.merge(nodes)
       end

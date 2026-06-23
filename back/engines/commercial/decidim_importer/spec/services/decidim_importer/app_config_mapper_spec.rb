@@ -38,6 +38,15 @@ RSpec.describe DecidimImporter::AppConfigMapper do
       .not_to have_key('timezone')
   end
 
+  it 'drops locales Go Vocal does not support, so the patch never fails the merge validation' do
+    core = patch_for(
+      'name' => '{"fr":"X"}', 'default_locale' => 'fr', 'available_locales' => '["en","fr","zz-ZZ"]'
+    )['settings']['core']
+    # `zz-ZZ` is a regioned code with no override, so it passes through the mapper unchanged and is
+    # then filtered out as unsupported, leaving only the supported locales.
+    expect(core['locales']).to eq(%w[fr-FR en])
+  end
+
   it 'exposes logo and favicon as remote URLs and omits unmapped/blank fields' do
     patch = patch_for(
       'name' => '{"fr":"X"}', 'logo' => 'http://localhost/logo.png',

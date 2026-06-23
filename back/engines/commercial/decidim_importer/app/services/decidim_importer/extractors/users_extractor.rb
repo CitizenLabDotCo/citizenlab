@@ -38,10 +38,11 @@ module DecidimImporter
       # @param extra_text_field_keys [Array<String>] `extended_data` keys that the organization's
       #   `extra_user_fields` config exposes as free-text Go Vocal custom fields (e.g.
       #   'phone_number'). Their raw values are copied verbatim onto `custom_field_values`.
-      # @param anonymize_users [Boolean] when true, each imported user's name and email are replaced
-      #   with fake values (a deterministic `*@example.org` address + a Faker name) — for non-production
-      #   dumps where real PII shouldn't leave the source. Accounts are still *filtered* on their real
-      #   email (spam domains), only the stored values are anonymised.
+      # @param anonymize_users [Boolean] when true, every directly-identifying field is faked or
+      #   dropped so no real PII leaves the source (see {#anonymize_pii!}): the name and a deterministic
+      #   `*@example.org` email are faked; the avatar, free-text bio/personal URL and free-text
+      #   demographic answers are removed; only the gender/birthyear aggregates are kept. Accounts are
+      #   still *filtered* on their real email (spam domains) — only the stored values are anonymised.
       def initialize(rows, ref_map, extra_text_field_keys: [], anonymize_users: false, **)
         super(rows, ref_map, **)
         @extra_text_field_keys = extra_text_field_keys
@@ -78,7 +79,6 @@ module DecidimImporter
           'password' => SecureRandom.urlsafe_base64(32)
         }
         attributes.merge!(name_attributes(row))
-        anonymize_pii!(attributes, uid) if @anonymize_users
 
         roles = roles_for(row)
         attributes['roles'] = roles if roles.any?
@@ -88,6 +88,9 @@ module DecidimImporter
 
         avatar = present_value(row[COLUMNS[:avatar]])
         attributes['remote_avatar_url'] = avatar if avatar
+
+        # Scrub PII last, once every identifying field is present, so nothing is added back after.
+        anonymize_pii!(attributes, uid) if @anonymize_users
 
         ref_map.register(uid, Record.new('user', attributes))
       end
@@ -105,14 +108,29 @@ module DecidimImporter
         @email_domain_blacklist ||= EmailDomainBlacklist.load.to_set
       end
 
-      # Replaces the stored name and email with fake values. The email is derived from the (unique)
-      # Decidim uid so it stays unique across the dump and is reproducible; `example.org` is reserved
-      # and never blacklisted. Only `email`/`first_name`/`last_name` are touched — other fields
-      # (bio/personal URL, avatar, `custom_field_values`) are left as-is.
+      # Replaces or removes every directly-identifying field so no real PII leaves the source: a fake
+      # name, a fake-but-stable-and-unique email derived from the Decidim uid (so it stays unique across
+      # the dump and reproducible; `example.org` is reserved and never blacklisted), and removal of the
+      # avatar, the free-text bio/personal URL, and the free-text demographic answers (phone number,
+      # postal code, …). The coarse aggregates Go Vocal reports on (gender, birthyear) are kept so
+      # anonymised dumps stay useful for testing.
       def anonymize_pii!(attributes, uid)
         attributes['email'] = "user-#{Digest::SHA256.hexdigest(uid)[0, 12]}@example.org"
         attributes['first_name'] = Faker::Name.first_name
         attributes['last_name'] = Faker::Name.last_name
+        attributes.delete('bio_multiloc')
+        attributes.delete('remote_avatar_url')
+        scrub_free_text_demographics!(attributes)
+      end
+
+      # Removes the free-text custom-field answers (the configured extra fields, e.g. phone number,
+      # postal code), leaving only the built-in gender/birthyear aggregates.
+      def scrub_free_text_demographics!(attributes)
+        values = attributes['custom_field_values']
+        return unless values
+
+        @extra_text_field_keys.each { |key| values.delete(key) }
+        attributes.delete('custom_field_values') if values.empty?
       end
 
       # Decidim stores a single display name; split into first/last (last token => last name).

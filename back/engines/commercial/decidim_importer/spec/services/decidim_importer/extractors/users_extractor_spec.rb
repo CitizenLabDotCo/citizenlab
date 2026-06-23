@@ -94,6 +94,19 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     expect(attrs['unique_code']).to eq('decidim-user-1') # join key preserved
   end
 
+  it 'strips every directly-identifying field when anonymising, keeping only coarse demographics' do
+    attrs = described_class.new(
+      [row('avatar' => 'https://decidim.example/avatars/marie.png')],
+      ref_map, locale_mapper: mapper, primary_locale: 'fr-FR',
+      extra_text_field_keys: %w[phone_number], anonymize_users: true
+    ).run.first.attributes
+
+    # The real bio (about + personal URL), avatar and free-text phone number must not survive.
+    expect(attrs).not_to have_key('bio_multiloc')
+    expect(attrs).not_to have_key('remote_avatar_url')
+    expect(attrs['custom_field_values']).to eq({ 'gender' => 'female', 'birthyear' => 1967 })
+  end
+
   it 'derives a unique anonymised email per user (from the uid)' do
     records = described_class.new(
       [row('uid' => 'decidim-user-1'), row('uid' => 'decidim-user-2', 'email' => 'other@example.fr')],

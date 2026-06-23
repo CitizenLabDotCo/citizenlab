@@ -79,12 +79,15 @@ module DecidimImporter
       candidates.find { |tz| TimezoneService::SUPPORTED_TIMEZONES.include?(tz) }
     end
 
-    # Decidim `default_locale` first, then `available_locales`, each mapped onto a Go Vocal code.
+    # Decidim `default_locale` first, then `available_locales`, each mapped onto a Go Vocal code and
+    # filtered to the ones Go Vocal actually supports — an unsupported locale would fail the
+    # AppConfiguration validation on merge (the same guard {#mapped_timezone} applies to time zones).
     def mapped_locales
       available = parse_json(@row['available_locales'])
       list = available.is_a?(Array) ? available : []
       ordered = ([present_value(@row['default_locale'])] + list).compact
-      ordered.map { |code| @locale_mapper.map(code) }.uniq
+      supported = CL2_SUPPORTED_LOCALES.map(&:to_s)
+      ordered.map { |code| @locale_mapper.map(code) }.uniq.select { |locale| supported.include?(locale) }
     end
 
     def smtp_from_email

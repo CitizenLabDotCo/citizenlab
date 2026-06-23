@@ -261,11 +261,14 @@ module DecidimImporter
       return if removed.empty?
 
       # Cross-record links share the exact attribute-hash object (preserved through the YAML
-      # anchors/aliases), so dependents are matched to removed files by object identity.
+      # anchors/aliases), so dependents are matched to removed files by object identity. Sweep every
+      # model for a `file_ref` pointing at a removed file — the files_project join and file_attachment
+      # today, plus any future file-referencing model — so no dangling ref survives to crash the
+      # deserializer, which raises (not skips) on an unresolved ref.
       removed_ids = removed.to_set(&:object_id)
       files.reject! { |attrs| removed_ids.include?(attrs.object_id) }
-      %w[files/files_project files/file_attachment].each do |model|
-        template.dig('models', model)&.reject! { |attrs| removed_ids.include?(attrs['file_ref'].object_id) }
+      template['models'].each_value do |records|
+        records.reject! { |attrs| removed_ids.include?(attrs['file_ref'].object_id) }
       end
       strip_layout_file_nodes!(template, removed.filter_map { |attrs| attrs['id'] }.to_set)
     end
@@ -414,8 +417,9 @@ module DecidimImporter
     end
 
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model
-    #   (:users, :folders, :projects, :phases, :process_roles). Missing keys are treated as
-    #   "model not in this export" and silently skipped.
+    #   (:organization, :users, :scopes, :folders, :projects, :phases, :attachments, :proposals,
+    #   :comments, :components, :process_roles). Missing keys are treated as "model not in this
+    #   export" and silently skipped.
     # @param import_images [Boolean] when false, `remote_*_url` attributes are dropped from the
     #   template before deserialize, so no external HTTP is performed. Useful for dry runs and for
     #   exports whose image URLs reference an unreachable host (e.g. the Decidim dev instance's

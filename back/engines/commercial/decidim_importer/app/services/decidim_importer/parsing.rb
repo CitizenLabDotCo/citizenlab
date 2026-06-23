@@ -8,6 +8,10 @@ module DecidimImporter
   module Parsing
     module_function
 
+    # Cell values treated as boolean true — includes the checkbox-style `x`/`checked` some Decidim
+    # exports use, so extractors and the non-extractor mappers agree on truthiness.
+    TRUE_VALUES = %w[1 true t yes y x checked].freeze
+
     # Parses a JSON object/array cell, returning the Ruby value or nil for blanks / non-JSON.
     def parse_json(value)
       return value if value.is_a?(Hash) || value.is_a?(Array)
@@ -26,7 +30,7 @@ module DecidimImporter
     end
 
     def truthy?(value)
-      %w[1 true t yes y].include?(value.to_s.strip.downcase)
+      TRUE_VALUES.include?(value.to_s.strip.downcase)
     end
   end
 end

@@ -22,9 +22,7 @@ module DecidimImporter
         body: 'body',
         answer: 'answer',
         state_token: 'state_token',
-        published_at: 'published_at',
-        created_at: 'created_at',
-        withdrawn: 'withdrawn'
+        published_at: 'published_at'
       }.freeze
 
       OFFICIAL_FEEDBACK_AUTHOR = 'Administration'

@@ -20,7 +20,10 @@ module DecidimImporter
     # @param assignments [Array<Hash>] tuples from {Extractors::ProcessRolesExtractor}.
     # @return [Integer] number of role assignments applied.
     def assign(created_object_ids, assignments)
-      index = build_id_index(created_object_ids)
+      return 0 if assignments.empty?
+
+      needed_keys = assignments.flat_map { |a| [a[:user_key], a[:target_key]] }.compact.to_set
+      index = build_id_index(created_object_ids, needed_keys)
       applied = 0
 
       assignments.each do |assignment|
@@ -39,14 +42,24 @@ module DecidimImporter
 
     private
 
-    # Maps each registered record's "<table>-<id>" key to the new database id it was assigned.
-    def build_id_index(created_object_ids)
+    # Maps each *needed* record key (a Decidim uid) to the new database id it was assigned. Only the
+    # models owning a needed key are correlated — so legitimately-pruned models (files, images) are
+    # ignored rather than tripping the count check below. For a correlated model, the positional zip is
+    # valid only when the deserializer created exactly the records we emitted, in order: a count
+    # mismatch means that broke and every subsequent id would map to the wrong record, so we fail
+    # loudly rather than silently assign a moderator role to the wrong project.
+    def build_id_index(created_object_ids, needed_keys)
       index = {}
       @ref_map.records.group_by(&:model_name).each do |model_name, records|
+        next unless records.any? { |record| needed_keys.include?(record.key) }
+
         ids = created_object_ids[model_name.classify] || []
-        records.each_with_index do |record, i|
-          index[record.key] = ids[i] if record.key && ids[i]
+        if ids.size != records.size
+          raise "RoleAssigner: deserializer created #{ids.size} #{model_name} record(s) but the " \
+                "template emitted #{records.size}; cannot reliably correlate role targets"
         end
+
+        records.each_with_index { |record, i| index[record.key] = ids[i] if record.key }
       end
       index
     end
