@@ -3,6 +3,7 @@
 # Two-step workflow — dump, then import the dumped file:
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR]
 #     → writes tmp/import_files/example.com.template.yml + tmp/import_files/example.com.app_config.json
+#   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
 #
@@ -23,12 +24,15 @@
 # applying the template, so the tenant's locales/branding are in place for the imported records.
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
-  task :dump_yaml, %i[path primary_locale production] => [:environment] do |_t, args|
+  task :dump_yaml, %i[path primary_locale production include_source_url] => [:environment] do |_t, args|
     path = args.fetch(:path)
     # Default to anonymising user names + emails; pass `production=true` to keep the real values.
     production = args[:production].to_s.strip.downcase == 'true'
+    # Pass `include_source_url=true` to prepend a link back to each project's original Decidim URL.
+    include_source_url = args[:include_source_url].to_s.strip.downcase == 'true'
     importer = build_importer(
-      path, primary_locale: args[:primary_locale] || 'fr-FR', anonymize_users: !production
+      path, primary_locale: args[:primary_locale] || 'fr-FR', anonymize_users: !production,
+      include_source_url: include_source_url
     )
     builder = importer.build_template
 

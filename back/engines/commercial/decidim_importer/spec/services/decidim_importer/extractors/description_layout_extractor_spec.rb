@@ -25,8 +25,8 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
     ref_map.register("#{uid}-fp", fp)
   end
 
-  def extract(rows)
-    described_class.new(rows, ref_map, locale_mapper: mapper, primary_locale: 'fr-FR').run
+  def extract(rows, **opts)
+    described_class.new(rows, ref_map, locale_mapper: mapper, primary_locale: 'fr-FR', **opts).run
   end
 
   def row(overrides = {})
@@ -82,5 +82,38 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
 
     craftjs = extract([row]).first.attributes['craftjs_json']
     expect(nodes_named(craftjs, 'PageLink').map { |n| n['props']['pageId'] }).to eq(['page-uuid-1'])
+  end
+
+  context 'when include_source_url is on' do
+    let(:source_row) { row('url' => 'https://decidim.example/processes/p1') }
+
+    it 'prepends a TextMultiloc block linking to the original project, before the description' do
+      craftjs = extract([source_row], include_source_url: true).first.attributes['craftjs_json']
+
+      order = craftjs['ROOT']['nodes'].map { |id| craftjs[id]['type']['resolvedName'] }
+      expect(order).to eq(%w[TextMultiloc TextMultiloc])
+      source = craftjs[craftjs['ROOT']['nodes'].first]
+      expect(source['props']['text']['fr-FR'])
+        .to eq('<p>Import source: <a href="https://decidim.example/processes/p1" ' \
+               'target="_blank" rel="noreferrer noopener nofollow">https://decidim.example/processes/p1</a></p>')
+    end
+
+    it 'builds a layout from the source link alone when there is no description, page or file' do
+      craftjs = extract([source_row.merge('description' => '')], include_source_url: true).first
+        .attributes['craftjs_json']
+
+      names = craftjs['ROOT']['nodes'].map { |id| craftjs[id]['type']['resolvedName'] }
+      expect(names).to eq(%w[TextMultiloc])
+    end
+
+    it 'adds no source block when the row has no url' do
+      craftjs = extract([row], include_source_url: true).first.attributes['craftjs_json']
+      expect(nodes_named(craftjs, 'TextMultiloc').size).to eq(1)
+    end
+  end
+
+  it 'adds no source block when include_source_url is off, even with a url' do
+    craftjs = extract([row('url' => 'https://decidim.example/processes/p1')]).first.attributes['craftjs_json']
+    expect(nodes_named(craftjs, 'TextMultiloc').size).to eq(1)
   end
 end

@@ -423,13 +423,14 @@ module DecidimImporter
     # @param anonymize_users [Boolean] when true, imported users' names and emails are replaced with
     #   fake values (for non-production dumps that shouldn't carry real PII).
     def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {}, import_images: true,
-      anonymize_users: false)
+      anonymize_users: false, include_source_url: false)
       @rows_by_model = rows_by_model
       @primary_locale = primary_locale
       @locale_mapper = LocaleMapper.new(locale_mapping, fallback_locale: primary_locale)
       @ref_map = RefMap.new
       @import_images = import_images
       @anonymize_users = anonymize_users
+      @include_source_url = include_source_url
     end
 
     attr_reader :ref_map
@@ -555,7 +556,8 @@ module DecidimImporter
       return unless @rows_by_model.key?(:projects)
 
       Extractors::DescriptionLayoutExtractor.new(
-        rows_for(:projects), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+        rows_for(:projects), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
+        include_source_url: @include_source_url
       ).run
     end
 

@@ -14,8 +14,15 @@ module DecidimImporter
     #
     # Runs after the projects/static-pages/files extractors so their records (and ids) are registered.
     class DescriptionLayoutExtractor < BaseExtractor
-      COLUMNS = { uid: 'uid', description: 'description' }.freeze
+      COLUMNS = { uid: 'uid', description: 'description', source_url: 'url' }.freeze
       FRAME_PROPS = { 'id' => 'e2e-content-builder-frame' }.freeze
+
+      # When `include_source_url` is on, prepend a TextMultiloc block linking back to the original
+      # Decidim project (its `url` column), so the imported description records its provenance.
+      def initialize(*, include_source_url: false, **)
+        super(*, **)
+        @include_source_url = include_source_url
+      end
 
       def run
         rows.filter_map { |row| build_layout(row) }
@@ -31,22 +38,23 @@ module DecidimImporter
         return nil if project.nil?
 
         description = multiloc(row[COLUMNS[:description]])
+        source = source_multiloc(row, description)
         page_ids = static_page_ids_for(project)
         file_ids = file_ids_for(project)
-        return nil if description.empty? && page_ids.empty? && file_ids.empty?
+        return nil if source.nil? && description.empty? && page_ids.empty? && file_ids.empty?
 
         layout = Record.new('content_builder/layout', {
           'code' => 'project_description',
           'enabled' => true,
-          'craftjs_json' => build_craftjs(description, page_ids, file_ids)
+          'craftjs_json' => build_craftjs(source, description, page_ids, file_ids)
         })
         layout.reference('content_buildable', project)
         ref_map.register("#{uid}-description-layout", layout)
       end
 
-      # Assembles the craft.js node tree: a ROOT canvas holding the description text, then a link to
-      # each static page, then each file attachment — in that order.
-      def build_craftjs(description, page_ids, file_ids)
+      # Assembles the craft.js node tree: a ROOT canvas holding (optionally) the import-source link,
+      # then the description text, then a link to each static page, then each file attachment.
+      def build_craftjs(source, description, page_ids, file_ids)
         children = []
         nodes = {}
         add = lambda do |id, resolved_name, props|
@@ -58,6 +66,7 @@ module DecidimImporter
           }
         end
 
+        add.call('source', 'TextMultiloc', { 'text' => source }) if source
         add.call('description', 'TextMultiloc', { 'text' => description }) unless description.empty?
         page_ids.each_with_index { |id, i| add.call("page#{i}", 'PageLink', { 'pageId' => id }) }
         file_ids.each_with_index { |id, i| add.call("file#{i}", 'FileAttachment', { 'fileId' => id }) }
@@ -66,6 +75,21 @@ module DecidimImporter
           'type' => 'div', 'nodes' => children, 'props' => FRAME_PROPS.dup, 'custom' => {},
           'hidden' => false, 'isCanvas' => true, 'displayName' => 'div', 'linkedNodes' => {}
         } }.merge(nodes)
+      end
+
+      # A TextMultiloc text linking to the original Decidim project, in each locale the description
+      # uses (falling back to the primary locale). Nil unless `include_source_url` is on and the row
+      # carries a `url`.
+      def source_multiloc(row, description)
+        return nil unless @include_source_url
+
+        url = present_value(row[COLUMNS[:source_url]])
+        return nil if url.nil?
+
+        href = CGI.escapeHTML(url)
+        html = %(<p>Import source: <a href="#{href}" target="_blank" rel="noreferrer noopener nofollow">#{href}</a></p>)
+        locales = description.keys.presence || [primary_locale]
+        locales.index_with { html }
       end
 
       # The explicit ids of the static pages registered against this project (shared-hash identity).
