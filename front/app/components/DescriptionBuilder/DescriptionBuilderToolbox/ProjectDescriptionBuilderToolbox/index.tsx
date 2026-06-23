@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import messages from 'containers/DescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -19,7 +21,6 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 const ProjectDescriptionBuilderToolbox = () => {
