@@ -1720,6 +1720,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Todos los archivos",
   "app.containers.Admin.projects.project.survey.allResponses": "Todas las respuestas",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Precisión: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Se generará automáticamente un resumen por IA una vez que haya más de 10 respuestas.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Se ha producido un error al generar el resumen de la IA. Intenta regenerarlo a continuación.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Análisis de IA abierta",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Ocultar los resúmenes de esta pregunta",

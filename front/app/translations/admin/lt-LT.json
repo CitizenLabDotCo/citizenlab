@@ -1720,6 +1720,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Visi failai",
   "app.containers.Admin.projects.project.survey.allResponses": "Visi atsakymai",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Tikslumas: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "DI santrauka bus sugeneruota automatiškai, kai bus gauta daugiau nei 10 atsakymų.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Klaida generuojant AI santrauką. Pabandykite ją atkurti toliau.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Atvira AI analizė",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Paslėpti šio klausimo santraukas",

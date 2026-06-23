@@ -1720,6 +1720,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Tutti i file",
   "app.containers.Admin.projects.project.survey.allResponses": "Tutte le risposte",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Precisione: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Un riepilogo IA verrà generato automaticamente una volta superate le 10 risposte.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Si è verificato un errore nella generazione del riepilogo AI. Prova a rigenerarlo qui sotto.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Apri l'analisi AI",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Nascondi i riassunti per questa domanda",

@@ -1720,6 +1720,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Alle filer",
   "app.containers.Admin.projects.project.survey.allResponses": "Alle svar",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Nøyaktighet: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Et AI-sammendrag vil bli generert automatisk når det er mer enn 10 svar.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Det oppstod en feil ved generering av AI-sammendraget. Prøv å generere det på nytt nedenfor.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Åpen AI-analyse",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Skjul sammendrag for dette spørsmålet",

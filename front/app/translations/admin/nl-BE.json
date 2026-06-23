@@ -1720,6 +1720,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Alle bestanden",
   "app.containers.Admin.projects.project.survey.allResponses": "Alle reacties",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Nauwkeurigheid: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Een AI-samenvatting wordt automatisch gegenereerd zodra er meer dan 10 reacties zijn.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Er is een fout opgetreden bij het genereren van de AI-samenvatting. Probeer hem hieronder opnieuw te genereren.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Open AI-analyse",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Verberg samenvattingen voor deze vraag",

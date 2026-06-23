@@ -1720,6 +1720,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "All Dateien",
   "app.containers.Admin.projects.project.survey.allResponses": "All Äntwerten",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Genauegkeet: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Eng AI-Zesummefaassung gëtt automatesch generéiert, soubal méi wéi 10 Äntwerte virléien.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Et gouf e Feeler beim Generéiere vum AI-Resumé. Versicht wgl. en hei drënner nei ze generéieren.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Open AI-Analys",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Zesummefaassunge fir dës Fro verstoppen",

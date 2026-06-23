@@ -1720,6 +1720,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Alle Dateien",
   "app.containers.Admin.projects.project.survey.allResponses": "Alle Antworten",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Genauigkeit: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Eine KI-Zusammenfassung wird automatisch erstellt, sobald mehr als 10 Antworten vorliegen.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Bei der Erstellung der KI-Zusammenfassung ist ein Fehler aufgetreten. Bitte versuchen Sie, sie unten neu zu generieren.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Zur KI-Analyse",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Zusammenfassungen ausblenden für diese Frage",
