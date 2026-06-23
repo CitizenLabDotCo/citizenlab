@@ -33,10 +33,6 @@ class TimelineService
     past_phases(project, time).max_by(&:end_at)
   end
 
-  def phase_is_complete?(phase, time = Time.now)
-    phase.end_at.present? && phase.end_at <= time.in_time_zone
-  end
-
   def current_or_backup_transitive_phase(project, time = Time.now)
     # This method is used to determine which project phase is the most relevant with
     # respect to the input form. For example, to select the input term from the right

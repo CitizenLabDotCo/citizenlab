@@ -115,25 +115,6 @@ describe TimelineService do
     end
   end
 
-  describe '#phase_is_complete?' do
-    let_it_be(:project) { create(:project) }
-
-    it 'returns true if the phase is complete' do
-      phase = create(:phase, project:, start_at: 10.days.ago, end_at: 5.days.ago)
-      expect(service.phase_is_complete?(phase)).to be true
-    end
-
-    it 'returns false if the phase is not complete' do
-      phase = create(:phase, project:, start_at: 2.days.ago, end_at: 3.days.from_now)
-      expect(service.phase_is_complete?(phase)).to be false
-    end
-
-    it 'returns false if the phase has no end date' do
-      phase = create(:phase, project:, start_at: 2.days.ago, end_at: nil)
-      expect(service.phase_is_complete?(phase)).to be false
-    end
-  end
-
   describe 'current_or_backup_transitive_phase' do
     let(:project) { create(:project) }
 
