@@ -143,4 +143,36 @@ describe Permissions::PhasePermissionsService do
       end
     end
   end
+
+  describe '#action_descriptors' do
+    subject(:descriptors) { service.action_descriptors }
+
+    let(:phases_config) { { sequence: 'c' } } # a single, current ideation phase
+
+    it 'returns a descriptor with :enabled and :disabled_reason for every supported action' do
+      expect(descriptors.keys).to match_array(%i[
+        posting_idea commenting_idea reacting_idea comment_reacting_idea annotating_document
+        taking_survey taking_poll voting attending_event volunteering
+      ])
+      descriptors.each_value { |descriptor| expect(descriptor).to include(:enabled, :disabled_reason) }
+    end
+
+    it 'nests up and down under reacting_idea' do
+      expect(descriptors[:reacting_idea]).to include(:up, :down)
+      expect(descriptors[:reacting_idea][:up]).to include(:enabled, :disabled_reason)
+      expect(descriptors[:reacting_idea][:down]).to include(:enabled, :disabled_reason)
+    end
+
+    it 'mirrors commenting_idea onto comment_reacting_idea' do
+      expect(descriptors[:comment_reacting_idea]).to eq(descriptors[:commenting_idea])
+    end
+
+    it 'disables actions the participation method does not support, with method-specific reasons' do
+      expect(descriptors[:taking_survey]).to eq(enabled: false, disabled_reason: 'not_survey')
+      expect(descriptors[:taking_poll]).to eq(enabled: false, disabled_reason: 'not_poll')
+      expect(descriptors[:voting]).to eq(enabled: false, disabled_reason: 'not_voting')
+      expect(descriptors[:annotating_document]).to eq(enabled: false, disabled_reason: 'not_document_annotation')
+      expect(descriptors[:volunteering]).to eq(enabled: false, disabled_reason: 'not_volunteering')
+    end
+  end
 end
