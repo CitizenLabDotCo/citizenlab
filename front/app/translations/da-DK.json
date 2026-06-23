@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} deltagere",
   "app.containers.EventsShow.registrantsIconAltText": "Deltagere",
   "app.containers.EventsShow.socialMediaSharingMessage": "Deltag i dette arrangement: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Se {location} på Google Maps (åbner i et nyt vindue)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# deltager} other {# deltagere}}",
   "app.containers.EventsViewer.allTime": "Hele tiden",
   "app.containers.EventsViewer.date": "Dato",

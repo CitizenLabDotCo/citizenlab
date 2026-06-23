@@ -42,6 +42,11 @@ export const sortBy =
     return numA - numB;
   };
 
+// Orders campaigns within a content-type group by the backend-supplied
+// `campaign_ordering` attribute (see GroupOrderingHelper::CAMPAIGN_ORDER).
+export const sortByCampaignOrdering = (a: CampaignData, b: CampaignData) =>
+  a.attributes.campaign_ordering - b.attributes.campaign_ordering;
+
 export const stringifyCampaignFields = (
   campaign: ICampaignData,
   localize: Localize
