@@ -48,7 +48,11 @@ hr-HR:
         new_attendee: Novo registrirani korisnik
         project_review_requester: Korisnik koji je zatražio pregled projekta
         project_reviewers: Recenzenti projekata i upravitelji mapa
+        user_changing_email: Korisnik koji mijenja svoju e-adresu
+        user_confirming_email: Korisnik koji potvrđuje svoju adresu e-pošte
+        user_requesting_password_reset: Korisnik koji je zatražio ponovno postavljanje lozinke
         user_who_commented: Korisnik koji je komentirao
+        user_who_is_blocked: Korisnik čiji je račun blokiran
         user_who_is_invited_to_cosponsor_a_proposal: Korisnik koji je pozvan da susponzorira prijedlog
         user_who_is_mentioned: Korisnik koji se spominje
         user_who_is_receiving_admin_rights: Korisnik koji dobiva administratorska prava
@@ -105,9 +109,12 @@ hr-HR:
         registration_to_event: Prijava na događaj
         survey_1_day_after_draft_saved: 1 dan nakon što je korisnik posljednji put spremio anketu u skicu
         user_accepts_invitation_to_cosponsor_a_proposal: Korisnik prihvaća poziv za susponzoriranje prijedloga
+        user_changes_email: Korisnik mijenja svoju e-adresu
         user_comments: Komentari korisnika
         user_comments_on_input: Korisnički komentari na unos
         user_comments_on_proposal: Komentari korisnika na prijedlog
+        user_confirms_email: Korisnik potvrđuje svoju e-adresu
+        user_is_blocked: Korisnički račun je blokiran
         user_is_given_admin_rights: Korisnik dobiva administratorska prava
         user_is_given_folder_manager_rights: Korisniku su dodijeljena prava voditelja mape
         user_is_given_folder_moderator_rights: Korisniku su dana prava moderatora mape
@@ -121,6 +128,7 @@ hr-HR:
         user_registers_for_the_first_time: Korisnik se registrira prvi put
         user_replies_to_comment: Korisnik odgovara na komentar
         user_replies_to_internal_comment: Korisnik odgovara na interni komentar
+        user_requests_password_reset: Korisnik traži ponovno postavljanje lozinke
         voting_1_day_after_last_votes: 1 dan nakon posljednjeg glasanja korisnika
         voting_2_days_before_phase_closes: 2 dana prije zatvaranja faze glasovanja
         voting_basket_submitted: Glasovi su poslani
@@ -160,6 +168,7 @@ hr-HR:
       comment_on_your_comment: Odgovor na moj komentar
       community_monitor_report: Izvješće monitora zajednice
       cosponsor_of_your_idea: Korisnik prihvaća moj poziv da susponzorira moj prijedlog
+      email_confirmation: Kod za potvrdu e-adrese
       event_registration_confirmation: Potvrda prijave za događaj
       idea_marked_as_spam: Izvješće o neželjenoj ideji
       idea_published: Objava moje ideje
@@ -178,6 +187,7 @@ hr-HR:
       moderator_digest: Tjedni pregled za voditelja projekata
       native_survey_not_submitted: Anketa nije poslana
       new_comment_for_admin: Novi komentar u projektu kojim upravljam
+      new_email_confirmation: Novi kod za potvrdu e-adrese
       new_idea_for_admin_prescreening: Novi unos koji zahtijeva odobrenje u projektu koji moderiram
       new_idea_for_admin_published: Novi objavljeni unos u projektu koji moderiram
       official_feedback_on_idea_you_follow: Ažuriranje ideje koju slijedite
@@ -196,6 +206,7 @@ hr-HR:
       status_change_on_idea_you_follow: Promjena statusa ideje koju slijedite
       survey_submitted: Anketa poslana
       threshold_reached_for_admin: Prijedlog je dosegao prag glasovanja
+      user_blocked: Račun je blokiran
       user_digest: Tjedni pregled
       voting_basket_not_submitted: Glasovi nisu poslani
       voting_basket_submitted: Potvrda glasovanja
@@ -271,6 +282,15 @@ hr-HR:
       preheader: '%{cosponsorName} je prihvatio vaš poziv da bude susponzor vašeg prijedloga'
       subject: '%{cosponsorName} je prihvatio vaš poziv da bude susponzor vašeg prijedloga'
       title: '%{cosponsorName} je prihvatio/la vaš poziv da bude supokrovitelj/ica vašeg prijedloga'
+    email_confirmation:
+      best_regards: Srdačan pozdrav,
+      event_description: 'Hvala vam na sudjelovanju. Unesite ovaj potvrdni kod u prozor na platformi za sudjelovanje organizacije %{organizationName}:'
+      expire_code: Ovaj kod istječe za
+      hours_24: 24 sata.
+      ignore_email: Ako niste zatražili kod, možete slobodno zanemariti ovu e-poruku.
+      preheader: Potvrdite svoju adresu e-pošte za %{organizationName}
+      subject: Potvrdite svoju e-adresu za platformu za sudjelovanje organizacije %{organizationName}
+      title: Potvrdite svoju e-adresu
     event_registration_confirmation:
       cta_add_to_calendar: Dodajte u svoj kalendar
       cta_button: Pogledajte događaj
@@ -482,6 +502,15 @@ hr-HR:
       title: '%{firstName}, na vašoj platformi objavljen je novi komentar'
       today: Danas
       yesterday: Jučer
+    new_email_confirmation:
+      best_regards: Srdačan pozdrav,
+      event_description: 'Unesite ovaj potvrdni kôd u prozor na platformi za sudjelovanje %{organizationName} kako biste potvrdili svoju novu adresu e-pošte:'
+      expire_code: Ovaj kod istječe za
+      hours_24: 24 sata.
+      ignore_email: Ako niste zatražili kod, možete slobodno zanemariti ovu e-poruku.
+      preheader: Potvrdite svoju novu e-adresu za %{organizationName}
+      subject: Potvrdite svoju novu e-adresu za platformu za sudjelovanje organizacije %{organizationName}
+      title: Potvrdite svoju novu adresu e-pošte
     new_idea_for_admin_prescreening:
       cta_button: Pregledajte unos
       days_ago: prije %{numberOfDays} dana
@@ -507,6 +536,12 @@ hr-HR:
       preheader: Postoji ažuriranje unosa koji slijedite
       subject: Službene povratne informacije objavljene su na "%{input_title}"
       title: Postoji ažuriranje za "%{input_title}"
+    password_reset:
+      cta_button: Ponovno postavite lozinku
+      event_description: Zatražili ste ponovno postavljanje lozinke za platformu za sudjelovanje %{organizationName}. Kliknite gumb u nastavku kako biste odabrali novu, sigurnu lozinku. Poveznica istječe za 1 sat.
+      preheader: Ponovno postavite lozinku za %{organizationName}
+      subject: '%{organizationName}: Ponovno postavite lozinku'
+      title: Odaberite novu lozinku
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jana
@@ -652,6 +687,14 @@ hr-HR:
       preheader: Obvezno poduzmite sljedeće korake
       subject: Inicijativa je dosegla prag glasovanja na vašoj platformi
       title: Prijedlog je dosegao prag glasovanja!
+    user_blocked:
+      for_more_information: Za više informacija o ovome možete pogledati %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Vaš račun na platformi za sudjelovanje organizacije %{organizationName} privremeno je onemogućen iz sljedećeg razloga:'
+      paragraph_1_without_reason: Vaš račun na platformi za sudjelovanje organizacije %{organizationName} privremeno je onemogućen zbog kršenja smjernica zajednice.
+      preheader: Vaš račun na platformi za sudjelovanje organizacije %{organizationName} privremeno je onemogućen
+      subject: Vaš je račun privremeno onemogućen
+      title: Vaš je račun privremeno onemogućen
+      you_can_sign_in_again_from: Možete se ponovno prijaviti od %{date}
     user_digest:
       commented: '%{authorFirstName} je komentirao/la:'
       cta_button: Idi na platformu

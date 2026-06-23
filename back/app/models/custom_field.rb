@@ -92,6 +92,7 @@ class CustomField < ApplicationRecord
   ].freeze
   PAGE_LAYOUTS = %w[default map].freeze
   QUESTION_CATEGORIES = %w[quality_of_life service_delivery governance_and_trust other].freeze
+  LINEAR_SCALE_MAX_RANGE = (2..11)
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates(
@@ -116,7 +117,7 @@ class CustomField < ApplicationRecord
   validates :page_layout, absence: true, unless: :page?
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
-  validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
+  validates :maximum, presence: true, inclusion: LINEAR_SCALE_MAX_RANGE, if: :supports_linear_scale?
   validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: :supports_text?, allow_nil: true
   validates :max_characters, comparison: { greater_than: 0 }, if: :supports_text?, allow_nil: true
   validate :max_characters_greater_than_min_characters, if: :supports_text?

@@ -51,6 +51,27 @@ describe EmailCampaigns::DeliveryService do
     end
   end
 
+  describe 'send_now_to_user' do
+    let(:campaign) { create(:email_confirmation_campaign) }
+    let(:user) { create(:user, locale: 'en') }
+
+    it 'delivers the campaign mail synchronously to the given recipient' do
+      expect { service.send_now_to_user(campaign, user, { code: '1234' }) }
+        .to change { ActionMailer::Base.deliveries.count }.by(1)
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.to).to eq([user.email])
+      expect(mail.body.encoded).to match('1234')
+    end
+
+    it 'records a tracked delivery for the recipient' do
+      expect { service.send_now_to_user(campaign, user, { code: '1234' }) }
+        .to change(EmailCampaigns::Delivery, :count).by(1)
+      delivery = EmailCampaigns::Delivery.order(:created_at).last
+      expect(delivery.user).to eq(user)
+      expect(delivery.campaign).to eq(campaign)
+    end
+  end
+
   describe 'send_on_schedule' do
     let(:campaign) { create(:admin_digest_campaign) }
     let!(:admin) { create(:admin) }
