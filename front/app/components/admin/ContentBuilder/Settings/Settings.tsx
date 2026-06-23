@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { SETTINGS_PANEL_WIDTH } from 'components/admin/ContentBuilder/constants';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -40,7 +41,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
       top={`${stylingConsts.menuHeight}px`}
       zIndex="99999"
       p="20px"
-      w="400px"
+      w={SETTINGS_PANEL_WIDTH}
       h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
       background="#ffffff"
       overflowY="visible"
