@@ -423,7 +423,7 @@ describe IdeaPolicy do
       it do
         is_expected.not_to permit(:show)
         is_expected.not_to permit(:by_slug)
-        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+        is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -465,7 +465,7 @@ describe IdeaPolicy do
     shared_examples 'moderator on private admins idea outside their scope' do
       it do
         is_expected.not_to permit(:show)
-        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+        is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -538,7 +538,7 @@ describe IdeaPolicy do
     it do
       is_expected.not_to permit(:show)
       is_expected.not_to permit(:by_slug)
-      expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+      is_expected.not_to permit(:create)
       is_expected.not_to permit(:update)
       expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
