@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Mainīt paroli",
   "app.containers.ChangePassword.newPasswordLabel": "Jauna parole",
   "app.containers.ChangePassword.newPasswordRequired": "Ievadiet savu jauno paroli",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Sniedziet vismaz {minimumPasswordLength} rakstzīmju garu paroli.",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Jūsu parole ir veiksmīgi atjaunināta",
   "app.containers.ChangePassword.passwordEmptyError": "Ievadiet savu paroli",
   "app.containers.ChangePassword.passwordsDontMatch": "Jaunās paroles apstiprināšana",

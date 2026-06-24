@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Ændre din adgangskode",
   "app.containers.ChangePassword.newPasswordLabel": "Ny adgangskode",
   "app.containers.ChangePassword.newPasswordRequired": "Indtast din nye adgangskode",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Angiv en adgangskode, der er mindst {minimumPasswordLength} tegn lang",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Din adgangskode er blevet opdateret med succes",
   "app.containers.ChangePassword.passwordEmptyError": "Indtast din adgangskode",
   "app.containers.ChangePassword.passwordsDontMatch": "Bekræft den nye adgangskode",

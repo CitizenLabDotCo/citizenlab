@@ -1285,7 +1285,6 @@
   "app.containers.ChangePassword.helmetTitle": "Promena lozinke",
   "app.containers.ChangePassword.newPasswordLabel": "Nova lozinka",
   "app.containers.ChangePassword.newPasswordRequired": "Unesi novu lozinku",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Unesi lozinku koja sadrži najmanje {minimumPasswordLength} znakova",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Vaša lozinka je uspešno ažurirana",
   "app.containers.ChangePassword.passwordEmptyError": "Unesi lozinku",
   "app.containers.ChangePassword.passwordsDontMatch": "Potvrdi novu lozinku",

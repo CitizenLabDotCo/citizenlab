@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Ändern Sie Ihr Passwort",
   "app.containers.ChangePassword.newPasswordLabel": "Neues Passwort",
   "app.containers.ChangePassword.newPasswordRequired": "Geben Sie Ihr neues Passwort ein",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Geben Sie ein Passwort ein, das mindestens {minimumPasswordLength} Zeichen lang ist",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Ihr Passwort wurde erfolgreich aktualisiert",
   "app.containers.ChangePassword.passwordEmptyError": "Geben Sie Ihr Passwort ein",
   "app.containers.ChangePassword.passwordsDontMatch": "Bestätigen Sie das neue Passwort",

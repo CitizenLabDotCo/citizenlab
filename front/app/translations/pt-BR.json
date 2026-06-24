@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Altere a sua senha",
   "app.containers.ChangePassword.newPasswordLabel": "Nova senha",
   "app.containers.ChangePassword.newPasswordRequired": "Insira a sua senha",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Forneça uma senha que tenha pelo menos {minimumPasswordLength} caracteres",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "A sua senha foi atualizada com sucesso",
   "app.containers.ChangePassword.passwordEmptyError": "Insira a sua senha",
   "app.containers.ChangePassword.passwordsDontMatch": "Confirmar nova senha",

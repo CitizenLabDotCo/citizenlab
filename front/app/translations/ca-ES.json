@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Canvia la teva contrasenya",
   "app.containers.ChangePassword.newPasswordLabel": "Nova contrasenya",
   "app.containers.ChangePassword.newPasswordRequired": "Introduïu la vostra nova contrasenya",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Proporcioneu una contrasenya que tingui com a mínim {minimumPasswordLength} caràcters",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "La teva contrasenya s'ha actualitzat correctament",
   "app.containers.ChangePassword.passwordEmptyError": "Fica la teva contrasenya",
   "app.containers.ChangePassword.passwordsDontMatch": "Confirmar nova contrasenya",

@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Vaihda salasanasi",
   "app.containers.ChangePassword.newPasswordLabel": "Uusi salasana",
   "app.containers.ChangePassword.newPasswordRequired": "Kirjoita uusi salasanasi",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Anna salasana, joka on vähintään {minimumPasswordLength} merkkiä pitkä",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Salasanasi on päivitetty onnistuneesti",
   "app.containers.ChangePassword.passwordEmptyError": "Syötä salasanasi",
   "app.containers.ChangePassword.passwordsDontMatch": "Vahvista uusi salasana",

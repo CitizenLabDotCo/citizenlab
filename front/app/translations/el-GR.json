@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Αλλάξτε τον κωδικό πρόσβασής σας",
   "app.containers.ChangePassword.newPasswordLabel": "Νέος κωδικός πρόσβασης",
   "app.containers.ChangePassword.newPasswordRequired": "Εισάγετε τον νέο σας κωδικό πρόσβασης",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Παρέχετε έναν κωδικό πρόσβασης που έχει μήκος τουλάχιστον {minimumPasswordLength} χαρακτήρες.",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Ο κωδικός πρόσβασής σας ενημερώθηκε επιτυχώς",
   "app.containers.ChangePassword.passwordEmptyError": "Εισάγετε τον κωδικό πρόσβασής σας",
   "app.containers.ChangePassword.passwordsDontMatch": "Επιβεβαίωση νέου κωδικού πρόσβασης",

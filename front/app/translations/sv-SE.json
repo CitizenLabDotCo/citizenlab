@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Ändra ditt lösenord",
   "app.containers.ChangePassword.newPasswordLabel": "Nytt lösenord",
   "app.containers.ChangePassword.newPasswordRequired": "Ange ditt nya lösenord",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Ange ett lösenord som är minst {minimumPasswordLength} tecken långt",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Ditt lösenord har uppdaterats",
   "app.containers.ChangePassword.passwordEmptyError": "Ange ditt lösenord",
   "app.containers.ChangePassword.passwordsDontMatch": "Bekräfta nytt lösenord",
