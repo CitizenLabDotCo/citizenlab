@@ -108,6 +108,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   def self.view_votes?(phase, user)
     return true if user && UserRoleService.new.can_moderate?(phase, user)
 
-    phase.ends_before?(Time.now.in_time_zone)
+    phase.complete?
   end
 end

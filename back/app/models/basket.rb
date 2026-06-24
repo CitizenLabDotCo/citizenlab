@@ -50,7 +50,7 @@ class Basket < ApplicationRecord
   end
 
   def destroy_or_keep!
-    if submitted? && phase.ends_before?(Time.now.in_time_zone)
+    if submitted? && phase.complete?
       update!(user: nil)
     else
       destroy!
