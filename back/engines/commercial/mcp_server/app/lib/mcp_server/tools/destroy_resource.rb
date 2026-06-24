@@ -41,7 +41,7 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      authorize_project!(project_of(record))
+      authorize_project!(record.project)
       authorize(record, :destroy?)
 
       assert_can_destroy_project!(record) if record.is_a?(Project)
@@ -86,15 +86,6 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
     def side_fx
       @side_fx ||= SIDE_FX_SERVICES.fetch(resource_class).new
-    end
-
-    def project_of(record)
-      case record
-      when Project then record
-      when Phase, Event then record.project
-      when Volunteering::Cause, Polls::Question then record.phase.project
-      when Polls::Option then record.question.phase.project
-      end
     end
 
     def destroy_with_sidefx!(record)
