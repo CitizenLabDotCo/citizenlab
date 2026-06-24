@@ -113,12 +113,13 @@ const StickyNote: React.FC<Props> = ({
   const localize = useLocalize();
   const { mutate: addIdeaExposure } = useAddIdeaExposure();
 
-  // Track idea exposure when sticky note becomes centered
+  // Track idea exposure when sticky note becomes centered. Record it against
+  // the phase being browsed so it matches what the feed endpoint filters on.
   useEffect(() => {
-    if (isCentered) {
-      addIdeaExposure({ ideaId });
+    if (isCentered && phaseId) {
+      addIdeaExposure({ ideaId, phaseId });
     }
-  }, [isCentered, ideaId, addIdeaExposure]);
+  }, [isCentered, ideaId, phaseId, addIdeaExposure]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
