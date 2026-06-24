@@ -24,8 +24,7 @@ export interface Props {
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
   required?: boolean;
-  // zxcvbn user_inputs (email/name) for the live strength meter, so it scores
-  // the password the same way the validation and backend do.
+  // zxcvbn user_inputs (email/name) for the live strength meter.
   userInputs?: string[];
 }
 
@@ -40,10 +39,9 @@ export function hasPasswordMinimumLength(
     : password.length < DEFAULT_MINIMUM_PASSWORD_LENGTH;
 }
 
-// Returns true when the password meets the configured minimum zxcvbn strength
-// score (0-4); a falsy threshold disables the check. `userInputs` (email/name)
-// let zxcvbn penalise passwords derived from them, matching the backend.
-// zxcvbn is large, so it is imported lazily to keep it out of the main bundle.
+// True if the password meets the minimum zxcvbn score (0-4); a falsy threshold
+// disables the check. `userInputs` (email/name) let zxcvbn penalise passwords
+// derived from them. zxcvbn is large, so it is imported lazily.
 export async function passwordMeetsStrength(
   password: string,
   minimumStrength: number | undefined,

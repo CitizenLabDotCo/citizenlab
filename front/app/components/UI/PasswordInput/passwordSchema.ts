@@ -10,17 +10,16 @@ interface PasswordSchemaOptions {
   minimumPasswordLength: number;
   // Minimum zxcvbn score (0-4); falsy disables the strength check.
   minimumStrength?: number;
-  // zxcvbn user_inputs known outside the form (e.g. stored account attributes).
-  // Merged with the sibling form fields (first/last/email, when present), so the
-  // strength check penalises them like the backend does.
+  // zxcvbn user_inputs known outside the form (e.g. stored account attributes),
+  // merged with the sibling form fields (first/last/email, when present).
   staticUserInputs?: string[];
-  // Message shown when the field is empty. Defaults to a generic "Please enter
-  // your password"; pass an override for flow-specific wording (e.g. "new").
+  // Empty-field message; defaults to "Please enter your password". Override for
+  // flow-specific wording (e.g. "new").
   requiredMessage?: MessageDescriptor;
 }
 
-// Builds the Yup string schema shared by the sign-up and password-change forms:
-// required, minimum length, and the zxcvbn strength check in one place.
+// Builds the Yup password schema (required + min length + zxcvbn strength)
+// shared by the sign-up and password-change forms.
 export function getPasswordSchema(
   formatMessage: FormatMessage,
   {
