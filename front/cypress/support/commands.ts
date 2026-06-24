@@ -104,6 +104,8 @@ declare global {
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
+      deleteEventAttendances: typeof deleteEventAttendances;
+      apiRemoveIdeas: typeof apiRemoveIdeas;
     }
   }
 }
@@ -125,9 +127,9 @@ export function randomEmail() {
     .toString(36)
     .substr(2, 12)
     .toLowerCase()}@${Math.random()
-      .toString(36)
-      .substr(2, 12)
-      .toLowerCase()}.com`;
+    .toString(36)
+    .substr(2, 12)
+    .toLowerCase()}.com`;
 }
 
 function unregisterServiceWorkers() {
@@ -1440,9 +1442,9 @@ function apiCreateEvent({
           address_1: location,
           location_point_geojson: includeLocation
             ? {
-              type: 'Point',
-              coordinates: [4.418731568531502, 50.86899604801978],
-            }
+                type: 'Point',
+                coordinates: [4.418731568531502, 50.86899604801978],
+              }
             : undefined,
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
@@ -1599,7 +1601,7 @@ function apiUpdatePermissionCustomField(
   permissionId: string,
   action: IPhasePermissionAction,
   custom_field_id: string
-) { }
+) {}
 
 function apiCreateManualGroup({ title }: { title: Multiloc }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -1768,10 +1770,10 @@ const createBaseCustomField =
     ordering: i,
     ...(input_type === 'linear_scale'
       ? {
-        maximum: 5,
-        linear_scale_label_1_multiloc: { en: 'Min label' },
-        linear_scale_label_5_multiloc: { en: 'Max label' },
-      }
+          maximum: 5,
+          linear_scale_label_1_multiloc: { en: 'Min label' },
+          linear_scale_label_5_multiloc: { en: 'Max label' },
+        }
       : {}),
   });
 
@@ -2191,6 +2193,69 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`[data-cy="${dataCyValue}"]`);
 }
 
+function deleteEventAttendances(
+  email: string,
+  password: string,
+  eventIdNoCoordinates: string
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: `web_api/v1/events/${eventIdNoCoordinates}/attendances`,
+      })
+      .then((response) => {
+        const attendances = response.body.data;
+        if (attendances.length !== 0) {
+          attendances.forEach((attendance: any) => {
+            cy.request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'DELETE',
+              url: `web_api/v1/event_attendances/${attendance.id}`,
+            });
+          });
+        }
+      });
+  });
+}
+
+function apiRemoveIdeas(projectId?: string) {
+  // When a projectId is passed, only ideas (incl. survey responses) belonging to
+  // that project are removed. Without it, ALL ideas in the tenant are deleted,
+  // which wipes seeded fixtures (e.g. the "Verified Idea") that other specs rely on.
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        method: 'GET',
+        url: `/web_api/v1/ideas`,
+        qs: projectId ? { 'projects[]': projectId } : undefined,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+      })
+      .then((response) => {
+        const ideas = response.body.data;
+        if (ideas.length !== 0) {
+          ideas.forEach((idea: any) => {
+            cy.apiRemoveIdea(idea.id);
+          });
+        }
+      });
+  });
+}
+
 Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
@@ -2308,6 +2373,8 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
+Cypress.Commands.add('deleteEventAttendances', deleteEventAttendances);
+Cypress.Commands.add('apiRemoveIdeas', apiRemoveIdeas);
 
 // ReactSelect helper function
 const selectReactSelectOption = (selector: string, label: string) => {

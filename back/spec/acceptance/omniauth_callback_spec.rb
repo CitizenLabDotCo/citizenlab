@@ -216,6 +216,25 @@ resource 'Omniauth Callback', document: false do
             expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
         end
+
+        context 'when claim_tokens is passed as a Rack-parsed Hash (e.g. claim_tokens[0]=...)' do
+          before do
+            allow_any_instance_of(OmniauthCallbackController)
+              .to receive(:omniauth_params)
+              .and_return({ 'claim_tokens' => { '0' => claim_token.token } })
+          end
+
+          example 'still claims participation data without erroring' do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            assert_status(302)
+            user = User.find_by(email: 'billy_fixed@example.com')
+            expect(user).not_to be_nil
+            expect(idea.reload.author_id).to eq(user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
       end
 
       context 'when identity already exists and user has a confirmed email different from the SSO returned one' do
@@ -282,12 +301,9 @@ resource 'Omniauth Callback', document: false do
   end
 
   context 'when SSO method returns email but it is not confirmed' do
-    let(:mailer) do
-      instance_double(
-        NewEmailConfirmationMailer,
-        send_code: instance_double(ActionMailer::MessageDelivery, deliver_now: true)
-      )
-    end
+    # The confirmation code email is sent through the EmailCampaigns engine via
+    # DeliveryService#send_now_to_user; spy on it to assert the code was sent.
+    let(:delivery_service) { instance_spy(EmailCampaigns::DeliveryService) }
 
     before do
       AppConfiguration.instance.settings['id_config'] = {
@@ -298,7 +314,7 @@ resource 'Omniauth Callback', document: false do
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:fake_sso] = get_auth_hash(email_confirmed: false)
-      allow(NewEmailConfirmationMailer).to receive(:with).and_return(mailer)
+      allow(EmailCampaigns::DeliveryService).to receive(:new).and_return(delivery_service)
     end
 
     after do
@@ -317,7 +333,8 @@ resource 'Omniauth Callback', document: false do
         expect(user.verified).to be true
 
         # Make sure confirmation email was sent
-        expect(NewEmailConfirmationMailer).to have_received(:with).with(user: user).once
+        expect(delivery_service).to have_received(:send_now_to_user)
+          .with(an_instance_of(EmailCampaigns::Campaigns::NewEmailConfirmation), user, hash_including(:code)).once
       end
 
       example 'if there is a pending invite with this email: return error' do

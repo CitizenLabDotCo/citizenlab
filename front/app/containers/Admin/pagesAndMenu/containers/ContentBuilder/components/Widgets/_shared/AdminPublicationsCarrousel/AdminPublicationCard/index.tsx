@@ -20,10 +20,9 @@ import useLocalize from 'hooks/useLocalize';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
-import { CardContainer, CardImage } from '../../BaseCard';
+import { CardContainer, CardImage, CardLink } from '../../BaseCard';
 import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from '../constants';
 
 import messages from './messages';
@@ -35,6 +34,7 @@ interface Props {
   mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
     React.KeyboardEventHandler<HTMLElement>;
+  onFocus?: React.FocusEventHandler<HTMLElement>;
 }
 
 interface InnerProps extends Props {
@@ -53,6 +53,7 @@ export const AdminPublicationCard = ({
   ml,
   mr,
   onKeyDown,
+  onFocus,
 }: InnerProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -70,18 +71,13 @@ export const AdminPublicationCard = ({
   const { type } = adminPublication.relationships.publication.data;
 
   return (
-    <Link
+    <CardLink
       scrollToTop
       {...getPublicationLinkProps(adminPublication)}
       onKeyDown={onKeyDown}
+      onFocus={onFocus}
     >
-      <CardContainer
-        tabIndex={0}
-        w={`${cardWidth}px`}
-        ml={ml}
-        mr={mr}
-        display="block"
-      >
+      <CardContainer w={`${cardWidth}px`} ml={ml} mr={mr} display="block">
         <CardImage imageUrl={imageUrl} alt={imageAltText} />
         <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
           {localize(publication_title_multiloc)}
@@ -118,7 +114,7 @@ export const AdminPublicationCard = ({
           {truncate(localize(publication_description_preview_multiloc), 280)}
         </Text>
       </CardContainer>
-    </Link>
+    </CardLink>
   );
 };
 

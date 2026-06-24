@@ -13,12 +13,7 @@ const fetchVerificationMethodVerifiedActions = () =>
   });
 
 const useVerificationMethodVerifiedActions = () => {
-  return useQuery<
-    IdMethod,
-    CLErrors,
-    IdMethod,
-    IdMethodsKeys
-  >({
+  return useQuery<IdMethod, CLErrors, IdMethod, IdMethodsKeys>({
     queryKey: idMethodsKeys.item({
       endpoint: 'first_enabled_for_verified_actions',
     }),

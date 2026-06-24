@@ -129,11 +129,9 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
   if (!firstVerificationMethod) return null;
 
   return (
-
     <Container
       id="e2e-verification-status"
-      className={`${className} e2e${authUserIsVerified ? '' : '-not'
-        }-verified`}
+      className={`${className} e2e${authUserIsVerified ? '' : '-not'}-verified`}
     >
       {authUserIsVerified ? (
         <>

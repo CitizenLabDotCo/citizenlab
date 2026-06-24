@@ -394,51 +394,51 @@ const Calendar = ({
         className={className}
       />
       {isSingleDaySelection ? (
-          <Box mt="16px">
-            <Text m="0" mb="8px" fontSize="l">
-              {formatMessage(messages.sameDaySelection)}
-            </Text>
-            <Warning w="95%">
-              {formatMessage(messages.sameDaySelectionWarning, {
-                timezone: gmtOffset,
-              })}
-            </Warning>
+        <Box mt="16px">
+          <Text m="0" mb="8px" fontSize="l">
+            {formatMessage(messages.sameDaySelection)}
+          </Text>
+          <Warning w="95%">
+            {formatMessage(messages.sameDaySelectionWarning, {
+              timezone: gmtOffset,
+            })}
+          </Warning>
+        </Box>
+      ) : (
+        <TimeInputContainer>
+          <Box display="flex" gap="8px" alignItems="center">
+            <Text m="0">{formatMessage(messages.startTime)}</Text>
+            <TimeInput
+              selectedTime={displayStartTime}
+              onChange={handleStartTimeChange}
+              minTime={startTimeMinTime}
+            />
           </Box>
-        ) : (
-          <TimeInputContainer>
-            <Box display="flex" gap="8px" alignItems="center">
-              <Text m="0">{formatMessage(messages.startTime)}</Text>
+          <Box display="flex" gap="8px" alignItems="center">
+            <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
+              {formatMessage(messages.endTime)}
+            </Text>
+            {selectedRange.to ? (
               <TimeInput
-                selectedTime={displayStartTime}
-                onChange={handleStartTimeChange}
-                minTime={startTimeMinTime}
+                selectedTime={displayEndTime}
+                onChange={handleEndTimeChange}
+                maxTime={endTimeMaxTime}
               />
-            </Box>
-            <Box display="flex" gap="8px" alignItems="center">
-              <Text m="0" color={selectedRange.to ? 'black' : 'grey600'}>
-                {formatMessage(messages.endTime)}
-              </Text>
-              {selectedRange.to ? (
-                <TimeInput
-                  selectedTime={displayEndTime}
-                  onChange={handleEndTimeChange}
-                  maxTime={endTimeMaxTime}
-                />
-              ) : (
-                <Box
-                  p="10px"
-                  bgColor={colors.grey100}
-                  border={`1px solid ${colors.grey300}`}
-                  borderRadius="4px"
-                  display="flex"
-                >
-                  <Text m="0" color="grey600">
-                    {formatMessage(messages.openEnded)}
-                  </Text>
-                </Box>
-              )}
-            </Box>
-          </TimeInputContainer>
+            ) : (
+              <Box
+                p="10px"
+                bgColor={colors.grey100}
+                border={`1px solid ${colors.grey300}`}
+                borderRadius="4px"
+                display="flex"
+              >
+                <Text m="0" color="grey600">
+                  {formatMessage(messages.openEnded)}
+                </Text>
+              </Box>
+            )}
+          </Box>
+        </TimeInputContainer>
       )}
     </DayPickerStyles>
   );

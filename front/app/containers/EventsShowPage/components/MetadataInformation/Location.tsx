@@ -36,6 +36,7 @@ const Location = ({ event }: Props) => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const address2 = event?.attributes?.address_2_multiloc[currentLocale];
+  const locationName = address1.slice(0, address1.indexOf(','));
 
   if (address1) {
     return (
@@ -55,6 +56,9 @@ const Location = ({ event }: Props) => {
                 buttonStyle="text"
                 linkTo={`https://www.google.com/maps/search/?api=1&query=${position.coordinates[1]},${position.coordinates[0]}`}
                 openLinkInNewTab={isPhoneOrSmaller ? false : true} // On mobile, this will open the app instead
+                ariaLabel={formatMessage(messages.viewLocationOnGoogleMaps, {
+                  location: locationName,
+                })}
                 pl="0px"
                 style={{
                   textDecoration: 'underline',
@@ -64,7 +68,7 @@ const Location = ({ event }: Props) => {
                 id="e2e-location-with-coordinates-button"
               >
                 <Text mt="4px" color="coolGrey600" m="0px" p="0px" fontSize="s">
-                  {address1.slice(0, address1.indexOf(','))}
+                  {locationName}
                 </Text>
               </ButtonWithLink>
             </Box>
@@ -88,11 +92,13 @@ const Location = ({ event }: Props) => {
               {address2}
             </Text>
           )}
-          {position && ( // Using a negative margin here so we can extend the map outside of the container
-            <Box ml="-30px" width="300" mt="8px" id="e2e-location-map">
-              <LocationMap eventLocation={position} />
-            </Box>
-          )}
+
+          {position &&
+            !isPhoneOrSmaller && ( // Negative margin extends the map outside the container
+              <Box ml="-30px" width="300" mt="8px" id="e2e-location-map">
+                <LocationMap eventLocation={position} />
+              </Box>
+            )}
         </Content>
       </Container>
     );

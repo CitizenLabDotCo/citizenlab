@@ -30,6 +30,24 @@ describe WebApi::V1::ActivitySerializer do
     end
   end
 
+  context 'permission_action' do
+    let(:permission) { create(:permission, action: 'posting_idea') }
+    let(:activity) do
+      create(:activity, item: permission, action: 'changed', payload: { permission: clean_time_attributes(permission.attributes) })
+    end
+
+    it 'returns the action the permission governs' do
+      serialized_output = described_class.new(activity).serializable_hash
+      expect(serialized_output.dig(:data, :attributes, :permission_action)).to eq 'posting_idea'
+    end
+
+    it 'is nil for non-permission activities' do
+      idea_activity = create(:idea_created_activity)
+      serialized_output = described_class.new(idea_activity).serializable_hash
+      expect(serialized_output.dig(:data, :attributes, :permission_action)).to be_nil
+    end
+  end
+
   context 'item_exists' do
     let(:idea) { create(:idea) }
     let(:activity) { create(:idea_created_activity, item: idea) }

@@ -6049,10 +6049,30 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.trendIndicator.comparedToLastQuarter": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:48:26.587367Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.trendIndicator.lastQuarter2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.trendIndicator.trendDecreased": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:48:26.587367Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.trendIndicator.trendIncreased": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:48:26.587367Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.trendIndicator.trendNoChange": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:48:26.587367Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AccessibilityStatement.applicability": {
     "state": "verified",
@@ -7128,6 +7148,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": {
+    "state": "verified",
+    "verified_at": "2026-06-19T09:35:34.347153Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.EventsShow.xParticipants": {
     "state": "verified",
@@ -13489,6 +13514,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.utils.votingMethodUtils.singleVotingMultipleVotesPreferredOptions": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:47:10.868782Z",
+    "verified_by": "Cindy EB"
+  },
   "app.utils.votingMethodUtils.singleVotingMultipleVotesYouCanVote2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -13588,6 +13618,81 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "containers.OAuthAuthorize.authorizeButton": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.authorizeExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.authorizeHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.denyButton": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.inControlDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.inControlTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.invalidRequestExplanation": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.invalidRequestHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.pageTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.scopeFallbackDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.scopeFallbackTitle2": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessDetail": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.signInButton": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
+  },
+  "containers.OAuthAuthorize.signInPrompt": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:53:00.229320Z",
+    "verified_by": "Cindy EB"
   },
   "containers.SiteMap.allProjects": {
     "state": "verified",

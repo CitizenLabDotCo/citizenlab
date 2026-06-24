@@ -106,7 +106,7 @@ const HealthScoreChart = ({
             tickLine: true,
           }}
           innerRef={undefined}
-          ariaLabel={ariaLabel}
+          ariaLabel={ariaLabel ?? formatMessage(messages.healthScore)}
           ariaDescribedBy={ariaDescribedBy}
         />
       </Box>

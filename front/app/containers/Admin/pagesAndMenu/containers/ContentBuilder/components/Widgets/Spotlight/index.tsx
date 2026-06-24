@@ -78,7 +78,7 @@ const Spotlight = ({
 
   const avatarIds =
     publication?.data.relationships.avatars?.data?.map((avatar) => avatar.id) ??
-    undefined;
+    [];
 
   const link = publication
     ? `/${publicationType}s/${publication.data.attributes.slug}`
@@ -109,11 +109,6 @@ const Spotlight = ({
       avatarIds={avatarIds}
       hideAvatars={hideAvatars}
       userCount={publication?.data.attributes.participants_count}
-      avatarsContext={
-        publicationType === 'project' && publicationId
-          ? { type: 'project', id: publicationId }
-          : undefined
-      }
     />
   );
 };
