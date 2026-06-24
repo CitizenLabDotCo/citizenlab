@@ -20,41 +20,43 @@ import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
-const Card = styled.div`
-  position: relative;
-  width: ${devicePreviewSizes.mobile.frameWidth};
-  height: ${devicePreviewSizes.frameHeight};
-  background: ${colors.white};
-  border: 2px solid ${colors.grey300};
-  border-radius: 24px;
-  overflow: hidden;
-  transition: border-color 120ms ease-out, box-shadow 120ms ease-out;
+const Card = styled(Box)`
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
 
   &:hover,
   &:focus-within {
-    border-color: ${colors.teal400};
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 3px rgba(44, 110, 125, 0.42),
+      0 18px 42px rgba(20, 25, 40, 0.16);
   }
 `;
 
-const Overlay = styled.div`
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 120ms ease-out, visibility 120ms ease-out;
-  // Let wheel/scroll fall through to the iframe so the preview stays
-  // scrollable; only the edit button below opts back into pointer events.
-  pointer-events: none;
+const CornerEditButton = styled(Button)`
+  transition: opacity 140ms ease-out;
+
+  ${Card}:hover &,
+  ${Card}:focus-within & {
+    opacity: 0;
+    pointer-events: none;
+  }
+`;
+
+const Overlay = styled(Box)`
+  transition: opacity 160ms ease-out, visibility 160ms ease-out;
 
   ${Card}:hover &,
   ${Card}:focus-within & {
     opacity: 1;
     visibility: visible;
+  }
+`;
+
+const CtaWrapper = styled(Box)`
+  transition: transform 160ms ease-out;
+
+  ${Card}:hover &,
+  ${Card}:focus-within & {
+    transform: translateY(0);
   }
 `;
 
@@ -67,7 +69,7 @@ const ProjectPage = () => {
   if (!project) {
     return (
       <Box
-        flexGrow={1}
+        minHeight="100%"
         background={colors.background}
         display="flex"
         alignItems="center"
@@ -89,14 +91,24 @@ const ProjectPage = () => {
 
   return (
     <Box
-      flexGrow={1}
-      background={colors.background}
+      minHeight="100%"
       display="flex"
+      alignItems="center"
       justifyContent="center"
-      overflowY="auto"
       p="32px"
+      background={`radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`}
     >
-      <Card data-cy="e2e-project-page-preview">
+      <Card
+        data-cy="e2e-project-page-preview"
+        position="relative"
+        w={devicePreviewSizes.mobile.frameWidth}
+        h={devicePreviewSizes.frameHeight}
+        background={colors.white}
+        border={`1.5px solid ${colors.grey300}`}
+        borderRadius="22px"
+        overflow="hidden"
+        boxShadow="0 10px 30px rgba(20, 25, 40, 0.07)"
+      >
         <Box
           as="iframe"
           src={previewSrc}
@@ -106,11 +118,40 @@ const ProjectPage = () => {
           h="100%"
           border="none"
         />
-        <Overlay>
-          <Box pointerEvents="auto">
+        <CornerEditButton
+          position="absolute"
+          top="12px"
+          right="12px"
+          buttonStyle="primary"
+          size="s"
+          icon="edit"
+          iconSize="16px"
+          borderColor={colors.grey300}
+          borderRadius="6px"
+          padding="4px 10px"
+          fontSize="12px"
+          onClick={openContentBuilder}
+          text={formatMessage(messages.edit)}
+        />
+        <Overlay
+          position="absolute"
+          top="0"
+          right="0"
+          bottom="0"
+          left="0"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          background="rgba(18, 38, 44, 0.3)"
+          opacity={0}
+          visibility="hidden"
+          // Let wheel/scroll fall through to the iframe so the preview stays scrollable
+          pointerEvents="none"
+        >
+          <CtaWrapper pointerEvents="auto" transform="translateY(7px)">
             <Button
               icon="edit"
-              bgColor={colors.teal500}
+              buttonStyle="primary"
               onClick={openContentBuilder}
               ariaLabel={formatMessage(
                 messages.editProjectPageInContentBuilder
@@ -118,7 +159,7 @@ const ProjectPage = () => {
               dataCy="e2e-edit-page-content"
               text={formatMessage(messages.editPageContent)}
             />
-          </Box>
+          </CtaWrapper>
         </Overlay>
       </Card>
     </Box>
