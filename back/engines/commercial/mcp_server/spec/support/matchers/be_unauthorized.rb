@@ -46,6 +46,6 @@ end
 RSpec::Matchers.define :be_unauthorized_project do
   match(notify_expectation_failures: true) do |response|
     expect(response).to be_unauthorized(McpServer::BaseTool::Runner::NOT_DRAFT_MESSAGE)
-    true
+    true # Ensure the matcher returns a truthy value.
   end
 end

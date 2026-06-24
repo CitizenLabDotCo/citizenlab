@@ -25,8 +25,7 @@ class McpServer::BaseTool::Runner
   private
 
   # MCP-channel guard. Tools that mutate or destroy a project (or anything inside one)
-  # call this with the target's project before doing the work, so risky operations
-  # can only run on draft projects.
+  # must call this with the target's project before doing the work.
   def authorize_project!(project)
     return if project.admin_publication.draft?
 

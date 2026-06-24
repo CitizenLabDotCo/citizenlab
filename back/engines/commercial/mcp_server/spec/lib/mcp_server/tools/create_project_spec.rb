@@ -17,6 +17,8 @@ describe McpServer::Tools::CreateProject do
     end.to change(Project, :count).by(1)
 
     expect(response).not_to be_error
-    expect(Project.last.admin_publication.publication_status).to eq('draft')
+
+    project = Project.find(response.structured_content['id'])
+    expect(project.admin_publication.publication_status).to eq('draft')
   end
 end
