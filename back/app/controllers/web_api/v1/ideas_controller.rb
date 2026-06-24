@@ -503,7 +503,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
     input.phase_ids = phase_ids if phase_ids
-    input.cosponsor_ids = cosponsor_ids unless cosponsor_ids.nil?
+    input.cosponsor_ids = cosponsor_ids if cosponsor_ids
   end
 
   def params_service
