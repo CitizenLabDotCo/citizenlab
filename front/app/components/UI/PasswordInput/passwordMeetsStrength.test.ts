@@ -1,4 +1,4 @@
-import { passwordMeetsStrength } from './';
+import { passwordMeetsStrength, passwordUserInputs } from './';
 
 // NOTE: These tests match the backend tests found in back/spec/models/user_spec.rb
 describe('passwordMeetsStrength', () => {
@@ -18,5 +18,28 @@ describe('passwordMeetsStrength', () => {
     expect(await passwordMeetsStrength('correct horse battery staple', 3)).toBe(
       true
     );
+  });
+
+  it('penalises a password built from the provided user inputs', async () => {
+    // Strong on its own, but worthless if it is just the user's own name.
+    const password = 'supercalifragilistic';
+    expect(await passwordMeetsStrength(password, 3)).toBe(true);
+    expect(await passwordMeetsStrength(password, 3, [password])).toBe(false);
+  });
+});
+
+describe('passwordUserInputs', () => {
+  it('collects present fields and drops empty/missing ones', () => {
+    expect(
+      passwordUserInputs({
+        email: 'a@b.com',
+        first_name: 'Ada',
+        last_name: null,
+      })
+    ).toEqual(['Ada', 'a@b.com']);
+  });
+
+  it('returns an empty array when given nothing', () => {
+    expect(passwordUserInputs()).toEqual([]);
   });
 });

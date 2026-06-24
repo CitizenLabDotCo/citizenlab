@@ -21,7 +21,8 @@ export const getSchema = (
   minimumPasswordLength: number,
   formatMessage: FormatMessage,
   requirements: AuthenticationRequirements,
-  minimumStrength?: number
+  minimumStrength?: number,
+  extraUserInputs: string[] = []
 ) => {
   const missingAttributes = new Set(
     requirements.requirements.authentication.missing_user_attributes
@@ -49,7 +50,12 @@ export const getSchema = (
     ..._if(
       missingAttributes.has('password'),
       'password',
-      getPasswordSchema(minimumPasswordLength, formatMessage, minimumStrength)
+      getPasswordSchema(
+        minimumPasswordLength,
+        formatMessage,
+        minimumStrength,
+        extraUserInputs
+      )
     ),
   });
 

@@ -29,8 +29,7 @@ module UserPasswordValidations
     AppConfiguration.instance.settings('password_login', 'minimum_length') || 0
   end
 
-  # Enforces a minimum zxcvbn strength score (0-4) when configured, in line with
-  # NCSC guidance (strength via unpredictability, not composition rules).
+  # Enforces a minimum zxcvbn strength score (0-4) when configured, per NCSC guidance.
   def validate_password_strength
     return unless password
     return if password_min_strength.zero?

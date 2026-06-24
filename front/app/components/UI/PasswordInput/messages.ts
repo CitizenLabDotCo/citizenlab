@@ -73,7 +73,7 @@ export default defineMessages({
   passwordStrengthError: {
     id: 'app.components.PasswordInput.passwordStrengthError',
     defaultMessage:
-      'This password is too easy to guess. Choose a stronger password, for example by making it longer or using several unrelated words.',
+      'This password can be easily guessed. Please choose a stronger password, for example by making it longer or using several unrelated words.',
   },
   passwordStrengthTooltip1: {
     id: 'app.components.PasswordInput.passwordStrengthTooltip1',

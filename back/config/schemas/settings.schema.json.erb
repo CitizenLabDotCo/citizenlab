@@ -423,7 +423,7 @@
           "minimum_strength": {
             "type": "number",
             "title": "Minimum password strength",
-            "description": "The minimum password strength score (0-4, estimated with zxcvbn) required for a user password, in line with NCSC guidance. The default value is 0, which disables the check. A value of 3 ('Strong') is recommended for stronger security. Changes only apply to users that create a new account or update their existing password (existing accounts remain the same).",
+            "description": "The minimum password strength score required for a password (0-4 - reflecting the strength bar on signup). The default value is 0 - this disables enforcement and makes password strength meter only a recommendation. A value of at least 3 is recommended for stronger security in line with NCSC guidance. Changes only apply to users that create a new account or update their existing password (existing accounts remain the same).",
             "minimum": 0,
             "maximum": 4,
             "default": 0

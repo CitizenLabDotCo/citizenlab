@@ -3,7 +3,10 @@ import { string, object, boolean } from 'yup';
 
 import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
-import { passwordMeetsStrength } from 'components/UI/PasswordInput';
+import {
+  passwordMeetsStrength,
+  passwordUserInputs,
+} from 'components/UI/PasswordInput';
 import passwordInputMessages from 'components/UI/PasswordInput/messages';
 
 import { isValidEmail } from 'utils/validate';
@@ -39,7 +42,10 @@ export const getEmailSchema = (formatMessage: FormatMessage) =>
 export const getPasswordSchema = (
   minimumPasswordLength: number,
   formatMessage: FormatMessage,
-  minimumStrength?: number
+  minimumStrength?: number,
+  // Extra user_inputs not in this form (e.g. an already-known email), merged
+  // with the in-form fields so the strength check penalises them like the backend.
+  extraUserInputs: string[] = []
 ) =>
   string()
     .required(formatMessage(sharedMessages.noPasswordError))
@@ -52,7 +58,11 @@ export const getPasswordSchema = (
     .test(
       'password-strength',
       formatMessage(passwordInputMessages.passwordStrengthError),
-      (value) => passwordMeetsStrength(value, minimumStrength)
+      (value, context) =>
+        passwordMeetsStrength(value, minimumStrength, [
+          ...passwordUserInputs(context.parent),
+          ...extraUserInputs,
+        ])
     );
 
 export const getSchema = (

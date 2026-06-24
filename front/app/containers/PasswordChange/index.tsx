@@ -22,7 +22,10 @@ import {
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
-import { passwordMeetsStrength } from 'components/UI/PasswordInput';
+import {
+  passwordMeetsStrength,
+  passwordUserInputs,
+} from 'components/UI/PasswordInput';
 import passwordInputMessages from 'components/UI/PasswordInput/messages';
 import Warning from 'components/UI/Warning';
 
@@ -59,6 +62,11 @@ const ChangePassword = () => {
     tenant?.data.attributes.settings.password_login?.minimum_length || 0;
   const minimumStrength =
     tenant?.data.attributes.settings.password_login?.minimum_strength;
+  const userInputs = passwordUserInputs({
+    email: authUser?.data.attributes.email,
+    first_name: authUser?.data.attributes.first_name,
+    last_name: authUser?.data.attributes.last_name,
+  });
 
   const passwordSchema = string()
     .required(formatMessage(messages.newPasswordRequired))
@@ -71,7 +79,7 @@ const ChangePassword = () => {
     .test(
       'password-strength',
       formatMessage(passwordInputMessages.passwordStrengthError),
-      (value) => passwordMeetsStrength(value, minimumStrength)
+      (value) => passwordMeetsStrength(value, minimumStrength, userInputs)
     );
 
   const schemaPreviousPasswordExists = object({
@@ -168,7 +176,11 @@ const ChangePassword = () => {
                 />
                 <StyledPasswordIconTooltip />
               </LabelContainer>
-              <PasswordInput name="password" autocomplete="new-password" />
+              <PasswordInput
+                name="password"
+                autocomplete="new-password"
+                userInputs={userInputs}
+              />
               <StyledButton
                 id="password-submit-button"
                 type="submit"
