@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Όλα τα αρχεία",
   "app.containers.Admin.projects.project.survey.allResponses": "Όλες οι απαντήσεις",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Ακρίβεια: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Μια σύνοψη AI θα δημιουργηθεί αυτόματα μόλις υπάρξουν περισσότερες από 10 απαντήσεις.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Παρουσιάστηκε σφάλμα κατά τη δημιουργία της σύνοψης AI. Δοκιμάστε να την αναδημιουργήσετε παρακάτω.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Ανάλυση Open AI",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Απόκρυψη περιλήψεων για αυτήν την ερώτηση",

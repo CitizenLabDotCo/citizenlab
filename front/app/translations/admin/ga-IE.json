@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Gach comhad",
   "app.containers.Admin.projects.project.survey.allResponses": "Gach freagra",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Cruinneas: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Ginfear achoimre AI go huathoibríoch nuair a bheidh níos mó ná 10 bhfreagra ann.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Tharla earráid agus achoimre na hintleachta saorga á giniúint. Déan iarracht í a athghiniúint thíos.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Anailís oscailte AI",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Folaigh achoimrí don cheist seo",
