@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import NewLabel from 'components/UI/NewLabel';
+
+import { useLocation } from 'utils/router';
 
 import projectMessages from '../../messages';
 import messages from '../messages';
@@ -57,7 +59,18 @@ const ProjectNavRail = ({ projectId }: Props) => {
     },
   ];
 
-  const [utilitiesExpanded, setUtilitiesExpanded] = useState(true);
+  // The project-page group follows the active route: it stays open on the
+  // project page and any of its sub-tabs, and collapses on phase/other routes.
+  const { pathname } = useLocation();
+  const onPageGroupRoute =
+    pathname.includes(projectPageItem.match) ||
+    utilityItems.some((item) => pathname.includes(item.match));
+
+  const [pageGroupExpanded, setPageGroupExpanded] = useState(onPageGroupRoute);
+
+  useEffect(() => {
+    setPageGroupExpanded(onPageGroupRoute);
+  }, [onPageGroupRoute]);
 
   return (
     <Box
@@ -74,9 +87,9 @@ const ProjectNavRail = ({ projectId }: Props) => {
           <Box
             as="button"
             type="button"
-            aria-label="toggle-project-utilities"
-            aria-expanded={utilitiesExpanded}
-            onClick={() => setUtilitiesExpanded((expanded) => !expanded)}
+            aria-label="toggle-project-page-group"
+            aria-expanded={pageGroupExpanded}
+            onClick={() => setPageGroupExpanded((expanded) => !expanded)}
             background="transparent"
             border="none"
             p="2px"
@@ -84,7 +97,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
             cursor="pointer"
           >
             <Icon
-              name={utilitiesExpanded ? 'chevron-down' : 'chevron-right'}
+              name={pageGroupExpanded ? 'chevron-down' : 'chevron-right'}
               width="16px"
               height="16px"
               fill={colors.coolGrey600}
@@ -93,7 +106,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
         }
       />
 
-      {utilitiesExpanded &&
+      {pageGroupExpanded &&
         utilityItems.map((item) => <NavItemRow key={item.name} item={item} />)}
     </Box>
   );
