@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, KeyboardEvent } from 'react';
+import React, { FormEvent, useRef, useEffect, KeyboardEvent } from 'react';
 
 import {
   Icon,
@@ -66,6 +66,12 @@ const ViewButton = styled.button<{ active: boolean }>`
             color: darken(0.2, theme.colors.tenantText),
           }};
   }
+
+  &.focus-visible,
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.tenantPrimary};
+    outline-offset: 2px;
+  }
 `;
 
 interface Props {
@@ -85,8 +91,44 @@ const ViewButtons = ({
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
   const feedButtonRef = useRef<HTMLButtonElement | null>(null);
+  const shouldFocusSelectedTabRef = useRef(false);
   const showMapButton = availableViews?.includes('map');
   const showFeedButton = availableViews?.includes('feed');
+
+  // After keyboard tab selection, move focus to the new tab once the (URL-driven,
+  // async) selectedView change has committed.
+  useEffect(() => {
+    if (!shouldFocusSelectedTabRef.current) return;
+    shouldFocusSelectedTabRef.current = false;
+
+    const refByView: Record<
+      PresentationMode,
+      React.RefObject<HTMLButtonElement | null>
+    > = {
+      card: listButtonRef,
+      map: mapButtonRef,
+      feed: feedButtonRef,
+    };
+    const target = refByView[selectedView].current;
+    target?.focus();
+
+    // Leaving map view unmounts ESRI's MapView, which then restores focus to the
+    // map tab; pull focus back if it's stolen onto another tab button.
+    const reassertFocus = (e: FocusEvent) => {
+      const stealer = e.target;
+      if (
+        stealer !== target &&
+        (stealer === listButtonRef.current ||
+          stealer === mapButtonRef.current ||
+          stealer === feedButtonRef.current)
+      ) {
+        target?.focus();
+      }
+    };
+
+    document.addEventListener('focusin', reassertFocus);
+    return () => document.removeEventListener('focusin', reassertFocus);
+  }, [selectedView]);
 
   if (!showMapButton && !showFeedButton) {
     return null;
@@ -107,6 +149,7 @@ const ViewButtons = ({
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if (arrowLeftPressed || arrowRightPressed) {
+      e.preventDefault();
       const views: PresentationMode[] = [
         'card',
         ...(showMapButton ? ['map' as const] : []),
@@ -116,6 +159,7 @@ const ViewButtons = ({
       const nextIndex = arrowRightPressed
         ? (currentIndex + 1) % views.length
         : (currentIndex - 1 + views.length) % views.length;
+      shouldFocusSelectedTabRef.current = true;
       onClick(views[nextIndex]);
     }
   };

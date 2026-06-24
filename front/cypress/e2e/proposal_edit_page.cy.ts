@@ -98,9 +98,17 @@ describe('Proposal edit page', () => {
       force: true,
       delay: 0,
     });
-    // Save the form
+    // Save the form and wait for the update to actually persist before
+    // navigating away. With only a fixed wait, the next cy.visit can abort the
+    // in-flight save request, so the Location-field deletion is lost and the
+    // location map still renders on the idea page (the flake this asserts against).
+    cy.intercept('PATCH', `**/phases/${phaseId}/custom_fields/update_all`).as(
+      'saveForm'
+    );
     cy.get('form').submit();
-    cy.wait(1000);
+    cy.wait('@saveForm')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 201]);
 
     // Edit proposal
     cy.visit(`/ideas/edit/${inputId}`);

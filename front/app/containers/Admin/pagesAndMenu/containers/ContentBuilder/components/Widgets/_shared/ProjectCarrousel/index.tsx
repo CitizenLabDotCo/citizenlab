@@ -10,7 +10,10 @@ import { CARD_GAP } from '../BaseCarrousel/constants';
 import { CardContainer } from '../BaseCarrousel/Containers';
 import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
 import ScrollableCarrousel from '../BaseCarrousel/ScrollableCarrousel';
-import { skipCarrousel } from '../BaseCarrousel/ScrollableCarrousel/utils';
+import {
+  skipCarrousel,
+  scrollFocusedCardIntoView,
+} from '../BaseCarrousel/ScrollableCarrousel/utils';
 
 import { CARD_WIDTH } from './constants';
 import LightProjectCard from './LightProjectCard';
@@ -48,15 +51,10 @@ const ProjectCarrousel = ({ projects, hasMore, onLoadMore }: Props) => {
     if (e.code === 'Escape') {
       skipCarrousel(endId);
     }
-
-    if (e.code === 'Tab' && scrollContainerRef) {
-      setTimeout(() => {
-        e.shiftKey
-          ? (scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP)
-          : (scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP);
-      }, 50);
-    }
   };
+
+  const handleFocus = (e: React.FocusEvent<HTMLElement>) =>
+    scrollFocusedCardIntoView(e, scrollContainerRef);
 
   return (
     <ScrollableCarrousel
@@ -73,6 +71,7 @@ const ProjectCarrousel = ({ projects, hasMore, onLoadMore }: Props) => {
             mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
             project={project}
             onKeyDown={handleKeyDown}
+            onFocus={handleFocus}
           />
         </CardContainer>
       ))}
