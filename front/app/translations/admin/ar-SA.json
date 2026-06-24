@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "كل الملفات",
   "app.containers.Admin.projects.project.survey.allResponses": "جميع الردود",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "الدقة: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "سيتم إنشاء ملخص بالذكاء الاصطناعي تلقائيًا بمجرد وجود أكثر من 10 ردود.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "حدث خطأ أثناء إنشاء ملخص الذكاء الاصطناعي. يرجى محاولة تجديده أدناه.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "فتح تحليل الذكاء الاصطناعي",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "إخفاء ملخصات هذا السؤال",

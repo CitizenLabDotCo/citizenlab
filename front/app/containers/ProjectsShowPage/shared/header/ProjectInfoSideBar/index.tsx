@@ -82,8 +82,8 @@ const ProjectInfoSideBar = memo<Props>(
                 disabled={!isAdmin(authUser)}
                 // Needs to be "left" at the time of writing
                 // to ensure the tooltip doesn't slip under the project CTA bar.
-                placement={isSmallerThanPhone ? 'bottom' : 'left'}
-                maxWidth={isSmallerThanPhone ? '90vw' : undefined}
+                placement={isSmallerThanPhone ? 'top' : 'left'}
+                maxWidth={isSmallerThanPhone ? '90vw' : '300px'}
                 content={formatMessage(messages.liveDataMessage)}
                 aria-hidden={true}
               >

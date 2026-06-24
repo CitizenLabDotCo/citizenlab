@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "All files",
   "app.containers.Admin.projects.project.survey.allResponses": "All responses",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Accuracy: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "An AI summary will be generated automatically once there are more than 10 responses.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "There was an error generating the AI summary. Please try to regenerate it below.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Open AI analysis",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Hide summaries for this question",

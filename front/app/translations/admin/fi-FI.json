@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Kaikki tiedostot",
   "app.containers.Admin.projects.project.survey.allResponses": "Kaikki vastaukset",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Tarkkuus: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Tekoälyyhteenveto luodaan automaattisesti, kun vastauksia on yli 10.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Tekoälyyhteenvedon luomisessa tapahtui virhe. Yritä luoda se uudelleen alla.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Avaa AI-analyysi",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Piilota tämän kysymyksen yhteenvedot",
