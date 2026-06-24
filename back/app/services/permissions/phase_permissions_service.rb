@@ -1,9 +1,5 @@
 module Permissions
   class PhasePermissionsService < BasePermissionsService
-    PHASE_DENIED_REASONS = {
-      project_inactive: 'project_inactive'
-    }.freeze
-
     POSTING_DENIED_REASONS = {
       posting_not_supported: 'posting_not_supported',
       posting_disabled: 'posting_disabled',

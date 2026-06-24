@@ -1,5 +1,9 @@
 module Permissions
   class ProjectPermissionsService < PhasePermissionsService
+    PROJECT_DENIED_REASONS = {
+      project_inactive: 'project_inactive'
+    }.freeze
+
     ATTENDING_EVENT_DENIED_REASONS = {
       attending_event_not_supported: 'attending_event_not_supported'
     }.freeze
@@ -17,10 +21,9 @@ module Permissions
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
-      archived_reason = project_archived_disabled_reason
-      return archived_reason if archived_reason
+      return PROJECT_DENIED_REASONS[:project_inactive] if project.admin_publication.archived?
       return attending_event_denied_reason_for_action if action == 'attending_event'
-      return PHASE_DENIED_REASONS[:project_inactive] if !phase
+      return PROJECT_DENIED_REASONS[:project_inactive] if !phase
 
       super
     end
@@ -47,12 +50,6 @@ module Permissions
     private
 
     attr_reader :project
-
-    def project_archived_disabled_reason
-      return unless project.admin_publication.archived?
-
-      PHASE_DENIED_REASONS[:project_inactive]
-    end
 
     # Events aren't tied to a phase, so attending_event isn't blocked when there's no current
     # phase - yet its permission is still resolved per phase (scope: phase), a known inconsistency.
