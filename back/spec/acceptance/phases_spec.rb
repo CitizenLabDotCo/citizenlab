@@ -273,7 +273,7 @@ resource 'Phases' do
         parameter :end_at, 'The end date of the phase', required: true
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
-        parameter :input_term, 'The term used to describe an input. One of #{Phase::INPUT_TERMS.join(', ')}. Defaults to "idea".', required: false
+        parameter :input_term, "The term used to describe an input. One of #{Phase::INPUT_TERMS.join(', ')}. Defaults to 'idea'.", required: false
         parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
@@ -281,6 +281,7 @@ resource 'Phases' do
         parameter :similarity_enabled, 'Enable searching for similar inputs during submission. Defaults to false.', required: false
         parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
         parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
+        parameter :placement_type, "Whether the phase is on the timeline or standalone (a detached phase, e.g. an extra survey). Either #{Phase::PLACEMENT_TYPES.join(', ')}. Defaults to 'on_timeline'. Can only be set on creation.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -336,6 +337,24 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
           expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
           expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
+        end
+      end
+
+      context 'standalone (detached) phase' do
+        # Deliberately reuse an existing timeline phase's window: standalone phases run
+        # in parallel and are not subject to the no-overlap rule.
+        let(:timeline_phase) { @project.phases.first }
+        let(:placement_type) { 'standalone' }
+        let(:start_at) { timeline_phase.start_at }
+        let(:end_at) { timeline_phase.end_at }
+
+        example_request 'Create a standalone phase that overlaps the timeline' do
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :placement_type)).to eq 'standalone'
+          expect(json_response.dig(:data, :attributes, :start_at)).to eq timeline_phase.start_at.as_json
+          expect(json_response.dig(:data, :attributes, :end_at)).to eq timeline_phase.end_at.as_json
+
+          expect(Phase.find(json_response.dig(:data, :id)).placement_type).to eq 'standalone'
         end
       end
 
