@@ -119,21 +119,24 @@ module DecidimImporter
         attributes
       end
 
-      # Placeholder rows: the export carries the row count but not the row labels. One statement per
-      # row (at least one), titled with a bracketed index so it's obviously a placeholder to relabel.
       def build_matrix_statements(field, component_uid, question)
-        count = [present_value(question['matrix_rows_count']).to_i, 1].max
-        locales = matrix_statement_locales(question)
-        count.times do |index|
-          attributes = {
-            'key' => "statement_#{index + 1}",
-            'ordering' => index,
-            'title_multiloc' => locales.index_with { "[#{index + 1}]" }
-          }
-          record = Record.new('custom_field_matrix_statement', attributes)
+        matrix_statements(question).each_with_index do |statement, index|
+          record = Record.new('custom_field_matrix_statement', statement.merge('ordering' => index))
           record.reference('custom_field', field)
           ref_map.register("#{component_uid}-statement-#{question['id']}-#{index + 1}", record)
         end
+      end
+
+      # One statement per matrix row. Newer exports carry the rows (id + label), keyed by the row
+      # reference so {Extractors::SurveyResponsesExtractor} can address them; older exports carried only
+      # a count, so the rows are placeholders (bracketed index) for an admin to relabel.
+      def matrix_statements(question)
+        rows = Array(question['matrix_rows']).sort_by { |row| row['position'].to_i }
+        return rows.map { |row| { 'key' => SurveyKeys.statement_key(row['id']), 'title_multiloc' => multiloc(row['body']) } } if rows.any?
+
+        locales = matrix_statement_locales(question)
+        count = [present_value(question['matrix_rows_count']).to_i, 1].max
+        Array.new(count) { |i| { 'key' => "statement_#{i + 1}", 'title_multiloc' => locales.index_with { "[#{i + 1}]" } } }
       end
 
       def matrix_statement_locales(question)
@@ -143,7 +146,7 @@ module DecidimImporter
 
       def question_attributes(input_type, question, ordering)
         attributes = {
-          'key' => "field_#{question['id']}",
+          'key' => SurveyKeys.field_key(question['id']),
           'input_type' => input_type,
           'title_multiloc' => multiloc(question['body']),
           'description_multiloc' => multiloc(question['description']),
@@ -169,7 +172,7 @@ module DecidimImporter
       def build_options(field, component_uid, question)
         Array(question['answer_options']).each_with_index do |option, index|
           attributes = {
-            'key' => "option_#{option['id']}",
+            'key' => SurveyKeys.option_key(option['id']),
             'title_multiloc' => multiloc(option['body']),
             'ordering' => index
           }

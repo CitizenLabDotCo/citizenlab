@@ -28,6 +28,7 @@ module DecidimImporter
       custom_field_option
       custom_field_matrix_statement
       idea
+      file_upload
       ideas_phase
       comment
       official_feedback

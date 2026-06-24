@@ -104,4 +104,28 @@ RSpec.describe DecidimImporter::Extractors::SurveysExtractor do
     expect(extractor.run).to be_empty
     expect(extractor.skipped.first).to include(uid: 'missing')
   end
+
+  it 'reads the newer unwrapped, UID-keyed shape and builds real matrix rows from matrix_rows' do
+    columns = [{ 'id' => 'decidim--forms--answer-option--40', 'body' => { 'fr' => 'Souvent' } },
+      { 'id' => 'decidim--forms--answer-option--41', 'body' => { 'fr' => 'Jamais' } }]
+    matrix_rows = [{ 'id' => 'decidim--forms--question-matrix-row--30', 'position' => 0, 'body' => { 'fr' => 'Parc A' } },
+      { 'id' => 'decidim--forms--question-matrix-row--31', 'position' => 1, 'body' => { 'fr' => 'Parc B' } }]
+    questions = [
+      { 'id' => 'decidim--forms--question--46', 'position' => 0, 'question_type' => 'short_answer', 'body' => { 'fr' => 'Q' } },
+      { 'id' => 'decidim--forms--question--47', 'position' => 1, 'question_type' => 'matrix_single',
+        'answer_options' => columns, 'matrix_rows' => matrix_rows, 'body' => { 'fr' => 'M' } }
+    ]
+    # Newer shape: the questions array is the single top-level entry (no `questionnaire` wrapper).
+    described_class.new([{ 'uid' => component_uid, 'specific_data' => [questions].to_json }],
+      ref_map, locale_mapper: mapper, primary_locale: 'fr-FR').run
+
+    expect(records('custom_field').map { |f| f.attributes['key'] }).to include('field_46', 'field_47')
+
+    field = records('custom_field').find { |f| f.attributes['key'] == 'field_47' }
+    statements = records('custom_field_matrix_statement')
+      .select { |s| s.attributes['custom_field_ref'].equal?(field.attributes) }
+    # Real rows now: keyed by the row reference, labelled from the export (no placeholders).
+    expect(statements.map { |s| s.attributes['key'] }).to eq(%w[statement_30 statement_31])
+    expect(statements.map { |s| s.attributes['title_multiloc'] }).to eq([{ 'fr-FR' => 'Parc A' }, { 'fr-FR' => 'Parc B' }])
+  end
 end

@@ -32,6 +32,7 @@ module DecidimImporter
     PROCESS_FILE_GLOB = '*--participatory-process.csv'
     STEPS_FILE_GLOB = '*--steps.csv'
     ATTACHMENTS_FILE_GLOB = '*--attachments.csv'
+    ANSWERS_FILE_GLOB = '*--answers.csv'
 
     # Each process directory holds a `NN---components/` folder with one subdirectory per Decidim
     # component, named `NN---decidim--component--N---<type>` (proposals, meetings, surveys, …). The
@@ -80,7 +81,8 @@ module DecidimImporter
     # are stamped with their owning process (`decidim_participatory_process`) and, for proposals/
     # comments, their component (`decidim_component`).
     def self.read_processes(root)
-      acc = { projects: [], phases: [], attachments: [], proposals: [], comments: [], components: [] }
+      acc = { projects: [], phases: [], attachments: [], proposals: [], comments: [], components: [],
+              survey_answers: [] }
       process_dirs(root).each do |dir|
         process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
         next unless process_file
@@ -111,13 +113,18 @@ module DecidimImporter
 
         type = component_type(comp_dir)
         acc[:components] << comp_row.merge('decidim_participatory_process' => process_uid, 'type' => type)
-        next unless type == PROPOSALS_COMPONENT
-
         stamp = { 'decidim_participatory_process' => process_uid, 'decidim_component' => comp_row['uid'] }
-        proposals_file = Dir.glob(File.join(comp_dir, PROPOSALS_FILE_GLOB)).first
-        acc[:proposals].concat(stamp(CsvReader.read(proposals_file), stamp)) if proposals_file
-        comments_file = Dir.glob(File.join(comp_dir, COMMENTS_FILE_GLOB)).first
-        acc[:comments].concat(stamp(CsvReader.read(comments_file), stamp)) if comments_file
+
+        case type
+        when PROPOSALS_COMPONENT
+          proposals_file = Dir.glob(File.join(comp_dir, PROPOSALS_FILE_GLOB)).first
+          acc[:proposals].concat(stamp(CsvReader.read(proposals_file), stamp)) if proposals_file
+          comments_file = Dir.glob(File.join(comp_dir, COMMENTS_FILE_GLOB)).first
+          acc[:comments].concat(stamp(CsvReader.read(comments_file), stamp)) if comments_file
+        when SURVEYS_COMPONENT
+          answers_file = Dir.glob(File.join(comp_dir, ANSWERS_FILE_GLOB)).first
+          acc[:survey_answers].concat(stamp(CsvReader.read(answers_file), stamp)) if answers_file
+        end
       end
     end
 
@@ -451,6 +458,7 @@ module DecidimImporter
       run_proposals
       run_comments
       run_surveys
+      run_survey_responses
       run_static_pages
       run_files
       run_description_layouts
@@ -504,6 +512,11 @@ module DecidimImporter
       @surveys_extractor&.skipped || []
     end
 
+    # Survey responses (or their uploaded files) that couldn't be fully imported.
+    def skipped_survey_responses
+      @survey_responses_extractor&.skipped || []
+    end
+
     # Pages that couldn't be imported as static pages (e.g. unpublished drafts, no owning project).
     def skipped_pages
       @static_pages_extractor&.skipped || []
@@ -552,6 +565,20 @@ module DecidimImporter
         survey_component_rows, ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       )
       @surveys_extractor.run
+    end
+
+    # Decidim survey answers (`02---answers.csv`) → native-survey response `Idea`s. Runs after the
+    # surveys and users extractors so each response's phase, project and author resolve through the ref
+    # map. The survey component rows are passed too: the extractor parses their questionnaires to encode
+    # each answer cell by question type.
+    def run_survey_responses
+      return if rows_for(:survey_answers).empty?
+
+      @survey_responses_extractor = Extractors::SurveyResponsesExtractor.new(
+        rows_for(:survey_answers), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
+        survey_components: survey_component_rows
+      )
+      @survey_responses_extractor.run
     end
 
     # Builds a Content Builder project-description layout per project from the Decidim description, the

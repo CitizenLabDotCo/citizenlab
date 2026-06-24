@@ -162,6 +162,25 @@ RSpec.describe DecidimImporter::Importer do
         expect(matrix.matrix_statements.first.title_multiloc).to eq('fr-FR' => '[1]')
       end
 
+      it 'imports survey answers as native_survey response ideas with encoded custom_field_values' do
+        survey_phase = project.phases.find_by(participation_method: 'native_survey')
+        responses = Idea.where(creation_phase: survey_phase).order(:created_at)
+        expect(responses.count).to eq(2)
+
+        first = responses.first
+        expect(first.author&.unique_code).to eq('decidim-user-1')
+        expect(first.custom_field_values['field_10']).to eq('Bonjour le monde')
+        expect(first.custom_field_values['field_11']).to eq('option_100') # single choice → one option key
+        expect(first.custom_field_values['field_12']).to match_array(%w[option_102 option_103]) # multiple choice
+        expect(first.custom_field_values['field_13']).to eq('Une reponse detaillee')
+
+        # An answer whose author wasn't imported still becomes a response, just author-less (not anonymous).
+        anonymous = responses.last
+        expect(anonymous.author).to be_nil
+        expect(anonymous.anonymous).to be(false)
+        expect(anonymous.custom_field_values['field_10']).to eq('Reponse sans auteur connu')
+      end
+
       it 'backfills phase permissions so a native_survey phase has its posting permission' do
         survey_phase = project.phases.find_by(participation_method: 'native_survey')
         # Without this the admin projects endpoint 500s (posting_permission delegated to nil).
