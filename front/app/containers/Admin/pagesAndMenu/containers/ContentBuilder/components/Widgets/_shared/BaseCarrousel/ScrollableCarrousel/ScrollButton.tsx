@@ -10,6 +10,9 @@ interface Props {
   onClick: () => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  onFocus: () => void;
+  onBlur: () => void;
+  disabled: boolean;
 }
 
 const ScrollButton = ({
@@ -17,6 +20,9 @@ const ScrollButton = ({
   onClick,
   onMouseEnter,
   onMouseLeave,
+  onFocus,
+  onBlur,
+  disabled,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -34,15 +40,21 @@ const ScrollButton = ({
       w="52px"
       h="52px"
       zIndex="3"
+      cursor={disabled ? 'not-allowed' : 'pointer'}
       border={`1px solid ${colors.divider}`}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (disabled) return;
         onClick();
       }}
+      onMouseDown={(e) => e.preventDefault()}
       tabIndex={0}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      aria-disabled={disabled}
       aria-label={
         variant === 'left'
           ? formatMessage(messages.scrollLeft)
