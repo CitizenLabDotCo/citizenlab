@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "تمام فائلیں۔",
   "app.containers.Admin.projects.project.survey.allResponses": "تمام جوابات",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "درستگی: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "10 سے زیادہ جوابات ہونے پر ایک AI خلاصہ خودکار طور پر تیار کیا جائے گا۔",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "AI کا خلاصہ بنانے میں ایک خرابی تھی۔ براہ کرم ذیل میں اسے دوبارہ تخلیق کرنے کی کوشش کریں۔",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "AI تجزیہ کھولیں۔",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "اس سوال کے خلاصے چھپائیں۔",

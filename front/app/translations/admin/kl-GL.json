@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Fiilit tamarmik",
   "app.containers.Admin.projects.project.survey.allResponses": "Akissutit tamarmik",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Eqqoqqissaarnera: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "AI-mik eqikkaaneq nammineerluni pilersinneqassaaq akissutit 10-nit amerlaneruppata.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "AI-mik eqikkaanermi kukkusoqarpoq. Ataani nutaamik sanatinniarsariuk.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Open AI atorlugu misissueqqissaarneq",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Apeqqummut uunga eqikkaanerit toqqorkit",

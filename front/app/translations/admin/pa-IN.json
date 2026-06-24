@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "ਸਾਰੀਆਂ ਫਾਈਲਾਂ",
   "app.containers.Admin.projects.project.survey.allResponses": "ਸਾਰੇ ਜਵਾਬ",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "ਸ਼ੁੱਧਤਾ: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "10 ਤੋਂ ਵੱਧ ਜਵਾਬ ਹੋਣ 'ਤੇ ਇੱਕ AI ਸਾਰ ਆਪਣੇ ਆਪ ਤਿਆਰ ਕੀਤਾ ਜਾਵੇਗਾ।",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "AI ਸਾਰਾਂਸ਼ ਬਣਾਉਣ ਵਿੱਚ ਇੱਕ ਤਰੁੱਟੀ ਆਈ ਸੀ। ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਇਸਨੂੰ ਦੁਬਾਰਾ ਬਣਾਉਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "AI ਵਿਸ਼ਲੇਸ਼ਣ ਖੋਲ੍ਹੋ",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "ਇਸ ਸਵਾਲ ਲਈ ਸੰਖੇਪ ਲੁਕਾਓ",
