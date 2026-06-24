@@ -226,7 +226,11 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def claim_tokens
-    omniauth_params&.dig('claim_tokens')
+    tokens = omniauth_params&.dig('claim_tokens')
+    # When passed through the SSO query string, an array is encoded as
+    # `claim_tokens[0]=...&claim_tokens[1]=...`, which Rack parses into a Hash
+    # ({ "0" => ..., "1" => ... }) rather than an Array. Coerce it back.
+    tokens.is_a?(Hash) ? tokens.values : tokens
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL

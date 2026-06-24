@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} inscrits",
   "app.containers.EventsShow.registrantsIconAltText": "Registrats",
   "app.containers.EventsShow.socialMediaSharingMessage": "Assisteix a aquest esdeveniment: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "Veure {location} a Google Maps (s'obre en una finestra nova)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {#participant} other {# participants}}",
   "app.containers.EventsViewer.allTime": "Tot el temps",
   "app.containers.EventsViewer.date": "Data",

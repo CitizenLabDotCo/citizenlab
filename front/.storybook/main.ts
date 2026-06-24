@@ -41,8 +41,7 @@ const config: StorybookConfig = {
     // We first need to upgrade our main app to react-router-dom >=6.4.0
     // This upgrade has breaking changes so those need to be dealt with first.
     // 'storybook-addon-react-router-v6',
-    'storybook-react-intl',
-    '@storybook/addon-viewport'
+    'storybook-react-intl'
   ],
   framework: '@storybook/react-vite',
   core: {
@@ -71,7 +70,21 @@ const config: StorybookConfig = {
         ]
       },
       define: {
-        'process.env': process.env
+        // Only expose the env vars actually read by app/ code (Storybook bundles
+        // only app/). Avoid passing the whole process.env, which Vite 8 flags as a
+        // security risk for leaking host environment variables into the bundle.
+        'process.env': {
+          NODE_ENV: process.env.NODE_ENV,
+          API_HOST: process.env.API_HOST,
+          API_PORT: process.env.API_PORT,
+          GRAPHQL_HOST: process.env.GRAPHQL_HOST,
+          GRAPHQL_PORT: process.env.GRAPHQL_PORT,
+          INTERCOM_APP_ID: process.env.INTERCOM_APP_ID,
+          SENTRY_DSN: process.env.SENTRY_DSN,
+          SENTRY_ENV: process.env.SENTRY_ENV,
+          MATOMO_HOST: process.env.MATOMO_HOST,
+          POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
+        }
       }
     });
   },

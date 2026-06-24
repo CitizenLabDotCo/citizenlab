@@ -48,7 +48,11 @@ el-GR:
         new_attendee: Πρόσφατα εγγεγραμμένος χρήστης
         project_review_requester: Χρήστης που ζήτησε την αναθεώρηση του έργου
         project_reviewers: Αξιολογητές έργων και διαχειριστές φακέλων
+        user_changing_email: Χρήστης που αλλάζει τη διεύθυνση email του
+        user_confirming_email: Χρήστης που επιβεβαιώνει τη διεύθυνση email του
+        user_requesting_password_reset: Χρήστης που ζήτησε επαναφορά κωδικού πρόσβασης
         user_who_commented: Χρήστης που σχολίασε
+        user_who_is_blocked: Χρήστης του οποίου ο λογαριασμός είναι αποκλεισμένος
         user_who_is_invited_to_cosponsor_a_proposal: Χρήστης που καλείται να συνυποστηρίξει μια πρόταση
         user_who_is_mentioned: Χρήστης που αναφέρεται
         user_who_is_receiving_admin_rights: Χρήστης που λαμβάνει δικαιώματα διαχειριστή
@@ -105,9 +109,12 @@ el-GR:
         registration_to_event: Εγγραφή σε μια εκδήλωση
         survey_1_day_after_draft_saved: 1 ημέρα μετά την τελευταία αποθήκευση της έρευνας σε προσχέδιο
         user_accepts_invitation_to_cosponsor_a_proposal: Ο χρήστης αποδέχεται την πρόσκληση να συνυπογράψει μια πρόταση
+        user_changes_email: Ο χρήστης αλλάζει τη διεύθυνση email του
         user_comments: Σχόλια χρηστών
         user_comments_on_input: Σχόλια χρηστών σχετικά με την είσοδο
         user_comments_on_proposal: Σχόλια χρηστών σχετικά με την πρόταση
+        user_confirms_email: Ο χρήστης επιβεβαιώνει τη διεύθυνση email του
+        user_is_blocked: Ο λογαριασμός του χρήστη έχει αποκλειστεί
         user_is_given_admin_rights: Ο χρήστης αποκτά δικαιώματα διαχειριστή
         user_is_given_folder_manager_rights: Στον χρήστη δίνονται δικαιώματα διαχειριστή φακέλου
         user_is_given_folder_moderator_rights: Ο χρήστης αποκτά δικαιώματα συντονιστή φακέλου
@@ -121,6 +128,7 @@ el-GR:
         user_registers_for_the_first_time: Ο χρήστης εγγράφεται για πρώτη φορά
         user_replies_to_comment: Ο χρήστης απαντά στο σχόλιο
         user_replies_to_internal_comment: Ο χρήστης απαντά στο εσωτερικό σχόλιο
+        user_requests_password_reset: Ο χρήστης ζητά επαναφορά κωδικού πρόσβασης
         voting_1_day_after_last_votes: 1 ημέρα μετά την τελευταία ψηφοφορία του χρήστη
         voting_2_days_before_phase_closes: 2 ημέρες πριν από τη λήξη της φάσης ψηφοφορίας
         voting_basket_submitted: Υποβάλλονται οι ψήφοι
@@ -160,6 +168,7 @@ el-GR:
       comment_on_your_comment: Μια απάντηση στο σχόλιό μου
       community_monitor_report: Έκθεση κοινοτικού παρατηρητή
       cosponsor_of_your_idea: Ένας χρήστης αποδέχεται την πρόσκληση να συνυπογράψει την πρότασή μου
+      email_confirmation: Κωδικός επιβεβαίωσης email
       event_registration_confirmation: Επιβεβαίωση προσθήκης στη λίστα εκδηλώσεων
       idea_marked_as_spam: Αναφορά spam ιδεών
       idea_published: Δημοσίευση της ιδέας μου
@@ -178,6 +187,7 @@ el-GR:
       moderator_digest: Εβδομαδιαία επισκόπηση για τους διαχειριστές έργων
       native_survey_not_submitted: Η έρευνα δεν υποβλήθηκε
       new_comment_for_admin: Νέο σχόλιο σε ένα έργο που συντονίζω
+      new_email_confirmation: Νέος κωδικός επιβεβαίωσης email
       new_idea_for_admin_prescreening: Νέες εισροές που απαιτούν έγκριση σε ένα έργο που μετριάζω
       new_idea_for_admin_published: Νέα δημοσιευμένη συνεισφορά σε ένα έργο που συντονίζω
       official_feedback_on_idea_you_follow: Ενημέρωση για μια ιδέα που ακολουθείτε
@@ -196,6 +206,7 @@ el-GR:
       status_change_on_idea_you_follow: Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
       survey_submitted: Υποβληθείσα έρευνα
       threshold_reached_for_admin: Η πρόταση έφθασε το κατώτατο όριο ψήφου
+      user_blocked: Ο λογαριασμός αποκλείστηκε
       user_digest: Εβδομαδιαία επισκόπηση
       voting_basket_not_submitted: Ψήφοι που δεν υποβλήθηκαν
       voting_basket_submitted: Επιβεβαίωση της ψηφοφορίας
@@ -271,6 +282,15 @@ el-GR:
       preheader: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συν-υποστηρίξει την πρότασή σας'
       subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συν-υποστηρίξει την πρότασή σας'
       title: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
+    email_confirmation:
+      best_regards: Με εκτίμηση,
+      event_description: 'Σας ευχαριστούμε για τη συμμετοχή σας. Παρακαλούμε εισαγάγετε αυτόν τον κωδικό επιβεβαίωσης στο παράθυρο στην πλατφόρμα συμμετοχής του/της %{organizationName}:'
+      expire_code: Αυτός ο κωδικός θα λήξει σε
+      hours_24: 24 ώρες.
+      ignore_email: Εάν δεν ζητήσατε κωδικό, μπορείτε να αγνοήσετε με ασφάλεια αυτό το email.
+      preheader: Επιβεβαιώστε τη διεύθυνση email σας για το %{organizationName}
+      subject: Επιβεβαιώστε τη διεύθυνση email σας για την πλατφόρμα συμμετοχής του/της %{organizationName}
+      title: Επιβεβαιώστε τη διεύθυνση email σας
     event_registration_confirmation:
       cta_add_to_calendar: Προσθέστε στο ημερολόγιό σας
       cta_button: Δείτε την εκδήλωση
@@ -482,6 +502,15 @@ el-GR:
       title: '%{firstName}, ένα νέο σχόλιο έχει αναρτηθεί στην πλατφόρμα σας'
       today: Σήμερα
       yesterday: Χθες
+    new_email_confirmation:
+      best_regards: Με εκτίμηση,
+      event_description: 'Παρακαλούμε εισαγάγετε αυτόν τον κωδικό επιβεβαίωσης στο παράθυρο της πλατφόρμας συμμετοχής του %{organizationName} για να επιβεβαιώσετε τη νέα σας διεύθυνση email:'
+      expire_code: Αυτός ο κωδικός θα λήξει σε
+      hours_24: 24 ώρες.
+      ignore_email: Εάν δεν ζητήσατε κωδικό, μπορείτε να αγνοήσετε με ασφάλεια αυτό το email.
+      preheader: Επιβεβαιώστε τη νέα σας διεύθυνση email για το %{organizationName}
+      subject: Επιβεβαιώστε τη νέα σας διεύθυνση email για την πλατφόρμα συμμετοχής του/της %{organizationName}
+      title: Επιβεβαιώστε τη νέα σας διεύθυνση email
     new_idea_for_admin_prescreening:
       cta_button: Επανεξέταση της εισόδου
       days_ago: '%{numberOfDays} ημέρες πριν'
@@ -507,6 +536,12 @@ el-GR:
       preheader: Υπάρχει μια ενημέρωση σε μια εγγραφή που ακολουθείτε
       subject: Μία νέα επίσημη ενημέρωση δημοσιεύτηκε στο "%{input_title}"
       title: Υπάρχει μια ενημέρωση για το "%{input_title}"
+    password_reset:
+      cta_button: Επαναφορά του κωδικού πρόσβασής σας
+      event_description: Ζητήσατε επαναφορά κωδικού πρόσβασης για την πλατφόρμα συμμετοχής του %{organizationName}. Κάντε κλικ στο παρακάτω κουμπί για να επιλέξετε έναν νέο, ασφαλή κωδικό πρόσβασης. Ο σύνδεσμος λήγει σε 1 ώρα.
+      preheader: Επαναφορά του κωδικού πρόσβασής σας για το %{organizationName}
+      subject: '%{organizationName}: Επαναφορά του κωδικού πρόσβασής σας'
+      title: Επιλέξτε έναν νέο κωδικό πρόσβασης
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -652,6 +687,14 @@ el-GR:
       preheader: Φροντίστε να κάνετε τα επόμενα βήματα
       subject: Μια πρωτοβουλία έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας
       title: Μια πρόταση έφθασε το κατώφλι της ψηφοφορίας!
+    user_blocked:
+      for_more_information: Για περισσότερες πληροφορίες σχετικά με αυτό, μπορείτε να συμβουλευτείτε τη σελίδα %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Ο λογαριασμός σας στην πλατφόρμα συμμετοχής του/της %{organizationName} έχει απενεργοποιηθεί προσωρινά για τον εξής λόγο:'
+      paragraph_1_without_reason: Ο λογαριασμός σας στην πλατφόρμα συμμετοχής του/της %{organizationName} έχει απενεργοποιηθεί προσωρινά λόγω παραβίασης των οδηγιών της κοινότητας.
+      preheader: Ο λογαριασμός σας στην πλατφόρμα συμμετοχής του/της %{organizationName} έχει απενεργοποιηθεί προσωρινά
+      subject: Ο λογαριασμός σας έχει απενεργοποιηθεί προσωρινά
+      title: Ο λογαριασμός σας έχει απενεργοποιηθεί προσωρινά
+      you_can_sign_in_again_from: Μπορείτε να συνδεθείτε ξανά από τις %{date}
     user_digest:
       commented: '%{authorFirstName} σχολίασε:'
       cta_button: Μεταβείτε στην πλατφόρμα
