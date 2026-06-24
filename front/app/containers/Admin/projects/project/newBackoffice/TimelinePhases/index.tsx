@@ -185,15 +185,16 @@ const TimelinePhases = ({ projectId }: Props) => {
         })}
       </Box>
 
-      <ButtonWithLink
-        linkTo={`/admin/projects/${projectId}/phases/new`}
-        buttonStyle="secondary-outlined"
-        icon="plus"
-        width="100%"
-        mt="4px"
-      >
-        {formatMessage(messages.newPhase)}
-      </ButtonWithLink>
+      <Box display="flex" mt="4px">
+        <ButtonWithLink
+          linkTo={`/admin/projects/${projectId}/phases/new`}
+          buttonStyle="primary-inverse"
+          icon="plus"
+          py="4px"
+        >
+          {formatMessage(messages.newPhase)}
+        </ButtonWithLink>
+      </Box>
     </Box>
   );
 };
