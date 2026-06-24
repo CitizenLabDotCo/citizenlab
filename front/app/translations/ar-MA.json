@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "غير كلمة المرور الخاصة بك",
   "app.containers.ChangePassword.newPasswordLabel": "كلمة المرور الجديدة",
   "app.containers.ChangePassword.newPasswordRequired": "أدخل كلمة المرور الجديدة",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "أدخل كلمة مرور تتكون من {minimumPasswordLength} حرفًا على الأقل",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "لقد تم تحديث كلمة السر الخاصة بك بنجاح",
   "app.containers.ChangePassword.passwordEmptyError": "ادخل رقمك السري",
   "app.containers.ChangePassword.passwordsDontMatch": "تأكيد كلمة المرور الجديدة",

@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Modifier votre mot de passe",
   "app.containers.ChangePassword.newPasswordLabel": "Nouveau mot de passe",
   "app.containers.ChangePassword.newPasswordRequired": "Entrez votre nouveau mot de passe",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Fournir un mot de passe d'au moins {minimumPasswordLength} caractères.",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Votre mot de passe a été mis à jour avec succès",
   "app.containers.ChangePassword.passwordEmptyError": "Entrez votre mot de passe",
   "app.containers.ChangePassword.passwordsDontMatch": "Confirmer le nouveau mot de passe",

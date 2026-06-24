@@ -1324,7 +1324,6 @@
   "app.containers.ChangePassword.helmetTitle": "Wijzig uw wachtwoord",
   "app.containers.ChangePassword.newPasswordLabel": "Nieuw wachtwoord",
   "app.containers.ChangePassword.newPasswordRequired": "Voer je nieuw wachtwoord in",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Uw wachtwoord moet ten minste {minimumPasswordLength} tekens lang zijn",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Je wachtwoord is succesvol bijgewerkt",
   "app.containers.ChangePassword.passwordEmptyError": "Voer je wachtwoord in",
   "app.containers.ChangePassword.passwordsDontMatch": "Nieuw wachtwoord bevestigen",
