@@ -157,6 +157,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :submission_enabled,
       :commenting_enabled,
       :autoshare_results_enabled,
+      :allow_multiple_responses,
       :reacting_enabled,
       :reacting_like_method,
       :reacting_like_limited_max,

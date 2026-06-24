@@ -205,6 +205,7 @@ class Phase < ApplicationRecord
   with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+    validates :allow_multiple_responses, inclusion: { in: [true, false] }
   end
 
   validate :validate_no_inputs_on_participation_method_change, on: :update
