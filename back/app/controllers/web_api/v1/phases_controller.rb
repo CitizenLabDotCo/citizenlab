@@ -15,11 +15,16 @@ class WebApi::V1::PhasesController < ApplicationController
     @phases = paginate @phases
     @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions manual_voters_last_updated_by])
+    render json: linked_json(
+      @phases,
+      WebApi::V1::PhaseSerializer,
+      params: action_descriptor_serializer_params,
+      include: %i[permissions manual_voters_last_updated_by]
+    )
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions]).serializable_hash
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: action_descriptor_serializer_params, include: %i[permissions]).serializable_hash
   end
 
   def show_mini
@@ -138,6 +143,14 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   private
+
+  def action_descriptor_serializer_params
+    jsonapi_serializer_params(
+      action_descriptors: true,
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      request: request
+    )
+  end
 
   def sidefx
     @sidefx ||= SideFxPhaseService.new
