@@ -3,11 +3,7 @@ import { string, object, boolean } from 'yup';
 
 import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
-import {
-  passwordMeetsStrength,
-  passwordUserInputs,
-} from 'components/UI/PasswordInput';
-import passwordInputMessages from 'components/UI/PasswordInput/messages';
+import { getPasswordSchema } from 'components/UI/PasswordInput/passwordSchema';
 
 import { isValidEmail } from 'utils/validate';
 
@@ -39,43 +35,16 @@ export const getEmailSchema = (formatMessage: FormatMessage) =>
     .email(formatMessage(sharedMessages.emailFormatError))
     .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
 
-export const getPasswordSchema = (
-  minimumPasswordLength: number,
-  formatMessage: FormatMessage,
-  minimumStrength?: number,
-  // Extra user_inputs not in this form (e.g. an already-known email), merged
-  // with the in-form fields so the strength check penalises them like the backend.
-  extraUserInputs: string[] = []
-) =>
-  string()
-    .required(formatMessage(sharedMessages.noPasswordError))
-    .min(
-      minimumPasswordLength,
-      formatMessage(passwordInputMessages.minimumPasswordLengthError, {
-        minimumPasswordLength,
-      })
-    )
-    .test(
-      'password-strength',
-      formatMessage(passwordInputMessages.passwordStrengthError),
-      (value, context) =>
-        passwordMeetsStrength(value, minimumStrength, [
-          ...passwordUserInputs(context.parent),
-          ...extraUserInputs,
-        ])
-    );
-
 export const getSchema = (
   minimumPasswordLength: number,
   formatMessage: FormatMessage,
   minimumStrength?: number
 ) => {
   const emailSchema = getEmailSchema(formatMessage);
-  const passwordSchema = getPasswordSchema(
+  const passwordSchema = getPasswordSchema(formatMessage, {
     minimumPasswordLength,
-    formatMessage,
-    minimumStrength
-  );
+    minimumStrength,
+  });
 
   const schema = object({
     first_name: string().required(

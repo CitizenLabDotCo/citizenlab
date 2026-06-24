@@ -22,11 +22,8 @@ import {
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
-import {
-  passwordMeetsStrength,
-  passwordUserInputs,
-} from 'components/UI/PasswordInput';
-import passwordInputMessages from 'components/UI/PasswordInput/messages';
+import { passwordUserInputs } from 'components/UI/PasswordInput';
+import { getPasswordSchema } from 'components/UI/PasswordInput/passwordSchema';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -68,19 +65,12 @@ const ChangePassword = () => {
     last_name: authUser?.data.attributes.last_name,
   });
 
-  const passwordSchema = string()
-    .required(formatMessage(messages.newPasswordRequired))
-    .min(
-      minimumPasswordLength,
-      formatMessage(messages.minimumPasswordLengthError, {
-        minimumPasswordLength,
-      })
-    )
-    .test(
-      'password-strength',
-      formatMessage(passwordInputMessages.passwordStrengthError),
-      (value) => passwordMeetsStrength(value, minimumStrength, userInputs)
-    );
+  const passwordSchema = getPasswordSchema(formatMessage, {
+    minimumPasswordLength,
+    minimumStrength,
+    staticUserInputs: userInputs,
+    requiredMessage: messages.newPasswordRequired,
+  });
 
   const schemaPreviousPasswordExists = object({
     current_password: string().required(
