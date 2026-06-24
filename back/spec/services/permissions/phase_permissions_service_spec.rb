@@ -152,7 +152,7 @@ describe Permissions::PhasePermissionsService do
     it 'returns a descriptor with :enabled and :disabled_reason for every supported action' do
       expect(descriptors.keys).to match_array(%i[
         posting_idea commenting_idea reacting_idea comment_reacting_idea annotating_document
-        taking_survey taking_poll voting attending_event volunteering
+        taking_survey taking_poll voting volunteering
       ])
       descriptors.each_value { |descriptor| expect(descriptor).to include(:enabled, :disabled_reason) }
     end
