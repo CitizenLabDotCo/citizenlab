@@ -166,10 +166,12 @@ module DecidimImporter
         'start_at' => start_at.iso8601,
         'end_at' => end_at&.iso8601
       }
-      # Native-survey phases require these two multilocs (Phase validates their presence).
+      # Native-survey phases require these two multilocs (Phase validates their presence). The button
+      # gets the same default the admin UI applies to a new native-survey phase, rather than a
+      # hardcoded string (see {#native_survey_button_multiloc}).
       if method == 'native_survey'
         attributes['native_survey_title_multiloc'] = title
-        attributes['native_survey_button_multiloc'] = title.keys.index_with { 'Submit' }
+        attributes['native_survey_button_multiloc'] = native_survey_button_multiloc(title.keys)
       end
 
       record = Record.new('phase', attributes)
@@ -180,6 +182,16 @@ module DecidimImporter
     def participation_title(component, method)
       title = multiloc(component[:name])
       title.empty? ? { primary_locale => DEFAULT_TITLES.fetch(method, 'Participation') } : title
+    end
+
+    # The native-survey CTA in each of the phase's locales — the same "Take the survey" default the
+    # admin UI fills in for a new native-survey phase (FE `defaultSurveyCTALabel` resolves to the BE
+    # `phases.native_survey_button` key), translated per locale instead of a hardcoded English string.
+    # `raise_on_missing: false` so an unexpected locale degrades gracefully rather than aborting.
+    def native_survey_button_multiloc(locales)
+      MultilocService.new.i18n_to_multiloc(
+        'phases.native_survey_button', locales: locales, raise_on_missing: false
+      )
     end
 
     # — small parsing helpers (kept local so the projector doesn't depend on BaseExtractor) —

@@ -91,6 +91,7 @@ RSpec.describe DecidimImporter::PhaseProjector do
     phase = ref_map.fetch('c1').attributes
     expect(phase['participation_method']).to eq('native_survey')
     expect(phase['native_survey_title_multiloc']).to eq('fr-FR' => 'Questionnaire')
-    expect(phase['native_survey_button_multiloc']).to eq('fr-FR' => 'Submit')
+    # The CTA matches the admin UI's default for a new native-survey phase, translated for the locale.
+    expect(phase['native_survey_button_multiloc']).to eq('fr-FR' => "Répondre à l'enquête")
   end
 end
