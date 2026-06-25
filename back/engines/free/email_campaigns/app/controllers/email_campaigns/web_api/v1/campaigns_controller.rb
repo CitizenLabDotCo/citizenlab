@@ -138,7 +138,7 @@ module EmailCampaigns
         .order(:created_at)
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
-      serializer = @campaign.channel == :sms ? ::WebApi::V1::Sms::DeliverySerializer : WebApi::V1::DeliverySerializer
+      serializer = @campaign.channel == :sms ? WebApi::V1::Sms::DeliverySerializer : WebApi::V1::DeliverySerializer
       render json: linked_json(
         @deliveries,
         serializer,
