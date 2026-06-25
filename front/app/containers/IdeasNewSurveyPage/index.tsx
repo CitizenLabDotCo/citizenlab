@@ -80,20 +80,14 @@ const IdeasNewSurveyPage = () => {
       authUser: authUser?.data,
     });
 
-  // Hard to understand why this is needed without context.
-  // The phase id checks are also unclear.
-  // Please replace this text and add a comment if you know.
+  // Block non-managers from taking a survey for a phase that isn't the current
+  // one (e.g. a stale link to a past/future phase). We compare against the
+  // resolved `phaseId`, which falls back to the current phase when no `phase_id`
+  // is in the URL — so a dropped `phase_id` (e.g. lost across an SSO round trip)
+  // on a still-current phase resolves to the current phase and is NOT blocked,
+  // matching what the form-rendering path below does.
   const userCannotViewSurvey =
-    !canModerateProject(project.data, authUser) &&
-    /* Something I could deduct: when this code was added, we made the (wrong)
-    assumption that `phase_id` was always a string (we were type casting the phase_id param).
-    So I _think_ we are checking here whether phase_id from the search params is differnet from
-    currentPhase?.id when both are strings.
-
-    I've added back undefined as a fallback, so the check remains the same as when we were using parse
-    to get the phase_id from the search params.
-    */
-    (phaseIdFromSearchParams || undefined) !== currentPhase?.id;
+    !canModerateProject(project.data, authUser) && phaseId !== currentPhase?.id;
 
   if (disabledReason === 'posting_limited_max_reached' || hadIdeaIdOnMount) {
     return <SurveySubmittedNotice project={project.data} />;

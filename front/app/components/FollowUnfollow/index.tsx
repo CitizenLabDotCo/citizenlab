@@ -32,11 +32,6 @@ import tracks from './tracks';
 const UnsubscribeLink = styled.a`
   color: ${colors.white};
   text-decoration: underline;
-
-  &:focus-visible {
-    outline: 2px solid ${colors.white};
-    outline-offset: 2px;
-  }
 `;
 
 interface Props extends BoxWidthProps, BoxPaddingProps {
