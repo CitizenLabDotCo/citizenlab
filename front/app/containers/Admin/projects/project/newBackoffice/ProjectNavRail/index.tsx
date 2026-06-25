@@ -16,55 +16,49 @@ interface Props {
 }
 
 const ProjectNavRail = ({ projectId }: Props) => {
-  const base = `/admin/projects/${projectId}`;
-
   const projectPageItem: NavItem = {
     name: 'project-page',
     label: messages.projectPageNav,
-    url: `${base}/project-page`,
-    match: `${base}/project-page`,
+    to: '/admin/projects/$projectId/project-page',
   };
 
   const utilityItems: NavItem[] = [
     {
       name: 'audience',
       label: projectMessages.audienceTab,
-      url: `${base}/audience`,
-      match: `${base}/audience`,
+      to: '/admin/projects/$projectId/audience',
     },
     {
       name: 'messaging',
       label: projectMessages.messagingTab,
-      url: `${base}/messaging`,
-      match: `${base}/messaging`,
+      to: '/admin/projects/$projectId/messaging',
     },
     {
       name: 'events',
       label: projectMessages.eventsTab,
-      url: `${base}/events`,
-      match: `${base}/events`,
+      to: '/admin/projects/$projectId/events',
     },
     {
       name: 'input-360',
       label: projectMessages.filesTab,
-      url: `${base}/files`,
-      match: `${base}/files`,
+      to: '/admin/projects/$projectId/files',
       badge: <NewLabel />,
     },
     {
       name: 'settings',
       label: messages.settingsNav,
-      url: `${base}/general`,
-      match: `${base}/general`,
+      to: '/admin/projects/$projectId/general',
     },
   ];
 
   // The project-page group follows the active route: it stays open on the
   // project page and any of its sub-tabs, and collapses on phase/other routes.
   const { pathname } = useLocation();
+  const isOnRoute = (to: NavItem['to']) =>
+    pathname.includes(to.replace('$projectId', projectId));
   const onPageGroupRoute =
-    pathname.includes(projectPageItem.match) ||
-    utilityItems.some((item) => pathname.includes(item.match));
+    isOnRoute(projectPageItem.to) ||
+    utilityItems.some((item) => isOnRoute(item.to));
 
   const [pageGroupExpanded, setPageGroupExpanded] = useState(onPageGroupRoute);
 
@@ -83,6 +77,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
     >
       <NavItemRow
         item={projectPageItem}
+        projectId={projectId}
         trailing={
           <Box
             as="button"
@@ -107,7 +102,9 @@ const ProjectNavRail = ({ projectId }: Props) => {
       />
 
       {pageGroupExpanded &&
-        utilityItems.map((item) => <NavItemRow key={item.name} item={item} />)}
+        utilityItems.map((item) => (
+          <NavItemRow key={item.name} item={item} projectId={projectId} />
+        ))}
     </Box>
   );
 };
