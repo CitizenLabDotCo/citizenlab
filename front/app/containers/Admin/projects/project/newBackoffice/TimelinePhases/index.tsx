@@ -21,7 +21,29 @@ import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
-import type { LinkProps } from '@tanstack/react-router';
+// Each phase landing tab maps to a registered phase route literal, so the
+// Link `to` below is compile-checked against the route tree instead of being
+// an interpolated string cast with `as LinkProps['to']`.
+type PhaseLandingTab = ReturnType<typeof getPhaseLandingTab>;
+
+type PhaseTabTarget =
+  | '/admin/projects/$projectId/phases/$phaseId/setup'
+  | '/admin/projects/$projectId/phases/$phaseId/ideas'
+  | '/admin/projects/$projectId/phases/$phaseId/proposals'
+  | '/admin/projects/$projectId/phases/$phaseId/insights'
+  | '/admin/projects/$projectId/phases/$phaseId/polls'
+  | '/admin/projects/$projectId/phases/$phaseId/survey-results'
+  | '/admin/projects/$projectId/phases/$phaseId/volunteering';
+
+const PHASE_TAB_ROUTES: Record<PhaseLandingTab, PhaseTabTarget> = {
+  setup: '/admin/projects/$projectId/phases/$phaseId/setup',
+  ideas: '/admin/projects/$projectId/phases/$phaseId/ideas',
+  proposals: '/admin/projects/$projectId/phases/$phaseId/proposals',
+  insights: '/admin/projects/$projectId/phases/$phaseId/insights',
+  polls: '/admin/projects/$projectId/phases/$phaseId/polls',
+  'survey-results': '/admin/projects/$projectId/phases/$phaseId/survey-results',
+  volunteering: '/admin/projects/$projectId/phases/$phaseId/volunteering',
+};
 
 const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: methodMessages.ideation,
@@ -134,11 +156,8 @@ const TimelinePhases = ({ projectId }: Props) => {
           return (
             <Link
               key={phase.id}
-              to={
-                `/admin/projects/${projectId}/phases/${
-                  phase.id
-                }/${getPhaseLandingTab(phase)}` as LinkProps['to']
-              }
+              to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
+              params={{ projectId, phaseId: phase.id }}
             >
               <Row selected={isSelected}>
                 <Box display="flex" flexDirection="column" alignItems="center">
