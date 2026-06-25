@@ -63,7 +63,9 @@ const CtaWrapper = styled(Box)`
 const ProjectPage = () => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/project-page',
+  });
   const { data: project } = useProjectById(projectId);
 
   if (!project) {
