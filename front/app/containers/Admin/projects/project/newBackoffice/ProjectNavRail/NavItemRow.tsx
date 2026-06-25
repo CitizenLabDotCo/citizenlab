@@ -6,13 +6,18 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useLocation } from 'utils/router';
 
-import type { LinkProps } from '@tanstack/react-router';
+export type ProjectNavTarget =
+  | '/admin/projects/$projectId/project-page'
+  | '/admin/projects/$projectId/audience'
+  | '/admin/projects/$projectId/messaging'
+  | '/admin/projects/$projectId/events'
+  | '/admin/projects/$projectId/files'
+  | '/admin/projects/$projectId/general';
 
 export interface NavItem {
   name: string;
   label: MessageDescriptor;
-  url: string;
-  match: string;
+  to: ProjectNavTarget;
   badge?: React.ReactNode;
 }
 
@@ -40,19 +45,22 @@ const RowLink = typedStyled(Link)`
 
 const NavItemRow = ({
   item,
+  projectId,
   trailing,
 }: {
   item: NavItem;
+  projectId: string;
   trailing?: React.ReactNode;
 }) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const active = pathname.includes(item.match);
+  const active = pathname.includes(item.to.replace('$projectId', projectId));
 
   return (
     <Box display="flex" alignItems="center" gap="6px">
       <RowLink
-        to={item.url as LinkProps['to']}
+        to={item.to}
+        params={{ projectId }}
         className={active ? 'active' : undefined}
       >
         <Box flexGrow={1} minWidth="0">
