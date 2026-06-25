@@ -228,6 +228,9 @@ class Phase < ApplicationRecord
   scope :on_timeline, -> { where(placement_type: 'on_timeline') }
   scope :standalone, -> { where(placement_type: 'standalone') }
 
+  # Timeline phases first, then chronological; created_at/id break start_at ties.
+  scope :ordered, -> { order(:placement_type, :start_at, :created_at, :id) }
+
   def ends_before?(time)
     end_at.present? && end_at <= time
   end

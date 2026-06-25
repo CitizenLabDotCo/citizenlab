@@ -395,6 +395,26 @@ RSpec.describe Phase do
     end
   end
 
+  describe '.ordered' do
+    it 'orders by placement (timeline first), then start_at, then created_at' do
+      project = create(:project)
+      shared_start = 1.day.ago
+      timeline = create(:phase, project:, start_at: 20.days.from_now, end_at: 30.days.from_now)
+      later_standalone = create(:phase, :standalone, project:, start_at: 5.days.from_now, end_at: 10.days.from_now)
+      # Same start_at: created_at breaks the tie (set opposite to creation order to
+      # prove created_at decides it, not insertion/id order).
+      newer_standalone = create(:phase, :standalone, project:, start_at: shared_start, end_at: 2.days.from_now, created_at: 1.hour.ago)
+      older_standalone = create(:phase, :standalone, project:, start_at: shared_start, end_at: 2.days.from_now, created_at: 3.hours.ago)
+
+      expect(described_class.where(project: project).ordered).to eq [
+        timeline,         # on_timeline before standalone, despite the latest start_at
+        older_standalone, # then by start_at; for equal start_at, by created_at
+        newer_standalone,
+        later_standalone
+      ]
+    end
+  end
+
   describe '.current' do
     let(:timeline_service) { TimelineService.new }
 
