@@ -56,6 +56,12 @@ const FolderFullscreenPreview = React.lazy(
       'containers/DescriptionBuilder/FolderDescriptionBuilder/FolderFullScreenPreview'
     )
 );
+const ProjectPageBuilderComponent = React.lazy(
+  () => import('containers/ProjectPageBuilder')
+);
+const ProjectPageFullscreenPreview = React.lazy(
+  () => import('containers/ProjectPageBuilder/ProjectPageFullScreenPreview')
+);
 
 const ProjectImporter = React.lazy(
   () => import('containers/Admin/ProjectImporter')
@@ -227,6 +233,23 @@ const folderPreviewRoute = createRoute({
   component: () => <FolderFullscreenPreview />,
 });
 
+// Project page builder routes (successor to the description builder)
+const projectPageBuilderRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'project-page-builder/projects/$projectId',
+  component: () => <ProjectPageBuilderComponent />,
+});
+
+const projectPageBuilderPreviewRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'project-page-builder/projects/$projectId/preview',
+  validateSearch: (search: Record<string, unknown>) =>
+    descriptionBuilderPreviewSearchSchema.validateSync(search, {
+      stripUnknown: true,
+    }),
+  component: () => <ProjectPageFullscreenPreview />,
+});
+
 // Project importer search schema
 const projectImporterSearchSchema = yup.object({
   id: yup.string().optional(),
@@ -274,6 +297,8 @@ export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
     projectPreviewRoute,
     folderDescriptionRoute,
     folderPreviewRoute,
+    projectPageBuilderRoute,
+    projectPageBuilderPreviewRoute,
     projectImporterRoute,
   ]);
 };
