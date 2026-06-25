@@ -93,6 +93,7 @@ const dotBorder = (status: PhaseStatus) =>
   status === 'future' ? `2px solid ${colors.coolGrey300}` : undefined;
 
 const Row = styled.div<{ selected: boolean }>`
+  position: relative;
   display: flex;
   gap: 10px;
   padding: 8px;
@@ -106,6 +107,19 @@ const Row = styled.div<{ selected: boolean }>`
     background: ${({ selected }) =>
       selected ? colors.grey200 : colors.grey100};
   }
+`;
+
+const DOT_CENTER = 16;
+
+const Connector = styled.div<{ isFirst: boolean; isLast: boolean }>`
+  position: absolute;
+  left: 13px; /* 8px row padding + 5px (half the 10px dot) */
+  width: 2px;
+  margin-left: -1px;
+  top: ${({ isFirst }) => (isFirst ? `${DOT_CENTER}px` : '0')};
+  bottom: ${({ isLast }) => (isLast ? 'auto' : '0')};
+  height: ${({ isLast }) => (isLast ? `${DOT_CENTER}px` : 'auto')};
+  background: ${colors.coolGrey300};
 `;
 
 interface Props {
@@ -131,8 +145,8 @@ const TimelinePhases = ({ projectId }: Props) => {
     <Box p="12px" borderTop={`1px solid ${colors.grey200}`}>
       <Text
         m="0 0 8px 0"
-        px="2px"
-        fontSize="m"
+        px="10px"
+        fontSize="s"
         fontWeight="bold"
         color="textPrimary"
       >
@@ -160,25 +174,20 @@ const TimelinePhases = ({ projectId }: Props) => {
               params={{ projectId, phaseId: phase.id }}
             >
               <Row selected={isSelected}>
-                <Box display="flex" flexDirection="column" alignItems="center">
+                {sortedPhases.length > 1 && (
+                  <Connector isFirst={index === 0} isLast={isLast} />
+                )}
+                <Box w="10px" flex="0 0 auto">
                   <Box
+                    position="relative"
+                    zIndex="1"
                     w="10px"
                     h="10px"
                     borderRadius="50%"
-                    flex="0 0 auto"
                     mt="3px"
                     background={dotBackground(status)}
                     border={dotBorder(status)}
                   />
-                  {!isLast && (
-                    <Box
-                      w="2px"
-                      flex="1 1 auto"
-                      minHeight="8px"
-                      background={colors.grey300}
-                      my="4px"
-                    />
-                  )}
                 </Box>
                 <Box flexGrow={1} pb="4px">
                   <Text
@@ -207,9 +216,10 @@ const TimelinePhases = ({ projectId }: Props) => {
       <Box display="flex" mt="4px">
         <ButtonWithLink
           linkTo={`/admin/projects/${projectId}/phases/new`}
-          buttonStyle="primary-inverse"
+          buttonStyle="text"
+          size="s"
           icon="plus"
-          py="4px"
+          width="auto"
         >
           {formatMessage(messages.newPhase)}
         </ButtonWithLink>
