@@ -1,35 +1,49 @@
 import moment = require('moment');
 import { randomString } from '../../support/commands';
 
-// Regression test for the smart-group "Follow → one of the inputs" rule.
-// The value selector used to fetch its candidate inputs with `transitive=true`,
-// which restricts the result to ideas with no creation phase and therefore
-// excludes proposals (proposals live in a proposals phase). We assert on the
-// real /ideas request the selector fires, because the rendered option list is
-// non-deterministic: the selector fetches tenant-wide inputs with `sort: random`
-// and a 26-item page cap, so a "does the proposal appear in the dropdown" check
-// would be flaky. The request no longer carrying `transitive=true` is the precise
-// guard against re-introducing the bug.
+// Regression + behaviour test for the smart-group "Follow → one of the inputs"
+// rule's value selector. The selector lists followable inputs by fetching
+// `/ideas` (via `useIdeas`). The fix here removed `transitive=true`, which had
+// excluded proposals (proposals live in a proposals phase, so they have a
+// non-nil creation_phase). This test guards that proposals AND regular ideas are
+// offered, while native-survey responses are not.
+//
+// `/ideas` (IdeasFinder) always applies `.publicly_visible`, which keeps
+// participation methods that support public visibility (ideation, proposals) and
+// drops the ones that don't (native survey). So a survey response is never
+// returned, regardless of the selector's random 26-item page.
 describe('Smart group Follow rule "one of the inputs" selector', () => {
-  const projectTitle = randomString();
   const proposalTitle = randomString(40);
+  const regularIdeaTitle = randomString(40);
+  const surveyResponseTitle = randomString(40);
 
+  const nineMonthsAgo = moment().subtract(9, 'month').format('DD/MM/YYYY');
   const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
 
-  let projectId: string;
+  // Separate projects keep each phase on its own timeline (phases within one
+  // project cannot overlap).
+  let proposalsProjectId: string;
+  let ideationProjectId: string;
+  let surveyProjectId: string;
+  let proposalId: string;
+  let regularIdeaId: string;
+  let surveyResponseId: string;
 
-  before(() => {
-    // A project with an active proposals phase + a published proposal in it.
+  const createProject = () =>
     cy.apiCreateProject({
-      title: projectTitle,
+      title: randomString(),
       descriptionPreview: randomString(),
       description: randomString(),
       publicationStatus: 'published',
-    }).then((project) => {
-      projectId = project.body.data.id;
+    });
+
+  before(() => {
+    // Proposals phase + a published proposal (non-nil creation_phase).
+    createProject().then((project) => {
+      proposalsProjectId = project.body.data.id;
       cy.apiCreatePhase({
-        projectId,
+        projectId: proposalsProjectId,
         title: randomString(),
         startAt: twoMonthsAgo,
         endAt: inTwoMonths,
@@ -38,24 +52,75 @@ describe('Smart group Follow rule "one of the inputs" selector', () => {
         canPost: true,
         canReact: true,
       }).then((phase) => {
-        const proposalPhaseId = phase.body.data.id;
         cy.apiCreateIdea({
-          projectId,
+          projectId: proposalsProjectId,
           ideaTitle: proposalTitle,
           ideaContent: randomString(60),
-          phaseIds: [proposalPhaseId],
+          phaseIds: [phase.body.data.id],
+        }).then((idea) => {
+          proposalId = idea.body.data.id;
+        });
+      });
+    });
+
+    // Ideation phase + a regular idea (nil creation_phase, publicly visible).
+    createProject().then((project) => {
+      ideationProjectId = project.body.data.id;
+      cy.apiCreatePhase({
+        projectId: ideationProjectId,
+        title: randomString(),
+        startAt: nineMonthsAgo,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+      }).then((phase) => {
+        cy.apiCreateIdea({
+          projectId: ideationProjectId,
+          ideaTitle: regularIdeaTitle,
+          ideaContent: randomString(60),
+          phaseIds: [phase.body.data.id],
+        }).then((idea) => {
+          regularIdeaId = idea.body.data.id;
+        });
+      });
+    });
+
+    // Native-survey phase + a survey response (creation_phase is a survey phase,
+    // so it is NOT publicly visible and must never be offered as an input).
+    createProject().then((project) => {
+      surveyProjectId = project.body.data.id;
+      cy.apiCreatePhase({
+        projectId: surveyProjectId,
+        title: randomString(),
+        startAt: twoMonthsAgo,
+        endAt: inTwoMonths,
+        participationMethod: 'native_survey',
+        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+        nativeSurveyTitleMultiloc: { en: 'Survey' },
+        canComment: true,
+        canPost: true,
+        canReact: true,
+      }).then((phase) => {
+        cy.apiCreateIdea({
+          projectId: surveyProjectId,
+          ideaTitle: surveyResponseTitle,
+          ideaContent: randomString(60),
+          phaseIds: [phase.body.data.id],
+        }).then((idea) => {
+          surveyResponseId = idea.body.data.id;
         });
       });
     });
   });
 
   after(() => {
-    if (projectId) {
-      cy.apiRemoveProject(projectId);
-    }
+    [proposalsProjectId, ideationProjectId, surveyProjectId].forEach((id) => {
+      if (id) cy.apiRemoveProject(id);
+    });
   });
 
-  it('fetches inputs without excluding proposals', () => {
+  it('offers ideas and proposals as inputs, but not survey responses', () => {
     cy.intercept('GET', '**/web_api/v1/ideas?*').as('ideaOptions');
 
     cy.setAdminLoginCookie();
@@ -74,10 +139,37 @@ describe('Smart group Follow rule "one of the inputs" selector', () => {
       .eq(1)
       .select('one of the inputs');
 
-    // The selector's request must not restrict inputs to non-proposal ideas.
     cy.wait('@ideaOptions').then((interception) => {
+      // The selector must not restrict inputs to non-proposal ideas.
       expect(interception.request.url).not.to.include('transitive');
       expect(interception.response?.statusCode).to.eq(200);
+
+      // Survey responses are never publicly visible, so are never offered —
+      // robust regardless of which random page the selector received.
+      const offeredIds = interception.response?.body.data.map(
+        (idea: { id: string }) => idea.id
+      );
+      expect(offeredIds).not.to.include(surveyResponseId);
+    });
+
+    // The selector's random 26-item page can't deterministically contain a
+    // specific input, so verify inclusion at the same `/ideas` source, scoped to
+    // our three projects: the regular idea and proposal are listed, the survey
+    // response is not.
+    cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      cy.request({
+        headers: { Authorization: `Bearer ${response.body.jwt}` },
+        url:
+          `web_api/v1/ideas?page[size]=100` +
+          `&projects[]=${ideationProjectId}` +
+          `&projects[]=${proposalsProjectId}` +
+          `&projects[]=${surveyProjectId}`,
+      }).then((resp) => {
+        const ids = resp.body.data.map((idea: { id: string }) => idea.id);
+        expect(ids).to.include(regularIdeaId);
+        expect(ids).to.include(proposalId);
+        expect(ids).not.to.include(surveyResponseId);
+      });
     });
   });
 });
