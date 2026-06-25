@@ -4,7 +4,11 @@ import { Button } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import {
+  getCurrentPhase,
+  getLastPhase,
+  getPhaseActionDescriptor,
+} from 'api/phases/utils';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -26,9 +30,6 @@ const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const { pathname } = useLocation();
-  const { enabled, disabled_reason } =
-    project.attributes.action_descriptors.annotating_document;
-  const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -37,6 +38,17 @@ const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
   if (!currentPhase || hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
+
+  const annotationDescriptor = getPhaseActionDescriptor(
+    currentPhase,
+    'annotating_document'
+  );
+  if (!annotationDescriptor) {
+    return null;
+  }
+
+  const { enabled, disabled_reason } = annotationDescriptor;
+  const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
   const handleClick = () => {
     const scrollParams = {

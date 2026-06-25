@@ -4,7 +4,11 @@ import { Button } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import {
+  getCurrentPhase,
+  getLastPhase,
+  getPhaseActionDescriptor,
+} from 'api/phases/utils';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -38,14 +42,20 @@ const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     }
   }, [divId]);
 
-  const { enabled, disabled_reason } =
-    project.attributes.action_descriptors.taking_survey;
-
-  const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
-
   if (!currentPhase || hasProjectEndedOrIsArchived(project, currentPhase)) {
     return null;
   }
+
+  const surveyDescriptor = getPhaseActionDescriptor(
+    currentPhase,
+    'taking_survey'
+  );
+  if (!surveyDescriptor) {
+    return null;
+  }
+
+  const { enabled, disabled_reason } = surveyDescriptor;
+  const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
   const handleTakeSurveyClick = () => {
     const scrollToParams = {
