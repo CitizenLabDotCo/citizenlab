@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Összes fájl",
   "app.containers.Admin.projects.project.survey.allResponses": "Összes válasz",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Pontosság: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Egy MI-összefoglaló automatikusan elkészül, amint több mint 10 válasz érkezik.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Hiba történt az MI-összefoglaló generálása közben. Kérjük, próbálja meg újra generálni alább.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Open AI elemzés",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Összegzések elrejtése ennél a kérdésnél",

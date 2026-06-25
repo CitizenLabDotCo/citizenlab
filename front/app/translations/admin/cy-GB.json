@@ -1732,6 +1732,7 @@
   "app.containers.Admin.projects.project.survey.allFiles": "Pob ffeil",
   "app.containers.Admin.projects.project.survey.allResponses": "Pob ymateb",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Cywirdeb: {accuracy}{percentage}",
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": "Bydd crynodeb AI yn cael ei gynhyrchu’n awtomatig unwaith y bydd mwy na 10 ymateb.",
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": "Bu gwall wrth gynhyrchu'r crynodeb AI. Ceisiwch ei adfywio isod.",
   "app.containers.Admin.projects.project.survey.analysis.createAIAnalysis": "Dadansoddiad AI agored",
   "app.containers.Admin.projects.project.survey.analysis.hideSummaries": "Cuddio crynodebau ar gyfer y cwestiwn hwn",
