@@ -720,6 +720,10 @@ jobs:
           # fresh prefix when a glyph changes) and removed from build/ before sync.
           name: Sync twemoji emoji assets to S3 (content-hashed, immutable)
           command: |
+            if [ -z "${TWEMOJI_BASE_URL:-}" ]; then
+              echo "TWEMOJI_BASE_URL is not set; refusing to sync twemoji to bucket root" >&2
+              exit 1
+            fi
             aws s3 sync app/public/twemoji/ "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}" --acl public-read --size-only --cache-control "public, max-age=31536000, immutable"
             rm -rf build/twemoji
       - run:
