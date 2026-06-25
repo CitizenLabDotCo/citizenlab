@@ -24,6 +24,8 @@ EmailCampaigns::Engine.routes.draw do
       resources :consents, only: %i[index update] do
         patch 'by_campaign_id/:campaign_id', action: 'update_by_campaign_id', on: :collection
       end
+
+      post 'sms/callbacks/twilio', to: 'sms/callbacks#twilio'
     end
   end
 

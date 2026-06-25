@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Sms::Delivery do
+RSpec.describe EmailCampaigns::Sms::Delivery do
   describe 'validations' do
     it 'requires phone_number, body, and a valid status' do
       delivery = described_class.new

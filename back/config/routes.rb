@@ -175,8 +175,6 @@ Rails.application.routes.draw do
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
-      post 'sms/callbacks/twilio', to: 'sms/callbacks#twilio'
-
       resources :global_topics do
         patch 'reorder', on: :member
 
