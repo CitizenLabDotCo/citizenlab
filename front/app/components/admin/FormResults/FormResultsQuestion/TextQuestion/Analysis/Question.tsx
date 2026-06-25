@@ -19,8 +19,6 @@ import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
 
-import { convertFilterValuesToString } from './utils';
-
 const Question = ({
   questionId,
   analysisId,
@@ -58,9 +56,10 @@ const Question = ({
 
   const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
 
-  const refreshDisabled =
-    missingInputsCount === 0 ||
-    (!largeSummariesAllowed && filteredInputCount > 30);
+  // The refresh button stays active even with 0 new responses, so admins can
+  // choose to re-trigger; only the hard capacity limit (too many inputs without
+  // large summaries) disables it.
+  const refreshDisabled = !largeSummariesAllowed && filteredInputCount > 30;
 
   if (!question || !answer) {
     return <Spinner />;
@@ -123,7 +122,7 @@ const Question = ({
             to="/admin/projects/$projectId/analysis/$analysisId"
             params={{ projectId, analysisId }}
             search={{
-              ...convertFilterValuesToString(filters),
+              ...filters,
               phase_id: phaseId,
             }}
           >

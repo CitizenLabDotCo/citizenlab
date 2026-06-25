@@ -404,6 +404,45 @@ describe Analysis::InputsFinder do
     end
   end
 
+  describe 'input_follow_up_not_empty' do
+    let_it_be(:custom_form) { create(:custom_form) }
+    let_it_be(:main_field) do
+      create(:custom_field_sentiment_linear_scale, resource: custom_form, ask_follow_up: true)
+    end
+    let_it_be(:follow_up_key) { "#{main_field.key}_follow_up" }
+    let_it_be(:analysis) do
+      create(:analysis, main_custom_field: main_field, additional_custom_fields: [])
+    end
+
+    let_it_be(:input_no_followup) do
+      create(:idea, project: analysis.source_project, custom_field_values: { main_field.key => 2 })
+    end
+
+    let_it_be(:input_with_followup) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        main_field.key => 1, follow_up_key => 'too cold'
+      })
+    end
+
+    let_it_be(:input_blank_followup) do
+      create(:idea, project: analysis.source_project, custom_field_values: {
+        main_field.key => 5, follow_up_key => "  \n"
+      })
+    end
+
+    it 'keeps only inputs with non-empty follow-up text' do
+      @params = { input_follow_up_not_empty: true }
+      expect(output).to contain_exactly(input_with_followup)
+    end
+
+    it 'is a no-op when the flag is not set' do
+      @params = {}
+      expect(output).to contain_exactly(
+        input_no_followup, input_with_followup, input_blank_followup
+      )
+    end
+  end
+
   describe 'input_custom_<uuid>from/to' do
     let_it_be(:analysis) { create(:analysis) }
     let_it_be(:custom_form) { create(:custom_form) }

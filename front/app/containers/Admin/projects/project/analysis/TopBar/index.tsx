@@ -8,7 +8,7 @@ import {
   Text,
   ClickOutside,
 } from '@citizenlab/cl2-component-library';
-import { get, set } from 'js-cookie';
+import Cookies from 'js-cookie';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -60,7 +60,7 @@ const TopBar = () => {
 
   useEffect(() => {
     if (cookieName) {
-      const cookieValue = get(cookieName);
+      const cookieValue = Cookies.get(cookieName);
       if (cookieValue !== 'true') {
         setShowLaunchModal(true);
       }
@@ -118,7 +118,7 @@ const TopBar = () => {
   const closeLaunchModal = () => {
     setShowLaunchModal(false);
     if (cookieName) {
-      set(cookieName, 'true');
+      Cookies.set(cookieName, 'true');
     }
   };
 

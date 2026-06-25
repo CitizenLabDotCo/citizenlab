@@ -48,7 +48,11 @@ ca-ES:
         new_attendee: Usuari recent registrat
         project_review_requester: Usuari que ha sol·licitat la revisió del projecte
         project_reviewers: Revisors de projectes i gestors de carpetes
+        user_changing_email: Usuari que està canviant la seva adreça de correu electrònic
+        user_confirming_email: Usuari que està confirmant la seva adreça de correu electrònic
+        user_requesting_password_reset: Usuari que ha sol·licitat un restabliment de la contrasenya
         user_who_commented: Usuari que ha comentat
+        user_who_is_blocked: Usuari el compte del qual està bloquejat
         user_who_is_invited_to_cosponsor_a_proposal: Usuari que està convidat a copatrocinar una proposta
         user_who_is_mentioned: Usuari que s'esmenta
         user_who_is_receiving_admin_rights: Usuari que està rebent drets d'administrador
@@ -105,9 +109,12 @@ ca-ES:
         registration_to_event: Inscripció a un esdeveniment
         survey_1_day_after_draft_saved: "1 dia després que l'usuari hagi desat l'enquesta per darrera vegada com a esborrany"
         user_accepts_invitation_to_cosponsor_a_proposal: L'usuari accepta la invitació per copatrocinar una proposta
+        user_changes_email: L'usuari canvia la seva adreça de correu electrònic
         user_comments: Comentaris dels usuaris
         user_comments_on_input: Comentaris dels usuaris sobre l'entrada
         user_comments_on_proposal: Comentaris dels usuaris sobre la proposta
+        user_confirms_email: L'usuari confirma la seva adreça de correu electrònic
+        user_is_blocked: El compte de l'usuari està bloquejat
         user_is_given_admin_rights: "L'usuari té drets d'administrador"
         user_is_given_folder_manager_rights: "S'atorguen drets de gestor de carpetes a l'usuari"
         user_is_given_folder_moderator_rights: L'usuari té drets de moderador de carpetes
@@ -121,6 +128,7 @@ ca-ES:
         user_registers_for_the_first_time: L'usuari es registra per primera vegada
         user_replies_to_comment: L'usuari respon al comentari
         user_replies_to_internal_comment: L'usuari respon al comentari intern
+        user_requests_password_reset: L'usuari sol·licita un restabliment de la contrasenya
         voting_1_day_after_last_votes: 1 dia després de la darrera votació de l'usuari
         voting_2_days_before_phase_closes: 2 dies abans del tancament de la fase de votació
         voting_basket_submitted: Es presenten els vots
@@ -160,6 +168,7 @@ ca-ES:
       comment_on_your_comment: Una resposta al meu comentari
       community_monitor_report: Informe del monitor comunitari
       cosponsor_of_your_idea: Un usuari accepta la meva invitació per copatrocinar la meva proposta
+      email_confirmation: Codi de confirmació del correu electrònic
       event_registration_confirmation: Confirmació de registre de l'esdeveniment
       idea_marked_as_spam: Informe de correu brossa d'idees
       idea_published: Publicació de la meva idea
@@ -178,6 +187,7 @@ ca-ES:
       moderator_digest: Visió general setmanal per a gestors de projectes
       native_survey_not_submitted: Enquesta no enviada
       new_comment_for_admin: Nou comentari en un projecte que modero
+      new_email_confirmation: Nou codi de confirmació del correu electrònic
       new_idea_for_admin_prescreening: Nova entrada que requereix aprovació en un projecte que modero
       new_idea_for_admin_published: Nova publicació d'aportacions en un projecte que modero
       official_feedback_on_idea_you_follow: Actualitzeu una idea que seguiu
@@ -196,6 +206,7 @@ ca-ES:
       status_change_on_idea_you_follow: "Canvi d'estat d'una idea que segueixes"
       survey_submitted: Enquesta enviada
       threshold_reached_for_admin: La proposta ha arribat al llindar de votació
+      user_blocked: Compte bloquejat
       user_digest: Resum setmanal
       voting_basket_not_submitted: Vots no enviats
       voting_basket_submitted: Confirmació de la votació
@@ -271,6 +282,15 @@ ca-ES:
       preheader: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       subject: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       title: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
+    email_confirmation:
+      best_regards: Cordialment,
+      event_description: 'Gràcies per la teva participació. Introdueix aquest codi de confirmació a la finestra de la plataforma de participació de %{organizationName}:'
+      expire_code: Aquest codi caducarà en
+      hours_24: 24 hores.
+      ignore_email: Si no has sol·licitat cap codi, pots ignorar aquest correu electrònic.
+      preheader: Confirma la teva adreça de correu electrònic per a %{organizationName}
+      subject: Confirma la teva adreça de correu electrònic per a la plataforma de participació de %{organizationName}
+      title: Confirma la teva adreça de correu electrònic
     event_registration_confirmation:
       cta_add_to_calendar: Afegeix al teu calendari
       cta_button: Veure l'esdeveniment
@@ -482,6 +502,15 @@ ca-ES:
       title: "%{firstName}, s'ha publicat un comentari nou a la teva plataforma"
       today: Avui
       yesterday: Ahir
+    new_email_confirmation:
+      best_regards: Cordialment,
+      event_description: 'Introdueix aquest codi de confirmació a la finestra de la plataforma de participació de %{organizationName} per confirmar la teva nova adreça de correu electrònic:'
+      expire_code: Aquest codi caducarà en
+      hours_24: 24 hores.
+      ignore_email: Si no has sol·licitat cap codi, pots ignorar aquest correu electrònic.
+      preheader: Confirma la teva nova adreça de correu electrònic per a %{organizationName}
+      subject: Confirma la teva nova adreça de correu electrònic per a la plataforma de participació de %{organizationName}
+      title: Confirma la teva nova adreça de correu electrònic
     new_idea_for_admin_prescreening:
       cta_button: Revisa l'entrada
       days_ago: Fa %{numberOfDays} dies
@@ -507,6 +536,12 @@ ca-ES:
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: Hi ha una actualització a "%{input_title}"
+    password_reset:
+      cta_button: Restableix la teva contrasenya
+      event_description: Has sol·licitat restablir la contrasenya per a la plataforma de participació de %{organizationName}. Fes clic al botó de sota per triar una contrasenya nova i segura. L'enllaç caduca en 1 hora.
+      preheader: Restableix la teva contrasenya per a %{organizationName}
+      subject: '%{organizationName}: Restableix la teva contrasenya'
+      title: Tria una nova contrasenya
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -652,6 +687,14 @@ ca-ES:
       preheader: Assegureu-vos de fer els següents passos
       subject: Una iniciativa ha arribat al llindar de votació a la vostra plataforma
       title: Una proposta ha arribat al llindar de votació!
+    user_blocked:
+      for_more_information: Per a més informació sobre això, pots consultar la %{termsAndConditionsPage}
+      paragraph_1_with_reason: "El teu compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment pel següent motiu:"
+      paragraph_1_without_reason: El teu compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment per una infracció de les normes de la comunitat.
+      preheader: El teu compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment
+      subject: El teu compte s'ha desactivat temporalment
+      title: El teu compte s'ha desactivat temporalment
+      you_can_sign_in_again_from: Pots tornar a iniciar sessió a partir del %{date}
     user_digest:
       commented: '%{authorFirstName} ha comentat:'
       cta_button: Anar a la plataforma

@@ -136,7 +136,9 @@ const ProfileForm = () => {
     event.preventDefault();
 
     // First validate the main form
-    const isMainFormValid = await methods.trigger();
+    const isMainFormValid = await methods.trigger(undefined, {
+      shouldFocus: true,
+    });
     if (!isMainFormValid) {
       return;
     }
@@ -212,7 +214,7 @@ const ProfileForm = () => {
   return (
     <FormSection>
       <FormProvider {...methods}>
-        <form onSubmit={handleDisclaimer}>
+        <form noValidate onSubmit={handleDisclaimer}>
           <FormSectionTitle
             message={messages.h1}
             subtitleMessage={messages.h1sub}
