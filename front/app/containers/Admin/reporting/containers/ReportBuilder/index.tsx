@@ -13,8 +13,8 @@ import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
 import useLocale from 'hooks/useLocale';
 
+import ContentBuilderCanvas from 'components/admin/ContentBuilder/Canvas';
 import Frame from 'components/admin/ContentBuilder/Frame';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Warning from 'components/UI/Warning';
@@ -124,7 +124,7 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                 contentBuilderLocale={selectedLocale}
                 platformLocale={platformLocale}
               >
-                <StyledRightColumn>
+                <ContentBuilderCanvas toolboxWidth="220px">
                   {!!phaseId && (
                     <Box maxWidth={A4_WIDTH} mb="20px">
                       <Warning>
@@ -161,7 +161,7 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                       ) : null}
                     </Frame>
                   </ViewContainer>
-                </StyledRightColumn>
+                </ContentBuilderCanvas>
               </LanguageProvider>
               <Settings />
             </Box>
