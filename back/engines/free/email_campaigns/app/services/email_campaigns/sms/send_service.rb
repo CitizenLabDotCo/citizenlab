@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   module Sms
-    class Sender
+    class SendService
       def send_now(to:, body:, user_id: nil, campaign_id: nil)
         unless AppConfiguration.instance.feature_activated?('sms')
           raise Error, 'SMS feature is not enabled for this tenant'

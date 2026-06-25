@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Sms::Sender do
+RSpec.describe EmailCampaigns::Sms::SendService do
   let(:provider) { instance_double(EmailCampaigns::Sms::Providers::Twilio) }
 
   before do
