@@ -118,11 +118,35 @@ namespace :decidim_importer do
     end
   end
 
-  # Logs how many of each model the built template will create, in dependency order.
+  # Logs how many of each model the built template will create — the overall total, then the same
+  # broken down per project (the project's title as a header), then a final shared bucket for records
+  # not tied to a project (users, areas, scopes, folders).
   def log_model_summary(builder)
     counts = builder.model_counts
     Rails.logger.info "Template will create #{counts.values.sum} records:"
     counts.each { |model, count| Rails.logger.info "  #{count} #{model}" }
+    log_per_project_summary(builder)
+  end
+
+  def log_per_project_summary(builder)
+    by_project = builder.counts_by_project
+    by_project.each do |project, counts|
+      next if project.nil?
+
+      Rails.logger.info "#{project_title(project)} (#{counts.values.sum} records):"
+      counts.each { |model, count| Rails.logger.info "  #{count} #{model}" }
+    end
+
+    shared = by_project[nil]
+    return if shared.blank?
+
+    Rails.logger.info "Not project-scoped (#{shared.values.sum} records):"
+    shared.each { |model, count| Rails.logger.info "  #{count} #{model}" }
+  end
+
+  def project_title(project)
+    title = project.attributes['title_multiloc']
+    (title.is_a?(Hash) && title.values.find(&:present?)) || '(untitled project)'
   end
 
   # The app-config JSON `dump_yaml` writes beside the template: same base name, with the
