@@ -2089,6 +2089,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.PasswordInput.passwordRequiredError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T14:22:33.063616Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PasswordInput.passwordStrengthError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T14:22:33.063616Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PasswordInput.passwordStrengthTooltip1": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12453,6 +12463,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.too_weak": {
+    "state": "verified",
+    "verified_at": "2026-06-25T14:22:33.063616Z",
+    "verified_by": "Jelena"
   },
   "app.errors.uncaught_error": {
     "state": "verified",
