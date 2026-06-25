@@ -2089,6 +2089,16 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.PasswordInput.passwordRequiredError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T09:36:41.150017Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.PasswordInput.passwordStrengthError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T09:36:41.150017Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.PasswordInput.passwordStrengthTooltip1": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -12448,6 +12458,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.errors.too_weak": {
+    "state": "verified",
+    "verified_at": "2026-06-25T09:36:41.150017Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.errors.uncaught_error": {
     "state": "verified",
