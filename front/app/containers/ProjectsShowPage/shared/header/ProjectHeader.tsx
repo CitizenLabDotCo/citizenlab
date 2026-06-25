@@ -13,6 +13,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import { adminProjectsProjectLink } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
@@ -21,6 +22,7 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import ContentContainer from 'components/ContentContainer';
 import ProjectContentViewer from 'components/DescriptionBuilder/ContentViewer/ProjectContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
+import ProjectPageContentViewer from 'components/ProjectPageBuilder/ContentViewer';
 import {
   HeaderImage,
   HeaderImageContainer,
@@ -70,6 +72,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const projectDescriptionBuilderEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
+  const parallelParticipation = useParallelParticipation();
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
   const projectFolderId = project?.data.attributes.folder_id;
@@ -154,14 +157,23 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               mt={projectHeaderImageLargeUrl ? '-20px' : '0px'}
             />
           )}
-          {!projectDescriptionBuilderEnabled && (
-            <ProjectInfo projectId={projectId} />
+          {parallelParticipation ? (
+            <ProjectPageContentViewer
+              projectId={project.data.id}
+              projectTitle={project.data.attributes.title_multiloc}
+            />
+          ) : (
+            <>
+              {!projectDescriptionBuilderEnabled && (
+                <ProjectInfo projectId={projectId} />
+              )}
+              <ProjectContentViewer
+                projectId={project.data.id}
+                projectTitle={project.data.attributes.title_multiloc}
+                enabled={project.data.attributes.uses_content_builder}
+              />
+            </>
           )}
-          <ProjectContentViewer
-            projectId={project.data.id}
-            projectTitle={project.data.attributes.title_multiloc}
-            enabled={project.data.attributes.uses_content_builder}
-          />
         </ContentContainer>
       </Container>
     );
