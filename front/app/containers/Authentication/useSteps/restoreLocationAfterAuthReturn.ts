@@ -2,7 +2,7 @@ import clHistory from 'utils/cl-router/history';
 
 /**
  * Returns the user to where they were before a third-party auth/verification
- * round trip. Before redirecting we stored the full path *and* query (e.g.
+ * round trip. Before redirecting we store the full path *and* query (e.g.
  * /projects/x/surveys/new?phase_id=...) in localStorage; navigating back to it
  * restores those params and drops the auth params the back-end appended to the
  * return URL (sso_success, sso_flow, ...). A full-page redirect already wiped
