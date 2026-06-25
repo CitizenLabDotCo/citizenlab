@@ -134,12 +134,12 @@ module EmailCampaigns
       body = MultilocService.new.t(campaign.body_multiloc, recipient.locale)
       return if body.blank?
 
-      delivery = Sms::Sender.new.create_delivery(
+      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
         to: recipient.phone_number,
         body: body,
         user_id: recipient.id
       )
-      Sms::SendJob.perform_later(delivery.id)
+      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
     end
 
     def preview_email(campaign, recipient)
@@ -234,9 +234,9 @@ module EmailCampaigns
         .deliver_later(wait: command[:delay] || 0)
     end
 
-    # Dispatches the command over SMS. The Sms::Delivery is created synchronously
+    # Dispatches the command over SMS. The EmailCampaigns::Sms::Delivery is created synchronously
     # here (so the campaign's sent? guard sees it immediately), then the actual
-    # provider send happens asynchronously in Sms::SendJob.
+    # provider send happens asynchronously in EmailCampaigns::Sms::SendJob.
     def send_command_sms(campaign, command)
       recipient = command[:recipient]
       return if recipient.phone_number.blank?
@@ -244,13 +244,13 @@ module EmailCampaigns
       body = MultilocService.new.t(command[:body_multiloc], recipient.locale)
       return if body.blank?
 
-      delivery = Sms::Sender.new.create_delivery(
+      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
         to: recipient.phone_number,
         body: body,
         user_id: recipient.id,
         campaign_id: campaign.id
       )
-      Sms::SendJob.perform_later(delivery.id)
+      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
     end
 
     def generate_commands(campaign, recipient, options = {})

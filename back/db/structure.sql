@@ -8340,7 +8340,7 @@ ALTER TABLE ONLY public.ideas
 --
 
 ALTER TABLE ONLY public.sms_deliveries
-    ADD CONSTRAINT fk_rails_a7e0804608 FOREIGN KEY (campaign_id) REFERENCES public.email_campaigns_campaigns(id) ON DELETE SET NULL;
+    ADD CONSTRAINT fk_rails_a7e0804608 FOREIGN KEY (campaign_id) REFERENCES public.email_campaigns_campaigns(id);
 
 
 --
@@ -8886,13 +8886,13 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260625093937'),
 ('20260617120000'),
 ('20260615142736'),
 ('20260611000000'),
 ('20260602120000'),
 ('20260528180000'),
 ('20260528120000'),
-('20260526100720'),
 ('20260522000000'),
 ('20260521120000'),
 ('20260519150520'),

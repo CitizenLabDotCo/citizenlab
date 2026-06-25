@@ -115,7 +115,7 @@ module EmailCampaigns
     def send_preview
       EmailCampaigns::DeliveryService.new.send_preview(@campaign, current_user)
       head :ok
-    rescue Sms::Error => e
+    rescue EmailCampaigns::Sms::Error => e
       render json: { errors: { base: [{ error: 'sms_preview_failed', message: e.message }] } },
         status: :unprocessable_entity
     end
@@ -148,7 +148,7 @@ module EmailCampaigns
     end
 
     def stats
-      counts = @campaign.channel == :sms ? Sms::Delivery.status_counts(@campaign.id) : EmailCampaigns::Delivery.status_counts(@campaign.id)
+      counts = @campaign.channel == :sms ? EmailCampaigns::Sms::Delivery.status_counts(@campaign.id) : EmailCampaigns::Delivery.status_counts(@campaign.id)
       render json: raw_json(counts)
     end
 

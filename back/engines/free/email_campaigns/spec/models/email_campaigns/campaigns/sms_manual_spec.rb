@@ -28,9 +28,9 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
   describe '#sent?' do
     let(:campaign) { create(:sms_manual_campaign) }
 
-    it 'is false with no deliveries and true once an Sms::Delivery is linked' do
+    it 'is false with no deliveries and true once an EmailCampaigns::Sms::Delivery is linked' do
       expect(campaign.sent?).to be(false)
-      Sms::Delivery.create!(campaign: campaign, phone_number: '+14155552671', body: 'hi', status: 'pending')
+      EmailCampaigns::Sms::Delivery.create!(campaign: campaign, phone_number: '+14155552671', body: 'hi', status: 'pending')
       expect(campaign.sent?).to be(true)
     end
   end

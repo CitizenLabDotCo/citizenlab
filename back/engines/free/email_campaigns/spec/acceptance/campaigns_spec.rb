@@ -600,7 +600,7 @@ resource 'Campaigns' do
         let(:campaign) { create(:sms_manual_campaign) }
 
         example 'Send out the SMS campaign now' do
-          expect { do_request }.to have_enqueued_job(Sms::SendJob)
+          expect { do_request }.to have_enqueued_job(EmailCampaigns::Sms::SendJob)
           assert_status 200
           expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
         end

@@ -37,10 +37,9 @@ module EmailCampaigns
   # manual SMS campaign, and later a phone-confirmation OTP campaign) inherit
   # from this.
   class Campaigns::BaseSms < Campaign
-    # SMS campaigns track their sends through Sms::Delivery (linked by
-    # campaign_id), not the email-only Trackable / EmailCampaigns::Delivery.
-    # The DB foreign key nullifies the link on campaign deletion.
-    has_many :sms_deliveries, class_name: 'Sms::Delivery', foreign_key: :campaign_id, inverse_of: :campaign
+    # SMS campaigns track their sends through EmailCampaigns::Sms::Delivery (linked by
+    # campaign_id)
+    has_many :sms_deliveries, class_name: 'EmailCampaigns::Sms::Delivery', foreign_key: :campaign_id, dependent: :nullify, inverse_of: :campaign
 
     def channel
       :sms

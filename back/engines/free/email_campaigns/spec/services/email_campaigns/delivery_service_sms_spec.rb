@@ -19,8 +19,8 @@ describe EmailCampaigns::DeliveryService do
 
     before { create(:user, phone_number: nil) } # phone-less user is not a recipient
 
-    it 'synchronously creates a pending campaign-linked Sms::Delivery per phone-having recipient' do
-      expect { service.send_now(campaign) }.to change(Sms::Delivery, :count).by(1)
+    it 'synchronously creates a pending campaign-linked EmailCampaigns::Sms::Delivery per phone-having recipient' do
+      expect { service.send_now(campaign) }.to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
       delivery = campaign.sms_deliveries.sole
       expect(delivery).to have_attributes(
@@ -31,11 +31,11 @@ describe EmailCampaigns::DeliveryService do
       )
     end
 
-    it 'enqueues an Sms::SendJob for the created delivery and marks the campaign sent' do
+    it 'enqueues an EmailCampaigns::Sms::SendJob for the created delivery and marks the campaign sent' do
       service.send_now(campaign)
 
       delivery = campaign.sms_deliveries.sole
-      expect(Sms::SendJob).to have_been_enqueued.with(delivery.id).exactly(:once)
+      expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id).exactly(:once)
       expect(campaign.sent?).to be(true)
     end
   end
@@ -46,21 +46,21 @@ describe EmailCampaigns::DeliveryService do
 
     it 'sends a test SMS to the previewer without linking it to the campaign' do
       expect { service.send_preview(campaign, previewer) }
-        .to change(Sms::Delivery, :count).by(1)
+        .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
-      delivery = Sms::Delivery.last
+      delivery = EmailCampaigns::Sms::Delivery.last
       expect(delivery).to have_attributes(
         user_id: previewer.id,
         phone_number: '+14155552672',
         campaign_id: nil
       )
       expect(campaign.sent?).to be(false)
-      expect(Sms::SendJob).to have_been_enqueued.with(delivery.id)
+      expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
     end
 
-    it 'raises Sms::Error when the previewer has no phone number' do
+    it 'raises EmailCampaigns::Sms::Error when the previewer has no phone number' do
       previewer.update_columns(phone_number: nil)
-      expect { service.send_preview(campaign, previewer) }.to raise_error(Sms::Error)
+      expect { service.send_preview(campaign, previewer) }.to raise_error(EmailCampaigns::Sms::Error)
     end
   end
 end
