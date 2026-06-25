@@ -47,7 +47,7 @@ module EmailCampaigns
         private
 
         def callback_url
-          "#{AppConfiguration.instance.base_backend_uri}/web_api/v1/sms/callbacks/twilio"
+          "#{AppConfiguration.instance.base_backend_uri}/web_api/v1/sms/callbacks"
         end
 
         # The Messaging Service SID takes precedence over the phone number when

@@ -6,13 +6,7 @@ module EmailCampaigns
     skip_after_action :verify_authorized
     skip_after_action :verify_policy_scoped
 
-    def twilio
-      process_callback(EmailCampaigns::Sms::Providers::Twilio.new)
-    end
-
-    private
-
-    def process_callback(provider)
+    def create
       return head :forbidden unless provider.verify_signature(request)
 
       parsed = provider.parse_callback(params)
@@ -25,6 +19,13 @@ module EmailCampaigns
       # still return 200 so the provider stops retrying.
       delivery.advance_status!(parsed[:status])
       head :ok
+    end
+
+    private
+
+    # The single configured SMS provider. Swap here if another is ever added.
+    def provider
+      @provider ||= EmailCampaigns::Sms::Providers::Twilio.new
     end
   end
 end

@@ -25,7 +25,7 @@ EmailCampaigns::Engine.routes.draw do
         patch 'by_campaign_id/:campaign_id', action: 'update_by_campaign_id', on: :collection
       end
 
-      post 'sms/callbacks/twilio', to: 'sms/callbacks#twilio'
+      post 'sms/callbacks', to: 'sms/callbacks#create'
     end
   end
 
