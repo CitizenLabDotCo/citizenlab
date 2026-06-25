@@ -62,6 +62,7 @@ module McpServer
         McpServer::Tools::CreatePollQuestion,
         McpServer::Tools::CreatePollOption,
         McpServer::Tools::AttachImage,
+        McpServer::Tools::AttachFile,
         McpServer::Tools::DestroyResource,
         McpServer::Tools::UpdateResource,
         McpServer::Tools::UpdateProject,
