@@ -1,15 +1,10 @@
 import React from 'react';
 
-import { Select } from '@citizenlab/cl2-component-library';
-import { IOption } from 'typings';
+import { IIdeaData } from 'api/ideas/types';
 
-import useIdeas from 'api/ideas/useIdeas';
-
-import useLocalize from 'hooks/useLocalize';
+import IdeaSelect from 'components/UI/IdeaSelect';
 
 import { TRule } from '../rules';
-
-import { generateOptions } from './utils';
 
 export interface Props {
   rule: TRule;
@@ -18,19 +13,15 @@ export interface Props {
 }
 
 const IdeaValueSelector = ({ value, onChange }: Props) => {
-  const { data: ideas } = useIdeas({ sort: 'random' });
-  const localize = useLocalize();
-
-  const handleOnChange = (option: IOption) => {
-    onChange(option.value);
+  const handleChange = (idea?: IIdeaData) => {
+    onChange(idea?.id ?? '');
   };
 
   return (
-    // TODO: use front/app/components/UI/IdeaSelect/index.tsx to show all ideas.
-    <Select
-      value={value}
-      options={generateOptions(localize, ideas?.data)}
-      onChange={handleOnChange}
+    <IdeaSelect
+      selectedIdeaId={value}
+      showLabel={false}
+      onChange={handleChange}
     />
   );
 };

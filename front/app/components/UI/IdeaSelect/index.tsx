@@ -12,13 +12,17 @@ import BaseIdeaSelect from './BaseIdeaSelect';
 import messages from './messages';
 import OptionLabel from './OptionLabel';
 import { Option } from './typings';
-import { optionIsIdea } from './utils';
+import { isOptionArray, optionIsIdea } from './utils';
 
 interface Props {
   selectedIdeaId?: string | null;
   id?: string;
   inputId?: string;
-  phaseId: string;
+  // Optional: when omitted the search spans the whole platform (e.g. smart-group
+  // rules, which have no phase context).
+  phaseId?: string;
+  // Hide the built-in "Select an idea" label, e.g. when embedded in a compact row.
+  showLabel?: boolean;
   onChange: (idea?: IIdeaData) => void;
 }
 
@@ -28,6 +32,7 @@ const IdeaSelect = ({
   id = 'idea-select',
   inputId = 'idea-select-input',
   phaseId,
+  showLabel = true,
   onChange,
 }: Props) => {
   const [searchValue, setSearchValue] = useState('');
@@ -63,20 +68,24 @@ const IdeaSelect = ({
     );
   }
 
-  const handleChange = (option?: Option) => {
-    if (!option) {
-      onChange(undefined);
+  const handleChange = (option?: Option | readonly Option[]) => {
+    // Single-select never receives an array, but the shared BaseIdeaSelect
+    // onChange is typed for both modes.
+    if (option && !isOptionArray(option) && optionIsIdea(option)) {
+      onChange(option);
       return;
     }
 
-    if (optionIsIdea(option)) onChange(option);
+    onChange(undefined);
   };
 
   return (
     <Box>
-      <Label htmlFor={id}>
-        <span>{formatMessage(messages.selectIdea)}</span>
-      </Label>
+      {showLabel && (
+        <Label htmlFor={id}>
+          <span>{formatMessage(messages.selectIdea)}</span>
+        </Label>
+      )}
       <BaseIdeaSelect
         id={id}
         inputId={inputId}
