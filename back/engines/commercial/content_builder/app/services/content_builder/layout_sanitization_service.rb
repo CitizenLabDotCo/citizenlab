@@ -16,7 +16,9 @@ module ContentBuilder
           text_multiloc.transform_values! do |text|
             html_sanitizer.sanitize text, features if text
           end
-        elsif html_multiloc.is_a?(Hash)
+        end
+
+        if html_multiloc.is_a?(Hash)
           html_multiloc.transform_values! do |html|
             html_block_sanitizer.sanitize(html) if html
           end
