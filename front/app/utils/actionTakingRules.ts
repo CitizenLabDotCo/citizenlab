@@ -1,6 +1,9 @@
 import { IPhaseData } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
+
+import { hasProjectEndedOrIsArchived } from 'components/ParticipationCTABars/utils';
 
 import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -136,9 +139,6 @@ export const getIdeaPostingRules = ({
   const signedIn = !!authUser;
 
   if (project) {
-    const { disabled_reason, future_enabled_at, enabled } =
-      project.attributes.action_descriptors.posting_idea;
-
     if (authUser && canModerateProject(project, { data: authUser })) {
       return {
         show: true,
@@ -148,37 +148,55 @@ export const getIdeaPostingRules = ({
       };
     }
 
-    // timeline
-    if (phase) {
-      // not an enabled ideation or native survey or proposals phase
-      if (
-        (phase.attributes.participation_method === 'ideation' ||
-          phase.attributes.participation_method === 'proposals') &&
-        !phase.attributes.submission_enabled &&
-        disabled_reason !== 'posting_not_supported'
-      ) {
-        return {
-          show: false,
-          enabled: null,
-          disabledReason: null,
-          authenticationRequirements: null,
-        };
-      }
+    // No active phase to post in: no current phase, the phase has ended, or the project
+    // is archived. The backend reports this as `project_inactive`; here we use the
+    // FE-owned `inactive_phase`, which renders the same disabled/unauthorized UI.
+    // TODO: once the POST /ideas endpoint always carries phase_id in the path, a phase is
+    // always resolved before reaching here and the no-phase case becomes unreachable.
+    if (!phase || hasProjectEndedOrIsArchived(project, phase)) {
+      return {
+        show: true,
+        enabled: false,
+        disabledReason: 'inactive_phase',
+        authenticationRequirements: null,
+      };
+    }
 
-      // if not in current phase - not sure this is possible to trigger
-      if (
-        pastPresentOrFuture([
-          phase.attributes.start_at,
-          phase.attributes.end_at,
-        ]) !== 'present'
-      ) {
-        return {
-          show: true,
-          enabled: false,
-          disabledReason: 'inactive_phase',
-          authenticationRequirements: null,
-        };
-      }
+    const { disabled_reason, future_enabled_at, enabled } =
+      getPhaseActionDescriptor(phase, 'posting_idea') ?? {
+        enabled: false as const,
+        disabled_reason: 'user_not_permitted' as const,
+        future_enabled_at: null,
+      };
+
+    // not an enabled ideation or native survey or proposals phase
+    if (
+      (phase.attributes.participation_method === 'ideation' ||
+        phase.attributes.participation_method === 'proposals') &&
+      !phase.attributes.submission_enabled &&
+      disabled_reason !== 'posting_not_supported'
+    ) {
+      return {
+        show: false,
+        enabled: null,
+        disabledReason: null,
+        authenticationRequirements: null,
+      };
+    }
+
+    // not the current phase (a future phase; past/archived handled above)
+    if (
+      pastPresentOrFuture([
+        phase.attributes.start_at,
+        phase.attributes.end_at,
+      ]) !== 'present'
+    ) {
+      return {
+        show: true,
+        enabled: false,
+        disabledReason: 'inactive_phase',
+        authenticationRequirements: null,
+      };
     }
 
     if (enabled) {
