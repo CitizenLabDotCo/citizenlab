@@ -7,6 +7,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
+import useParallelParticipation from 'hooks/useParallelParticipation';
+
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
 import NewLabel from 'components/UI/NewLabel';
@@ -16,6 +18,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
 
 import messages from './messages';
+import ProjectSidebar from './newBackoffice/ProjectSidebar';
 import ProjectHeader from './projectHeader';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
@@ -23,6 +26,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { pathname } = useLocation();
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
+  const newBackoffice = useParallelParticipation();
   const projectId = project.id;
 
   if (!canModerateProject(project, authUser)) {
@@ -32,6 +36,26 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const privateAttributesInExport =
     appConfiguration?.data.attributes.settings.core
       .private_attributes_in_export !== false;
+
+  if (newBackoffice) {
+    return (
+      <Box
+        data-cy="e2e-admin-projects-project-index"
+        display="flex"
+        flexDirection="column"
+        height="100vh"
+        overflow="hidden"
+      >
+        <ProjectHeader projectId={projectId} />
+        <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
+          <ProjectSidebar projectId={projectId} />
+          <Box flexGrow={1} minWidth="0" overflowY="auto">
+            <RouterOutlet />
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box
