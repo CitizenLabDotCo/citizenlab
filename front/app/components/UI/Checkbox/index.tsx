@@ -1,11 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import {
-  colors,
-  defaultOutline,
-  isRtl,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { colors, isRtl, Icon } from '@citizenlab/cl2-component-library';
+import { focusRing } from 'global-styles';
 import { isBoolean } from 'lodash-es';
 import { darken, hideVisually } from 'polished';
 import styled from 'styled-components';
@@ -61,7 +57,7 @@ const StyledCheckbox = styled.div<{
   transition: all 120ms ease-out;
 
   ${HiddenCheckbox}.focus-visible + & {
-    ${defaultOutline};
+    ${focusRing}
   }
 
   &.enabled {
