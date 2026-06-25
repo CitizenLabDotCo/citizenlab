@@ -84,8 +84,10 @@ const ProjectPage = () => {
   const previewSrc = `/${locale}/projects/${slug}`;
 
   const openContentBuilder = () => {
+    // Preserve the current query string (e.g. ?parallel_participation) so the
+    // builder stays gated-on when the flag is toggled via the URL.
     clHistory.push(
-      `/admin/description-builder/projects/${projectId}/description`
+      `/admin/project-page-builder/projects/${projectId}${window.location.search}`
     );
   };
 
