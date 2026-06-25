@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
-import NewLabel from 'components/UI/NewLabel';
-
 import { useLocation } from 'utils/router';
 
 import projectMessages from '../../messages';
@@ -42,7 +40,6 @@ const ProjectNavRail = ({ projectId }: Props) => {
       name: 'input-360',
       label: projectMessages.filesTab,
       to: '/admin/projects/$projectId/files',
-      badge: <NewLabel />,
     },
     {
       name: 'settings',
