@@ -16,7 +16,12 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
       properties: {
         phase_id: { type: 'string', description: 'The ID of the volunteering phase to add the cause to.' },
         title_multiloc: { **multiloc_schema, description: 'Cause title.' },
-        description_multiloc: { **multiloc_schema, description: 'Cause description (HTML).' }
+        description_multiloc: { **multiloc_schema, description: 'Cause description (HTML).' },
+        remote_image_url: {
+          type: 'string',
+          format: 'uri',
+          description: 'Public URL of the image to download and use as the cause illustration.'
+        }
       },
       required: %w[phase_id title_multiloc]
     }
@@ -27,7 +32,7 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
       phase = Phase.find(params[:phase_id])
       authorize_project!(phase.project)
 
-      attributes = params.slice(:title_multiloc, :description_multiloc).compact
+      attributes = params.except(:phase_id)
       cause = Volunteering::Cause.new(phase: phase, **attributes)
       authorize(cause, :create?)
 
