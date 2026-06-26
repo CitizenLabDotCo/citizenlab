@@ -5,12 +5,7 @@ import { get } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import {
-  fontSizes,
-  colors,
-  defaultOutline,
-  isRtl,
-} from '../../utils/styleUtils';
+import { fontSizes, colors, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxPaddingProps, BoxMarginProps } from '../Box';
 
@@ -43,7 +38,7 @@ const CustomRadio = styled.div<{ borderColor: string | undefined }>`
   `}
 
   ${HiddenRadio}.focus-visible + & {
-    ${defaultOutline};
+    ${focusRing}
   }
 
   &.enabled:hover {
