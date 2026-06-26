@@ -1834,7 +1834,8 @@ CREATE TABLE public.phases (
     voting_filtering_enabled boolean DEFAULT false NOT NULL,
     prescreening_mode character varying,
     available_views character varying[] DEFAULT '{card}'::character varying[] NOT NULL,
-    draft_description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    draft_description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    allow_multiple_responses boolean DEFAULT false NOT NULL
 );
 
 
@@ -8823,6 +8824,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260623120000'),
 ('20260617120000'),
 ('20260611000000'),
 ('20260602120000'),

@@ -22,6 +22,7 @@ import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 import { downloadSurveyResults } from 'api/survey_results/utils';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
@@ -49,6 +50,7 @@ interface Props {
 const SurveyActions = ({ phase }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
+  const pdfExportEnabled = useFeatureFlag({ name: 'pdf_export_responses' });
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
 
@@ -289,13 +291,15 @@ const SurveyActions = ({ phase }: Props) => {
               zIndex="10000"
               content={
                 <Box style={{ whiteSpace: 'nowrap' }}>
-                  <ExportDropdownItem
-                    label={formatMessage(messages.exportResponsesToPdf)}
-                    onClick={() => {
-                      setDropdownOpened(false);
-                      setExportPdfModalOpened(true);
-                    }}
-                  />
+                  {pdfExportEnabled && (
+                    <ExportDropdownItem
+                      label={formatMessage(messages.exportResponsesToPdf)}
+                      onClick={() => {
+                        setDropdownOpened(false);
+                        setExportPdfModalOpened(true);
+                      }}
+                    />
+                  )}
                   <ExportDropdownItem
                     label={formatMessage(messages.downloadInsightsPdf)}
                     onClick={async () => {

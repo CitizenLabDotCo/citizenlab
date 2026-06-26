@@ -265,17 +265,6 @@ en:
       response_count:
         one: '%{count} response'
         other: '%{count} responses'
-    # Terms matched against survey question titles to flag potential personal
-    # data. Translated per locale so detection works in the tenant's languages.
-    pii_terms:
-      name: 'name'
-      email: 'email'
-      phone: 'phone number'
-      postal_code: 'postal code'
-      postal_address: 'postal address'
-      date_of_birth: 'date of birth'
-      id: 'ID'
-      identification_number: 'identification number'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:
