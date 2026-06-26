@@ -118,6 +118,10 @@ module EmailCampaigns
     def send_preview(campaign, recipient)
       return send_sms_preview(campaign, recipient) if campaign.channel == :sms
 
+      send_email_preview(campaign, recipient)
+    end
+
+    def send_email_preview(campaign, recipient)
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
       else
@@ -217,17 +221,16 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      case campaign.channel
-      when :sms
-        send_command_sms(campaign, command)
-      else
-        send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
-      end
+      return send_command_sms(campaign, command) if campaign.channel == :sms
+
+      send_command_email(campaign, command)
     end
 
-    # This method is triggered when the given sending command should be sent
-    # out through the interal Rails mailing stack
-    def send_command_internal(campaign, command)
+    # Sends the command through the internal Rails mailing stack. Campaigns
+    # without a mailer (nothing to email) are a no-op.
+    def send_command_email(campaign, command)
+      return unless campaign.respond_to?(:mailer_class)
+
       campaign.mailer_class
         .with(campaign: campaign, command: command)
         .campaign_mail
