@@ -25,8 +25,10 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const { formatMessage } = useIntl();
   const isTablet = useBreakpoint('tablet');
 
-  // project related
-  const { slug } = useParams({ from: '/$locale/projects/$slug' });
+  // project related. `strict: false` so this also renders outside the project
+  // route (e.g. inside the project page builder), where `slug` is absent and the
+  // `projectId` prop is used instead.
+  const { slug } = useParams({ strict: false });
   const { data: project } = useProjectBySlug(slug);
   const projectIdToUse = projectId || project?.data.id;
   const { data: phases } = usePhases(projectIdToUse);
