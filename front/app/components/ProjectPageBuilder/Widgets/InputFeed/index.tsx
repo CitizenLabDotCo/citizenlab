@@ -97,7 +97,7 @@ InputFeed.craft = {
     settings: InputFeedSettings,
   },
   custom: {
-    title: messages.inputFeedWidgetTitle,
+    title: messages.inputFeedWidgetTitle2,
     // Non-deletable (the settings panel hides Delete for locked nodes), but no
     // canDrag rule so it stays movable within the page.
     locked: true,
@@ -105,6 +105,6 @@ InputFeed.craft = {
   },
 };
 
-export const inputFeedWidgetTitle = messages.inputFeedWidgetTitle;
+export const inputFeedWidgetTitle = messages.inputFeedWidgetTitle2;
 
 export default InputFeed;
