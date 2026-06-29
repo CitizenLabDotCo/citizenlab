@@ -63,7 +63,8 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
           description: 'The fields to update. Allowed keys depend on `type`.'
         }
       },
-      required: %w[type id attributes]
+      required: %w[type id attributes],
+      additionalProperties: false
     }
   end
 

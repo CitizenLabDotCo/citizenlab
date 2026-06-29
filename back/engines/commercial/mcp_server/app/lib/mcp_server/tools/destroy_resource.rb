@@ -39,7 +39,8 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
         resource_type: { type: 'string', enum: RESOURCE_TYPES.keys },
         id: { type: 'string' }
       },
-      required: %w[resource_type id]
+      required: %w[resource_type id],
+      additionalProperties: false
     }
   end
 

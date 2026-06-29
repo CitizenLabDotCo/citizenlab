@@ -18,7 +18,8 @@ class McpServer::Tools::ListProjectFiles < McpServer::BaseTool
         project_id: { type: 'string' },
         **PAGINATION_SCHEMA
       },
-      required: %w[project_id]
+      required: %w[project_id],
+      additionalProperties: false
     }
   end
 

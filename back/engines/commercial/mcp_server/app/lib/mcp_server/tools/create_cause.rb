@@ -23,7 +23,8 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
           description: 'Public URL of the image to download and use as the cause illustration.'
         }
       },
-      required: %w[phase_id title_multiloc]
+      required: %w[phase_id title_multiloc],
+      additionalProperties: false
     }
   end
 

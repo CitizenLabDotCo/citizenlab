@@ -20,7 +20,8 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
         track_participation_location: { type: 'boolean', description: "Whether to track participants' location (requires the participation-location feature)." },
         remote_header_bg_url: { type: 'string', format: 'uri', description: 'Public URL of the image to download and use as the header background.' }
       },
-      required: %w[title_multiloc]
+      required: %w[title_multiloc],
+      additionalProperties: false
     }
   end
 
