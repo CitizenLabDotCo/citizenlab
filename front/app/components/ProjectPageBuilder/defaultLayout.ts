@@ -1,5 +1,8 @@
 import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
+import aboutBoxMessages from 'components/admin/ContentBuilder/Widgets/AboutBox/messages';
+import twoColumnMessages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
+
 import widgetMessages from './Widgets/messages';
 
 // The project page layout is split into two canvas regions:
@@ -18,6 +21,12 @@ export const BANNER_NODE_ID = 'PROJECT_PAGE_BANNER';
 export const TITLE_NODE_ID = 'PROJECT_PAGE_TITLE';
 export const BODY_NODE_ID = 'PROJECT_PAGE_BODY';
 export const INPUT_FEED_NODE_ID = 'PROJECT_PAGE_INPUT_FEED';
+export const TIMELINE_NODE_ID = 'PROJECT_PAGE_TIMELINE';
+export const EVENTS_NODE_ID = 'PROJECT_PAGE_EVENTS';
+export const TWO_COLUMN_NODE_ID = 'PROJECT_PAGE_TWO_COLUMN';
+export const LEFT_COLUMN_NODE_ID = 'PROJECT_PAGE_LEFT_COLUMN';
+export const RIGHT_COLUMN_NODE_ID = 'PROJECT_PAGE_RIGHT_COLUMN';
+export const ABOUT_BOX_NODE_ID = 'PROJECT_PAGE_ABOUT_BOX';
 
 const ROOT_ID = 'ROOT';
 
@@ -86,6 +95,92 @@ const inputFeedNode = (parentId: string): SerializedNode =>
     linkedNodes: {},
   } as unknown as SerializedNode);
 
+// Movable, deletable widgets seeded into a fresh page so the empty Phases and
+// Events sections (with their admin-only placeholders) are present by default.
+const timelineNode = (parentId: string): SerializedNode =>
+  ({
+    type: { resolvedName: 'TimelineWidget' },
+    nodes: [],
+    props: {},
+    custom: {
+      title: widgetMessages.timelineWidgetTitle,
+      noPointerEvents: true,
+    },
+    hidden: false,
+    parent: parentId,
+    isCanvas: false,
+    displayName: 'TimelineWidget',
+    linkedNodes: {},
+  } as unknown as SerializedNode);
+
+const eventsNode = (parentId: string): SerializedNode =>
+  ({
+    type: { resolvedName: 'EventsWidget' },
+    nodes: [],
+    props: {},
+    custom: {
+      title: widgetMessages.eventsWidgetTitle,
+      noPointerEvents: true,
+    },
+    hidden: false,
+    parent: parentId,
+    isCanvas: false,
+    displayName: 'EventsWidget',
+    linkedNodes: {},
+  } as unknown as SerializedNode);
+
+// A column inside the TwoColumn widget. `id: 'left' | 'right'` mirrors the
+// canvas regions the TwoColumn component renders, so the builder treats each as
+// a droppable column.
+const columnNode = (
+  side: 'left' | 'right',
+  parentId: string,
+  childIds: string[]
+): SerializedNode =>
+  ({
+    type: { resolvedName: 'Container' },
+    nodes: childIds,
+    props: { id: side },
+    custom: {},
+    hidden: false,
+    parent: parentId,
+    isCanvas: true,
+    displayName: 'Container',
+    linkedNodes: {},
+  } as unknown as SerializedNode);
+
+// Two-column row seeded after the title. The participation box (AboutBox) sits
+// in the narrower right column; the wider left column is left empty for the admin
+// to fill in.
+const twoColumnNode = (parentId: string): SerializedNode =>
+  ({
+    type: { resolvedName: 'TwoColumn' },
+    nodes: [LEFT_COLUMN_NODE_ID, RIGHT_COLUMN_NODE_ID],
+    props: { columnLayout: '2-1' },
+    custom: { title: twoColumnMessages.twoColumn, hasChildren: true },
+    hidden: false,
+    parent: parentId,
+    isCanvas: false,
+    displayName: 'TwoColumn',
+    linkedNodes: {},
+  } as unknown as SerializedNode);
+
+const aboutBoxNode = (parentId: string): SerializedNode =>
+  ({
+    type: { resolvedName: 'AboutBox' },
+    nodes: [],
+    props: {},
+    custom: {
+      title: aboutBoxMessages.participationBox,
+      noPointerEvents: true,
+    },
+    hidden: false,
+    parent: parentId,
+    isCanvas: false,
+    displayName: 'AboutBox',
+    linkedNodes: {},
+  } as unknown as SerializedNode);
+
 const rootNode = (childIds: string[]): SerializedNode =>
   ({
     type: { resolvedName: 'ProjectPageRoot' },
@@ -104,8 +199,23 @@ export const defaultProjectPageLayout = (): SerializedNodes => ({
   [ROOT_ID]: rootNode([BANNER_NODE_ID, TITLE_NODE_ID, BODY_NODE_ID]),
   [BANNER_NODE_ID]: bannerNode(),
   [TITLE_NODE_ID]: titleNode(),
-  [BODY_NODE_ID]: bodyNode([INPUT_FEED_NODE_ID]),
+  // After the title: a two-column row (participation box on the right), then the
+  // timeline, the participation content feed, and events.
+  [BODY_NODE_ID]: bodyNode([
+    TWO_COLUMN_NODE_ID,
+    TIMELINE_NODE_ID,
+    INPUT_FEED_NODE_ID,
+    EVENTS_NODE_ID,
+  ]),
+  [TWO_COLUMN_NODE_ID]: twoColumnNode(BODY_NODE_ID),
+  [LEFT_COLUMN_NODE_ID]: columnNode('left', TWO_COLUMN_NODE_ID, []),
+  [RIGHT_COLUMN_NODE_ID]: columnNode('right', TWO_COLUMN_NODE_ID, [
+    ABOUT_BOX_NODE_ID,
+  ]),
+  [ABOUT_BOX_NODE_ID]: aboutBoxNode(RIGHT_COLUMN_NODE_ID),
   [INPUT_FEED_NODE_ID]: inputFeedNode(BODY_NODE_ID),
+  [TIMELINE_NODE_ID]: timelineNode(BODY_NODE_ID),
+  [EVENTS_NODE_ID]: eventsNode(BODY_NODE_ID),
 });
 
 const resolvedNameOf = (node: SerializedNode) =>
