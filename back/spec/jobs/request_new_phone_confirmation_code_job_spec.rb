@@ -22,11 +22,11 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
     expect(user.phone_number).to be_nil
   end
 
-  it 'creates a campaign-linked pending Sms::Delivery to the new phone number' do
+  it 'creates a campaign-linked pending EmailCampaigns::Sms::Delivery to the new phone number' do
     expect { job.perform(user, new_phone_number: new_phone_number) }
-      .to change(Sms::Delivery, :count).by(1)
+      .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
-    delivery = Sms::Delivery.last
+    delivery = EmailCampaigns::Sms::Delivery.last
     expect(delivery).to have_attributes(
       user_id: user.id,
       phone_number: new_phone_number,
@@ -35,10 +35,10 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
     expect(delivery.campaign).to be_a(EmailCampaigns::Campaigns::PhoneConfirmation)
   end
 
-  it 'enqueues an Sms::SendJob for the created delivery' do
+  it 'enqueues an EmailCampaigns::Sms::SendJob for the created delivery' do
     job.perform(user, new_phone_number: new_phone_number)
-    delivery = Sms::Delivery.last
-    expect(Sms::SendJob).to have_been_enqueued.with(delivery.id)
+    delivery = EmailCampaigns::Sms::Delivery.last
+    expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
   end
 
   it 'sets the code delivery timestamp and resets the retry count' do

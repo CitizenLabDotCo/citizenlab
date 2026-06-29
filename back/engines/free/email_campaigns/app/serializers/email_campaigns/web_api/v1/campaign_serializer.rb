@@ -86,7 +86,7 @@ module EmailCampaigns
     attribute :delivery_stats, if: proc { |object|
       object.manual? && object.sent?
     } do |object|
-      sms?(object) ? Sms::Delivery.status_counts(object.id) : Delivery.status_counts(object.id)
+      sms?(object) ? EmailCampaigns::Sms::Delivery.status_counts(object.id) : Delivery.status_counts(object.id)
     end
 
     attribute :sender, if: proc { |object|

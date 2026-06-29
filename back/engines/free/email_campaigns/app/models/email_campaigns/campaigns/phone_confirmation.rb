@@ -36,7 +36,7 @@ module EmailCampaigns
   # Transactional SMS one-time-password campaign for phone-number verification.
   # Unlike the manual SMS campaign, it is never broadcast through the send
   # pipeline (activity / schedule / manual send): it is sent one recipient at a
-  # time from RequestNewPhoneConfirmationCodeJob via Sms::Sender, and this campaign
+  # time from RequestNewPhoneConfirmationCodeJob via EmailCampaigns::Sms::SendService, and this campaign
   # only provides the localized body template and the delivery tracking link.
   class Campaigns::PhoneConfirmation < Campaigns::BaseSms
     # Belt-and-suspenders: block every pipeline send. The OTP is dispatched
