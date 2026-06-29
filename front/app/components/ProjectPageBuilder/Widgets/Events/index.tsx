@@ -16,7 +16,10 @@ import Link from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
 
 import messages from '../messages';
+import useCanModerateProject from '../useCanModerateProject';
 import useWidgetProjectId from '../useWidgetProjectId';
+
+import EmptyEvents from './EmptyEvents';
 
 const PUBLICATION_STATUSES = ['published', 'draft', 'archived'] as const;
 
@@ -27,13 +30,18 @@ const EventsWidget: UserComponent = () => {
   const { formatMessage } = useIntl();
   const padding = useCraftComponentDefaultPadding();
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const canModerate = useCanModerateProject(projectId);
   const { data: events } = useEvents({
     projectIds: projectId ? [projectId] : [],
     sort: '-start_at',
   });
 
-  if (!projectId || isNil(events) || events.data.length === 0) {
+  if (!projectId || isNil(events)) {
     return null;
+  }
+
+  if (events.data.length === 0) {
+    return canModerate ? <EmptyEvents /> : null;
   }
 
   return (
