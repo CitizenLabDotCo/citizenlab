@@ -9,6 +9,7 @@ import {
   invisibleA11yText,
   fontSizes,
   defaultStyles,
+  focusRing,
   isRtl,
   MainThemeProps,
 } from '../../utils/styleUtils';
@@ -377,8 +378,7 @@ function getButtonStyle(
 
     &:focus-visible,
     &.focus-visible {
-      outline: 2px solid #000;
-      outline-offset: 2px;
+      ${focusRing}
     }
 
     &.fullWidth {

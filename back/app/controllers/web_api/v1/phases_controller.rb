@@ -4,8 +4,12 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results sentiment_by_quarter
-    submission_count index_xlsx delete_inputs show_progress common_ground_results
+    show show_mini update destroy survey_results survey_responses_pdf survey_response_fields
+    sentiment_by_quarter submission_count index_xlsx delete_inputs
+    show_progress common_ground_results
+  ]
+  before_action :ensure_survey_form, only: %i[
+    survey_responses_pdf survey_response_fields
   ]
 
   def index
@@ -82,6 +86,42 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: raw_json(results)
   end
 
+  # Lists the survey fields that will appear in the PDF export, flagging
+  # registration/personal-data fields so the UI can pre-select them for
+  # redaction. Source of truth for the export's field set.
+  def survey_response_fields
+    detector = Export::Pdf::PiiDetector.new
+    data = Export::Pdf::SurveyFields.new(@phase).fields.map do |field|
+      {
+        id: field.key,
+        type: 'survey_response_field',
+        attributes: {
+          title_multiloc: field.title_multiloc,
+          personal_data: detector.personal_data?(field)
+        }
+      }
+    end
+
+    render json: { data: data }
+  end
+
+  # Generates a PDF of native survey responses (cover page + one card per
+  # response). Field-level PII redaction is driven by `redacted_field_keys`.
+  # `cover_only` returns just the cover page (used by the live preview).
+  def survey_responses_pdf
+    cover_only = ActiveModel::Type::Boolean.new.cast(params[:cover_only])
+    pdf = I18n.with_locale(current_user.locale) do
+      Export::Pdf::SurveyResponsesGenerator.new(
+        @phase,
+        cover: cover_from_params,
+        redacted_field_keys: params[:redacted_field_keys] || [],
+        cover_only: cover_only
+      ).generate_pdf
+    end
+
+    send_data pdf.read, type: 'application/pdf', filename: 'survey_responses.pdf'
+  end
+
   def common_ground_results
     results = CommonGround::ResultsService.new(@phase).results
 
@@ -154,6 +194,21 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def phase_params_for_update
     params.require(:phase).permit(shared_phase_params)
+  end
+
+  def ensure_survey_form
+    head :unprocessable_entity unless @phase.pmethod.supports_survey_form?
+  end
+
+  def cover_from_params
+    {
+      include: ActiveModel::Type::Boolean.new.cast(params.dig(:cover, :include)),
+      title: params.dig(:cover, :title).to_s,
+      subtitle: params.dig(:cover, :subtitle).to_s,
+      date: params.dig(:cover, :date).to_s,
+      prepared_by: params.dig(:cover, :prepared_by).to_s,
+      notes: params.dig(:cover, :notes).to_s
+    }
   end
 
   def shared_phase_params

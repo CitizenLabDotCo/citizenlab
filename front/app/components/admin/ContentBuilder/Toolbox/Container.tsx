@@ -7,6 +7,8 @@ import {
   BoxProps,
 } from '@citizenlab/cl2-component-library';
 
+import { TOOLBOX_WIDTH } from 'components/admin/ContentBuilder/constants';
+
 type Props = {
   children: React.ReactNode;
 } & BoxProps;
@@ -17,7 +19,7 @@ const Container = ({ children, ...rest }: Props) => (
     zIndex="99999"
     flex="0 0 auto"
     h={`calc(100vh - ${stylingConsts.menuHeight}px)`}
-    w="236px"
+    w={TOOLBOX_WIDTH}
     display="flex"
     flexDirection="column"
     alignItems="center"

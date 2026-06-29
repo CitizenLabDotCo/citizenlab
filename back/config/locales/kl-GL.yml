@@ -301,6 +301,16 @@ kl-GL:
       title: Suliniutit tamarmik
     proposals:
       title: Proposals
+  pdf_export:
+    survey_responses:
+      date: Ulloq
+      no_answer: (Akineqanngilaq)
+      prepared_by: Suliarineqarpoq uannga
+      report_label: Misissuinermi akissutit nalunaarusiaat
+      respondent: Akissuteqartoq %{number}
+      response_count:
+        one: '%{count} akissut'
+        other: '%{count} akissutit'
   phases:
     community_monitor_title: Inoqatigiinni nakkutilliisoq
     native_survey_button: Misissuinermi peqataagit

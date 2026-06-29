@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
+import { devicePreviewSizes } from './dimensions';
 import DesktopButton from './ViewButtons/DesktopButton';
 import MobileButton from './ViewButtons/MobileButton';
 
@@ -38,12 +39,16 @@ const ContentBuilderEditModePreview = React.forwardRef<
         </Box>
         {/* Platform Container */}
         <Box
-          height="620px"
+          height={devicePreviewSizes.frameHeight}
           border="solid black"
           borderWidth="40px 20px 20px 20px"
           zIndex="1"
           mb="12px"
-          width={isMobile ? '360px' : '1140px'}
+          width={
+            isMobile
+              ? devicePreviewSizes.mobile.frameWidth
+              : devicePreviewSizes.desktop.frameWidth
+          }
           borderRadius="20px"
         >
           {/* Iframe */}
@@ -51,8 +56,12 @@ const ContentBuilderEditModePreview = React.forwardRef<
             as="iframe"
             ref={ref}
             src={iframeSrc}
-            height="560px"
-            width={isMobile ? '320px' : '1100px'}
+            height={devicePreviewSizes.iframeHeight}
+            width={
+              isMobile
+                ? devicePreviewSizes.mobile.iframeWidth
+                : devicePreviewSizes.desktop.iframeWidth
+            }
             border="none"
             borderRadius="3px"
             data-cy={

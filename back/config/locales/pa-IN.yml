@@ -267,6 +267,16 @@ pa-IN:
       title: ਸਾਰੇ ਪ੍ਰੋਜੈਕਟ
     proposals:
       title: ਪ੍ਰਸਤਾਵ
+  pdf_export:
+    survey_responses:
+      date: ਮਿਤੀ
+      no_answer: (ਕੋਈ ਜਵਾਬ ਨਹੀਂ)
+      prepared_by: ਦੁਆਰਾ ਤਿਆਰ ਕੀਤਾ ਗਿਆ
+      report_label: ਸਰਵੇਖਣ ਜਵਾਬ ਰਿਪੋਰਟ
+      respondent: ਉੱਤਰਦਾਤਾ %{number}
+      response_count:
+        one: '%{count} ਜਵਾਬ'
+        other: '%{count} ਜਵਾਬ'
   phases:
     community_monitor_title: ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ
     native_survey_button: ਸਰਵੇਖਣ ਲਵੋ

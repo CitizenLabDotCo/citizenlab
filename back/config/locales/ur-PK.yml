@@ -267,6 +267,16 @@ ur-PK:
       title: تمام منصوبے
     proposals:
       title: تجاویز
+  pdf_export:
+    survey_responses:
+      date: تاریخ
+      no_answer: (کوئی جواب نہیں)
+      prepared_by: تیار کردہ
+      report_label: سروے کے جوابات کی رپورٹ
+      respondent: جواب دہندہ %{number}
+      response_count:
+        one: '%{count} جواب'
+        other: '%{count} جوابات'
   phases:
     community_monitor_title: کمیونٹی مانیٹر
     native_survey_button: سروے میں حصہ لیں۔
