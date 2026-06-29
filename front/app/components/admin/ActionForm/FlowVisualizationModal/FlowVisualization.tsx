@@ -2,32 +2,39 @@ import React from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
-import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
-import { PermittedBy } from 'api/phase_permissions/types';
+import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import Blocks from './Blocks';
 import Edge from './Blocks/Edge';
 
 interface Props {
-  permittedBy: PermittedBy;
-  verificationEnabled: boolean;
-  permissionsCustomFields: IPermissionsPhaseCustomFieldData[];
-  userFieldsInForm: boolean | null;
+  permission: IPhasePermissionData;
+  phaseId: string;
 }
 
 const FlowVisualization = ({
-  permittedBy,
-  verificationEnabled,
-  permissionsCustomFields,
-  userFieldsInForm,
+  permission,
+  phaseId
 }: Props) => {
+  const {
+    permitted_by,
+    action,
+    user_fields_in_form_descriptor
+  } = permission.attributes;
+
+  const { data: permissionFields } = usePermissionsPhaseCustomFields({
+    phaseId,
+    action,
+  });
+
   return (
     <Box display="flex" flexDirection="row">
       <Blocks
-        permittedBy={permittedBy}
-        permissionsCustomFields={permissionsCustomFields}
+        permittedBy={permitted_by}
+        permissionsCustomFields={permissionFields?.data ?? []}
         verificationEnabled={verificationEnabled}
-        userFieldsInForm={userFieldsInForm}
+        userFieldsInForm={user_fields_in_form_descriptor.value}
       />
       <Edge />
       <Box display="flex" alignItems="center">
