@@ -11,7 +11,7 @@ describe McpServer::Tools::ListAttachedImages do
 
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: project.id },
+      params: { resource_type: 'Project', resource_id: project.id },
       current_user:
     )
 
@@ -26,7 +26,7 @@ describe McpServer::Tools::ListAttachedImages do
 
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Event', container_id: event.id },
+      params: { resource_type: 'Event', resource_id: event.id },
       current_user:
     )
 
@@ -35,10 +35,10 @@ describe McpServer::Tools::ListAttachedImages do
     expect(ids).to contain_exactly(image.id)
   end
 
-  it 'returns a not-found error when the container is missing' do
+  it 'returns a not-found error when the resource is missing' do
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: SecureRandom.uuid },
+      params: { resource_type: 'Project', resource_id: SecureRandom.uuid },
       current_user:
     )
 

@@ -14,7 +14,7 @@ describe McpServer::Tools::ListFileAttachments do
 
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: project.id },
+      params: { resource_type: 'Project', resource_id: project.id },
       current_user:
     )
 
@@ -23,10 +23,10 @@ describe McpServer::Tools::ListFileAttachments do
     expect(file_ids).to eq([file_b.id, file_a.id])
   end
 
-  it 'returns a not-found error when the container is missing' do
+  it 'returns a not-found error when the resource is missing' do
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: SecureRandom.uuid },
+      params: { resource_type: 'Project', resource_id: SecureRandom.uuid },
       current_user:
     )
 

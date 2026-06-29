@@ -2,7 +2,15 @@
 
 class McpServer::Tools::ListProjectFiles < McpServer::BaseTool
   def name = 'list_project_files'
-  def description = "Lists the project's files."
+
+  def description
+    <<~DESC.squish
+      Lists the project's files. The project's files are a per-project pool of uploaded
+      files that can be attached to its resources (e.g., the project itself or phases) via
+      `attach_file`. The same file can be attached to multiple resources in the scope of
+      the project.
+    DESC
+  end
 
   def input_schema
     {

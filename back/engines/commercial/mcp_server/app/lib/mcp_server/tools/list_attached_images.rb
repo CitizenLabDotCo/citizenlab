@@ -8,24 +8,30 @@ class McpServer::Tools::ListAttachedImages < McpServer::BaseTool
   private_constant :CONTAINERS
 
   def name = 'list_attached_images'
-  def description = 'Lists the images attached to a container.'
+
+  def description
+    <<~DESC.squish
+      Lists the images attached to a resource. Each image is shown on the
+      resource's page.
+    DESC
+  end
 
   def input_schema
     {
       properties: {
-        container_type: { type: 'string', enum: CONTAINERS.keys },
-        container_id: { type: 'string' },
+        resource_type: { type: 'string', enum: CONTAINERS.keys },
+        resource_id: { type: 'string' },
         **PAGINATION_SCHEMA
       },
-      required: %w[container_type container_id],
+      required: %w[resource_type resource_id],
       additionalProperties: false
     }
   end
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      config = CONTAINERS.fetch(params[:container_type])
-      container = config[:class].find(params[:container_id])
+      config = CONTAINERS.fetch(params[:resource_type])
+      container = config[:class].find(params[:resource_id])
 
       scope = container
         .public_send(config[:association])
@@ -38,7 +44,7 @@ class McpServer::Tools::ListAttachedImages < McpServer::BaseTool
         **params.slice(:page, :per_page)
       )
     rescue ActiveRecord::RecordNotFound
-      error("#{params[:container_type]} not found: #{params[:container_id]}")
+      error("#{params[:resource_type]} not found: #{params[:resource_id]}")
     end
   end
 end

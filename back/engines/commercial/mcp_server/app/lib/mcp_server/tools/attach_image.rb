@@ -9,13 +9,18 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
 
   def name = 'attach_image'
 
-  def description = 'Adds an image to an existing resource (container) by fetching it from a public URL.'
+  def description
+    <<~DESC.squish
+      Adds an image to an existing resource by fetching it from a public URL.
+      The image is shown on the resource's page.
+    DESC
+  end
 
   def input_schema
     {
       properties: {
-        container_type: { type: 'string', enum: CONTAINERS.keys },
-        container_id: { type: 'string' },
+        resource_type: { type: 'string', enum: CONTAINERS.keys },
+        resource_id: { type: 'string' },
         remote_url: {
           type: 'string',
           format: 'uri',
@@ -23,7 +28,7 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
         },
         alt_text_multiloc: { **multiloc_schema, description: 'Alt text per locale.' }
       },
-      required: %w[container_type container_id remote_url],
+      required: %w[resource_type resource_id remote_url],
       additionalProperties: false
     }
   end
@@ -41,11 +46,11 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
       image.save!
 
       ok(
-        "Attached image to #{params[:container_type]} #{container.id}",
+        "Attached image to #{params[:resource_type]} #{container.id}",
         structured: McpServer::Serializers::Image.serialize(image)
       )
     rescue ActiveRecord::RecordNotFound
-      error("#{params[:container_type]} not found: #{params[:container_id]}")
+      error("#{params[:resource_type]} not found: #{params[:resource_id]}")
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
     rescue CarrierWave::DownloadError, CarrierWave::IntegrityError => e
@@ -55,11 +60,11 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
     private
 
     def config
-      @config ||= CONTAINERS.fetch(params[:container_type])
+      @config ||= CONTAINERS.fetch(params[:resource_type])
     end
 
     def container
-      @container ||= config[:class].find(params[:container_id])
+      @container ||= config[:class].find(params[:resource_id])
     end
 
     def images_association

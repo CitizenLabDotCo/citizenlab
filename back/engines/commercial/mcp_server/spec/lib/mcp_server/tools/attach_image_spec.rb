@@ -11,7 +11,7 @@ describe McpServer::Tools::AttachImage do
   it 'attaches an image to a project' do
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: project.id, remote_url: remote_url },
+      params: { resource_type: 'Project', resource_id: project.id, remote_url: remote_url },
       current_user:
     )
 
@@ -25,7 +25,7 @@ describe McpServer::Tools::AttachImage do
 
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Event', container_id: event.id, remote_url: remote_url },
+      params: { resource_type: 'Event', resource_id: event.id, remote_url: remote_url },
       current_user:
     )
 
@@ -39,7 +39,7 @@ describe McpServer::Tools::AttachImage do
 
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: published.id, remote_url: remote_url },
+      params: { resource_type: 'Project', resource_id: published.id, remote_url: remote_url },
       current_user:
     )
 
@@ -47,10 +47,10 @@ describe McpServer::Tools::AttachImage do
     expect(published.reload.project_images.count).to eq(0)
   end
 
-  it 'returns a not-found error when the container is missing' do
+  it 'returns a not-found error when the resource is missing' do
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: SecureRandom.uuid, remote_url: remote_url },
+      params: { resource_type: 'Project', resource_id: SecureRandom.uuid, remote_url: remote_url },
       current_user:
     )
 

@@ -9,23 +9,30 @@ class McpServer::Tools::ListFileAttachments < McpServer::BaseTool
   private_constant :CONTAINERS
 
   def name = 'list_file_attachments'
-  def description = 'Lists the files attached to a container, ordered by position.'
+
+  def description
+    <<~DESC.squish
+      Lists the files attached to a resource, ordered by position. Each file is
+      shown as an attachment on the resource's page and can be downloaded from
+      there.
+    DESC
+  end
 
   def input_schema
     {
       properties: {
-        container_type: { type: 'string', enum: CONTAINERS.keys },
-        container_id: { type: 'string' },
+        resource_type: { type: 'string', enum: CONTAINERS.keys },
+        resource_id: { type: 'string' },
         **PAGINATION_SCHEMA
       },
-      required: %w[container_type container_id],
+      required: %w[resource_type resource_id],
       additionalProperties: false
     }
   end
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      container = CONTAINERS.fetch(params[:container_type]).find(params[:container_id])
+      container = CONTAINERS.fetch(params[:resource_type]).find(params[:resource_id])
       scope = Files::FileAttachment
         .where(attachable: container)
         .includes(:file)
@@ -38,7 +45,7 @@ class McpServer::Tools::ListFileAttachments < McpServer::BaseTool
         **params.slice(:page, :per_page)
       )
     rescue ActiveRecord::RecordNotFound
-      error("#{params[:container_type]} not found: #{params[:container_id]}")
+      error("#{params[:resource_type]} not found: #{params[:resource_id]}")
     end
   end
 end

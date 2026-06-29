@@ -12,17 +12,19 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Attaches a file to a container. Pass either `remote_url` to upload a new file
-      from a public URL, or `file_id` to reuse one of the container's project files
-      (see `list_project_files`).
+      Attaches a file to an existing resource. The file is listed as an attachment
+      on the resource's page and can be downloaded from there. Pass `remote_url`
+      to upload a new file from a public URL (which is also added to the
+      project's files), or `file_id` to reuse one of the project's files (see
+      `list_project_files`).
     DESC
   end
 
   def input_schema
     {
       properties: {
-        container_type: { type: 'string', enum: CONTAINERS.keys },
-        container_id: { type: 'string' },
+        resource_type: { type: 'string', enum: CONTAINERS.keys },
+        resource_id: { type: 'string' },
         remote_url: {
           type: 'string',
           format: 'uri',
@@ -30,7 +32,7 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
         },
         file_id: {
           type: 'string',
-          description: "ID of an existing file from the container's project files."
+          description: "ID of an existing file from the resource's project files."
         },
         name: {
           type: 'string',
@@ -40,7 +42,7 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
           DESC
         }
       },
-      required: %w[container_type container_id],
+      required: %w[resource_type resource_id],
       oneOf: [
         { required: ['remote_url'] },
         { required: ['file_id'] }
@@ -65,7 +67,7 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
       side_fx.after_create(attachment, current_user)
 
       ok(
-        "Attached file to #{params[:container_type]} #{container.id}",
+        "Attached file to #{params[:resource_type]} #{container.id}",
         structured: McpServer::Serializers::FileAttachment.serialize(attachment)
       )
     rescue ActiveRecord::RecordNotFound => e
@@ -80,8 +82,8 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
 
     def container
       @container ||= CONTAINERS
-        .fetch(params[:container_type])
-        .find(params[:container_id])
+        .fetch(params[:resource_type])
+        .find(params[:resource_id])
     end
 
     def build_new_file
@@ -98,7 +100,7 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
       @existing_file ||= container.project.files.find(params[:file_id])
     rescue ActiveRecord::RecordNotFound
       raise ActiveRecord::RecordNotFound, <<~MSG.squish
-        File #{params[:file_id]} is not one of the container's project files
+        File #{params[:file_id]} is not one of the resource's project files
       MSG
     end
 

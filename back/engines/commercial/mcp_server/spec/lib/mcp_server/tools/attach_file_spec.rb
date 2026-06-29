@@ -12,7 +12,7 @@ describe McpServer::Tools::AttachFile do
     it 'uploads and attaches the file to a project' do
       response = run_mcp_tool(
         described_class,
-        params: { container_type: 'Project', container_id: project.id, remote_url: remote_url, name: 'doc.pdf' },
+        params: { resource_type: 'Project', resource_id: project.id, remote_url: remote_url, name: 'doc.pdf' },
         current_user:
       )
 
@@ -29,7 +29,7 @@ describe McpServer::Tools::AttachFile do
 
       response = run_mcp_tool(
         described_class,
-        params: { container_type: 'Phase', container_id: phase.id, remote_url: remote_url, name: 'doc.pdf' },
+        params: { resource_type: 'Phase', resource_id: phase.id, remote_url: remote_url, name: 'doc.pdf' },
         current_user:
       )
 
@@ -47,7 +47,7 @@ describe McpServer::Tools::AttachFile do
     it 'reuses an existing project file' do
       response = run_mcp_tool(
         described_class,
-        params: { container_type: 'Project', container_id: project.id, file_id: existing_file.id },
+        params: { resource_type: 'Project', resource_id: project.id, file_id: existing_file.id },
         current_user:
       )
 
@@ -56,18 +56,18 @@ describe McpServer::Tools::AttachFile do
       expect(attachment.file).to eq(existing_file)
     end
 
-    it "refuses when the file is not one of the container's project files" do
+    it "refuses when the file is not one of the resource's project files" do
       other_project = create(:project, :draft)
       other_file = create(:file, projects: [other_project])
 
       response = run_mcp_tool(
         described_class,
-        params: { container_type: 'Project', container_id: project.id, file_id: other_file.id },
+        params: { resource_type: 'Project', resource_id: project.id, file_id: other_file.id },
         current_user:
       )
 
       expect(response).to be_error
-      expect(response.content.first[:text]).to match(/not one of the container's project files/)
+      expect(response.content.first[:text]).to match(/not one of the resource's project files/)
     end
   end
 
@@ -76,7 +76,7 @@ describe McpServer::Tools::AttachFile do
 
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: published.id, remote_url: remote_url, name: 'doc.pdf' },
+      params: { resource_type: 'Project', resource_id: published.id, remote_url: remote_url, name: 'doc.pdf' },
       current_user:
     )
 
@@ -84,10 +84,10 @@ describe McpServer::Tools::AttachFile do
     expect(Files::FileAttachment.where(attachable: published).count).to eq(0)
   end
 
-  it 'returns a not-found error when the container is missing' do
+  it 'returns a not-found error when the resource is missing' do
     response = run_mcp_tool(
       described_class,
-      params: { container_type: 'Project', container_id: SecureRandom.uuid, remote_url: remote_url },
+      params: { resource_type: 'Project', resource_id: SecureRandom.uuid, remote_url: remote_url },
       current_user:
     )
 
