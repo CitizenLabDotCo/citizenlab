@@ -85,7 +85,13 @@ const ProjectPage = () => {
   }
 
   const slug = project.data.attributes.slug;
-  const previewSrc = `/${locale}/projects/${slug}`;
+  // Carry the current query string (e.g. ?parallel_participation) into the
+  // preview iframe so it renders the same project-page variant the admin is
+  // editing (mirrors openContentBuilder below). When the flag is enabled
+  // server-side this is a no-op; it only matters when toggled via the URL.
+  // TODO(parallel_participation cleanup): drop the query-string forwarding once
+  // the flag is removed and the new project page is the default.
+  const previewSrc = `/${locale}/projects/${slug}${window.location.search}`;
 
   const openContentBuilder = () => {
     // Preserve the current query string (e.g. ?parallel_participation) so the
