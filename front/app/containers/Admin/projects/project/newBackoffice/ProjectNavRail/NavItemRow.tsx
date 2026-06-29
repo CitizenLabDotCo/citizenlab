@@ -1,31 +1,31 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useLocation } from 'utils/router';
 
-import type { LinkProps } from '@tanstack/react-router';
+export type ProjectNavTarget =
+  | '/admin/projects/$projectId/project-page'
+  | '/admin/projects/$projectId/audience'
+  | '/admin/projects/$projectId/messaging'
+  | '/admin/projects/$projectId/events'
+  | '/admin/projects/$projectId/files'
+  | '/admin/projects/$projectId/general';
 
 export interface NavItem {
   name: string;
   label: MessageDescriptor;
-  url: string;
-  match: string;
+  to: ProjectNavTarget;
   badge?: React.ReactNode;
 }
 
-const RowLink = typedStyled(Link)`
+const Row = styled(Box)`
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-grow: 1;
-  min-width: 0;
-  padding: 8px 10px;
   border-radius: 6px;
-  cursor: pointer;
-  text-decoration: none;
   transition: background 80ms ease-out;
 
   &:hover {
@@ -38,29 +38,40 @@ const RowLink = typedStyled(Link)`
   }
 `;
 
+const RowLink = typedStyled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+`;
+
 const NavItemRow = ({
   item,
+  projectId,
   trailing,
 }: {
   item: NavItem;
+  projectId: string;
   trailing?: React.ReactNode;
 }) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const active = pathname.includes(item.match);
+  const active = pathname.includes(item.to.replace('$projectId', projectId));
 
   return (
-    <Box display="flex" alignItems="center" gap="6px">
-      <RowLink
-        to={item.url as LinkProps['to']}
-        className={active ? 'active' : undefined}
-      >
+    <Row className={active ? 'active' : undefined} pr={trailing ? '8px' : '0'}>
+      <RowLink to={item.to} params={{ projectId }}>
         <Box flexGrow={1} minWidth="0">
           <Text
             m="0"
             fontSize="s"
-            color={active ? 'primary' : 'coolGrey700'}
-            fontWeight={active ? 'semi-bold' : 'normal'}
+            color={active ? 'textPrimary' : 'coolGrey700'}
+            fontWeight={active ? 'bold' : 'normal'}
           >
             {formatMessage(item.label)}
           </Text>
@@ -68,7 +79,7 @@ const NavItemRow = ({
         {item.badge}
       </RowLink>
       {trailing}
-    </Box>
+    </Row>
   );
 };
 

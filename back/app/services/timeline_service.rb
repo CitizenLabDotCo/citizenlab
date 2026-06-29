@@ -33,10 +33,6 @@ class TimelineService
     past_phases(project, time).max_by(&:end_at)
   end
 
-  def phase_is_complete?(phase, time = Time.now)
-    phase.end_at.present? && phase.end_at <= time.in_time_zone
-  end
-
   def current_or_backup_transitive_phase(project, time = Time.now)
     # This method is used to determine which project phase is the most relevant with
     # respect to the input form. For example, to select the input term from the right
@@ -50,23 +46,10 @@ class TimelineService
     project.phases.select { |phase| phase.pmethod.transitive? }&.last
   end
 
-  def current_and_future_phases(project, time = Time.now)
-    time = time.in_time_zone
-    project.phases.select { |phase| phase.end_at.nil? || phase.end_at > time }
-  end
-
-  def in_active_phase?(idea)
-    idea.phases.include?(current_phase(idea.project))
-  end
-
-  def overlaps?(phase1, phase2)
-    period1 = phase1.start_at...phase1.end_at
-    period2 = phase2.start_at...phase2.end_at
-    period1.overlap?(period2)
-  end
-
-  def other_project_phases(phase)
-    Phase.where(project_id: phase.project_id).all.reject { |p| p.id == phase.id }
+  def overlapping_phases(phase)
+    Phase.where(project_id: phase.project_id).where.not(id: phase.id).select do |other_phase|
+      overlaps?(phase, other_phase)
+    end
   end
 
   def timeline_active(project)
@@ -116,5 +99,11 @@ class TimelineService
     return false if !phase.start_at
 
     other_project_phases.maximum(:start_at) < phase.start_at
+  end
+
+  private
+
+  def overlaps?(phase1, phase2)
+    (phase1.start_at...phase1.end_at).overlap?(phase2.start_at...phase2.end_at)
   end
 end

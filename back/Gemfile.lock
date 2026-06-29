@@ -496,7 +496,7 @@ GEM
     crack (1.0.0)
       bigdecimal
       rexml
-    crass (1.0.6)
+    crass (1.0.7)
     crawler_detect (1.2.9)
       qonfig (>= 0.24)
     css_parser (1.22.0)

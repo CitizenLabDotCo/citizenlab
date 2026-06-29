@@ -21,7 +21,29 @@ import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
-import type { LinkProps } from '@tanstack/react-router';
+// Each phase landing tab maps to a registered phase route literal, so the
+// Link `to` below is compile-checked against the route tree instead of being
+// an interpolated string cast with `as LinkProps['to']`.
+type PhaseLandingTab = ReturnType<typeof getPhaseLandingTab>;
+
+type PhaseTabTarget =
+  | '/admin/projects/$projectId/phases/$phaseId/setup'
+  | '/admin/projects/$projectId/phases/$phaseId/ideas'
+  | '/admin/projects/$projectId/phases/$phaseId/proposals'
+  | '/admin/projects/$projectId/phases/$phaseId/insights'
+  | '/admin/projects/$projectId/phases/$phaseId/polls'
+  | '/admin/projects/$projectId/phases/$phaseId/survey-results'
+  | '/admin/projects/$projectId/phases/$phaseId/volunteering';
+
+const PHASE_TAB_ROUTES: Record<PhaseLandingTab, PhaseTabTarget> = {
+  setup: '/admin/projects/$projectId/phases/$phaseId/setup',
+  ideas: '/admin/projects/$projectId/phases/$phaseId/ideas',
+  proposals: '/admin/projects/$projectId/phases/$phaseId/proposals',
+  insights: '/admin/projects/$projectId/phases/$phaseId/insights',
+  polls: '/admin/projects/$projectId/phases/$phaseId/polls',
+  'survey-results': '/admin/projects/$projectId/phases/$phaseId/survey-results',
+  volunteering: '/admin/projects/$projectId/phases/$phaseId/volunteering',
+};
 
 const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: methodMessages.ideation,
@@ -71,6 +93,7 @@ const dotBorder = (status: PhaseStatus) =>
   status === 'future' ? `2px solid ${colors.coolGrey300}` : undefined;
 
 const Row = styled.div<{ selected: boolean }>`
+  position: relative;
   display: flex;
   gap: 10px;
   padding: 8px;
@@ -84,6 +107,19 @@ const Row = styled.div<{ selected: boolean }>`
     background: ${({ selected }) =>
       selected ? colors.grey200 : colors.grey100};
   }
+`;
+
+const DOT_CENTER = 16;
+
+const Connector = styled.div<{ isFirst: boolean; isLast: boolean }>`
+  position: absolute;
+  left: 13px; /* 8px row padding + 5px (half the 10px dot) */
+  width: 2px;
+  margin-left: -1px;
+  top: ${({ isFirst }) => (isFirst ? `${DOT_CENTER}px` : '0')};
+  bottom: ${({ isLast }) => (isLast ? 'auto' : '0')};
+  height: ${({ isLast }) => (isLast ? `${DOT_CENTER}px` : 'auto')};
+  background: ${colors.coolGrey300};
 `;
 
 interface Props {
@@ -109,8 +145,8 @@ const TimelinePhases = ({ projectId }: Props) => {
     <Box p="12px" borderTop={`1px solid ${colors.grey200}`}>
       <Text
         m="0 0 8px 0"
-        px="2px"
-        fontSize="m"
+        px="10px"
+        fontSize="s"
         fontWeight="bold"
         color="textPrimary"
       >
@@ -134,32 +170,24 @@ const TimelinePhases = ({ projectId }: Props) => {
           return (
             <Link
               key={phase.id}
-              to={
-                `/admin/projects/${projectId}/phases/${
-                  phase.id
-                }/${getPhaseLandingTab(phase)}` as LinkProps['to']
-              }
+              to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
+              params={{ projectId, phaseId: phase.id }}
             >
               <Row selected={isSelected}>
-                <Box display="flex" flexDirection="column" alignItems="center">
+                {sortedPhases.length > 1 && (
+                  <Connector isFirst={index === 0} isLast={isLast} />
+                )}
+                <Box w="10px" flex="0 0 auto">
                   <Box
+                    position="relative"
+                    zIndex="1"
                     w="10px"
                     h="10px"
                     borderRadius="50%"
-                    flex="0 0 auto"
                     mt="3px"
                     background={dotBackground(status)}
                     border={dotBorder(status)}
                   />
-                  {!isLast && (
-                    <Box
-                      w="2px"
-                      flex="1 1 auto"
-                      minHeight="8px"
-                      background={colors.grey300}
-                      my="4px"
-                    />
-                  )}
                 </Box>
                 <Box flexGrow={1} pb="4px">
                   <Text
@@ -188,9 +216,10 @@ const TimelinePhases = ({ projectId }: Props) => {
       <Box display="flex" mt="4px">
         <ButtonWithLink
           linkTo={`/admin/projects/${projectId}/phases/new`}
-          buttonStyle="primary-inverse"
+          buttonStyle="text"
+          size="s"
           icon="plus"
-          py="4px"
+          width="auto"
         >
           {formatMessage(messages.newPhase)}
         </ButtonWithLink>

@@ -12,14 +12,16 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
-import { devicePreviewSizes } from 'components/admin/ContentBuilder/EditModePreview/dimensions';
-
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
+// Render the preview interior at a fixed logical phone viewport and scale the
+// whole thing down to fit the frame, so components keep their real proportions
+// instead of being squeezed into a narrow iframe ("scale, don't shrink"). The
+// frame size is derived from the scale, so the same trick fits any viewport.
 const Card = styled(Box)`
   transition: transform 150ms ease-out, box-shadow 150ms ease-out;
 
@@ -63,7 +65,9 @@ const CtaWrapper = styled(Box)`
 const ProjectPage = () => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
-  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/project-page',
+  });
   const { data: project } = useProjectById(projectId);
 
   if (!project) {
@@ -103,8 +107,8 @@ const ProjectPage = () => {
       <Card
         data-cy="e2e-project-page-preview"
         position="relative"
-        w={devicePreviewSizes.mobile.frameWidth}
-        h={devicePreviewSizes.frameHeight}
+        w={`${phoneFrameWidth}px`}
+        h={`${phoneFrameHeight}px`}
         background={colors.white}
         border={`1.5px solid ${colors.grey300}`}
         borderRadius="22px"
@@ -116,9 +120,11 @@ const ProjectPage = () => {
           src={previewSrc}
           title={formatMessage(messages.projectPagePreviewTitle)}
           display="block"
-          w="100%"
-          h="100%"
+          w={`${PHONE_LOGICAL_WIDTH}px`}
+          h={`${PHONE_LOGICAL_HEIGHT}px`}
           border="none"
+          transform={`scale(${PHONE_PREVIEW_SCALE})`}
+          style={{ transformOrigin: 'top left' }}
         />
         <CornerEditButton
           position="absolute"
@@ -169,3 +175,13 @@ const ProjectPage = () => {
 };
 
 export default ProjectPage;
+
+const PHONE_LOGICAL_WIDTH = 400;
+
+const PHONE_PREVIEW_SCALE = 0.8;
+
+const phoneFrameHeight = PHONE_LOGICAL_HEIGHT * PHONE_PREVIEW_SCALE;
+
+const PHONE_LOGICAL_HEIGHT = 800;
+
+const phoneFrameWidth = PHONE_LOGICAL_WIDTH * PHONE_PREVIEW_SCALE;

@@ -7,3 +7,6 @@ export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
   'deleteContentBuilderElement';
 
 export const DEFAULT_PADDING = '20px';
+
+export const TOOLBOX_WIDTH = '236px';
+export const SETTINGS_PANEL_WIDTH = '400px';
