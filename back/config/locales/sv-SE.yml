@@ -267,6 +267,16 @@ sv-SE:
       title: Alla projekt
     proposals:
       title: Förslag
+  pdf_export:
+    survey_responses:
+      date: Datum
+      no_answer: (Inget svar)
+      prepared_by: Framtagen av
+      report_label: Rapport över enkätsvar
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} svar'
+        other: '%{count} svar'
   phases:
     community_monitor_title: Gemenskapens övervakare
     native_survey_button: Svara på enkäten

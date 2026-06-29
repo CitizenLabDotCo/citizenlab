@@ -267,6 +267,16 @@ it-IT:
       title: Tutti i progetti
     proposals:
       title: Proposte
+  pdf_export:
+    survey_responses:
+      date: Data
+      no_answer: (Nessuna risposta)
+      prepared_by: Preparato da
+      report_label: Report delle risposte al sondaggio
+      respondent: Rispondente %{number}
+      response_count:
+        one: '%{count} risposta'
+        other: '%{count} risposte'
   phases:
     community_monitor_title: Barometro civico
     native_survey_button: Partecipa al sondaggio

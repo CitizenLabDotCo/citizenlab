@@ -66,12 +66,6 @@ const ViewButton = styled.button<{ active: boolean }>`
             color: darken(0.2, theme.colors.tenantText),
           }};
   }
-
-  &.focus-visible,
-  &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.tenantPrimary};
-    outline-offset: 2px;
-  }
 `;
 
 interface Props {
