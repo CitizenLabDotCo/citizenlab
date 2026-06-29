@@ -20,6 +20,7 @@ resource 'Phases' do
       parameter :number, 'Page number'
       parameter :size, 'Number of phases per page'
     end
+    parameter :placement_type, "Which phases to return: 'on_timeline' (default), 'standalone', or 'all'.", required: false
     let(:project_id) { @project.id }
 
     context 'when visitor' do
@@ -81,6 +82,33 @@ resource 'Phases' do
         expect(phase2_response.dig(:attributes, :total_votes_amount)).to eq 3
         expect(phase2_response.dig(:relationships, :manual_voters_last_updated_by, :data, :id)).to be_nil
         expect(phase2_response.dig(:attributes, :manual_voters_last_updated_at)).to be_nil
+      end
+    end
+
+    context 'filtering by placement_type' do
+      before do
+        admin_header_token
+        @timeline_phases = @project.phases.to_a
+        @standalone = create(:phase, :standalone, project: @project, start_at: @timeline_phases.first.start_at, end_at: @timeline_phases.first.end_at)
+      end
+
+      example 'returns only on_timeline phases by default' do
+        do_request
+        assert_status 200
+        expect(json_response[:data].pluck(:id)).to match_array @timeline_phases.map(&:id)
+      end
+
+      example 'returns only standalone phases', document: false do
+        do_request(placement_type: 'standalone')
+        assert_status 200
+        expect(json_response[:data].pluck(:id)).to eq [@standalone.id]
+      end
+
+      example 'returns all phases, timeline phases first' do
+        do_request(placement_type: 'all')
+        assert_status 200
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].last[:id]).to eq @standalone.id
       end
     end
   end

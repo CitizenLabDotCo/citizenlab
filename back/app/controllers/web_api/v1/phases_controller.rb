@@ -11,7 +11,12 @@ class WebApi::V1::PhasesController < ApplicationController
   def index
     @phases = policy_scope(Phase)
       .where(project_id: params[:project_id])
-      .order(:start_at)
+      .ordered
+    @phases = case params[:placement_type]
+    when 'all' then @phases
+    when 'standalone' then @phases.standalone
+    else @phases.on_timeline # default
+    end
     @phases = paginate @phases
     @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
 
