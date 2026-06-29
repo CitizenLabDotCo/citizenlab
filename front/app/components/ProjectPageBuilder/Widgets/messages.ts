@@ -50,11 +50,36 @@ export default defineMessages({
   },
   inputFeedWidgetTitle: {
     id: 'app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle',
-    defaultMessage: 'Inputs',
+    defaultMessage: 'Phase content',
   },
   inputFeedManagedNote: {
     id: 'app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote',
     defaultMessage:
       "This shows the participation content for the active phase. Its content is set by the phase's method in the {projectEditorLink} — here you only choose where it sits on the page.",
+  },
+  onlyAdminsSeeThis: {
+    id: 'app.components.ProjectPageBuilder.Widgets.onlyAdminsSeeThis',
+    defaultMessage: 'Only admins and moderators of this project can see this',
+  },
+  bannerEmptyTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle',
+    defaultMessage: 'Add a project image',
+  },
+  bannerEmptyNote: {
+    id: 'app.components.ProjectPageBuilder.Widgets.bannerEmptyNote',
+    defaultMessage:
+      'No image yet · only admins and moderators of this project can see this',
+  },
+  inputFeedEmptyTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle',
+    defaultMessage: 'No ways to take part yet',
+  },
+  timelineEmptyTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.timelineEmptyTitle',
+    defaultMessage: 'No phases yet',
+  },
+  untitledProject: {
+    id: 'app.components.ProjectPageBuilder.Widgets.untitledProject',
+    defaultMessage: 'Untitled project',
   },
 });
