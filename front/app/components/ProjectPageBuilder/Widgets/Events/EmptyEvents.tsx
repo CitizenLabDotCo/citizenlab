@@ -16,11 +16,11 @@ import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/use
 import { FormattedMessage } from 'utils/cl-intl';
 import sharedMessages from 'utils/messages';
 
-import AdminOnlyNote from '../EmptyState/AdminOnlyNote';
 import EmptyStateContainer from '../EmptyState/EmptyStateContainer';
 import messages from '../messages';
 
-// Admin-only placeholder shown in the builder when the project has no events yet.
+// Shown (to everyone, like the public events page) when the project has no
+// upcoming or ongoing events yet.
 const EmptyEvents = () => {
   const padding = useCraftComponentDefaultPadding();
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -44,7 +44,6 @@ const EmptyEvents = () => {
         <Text m="0px" color="textSecondary">
           <FormattedMessage {...sharedMessages.noUpcomingOrOngoingEvents} />
         </Text>
-        <AdminOnlyNote />
       </EmptyStateContainer>
     </Box>
   );
