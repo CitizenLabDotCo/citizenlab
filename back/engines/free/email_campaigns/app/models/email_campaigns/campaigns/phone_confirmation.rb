@@ -33,30 +33,14 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  # Transactional SMS one-time-password campaign for phone-number verification.
-  # Unlike the manual SMS campaign, it is never broadcast through the send
-  # pipeline (activity / schedule / manual send): it is sent one recipient at a
-  # time from RequestNewPhoneConfirmationCodeJob via EmailCampaigns::Sms::SendService, and this campaign
-  # only provides the localized body template and the delivery tracking link.
   class Campaigns::PhoneConfirmation < Campaigns::BaseSms
-    # Belt-and-suspenders: block every pipeline send. The OTP is dispatched
-    # directly, so this filter never gets in the way of an actual send.
-    filter :never_via_pipeline
+    filter :exclude_from_send_pipeline
 
-    # The body is rendered here (not from a DB column) with the code interpolated,
-    # then translated to the recipient's locale by the delivery layer.
-    def generate_commands(recipient:, code:)
-      [{
-        author: author,
-        event_payload: { code: code },
-        body_multiloc: {
-          recipient.locale => I18n.t(
-            'email_campaigns.phone_confirmation.sms_body',
-            code: code,
-            locale: recipient.locale
-          )
-        }
-      }]
+    # Renders the OTP message body in the recipient's locale, with the code
+    # interpolated. SMS has no mailer, so the campaign produces its own body
+    # (the email side renders via a mailer instead).
+    def sms_body(recipient, code:)
+      I18n.t('email_campaigns.phone_confirmation.sms_body', code: code, locale: recipient.locale)
     end
 
     def can_be_disabled?
@@ -70,7 +54,7 @@ module EmailCampaigns
 
     private
 
-    def never_via_pipeline(activity: nil, time: nil)
+    def exclude_from_send_pipeline(activity: nil, time: nil)
       false
     end
   end

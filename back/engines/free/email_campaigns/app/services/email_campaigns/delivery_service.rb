@@ -110,11 +110,18 @@ module EmailCampaigns
       apply_send_pipeline([campaign])
     end
 
-    # Sends one campaign to one recipient immediately (synchronously) with a
-    # caller-supplied event_payload. For transactional emails that must arrive
-    # right away (e.g. confirmation codes). Runs Trackable hooks so a Delivery
-    # record is saved, but bypasses the recipient-filter pipeline.
+    # Sends one campaign to one recipient immediately, bypassing the
+    # recipient-filter pipeline. For transactional messages that must go out
+    # right away (e.g. confirmation codes).
     def send_now_to_user(campaign, recipient, event_payload = {})
+      return send_sms_now_to_user(campaign, recipient, event_payload) if campaign.channel == :sms
+
+      send_email_now_to_user(campaign, recipient, event_payload)
+    end
+
+    # Renders and delivers the campaign's email synchronously. Runs Trackable
+    # hooks so a Delivery record is saved.
+    def send_email_now_to_user(campaign, recipient, event_payload = {})
       command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
       campaign.run_before_send_hooks(command)
       campaign.mailer_class
@@ -122,6 +129,21 @@ module EmailCampaigns
         .campaign_mail
         .deliver_now
       campaign.run_after_send_hooks(command)
+    end
+
+    # Creates the SMS delivery synchronously (so it's tracked immediately) and
+    # enqueues the provider send. Used for transactional one-off sends like the
+    # phone-confirmation OTP, which goes to the recipient's pending
+    # new_phone_number being verified.
+    def send_sms_now_to_user(campaign, recipient, event_payload = {})
+      body = campaign.sms_body(recipient, **event_payload)
+      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
+        to: recipient.new_phone_number,
+        body: body,
+        user_id: recipient.id,
+        campaign_id: campaign.id
+      )
+      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
     end
 
     def send_preview(campaign, recipient)
