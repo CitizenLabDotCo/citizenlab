@@ -178,10 +178,10 @@ export default ProjectPage;
 
 const PHONE_LOGICAL_WIDTH = 400;
 
-const PHONE_PREVIEW_SCALE = 0.8;
-
-const phoneFrameHeight = PHONE_LOGICAL_HEIGHT * PHONE_PREVIEW_SCALE;
-
 const PHONE_LOGICAL_HEIGHT = 800;
 
+const PHONE_PREVIEW_SCALE = 0.8;
+
 const phoneFrameWidth = PHONE_LOGICAL_WIDTH * PHONE_PREVIEW_SCALE;
+
+const phoneFrameHeight = PHONE_LOGICAL_HEIGHT * PHONE_PREVIEW_SCALE;
