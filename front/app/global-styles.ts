@@ -1,5 +1,21 @@
 import { fontSizes, isRtl, colors } from '@citizenlab/cl2-component-library';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
+
+export const focusRing = css`
+  outline: 2px solid ${colors.black};
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px ${colors.white};
+`;
+
+export const focusRingInset = css`
+  outline: 2px solid ${colors.black};
+  outline-offset: -2px;
+`;
+
+export const focusRingBorder = css`
+  border: 2px solid ${colors.black};
+  box-shadow: 0 0 0 2px ${colors.white};
+`;
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -22,6 +38,12 @@ const GlobalStyle = createGlobalStyle`
     &:not(.focus-visible) {
       outline: none;
     }
+  }
+
+
+  *:focus-visible,
+  *.focus-visible {
+    ${focusRing}
   }
 
   html,

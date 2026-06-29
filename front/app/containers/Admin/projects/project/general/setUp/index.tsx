@@ -455,16 +455,21 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           {isProjectLibraryEnabled && (
             <Box mb="20px">
               <Warning>
-                <FormattedMessage
-                  {...messages.needInspiration}
-                  values={{
-                    inspirationHubLink: (
-                      <Link to="/admin/inspiration-hub" target="_blank">
-                        <FormattedMessage {...messages.inspirationHub} />
-                      </Link>
-                    ),
-                  }}
-                />
+                <>
+                  <strong>
+                    <FormattedMessage {...messages.needInspiration} />
+                  </strong>{' '}
+                  <FormattedMessage
+                    {...messages.needInspirationDescription}
+                    values={{
+                      inspirationHubLink: (
+                        <Link to="/admin/inspiration-hub" target="_blank">
+                          <FormattedMessage {...messages.inspirationHub} />
+                        </Link>
+                      ),
+                    }}
+                  />
+                </>
               </Warning>
             </Box>
           )}

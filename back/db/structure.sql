@@ -39,6 +39,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_d68de6da88;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
+ALTER TABLE IF EXISTS ONLY public.static_pages_spaces DROP CONSTRAINT IF EXISTS fk_rails_d41f96bbfb;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
 ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS fk_rails_d182afe5ca;
 ALTER TABLE IF EXISTS ONLY public.email_bans DROP CONSTRAINT IF EXISTS fk_rails_d15949a47c;
@@ -96,6 +97,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_ra
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_8f9b3b56d6;
 ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
+ALTER TABLE IF EXISTS ONLY public.static_pages_spaces DROP CONSTRAINT IF EXISTS fk_rails_8c48617ba6;
 ALTER TABLE IF EXISTS ONLY public.idea_relations DROP CONSTRAINT IF EXISTS fk_rails_8a385cdad7;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_87e592c9f5;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
@@ -207,6 +209,9 @@ DROP INDEX IF EXISTS public.index_tenants_on_deleted_at;
 DROP INDEX IF EXISTS public.index_tenants_on_creation_finalized_at;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_user_id;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_phase_id;
+DROP INDEX IF EXISTS public.index_static_pages_spaces_on_static_page_id_and_space_id;
+DROP INDEX IF EXISTS public.index_static_pages_spaces_on_static_page_id;
+DROP INDEX IF EXISTS public.index_static_pages_spaces_on_space_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_slug;
 DROP INDEX IF EXISTS public.index_static_pages_on_code;
 DROP INDEX IF EXISTS public.index_static_pages_global_topics_on_static_page_id;
@@ -524,6 +529,7 @@ ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_dist
 ALTER TABLE IF EXISTS ONLY public.text_images DROP CONSTRAINT IF EXISTS text_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.tenants DROP CONSTRAINT IF EXISTS tenants_pkey;
 ALTER TABLE IF EXISTS ONLY public.surveys_responses DROP CONSTRAINT IF EXISTS surveys_responses_pkey;
+ALTER TABLE IF EXISTS ONLY public.static_pages_spaces DROP CONSTRAINT IF EXISTS static_pages_spaces_pkey;
 ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS static_pages_global_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.spaces DROP CONSTRAINT IF EXISTS spaces_pkey;
@@ -663,6 +669,7 @@ DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributi
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
 DROP TABLE IF EXISTS public.surveys_responses;
+DROP TABLE IF EXISTS public.static_pages_spaces;
 DROP TABLE IF EXISTS public.static_pages_global_topics;
 DROP TABLE IF EXISTS public.static_pages;
 DROP TABLE IF EXISTS public.static_page_files;
@@ -2887,11 +2894,9 @@ CREATE TABLE public.idea_imports (
     import_user_id uuid,
     file_id uuid,
     user_created boolean DEFAULT false,
-    required boolean DEFAULT false,
     approved_at timestamp without time zone,
     page_range text[] DEFAULT '{}'::text[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_consent boolean DEFAULT false NOT NULL,
@@ -3557,7 +3562,6 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -3792,6 +3796,19 @@ CREATE TABLE public.static_pages_global_topics (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     global_topic_id uuid NOT NULL,
     static_page_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: static_pages_spaces; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.static_pages_spaces (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    static_page_id uuid NOT NULL,
+    space_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -4978,6 +4995,14 @@ ALTER TABLE ONLY public.spam_reports
 
 ALTER TABLE ONLY public.static_pages_global_topics
     ADD CONSTRAINT static_pages_global_topics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: static_pages_spaces static_pages_spaces_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.static_pages_spaces
+    ADD CONSTRAINT static_pages_spaces_pkey PRIMARY KEY (id);
 
 
 --
@@ -7213,6 +7238,27 @@ CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btre
 
 
 --
+-- Name: index_static_pages_spaces_on_space_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_static_pages_spaces_on_space_id ON public.static_pages_spaces USING btree (space_id);
+
+
+--
+-- Name: index_static_pages_spaces_on_static_page_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_static_pages_spaces_on_static_page_id ON public.static_pages_spaces USING btree (static_page_id);
+
+
+--
+-- Name: index_static_pages_spaces_on_static_page_id_and_space_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_static_pages_spaces_on_static_page_id_and_space_id ON public.static_pages_spaces USING btree (static_page_id, space_id);
+
+
+--
 -- Name: index_surveys_responses_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8064,6 +8110,14 @@ ALTER TABLE ONLY public.idea_relations
 
 
 --
+-- Name: static_pages_spaces fk_rails_8c48617ba6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.static_pages_spaces
+    ADD CONSTRAINT fk_rails_8c48617ba6 FOREIGN KEY (static_page_id) REFERENCES public.static_pages(id);
+
+
+--
 -- Name: user_custom_fields_representativeness_ref_distributions fk_rails_8cabeff294; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8520,6 +8574,14 @@ ALTER TABLE ONLY public.projects
 
 
 --
+-- Name: static_pages_spaces fk_rails_d41f96bbfb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.static_pages_spaces
+    ADD CONSTRAINT fk_rails_d41f96bbfb FOREIGN KEY (space_id) REFERENCES public.spaces(id);
+
+
+--
 -- Name: groups_projects fk_rails_d6353758d5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8766,7 +8828,9 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260617120000'),
 ('20260611120000'),
+('20260611000000'),
 ('20260602120000'),
 ('20260528180000'),
 ('20260528120000'),

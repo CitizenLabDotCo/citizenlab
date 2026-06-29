@@ -3,10 +3,7 @@ import React from 'react';
 import { colors, IconNames } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
-import {
-  IdMethodData,
-  IdMethodName,
-} from 'api/id_methods/types';
+import { IdMethodData, IdMethodName } from 'api/id_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
 
@@ -101,10 +98,11 @@ const SSOVerificationButton = ({
       onClickStandardSSO?.();
     } else {
       const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/${verificationMethod?.attributes.name
-        }?token=${jwt}&verification_pathname=${removeUrlLocale(
-          window.location.pathname
-        )}`;
+      window.location.href = `${AUTH_PATH}/${
+        verificationMethod?.attributes.name
+      }?token=${jwt}&verification_pathname=${removeUrlLocale(
+        window.location.pathname
+      )}`;
     }
   };
 

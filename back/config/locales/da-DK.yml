@@ -267,6 +267,16 @@ da-DK:
       title: Alle projekter
     proposals:
       title: Forslag
+  pdf_export:
+    survey_responses:
+      date: Dato
+      no_answer: (Intet svar)
+      prepared_by: Udarbejdet af
+      report_label: Rapport over spørgeskemabesvarelser
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} besvarelse'
+        other: '%{count} besvarelser'
   phases:
     community_monitor_title: Fællesskabsovervågning
     native_survey_button: Besvar spørgeskemaet

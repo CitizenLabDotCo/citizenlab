@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, BoxProps, Text } from '@citizenlab/cl2-component-library';
-import { get } from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -18,7 +18,7 @@ type Props = {
 const ProjectPreviewIndicator = ({ projectId, ...rest }: Props) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
-  const projectPreviewTokenCookie = get('preview_token');
+  const projectPreviewTokenCookie = Cookies.get('preview_token');
 
   if (
     project?.data.attributes.publication_status === 'draft' &&

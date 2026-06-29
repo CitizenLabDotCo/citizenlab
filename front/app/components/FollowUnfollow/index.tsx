@@ -8,6 +8,7 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useABTest from 'api/experiments/useABTest';
 import { FollowableType } from 'api/follow_unfollow/types';
@@ -27,6 +28,11 @@ import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';
+
+const UnsubscribeLink = styled.a`
+  color: ${colors.white};
+  text-decoration: underline;
+`;
 
 interface Props extends BoxWidthProps, BoxPaddingProps {
   followableType: FollowableType;
@@ -140,15 +146,9 @@ const FollowUnfollow = ({
 
   const getTooltipContent = () => {
     const unsubscribeLink = (
-      <a
-        href={'/profile/edit'}
-        target="_blank"
-        rel="noreferrer"
-        tabIndex={0}
-        style={{ textDecoration: 'underline', color: colors.white }}
-      >
+      <UnsubscribeLink href={'/profile/edit'} target="_blank" rel="noreferrer">
         <FormattedMessage {...messages.unsubscribe} />
-      </a>
+      </UnsubscribeLink>
     );
 
     if (toolTipType === 'input') {

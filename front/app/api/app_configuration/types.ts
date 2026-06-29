@@ -24,12 +24,12 @@ export type IAppConfigurationSettingsCore = {
   organization_site?: string;
   organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
   lifecycle_stage:
-  | 'trial'
-  | 'expired_trial'
-  | 'demo'
-  | 'active'
-  | 'churned'
-  | 'not_applicable';
+    | 'trial'
+    | 'expired_trial'
+    | 'demo'
+    | 'active'
+    | 'churned'
+    | 'not_applicable';
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
@@ -177,6 +177,7 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
+  parallel_participation?: AppConfigurationFeature;
   input_iq?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
@@ -202,11 +203,15 @@ export interface IAppConfigurationSettings {
   draft_phase_description?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
+  pdf_export_responses?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
-export type TAppConfigurationSetting = Exclude<keyof IAppConfigurationSettings, 'verification'>;
+export type TAppConfigurationSetting = Exclude<
+  keyof IAppConfigurationSettings,
+  'verification'
+>;
 
 export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {

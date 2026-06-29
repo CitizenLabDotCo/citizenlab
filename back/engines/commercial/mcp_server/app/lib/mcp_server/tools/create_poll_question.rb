@@ -50,7 +50,10 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.find(params[:phase_id])
+      authorize_project!(phase.project)
+
       question = build_question(phase)
+      authorize(question, :create?)
 
       ActiveRecord::Base.transaction do
         Polls::SideFxQuestionService.new.before_create(question, current_user)
@@ -62,7 +65,7 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
 
       ok(
         "Created poll question #{question.id} with #{question.options.size} option(s)",
-        structured: serialize(question.reload)
+        structured: McpServer::Serializers::PollQuestion.serialize(question.reload)
       )
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")
@@ -82,13 +85,6 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
       Polls::SideFxOptionService.new.before_create(option, current_user)
       option.save!
       Polls::SideFxOptionService.new.after_create(option, current_user)
-    end
-
-    def serialize(question)
-      question.as_json(
-        only: %i[id phase_id title_multiloc question_type max_options ordering],
-        include: { options: { only: %i[id title_multiloc ordering] } }
-      )
     end
   end
 end

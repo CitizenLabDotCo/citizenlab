@@ -24,10 +24,7 @@ const configuration: ModuleConfiguration = {
       );
 
       if (method) {
-        const last = isLastIdMethod(
-          verificationMethodName,
-          idMethods
-        );
+        const last = isLastIdMethod(verificationMethodName, idMethods);
         return (
           <OostendeRrnButton method={method} last={last} {...otherProps} />
         );

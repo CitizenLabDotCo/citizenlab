@@ -329,12 +329,15 @@ class User < ApplicationRecord
 
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
-    # either by posting ideas or comments in phases with public participation methods.
+    # either by posting ideas or comments in phases with public participation methods,
+    # or by accepting an invitation to co-sponsor a proposal.
     # This is to avoid exposing personal data of users who have not actively used the platform.
     ideas
       .joins(:ideas_phases)
       .joins(:phases)
-      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) || comments.exists?
+      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) ||
+      comments.exists? ||
+      cosponsorships.exists?(status: 'accepted')
   end
 
   private
@@ -379,6 +382,10 @@ class User < ApplicationRecord
                   (new_email_changed? || email_changed?) &&
                   email_was.present?
 
+    # Ignore changes that only differ in letter-case (e.g. accepting an invite with
+    # `small@big.com` for an address stored as `SMALL@BIG.COM`)
+    return if email_changed_only_in_case? && !new_email_changed?
+
     if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
       errors.add :email, :change_not_permitted, value: email, message: 'change not permitted - user not active'
@@ -415,6 +422,10 @@ class User < ApplicationRecord
 
   def email_or_new_email_changed?
     new_record? || email_changed? || new_email_changed?
+  end
+
+  def email_changed_only_in_case?
+    email_changed? && email.present? && email_was.present? && email.casecmp?(email_was)
   end
 
   def validate_email_domains_blacklist

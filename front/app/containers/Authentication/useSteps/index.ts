@@ -31,6 +31,7 @@ import {
   VerificationError,
 } from '../typings';
 
+import { restoreLocationAfterAuthReturn } from './restoreLocationAfterAuthReturn';
 import { getStepConfig } from './stepConfig';
 
 let initialized = false;
@@ -249,18 +250,6 @@ export default function useSteps() {
 
     // launch sign in flow, derived from route
     if (pathname.endsWith('/sign-in') || pathname.endsWith('/sign-in/admin')) {
-      // Capture `return_to` so we can navigate the browser there once auth
-      // completes. Only same-origin paths are accepted (must start with a
-      // single "/", excluding protocol-relative "//..." URLs) so this can't
-      // be turned into an open redirector.
-      if (
-        typeof search.return_to === 'string' &&
-        search.return_to.startsWith('/') &&
-        !search.return_to.startsWith('//')
-      ) {
-        localStorage.setItem('auth_return_to', search.return_to);
-      }
-
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
           context: GLOBAL_CONTEXT,
@@ -336,10 +325,6 @@ export default function useSteps() {
       const contextFromLocalStorage = localStorage.getItem('auth_context');
       localStorage.removeItem('auth_context');
 
-      // Check if there is a path in local storage
-      const pathFromLocalStorage = localStorage.getItem('auth_path');
-      localStorage.removeItem('auth_path');
-
       const context = contextFromLocalStorage
         ? JSON.parse(contextFromLocalStorage)
         : {
@@ -362,13 +347,7 @@ export default function useSteps() {
       updateState({ flow, email: emailInCaseUserNeedsToConfirm });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
-      // Check that the path is the same as the one stored in local storage
-      if (pathFromLocalStorage && pathname !== pathFromLocalStorage) {
-        clHistory.push(pathFromLocalStorage);
-      } else {
-        // Remove query string from URL as params already been captured
-        window.history.replaceState(null, '', pathname);
-      }
+      restoreLocationAfterAuthReturn(pathname);
     }
   }, [
     pathname,
@@ -379,21 +358,6 @@ export default function useSteps() {
     setError,
     updateState,
   ]);
-
-  // Honour `return_to` stashed by the /sign-in route once the user is
-  // authenticated and the auth modal has fully closed. Uses a full-page
-  // navigation (not clHistory.push) so non-SPA targets like Rails-served
-  // Doorkeeper endpoints actually hit the backend.
-  useEffect(() => {
-    if (currentStep !== 'closed') return;
-    if (isNilOrError(authUser)) return;
-
-    const returnTo = localStorage.getItem('auth_return_to');
-    if (!returnTo) return;
-
-    localStorage.removeItem('auth_return_to');
-    window.location.assign(returnTo);
-  }, [currentStep, authUser]);
 
   return {
     currentStep,

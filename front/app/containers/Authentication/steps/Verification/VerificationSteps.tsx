@@ -2,10 +2,7 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import {
-  IdMethodData,
-  omniauthVerificationTypes,
-} from 'api/id_methods/types';
+import { IdMethodData, omniauthVerificationTypes } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -54,11 +51,7 @@ const VerificationSteps = memo<Props>(
     const onMethodSelected = (selectedMethod: IdMethodData) => {
       // Save the successAction and the current context in local
       // storage for when user returns from verification which leaves platform.
-      if (
-        omniauthVerificationTypes.includes(
-          selectedMethod.attributes.name
-        )
-      ) {
+      if (omniauthVerificationTypes.includes(selectedMethod.attributes.name)) {
         localStorage.setItem(
           'auth_context',
           JSON.stringify(authenticationData.context)
@@ -69,7 +62,12 @@ const VerificationSteps = memo<Props>(
             JSON.stringify(authenticationData.successAction)
           );
         }
-        localStorage.setItem('auth_path', window.location.pathname);
+        // Store the full path *and* query so any participation params survive
+        // the verification round trip and the user returns where they were.
+        localStorage.setItem(
+          'auth_path',
+          `${window.location.pathname}${window.location.search}`
+        );
       }
 
       setMethod(selectedMethod);

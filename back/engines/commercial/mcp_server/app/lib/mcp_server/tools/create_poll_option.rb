@@ -26,7 +26,10 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       question = Polls::Question.find(params[:question_id])
+      authorize_project!(question.phase.project)
+
       option = Polls::Option.new(question: question, title_multiloc: params[:title_multiloc])
+      authorize(option, :create?)
 
       Polls::SideFxOptionService.new.before_create(option, current_user)
       option.save!
@@ -35,7 +38,7 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
 
       ok(
         "Created poll option #{option.id}",
-        structured: option.reload.as_json(only: %i[id question_id title_multiloc ordering])
+        structured: McpServer::Serializers::PollOption.serialize(option.reload)
       )
     rescue ActiveRecord::RecordNotFound
       error("Poll question not found: #{params[:question_id]}")

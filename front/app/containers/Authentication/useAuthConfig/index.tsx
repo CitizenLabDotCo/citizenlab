@@ -50,7 +50,8 @@ export default function useAuthConfig() {
   const azureAdSettings = azureAdMethod?.attributes;
   const azureAdVisiblity = azureAdSettings?.visibility;
   const azureAdIsVisible = ['show', undefined].includes(azureAdVisiblity);
-  const azureAdOverride = !!azureAdMethod && (azureAdIsVisible || showAdminOnlyMethods);
+  const azureAdOverride =
+    !!azureAdMethod && (azureAdIsVisible || showAdminOnlyMethods);
 
   const azureAdB2cMethod = idMethods?.data.find(
     (method): method is IDAzureAdB2cMethod =>

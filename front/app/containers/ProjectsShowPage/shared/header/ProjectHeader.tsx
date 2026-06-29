@@ -64,6 +64,7 @@ interface Props {
 
 const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const isPhoneOrSmaller = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const projectDescriptionBuilderEnabled = useFeatureFlag({
@@ -86,37 +87,33 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
         <ContentContainer maxWidth={maxPageWidth}>
           <Box
             display="flex"
+            flexWrap="wrap"
             justifyContent="center"
             alignItems="center"
             mb="20px"
           >
-            {(projectFolderId || userCanEditProject) && (
+            {projectFolderId && (
               <Box
-                w="100%"
+                w={isPhoneOrSmaller && userCanEditProject ? '100%' : 'auto'}
                 display="flex"
-                justifyContent="center"
-                alignItems="center"
+                justifyContent="flex-start"
               >
-                {projectFolderId && (
-                  <ProjectFolderGoBackButton
-                    projectFolderId={projectFolderId}
-                  />
-                )}
-                <Box mr="8px" ml="auto" display="flex">
-                  {userCanEditProject && (
-                    <EditButton
-                      icon="edit"
-                      {...adminProjectsProjectLink(project.data.id)}
-                      buttonStyle="secondary-outlined"
-                      padding="6px 12px"
-                    >
-                      {formatMessage(messages.editProject)}
-                    </EditButton>
-                  )}
-                </Box>
+                <ProjectFolderGoBackButton projectFolderId={projectFolderId} />
               </Box>
             )}
-            <Box ml="auto" mt="0px">
+            <Box ml="auto" display="flex" alignItems="center">
+              {userCanEditProject && (
+                <Box mr="8px" display="flex">
+                  <EditButton
+                    icon="edit"
+                    {...adminProjectsProjectLink(project.data.id)}
+                    buttonStyle="secondary-outlined"
+                    padding="6px 12px"
+                  >
+                    {formatMessage(messages.editProject)}
+                  </EditButton>
+                </Box>
+              )}
               <FollowUnfollow
                 followableType="projects"
                 followableId={project.data.id}

@@ -5,6 +5,7 @@ import {
   Text,
   IconTooltip,
   Color,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const StatisticName = ({ name, nameColor, tooltipContent }: Props) => {
+  const isMobileOrSmaller = useBreakpoint('phone');
   return (
     <Box display="flex" alignItems="center">
       <Text
@@ -33,6 +35,8 @@ const StatisticName = ({ name, nameColor, tooltipContent }: Props) => {
             theme="light"
             transform="translate(0,-2)"
             display="inline"
+            placement={isMobileOrSmaller ? 'bottom' : 'right-end'}
+            maxTooltipWidth={isMobileOrSmaller ? 250 : undefined}
           />
         </Box>
       )}

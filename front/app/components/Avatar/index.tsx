@@ -51,12 +51,12 @@ export const AvatarImage = styled.img<{
 
     &:hover {
       border-color: ${({ borderHoverColor }) =>
-    borderHoverColor || 'transparent'};
+        borderHoverColor || 'transparent'};
     }
   }
 `;
 
-const AvatarIcon = styled(Icon) <{
+const AvatarIcon = styled(Icon)<{
   size: number;
   fillColor: string | undefined;
   fillHoverColor: string | undefined;
@@ -84,13 +84,13 @@ const AvatarIcon = styled(Icon) <{
 
     &:hover {
       border-color: ${({ borderHoverColor }) =>
-    borderHoverColor || 'transparent'};
+        borderHoverColor || 'transparent'};
       fill: ${({ fillHoverColor }) => fillHoverColor || ''};
     }
   }
 `;
 
-const BadgeIcon = styled(Icon) <{ size: number; fill: string }>`
+const BadgeIcon = styled(Icon)<{ size: number; fill: string }>`
   fill: ${({ fill }) => fill};
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
@@ -255,11 +255,7 @@ const AvatarInner = ({
       )}
 
       {verified && addVerificationBadge && !!firstVerificationMethod && (
-        <BadgeIcon
-          name="check-circle"
-          size={badgeSize}
-          fill={colors.success}
-        />
+        <BadgeIcon name="check-circle" size={badgeSize} fill={colors.success} />
       )}
     </Container>
   );

@@ -61,6 +61,8 @@ class SideFxUserService
 
   def after_block(user, current_user)
     TrackUserJob.perform_later(user)
+    # Logging the 'blocked' activity triggers the EmailCampaigns::Campaigns::UserBlocked
+    # campaign, which notifies the user that their account was blocked.
     LogActivityJob.perform_later(
       user,
       'blocked',
@@ -72,7 +74,6 @@ class SideFxUserService
         block_end_at: user.block_end_at
       }
     )
-    UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
     user.expire_token! # Stop any active sessions of the blocked user
   end
 

@@ -25,9 +25,11 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.find(params[:phase_id])
+      authorize_project!(phase.project)
 
       attributes = params.slice(:title_multiloc, :description_multiloc).compact
       cause = Volunteering::Cause.new(phase: phase, **attributes)
+      authorize(cause, :create?)
 
       Volunteering::SideFxCauseService.new.before_create(cause, current_user)
       cause.save!
@@ -35,7 +37,7 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
 
       ok(
         "Created cause #{cause.id}",
-        structured: cause.as_json(only: %i[id phase_id title_multiloc description_multiloc ordering volunteers_count])
+        structured: McpServer::Serializers::Cause.serialize(cause, params: { current_user: current_user })
       )
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")
