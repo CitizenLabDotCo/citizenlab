@@ -52,6 +52,10 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
     ? messages.addPassword
     : messages.changePassword2;
 
+  const phoneNumberButtonText = !user.attributes.phone_number
+    ? messages.addPhone
+    : messages.changePhone;
+
   return (
     <FormSection>
       <FormSectionTitle
@@ -88,12 +92,9 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
             width="auto"
             justifyWrapper="left"
             buttonStyle="secondary-outlined"
+            icon="tablet"
           >
-            <FormattedMessage
-              {...(user.attributes.phone_number
-                ? messages.changePhone
-                : messages.addPhone)}
-            />
+            <FormattedMessage {...phoneNumberButtonText} />
           </ButtonWithLink>
         )}
       </Box>
