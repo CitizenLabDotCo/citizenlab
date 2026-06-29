@@ -57,11 +57,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
-    normalized = Phonelib.parse(phone_number).e164.presence
-    unless normalized && Phonelib.valid?(normalized)
+    parsed = Phonelib.parse(phone_number)
+    if parsed.invalid?
       render json: { errors: { phone_number: [{ error: 'is invalid' }] } }, status: :unprocessable_entity
       return
     end
+    normalized = parsed.e164
 
     if User.where.not(id: current_user.id).exists?(phone_number: normalized)
       render json: { errors: { phone_number: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
