@@ -40,7 +40,10 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
       authorize(image, :create?)
       image.save!
 
-      ok("Attached image to #{params[:container_type]} #{container.id}", structured: { id: image.id })
+      ok(
+        "Attached image to #{params[:container_type]} #{container.id}",
+        structured: McpServer::Serializers::Image.serialize(image)
+      )
     rescue ActiveRecord::RecordNotFound
       error("#{params[:container_type]} not found: #{params[:container_id]}")
     rescue ActiveRecord::RecordInvalid => e

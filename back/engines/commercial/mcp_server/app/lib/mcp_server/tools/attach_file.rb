@@ -64,7 +64,10 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
       end
       side_fx.after_create(attachment, current_user)
 
-      ok("Attached file to #{params[:container_type]} #{container.id}", structured: { id: attachment.id, file_id: file.id })
+      ok(
+        "Attached file to #{params[:container_type]} #{container.id}",
+        structured: McpServer::Serializers::FileAttachment.serialize(attachment)
+      )
     rescue ActiveRecord::RecordNotFound => e
       error(e.message)
     rescue ActiveRecord::RecordInvalid => e
