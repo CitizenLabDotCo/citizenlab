@@ -8,49 +8,42 @@ resource 'Phases' do
 
   let(:json_response) { json_parse(response_body) }
 
-  before do
-    header 'Content-Type', 'application/json'
-    create(:idea_status_proposed)
-    @project = create(:project)
-    @project.phases = create_list(:phase_sequence, 2, project: @project, participation_method: 'voting', voting_method: 'single_voting')
-  end
+  before { header 'Content-Type', 'application/json' }
 
   get 'web_api/v1/phases/:id/mini' do
-    before { @phase = @project.phases.first }
-
-    let(:id) { @phase.id }
+    let(:phase) { create(:phase) }
+    let(:id) { phase.id }
 
     example 'Get a phase by id' do
-      @phase.update!(report: build(:report))
+      phase.update!(report: build(:report))
       do_request
       assert_status 200
 
-      expect(json_response.dig(:data, :id)).to eq @phase.id
+      expect(json_response.dig(:data, :id)).to eq phase.id
       expect(json_response.dig(:data, :type)).to eq 'phase_mini'
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
-        data: { id: @phase.project_id, type: 'project' }
+        data: { id: phase.project_id, type: 'project' }
       })
 
       expect(json_response.dig(:data, :relationships, :report)).to match({
-        data: { id: @phase.report.id, type: 'report' }
+        data: { id: phase.report.id, type: 'report' }
       })
     end
   end
 
   get 'web_api/v1/phases/:id' do
-    before { @phase = @project.phases.first }
-
-    let(:id) { @phase.id }
+    let(:phase) { create(:phase) }
+    let(:id) { phase.id }
 
     example 'Get one phase by id' do
-      create_list(:idea, 2, project: @project, phases: @project.phases)
+      create_list(:idea, 2, project: phase.project, phases: [phase])
       Permissions::PermissionsUpdateService.new.update_all_permissions
-      @phase.update!(report: build(:report))
+      phase.update!(report: build(:report))
       do_request
       assert_status 200
 
-      expect(json_response.dig(:data, :id)).to eq @phase.id
+      expect(json_response.dig(:data, :id)).to eq phase.id
       expect(json_response.dig(:data, :type)).to eq 'phase'
       expect(json_response.dig(:data, :attributes)).to include(
         reacting_like_method: 'unlimited',
@@ -58,15 +51,15 @@ resource 'Phases' do
       )
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
-        data: { id: @phase.project_id, type: 'project' }
+        data: { id: phase.project_id, type: 'project' }
       })
 
       expect(json_response.dig(:data, :relationships, :report)).to match({
-        data: { id: @phase.report.id, type: 'report' }
+        data: { id: phase.report.id, type: 'report' }
       })
 
       expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-        .to eq(Permission.available_actions(@phase).length)
+        .to eq(Permission.available_actions(phase).length)
 
       expect(json_response[:included].pluck(:type)).to include 'permission'
     end
@@ -77,6 +70,7 @@ resource 'Phases' do
     let(:id) { phase.id }
 
     before do
+      create(:idea_status_proposed)
       create_list(:native_survey_response, 2, creation_phase: phase, project: phase.project, phases: [phase])
       create_list(:idea, 3, project: phase.project, phases: [phase])
     end
@@ -177,7 +171,8 @@ resource 'Phases' do
     end
 
     delete 'web_api/v1/phases/:id' do
-      let(:phase) { create(:phase, project: @project) }
+      let(:project) { create(:project) }
+      let(:phase) { create(:phase, project: project) }
       let(:id) { phase.id }
 
       example_request 'Delete a phase' do
@@ -186,12 +181,12 @@ resource 'Phases' do
       end
 
       context 'on a native survey phase' do
-        let(:phase) { create(:native_survey_phase, project: @project) }
+        let(:phase) { create(:native_survey_phase, project: project) }
 
         example 'Deleting a phase deletes all survey responses', document: false do
-          ideation_phase = create(:phase, participation_method: 'ideation', project: @project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day))
-          idea = create(:idea, project: @project, phases: [ideation_phase])
-          responses = create_list(:idea, 2, project: @project, creation_phase: phase, phases: [phase])
+          ideation_phase = create(:phase, participation_method: 'ideation', project: project, start_at: (phase.start_at - 7.days), end_at: (phase.start_at - 1.day))
+          idea = create(:idea, project: project, phases: [ideation_phase])
+          responses = create_list(:idea, 2, project: project, creation_phase: phase, phases: [phase])
 
           do_request
 
@@ -203,10 +198,10 @@ resource 'Phases' do
       end
 
       context 'on an ideation phase' do
-        let(:phase) { create(:phase, participation_method: 'ideation', project: @project) }
+        let(:phase) { create(:phase, participation_method: 'ideation', project: project) }
 
         example 'Deleting a phase does not delete the ideas', document: false do
-          idea = create(:idea, project: @project, phases: [phase])
+          idea = create(:idea, project: project, phases: [phase])
 
           do_request
 
@@ -216,10 +211,10 @@ resource 'Phases' do
 
       # Edge case: Historic code means a phase with ideas could be changed to an information phase
       context 'on an information phase' do
-        let(:phase) { create(:phase, participation_method: 'information', project: @project) }
+        let(:phase) { create(:phase, participation_method: 'information', project: project) }
 
         example 'Deleting a phase does not delete the ideas', document: false do
-          idea = create(:idea, project: @project, phases: [phase])
+          idea = create(:idea, project: project, phases: [phase])
 
           do_request
 
@@ -379,6 +374,8 @@ resource 'Phases' do
     end
 
     get 'web_api/v1/phases/:id/sentiment_by_quarter' do
+      let!(:proposed_idea_status) { create(:idea_status_proposed) }
+
       let(:project) { create(:community_monitor_project) }
       let(:active_phase) { project.phases.first }
       let(:form) { create(:custom_form, participation_context: active_phase) }
