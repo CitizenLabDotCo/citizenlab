@@ -161,9 +161,8 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-after-submission').should('exist');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
-    cy.dataCy('e2e-more-survey-actions-button').click();
 
-    // Click the delete button
+    // Click the delete button (now a standalone button, not in the dropdown)
     cy.dataCy('e2e-delete-survey-results').click();
 
     // Confirm deleting the results
@@ -205,7 +204,9 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-after-submission').should('be.visible');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
-    cy.dataCy('e2e-more-survey-actions-button').click();
+
+    // Open the export dropdown
+    cy.dataCy('e2e-survey-export-button').click();
 
     // Click button to export survey results
     cy.dataCy('e2e-download-survey-results').click();
