@@ -267,6 +267,16 @@ de-AT:
       title: Alle Projekte
     proposals:
       title: Vorschläge
+  pdf_export:
+    survey_responses:
+      date: Datum
+      no_answer: (Keine Antwort)
+      prepared_by: Erstellt von
+      report_label: Bericht der Umfrageantworten
+      respondent: Teilnehmer %{number}
+      response_count:
+        one: '%{count} Antwort'
+        other: '%{count} Antworten'
   phases:
     community_monitor_title: Stimmungsbarometer
     native_survey_button: Umfrage ausfüllen
