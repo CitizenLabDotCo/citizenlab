@@ -19,7 +19,6 @@ interface TabProps {
   onClick: () => void;
 }
 
-// Mirrors the projects overview tabs (app/containers/Admin/projects/all/Tabs.tsx)
 const Tab = ({ message, active, dataCy, onClick }: TabProps) => {
   const { formatMessage } = useIntl();
 

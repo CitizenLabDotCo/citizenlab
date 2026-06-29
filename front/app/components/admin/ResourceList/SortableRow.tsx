@@ -11,6 +11,7 @@ const DragHandle = styled.div`
   cursor: move;
   padding: 1rem 0;
   height: 100%;
+  align-self: flex-start;
 `;
 
 interface Props {

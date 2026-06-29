@@ -12,14 +12,11 @@ export function getNavbarItemSlug({
   attributes: { code, slug },
   relationships,
 }: INavbarItem): string | null {
-  // Dropdown ('menu') items are not links themselves.
   if (code === 'menu') return null;
 
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const hasCorrespondingFolder = !!relationships.project_folder?.data?.id;
+  const hasCorrespondingFolder = !!relationships.project_folder.data?.id;
 
   // Default navbar item
   if (code !== 'custom' && !hasCorrespondingPage) {
@@ -46,10 +43,6 @@ export function getNavbarItemSlug({
   return null;
 }
 
-// Resolves the front-office link target for a dropdown ('menu') child. The
-// `to`/`params` are passed to a typed router Link at the call site (cast there,
-// matching the existing navbar Link usage). Returns null when the child has no
-// usable slug.
 export function getNavbarChildLink(
   child: INavbarChild
 ): { to: string; params: { slug: string } } | null {

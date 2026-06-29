@@ -8,8 +8,6 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import navbarKeys from './keys';
 import { INavbarDropdown, INavbarItemResponse } from './types';
 
-// Atomically creates or updates a dropdown ('menu') navbar item together with
-// its ordered children in a single request.
 const upsertNavbarDropdown = ({ id, ...attributes }: INavbarDropdown) => {
   if (id) {
     return fetcher<INavbarItemResponse>({

@@ -5,6 +5,7 @@ import {
   Button,
   colors,
   IconButton,
+  Badge,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -20,26 +21,12 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-const Tag = styled.div`
-  display: inline-block;
-  color: ${colors.textSecondary};
-  background-color: ${colors.grey200};
-  font-weight: bold;
-  font-size: 12px;
-  padding: 0px 6px;
-  margin-left: 15px;
-  transform: translateY(-2px);
-  border-radius: 3px;
-  text-transform: uppercase;
-`;
-
 const ChildItem = styled.div`
   color: ${colors.textSecondary};
-  font-size: 14px;
   padding: 10px 0;
 
   & + & {
-    border-top: 1px solid ${colors.divider};
+    border-top: 1px solid ${colors.grey100};
   }
 `;
 
@@ -77,18 +64,18 @@ const MenuItemRow = ({
         data-testid="menu-item-row"
       >
         <TextCell className="expand">
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" gap="8px">
             <T value={title} />
             {isDefaultPage && (
-              <Tag data-testid="default-tag">
+              <Badge data-testid="default-tag" className="inverse">
                 <FormattedMessage {...messages.defaultTag} />
-              </Tag>
+              </Badge>
             )}
             {isDropdown && (
               <>
-                <Tag data-testid="dropdown-tag">
+                <Badge data-testid="dropdown-tag" className="inverse">
                   <FormattedMessage {...messages.dropdownTag} />
-                </Tag>
+                </Badge>
                 <Box ml="4px">
                   <IconButton
                     iconName={expanded ? 'chevron-up' : 'chevron-down'}
@@ -101,8 +88,6 @@ const MenuItemRow = ({
                     iconColor={colors.textSecondary}
                     iconColorOnHover={colors.primary}
                     p="4px"
-                    border={`1px solid ${colors.borderLight}`}
-                    borderRadius={stylingConsts.borderRadius}
                   />
                 </Box>
               </>
@@ -153,7 +138,7 @@ const MenuItemRow = ({
       </Box>
 
       {isDropdown && expanded && dropdownChildren && (
-        <Box pl="16px" mt="4px">
+        <Box mt="8px">
           {dropdownChildren.map((child) => (
             <ChildItem key={child.id}>
               <T value={child.title_multiloc} />
