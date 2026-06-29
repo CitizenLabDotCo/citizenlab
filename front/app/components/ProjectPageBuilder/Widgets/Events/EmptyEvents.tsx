@@ -28,6 +28,7 @@ const EmptyEvents = () => {
   return (
     <Box
       mx="auto"
+      mt="48px"
       maxWidth={`${maxPageWidth}px`}
       px={isSmallerThanTablet ? '20px' : padding}
     >
