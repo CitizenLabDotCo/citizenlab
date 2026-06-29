@@ -21,6 +21,8 @@ import tracks from '../../../tracks';
 import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
 import TenantLogo from '../../TenantLogo';
 
+import FullMobileNavMenuDropdown from './FullMobileNavMenuDropdown';
+import FullMobileNavMenuDropdownItem from './FullMobileNavMenuDropdownItem';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 
 const ContentContainer = styled.nav`
@@ -54,8 +56,25 @@ const StyledCloseIconButton = styled(CloseIconButton)`
 
 const MenuItems = styled.ul`
   margin: 0;
-  padding: 0px;
-  text-align: center;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  /* Cap the width so dropdown rows (and their trailing chevron) don't stretch
+     across wide screens; the container centers this block while items inside
+     stay left-aligned. */
+  max-width: 400px;
+  text-align: left;
+
+  /* 20px between every item, except a larger gap above the trailing Search. */
+  > * {
+    margin-top: 20px;
+  }
+  > *:first-child {
+    margin-top: 0;
+  }
+  > *:last-child {
+    margin-top: 48px;
+  }
 `;
 
 const StyledFullscreenModal = styled(FullscreenModal)`
@@ -117,32 +136,39 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
               navigationItemTitle,
               navbarItem,
             } = navbarItemProps;
-            // Dropdown ('menu') items have no link; flatten their children
-            // into the mobile menu so they stay reachable.
+            // Dropdown ('menu') items have no link of their own; render them as
+            // an expandable row that reveals their children in place.
             if (navbarItem) {
               const dropdownChildren = navbarItem.attributes.children ?? [];
-              return dropdownChildren.map((child) => {
-                const link = getNavbarChildLink(child);
-                if (!link) return null;
-                return (
-                  <FullMobileNavMenuItem
-                    key={child.id}
-                    to={
-                      link.to as Parameters<
-                        typeof FullMobileNavMenuItem
-                      >[0]['to']
-                    }
-                    params={
-                      link.params as Parameters<
-                        typeof FullMobileNavMenuItem
-                      >[0]['params']
-                    }
-                    navigationItemTitle={localize(child.title_multiloc)}
-                    onClick={handleOnMenuItemClick(child.id)}
-                    scrollToTop
-                  />
-                );
-              });
+              return (
+                <FullMobileNavMenuDropdown
+                  key={navbarItem.id}
+                  title={localize(navbarItem.attributes.title_multiloc)}
+                >
+                  {dropdownChildren.map((child) => {
+                    const link = getNavbarChildLink(child);
+                    if (!link) return null;
+                    return (
+                      <FullMobileNavMenuDropdownItem
+                        key={child.id}
+                        to={
+                          link.to as Parameters<
+                            typeof FullMobileNavMenuDropdownItem
+                          >[0]['to']
+                        }
+                        params={
+                          link.params as Parameters<
+                            typeof FullMobileNavMenuDropdownItem
+                          >[0]['params']
+                        }
+                        navigationItemTitle={localize(child.title_multiloc)}
+                        onClick={handleOnMenuItemClick(child.id)}
+                        scrollToTop
+                      />
+                    );
+                  })}
+                </FullMobileNavMenuDropdown>
+              );
             }
             if (linkTo) {
               return (
