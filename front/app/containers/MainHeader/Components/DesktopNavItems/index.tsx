@@ -12,11 +12,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
-import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 import DesktopNavbarItem from './DesktopNavbarItem';
-import DropdownNavbarItem from './DropdownNavbarItem';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 import MoreNavbarItem from './MoreNavbarItem';
+import AdminPublicationsNavbarItem from './NavbarDropdowns/AdminPublicationsNavbarItem';
+import DropdownNavbarItem from './NavbarDropdowns/DropdownNavbarItem';
 import {
   NavbarItemProps,
   calculateItemDistribution,
