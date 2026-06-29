@@ -9,7 +9,7 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
 
   def name = 'attach_image'
 
-  def description = "Adds an image to an existing resource (container) by fetching it from a public URL."
+  def description = 'Adds an image to an existing resource (container) by fetching it from a public URL.'
 
   def input_schema
     {
