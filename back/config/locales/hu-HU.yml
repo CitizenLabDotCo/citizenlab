@@ -267,6 +267,16 @@ hu-HU:
       title: Minden projekt
     proposals:
       title: Javaslatok
+  pdf_export:
+    survey_responses:
+      date: Dátum
+      no_answer: (Nincs válasz)
+      prepared_by: Készítette
+      report_label: Kérdőív válaszjelentés
+      respondent: Válaszadó %{number}
+      response_count:
+        one: '%{count} válasz'
+        other: '%{count} válasz'
   phases:
     community_monitor_title: Közösségi monitor
     native_survey_button: Vegye ki a felmérést
