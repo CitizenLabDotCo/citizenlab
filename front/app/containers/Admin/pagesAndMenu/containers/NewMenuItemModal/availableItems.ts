@@ -43,9 +43,7 @@ export const getUsedPublicationIds = (
   const ids = new Set<string>();
   navbarItems.forEach((navbarItem) => {
     const projectId = navbarItem.relationships.project.data?.id;
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const folderId = navbarItem.relationships.project_folder?.data?.id;
+    const folderId = navbarItem.relationships.project_folder.data?.id;
     if (projectId) ids.add(projectId);
     if (folderId) ids.add(folderId);
     navbarItem.attributes.children?.forEach((child) => {
