@@ -48,8 +48,8 @@ export default defineMessages({
     id: 'app.components.ProjectPageBuilder.Widgets.projectEditorLinkText',
     defaultMessage: 'project editor',
   },
-  inputFeedWidgetTitle: {
-    id: 'app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle',
+  inputFeedWidgetTitle2: {
+    id: 'app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle2',
     defaultMessage: 'Phase content',
   },
   inputFeedManagedNote: {
