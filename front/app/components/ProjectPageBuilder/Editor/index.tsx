@@ -24,6 +24,7 @@ import {
   ProjectPageBody,
 } from 'components/ProjectPageBuilder/regions';
 import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
+import InputFeed from 'components/ProjectPageBuilder/Widgets/InputFeed';
 import ProjectBanner from 'components/ProjectPageBuilder/Widgets/ProjectBanner';
 import ProjectTitle from 'components/ProjectPageBuilder/Widgets/ProjectTitle';
 import TimelineWidget from 'components/ProjectPageBuilder/Widgets/Timeline';
@@ -56,6 +57,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         ButtonMultiloc,
         TimelineWidget,
         EventsWidget,
+        InputFeed,
         ProjectBanner,
         ProjectTitle,
         ProjectPageRoot,
