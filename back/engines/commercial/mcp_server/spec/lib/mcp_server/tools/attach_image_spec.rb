@@ -6,21 +6,7 @@ describe McpServer::Tools::AttachImage do
   let(:current_user) { create(:super_admin) }
   let(:project) { create(:project, :draft) }
   let(:remote_url) { 'https://example.com/image.jpg' }
-  let(:fixture_path) { Rails.root.join('spec/fixtures/female_avatar_0.jpg') }
-
-  before do
-    # Bypass SsrfFilter so WebMock can intercept via Net::HTTP. The codebase prepends
-    # ProcessableUriDownloader (see back/config/initializers/carrierwave.rb), so we stub
-    # on that module rather than on the base class.
-    allow_any_instance_of(ProcessableUriDownloader)
-      .to receive(:skip_ssrf_protection?).and_return(true)
-
-    stub_request(:any, remote_url).to_return(
-      status: 200,
-      body: ->(_req) { fixture_path.open },
-      headers: { 'Content-Type' => 'image/jpeg' }
-    )
-  end
+  let!(:fixture_path) { stub_remote_image_download(remote_url) }
 
   it 'attaches an image to a project' do
     response = run_mcp_tool(

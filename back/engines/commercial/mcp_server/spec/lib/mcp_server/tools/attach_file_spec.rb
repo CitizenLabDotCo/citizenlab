@@ -6,21 +6,7 @@ describe McpServer::Tools::AttachFile do
   let(:current_user) { create(:super_admin) }
   let(:project) { create(:project, :draft) }
   let(:remote_url) { 'https://example.com/file.pdf' }
-  let(:fixture_path) { Rails.root.join('spec/fixtures/minimal_pdf.pdf') }
-
-  before do
-    # Bypass SsrfFilter so WebMock can intercept via Net::HTTP. The codebase prepends
-    # ProcessableUriDownloader (see back/config/initializers/carrierwave.rb), so we stub
-    # on that module rather than on the base class.
-    allow_any_instance_of(ProcessableUriDownloader)
-      .to receive(:skip_ssrf_protection?).and_return(true)
-
-    stub_request(:get, remote_url).to_return(
-      status: 200,
-      body: ->(_req) { fixture_path.open },
-      headers: { 'Content-Type' => 'application/pdf' }
-    )
-  end
+  let!(:fixture_path) { stub_remote_file_download(remote_url) }
 
   context 'with a remote_url' do
     it 'uploads and attaches the file to a project' do

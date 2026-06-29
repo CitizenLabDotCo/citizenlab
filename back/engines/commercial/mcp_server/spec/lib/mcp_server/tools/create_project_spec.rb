@@ -24,18 +24,7 @@ describe McpServer::Tools::CreateProject do
 
   it 'attaches a remote header_bg by URL' do
     remote_url = 'https://example.com/header.jpg'
-
-    # Bypass SsrfFilter so WebMock can intercept via Net::HTTP. The codebase prepends
-    # ProcessableUriDownloader (see back/config/initializers/carrierwave.rb), so we stub
-    # on that module rather than on the base class.
-    allow_any_instance_of(ProcessableUriDownloader)
-      .to receive(:skip_ssrf_protection?).and_return(true)
-
-    stub_request(:any, remote_url).to_return(
-      status: 200,
-      body: ->(_req) { Rails.root.join('spec/fixtures/female_avatar_0.jpg').open },
-      headers: { 'Content-Type' => 'image/jpeg' }
-    )
+    fixture_path = stub_remote_image_download(remote_url)
 
     response = run_mcp_tool(
       described_class,
@@ -46,7 +35,6 @@ describe McpServer::Tools::CreateProject do
     expect(response).not_to be_error
 
     project = Project.find(response.structured_content['id'])
-    expected_bytes = Rails.root.join('spec/fixtures/female_avatar_0.jpg').binread
-    expect(project.header_bg.file.read).to eq(expected_bytes)
+    expect(project.header_bg.file.read).to eq(fixture_path.binread)
   end
 end
