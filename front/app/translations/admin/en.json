@@ -2878,6 +2878,7 @@
   "app.containers.AdminPage.ProjectFiles.filePreviewLabel2": "Preview",
   "app.containers.AdminPage.ProjectFiles.fileSizeError2": "This file will not be uploaded, as it exceeds the maximum limit of 50 MB.",
   "app.containers.AdminPage.ProjectFiles.fileTitleLabel": "Title",
+  "app.containers.AdminPage.ProjectFiles.fileTitleTooltip": "Add a title to show this instead of the file name when users view this file",
   "app.containers.AdminPage.ProjectFiles.filesUploadedSuccessfully": "All files uploaded successfully",
   "app.containers.AdminPage.ProjectFiles.generatingPreview": "Generating preview...",
   "app.containers.AdminPage.ProjectFiles.info_sheet": "Information",
