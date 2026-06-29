@@ -110,6 +110,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.storyTwitterMessage',
     defaultMessage: 'Support this story: {postTitle}',
   },
+  observationTwitterMessage: {
+    id: 'app.containers.IdeasShow.observationTwitterMessage',
+    defaultMessage: 'Support this observation: {postTitle}',
+  },
   // #input_term_copy
   ideaWhatsAppMessage: {
     id: 'app.containers.IdeasShow.ideaWhatsAppMessage',
@@ -170,6 +174,10 @@ export default defineMessages({
   storyWhatsAppMessage: {
     id: 'app.containers.IdeasShow.storyWhatsAppMessage',
     defaultMessage: 'Support this story: {postTitle}',
+  },
+  observationWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.observationWhatsAppMessage',
+    defaultMessage: 'Support this observation: {postTitle}',
   },
   // #input_term_copy
   ideaEmailSharingSubject: {
@@ -292,6 +300,14 @@ export default defineMessages({
   storyEmailSharingBody: {
     id: 'app.containers.IdeasShow.storyEmailSharingBody',
     defaultMessage: "Support this story '{ideaTitle}' at {ideaUrl}!",
+  },
+  observationEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.observationEmailSharingSubject',
+    defaultMessage: 'Support this observation: {ideaTitle}',
+  },
+  observationEmailSharingBody: {
+    id: 'app.containers.IdeasShow.observationEmailSharingBody',
+    defaultMessage: "Support this observation '{ideaTitle}' at {ideaUrl}!",
   },
   share: {
     id: 'app.containers.IdeasShow.share',

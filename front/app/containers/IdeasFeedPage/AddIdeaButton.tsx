@@ -97,6 +97,7 @@ const AddIdeaButton = ({ projectSlug, phaseId }: Props) => {
           topic: messages.addATopic,
           post: messages.addAPost,
           story: messages.addAStory,
+          observation: messages.addAnObservation,
         })}
       />
     </Button>
