@@ -3,6 +3,8 @@ import React, { Suspense } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { UserComponent } from '@craftjs/core';
 
+import usePhases from 'api/phases/usePhases';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -10,6 +12,9 @@ import Link from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
+import useCanModerateProject from '../useCanModerateProject';
+
+import EmptyInputFeed from './EmptyInputFeed';
 
 const PublicInputContent = React.lazy(() => import('./PublicInputContent'));
 
@@ -29,6 +34,9 @@ const InputFeed: UserComponent = () => {
   const { data: projectBySlug } = useProjectBySlug(slug);
   const projectIdToUse = projectId || projectBySlug?.data.id;
   const onPublicRoute = !!slug;
+  const canModerate = useCanModerateProject(projectIdToUse);
+  const { data: phases } = usePhases(projectIdToUse);
+  const hasParticipation = !!phases && !!getLatestRelevantPhase(phases.data);
 
   return (
     <Box
@@ -38,11 +46,15 @@ const InputFeed: UserComponent = () => {
       // phase (and so no content renders).
       minHeight={onPublicRoute ? undefined : '40px'}
     >
-      {projectIdToUse && (
-        <Suspense fallback={null}>
-          <PublicInputContent projectId={projectIdToUse} />
-        </Suspense>
-      )}
+      {projectIdToUse &&
+        phases &&
+        (hasParticipation ? (
+          <Suspense fallback={null}>
+            <PublicInputContent projectId={projectIdToUse} />
+          </Suspense>
+        ) : canModerate ? (
+          <EmptyInputFeed />
+        ) : null)}
     </Box>
   );
 };
