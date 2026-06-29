@@ -84,7 +84,7 @@ const inputFeedNode = (parentId: string): SerializedNode =>
     nodes: [],
     props: {},
     custom: {
-      title: widgetMessages.inputFeedWidgetTitle,
+      title: widgetMessages.inputFeedWidgetTitle2,
       locked: true,
       noPointerEvents: true,
     },
@@ -238,7 +238,7 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
     noPointerEvents: true,
   },
   InputFeed: {
-    title: widgetMessages.inputFeedWidgetTitle,
+    title: widgetMessages.inputFeedWidgetTitle2,
     locked: true,
     noPointerEvents: true,
   },
