@@ -22,7 +22,10 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 import LockedHeaderNote from '../LockedHeaderNote';
 import messages from '../messages';
+import useCanModerateProject from '../useCanModerateProject';
 import useWidgetProjectId from '../useWidgetProjectId';
+
+import EmptyBanner from './EmptyBanner';
 
 type ImageValue = {
   dataCode?: string;
@@ -41,6 +44,7 @@ const ProjectBanner: UserComponent<Props> = ({ image, alt }) => {
   const projectId = useWidgetProjectId();
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
+  const canModerate = useCanModerateProject(projectId);
 
   if (!project) {
     return null;
@@ -52,7 +56,7 @@ const ProjectBanner: UserComponent<Props> = ({ image, alt }) => {
     localize(project.data.attributes.header_bg_alt_text_multiloc);
 
   if (!imageUrl) {
-    return null;
+    return canModerate ? <EmptyBanner /> : null;
   }
 
   return (
