@@ -48,4 +48,13 @@ export default defineMessages({
     id: 'app.components.ProjectPageBuilder.Widgets.projectEditorLinkText',
     defaultMessage: 'project editor',
   },
+  inputFeedWidgetTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle',
+    defaultMessage: 'Inputs',
+  },
+  inputFeedManagedNote: {
+    id: 'app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote',
+    defaultMessage:
+      "This shows the participation content for the active phase. Its content is set by the phase's method in the {projectEditorLink} — here you only choose where it sits on the page.",
+  },
 });
