@@ -7,8 +7,7 @@ describe McpServer::Tools::ListFileAttachments do
   let(:project) { create(:project, :draft) }
 
   it 'lists attachments on a project ordered by position' do
-    file_a = create(:file, projects: [project])
-    file_b = create(:file, projects: [project])
+    file_a, file_b = create_list(:file, 2, projects: [project])
     create(:file_attachment, file: file_a, attachable: project, position: 1)
     create(:file_attachment, file: file_b, attachable: project, position: 0)
 

@@ -7,8 +7,8 @@ describe McpServer::Tools::ListProjectFiles do
   let(:project) { create(:project, :draft) }
 
   it 'lists files in the project' do
-    file_a = create(:file, projects: [project])
-    file_b = create(:file, projects: [project])
+    files = create_list(:file, 2, projects: [project])
+    create(:file, projects: [create(:project, :draft)])
 
     response = run_mcp_tool(
       described_class,
@@ -18,7 +18,7 @@ describe McpServer::Tools::ListProjectFiles do
 
     expect(response).not_to be_error
     ids = response.structured_content[:data].pluck(:id)
-    expect(ids).to contain_exactly(file_a.id, file_b.id)
+    expect(ids).to match_array(files.map(&:id))
   end
 
   it 'returns a not-found error when the project is missing' do

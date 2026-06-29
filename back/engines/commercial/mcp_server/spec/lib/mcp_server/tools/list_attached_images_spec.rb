@@ -7,7 +7,7 @@ describe McpServer::Tools::ListAttachedImages do
   let(:project) { create(:project, :draft) }
 
   it 'lists images on a project' do
-    image = create(:project_image, project: project)
+    images = create_list(:project_image, 2, project:)
 
     response = run_mcp_tool(
       described_class,
@@ -17,12 +17,12 @@ describe McpServer::Tools::ListAttachedImages do
 
     expect(response).not_to be_error
     ids = response.structured_content[:data].pluck(:id)
-    expect(ids).to contain_exactly(image.id)
+    expect(ids).to match_array(images.map(&:id))
   end
 
   it 'lists images on an event' do
-    event = create(:event, project: project)
-    image = create(:event_image, event: event)
+    event = create(:event, project:)
+    images = create_list(:event_image, 2, event:)
 
     response = run_mcp_tool(
       described_class,
@@ -32,7 +32,7 @@ describe McpServer::Tools::ListAttachedImages do
 
     expect(response).not_to be_error
     ids = response.structured_content[:data].pluck(:id)
-    expect(ids).to contain_exactly(image.id)
+    expect(ids).to match_array(images.map(&:id))
   end
 
   it 'returns a not-found error when the resource is missing' do
