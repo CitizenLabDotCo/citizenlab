@@ -17,6 +17,7 @@ import widgetMessages from './Widgets/messages';
 export const BANNER_NODE_ID = 'PROJECT_PAGE_BANNER';
 export const TITLE_NODE_ID = 'PROJECT_PAGE_TITLE';
 export const BODY_NODE_ID = 'PROJECT_PAGE_BODY';
+export const INPUT_FEED_NODE_ID = 'PROJECT_PAGE_INPUT_FEED';
 
 const ROOT_ID = 'ROOT';
 
@@ -67,6 +68,24 @@ const bodyNode = (childIds: string[]): SerializedNode =>
     linkedNodes: {},
   } as unknown as SerializedNode);
 
+// Movable but non-deletable participation content slot (ideas / survey / voting…).
+const inputFeedNode = (parentId: string): SerializedNode =>
+  ({
+    type: { resolvedName: 'InputFeed' },
+    nodes: [],
+    props: {},
+    custom: {
+      title: widgetMessages.inputFeedWidgetTitle,
+      locked: true,
+      noPointerEvents: true,
+    },
+    hidden: false,
+    parent: parentId,
+    isCanvas: false,
+    displayName: 'InputFeed',
+    linkedNodes: {},
+  } as unknown as SerializedNode);
+
 const rootNode = (childIds: string[]): SerializedNode =>
   ({
     type: { resolvedName: 'ProjectPageRoot' },
@@ -79,12 +98,14 @@ const rootNode = (childIds: string[]): SerializedNode =>
     linkedNodes: {},
   } as unknown as SerializedNode);
 
-// A fresh project page: the locked header above an empty editable body.
+// A fresh project page: the locked header above a body containing the (movable,
+// non-deletable) participation content.
 export const defaultProjectPageLayout = (): SerializedNodes => ({
   [ROOT_ID]: rootNode([BANNER_NODE_ID, TITLE_NODE_ID, BODY_NODE_ID]),
   [BANNER_NODE_ID]: bannerNode(),
   [TITLE_NODE_ID]: titleNode(),
-  [BODY_NODE_ID]: bodyNode([]),
+  [BODY_NODE_ID]: bodyNode([INPUT_FEED_NODE_ID]),
+  [INPUT_FEED_NODE_ID]: inputFeedNode(BODY_NODE_ID),
 });
 
 const resolvedNameOf = (node: SerializedNode) =>
@@ -103,6 +124,11 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   },
   ProjectTitle: {
     title: widgetMessages.titleWidgetTitle,
+    locked: true,
+    noPointerEvents: true,
+  },
+  InputFeed: {
+    title: widgetMessages.inputFeedWidgetTitle,
     locked: true,
     noPointerEvents: true,
   },
@@ -167,6 +193,17 @@ export const ensureLockedHeaderNodes = (
     });
     next[newBodyId] = bodyNode(userIds);
     bodyId = newBodyId;
+  }
+
+  // Ensure the participation content exists in the body (non-deletable, but the
+  // admin can move it). Appended when absent; its position is otherwise preserved.
+  if (!findNodeIdByName(next, 'InputFeed')) {
+    next[INPUT_FEED_NODE_ID] = inputFeedNode(bodyId);
+    const body = next[bodyId];
+    next[bodyId] = {
+      ...body,
+      nodes: [...body.nodes, INPUT_FEED_NODE_ID],
+    };
   }
 
   // Pin the header + body directly under the root, in order.
