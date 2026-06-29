@@ -22,11 +22,11 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import ContentContainer from 'components/ContentContainer';
 import ProjectContentViewer from 'components/DescriptionBuilder/ContentViewer/ProjectContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
-import ProjectPageContentViewer from 'components/ProjectPageBuilder/ContentViewer';
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
+import ProjectPageContentViewer from 'components/ProjectPageBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -130,7 +130,9 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               />
             </Box>
           </Box>
-          {projectHeaderImageLargeUrl && (
+          {/* When parallel participation is on, the project page layout owns the
+              header (locked Banner widget), so the standard banner is suppressed. */}
+          {!parallelParticipation && projectHeaderImageLargeUrl && (
             <HeaderImageContainer>
               <HeaderImage
                 id="e2e-project-header-image"
@@ -158,10 +160,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
             />
           )}
           {parallelParticipation ? (
-            <ProjectPageContentViewer
-              projectId={project.data.id}
-              projectTitle={project.data.attributes.title_multiloc}
-            />
+            <ProjectPageContentViewer projectId={project.data.id} />
           ) : (
             <>
               {!projectDescriptionBuilderEnabled && (
