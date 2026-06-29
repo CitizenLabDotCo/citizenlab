@@ -1,11 +1,8 @@
-import { FormatMessage } from 'typings';
 
 import { MethodMetadata } from 'api/id_methods/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
-
-import messages from './messages';
 
 export const getReturnedFieldsPreview = (
   verificationMethodMetadata: MethodMetadata,
@@ -75,23 +72,6 @@ export const getVerifiedDataList = (
   ];
 
   return allAttributes;
-};
-
-export const getVerificationFrequencyExplanation = (
-  verificationExpiry: number | null,
-  formatMessage: FormatMessage
-) => {
-  if (verificationExpiry === null) {
-    return null;
-  }
-
-  if (verificationExpiry === 0) {
-    return formatMessage(messages.verificationFlowVizExplanation30Min);
-  }
-
-  return formatMessage(messages.verificationFlowVizExplanationXDays, {
-    days: verificationExpiry,
-  });
 };
 
 export const getNumberOfVerificationLockedItems = (
