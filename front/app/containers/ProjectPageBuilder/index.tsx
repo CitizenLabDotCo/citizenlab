@@ -6,6 +6,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useParallelParticipation from 'hooks/useParallelParticipation';
 
+import { defaultProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
+
 import { useParams } from 'utils/router';
 
 import ProjectPageBuilderPage from './ProjectPageBuilderPage';
@@ -17,14 +19,18 @@ const ProjectPageBuilder = () => {
   const { isError } = useProjectPageLayout(projectId, parallelParticipation);
   const { mutate: upsertProjectPageLayout } = useUpsertProjectPageLayout();
 
-  // A fresh project has no `project_page` layout yet (GET 404s). Create an
-  // empty enabled one on first open so the builder has something to edit;
-  // content is added by the admin and persisted on save.
+  // A fresh project has no `project_page` layout yet (GET 404s). Create one
+  // seeded with the locked Banner + Title on first open so the builder always
+  // has the fixed header; further content is added by the admin and saved.
   const bootstrapped = useRef(false);
   useEffect(() => {
     if (parallelParticipation && isError && !bootstrapped.current) {
       bootstrapped.current = true;
-      upsertProjectPageLayout({ projectId, enabled: true, craftjs_json: {} });
+      upsertProjectPageLayout({
+        projectId,
+        enabled: true,
+        craftjs_json: defaultProjectPageLayout(),
+      });
     }
   }, [parallelParticipation, isError, projectId, upsertProjectPageLayout]);
 
