@@ -17,6 +17,9 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
+import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
+import widgetMessages from 'components/ProjectPageBuilder/Widgets/messages';
+import TimelineWidget from 'components/ProjectPageBuilder/Widgets/Timeline';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -119,6 +122,20 @@ const ProjectPageBuilderToolbox = () => {
           component={<AccordionMultiloc title={{}} />}
           icon="accordion"
           label={formatMessage(AccordionMultiloc.craft.custom.title)}
+        />
+      </Section>
+      <Section>
+        <DraggableElement
+          id="e2e-draggable-timeline"
+          component={<TimelineWidget />}
+          icon="timeline"
+          label={formatMessage(widgetMessages.timelineWidgetTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-events"
+          component={<EventsWidget />}
+          icon="calendar"
+          label={formatMessage(widgetMessages.eventsWidgetTitle)}
         />
       </Section>
     </Container>
