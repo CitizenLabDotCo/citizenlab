@@ -20,7 +20,8 @@ const FlowVisualization = ({
   const {
     permitted_by,
     action,
-    user_fields_in_form_descriptor
+    user_fields_in_form_descriptor,
+    verification_enabled
   } = permission.attributes;
 
   const { data: permissionFields } = usePermissionsPhaseCustomFields({
@@ -33,7 +34,7 @@ const FlowVisualization = ({
       <Blocks
         permittedBy={permitted_by}
         permissionsCustomFields={permissionFields?.data ?? []}
-        verificationEnabled={verificationEnabled}
+        verificationEnabled={verification_enabled}
         userFieldsInForm={user_fields_in_form_descriptor.value}
       />
       <Edge />
