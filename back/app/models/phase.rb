@@ -226,6 +226,10 @@ class Phase < ApplicationRecord
     end_at.present? && end_at <= time
   end
 
+  def complete?
+    ends_before?(Time.zone.now)
+  end
+
   def permission_scope
     self
   end
@@ -369,12 +373,10 @@ class Phase < ApplicationRecord
   end
 
   def validate_no_other_overlapping_phases
-    ts = TimelineService.new
-    ts.other_project_phases(self).each do |other_phase|
+    TimelineService.new.overlapping_phases(self).each do |other_phase|
       # Skip open-ended phases that start before this phase as they have their own
       # validation. See Phase#validate_previous_phase_can_be_closed
       next if other_phase.end_at.nil? && other_phase.start_at < start_at
-      next unless ts.overlaps?(self, other_phase)
 
       errors.add(:base, :has_other_overlapping_phases,
         message: "overlaps with Phase##{other_phase.id}")

@@ -267,6 +267,16 @@ es-ES:
       title: Todos los proyectos
     proposals:
       title: Propuestas
+  pdf_export:
+    survey_responses:
+      date: Fecha
+      no_answer: (Sin respuesta)
+      prepared_by: Preparado por
+      report_label: Informe de respuestas de la encuesta
+      respondent: Encuestado %{number}
+      response_count:
+        one: '%{count} respuesta'
+        other: '%{count} respuestas'
   phases:
     community_monitor_title: Monitor comunitario
     native_survey_button: Responde la consulta

@@ -8979,6 +8979,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": {
+    "state": "verified",
+    "verified_at": "2026-06-24T08:36:57.445404Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",

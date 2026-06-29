@@ -74,6 +74,8 @@ Naming/VariableNumber:
     - 'app/serializers/web_api/v1/event_serializer.rb'
     - 'db/migrate/20230811123114_rework_event_location_attributes.rb'
     - 'spec/acceptance/events_spec.rb'
+    - 'engines/commercial/mcp_server/app/lib/mcp_server/tools/create_event.rb'
+    - 'engines/commercial/mcp_server/app/lib/mcp_server/tools/update_resource.rb'
 
 # Offense count: 6
 RSpec/BeforeAfterAll:

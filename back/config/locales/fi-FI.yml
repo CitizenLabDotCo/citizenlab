@@ -267,6 +267,16 @@ fi-FI:
       title: Kaikki projektit
     proposals:
       title: ehdotuksia
+  pdf_export:
+    survey_responses:
+      date: Päivämäärä
+      no_answer: (Ei vastausta)
+      prepared_by: Laatija
+      report_label: Kyselyvastausraportti
+      respondent: Vastaaja %{number}
+      response_count:
+        one: '%{count} vastaus'
+        other: '%{count} vastausta'
   phases:
     community_monitor_title: yhteisön valvoja
     native_survey_button: Vastaa kyselyyn

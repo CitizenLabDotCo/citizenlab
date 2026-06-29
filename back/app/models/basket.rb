@@ -50,7 +50,7 @@ class Basket < ApplicationRecord
   end
 
   def destroy_or_keep!
-    if submitted? && TimelineService.new.phase_is_complete?(phase)
+    if submitted? && phase.complete?
       update!(user: nil)
     else
       destroy!
