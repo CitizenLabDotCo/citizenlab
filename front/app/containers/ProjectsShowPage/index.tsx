@@ -21,6 +21,7 @@ import { IProjectData } from 'api/projects/types';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import useLocale from 'hooks/useLocale';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import EventsViewer from 'containers/EventsPage/EventsViewer';
 
@@ -76,6 +77,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
   const locale = useLocale();
+  const parallelParticipation = useParallelParticipation();
   const { data: appConfig } = useAppConfiguration();
   const { data: phases } = usePhases(projectId);
 
@@ -131,46 +133,55 @@ const ProjectsShowPage = ({ project }: Props) => {
         ) : (
           <ContentWrapper>
             <ProjectHeader projectId={projectId} />
-            <ProjectCTABar projectId={projectId} />
 
-            <TimelineContainer projectId={projectId} />
-            {!!events?.data.length && (
-              <Box
-                id="e2e-events-section-project-page"
-                display="flex"
-                flexDirection="column"
-                gap="48px"
-                mx="auto"
-                my="48px"
-                maxWidth={`${maxPageWidth}px`}
-                padding={isSmallerThanTablet ? '20px' : '0px'}
-              >
-                <EventsViewer
-                  showProjectFilter={false}
-                  projectId={projectId}
-                  eventsTime="currentAndFuture"
-                  title={formatMessage(messages.upcomingAndOngoingEvents)}
-                  fallbackMessage={messages.noUpcomingOrOngoingEvents}
-                  projectPublicationStatuses={[
-                    'published',
-                    'draft',
-                    'archived',
-                  ]}
-                />
-                <EventsViewer
-                  showProjectFilter={false}
-                  projectId={projectId}
-                  eventsTime="past"
-                  title={formatMessage(messages.pastEvents)}
-                  fallbackMessage={messages.noPastEvents}
-                  projectPublicationStatuses={[
-                    'published',
-                    'draft',
-                    'archived',
-                  ]}
-                  showDateFilter={false}
-                />
-              </Box>
+            {/* When the project page builder is active, the page layout (rendered
+                by ProjectHeader's ContentViewer) already includes the participation
+                box CTA, timeline, participation content and events, so the legacy
+                body — including the sticky CTA bar — is suppressed to avoid
+                rendering everything twice. */}
+            {!parallelParticipation && (
+              <>
+                <ProjectCTABar projectId={projectId} />
+                <TimelineContainer projectId={projectId} />
+                {!!events?.data.length && (
+                  <Box
+                    id="e2e-events-section-project-page"
+                    display="flex"
+                    flexDirection="column"
+                    gap="48px"
+                    mx="auto"
+                    my="48px"
+                    maxWidth={`${maxPageWidth}px`}
+                    padding={isSmallerThanTablet ? '20px' : '0px'}
+                  >
+                    <EventsViewer
+                      showProjectFilter={false}
+                      projectId={projectId}
+                      eventsTime="currentAndFuture"
+                      title={formatMessage(messages.upcomingAndOngoingEvents)}
+                      fallbackMessage={messages.noUpcomingOrOngoingEvents}
+                      projectPublicationStatuses={[
+                        'published',
+                        'draft',
+                        'archived',
+                      ]}
+                    />
+                    <EventsViewer
+                      showProjectFilter={false}
+                      projectId={projectId}
+                      eventsTime="past"
+                      title={formatMessage(messages.pastEvents)}
+                      fallbackMessage={messages.noPastEvents}
+                      projectPublicationStatuses={[
+                        'published',
+                        'draft',
+                        'archived',
+                      ]}
+                      showDateFilter={false}
+                    />
+                  </Box>
+                )}
+              </>
             )}
             <SuccessModal projectId={projectId} />
           </ContentWrapper>
