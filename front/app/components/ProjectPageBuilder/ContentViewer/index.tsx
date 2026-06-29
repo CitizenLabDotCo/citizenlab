@@ -12,6 +12,7 @@ import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/co
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { ensureLockedHeaderNodes } from 'components/ProjectPageBuilder/defaultLayout';
 import Editor from 'components/ProjectPageBuilder/Editor';
+import useCanModerateProject from 'components/ProjectPageBuilder/Widgets/useCanModerateProject';
 
 import eventEmitter from 'utils/eventEmitter';
 
@@ -28,6 +29,7 @@ const handleLoadImages = () => {
 const ProjectPageContentViewer = ({ projectId }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const parallelParticipation = useParallelParticipation();
+  const canModerate = useCanModerateProject(projectId);
 
   const { data: layout, isInitialLoading } = useProjectPageLayout(
     projectId,
@@ -49,7 +51,11 @@ const ProjectPageContentViewer = ({ projectId }: Props) => {
     layout.data.attributes.enabled &&
     !isEmpty(layout.data.attributes.craftjs_json);
 
-  if (!hasContent) return null;
+  // Residents only see the page once it has enabled content. Admins/moderators
+  // also see the default empty-state layout (locked header + Inputs / Phases /
+  // Events placeholders), so the admin preview mirrors the builder before any
+  // content is published.
+  if (!hasContent && !canModerate) return null;
 
   return (
     <Box
@@ -57,7 +63,7 @@ const ProjectPageContentViewer = ({ projectId }: Props) => {
       id={`project-page-${projectId}`}
       mx={isSmallerThanTablet ? '-20px' : '0px'}
     >
-      <ContentBuilderLayoutProvider layoutId={layout.data.id}>
+      <ContentBuilderLayoutProvider layoutId={layout?.data.id}>
         <Editor isPreview={true}>
           <ContentBuilderFrame
             editorData={editorData}
