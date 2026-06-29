@@ -13,19 +13,19 @@ describe SmartGroups::Rules::ParticipatedInInput do
   let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
   describe 'from_json' do
-    it 'successfully parses a valid json' do
+    it 'successfully parses a valid json rule' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
   end
 
   describe 'validations' do
-    it 'accept a rule with a mutli-value predicate and an array of values' do
+    it 'accepts a rule with a mutli-value predicate and an array of values' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
 
-    it 'reject a rule with a mutli-value predicate and a single value' do
+    it 'rejects a rule with a mutli-value predicate and a single value' do
       rule = valid_json_rule.tap do |r|
         r['predicate'] = 'in'
         r['value'] = Idea.first.id
@@ -42,7 +42,7 @@ describe SmartGroups::Rules::ParticipatedInInput do
       expect(build(:smart_group, rules: [rule])).to be_valid
     end
 
-    it 'reject a rule with a single-value predicate and an array of values' do
+    it 'rejects a rule with a single-value predicate and an array of values' do
       valid_json_rule['predicate'] = 'not_in'
       expect(build(:smart_group, rules: [valid_json_rule])).to be_invalid
     end
