@@ -583,7 +583,7 @@
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Events",
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": "No ways to take part yet",
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "This shows the participation content for the active phase. Its content is set by the phase's method in the {projectEditorLink} — here you only choose where it sits on the page.",
-  "app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle": "Phase content",
+  "app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle2": "Phase content",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Pinned to the top of the page — editable, but can't be moved or removed.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsSeeThis": "Only admins and moderators of this project can see this",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Phases",
