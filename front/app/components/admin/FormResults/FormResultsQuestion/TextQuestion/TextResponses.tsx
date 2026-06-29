@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { getTextResponseTitle } from './utils';
+import { getTextResponseTitle, TextResponseSource } from './utils';
 
 const Item = styled.div<{ start: number }>`
   position: absolute;
@@ -20,14 +20,12 @@ type TextResponsesProps = {
   textResponses: {
     answer: string;
   }[];
-  hasOtherResponses?: boolean;
-  hasFollowUpResponses?: boolean;
+  textResponseSource?: TextResponseSource;
 };
 
 const TextResponses = ({
   textResponses,
-  hasOtherResponses,
-  hasFollowUpResponses,
+  textResponseSource,
 }: TextResponsesProps) => {
   const parentRef = React.useRef(null);
   const { formatMessage } = useIntl();
@@ -45,10 +43,8 @@ const TextResponses = ({
     <Box bg={colors.grey100} height="460px">
       <Box borderBottom={`1px solid ${colors.divider}`} p="24px" height="60px">
         <Text fontWeight="bold" m="0px">
-          {formatMessage(
-            getTextResponseTitle({ hasOtherResponses, hasFollowUpResponses })
-          )}{' '}
-          ({textResponses.length})
+          {formatMessage(getTextResponseTitle({ textResponseSource }))} (
+          {textResponses.length})
         </Text>
       </Box>
 

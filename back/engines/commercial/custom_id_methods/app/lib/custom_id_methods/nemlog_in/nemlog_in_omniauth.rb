@@ -1,13 +1,28 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::NemlogIn
-  class NemlogInOmniauth < OmniauthMethods::Base
+  class NemlogInOmniauth < IdMethods::Base
     include NemlogInVerification
 
-    # Certs can be found here: https://www.nemlog-in.dk/metadata/#broker-idp
+    def name
+      'nemlog_in'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
+
+    # IdP metadata (including the signing certificate) is published at
+    # https://www.nemlog-in.dk/metadata/#broker-idp. NemLog-in rotates these
+    # certificates periodically; when a rotation happens the response signature
+    # stops validating ("Invalid Signature on SAML Response") and the relevant
+    # file below must be refreshed from the published OIOSAML3 broker metadata.
     ENVIRONMENTS = {
       pre_production_integration: {
-        # But the certificates from `production_integration` are used, because the ones from `pre_production_integration` give "Invalid Signature on SAML Response"
         metadata_xml_file: File.join(CustomIdMethods::Engine.root, 'config', 'saml', 'nemlog_in', 'idp_metadata', 'pre_production_integration.xml')
       },
       production_integration: {
@@ -114,10 +129,6 @@ module CustomIdMethods::NemlogIn
 
     def email_always_present?
       false
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def email_confirmed?(_auth)

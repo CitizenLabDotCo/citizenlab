@@ -15,11 +15,13 @@ const NewCustomPage = () => {
   const handleOnSubmit = async (formValues: FormValues) => {
     // the form returns one area_id as a string,
     // the backend expects an array of area_ids
+    const isSpaces = formValues.projects_filter_type === 'spaces';
     const newFormValues = {
       ...formValues,
       ...(formValues.projects_filter_type === 'areas' && {
-        area_ids: [formValues.area_id],
+        area_ids: formValues.area_id ? [formValues.area_id] : [],
       }),
+      space_ids: isSpaces ? formValues.space_ids ?? [] : [],
     };
 
     const { data } = await createCustomPage(omit(newFormValues, 'area_id'));
@@ -39,6 +41,7 @@ const NewCustomPage = () => {
       defaultValues={{
         projects_filter_type: 'no_filter',
         area_id: null,
+        space_ids: [],
         global_topic_ids: [],
       }}
       hideSlug

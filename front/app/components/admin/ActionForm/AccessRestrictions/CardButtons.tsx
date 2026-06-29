@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { PermittedBy } from 'api/phase_permissions/types';
-import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
+import useVerificationMethodVerifiedActions from 'api/id_methods/useVerificationMethodVerifiedActions';
 
 import NewLabel from 'components/UI/NewLabel';
 

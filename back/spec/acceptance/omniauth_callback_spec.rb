@@ -78,85 +78,32 @@ resource 'Omniauth Callback', document: false do
   end
 
   context 'when authenticating via OAuth' do
-    def mock_app_configuration
-      app_config_mock = instance_double(AppConfiguration)
-      allow(app_config_mock).to receive(:closest_locale_to).and_return('en')
-      allow(app_config_mock).to receive(:feature_activated?).with('facebook_login').and_return(true)
-      # Timezone setting is accessed during tenant switch.
-      allow(app_config_mock).to receive(:settings).with(no_args).and_return({ 'core' => { 'timezone' => 'Europe/Brussels' } })
-      allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_id').and_return('mock_facebook_app_id')
-      allow(app_config_mock).to receive(:settings).with('facebook_login', 'app_secret').and_return('mock_facebook_app_secret')
-      allow(app_config_mock).to receive(:settings).with('password_login', 'minimum_length').and_return(8)
-      allow(app_config_mock).to receive(:settings).with('core', 'locales').and_return(['en'])
-      allow(AppConfiguration).to receive(:instance).and_return(app_config_mock)
-
-      app_config_mock
-    end
-
-    def mock_facebook_auth_method(user)
-      facebook_method = instance_double(OmniauthMethods::Facebook)
-      allow(facebook_method).to receive_messages(
-        profile_to_user_attrs: { email: user.email, first_name: user.first_name },
-        email_confirmed?: true,
-        verification_prioritized?: false,
-        updateable_user_attrs: [],
-        can_merge?: true
-      )
-
-      facebook_method
-    end
-
-    def mock_authentication_service(facebook_method, user)
-      auth_service_mock = instance_double(AuthenticationService)
-      allow(auth_service_mock).to receive(:method_by_provider).with('facebook').and_return(facebook_method)
-      allow(auth_service_mock).to receive(:prevent_user_account_hijacking).and_return(user)
-
-      auth_service_mock
-    end
-
-    def mock_omniauth_callback_controller(auth_service_mock)
-      # Mock auth token
-      auth_token_double = instance_double(AuthToken::AuthToken, token: 'test-jwt-token')
-      allow_any_instance_of(OmniauthCallbackController).to receive(:auth_token).and_return(auth_token_double)
-
-      # Make sure set_auth_cookie is actually called
-      allow_any_instance_of(OmniauthCallbackController).to receive(:set_auth_cookie).and_call_original
-
-      # Mock other methods
-      allow_any_instance_of(OmniauthCallbackController).to receive(:authentication_service).and_return(auth_service_mock)
-      allow_any_instance_of(OmniauthCallbackController).to receive(:update_identity!).and_return(true)
-      allow_any_instance_of(OmniauthCallbackController).to receive(:verified_for_sso?).and_return(true)
-      allow_any_instance_of(OmniauthCallbackController).to receive(:signin_success_redirect)
-    end
-
     before do
-      @user = create(:user)
+      @user = create(:user, email: 'facebook_user@example.com')
 
-      # Mock OmniAuth's authentication
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'facebook' }]
+      }
+      AppConfiguration.instance.save!
+
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
-        'provider' => 'facebook',
-        'uid' => '12345',
-        'info' => {
-          'email' => @user.email,
-          'name' => @user.first_name
+        provider: 'facebook',
+        uid: '12345',
+        info: {
+          email: @user.email,
+          first_name: @user.first_name,
+          last_name: @user.last_name
         },
-        'extra' => {
-          'raw_info' => {
-            'locale' => 'en_US',
-            'id' => '12345'
+        extra: {
+          raw_info: {
+            locale: 'en_US',
+            id: '12345'
           }
         }
       })
-
-      # Mock identity to return our test user
-      identity_double = instance_double(Identity, user: @user)
-      allow(Identity).to receive(:find_or_build_with_omniauth).and_return(identity_double)
-
-      mock_app_configuration
-      facebook_method = mock_facebook_auth_method(@user)
-      auth_service_mock = mock_authentication_service(facebook_method, @user)
-      mock_omniauth_callback_controller(auth_service_mock)
     end
 
     after do
@@ -164,13 +111,13 @@ resource 'Omniauth Callback', document: false do
     end
 
     get '/auth/facebook/callback' do
-      example 'Sets secure cookie with expected headers' do
+      example 'Sets auth cookie with expected headers' do
         do_request
 
-        assert_status(204)
+        assert_status(302) # Redirect code
 
         cookie_header = response_headers['Set-Cookie']
-        expect(cookie_header).to include('cl2_jwt=test-jwt-token')
+        expect(cookie_header).to match(/cl2_jwt=[^;]+/)
         expect(cookie_header).to include('SameSite=Lax')
         expect(cookie_header.include?('Secure')).to be(false) # No HTTPS in the test environment
         expect(cookie_header).to match(/expires=.+GMT/i)
@@ -180,10 +127,10 @@ resource 'Omniauth Callback', document: false do
 
   context 'when SSO method returns email and it is confirmed' do
     before do
-      AppConfiguration.instance.settings['verification'] = {
-        'allowed' => true,
-        'enabled' => true,
-        verification_methods: [{ name: 'fake_sso' }]
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
@@ -269,6 +216,25 @@ resource 'Omniauth Callback', document: false do
             expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
         end
+
+        context 'when claim_tokens is passed as a Rack-parsed Hash (e.g. claim_tokens[0]=...)' do
+          before do
+            allow_any_instance_of(OmniauthCallbackController)
+              .to receive(:omniauth_params)
+              .and_return({ 'claim_tokens' => { '0' => claim_token.token } })
+          end
+
+          example 'still claims participation data without erroring' do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            assert_status(302)
+            user = User.find_by(email: 'billy_fixed@example.com')
+            expect(user).not_to be_nil
+            expect(idea.reload.author_id).to eq(user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
       end
 
       context 'when identity already exists and user has a confirmed email different from the SSO returned one' do
@@ -335,23 +301,20 @@ resource 'Omniauth Callback', document: false do
   end
 
   context 'when SSO method returns email but it is not confirmed' do
-    let(:mailer) do
-      instance_double(
-        NewEmailConfirmationMailer,
-        send_code: instance_double(ActionMailer::MessageDelivery, deliver_now: true)
-      )
-    end
+    # The confirmation code email is sent through the EmailCampaigns engine via
+    # DeliveryService#send_now_to_user; spy on it to assert the code was sent.
+    let(:delivery_service) { instance_spy(EmailCampaigns::DeliveryService) }
 
     before do
-      AppConfiguration.instance.settings['verification'] = {
-        'allowed' => true,
-        'enabled' => true,
-        verification_methods: [{ name: 'fake_sso' }]
+      AppConfiguration.instance.settings['id_config'] = {
+        allowed: true,
+        enabled: true,
+        id_methods: [{ name: 'fake_sso' }]
       }
       AppConfiguration.instance.save!
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:fake_sso] = get_auth_hash(email_confirmed: false)
-      allow(NewEmailConfirmationMailer).to receive(:with).and_return(mailer)
+      allow(EmailCampaigns::DeliveryService).to receive(:new).and_return(delivery_service)
     end
 
     after do
@@ -370,7 +333,8 @@ resource 'Omniauth Callback', document: false do
         expect(user.verified).to be true
 
         # Make sure confirmation email was sent
-        expect(NewEmailConfirmationMailer).to have_received(:with).with(user: user).once
+        expect(delivery_service).to have_received(:send_now_to_user)
+          .with(an_instance_of(EmailCampaigns::Campaigns::NewEmailConfirmation), user, hash_including(:code)).once
       end
 
       example 'if there is a pending invite with this email: return error' do

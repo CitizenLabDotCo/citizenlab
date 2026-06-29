@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   # Doorkeeper serves only JSON here. Its HTML controllers are dropped:
-  # - authorizations: replaced by the SPA consent screen (WebApi::V1::OauthAuthorizationsController)
+  # - authorizations: replaced by the SPA consent screen (McpServer::WebApi::V1::OauthAuthorizationsController)
   # - applications / authorized_applications: client creation is handled by RFC 7591
   #   Dynamic Client Registration (oauth/registrations), so the admin HTML UI is unused.
   # This leaves the token/introspect/revoke endpoints, which are JSON.
@@ -32,13 +32,9 @@ Rails.application.routes.draw do
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
-      # OAuth 2.1 consent screen, served as JSON to the SPA (replaces Doorkeeper's
-      # HTML authorize page). See WebApi::V1::OauthAuthorizationsController.
-      resource :oauth_authorization, only: %i[show create], controller: 'oauth_authorizations'
-
-      # The current user's MCP client authorizations (list + revoke), grouped by
-      # client. See WebApi::V1::McpAuthorizationsController.
-      resources :mcp_authorizations, only: %i[index destroy]
+      # The OAuth consent screen and MCP authorization management endpoints live in
+      # the MCP engine. See McpServer::Engine routes and
+      # McpServer::WebApi::V1::{OauthAuthorizations,McpAuthorizations}Controller.
 
       concern :reactable do
         resources :reactions, except: [:update], shallow: true do
@@ -238,6 +234,8 @@ Rails.application.routes.draw do
 
         member do
           get 'survey_results'
+          get 'survey_response_fields'
+          post 'survey_responses_pdf'
           get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'
@@ -405,14 +403,14 @@ Rails.application.routes.draw do
 
       resources :ideas_phases, only: %i[show]
 
-      resources :verification_methods, module: 'verification', only: [:index] do
-        get :first_enabled, on: :collection
+      resources :id_methods, only: [:index] do
+        get :first_enabled_verification_method, on: :collection
         get :first_enabled_for_verified_actions, on: :collection
-        Verification::VerificationService.new
+        IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
-          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, defaults: { method_name: vm.name }
+          post "#{vm.name}/verification", to: 'verification/verifications#create', on: :collection, defaults: { method_name: vm.name }
         end
       end
 

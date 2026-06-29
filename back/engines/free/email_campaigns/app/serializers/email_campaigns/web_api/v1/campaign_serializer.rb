@@ -53,6 +53,10 @@ module EmailCampaigns
       end
     end
 
+    attribute :campaign_ordering do |object|
+      campaign_ordering(object.class.campaign_name)
+    end
+
     attribute :can_be_disabled do |object|
       object.can_be_disabled?
     end

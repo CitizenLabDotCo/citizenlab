@@ -23,7 +23,6 @@ import { isDraft } from 'api/campaigns/util';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
@@ -200,9 +199,6 @@ const Show = () => {
       },
     });
   };
-  const isEmailSchedulingAllowed = useFeatureFlag({
-    name: 'email_scheduling',
-  });
   const timeZone = tenant?.data.attributes.settings.core.timezone;
 
   if (campaign) {
@@ -277,15 +273,11 @@ const Show = () => {
                   onClick={handleSend(noGroupsSelected)}
                   disabled={isLoading}
                   processing={isLoading}
-                  borderRadius={
-                    isEmailSchedulingAllowed ? '3px 0px 0px 3px' : '3px'
-                  }
+                  borderRadius={'3px 0px 0px 3px'}
                 >
                   <FormattedMessage {...messages.send} />
                 </ButtonWithLink>
-                {isEmailSchedulingAllowed && (
-                  <EmailScheduling campaign={campaign} timeZone={timeZone} />
-                )}
+                <EmailScheduling campaign={campaign} timeZone={timeZone} />
               </Box>
             </Buttons>
           )}

@@ -129,7 +129,7 @@ RSpec.describe Analysis::AutoTaggingTask do
         - planets
         - bananas
       RESPONSE
-      expect_any_instance_of(Analysis::LLM::GPT41)
+      expect_any_instance_of(Analysis::LLM::GPT54)
         .to receive(:chat)
         .and_return(topics_response)
 
@@ -157,7 +157,7 @@ RSpec.describe Analysis::AutoTaggingTask do
     describe '#fit_inputs_in_context_window' do
       it 'recudes the inputs to fit in the context window' do
         stubbed_context_window = 1000
-        expect_any_instance_of(Analysis::LLM::GPT41)
+        expect_any_instance_of(Analysis::LLM::GPT54)
           .to receive(:usable_context_window)
           .at_least(:once)
           .and_return(stubbed_context_window)
@@ -167,11 +167,11 @@ RSpec.describe Analysis::AutoTaggingTask do
 
         # Take token size of the prompt with one input + one returned topic
         ideas = [create(:idea, project: project)]
-        min_size = Analysis::LLM::GPT41.new.token_count(model.send(:inputs_prompt, ideas, project.title_multiloc.values.first)) + Analysis::AutoTaggingMethod::NLPTopic::TOKENS_PER_TOPIC
+        min_size = Analysis::LLM::GPT54.new.token_count(model.send(:inputs_prompt, ideas, project.title_multiloc.values.first)) + Analysis::AutoTaggingMethod::NLPTopic::TOKENS_PER_TOPIC
 
         # Check how many more inputs can fit and triple that amount
         remaining_tokens = stubbed_context_window - min_size
-        tokens_per_input = Analysis::LLM::GPT41.new.token_count(Analysis::InputToText.new(analysis.associated_custom_fields).format_all(ideas))
+        tokens_per_input = Analysis::LLM::GPT54.new.token_count(Analysis::InputToText.new(analysis.associated_custom_fields).format_all(ideas))
         fit_ideas_count = (remaining_tokens / tokens_per_input.to_f).ceil
         ideas += create_list(:idea, (fit_ideas_count * 3), project: project)
 
@@ -230,6 +230,43 @@ RSpec.describe Analysis::AutoTaggingTask do
       })
     end
 
+    it 'staggers classification requests over time to avoid LLM rate limits' do
+      project = create(:single_phase_ideation_project)
+      custom_form = create(:custom_form, :with_default_fields, participation_context: project)
+      analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
+      tags = create_list(:tag, 3, analysis: analysis)
+      att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
+      create_list(:idea, 3, project: project)
+
+      # Record the (monotonic) time at which each LLM request actually fires from the
+      # pool threads, so we can assert concurrent-ruby honoured the scheduled delays.
+      mutex = Mutex.new
+      call_times = []
+      allow_any_instance_of(Analysis::LLM::GPT4oMini).to receive(:chat) do
+        mutex.synchronize { call_times << Process.clock_gettime(Process::CLOCK_MONOTONIC) }
+        tags[0].name
+      end
+      allow(Concurrent::ScheduledTask).to receive(:execute).and_call_original
+
+      att.execute
+
+      interval = Analysis::AutoTaggingMethod::Base::TASK_INTERVAL
+
+      # We scheduled each input with an increasing delay (idx * TASK_INTERVAL) so the
+      # LLM requests are spread out rather than fired all at once.
+      expect(Concurrent::ScheduledTask).to have_received(:execute).with(0 * interval, executor: anything)
+      expect(Concurrent::ScheduledTask).to have_received(:execute).with(1 * interval, executor: anything)
+      expect(Concurrent::ScheduledTask).to have_received(:execute).with(2 * interval, executor: anything)
+
+      # ...and concurrent-ruby actually honoured those delays at runtime: the requests
+      # were genuinely spread out over time. A ScheduledTask never fires *before* its
+      # delay, so this lower bound is safe from timing flakiness. If a gem bump broke
+      # the delay semantics, all three would fire ~immediately and this would fail.
+      expect(call_times.size).to eq(3)
+      span = call_times.max - call_times.min
+      expect(span).to be >= (2 * interval * 0.9)
+    end
+
     it 'includes the topics field for ideation' do
       topic = create(:input_topic, title_multiloc: { 'en' => 'Bananas' })
       project = create(:single_phase_ideation_project)
@@ -257,9 +294,9 @@ RSpec.describe Analysis::AutoTaggingTask do
       idea3 = create(:idea, project: project, title_multiloc: { en: 'We need more houses' })
       create(:tagging, input: idea3, tag: tags[0])
 
-      mock_llm = instance_double(Analysis::LLM::GPT41)
+      mock_llm = instance_double(Analysis::LLM::GPT54)
 
-      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:gpt4).and_return(mock_llm)
+      expect_any_instance_of(Analysis::AutoTaggingMethod::FewShotClassification).to receive(:gpt5).and_return(mock_llm)
       expect(mock_llm).to receive(:chat) do |prompt|
         expect(prompt).to include(tags[0].name, tags[1].name, 'other')
         expect(prompt).to include('other')

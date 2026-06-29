@@ -170,9 +170,9 @@ export default defineMessages({
     defaultMessage: 'Manage MCP Authorizations',
   },
   mcpAuthorizationsDescription: {
-    id: 'app.containers.Admin.tools.mcpAuthorizationsDescription',
+    id: 'app.containers.Admin.tools.mcpAuthorizationsDescription2',
     defaultMessage:
-      'View and manage authorizations for your Model Context Protocol (MCP) integrations. Control which external services can access the platform on your behalf.',
+      'View and manage authorizations for your Model Context Protocol (MCP) integrations. Control which AI agents can access the platform on your behalf.',
   },
   manageMcpAuthorizations: {
     id: 'app.containers.Admin.tools.manageMcpAuthorizations',

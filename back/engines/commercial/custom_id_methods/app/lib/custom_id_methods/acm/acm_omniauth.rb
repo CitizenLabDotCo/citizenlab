@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::Acm
-  class AcmOmniauth < OmniauthMethods::Base
+  class AcmOmniauth < IdMethods::Base
     include AcmVerification
+
+    def name
+      'acm'
+    end
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
 
     def profile_to_user_attrs(auth)
       # Validate the RRN against the API and store the result in a custom field
@@ -42,10 +54,6 @@ module CustomIdMethods::Acm
 
     def email_always_present?
       false
-    end
-
-    def verification_prioritized?
-      true
     end
 
     def email_confirmed?(_auth)

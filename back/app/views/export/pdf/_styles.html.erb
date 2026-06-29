@@ -1,0 +1,128 @@
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: <%= colors[:text] %>;
+    margin: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ---- Cover (light primary wash, dark/brand text) ---- */
+  .cover {
+    background: <%= colors[:cover_bg] %>;
+    color: <%= colors[:text] %>;
+    border: 1px solid <%= colors[:primary_border] %>;
+    border-radius: 8px;
+    padding: 40px 36px;
+    min-height: 258mm; /* fill the page within the 16mm page margin */
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+  }
+  .cover-label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: <%= colors[:primary_dark] %>;
+    font-weight: 700;
+    margin-bottom: 32px;
+  }
+  .cover-title {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    color: <%= colors[:primary] %>;
+    word-break: break-word;
+  }
+  .cover-subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    color: <%= colors[:text_muted] %>;
+  }
+  .cover-spacer { flex: 1; }
+  .cover-meta {
+    border-top: 1px solid <%= colors[:primary_light] %>;
+    padding-top: 16px;
+    margin-top: 16px;
+    display: flex;
+    gap: 48px;
+  }
+  .cover-meta-label {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: <%= colors[:text_muted] %>;
+    margin-bottom: 4px;
+  }
+  .cover-meta-value { font-size: 13px; color: <%= colors[:text] %>; }
+  .cover-count { font-size: 12px; color: <%= colors[:text_muted] %>; margin-top: 14px; }
+  .cover-notes {
+    margin-top: 24px;
+    background: #FFFFFF;
+    border: 1px solid <%= colors[:primary_border] %>;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: <%= colors[:text] %>;
+    word-break: break-word;
+  }
+
+  /* ---- Response cards ---- */
+  .card {
+    border: 1px solid <%= colors[:primary_border] %>;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    page-break-inside: avoid;
+  }
+  .card-header {
+    background: <%= colors[:primary] %>;
+    color: <%= colors[:on_primary] %>;
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-header-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .card-header-date { font-size: 8px; color: <%= colors[:on_primary_muted] %>; }
+  .card-body { padding: 10px 12px; }
+  .qa { margin-bottom: 8px; }
+  .qa:last-child { margin-bottom: 0; }
+  .qa-question {
+    background: <%= colors[:primary_tint] %>;
+    color: <%= colors[:primary] %>;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 3px;
+  }
+  .qa-answer {
+    border: 1px solid <%= colors[:primary_border] %>;
+    border-radius: 3px;
+    padding: 6px 8px;
+    margin-top: 3px;
+    font-size: 11px;
+    color: <%= colors[:text] %>;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .qa-answer.empty { color: <%= colors[:text_muted] %>; }
+  .footer {
+    text-align: center;
+    font-size: 8px;
+    color: <%= colors[:text_muted] %>;
+    margin-top: 8px;
+  }
+</style>

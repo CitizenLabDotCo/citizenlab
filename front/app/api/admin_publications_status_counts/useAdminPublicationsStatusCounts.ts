@@ -15,6 +15,7 @@ export const fetchStatusCounts = ({
   childrenOfId,
   globalTopics,
   areaIds,
+  spaceIds,
   onlyProjects,
   ...queryParameters
 }: IQueryParameters) =>
@@ -31,6 +32,7 @@ export const fetchStatusCounts = ({
       folder: childrenOfId,
       global_topics: globalTopics,
       areas: areaIds,
+      spaces: spaceIds,
       only_projects: onlyProjects,
     },
   });

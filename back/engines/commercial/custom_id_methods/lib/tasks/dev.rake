@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-# Enable verification/SSO methods for local development only
+# Enable verification/authentication methods for local development only
 # Use `rake dev:enable_id_method[<name>]` to enable a single method
 # Use `rake dev:enable_id_method[<name>,<name>]` to enable multiple methods
 # Use `rake dev:enable_id_method[all]` to enable every configured methods
 
-# Config for every custom verification/SSO method we support
+# Config for every custom verification/authentication method we support
 DEV_ID_METHOD_CONFIGS = {
-  # Methods for both identity verification and login/SSO.
+  # Methods for both identity verification and authentication/SSO.
   'fake_sso' => {
     'name' => 'fake_sso',
     'method_name_multiloc' => {},
@@ -98,6 +98,13 @@ DEV_ID_METHOD_CONFIGS = {
     'private_key' => ENV.fetch('DEFAULT_ID_FEDERA_PRIVATE_KEY', 'fake private key'),
     'enabled_for_verified_actions' => true
   },
+  'nemlog_in' => {
+    'name' => 'nemlog_in',
+    'environment' => 'pre_production_integration',
+    'issuer' => ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
+    'private_key' => ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
+    'enabled_for_verified_actions' => true
+  },
 
   # Verification-only methods (cannot be used for login/SSO).
   'cow' => {
@@ -129,15 +136,36 @@ DEV_ID_METHOD_CONFIGS = {
     'api_key' => ENV.fetch('DEFAULT_ID_OOSTENDE_RRN_API_KEY', 'fake key'),
     'environment' => 'dv'
   },
-  'nemlog_in' => {
-    'name' => 'nemlog_in',
-    'environment' => 'pre_production_integration',
-    'issuer' => ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
-    'private_key' => ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
-    'enabled_for_verified_actions' => true
-  },
 
-  # Login-only SSO methods (cannot be used for identity verification).
+  # Authentication-only SSO methods (cannot be used for identity verification).
+  # These all work on plain localhost (no HTTPS tunnel needed); supply real
+  # credentials via the DEFAULT_* env vars to actually complete a login.
+  'google' => {
+    'name' => 'google',
+    'client_id' => ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_GOOGLE_LOGIN_CLIENT_SECRET', 'fake secret')
+  },
+  'facebook' => {
+    'name' => 'facebook',
+    'app_id' => ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_ID', 'fake id'),
+    'app_secret' => ENV.fetch('DEFAULT_FACEBOOK_LOGIN_APP_SECRET', 'fake secret')
+  },
+  'azureactivedirectory' => {
+    name: 'azureactivedirectory',
+    tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID', 'fake id'),
+    client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID', 'fake secret'),
+    logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
+    login_mechanism_name: 'Azure Active Directory',
+    visibility: 'show'
+  },
+  'azureactivedirectory_b2c' => {
+    'name' => 'azureactivedirectory_b2c',
+    'tenant_name' => ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_NAME', 'fake tenant name'),
+    'tenant_id' => ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_TENANT_ID', 'fake tenant id'),
+    'policy_name' => ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_POLICY_NAME', 'fake policy'),
+    'client_id' => ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID', 'fake id'),
+    'login_mechanism_name' => 'Azure AD B2C'
+  },
   'hoplr' => {
     'name' => 'hoplr',
     'environment' => 'test',
@@ -224,9 +252,7 @@ namespace :dev do
 
     tenant.switch do
       settings = AppConfiguration.instance.settings
-      settings['verification']['enabled'] = true
-      settings['verification']['allowed'] = true
-      settings['verification']['verification_methods'] = methods
+      settings['id_config']['id_methods'] = methods
       AppConfiguration.instance.update!(settings: settings)
 
       setup_verified_actions_test_data if names.include?('fake_sso')

@@ -7,7 +7,7 @@ class OmniauthCallbackController < ApplicationController
   def create
     if auth_method && verification_method
       # If token is present, the user is already logged in, which means they try to verify not authenticate.
-      if omniauth_params['token'].present? && auth_method.verification_prioritized?
+      if omniauth_params['token'].present?
         # We need it only for providers that support both auth and ver except FC.
         # For FC, we never verify, only authenticate (even when user clicks "verify"). Not sure why.
         verification_callback(verification_method)
@@ -226,7 +226,11 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def claim_tokens
-    omniauth_params&.dig('claim_tokens')
+    tokens = omniauth_params&.dig('claim_tokens')
+    # When passed through the SSO query string, an array is encoded as
+    # `claim_tokens[0]=...&claim_tokens[1]=...`, which Rack parses into a Hash
+    # ({ "0" => ..., "1" => ... }) rather than an Array. Coerce it back.
+    tokens.is_a?(Hash) ? tokens.values : tokens
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
@@ -300,14 +304,15 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def auth_method
-    @auth_method ||= authentication_service.method_by_provider(auth_provider)
+    @auth_method ||= begin
+      method = IdMethodService.new.method_by_name(auth_provider)
+      method if method&.authentication?
+    end
   end
 
   def handle_verification(auth, user)
     configuration = AppConfiguration.instance
-    return unless configuration.feature_activated?('verification')
     return unless verification_service.active?(configuration, auth.provider)
-    return unless verification_service.enabled?(auth.provider)
 
     verification_service.verify_omniauth(auth: auth, user: user)
   end

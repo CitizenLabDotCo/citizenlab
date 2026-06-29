@@ -7,17 +7,18 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Analysis from './Analysis';
 import AnalysisUpsell from './AnalysisUpsell';
 import TextResponses from './TextResponses';
+import { TextResponseSource } from './utils';
 
 interface Props {
   textResponses: { answer: string }[];
   customFieldId: string;
-  hasOtherResponses?: boolean;
+  textResponseSource?: TextResponseSource;
 }
 
 const TextQuestion = ({
   textResponses,
   customFieldId,
-  hasOtherResponses,
+  textResponseSource,
 }: Props) => {
   const isAnalysisAllowed = useFeatureFlag({
     name: 'analysis',
@@ -32,7 +33,7 @@ const TextQuestion = ({
       <Box flex="1">
         <TextResponses
           textResponses={textResponses}
-          hasOtherResponses={hasOtherResponses}
+          textResponseSource={textResponseSource}
         />
       </Box>
       <Box flex="1">
@@ -41,7 +42,7 @@ const TextQuestion = ({
           <Analysis
             customFieldId={customFieldId}
             textResponsesCount={textResponses.length}
-            hasOtherResponses={hasOtherResponses}
+            textResponseSource={textResponseSource}
           />
         )}
       </Box>
