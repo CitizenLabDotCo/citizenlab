@@ -15,10 +15,18 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 // BaseEditor is the generic craft.js wrapper; it only needs a resolver. It is
 // shared with the (to-be-sunset) description builder for now.
-import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
+import {
+  ProjectPageRoot,
+  ProjectPageBody,
+} from 'components/ProjectPageBuilder/regions';
+import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
+import ProjectBanner from 'components/ProjectPageBuilder/Widgets/ProjectBanner';
+import ProjectTitle from 'components/ProjectPageBuilder/Widgets/ProjectTitle';
+import TimelineWidget from 'components/ProjectPageBuilder/Widgets/Timeline';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -46,6 +54,12 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         InfoWithAccordions,
         ImageTextCards,
         ButtonMultiloc,
+        TimelineWidget,
+        EventsWidget,
+        ProjectBanner,
+        ProjectTitle,
+        ProjectPageRoot,
+        ProjectPageBody,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
