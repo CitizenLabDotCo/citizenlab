@@ -68,6 +68,12 @@ interface BuildParams {
   excludePublicationIds?: Set<string>;
 }
 
+const toAvailableItem = (item: IItemNotInNavbar): AvailableItem => ({
+  titleMultiloc: item.titleMultiloc,
+  slug: item.slug,
+  item,
+});
+
 // Builds the list of addable items for the given type, excluding anything
 // already in the navbar (top-level or nested) and any extra excluded ids.
 export const buildAvailableItems = ({
@@ -88,49 +94,34 @@ export const buildAvailableItems = ({
 
   if (type === 'custom_page') {
     return itemsNotInNavbar
-      .filter((item) => item.type === 'page')
       .filter(
-        (item) => !('pageId' in item) || !excludeStaticPageIds?.has(item.pageId)
+        (item): item is Extract<IItemNotInNavbar, { type: 'page' }> =>
+          item.type === 'page' && !excludeStaticPageIds?.has(item.pageId)
       )
-      .map((item) => ({
-        titleMultiloc: item.titleMultiloc,
-        slug: item.slug,
-        item,
-      }));
+      .map(toAvailableItem);
   }
 
   if (type === 'default_page') {
     return itemsNotInNavbar
       .filter((item) => item.type === 'default_item')
-      .map((item) => ({
-        titleMultiloc: item.titleMultiloc,
-        slug: item.slug,
-        item,
-      }));
+      .map(toAvailableItem);
   }
 
-  const publicationType = type === 'project' ? 'project' : 'folder';
-  return adminPublications
-    .filter((publication) => {
-      const publicationId = publication.relationships.publication.data.id;
-      return (
-        publication.relationships.publication.data.type === publicationType &&
-        !usedPublicationIds.has(publicationId) &&
-        !excludePublicationIds?.has(publicationId)
-      );
-    })
-    .map((publication) => {
-      const publicationId = publication.relationships.publication.data.id;
-      const titleMultiloc = publication.attributes.publication_title_multiloc;
-      return {
-        titleMultiloc,
-        slug: publication.attributes.publication_slug,
-        item: {
-          type: publicationType,
-          itemId: publicationId,
-          titleMultiloc,
-          slug: publication.attributes.publication_slug,
-        } as IItemNotInNavbar,
-      };
-    });
+  // type is now narrowed to 'project' | 'folder'.
+  return adminPublications.flatMap((publication) => {
+    const { id: itemId, type: publicationType } =
+      publication.relationships.publication.data;
+    if (
+      publicationType !== type ||
+      usedPublicationIds.has(itemId) ||
+      excludePublicationIds?.has(itemId)
+    ) {
+      return [];
+    }
+    const titleMultiloc = publication.attributes.publication_title_multiloc;
+    const slug = publication.attributes.publication_slug;
+    return [
+      { titleMultiloc, slug, item: { type, itemId, titleMultiloc, slug } },
+    ];
+  });
 };
