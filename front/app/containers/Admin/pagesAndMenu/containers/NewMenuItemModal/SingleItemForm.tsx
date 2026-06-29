@@ -3,16 +3,12 @@ import React, { useMemo, useState } from 'react';
 import {
   Box,
   Button,
-  colors,
   Label,
   Select,
-  stylingConsts,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import ReactSelect from 'react-select';
-import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 import { object, string } from 'yup';
 
@@ -24,8 +20,7 @@ import useNavbarItems from 'api/navbar/useNavbarItems';
 import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Error from 'components/UI/Error';
-import selectStyles from 'components/UI/MultipleSelect/styles';
+import SearchSelect from 'components/HookForm/SearchSelect';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -48,7 +43,6 @@ type Props = {
 const SingleItemForm = ({ onSubmit, processing }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const theme = useTheme();
 
   const { data: navbarItems } = useNavbarItems();
   const { data: removedDefaultItems } = useNavbarItems({
@@ -83,9 +77,7 @@ const SingleItemForm = ({ onSubmit, processing }: Props) => {
 
   const availableItems = useMemo(() => {
     const flattenedAdminPublications: IAdminPublicationData[] =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      adminPublications?.pages?.flatMap((page) => page.data) ?? [];
+      adminPublications?.pages.flatMap((page) => page.data) ?? [];
     if (!navbarItems || !removedDefaultItems || !pages) return [];
     return buildAvailableItems({
       type: selectedType,
@@ -172,52 +164,14 @@ const SingleItemForm = ({ onSubmit, processing }: Props) => {
                   />
                 </Box>
                 <Box flex="1">
-                  <ReactSelect
-                    value={itemOptions.find((o) => o.value === itemId) ?? null}
+                  <SearchSelect
+                    name="itemId"
                     options={itemOptions}
-                    onChange={(option) =>
-                      methods.setValue('itemId', option?.value ?? '', {
-                        shouldValidate: true,
-                        shouldDirty: true,
-                      })
-                    }
-                    isSearchable
                     isClearable
-                    blurInputOnSelect
                     placeholder={formatMessage(messages.selectItemPlaceholder)}
-                    menuPosition="fixed"
-                    menuPlacement="auto"
-                    styles={{
-                      ...selectStyles(theme),
-                      menuPortal: (base) => ({ ...base, zIndex: 1001 }),
-                      control: (base, { isFocused }) => ({
-                        ...base,
-                        minHeight: `${stylingConsts.inputHeight}px`,
-                        borderWidth: isFocused ? '2px' : '1px',
-                        borderColor: isFocused
-                          ? theme.colors.tenantPrimary
-                          : colors.borderDark,
-                        boxShadow: 'none',
-                        '&:hover': {
-                          borderColor: isFocused
-                            ? theme.colors.tenantPrimary
-                            : colors.black,
-                        },
-                      }),
-                      placeholder: (base) => ({
-                        ...base,
-                        color: colors.placeholder,
-                      }),
-                    }}
                   />
                 </Box>
               </Box>
-              {methods.formState.errors.itemId && (
-                <Error
-                  marginTop="8px"
-                  text={methods.formState.errors.itemId.message}
-                />
-              )}
               {itemOptions.length === 0 && (
                 <Text color="textSecondary" mt="8px" mb="0px">
                   {formatMessage(messages.noItemsAvailable)}

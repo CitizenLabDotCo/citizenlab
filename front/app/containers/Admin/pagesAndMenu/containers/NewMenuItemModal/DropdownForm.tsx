@@ -8,13 +8,11 @@ import {
   IconButton,
   Label,
   Select,
-  stylingConsts,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import ReactSelect from 'react-select';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 import { array, object } from 'yup';
 
@@ -30,9 +28,9 @@ import { TextCell } from 'components/admin/ResourceList';
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
+import SearchSelect from 'components/HookForm/SearchSelect';
 import T from 'components/T';
 import Error from 'components/UI/Error';
-import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -141,7 +139,6 @@ type Props = {
 const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const theme = useTheme();
 
   const { data: navbarItems } = useNavbarItems();
   const { data: removedDefaultItems } = useNavbarItems({
@@ -172,6 +169,8 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
       children: (editItem?.attributes.children ?? []).map(
         navbarChildToLocalChild
       ),
+      // Drives the picker below; cleared again after each selection is added.
+      itemPicker: '',
     },
   });
 
@@ -323,38 +322,16 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
                   />
                 </Box>
                 <Box flex="1">
-                  <ReactSelect
-                    // Always cleared: selecting an option adds it to the list.
-                    value={null}
+                  <SearchSelect
+                    name="itemPicker"
                     options={itemOptions}
-                    onChange={handleSelect}
-                    isSearchable
                     isDisabled={isFull}
-                    blurInputOnSelect
                     placeholder={formatMessage(messages.selectItemPlaceholder)}
-                    menuPosition="fixed"
-                    menuPlacement="auto"
-                    styles={{
-                      ...selectStyles(theme),
-                      menuPortal: (base) => ({ ...base, zIndex: 1001 }),
-                      control: (base, { isFocused }) => ({
-                        ...base,
-                        minHeight: `${stylingConsts.inputHeight}px`,
-                        borderWidth: isFocused ? '2px' : '1px',
-                        borderColor: isFocused
-                          ? theme.colors.tenantPrimary
-                          : colors.borderDark,
-                        boxShadow: 'none',
-                        '&:hover': {
-                          borderColor: isFocused
-                            ? theme.colors.tenantPrimary
-                            : colors.black,
-                        },
-                      }),
-                      placeholder: (base) => ({
-                        ...base,
-                        color: colors.placeholder,
-                      }),
+                    // Selecting an option adds it to the list, then clears the
+                    // picker so it's ready for the next selection.
+                    onChange={(option) => {
+                      handleSelect(option);
+                      methods.setValue('itemPicker', '');
                     }}
                   />
                 </Box>
