@@ -15,7 +15,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from '../messages';
+import useCanModerateProject from '../useCanModerateProject';
 import useWidgetProjectId from '../useWidgetProjectId';
+
+import EmptyTimeline from './EmptyTimeline';
 
 // Renders the project's phase timeline (tabs + selected-phase title, dates and
 // description), reusing the public project-page Timeline component.
@@ -23,6 +26,7 @@ const TimelineWidget: UserComponent = () => {
   const projectId = useWidgetProjectId();
   const padding = useCraftComponentDefaultPadding();
   const { data: phases } = usePhases(projectId);
+  const canModerate = useCanModerateProject(projectId);
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>();
 
   useEffect(() => {
@@ -33,8 +37,12 @@ const TimelineWidget: UserComponent = () => {
     }
   }, [phases, selectedPhase]);
 
-  if (!projectId || !phases || phases.data.length === 0) {
+  if (!projectId || !phases) {
     return null;
+  }
+
+  if (phases.data.length === 0) {
+    return canModerate ? <EmptyTimeline /> : null;
   }
 
   return (
