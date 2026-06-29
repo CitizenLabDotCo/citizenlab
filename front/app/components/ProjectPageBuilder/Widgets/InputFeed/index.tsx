@@ -12,6 +12,7 @@ import Link from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
+import SectionBackground from '../SectionBackground';
 import useCanModerateProject from '../useCanModerateProject';
 
 import EmptyInputFeed from './EmptyInputFeed';
@@ -49,9 +50,14 @@ const InputFeed: UserComponent = () => {
       {projectIdToUse &&
         phases &&
         (hasParticipation ? (
-          <Suspense fallback={null}>
-            <PublicInputContent projectId={projectIdToUse} />
-          </Suspense>
+          // Sits on the same grey background as the Timeline widget above it, so
+          // the phases + participation content read as one section (like the old
+          // page). Only wraps real content, so empty phases leave no grey strip.
+          <SectionBackground $fullBleed={onPublicRoute} pb="40px">
+            <Suspense fallback={null}>
+              <PublicInputContent projectId={projectIdToUse} />
+            </Suspense>
+          </SectionBackground>
         ) : canModerate ? (
           <EmptyInputFeed />
         ) : null)}
