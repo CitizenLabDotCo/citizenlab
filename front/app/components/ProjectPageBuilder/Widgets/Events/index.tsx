@@ -49,6 +49,7 @@ const EventsWidget: UserComponent = () => {
       flexDirection="column"
       gap="48px"
       mx="auto"
+      mt="48px"
       maxWidth={`${maxPageWidth}px`}
       px={isSmallerThanTablet ? '20px' : padding}
     >
