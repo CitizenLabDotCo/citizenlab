@@ -23,12 +23,15 @@ import useWidgetProjectId from '../useWidgetProjectId';
 const ProjectTitle: UserComponent = () => {
   const projectId = useWidgetProjectId();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const padding = useCraftComponentDefaultPadding();
   const { data: project } = useProjectById(projectId);
 
   if (!project) {
     return null;
   }
+
+  const title = localize(project.data.attributes.title_multiloc);
 
   return (
     <Title
@@ -37,7 +40,7 @@ const ProjectTitle: UserComponent = () => {
       variant="h1"
       px={padding}
     >
-      {localize(project.data.attributes.title_multiloc)}
+      {title || formatMessage(messages.untitledProject)}
     </Title>
   );
 };
