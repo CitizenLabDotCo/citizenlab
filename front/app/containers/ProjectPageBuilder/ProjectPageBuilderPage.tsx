@@ -1,8 +1,7 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { isEmpty } from 'lodash-es';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import useProjectPageLayout from 'api/content_builder/useProjectPageLayout';
@@ -11,15 +10,16 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 import useParallelParticipation from 'hooks/useParallelParticipation';
 
+import ContentBuilderCanvas from 'components/admin/ContentBuilder/Canvas';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
-import Editor from 'components/ProjectPageBuilder/Editor';
+import { ensureLockedHeaderNodes } from 'components/ProjectPageBuilder/defaultLayout';
 import ProjectPageBuilderEditModePreview from 'components/ProjectPageBuilder/EditModePreview';
+import Editor from 'components/ProjectPageBuilder/Editor';
 import ProjectPageBuilderToolbox from 'components/ProjectPageBuilder/Toolbox';
 import ProjectPageBuilderTopBar from 'components/ProjectPageBuilder/TopBar';
 
@@ -56,6 +56,13 @@ const ProjectPageBuilderPage = ({
     useState<ContentBuilderErrors>({});
   const [imageUploading, setImageUploading] = useState(false);
 
+  // Always render with the locked Banner + Title at the top, injecting them into
+  // layouts that predate these widgets. Memoised so the frame doesn't re-deserialize.
+  const editorData = useMemo(
+    () => ensureLockedHeaderNodes(layout?.data.attributes.craftjs_json),
+    [layout]
+  );
+
   const builderVisible =
     parallelParticipation && pathname.includes('admin/project-page-builder');
 
@@ -82,13 +89,6 @@ const ProjectPageBuilderPage = ({
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
-
-  const getEditorData = () => {
-    if (!isEmpty(layout.data.attributes.craftjs_json)) {
-      return layout.data.attributes.craftjs_json;
-    }
-    return undefined;
-  };
 
   const handleEditorChange = (nodes: SerializedNodes) => {
     iframeRef.current &&
@@ -147,11 +147,11 @@ const ProjectPageBuilderPage = ({
               contentBuilderLocale={selectedLocale}
               platformLocale={locale}
             >
-              <StyledRightColumn>
-                <Box width="1000px">
-                  <ContentBuilderFrame editorData={getEditorData()} />
+              <ContentBuilderCanvas>
+                <Box width="100%" maxWidth="1000px">
+                  <ContentBuilderFrame editorData={editorData} />
                 </Box>
-              </StyledRightColumn>
+              </ContentBuilderCanvas>
             </LanguageProvider>
             <ContentBuilderSettings />
           </Box>
