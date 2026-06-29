@@ -66,6 +66,7 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
             file: { url: '' },
             ordering: null,
             size: file.data.attributes.size,
+            title_multiloc: file.data.attributes.title_multiloc,
             created_at: '',
             updated_at: '',
           },
@@ -104,6 +105,7 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
               ordering: 1,
               name: attachmentAttributes.file_name,
               size: attachmentAttributes.file_size,
+              title_multiloc: attachmentAttributes.file_title_multiloc,
               created_at: attachmentAttributes.created_at,
               updated_at: attachmentAttributes.updated_at,
               file: {

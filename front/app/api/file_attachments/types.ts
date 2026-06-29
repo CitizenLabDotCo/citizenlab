@@ -1,4 +1,4 @@
-import { IRelationship } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -48,6 +48,7 @@ interface IFileAttachmentAttributes {
   file_name: string;
   file_size: number;
   file_url: string;
+  file_title_multiloc: Multiloc;
   created_at: string;
   updated_at: string;
 }

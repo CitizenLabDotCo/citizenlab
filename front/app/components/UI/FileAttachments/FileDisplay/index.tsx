@@ -15,8 +15,10 @@ import { IPageFileData } from 'api/page_files/types';
 import { IPhaseFileData } from 'api/phase_files/types';
 import { IProjectFileData } from 'api/project_files/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { useIntl } from 'utils/cl-intl';
-import { returnFileSize } from 'utils/fileUtils';
+import { getFileDisplayName, returnFileSize } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
@@ -86,12 +88,17 @@ interface Props {
 
 const FileDisplay = ({ file, className }: Props) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   if (!isNilOrError(file)) {
     const {
       file: { url },
       name,
       size,
+      title_multiloc,
     } = file.attributes;
+
+    const title = title_multiloc ? localize(title_multiloc) : '';
+    const displayName = getFileDisplayName(name, title);
 
     return (
       <Container className={className}>
@@ -102,11 +109,11 @@ const FileDisplay = ({ file, className }: Props) => {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={formatMessage(messages.ariaLabel, {
-            fileName: name,
+            fileName: displayName,
             ...(size > 0 && { fileSize: returnFileSize(size) }),
           })}
         >
-          {name}
+          {displayName}
         </FileDownloadLink>
         <Spacer />
         {size > 0 && <FileSize>({returnFileSize(size)})</FileSize>}

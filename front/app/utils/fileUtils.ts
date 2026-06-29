@@ -114,6 +114,18 @@ export function getFilesToAdd(
   }
 }
 
+/**
+ * Builds the display name for a file. When a (localized) title is set, it is shown
+ * with the file's extension appended in brackets, e.g. a file "test.pdf" with title
+ * "Test file" becomes "Test file (.pdf)". With no title, the raw file name is returned.
+ */
+export function getFileDisplayName(name: string, title: string): string {
+  if (!title) return name;
+  const finalDotIndex = name.lastIndexOf('.');
+  const extension = finalDotIndex !== -1 ? name.slice(finalDotIndex) : '';
+  return `${title} (${extension})`;
+}
+
 export function returnFileSize(size: number) {
   if (size < 1024) {
     return `${size} bytes`;
@@ -201,6 +213,7 @@ export const generateTemporaryFileAttachment = ({
       file_name: '',
       file_size: 0,
       file_url: '',
+      file_title_multiloc: {},
       created_at: '',
       updated_at: '',
     },
