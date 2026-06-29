@@ -5,11 +5,10 @@ import { PermittedBy } from 'api/phase_permissions/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { getNumberOfVerificationLockedItems } from '../../utils';
-
 import Block from './Block';
 import Edge from './Edge';
 import messages from './messages';
+import { getNumberOfVerificationLockedItems } from './utils';
 import VerificationBlock from './VerificationBlock';
 
 interface Props {

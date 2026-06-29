@@ -1,6 +1,7 @@
 import { FormatMessage } from 'typings';
 
 import { MethodMetadata } from 'api/id_methods/types';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -92,3 +93,11 @@ export const getVerificationFrequencyExplanation = (
     days: verificationExpiry,
   });
 };
+
+export const getNumberOfVerificationLockedItems = (
+  fields: IPermissionsPhaseCustomFieldData[]
+) => {
+  return fields.filter(({ attributes }) => attributes.lock === 'verification')
+    .length;
+};
+
