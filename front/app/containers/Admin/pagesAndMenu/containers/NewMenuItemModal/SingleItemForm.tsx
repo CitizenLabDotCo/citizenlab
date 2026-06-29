@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -12,11 +12,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { object, string } from 'yup';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useCustomPages from 'api/custom_pages/useCustomPages';
-import useNavbarItems from 'api/navbar/useNavbarItems';
-
 import useLocalize from 'hooks/useLocalize';
 
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
@@ -28,12 +23,8 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { IItemNotInNavbar } from 'utils/navbar';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import {
-  buildAvailableItems,
-  getUsedPublicationIds,
-  MenuItemType,
-} from './availableItems';
 import messages from './messages';
+import useAvailableItems, { MenuItemType } from './useAvailableItems';
 
 type Props = {
   onSubmit: (item: IItemNotInNavbar) => Promise<void>;
@@ -44,16 +35,6 @@ const SingleItemForm = ({ onSubmit, processing }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const { data: navbarItems } = useNavbarItems();
-  const { data: removedDefaultItems } = useNavbarItems({
-    onlyRemovedDefaultItems: true,
-  });
-  const { data: pages } = useCustomPages();
-  const { data: adminPublications } = useAdminPublications({
-    remove_all_unlisted: true,
-    sort: 'title_multiloc',
-  });
-
   const [selectedType, setSelectedType] = useState<MenuItemType>('custom_page');
 
   const methods = useForm({
@@ -61,8 +42,6 @@ const SingleItemForm = ({ onSubmit, processing }: Props) => {
     resolver: yupResolver(
       object({
         itemId: string().required(formatMessage(messages.emptyItemError)),
-        // Leaving titleMultiloc unseeded lets InputMultilocWithLocaleSwitcher
-        // seed every configured locale, so this enforces "at least one locale".
         titleMultiloc: validateAtLeastOneLocale(
           formatMessage(messages.emptyNameError)
         ),
@@ -75,25 +54,7 @@ const SingleItemForm = ({ onSubmit, processing }: Props) => {
 
   const itemId = methods.watch('itemId');
 
-  const availableItems = useMemo(() => {
-    const flattenedAdminPublications: IAdminPublicationData[] =
-      adminPublications?.pages.flatMap((page) => page.data) ?? [];
-    if (!navbarItems || !removedDefaultItems || !pages) return [];
-    return buildAvailableItems({
-      type: selectedType,
-      navbarItems: navbarItems.data,
-      removedDefaultItems: removedDefaultItems.data,
-      pages: pages.data,
-      adminPublications: flattenedAdminPublications,
-      usedPublicationIds: getUsedPublicationIds(navbarItems.data),
-    });
-  }, [
-    selectedType,
-    navbarItems,
-    removedDefaultItems,
-    pages,
-    adminPublications,
-  ]);
+  const availableItems = useAvailableItems({ type: selectedType });
 
   // itemId holds the index into availableItems (as a string). Binding the
   // dropdown to the array index sidesteps any unreliable/duplicate data ids.

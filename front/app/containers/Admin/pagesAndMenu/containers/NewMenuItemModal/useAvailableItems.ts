@@ -1,8 +1,13 @@
+import { useMemo } from 'react';
+
 import { Multiloc } from 'typings';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
+import useCustomPages from 'api/custom_pages/useCustomPages';
 import { INavbarItem } from 'api/navbar/types';
+import useNavbarItems from 'api/navbar/useNavbarItems';
 
 import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
 
@@ -33,13 +38,11 @@ const FIXED_PAGES_SET = new Set<TCustomPageCode>([
   'privacy-policy',
   'cookie-policy',
 ]);
-export const isNotFixedPage = (page: ICustomPageData) =>
+const isNotFixedPage = (page: ICustomPageData) =>
   !FIXED_PAGES_SET.has(page.attributes.code);
 
 // Project/folder ids already used by the navbar, including dropdown children.
-export const getUsedPublicationIds = (
-  navbarItems: INavbarItem[]
-): Set<string> => {
+const getUsedPublicationIds = (navbarItems: INavbarItem[]): Set<string> => {
   const ids = new Set<string>();
   navbarItems.forEach((navbarItem) => {
     const projectId = navbarItem.relationships.project.data?.id;
@@ -74,7 +77,7 @@ const toAvailableItem = (item: IItemNotInNavbar): AvailableItem => ({
 
 // Builds the list of addable items for the given type, excluding anything
 // already in the navbar (top-level or nested) and any extra excluded ids.
-export const buildAvailableItems = ({
+const buildAvailableItems = ({
   type,
   navbarItems,
   removedDefaultItems,
@@ -123,3 +126,65 @@ export const buildAvailableItems = ({
     ];
   });
 };
+
+interface UseAvailableItemsParams {
+  type: MenuItemType;
+  // When editing a dropdown, ignore its own children so that removing one
+  // locally makes it addable again.
+  editItem?: INavbarItem;
+  // Extra targets to hide (e.g. items already added to a dropdown locally).
+  excludeStaticPageIds?: Set<string>;
+  excludePublicationIds?: Set<string>;
+}
+
+// Fetches the data backing the item picker and builds the addable-items list for
+// the given type. Shared by the single-item and dropdown forms.
+const useAvailableItems = ({
+  type,
+  editItem,
+  excludeStaticPageIds,
+  excludePublicationIds,
+}: UseAvailableItemsParams): AvailableItem[] => {
+  const { data: navbarItems } = useNavbarItems();
+  const { data: removedDefaultItems } = useNavbarItems({
+    onlyRemovedDefaultItems: true,
+  });
+  const { data: pages } = useCustomPages();
+  const { data: adminPublications } = useAdminPublications({
+    remove_all_unlisted: true,
+    sort: 'title_multiloc',
+  });
+
+  return useMemo(() => {
+    if (!navbarItems || !removedDefaultItems || !pages) return [];
+
+    const navbarItemsForExclusion = navbarItems.data.map((item) =>
+      item.id === editItem?.id
+        ? { ...item, attributes: { ...item.attributes, children: [] } }
+        : item
+    );
+
+    return buildAvailableItems({
+      type,
+      navbarItems: navbarItemsForExclusion,
+      removedDefaultItems: removedDefaultItems.data,
+      pages: pages.data,
+      adminPublications:
+        adminPublications?.pages.flatMap((page) => page.data) ?? [],
+      usedPublicationIds: getUsedPublicationIds(navbarItemsForExclusion),
+      excludeStaticPageIds,
+      excludePublicationIds,
+    });
+  }, [
+    type,
+    editItem,
+    navbarItems,
+    removedDefaultItems,
+    pages,
+    adminPublications,
+    excludeStaticPageIds,
+    excludePublicationIds,
+  ]);
+};
+
+export default useAvailableItems;

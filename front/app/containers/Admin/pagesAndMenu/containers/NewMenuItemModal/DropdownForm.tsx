@@ -15,15 +15,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
 import { array, object, string } from 'yup';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
-import useCustomPages from 'api/custom_pages/useCustomPages';
 import {
   INavbarChild,
   INavbarDropdownChild,
   INavbarItem,
 } from 'api/navbar/types';
-import useNavbarItems from 'api/navbar/useNavbarItems';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -41,13 +37,11 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { IItemNotInNavbar } from 'utils/navbar';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import {
-  buildAvailableItems,
-  DROPDOWN_CHILD_TYPES,
-  getUsedPublicationIds,
-  MenuItemType,
-} from './availableItems';
 import messages from './messages';
+import useAvailableItems, {
+  DROPDOWN_CHILD_TYPES,
+  MenuItemType,
+} from './useAvailableItems';
 
 const MAX_ITEMS = 5;
 
@@ -60,17 +54,25 @@ interface LocalChild {
   payload: INavbarDropdownChild;
 }
 
-const childPayload = (kind: ChildKind, id: string): INavbarDropdownChild => {
-  if (kind === 'page') return { static_page_id: id };
-  if (kind === 'project') return { project_id: id };
-  return { project_folder_id: id };
+// Single source of truth for the kind ↔ payload-field correspondence, used
+// both to build a payload (kind → field) and to detect a kind (field → kind).
+const KINDS = ['page', 'project', 'folder'] as const;
+const PAYLOAD_KEY: Record<ChildKind, keyof INavbarDropdownChild> = {
+  page: 'static_page_id',
+  project: 'project_id',
+  folder: 'project_folder_id',
 };
 
 const makeLocalChild = (
   kind: ChildKind,
   id: string,
   titleMultiloc: Multiloc
-): LocalChild => ({ id, titleMultiloc, kind, payload: childPayload(kind, id) });
+): LocalChild => ({
+  id,
+  titleMultiloc,
+  kind,
+  payload: { [PAYLOAD_KEY[kind]]: id },
+});
 
 // Maps an addable item (IItemNotInNavbar) to a local dropdown child.
 const itemToLocalChild = (item: IItemNotInNavbar): LocalChild | null => {
@@ -85,15 +87,10 @@ const itemToLocalChild = (item: IItemNotInNavbar): LocalChild | null => {
 
 // Maps a persisted dropdown child (from the API) to a local child.
 const navbarChildToLocalChild = (child: INavbarChild): LocalChild => {
-  if (child.static_page_id) {
-    return makeLocalChild('page', child.static_page_id, child.title_multiloc);
-  }
-  if (child.project_id) {
-    return makeLocalChild('project', child.project_id, child.title_multiloc);
-  }
+  const kind = KINDS.find((k) => child[PAYLOAD_KEY[k]]) ?? 'folder';
   return makeLocalChild(
-    'folder',
-    child.project_folder_id ?? '',
+    kind,
+    child[PAYLOAD_KEY[kind]] ?? '',
     child.title_multiloc
   );
 };
@@ -111,24 +108,12 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const { data: navbarItems } = useNavbarItems();
-  const { data: removedDefaultItems } = useNavbarItems({
-    onlyRemovedDefaultItems: true,
-  });
-  const { data: pages } = useCustomPages();
-  const { data: adminPublications } = useAdminPublications({
-    remove_all_unlisted: true,
-    sort: 'title_multiloc',
-  });
-
   const [selectedType, setSelectedType] = useState<MenuItemType>('custom_page');
 
   const methods = useForm({
     mode: 'onBlur',
     resolver: yupResolver(
       object({
-        // Leaving titleMultiloc unseeded lets InputMultilocWithLocaleSwitcher
-        // seed every configured locale, so this enforces "at least one locale".
         titleMultiloc: validateAtLeastOneLocale(
           formatMessage(messages.emptyNameError)
         ),
@@ -156,26 +141,6 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
   const setChildren = (next: LocalChild[]) =>
     methods.setValue('children', next, { shouldValidate: true });
 
-  const flattenedAdminPublications = useMemo<IAdminPublicationData[]>(
-    () =>
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      adminPublications?.pages?.flatMap((page) => page.data) ?? [],
-    [adminPublications]
-  );
-
-  // When editing, ignore this dropdown's own children in the "used" computation
-  // so that removing one locally makes it addable again.
-  const navbarItemsForExclusion = useMemo(
-    () =>
-      (navbarItems?.data ?? []).map((item) =>
-        item.id === editItem?.id
-          ? { ...item, attributes: { ...item.attributes, children: [] } }
-          : item
-      ),
-    [navbarItems, editItem]
-  );
-
   const excludeStaticPageIds = useMemo(
     () => new Set(children.filter((c) => c.kind === 'page').map((c) => c.id)),
     [children]
@@ -185,34 +150,12 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
     [children]
   );
 
-  const usedPublicationIds = useMemo(
-    () => getUsedPublicationIds(navbarItemsForExclusion),
-    [navbarItemsForExclusion]
-  );
-
-  const availableItems = useMemo(() => {
-    if (!navbarItems || !removedDefaultItems || !pages) return [];
-    return buildAvailableItems({
-      type: selectedType,
-      navbarItems: navbarItemsForExclusion,
-      removedDefaultItems: removedDefaultItems.data,
-      pages: pages.data,
-      adminPublications: flattenedAdminPublications,
-      usedPublicationIds,
-      excludeStaticPageIds,
-      excludePublicationIds,
-    });
-  }, [
-    selectedType,
-    navbarItems,
-    navbarItemsForExclusion,
-    removedDefaultItems,
-    pages,
-    flattenedAdminPublications,
-    usedPublicationIds,
+  const availableItems = useAvailableItems({
+    type: selectedType,
+    editItem,
     excludeStaticPageIds,
     excludePublicationIds,
-  ]);
+  });
 
   const typeOptions = [
     { value: 'custom_page', label: formatMessage(messages.typeCustomPage) },

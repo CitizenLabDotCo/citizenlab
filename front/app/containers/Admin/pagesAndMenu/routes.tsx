@@ -58,13 +58,11 @@ export const adminCustomPageSettingsPath = (pageId: string) => {
   return `/admin/pages-menu/pages/${pageId}/settings`;
 };
 
-// pages-menu grouping route (no component — renders a default Outlet for its tabs)
 const pagesAndMenuRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: 'pages-menu',
 });
 
-// Index of /admin/pages-menu redirects to the Pages tab.
 const PagesMenuIndexRedirect = () => <Navigate to="/admin/pages-menu/pages" />;
 
 const pagesMenuIndexRoute = createRoute({
@@ -73,7 +71,6 @@ const pagesMenuIndexRoute = createRoute({
   component: PagesMenuIndexRedirect,
 });
 
-// Menu tab: configure the navigation bar.
 const menuRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
   path: 'menu',
@@ -118,14 +115,12 @@ const homepageBuilderPreviewRoute = createRoute({
   ),
 });
 
-// pages layout route
 const pagesRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
   path: 'pages',
   component: () => <CustomPagesIndex />,
 });
 
-// Pages tab: list of custom pages (index of /admin/pages-menu/pages).
 const pagesIndexRoute = createRoute({
   getParentRoute: () => pagesRoute,
   path: '/',
@@ -142,7 +137,6 @@ const pagesNewRoute = createRoute({
   component: () => <NewCustomPageIndex />,
 });
 
-// custom page edit layout
 const customPageRoute = createRoute({
   getParentRoute: () => pagesRoute,
   path: '$customPageId',
