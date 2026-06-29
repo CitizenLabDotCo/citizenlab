@@ -10,5 +10,12 @@ FactoryBot.define do
       }
     end
     static_page
+
+    # A dropdown ('menu') item: a title-only parent with no target.
+    trait :menu do
+      code { 'menu' }
+      title_multiloc { { 'en' => 'Departments' } }
+      static_page { nil }
+    end
   end
 end
