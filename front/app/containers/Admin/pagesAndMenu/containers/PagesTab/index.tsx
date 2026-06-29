@@ -94,10 +94,9 @@ const PagesTab = () => {
           </Text>
         ) : (
           <Box>
-            {customPages.map((page, i) => (
-              <>
+            {customPages.map((page) => (
+              <React.Fragment key={page.id}>
                 <Box
-                  key={page.id}
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
@@ -151,7 +150,7 @@ const PagesTab = () => {
                   </Box>
                 </Box>
                 <Divider />
-              </>
+              </React.Fragment>
             ))}
           </Box>
         )}

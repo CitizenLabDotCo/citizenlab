@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 
 import {
+  Badge,
   Box,
   Button,
   colors,
-  Icon,
   IconButton,
   Label,
   Select,
@@ -12,14 +12,17 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
-import styled from 'styled-components';
 import { Multiloc } from 'typings';
-import { array, object } from 'yup';
+import { array, object, string } from 'yup';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useCustomPages from 'api/custom_pages/useCustomPages';
-import { INavbarDropdownChild, INavbarItem } from 'api/navbar/types';
+import {
+  INavbarChild,
+  INavbarDropdownChild,
+  INavbarItem,
+} from 'api/navbar/types';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 
 import useLocalize from 'hooks/useLocalize';
@@ -31,6 +34,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import SearchSelect from 'components/HookForm/SearchSelect';
 import T from 'components/T';
 import Error from 'components/UI/Error';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -56,75 +60,42 @@ interface LocalChild {
   payload: INavbarDropdownChild;
 }
 
-const InfoBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: ${colors.teal50};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  padding: 12px 16px;
-`;
+const childPayload = (kind: ChildKind, id: string): INavbarDropdownChild => {
+  if (kind === 'page') return { static_page_id: id };
+  if (kind === 'project') return { project_id: id };
+  return { project_folder_id: id };
+};
 
-const Tag = styled.span`
-  color: ${colors.textSecondary};
-  font-size: 14px;
-`;
+const makeLocalChild = (
+  kind: ChildKind,
+  id: string,
+  titleMultiloc: Multiloc
+): LocalChild => ({ id, titleMultiloc, kind, payload: childPayload(kind, id) });
 
 // Maps an addable item (IItemNotInNavbar) to a local dropdown child.
 const itemToLocalChild = (item: IItemNotInNavbar): LocalChild | null => {
   if (item.type === 'page') {
-    return {
-      id: item.pageId,
-      titleMultiloc: item.titleMultiloc,
-      kind: 'page',
-      payload: { static_page_id: item.pageId },
-    };
+    return makeLocalChild('page', item.pageId, item.titleMultiloc);
   }
-  if (item.type === 'project') {
-    return {
-      id: item.itemId,
-      titleMultiloc: item.titleMultiloc,
-      kind: 'project',
-      payload: { project_id: item.itemId },
-    };
-  }
-  if (item.type === 'folder') {
-    return {
-      id: item.itemId,
-      titleMultiloc: item.titleMultiloc,
-      kind: 'folder',
-      payload: { project_folder_id: item.itemId },
-    };
+  if (item.type === 'project' || item.type === 'folder') {
+    return makeLocalChild(item.type, item.itemId, item.titleMultiloc);
   }
   return null;
 };
 
 // Maps a persisted dropdown child (from the API) to a local child.
-const navbarChildToLocalChild = (
-  child: INavbarItem['attributes']['children'][number]
-): LocalChild => {
+const navbarChildToLocalChild = (child: INavbarChild): LocalChild => {
   if (child.static_page_id) {
-    return {
-      id: child.static_page_id,
-      titleMultiloc: child.title_multiloc,
-      kind: 'page',
-      payload: { static_page_id: child.static_page_id },
-    };
+    return makeLocalChild('page', child.static_page_id, child.title_multiloc);
   }
   if (child.project_id) {
-    return {
-      id: child.project_id,
-      titleMultiloc: child.title_multiloc,
-      kind: 'project',
-      payload: { project_id: child.project_id },
-    };
+    return makeLocalChild('project', child.project_id, child.title_multiloc);
   }
-  return {
-    id: child.project_folder_id ?? '',
-    titleMultiloc: child.title_multiloc,
-    kind: 'folder',
-    payload: { project_folder_id: child.project_folder_id ?? '' },
-  };
+  return makeLocalChild(
+    'folder',
+    child.project_folder_id ?? '',
+    child.title_multiloc
+  );
 };
 
 type Props = {
@@ -162,6 +133,8 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
           formatMessage(messages.emptyNameError)
         ),
         children: array().min(1, formatMessage(messages.emptyDropdownError)),
+        // UI-only field that drives the picker below; not validated.
+        itemPicker: string(),
       })
     ),
     defaultValues: {
@@ -175,14 +148,21 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
   });
 
   // The child list lives in the form so react-hook-form validates it natively.
-  const children = (methods.watch('children') ?? []) as LocalChild[];
+  const watchedChildren = methods.watch('children');
+  const children = useMemo(
+    () => (watchedChildren ?? []) as LocalChild[],
+    [watchedChildren]
+  );
   const setChildren = (next: LocalChild[]) =>
     methods.setValue('children', next, { shouldValidate: true });
 
-  const flattenedAdminPublications: IAdminPublicationData[] =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    adminPublications?.pages?.flatMap((page) => page.data) ?? [];
+  const flattenedAdminPublications = useMemo<IAdminPublicationData[]>(
+    () =>
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      adminPublications?.pages?.flatMap((page) => page.data) ?? [],
+    [adminPublications]
+  );
 
   // When editing, ignore this dropdown's own children in the "used" computation
   // so that removing one locally makes it addable again.
@@ -222,12 +202,13 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
       excludeStaticPageIds,
       excludePublicationIds,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     selectedType,
+    navbarItems,
     navbarItemsForExclusion,
     removedDefaultItems,
     pages,
+    flattenedAdminPublications,
     usedPublicationIds,
     excludeStaticPageIds,
     excludePublicationIds,
@@ -249,7 +230,7 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
   // Items are added immediately on selection; the select then clears itself.
   const handleSelect = (option: { value: string; label: string } | null) => {
     if (!option || isFull) return;
-    const available = availableItems[Number(option.value)];
+    const available = availableItems.at(Number(option.value));
     const child = available && itemToLocalChild(available.item);
     if (!child) return;
     setChildren([...children, child]);
@@ -268,11 +249,14 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
     setChildren(next);
   };
 
-  const tagFor = (kind: ChildKind) => {
-    if (kind === 'page') return formatMessage(messages.pageTag);
-    if (kind === 'project') return formatMessage(messages.projectTag);
-    return formatMessage(messages.folderTag);
-  };
+  const tagFor = (kind: ChildKind) =>
+    formatMessage(
+      {
+        page: messages.pageTag,
+        project: messages.projectTag,
+        folder: messages.folderTag,
+      }[kind]
+    );
 
   const sortableItems = children.map((child, index) => ({
     ...child,
@@ -338,17 +322,7 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
               </Box>
             </Box>
 
-            <InfoBox>
-              <Icon
-                name="info-outline"
-                width="20px"
-                height="20px"
-                fill={colors.teal500}
-              />
-              <Text m="0px" color="textSecondary">
-                {formatMessage(messages.upToFiveItems)}
-              </Text>
-            </InfoBox>
+            <Warning>{formatMessage(messages.upToFiveItems)}</Warning>
 
             {children.length > 0 && (
               <Box>
@@ -375,7 +349,9 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
                               <T value={item.titleMultiloc} />
                             </TextCell>
                             <Box display="flex" alignItems="center" gap="16px">
-                              <Tag>{tagFor(item.kind)}</Tag>
+                              <Badge className="inverse">
+                                {tagFor(item.kind)}
+                              </Badge>
                               <IconButton
                                 iconName="close"
                                 onClick={() => handleRemove(item.id)}

@@ -120,7 +120,8 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
             // Dropdown ('menu') items have no link; flatten their children
             // into the mobile menu so they stay reachable.
             if (navbarItem) {
-              return navbarItem.attributes.children.map((child) => {
+              const dropdownChildren = navbarItem.attributes.children ?? [];
+              return dropdownChildren.map((child) => {
                 const link = getNavbarChildLink(child);
                 if (!link) return null;
                 return (

@@ -124,7 +124,7 @@ const DropdownNavbarItem = ({ navbarItem, onDropdownStateChange }: Props) => {
   const localize = useLocalize();
   const [dropdownOpened, setDropdownOpened] = useState(false);
 
-  const children = navbarItem.attributes.children;
+  const children = navbarItem.attributes.children ?? [];
 
   // The dropdown is "active" when the current page is one of its children.
   const isActive = children.some(
