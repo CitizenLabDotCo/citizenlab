@@ -1160,7 +1160,6 @@
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Send your first text message",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Send a preview",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Sends a test text message to your own phone number.",
-  "app.containers.Admin.messaging.smsCampaigns": "SMS",
   "app.containers.Admin.messaging.smsCampaignsDescription": "Send text messages to your participants.",
   "app.containers.Admin.messaging.smsPreviewSentConfirmation": "A test text message was sent to your phone number.",
   "app.containers.Admin.messaging.tabSms": "SMS",

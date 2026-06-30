@@ -76,7 +76,7 @@ const SmsCampaigns = () => {
       >
         <Box>
           <Title color="primary">
-            <FormattedMessage {...messages.smsCampaigns} />
+            <FormattedMessage {...messages.tabSms} />
           </Title>
           <Text color="coolGrey600">
             <FormattedMessage {...messages.smsCampaignsDescription} />

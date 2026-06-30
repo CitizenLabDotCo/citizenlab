@@ -327,10 +327,6 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.tabSms',
     defaultMessage: 'SMS',
   },
-  smsCampaigns: {
-    id: 'app.containers.Admin.messaging.smsCampaigns',
-    defaultMessage: 'SMS',
-  },
   smsCampaignsDescription: {
     id: 'app.containers.Admin.messaging.smsCampaignsDescription',
     defaultMessage: 'Send text messages to your participants.',
