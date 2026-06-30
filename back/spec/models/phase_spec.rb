@@ -330,6 +330,23 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#complete?' do
+    it 'returns true when the phase has ended' do
+      phase = create(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.complete?).to be true
+    end
+
+    it 'returns false when the phase is ongoing' do
+      phase = create(:phase, start_at: 2.days.ago, end_at: 3.days.from_now)
+      expect(phase.complete?).to be false
+    end
+
+    it 'returns false when the phase has no end date' do
+      phase = create(:phase, start_at: 2.days.ago, end_at: nil)
+      expect(phase.complete?).to be false
+    end
+  end
+
   describe '#start_date' do
     it 'returns the date when start_at is set' do
       phase = build(:phase, start_at: '2025-03-15 14:30:00')
