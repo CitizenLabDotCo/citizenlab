@@ -2,11 +2,11 @@ import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
-import surveyResponseFieldsKeys from './keys';
+import inputResponseFieldsKeys from './keys';
 
-export type SurveyResponseFieldsKeys = Keys<typeof surveyResponseFieldsKeys>;
+export type InputResponseFieldsKeys = Keys<typeof inputResponseFieldsKeys>;
 
-export interface ISurveyResponseFieldData {
+export interface IInputResponseFieldData {
   id: string;
   type: string;
   attributes: {
@@ -16,10 +16,10 @@ export interface ISurveyResponseFieldData {
   };
 }
 
-export interface ISurveyResponseFields {
-  data: ISurveyResponseFieldData[];
+export interface IInputResponseFields {
+  data: IInputResponseFieldData[];
 }
 
-export interface ISurveyResponseFieldsParameters {
+export interface IInputResponseFieldsParameters {
   phaseId: string;
 }

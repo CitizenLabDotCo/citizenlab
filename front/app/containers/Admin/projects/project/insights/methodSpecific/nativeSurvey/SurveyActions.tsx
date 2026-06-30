@@ -22,11 +22,10 @@ import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 import { downloadSurveyResults } from 'api/survey_results/utils';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
-import SurveyPdfExportModal from 'containers/Admin/projects/project/surveyPdfExport/SurveyPdfExportModal';
+import useInputPdfExport from 'containers/Admin/projects/project/inputPdfExport/useInputPdfExport';
 
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -50,9 +49,10 @@ interface Props {
 const SurveyActions = ({ phase }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const pdfExportEnabled = useFeatureFlag({ name: 'pdf_export_responses' });
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
+  const { openModal: openPdfExportModal, modal: pdfExportModal } =
+    useInputPdfExport({ projectId, phaseId });
 
   const {
     downloadPdf,
@@ -89,7 +89,6 @@ const SurveyActions = ({ phase }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const [isDownloadingXlsx, setIsDownloadingXlsx] = useState(false);
-  const [exportPdfModalOpened, setExportPdfModalOpened] = useState(false);
 
   if (!project || !submissionCount) {
     return null;
@@ -291,15 +290,13 @@ const SurveyActions = ({ phase }: Props) => {
               zIndex="10000"
               content={
                 <Box style={{ whiteSpace: 'nowrap' }}>
-                  {pdfExportEnabled && (
-                    <ExportDropdownItem
-                      label={formatMessage(messages.exportResponsesToPdf)}
-                      onClick={() => {
-                        setDropdownOpened(false);
-                        setExportPdfModalOpened(true);
-                      }}
-                    />
-                  )}
+                  <ExportDropdownItem
+                    label={formatMessage(messages.exportResponsesToPdf)}
+                    onClick={() => {
+                      setDropdownOpened(false);
+                      openPdfExportModal();
+                    }}
+                  />
                   <ExportDropdownItem
                     label={formatMessage(messages.downloadInsightsPdf)}
                     onClick={async () => {
@@ -368,14 +365,7 @@ const SurveyActions = ({ phase }: Props) => {
         closeDeleteModal={closeDeleteModal}
         deleteResults={deleteResults}
       />
-      {exportPdfModalOpened && (
-        <SurveyPdfExportModal
-          projectId={projectId}
-          phaseId={phaseId}
-          opened
-          onClose={() => setExportPdfModalOpened(false)}
-        />
-      )}
+      {pdfExportModal}
     </>
   );
 };

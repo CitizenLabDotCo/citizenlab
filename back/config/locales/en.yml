@@ -256,8 +256,8 @@ en:
     domicile:
       outside: Somewhere else
   pdf_export:
-    survey_responses:
-      report_label: 'Survey response report'
+    input_responses:
+      report_label: 'Response report'
       date: 'Date'
       prepared_by: 'Prepared by'
       respondent: 'Respondent %{number}'

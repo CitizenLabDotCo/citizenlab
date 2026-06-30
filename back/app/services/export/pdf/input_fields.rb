@@ -2,14 +2,15 @@
 
 module Export
   module Pdf
-    # The set of survey fields included in the PDF export, in form order. Shared
+    # The set of input fields included in the PDF export, in form order. Shared
     # between the generator and the fields endpoint so the review UI lists
     # exactly what the export will contain (including user/registration fields
-    # appended to the form). `custom_form` is a lazily-created has_one, so we
-    # fall back to an unsaved one (matching Surveys::ResultsGenerator).
-    class SurveyFields
+    # appended to the form). `pmethod.custom_form` resolves the form from the
+    # right context per method (the phase for surveys/proposals, the project for
+    # ideation) and falls back to an unsaved form when none exists yet.
+    class InputFields
       def initialize(phase)
-        @custom_form = phase.custom_form || CustomForm.new(participation_context: phase)
+        @custom_form = phase.pmethod.custom_form
       end
 
       def fields

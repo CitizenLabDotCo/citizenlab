@@ -203,7 +203,6 @@ export interface IAppConfigurationSettings {
   draft_phase_description?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
-  pdf_export_responses?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

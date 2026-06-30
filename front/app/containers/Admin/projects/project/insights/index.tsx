@@ -18,6 +18,7 @@ import usePhase from 'api/phases/usePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
+import useInputPdfExport from 'containers/Admin/projects/project/inputPdfExport/useInputPdfExport';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
@@ -49,6 +50,11 @@ const AI_ANALYSIS_SUPPORTED_METHODS = [
   'native_survey',
 ];
 
+// Methods handled by this generic action bar that offer the responses PDF
+// export. Native survey has its own action bar (SurveyActions) and is excluded
+// here; voting/common_ground have no fillable response form.
+const INPUT_PDF_EXPORT_METHODS = ['ideation', 'proposals'];
+
 // Hidden container styles for PDF rendering (offscreen, but must remain "visible" for SVG rendering)
 // Note: visibility: hidden breaks Recharts SVG path rendering, so we use positioning instead
 const hiddenContainerStyle: React.CSSProperties = {
@@ -72,6 +78,7 @@ const InsightsContent = () => {
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
   const [dropdownOpened, setDropdownOpened] = useState(false);
+  const inputPdfExport = useInputPdfExport({ projectId, phaseId });
 
   const {
     downloadPdf,
@@ -185,6 +192,9 @@ const InsightsContent = () => {
   }
 
   const isNativeSurvey = participationMethod === 'native_survey';
+  const showInputPdfExport =
+    !!participationMethod &&
+    INPUT_PDF_EXPORT_METHODS.includes(participationMethod);
 
   return (
     <>
@@ -232,9 +242,9 @@ const InsightsContent = () => {
                       onClick={toggleDropdown()}
                       processing={isDownloading}
                       disabled={!allComponentsReady && !isDownloading}
-                      aria-label={formatMessage(messages.downloadInsightsPdf)}
+                      aria-label={formatMessage(messages.exportButton)}
                     >
-                      <FormattedMessage {...messages.download} />
+                      <FormattedMessage {...messages.exportButton} />
                     </Button>
                     <Dropdown
                       width="max-content"
@@ -251,6 +261,18 @@ const InsightsContent = () => {
                           gap="4px"
                           style={{ whiteSpace: 'nowrap' }}
                         >
+                          {showInputPdfExport && (
+                            <DropdownListItem
+                              onClick={() => {
+                                setDropdownOpened(false);
+                                inputPdfExport.openModal();
+                              }}
+                            >
+                              <FormattedMessage
+                                {...messages.exportResponsesToPdf}
+                              />
+                            </DropdownListItem>
+                          )}
                           <DropdownListItem onClick={handleDownloadPdf}>
                             <FormattedMessage {...messages.downloadPdf} />
                           </DropdownListItem>
@@ -330,6 +352,8 @@ const InsightsContent = () => {
           </PageBreakBox>
         </Box>
       </Box>
+
+      {inputPdfExport.modal}
 
       {isDownloadingPdf && (
         <div style={hiddenContainerStyle}>

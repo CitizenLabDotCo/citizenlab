@@ -11,9 +11,9 @@ import {
 import { snakeCase } from 'lodash-es';
 import { FormProvider } from 'react-hook-form';
 
+import useInputResponseFields from 'api/input_response_fields/useInputResponseFields';
+import { generateInputResponsesPdf } from 'api/input_responses_pdf/generateInputResponsesPdf';
 import usePhase from 'api/phases/usePhase';
-import useSurveyResponseFields from 'api/survey_response_fields/useSurveyResponseFields';
-import { generateSurveyResponsesPdf } from 'api/survey_responses_pdf/generateSurveyResponsesPdf';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -36,7 +36,7 @@ type Props = {
   onClose: () => void;
 };
 
-const SurveyPdfExportModal = ({
+const InputPdfExportModal = ({
   projectId,
   phaseId,
   opened,
@@ -46,7 +46,7 @@ const SurveyPdfExportModal = ({
   const localize = useLocalize();
 
   const { data: phase } = usePhase(phaseId);
-  const { data: surveyFields } = useSurveyResponseFields({ phaseId });
+  const { data: responseFields } = useInputResponseFields({ phaseId });
 
   const { methods, cover } = useCoverForm({ phaseId, projectId });
 
@@ -57,12 +57,12 @@ const SurveyPdfExportModal = ({
   // Personal-data fields are flagged for redaction by default.
   const fields: RedactionField[] = useMemo(
     () =>
-      (surveyFields?.data ?? []).map((field) => ({
+      (responseFields?.data ?? []).map((field) => ({
         key: field.id,
         label: localize(field.attributes.title_multiloc),
         redact: redactOverrides[field.id] ?? field.attributes.personal_data,
       })),
-    [surveyFields, localize, redactOverrides]
+    [responseFields, localize, redactOverrides]
   );
 
   const toggleField = (key: string) => {
@@ -84,12 +84,12 @@ const SurveyPdfExportModal = ({
       const phaseTitle = phase
         ? localize(phase.data.attributes.title_multiloc)
         : '';
-      await generateSurveyResponsesPdf({
+      await generateInputResponsesPdf({
         phaseId,
         cover,
         redactedFieldKeys,
         fileName: `${
-          snakeCase(`survey responses ${phaseTitle}`) || 'survey_responses'
+          snakeCase(`input responses ${phaseTitle}`) || 'input_responses'
         }.pdf`,
       });
       onClose();
@@ -183,4 +183,4 @@ const SurveyPdfExportModal = ({
   );
 };
 
-export default SurveyPdfExportModal;
+export default InputPdfExportModal;

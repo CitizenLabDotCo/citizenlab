@@ -27,11 +27,11 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def survey_responses_pdf?
+  def input_responses_pdf?
     active_moderator?
   end
 
-  def survey_response_fields?
+  def input_response_fields?
     active_moderator?
   end
 
