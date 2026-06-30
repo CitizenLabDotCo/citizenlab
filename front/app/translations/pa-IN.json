@@ -1426,6 +1426,7 @@
   "app.containers.EventsShow.registrantCountWithMaximum": "{attendeesCount} / {maximumNumberOfAttendees} ਰਜਿਸਟਰ ਕਰਨ ਵਾਲੇ",
   "app.containers.EventsShow.registrantsIconAltText": "ਰਜਿਸਟਰ ਕਰਨ ਵਾਲੇ",
   "app.containers.EventsShow.socialMediaSharingMessage": "ਇਸ ਇਵੈਂਟ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ: {eventTitle}",
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": "ਗੂਗਲ ਮੈਪਸ 'ਤੇ {location} ਦੇਖੋ (ਨਵੀਂ ਵਿੰਡੋ ਵਿੱਚ ਖੁੱਲ੍ਹਦਾ ਹੈ)",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# ਭਾਗੀਦਾਰ} other {# ਭਾਗੀਦਾਰ}}",
   "app.containers.EventsViewer.allTime": "ਸਾਰਾ ਸਮਾਂ",
   "app.containers.EventsViewer.date": "ਮਿਤੀ",

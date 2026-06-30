@@ -2231,23 +2231,32 @@ function deleteEventAttendances(
   });
 }
 
-function apiRemoveIdeas() {
-  return cy
-    .request({
-      method: 'GET',
-      url: `/web_api/v1/ideas`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response) => {
-      const ideas = response.body.data;
-      if (ideas.length !== 0) {
-        ideas.forEach((idea: any) => {
-          cy.apiRemoveIdea(idea.id);
-        });
-      }
-    });
+function apiRemoveIdeas(projectId?: string) {
+  // When a projectId is passed, only ideas (incl. survey responses) belonging to
+  // that project are removed. Without it, ALL ideas in the tenant are deleted,
+  // which wipes seeded fixtures (e.g. the "Verified Idea") that other specs rely on.
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        method: 'GET',
+        url: `/web_api/v1/ideas`,
+        qs: projectId ? { 'projects[]': projectId } : undefined,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+      })
+      .then((response) => {
+        const ideas = response.body.data;
+        if (ideas.length !== 0) {
+          ideas.forEach((idea: any) => {
+            cy.apiRemoveIdea(idea.id);
+          });
+        }
+      });
+  });
 }
 
 Cypress.Commands.add('dataCy', dataCy);

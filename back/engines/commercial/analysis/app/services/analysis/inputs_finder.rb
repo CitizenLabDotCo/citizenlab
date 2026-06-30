@@ -17,6 +17,7 @@ module Analysis
 
       inputs = filter_tags(inputs)
       inputs = filter_input_custom_field_no_empty_values(inputs)
+      inputs = filter_input_follow_up_not_empty(inputs)
       inputs = filter_published_at(inputs)
       inputs = filter_reactions(inputs)
       inputs = filter_comments(inputs)
@@ -56,6 +57,20 @@ module Analysis
           # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
           # then check the result is not empty. TRIM would not handle newlines correctly.
           .where("regexp_replace(custom_field_values->>'#{analysis.main_custom_field.key}', '[[:space:]]+', '', 'g') != ''")
+      end
+      scope
+    end
+
+    # Restricts inputs to those with non-empty follow-up text on the analysis's
+    # main field. Used to scope sentiment follow-up summaries to respondents who
+    # actually left follow-up text (rather than all scale responders).
+    def filter_input_follow_up_not_empty(inputs)
+      scope = inputs
+      if params[:input_follow_up_not_empty] && analysis.main_custom_field&.ask_follow_up?
+        follow_up_key = "#{analysis.main_custom_field.key}_follow_up"
+        scope = scope.where.not("ideas.custom_field_values->>'#{follow_up_key}' IS NULL")
+          # Same whitespace-aware non-empty check as filter_input_custom_field_no_empty_values.
+          .where("regexp_replace(custom_field_values->>'#{follow_up_key}', '[[:space:]]+', '', 'g') != ''")
       end
       scope
     end

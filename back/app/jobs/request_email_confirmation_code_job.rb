@@ -9,7 +9,8 @@ class RequestEmailConfirmationCodeJob < ApplicationJob
     ActiveRecord::Base.transaction do
       confirmation = user.email_confirmation
       confirmation.reset_code!
-      EmailConfirmationMailer.with(user: user).send_code.deliver_now
+      campaign = EmailCampaigns::Campaigns::EmailConfirmation.first_or_create!
+      EmailCampaigns::DeliveryService.new.send_now_to_user(campaign, user, { code: confirmation.code })
       confirmation.update!(code_sent_at: Time.zone.now)
       ExpireConfirmationCodeOrDeleteJob.set(
         wait_until: confirmation.expiration_at

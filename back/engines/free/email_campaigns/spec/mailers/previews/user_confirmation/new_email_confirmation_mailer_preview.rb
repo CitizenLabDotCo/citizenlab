@@ -4,8 +4,8 @@ module UserConfirmation
   class NewEmailConfirmationMailerPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreview
 
-    def send_code
-      ::NewEmailConfirmationMailer.with(user: recipient_user).send_code
+    def campaign_mail
+      preview_campaign_mail(EmailCampaigns::Campaigns::NewEmailConfirmation)
     end
   end
 end

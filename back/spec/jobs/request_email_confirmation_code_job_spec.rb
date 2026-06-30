@@ -21,6 +21,13 @@ RSpec.describe RequestEmailConfirmationCodeJob do
         expect { job.perform(user) }.to change { ActionMailer::Base.deliveries.count }.by(1)
       end
 
+      it 'records a delivery for the EmailConfirmation campaign' do
+        expect { job.perform(user) }.to change(EmailCampaigns::Delivery, :count).by(1)
+        delivery = EmailCampaigns::Delivery.order(:created_at).last
+        expect(delivery.campaign).to be_a(EmailCampaigns::Campaigns::EmailConfirmation)
+        expect(delivery.user).to eq(user)
+      end
+
       it 'enqueues a code expiration job' do
         expect { job.perform(user) }.to enqueue_job(ExpireConfirmationCodeOrDeleteJob)
       end

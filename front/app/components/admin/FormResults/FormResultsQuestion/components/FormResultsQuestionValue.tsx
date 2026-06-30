@@ -34,7 +34,6 @@ const FormResultQuestionValue = ({
     determineAnswerType(result);
 
   const {
-    answers,
     textResponses,
     pointResponses,
     lineResponses,
@@ -71,7 +70,7 @@ const FormResultQuestionValue = ({
             <TextQuestion
               textResponses={textResponses}
               customFieldId={customFieldId}
-              hasOtherResponses={!!answers}
+              textResponseSource="other_option"
             />
           )}
         </>
@@ -81,7 +80,7 @@ const FormResultQuestionValue = ({
         <TextQuestion
           textResponses={textResponses}
           customFieldId={customFieldId}
-          hasOtherResponses={!!answers}
+          textResponseSource="free_text"
         />
       ) : null;
 

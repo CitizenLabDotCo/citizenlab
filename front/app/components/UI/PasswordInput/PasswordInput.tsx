@@ -19,7 +19,18 @@ import messages from './messages';
 
 import { Props as WrapperProps } from './';
 
-const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
+const PasswordStrengthBar = lazy(() =>
+  // react-password-strength-bar is a CommonJS module (exports.default + __esModule).
+  // Vite's dev dep-optimizer double-wraps its default export, so in dev `module.default`
+  // is `{ default: Component }` rather than the component itself, which makes React.lazy
+  // throw "Element type is invalid". Unwrap the inner default when present (production is fine).
+  import('react-password-strength-bar').then((module) => {
+    const imported = module.default as typeof module.default & {
+      default?: typeof module.default;
+    };
+    return { default: imported.default ?? imported };
+  })
+);
 
 const Container = styled.div`
   position: relative;
