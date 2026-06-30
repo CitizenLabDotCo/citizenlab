@@ -4,55 +4,42 @@ module Tasks
   module SingleUse
     module Services
       # Moves a project/folder's legacy WYSIWYG `description_multiloc` onto the
-      # Content Builder, enabling the layout so the citizen page renders it. The
-      # legacy `description_multiloc` is left untouched.
+      # Content Builder, picking the widget by content (see
+      # ContentBuilder::DescriptionLayoutService). A project's description is
+      # wrapped beside the participation AboutBox in a "2 column" widget so the
+      # legacy WYSIWYG sidebar is preserved; folders have no sidebar.
       #
-      # After running, EVERY buildable is on the Content Builder (the widget is
-      # chosen by content — see ContentBuilder::DescriptionLayoutService). A
-      # project's description is wrapped beside the participation AboutBox (in a
-      # "2 column" widget) so the legacy WYSIWYG sidebar is preserved; folders have
-      # no sidebar and keep the plain content-aware widget:
-      # - text-only description  -> native TextMultiloc widget;
-      # - description with media -> lossless RichTextMultiloc "bridge" widget;
-      # - blank description       -> for a project, the 2-column AboutBox layout with
-      #                             an empty text widget on the left; for a folder, the
-      #                             enabled default layout (title + published projects),
-      #                             so there is no off-builder description;
-      # - disabled layout        -> a "straggler" (admin toggled the builder on then
-      #                             off). We re-point it at the chosen layout and
-      #                             enable it. The prior craftjs_json is logged first
-      #                             so the overwrite is recoverable;
-      # - enabled layout         -> already on the builder, left untouched.
+      # A disabled layout (admin toggled the builder on then off) is re-pointed at
+      # the chosen layout and enabled; its prior craftjs_json is logged first so the
+      # overwrite is recoverable. `description_multiloc` is never touched.
       #
-      # Idempotent and resumable (a second run finds an enabled layout and skips).
-      # Operates on the current tenant; the rake task switches tenants and
-      # aggregates the per-tenant stats.
+      # Idempotent: a second run finds an enabled layout and skips. Operates on the
+      # current tenant; the rake task switches tenants, aggregates the stats, and
+      # shares one ScriptReporter so every created/overwritten layout is captured in
+      # a single recoverable JSON report across all tenants.
       class DescriptionToContentBuilderMigrationService
-        def initialize
+        def initialize(reporter: ScriptReporter.new)
           @stats = Hash.new(0)
+          @reporter = reporter
         end
 
-        attr_reader :stats
+        attr_reader :stats, :reporter
 
-        # Migrates every project and folder in the current tenant.
         def migrate(persist:)
           Project.find_each { |project| migrate_buildable(project, persist: persist) }
           ProjectFolders::Folder.find_each { |folder| migrate_buildable(folder, persist: persist) }
           @stats
         end
 
-        # Migrates a single buildable. Safe to call repeatedly.
         def migrate_buildable(buildable, persist:)
           code = description_layout_service.layout_code(buildable)
           existing = buildable.content_builder_layouts.find_by(code: code)
 
-          # Already on the Content Builder — nothing to do.
           if existing&.enabled
             @stats[:skipped_existing] += 1
             return
           end
 
-          # `blank` is still tracked for the summary stat.
           blank = description_layout_service.description_blank?(buildable.description_multiloc)
           craftjs = migrated_craftjs_json(buildable)
 
@@ -67,35 +54,34 @@ module Tasks
           @stats[buildable.is_a?(Project) ? :projects_migrated : :folders_migrated] += 1
         rescue StandardError => e
           @stats[:errors] += 1
+          @reporter.add_error(e.message, context: report_context(buildable))
           Rails.logger.error "   ❌ Error migrating #{buildable.class.name} #{buildable.id}: #{e.message}"
           ErrorReporter.report(e, extra: { buildable_type: buildable.class.name, buildable_id: buildable.id })
         end
 
         private
 
+        def report_context(buildable)
+          { tenant: Tenant.current.host, buildable_type: buildable.class.name, buildable_id: buildable.id }
+        end
+
         # The "2 column" ratio reproducing the legacy ~2/3 + 1/3 split (wide left
-        # description, narrow right sidebar). Mirrors the InfoWithAccordions widget.
+        # description, narrow right sidebar).
         ABOUT_BOX_COLUMN_LAYOUT = '2-1'
 
         def description_layout_service
           @description_layout_service ||= ContentBuilder::DescriptionLayoutService.new
         end
 
-        # The craftjs the migration writes. A project's description is wrapped beside
-        # the participation AboutBox so the legacy WYSIWYG sidebar is preserved; a
-        # folder keeps the plain content-aware layout (it has no sidebar). This
-        # WYSIWYG-preservation lives here, in the single-use migration, rather than in
-        # the going-forward DescriptionLayoutService — once every buildable is on the
-        # Content Builder the distinction no longer exists.
+        # Wraps a project's description beside the participation AboutBox; folders have
+        # no sidebar and keep the plain content-aware layout. This sidebar preservation
+        # lives in the migration, not the going-forward DescriptionLayoutService.
         def migrated_craftjs_json(buildable)
           return description_layout_service.content_aware_craftjs_json(buildable) unless buildable.is_a?(Project)
 
           about_box_project_craftjs(buildable.description_multiloc)
         end
 
-        # A project layout: the description in the wide left column of a "2 column"
-        # widget, the participation AboutBox in the narrow right column. A blank
-        # description still gets the sidebar, with an empty TextMultiloc on the left.
         def about_box_project_craftjs(description_multiloc)
           description_node =
             if description_layout_service.description_blank?(description_multiloc)
@@ -109,7 +95,6 @@ module Tasks
         end
 
         # ROOT -> TwoColumn -> [left Container -> description, right Container -> AboutBox].
-        # Mirrors the craftjs the editor serialises for the InfoWithAccordions template.
         def two_column_with_about_box(description_node)
           two_column_id = SecureRandom.alphanumeric(10)
           left_id = SecureRandom.alphanumeric(10)
@@ -192,34 +177,35 @@ module Tasks
 
         def create_layout(buildable, craftjs, persist:)
           @stats[:created] += 1
+          @reporter.add_create(
+            'ContentBuilder::Layout',
+            { code: description_layout_service.layout_code(buildable), enabled: true },
+            context: report_context(buildable)
+          )
           return unless persist
 
           description_layout_service.create_layout!(buildable, craftjs)
         end
 
-        # Re-points a disabled (abandoned) layout at the chosen layout and enables
-        # it. The previous craftjs_json is logged first (only when it holds real
-        # content) so any overwrite is recoverable; `description_multiloc`, the
-        # live content, is never touched.
+        # Re-points a disabled layout at the chosen layout and enables it. The previous
+        # craftjs_json is recorded in the reporter so any overwrite is recoverable.
         def migrate_straggler(buildable, layout, craftjs, persist:)
           had_content = layout_has_content?(layout)
           @stats[:remigrated_disabled] += 1
           @stats[:remigrated_disabled_with_content] += 1 if had_content
 
-          return unless persist
+          @reporter.add_change(
+            { enabled: layout.enabled, craftjs_json: layout.craftjs_json },
+            { enabled: true, craftjs_json: craftjs },
+            context: report_context(buildable).merge(layout_id: layout.id, had_content: had_content)
+          )
 
-          if had_content
-            Rails.logger.info(
-              "   💾 Overwriting disabled layout #{layout.id} for #{buildable.class.name} " \
-              "#{buildable.id}; previous craftjs_json: #{layout.craftjs_json.to_json}"
-            )
-          end
+          return unless persist
 
           layout.update!(enabled: true, craftjs_json: craftjs)
         end
 
-        # A layout holds admin-built content when it has any node beyond the ROOT
-        # canvas (an empty/never-built layout is `{}` or ROOT-only).
+        # A layout holds admin-built content when it has any node beyond the ROOT canvas.
         def layout_has_content?(layout)
           layout.craftjs_json.is_a?(Hash) && layout.craftjs_json.except('ROOT').present?
         end
