@@ -16,7 +16,12 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
       on the resource's page and can be downloaded from there. Pass `remote_url`
       to upload a new file from a public URL (which is also added to the
       project's files), or `file_id` to reuse one of the project's files (see
-      `list_project_files`).
+      `list_project_files`). 
+
+      If the user wants to work with local files: pause and ask the user to upload them
+      to the project from the web interface (at `/admin/projects/<project_id>/files`).
+      They can use bulk upload to upload multiple files at once. Once done, call
+      `list_project_files` to find them and pass them via `file_id`.
     DESC
   end
 
