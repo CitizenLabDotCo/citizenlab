@@ -15,6 +15,8 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { useIntl } from 'utils/cl-intl';
+
 import AccessSection from './AccessSections/AccessSection';
 import AccessSectionSSO from './AccessSections/AccessSectionSSO';
 import DataSection from './DataSection';
@@ -60,6 +62,7 @@ const ActionForm = ({
   onChange,
   onReset,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
 
@@ -85,7 +88,7 @@ const ActionForm = ({
     passwordLoginEnabled && attributes.require_confirmed_email;
 
   const summary = passwordLoginEnabled
-    ? buildSummary(permissionData, customFields)
+    ? buildSummary(permissionData, customFields, formatMessage)
     : buildSummarySSO(
       permissionData,
       customFields,

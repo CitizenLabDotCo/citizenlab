@@ -3,6 +3,7 @@
 // `IPhasePermissionData` shape (plus the list of permission custom fields that
 // holds the demographics). The panel is stateless, so nothing here mutates:
 // writes are expressed as `Changes` for `onChange`.
+import { FormatMessage } from 'typings';
 
 import { IdMethod } from 'api/id_methods/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
@@ -73,7 +74,8 @@ const demographicsChip = (
 
 export const buildSummary = (
   permission: IPhasePermissionData,
-  customFields: IPermissionsPhaseCustomFieldData[]
+  customFields: IPermissionsPhaseCustomFieldData[],
+  formatMessage: FormatMessage
 ): SummaryChip[] => {
   const { attributes } = permission;
 
@@ -104,7 +106,7 @@ export const buildSummary = (
     if (getMethod(permission, key).enabled) {
       chips.push({
         key,
-        label: AUTH_METHOD_LABELS[key],
+        label: formatMessage(AUTH_METHOD_LABELS[key]),
         icon: methodIcon[key],
         tone: 'access',
       });
