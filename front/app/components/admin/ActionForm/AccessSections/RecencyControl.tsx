@@ -1,6 +1,5 @@
 // The "re-confirm/re-verify if older than N days" control shown under an
 // enabled authentication method.
-
 import React from 'react';
 
 import { Box, Text, Input } from '@citizenlab/cl2-component-library';
