@@ -24,7 +24,7 @@ const HtmlBlockMultiloc = ({ html }: Props) => {
 
   return (
     <Box
-      className="e2e-html-block"
+      data-cy="e2e-html-block"
       minHeight="40px"
       maxWidth="1200px"
       margin="0 auto"
