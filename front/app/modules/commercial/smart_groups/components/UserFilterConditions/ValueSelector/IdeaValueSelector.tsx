@@ -8,13 +8,14 @@ import { TRule } from '../rules';
 
 export interface Props {
   rule: TRule;
-  value: string;
-  onChange: (value: string) => void;
+  // Undefined until the manager has picked an input.
+  value?: string;
+  onChange: (value: string | undefined) => void;
 }
 
 const IdeaValueSelector = ({ value, onChange }: Props) => {
   const handleChange = (idea?: IIdeaData) => {
-    onChange(idea?.id ?? '');
+    onChange(idea?.id);
   };
 
   return (
