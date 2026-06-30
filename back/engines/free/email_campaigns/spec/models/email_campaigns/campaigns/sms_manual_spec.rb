@@ -20,9 +20,14 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
   describe 'channel and manual flags' do
     subject(:campaign) { build(:sms_manual_campaign) }
 
-    it { expect(campaign.channel).to eq(:sms) }
+    it { expect(campaign.channel).to eq('sms') }
     it { expect(campaign.manual?).to be(true) }
     it { expect(campaign.can_be_disabled?).to be(false) }
+
+    it 'persists the sms channel' do
+      campaign.save!
+      expect(campaign.reload.channel).to eq('sms')
+    end
   end
 
   describe '#sent?' do

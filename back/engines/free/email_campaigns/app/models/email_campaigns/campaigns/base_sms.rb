@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -41,8 +42,8 @@ module EmailCampaigns
     # campaign_id)
     has_many :sms_deliveries, class_name: 'EmailCampaigns::Sms::Delivery', foreign_key: :campaign_id, dependent: :nullify, inverse_of: :campaign
 
-    def channel
-      :sms
+    def self.channel
+      'sms'
     end
 
     def sent?

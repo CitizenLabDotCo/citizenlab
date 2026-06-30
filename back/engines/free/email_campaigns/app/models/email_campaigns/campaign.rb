@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -51,6 +52,7 @@ module EmailCampaigns
     has_many_text_images from: :intro_multiloc, as: :intro_text_images
 
     before_validation :set_enabled, on: :create
+    after_initialize :set_channel, if: :new_record?
 
     validate :validate_recipients, on: :send
     validates :context_id, uniqueness: { scope: :type }, if: :unique_campaigns_per_context?
@@ -182,10 +184,11 @@ module EmailCampaigns
       false
     end
 
-    # Communication channel for this campaign. Stand-in for a future DB column;
-    # SMS campaigns override this to :sms.
-    def channel
-      :email
+    # Communication channel used to deliver this campaign. Persisted in the
+    # `channel` column so it can be queried directly (e.g. from Metabase). The
+    # value is fixed by the campaign class; SMS classes override `self.channel`.
+    def self.channel
+      'email'
     end
 
     def activity_context(_activity)
@@ -210,6 +213,10 @@ module EmailCampaigns
 
     def set_enabled
       self.enabled = true if enabled.nil?
+    end
+
+    def set_channel
+      self.channel = self.class.channel
     end
 
     def serialize_campaign(item)

@@ -116,7 +116,7 @@ module EmailCampaigns
     end
 
     def send_preview(campaign, recipient)
-      return send_sms_preview(campaign, recipient) if campaign.channel == :sms
+      return send_sms_preview(campaign, recipient) if campaign.channel == 'sms'
 
       send_email_preview(campaign, recipient)
     end
@@ -147,7 +147,7 @@ module EmailCampaigns
     end
 
     def preview_email(campaign, recipient)
-      return {} if campaign.channel == :sms
+      return {} if campaign.channel == 'sms'
 
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
@@ -221,7 +221,7 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      return send_command_sms(campaign, command) if campaign.channel == :sms
+      return send_command_sms(campaign, command) if campaign.channel == 'sms'
 
       send_command_email(campaign, command)
     end
