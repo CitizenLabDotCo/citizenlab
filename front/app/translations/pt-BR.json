@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Apoie esta ideia: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Apoie esta ideia: {postTitle}",
   "app.containers.IdeasShow.imported": "Importado",
-  "app.containers.IdeasShow.importedTooltip": "Este {inputTerm} foi coletado offline e carregado automaticamente na plataforma.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Apoie esta iniciativa '{ideaTitle}' em {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Apoie esta iniciativa: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Obrigado por enviar sua iniciativa!",

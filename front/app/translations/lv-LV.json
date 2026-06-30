@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Atbalstīt šo ideju: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Atbalstīt šo ideju: {postTitle}",
   "app.containers.IdeasShow.imported": "Importēts",
-  "app.containers.IdeasShow.importedTooltip": "Šis {inputTerm} tika apkopots bezsaistē un automātiski augšupielādēts platformā.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Atbalstiet šo iniciatīvu '{ideaTitle}' vietnē {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Atbalstiet šo iniciatīvu: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Paldies par iniciatīvas iesniegšanu!",

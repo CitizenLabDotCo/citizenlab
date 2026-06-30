@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Ënnerstëtzt dës Iddi: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Ënnerstëtzt dës Iddi: {postTitle}",
   "app.containers.IdeasShow.imported": "Importéiert",
-  "app.containers.IdeasShow.importedTooltip": "Dës {inputTerm} gouf offline gesammelt an automatesch op d'Plattform eropgelueden.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Ënnerstëtzt dës Initiativ '{ideaTitle}' um {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Ënnerstëtzt dës Initiativ: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Merci fir Är Initiativ!",

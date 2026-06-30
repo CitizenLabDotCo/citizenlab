@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "ادعم هذه الفكرة: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "ادعم هذه الفكرة: {postTitle}",
   "app.containers.IdeasShow.imported": "مستورد",
-  "app.containers.IdeasShow.importedTooltip": "تم جمع هذا {inputTerm} دون اتصال بالإنترنت وتم تحميله تلقائيًا على النظام الأساسي.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "ادعم هذه المبادرة '{ideaTitle}' على {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "ادعم هذه المبادرة: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "شكرا لتقديم مبادرتك!",

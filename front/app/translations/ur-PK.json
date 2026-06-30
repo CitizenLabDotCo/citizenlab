@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "اس خیال کی حمایت کریں: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "اس خیال کی حمایت کریں: {postTitle}",
   "app.containers.IdeasShow.imported": "درآمد شدہ",
-  "app.containers.IdeasShow.importedTooltip": "یہ {inputTerm} آف لائن جمع کیا گیا تھا اور خود بخود پلیٹ فارم پر اپ لوڈ ہو گیا تھا۔",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "{ideaUrl}پر اس اقدام کی حمایت کریں '{ideaTitle}' !",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "اس اقدام کی حمایت کریں: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "اپنی پہل جمع کرانے کا شکریہ!",

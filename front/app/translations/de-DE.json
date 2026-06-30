@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Unterstützen Sie diese Idee: {postTitle}\n",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Unterstützen Sie diese Idee: {postTitle}\n",
   "app.containers.IdeasShow.imported": "Importiert",
-  "app.containers.IdeasShow.importedTooltip": "Diese {inputTerm} wurde auf die Plattform hochgeladen.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Unterstützen Sie diese Initiative '{ideaTitle}' unter {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Diesen Vorschlag unterstützen: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Vielen Dank für die Einreichung!",

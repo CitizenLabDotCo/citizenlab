@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Støtt denne ideen: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Støtt denne ideen: {postTitle}",
   "app.containers.IdeasShow.imported": "Importert",
-  "app.containers.IdeasShow.importedTooltip": "Denne {inputTerm} ble samlet inn offline og automatisk lastet opp til plattformen.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Støtt dette initiativet '{ideaTitle}' på {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Støtt dette initiativet: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Takk for at du sendte inn initiativet ditt!",

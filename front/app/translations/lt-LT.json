@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Palaikykite šią idėją: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Palaikykite šią idėją: {postTitle}",
   "app.containers.IdeasShow.imported": "Importuota",
-  "app.containers.IdeasShow.importedTooltip": "Šis {inputTerm} buvo surinktas neprisijungus prie interneto ir automatiškai įkeltas į platformą.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Palaikykite šią iniciatyvą '{ideaTitle}' adresu {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Palaikykite šią iniciatyvą: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Ačiū, kad pateikėte iniciatyvą!",

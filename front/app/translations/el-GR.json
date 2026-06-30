@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Υποστηρίξτε αυτή την ιδέα: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Υποστηρίξτε αυτή την ιδέα: {postTitle}",
   "app.containers.IdeasShow.imported": "Εισαγόμενο",
-  "app.containers.IdeasShow.importedTooltip": "Το εν λόγω {inputTerm} συλλέχθηκε εκτός σύνδεσης και μεταφορτώθηκε αυτόματα στην πλατφόρμα.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Υποστηρίξτε αυτή την πρωτοβουλία '{ideaTitle}' στο {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Υποστηρίξτε αυτή την πρωτοβουλία: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Ευχαριστούμε για την υποβολή της πρωτοβουλίας σας!",

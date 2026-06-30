@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Podrži ovu ideju: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Podrži ovu ideju: {postTitle}",
   "app.containers.IdeasShow.imported": "Uvozni",
-  "app.containers.IdeasShow.importedTooltip": "Ovaj {inputTerm} je prikupljen offline i automatski prenesen na platformu.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Podržite ovu inicijativu '{ideaTitle}' na {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Podržite ovu inicijativu: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Hvala što ste poslali inicijativu!",

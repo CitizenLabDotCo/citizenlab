@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Támogassa ezt az ötletet: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Támogassa ezt az ötletet: {postTitle}",
   "app.containers.IdeasShow.imported": "Importált",
-  "app.containers.IdeasShow.importedTooltip": "Ezt a {inputTerm} -t offline gyűjtöttük, és automatikusan feltöltöttük a platformra.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Támogassa ezt a kezdeményezést '{ideaTitle}' a {ideaUrl}címen!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Támogassa ezt a kezdeményezést: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Köszönjük kezdeményezését!",

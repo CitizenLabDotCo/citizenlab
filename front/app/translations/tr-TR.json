@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Bu fikre destek olun: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Bu fikre destek olun: {postTitle}",
   "app.containers.IdeasShow.imported": "İthal",
-  "app.containers.IdeasShow.importedTooltip": "Bu {inputTerm} çevrimdışı olarak toplanmış ve otomatik olarak platforma yüklenmiştir.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Bu girişimi desteklemek için '{ideaTitle}' {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Bu girişimi destekleyin: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Girişiminizi gönderdiğiniz için teşekkür ederiz!",

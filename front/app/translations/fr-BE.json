@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Soutenez cette idée : {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Soutenez cette idée : {postTitle}",
   "app.containers.IdeasShow.imported": "Importé",
-  "app.containers.IdeasShow.importedTooltip": "Cette contribution a été collectée hors ligne et téléchargée automatiquement sur la plateforme.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Soutenez l'initiative « {ideaTitle} » sur {ideaUrl} !",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Soutenir cette initiative : {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Merci d'avoir soumis votre initiative !",

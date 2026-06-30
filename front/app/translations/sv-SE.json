@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Stöd den här idén: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Stöd den här idén: {postTitle}",
   "app.containers.IdeasShow.imported": "Importerad",
-  "app.containers.IdeasShow.importedTooltip": "Denna {inputTerm} samlades in offline och laddades automatiskt upp till plattformen.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Stöd detta initiativ '{ideaTitle}' på {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Stöd detta initiativ: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Tack för att du skickade in ditt initiativ!",

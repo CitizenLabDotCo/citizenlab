@@ -1794,7 +1794,6 @@
   "app.containers.IdeasShow.ideaTwitterMessage": "Tue tätä ideaa: {postTitle}",
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Tue tätä ideaa: {postTitle}",
   "app.containers.IdeasShow.imported": "Tuotu",
-  "app.containers.IdeasShow.importedTooltip": "Tämä {inputTerm} kerättiin offline-tilassa ja ladattiin automaattisesti alustalle.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Tue tätä aloitetta{ideaTitle}osoitteessa {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Tue tätä aloitetta: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Kiitos aloitteesi lähettämisestä!",
