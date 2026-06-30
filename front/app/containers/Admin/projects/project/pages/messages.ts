@@ -2,17 +2,17 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   pagesTitle: {
-    id: 'app.containers.AdminPage.ProjectPages.pagesTitle',
-    defaultMessage: 'Pages',
+    id: 'app.containers.AdminPage.ProjectPages.pagesTitle2',
+    defaultMessage: 'Project pages',
   },
   pagesDescription: {
-    id: 'app.containers.AdminPage.ProjectPages.pagesDescription',
+    id: 'app.containers.AdminPage.ProjectPages.pagesDescription2',
     defaultMessage:
-      'Add informational pages to this project. They are listed on the project page for participants.',
+      'Add informational pages to this project. You can link to these pages in the project description using the Page Link widget. Project pages are scoped only to this project and cannot be added to the navigation bar.',
   },
   newPageButton: {
-    id: 'app.containers.AdminPage.ProjectPages.newPageButton',
-    defaultMessage: 'Add page',
+    id: 'app.containers.AdminPage.ProjectPages.newPageButton2',
+    defaultMessage: 'Create project page',
   },
   noPages: {
     id: 'app.containers.AdminPage.ProjectPages.noPages',
@@ -65,5 +65,14 @@ export default defineMessages({
   titleError: {
     id: 'app.containers.AdminPage.ProjectPages.titleError',
     defaultMessage: 'Provide a title for all languages',
+  },
+  slugRegexError: {
+    id: 'app.containers.AdminPage.ProjectPages.slugRegexError',
+    defaultMessage:
+      'The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are prohibited.',
+  },
+  slugRequiredError: {
+    id: 'app.containers.AdminPage.ProjectPages.slugRequiredError',
+    defaultMessage: 'Provide a slug',
   },
 });

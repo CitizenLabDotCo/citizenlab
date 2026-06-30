@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
@@ -10,6 +10,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 import { List, Row, TextCell } from 'components/admin/ResourceList';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -38,62 +39,62 @@ const ProjectPagesList = () => {
   };
 
   return (
-    <Box background={colors.white} p="40px">
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb="8px"
-      >
-        <Title variant="h2">{formatMessage(messages.pagesTitle)}</Title>
-        <ButtonWithLink
-          icon="plus-circle"
-          linkTo={`/admin/projects/${projectId}/pages/new`}
-          data-cy="e2e-add-project-page"
-        >
-          {formatMessage(messages.newPageButton)}
-        </ButtonWithLink>
-      </Box>
-      <Text color="textSecondary" mb="24px">
-        {formatMessage(messages.pagesDescription)}
-      </Text>
+    <Box mb="40px" p="44px">
+      <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
+        <SectionTitle>{formatMessage(messages.pagesTitle)}</SectionTitle>
+        <SectionDescription>
+          {formatMessage(messages.pagesDescription)}
+        </SectionDescription>
+        <Box display="flex" mb="40px">
+          <ButtonWithLink
+            buttonStyle="admin-dark"
+            icon="plus-circle"
+            linkTo={`/admin/projects/${projectId}/pages/new`}
+            data-cy="e2e-add-project-page"
+          >
+            {formatMessage(messages.newPageButton)}
+          </ButtonWithLink>
+        </Box>
 
-      {pages.data.length === 0 ? (
-        <Text>{formatMessage(messages.noPages)}</Text>
-      ) : (
-        <List>
-          {pages.data.map((page) => (
-            <Row key={page.id} id={page.id}>
-              <TextCell className="expand">
-                {localize(page.attributes.title_multiloc)}
-              </TextCell>
-              <ButtonWithLink
-                buttonStyle="secondary-outlined"
-                icon="eye"
-                openLinkInNewTab
-                to="/projects/$slug/pages/$pageSlug"
-                params={{ slug: projectSlug, pageSlug: page.attributes.slug }}
-              >
-                {formatMessage(messages.viewPage)}
-              </ButtonWithLink>
-              <ButtonWithLink
-                buttonStyle="secondary-outlined"
-                icon="edit"
-                linkTo={`/admin/projects/${projectId}/pages/${page.id}`}
-              >
-                {formatMessage(messages.editButton)}
-              </ButtonWithLink>
-              <ButtonWithLink
-                buttonStyle="text"
-                icon="delete"
-                onClick={handleDelete(page)}
-              >
-                {formatMessage(messages.deleteButton)}
-              </ButtonWithLink>
-            </Row>
-          ))}
-        </List>
-      )}
+        {pages.data.length === 0 ? (
+          <SectionDescription>
+            {formatMessage(messages.noPages)}
+          </SectionDescription>
+        ) : (
+          <List>
+            {pages.data.map((page) => (
+              <Row key={page.id} id={page.id}>
+                <TextCell className="expand">
+                  {localize(page.attributes.title_multiloc)}
+                </TextCell>
+                <ButtonWithLink
+                  buttonStyle="secondary-outlined"
+                  icon="eye"
+                  openLinkInNewTab
+                  to="/projects/$slug/pages/$pageSlug"
+                  params={{ slug: projectSlug, pageSlug: page.attributes.slug }}
+                >
+                  {formatMessage(messages.viewPage)}
+                </ButtonWithLink>
+                <ButtonWithLink
+                  buttonStyle="secondary-outlined"
+                  icon="edit"
+                  linkTo={`/admin/projects/${projectId}/pages/${page.id}`}
+                >
+                  {formatMessage(messages.editButton)}
+                </ButtonWithLink>
+                <ButtonWithLink
+                  buttonStyle="text"
+                  icon="delete"
+                  onClick={handleDelete(page)}
+                >
+                  {formatMessage(messages.deleteButton)}
+                </ButtonWithLink>
+              </Row>
+            ))}
+          </List>
+        )}
+      </Box>
     </Box>
   );
 };
