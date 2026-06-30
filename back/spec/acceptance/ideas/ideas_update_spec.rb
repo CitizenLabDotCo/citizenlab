@@ -598,6 +598,25 @@ resource 'Ideas' do
             expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to include new_cosponsor.id
           end
         end
+
+        describe do
+          let(:input) { create(:proposal) }
+          let(:new_cosponsor) { create(:user) }
+          let(:cosponsor_ids) { [new_cosponsor.id] }
+
+          before { CustomField.find_by(code: 'cosponsor_ids').update!(enabled: true) }
+
+          # Adding a cosponsor via an idea update must log a `Cosponsorship 'created'`
+          # activity, which is what drives the InvitationToCosponsorIdea notification.
+          example 'Adding a cosponsor logs the activity that drives the invite notification', document: false do
+            expect { do_request }
+              .to have_enqueued_job(LogActivityJob)
+              .with(an_instance_of(Cosponsorship), 'created', anything, anything)
+
+            assert_status 200
+            expect(input.reload.cosponsors).to include(new_cosponsor)
+          end
+        end
       end
 
       context 'when admin' do

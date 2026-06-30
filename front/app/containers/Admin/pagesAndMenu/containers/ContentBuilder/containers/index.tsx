@@ -10,8 +10,8 @@ import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import ContentBuilderCanvas from 'components/admin/ContentBuilder/Canvas';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
@@ -109,16 +109,16 @@ const HomepageBuilderPage = () => {
           display={previewEnabled ? 'none' : 'flex'}
         >
           <Toolbox />
-          <StyledRightColumn>
-            <LanguageProvider
-              contentBuilderLocale={selectedLocale}
-              platformLocale={locale}
-            >
-              <Box width="1000px">
+          <LanguageProvider
+            contentBuilderLocale={selectedLocale}
+            platformLocale={locale}
+          >
+            <ContentBuilderCanvas>
+              <Box width="100%" maxWidth="1000px">
                 <ContentBuilderFrame editorData={getEditorData()} />
               </Box>
-            </LanguageProvider>
-          </StyledRightColumn>
+            </ContentBuilderCanvas>
+          </LanguageProvider>
           <Settings />
         </Box>
       </Editor>

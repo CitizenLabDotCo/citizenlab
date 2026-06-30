@@ -102,19 +102,5 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     def config
       @config ||= RESOURCES.fetch(params[:type])
     end
-
-    # `*_multiloc` fields are deep-merged with the existing value:
-    #   {en: 'Hi', fr: 'Bonjour'} + {fr: 'Salut', es: 'Hola'} -> {en: 'Hi', fr: 'Salut', es: 'Hola'}
-    # Others attributes pass through as-is.
-    def merge_multilocs(record, attributes)
-      attributes.to_h do |key, value|
-        next [key, value] unless multiloc?(key)
-
-        current_value = record[key]
-        [key, current_value.blank? ? value : current_value.merge(value)]
-      end
-    end
-
-    def multiloc?(key) = key.to_s.end_with?('_multiloc')
   end
 end

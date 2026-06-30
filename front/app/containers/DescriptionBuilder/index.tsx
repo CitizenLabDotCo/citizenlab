@@ -13,11 +13,9 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
-import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
 import DescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
 import DescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox';
 import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionBuilderTopBar';
@@ -163,16 +161,11 @@ const DescriptionBuilderPage = ({
               contentBuildableId={contentBuildableId}
               selectedLocale={selectedLocale}
             />
-            <LanguageProvider
-              contentBuilderLocale={selectedLocale}
+            <DescriptionBuilderContent
+              selectedLocale={selectedLocale}
               platformLocale={locale}
-            >
-              <StyledRightColumn>
-                <Box width="1000px">
-                  <ContentBuilderFrame editorData={getEditorData()} />
-                </Box>
-              </StyledRightColumn>
-            </LanguageProvider>
+              editorData={getEditorData()}
+            />
             <ContentBuilderSettings />
           </Box>
         </Editor>

@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  Toggle,
   Spinner,
   Button,
   Dropdown,
   colors,
-  Icon,
   Text,
-  DropdownListItem,
   Badge,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
@@ -25,9 +22,11 @@ import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 import useDeleteSurveyResults from 'api/survey_results/useDeleteSurveyResults';
 import { downloadSurveyResults } from 'api/survey_results/utils';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
+import SurveyPdfExportModal from 'containers/Admin/projects/project/surveyPdfExport/SurveyPdfExportModal';
 
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -42,6 +41,8 @@ import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import wordMessages from '../../word/messages';
 import { useWordExportContext } from '../../word/WordExportContext';
 
+import ExportDropdownItem from './components/ExportDropdownItem';
+
 interface Props {
   phase: IPhaseData;
 }
@@ -49,6 +50,7 @@ interface Props {
 const SurveyActions = ({ phase }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
+  const pdfExportEnabled = useFeatureFlag({ name: 'pdf_export_responses' });
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
 
@@ -87,6 +89,7 @@ const SurveyActions = ({ phase }: Props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const [isDownloadingXlsx, setIsDownloadingXlsx] = useState(false);
+  const [exportPdfModalOpened, setExportPdfModalOpened] = useState(false);
 
   if (!project || !submissionCount) {
     return null;
@@ -95,8 +98,11 @@ const SurveyActions = ({ phase }: Props) => {
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
 
-  const { postingEnabled, togglePostingEnabled, inputImporterLink } =
-    getFormActionsConfig(project.data, updatePhase, phase);
+  const { inputImporterLink } = getFormActionsConfig(
+    project.data,
+    updatePhase,
+    phase
+  );
 
   const inputCustomFieldsIds = inputCustomFields?.data.map(
     (customField) => customField.id
@@ -247,91 +253,6 @@ const SurveyActions = ({ phase }: Props) => {
       >
         <Box display="flex" alignItems="center" gap="8px">
           {isAnyDownloading && <Spinner size="24px" />}
-          <Box position="relative">
-            <Button
-              icon="dots-horizontal"
-              iconColor={colors.textSecondary}
-              iconHoverColor={colors.textSecondary}
-              boxShadow="none"
-              boxShadowHover="none"
-              bgColor="transparent"
-              bgHoverColor="transparent"
-              pr="0"
-              data-cy="e2e-more-survey-actions-button"
-              onClick={toggleDropdown}
-            />
-            <Dropdown
-              opened={isDropdownOpened}
-              onClickOutside={closeDropdown}
-              className="dropdown"
-              width="max-content"
-              right="12px"
-              top="45px"
-              zIndex="10000"
-              content={
-                <Box style={{ whiteSpace: 'nowrap' }}>
-                  <DropdownListItem
-                    onClick={async () => {
-                      setDropdownOpened(false);
-                      await captureAllMapScreenshots();
-                      downloadPdf();
-                    }}
-                  >
-                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                    <Text my="0px">
-                      {formatMessage(messages.downloadInsightsPdf)}
-                    </Text>
-                  </DropdownListItem>
-                  <DropdownListItem
-                    onClick={async () => {
-                      setDropdownOpened(false);
-                      await captureAllMapScreenshots();
-                      downloadWord();
-                    }}
-                  >
-                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                    <Box display="flex" alignItems="center" gap="6px">
-                      <Text my="0px">
-                        {formatMessage(messages.downloadWord)}
-                      </Text>
-                      <Badge color={colors.coolGrey600} className="inverse">
-                        {formatMessage(projectFilesMessages.beta)}
-                      </Badge>
-                    </Box>
-                  </DropdownListItem>
-                  <DropdownListItem
-                    onClick={handleDownloadXlsx}
-                    data-cy="e2e-download-survey-results"
-                  >
-                    <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                    <Text my="0px">
-                      {formatMessage(messages.downloadSurveyResults)} (.xlsx)
-                    </Text>
-                  </DropdownListItem>
-                  {haveSubmissionsComeIn && (
-                    <DropdownListItem
-                      onClick={openDeleteModal}
-                      data-cy="e2e-delete-survey-results"
-                    >
-                      <Icon name="delete" fill={colors.red600} mr="8px" />
-                      <Text color="red600" my="0px">
-                        {formatMessage(messages.deleteSurveyResults)}
-                      </Text>
-                    </DropdownListItem>
-                  )}
-                </Box>
-              }
-            />
-          </Box>
-          <Box flexShrink={0} style={{ whiteSpace: 'nowrap' }}>
-            <Toggle
-              checked={postingEnabled}
-              label={formatMessage(messages.openForResponses)}
-              onChange={() => {
-                togglePostingEnabled();
-              }}
-            />
-          </Box>
           <ButtonWithLink
             linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
             buttonStyle="text"
@@ -349,6 +270,68 @@ const SurveyActions = ({ phase }: Props) => {
           >
             {formatMessage(messages.import)}
           </ButtonWithLink>
+          <Box position="relative">
+            <Button
+              icon="download"
+              iconSize="20px"
+              buttonStyle="secondary-outlined"
+              width="auto"
+              data-cy="e2e-survey-export-button"
+              onClick={toggleDropdown}
+            >
+              {formatMessage(messages.exportButton)}
+            </Button>
+            <Dropdown
+              opened={isDropdownOpened}
+              onClickOutside={closeDropdown}
+              className="dropdown"
+              width="max-content"
+              right="0px"
+              top="45px"
+              zIndex="10000"
+              content={
+                <Box style={{ whiteSpace: 'nowrap' }}>
+                  {pdfExportEnabled && (
+                    <ExportDropdownItem
+                      label={formatMessage(messages.exportResponsesToPdf)}
+                      onClick={() => {
+                        setDropdownOpened(false);
+                        setExportPdfModalOpened(true);
+                      }}
+                    />
+                  )}
+                  <ExportDropdownItem
+                    label={formatMessage(messages.downloadInsightsPdf)}
+                    onClick={async () => {
+                      setDropdownOpened(false);
+                      await captureAllMapScreenshots();
+                      downloadPdf();
+                    }}
+                  />
+                  <ExportDropdownItem
+                    label={formatMessage(messages.downloadWord)}
+                    onClick={async () => {
+                      setDropdownOpened(false);
+                      await captureAllMapScreenshots();
+                      downloadWord();
+                    }}
+                    badge={
+                      <Badge color={colors.coolGrey600} className="inverse">
+                        {formatMessage(projectFilesMessages.beta)}
+                      </Badge>
+                    }
+                  />
+                  <ExportDropdownItem
+                    label={`${formatMessage(
+                      messages.downloadSurveyResults
+                    )} (.xlsx)`}
+                    onClick={handleDownloadXlsx}
+                    data-cy="e2e-download-survey-results"
+                  />
+                </Box>
+              }
+            />
+          </Box>
           <Button
             buttonStyle="primary"
             icon="stars"
@@ -357,6 +340,17 @@ const SurveyActions = ({ phase }: Props) => {
           >
             {formatMessage(messages.aiAnalysis)}
           </Button>
+          {haveSubmissionsComeIn && (
+            <Button
+              buttonStyle="admin-dark-outlined"
+              icon="delete"
+              width="auto"
+              onClick={openDeleteModal}
+              data-cy="e2e-delete-survey-results"
+            >
+              {formatMessage(messages.deleteSurveyResults)}
+            </Button>
+          )}
         </Box>
         {exportStatusText && (
           <Text fontSize="s" color="textSecondary" m="0px">
@@ -374,6 +368,14 @@ const SurveyActions = ({ phase }: Props) => {
         closeDeleteModal={closeDeleteModal}
         deleteResults={deleteResults}
       />
+      {exportPdfModalOpened && (
+        <SurveyPdfExportModal
+          projectId={projectId}
+          phaseId={phaseId}
+          opened
+          onClose={() => setExportPdfModalOpened(false)}
+        />
+      )}
     </>
   );
 };
