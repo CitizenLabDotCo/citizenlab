@@ -34,9 +34,7 @@ module Volunteering
     before_validation :sanitize_description_multiloc
     before_validation :strip_title
 
-    def project_id
-      phase.try(:project_id)
-    end
+    delegate :project, :project_id, to: :phase
 
     private
 

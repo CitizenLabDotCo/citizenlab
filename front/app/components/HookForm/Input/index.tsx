@@ -64,6 +64,7 @@ const Input = ({
           marginBottom="8px"
           text={validationError}
           scrollIntoView={scrollErrorIntoView}
+          liveRegion={false}
         />
       )}
       {apiError && (
