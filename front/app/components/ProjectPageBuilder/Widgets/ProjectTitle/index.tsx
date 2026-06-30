@@ -98,6 +98,4 @@ ProjectTitle.craft = {
   },
 };
 
-export const projectTitleWidgetTitle = messages.titleWidgetTitle;
-
 export default ProjectTitle;
