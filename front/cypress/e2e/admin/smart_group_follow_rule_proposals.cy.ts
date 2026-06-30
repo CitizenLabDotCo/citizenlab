@@ -5,13 +5,15 @@ import { randomString } from '../../support/commands';
 // rule's value selector. The selector lists followable inputs by fetching
 // `/ideas` (via `useIdeas`). The fix here removed `transitive=true`, which had
 // excluded proposals (proposals live in a proposals phase, so they have a
-// non-nil creation_phase). This test guards that proposals AND regular ideas are
-// offered, while native-survey responses are not.
+// non-nil creation_phase). This test guards the front-end concern: that the
+// selector fires `/ideas` without `transitive`, and that native-survey
+// responses are never offered.
 //
-// `/ideas` (IdeasFinder) always applies `.publicly_visible`, which keeps
-// participation methods that support public visibility (ideation, proposals) and
-// drops the ones that don't (native survey). So a survey response is never
-// returned, regardless of the selector's random 26-item page.
+// Which inputs `/ideas` returns (proposals and ideas in, survey responses out,
+// via IdeasFinder's `.publicly_visible`) is a back-end concern and is covered in
+// back/spec/acceptance/ideas/ideas_index_spec.rb — it can't be asserted
+// deterministically here anyway, since the selector receives a random 26-item
+// page.
 describe('Smart group Follow rule "one of the inputs" selector', () => {
   const proposalTitle = randomString(40);
   const regularIdeaTitle = randomString(40);
@@ -26,8 +28,6 @@ describe('Smart group Follow rule "one of the inputs" selector', () => {
   let proposalsProjectId: string;
   let ideationProjectId: string;
   let surveyProjectId: string;
-  let proposalId: string;
-  let regularIdeaId: string;
   let surveyResponseId: string;
 
   const createProject = () =>
@@ -57,8 +57,6 @@ describe('Smart group Follow rule "one of the inputs" selector', () => {
           ideaTitle: proposalTitle,
           ideaContent: randomString(60),
           phaseIds: [phase.body.data.id],
-        }).then((idea) => {
-          proposalId = idea.body.data.id;
         });
       });
     });
@@ -80,8 +78,6 @@ describe('Smart group Follow rule "one of the inputs" selector', () => {
           ideaTitle: regularIdeaTitle,
           ideaContent: randomString(60),
           phaseIds: [phase.body.data.id],
-        }).then((idea) => {
-          regularIdeaId = idea.body.data.id;
         });
       });
     });
@@ -150,26 +146,6 @@ describe('Smart group Follow rule "one of the inputs" selector', () => {
         (idea: { id: string }) => idea.id
       );
       expect(offeredIds).not.to.include(surveyResponseId);
-    });
-
-    // The selector's random 26-item page can't deterministically contain a
-    // specific input, so verify inclusion at the same `/ideas` source, scoped to
-    // our three projects: the regular idea and proposal are listed, the survey
-    // response is not.
-    cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-      cy.request({
-        headers: { Authorization: `Bearer ${response.body.jwt}` },
-        url:
-          `web_api/v1/ideas?page[size]=100` +
-          `&projects[]=${ideationProjectId}` +
-          `&projects[]=${proposalsProjectId}` +
-          `&projects[]=${surveyProjectId}`,
-      }).then((resp) => {
-        const ids = resp.body.data.map((idea: { id: string }) => idea.id);
-        expect(ids).to.include(regularIdeaId);
-        expect(ids).to.include(proposalId);
-        expect(ids).not.to.include(surveyResponseId);
-      });
     });
   });
 });
