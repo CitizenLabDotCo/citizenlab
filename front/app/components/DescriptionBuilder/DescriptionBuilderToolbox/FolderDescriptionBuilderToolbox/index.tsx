@@ -163,14 +163,14 @@ const FolderDescriptionBuilderToolbox = ({
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
         />
-        { isHtmlBlockMultilocEnabled ? (
+        {isHtmlBlockMultilocEnabled && (
           <DraggableElement
             id="e2e-draggable-html-block"
             component={<HtmlBlockMultiloc />}
             icon="code"
             label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
           />
-          ) : null
+          )
         }
         <DraggableElement
           id="e2e-draggable-button"

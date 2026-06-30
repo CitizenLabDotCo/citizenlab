@@ -6,7 +6,7 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-
+import { colors } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import styled from 'styled-components';
 
@@ -44,7 +44,7 @@ const HtmlBlockMultilocSettings = () => {
   }));
 
   return (
-    <StyledBox background="#ffffff" marginBottom="20px">
+    <StyledBox background={colors.white} marginBottom="20px">
       <TextAreaMultilocWithLocaleSwitcher
         id="html-block-textarea"
         minRows={16}

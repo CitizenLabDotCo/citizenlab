@@ -245,14 +245,14 @@ const HomepageBuilderToolbox = () => {
           icon="text"
           label={formatMessage(textMultilocTitle)}
         />
-        { isHtmlBlockMultilocEnabled ? (
+        {isHtmlBlockMultilocEnabled && (
           <DraggableElement
             id="e2e-draggable-html-block-multiloc"
             component={<HtmlBlockMultiloc html={{}} />}
             icon="code"
             label={formatMessage(htmlBlockMultilocTitle)}
           />
-          ) : null
+          )
         }
         <DraggableElement
           id="e2e-draggable-white-space"
