@@ -1,28 +1,19 @@
 import React, { useState } from 'react';
 
-import {
-  StatusLabel,
-  colors,
-  Title,
-  Box,
-  Text,
-  Success,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, Text, Success } from '@citizenlab/cl2-component-library';
 
 import useCampaign from 'api/campaigns/useCampaign';
 import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import { isDraft } from 'api/campaigns/util';
+import { IGroupData } from 'api/groups/types';
 import useGroupsByIds from 'api/groups/useGroupsByIds';
-
-import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
-import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -30,10 +21,14 @@ import { useParams } from 'utils/router';
 
 import messages from '../../messages';
 
+import ConfirmSendModal from './ConfirmSendModal';
+import DeleteModal from './DeleteModal';
+import Header from './Header';
+import Recipients from './Recipients';
+
 const Show = () => {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
   const { data: campaign } = useCampaign(campaignId);
-  const localize = useLocalize();
   const {
     mutate: sendCampaign,
     isLoading: isSending,
@@ -84,43 +79,48 @@ const Show = () => {
 
   const goBack = () => clHistory.push('/admin/messaging/sms');
 
-  const groupNames = groups
-    .map((group) =>
-      group ? localize(group.data.attributes.title_multiloc) : null
-    )
-    .filter(Boolean)
-    .join(', ');
+  const selectedGroups = groups
+    .map((group) => group?.data)
+    .filter((group): group is IGroupData => group !== undefined);
 
   return (
     <Box background={colors.white} p="40px">
       <GoBackButton onClick={goBack} />
-      <Box display="flex" alignItems="center" gap="12px" mt="20px" mb="24px">
-        <Title m="0px">
-          {localize(campaign.data.attributes.subject_multiloc)}
-        </Title>
-        {draft ? (
-          <StatusLabel
-            backgroundColor={colors.brown}
-            text={<FormattedMessage {...messages.draft} />}
-          />
-        ) : (
-          <StatusLabel
-            backgroundColor={colors.success}
-            text={<FormattedMessage {...messages.sent} />}
-          />
-        )}
-      </Box>
 
-      <Text fontWeight="bold" mb="4px">
-        <FormattedMessage {...messages.fieldTo} />
-      </Text>
-      <Text mb="20px">
-        {noGroupsSelected ? (
-          <FormattedMessage {...messages.allUsers} />
-        ) : (
-          groupNames
-        )}
-      </Text>
+      <Header
+        campaign={campaign.data}
+        draft={draft}
+        onSend={handleSend}
+        isSending={isSending}
+      />
+
+      {previewSent && (
+        <Box mb="8px">
+          <Success
+            text={<FormattedMessage {...messages.smsPreviewSentConfirmation} />}
+            showIcon
+            showBackground
+          />
+        </Box>
+      )}
+      {apiPreviewErrors && (
+        <Box mb="8px">
+          <Error apiErrors={apiPreviewErrors.errors['base']} />
+        </Box>
+      )}
+      {apiSendErrors && (
+        <Box mb="8px">
+          <Error apiErrors={apiSendErrors.errors['base']} />
+        </Box>
+      )}
+
+      <Recipients
+        selectedGroups={selectedGroups}
+        noGroupsSelected={noGroupsSelected}
+        draft={draft}
+        onSendPreview={handleSendPreview}
+        isSendingPreview={isSendingPreview}
+      />
 
       <Text fontWeight="bold" mb="4px">
         <FormattedMessage {...messages.fieldSmsBody} />
@@ -137,36 +137,10 @@ const Show = () => {
       </Box>
 
       {draft && (
-        <Box display="flex" gap="10px" alignItems="center" flexWrap="wrap">
-          <ButtonWithLink
-            to="/admin/messaging/sms/$campaignId/edit"
-            params={{ campaignId: campaign.data.id }}
-            buttonStyle="secondary-outlined"
-            icon="edit"
-          >
-            <FormattedMessage {...messages.editButtonLabel} />
-          </ButtonWithLink>
-          <ButtonWithLink
-            buttonStyle="secondary-outlined"
-            icon="send"
-            onClick={handleSendPreview}
-            processing={isSendingPreview}
-            disabled={isSendingPreview}
-          >
-            <FormattedMessage {...messages.sendSmsPreviewButton} />
-          </ButtonWithLink>
-          <ButtonWithLink
-            buttonStyle="primary"
-            icon="send"
-            iconPos="right"
-            onClick={handleSend}
-            processing={isSending}
-            disabled={isSending}
-          >
-            <FormattedMessage {...messages.sendNowButton} />
-          </ButtonWithLink>
+        <Box display="flex">
           <ButtonWithLink
             buttonStyle="delete"
+            icon="delete"
             onClick={() => setShowDeleteModal(true)}
           >
             <FormattedMessage {...messages.deleteSmsButton} />
@@ -174,81 +148,19 @@ const Show = () => {
         </Box>
       )}
 
-      {previewSent && (
-        <Box mt="16px">
-          <Success
-            text={<FormattedMessage {...messages.smsPreviewSentConfirmation} />}
-          />
-        </Box>
-      )}
-      {apiPreviewErrors && (
-        <Box mt="16px">
-          <Error apiErrors={apiPreviewErrors.errors['base']} />
-        </Box>
-      )}
-      {apiSendErrors && (
-        <Box mt="16px">
-          <Error apiErrors={apiSendErrors.errors['base']} />
-        </Box>
-      )}
-
-      <Modal
+      <ConfirmSendModal
         opened={showConfirm}
-        close={() => setShowConfirm(false)}
-        header={<FormattedMessage {...messages.confirmSendSmsHeader} />}
-      >
-        <Box p="30px">
-          <Text mb="20px">
-            <FormattedMessage {...messages.toAllUsers} />
-          </Text>
-          <Box display="flex" gap="10px" justifyContent="flex-end">
-            <ButtonWithLink
-              buttonStyle="secondary-outlined"
-              onClick={() => setShowConfirm(false)}
-            >
-              <FormattedMessage {...messages.changeRecipientsButton} />
-            </ButtonWithLink>
-            <ButtonWithLink
-              buttonStyle="primary"
-              icon="send"
-              iconPos="right"
-              onClick={confirmSend}
-              processing={isSending}
-              disabled={isSending}
-            >
-              <FormattedMessage {...messages.sendNowButton} />
-            </ButtonWithLink>
-          </Box>
-        </Box>
-      </Modal>
+        onClose={() => setShowConfirm(false)}
+        onConfirm={confirmSend}
+        isSending={isSending}
+      />
 
-      <Modal
+      <DeleteModal
         opened={showDeleteModal}
-        close={() => setShowDeleteModal(false)}
-        header={<FormattedMessage {...messages.deleteSmsButton} />}
-      >
-        <Box p="30px">
-          <Text mb="20px">
-            <FormattedMessage {...messages.deleteSmsConfirmation} />
-          </Text>
-          <Box display="flex" gap="10px" justifyContent="flex-end">
-            <ButtonWithLink
-              buttonStyle="secondary-outlined"
-              onClick={() => setShowDeleteModal(false)}
-            >
-              <FormattedMessage {...messages.cancelButton} />
-            </ButtonWithLink>
-            <ButtonWithLink
-              buttonStyle="delete"
-              onClick={handleDelete}
-              processing={isDeleting}
-              disabled={isDeleting}
-            >
-              <FormattedMessage {...messages.deleteSmsButton} />
-            </ButtonWithLink>
-          </Box>
-        </Box>
-      </Modal>
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        isDeleting={isDeleting}
+      />
     </Box>
   );
 };
