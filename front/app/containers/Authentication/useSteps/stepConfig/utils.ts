@@ -61,9 +61,17 @@ export const checkMissingData = (
 };
 
 export const doesNotMeetGroupCriteria = (
-  requirements: AuthenticationRequirements['requirements']
+  requirements: AuthenticationRequirements['requirements'],
+  disabledReason: AuthenticationRequirements['disabled_reason']
 ) => {
-  return requirements.group_membership;
+  // `disabled_reason` is the backend's authoritative permission check and
+  // already accounts for admin/moderator bypass (it's `null` when the user may
+  // participate). The raw `group_membership` flag, by contrast, stays `true`
+  // for an admin who isn't in the configured group even though they're allowed
+  // — and `permitted` is `false` for them too (it just means "not every
+  // requirement is satisfied"). So only treat the group criterion as unmet when
+  // there is an actual denial reason.
+  return requirements.group_membership && disabledReason !== null;
 };
 
 export const confirmationRequired = (

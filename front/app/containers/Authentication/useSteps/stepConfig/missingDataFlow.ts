@@ -55,7 +55,7 @@ export const missingDataFlow = (
         await confirmEmailConfirmationCodeChangeEmail(code);
         await queryClient.invalidateQueries(requirementKeys.all());
 
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
@@ -70,7 +70,7 @@ export const missingDataFlow = (
           return;
         }
 
-        if (doesNotMeetGroupCriteria(requirements)) {
+        if (doesNotMeetGroupCriteria(requirements, disabled_reason)) {
           setCurrentStep('access-denied');
           return;
         }
@@ -101,7 +101,7 @@ export const missingDataFlow = (
 
         invalidateCacheAfterUpdateUser(queryClient);
 
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
@@ -120,7 +120,7 @@ export const missingDataFlow = (
           return;
         }
 
-        if (doesNotMeetGroupCriteria(requirements)) {
+        if (doesNotMeetGroupCriteria(requirements, disabled_reason)) {
           setCurrentStep('access-denied');
           return;
         }
@@ -132,7 +132,7 @@ export const missingDataFlow = (
     'missing-data:verification': {
       CLOSE: () => setCurrentStep('closed'),
       CONTINUE: async () => {
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
@@ -147,7 +147,7 @@ export const missingDataFlow = (
           return;
         }
 
-        if (doesNotMeetGroupCriteria(requirements)) {
+        if (doesNotMeetGroupCriteria(requirements, disabled_reason)) {
           setCurrentStep('access-denied');
           return;
         }
@@ -162,14 +162,14 @@ export const missingDataFlow = (
         await updateUser({ userId, custom_field_values: formData });
         invalidateCacheAfterUpdateUser(queryClient);
 
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
 
         if (showOnboarding(requirements)) {
           setCurrentStep('missing-data:onboarding');
           return;
         }
 
-        if (doesNotMeetGroupCriteria(requirements)) {
+        if (doesNotMeetGroupCriteria(requirements, disabled_reason)) {
           setCurrentStep('access-denied');
           return;
         }
@@ -194,9 +194,9 @@ export const missingDataFlow = (
         await updateUser({ userId, onboarding });
         invalidateCacheAfterUpdateUser(queryClient);
 
-        const { requirements } = await getRequirements();
+        const { requirements, disabled_reason } = await getRequirements();
 
-        if (doesNotMeetGroupCriteria(requirements)) {
+        if (doesNotMeetGroupCriteria(requirements, disabled_reason)) {
           setCurrentStep('access-denied');
           return;
         }

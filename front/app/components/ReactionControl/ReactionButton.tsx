@@ -449,23 +449,23 @@ const ReactionButton = ({
       />
     );
 
-    // The tooltip only ever shows a message when the button is disabled for a
-    // reason authentication can't fix. When there's nothing to show we skip the
-    // Tooltip entirely: it's a needless interactive tippy instance on every
-    // enabled reaction button, and mounting it on this re-render-heavy button
-    // triggers a crash in the (known-fragile) Tooltip component.
-    const tooltipDisabled =
-      disabledReason === null || isFixableByAuthentication(disabledReason);
+    // "Blocked" = disabled for a reason the user can't resolve by authenticating
+    // (e.g. not in the permitted group). Then the button is genuinely disabled
+    // and a Tooltip explains why on hover. For every other state (enabled, or
+    // fixable by signing in) we skip the Tooltip: it's a needless interactive
+    // tippy on a frequently re-rendered/clicked button, and mounting it there
+    // crashes the (known-fragile) Tooltip component.
+    const isBlocked =
+      disabledReason !== null && !isFixableByAuthentication(disabledReason);
+
+    const buttonWidth = variant === 'text' ? '100%' : 'fit-content';
 
     const reactionButton = (
       <>
         {variant === 'text' && (
           <ButtonComponent
             onClick={onClick}
-            // When disabled for a non-authentication reason (e.g. not in the
-            // permitted group) the button is genuinely disabled: it can't be
-            // clicked, and the wrapping Tooltip still explains why on hover.
-            disabled={!tooltipDisabled}
+            disabled={isBlocked}
             icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
             bgColor={buttonReactionModeIsActive ? colors.success : undefined}
             className="e2e-ideacard-vote-button"
@@ -486,10 +486,7 @@ const ReactionButton = ({
             styleType={styleType}
             onMouseDown={removeFocusAfterMouseClick}
             onClick={onClick}
-            // When disabled for a non-authentication reason (e.g. not in the
-            // permitted group) the button is genuinely disabled: it can't be
-            // clicked, and the wrapping Tooltip still explains why on hover.
-            disabled={!tooltipDisabled}
+            disabled={isBlocked}
             className={[
               className,
               {
@@ -544,39 +541,36 @@ const ReactionButton = ({
       </>
     );
 
-    if (tooltipDisabled) {
+    if (!isBlocked) {
       return (
-        <Box as="span" w={variant === 'text' ? '100%' : 'fit-content'}>
+        <Box as="span" w={buttonWidth}>
           {reactionButton}
         </Box>
       );
     }
 
+    // The button is disabled, and a disabled <button> fires no hover or click
+    // events — so the tooltip's reference must be this enabled wrapper (for
+    // hover), and the absence of click events is what keeps the fragile
+    // Tooltip's click-toggle/remount crash from ever firing.
     return (
       <Tooltip
         placement="top"
         theme="light"
         content={
           <span
-            // aria-hidden is needed because we already use ScreenReaderOnly for screen readers
-            // and we don't want to duplicate the message
+            // aria-hidden because the message is already announced via the
+            // ScreenReaderOnly above; avoid duplicating it for screen readers.
             aria-hidden
           >
             {customAccessDeniedMessage ?? disabledMessage}
           </span>
         }
         trigger="mouseenter"
-        width={variant === 'text' ? '100%' : 'fit-content'}
+        width={buttonWidth}
         useContentWrapper={false}
       >
-        {/*
-          The button itself is disabled (see disabled={!tooltipDisabled}), and a
-          disabled <button> fires no hover events — so the tooltip's reference
-          has to be this enabled wrapper, not the button, for hover to work.
-          A disabled button also dispatches no click event, which is what keeps
-          the Tooltip's click-toggle path (and its crash) from ever engaging.
-        */}
-        <Box as="span" display="inline-flex">
+        <Box as="span" display="inline-flex" w={buttonWidth}>
           {reactionButton}
         </Box>
       </Tooltip>

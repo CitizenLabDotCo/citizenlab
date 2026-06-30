@@ -27,7 +27,7 @@ export const inviteFlow = (
         try {
           await createAccountFromInvite(params);
 
-          const { requirements } = await getRequirements();
+          const { requirements, disabled_reason } = await getRequirements();
           const authenticationData = getAuthenticationData();
 
           const missingDataStep = checkMissingData(
@@ -42,7 +42,7 @@ export const inviteFlow = (
             return;
           }
 
-          if (doesNotMeetGroupCriteria(requirements)) {
+          if (doesNotMeetGroupCriteria(requirements, disabled_reason)) {
             setCurrentStep('access-denied');
             return;
           }
