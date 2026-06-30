@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-import { colors } from '@citizenlab/cl2-component-library';
 import messages from './messages';
 import styled from 'styled-components';
 
