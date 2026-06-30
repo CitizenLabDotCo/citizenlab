@@ -133,6 +133,8 @@ const normalizeParallelParticipation = ({
 
   return result;
 };
+
+// Root route
 const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),
@@ -198,6 +200,8 @@ const signInRoute = createRoute({
   ),
 });
 
+// OAuth 2.1 authorize-request params, forwarded by the client app on the
+// consent page URL (an external redirect, like our SSO/verification params).
 const oauthAuthorizeSearchSchema = yup.object({
   client_id: yup.string(),
   response_type: yup.string(),
@@ -219,6 +223,7 @@ const oauthAuthorizeRoute = createRoute({
     </PageLoading>
   ),
 });
+
 const signUpRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'sign-up',

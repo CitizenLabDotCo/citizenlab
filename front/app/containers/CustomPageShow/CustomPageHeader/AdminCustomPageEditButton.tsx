@@ -5,6 +5,7 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
@@ -12,6 +13,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { canModerateProjectByIds } from 'utils/permissions/rules/projectPermissions';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
@@ -22,8 +24,6 @@ import messages from '../messages';
 
 interface Props {
   pageId: string;
-  // Set for project-scoped pages so editing routes to the project's page
-  // editor instead of the global pages & menu editor.
   projectId?: string | null;
 }
 
@@ -33,8 +33,20 @@ const AdminCustomPageEditButton = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   const { data: authUser } = useAuthUser();
+  // Only fetched for project-scoped pages (the hook is disabled when id is
+  // nullish), so we can pass the project's folder/space to mirror the backend's
+  // StaticPagePolicy#update?, which lets project/folder/space moderators edit.
+  const { data: project } = useProjectById(projectId);
 
-  const userCanEditPage = !isNilOrError(authUser) && isAdmin(authUser);
+  const userCanEditPage = projectId
+    ? canModerateProjectByIds({
+        projectId,
+        folderId: project?.data.attributes.folder_id,
+        spaceId: project?.data.attributes.space_id,
+        user: authUser,
+      })
+    : // Global (projectless) pages remain admin-only.
+      !isNilOrError(authUser) && isAdmin(authUser);
 
   const editLink = projectId
     ? { linkTo: `/admin/projects/${projectId}/pages/${pageId}` }

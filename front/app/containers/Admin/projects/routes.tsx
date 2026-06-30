@@ -31,7 +31,6 @@ const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
-
 const AdminProjectPageNewBackoffice = lazy(
   () => import('./project/newBackoffice/ProjectPage')
 );
@@ -251,6 +250,8 @@ const projectPageRoute = createRoute({
     </PageLoading>
   ),
 });
+
+// --- General settings layout ---
 const projectGeneralRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'general',

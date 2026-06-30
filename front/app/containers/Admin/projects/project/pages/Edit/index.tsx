@@ -3,7 +3,6 @@ import React from 'react';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
 import useProjectById from 'api/projects/useProjectById';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import ProjectPageForm from '../ProjectPageForm';
@@ -16,7 +15,7 @@ const EditProjectPage = () => {
   const { data: project } = useProjectById(projectId);
   const { data: customPage } = useCustomPageById(customPageId);
 
-  if (isNilOrError(customPage) || !project) {
+  if (!customPage || !project) {
     return null;
   }
 

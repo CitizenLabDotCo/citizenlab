@@ -14,8 +14,8 @@ export const fetchCustomPages = (projectId?: string) => {
   });
 };
 
-// Without `projectId`, returns the global (non-project) pages shown in the
-// global pages menu. With `projectId`, returns that project's scoped pages.
+// Without `projectId`, returns the global (non-project) pages
+// With `projectId`, returns the pages scoped to the project
 const useCustomPages = ({ projectId }: { projectId?: string } = {}) => {
   return useQuery<ICustomPages, CLErrors, ICustomPages, CustomPagesKeys>({
     queryKey: customPagesKeys.lists({ projectId }),

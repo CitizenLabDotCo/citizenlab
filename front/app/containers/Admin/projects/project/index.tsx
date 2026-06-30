@@ -4,36 +4,38 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectById from 'api/projects/useProjectById';
 import { IProjectData } from 'api/projects/types';
-
-import NavigationTabs from 'components/admin/NavigationTabs';
-import NewLabel from 'components/UI/NewLabel';
-import Tab from 'components/admin/NavigationTabs/Tab';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { useIntl } from 'utils/cl-intl';
-
-import ProjectHeader from './projectHeader';
-import ProjectSidebar from './newBackoffice/ProjectSidebar';
-import messages from './messages';
 import useParallelParticipation from 'hooks/useParallelParticipation';
+
+import NavigationTabs from 'components/admin/NavigationTabs';
+import Tab from 'components/admin/NavigationTabs/Tab';
+import NewLabel from 'components/UI/NewLabel';
+
+import { useIntl } from 'utils/cl-intl';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
+
+import messages from './messages';
+import ProjectSidebar from './newBackoffice/ProjectSidebar';
+import ProjectHeader from './projectHeader';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { formatMessage } = useIntl();
-
   const { pathname } = useLocation();
-
   const { data: appConfiguration } = useAppConfiguration();
-
   const { data: authUser } = useAuthUser();
-
+  const newBackoffice = useParallelParticipation();
   const projectStaticPagesEnabled = useFeatureFlag({
     name: 'project_static_pages',
   });
+  const projectId = project.id;
+
+  if (!canModerateProject(project, authUser)) {
+    return null;
+  }
 
   const privateAttributesInExport =
     appConfiguration?.data.attributes.settings.core
@@ -106,17 +108,6 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
           url={`/admin/projects/${projectId}/events`}
           active={pathname.includes(`/admin/projects/${projectId}/events`)}
         />
-        <Tab
-          className="intercom-admin-project-files-tab"
-          label={
-            <Box display="flex" alignItems="center" gap="8px">
-              {formatMessage(messages.filesTab)}
-              <NewLabel />
-            </Box>
-          }
-          url={`/admin/projects/${projectId}/files`}
-          active={pathname.includes(`/admin/projects/${projectId}/files`)}
-        />
         {projectStaticPagesEnabled && (
           <Tab
             className="intercom-admin-project-pages-tab"
@@ -130,13 +121,20 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
             active={pathname.includes(`/admin/projects/${projectId}/pages`)}
           />
         )}
+        <Tab
+          className="intercom-admin-project-files-tab"
+          label={
+            <Box display="flex" alignItems="center" gap="8px">
+              {formatMessage(messages.filesTab)}
+            </Box>
+          }
+          url={`/admin/projects/${projectId}/files`}
+          active={pathname.includes(`/admin/projects/${projectId}/files`)}
+        />
       </NavigationTabs>
       <RouterOutlet />
     </Box>
-
   );
-
-  const newBackoffice = useParallelParticipation();
 };
 
 const AdminProjectsProjectIndexWrapper = () => {
