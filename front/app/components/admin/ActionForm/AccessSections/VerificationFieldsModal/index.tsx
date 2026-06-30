@@ -19,6 +19,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import Modal from 'components/UI/Modal';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
+
 interface Props {
   opened: boolean;
   onClose: () => void;
@@ -49,15 +53,16 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
       width="480px"
       header={
         <Title ml="20px" variant="h3" color="primary">
-          Fields returned by {methodName}
+          <FormattedMessage {...messages.fieldsReturnedByMethod} values={{ methodName }} />
         </Title>
       }
     >
       <Box p="24px">
         <Text mt="0" color="coolGrey600">
-          When a participant verifies through {methodName}, these fields are filled
-          in automatically. Locked fields come straight from the official register
-          and can’t be changed by the participant.
+          <FormattedMessage
+            {...messages.whenAParticipantVerifiesThroughMethod}
+            values={{ methodName }}
+          />
         </Text>
 
         <Box mt="12px">
@@ -88,7 +93,9 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
                   fontSize="xs"
                   color={field.locked ? 'coolGrey600' : 'teal500'}
                 >
-                  {field.locked ? 'Locked' : 'Editable'}
+                  <FormattedMessage
+                    {...(field.locked ? messages.locked : messages.editable)}
+                  />
                 </Text>
               </Box>
             </Box>
