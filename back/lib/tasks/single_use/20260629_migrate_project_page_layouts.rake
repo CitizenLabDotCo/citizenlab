@@ -106,7 +106,7 @@ class ProjectPageLayoutBuilder
       next unless node.is_a?(Hash)
 
       queue.concat(Array(node['nodes']))
-      queue.concat(Array(node['linkedNodes']).map { |pair| pair[1] })
+      queue.concat(Array(node['linkedNodes']).pluck(1))
     end
 
     ids
