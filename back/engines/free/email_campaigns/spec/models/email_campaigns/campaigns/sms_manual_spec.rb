@@ -12,8 +12,8 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
       expect(build(:sms_manual_campaign, body_multiloc: {})).not_to be_valid
     end
 
-    it 'is invalid without a title' do
-      expect(build(:sms_manual_campaign, title_multiloc: {})).not_to be_valid
+    it 'is invalid without a subject' do
+      expect(build(:sms_manual_campaign, subject_multiloc: {})).not_to be_valid
     end
   end
 

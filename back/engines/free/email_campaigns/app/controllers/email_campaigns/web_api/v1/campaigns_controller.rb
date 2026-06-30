@@ -119,9 +119,6 @@ module EmailCampaigns
     def send_preview
       EmailCampaigns::DeliveryService.new.send_preview(@campaign, current_user)
       head :ok
-    rescue EmailCampaigns::Sms::Error => e
-      render json: { errors: { base: [{ error: 'sms_preview_failed', message: e.message }] } },
-        status: :unprocessable_entity
     end
 
     def preview
@@ -136,24 +133,15 @@ module EmailCampaigns
     end
 
     def deliveries
-      relation = @campaign.channel == :sms ? @campaign.sms_deliveries : @campaign.deliveries
-      @deliveries = relation
-        .includes(:user)
-        .order(:created_at)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
-      serializer = @campaign.channel == :sms ? WebApi::V1::Sms::DeliverySerializer : WebApi::V1::DeliverySerializer
-      render json: linked_json(
-        @deliveries,
-        serializer,
-        params: jsonapi_serializer_params,
-        include: [:user]
-      )
+      return sms_deliveries if @campaign.channel == :sms
+
+      email_deliveries
     end
 
     def stats
-      counts = @campaign.channel == :sms ? EmailCampaigns::Sms::Delivery.status_counts(@campaign.id) : EmailCampaigns::Delivery.status_counts(@campaign.id)
-      render json: raw_json(counts)
+      return sms_stats if @campaign.channel == :sms
+
+      email_stats
     end
 
     def supported_campaign_names
@@ -185,17 +173,48 @@ module EmailCampaigns
       @campaign_context = context_model.find(context_id)
     end
 
+    def sms_deliveries
+      render_deliveries(@campaign.sms_deliveries, WebApi::V1::Sms::DeliverySerializer)
+    end
+
+    def email_deliveries
+      render_deliveries(@campaign.deliveries, WebApi::V1::DeliverySerializer)
+    end
+
+    def render_deliveries(relation, serializer)
+      deliveries = relation
+        .includes(:user)
+        .order(:created_at)
+        .page(params.dig(:page, :number))
+        .per(params.dig(:page, :size))
+      render json: linked_json(
+        deliveries,
+        serializer,
+        params: jsonapi_serializer_params,
+        include: [:user]
+      )
+    end
+
+    def sms_stats
+      render json: raw_json(EmailCampaigns::Sms::Delivery.status_counts(@campaign.id))
+    end
+
+    def email_stats
+      render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
+    end
+
     def campaign_params
       return sms_campaign_params if @campaign.channel == :sms
+      return manual_campaign_params if @campaign.manual?
 
-      @campaign.manual? ? manual_campaign_params : automated_campaign_params
+      automated_campaign_params
     end
 
     def sms_campaign_params
       params.require(:campaign).permit(
         :enabled,
         group_ids: [],
-        title_multiloc: I18n.available_locales,
+        subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
       )
     end

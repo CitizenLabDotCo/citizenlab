@@ -13,24 +13,14 @@ import useCampaigns from 'api/campaigns/useCampaigns';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List } from 'components/admin/ResourceList';
 import Pagination from 'components/Pagination';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import messages from '../../messages';
 
+import NewSmsCampaignButton from './NewSmsCampaignButton';
 import SmsCampaignRow from './SmsCampaignRow';
-
-const NewSmsCampaignButton = () => (
-  <ButtonWithLink
-    buttonStyle="admin-dark"
-    icon="plus-circle"
-    to="/admin/messaging/sms/new"
-  >
-    <FormattedMessage {...messages.addSmsCampaignButton} />
-  </ButtonWithLink>
-);
 
 const SmsCampaigns = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -86,7 +76,7 @@ const SmsCampaigns = () => {
       >
         <Box>
           <Title color="primary">
-            <FormattedMessage {...messages.smsCampaigns} />
+            <FormattedMessage {...messages.tabSms} />
           </Title>
           <Text color="coolGrey600">
             <FormattedMessage {...messages.smsCampaignsDescription} />

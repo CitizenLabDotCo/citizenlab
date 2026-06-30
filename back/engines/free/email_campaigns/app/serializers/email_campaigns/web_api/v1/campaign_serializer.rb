@@ -100,13 +100,13 @@ module EmailCampaigns
     end
 
     # For customised emails
-    attribute :reply_to, :subject_multiloc, :button_text_multiloc, if: proc { |object|
+    attribute :reply_to, :title_multiloc, :button_text_multiloc, if: proc { |object|
       content_configurable?(object)
     }
 
-    # title_multiloc is the visible title for content-configurable emails and
-    # the admin-facing label for SMS campaigns.
-    attribute :title_multiloc, if: proc { |object|
+    # subject_multiloc is the email subject for content-configurable emails and
+    # the admin-facing label for SMS campaigns (SMS has no subject line).
+    attribute :subject_multiloc, if: proc { |object|
       content_configurable?(object) || sms?(object)
     }
 

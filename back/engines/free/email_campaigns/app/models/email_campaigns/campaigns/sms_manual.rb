@@ -33,9 +33,6 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  # First concrete SMS campaign: an admin writes a short text and sends it on
-  # demand. Mirrors the manual email campaign, minus the email-only pieces
-  # (subject, HTML body, sender/reply_to, mailer) and minus scheduling.
   class Campaigns::SmsManual < Campaigns::BaseSms
     include Consentable
     include RecipientConfigurable
@@ -45,13 +42,9 @@ module EmailCampaigns
 
     recipient_filter :user_filter_no_invitees
 
-    # Without this, the campaign would be sent on every event and every schedule
-    # trigger. It should only be sent through an explicit manual send.
     filter :only_manual_send
 
-    # Admin-facing label so campaigns are easy to tell apart in the list
-    # (not sent to recipients). SMS body is a single plain-text multiloc.
-    validates :title_multiloc, presence: true, multiloc: { presence: true }
+    validates :subject_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
 
     def self.recipient_role_multiloc_key
