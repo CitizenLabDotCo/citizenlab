@@ -9,7 +9,7 @@ describe('Project description builder Iframe component', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
+      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
