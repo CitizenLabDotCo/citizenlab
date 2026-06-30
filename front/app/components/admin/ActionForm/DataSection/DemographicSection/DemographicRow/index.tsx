@@ -9,6 +9,10 @@ import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_f
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 interface Props {
   field: IPermissionsPhaseCustomFieldData;
   onChangeRequired: (required: boolean) => void;
@@ -17,6 +21,7 @@ interface Props {
 
 const DemographicRow = ({ field, onChangeRequired, onRemove }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const title = localize(field.attributes.title_multiloc);
 
   return (
@@ -40,8 +45,8 @@ const DemographicRow = ({ field, onChangeRequired, onRemove }: Props) => {
             size="small"
             value={field.attributes.required ? 'required' : 'optional'}
             options={[
-              { value: 'required', label: 'Required' },
-              { value: 'optional', label: 'Optional' },
+              { value: 'required', label: formatMessage(messages.required) },
+              { value: 'optional', label: formatMessage(messages.optional) },
             ]}
             onChange={(option) => onChangeRequired(option.value === 'required')}
           />
@@ -49,7 +54,7 @@ const DemographicRow = ({ field, onChangeRequired, onRemove }: Props) => {
         <IconButton
           iconName="delete"
           onClick={onRemove}
-          a11y_buttonActionMessage={`Remove ${title}`}
+          a11y_buttonActionMessage={formatMessage(messages.removeDemographicField, { fieldName: title })}
           iconColor={colors.coolGrey500}
           iconColorOnHover={colors.red500}
           iconWidth="18px"
