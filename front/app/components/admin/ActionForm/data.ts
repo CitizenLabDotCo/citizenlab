@@ -4,10 +4,6 @@
 
 import { AuthMethodKey } from './types';
 
-// Default shown to users who don't meet the requirements.
-export const DEFAULT_ACCESS_DENIED_MESSAGE =
-  'You do not meet the requirements to participate in this process.';
-
 export const AUTH_METHOD_LABELS: Record<AuthMethodKey, string> = {
   email: 'Confirmed email',
   verification: 'Identity verification',
