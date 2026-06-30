@@ -4,14 +4,18 @@ import React from 'react';
 
 import { Box, Text, Input } from '@citizenlab/cl2-component-library';
 
-import { linkStyle } from './shared';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { linkStyle } from '../shared';
+
+import messages from './messages';
 
 // Default recency to require when an admin first switches it on, in days.
 const DEFAULT_EXPIRY_DAYS = 30;
 
 interface Props {
   expiry: number | null; // days; `null` = confirm once, ever
-  verb: string; // "Re-confirm" / "Re-verify"
+  verb: 'Re-confirm' | 'Re-verify';
   onChange: (expiry: number | null) => void;
 }
 
@@ -27,7 +31,12 @@ const RecencyControl = ({ expiry, verb, onChange }: Props) => {
         tabIndex={0}
         onClick={() => onChange(DEFAULT_EXPIRY_DAYS)}
       >
-        + Require recent {verb === 'Re-verify' ? 'verification' : 'confirmation'}
+        <FormattedMessage
+          {...(verb === 'Re-verify'
+            ? messages.reverifyIfOlderThan
+            : messages.reconfirmIfOlderThan
+          )}
+        />
       </Text>
     );
   }
@@ -35,7 +44,12 @@ const RecencyControl = ({ expiry, verb, onChange }: Props) => {
   return (
     <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap">
       <Text as="span" m="0" fontSize="xs" color="coolGrey700">
-        {verb} if older than
+        <FormattedMessage
+          {...(verb === 'Re-verify'
+            ? messages.reverifyIfOlderThan
+            : messages.reconfirmIfOlderThan
+          )}
+        />
       </Text>
       <Box width="64px">
         <Input
@@ -47,7 +61,7 @@ const RecencyControl = ({ expiry, verb, onChange }: Props) => {
         />
       </Box>
       <Text as="span" m="0" fontSize="xs" color="coolGrey700">
-        days
+        <FormattedMessage {...messages.days} />
       </Text>
       <Text
         as="span"
@@ -58,7 +72,7 @@ const RecencyControl = ({ expiry, verb, onChange }: Props) => {
         tabIndex={0}
         onClick={() => onChange(null)}
       >
-        remove
+        <FormattedMessage {...messages.remove} />
       </Text>
     </Box>
   );
