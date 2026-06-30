@@ -63,6 +63,8 @@ module McpServer
         McpServer::Tools::CreatePollOption,
         McpServer::Tools::DestroyResource,
         McpServer::Tools::UpdateResource,
+        McpServer::Tools::UpdateProject,
+        McpServer::Tools::UpdatePhase,
         McpServer::Tools::GetResource,
         McpServer::Tools::GetFormFields,
         McpServer::Tools::ReplaceFormFields,
