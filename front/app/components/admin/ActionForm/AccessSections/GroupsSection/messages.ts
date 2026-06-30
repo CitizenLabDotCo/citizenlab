@@ -25,5 +25,17 @@ export default defineMessages({
   done: {
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.done',
     defaultMessage: 'Done',
-  }
+  },
+  participantMustBe: {
+    id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.participantMustBe',
+    defaultMessage: 'Participant must be in any one of the selected groups.',
+  },
+  allParticipants: {
+    id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.allParticipants',
+    defaultMessage: 'All participants (no group restriction)',
+  },
+  customizeErrorMessage: {
+    id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.customizeErrorMessage',
+    defaultMessage: 'Customize error message',
+  },
 });

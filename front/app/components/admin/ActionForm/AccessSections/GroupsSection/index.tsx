@@ -1,6 +1,3 @@
-// "Limit to groups" — a collapsible group selector plus the access-denied
-// error-message override. Shared, identical, by both access-section variants.
-
 import React, { useState } from 'react';
 
 import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
@@ -13,11 +10,14 @@ import useLocalize from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { getGroupIds, groupsSummary } from '../../logic';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
 
 import ErrorMessageModal from './ErrorMessageModal';
+import messages from './messages';
 
 interface Props {
   permission: IPhasePermissionData;
@@ -41,7 +41,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
         summary={groupsSummary(permission)}
       >
         <Text as="p" mt="0" mb="8px" fontSize="xs" color="coolGrey600">
-          Participant must be in any one of the selected groups.
+          <FormattedMessage {...messages.participantMustBe} />
         </Text>
         <Box maxWidth="440px">
           <MultipleSelect
@@ -53,7 +53,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
             onChange={(options) =>
               onChange({ group_ids: options.map((o) => o.value) })
             }
-            placeholder="All participants (no group restriction)"
+            placeholder={<FormattedMessage {...messages.allParticipants} />}
           />
         </Box>
 
@@ -64,7 +64,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
             icon="edit"
             onClick={() => setErrorMessageOpen(true)}
           >
-            Customize error message
+            <FormattedMessage {...messages.customizeErrorMessage} />
           </Button>
         </Box>
       </Expander>
