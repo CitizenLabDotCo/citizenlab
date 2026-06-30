@@ -1,7 +1,3 @@
-// "Who can participate" for the SSO variant. Same shape as AccessSection, but
-// "Require sign-in" is a single fixed single-sign-on method with no per-method
-// options to configure.
-
 import React, { useState } from 'react';
 
 import {
@@ -14,19 +10,23 @@ import {
 
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { requiresAccount, ssoMethodName } from '../logic';
 import { SectionHeader } from '../ui';
-import VerificationFieldsModal from './VerificationFieldsModal';
 
 import GroupsSection from './GroupsSection';
+import messages from './messages';
 import ModeCards from './ModeCards';
 import { AccessSectionProps, linkStyle } from './shared';
+import VerificationFieldsModal from './VerificationFieldsModal';
 
 const AccessSectionSSO = ({
   permission,
   showAnyone,
   onChange,
 }: AccessSectionProps) => {
+  const { formatMessage } = useIntl();
   const hasAccount = requiresAccount(permission);
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
@@ -37,15 +37,15 @@ const AccessSectionSSO = ({
     <Box>
       <SectionHeader
         icon="user-circle"
-        title="Who can participate"
-        tooltip="Decide whether an account is needed. Sign-in is handled by single sign-on."
+        title={formatMessage(messages.whoCanParticipate)}
+        tooltip={formatMessage(messages.firstDecideSSO)}
       />
 
       <ModeCards
         permittedBy={permission.attributes.permitted_by}
         showAnyone={showAnyone}
-        signInTitle="Require single sign-on"
-        signInDescription="Sign in via the configured SSO account."
+        signInTitle={formatMessage(messages.requireSSO)}
+        signInDescription={formatMessage(messages.signInViaSSO)}
         onChange={onChange}
       />
 
@@ -69,7 +69,7 @@ const AccessSectionSSO = ({
             />
             <Box display="flex" flexDirection="column" gap="2px">
               <Text as="span" m="0" fontSize="s" fontWeight="semi-bold" color="primary">
-                Participants sign in with their {methodName}
+                {formatMessage(messages.participantsSignInWith, { methodName })}
               </Text>
               <Text
                 as="span"
@@ -80,7 +80,7 @@ const AccessSectionSSO = ({
                 tabIndex={0}
                 onClick={() => setReturnedFieldsOpen(true)}
               >
-                See which fields this returns
+                {formatMessage(messages.seeWhichFieldsThisReturns)}
               </Text>
             </Box>
           </Box>
