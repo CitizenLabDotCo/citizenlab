@@ -24,6 +24,10 @@ module Permissions
       user_blocked: 'user_blocked'
     }.freeze
 
+    PROJECT_DENIED_REASONS = {
+      project_inactive: 'project_inactive'
+    }.freeze
+
     def initialize(user, user_requirements_service: nil)
       @user = user
       @user_requirements_service = user_requirements_service
@@ -60,7 +64,6 @@ module Permissions
       permission
     end
 
-    # User methods
     def user_denied_reason(permission, scope = nil)
       return if permission.permitted_by == 'everyone'
       return USER_DENIED_REASONS[:user_not_signed_in] unless user
@@ -71,13 +74,13 @@ module Permissions
       return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
       return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.permitted_for_permission?(permission, user)
       return USER_DENIED_REASONS[:user_not_verified] if user_requirements_service.requires_verification?(permission, user)
-      return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission)
+      return USER_DENIED_REASONS[:user_not_in_group] if permission.groups.any? && !user.in_any_groups?(permission.groups)
 
       nil
     end
 
-    def denied_when_permitted_by_groups?(permission)
-      permission.groups.any? && !user.in_any_groups?(permission.groups)
+    def project_denied_reason(project)
+      PROJECT_DENIED_REASONS[:project_inactive] if project.admin_publication.archived?
     end
   end
 end

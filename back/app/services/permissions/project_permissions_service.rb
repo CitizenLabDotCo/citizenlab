@@ -1,9 +1,5 @@
 module Permissions
   class ProjectPermissionsService < PhasePermissionsService
-    PROJECT_DENIED_REASONS = {
-      project_inactive: 'project_inactive'
-    }.freeze
-
     ATTENDING_EVENT_DENIED_REASONS = {
       attending_event_not_supported: 'attending_event_not_supported'
     }.freeze
@@ -21,7 +17,8 @@ module Permissions
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
-      return PROJECT_DENIED_REASONS[:project_inactive] if project.admin_publication.archived?
+      project_reason = project_denied_reason(project)
+      return project_reason if project_reason
       return attending_event_denied_reason_for_action if action == 'attending_event'
       return PROJECT_DENIED_REASONS[:project_inactive] if !phase
 

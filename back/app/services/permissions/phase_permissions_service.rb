@@ -47,6 +47,9 @@ module Permissions
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
+      project_reason = project_denied_reason(phase.project)
+      return project_reason if project_reason
+
       phase_denied_reason = case action
       when 'posting_idea'
         posting_idea_denied_reason_for_action

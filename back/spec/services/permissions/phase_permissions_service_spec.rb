@@ -7,6 +7,14 @@ describe Permissions::PhasePermissionsService do
   let(:phase) { project.phases.first }
   let(:project) { create(:project_with_current_phase, phases_config: phases_config) }
 
+  context 'when the project is archived' do
+    let(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' }) }
+
+    it 'returns `project_inactive`' do
+      expect(service.denied_reason_for_action('posting_idea')).to eq 'project_inactive'
+    end
+  end
+
   context '"reacting_idea" denied_reason_for_action' do
     context 'when reacting is enabled' do
       let(:phase) { project.phases[1] }
