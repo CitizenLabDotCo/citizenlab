@@ -15,7 +15,7 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import AccessSection from './AccessSections/AccessSection';
 import AccessSectionSSO from './AccessSections/AccessSectionSSO';
@@ -26,34 +26,10 @@ import {
   getGroupIds,
   ssoMethodName,
 } from './logic';
+import messages from './messages';
 import { Props } from './types';
 import { Chip } from './ui';
 
-/**
- * "Participation requirements" — a single, collapsible panel that captures
- * everything a participant must satisfy before they can take an action:
- * authentication, group membership, personal info and demographic questions.
- *
- * A *stateless* controlled component: it renders the `permissionData` it is
- * given and reports edits through `onChange`; the parent owns the state and
- * persists it. The demographic questions come straight from
- * `usePermissionsPhaseCustomFields` rather than from a prop.
- *
- * The access section adapts to the platform's `password_login` setting:
- *  - with password login, admins pick between confirmed email / identity
- *    verification (`AccessSection`);
- *  - without it, there is no email/password account, so "require sign-in" means
- *    a single fixed SSO method and the password requirement is dropped
- *    (`AccessSectionSSO`).
- *
- * Design notes:
- *  - One panel, two groups: *who can participate* (access) and *what we ask*
- *    (data), splitting access-rights from data collection.
- *  - Collapses to a one-line summary of chips so several actions fit on a page.
- *  - The rules engine in logic.ts keeps invalid combinations impossible: turn
- *    off all auth and the data section greys out; turn off password login and
- *    the email method disables; etc.
- */
 const ActionForm = ({
   phaseId,
   permissionData,
@@ -122,7 +98,9 @@ const ActionForm = ({
           px="20px"
           py="16px"
           background="transparent"
-          style={{ border: 'none', cursor: 'pointer', textAlign: 'left' }}
+          border="none"
+          cursor="pointer"
+          style={{ textAlign: 'left' }}
           onClick={() => setIsOpen((open) => !open)}
         >
           <Icon
@@ -190,7 +168,7 @@ const ActionForm = ({
                   onClick={onReset}
                 >
                   <span style={{ textDecorationLine: 'underline' }}>
-                    Reset demographic questions and groups
+                    <FormattedMessage {...messages.resetDemographicQuestionsAndGroups} />
                   </span>
                 </Button>
               </Box>
