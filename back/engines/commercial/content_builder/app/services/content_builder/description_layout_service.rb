@@ -1,21 +1,14 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Puts project/folder descriptions on the Content Builder. Used in three places,
-  # all sharing the same content-aware building:
-  # - the SideFx creation/copy hook, so a new (or copied/imported) buildable gets a
-  #   layout wrapping its description, or an empty layout when it has none;
-  # - the after-template hook, so every project/folder in a freshly created tenant
-  #   is on the builder regardless of which template it came from;
-  # - the one-time WYSIWYG migration (delegates its craftjs building here).
+  # Puts project/folder descriptions on the Content Builder, used by the SideFx
+  # creation/copy hook, the after-template hook, and the one-time WYSIWYG migration.
   #
   # Widget choice per description:
-  # - blank             -> default layout (empty canvas for projects, title +
-  #                        published projects for folders);
-  # - inline media      -> lossless RichTextMultiloc "bridge" widget (inline images
-  #                        need server-side rendering; videos/buttons kept on the
-  #                        bridge for guaranteed fidelity);
-  # - plain/rich text   -> native TextMultiloc widget (no bridge debt).
+  # - blank         -> default layout (empty canvas for projects, title + published
+  #                    projects for folders);
+  # - inline media  -> lossless RichTextMultiloc "bridge" widget (images, videos, buttons);
+  # - plain/rich text -> native TextMultiloc widget.
   class DescriptionLayoutService
     LAYOUT_CODE_BY_TYPE = {
       'Project' => 'project_description',
@@ -23,7 +16,7 @@ module ContentBuilder
     }.freeze
 
     # A ROOT-only craftjs canvas — the empty editor state the Content Builder
-    # frame initialises from (mirrors the structure craftjs serialises).
+    # frame initialises from.
     EMPTY_PROJECT_CRAFTJS_JSON = {
       'ROOT' => {
         'type' => 'div',
@@ -37,23 +30,17 @@ module ContentBuilder
       }
     }.freeze
 
-    # --- Creation/copy hook (new or copied/imported buildables) ----------------
-
-    # Idempotently provisions an enabled description layout — wrapping the
-    # buildable's description if it has one (so a copied/imported description is
-    # never hidden behind an empty frame), or an empty layout otherwise. Gated on
-    # the feature; no-op when it is off or a layout already exists.
+    # Provisions an enabled description layout for a new (or copied/imported)
+    # buildable. Gated on the feature; no-op when off or a layout already exists.
     def provision_for(buildable)
       return unless feature_activated?
 
       ensure_on_content_builder!(buildable)
     end
 
-    # --- After-template hook (every buildable in a new tenant) -----------------
-
     # Ensures every project/folder description in the current tenant is on the
-    # Content Builder. Resilient: a failure on one buildable is reported and
-    # skipped rather than aborting tenant creation.
+    # Content Builder. A failure on one buildable is reported and skipped rather
+    # than aborting tenant creation.
     def provision_all_descriptions!
       return unless feature_activated?
 
@@ -61,15 +48,13 @@ module ContentBuilder
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
 
-    # Idempotently puts one buildable's description on the Content Builder, picking
-    # the widget by content (blank / media / text). Skips if a layout exists.
+    # Puts one buildable's description on the Content Builder, picking the widget by
+    # content (blank / media / text). Skips if a layout exists.
     def ensure_on_content_builder!(buildable)
       return if buildable.content_builder_layouts.exists?
 
       create_layout!(buildable, content_aware_craftjs_json(buildable))
     end
-
-    # --- Shared building blocks (also used by the one-time migration) ----------
 
     def layout_code(buildable)
       LAYOUT_CODE_BY_TYPE.fetch(buildable.class.name) do
@@ -84,16 +69,13 @@ module ContentBuilder
     end
 
     # True when any locale's HTML holds media the native text widget cannot render
-    # losslessly — inline images (need server-side TextImage rendering) — or richer
-    # embeds we keep on the bridge for guaranteed fidelity (videos, CTA buttons).
+    # losslessly: inline images, videos or CTA buttons, which stay on the bridge.
     def description_has_media?(description_multiloc)
       return false if description_multiloc.blank?
 
       description_multiloc.values.any? { |html| html_has_media?(html) }
     end
 
-    # Picks the layout for a description by content: blank -> default; inline media
-    # -> lossless bridge; plain/rich text -> native TextMultiloc.
     def content_aware_craftjs_json(buildable)
       multiloc = buildable.description_multiloc
       if description_blank?(multiloc)
@@ -105,15 +87,12 @@ module ContentBuilder
       end
     end
 
-    # --- Generic craftjs node builders (reused by the one-time WYSIWYG migration,
-    # which assembles its own description-beside-AboutBox project layout) -----------
+    # Generic craftjs node builders, also used by the one-time WYSIWYG migration.
 
-    # A native TextMultiloc node carrying the given multiloc HTML.
     def text_node(description_multiloc)
       content_node('TextMultiloc', description_multiloc)
     end
 
-    # A lossless RichTextMultiloc "bridge" node carrying the given multiloc HTML.
     def bridge_node(description_multiloc)
       content_node('RichTextMultiloc', description_multiloc, custom: {
         'title' => {
@@ -158,8 +137,8 @@ module ContentBuilder
     end
 
     # Wraps the description in the lossless RichTextMultiloc bridge widget. A folder
-    # reuses its canonical layout (title + published projects) with the bridge
-    # swapped in for the description, so the project listing is preserved.
+    # reuses its canonical layout with the bridge swapped in for the description, so
+    # the published-projects listing is preserved.
     def bridge_craftjs_json(buildable)
       if buildable.is_a?(ProjectFolders::Folder)
         default_craftjs_json(buildable).tap do |craftjs|
