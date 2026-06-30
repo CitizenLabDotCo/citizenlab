@@ -192,7 +192,7 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Veryify location is present and properly geocoded (from the lat long in URL)
-    cy.contains('Steenakker 36, 5411').should('exist');
+    cy.contains('Steenakker 34, 5411').should('exist');
 
     // Cannot proceed to the next page without filling in the required custom field
     cy.dataCy('e2e-submit-form').click();

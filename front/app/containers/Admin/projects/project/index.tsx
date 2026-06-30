@@ -4,39 +4,60 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
+import { IProjectData } from 'api/projects/types';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
-import Tab from 'components/admin/NavigationTabs/Tab';
 import NewLabel from 'components/UI/NewLabel';
+import Tab from 'components/admin/NavigationTabs/Tab';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { useIntl } from 'utils/cl-intl';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
+import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
+import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
 import ProjectHeader from './projectHeader';
+import ProjectSidebar from './newBackoffice/ProjectSidebar';
+import messages from './messages';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { formatMessage } = useIntl();
+
   const { pathname } = useLocation();
+
   const { data: appConfiguration } = useAppConfiguration();
+
   const { data: authUser } = useAuthUser();
+
   const projectStaticPagesEnabled = useFeatureFlag({
     name: 'project_static_pages',
   });
-  const projectId = project.id;
-
-  if (!canModerateProject(project, authUser)) {
-    return null;
-  }
 
   const privateAttributesInExport =
     appConfiguration?.data.attributes.settings.core
       .private_attributes_in_export !== false;
+
+  if (newBackoffice) {
+    return (
+      <Box
+        data-cy="e2e-admin-projects-project-index"
+        display="flex"
+        flexDirection="column"
+        height="100vh"
+        overflow="hidden"
+      >
+        <ProjectHeader projectId={projectId} />
+        <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
+          <ProjectSidebar projectId={projectId} />
+          <Box flexGrow={1} minWidth="0" overflowY="auto">
+            <RouterOutlet />
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -112,7 +133,10 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
       </NavigationTabs>
       <RouterOutlet />
     </Box>
+
   );
+
+  const newBackoffice = useParallelParticipation();
 };
 
 const AdminProjectsProjectIndexWrapper = () => {

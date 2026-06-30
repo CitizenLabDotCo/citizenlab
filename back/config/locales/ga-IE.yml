@@ -270,6 +270,16 @@ ga-IE:
       title: Gach tionscadal
     proposals:
       title: Tograí
+  pdf_export:
+    survey_responses:
+      date: Dáta
+      no_answer: (Gan freagra)
+      prepared_by: Ullmhaithe ag
+      report_label: Tuairisc ar fhreagraí an tsuirbhé
+      respondent: Freagróir %{number}
+      response_count:
+        one: '%{count} freagra'
+        other: '%{count} freagra'
   phases:
     community_monitor_title: Monatóir pobail
     native_survey_button: Glac an suirbhé
