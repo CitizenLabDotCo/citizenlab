@@ -249,6 +249,7 @@ de-AT:
         idea: '%{authorName} hat eine Idee kommentiert, der Sie folgen'
         initiative: '%{authorName} hat eine Initiative kommentiert, der Sie folgen'
         issue: '%{authorName} hat ein Problem kommentiert, dem Sie folgen'
+        observation: '%{authorName} hat eine Beobachtung kommentiert, der du folgst'
         option: '%{authorName} hat eine Option kommentiert, der Sie folgen'
         petition: '%{authorName} hat eine Petition kommentiert, der Sie folgen'
         post: '%{authorName} hat einen Beitrag kommentiert, dem Sie folgen'
@@ -323,6 +324,7 @@ de-AT:
         idea: Zur Idee
         initiative: Zur Initiative
         issue: Zum Mangel
+        observation: Zu dieser Beobachtung
         option: Zur Option
         petition: Zur Petition
         post: Zum Beitrag
@@ -343,6 +345,7 @@ de-AT:
         idea: Zur Idee
         initiative: Zur Initiative
         issue: Zum Mangel
+        observation: Zu deiner Beobachtung gehen
         option: Zur Option
         petition: Zur Petition
         post: Zu Ihrem Beitrag
@@ -376,6 +379,7 @@ de-AT:
         idea: Ihre Idee wurde veröffentlicht
         initiative: Initiative wurde veröffentlicht
         issue: Ihr Mangel wurde veröffentlicht
+        observation: Deine Beobachtung wurde veröffentlicht
         option: Ihre Option wurde veröffentlicht
         petition: Ihre Petition wurde veröffentlicht
         post: Beitrag wurde veröffentlicht
@@ -764,6 +768,7 @@ de-AT:
         idea: Ihr Beitrag ist in "%{prescreening_status_title}"
         initiative: Ihre Initiative ist in "%{prescreening_status_title}"
         issue: Ihr Mangel ist in "%{prescreening_status_title}"
+        observation: Deine Beobachtung befindet sich im Status "%{prescreening_status_title}"
         option: Ihre Option ist in "%{prescreening_status_title}"
         petition: Ihre Petition ist in "%{prescreening_status_title}"
         post: Ihr Beitrag ist in "%{prescreening_status_title}"

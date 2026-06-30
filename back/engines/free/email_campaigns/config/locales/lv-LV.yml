@@ -249,6 +249,7 @@ lv-LV:
         idea: '%{authorName} komentēja ideju, kurai tu seko'
         initiative: '%{authorName} komentēja kādu iniciatīvu, kurai jūs sekojat.'
         issue: '%{authorName} komentēja jautājumu, kuram jūs sekojat'
+        observation: '%{authorName} komentēja novērojumu, kuram tu seko'
         option: '%{authorName} komentēja iespēju, kuru jūs sekojat'
         petition: '%{authorName} komentēja lūgumrakstu, kam tu seko'
         post: '%{authorName} komentēja ziņu, kurai tu seko'
@@ -323,6 +324,7 @@ lv-LV:
         idea: Pārejiet uz šo ideju
         initiative: Dodieties uz šo iniciatīvu
         issue: Pārejiet uz šo jautājumu
+        observation: Doties uz šo novērojumu
         option: Pārejiet uz šo opciju
         petition: Dodieties uz šo lūgumrakstu
         post: Iet uz šo ziņu
@@ -343,6 +345,7 @@ lv-LV:
         idea: Pārejiet uz savu ideju
         initiative: Dodieties uz savu iniciatīvu
         issue: Pārejiet uz savu jautājumu
+        observation: Doties uz savu novērojumu
         option: Dodieties uz savu opciju
         petition: Dodieties uz savu lūgumrakstu
         post: Dodieties uz savu ziņu
@@ -376,6 +379,7 @@ lv-LV:
         idea: Jūsu ideja ir publicēta
         initiative: Jūsu iniciatīva ir publicēta
         issue: Jūsu izdevums ir publicēts
+        observation: Jūsu novērojums ir publicēts
         option: Jūsu opcija ir publicēta
         petition: Jūsu lūgumraksts ir publicēts
         post: Jūsu ziņa ir publicēta
@@ -764,6 +768,7 @@ lv-LV:
         idea: Jūsu ideja ir "%{prescreening_status_title}"
         initiative: Jūsu iniciatīva ir "%{prescreening_status_title}"
         issue: Jūsu jautājums ir sadaļā "%{prescreening_status_title}"
+        observation: Tavs novērojums ir statusā "%{prescreening_status_title}"
         option: Jūsu iespēja ir "%{prescreening_status_title}"
         petition: Jūsu lūgumraksts ir "%{prescreening_status_title}"
         post: Jūsu amats ir "%{prescreening_status_title}"
