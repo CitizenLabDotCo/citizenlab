@@ -33,6 +33,7 @@ import TwoColumn, {
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import NewLabel from 'components/UI/NewLabel';
 
 import {
   useIntl,
@@ -46,6 +47,8 @@ import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
+import CustomPages, { customPagesTitle } from '../Widgets/CustomPages';
+import customPagesMessages from '../Widgets/CustomPages/messages';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -179,6 +182,19 @@ const HomepageBuilderToolbox = () => {
           }
           icon="folder-outline"
           label={formatMessage(selectionTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-custom-pages"
+          component={
+            <CustomPages
+              titleMultiloc={toMultiloc(customPagesMessages.defaultTitle)}
+              customPageIds={[]}
+              pageIcons={{}}
+            />
+          }
+          icon="page"
+          label={formatMessage(customPagesTitle)}
+          labelSuffix={<NewLabel />}
         />
         <DraggableElement
           id="e2e-draggable-published"

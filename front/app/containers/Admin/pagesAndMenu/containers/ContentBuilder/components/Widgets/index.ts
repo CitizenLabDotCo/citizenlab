@@ -42,6 +42,7 @@ import CallToAction, { callToActionTitle } from './CallToAction';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from './CommunityMonitorCTA';
+import CustomPages, { customPagesTitle } from './CustomPages';
 import Events, { eventsTitle } from './Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -77,6 +78,7 @@ export const WIDGETS = {
   Areas,
   CallToAction,
   CommunityMonitorCTA,
+  CustomPages,
   Events,
   FollowedItems,
   FinishedOrArchived,
@@ -121,6 +123,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   Areas: areasTitle,
   CallToAction: callToActionTitle,
   CommunityMonitorCTA: communityMonitorCTATitle,
+  CustomPages: customPagesTitle,
   Events: eventsTitle,
   FollowedItems: followedItemsTitle,
   FinishedOrArchived: finishedOrArchivedTitle,
@@ -169,6 +172,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'Areas',
   'CallToAction',
   'CommunityMonitorCTA',
+  'CustomPages',
   'Events',
   'FollowedItems',
   'FinishedOrArchived',
