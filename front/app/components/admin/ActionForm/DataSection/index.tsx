@@ -9,11 +9,14 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 import usePhase from 'api/phases/usePhase';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { Changes } from '../types';
 import { SectionHeader } from '../ui';
 
 import AnonymitySection from './AnonymitySection';
 import DemographicSection from './DemographicSection';
+import messages from './messages';
 import PersonalInfoSection from './PersonalInfoSection';
 
 interface Props {
@@ -35,6 +38,7 @@ const DataSection = ({
 }: Props) => {
   const { attributes } = permission;
   const { data: phase } = usePhase(phaseId);
+  const { formatMessage } = useIntl();
 
   // PII only make sense if there is an account
   const showPIISection = attributes.permitted_by === 'users';
@@ -49,8 +53,8 @@ const DataSection = ({
     <Box>
       <SectionHeader
         icon="user-data"
-        title="What we collect"
-        tooltip="Information collected from participants, and how it is stored alongside their submission."
+        title={formatMessage(messages.whatWeCollect)}
+        tooltip={formatMessage(messages.whatWeCollectTooltip)}
       />
 
       <Box border={`1px solid ${colors.borderLight}`} borderRadius="8px" px="14px">
