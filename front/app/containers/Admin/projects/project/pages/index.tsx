@@ -49,7 +49,8 @@ const ProjectPagesList = () => {
           <ButtonWithLink
             buttonStyle="admin-dark"
             icon="plus-circle"
-            linkTo={`/admin/projects/${projectId}/pages/new`}
+            to="/admin/projects/$projectId/pages/new"
+            params={{ projectId }}
             data-cy="e2e-add-project-page"
           >
             {formatMessage(messages.newPageButton)}
@@ -79,7 +80,8 @@ const ProjectPagesList = () => {
                 <ButtonWithLink
                   buttonStyle="secondary-outlined"
                   icon="edit"
-                  linkTo={`/admin/projects/${projectId}/pages/${page.id}`}
+                  to="/admin/projects/$projectId/pages/$customPageId"
+                  params={{ projectId, customPageId: page.id }}
                 >
                   {formatMessage(messages.editButton)}
                 </ButtonWithLink>

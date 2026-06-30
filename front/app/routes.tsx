@@ -133,6 +133,8 @@ const normalizeParallelParticipation = ({
 
   return result;
 };
+
+// Root route
 const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),

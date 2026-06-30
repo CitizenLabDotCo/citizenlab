@@ -21,8 +21,8 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
-
 import { useIntl } from 'utils/cl-intl';
+
 const ProjectDescriptionBuilderToolbox = () => {
   const { formatMessage } = useIntl();
   const projectStaticPagesEnabled = useFeatureFlag({
