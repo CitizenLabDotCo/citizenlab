@@ -27,7 +27,7 @@ interface Props {
 }
 
 // Heavily inspired by front/app/components/UI/UserSelect/index.tsx
-const IdeaSelect = ({
+const IdeaSingleSelect = ({
   selectedIdeaId,
   id = 'idea-select',
   inputId = 'idea-select-input',
@@ -111,4 +111,4 @@ const IdeaSelect = ({
   );
 };
 
-export default IdeaSelect;
+export default IdeaSingleSelect;

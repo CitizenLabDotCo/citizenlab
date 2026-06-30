@@ -2,7 +2,7 @@ import React from 'react';
 
 import { IIdeaData } from 'api/ideas/types';
 
-import IdeaSelect from 'components/UI/IdeaSelect';
+import IdeaSingleSelect from 'components/UI/IdeaSelect/IdeaSingleSelect';
 
 import { TRule } from '../rules';
 
@@ -18,7 +18,7 @@ const IdeaValueSelector = ({ value, onChange }: Props) => {
   };
 
   return (
-    <IdeaSelect
+    <IdeaSingleSelect
       selectedIdeaId={value}
       showLabel={false}
       onChange={handleChange}
