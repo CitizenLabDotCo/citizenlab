@@ -23,6 +23,7 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       project = Project.new(**params, admin_publication_attributes: { publication_status: 'draft' })
+      authorize(project, :create?)
 
       SideFxProjectService.new.before_create(project, current_user)
       project.save!
