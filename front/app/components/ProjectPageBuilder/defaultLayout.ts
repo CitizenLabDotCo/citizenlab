@@ -244,9 +244,18 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   },
 };
 
-// Widgets that have been removed from the resolver. Their nodes are stripped from
-// older layouts so craft.js doesn't crash deserializing an unknown component.
-const REMOVED_WIDGETS = ['ExtraSurveysWidget'];
+// Widgets absent from the project page resolver: ones removed over time, plus the
+// DescriptionBuilder-only widgets that exist in project_description layouts. Their
+// nodes are stripped so craft.js doesn't crash deserializing an unknown component.
+// Keep in sync with UNSUPPORTED_WIDGETS in the project_page migration rake task.
+const REMOVED_WIDGETS = [
+  'ExtraSurveysWidget',
+  'FolderFiles',
+  'FolderTitle',
+  'Published',
+  'Selection',
+  'Spotlight',
+];
 
 // Normalises a stored layout into the two-region structure: keeps the locked
 // Banner + Title at the top, nests all user content in the droppable body, drops
