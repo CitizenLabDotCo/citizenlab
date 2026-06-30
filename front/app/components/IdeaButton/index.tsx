@@ -9,6 +9,7 @@ import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -58,14 +59,25 @@ const IdeaButton = memo<Props>(
     const localize = useLocalize();
     const isNativeSurvey = participationMethod === 'native_survey';
 
-    if (!project || !phase) return null;
+    const postingRules =
+      project && phase
+        ? getIdeaPostingRules({
+            project: project.data,
+            phase,
+            authUser: authUser?.data,
+          })
+        : undefined;
+
+    const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+      phaseId: phase?.id,
+      action: 'posting_idea',
+      disabledReason: postingRules?.disabledReason,
+    });
+
+    if (!project || !phase || !postingRules) return null;
 
     const { enabled, show, disabledReason, authenticationRequirements } =
-      getIdeaPostingRules({
-        project: project.data,
-        phase,
-        authUser: authUser?.data,
-      });
+      postingRules;
 
     if (!show) return null;
 
@@ -149,11 +161,13 @@ const IdeaButton = memo<Props>(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (inMap && !enabled && !!disabledReason) {
       return (
-        <TippyContent
-          projectId={projectId}
-          inMap={inMap}
-          disabledReason={disabledReason}
-        />
+        customAccessDeniedMessage ?? (
+          <TippyContent
+            projectId={projectId}
+            inMap={inMap}
+            disabledReason={disabledReason}
+          />
+        )
       );
     }
 
@@ -163,13 +177,15 @@ const IdeaButton = memo<Props>(
           disabled={!tippyEnabled}
           placement="bottom"
           content={
-            tippyEnabled ? (
-              <TippyContent
-                projectId={projectId}
-                inMap={inMap}
-                disabledReason={disabledReason}
-              />
-            ) : null
+            tippyEnabled
+              ? customAccessDeniedMessage ?? (
+                  <TippyContent
+                    projectId={projectId}
+                    inMap={inMap}
+                    disabledReason={disabledReason}
+                  />
+                )
+              : null
           }
           theme="light"
           hideOnClick={false}

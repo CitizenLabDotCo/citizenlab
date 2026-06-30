@@ -18,6 +18,7 @@ import { TReactionMode } from 'api/idea_reactions/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
 import useLocalize from 'hooks/useLocalize';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -346,6 +347,7 @@ interface Props {
   onClick: (event: React.FormEvent) => void;
   iconName: IconNames;
   ideaId: string;
+  phaseId: string | null;
   variant?: 'text' | 'icon';
 }
 
@@ -358,6 +360,7 @@ const ReactionButton = ({
   onClick,
   iconName,
   ideaId,
+  phaseId,
   userReactionMode,
   variant = 'icon',
 }: Props) => {
@@ -368,6 +371,16 @@ const ReactionButton = ({
 
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
+
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: phaseId ?? undefined,
+    action: 'reacting_idea',
+    disabledReason: !isNilOrError(idea)
+      ? idea.data.attributes.action_descriptors.reacting_idea[
+          buttonReactionMode
+        ].disabled_reason
+      : undefined,
+  });
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
     const reactingDescriptor =
@@ -443,7 +456,7 @@ const ReactionButton = ({
             // and we don't want to duplicate the message
             aria-hidden
           >
-            {disabledMessage}
+            {customAccessDeniedMessage ?? disabledMessage}
           </span>
         }
         trigger="mouseenter"
@@ -522,7 +535,7 @@ const ReactionButton = ({
           {describedById && disabledMessage && (
             <ScreenReaderOnly id={describedById}>
               {`. `}
-              {disabledMessage}
+              {customAccessDeniedMessage ?? disabledMessage}
             </ScreenReaderOnly>
           )}
         </>
