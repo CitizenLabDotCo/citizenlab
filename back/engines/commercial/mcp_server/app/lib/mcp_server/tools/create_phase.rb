@@ -277,7 +277,9 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
             Konveio embed URL (https://*.konveio.{com,site,net}/...).
             Only for 'document_annotation' phases.
           DESC
-        }
+        },
+
+        manual_voters_amount: { type: 'integer', description: 'Count of offline/manually-recorded voters. Only for voting phases.' }
       },
       required: %w[project_id title_multiloc start_at]
     }
