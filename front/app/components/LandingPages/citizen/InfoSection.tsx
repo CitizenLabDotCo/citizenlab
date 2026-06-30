@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import ContentContainer from 'components/ContentContainer';
@@ -35,6 +35,7 @@ const InfoSection = ({ multilocContent }: Props) => {
   if (!multilocContent || isEmptyMultiloc(multilocContent)) {
     return null;
   }
+  const theme = useTheme();
 
   // needed for backwards compatibility with old-style custom pages
   // see PagesShowPage/index.tsx on an older commit for more info
@@ -47,7 +48,7 @@ const InfoSection = ({ multilocContent }: Props) => {
 
   return (
     <StyledContentContainer>
-      <QuillEditedContent>{pageContent}</QuillEditedContent>
+      <QuillEditedContent textColor={theme.colors.tenantText}>{pageContent}</QuillEditedContent>
     </StyledContentContainer>
   );
 };
