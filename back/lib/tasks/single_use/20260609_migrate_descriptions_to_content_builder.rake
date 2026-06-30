@@ -2,18 +2,8 @@
 
 require_relative 'services/description_to_content_builder_migration_service'
 
-# Moves every project/folder description onto the Content Builder. Non-blank
-# `description_multiloc` (legacy WYSIWYG) is wrapped in a single bridge widget
-# (RichTextMultiloc) at full fidelity; blank descriptions get the default layout.
-# The legacy `description_multiloc` is left untouched.
-#
-# - Skips buildables already on the Content Builder, so it is idempotent and
-#   resumable.
-# - Use DRY_RUN=true to analyse without writing. Use HOST=<host> to limit to one
-#   tenant.
-#
-#   docker compose run web bundle exec rake single_use:migrate_descriptions_to_content_builder DRY_RUN=true
-#   docker compose run web bundle exec rake single_use:migrate_descriptions_to_content_builder HOST=localhost
+# Moves every project/folder description onto the Content Builder.
+# DRY_RUN=true analyses without writing; HOST=<host> limits to one tenant.
 namespace :single_use do
   desc 'Migrate WYSIWYG project/folder descriptions into a Content Builder bridge widget. DRY_RUN=true to analyse only.'
   task migrate_descriptions_to_content_builder: :environment do
@@ -32,12 +22,14 @@ namespace :single_use do
 
     tenants = host ? Tenant.where(host: host) : Tenant.prioritize(Tenant.creation_finalized)
     totals = Hash.new(0)
+    reporter = ScriptReporter.new
 
     tenants.each do |tenant|
       Rails.logger.info "\n🏢 Processing tenant: #{tenant.host}"
+      reporter.add_processed_tenant(tenant)
       stats = nil
       tenant.switch do
-        service = Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationService.new
+        service = Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationService.new(reporter: reporter)
         service.migrate(persist: persist)
         stats = service.stats
       end
@@ -60,6 +52,10 @@ namespace :single_use do
     Rails.logger.info "      Blank descriptions given a default layout: #{totals[:created_blank]}"
     Rails.logger.info "   Skipped (already on builder): #{totals[:skipped_existing]}"
     Rails.logger.info "   Errors: #{totals[:errors]}"
+
+    report_file = dry_run ? 'descr_migration_dry_run.json' : 'descr_migration.json'
+    reporter.report!(report_file)
+    Rails.logger.info "   📝 Per-record report (every created/overwritten layout): #{report_file}"
 
     if dry_run
       Rails.logger.info "\n💡 To run the actual migration:"
