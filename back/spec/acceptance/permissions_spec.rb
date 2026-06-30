@@ -174,6 +174,17 @@ resource 'Permissions' do
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
+
+      context 'activity logging', document: false do
+        let(:permitted_by) { 'verified' }
+        let(:verification_expiry) { 30 }
+
+        example 'logs a "changed" and a "changed_permitted_by" activity' do
+          expect { do_request }
+            .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed', anything, anything, anything)
+            .and enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed_permitted_by', anything, anything, anything)
+        end
+      end
     end
 
     patch 'web_api/v1/phases/:phase_id/permissions/:action/reset' do
@@ -197,6 +208,13 @@ resource 'Permissions' do
         expect(response_data.dig(:attributes, :global_custom_fields)).to be true
         expect(permission.permissions_custom_fields.count).to eq 0
         expect(permission.permissions_custom_fields.count).to eq 0
+      end
+
+      example 'logs a "changed" activity', document: false do
+        permission.groups << create_list(:group, 2, projects: [@phase.project])
+
+        expect { do_request }
+          .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed', anything, anything, anything)
       end
     end
 
