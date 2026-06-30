@@ -6,23 +6,24 @@ import { UserFieldsInFormFrontendDescriptor } from 'api/phase_permissions/types'
 
 import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
-import { Changes } from '../../types';
+import { Changes } from '../../../types';
+import { EXPLANATION_MESSAGES } from '../constants';
 
-import { EXPLANATION_MESSAGES } from './constants';
+import messages from './messages';
 
 // Demographics placement is stored as a boolean on the permission:
 //  - false => ask in the registration flow, before the user participates;
 //  - true  => add a new page to the end of the form itself.
-const PLACEMENT_OPTIONS: { value: boolean; label: string }[] = [
+const PLACEMENT_OPTIONS: { value: boolean; label: MessageDescriptor }[] = [
   {
     value: false,
-    label: 'Ask demographic questions before the user participates',
+    label: messages.askDemographicQuestionsBefore,
   },
   {
     value: true,
-    label: 'Collect demographics by adding a new page to the end of the form',
+    label: messages.collectDemographicsAfter,
   },
 ];
 
@@ -63,7 +64,7 @@ const DemographicsPlacement = ({
                 fontSize="s"
                 color={locked ? 'coolGrey500' : 'primary'}
               >
-                {option.label}
+                {formatMessage(option.label)}
               </Text>
             }
           />
