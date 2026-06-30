@@ -8,6 +8,7 @@ class McpServer::BaseTool::Runner
   include McpServer::BaseTool::ResponseHelpers
   include McpServer::BaseTool::Pagination
   include McpServer::BaseTool::Authorization
+  include McpServer::BaseTool::MultilocMerge
 
   attr_reader :params, :server_context, :current_user, :token_scopes
 

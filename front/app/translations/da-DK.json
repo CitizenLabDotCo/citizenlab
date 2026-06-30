@@ -2384,7 +2384,7 @@
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "Der er ingen kommende eller igangværende begivenheder planlagt i øjeblikket.",
   "app.containers.eventspage.pastEvents": "Tidligere begivenheder",
   "app.containers.eventspage.upcomingAndOngoingEvents": "Kommende og igangværende begivenheder",
-  "app.containers.footer.accessibility-statement": "{tenantName, select, HillerodKommune {WAS} other {Webtilgængelighed}}",
+  "app.containers.footer.accessibility-statement": "{tenantName, select, HillerodKommune {WAS} other {Tilgængelighedserklæring}}",
   "app.containers.footer.ariaLabel": "Sekundære",
   "app.containers.footer.cookie-policy": "Cookiepolitik",
   "app.containers.footer.cookieSettings": "Cookie-indstillinger",
