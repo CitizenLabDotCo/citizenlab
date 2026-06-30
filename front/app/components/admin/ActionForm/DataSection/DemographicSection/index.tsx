@@ -13,6 +13,8 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { demographicsSummary } from '../../logic';
 import { Changes } from '../../types';
 import { Expander } from '../../ui';
@@ -20,6 +22,7 @@ import { Expander } from '../../ui';
 import DemographicsPlacement from './DemographicsPlacement';
 import FieldSelectionModal from './FieldSelectionModal';
 import FieldsList from './FieldsList';
+import messages from './messages';
 
 interface Props {
   permission: IPhasePermissionData;
@@ -32,6 +35,7 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
   const { attributes } = permission;
   const { action } = attributes;
   const [showSelectionModal, setShowSelectionModal] = useState(false);
+  const { formatMessage } = useIntl();
 
   const { data: permissionFields } = usePermissionsPhaseCustomFields({
     phaseId,
@@ -79,7 +83,7 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
   return (
     <Expander
       icon="user-data"
-      title="Demographic questions"
+      title={formatMessage(messages.demographicQuestions)}
       summary={demographicsSummary(customFields)}
     >
       {permissionHasForm && (
@@ -92,7 +96,7 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
       )}
 
       <Text as="p" mt="0" mb="8px" fontSize="xs" fontWeight="bold" color="coolGrey600">
-        Questions
+        {formatMessage(messages.questions)}
       </Text>
 
       <FieldsList
@@ -110,7 +114,7 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
           icon="plus-circle"
           onClick={() => setShowSelectionModal(true)}
         >
-          Add a demographic question
+          {formatMessage(messages.addDemographicQuestion)}
         </Button>
       </Box>
 
