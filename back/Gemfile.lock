@@ -80,7 +80,7 @@ PATH
       omniauth-saml (~> 2.2.0)
       omniauth_openid_connect (~> 0.8.0)
       rails (~> 7.2)
-      savon (>= 2.12, < 2.15)
+      savon (~> 2.17.2)
 
 PATH
   remote: engines/commercial/custom_maps
@@ -496,7 +496,7 @@ GEM
     crack (1.0.0)
       bigdecimal
       rexml
-    crass (1.0.6)
+    crass (1.0.7)
     crawler_detect (1.2.9)
       qonfig (>= 0.24)
     css_parser (1.22.0)
@@ -641,11 +641,11 @@ GEM
       multi_xml (>= 0.5.2)
     httpclient (2.9.0)
       mutex_m
-    httpi (3.0.2)
+    httpi (4.0.4)
       base64
       mutex_m
       nkf
-      rack (< 3)
+      rack (>= 2.0, < 4)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     icalendar (2.12.2)
@@ -752,7 +752,7 @@ GEM
     mrml (1.7.0-arm64-darwin)
     mrml (1.7.0-x86_64-darwin)
     mrml (1.7.0-x86_64-linux)
-    msgpack (1.7.2)
+    msgpack (1.8.3)
     multi_json (1.21.1)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
@@ -1099,15 +1099,15 @@ GEM
     rubyzip (1.3.0)
     saharspec (0.0.10)
       ruby2_keywords
-    savon (2.14.0)
+    savon (2.17.3)
       akami (~> 1.2)
       builder (>= 2.1.2)
       gyoku (~> 1.2)
-      httpi (>= 2.4.5)
+      httpi (>= 4, < 5)
       mail (~> 2.5)
       nokogiri (>= 1.8.1)
-      nori (~> 2.4)
-      wasabi (~> 3.4)
+      nori (~> 2.7)
+      wasabi (>= 5.1.0, < 6)
     scenic (1.8.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
@@ -1198,10 +1198,10 @@ GEM
       public_suffix
     vcr (6.2.0)
     version_gem (1.1.11)
-    wasabi (3.8.0)
+    wasabi (5.1.0)
       addressable
-      httpi (~> 3.0)
-      nokogiri (>= 1.4.2)
+      faraday (>= 1.9, < 3)
+      nokogiri (>= 1.13.9)
     webfinger (2.1.2)
       activesupport
       faraday (~> 2.0)
@@ -1228,6 +1228,7 @@ PLATFORMS
   arm64-darwin-24
   x86_64-darwin-21
   x86_64-darwin-23
+  x86_64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
