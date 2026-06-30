@@ -377,8 +377,8 @@ class Phase < ApplicationRecord
   end
 
   def validate_end_at
-    return if end_at.present?
-    return if !placement.sequential? || TimelineService.new.last_phase?(self)
+    return if !placement.sequential?
+    return if end_at.present? || TimelineService.new.last_phase?(self)
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
   end

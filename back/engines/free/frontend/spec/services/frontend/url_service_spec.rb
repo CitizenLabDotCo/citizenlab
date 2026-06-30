@@ -28,6 +28,14 @@ describe Frontend::UrlService do
       expect(service.model_to_url(current_phase.reload, locale: locale)).to eq "#{base_uri}/en/projects/my-project/2"
     end
 
+    it 'returns the project url for a standalone phase' do
+      project = create(:project, slug: 'my-project')
+      _timeline_phase = create(:phase, project: project, start_at: 2.days.ago, end_at: 4.days.from_now)
+      standalone_phase = create(:phase, :standalone, project: project, start_at: 2.days.ago, end_at: 4.days.from_now)
+
+      expect(service.model_to_url(standalone_phase, locale: locale)).to eq "#{base_uri}/en/projects/my-project"
+    end
+
     it 'returns the correct url for an event' do
       event = create(:event)
 
