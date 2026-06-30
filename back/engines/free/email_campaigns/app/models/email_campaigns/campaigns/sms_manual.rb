@@ -33,10 +33,6 @@
 #  fk_rails_...  (author_id => users.id)
 #
 module EmailCampaigns
-  # First concrete SMS campaign: an admin writes a short text and sends it on
-  # demand. Mirrors the manual email campaign, minus the email-only pieces
-  # (HTML body, sender/reply_to, mailer) and minus scheduling. The subject_multiloc
-  # column is reused to hold an internal admin label (SMS has no subject line).
   class Campaigns::SmsManual < Campaigns::BaseSms
     include Consentable
     include RecipientConfigurable
@@ -46,13 +42,8 @@ module EmailCampaigns
 
     recipient_filter :user_filter_no_invitees
 
-    # Without this, the campaign would be sent on every event and every schedule
-    # trigger. It should only be sent through an explicit manual send.
     filter :only_manual_send
 
-    # subject_multiloc is reused as the admin-facing label so campaigns are easy
-    # to tell apart in the list (not sent to recipients; SMS has no subject line).
-    # SMS body is a single plain-text multiloc.
     validates :subject_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
 
