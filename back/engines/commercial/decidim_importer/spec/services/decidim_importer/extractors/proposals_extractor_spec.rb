@@ -40,6 +40,8 @@ RSpec.describe DecidimImporter::Extractors::ProposalsExtractor do
     expect(attrs['project_ref']).to be(project.attributes)
     expect(attrs['author_ref']).to be(ref_map.fetch('decidim-user-1').attributes)
     expect(attrs).not_to have_key('creation_phase_ref') # ideation is transitive
+    # All dates come from the export's publication date, not the import time.
+    expect(attrs.values_at('created_at', 'published_at', 'submitted_at')).to all(eq('2023-02-10 09:00:00 +0100'))
   end
 
   it 'registers an ideas_phase join linking the idea to its phase' do

@@ -1,4 +1,4 @@
 uid,body,locale,author,alignment,up_votes_count,down_votes_count,depth,comments_count,commentable,root_commentable,created_at,updated_at
-decidim--comments--comment--1,"{""fr"":""Bonne idée, merci.""}",fr,decidim-user-2,0,0,0,0,1,decidim--proposals--proposal--1,decidim--proposals--proposal--1,2023-02-11 10:00:00 +0100,2023-02-11 10:00:00 +0100
+decidim--comments--comment--1,"{""fr"":""Bonne idée, merci.""}",fr,decidim-user-2,0,0,0,0,1,decidim--proposals--proposal--1,decidim--proposals--proposal--1,2023-02-11 10:00:00 +0100,2023-02-14 10:00:00 +0100
 decidim--comments--comment--2,"{""fr"":""Je suis tout à fait d'accord.""}",fr,decidim-user-3,0,0,0,1,0,decidim--comments--comment--1,decidim--proposals--proposal--1,2023-02-12 10:00:00 +0100,2023-02-12 10:00:00 +0100
 decidim--comments--comment--3,"{""fr"":""Pas convaincu par cette idée.""}",fr,decidim-user-131,0,0,0,0,0,decidim--proposals--proposal--2,decidim--proposals--proposal--2,2023-02-16 10:00:00 +0100,2023-02-16 10:00:00 +0100

@@ -73,10 +73,10 @@ module DecidimImporter
           'registration_completed_at' => timestamp(row[COLUMNS[:created_at]]),
           'created_at' => timestamp(row[COLUMNS[:created_at]]),
           'updated_at' => timestamp(row[COLUMNS[:updated_at]]),
-          'imported' => true,
-          # No password is migrated; users will set one via the post-migration invite flow. A
-          # random one keeps the record valid until then.
-          'password' => SecureRandom.urlsafe_base64(32)
+          'imported' => true
+          # No password is set or migrated: `User` has `has_secure_password validations: false`, so a
+          # passwordless account is valid (`no_password?`). Imported users claim their account and set a
+          # password later via the invite / SSO / password-reset flow.
         }
         attributes.merge!(name_attributes(row))
 

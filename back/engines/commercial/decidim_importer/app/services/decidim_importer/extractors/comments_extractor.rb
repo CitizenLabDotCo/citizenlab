@@ -21,7 +21,8 @@ module DecidimImporter
         commentable: 'commentable',
         root_commentable: 'root_commentable',
         depth: 'depth',
-        created_at: 'created_at'
+        created_at: 'created_at',
+        updated_at: 'updated_at'
       }.freeze
 
       attr_reader :skipped
@@ -58,7 +59,8 @@ module DecidimImporter
         comment = Record.new('comment', {
           'body_multiloc' => body,
           'publication_status' => 'published',
-          'created_at' => timestamp(row[COLUMNS[:created_at]])
+          'created_at' => timestamp(row[COLUMNS[:created_at]]),
+          'updated_at' => timestamp(row[COLUMNS[:updated_at]])
         })
         comment.reference('idea', idea)
         reference_author(comment, row)

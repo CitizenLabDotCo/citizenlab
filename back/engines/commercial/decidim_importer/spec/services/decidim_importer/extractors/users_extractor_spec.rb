@@ -35,7 +35,8 @@ RSpec.describe DecidimImporter::Extractors::UsersExtractor do
     expect(attrs['roles']).to eq [{ 'type' => 'admin' }]
     expect(attrs['custom_field_values']).to eq({ 'gender' => 'female', 'birthyear' => 1967 })
     expect(attrs['bio_multiloc']['fr-FR']).to include('Chercheuse').and include('https://marie.example.fr')
-    expect(attrs['password']).to be_present
+    # No password is migrated — imported accounts are passwordless until claimed.
+    expect(attrs).not_to have_key('password')
   end
 
   it 'skips deleted, blocked, unconfirmed and email-less accounts' do

@@ -123,17 +123,25 @@ RSpec.describe DecidimImporter::Importer do
         expect(page.top_info_section_multiloc['fr-FR']).to include('Contenu de la page')
       end
 
-      it 'imports the project description as a Content Builder layout linking the static page' do
+      it 'imports the project description as a two-column Content Builder layout linking the static page' do
         expect(project.description_multiloc).to eq({}) # description is in the layout, not here
         layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_description')
         expect(layout).to be_present
         expect(layout.enabled).to be(true)
+        cj = layout.craftjs_json
 
-        nodes = layout.craftjs_json['ROOT']['nodes'].map { |id| layout.craftjs_json[id]['type']['resolvedName'] }
-        expect(nodes).to include('TextMultiloc', 'PageLink')
+        # A 2-1 TwoColumn: description on the left, AboutBox + page links on the right.
+        two_col = cj.values.find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TwoColumn' }
+        expect(two_col['props']['columnLayout']).to eq('2-1')
+        left = cj[two_col['linkedNodes']['left']]['nodes'].map { |id| cj[id]['type']['resolvedName'] }
+        right = cj[two_col['linkedNodes']['right']]['nodes'].map { |id| cj[id]['type']['resolvedName'] }
+        expect(left).to include('TextMultiloc')
+        expect(right.first).to eq('AboutBox')
+        expect(right).to include('PageLink')
+
         # The PageLink references the imported static page by its id.
         page = StaticPage.find_by("title_multiloc->>'fr-FR' = 'La concertation'")
-        page_link = layout.craftjs_json.values.find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'PageLink' }
+        page_link = cj.values.find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'PageLink' }
         expect(page_link['props']['pageId']).to eq(page.id)
       end
 
@@ -167,8 +175,15 @@ RSpec.describe DecidimImporter::Importer do
         responses = Idea.where(creation_phase: survey_phase).order(:created_at)
         expect(responses.count).to eq(2)
 
+        # The responses must be reachable through `Phase#ideas` (the ideas_phases join) — that's what
+        # the survey results generator reads — not just via `creation_phase`.
+        expect(survey_phase.ideas).to match_array(responses)
+
         first = responses.first
         expect(first.author&.unique_code).to eq('decidim-user-1')
+        # Dates come from the answer row, not the import time (submitted_at would otherwise be today).
+        expect(first.created_at.to_date.iso8601).to eq('2022-11-16')
+        expect(first.submitted_at.to_date.iso8601).to eq('2022-11-16')
         expect(first.custom_field_values['field_10']).to eq('Bonjour le monde')
         expect(first.custom_field_values['field_11']).to eq('option_100') # single choice → one option key
         expect(first.custom_field_values['field_12']).to match_array(%w[option_102 option_103]) # multiple choice
@@ -207,7 +222,8 @@ RSpec.describe DecidimImporter::Importer do
 
       it 'imports the admin answer as official feedback and the comment thread' do
         accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
-        expect(accepted.official_feedbacks.first.body_multiloc['fr-FR']).to include('acceptée')
+        feedback = accepted.official_feedbacks.first
+        expect(feedback.body_multiloc['fr-FR']).to include('acceptée')
 
         thread = accepted.comments.order(:created_at)
         expect(thread.size).to eq(2)
@@ -216,6 +232,24 @@ RSpec.describe DecidimImporter::Importer do
         # A comment whose Decidim author was filtered out is imported author-less.
         rejected = Idea.find_by(title_multiloc: { 'fr-FR' => 'Pistes cyclables' })
         expect(rejected.comments.first.author).to be_nil
+      end
+
+      it 'dates imported content from the export, not the import run' do
+        accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+
+        # The proposal idea is dated by its publication; updated_at mirrors it (no source edit date).
+        expect(accepted.created_at.to_date.iso8601).to eq('2023-02-10')
+        expect(accepted.updated_at.to_date.iso8601).to eq('2023-02-10')
+
+        # Official feedback is dated by when the proposal was answered, not today; updated_at mirrors it.
+        feedback = accepted.official_feedbacks.first
+        expect(feedback.created_at.to_date.iso8601).to eq('2023-03-01')
+        expect(feedback.updated_at.to_date.iso8601).to eq('2023-03-01')
+
+        # A comment keeps the export's own (distinct) updated_at — an edit date, not today.
+        comment = accepted.comments.order(:created_at).first
+        expect(comment.created_at.to_date.iso8601).to eq('2023-02-11')
+        expect(comment.updated_at.to_date.iso8601).to eq('2023-02-14')
       end
     end
   end

@@ -21,6 +21,7 @@ module DecidimImporter
         title: 'title',
         body: 'body',
         answer: 'answer',
+        answered_at: 'answered_at',
         state_token: 'state_token',
         published_at: 'published_at'
       }.freeze
@@ -66,11 +67,16 @@ module DecidimImporter
       end
 
       def idea_attributes(row)
+        # The export only dates a proposal by its publication; use that for created/submitted too, so the
+        # imported idea isn't stamped with today's date.
+        published = timestamp(row[COLUMNS[:published_at]])
         {
           'title_multiloc' => multiloc(row[COLUMNS[:title]]),
           'body_multiloc' => multiloc(row[COLUMNS[:body]]),
           'publication_status' => 'published',
-          'published_at' => timestamp(row[COLUMNS[:published_at]]),
+          'created_at' => published,
+          'published_at' => published,
+          'submitted_at' => published,
           'idea_status_code' => IdeaStatuses.code_for_state_token(row[COLUMNS[:state_token]])
         }
       end
@@ -100,9 +106,12 @@ module DecidimImporter
         body = multiloc(row[COLUMNS[:answer]])
         return if body.empty?
 
+        # Date the feedback by when the proposal was answered, falling back to the proposal's own date
+        # rather than the import date. (`updated_at` is then mirrored from this by the importer.)
         feedback = Record.new('official_feedback', {
           'body_multiloc' => body,
-          'author_multiloc' => body.keys.index_with { OFFICIAL_FEEDBACK_AUTHOR }
+          'author_multiloc' => body.keys.index_with { OFFICIAL_FEEDBACK_AUTHOR },
+          'created_at' => timestamp(row[COLUMNS[:answered_at]]) || timestamp(row[COLUMNS[:published_at]])
         })
         feedback.reference('idea', idea)
         ref_map.register("#{uid}-official-feedback", feedback)

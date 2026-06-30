@@ -3,9 +3,11 @@
 module DecidimImporter
   module Extractors
     # Decidim survey answers (`02---answers.csv` in a surveys component) ──▶ Go Vocal native-survey
-    # responses: one `Idea` per answer row, bound to the survey phase via `creation_phase` (native
-    # survey is non-transitive, so there's no `ideas_phase` join — unlike proposals), with the answers
-    # in `custom_field_values`.
+    # responses: one `Idea` per answer row, bound to the survey phase via both `creation_phase` (the
+    # non-transitive method's "created here" pointer) *and* an `ideas_phase` join — the latter is what
+    # `Phase#ideas` (a `has_many through: :ideas_phases`) reads, so without it the survey results show
+    # nothing. Answers go in `custom_field_values`. Dates (`created_at`/`published_at`/`submitted_at`)
+    # come from the answer row so the response isn't stamped with the import date.
     #
     # The answers CSV has `author` (a Decidim user uid), `author_status`, `created_at`, then one column
     # per question headed by the question uid. Each cell is encoded by question type:
@@ -52,6 +54,7 @@ module DecidimImporter
         author = author_for(row)
         idea.reference('author', author) if author
         ref_map.register(response_uid, idea)
+        register_ideas_phase(response_uid, idea, phase)
 
         # Built after registration so file-upload records can reference the (now-registered) idea, then
         # merged into the same attributes hash held by the ref map.
@@ -62,7 +65,16 @@ module DecidimImporter
       def idea_attributes(row)
         created = timestamp(row[COLUMNS[:created_at]])
         { 'publication_status' => 'published', 'created_at' => created, 'published_at' => created,
-          'custom_field_values' => {} }
+          'submitted_at' => created, 'custom_field_values' => {} }
+      end
+
+      # The join that surfaces the response in `Phase#ideas` (and so in the survey results). Without it
+      # the idea exists with a `creation_phase` but is invisible to the results generator.
+      def register_ideas_phase(uid, idea, phase)
+        join = Record.new('ideas_phase', {})
+        join.reference('idea', idea)
+        join.reference('phase', phase)
+        ref_map.register("#{uid}-ideas-phase", join)
       end
 
       # The response's author is the imported user matching the `author` uid; left nil (never anonymous)

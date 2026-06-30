@@ -32,6 +32,7 @@ module DecidimImporter
     PROCESS_FILE_GLOB = '*--participatory-process.csv'
     STEPS_FILE_GLOB = '*--steps.csv'
     ATTACHMENTS_FILE_GLOB = '*--attachments.csv'
+    COLLECTIONS_FILE_GLOB = '*--attachment_collections.csv'
     ANSWERS_FILE_GLOB = '*--answers.csv'
 
     # Each process directory holds a `NN---components/` folder with one subdirectory per Decidim
@@ -81,8 +82,8 @@ module DecidimImporter
     # are stamped with their owning process (`decidim_participatory_process`) and, for proposals/
     # comments, their component (`decidim_component`).
     def self.read_processes(root)
-      acc = { projects: [], phases: [], attachments: [], proposals: [], comments: [], components: [],
-              survey_answers: [] }
+      acc = { projects: [], phases: [], attachments: [], attachment_collections: [], proposals: [],
+              comments: [], components: [], survey_answers: [] }
       process_dirs(root).each do |dir|
         process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
         next unless process_file
@@ -97,6 +98,9 @@ module DecidimImporter
 
         attachments_file = Dir.glob(File.join(dir, ATTACHMENTS_FILE_GLOB)).first
         acc[:attachments].concat(stamp(CsvReader.read(attachments_file), process_stamp)) if attachments_file
+
+        collections_file = Dir.glob(File.join(dir, COLLECTIONS_FILE_GLOB)).first
+        acc[:attachment_collections].concat(stamp(CsvReader.read(collections_file), process_stamp)) if collections_file
 
         read_components(dir, process_uid, acc)
       end
@@ -165,9 +169,39 @@ module DecidimImporter
       prepare_images!(template, import_images: import_images)
       prune_fileless_attachments!(template)
       prune_imageless_project_images!(template)
-      created = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+      # Suppress `touch: true` callbacks during the bulk load: creating an idea's `ideas_phase`/comments
+      # would otherwise bump the idea's `updated_at` to the import time, overwriting the date the
+      # template carries.
+      created = ActiveRecord::Base.no_touching do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+      end
+      restore_update_timestamps(template, created)
       reconcile_permissions!
       created
+    end
+
+    # After the bulk load, restore each created record's `updated_at` to the date the template carries.
+    # `no_touching` stops `touch: true` callbacks, but counter-cache updates (`counter_culture ...
+    # touch: true`, e.g. an idea's `comments_count`/a project's `ideas_count`) bump `updated_at` to the
+    # import time via raw `update_all`, which it can't intercept. The template's records line up
+    # positionally with the deserializer's per-model created ids (same order), so we map them back and
+    # reset `updated_at` with `update_all` (no callbacks, no re-touch). Records keep their source update
+    # date where the export gave one (comments, projects, …); the rest mirror `created_at`.
+    def self.restore_update_timestamps(template, created_object_ids)
+      (template['models'] || {}).each do |model_name, records|
+        klass = model_name.classify.safe_constantize
+        next unless klass.respond_to?(:column_names) && klass.column_names.include?('updated_at')
+
+        ids = created_object_ids[klass.name] || []
+        next unless ids.size == records.size
+
+        by_timestamp = Hash.new { |hash, key| hash[key] = [] }
+        records.each_with_index do |attrs, i|
+          timestamp = attrs['updated_at'].presence || attrs['created_at'].presence
+          by_timestamp[timestamp] << ids[i] if timestamp
+        end
+        by_timestamp.each { |timestamp, group_ids| klass.where(id: group_ids).update_all(updated_at: timestamp) }
+      end
     end
 
     # Offsets each imported area's `ordering` past the tenant's existing areas. `Area#ordering` is
@@ -280,9 +314,11 @@ module DecidimImporter
       strip_layout_file_nodes!(template, removed.filter_map { |attrs| attrs['id'] }.to_set)
     end
 
-    # Removes `FileAttachment` craft nodes whose file was pruned from every project-description layout
-    # (and from the ROOT child list). A node pointing at a non-existent file would make the layout's
-    # `sync_file_attachments` callback try to attach a missing file and fail the import.
+    # Removes `FileAttachment` craft nodes whose file was pruned from every project-description layout.
+    # A node pointing at a non-existent file would make the layout's `sync_file_attachments` callback
+    # try to attach a missing file and fail the import. Nodes are unlinked from *whatever* parent holds
+    # them (the ROOT canvas, or an accordion's linked `Container`), and an accordion left with no files
+    # is removed too (along with its linked canvas) so no empty accordion is rendered.
     def self.strip_layout_file_nodes!(template, removed_file_ids)
       return if removed_file_ids.empty?
 
@@ -293,12 +329,32 @@ module DecidimImporter
         dangling = craftjs.select do |_id, node|
           craftjs_resolved_name(node) == 'FileAttachment' && removed_file_ids.include?(node.dig('props', 'fileId'))
         end.keys
-        next if dangling.empty?
-
-        dangling.each { |id| craftjs.delete(id) }
-        root = craftjs['ROOT']
-        root['nodes'] -= dangling if root.is_a?(Hash) && root['nodes'].is_a?(Array)
+        remove_craftjs_nodes!(craftjs, dangling)
+        remove_empty_accordions!(craftjs)
       end
+    end
+
+    # Deletes the given craft nodes and unlinks their ids from every node's `nodes` child list.
+    def self.remove_craftjs_nodes!(craftjs, ids)
+      return if ids.empty?
+
+      ids.each { |id| craftjs.delete(id) }
+      craftjs.each_value do |node|
+        node['nodes'] -= ids if node.is_a?(Hash) && node['nodes'].is_a?(Array)
+      end
+    end
+
+    # Drops `AccordionMultiloc` nodes whose linked content canvas has no children left, removing the
+    # accordion and its canvas together (the canvas would otherwise be an orphan).
+    def self.remove_empty_accordions!(craftjs)
+      empty = craftjs.select do |_id, node|
+        next false unless craftjs_resolved_name(node) == 'AccordionMultiloc'
+
+        canvas = craftjs[node['linkedNodes']&.values&.first]
+        canvas.nil? || (canvas['nodes'].is_a?(Array) && canvas['nodes'].empty?)
+      end
+      canvases = empty.values.filter_map { |node| node['linkedNodes']&.values }.flatten
+      remove_craftjs_nodes!(craftjs, empty.keys + canvases)
     end
 
     # Drops any `project_image` whose image URL was pruned (unreachable) or stripped (images off): an
@@ -462,7 +518,21 @@ module DecidimImporter
       run_static_pages
       run_files
       run_description_layouts
+      default_record_update_timestamps
       TemplateBuilder.new(ref_map)
+    end
+
+    # For every record that has a `created_at` but no explicit update date, mirror `created_at` into
+    # `updated_at`. Without this the deserializer (Rails timestamps) stamps `updated_at` with the import
+    # date, so imported content would appear edited today. Records that carry a real update date from
+    # the source (users, projects, comments, …) keep it.
+    def default_record_update_timestamps
+      ref_map.records.each do |record|
+        created = record.attributes['created_at']
+        next if created.blank? || record.attributes['updated_at'].present?
+
+        record.attributes['updated_at'] = created
+      end
     end
 
     # The AppConfiguration patch derived from `01--organization.csv` — a JSON-able hash of just the
@@ -486,7 +556,11 @@ module DecidimImporter
       self.class.prepare_images!(template, import_images: @import_images)
       self.class.prune_fileless_attachments!(template)
       self.class.prune_imageless_project_images!(template)
-      created_object_ids = MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
+      # See {.apply_template_file}: suppress `touch` callbacks so imported records keep their dates.
+      created_object_ids = ActiveRecord::Base.no_touching do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
+      end
+      self.class.restore_update_timestamps(template, created_object_ids)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
       self.class.reconcile_permissions!
       created_object_ids
@@ -588,7 +662,8 @@ module DecidimImporter
 
       Extractors::DescriptionLayoutExtractor.new(
         rows_for(:projects), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
-        include_source_url: @include_source_url
+        include_source_url: @include_source_url, attachments: rows_for(:attachments),
+        attachment_collections: rows_for(:attachment_collections)
       ).run
     end
 

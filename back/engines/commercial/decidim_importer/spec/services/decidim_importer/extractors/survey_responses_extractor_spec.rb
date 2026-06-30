@@ -70,10 +70,23 @@ RSpec.describe DecidimImporter::Extractors::SurveyResponsesExtractor do
     idea = extract([answer_row]).first
 
     expect(idea.model_name).to eq('idea')
-    expect(idea.attributes).to include('publication_status' => 'published', 'created_at' => '2022-11-16 19:08:17 +0100')
+    # created_at/published_at/submitted_at all come from the answer row's date, not the import time.
+    expect(idea.attributes).to include(
+      'publication_status' => 'published', 'created_at' => '2022-11-16 19:08:17 +0100',
+      'published_at' => '2022-11-16 19:08:17 +0100', 'submitted_at' => '2022-11-16 19:08:17 +0100'
+    )
     expect(idea.attributes['project_ref']).to be(project.attributes)
     expect(idea.attributes['creation_phase_ref']).to be(phase.attributes)
     expect(idea.attributes['author_ref']).to be(user.attributes)
+  end
+
+  it 'registers an ideas_phase join so the response shows in the survey phase results' do
+    extract([answer_row])
+
+    join = ref_map.records.find { |r| r.model_name == 'ideas_phase' }
+    expect(join).not_to be_nil
+    expect(join.attributes['phase_ref']).to be(phase.attributes)
+    expect(join.attributes['idea_ref']).to be(ref_map.fetch("#{component_uid}-response-0").attributes)
   end
 
   it 'leaves the author nil (never anonymous) when the user was not imported' do
