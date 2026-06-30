@@ -1,15 +1,15 @@
-// The top-level access choice — Anyone / Require sign-in / Admins & managers —
-// plus the admins-only hint. Shared by both access-section variants; only the
-// sign-in card's wording differs between them.
-
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { PermittedBy } from 'api/phase_permissions/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { Changes } from '../types';
 import { Hint, ModeCard } from '../ui';
+
+import messages from './messages';
 
 interface Props {
   permittedBy: PermittedBy;
@@ -27,6 +27,7 @@ const ModeCards = ({
   signInDescription,
   onChange,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const setMode = (permitted_by: PermittedBy) => onChange({ permitted_by });
 
   return (
@@ -35,8 +36,8 @@ const ModeCards = ({
         {showAnyone && (
           <ModeCard
             icon="user-circle"
-            title="Anyone"
-            description="No account needed."
+            title={formatMessage(messages.anyone)}
+            description={formatMessage(messages.noAccountNeeded)}
             selected={permittedBy === 'everyone'}
             onClick={() => setMode('everyone')}
           />
@@ -50,8 +51,8 @@ const ModeCards = ({
         />
         <ModeCard
           icon="lock"
-          title="Admins & managers only"
-          description="Restricted to staff."
+          title={formatMessage(messages.adminManagersOnly)}
+          description={formatMessage(messages.restrictedToStaff)}
           selected={permittedBy === 'admins_moderators'}
           onClick={() => setMode('admins_moderators')}
         />
@@ -59,8 +60,7 @@ const ModeCards = ({
 
       {permittedBy === 'admins_moderators' && (
         <Hint>
-          Only admins and managers can take this action. No other requirements
-          apply.
+          {formatMessage(messages.onlyAdminsAndManagers)}
         </Hint>
       )}
     </>
