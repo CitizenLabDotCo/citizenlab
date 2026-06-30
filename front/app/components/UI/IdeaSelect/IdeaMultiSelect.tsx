@@ -54,8 +54,14 @@ const IdeaMultiSelect = ({
   const ideasList = ideas?.pages.flatMap((page) => page.data) ?? [];
 
   // The selected inputs are usually not in the current search page, so resolve
-  // their titles by fetching each by id in parallel (there is no fetch-by-ids
-  // endpoint). useQueries keeps this rules-of-hooks-safe for a dynamic length.
+  // their titles by fetching each by id in parallel. The count is small (a
+  // manager picks a handful of inputs per rule), each id reuses the shared
+  // per-idea cache, and a deleted input just drops out (see filter below). A
+  // by-ids fetch (`/ideas?ideas[]=`) exists but wasn't worth it at this scale:
+  // collapsing a handful of requests into one is a negligible saving, and it
+  // would trade away the shared per-idea cache for a list entry keyed by the
+  // exact id-set (so re-fetched on every add/remove). useQueries keeps this
+  // rules-of-hooks-safe for a dynamic length.
   const selectedIdeaResults = useQueries({
     queries: selectedIdeaIds.map((ideaId) => ({
       queryKey: ideasKeys.item({ id: ideaId }),
