@@ -115,9 +115,6 @@ module EmailCampaigns
     def send_preview
       EmailCampaigns::DeliveryService.new.send_preview(@campaign, current_user)
       head :ok
-    rescue EmailCampaigns::Sms::Error => e
-      render json: { errors: { base: [{ error: 'sms_preview_failed', message: e.message }] } },
-        status: :unprocessable_entity
     end
 
     def preview
