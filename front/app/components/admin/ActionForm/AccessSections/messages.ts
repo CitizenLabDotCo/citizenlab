@@ -66,4 +66,14 @@ export default defineMessages({
     defaultMessage:
       'At least one authentication method must stay enabled, so this one can’t be turned off.',
   },
+  emailMethodDescription: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription',
+    defaultMessage:
+      'Participant confirms an email address with a one-time code.',
+  },
+  verificationMethodDescription: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription',
+    defaultMessage:
+      'Participant proves their identity through an external register.',
+  },
 });

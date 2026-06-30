@@ -1,14 +1,9 @@
-// A single authentication-method row: a toggle with its description, the
-// "see which fields this returns" link (verification only), and the recency
-// control once enabled.
-
 import React from 'react';
 
 import {
   Box,
   Text,
   Icon,
-  IconNames,
   IconTooltip,
   Toggle,
   colors,
@@ -18,24 +13,10 @@ import { useIntl } from 'utils/cl-intl';
 
 import { AuthMethodKey } from '../types';
 
-import { AUTH_METHOD_LABELS } from './constants';
+import { METHOD_META, AUTH_METHOD_LABELS } from './constants';
 import messages from './messages';
 import RecencyControl from './RecencyControl';
 import { linkStyle } from './shared';
-
-const METHOD_META: Record<
-  AuthMethodKey,
-  { icon: IconNames; description: string }
-> = {
-  email: {
-    icon: 'email',
-    description: 'Participant confirms an email address with a one-time code.',
-  },
-  verification: {
-    icon: 'shield-checkered',
-    description: 'Participant proves their identity through an external register.',
-  },
-};
 
 interface Props {
   methodKey: AuthMethodKey;
@@ -96,7 +77,7 @@ const MethodRow = ({
               )}
             </Box>
             <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-              {available ? meta.description : unavailableReason}
+              {available ? formatMessage(meta.description) : unavailableReason}
             </Text>
           </Box>
         }
