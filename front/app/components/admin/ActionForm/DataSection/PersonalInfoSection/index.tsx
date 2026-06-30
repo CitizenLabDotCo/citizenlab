@@ -5,11 +5,14 @@ import React from 'react';
 
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
-import { piiSummary } from '../logic';
-import { Changes } from '../types';
-import { Expander } from '../ui';
+import { useIntl } from 'utils/cl-intl';
 
-import PiiToggle from './PiiToggle';
+import { piiSummary } from '../../logic';
+import { Changes } from '../../types';
+import { Expander } from '../../ui';
+import PiiToggle from '../PiiToggle';
+
+import messages from './messages';
 
 interface Props {
   permission: IPhasePermissionData;
@@ -27,28 +30,29 @@ const PersonalInfoSection = ({
   onChange,
 }: Props) => {
   const { attributes } = permission;
+  const { formatMessage } = useIntl();
 
   return (
     <Expander
       icon="user-circle"
-      title="Personal info"
+      title={formatMessage(messages.personalInfo)}
       summary={piiSummary(permission)}
     >
       <PiiToggle
         icon="user-circle"
-        title="Full name"
-        description="Ask for first and last name."
+        title={formatMessage(messages.fullName)}
+        description={formatMessage(messages.fullNameDescription)}
         checked={attributes.require_name}
         onChange={() => onChange({ require_name: !attributes.require_name })}
       />
       {showPassword && (
         <PiiToggle
           icon="lock"
-          title="Password"
+          title={formatMessage(messages.password)}
           description={
             passwordAvailable
-              ? 'Require a password on the account.'
-              : 'Requires the “Confirmed email” method to be enabled.'
+              ? formatMessage(messages.passwordAvailableDescription)
+              : formatMessage(messages.passwordUnavailableDescription)
           }
           checked={attributes.require_password}
           disabled={!passwordAvailable}
