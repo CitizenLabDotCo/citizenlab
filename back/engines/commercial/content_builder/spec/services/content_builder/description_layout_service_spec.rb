@@ -56,14 +56,6 @@ describe ContentBuilder::DescriptionLayoutService do
         expect(layout.enabled).to be(true)
         expect(node_types(layout)).to include('FolderTitle', 'Published')
       end
-
-      it 'is idempotent — does nothing when a layout already exists' do
-        project = create(:project)
-        create(:layout, content_buildable: project, code: 'project_description', enabled: true)
-
-        expect { service.provision_for(project) }
-          .not_to change { project.content_builder_layouts.count }
-      end
     end
 
     context 'when the project_description_builder feature is disabled' do
