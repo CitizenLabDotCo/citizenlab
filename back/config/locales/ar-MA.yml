@@ -271,6 +271,16 @@ ar-MA:
       title: جميع المشاريع
     proposals:
       title: المُقترحات
+  pdf_export:
+    survey_responses:
+      date: التاريخ
+      no_answer: (لا توجد إجابة)
+      prepared_by: من إعداد
+      report_label: تقرير ردود الاستطلاع
+      respondent: المجيب %{number}
+      response_count:
+        one: '%{count} رد'
+        other: '%{count} ردود'
   phases:
     community_monitor_title: مراقب المجتمع
     native_survey_button: خذ الاستطلاع

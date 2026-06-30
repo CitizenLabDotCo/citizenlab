@@ -145,8 +145,6 @@ const PhaseBar = styled.button<{
   }
 
   &:focus-visible {
-    outline: 2px solid ${colors.black};
-    outline-offset: 2px;
     z-index: 3;
   }
 `;

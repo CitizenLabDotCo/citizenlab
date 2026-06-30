@@ -267,6 +267,16 @@ fr-BE:
       title: Tous les projets
     proposals:
       title: Propositions
+  pdf_export:
+    survey_responses:
+      date: Date
+      no_answer: (Pas de réponse)
+      prepared_by: Préparé par
+      report_label: Rapport de réponses au sondage
+      respondent: Répondant %{number}
+      response_count:
+        one: '%{count} réponse'
+        other: '%{count} réponses'
   phases:
     community_monitor_title: Observatoire de communauté
     native_survey_button: Répondre à l'enquête

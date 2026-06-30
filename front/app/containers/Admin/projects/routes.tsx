@@ -31,6 +31,10 @@ const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
+
+const AdminProjectPageNewBackoffice = lazy(
+  () => import('./project/newBackoffice/ProjectPage')
+);
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminProjectsProjectGeneralSetUp = lazy(
@@ -238,7 +242,15 @@ const projectIndexRoute = createRoute({
   component: ProjectIndexRedirect,
 });
 
-// --- General settings layout ---
+const projectPageRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'project-page',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageNewBackoffice />
+    </PageLoading>
+  ),
+});
 const projectGeneralRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'general',
@@ -785,6 +797,7 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
     projectIdeaPreviewRoute,
     projectRoute.addChildren([
       projectIndexRoute,
+      projectPageRoute,
       projectGeneralRoute.addChildren([
         projectGeneralIndexRoute,
         projectGeneralInputTagsRoute,

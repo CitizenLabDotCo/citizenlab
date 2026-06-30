@@ -5,6 +5,7 @@ import {
   createRootRoute,
   createRouter,
   Outlet,
+  retainSearchParams,
 } from '@tanstack/react-router';
 import * as yup from 'yup';
 
@@ -107,14 +108,42 @@ const rootSearchSchema = yup.object({
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
   lat: yup.number().optional(),
   lng: yup.number().optional(),
+  // Enables `parallel_participation` without the feature flag —
+  // `?parallel_participation=true`. Retained across navigation by the root
+  // route's search middleware so it sticks while moving between pages; lives
+  // only in the URL (no cookie/localStorage). See useParallelParticipation.
+  parallel_participation: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
 
-// Root route
+const normalizeParallelParticipation = ({
+  search,
+  next,
+}: {
+  search: RootSearchParams;
+  next: (search: RootSearchParams) => RootSearchParams;
+}): RootSearchParams => {
+  const result = next(search);
+  const value = result.parallel_participation;
+
+  if (value !== undefined && value !== 'false' && value !== 'true') {
+    return { ...result, parallel_participation: 'true' };
+  }
+
+  return result;
+};
 const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),
+  search: {
+    // Keep `parallel_participation` in the URL across client-side navigations
+    // so it persists while moving between pages
+    middlewares: [
+      retainSearchParams(['parallel_participation']),
+      normalizeParallelParticipation,
+    ],
+  },
   component: () => (
     <App>
       <Outlet />
