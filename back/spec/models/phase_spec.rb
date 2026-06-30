@@ -255,6 +255,17 @@ RSpec.describe Phase do
       phase = build(:phase, project:, start_at: 2.days.after(p.end_at), end_at: nil)
       expect(phase).not_to be_valid
     end
+
+    it 'accepts a standalone phase overlapping a timeline phase' do
+      phase = build(:phase, :standalone, project:, start_at: p.start_at + 1.second, end_at: p.end_at - 1.second)
+      expect(phase).to be_valid
+    end
+
+    it 'accepts standalone phases overlapping each other' do
+      create(:phase, :standalone, project:, start_at: p.start_at, end_at: p.end_at)
+      phase = build(:phase, :standalone, project:, start_at: p.start_at, end_at: p.end_at)
+      expect(phase).to be_valid
+    end
   end
 
   describe 'voting_max_total' do
@@ -529,6 +540,12 @@ RSpec.describe Phase do
       phase.start_at -= 1.day
       expect(phase).to be_valid
     end
+
+    it 'allows a standalone phase to be open-ended even when it is not the last phase' do
+      first_phase = project.phases.first
+      standalone = build(:phase, :standalone, project:, start_at: first_phase.start_at, end_at: nil)
+      expect(standalone).to be_valid
+    end
   end
 
   context 'when the project has an open-ended last phase' do
@@ -573,6 +590,16 @@ RSpec.describe Phase do
 
         expect(last_phase.reload.end_at).to eq(new_phase_start)
         expect(new_phase.previous_phase_end_at_updated?).to be true
+      end
+    end
+
+    context 'and a standalone phase is added' do
+      it 'after the last phase, it does not close the previous phase' do
+        new_phase_start = last_phase.start_at + 15.days
+        new_phase = create(:phase, :standalone, project:, start_at: new_phase_start, end_at: new_phase_start + 1.day)
+
+        expect(last_phase.reload.end_at).to be_nil
+        expect(new_phase.previous_phase_end_at_updated?).to be false
       end
     end
 
