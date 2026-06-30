@@ -5,6 +5,7 @@ import {
   fontSizes,
   defaultStyles,
   isRtl,
+  Box,
   Icon,
   IconNames,
   Tooltip,
@@ -304,6 +305,11 @@ const Button = styled.button<{
   margin-right: ${({ styleType }) =>
     styleType === 'compact' ? '4px' : '16px'};
 
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   ${isRtl`
     flex-direction: row-reverse;
   `}
@@ -443,13 +449,113 @@ const ReactionButton = ({
       />
     );
 
+    // The tooltip only ever shows a message when the button is disabled for a
+    // reason authentication can't fix. When there's nothing to show we skip the
+    // Tooltip entirely: it's a needless interactive tippy instance on every
+    // enabled reaction button, and mounting it on this re-render-heavy button
+    // triggers a crash in the (known-fragile) Tooltip component.
+    const tooltipDisabled =
+      disabledReason === null || isFixableByAuthentication(disabledReason);
+
+    const reactionButton = (
+      <>
+        {variant === 'text' && (
+          <ButtonComponent
+            onClick={onClick}
+            // When disabled for a non-authentication reason (e.g. not in the
+            // permitted group) the button is genuinely disabled: it can't be
+            // clicked, and the wrapping Tooltip still explains why on hover.
+            disabled={!tooltipDisabled}
+            icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
+            bgColor={buttonReactionModeIsActive ? colors.success : undefined}
+            className="e2e-ideacard-vote-button"
+            aria-describedby={describedById}
+          >
+            {buttonReactionModeIsActive ? (
+              <FormattedMessage {...messages.voted} />
+            ) : (
+              <FormattedMessage {...messages.vote} />
+            )}
+          </ButtonComponent>
+        )}
+        {variant === 'icon' && (
+          <Button
+            buttonReactionMode={buttonReactionMode}
+            buttonReactionModeIsActive={buttonReactionModeIsActive}
+            reactingEnabled={buttonEnabled}
+            styleType={styleType}
+            onMouseDown={removeFocusAfterMouseClick}
+            onClick={onClick}
+            // When disabled for a non-authentication reason (e.g. not in the
+            // permitted group) the button is genuinely disabled: it can't be
+            // clicked, and the wrapping Tooltip still explains why on hover.
+            disabled={!tooltipDisabled}
+            className={[
+              className,
+              {
+                up: 'e2e-ideacard-like-button',
+                down: 'e2e-ideacard-dislike-button',
+              }[buttonReactionMode],
+              buttonReactionModeEnabled ? 'enabled' : '',
+            ].join(' ')}
+            aria-describedby={describedById}
+          >
+            <ReactionIconContainer
+              styleType={styleType}
+              size={size}
+              reactingEnabled={buttonEnabled}
+              buttonReactionModeIsActive={buttonReactionModeIsActive}
+              buttonReactionMode={buttonReactionMode}
+              disabledReason={disabledReason}
+            >
+              <ReactionIcon
+                name={iconName}
+                reactingEnabled={buttonEnabled}
+                buttonReactionModeIsActive={buttonReactionModeIsActive}
+                buttonReactionMode={buttonReactionMode}
+                disabledReason={disabledReason}
+                styleType={styleType}
+              />
+              <ScreenReaderOnly>
+                <FormattedMessage
+                  {...{ up: messages.like, down: messages.dislike }[
+                    buttonReactionMode
+                  ]}
+                />
+              </ScreenReaderOnly>
+            </ReactionIconContainer>
+            <ReactionCount
+              reactingEnabled={buttonEnabled}
+              buttonReactionMode={buttonReactionMode}
+              buttonReactionModeIsActive={buttonReactionModeIsActive}
+              styleType={styleType}
+              aria-hidden
+            >
+              {reactionsCount}
+            </ReactionCount>
+          </Button>
+        )}
+        {describedById && disabledMessage && (
+          <ScreenReaderOnly id={describedById}>
+            {`. `}
+            {customAccessDeniedMessage ?? disabledMessage}
+          </ScreenReaderOnly>
+        )}
+      </>
+    );
+
+    if (tooltipDisabled) {
+      return (
+        <Box as="span" w={variant === 'text' ? '100%' : 'fit-content'}>
+          {reactionButton}
+        </Box>
+      );
+    }
+
     return (
       <Tooltip
         placement="top"
-        theme="dark"
-        disabled={
-          disabledReason === null || isFixableByAuthentication(disabledReason)
-        }
+        theme="light"
         content={
           <span
             // aria-hidden is needed because we already use ScreenReaderOnly for screen readers
@@ -463,82 +569,16 @@ const ReactionButton = ({
         width={variant === 'text' ? '100%' : 'fit-content'}
         useContentWrapper={false}
       >
-        <>
-          {variant === 'text' && (
-            <ButtonComponent
-              onClick={onClick}
-              icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
-              bgColor={buttonReactionModeIsActive ? colors.success : undefined}
-              className="e2e-ideacard-vote-button"
-              aria-describedby={describedById}
-            >
-              {buttonReactionModeIsActive ? (
-                <FormattedMessage {...messages.voted} />
-              ) : (
-                <FormattedMessage {...messages.vote} />
-              )}
-            </ButtonComponent>
-          )}
-          {variant === 'icon' && (
-            <Button
-              buttonReactionMode={buttonReactionMode}
-              buttonReactionModeIsActive={buttonReactionModeIsActive}
-              reactingEnabled={buttonEnabled}
-              styleType={styleType}
-              onMouseDown={removeFocusAfterMouseClick}
-              onClick={onClick}
-              className={[
-                className,
-                {
-                  up: 'e2e-ideacard-like-button',
-                  down: 'e2e-ideacard-dislike-button',
-                }[buttonReactionMode],
-                buttonReactionModeEnabled ? 'enabled' : '',
-              ].join(' ')}
-              aria-describedby={describedById}
-            >
-              <ReactionIconContainer
-                styleType={styleType}
-                size={size}
-                reactingEnabled={buttonEnabled}
-                buttonReactionModeIsActive={buttonReactionModeIsActive}
-                buttonReactionMode={buttonReactionMode}
-                disabledReason={disabledReason}
-              >
-                <ReactionIcon
-                  name={iconName}
-                  reactingEnabled={buttonEnabled}
-                  buttonReactionModeIsActive={buttonReactionModeIsActive}
-                  buttonReactionMode={buttonReactionMode}
-                  disabledReason={disabledReason}
-                  styleType={styleType}
-                />
-                <ScreenReaderOnly>
-                  <FormattedMessage
-                    {...{ up: messages.like, down: messages.dislike }[
-                      buttonReactionMode
-                    ]}
-                  />
-                </ScreenReaderOnly>
-              </ReactionIconContainer>
-              <ReactionCount
-                reactingEnabled={buttonEnabled}
-                buttonReactionMode={buttonReactionMode}
-                buttonReactionModeIsActive={buttonReactionModeIsActive}
-                styleType={styleType}
-                aria-hidden
-              >
-                {reactionsCount}
-              </ReactionCount>
-            </Button>
-          )}
-          {describedById && disabledMessage && (
-            <ScreenReaderOnly id={describedById}>
-              {`. `}
-              {customAccessDeniedMessage ?? disabledMessage}
-            </ScreenReaderOnly>
-          )}
-        </>
+        {/*
+          The button itself is disabled (see disabled={!tooltipDisabled}), and a
+          disabled <button> fires no hover events — so the tooltip's reference
+          has to be this enabled wrapper, not the button, for hover to work.
+          A disabled button also dispatches no click event, which is what keeps
+          the Tooltip's click-toggle path (and its crash) from ever engaging.
+        */}
+        <Box as="span" display="inline-flex">
+          {reactionButton}
+        </Box>
       </Tooltip>
     );
   }
