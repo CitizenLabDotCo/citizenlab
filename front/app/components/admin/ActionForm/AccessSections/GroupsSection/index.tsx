@@ -10,7 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { getGroupIds, groupsSummary } from '../../logic';
 import { Changes } from '../../types';
@@ -28,6 +28,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
   const localize = useLocalize();
   const { data: groups } = useGroups({});
   const [errorMessageOpen, setErrorMessageOpen] = useState(false);
+  const { formatMessage } = useIntl();
 
   const setAccessDeniedMultiloc = (
     access_denied_explanation_multiloc: Multiloc
@@ -38,7 +39,7 @@ const GroupsSection = ({ permission, onChange }: Props) => {
       <Expander
         icon="group"
         title="Limit to groups"
-        summary={groupsSummary(permission)}
+        summary={groupsSummary(permission, formatMessage)}
       >
         <Text as="p" mt="0" mb="8px" fontSize="xs" color="coolGrey600">
           <FormattedMessage {...messages.participantMustBe} />

@@ -84,7 +84,7 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
     <Expander
       icon="user-data"
       title={formatMessage(messages.demographicQuestions)}
-      summary={demographicsSummary(customFields)}
+      summary={demographicsSummary(customFields, formatMessage)}
     >
       {permissionHasForm && (
         <DemographicsPlacement

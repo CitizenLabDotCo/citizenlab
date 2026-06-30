@@ -12,7 +12,10 @@ import {
   UserDataCollection,
 } from 'api/phase_permissions/types';
 
+import { MessageDescriptor } from 'utils/cl-intl';
+
 import { AUTH_METHOD_LABELS } from './AccessSections/constants';
+import messages from './messages';
 import { AuthMethodKey, Changes, METHOD_FIELDS } from './types';
 
 /** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
@@ -58,14 +61,15 @@ export interface SummaryChip {
 
 // Demographic questions can be collected in every mode, so this chip is shared.
 const demographicsChip = (
-  customFields: IPermissionsPhaseCustomFieldData[]
+  customFields: IPermissionsPhaseCustomFieldData[],
+  formatMessage: FormatMessage
 ): SummaryChip[] => {
   if (customFields.length === 0) return [];
   const n = customFields.length;
   return [
     {
       key: 'demographics',
-      label: `${n} question${n > 1 ? 's' : ''}`,
+      label: formatMessage(messages.nQuestions, { nQuestions: n }),
       icon: 'user-data',
       tone: 'data',
     },
@@ -83,7 +87,7 @@ export const buildSummary = (
     return [
       {
         key: 'admins',
-        label: 'Admins & managers only',
+        label: formatMessage(messages.adminsManagersOnly),
         icon: 'shield-checkered',
         tone: 'access',
       },
@@ -92,8 +96,13 @@ export const buildSummary = (
 
   if (!requiresAccount(permission)) {
     return [
-      { key: 'open', label: 'Anyone can participate', icon: 'user-circle', tone: 'open' },
-      ...demographicsChip(customFields),
+      {
+        key: 'open',
+        label: formatMessage(messages.anyoneCanParticipate),
+        icon: 'user-circle',
+        tone: 'open'
+      },
+      ...demographicsChip(customFields, formatMessage),
     ];
   }
 
@@ -117,7 +126,7 @@ export const buildSummary = (
   if (!hasEnabledMethod(permission)) {
     chips.push({
       key: 'account',
-      label: 'Sign-in required',
+      label: formatMessage(messages.signInRequired),
       icon: 'user-circle',
       tone: 'access',
     });
@@ -127,28 +136,38 @@ export const buildSummary = (
   if (groupIds.length > 0) {
     chips.push({
       key: 'groups',
-      label: `${groupIds.length} group${groupIds.length > 1 ? 's' : ''}`,
+      label: formatMessage(messages.nGroups, { nGroups: groupIds.length }),
       icon: 'group',
       tone: 'access',
     });
   }
 
   if (attributes.require_name) {
-    chips.push({ key: 'name', label: 'Name', icon: 'user-circle', tone: 'data' });
+    chips.push({
+      key: 'name',
+      label: formatMessage(messages.name),
+      icon: 'user-circle',
+      tone: 'data'
+    });
   }
   if (attributes.require_password) {
-    chips.push({ key: 'password', label: 'Password', icon: 'lock', tone: 'data' });
+    chips.push({
+      key: 'password',
+      label: formatMessage(messages.password),
+      icon: 'lock',
+      tone: 'data'
+    });
   }
 
-  chips.push(...demographicsChip(customFields));
+  chips.push(...demographicsChip(customFields, formatMessage));
 
   if (attributes.user_data_collection !== 'all_data') {
     chips.push({
       key: 'anonymity',
       label:
         attributes.user_data_collection === 'anonymous'
-          ? 'Anonymous'
-          : 'PII excluded',
+          ? formatMessage(messages.anonymous)
+          : formatMessage(messages.piiExcluded),
       icon: 'user-circle',
       tone: 'data',
     });
@@ -162,7 +181,8 @@ export const buildSummary = (
 export const buildSummarySSO = (
   permission: IPhasePermissionData,
   customFields: IPermissionsPhaseCustomFieldData[],
-  signInLabel: string
+  signInLabel: string,
+  formatMessage: FormatMessage
 ): SummaryChip[] => {
   const { attributes } = permission;
 
@@ -170,7 +190,7 @@ export const buildSummarySSO = (
     return [
       {
         key: 'admins',
-        label: 'Admins & managers only',
+        label: formatMessage(messages.adminsManagersOnly),
         icon: 'shield-checkered',
         tone: 'access',
       },
@@ -179,8 +199,13 @@ export const buildSummarySSO = (
 
   if (attributes.permitted_by === 'everyone') {
     return [
-      { key: 'open', label: 'Anyone can participate', icon: 'user-circle', tone: 'open' },
-      ...demographicsChip(customFields),
+      {
+        key: 'open',
+        label: formatMessage(messages.anyoneCanParticipate),
+        icon: 'user-circle',
+        tone: 'open'
+      },
+      ...demographicsChip(customFields, formatMessage),
     ];
   }
 
@@ -191,22 +216,27 @@ export const buildSummarySSO = (
   if (groupIds.length > 0) {
     chips.push({
       key: 'groups',
-      label: `${groupIds.length} group${groupIds.length > 1 ? 's' : ''}`,
+      label: formatMessage(messages.nGroups, { nGroups: groupIds.length }),
       icon: 'group',
       tone: 'access',
     });
   }
   if (attributes.require_name) {
-    chips.push({ key: 'name', label: 'Name', icon: 'user-circle', tone: 'data' });
+    chips.push({
+      key: 'name',
+      label: formatMessage(messages.name),
+      icon: 'user-circle',
+      tone: 'data'
+    });
   }
-  chips.push(...demographicsChip(customFields));
+  chips.push(...demographicsChip(customFields, formatMessage));
   if (attributes.user_data_collection !== 'all_data') {
     chips.push({
       key: 'anonymity',
       label:
         attributes.user_data_collection === 'anonymous'
-          ? 'Anonymous'
-          : 'PII excluded',
+          ? formatMessage(messages.anonymous)
+          : formatMessage(messages.piiExcluded),
       icon: 'user-circle',
       tone: 'data',
     });
@@ -214,34 +244,40 @@ export const buildSummarySSO = (
   return chips;
 };
 
-/** Readable name of the fixed SSO sign-in method, with a generic fallback. */
+/** Readable name of the fixed SSO sign-in method */
 export const ssoMethodName = (authenticationMethod?: IdMethod): string =>
-  authenticationMethod?.data.attributes.method_metadata?.name ?? 'SSO account';
+  authenticationMethod?.data.attributes.method_metadata?.name ?? '';
 
 // ---- One-line summaries shown on the collapsed setting rows ----
-
-export const groupsSummary = (permission: IPhasePermissionData): string => {
+export const groupsSummary = (
+  permission: IPhasePermissionData,
+  formatMessage: FormatMessage
+): string => {
   const n = getGroupIds(permission).length;
-  if (n === 0) return 'Everyone who signs in';
-  return `${n} group${n > 1 ? 's' : ''}`;
+  if (n === 0) return formatMessage(messages.everyoneWhoSignsIn);
+  return formatMessage(messages.nGroups, { nGroups: n });
 };
 
-export const piiSummary = (permission: IPhasePermissionData): string => {
+export const piiSummary = (
+  permission: IPhasePermissionData,
+  formatMessage: FormatMessage
+): string => {
   const parts: string[] = [];
-  if (permission.attributes.require_name) parts.push('Name');
-  if (permission.attributes.require_password) parts.push('Password');
-  return parts.length ? parts.join(' · ') : 'Nothing extra';
+  if (permission.attributes.require_name) parts.push(formatMessage(messages.name));
+  if (permission.attributes.require_password) parts.push(formatMessage(messages.password));
+  return parts.length ? parts.join(' · ') : formatMessage(messages.nothingExtra);
 };
 
 export const demographicsSummary = (
-  customFields: IPermissionsPhaseCustomFieldData[]
+  customFields: IPermissionsPhaseCustomFieldData[],
+  formatMessage: FormatMessage
 ): string => {
   const n = customFields.length;
-  return n === 0 ? 'None' : `${n} question${n > 1 ? 's' : ''}`;
+  return n === 0 ? formatMessage(messages.none) : formatMessage(messages.nQuestions, { nQuestions: n });
 };
 
-export const DATA_COLLECTION_SUMMARY: Record<UserDataCollection, string> = {
-  all_data: 'Linked to profile',
-  demographics_only: 'PII excluded from results',
-  anonymous: 'Fully anonymous',
+export const DATA_COLLECTION_SUMMARY: Record<UserDataCollection, MessageDescriptor> = {
+  all_data: messages.linkedToProfile,
+  demographics_only: messages.piiExcludedFromResults,
+  anonymous: messages.fullyAnonymous,
 };

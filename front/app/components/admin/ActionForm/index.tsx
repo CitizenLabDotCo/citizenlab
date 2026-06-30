@@ -68,7 +68,8 @@ const ActionForm = ({
     : buildSummarySSO(
       permissionData,
       customFields,
-      ssoMethodName(authenticationMethod)
+      ssoMethodName(authenticationMethod),
+      formatMessage
     );
 
   // Reset clears the account-only customisations (groups + persisted questions);

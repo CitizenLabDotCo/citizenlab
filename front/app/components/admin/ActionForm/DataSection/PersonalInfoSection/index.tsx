@@ -36,7 +36,7 @@ const PersonalInfoSection = ({
     <Expander
       icon="user-circle"
       title={formatMessage(messages.personalInfo)}
-      summary={piiSummary(permission)}
+      summary={piiSummary(permission, formatMessage)}
     >
       <PiiToggle
         icon="user-circle"

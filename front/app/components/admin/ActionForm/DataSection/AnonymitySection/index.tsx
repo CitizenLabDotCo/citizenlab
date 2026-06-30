@@ -55,7 +55,7 @@ const AnonymitySection = ({ permission, onChange }: Props) => {
     <Expander
       icon="shield-checkered"
       title={formatMessage(messages.anonymityInResults)}
-      summary={DATA_COLLECTION_SUMMARY[attributes.user_data_collection]}
+      summary={formatMessage(DATA_COLLECTION_SUMMARY[attributes.user_data_collection])}
     >
       <Text as="p" mt="0" mb="10px" fontSize="xs" color="coolGrey600">
         {formatMessage(messages.anonymityExplanation)}
