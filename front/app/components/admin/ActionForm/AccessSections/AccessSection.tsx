@@ -8,6 +8,8 @@ import useVerificationMethod from 'api/id_methods/useVerificationMethod';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { useIntl } from 'utils/cl-intl';
+
 import {
   getMethod,
   hasEnabledMethod,
@@ -17,8 +19,8 @@ import {
 import { AuthMethodKey } from '../types';
 import { SectionHeader, Hint } from '../ui';
 
-
 import GroupsSection from './GroupsSection';
+import messages from './messages';
 import MethodRow from './MethodRow';
 import ModeCards from './ModeCards';
 import { AccessSectionProps } from './shared';
@@ -26,11 +28,11 @@ import VerificationFieldsModal from './VerificationFieldsModal';
 
 const METHOD_KEYS: AuthMethodKey[] = ['email', 'verification'];
 
-const unavailableReason = (key: AuthMethodKey): string => {
+const unavailableReason = (key: AuthMethodKey) => {
   if (key === 'email') {
-    return 'Unavailable: password login is turned off for this platform.';
+    return messages.unavailablePasswordLogin;
   }
-  return 'Unavailable: no identity verification method is configured.';
+  return messages.unavailableVerification;
 };
 
 const AccessSection = ({
@@ -38,6 +40,7 @@ const AccessSection = ({
   showAnyone,
   onChange,
 }: AccessSectionProps) => {
+  const { formatMessage } = useIntl();
   const hasAccount = requiresAccount(permission);
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
@@ -62,15 +65,15 @@ const AccessSection = ({
     <Box>
       <SectionHeader
         icon="user-circle"
-        title="Who can participate"
-        tooltip="First decide whether an account is needed at all, then pick the proof of identity required."
+        title={formatMessage(messages.whoCanParticipate)}
+        tooltip={formatMessage(messages.firstDecide)}
       />
 
       <ModeCards
         permittedBy={permission.attributes.permitted_by}
         showAnyone={showAnyone}
-        signInTitle="Require sign-in"
-        signInDescription="Must prove who they are first."
+        signInTitle={formatMessage(messages.requireSignIn)}
+        signInDescription={formatMessage(messages.mustProveIdentity)}
         onChange={onChange}
       />
 
@@ -90,7 +93,7 @@ const AccessSection = ({
                   enabled={enabled}
                   expiry={expiry}
                   available={isAvailable[key]}
-                  unavailableReason={unavailableReason(key)}
+                  unavailableReason={formatMessage(unavailableReason(key))}
                   locked={locked}
                   onChange={(next) => onChange(methodChange(key, next))}
                   onShowReturnedFields={() => setReturnedFieldsOpen(true)}
@@ -101,8 +104,7 @@ const AccessSection = ({
             {!hasEnabledMethod(permission) && (
               <Box mt="8px">
                 <Hint>
-                  Pick at least one method, otherwise participants have no way to
-                  prove who they are.
+                  {formatMessage(messages.pickAtLeastOne)}
                 </Hint>
               </Box>
             )}
