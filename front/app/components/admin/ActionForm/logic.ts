@@ -11,7 +11,7 @@ import {
   UserDataCollection,
 } from 'api/phase_permissions/types';
 
-import { AUTH_METHOD_LABELS } from './data';
+import { AUTH_METHOD_LABELS } from './AccessSections/constants';
 import { AuthMethodKey, Changes, METHOD_FIELDS } from './types';
 
 /** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */

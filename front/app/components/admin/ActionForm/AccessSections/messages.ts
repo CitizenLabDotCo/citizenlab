@@ -52,5 +52,18 @@ export default defineMessages({
   seeWhichFieldsThisReturns: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns',
     defaultMessage: 'See which fields this returns',
-  }
+  },
+  confirmedEmail: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail',
+    defaultMessage: 'Confirmed email',
+  },
+  identityVerification: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.identityVerification',
+    defaultMessage: 'Identity verification',
+  },
+  atLeastOneMethodMustStayEnabled: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled',
+    defaultMessage:
+      'At least one authentication method must stay enabled, so this one can’t be turned off.',
+  },
 });

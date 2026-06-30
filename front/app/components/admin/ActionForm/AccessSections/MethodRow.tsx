@@ -14,9 +14,12 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { AUTH_METHOD_LABELS } from '../data';
+import { useIntl } from 'utils/cl-intl';
+
 import { AuthMethodKey } from '../types';
 
+import { AUTH_METHOD_LABELS } from './constants';
+import messages from './messages';
 import RecencyControl from './RecencyControl';
 import { linkStyle } from './shared';
 
@@ -57,6 +60,7 @@ const MethodRow = ({
   onChange,
   onShowReturnedFields,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const meta = METHOD_META[methodKey];
   const enabled = available && stateEnabled;
 
@@ -82,11 +86,11 @@ const MethodRow = ({
                 fontWeight="semi-bold"
                 color={available ? 'primary' : 'coolGrey500'}
               >
-                {AUTH_METHOD_LABELS[methodKey]}
+                {formatMessage(AUTH_METHOD_LABELS[methodKey])}
               </Text>
               {locked && (
                 <IconTooltip
-                  content="At least one authentication method must stay enabled, so this one can’t be turned off."
+                  content={formatMessage(messages.atLeastOneMethodMustStayEnabled)}
                   iconSize="14px"
                 />
               )}
@@ -108,7 +112,7 @@ const MethodRow = ({
             tabIndex={0}
             onClick={onShowReturnedFields}
           >
-            See which fields this returns
+            {formatMessage(messages.seeWhichFieldsThisReturns)}
           </Text>
         </Box>
       )}
