@@ -2,12 +2,13 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
+
 import messages from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc/messages';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-import styled from 'styled-components';
 
 interface Props {
   html?: Multiloc;
