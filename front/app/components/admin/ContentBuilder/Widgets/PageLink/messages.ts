@@ -2,12 +2,12 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   pageLink: {
-    id: 'app.containers.admin.ContentBuilder.pageLink',
-    defaultMessage: 'Page Link',
+    id: 'app.containers.admin.ContentBuilder.projectPageLink',
+    defaultMessage: 'Project Page Link',
   },
   selectPage: {
-    id: 'app.containers.admin.ContentBuilder.selectPage',
-    defaultMessage: 'Select existing page',
+    id: 'app.containers.admin.ContentBuilder.selectPage2',
+    defaultMessage: 'Select project page',
   },
   noPagesAvailable: {
     id: 'app.containers.admin.ContentBuilder.noPagesAvailable',
@@ -29,5 +29,17 @@ export default defineMessages({
   noPageSelected: {
     id: 'app.containers.admin.ContentBuilder.noPageSelected',
     defaultMessage: 'No page selected.',
+  },
+  displayTypeLabel: {
+    id: 'app.containers.admin.ContentBuilder.displayTypeLabel',
+    defaultMessage: 'Display as',
+  },
+  displayTypeLink: {
+    id: 'app.containers.admin.ContentBuilder.displayTypeLink',
+    defaultMessage: 'Link',
+  },
+  displayTypePreview: {
+    id: 'app.containers.admin.ContentBuilder.displayTypePreview',
+    defaultMessage: 'Preview',
   },
 });

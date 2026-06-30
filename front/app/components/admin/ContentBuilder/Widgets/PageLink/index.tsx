@@ -6,6 +6,8 @@ import {
   fontSizes,
   Icon,
   IconButton,
+  Label,
+  Radio,
   Select,
   Spinner,
   Text,
@@ -25,12 +27,19 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
+import { stripHtml } from 'utils/textUtils';
 
 import messages from './messages';
 
+type DisplayType = 'link' | 'preview';
+
 type PageLinkProps = {
   pageId?: string;
+  displayType?: DisplayType;
 };
+
+// Characters of the (HTML-stripped) top info section shown in preview mode.
+const PREVIEW_MAX_LENGTH = 300;
 
 const PageLinkRow = typedStyled(Link)`
   display: flex;
@@ -54,6 +63,20 @@ const RowIcon = styled(Icon)`
   fill: ${colors.textSecondary};
   margin-right: 15px;
   flex-shrink: 0;
+`;
+
+const PreviewTitleLink = typedStyled(Link)`
+  display: inline-block;
+  color: ${({ theme }) => theme.colors.tenantText};
+  font-size: ${fontSizes.l}px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.tenantText};
+    text-decoration: underline;
+  }
 `;
 
 const PlaceholderContainer = styled(Box)<{ color: string }>`
@@ -83,7 +106,7 @@ const PagePlaceholder = ({
   );
 };
 
-const PageLink = ({ pageId }: PageLinkProps) => {
+const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
   const localize = useLocalize();
   const { enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -93,25 +116,50 @@ const PageLink = ({ pageId }: PageLinkProps) => {
   const projectId = page?.data.attributes.project_id;
   const { data: project } = useProjectById(projectId);
 
-  // Selected page resolved -> render the public link. Disable pointer events
-  // while in the builder (`enabled`) so clicking selects the widget instead of
-  // navigating away; the link stays clickable once published.
+  // Selected page resolved -> render the chosen representation. Disable pointer
+  // events while in the builder (`enabled`) so clicking selects the widget
+  // instead of navigating away; links stay clickable once published.
   if (page && project) {
+    const linkParams = {
+      to: '/projects/$slug/pages/$pageSlug',
+      params: {
+        slug: project.data.attributes.slug,
+        pageSlug: page.data.attributes.slug,
+      },
+    } as const;
+    const title = localize(page.data.attributes.title_multiloc);
+
+    if (displayType === 'preview') {
+      const previewText = stripHtml(
+        localize(page.data.attributes.top_info_section_multiloc),
+        PREVIEW_MAX_LENGTH
+      );
+
+      return (
+        <Box
+          id="e2e-page-link"
+          maxWidth="1200px"
+          pointerEvents={enabled ? 'none' : 'auto'}
+        >
+          <PreviewTitleLink {...linkParams}>{title}</PreviewTitleLink>
+          {previewText && (
+            <Text mt="8px" mb="0px" color="textSecondary">
+              {previewText}
+            </Text>
+          )}
+        </Box>
+      );
+    }
+
     return (
       <Box
         id="e2e-page-link"
         maxWidth="1200px"
         pointerEvents={enabled ? 'none' : 'auto'}
       >
-        <PageLinkRow
-          to="/projects/$slug/pages/$pageSlug"
-          params={{
-            slug: project.data.attributes.slug,
-            pageSlug: page.data.attributes.slug,
-          }}
-        >
+        <PageLinkRow {...linkParams}>
           <RowIcon name="file" width="20px" height="20px" />
-          {localize(page.data.attributes.title_multiloc)}
+          {title}
         </PageLinkRow>
       </Box>
     );
@@ -138,8 +186,10 @@ const PageLinkSettings = () => {
   const {
     actions: { setProp },
     pageId,
+    displayType = 'link',
   } = useNode((node) => ({
     pageId: node.data.props.pageId,
+    displayType: node.data.props.displayType,
   }));
 
   const { formatMessage } = useIntl();
@@ -177,6 +227,34 @@ const PageLinkSettings = () => {
       flexDirection="column"
       gap="12px"
     >
+      <Box>
+        <Label>{formatMessage(messages.displayTypeLabel)}</Label>
+        <Radio
+          onChange={(value: DisplayType) => {
+            setProp((props: PageLinkProps) => {
+              props.displayType = value;
+            });
+          }}
+          currentValue={displayType}
+          id="page-link-display-link"
+          name="page-link-display-type"
+          value="link"
+          label={formatMessage(messages.displayTypeLink)}
+        />
+        <Radio
+          onChange={(value: DisplayType) => {
+            setProp((props: PageLinkProps) => {
+              props.displayType = value;
+            });
+          }}
+          currentValue={displayType}
+          id="page-link-display-preview"
+          name="page-link-display-type"
+          value="preview"
+          label={formatMessage(messages.displayTypePreview)}
+        />
+      </Box>
+
       {pageOptions.length === 0 ? (
         <Text m="0px">{formatMessage(messages.noPagesAvailable)}</Text>
       ) : (
