@@ -11,12 +11,13 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import { AuthMethodKey } from '../types';
+import { AuthMethodKey } from '../../../types';
+import { METHOD_META, AUTH_METHOD_LABELS } from '../../constants';
+import sharedMessages from '../../messages';
+import RecencyControl from '../../RecencyControl';
+import { linkStyle } from '../../shared';
 
-import { METHOD_META, AUTH_METHOD_LABELS } from './constants';
 import messages from './messages';
-import RecencyControl from './RecencyControl';
-import { linkStyle } from './shared';
 
 interface Props {
   methodKey: AuthMethodKey;
@@ -93,7 +94,7 @@ const MethodRow = ({
             tabIndex={0}
             onClick={onShowReturnedFields}
           >
-            {formatMessage(messages.seeWhichFieldsThisReturns)}
+            {formatMessage(sharedMessages.seeWhichFieldsThisReturns)}
           </Text>
         </Box>
       )}

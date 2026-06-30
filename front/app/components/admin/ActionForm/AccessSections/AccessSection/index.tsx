@@ -15,16 +15,16 @@ import {
   hasEnabledMethod,
   methodChange,
   requiresAccount,
-} from '../logic';
-import { AuthMethodKey } from '../types';
-import { SectionHeader, Hint } from '../ui';
+} from '../../logic';
+import { AuthMethodKey } from '../../types';
+import { SectionHeader, Hint } from '../../ui';
+import GroupsSection from '../GroupsSection';
+import ModeCards from '../ModeCards';
+import { AccessSectionProps } from '../shared';
+import VerificationFieldsModal from '../VerificationFieldsModal';
 
-import GroupsSection from './GroupsSection';
 import messages from './messages';
 import MethodRow from './MethodRow';
-import ModeCards from './ModeCards';
-import { AccessSectionProps } from './shared';
-import VerificationFieldsModal from './VerificationFieldsModal';
 
 const METHOD_KEYS: AuthMethodKey[] = ['email', 'verification'];
 

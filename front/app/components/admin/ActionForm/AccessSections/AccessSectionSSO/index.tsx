@@ -12,14 +12,16 @@ import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { requiresAccount, ssoMethodName } from '../logic';
-import { SectionHeader } from '../ui';
+import { requiresAccount, ssoMethodName } from '../../logic';
+import { SectionHeader } from '../../ui';
+import accessSectionMessages from '../AccessSection/messages';
+import GroupsSection from '../GroupsSection';
+import sharedMessages from '../messages';
+import ModeCards from '../ModeCards';
+import { AccessSectionProps, linkStyle } from '../shared';
+import VerificationFieldsModal from '../VerificationFieldsModal';
 
-import GroupsSection from './GroupsSection';
 import messages from './messages';
-import ModeCards from './ModeCards';
-import { AccessSectionProps, linkStyle } from './shared';
-import VerificationFieldsModal from './VerificationFieldsModal';
 
 const AccessSectionSSO = ({
   permission,
@@ -37,7 +39,7 @@ const AccessSectionSSO = ({
     <Box>
       <SectionHeader
         icon="user-circle"
-        title={formatMessage(messages.whoCanParticipate)}
+        title={formatMessage(accessSectionMessages.whoCanParticipate)}
         tooltip={formatMessage(messages.firstDecideSSO)}
       />
 
@@ -80,7 +82,7 @@ const AccessSectionSSO = ({
                 tabIndex={0}
                 onClick={() => setReturnedFieldsOpen(true)}
               >
-                {formatMessage(messages.seeWhichFieldsThisReturns)}
+                {formatMessage(sharedMessages.seeWhichFieldsThisReturns)}
               </Text>
             </Box>
           </Box>
