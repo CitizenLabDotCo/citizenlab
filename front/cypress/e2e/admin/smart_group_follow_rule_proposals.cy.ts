@@ -10,10 +10,9 @@ import { randomString } from '../../support/commands';
 // responses are never offered.
 //
 // Which inputs `/ideas` returns (proposals and ideas in, survey responses out,
-// via IdeasFinder's `.publicly_visible`) is a back-end concern and is covered in
-// back/spec/acceptance/ideas/ideas_index_spec.rb — it can't be asserted
-// deterministically here anyway, since the selector receives a random 26-item
-// page.
+// via IdeasFinder's `.publicly_visible`) is a back-end concern and it can't be
+// asserted deterministically here anyway, since the selector receives a random
+// 26-item page.
 describe('Smart group Follow rule "one of the inputs" selector', () => {
   const proposalTitle = randomString(40);
   const regularIdeaTitle = randomString(40);
