@@ -65,7 +65,7 @@ module EmailCampaigns
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
         if AppConfiguration.instance.feature_activated?('sms')
           classes << Campaigns::SmsManual
-          classes << Campaigns::PhoneConfirmation
+          classes << Campaigns::NewPhoneConfirmation
         end
         classes
       end

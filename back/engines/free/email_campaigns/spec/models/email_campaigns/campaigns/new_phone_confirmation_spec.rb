@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe EmailCampaigns::Campaigns::PhoneConfirmation do
+RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
   subject(:campaign) { described_class.create! }
 
   describe 'channel and flags' do

@@ -177,7 +177,7 @@ resource 'Request codes' do
       expect(response_status).to eq 200
       expect(user.reload.new_phone_number).to eq '+14155552671'
       expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+        .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
     end
 
     example 'It does not work if phone_number is blank' do

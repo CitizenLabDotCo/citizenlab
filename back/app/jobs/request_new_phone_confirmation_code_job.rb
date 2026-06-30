@@ -10,7 +10,7 @@ class RequestNewPhoneConfirmationCodeJob < ApplicationJob
       user.update!(new_phone_number: new_phone_number)
       confirmation = user.new_phone_confirmation || user.create_new_phone_confirmation!
       confirmation.reset_code!
-      campaign = EmailCampaigns::Campaigns::PhoneConfirmation.first_or_create!
+      campaign = EmailCampaigns::Campaigns::NewPhoneConfirmation.first_or_create!
       EmailCampaigns::DeliveryService.new.send_now_to_user(campaign, user, { code: confirmation.code })
 
       confirmation.update!(code_sent_at: Time.zone.now)

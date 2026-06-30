@@ -32,7 +32,7 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
       phone_number: new_phone_number,
       status: 'pending'
     )
-    expect(delivery.campaign).to be_a(EmailCampaigns::Campaigns::PhoneConfirmation)
+    expect(delivery.campaign).to be_a(EmailCampaigns::Campaigns::NewPhoneConfirmation)
   end
 
   it 'enqueues an EmailCampaigns::Sms::SendJob for the created delivery' do
