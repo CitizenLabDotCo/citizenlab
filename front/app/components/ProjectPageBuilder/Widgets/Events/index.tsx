@@ -16,6 +16,7 @@ import Link from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
 
 import messages from '../messages';
+import useCanModerateProject from '../useCanModerateProject';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyEvents from './EmptyEvents';
@@ -29,6 +30,7 @@ const EventsWidget: UserComponent = () => {
   const { formatMessage } = useIntl();
   const padding = useCraftComponentDefaultPadding();
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const canModerate = useCanModerateProject(projectId);
   const { data: events } = useEvents({
     projectIds: projectId ? [projectId] : [],
     sort: '-start_at',
@@ -38,8 +40,12 @@ const EventsWidget: UserComponent = () => {
     return null;
   }
 
+  // Like the legacy public page, residents see nothing when there are no events.
+  // The empty-state placeholder is kept for moderators only (builder, admin
+  // preview, and admins viewing the live page), matching the Timeline/InputFeed
+  // widgets.
   if (events.data.length === 0) {
-    return <EmptyEvents />;
+    return canModerate ? <EmptyEvents /> : null;
   }
 
   return (
