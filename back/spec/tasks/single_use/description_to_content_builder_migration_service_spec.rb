@@ -12,8 +12,6 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
     end
   end
 
-  # The description node regardless of widget (native TextMultiloc for text, or the
-  # RichTextMultiloc bridge for descriptions with inline media).
   def description_node(layout)
     widget_types = %w[TextMultiloc RichTextMultiloc]
     layout.craftjs_json.values.find do |node|
@@ -41,8 +39,8 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
         layout = project.content_builder_layouts.find_by(code: 'project_description')
         expect(layout).to be_present
         expect(layout.enabled).to be(true)
-        # The text sits in the left column of a 2-column layout, the participation
-        # AboutBox in the right, reproducing the legacy WYSIWYG sidebar.
+        # Text in the left column, participation AboutBox in the right, reproducing
+        # the legacy WYSIWYG sidebar.
         expect(node_types(layout)).to include('TwoColumn', 'TextMultiloc', 'AboutBox')
         node = description_node(layout)
         expect(node['type']['resolvedName']).to eq('TextMultiloc')
@@ -51,8 +49,8 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
       end
 
       it 'sets content_buildable_type so the controller lookup finds the layout' do
-        # Regression guard: a NULL content_buildable_type makes the layout
-        # invisible to the controller's find_by! (404 / empty editor).
+        # Regression guard: a NULL content_buildable_type is invisible to the
+        # controller's find_by! (404 / empty editor).
         service.migrate_buildable(project, persist: true)
 
         layout = project.content_builder_layouts.find_by(code: 'project_description')
@@ -157,8 +155,6 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
       let(:project) { create(:project, description_multiloc: { 'en' => '<p></p>' }) }
 
       it 'still shows the AboutBox sidebar, with an empty text widget on the left' do
-        # The legacy WYSIWYG page showed the participation sidebar even with no
-        # description, so a blank project keeps the AboutBox (empty TextMultiloc left).
         service.migrate_buildable(project, persist: true)
 
         layout = project.content_builder_layouts.find_by(code: 'project_description')
@@ -196,9 +192,6 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
       end
 
       it 'wraps the text description in a TextMultiloc node while keeping the folder title and published-projects widgets' do
-        # A folder on the Content Builder renders only its craftjs layout, so the
-        # migration must preserve the published-projects list rather than produce
-        # a description-only layout.
         service.migrate_buildable(folder, persist: true)
 
         layout = folder.content_builder_layouts.find_by(code: 'project_folder_description')
@@ -219,6 +212,36 @@ RSpec.describe Tasks::SingleUse::Services::DescriptionToContentBuilderMigrationS
           expect(service.stats).to include(created_blank: 1, folders_migrated: 1)
         end
       end
+    end
+  end
+
+  describe 'reporting' do
+    let(:reporter) { ScriptReporter.new }
+    let(:service) { described_class.new(reporter: reporter) }
+
+    it 'records each created layout in the reporter' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Hi</p>' })
+
+      service.migrate_buildable(project, persist: true)
+
+      expect(reporter.creates).to contain_exactly(
+        hash_including(
+          model_name: 'ContentBuilder::Layout',
+          context: hash_including(buildable_type: 'Project', buildable_id: project.id)
+        )
+      )
+    end
+
+    it 'records a straggler overwrite with its previous craftjs_json so it is recoverable' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Live</p>' })
+      previous = { 'ROOT' => { 'type' => 'div' }, 'text1' => { 'props' => { 'text' => { 'en' => 'old' } } } }
+      create(:layout, content_buildable: project, code: 'project_description', enabled: false, craftjs_json: previous)
+
+      service.migrate_buildable(project, persist: true)
+
+      expect(reporter.changes).to contain_exactly(
+        hash_including(old_value: hash_including(craftjs_json: previous))
+      )
     end
   end
 
