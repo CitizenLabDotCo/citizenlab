@@ -105,6 +105,4 @@ InputFeed.craft = {
   },
 };
 
-export const inputFeedWidgetTitle = messages.inputFeedWidgetTitle2;
-
 export default InputFeed;
