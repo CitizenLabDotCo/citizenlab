@@ -188,6 +188,4 @@ ProjectBanner.craft = {
   },
 };
 
-export const projectBannerWidgetTitle = messages.bannerWidgetTitle;
-
 export default ProjectBanner;
