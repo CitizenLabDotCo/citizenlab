@@ -352,18 +352,18 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.addSmsCampaignTitle',
     defaultMessage: 'New SMS message',
   },
-  fieldSmsTitle: {
-    id: 'app.containers.Admin.messaging.fieldSmsTitle',
-    defaultMessage: 'Title',
+  fieldSmsLabel: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabel',
+    defaultMessage: 'Label',
   },
-  fieldSmsTitleTooltip: {
-    id: 'app.containers.Admin.messaging.fieldSmsTitleTooltip',
+  fieldSmsLabelTooltip: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabelTooltip',
     defaultMessage:
       'An internal label to recognise this campaign. It is not sent to recipients.',
   },
-  fieldSmsTitleError: {
-    id: 'app.containers.Admin.messaging.fieldSmsTitleError',
-    defaultMessage: 'Provide a title for all languages',
+  fieldSmsLabelError: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabelError',
+    defaultMessage: 'Provide a label for all languages',
   },
   fieldSmsBody: {
     id: 'app.containers.Admin.messaging.fieldSmsBody',

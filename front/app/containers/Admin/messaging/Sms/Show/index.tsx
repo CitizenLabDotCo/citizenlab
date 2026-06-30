@@ -96,7 +96,7 @@ const Show = () => {
       <GoBackButton onClick={goBack} />
       <Box display="flex" alignItems="center" gap="12px" mt="20px" mb="24px">
         <Title m="0px">
-          {localize(campaign.data.attributes.title_multiloc)}
+          {localize(campaign.data.attributes.subject_multiloc)}
         </Title>
         {draft ? (
           <StatusLabel

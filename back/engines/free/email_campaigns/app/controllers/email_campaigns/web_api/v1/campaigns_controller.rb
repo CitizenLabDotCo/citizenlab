@@ -191,7 +191,7 @@ module EmailCampaigns
       params.require(:campaign).permit(
         :enabled,
         group_ids: [],
-        title_multiloc: I18n.available_locales,
+        subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
       )
     end

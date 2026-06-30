@@ -41,7 +41,7 @@ const EditSmsCampaign = () => {
       <SmsCampaignForm
         isLoading={isLoading}
         defaultValues={{
-          title_multiloc: campaign.data.attributes.title_multiloc,
+          subject_multiloc: campaign.data.attributes.subject_multiloc,
           body_multiloc: campaign.data.attributes.body_multiloc,
           group_ids: groupIds,
         }}

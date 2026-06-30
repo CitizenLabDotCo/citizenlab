@@ -33,7 +33,7 @@ const StyledSectionField = styled(SectionField)`
 `;
 
 export interface FormValues {
-  title_multiloc: Multiloc;
+  subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
   group_ids?: string[];
 }
@@ -54,8 +54,8 @@ const SmsCampaignForm = ({
   const localize = useLocalize();
 
   const schema = object({
-    title_multiloc: validateMultilocForEveryLocale(
-      formatMessage(messages.fieldSmsTitleError)
+    subject_multiloc: validateMultilocForEveryLocale(
+      formatMessage(messages.fieldSmsLabelError)
     ),
     body_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldSmsBodyError)
@@ -91,12 +91,12 @@ const SmsCampaignForm = ({
           <StyledSectionField>
             <Feedback onlyShowErrors={true} />
           </StyledSectionField>
-          <StyledSectionField className="e2e-sms-campaign_title_multiloc">
+          <StyledSectionField className="e2e-sms-campaign_subject_multiloc">
             <InputMultilocWithLocaleSwitcher
-              name="title_multiloc"
-              label={<FormattedMessage {...messages.fieldSmsTitle} />}
+              name="subject_multiloc"
+              label={<FormattedMessage {...messages.fieldSmsLabel} />}
               labelTooltipText={
-                <FormattedMessage {...messages.fieldSmsTitleTooltip} />
+                <FormattedMessage {...messages.fieldSmsLabelTooltip} />
               }
               maxCharCount={80}
             />

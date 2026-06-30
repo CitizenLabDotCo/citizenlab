@@ -26,7 +26,7 @@ interface Props {
 
 const SmsCampaignRow = ({ campaign }: Props) => {
   const localize = useLocalize();
-  const title = localize(campaign.attributes.title_multiloc);
+  const title = localize(campaign.attributes.subject_multiloc);
   const body = localize(campaign.attributes.body_multiloc);
   const snippet = body.length > 80 ? `${body.slice(0, 80)}…` : body;
 

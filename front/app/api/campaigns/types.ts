@@ -92,7 +92,7 @@ export interface EditableRegion {
 }
 
 export interface SmsCampaignFormValues {
-  title_multiloc: Multiloc;
+  subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
   group_ids?: string[];
 }

@@ -268,7 +268,7 @@ resource 'Campaigns' do
 
       context 'SMS campaigns' do
         with_options scope: :campaign do
-          parameter :title_multiloc, 'An admin-facing title for the SMS campaign', required: true
+          parameter :subject_multiloc, 'An admin-facing label for the SMS campaign (reuses the subject column; SMS has no subject line)', required: true
         end
 
         before do
@@ -280,16 +280,16 @@ resource 'Campaigns' do
         end
 
         let(:campaign_name) { 'sms_manual' }
-        let(:title_multiloc) { { 'en' => 'Town hall reminder' } }
+        let(:subject_multiloc) { { 'en' => 'Town hall reminder' } }
         let(:body_multiloc) { { 'en' => 'A short SMS update from your city.' } }
 
         example_request 'Create an SMS campaign' do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :channel)).to eq 'sms'
-          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
           expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
-          expect(json_response.dig(:data, :attributes, :subject_multiloc)).to be_nil
+          expect(json_response.dig(:data, :attributes, :title_multiloc)).to be_nil
           expect(json_response.dig(:data, :attributes, :sender)).to be_nil
         end
       end
