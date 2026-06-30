@@ -55,17 +55,10 @@ const BaseIdeaSelect = ({
     };
   }, [handleInputChange]);
 
-  const handleChange = (
-    newValue: Option | readonly Option[] | null,
-    { action }: { action: string }
-  ) => {
-    // Single mode special-cases the clear action to emit `undefined`.
-    if (!isMulti && action === 'clear') {
-      onChange(undefined);
-      return;
-    }
-
-    // Multi: forward the full selected array; single: the chosen option.
+  const handleChange = (newValue: Option | readonly Option[] | null) => {
+    // react-select represents a cleared single-select as `null` (multi is the
+    // full selected array, single is the chosen option). Normalise that `null`
+    // to the `undefined` our onChange prop uses.
     onChange(newValue ?? undefined);
   };
 
