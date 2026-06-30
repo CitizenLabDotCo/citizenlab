@@ -22,4 +22,8 @@ export default defineMessages({
     defaultMessage:
       'Because you selected "Full anonymity" in "User data collection", the answers to the demographic questions asked before participation WILL NOT BE STORED IN THE RESULTS. The answers will only be used to update the user\'s profile, but this profile is not linked to the response. To collect demographic data and store it in the results please choose another option under "User data collection".',
   },
+  noDemographicQuestionsAsked: {
+    id: 'app.components.admin.ActionForm.Fields.noDemographicQuestionsAsked',
+    defaultMessage: 'No demographic questions asked.',
+  },
 });

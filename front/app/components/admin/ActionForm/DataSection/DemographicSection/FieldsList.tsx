@@ -13,7 +13,10 @@ import useReorderPermissionsPhaseCustomField from 'api/permissions_phase_custom_
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
 import DemographicRow from './DemographicRow';
+import messages from './messages';
 
 const verificationLockedCount = (fields: IPermissionsPhaseCustomFieldData[]) =>
   fields.filter(({ attributes }) => attributes.lock === 'verification').length;
@@ -47,7 +50,7 @@ const FieldsList = ({
   if (customFields.length === lockedCount) {
     return (
       <Text as="p" mt="0" mb="8px" fontSize="s" color="coolGrey500">
-        No demographic questions asked.
+        <FormattedMessage {...messages.noDemographicQuestionsAsked} />
       </Text>
     );
   }
