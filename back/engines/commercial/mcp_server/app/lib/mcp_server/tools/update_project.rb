@@ -9,38 +9,27 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
   def description
     <<~DESC.squish
       Updates an existing project's content and settings. Partial update — only the fields you pass
-      change, and `*_multiloc` fields merge per locale. Does not change publication status (draft/
-      published/archived), move the project between folders/spaces, or set the header image.
+      change, and `*_multiloc` fields merge per locale. Accepts the same content fields as
+      create_project (see that tool for field semantics), except folder_id — a project can't be
+      moved between folders here. Does not change publication status (draft/published/archived) or
+      set the header image.
     DESC
   end
 
   def input_schema
+    create_properties = McpServer::Tools::CreateProject.new.input_schema[:properties].except(:folder_id)
     {
-      properties: {
-        project_id: { type: 'string', description: 'The ID of the project to update.' },
-        title_multiloc: { **multiloc_schema, description: 'Project title.' },
-        description_multiloc: { **multiloc_schema, description: 'Project description (HTML).' },
-        description_preview_multiloc: { **multiloc_schema, description: 'Plain-text summary for search/previews.' },
-        visible_to: { type: 'string', enum: %w[public groups admins], description: 'Who can see the project.' },
-        area_ids: { type: 'array', items: { type: 'string' }, description: 'Area IDs to associate (replaces the current set; pass [] to clear). Use list_areas.' },
-        global_topic_ids: { type: 'array', items: { type: 'string' }, description: 'Global topic IDs (replaces the current set; pass [] to clear). Use list_global_topics.' },
-        include_all_areas: { type: 'boolean', description: 'Whether the project is associated with all areas.' },
-        listed: { type: 'boolean', description: 'Whether the project is listed/discoverable (vs accessible by link only).' },
-        live_auto_input_topics_enabled: { type: 'boolean', description: 'Auto-detect and assign topics to inputs.' },
-        track_participation_location: { type: 'boolean', description: "Whether to track participants' location (requires the participation-location feature)." }
-      },
+      properties: { project_id: { type: 'string', description: 'The ID of the project to update.' }, **create_properties },
+      additionalProperties: false,
       required: %w[project_id]
     }
   end
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      attributes = params.except(:project_id).symbolize_keys
-      rejected = attributes.keys - updatable_attributes
-      return error("These fields can't be updated on a project: #{rejected.join(', ')}.") if rejected.any?
-
       project = Project.find(params[:project_id])
-      apply_attributes(project, attributes)
+      attributes = params.except(:project_id)
+      project.assign_attributes(merge_multilocs(project, attributes))
 
       SideFxProjectService.new.before_update(project, current_user)
       project.save!
@@ -51,13 +40,6 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       error("Project not found: #{params[:project_id]}")
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
-    end
-
-    private
-
-    # The allowlist is the tool's own schema fields (minus the id locator) — single source of truth.
-    def updatable_attributes
-      McpServer::Tools::UpdateProject.new.input_schema[:properties].keys.map(&:to_sym) - [:project_id]
     end
   end
 end

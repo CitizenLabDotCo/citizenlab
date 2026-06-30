@@ -8,6 +8,7 @@ class McpServer::BaseTool::Runner
   include McpServer::BaseTool::ResponseHelpers
   include McpServer::BaseTool::Pagination
   include McpServer::BaseTool::Authorization
+  include McpServer::BaseTool::MultilocMerge
 
   attr_reader :params, :server_context, :current_user, :token_scopes
 
@@ -23,17 +24,6 @@ class McpServer::BaseTool::Runner
   end
 
   private
-
-  # Assigns attributes through setters (so any custom setter/normalization runs).
-  # `*_multiloc` fields merge per-locale (locales the caller didn't pass are kept); others replace.
-  # Callers should reject unknown/non-updatable keys before calling this.
-  def apply_attributes(record, attributes)
-    attributes.each do |key, value|
-      current = record.public_send(key)
-      merge = key.to_s.end_with?('_multiloc') && current.is_a?(Hash) && value.is_a?(Hash)
-      record.public_send(:"#{key}=", merge ? current.merge(value) : value)
-    end
-  end
 
   # MCP-channel guard. Tools that mutate or destroy a project (or anything inside one)
   # must call this with the target's project before doing the work.
