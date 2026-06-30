@@ -5,11 +5,11 @@ import {
   media,
   colors,
   fontSizes,
-  defaultOutline,
   viewportWidths,
   ClickOutside,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { focusRingBorder } from 'global-styles';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -64,8 +64,10 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     background: #e0e0e0;
   }
 
+  /* This button forces outline:none, so the global outline ring can't apply —
+     use the shared border-based ring instead. */
   &.focus-visible {
-    ${defaultOutline};
+    ${focusRingBorder}
   }
 
   ${isRtl`
@@ -99,7 +101,7 @@ const StyledCloseIconButton2 = styled(CloseIconButton)`
   }
 
   &.focus-visible {
-    ${defaultOutline};
+    ${focusRingBorder}
   }
 
   ${isRtl`

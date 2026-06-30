@@ -149,6 +149,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.analysis.createAIAnalysis',
     defaultMessage: 'Open AI analysis',
   },
+  autoSummaryInfo: {
+    id: 'app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo',
+    defaultMessage:
+      'An AI summary will be generated automatically once there are more than 10 responses.',
+  },
   openAnalysisActions: {
     id: 'app.containers.Admin.projects.project.survey.analysis.openAnalysisActions',
     defaultMessage: 'Open analysis actions',
