@@ -95,10 +95,12 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
     end
   end
 
-  CANONICAL_NAMES = %w[
-    ProjectPageRoot ProjectBanner ProjectTitle ProjectPageBody
-    TimelineWidget InputFeed EventsWidget
-  ].freeze
+  def canonical_names
+    %w[
+      ProjectPageRoot ProjectBanner ProjectTitle ProjectPageBody
+      TimelineWidget InputFeed EventsWidget
+    ]
+  end
 
   # --- transform unit tests -------------------------------------------------
 
@@ -108,7 +110,7 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
 
       expect(result['ROOT']['nodes']).to eq(%w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_BODY])
       expect(result['ROOT']['type']).to eq({ 'resolvedName' => 'ProjectPageRoot' })
-      CANONICAL_NAMES.each { |name| expect(resolved_names(result)).to include(name) }
+      canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
     it 'does not seed a TwoColumn or AboutBox' do
@@ -181,11 +183,14 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
       expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
         %w[PROJECT_PAGE_TIMELINE PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
       )
-      CANONICAL_NAMES.each { |name| expect(resolved_names(result)).to include(name) }
+      canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
     it 'is idempotent — building twice yields identical json' do
-      expect(build(rich_description)).to eq(build(rich_description))
+      first = build(rich_description)
+      second = build(rich_description)
+
+      expect(first).to eq(second)
     end
 
     it 'reproduces the current locked-header custom titles (fixed point of ensureLockedHeaderNodes)' do
