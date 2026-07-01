@@ -90,6 +90,10 @@ const patchDateTimeFormatConstructor = (): void => {
   const Original = Intl.DateTimeFormat;
   if ((Original as unknown as Record<string, unknown>)[PATCHED]) return;
 
+  // Kept as a plain function while we set up prototype/statics (the constructor
+  // type's `prototype` is read-only); cast to the constructor type at the end.
+  // Called only via `new` (incl. `new (Intl.DateTimeFormat).bind.apply(...)` as
+  // @formatjs does); returning an object makes `new` yield it.
   const Patched = function (
     locales?: string | string[],
     options?: Intl.DateTimeFormatOptions
@@ -97,17 +101,15 @@ const patchDateTimeFormatConstructor = (): void => {
     const dtf = new Original(locales, options);
     if (isDeAt(dtf)) wrapInstance(dtf);
     return dtf;
-    // Called only via `new` (incl. `new (Intl.DateTimeFormat).bind.apply(...)`
-    // as @formatjs does); returning an object makes `new` yield it.
-    // The signature intentionally differs from the constructor type, hence the
-    // cast at the assignment below.
-  } as unknown as typeof Intl.DateTimeFormat;
+  };
 
   Patched.prototype = Original.prototype;
-  Patched.supportedLocalesOf = Original.supportedLocalesOf.bind(Original);
-  (Patched as unknown as Record<string, unknown>)[PATCHED] = true;
+  const patched = Patched as unknown as typeof Intl.DateTimeFormat &
+    Record<string, unknown>;
+  patched.supportedLocalesOf = Original.supportedLocalesOf.bind(Original);
+  patched[PATCHED] = true;
 
-  Intl.DateTimeFormat = Patched;
+  Intl.DateTimeFormat = patched;
 };
 
 // Date#toLocaleDateString / #toLocaleString use the %DateTimeFormat% intrinsic
