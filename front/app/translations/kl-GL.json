@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Ilanngussanik nutaanik tigusisoqarsinnaanngikkallarpoq",
   "app.containers.IdeaButton.postingLimitedMaxReached": "You have already completed this survey. Thanks for your response!",
   "app.containers.IdeaButton.postingNoPermission": "Ilanngussanik nutaanik tigusisoqarsinnaanngikkallarpoq",
-  "app.containers.IdeaButton.postingNotYetPossible": "Ilanngussanik nutaanik tigusisoqarsinnaanngikkallarpoq",
   "app.containers.IdeaButton.signInLinkText": "Iserneq",
   "app.containers.IdeaButton.signUpLinkText": "nalunaarsorit",
   "app.containers.IdeaButton.submitAnIssue1": "Submit an issue",

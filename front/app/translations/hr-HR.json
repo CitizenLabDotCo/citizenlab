@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Trenutno ne prihvaćamo nove predaje.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Već ste ispunili ovu anketu. Hvala na odgovoru!",
   "app.containers.IdeaButton.postingNoPermission": "Trenutno ne prihvaćamo nove predaje",
-  "app.containers.IdeaButton.postingNotYetPossible": "Još uvijek ne prihvaćamo nove predaje.",
   "app.containers.IdeaButton.signInLinkText": "prijava",
   "app.containers.IdeaButton.signUpLinkText": "registracija",
   "app.containers.IdeaButton.submitAnIssue1": "Pošalji problem",

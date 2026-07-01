@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Nye bidrag accepteres ikke i øjeblikket.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Du har allerede gennemført denne undersøgelse. Tak for dit svar!",
   "app.containers.IdeaButton.postingNoPermission": "Nye indlæg er ikke aktiveret i øjeblikket",
-  "app.containers.IdeaButton.postingNotYetPossible": "Nye bidrag accepteres endnu ikke her.",
   "app.containers.IdeaButton.signInLinkText": "logge ind",
   "app.containers.IdeaButton.signUpLinkText": "registrer dig",
   "app.containers.IdeaButton.submitAnIssue1": "Send dit høringssvar",

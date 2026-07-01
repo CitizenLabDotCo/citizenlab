@@ -52,8 +52,7 @@ export type AuthenticationRequirements =
 
 const ideaPostingDisabledReason = (
   backendReason: ProjectPostingDisabledReason | null,
-  signedIn: boolean,
-  futureEnabled: string | null
+  signedIn: boolean
 ): {
   disabledReason: ProjectPostingDisabledReason | null;
   authenticationRequirements: AuthenticationRequirements | null;
@@ -86,7 +85,7 @@ const ideaPostingDisabledReason = (
       };
     case 'project_inactive':
       return {
-        disabledReason: futureEnabled ? 'future_enabled' : backendReason,
+        disabledReason: backendReason,
         authenticationRequirements: null,
       };
     case 'posting_disabled':
@@ -162,12 +161,13 @@ export const getIdeaPostingRules = ({
       };
     }
 
-    const { disabled_reason, future_enabled_at, enabled } =
-      getPhaseActionDescriptor(phase, 'posting_idea') ?? {
-        enabled: false as const,
-        disabled_reason: 'user_not_permitted' as const,
-        future_enabled_at: null,
-      };
+    const { disabled_reason, enabled } = getPhaseActionDescriptor(
+      phase,
+      'posting_idea'
+    ) ?? {
+      enabled: false as const,
+      disabled_reason: 'user_not_permitted' as const,
+    };
 
     // not an enabled ideation or native survey or proposals phase
     if (
@@ -209,7 +209,7 @@ export const getIdeaPostingRules = ({
     }
 
     const { disabledReason, authenticationRequirements } =
-      ideaPostingDisabledReason(disabled_reason, signedIn, future_enabled_at);
+      ideaPostingDisabledReason(disabled_reason, signedIn);
 
     if (authenticationRequirements) {
       return {

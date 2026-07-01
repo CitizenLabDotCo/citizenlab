@@ -16,7 +16,6 @@ export type UserDisabledReason =
 export type ProjectDisabledReason = 'project_inactive' | UserDisabledReason;
 
 export type ProjectPostingDisabledReason =
-  | 'future_enabled' // Note: Not returned by backend but needed for posting
   | 'inactive_phase' // Note: Not returned by backend but needed for posting
   | 'posting_not_supported'
   | 'posting_disabled'
@@ -31,6 +30,7 @@ export type ProjectCommentingDisabledReason =
   | ProjectDisabledReason;
 
 export type ProjectReactingDisabledReason =
+  | 'future_enabled' // Note: Not returned by backend but needed for reacting
   | 'reacting_not_supported'
   | 'reacting_disabled'
   | 'reacting_dislike_disabled'

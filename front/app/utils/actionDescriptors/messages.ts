@@ -29,11 +29,6 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.postingInNonActivePhases',
     defaultMessage: 'New submissions can only be added in active phases.',
   },
-  postingNotYetPossible: {
-    id: 'app.containers.IdeaButton.postingNotYetPossible',
-    defaultMessage: 'New submissions are not yet accepted here.',
-  },
-
   // 'commenting_idea'
   commentingDisabledInactiveProject: {
     id: 'app.components.Comments.commentingDisabledInactiveProject',

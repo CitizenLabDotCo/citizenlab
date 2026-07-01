@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "New submissions are not currently being accepted.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "You have already completed this survey. Thanks for your response!",
   "app.containers.IdeaButton.postingNoPermission": "New submissions are not currently being accepted",
-  "app.containers.IdeaButton.postingNotYetPossible": "New submissions are not yet being accepted.",
   "app.containers.IdeaButton.signInLinkText": "log in",
   "app.containers.IdeaButton.signUpLinkText": "sign up",
   "app.containers.IdeaButton.submitAnIssue1": "Submit an issue",

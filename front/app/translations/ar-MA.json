@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "لا يتم قبول الطلبات الجديدة حالياً",
   "app.containers.IdeaButton.postingLimitedMaxReached": "لقد أكملت هذا الاستبيان فعلاً. نشكرك على استجابتك!",
   "app.containers.IdeaButton.postingNoPermission": "نشر فكرة هنا غير ممكن حاليًا.",
-  "app.containers.IdeaButton.postingNotYetPossible": "لا تُقبل الطلبات الجديدة هنا بعد.",
   "app.containers.IdeaButton.signInLinkText": "تسجيل الدخول",
   "app.containers.IdeaButton.signUpLinkText": "التسجيل",
   "app.containers.IdeaButton.submitAnIssue1": "تقديم مشكلة",

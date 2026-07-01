@@ -61,7 +61,7 @@ describe ProjectsFinderService do
       expect(result[:projects][0].id).to eq active_ideation_project.id
 
       expect(result[:descriptor_pairs][active_ideation_project.id]).to be_a(Hash).and(include(
-        posting_idea: { enabled: true, disabled_reason: nil, future_enabled_at: nil },
+        posting_idea: { enabled: true, disabled_reason: nil },
         commenting_idea: { enabled: true, disabled_reason: nil },
         reacting_idea: {
           enabled: true,

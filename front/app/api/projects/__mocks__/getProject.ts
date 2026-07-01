@@ -45,7 +45,6 @@ export function getProject(
         posting_idea: {
           enabled: true,
           disabled_reason: null, // PostingDisabledReasons | null,
-          future_enabled_at: null, // string | null,
         },
         commenting_idea: {
           enabled: true,

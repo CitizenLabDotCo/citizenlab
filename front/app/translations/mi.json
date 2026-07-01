@@ -408,7 +408,6 @@
   "app.containers.IdeaButton.postingInNonActivePhases": "New submissions can only be added in active phases.",
   "app.containers.IdeaButton.postingInactive": "New submissions are not currently being accepted.",
   "app.containers.IdeaButton.postingNoPermission": "New submissions are not currently being accepted",
-  "app.containers.IdeaButton.postingNotYetPossible": "New submissions are not yet being accepted.",
   "app.containers.IdeaButton.signInLinkText": "takiuru",
   "app.containers.IdeaButton.signUpLinkText": "waitohu",
   "app.containers.IdeaButton.submitYourIdea": "Submit your idea",

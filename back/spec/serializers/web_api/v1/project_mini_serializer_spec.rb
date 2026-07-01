@@ -68,7 +68,7 @@ describe WebApi::V1::ProjectMiniSerializer do
         .dig(:data, :attributes, :action_descriptors)
 
       expect(action_descriptors).to be_a(Hash).and(include(
-        posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled_at: nil },
+        posting_idea: { enabled: false, disabled_reason: 'project_inactive' },
         commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
         reacting_idea: {
           enabled: false,
@@ -90,7 +90,7 @@ describe WebApi::V1::ProjectMiniSerializer do
   context 'when action descriptors are passed to serializer in params' do
     it 'uses the provided action descriptors' do
       expected_action_descriptors = {
-        posting_idea: { enabled: true, disabled_reason: nil, future_enabled_at: nil },
+        posting_idea: { enabled: true, disabled_reason: nil },
         commenting_idea: { enabled: true, disabled_reason: nil },
         reacting_idea: {
           enabled: true,

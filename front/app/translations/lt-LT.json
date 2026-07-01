@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Šiuo metu naujos paraiškos nepriimamos.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Jūs jau atlikote šią apklausą. Ačiū už atsakymą!",
   "app.containers.IdeaButton.postingNoPermission": "Naujos paraiškos šiuo metu nepriimamos",
-  "app.containers.IdeaButton.postingNotYetPossible": "Naujos paraiškos dar nepriimamos.",
   "app.containers.IdeaButton.signInLinkText": "prisijungti",
   "app.containers.IdeaButton.signUpLinkText": "užsiregistruoti",
   "app.containers.IdeaButton.submitAnIssue1": "Pateikite klausimą",

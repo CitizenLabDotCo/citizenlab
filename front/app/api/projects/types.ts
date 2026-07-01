@@ -2,7 +2,6 @@ import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import {
   ActionDescriptor,
-  ActionDescriptorFutureEnabled,
   ProjectDisabledReason,
   ProjectCommentingDisabledReason,
   ProjectDocumentAnnotationDisabledReason,
@@ -106,7 +105,7 @@ export interface IProjectAttributes {
 }
 
 export type ActionDescriptors = {
-  posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
+  posting_idea: ActionDescriptor<ProjectPostingDisabledReason>;
   commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
   // Same disabled reasons as commenting_idea at time of writing
   comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;

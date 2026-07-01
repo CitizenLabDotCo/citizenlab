@@ -536,7 +536,6 @@
   "app.containers.IdeaButton.postingInactive": "Înscrierile noi nu sunt acceptate momentan.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Ați completat deja acest sondaj. Vă mulțumim pentru răspuns!",
   "app.containers.IdeaButton.postingNoPermission": "Înscrierile noi nu sunt acceptate momentan",
-  "app.containers.IdeaButton.postingNotYetPossible": "Înscrierile noi nu sunt acceptate momentan.",
   "app.containers.IdeaButton.signInLinkText": "Autentifică-te",
   "app.containers.IdeaButton.signUpLinkText": "Înscrie-te",
   "app.containers.IdeaButton.submitYourIdea": "Trimite-ți ideea",

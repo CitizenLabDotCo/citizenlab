@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Actualment no s'accepten noves presentacions.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Ja heu completat aquesta enquesta. Gràcies per la teva resposta!",
   "app.containers.IdeaButton.postingNoPermission": "Actualment no s'accepten noves presentacions",
-  "app.containers.IdeaButton.postingNotYetPossible": "Encara no s'accepten noves presentacions.",
   "app.containers.IdeaButton.signInLinkText": "iniciar Sessió",
   "app.containers.IdeaButton.signUpLinkText": "Registreu-vos",
   "app.containers.IdeaButton.submitAnIssue1": "Envia un problema",

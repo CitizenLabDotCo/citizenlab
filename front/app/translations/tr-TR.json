@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Şu an için yeni gönderim kabul edilmiyor.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Bu anketi zaten tamamladınız. Yanıtınız için teşekkürler!",
   "app.containers.IdeaButton.postingNoPermission": "Şu an için yeni gönderim kabul edilmiyor",
-  "app.containers.IdeaButton.postingNotYetPossible": "Henüz yeni gönderim kabul edilmiyor.",
   "app.containers.IdeaButton.signInLinkText": "oturum açın",
   "app.containers.IdeaButton.signUpLinkText": "kaydolun",
   "app.containers.IdeaButton.submitAnIssue1": "Bir sorun gönderin",

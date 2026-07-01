@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Προς το παρόν δεν γίνονται δεκτές νέες υποβολές.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Έχετε ήδη ολοκληρώσει αυτή την έρευνα. Ευχαριστούμε για την απάντησή σας!",
   "app.containers.IdeaButton.postingNoPermission": "Προς το παρόν δεν γίνονται δεκτές νέες υποβολές",
-  "app.containers.IdeaButton.postingNotYetPossible": "Νέες υποβολές δεν γίνονται ακόμη δεκτές.",
   "app.containers.IdeaButton.signInLinkText": "σύνδεση",
   "app.containers.IdeaButton.signUpLinkText": "εγγραφείτε",
   "app.containers.IdeaButton.submitAnIssue1": "Υποβάλετε ένα θέμα",

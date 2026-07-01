@@ -558,4 +558,133 @@ describe Permissions::IdeaPermissionsService do
       end.not_to exceed_query_limit(3) # Down from an original 486
     end
   end
+
+  describe 'future_enabled_phase' do
+    # future_enabled_phase looks ahead over the project's phases and is independent of
+    # the idea itself, so an unpersisted idea is enough to build the service.
+    let(:input) { build(:idea, project: project) }
+
+    describe '"reacting_idea"' do
+      context do
+        let(:project) do
+          create(
+            :project_with_current_phase,
+            phases_config: {
+              sequence: 'xcxxy',
+              x: { reacting_enabled: true, reacting_dislike_enabled: false },
+              c: { reacting_enabled: false },
+              y: { reacting_enabled: true, reacting_dislike_enabled: true }
+            }
+          )
+        end
+
+        it 'returns the first upcoming phase that has reacting enabled' do
+          expect(service.send(:future_enabled_phase, 'reacting_idea', reaction_mode: 'up')).to eq project.phases.order(:start_at)[2]
+          expect(service.send(:future_enabled_phase, 'reacting_idea', reaction_mode: 'down')).to eq project.phases.order(:start_at)[4]
+        end
+      end
+
+      context 'when no next phase has reacting enabled' do
+        let(:project) do
+          create(
+            :project_with_current_phase,
+            phases_config: {
+              sequence: 'xcyy',
+              y: { reacting_enabled: false }
+            }
+          )
+        end
+
+        it 'returns nil' do
+          expect(service.send(:future_enabled_phase, 'reacting_idea', reaction_mode: 'up')).to be_nil
+          expect(service.send(:future_enabled_phase, 'reacting_idea', reaction_mode: 'down')).to be_nil
+        end
+      end
+
+      context 'when the project has no future phases' do
+        let(:project) { create(:project_with_past_phases) }
+
+        it 'returns nil' do
+          expect(service.send(:future_enabled_phase, 'reacting_idea', reaction_mode: 'up')).to be_nil
+          expect(service.send(:future_enabled_phase, 'reacting_idea', reaction_mode: 'down')).to be_nil
+        end
+      end
+    end
+
+    describe '"commenting_idea"' do
+      context do
+        let(:project) do
+          create(
+            :project_with_current_phase,
+            phases_config: {
+              sequence: 'xcxxxxxy',
+              x: { commenting_enabled: false },
+              y: { commenting_enabled: true },
+              c: { commenting_enabled: false }
+            }
+          )
+        end
+
+        it 'returns the first upcoming phase that has commenting enabled' do
+          expect(service.send(:future_enabled_phase, 'commenting_idea')).to eq project.phases.order(:start_at)[7]
+        end
+      end
+
+      context 'when no next phase has commenting enabled' do
+        let(:project) do
+          create(
+            :project_with_current_phase,
+            phases_config: {
+              sequence: 'xcyyy',
+              y: { commenting_enabled: false }
+            }
+          )
+        end
+
+        it 'returns nil' do
+          expect(service.send(:future_enabled_phase, 'commenting_idea')).to be_nil
+        end
+      end
+
+      context 'when the project has no future phases' do
+        let(:project) { create(:project_with_past_phases) }
+
+        it 'returns nil' do
+          expect(service.send(:future_enabled_phase, 'commenting_idea')).to be_nil
+        end
+      end
+    end
+
+    describe '"voting"' do
+      let(:project) { create(:project_with_current_phase, phases_config: phases_config) }
+      let(:phases_config) do
+        {
+          sequence: 'xcxxyxy',
+          x: { participation_method: 'ideation' },
+          y: { participation_method: 'voting', voting_method: 'budgeting' },
+          c: { participation_method: 'ideation' }
+        }
+      end
+
+      it 'returns the first upcoming phase that is voting' do
+        expect(service.send(:future_enabled_phase, 'voting')).to eq project.phases.order(:start_at)[4]
+      end
+
+      context 'when none of the next phases are voting phases' do
+        let(:phases_config) { { sequence: 'xcyyy', y: { participation_method: 'ideation' } } }
+
+        it 'returns nil' do
+          expect(service.send(:future_enabled_phase, 'voting')).to be_nil
+        end
+      end
+
+      context 'for a project without future phases' do
+        let(:project) { create(:project_with_past_phases) }
+
+        it 'returns nil' do
+          expect(service.send(:future_enabled_phase, 'voting')).to be_nil
+        end
+      end
+    end
+  end
 end

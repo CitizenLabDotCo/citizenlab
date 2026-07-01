@@ -41,7 +41,6 @@ export const project: IProjectData = {
       posting_idea: {
         enabled: true,
         disabled_reason: null,
-        future_enabled_at: null,
       },
       commenting_idea: {
         enabled: true,

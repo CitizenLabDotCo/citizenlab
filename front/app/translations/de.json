@@ -1360,7 +1360,6 @@
   "app.containers.IdeaButton.postingInactive": "Sie können derzeit nicht an diesem Projekt teilnehmen.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Sie haben diese Umfrage bereits abgeschlossen. Vielen Dank für Ihre Antwort!",
   "app.containers.IdeaButton.postingNoPermission": "Sie können derzeit nicht an diesem Projekt teilnehmen",
-  "app.containers.IdeaButton.postingNotYetPossible": "Hier werden noch keine neuen Beiträge entgegengenommen.\n",
   "app.containers.IdeaButton.signInLinkText": "melden Sie sich an",
   "app.containers.IdeaButton.signUpLinkText": "registrieren Sie sich",
   "app.containers.IdeaButton.submitAnIssue": "Kommentieren",

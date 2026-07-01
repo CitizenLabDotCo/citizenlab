@@ -1411,7 +1411,6 @@
   "app.containers.IdeaButton.postingInactive": "Нове пријаве се тренутно не прихватају.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Већ сте попунили ову анкету. Хвала на одговору!",
   "app.containers.IdeaButton.postingNoPermission": "Нове пријаве се тренутно не прихватају",
-  "app.containers.IdeaButton.postingNotYetPossible": "Нове пријаве се још не прихватају.",
   "app.containers.IdeaButton.signInLinkText": "Пријавите се",
   "app.containers.IdeaButton.signUpLinkText": "пријави се",
   "app.containers.IdeaButton.submitAnIssue1": "Submit an issue",

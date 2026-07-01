@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Ní ghlactar le haighneachtaí nua faoi láthair.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Tá an suirbhé seo críochnaithe agat cheana féin. Go raibh maith agat as do fhreagra!",
   "app.containers.IdeaButton.postingNoPermission": "Ní ghlactar le haighneachtaí nua faoi láthair",
-  "app.containers.IdeaButton.postingNotYetPossible": "Níl aighneachtaí nua á nglacadh go fóill.",
   "app.containers.IdeaButton.signInLinkText": "logáil isteach",
   "app.containers.IdeaButton.signUpLinkText": "cláraigh",
   "app.containers.IdeaButton.submitAnIssue1": "Cuir isteach saincheist",

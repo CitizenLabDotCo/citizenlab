@@ -25,22 +25,11 @@ module Permissions
       super
     end
 
-    # Future enabled phases
-    def future_enabled_phase(action, reaction_mode: nil)
-      time = Time.zone.now
-      @timeline_service.future_phases(project, time).find do |phase|
-        !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_action(action, reaction_mode: reaction_mode)
-      end
-    end
-
     # The project's descriptors are its current phase's, plus the project-level
-    # attending_event action and a future_enabled_at lookahead for posting.
+    # attending_event action.
     def action_descriptors
       descriptors = super
       descriptors[:attending_event] = descriptor(denied_reason_for_action('attending_event'))
-      posting_disabled_reason = descriptors[:posting_idea][:disabled_reason]
-      descriptors[:posting_idea][:future_enabled_at] =
-        posting_disabled_reason && future_enabled_phase('posting_idea')&.start_at
       descriptors
     end
 

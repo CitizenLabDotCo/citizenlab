@@ -38,7 +38,6 @@ const actionDisabledMessages: {
     posting_disabled: messages.postingDisabled,
     posting_limited_max_reached: messages.postingLimitedMaxReached,
     project_inactive: messages.postingInactive,
-    future_enabled: messages.postingNotYetPossible,
     inactive_phase: messages.postingInNonActivePhases,
   },
   commenting_idea: {

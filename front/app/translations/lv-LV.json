@@ -1451,7 +1451,6 @@
   "app.containers.IdeaButton.postingInactive": "Pašlaik jauni iesniegumi netiek pieņemti.",
   "app.containers.IdeaButton.postingLimitedMaxReached": "Jūs jau esat aizpildījis šo aptauju. Paldies par atbildi!",
   "app.containers.IdeaButton.postingNoPermission": "Jauni pieteikumi pašlaik netiek pieņemti",
-  "app.containers.IdeaButton.postingNotYetPossible": "Jauni iesniegumi vēl netiek pieņemti.",
   "app.containers.IdeaButton.signInLinkText": "pierakstīties",
   "app.containers.IdeaButton.signUpLinkText": "reģistrēties",
   "app.containers.IdeaButton.submitAnIssue1": "Iesniegt jautājumu",
