@@ -19,7 +19,7 @@ module Export
       # LLM call (only the non-structural questions are sent to the model).
       def personal_data_keys(fields)
         structural, questions = fields.partition { |field| structural_pii?(field) }
-        structural.map(&:key).to_set.merge(llm_pii_keys(questions))
+        structural.to_set(&:key).merge(llm_pii_keys(questions))
       end
 
       private
@@ -33,7 +33,7 @@ module Export
 
         prompt = ::Analysis::LLM::Prompt.new.fetch(USE_CASE, fields: fields_for_prompt(fields))
         response = llm.chat(prompt, response_schema: RESPONSE_SCHEMA)
-        sent_keys = fields.map(&:key).to_set
+        sent_keys = fields.to_set(&:key)
         Array(response).select { |key| sent_keys.include?(key) }
       rescue StandardError => e
         # Keep the export review working even if the model/credentials are down;

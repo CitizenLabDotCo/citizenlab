@@ -14,7 +14,7 @@ describe Export::Pdf::PiiDetector do
   let(:user_field) { create(:custom_field, key: 'residence') }
 
   before do
-    allow_any_instance_of(LLMSelector).to receive(:llm_class_for_use_case) # rubocop:disable RSpec/AnyInstance
+    allow_any_instance_of(LLMSelector).to receive(:llm_class_for_use_case)
       .and_return(class_double(Analysis::LLM::ClaudeHaiku45, new: llm))
   end
 
