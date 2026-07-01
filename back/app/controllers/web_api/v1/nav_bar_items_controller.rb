@@ -8,9 +8,9 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   after_action :verify_policy_scoped, only: :index
 
   def index
-    # Only top-level items; dropdown ('menu') children are nested under their parent.
+    # Only top-level items; dropdown children are nested under their parent.
     @items = policy_scope(NavBarItem)
-      .where(parent_id: nil)
+      .top_level
       .includes(:static_page, children: %i[static_page project project_folder])
       .order(:ordering)
     @items = @items.only_default if parse_bool(params[:only_default])
@@ -23,10 +23,12 @@ class WebApi::V1::NavBarItemsController < ApplicationController
     @item = NavBarItem.new attrs
     authorize @item
 
-    if @item.menu?
-      create_dropdown(children)
-    else
+    # A request that carries `children` builds a dropdown (parent + children,
+    # transactionally); otherwise it's a plain leaf/default item.
+    if children.nil?
       add_nav_bar_item
+    else
+      create_dropdown(children)
     end
   end
 
@@ -36,9 +38,9 @@ class WebApi::V1::NavBarItemsController < ApplicationController
     @item.assign_attributes attrs
     authorize @item
 
-    if @item.menu?
-      update_dropdown(children)
-    else
+    # A request that carries `children` reconciles a dropdown's children
+    # transactionally; otherwise it's a plain attribute update.
+    if children.nil?
       SideFxNavBarItemService.new.before_update @item, current_user
       if @item.save
         SideFxNavBarItemService.new.after_update @item, current_user
@@ -49,6 +51,8 @@ class WebApi::V1::NavBarItemsController < ApplicationController
       else
         render json: { errors: @item.errors.details }, status: :unprocessable_entity
       end
+    else
+      update_dropdown(children)
     end
   end
 
@@ -84,32 +88,28 @@ class WebApi::V1::NavBarItemsController < ApplicationController
 
   private
 
-  # Atomically creates a dropdown ('menu') parent with its ordered children.
+  # Atomically creates a dropdown parent with its ordered children.
   def create_dropdown(children)
     fx = SideFxNavBarItemService.new
     ActiveRecord::Base.transaction do
       fx.before_create @item, current_user
-      @item.save!
+      save_or_raise! @item
       sync_children!(@item, children || [])
       fx.after_create @item, current_user
     end
     render_dropdown :created
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { errors: e.record.errors.details }, status: :unprocessable_entity
   end
 
-  # Atomically updates a dropdown ('menu') parent and reconciles its children.
+  # Atomically updates a dropdown parent and reconciles its children.
   def update_dropdown(children)
     fx = SideFxNavBarItemService.new
     ActiveRecord::Base.transaction do
       fx.before_update @item, current_user
-      @item.save!
-      sync_children!(@item, children) unless children.nil?
+      save_or_raise! @item
+      sync_children!(@item, children)
       fx.after_update @item, current_user
     end
     render_dropdown :ok
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { errors: e.record.errors.details }, status: :unprocessable_entity
   end
 
   # Replaces the dropdown's children with the given ordered list. Order in the
@@ -117,12 +117,13 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   def sync_children!(parent, children)
     parent.children.destroy_all
     children.each do |child|
-      parent.children.create!(
+      new_child = parent.children.build(
         code: 'custom',
         static_page_id: child['static_page_id'],
         project_id: child['project_id'],
         project_folder_id: child['project_folder_id']
       )
+      save_or_raise! new_child
     end
   end
 

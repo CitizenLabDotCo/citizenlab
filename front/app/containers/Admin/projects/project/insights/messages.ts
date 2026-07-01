@@ -181,6 +181,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.downloadInsightsPdf',
     defaultMessage: 'Download insights as PDF',
   },
+  exportButton: {
+    id: 'app.containers.Admin.projects.project.insights.exportButton',
+    defaultMessage: 'Export',
+  },
+  exportResponsesToPdf: {
+    id: 'app.containers.Admin.projects.project.insights.exportResponsesToPdf2',
+    defaultMessage: 'Download responses as PDF',
+  },
   noAnswer: {
     id: 'app.containers.Admin.projects.project.insights.noAnswer',
     defaultMessage: 'No answer',

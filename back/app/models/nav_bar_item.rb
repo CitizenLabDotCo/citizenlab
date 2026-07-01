@@ -33,11 +33,7 @@
 #
 class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering.
-  # 'menu' is a dropdown navbar item: a title-only parent grouping child items.
-  CODES = %w[home projects events all_input custom menu].freeze
-
-  # A dropdown ('menu') can hold up to this many child items.
-  MAX_DROPDOWN_CHILDREN = 5
+  CODES = %w[home projects events all_input custom].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: :parent_id
 
@@ -50,13 +46,16 @@ class NavBarItem < ApplicationRecord
 
   validates :title_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: CODES }
-  validates :code, uniqueness: true, unless: ->(item) { item.custom? || item.menu? }
+  validates :code, uniqueness: true, unless: :custom?
   validates :static_page, presence: true, if: :page?
   validates :project, presence: true, if: :project?
   validates :project_folder, presence: true, if: :project_folder?
   validate :dropdown_constraints
 
   before_validation :set_code, on: :create
+
+  # Top-level items only; dropdown children live under their parent.
+  scope :top_level, -> { where(parent_id: nil) }
 
   scope :only_default, lambda {
     result = left_joins(:static_page)
@@ -73,8 +72,14 @@ class NavBarItem < ApplicationRecord
     code == 'custom'
   end
 
-  def menu?
-    code == 'menu'
+  # A dropdown is a custom, top-level item that groups children instead of
+  # linking to a target (page, project or folder) of its own.
+  def dropdown?
+    custom? && !links_to_target?
+  end
+
+  def links_to_target?
+    static_page_id.present? || project_id.present? || project_folder_id.present?
   end
 
   def dropdown_child?
@@ -94,7 +99,7 @@ class NavBarItem < ApplicationRecord
   end
 
   def title_multiloc_with_fallback
-    # Dropdown ('menu') items have no fallback source, so guard against nil.
+    # Dropdown items have no fallback source, so guard against nil.
     (fallback_title_multiloc || {}).merge(title_multiloc || {})
   end
 
@@ -111,20 +116,14 @@ class NavBarItem < ApplicationRecord
     self.code ||= 'custom'
   end
 
-  # Enforces the dropdown ('menu') structure: a menu is a title-only top-level
-  # parent, and its children are non-menu items pointing at a single target.
+  # Enforces the dropdown structure: a dropdown is a title-only, top-level custom
+  # item, and its children are leaf items (each pointing at a single target)
+  # nested directly under a dropdown.
   def dropdown_constraints
-    if menu?
-      if static_page_id.present? || project_id.present? || project_folder_id.present?
-        errors.add(:base, 'A dropdown menu item cannot link to a page, project or folder')
-      end
-      errors.add(:parent, 'A dropdown menu item cannot be nested') if parent_id.present?
-    elsif parent_id.present?
-      errors.add(:parent, 'must be a dropdown menu item') unless parent&.menu?
-      if parent && parent.children.where.not(id: id).count >= MAX_DROPDOWN_CHILDREN
-        errors.add(:base, "A dropdown menu can contain at most #{MAX_DROPDOWN_CHILDREN} items")
-      end
-    end
+    return unless dropdown_child?
+
+    errors.add(:base, 'A nested navbar item must link to a page, project or folder') unless links_to_target?
+    errors.add(:parent, 'must be a dropdown item') unless parent&.dropdown?
   end
 
   def fallback_title_multiloc

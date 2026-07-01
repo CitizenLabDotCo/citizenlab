@@ -19,6 +19,7 @@ import useAnalysisSummaries from 'api/analysis_summaries/useAnalysisSummaries';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -33,6 +34,13 @@ import {
   isFollowUpFiltered,
   isOtherFiltered,
 } from './utils';
+
+// Minimum number of (non-empty) text responses before the analysis is created
+// automatically (which in turn triggers its default summary). Used by both the
+// auto-create guard and the info box that explains it, so the two can't drift.
+// ./AnalysisInsights gates its default summary on the same textResponsesCount
+// and threshold value, so all three stay in step.
+const AUTO_ANALYSIS_MIN_RESPONSES = 10;
 
 type Props = {
   customFieldId: string;
@@ -147,7 +155,7 @@ const Analysis = ({
       analyses &&
       customFieldId &&
       !relevantAnalysis &&
-      textResponsesCount > 10
+      textResponsesCount > AUTO_ANALYSIS_MIN_RESPONSES
     ) {
       addAnalysis({
         projectId: phaseId ? undefined : projectId,
@@ -199,6 +207,14 @@ const Analysis = ({
       ...scopeSearchParams,
     })}`;
 
+  // Below the auto-summary threshold, no summary exists yet: let the admin know
+  // a summary will be generated automatically once enough responses come in.
+  // Applies to every textual case routed through this component (open text
+  // question responses, select/multiselect "other" responses, and sentiment
+  // follow-ups), since they all share the same auto-creation threshold.
+  const showAutoSummaryInfo =
+    noInsights && textResponsesCount <= AUTO_ANALYSIS_MIN_RESPONSES;
+
   const goToAnalysis = () => {
     if (relevantAnalysis?.id) {
       clHistory.push(analysisUrl(relevantAnalysis.id));
@@ -225,15 +241,20 @@ const Analysis = ({
   return (
     <Box position="relative">
       {noInsights && (
-        <Box display="flex">
-          <ButtonWithLink
-            processing={isAddAnalysisLoading}
-            onClick={goToAnalysis}
-            buttonStyle="secondary-outlined"
-            icon="stars"
-          >
-            {formatMessage(messages.createAIAnalysis)}
-          </ButtonWithLink>
+        <Box display="flex" flexDirection="column" gap="12px">
+          {showAutoSummaryInfo && (
+            <Warning>{formatMessage(messages.autoSummaryInfo)}</Warning>
+          )}
+          <Box display="flex">
+            <ButtonWithLink
+              processing={isAddAnalysisLoading}
+              onClick={goToAnalysis}
+              buttonStyle="secondary-outlined"
+              icon="stars"
+            >
+              {formatMessage(messages.createAIAnalysis)}
+            </ButtonWithLink>
+          </Box>
         </Box>
       )}
       {showAnalysisInsights && (

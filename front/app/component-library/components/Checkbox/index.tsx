@@ -3,7 +3,7 @@ import React from 'react';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
 
-import { Color, defaultOutline } from '../../utils/styleUtils';
+import { Color, focusRing } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';
 import Icon from '../Icon';
@@ -78,7 +78,7 @@ const StyledCheckbox = styled.div<{
   transition: all 120ms ease-out;
 
   ${HiddenCheckbox}.focus-visible + & {
-    ${defaultOutline};
+    ${focusRing}
   }
 `;
 
