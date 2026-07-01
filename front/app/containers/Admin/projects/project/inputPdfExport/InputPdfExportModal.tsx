@@ -46,7 +46,10 @@ const InputPdfExportModal = ({
   const localize = useLocalize();
 
   const { data: phase } = usePhase(phaseId);
-  const { data: responseFields } = useInputResponseFields({ phaseId });
+  // Fields carry their PII flag, which the backend derives via an LLM call, so
+  // this can take a moment — surface the loading state in the field list.
+  const { data: responseFields, isLoading: isLoadingFields } =
+    useInputResponseFields({ phaseId });
 
   const { methods, cover } = useCoverForm({ phaseId, projectId });
 
@@ -116,7 +119,7 @@ const InputPdfExportModal = ({
             icon="download"
             onClick={handleGenerate}
             processing={isGenerating}
-            disabled={!consent || isGenerating}
+            disabled={!consent || isGenerating || isLoadingFields}
           >
             <FormattedMessage {...messages.generateButton} />
           </Button>
@@ -129,7 +132,11 @@ const InputPdfExportModal = ({
           <Box flex="1 1 0" minWidth="0" h="100%" overflowY="auto" pr="8px">
             <CoverPageSettings />
 
-            <FieldRedactionList fields={fields} onToggleField={toggleField} />
+            <FieldRedactionList
+              fields={fields}
+              onToggleField={toggleField}
+              isLoading={isLoadingFields}
+            />
 
             <CheckboxWithLabel
               checked={consent}

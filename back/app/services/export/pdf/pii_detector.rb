@@ -3,43 +3,44 @@
 module Export
   module Pdf
     # Flags input fields that collect personal data, so the export UI can
-    # pre-select them for redaction. Two signals, combined:
-    #   1. Registration/user fields — the out-of-form ones (resource_type 'User')
-    #      or the in-form ones tagged with a 'u_' key prefix by
-    #      UserFieldsInFormService. Structurally personal data, always flagged.
-    #   2. An LLM classification of the remaining form questions (title,
-    #      description, options), via the `field_pii_detection` use case.
-    # Best-effort: the admin makes the final call in review, so on any LLM error
-    # we fall back to the structural signal alone.
+    # pre-select them for redaction. All fields — including registration/user
+    # fields — are classified in a single LLM call (`field_pii_detection` use
+    # case) from their title, description and options.
+    # Best-effort: the admin makes the final call in review, so if the LLM is
+    # unavailable we fall back to flagging the fields that are structurally
+    # personal data (registration/user fields).
     class PiiDetector
       USE_CASE = 'field_pii_detection'
       RESPONSE_SCHEMA = { type: 'array', items: { type: 'string' } }.freeze
 
       # The keys of the fields that collect personal data, computed in a single
-      # LLM call (only the non-structural questions are sent to the model).
+      # LLM call over all fields.
       def personal_data_keys(fields)
-        structural, questions = fields.partition { |field| structural_pii?(field) }
-        structural.to_set(&:key).merge(llm_pii_keys(questions))
+        classify_with_llm(fields)
+      rescue StandardError => e
+        # Keep the export review working even if the model/credentials are down;
+        # fall back to the structurally-known personal fields for the admin to review.
+        ErrorReporter.report(e)
+        structural_pii_keys(fields)
       end
 
       private
 
-      def structural_pii?(field)
-        field.resource_type == 'User' || field.key.start_with?('u_')
-      end
-
-      def llm_pii_keys(fields)
-        return [] if fields.empty?
+      def classify_with_llm(fields)
+        return Set.new if fields.empty?
 
         prompt = ::Analysis::LLM::Prompt.new.fetch(USE_CASE, fields: fields_for_prompt(fields))
         response = llm.chat(prompt, response_schema: RESPONSE_SCHEMA)
         sent_keys = fields.to_set(&:key)
-        Array(response).select { |key| sent_keys.include?(key) }
-      rescue StandardError => e
-        # Keep the export review working even if the model/credentials are down;
-        # the structural fields are still flagged and the admin reviews the rest.
-        ErrorReporter.report(e)
-        []
+        Array(response).select { |key| sent_keys.include?(key) }.to_set
+      end
+
+      def structural_pii_keys(fields)
+        fields.select { |field| structural_pii?(field) }.to_set(&:key)
+      end
+
+      def structural_pii?(field)
+        field.resource_type == 'User' || field.key.start_with?('u_')
       end
 
       def fields_for_prompt(fields)

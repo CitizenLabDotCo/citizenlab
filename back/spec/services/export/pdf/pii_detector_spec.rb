@@ -19,17 +19,17 @@ describe Export::Pdf::PiiDetector do
   end
 
   describe '#personal_data_keys' do
-    it 'flags registration/user fields structurally, without an LLM call' do
-      allow(llm).to receive(:chat)
+    it 'classifies all fields (including user fields) via the LLM' do
+      allow(llm).to receive(:chat).and_return(%w[q_name residence])
 
-      expect(detector.personal_data_keys([user_field])).to contain_exactly('residence')
-      expect(llm).not_to have_received(:chat)
+      expect(detector.personal_data_keys([name_field, colour_field, user_field]))
+        .to contain_exactly('q_name', 'residence')
     end
 
-    it 'merges the LLM classification of the question fields' do
-      allow(llm).to receive(:chat).and_return(['q_name'])
+    it 'does not auto-flag user fields — the LLM decides' do
+      allow(llm).to receive(:chat).and_return([])
 
-      expect(detector.personal_data_keys([name_field, colour_field])).to contain_exactly('q_name')
+      expect(detector.personal_data_keys([user_field])).to be_empty
     end
 
     it 'ignores keys the model returns that were not sent to it' do
@@ -38,7 +38,7 @@ describe Export::Pdf::PiiDetector do
       expect(detector.personal_data_keys([name_field, colour_field])).to contain_exactly('q_name')
     end
 
-    it 'falls back to the structural flags when the LLM call fails' do
+    it 'falls back to flagging the structural user fields when the LLM call fails' do
       allow(llm).to receive(:chat).and_raise(StandardError)
       allow(ErrorReporter).to receive(:report)
 
