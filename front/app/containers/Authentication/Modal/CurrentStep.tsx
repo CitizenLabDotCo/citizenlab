@@ -56,6 +56,7 @@ const CurrentStep = ({
         <EmailFlowStart
           loading={loading}
           setError={setError}
+          authenticationData={authenticationData}
           onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
           onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
         />
