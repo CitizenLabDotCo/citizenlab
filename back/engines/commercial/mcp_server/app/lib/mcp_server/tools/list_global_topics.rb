@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListGlobalTopics < McpServer::BaseTool
   def name = 'list_global_topics'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists global topic categories for projects'
   def input_schema = { properties: { **PAGINATION_SCHEMA } }
 

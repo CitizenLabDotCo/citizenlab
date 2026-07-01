@@ -6,6 +6,15 @@
 class McpServer::Tools::UpdateProject < McpServer::BaseTool
   def name = 'update_project'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: true # Fetches `remote_header_bg_url` from an arbitrary public URL.
+    }
+  end
+
   def description
     <<~DESC.squish
       Updates an existing project's content and settings. Partial update — only the fields you pass

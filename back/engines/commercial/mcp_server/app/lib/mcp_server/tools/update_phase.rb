@@ -6,6 +6,15 @@
 class McpServer::Tools::UpdatePhase < McpServer::BaseTool
   def name = 'update_phase'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Updates an existing phase. Partial update — only the fields you pass change, and `*_multiloc`

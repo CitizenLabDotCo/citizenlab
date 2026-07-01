@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListPollQuestions < McpServer::BaseTool
   def name = 'list_poll_questions'
+  def annotations = READ_ANNOTATIONS
   def title = 'List poll questions'
   def description = 'Lists poll questions for a phase, in display order, each with its answer options'
 

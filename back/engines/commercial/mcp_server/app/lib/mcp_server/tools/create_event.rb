@@ -4,6 +4,15 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
   def name = 'create_event'
   def description = 'Creates an event for a project'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: false
+    }
+  end
+
   def input_schema
     {
       properties: {

@@ -15,6 +15,7 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
   }.freeze
 
   def name = 'get_resource'
+  def annotations = READ_ANNOTATIONS
   def description = 'Gets a resource by type and ID'
 
   def input_schema

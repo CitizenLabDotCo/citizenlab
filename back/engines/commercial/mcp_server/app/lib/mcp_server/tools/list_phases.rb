@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListPhases < McpServer::BaseTool
   def name = 'list_phases'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists phases for a project, ordered by start date'
 
   def input_schema

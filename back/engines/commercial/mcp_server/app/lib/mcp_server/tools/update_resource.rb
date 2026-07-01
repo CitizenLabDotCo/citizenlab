@@ -35,6 +35,15 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
 
   def name = 'update_resource'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: true # Some resources (e.g. cause) accept `remote_image_url`, fetched from a public URL.
+    }
+  end
+
   def description
     intro = <<~DESC.squish
       Updates an existing resource. Partial update — only the fields you pass change.

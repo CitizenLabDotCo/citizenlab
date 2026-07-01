@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListEvents < McpServer::BaseTool
   def name = 'list_events'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists events for a project, ordered by start date'
 
   def input_schema

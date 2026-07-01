@@ -9,6 +9,7 @@ class McpServer::Tools::ListFileAttachments < McpServer::BaseTool
   private_constant :CONTAINERS
 
   def name = 'list_file_attachments'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish

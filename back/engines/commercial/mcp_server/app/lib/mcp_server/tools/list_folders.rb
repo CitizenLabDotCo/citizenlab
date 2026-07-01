@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListFolders < McpServer::BaseTool
   def name = 'list_folders'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists project folders. Search by title.'
 
   def input_schema

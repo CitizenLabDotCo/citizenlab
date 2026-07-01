@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListAreas < McpServer::BaseTool
   def name = 'list_areas'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists geographic/administrative areas'
   def input_schema = { properties: { **PAGINATION_SCHEMA } }
 

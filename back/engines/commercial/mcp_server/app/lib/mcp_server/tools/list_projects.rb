@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListProjects < McpServer::BaseTool
   def name = 'list_projects'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists projects. Search by title or description.'
 
   def input_schema

@@ -4,6 +4,15 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
   def name = 'create_project'
   def description = 'Creates a new project in draft'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: true # Fetches `remote_header_bg_url` from an arbitrary public URL.
+    }
+  end
+
   def input_schema
     {
       properties: {

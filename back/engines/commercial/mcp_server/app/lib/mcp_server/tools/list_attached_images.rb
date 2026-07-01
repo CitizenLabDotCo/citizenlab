@@ -8,6 +8,7 @@ class McpServer::Tools::ListAttachedImages < McpServer::BaseTool
   private_constant :CONTAINERS
 
   def name = 'list_attached_images'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish

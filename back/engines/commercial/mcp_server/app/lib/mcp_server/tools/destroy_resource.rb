@@ -26,6 +26,15 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
   def name = 'destroy_resource'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Deletes a resource by id. Only works on resources whose target project is in draft.

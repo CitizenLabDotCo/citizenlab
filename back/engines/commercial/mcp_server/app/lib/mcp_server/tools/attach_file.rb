@@ -10,6 +10,21 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
 
   def name = 'attach_file'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      # The `remote_url` branch isn't idempotent: each call downloads and stores a fresh
+      # file, so two identical calls end up with two attachments. The `file_id` branch is
+      # idempotent at the state level (a unique constraint on
+      # `(file_id, attachable_type, attachable_id)` prevents duplicates), but not at the
+      # response level (the second call errors out instead of returning the existing
+      # attachment).
+      idempotent_hint: false,
+      open_world_hint: true # The `remote_url` branch fetches from an arbitrary public URL.
+    }
+  end
+
   def description
     <<~DESC.squish
       Attaches a file to an existing resource. The file is listed as an attachment

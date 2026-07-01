@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListProjectFiles < McpServer::BaseTool
   def name = 'list_project_files'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish

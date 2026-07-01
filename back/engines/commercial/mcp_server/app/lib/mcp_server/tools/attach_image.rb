@@ -9,6 +9,15 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
 
   def name = 'attach_image'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: true # Fetches the image from an arbitrary public URL.
+    }
+  end
+
   def description
     <<~DESC.squish
       Adds an image to an existing resource by fetching it from a public URL.
