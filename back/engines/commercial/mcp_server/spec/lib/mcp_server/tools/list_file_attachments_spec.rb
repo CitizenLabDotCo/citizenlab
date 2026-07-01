@@ -13,7 +13,7 @@ describe McpServer::Tools::ListFileAttachments do
 
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: project.id },
+      params: { resource_type: 'project', resource_id: project.id },
       current_user:
     )
 
@@ -25,11 +25,11 @@ describe McpServer::Tools::ListFileAttachments do
   it 'returns a not-found error when the resource is missing' do
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: SecureRandom.uuid },
+      params: { resource_type: 'project', resource_id: SecureRandom.uuid },
       current_user:
     )
 
     expect(response).to be_error
-    expect(response.content.first[:text]).to match(/Project not found/)
+    expect(response.content.first[:text]).to match(/project not found/)
   end
 end

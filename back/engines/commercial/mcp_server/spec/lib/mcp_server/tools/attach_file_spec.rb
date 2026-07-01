@@ -12,7 +12,7 @@ describe McpServer::Tools::AttachFile do
     it 'uploads and attaches the file to a project' do
       response = run_mcp_tool(
         described_class,
-        params: { resource_type: 'Project', resource_id: project.id, name: 'doc.pdf', remote_url: },
+        params: { resource_type: 'project', resource_id: project.id, name: 'doc.pdf', remote_url: },
         current_user:
       )
 
@@ -29,7 +29,7 @@ describe McpServer::Tools::AttachFile do
 
       response = run_mcp_tool(
         described_class,
-        params: { resource_type: 'Phase', resource_id: phase.id, name: 'doc.pdf', remote_url: },
+        params: { resource_type: 'phase', resource_id: phase.id, name: 'doc.pdf', remote_url: },
         current_user:
       )
 
@@ -47,7 +47,7 @@ describe McpServer::Tools::AttachFile do
     it 'reuses an existing project file' do
       response = run_mcp_tool(
         described_class,
-        params: { resource_type: 'Project', resource_id: project.id, file_id: existing_file.id },
+        params: { resource_type: 'project', resource_id: project.id, file_id: existing_file.id },
         current_user:
       )
 
@@ -61,7 +61,7 @@ describe McpServer::Tools::AttachFile do
 
       response = run_mcp_tool(
         described_class,
-        params: { resource_type: 'Project', resource_id: project.id, file_id: file.id },
+        params: { resource_type: 'project', resource_id: project.id, file_id: file.id },
         current_user:
       )
 
@@ -75,7 +75,7 @@ describe McpServer::Tools::AttachFile do
 
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: published.id, name: 'doc.pdf', remote_url: },
+      params: { resource_type: 'project', resource_id: published.id, name: 'doc.pdf', remote_url: },
       current_user:
     )
 
@@ -86,7 +86,7 @@ describe McpServer::Tools::AttachFile do
   it 'returns a not-found error when the resource is missing' do
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: SecureRandom.uuid, remote_url: },
+      params: { resource_type: 'project', resource_id: SecureRandom.uuid, remote_url: },
       current_user:
     )
 

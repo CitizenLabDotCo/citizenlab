@@ -2,8 +2,8 @@
 
 class McpServer::Tools::AttachImage < McpServer::BaseTool
   CONTAINERS = {
-    'Project' => { class: Project, association: :project_images },
-    'Event' => { class: Event, association: :event_images }
+    'project' => { class: Project, association: :project_images },
+    'event' => { class: Event, association: :event_images }
   }.freeze
   private_constant :CONTAINERS
 

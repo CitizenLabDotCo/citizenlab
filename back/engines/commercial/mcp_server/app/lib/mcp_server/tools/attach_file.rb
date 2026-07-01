@@ -2,9 +2,9 @@
 
 class McpServer::Tools::AttachFile < McpServer::BaseTool
   CONTAINERS = {
-    'Project' => Project,
-    'Phase' => Phase,
-    'Event' => Event
+    'project' => Project,
+    'phase' => Phase,
+    'event' => Event
   }.freeze
   private_constant :CONTAINERS
 
