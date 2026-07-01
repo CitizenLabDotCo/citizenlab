@@ -651,6 +651,15 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
+          # Immutable per-build asset prefix (Vite `base`) + content-hashed twemoji
+          # prefix. Both are exported via BASH_ENV so the build and the deploy step
+          # below agree on them. The twemoji hash changes iff a glyph changes.
+          name: Compute content-hashed asset + twemoji prefixes
+          command: |
+            echo "export ASSET_BASE_URL=/$CIRCLE_SHA1/" >> "$BASH_ENV"
+            TWEMOJI_HASH=$(find app/public/twemoji -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-12)
+            echo "export TWEMOJI_BASE_URL=/twemoji/$TWEMOJI_HASH/" >> "$BASH_ENV"
+      - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
           no_output_timeout: "30m"
       - run:
@@ -658,7 +667,20 @@ jobs:
       - run:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
-            aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
+            # Twemoji: ~4k immutable SVGs served from a content-hashed prefix. Upload
+            # them only when that prefix doesn't exist yet, so steady-state cost is a
+            # single LIST — not the 4k-file diff that made the old sync slow. The hash
+            # guarantees a fresh prefix (and thus a re-upload) whenever a glyph changes.
+            if [ -z "$(aws s3 ls "s3://cl2-front-staging${TWEMOJI_BASE_URL}")" ]; then
+              aws s3 sync app/public/twemoji/ "s3://cl2-front-staging${TWEMOJI_BASE_URL}" --acl public-read --cache-control "public, max-age=31536000, immutable"
+            fi
+            rm -rf build/twemoji
+            # Upload the build into a fresh, EMPTY per-build prefix. cp --recursive
+            # never lists the bucket root, so deploy time no longer grows with the
+            # thousands of files left there by past deploys. Everything under /<sha>/
+            # is immutable (new prefix each build) -> cache for a year.
+            aws s3 cp build/ "s3://cl2-front-staging/$CIRCLE_SHA1/" --recursive --acl public-read --exclude "index.html" --cache-control "public, max-age=31536000, immutable"
+            # Flip the root index.html to the new prefix — the atomic release switch.
             aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
             aws s3 cp .well-known/security.txt s3://cl2-front-staging/.well-known/security.txt --acl public-read --content-type text/plain
 
@@ -678,6 +700,13 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
+          # See the staging job for rationale.
+          name: Compute content-hashed asset + twemoji prefixes
+          command: |
+            echo "export ASSET_BASE_URL=/$CIRCLE_SHA1/" >> "$BASH_ENV"
+            TWEMOJI_HASH=$(find app/public/twemoji -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-12)
+            echo "export TWEMOJI_BASE_URL=/twemoji/$TWEMOJI_HASH/" >> "$BASH_ENV"
+      - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
           no_output_timeout: "30m"
       - run:
@@ -685,12 +714,19 @@ jobs:
       - run:
           name: Deploy production version
           command: |
-            aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "index.html"
+            # See the staging job for rationale.
+            if [ -z "$(aws s3 ls "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}")" ]; then
+              aws s3 sync app/public/twemoji/ "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}" --acl public-read --cache-control "public, max-age=31536000, immutable"
+            fi
+            rm -rf build/twemoji
+            aws s3 cp build/ "s3://cl2-front-production-benelux/$CIRCLE_SHA1/" --recursive --acl public-read --exclude "index.html" --cache-control "public, max-age=31536000, immutable"
             aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
             aws s3 cp .well-known/security.txt s3://cl2-front-production-benelux/.well-known/security.txt --acl public-read --content-type text/plain
       - run:
           name: Invalidate the static assets on the CDN
-          command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
+          # Assets live at immutable /<sha>/ URLs, so only the root index.html (the
+          # release pointer) needs busting — far cheaper than invalidating /*.
+          command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/index.html'
 
   front-test-lighthouse:
     docker:
