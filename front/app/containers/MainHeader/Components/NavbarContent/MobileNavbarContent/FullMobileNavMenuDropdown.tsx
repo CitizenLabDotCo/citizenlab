@@ -47,7 +47,7 @@ interface Props {
   children: ReactNode;
 }
 
-// Mobile equivalent of a navbar dropdown ('menu') item: a tappable row that
+// Mobile equivalent of a navbar dropdown item: a tappable row that
 // expands in place to reveal its children, with a chevron that rotates to
 // indicate the open/closed state.
 const FullMobileNavMenuDropdown = ({ title, children }: Props) => {

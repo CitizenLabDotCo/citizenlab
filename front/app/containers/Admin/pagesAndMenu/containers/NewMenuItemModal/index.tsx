@@ -39,7 +39,7 @@ const TabsBar = styled.div`
 type Props = {
   opened: boolean;
   onClose: () => void;
-  // When present, the modal edits this dropdown ('menu') item.
+  // When present, the modal edits this dropdown item.
   editItem?: INavbarItem;
 };
 

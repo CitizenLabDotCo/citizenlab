@@ -13,7 +13,7 @@ export const TEMP_DROPDOWN_ITEM_STYLES = `
 `;
 
 export interface NavbarItemProps {
-  // null for dropdown ('menu') items, which carry `navbarItem` instead.
+  // null for dropdown items, which carry `navbarItem` instead.
   linkTo: string | null;
   onlyActiveOnIndex?: boolean;
   navigationItemTitle: Multiloc;
@@ -128,7 +128,7 @@ export const createTempElementsForMeasurement = (
     const { linkTo, onlyActiveOnIndex, navigationItemTitle, navbarItem } =
       navbarItemProps;
 
-    // A regular item has a linkTo; a dropdown ('menu') item has a navbarItem.
+    // A regular item has a linkTo; a dropdown item has a navbarItem.
     if (linkTo || navbarItem) {
       const titleText = localize(navigationItemTitle);
       const tempElement = createTempElement(titleText, hiddenContainer);

@@ -83,10 +83,6 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItemButton',
     defaultMessage: 'Add',
   },
-  upToFiveItems: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.upToFiveItems',
-    defaultMessage: 'A dropdown should contain up to 5 items.',
-  },
   inThisMenu: {
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.inThisMenu',
     defaultMessage: 'In this menu',

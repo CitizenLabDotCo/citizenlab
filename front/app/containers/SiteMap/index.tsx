@@ -167,9 +167,8 @@ const SiteMap = () => {
                               null &&
                             navBarItem.relationships.project.data === null &&
                             // Only default items map to DEFAULT_PAGE_SLUGS;
-                            // 'custom' (folders) and 'menu' (dropdowns) don't.
-                            navBarItem.attributes.code !== 'custom' &&
-                            navBarItem.attributes.code !== 'menu'
+                            // 'custom' items (leaves and dropdowns) don't.
+                            navBarItem.attributes.code !== 'custom'
                         )
                         .map((navBarItem) => (
                           <li key={navBarItem.id}>

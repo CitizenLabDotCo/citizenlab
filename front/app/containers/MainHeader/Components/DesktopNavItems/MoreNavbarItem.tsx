@@ -114,8 +114,8 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
         content={
           <>
             {overflowItems.map((item, index) => {
-              // A dropdown ('menu') item has no link of its own; flatten its
-              // children into the overflow list so they stay reachable.
+              // A dropdown item has no link of its own; flatten its children
+              // into the overflow list so they stay reachable.
               if (item.navbarItem) {
                 const dropdownChildren =
                   item.navbarItem.attributes.children ?? [];

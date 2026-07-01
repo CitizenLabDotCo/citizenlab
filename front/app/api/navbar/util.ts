@@ -7,13 +7,25 @@ export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
   events: '/events',
 };
 
+// A dropdown is a custom navbar item that groups children instead of linking
+// to a target (page, project or folder) of its own. Mirrors the backend's
+// NavBarItem#dropdown?.
+export function isNavbarDropdown({
+  attributes: { code },
+  relationships,
+}: INavbarItem): boolean {
+  const linksToTarget =
+    !!relationships.static_page.data?.id ||
+    !!relationships.project.data?.id ||
+    !!relationships.project_folder.data?.id;
+  return code === 'custom' && !linksToTarget;
+}
+
 // utility function to get slug associated with navbar item
 export function getNavbarItemSlug({
   attributes: { code, slug },
   relationships,
 }: INavbarItem): string | null {
-  if (code === 'menu') return null;
-
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
   const hasCorrespondingFolder = !!relationships.project_folder.data?.id;
@@ -38,8 +50,7 @@ export function getNavbarItemSlug({
     return `/folders/${slug}`;
   }
 
-  // This is impossible, but I can't seem to make typescript understand
-  // that. So just returning null here
+  // Dropdown items (custom, no target of their own) have no slug and land here.
   return null;
 }
 

@@ -30,7 +30,6 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import SearchSelect from 'components/HookForm/SearchSelect';
 import T from 'components/T';
 import Error from 'components/UI/Error';
-import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
@@ -42,8 +41,6 @@ import useAvailableItems, {
   DROPDOWN_CHILD_TYPES,
   MenuItemType,
 } from './useAvailableItems';
-
-const MAX_ITEMS = 5;
 
 type ChildKind = 'page' | 'project' | 'folder';
 
@@ -168,11 +165,9 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
     label: localize(item.titleMultiloc),
   }));
 
-  const isFull = children.length >= MAX_ITEMS;
-
   // Items are added immediately on selection; the select then clears itself.
   const handleSelect = (option: { value: string; label: string } | null) => {
-    if (!option || isFull) return;
+    if (!option) return;
     const available = availableItems.at(Number(option.value));
     const child = available && itemToLocalChild(available.item);
     if (!child) return;
@@ -252,7 +247,6 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
                   <SearchSelect
                     name="itemPicker"
                     options={itemOptions}
-                    isDisabled={isFull}
                     placeholder={formatMessage(messages.selectItemPlaceholder)}
                     // Selecting an option adds it to the list, then clears the
                     // picker so it's ready for the next selection.
@@ -264,8 +258,6 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
                 </Box>
               </Box>
             </Box>
-
-            <Warning>{formatMessage(messages.upToFiveItems)}</Warning>
 
             {children.length > 0 && (
               <Box>

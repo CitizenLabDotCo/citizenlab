@@ -6,7 +6,11 @@ import { INavbarItem } from 'api/navbar/types';
 import useDeleteNavbarItem from 'api/navbar/useDeleteNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
-import { getNavbarItemSlug, MAX_NAVBAR_ITEMS } from 'api/navbar/util';
+import {
+  getNavbarItemSlug,
+  isNavbarDropdown,
+  MAX_NAVBAR_ITEMS,
+} from 'api/navbar/util';
 
 import PagesMenuTabs from 'containers/Admin/pagesAndMenu/components/PagesMenuTabs';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
@@ -40,6 +44,10 @@ const MenuTab = () => {
 
   const navbarIsFull = navbarItems.data.length >= MAX_NAVBAR_ITEMS;
 
+  // The sortable list types its rows loosely (`Item`); at runtime they are the
+  // INavbarItem[] we passed in, so narrow once here.
+  const isDropdownItem = (item: Item) => isNavbarDropdown(item as INavbarItem);
+
   const openNewModal = () => {
     setEditItem(undefined);
     setModalOpen(true);
@@ -54,8 +62,8 @@ const MenuTab = () => {
       return;
     }
 
-    // Dropdown ('menu') items are edited in the modal.
-    if (navbarItem.attributes.code === 'menu') {
+    // Dropdown items are edited in the modal.
+    if (isDropdownItem(navbarItem)) {
       setEditItem(navbarItem as INavbarItem);
       setModalOpen(true);
       return;
@@ -72,7 +80,7 @@ const MenuTab = () => {
 
   const getViewButtonLink = (navbarItem: Item) => {
     // Dropdowns aren't links, so they have no view button.
-    if (navbarItem.attributes.code === 'menu') return undefined;
+    if (isDropdownItem(navbarItem)) return undefined;
     return getNavbarItemSlug(navbarItem as INavbarItem) || '/';
   };
 
@@ -90,17 +98,15 @@ const MenuTab = () => {
             content={formatMessage(messages.navBarMaxItems)}
             disabled={!navbarIsFull}
           >
-            <Box>
-              <ButtonWithLink
-                buttonStyle="admin-dark"
-                icon="plus-circle"
-                id="e2e-new-menu-item"
-                onClick={openNewModal}
-                disabled={navbarIsFull}
-              >
-                {formatMessage(messages.newMenuItem)}
-              </ButtonWithLink>
-            </Box>
+            <ButtonWithLink
+              buttonStyle="admin-dark"
+              icon="plus-circle"
+              id="e2e-new-menu-item"
+              onClick={openNewModal}
+              disabled={navbarIsFull}
+            >
+              {formatMessage(messages.newMenuItem)}
+            </ButtonWithLink>
           </Tooltip>
         }
       >
@@ -120,10 +126,8 @@ const MenuTab = () => {
                   >
                     <MenuItemRow
                       title={navbarItem.attributes.title_multiloc}
-                      isDefaultPage={
-                        !['custom', 'menu'].includes(navbarItem.attributes.code)
-                      }
-                      isDropdown={navbarItem.attributes.code === 'menu'}
+                      isDefaultPage={navbarItem.attributes.code !== 'custom'}
+                      isDropdown={isDropdownItem(navbarItem)}
                       dropdownChildren={navbarItem.attributes.children}
                       viewButtonLink={getViewButtonLink(navbarItem)}
                       onClickEditButton={handleClickEdit(navbarItem)}
@@ -142,10 +146,8 @@ const MenuTab = () => {
                   >
                     <MenuItemRow
                       title={navbarItem.attributes.title_multiloc}
-                      isDefaultPage={
-                        !['custom', 'menu'].includes(navbarItem.attributes.code)
-                      }
-                      isDropdown={navbarItem.attributes.code === 'menu'}
+                      isDefaultPage={navbarItem.attributes.code !== 'custom'}
+                      isDropdown={isDropdownItem(navbarItem)}
                       dropdownChildren={navbarItem.attributes.children}
                       viewButtonLink={getViewButtonLink(navbarItem)}
                       onClickEditButton={handleClickEdit(navbarItem)}

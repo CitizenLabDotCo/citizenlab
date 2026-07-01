@@ -17,7 +17,7 @@ export type MenuItemType =
   | 'folder'
   | 'project';
 
-// Types selectable as children of a dropdown ('menu') item.
+// Types selectable as children of a dropdown item.
 export const DROPDOWN_CHILD_TYPES: MenuItemType[] = [
   'custom_page',
   'folder',

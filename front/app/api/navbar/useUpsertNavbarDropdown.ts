@@ -20,7 +20,7 @@ const upsertNavbarDropdown = ({ id, ...attributes }: INavbarDropdown) => {
   return fetcher<INavbarItemResponse>({
     path: '/nav_bar_items',
     action: 'post',
-    body: { nav_bar_item: { code: 'menu', ...attributes } },
+    body: { nav_bar_item: { code: 'custom', ...attributes } },
   });
 };
 

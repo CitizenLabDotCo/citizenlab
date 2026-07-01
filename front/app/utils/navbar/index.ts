@@ -53,7 +53,7 @@ function getPagesNotInNavbar(
       if (navbarItem.relationships.static_page.data) {
         ids.push(navbarItem.relationships.static_page.data.id);
       }
-      // Pages can also be nested inside a dropdown ('menu') item.
+      // Pages can also be nested inside a dropdown item.
       navbarItem.attributes.children?.forEach((child) => {
         if (child.static_page_id) ids.push(child.static_page_id);
       });

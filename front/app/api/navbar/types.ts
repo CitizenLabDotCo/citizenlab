@@ -17,7 +17,7 @@ export type TDefaultNavbarItemCode =
   | 'all_input'
   | 'events';
 
-export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom' | 'menu';
+export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
 
 export interface INavbarChild {
   id: string;

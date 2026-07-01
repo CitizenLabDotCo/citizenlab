@@ -136,8 +136,8 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
               navigationItemTitle,
               navbarItem,
             } = navbarItemProps;
-            // Dropdown ('menu') items have no link of their own; render them as
-            // an expandable row that reveals their children in place.
+            // Dropdown items have no link of their own; render them as an
+            // expandable row that reveals their children in place.
             if (navbarItem) {
               const dropdownChildren = navbarItem.attributes.children ?? [];
               return (
