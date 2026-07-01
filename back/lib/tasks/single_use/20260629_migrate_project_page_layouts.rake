@@ -1,28 +1,14 @@
 # frozen_string_literal: true
 
-# Creates a `project_page` content_builder_layout for every project that already
-# has a `project_description` layout, reproducing the legacy public project page
-# with the new project page builder structure.
-#
-# The migration is additive: the existing `project_description` row is never
-# touched. Reverting means deleting the `project_page` rows.
-#
-# Idempotent: projects that already have a `project_page` layout are skipped, so
-# re-running never duplicates.
-#
-# Dry-run by default. Set DRY_RUN=false to actually write the new layouts.
+# Creates an additive, idempotent `project_page` layout for every project that
+# has a `project_description` layout. Dry-run by default (DRY_RUN=false writes).
 #
 #   bin/rake single_use:migrate_project_page_layouts                # dry-run
 #   DRY_RUN=false bin/rake single_use:migrate_project_page_layouts  # execute
 
-# Builds the `project_page` craftjs_json from a `project_description` layout's
-# craftjs_json. Kept deliberately self-contained (pure transform, no DB) so it
-# can be unit-tested with fixtures.
-#
-# The canonical structure mirrors the frontend
-# `front/app/components/ProjectPageBuilder/defaultLayout.ts`
-# (`defaultProjectPageLayout` + `ensureLockedHeaderNodes`). Keep the two in sync;
-# the spec asserts the produced json survives the frontend normalizer unchanged.
+# Pure transform (no DB) from a `project_description` craftjs_json to a
+# `project_page` one. Mirrors the frontend `defaultLayout.ts`
+# (`defaultProjectPageLayout` + `ensureLockedHeaderNodes`) — keep the two in sync.
 class ProjectPageLayoutBuilder
   ROOT_ID = 'ROOT'
   BANNER_ID = 'PROJECT_PAGE_BANNER'
@@ -32,9 +18,8 @@ class ProjectPageLayoutBuilder
   INPUT_FEED_ID = 'PROJECT_PAGE_INPUT_FEED'
   EVENTS_ID = 'PROJECT_PAGE_EVENTS'
 
-  # Description-builder-only widgets that are absent from the project page
-  # resolver. Left in place they crash craft.js when the public page
-  # deserializes the layout, so they are stripped (with their subtrees).
+  # Widgets absent from the project page resolver; left in place they crash
+  # craft.js on deserialize, so they are stripped with their subtrees.
   # Keep in sync with REMOVED_WIDGETS in defaultLayout.ts.
   UNSUPPORTED_WIDGETS = %w[
     FolderFiles
@@ -45,9 +30,7 @@ class ProjectPageLayoutBuilder
     ExtraSurveysWidget
   ].freeze
 
-  # Injected description nodes are re-keyed with this prefix so they can never
-  # collide with the fixed PROJECT_PAGE_* / ROOT ids, and so migrated content is
-  # recognisable in the stored json.
+  # Re-key injected nodes so they can't collide with the fixed PROJECT_PAGE_* ids.
   INJECTED_ID_PREFIX = 'd_'
 
   def initialize(description_craftjs)
@@ -248,9 +231,8 @@ class ProjectPageLayoutBuilder
     }
   end
 
-  # craft.js persists a widget's `custom.title` as the resolved react-intl
-  # descriptor. Reproduced here so the json is a fixed point of the frontend
-  # `ensureLockedHeaderNodes` (which re-stamps these on load).
+  # craft.js persists `custom.title` as a resolved react-intl descriptor;
+  # reproduced here so the json is a fixed point of `ensureLockedHeaderNodes`.
   def message(id, default_message)
     { 'id' => id, 'defaultMessage' => default_message }
   end
