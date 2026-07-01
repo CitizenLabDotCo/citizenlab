@@ -91,14 +91,15 @@ class WebApi::V1::PhasesController < ApplicationController
   # registration/personal-data fields so the UI can pre-select them for
   # redaction. Source of truth for the export's field set.
   def input_response_fields
-    detector = Export::Pdf::PiiDetector.new
-    data = Export::InputFields.new(@phase).all.map do |field|
+    fields = Export::InputFields.new(@phase).all
+    pii_keys = Export::Pdf::PiiDetector.new.personal_data_keys(fields)
+    data = fields.map do |field|
       {
         id: field.key,
         type: 'input_response_field',
         attributes: {
           title_multiloc: field.title_multiloc,
-          personal_data: detector.personal_data?(field)
+          personal_data: pii_keys.include?(field.key)
         }
       }
     end

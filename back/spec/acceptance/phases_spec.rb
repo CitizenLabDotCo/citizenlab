@@ -247,6 +247,10 @@ resource 'Phases' do
     before do
       form = create(:custom_form, participation_context: phase)
       create(:custom_field, resource: form, key: 'q1', title_multiloc: { 'en' => 'Favourite colour' })
+      # Stub the PII LLM classification so the endpoint makes no network call.
+      llm = instance_double(Analysis::LLM::ClaudeHaiku45, chat: [])
+      allow_any_instance_of(LLMSelector).to receive(:llm_class_for_use_case) # rubocop:disable RSpec/AnyInstance
+        .and_return(class_double(Analysis::LLM::ClaudeHaiku45, new: llm))
     end
 
     context 'when visitor' do

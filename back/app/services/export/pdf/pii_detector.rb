@@ -2,31 +2,64 @@
 
 module Export
   module Pdf
-    # Flags input fields that likely hold personal data, so the export UI can
-    # pre-select them for redaction. Two signals:
-    #   1. Registration/user fields — either the out-of-form ones (resource_type
-    #      'User') or the in-form ones tagged with a 'u_' key prefix by
-    #      UserFieldsInFormService (both language-independent).
-    #   2. The field title matching a known PII term. Hardcoded English terms for
-    #      now (this detection is slated to be reworked), so matching only works
-    #      for English-language titles.
-    #
-    # It's a best-effort safety net; the admin makes the final call in review.
+    # Flags input fields that collect personal data, so the export UI can
+    # pre-select them for redaction. Two signals, combined:
+    #   1. Registration/user fields — the out-of-form ones (resource_type 'User')
+    #      or the in-form ones tagged with a 'u_' key prefix by
+    #      UserFieldsInFormService. Structurally personal data, always flagged.
+    #   2. An LLM classification of the remaining form questions (title,
+    #      description, options), via the `field_pii_detection` use case.
+    # Best-effort: the admin makes the final call in review, so on any LLM error
+    # we fall back to the structural signal alone.
     class PiiDetector
-      TERMS = [
-        'name', 'email', 'phone number', 'postal code', 'postal address',
-        'date of birth', 'ID', 'identification number'
-      ].freeze
+      USE_CASE = 'field_pii_detection'
+      RESPONSE_SCHEMA = { type: 'array', items: { type: 'string' } }.freeze
 
-      def initialize
-        @term_regexes = TERMS.map { |term| /\b#{Regexp.escape(term)}\b/i }
+      # The keys of the fields that collect personal data, computed in a single
+      # LLM call (only the non-structural questions are sent to the model).
+      def personal_data_keys(fields)
+        structural, questions = fields.partition { |field| structural_pii?(field) }
+        structural.map(&:key).to_set.merge(llm_pii_keys(questions))
       end
 
-      def personal_data?(field)
-        return true if field.resource_type == 'User' || field.key.start_with?('u_')
+      private
 
-        titles = field.title_multiloc.values.compact
-        @term_regexes.any? { |regex| titles.any? { |title| regex.match?(title) } }
+      def structural_pii?(field)
+        field.resource_type == 'User' || field.key.start_with?('u_')
+      end
+
+      def llm_pii_keys(fields)
+        return [] if fields.empty?
+
+        prompt = ::Analysis::LLM::Prompt.new.fetch(USE_CASE, fields: fields_for_prompt(fields))
+        response = llm.chat(prompt, response_schema: RESPONSE_SCHEMA)
+        sent_keys = fields.map(&:key).to_set
+        Array(response).select { |key| sent_keys.include?(key) }
+      rescue StandardError => e
+        # Keep the export review working even if the model/credentials are down;
+        # the structural fields are still flagged and the admin reviews the rest.
+        ErrorReporter.report(e)
+        []
+      end
+
+      def fields_for_prompt(fields)
+        fields.map do |field|
+          {
+            key: field.key,
+            title: multiloc_service.t(field.title_multiloc),
+            description: multiloc_service.t(field.description_multiloc),
+            input_type: field.input_type,
+            options: field.ordered_transformed_options.map { |option| multiloc_service.t(option.title_multiloc) }
+          }
+        end
+      end
+
+      def llm
+        @llm ||= LLMSelector.new.llm_class_for_use_case(USE_CASE).new
+      end
+
+      def multiloc_service
+        @multiloc_service ||= MultilocService.new
       end
     end
   end
