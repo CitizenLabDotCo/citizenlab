@@ -14,7 +14,8 @@ module DecidimImporter
     # files. Files that
     # belong to a Decidim *attachment collection* are nested inside an `AccordionMultiloc` (titled with
     # the collection name, opening with a `TextMultiloc` of the collection description when it has one),
-    # under a "Documents to consult" H2 heading; files with no collection stay at the layout root. The
+    # under a "Documents to consult" H2 heading (preceded by a blank `WhiteSpace`); files with no
+    # collection stay at the layout root. The
     # blocks reference
     # pages/files by the explicit UUIDs the static-page and file records were assigned, so the ids
     # resolve once those records are created. The layout's own `after_save` (`sync_file_attachments`)
@@ -150,7 +151,11 @@ module DecidimImporter
         return if accordions.empty?
 
         heading = documents_heading(collections)
-        blocks << leaf('documents-heading', 'TextMultiloc', { 'text' => heading }) if heading.present?
+        if heading.present?
+          # A blank space sets the documents section apart from the content above its heading.
+          blocks << leaf('documents-space', 'WhiteSpace', { 'size' => 'medium' })
+          blocks << leaf('documents-heading', 'TextMultiloc', { 'text' => heading })
+        end
         blocks.concat(accordions)
       end
 

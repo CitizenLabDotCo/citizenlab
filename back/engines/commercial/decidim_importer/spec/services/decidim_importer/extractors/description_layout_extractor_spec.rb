@@ -239,6 +239,10 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
       # Translated via the back-end key (en fallback for fr-FR until Polyglit adds French), wrapped in <h2>.
       heading_text = root[heading_index].last['props']['text']['fr-FR']
       expect(heading_text).to eq("<h2>#{I18n.t('decidim_importer.documents_to_consult', locale: 'fr-FR')}</h2>")
+
+      # A blank space sits directly above the heading.
+      space_node = root[heading_index - 1].last
+      expect(space_node['type']['resolvedName']).to eq('WhiteSpace')
     end
 
     it 'adds no documents heading when the project has no collections' do
