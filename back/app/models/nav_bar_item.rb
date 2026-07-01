@@ -58,6 +58,9 @@ class NavBarItem < ApplicationRecord
 
   before_validation :set_code, on: :create
 
+  # Top-level items only; dropdown ('menu') children live under their parent.
+  scope :top_level, -> { where(parent_id: nil) }
+
   scope :only_default, lambda {
     result = left_joins(:static_page)
     result.where(code: 'home')

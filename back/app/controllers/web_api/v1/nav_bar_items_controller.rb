@@ -10,7 +10,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   def index
     # Only top-level items; dropdown ('menu') children are nested under their parent.
     @items = policy_scope(NavBarItem)
-      .where(parent_id: nil)
+      .top_level
       .includes(:static_page, children: %i[static_page project project_folder])
       .order(:ordering)
     @items = @items.only_default if parse_bool(params[:only_default])
@@ -89,13 +89,11 @@ class WebApi::V1::NavBarItemsController < ApplicationController
     fx = SideFxNavBarItemService.new
     ActiveRecord::Base.transaction do
       fx.before_create @item, current_user
-      @item.save!
+      save_or_raise! @item
       sync_children!(@item, children || [])
       fx.after_create @item, current_user
     end
     render_dropdown :created
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { errors: e.record.errors.details }, status: :unprocessable_entity
   end
 
   # Atomically updates a dropdown ('menu') parent and reconciles its children.
@@ -103,13 +101,11 @@ class WebApi::V1::NavBarItemsController < ApplicationController
     fx = SideFxNavBarItemService.new
     ActiveRecord::Base.transaction do
       fx.before_update @item, current_user
-      @item.save!
+      save_or_raise! @item
       sync_children!(@item, children) unless children.nil?
       fx.after_update @item, current_user
     end
     render_dropdown :ok
-  rescue ActiveRecord::RecordInvalid => e
-    render json: { errors: e.record.errors.details }, status: :unprocessable_entity
   end
 
   # Replaces the dropdown's children with the given ordered list. Order in the
@@ -117,12 +113,13 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   def sync_children!(parent, children)
     parent.children.destroy_all
     children.each do |child|
-      parent.children.create!(
+      new_child = parent.children.build(
         code: 'custom',
         static_page_id: child['static_page_id'],
         project_id: child['project_id'],
         project_folder_id: child['project_folder_id']
       )
+      save_or_raise! new_child
     end
   end
 

@@ -34,9 +34,7 @@ resource 'NavBarItems' do
       expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) })
         .to eq %w[home custom custom custom events all_input]
     end
-  end
 
-  get 'web_api/v1/nav_bar_items' do
     example 'Nests dropdown children under the parent and hides them from the top level' do
       menu = create(:nav_bar_item, :menu)
       child_page = create(:static_page, slug: 'child-page')

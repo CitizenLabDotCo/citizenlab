@@ -29,7 +29,7 @@ class NavBarItemService
       prev_code != item.code
     end
     # all current codes in order (top-level items only; children live in their own ordering scope)
-    cur_codes = NavBarItem.where(parent_id: nil).order(:ordering).pluck(:code)
+    cur_codes = NavBarItem.top_level.order(:ordering).pluck(:code)
     # all current codes expected to appear before the item's new position
     expected_prev_codes = all_prev_codes.select do |prev_code|
       # Not using set intersection to have an
@@ -39,7 +39,7 @@ class NavBarItemService
     end
     # check if the expected codes are indeed appearing exactly all before the item's new position
     if cur_codes.take(expected_prev_codes.size) == expected_prev_codes
-      (NavBarItem.where(parent_id: nil).find_by(code: expected_prev_codes.last)&.ordering || -1) + 1
+      (NavBarItem.top_level.find_by(code: expected_prev_codes.last)&.ordering || -1) + 1
     else
       false
     end
@@ -49,7 +49,7 @@ class NavBarItemService
     # When all default items occur before all custom items,
     # reposition the new default item behind the last
     # default item.
-    code_sequence = NavBarItem.where(parent_id: nil).order(:ordering).pluck(:code) - [item.code]
+    code_sequence = NavBarItem.top_level.order(:ordering).pluck(:code) - [item.code]
     pos = code_sequence.index 'custom'
     if code_sequence[pos..].all? 'custom'
       pos
