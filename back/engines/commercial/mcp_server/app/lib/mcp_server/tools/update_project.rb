@@ -1,0 +1,45 @@
+# frozen_string_literal: true
+
+# Dedicated update tool for projects (too side-effect-heavy for the generic update_resource).
+# Content/settings only: publication state, folder/space moves, and the header image are
+# intentionally NOT updatable here — publishing stays a deliberate human action.
+class McpServer::Tools::UpdateProject < McpServer::BaseTool
+  def name = 'update_project'
+
+  def description
+    <<~DESC.squish
+      Updates an existing project's content and settings. Partial update — only the fields you pass
+      change, and `*_multiloc` fields merge per locale. Accepts the same content fields as
+      create_project (see that tool for field semantics), except folder_id — a project can't be
+      moved between folders here. Does not change publication status (draft/published/archived) or
+      set the header image.
+    DESC
+  end
+
+  def input_schema
+    create_properties = McpServer::Tools::CreateProject.new.input_schema[:properties].except(:folder_id)
+    {
+      properties: { project_id: { type: 'string', description: 'The ID of the project to update.' }, **create_properties },
+      additionalProperties: false,
+      required: %w[project_id]
+    }
+  end
+
+  class Runner < McpServer::BaseTool::Runner
+    def run
+      project = Project.find(params[:project_id])
+      attributes = params.except(:project_id)
+      project.assign_attributes(merge_multilocs(project, attributes))
+
+      SideFxProjectService.new.before_update(project, current_user)
+      project.save!
+      SideFxProjectService.new.after_update(project, current_user)
+
+      ok("Updated project #{project.id}")
+    rescue ActiveRecord::RecordNotFound
+      error("Project not found: #{params[:project_id]}")
+    rescue ActiveRecord::RecordInvalid => e
+      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+    end
+  end
+end
