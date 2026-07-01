@@ -717,7 +717,7 @@ jobs:
             aws s3 cp .well-known/security.txt s3://cl2-front-production-benelux/.well-known/security.txt --acl public-read --content-type text/plain
           # NEW: Keep commented until validated on staging.
           # command: |
-          #   if [ -z "$(aws s3 ls "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}")" ]; then
+          #   if [ "$(aws s3api list-objects-v2 --bucket cl2-front-production-benelux --prefix "${TWEMOJI_BASE_URL#/}" --max-keys 1 --query 'KeyCount' --output text)" = "0" ]; then
           #    aws s3 sync app/public/twemoji/ "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}" --acl public-read --cache-control "public, max-age=31536000, immutable"
           #   fi
           #   rm -rf build/twemoji
