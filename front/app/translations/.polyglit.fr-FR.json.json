@@ -7149,6 +7149,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.containers.EventsShow.viewLocationOnGoogleMaps": {
     "state": "verified",
     "verified_at": "2026-06-19T09:35:34.178166Z",
@@ -11723,6 +11724,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ContentBuilder.richTextMultiloc": {
+    "state": "verified",
+    "verified_at": "2026-06-19T09:36:38.312242Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.admin.ContentBuilder.selectedProjects": {
     "state": "verified",

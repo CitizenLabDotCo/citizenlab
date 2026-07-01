@@ -3554,6 +3554,7 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
   "app.components.admin.UserFilterConditions.field_participated_in_input": {
     "state": "verified",
     "verified_at": "2026-07-01T07:58:46.314688Z",
@@ -6054,6 +6055,7 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
   "app.components.trendIndicator.comparedToLastQuarter": {
     "state": "verified",
     "verified_at": "2026-06-15T09:13:10.830148Z",
@@ -6064,16 +6066,19 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
   "app.components.trendIndicator.trendDecreased": {
     "state": "verified",
     "verified_at": "2026-06-15T09:13:10.830148Z",
     "verified_by": "Jelena"
   },
+
   "app.components.trendIndicator.trendIncreased": {
     "state": "verified",
     "verified_at": "2026-06-15T09:13:10.830148Z",
     "verified_by": "Jelena"
   },
+
   "app.components.trendIndicator.trendNoChange": {
     "state": "verified",
     "verified_at": "2026-06-15T09:13:10.830148Z",
@@ -7154,6 +7159,7 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
   "app.containers.EventsShow.viewLocationOnGoogleMaps": {
     "state": "verified",
     "verified_at": "2026-06-18T11:53:51.177677Z",
@@ -11729,6 +11735,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.admin.ContentBuilder.richTextMultiloc": {
+    "state": "verified",
+    "verified_at": "2026-06-17T09:27:03.034167Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.admin.ContentBuilder.selectedProjects": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -13624,76 +13635,91 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
   "containers.OAuthAuthorize.authorizeButton": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.authorizeExplanation2": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.authorizeHeading": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.denyButton": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.inControlDetail2": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.inControlTitle": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.invalidRequestExplanation": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.invalidRequestHeading": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.pageTitle": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.scopeFallbackDetail2": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.scopeFallbackTitle2": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.scopeMcpAccessDetail": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.scopeMcpAccessTitle": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.signInButton": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",
     "verified_by": "Jelena"
   },
+
   "containers.OAuthAuthorize.signInPrompt": {
     "state": "verified",
     "verified_at": "2026-06-09T14:26:27.625482Z",

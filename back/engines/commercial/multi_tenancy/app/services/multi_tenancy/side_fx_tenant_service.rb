@@ -75,3 +75,7 @@ module MultiTenancy
     end
   end
 end
+
+MultiTenancy::SideFxTenantService.prepend(
+  ContentBuilder::Patches::MultiTenancy::SideFxTenantService
+)
