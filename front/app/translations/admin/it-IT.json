@@ -573,7 +573,7 @@
   "app.components.formBuilder.editWarningModal.addOrReorderDescription": "I tuoi dati di risposta potrebbero essere imprecisi",
   "app.components.formBuilder.editWarningModal.changeQuestionText2": "Modifica il testo",
   "app.components.formBuilder.editWarningModal.changeQuestionTextDescription": "Vuoi correggere un errore di battitura? Non influirà sui dati delle risposte",
-  "app.components.formBuilder.editWarningModal.deleteAQuestionDescription": "Perderai i dati di risposta collegati a quella domanda",
+  "app.components.formBuilder.editWarningModal.deleteAQuestionDescription": "Perderai i dati delle risposte collegate a quella domanda",
   "app.components.formBuilder.editWarningModal.deteleAQuestion": "Elimina una domanda",
   "app.components.formBuilder.editWarningModal.exportYouResponses2": "esporta le tue risposte.",
   "app.components.formBuilder.editWarningModal.loseDataWarning3": "Attenzione: Potresti perdere per sempre i dati delle risposte. Prima di continuare,",
