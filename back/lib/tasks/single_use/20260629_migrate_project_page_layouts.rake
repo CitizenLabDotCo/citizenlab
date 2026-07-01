@@ -130,8 +130,6 @@ class ProjectPageLayoutBuilder
     type.is_a?(Hash) ? type['resolvedName'] : type
   end
 
-  # The locked header above a body of: timeline, the migrated description
-  # content, the (locked) participation feed, then events.
   def canonical_nodes(description_ids)
     {
       ROOT_ID => {
@@ -176,7 +174,7 @@ class ProjectPageLayoutBuilder
       },
       BODY_ID => {
         'type' => { 'resolvedName' => 'ProjectPageBody' },
-        'nodes' => [TIMELINE_ID, *description_ids, INPUT_FEED_ID, EVENTS_ID],
+        'nodes' => [*description_ids, TIMELINE_ID, INPUT_FEED_ID, EVENTS_ID],
         'props' => {},
         'custom' => { 'region' => true },
         'hidden' => false,
