@@ -651,14 +651,44 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
+          # Emoji rendering (twemoji) ships ~4k immutable SVGs served at stable
+          # codepoint URLs. Export their URL prefix as a BASH_ENV from a hash of their
+          # contents that the build changes the URL if any icons change.
+          # Unset locally, so dev serves them from app/public/.
+          name: Compute content-hashed twemoji asset prefix
+          command: |
+            TWEMOJI_HASH=$(find app/public/twemoji -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-12)
+            echo "export TWEMOJI_BASE_URL=/twemoji/$TWEMOJI_HASH/" >> "$BASH_ENV"
+      - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING POSTHOG_API_KEY=$POSTHOG_API_KEY_STAGING npm run build
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
       - run:
+          # Vite copies app/public/twemoji into build/ on every build, and the
+          # deploy sync would otherwise re-upload all ~4k files each run (sync sees
+          # fresh mtimes in CI). Instead sync them once to the content-hashed
+          # prefix: --size-only makes it a no-op when the prefix already exists,
+          # and the hash guarantees a fresh prefix whenever a glyph changes, so the
+          # size comparison is safe and the immutable cache never goes stale. The
+          # deploy sync below has no --delete, so prefixes persist across deploys.
+          name: Sync twemoji emoji assets to S3 (content-hashed, immutable)
+          command: |
+            if [ -z "${TWEMOJI_BASE_URL:-}" ]; then
+              echo "TWEMOJI_BASE_URL is not set; refusing to sync twemoji to bucket root" >&2
+              exit 1
+            fi
+            aws s3 sync app/public/twemoji/ "s3://cl2-front-staging${TWEMOJI_BASE_URL}" --acl public-read --size-only --cache-control "public, max-age=31536000, immutable"
+            rm -rf build/twemoji
+      - run:
+          # Content-hashed JS bundles ([name].[hash].min.js / .chunk.js) are
+          # immutable: a change produces a new filename, so cache them for a year.
+          # Everything else (fonts, css) keeps the default cache
+          # Except index.html (no-cache, below)
           name: Deploy to S3 if tests pass and branch is Master
           command: |
-            aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html"
+            aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "*" --include "*.min.js" --include "*.chunk.js" --cache-control "public, max-age=31536000, immutable"
+            aws s3 sync build/ s3://cl2-front-staging/ --acl public-read --exclude "index.html" --exclude "*.min.js" --exclude "*.chunk.js" --size-only
             aws s3 cp build/index.html s3://cl2-front-staging/index.html --acl public-read --cache-control no-cache
             aws s3 cp .well-known/security.txt s3://cl2-front-staging/.well-known/security.txt --acl public-read --content-type text/plain
 
@@ -677,11 +707,38 @@ jobs:
           paths:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
+      # NEW VERSION - WAIT UNTIL TESTED ON STAGING
+      # - run:
+      #          # See the staging deploy job for the rationale.
+      #          name: Compute content-hashed twemoji asset prefix
+      #          command: |
+      #            TWEMOJI_HASH=$(find app/public/twemoji -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -c1-12)
+      #            echo "export TWEMOJI_BASE_URL=/twemoji/$TWEMOJI_HASH/" >> "$BASH_ENV"
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION POSTHOG_API_KEY=$POSTHOG_API_KEY_PRODUCTION npm run build
           no_output_timeout: "30m"
       - run:
           command: rm build/*.map
+      # NEW VERSION - WAIT UNTIL TESTED ON STAGING
+      #- run:
+      #    # See the staging deploy job for the rationale: twemoji's ~4k immutable
+      #    # SVGs are synced once to a content-hashed prefix (no-op when unchanged,
+      #    # fresh prefix when a glyph changes) and removed from build/ before sync.
+      #    name: Sync twemoji emoji assets to S3 (content-hashed, immutable)
+      #    command: |
+      #      if [ -z "${TWEMOJI_BASE_URL:-}" ]; then
+      #        echo "TWEMOJI_BASE_URL is not set; refusing to sync twemoji to bucket root" >&2
+      #        exit 1
+      #      fi
+      #      aws s3 sync app/public/twemoji/ "s3://cl2-front-production-benelux${TWEMOJI_BASE_URL}" --acl public-read --size-only --cache-control "public, max-age=31536000, immutable"
+      #      rm -rf build/twemoji
+      #- run:
+      #    name: Deploy production version
+      #    command: |
+      #      aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "*" --include "*.min.js" --include "*.chunk.js" --cache-control "public, max-age=31536000, immutable"
+      #      aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "index.html" --exclude "*.min.js" --exclude "*.chunk.js" --size-only
+      #      aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
+      #      aws s3 cp .well-known/security.txt s3://cl2-front-production-benelux/.well-known/security.txt --acl public-read --content-type text/plain
       - run:
           name: Deploy production version
           command: |
