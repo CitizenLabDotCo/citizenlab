@@ -164,7 +164,7 @@
     "@babel/preset-react": "7.28.5",
     "@babel/preset-typescript": "7.x",
     "@cypress/skip-test": "2.6.1",
-    "@cypress/webpack-preprocessor": "6.0.1",
+    "@cypress/webpack-preprocessor": "7.1.1",
     "@sentry/vite-plugin": "^2.22.7",
     "@storybook/builder-vite": "10.4.5",
     "@storybook/react": "10.4.5",
