@@ -3544,6 +3544,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.field_participated_in_input": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:38:54.030433Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
