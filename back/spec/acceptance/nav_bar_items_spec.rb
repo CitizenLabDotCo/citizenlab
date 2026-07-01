@@ -195,12 +195,13 @@ resource 'NavBarItems' do
         end
       end
 
-      describe 'Adding a dropdown with too many children' do
+      describe 'Adding a dropdown with an invalid child' do
         let(:code) { 'custom' }
-        let(:title_multiloc) { { 'en' => 'Too many' } }
-        let(:children) { Array.new(6) { { static_page_id: create(:static_page).id } } }
+        let(:title_multiloc) { { 'en' => 'Broken' } }
+        # A child linking to no target is invalid, so the whole create rolls back.
+        let(:children) { [{ static_page_id: create(:static_page).id }, {}] }
 
-        example '[error] Rejects more than 5 children and rolls back' do
+        example '[error] Rejects an invalid child and rolls back' do
           count_before = NavBarItem.count
           do_request
           expect(response_status).to eq 422

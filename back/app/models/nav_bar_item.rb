@@ -35,9 +35,6 @@ class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering.
   CODES = %w[home projects events all_input custom].freeze
 
-  # A dropdown can hold up to this many child items.
-  MAX_DROPDOWN_CHILDREN = 5
-
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: :parent_id
 
   belongs_to :static_page, optional: true
@@ -127,9 +124,6 @@ class NavBarItem < ApplicationRecord
 
     errors.add(:base, 'A nested navbar item must link to a page, project or folder') unless links_to_target?
     errors.add(:parent, 'must be a dropdown item') unless parent&.dropdown?
-    if parent && parent.children.where.not(id: id).count >= MAX_DROPDOWN_CHILDREN
-      errors.add(:base, "A dropdown can contain at most #{MAX_DROPDOWN_CHILDREN} items")
-    end
   end
 
   def fallback_title_multiloc

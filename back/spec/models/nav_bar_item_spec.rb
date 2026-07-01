@@ -64,15 +64,6 @@ RSpec.describe NavBarItem do
       expect(child).not_to be_valid
     end
 
-    it 'allows up to 5 children but not more' do
-      dropdown = create(:nav_bar_item, :dropdown)
-      5.times do
-        create(:nav_bar_item, code: 'custom', parent: dropdown, static_page: create(:static_page))
-      end
-      sixth = build(:nav_bar_item, code: 'custom', parent: dropdown, static_page: create(:static_page))
-      expect(sixth).not_to be_valid
-    end
-
     it 'orders children within the parent scope independently of top-level items' do
       create(:nav_bar_item, code: 'home')
       dropdown = create(:nav_bar_item, :dropdown)
