@@ -17,12 +17,17 @@ describe('de-AT date-fns locale', () => {
     expect(format(january, 'MMMM', { locale: deAT })).not.toBe('Jänner');
   });
 
-  it('leaves other months and non-wide widths of January untouched', () => {
-    // Only the wide "Jänner" is overridden; everything else keeps the Austrian form.
+  it('renders the short January as "Jan"/"Jan." instead of "Jän"/"Jän."', () => {
+    // Formatting abbreviated (MMM) keeps the period; standalone (LLL) has none.
+    expect(format(january, 'MMM', { locale: deAT })).toBe('Jan.');
+    expect(format(january, 'LLL', { locale: deAT })).toBe('Jan');
+  });
+
+  it('leaves other months and the narrow width untouched', () => {
     expect(format(new Date(2026, 1, 1), 'MMMM', { locale: deAT })).toBe(
       'Februar'
     );
-    expect(format(january, 'MMM', { locale: deAT })).toBe('Jän.');
+    expect(format(new Date(2026, 1, 1), 'MMM', { locale: deAT })).toBe('Feb.');
     expect(format(january, 'MMMMM', { locale: deAT })).toBe('J');
   });
 });

@@ -17,11 +17,17 @@ describe('patchMomentDeAtJanuary', () => {
     expect(january().format('MMMM')).not.toBe('Jänner');
   });
 
-  it('leaves other months and the abbreviated January untouched', () => {
+  it('renders the abbreviated January as "Jan." instead of "Jän."', () => {
+    expect(january().format('MMM')).toBe('Jan.');
+  });
+
+  it('leaves other months untouched', () => {
     expect(moment(new Date(2026, 1, 1)).locale('de-at').format('MMMM')).toBe(
       'Februar'
     );
-    expect(january().format('MMM')).toBe('Jän.');
+    expect(moment(new Date(2026, 1, 1)).locale('de-at').format('MMM')).toBe(
+      'Feb.'
+    );
   });
 
   it('does not leave the global locale changed as a side effect', () => {

@@ -5,10 +5,11 @@ import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import { formatTranslationMessages } from '.';
 
-// date-fns' de-AT locale renders January as "Jänner"; we display "Januar" for
-// de-AT instead. Wrapping the locale's `month` localizer overrides the value on
-// every code path date-fns uses to produce a month name (format tokens like
-// MMMM/LLLL, and react-day-picker's month dropdown).
+// date-fns' de-AT locale renders January as "Jänner" (wide) / "Jän." (short);
+// we display "Januar" / "Jan." for de-AT instead. Wrapping the locale's `month`
+// localizer overrides the value on every code path date-fns uses to produce a
+// month name (format tokens like MMMM/LLLL/MMM/LLL, and react-day-picker's month
+// dropdown).
 const { localize } = deAT;
 const deATLocale: Locale = localize
   ? {
@@ -17,7 +18,12 @@ const deATLocale: Locale = localize
         ...localize,
         month: (...args: Parameters<typeof localize.month>) => {
           const month = localize.month(...args);
-          return month === 'Jänner' ? 'Januar' : month;
+          // Wide "Jänner", plus both abbreviated variants: formatting "Jän."
+          // (MMM) and standalone "Jän" (LLL).
+          if (month === 'Jänner') return 'Januar';
+          if (month === 'Jän.') return 'Jan.';
+          if (month === 'Jän') return 'Jan';
+          return month;
         },
       },
     }

@@ -1,31 +1,35 @@
 /**
- * Overrides the Austrian German (de-AT) wide month name "Jänner" with "Januar"
- * wherever it is produced by the platform's native `Intl` API.
+ * Overrides the Austrian German (de-AT) January month name — "Jänner" (wide)
+ * and "Jän" (short) — with "Januar" / "Jan" wherever it is produced by the
+ * platform's native `Intl` API.
  *
  * This is the counterpart to the date-fns (`i18n/de-AT.ts`) and moment
  * (`patchMomentDeAtJanuary.ts`) overrides. react-intl's `formatDate` /
  * `<FormattedDate>` — and any raw `new Intl.DateTimeFormat(...)` or
  * `Date#toLocale*` call — delegate to the browser's CLDR data, where de-AT
- * January is "Jänner". @formatjs reads the global `Intl.DateTimeFormat` at
+ * January is "Jänner"/"Jän". @formatjs reads the global `Intl.DateTimeFormat` at
  * format time, so wrapping the constructor here (plus the `Date#toLocale*`
  * helpers, which use the intrinsic directly) catches every native-Intl path.
  *
- * Only the exact wide form "Jänner" is rewritten (abbreviated "Jän" is left as
- * is, matching the date-fns/moment overrides). Because "Jänner" is unique to
- * de-AT January, the rewrite is a safe no-op for every other locale.
+ * Because "Jän" is unique to de-AT January, the rewrite is a safe no-op for
+ * every other locale. The narrow form ("J") is left untouched.
  *
  * Imported for side effects at the very top of `root.tsx` so it runs before the
  * first date is formatted. Idempotent.
  */
 
-const JAENNER = 'Jänner';
-const JANUAR = 'Januar';
+const JAEN = 'Jän'; // prefix shared by both "Jänner" (wide) and "Jän" (short)
 const PATCHED = '__deAtJanuarPatched';
 
 type DateArg = Date | number | undefined;
 
+// Rewrite the wide form first ("Jänner" -> "Januar"), then the short form
+// ("Jän" -> "Jan"). Order matters: "Jän" is a prefix of "Jänner", so the wide
+// replacement must run before the short one (after it, "Januar" has no "Jän").
 const januarize = (value: string): string =>
-  value.includes(JAENNER) ? value.split(JAENNER).join(JANUAR) : value;
+  value.includes(JAEN)
+    ? value.split('Jänner').join('Januar').split('Jän').join('Jan')
+    : value;
 
 const januarizeParts = (
   parts: Intl.DateTimeFormatPart[]

@@ -18,19 +18,29 @@ describe('patchIntlDeAtJanuary', () => {
     expect(parts.find((p) => p.type === 'month')?.value).toBe('Januar');
   });
 
-  it('rewrites Date#toLocaleDateString for de-AT', () => {
-    expect(jan.toLocaleDateString('de-AT', { month: 'long' })).toBe('Januar');
-  });
-
-  it('leaves abbreviated January, other months, and other locales untouched', () => {
-    // Abbreviated form is intentionally not rewritten.
+  it('rewrites the short de-AT January to "Jan"', () => {
     expect(
       new Intl.DateTimeFormat('de-AT', { month: 'short' }).format(jan)
-    ).toBe('Jän');
+    ).toBe('Jan');
+  });
+
+  it('rewrites Date#toLocaleDateString for de-AT (wide and short)', () => {
+    expect(jan.toLocaleDateString('de-AT', { month: 'long' })).toBe('Januar');
+    expect(jan.toLocaleDateString('de-AT', { month: 'short' })).toBe('Jan');
+  });
+
+  it('leaves other months, the narrow width, and other locales untouched', () => {
     // Other months unaffected.
     expect(
       new Intl.DateTimeFormat('de-AT', { month: 'long' }).format(feb)
     ).toBe('Februar');
+    expect(
+      new Intl.DateTimeFormat('de-AT', { month: 'short' }).format(feb)
+    ).toBe('Feb');
+    // Narrow stays a single letter.
+    expect(
+      new Intl.DateTimeFormat('de-AT', { month: 'narrow' }).format(jan)
+    ).toBe('J');
     // Plain German already says "Januar"; English unaffected.
     expect(new Intl.DateTimeFormat('de', { month: 'long' }).format(jan)).toBe(
       'Januar'
