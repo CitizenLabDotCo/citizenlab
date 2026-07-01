@@ -130,12 +130,17 @@ RSpec.describe DecidimImporter::Importer do
         expect(layout.enabled).to be(true)
         cj = layout.craftjs_json
 
-        # A 2-1 TwoColumn: description on the left, AboutBox + page links on the right.
+        # A 2-1 TwoColumn: short description + description on the left, AboutBox + page links on the right.
         two_col = cj.values.find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TwoColumn' }
         expect(two_col['props']['columnLayout']).to eq('2-1')
-        left = cj[two_col['linkedNodes']['left']]['nodes'].map { |id| cj[id]['type']['resolvedName'] }
+        left_nodes = cj[two_col['linkedNodes']['left']]['nodes'].map { |id| cj[id] }
+        left = left_nodes.map { |n| n['type']['resolvedName'] }
         right = cj[two_col['linkedNodes']['right']]['nodes'].map { |id| cj[id]['type']['resolvedName'] }
-        expect(left).to include('TextMultiloc')
+        # The fixture process has no subtitle, so the left column is short_description then description,
+        # each its own TextMultiloc.
+        expect(left).to eq(%w[TextMultiloc TextMultiloc])
+        expect(left_nodes.first['props']['text']['fr-FR']).to include('Résumé') # the short_description
+        expect(left_nodes.last['props']['text']['fr-FR']).to include('Concertation') # the full description
         expect(right.first).to eq('AboutBox')
         expect(right).to include('PageLink')
 
@@ -157,6 +162,15 @@ RSpec.describe DecidimImporter::Importer do
 
         select = fields.find { |field| field.input_type == 'select' }
         expect(select.options.order(:ordering).map { |o| o.title_multiloc['fr-FR'] }).to eq(%w[Oui Non])
+      end
+
+      it 'titles the survey phase by the component name and renders the questionnaire into its description' do
+        survey_phase = project.phases.find_by(participation_method: 'native_survey')
+        # Phase title from the component `name`, not the questionnaire title.
+        expect(survey_phase.title_multiloc['fr-FR']).to eq('Questionnaire')
+        # The questionnaire title becomes an <h2> heading above its description.
+        expect(survey_phase.description_multiloc['fr-FR'])
+          .to eq('<h2>Mon questionnaire</h2><p>Description du questionnaire</p>')
       end
 
       it 'imports a matrix_single question as a matrix_linear_scale with scale labels and placeholder rows' do

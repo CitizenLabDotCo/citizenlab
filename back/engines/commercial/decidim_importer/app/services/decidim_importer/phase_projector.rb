@@ -166,6 +166,8 @@ module DecidimImporter
         'start_at' => start_at.iso8601,
         'end_at' => end_at&.iso8601
       }
+      description = participation_description(component)
+      attributes['description_multiloc'] = description if description.present?
       # Native-survey phases require these two multilocs (Phase validates their presence). The button
       # gets the same default the admin UI applies to a new native-survey phase, rather than a
       # hardcoded string (see {#native_survey_button_multiloc}).
@@ -182,6 +184,21 @@ module DecidimImporter
     def participation_title(component, method)
       title = multiloc(component[:name])
       title.empty? ? { primary_locale => DEFAULT_TITLES.fetch(method, 'Participation') } : title
+    end
+
+    # The phase's rich description, per locale: an optional `<h2>` heading above a body. Surveys carry
+    # their questionnaire title (→ heading) and description (→ body); components without either get an
+    # empty multiloc (no description set). Locales are the union of the two, so a heading-only or
+    # body-only locale still renders.
+    def participation_description(component)
+      heading = multiloc(component[:description_heading])
+      body = multiloc(component[:description_body])
+      (heading.keys | body.keys).each_with_object({}) do |locale, acc|
+        parts = []
+        parts << "<h2>#{heading[locale]}</h2>" if heading[locale]
+        parts << body[locale] if body[locale]
+        acc[locale] = parts.join
+      end
     end
 
     # The native-survey CTA in each of the phase's locales — the same "Take the survey" default the

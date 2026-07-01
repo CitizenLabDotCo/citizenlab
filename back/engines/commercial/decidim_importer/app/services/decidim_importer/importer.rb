@@ -709,8 +709,12 @@ module DecidimImporter
 
     def survey_phase_components
       survey_component_rows.map do |row|
+        # The phase is titled by the component `name`; the questionnaire's own title/description (when
+        # present) render into the phase description as an <h2> heading above the body.
         { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
-          name: SurveyParser.title(row['specific_data']) || row['name'],
+          name: row['name'],
+          description_heading: SurveyParser.title(row['specific_data']),
+          description_body: SurveyParser.description(row['specific_data']),
           method: 'native_survey', dates: [row['published_at']] }
       end
     end

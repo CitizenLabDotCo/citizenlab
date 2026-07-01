@@ -27,6 +27,13 @@ module DecidimImporter
       first.is_a?(Hash) ? first.dig('questionnaire', 'title') : nil
     end
 
+    # The questionnaire description as a (raw, Decidim-locale-keyed) multiloc of HTML, or nil. Like the
+    # title, only the older wrapped shape carries it; it's rendered into the survey phase's description.
+    def description(specific_data)
+      first = top_entry(specific_data)
+      first.is_a?(Hash) ? first.dig('questionnaire', 'description') : nil
+    end
+
     def top_entry(specific_data)
       Array(Parsing.parse_json(specific_data)).first
     end

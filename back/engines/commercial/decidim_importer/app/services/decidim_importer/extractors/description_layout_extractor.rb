@@ -6,7 +6,8 @@ module DecidimImporter
     # `project_description`) for each project, taking the place of the plain `description_multiloc`.
     #
     # The layout's `craftjs_json` holds, in order: a `TwoColumn` (`2-1`) main section with the process
-    # subtitle (an `H2`) above the Decidim description on the left and, on the right, an optional
+    # subtitle (an `H2`), short description and full description — each its own `TextMultiloc` — on the
+    # left and, on the right, an optional
     # import-source link (only with `include_source_url`), the participation widget (`AboutBox`, only
     # when the project has a participation phase), then a `PageLink` per project static page (the left
     # content spans full width instead when that right column would be empty); then the project's
@@ -26,7 +27,8 @@ module DecidimImporter
     #
     # Runs after the projects/static-pages/files extractors so their records (and ids) are registered.
     class DescriptionLayoutExtractor < BaseExtractor
-      COLUMNS = { uid: 'uid', subtitle: 'subtitle', description: 'description', source_url: 'url' }.freeze
+      COLUMNS = { uid: 'uid', subtitle: 'subtitle', short_description: 'short_description',
+                  description: 'description', source_url: 'url' }.freeze
       ATTACHMENT = { uid: 'uid', collection: 'collection' }.freeze
       COLLECTION = { uid: 'uid', name: 'name', description: 'description', weight: 'weight',
                      collection_for: 'collection_for' }.freeze
@@ -75,24 +77,27 @@ module DecidimImporter
       # (`{ id:, columnLayout:, left: [leaf, …], right: [leaf, …] }`).
       def content_blocks(row, project, process_uid)
         description = multiloc(row[COLUMNS[:description]])
+        short_description = multiloc(row[COLUMNS[:short_description]])
         subtitle = subtitle_multiloc(row)
         source = source_multiloc(row, description)
 
         blocks = []
-        append_main_section(blocks, subtitle, description, source, static_page_ids_for(project),
-          participation_phase?(project))
+        append_main_section(blocks, subtitle, short_description, description, source,
+          static_page_ids_for(project), participation_phase?(project))
         append_file_blocks(blocks, project, process_uid)
         blocks
       end
 
-      # The main section. Left column: the process subtitle (an `H2`) above the description. Right column:
-      # the participation widget (`AboutBox`, only when the project has a participation phase), a
-      # `PageLink` per page, then — when `include_source_url` — a `WhiteSpace` and the import-source link
-      # at the bottom. With content on the right these sit in a `2-1` `TwoColumn` (wider left); with
-      # nothing on the right the left content spans the full width instead of a lopsided two-column.
-      def append_main_section(blocks, subtitle, description, source, page_ids, participation)
+      # The main section. Left column: the process subtitle (an `H2`), the short description and the full
+      # description — each its own `TextMultiloc`, in that order. Right column: the participation widget
+      # (`AboutBox`, only when the project has a participation phase), a `PageLink` per page, then — when
+      # `include_source_url` — a `WhiteSpace` and the import-source link at the bottom. With content on
+      # the right these sit in a `2-1` `TwoColumn` (wider left); with nothing on the right the left
+      # content spans the full width instead of a lopsided two-column.
+      def append_main_section(blocks, subtitle, short_description, description, source, page_ids, participation)
         left = []
         left << leaf('subtitle', 'TextMultiloc', { 'text' => subtitle }) if subtitle.present?
+        left << leaf('short-description', 'TextMultiloc', { 'text' => short_description }) if short_description.present?
         left << leaf('description', 'TextMultiloc', { 'text' => description }) if description.present?
 
         right = []

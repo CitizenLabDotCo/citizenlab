@@ -90,6 +90,20 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
     expect(left.last['props']['text']['fr-FR']).to eq('<p>Une description</p>')
   end
 
+  it 'lays out subtitle (H2), short description and description as separate TextMultilocs, in that order' do
+    register_participation_phase
+    craftjs = extract([row(
+      'subtitle' => '{"fr":"Mon sous-titre"}',
+      'short_description' => '{"fr":"<p>Un résumé</p>"}'
+    )]).first.attributes['craftjs_json']
+
+    two_col = nodes_named(craftjs, 'TwoColumn').first
+    left = craftjs[two_col['linkedNodes']['left']]['nodes'].map { |id| craftjs[id] }
+    expect(left.map { |n| n['type']['resolvedName'] }).to eq(%w[TextMultiloc TextMultiloc TextMultiloc])
+    expect(left.map { |n| n['props']['text']['fr-FR'] })
+      .to eq(['<h2>Mon sous-titre</h2>', '<p>Un résumé</p>', '<p>Une description</p>'])
+  end
+
   it 'leaves the left column empty when there is no description' do
     register_participation_phase
     register_page('decidim-page-1', 'page-uuid-1')

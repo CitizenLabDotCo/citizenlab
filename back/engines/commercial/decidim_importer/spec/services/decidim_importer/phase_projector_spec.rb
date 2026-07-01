@@ -25,8 +25,8 @@ RSpec.describe DecidimImporter::PhaseProjector do
     ref_map.register(uid, record)
   end
 
-  def component(uid, dates, method: 'ideation', name: '{"fr":"Propositions"}')
-    { process_uid: process_uid, component_uid: uid, name: name, method: method, dates: dates }
+  def component(uid, dates, method: 'ideation', name: '{"fr":"Propositions"}', **extra)
+    { process_uid: process_uid, component_uid: uid, name: name, method: method, dates: dates }.merge(extra)
   end
 
   # All registered phase records for the project, sorted by start, as [method, start, end] tuples.
@@ -93,5 +93,26 @@ RSpec.describe DecidimImporter::PhaseProjector do
     expect(phase['native_survey_title_multiloc']).to eq('fr-FR' => 'Questionnaire')
     # The CTA matches the admin UI's default for a new native-survey phase, translated for the locale.
     expect(phase['native_survey_button_multiloc']).to eq('fr-FR' => "Répondre à l'enquête")
+  end
+
+  it 'titles the survey phase by the component name and renders the questionnaire title/description into it' do
+    survey = component('c1', %w[2023-04-01], method: 'native_survey', name: '{"fr":"Questionnaire"}',
+      description_heading: { 'fr' => 'Quelle rue pour demain ?' },
+      description_body: { 'fr' => '<p>Donnez votre avis.</p>' })
+    projector.run(step_rows: [], participation_components: [survey])
+
+    phase = ref_map.fetch('c1').attributes
+    # The phase is named by the component, not the questionnaire.
+    expect(phase['title_multiloc']).to eq('fr-FR' => 'Questionnaire')
+    # The questionnaire title becomes an <h2> heading above its description.
+    expect(phase['description_multiloc'])
+      .to eq('fr-FR' => '<h2>Quelle rue pour demain ?</h2><p>Donnez votre avis.</p>')
+  end
+
+  it 'leaves the survey phase without a description when the questionnaire carries none' do
+    survey = component('c1', %w[2023-04-01], method: 'native_survey', name: '{"fr":"Enquête"}')
+    projector.run(step_rows: [], participation_components: [survey])
+
+    expect(ref_map.fetch('c1').attributes).not_to have_key('description_multiloc')
   end
 end
