@@ -86,9 +86,10 @@ async function importMomentLocaleFilePromise(momentLocale: string) {
   try {
     await localeGetter(momentLocale);
     if (momentLocale === 'de-at') {
-      // date-fns' and moment's de-at locales both render January as "Jänner";
-      // we display "Januar". This overrides moment's copy once its locale file
-      // is loaded (the date-fns counterpart lives in i18n/de-AT.ts).
+      // date-fns' and moment's de-at locales render January as "Jänner" (wide)
+      // and "Jän." (short); we display "Januar"/"Jan." instead. This overrides
+      // moment's copy once its locale file is loaded (the date-fns counterpart
+      // lives in i18n/de-AT.ts).
       patchMomentDeAtJanuary();
     }
     importedLocales.add(momentLocale);

@@ -118,7 +118,8 @@ const patchDateTimeFormatConstructor = (): void => {
 
 // Date#toLocaleDateString / #toLocaleString use the %DateTimeFormat% intrinsic
 // directly, not the global we patched above, so wrap them too. januarize is
-// applied unconditionally — safe because "Jänner" only occurs for de-AT.
+// applied unconditionally — safe because "Jän" (the prefix it keys on) only
+// occurs for de-AT January.
 const patchDatePrototype = (): void => {
   const proto = Date.prototype;
   (['toLocaleDateString', 'toLocaleString'] as const).forEach((name) => {
