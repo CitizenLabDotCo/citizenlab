@@ -62,7 +62,7 @@ const MenuItems = styled.ul`
   /* Cap the width so dropdown rows (and their trailing chevron) don't stretch
      across wide screens; the container centers this block while items inside
      stay left-aligned. */
-  max-width: 400px;
+  max-width: 320px;
   text-align: left;
 
   /* 20px between every item, except a larger gap above the trailing Search. */

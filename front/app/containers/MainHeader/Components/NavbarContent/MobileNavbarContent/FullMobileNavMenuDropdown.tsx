@@ -11,7 +11,7 @@ const DropdownButton = styled.button`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 8px;
   padding: 0;
   margin: 0;
@@ -35,9 +35,8 @@ const ChildItems = styled.ul`
   padding: 0;
   list-style: none;
 
-  /* 32px above each child, including the gap below the dropdown title. */
   > * {
-    margin-top: 32px;
+    margin-top: 24px;
   }
 `;
 
