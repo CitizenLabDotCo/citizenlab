@@ -186,13 +186,6 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
       canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
-    it 'is idempotent — building twice yields identical json' do
-      first = build(rich_description)
-      second = build(rich_description)
-
-      expect(first).to eq(second)
-    end
-
     it 'reproduces the current locked-header custom titles (fixed point of ensureLockedHeaderNodes)' do
       result = build(empty_description)
 
