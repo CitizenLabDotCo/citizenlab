@@ -560,8 +560,6 @@ describe Permissions::IdeaPermissionsService do
   end
 
   describe 'future_enabled_phase' do
-    # future_enabled_phase looks ahead over the project's phases and is independent of
-    # the idea itself, so an unpersisted idea is enough to build the service.
     let(:input) { build(:idea, project: project) }
 
     describe '"reacting_idea"' do

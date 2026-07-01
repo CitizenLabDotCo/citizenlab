@@ -25,8 +25,6 @@ module Permissions
       super
     end
 
-    # The project's descriptors are its current phase's, plus the project-level
-    # attending_event action.
     def action_descriptors
       descriptors = super
       descriptors[:attending_event] = descriptor(denied_reason_for_action('attending_event'))

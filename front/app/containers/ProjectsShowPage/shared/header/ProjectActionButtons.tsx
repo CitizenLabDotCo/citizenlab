@@ -6,7 +6,12 @@ import { isNumber } from 'lodash-es';
 import useEvents from 'api/events/useEvents';
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
+import {
+  getCurrentPhase,
+  getInputTerm,
+  getLastPhase,
+  getPhaseActionDescriptor,
+} from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -70,19 +75,22 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     scrollTo(scrollParams)();
   };
 
-  const { disabled_reason } =
-    project.data.attributes.action_descriptors.taking_survey;
+  const presentPhase = getCurrentPhase(phases?.data);
+  const takingSurveyEnabled = presentPhase
+    ? !!getPhaseActionDescriptor(presentPhase, 'taking_survey')?.enabled
+    : false;
 
   const handleTakeSurveyClick = () => {
-    const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptors.taking_survey;
+    const descriptor = presentPhase
+      ? getPhaseActionDescriptor(presentPhase, 'taking_survey')
+      : undefined;
 
-    if (enabled) {
+    if (descriptor?.enabled) {
       scrollToElementWithId('project-survey');
       return;
     }
 
-    if (isFixableByAuthentication(disabled_reason)) {
+    if (descriptor && isFixableByAuthentication(descriptor.disabled_reason)) {
       const scrollParams = {
         elementId: 'project-survey',
         pathname,
@@ -106,15 +114,16 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   };
 
   const handleReviewDocumentClick = () => {
-    const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptors.annotating_document;
+    const descriptor = presentPhase
+      ? getPhaseActionDescriptor(presentPhase, 'annotating_document')
+      : undefined;
 
-    if (enabled) {
+    if (descriptor?.enabled) {
       scrollToElementWithId('document-annotation');
       return;
     }
 
-    if (isFixableByAuthentication(disabled_reason)) {
+    if (descriptor && isFixableByAuthentication(descriptor.disabled_reason)) {
       const scrollParams = {
         elementId: 'document-annotation',
         pathname,
@@ -169,7 +178,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const showTakeNativeSurveyButton =
     generalShowCTAButtonCondition && participationMethod === 'native_survey';
   const showTakeSurveyButton =
-    !disabled_reason &&
+    takingSurveyEnabled &&
     !generalShowCTAButtonCondition &&
     participationMethod === 'survey' &&
     !hasCurrentPhaseEnded;
