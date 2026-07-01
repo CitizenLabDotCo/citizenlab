@@ -5,7 +5,7 @@ module EmailCampaigns
     class SendService
       def send_now(to:, body:, user_id: nil, campaign_id: nil)
         delivery = create_delivery(to: to, body: body, user_id: user_id, campaign_id: campaign_id)
-        dispatch(delivery)
+        deliver(delivery)
       end
 
       def create_delivery(to:, body:, user_id: nil, campaign_id: nil)
@@ -27,12 +27,6 @@ module EmailCampaigns
 
       # Sends an already-created pending delivery through the provider.
       def deliver(delivery)
-        dispatch(delivery)
-      end
-
-      private
-
-      def dispatch(delivery)
         result = provider.send(to: delivery.phone_number, body: delivery.body)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
         delivery
@@ -40,6 +34,8 @@ module EmailCampaigns
         delivery.update!(status: 'failed', error_message: e.message)
         raise
       end
+
+      private
 
       def provider
         Providers::Twilio.new
