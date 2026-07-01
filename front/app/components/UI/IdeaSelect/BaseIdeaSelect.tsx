@@ -15,15 +15,18 @@ import { getOptionId } from './utils';
 interface Props {
   id?: string;
   inputId?: string;
-  value: IIdeaData | null;
+  value: IIdeaData | IIdeaData[] | null;
   inputValue?: string;
+  isMulti?: boolean;
   options: Option[];
   components?: { Option: FC };
   getOptionLabel: (option: Option) => any;
   /* onInputChange should be a stable reference! */
   onInputChange: (searchTerm: string) => void;
   onMenuScrollToBottom: () => void;
-  onChange: (option?: Option) => void;
+  // Single mode emits one option (or undefined when cleared); multi mode emits
+  // the full array of currently-selected options.
+  onChange: (option?: Option | readonly Option[]) => void;
 }
 
 const BaseIdeaSelect = ({
@@ -31,6 +34,7 @@ const BaseIdeaSelect = ({
   inputId,
   value,
   inputValue,
+  isMulti,
   options,
   components,
   getOptionLabel,
@@ -51,16 +55,11 @@ const BaseIdeaSelect = ({
     };
   }, [handleInputChange]);
 
-  const handleChange = (
-    option: Option,
-    { action }: { action: 'clear' | 'select-option' }
-  ) => {
-    if (action === 'clear') {
-      onChange(undefined);
-      return;
-    }
-
-    onChange(option);
+  const handleChange = (newValue: Option | readonly Option[] | null) => {
+    // react-select represents a cleared single-select as `null` (multi is the
+    // full selected array, single is the chosen option). Normalise that `null`
+    // to the `undefined` our onChange prop uses.
+    onChange(newValue ?? undefined);
   };
 
   return (
@@ -68,9 +67,11 @@ const BaseIdeaSelect = ({
       <ReactSelect
         id={id}
         inputId={inputId}
+        isMulti={isMulti}
         isSearchable
-        blurInputOnSelect
-        backspaceRemovesValue={false}
+        // In multi mode keep focus so the user can add several inputs in a row.
+        blurInputOnSelect={!isMulti}
+        backspaceRemovesValue={!!isMulti}
         menuShouldScrollIntoView={false}
         value={value}
         inputValue={inputValue}

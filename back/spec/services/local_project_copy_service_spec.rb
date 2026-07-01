@@ -154,13 +154,14 @@ describe LocalProjectCopyService do
     end
 
     it 'copies associated volunteering_causes' do
-      create_list(:cause, 2, phase: open_ended_project.phases.first)
-      copied_project = service.copy(open_ended_project.reload)
+      volunteering_project = create(:single_phase_volunteering_project)
+      create_list(:cause, 2, phase: volunteering_project.phases.first)
+      copied_project = service.copy(volunteering_project.reload)
 
       expect(copied_project.phases.first.causes.map do |record|
         record.as_json(except: %i[id phase_id image updated_at created_at])
       end)
-        .to match_array(open_ended_project.phases.first.causes.map do |record|
+        .to match_array(volunteering_project.phases.first.causes.map do |record|
           record.as_json(except: %i[id phase_id image updated_at created_at])
         end)
     end

@@ -5,6 +5,7 @@ import {
   createRootRoute,
   createRouter,
   Outlet,
+  retainSearchParams,
 } from '@tanstack/react-router';
 import * as yup from 'yup';
 
@@ -24,6 +25,7 @@ import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
 
 const HomePage = lazy(() => import('containers/HomePage'));
+const OAuthAuthorize = lazy(() => import('containers/OAuthAuthorize'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
@@ -106,14 +108,44 @@ const rootSearchSchema = yup.object({
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
   lat: yup.number().optional(),
   lng: yup.number().optional(),
+  // Enables `parallel_participation` without the feature flag —
+  // `?parallel_participation=true`. Retained across navigation by the root
+  // route's search middleware so it sticks while moving between pages; lives
+  // only in the URL (no cookie/localStorage). See useParallelParticipation.
+  parallel_participation: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
+
+const normalizeParallelParticipation = ({
+  search,
+  next,
+}: {
+  search: RootSearchParams;
+  next: (search: RootSearchParams) => RootSearchParams;
+}): RootSearchParams => {
+  const result = next(search);
+  const value = result.parallel_participation;
+
+  if (value !== undefined && value !== 'false' && value !== 'true') {
+    return { ...result, parallel_participation: 'true' };
+  }
+
+  return result;
+};
 
 // Root route
 const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),
+  search: {
+    // Keep `parallel_participation` in the URL across client-side navigations
+    // so it persists while moving between pages
+    middlewares: [
+      retainSearchParams(['parallel_participation']),
+      normalizeParallelParticipation,
+    ],
+  },
   component: () => (
     <App>
       <Outlet />
@@ -164,6 +196,30 @@ const signInRoute = createRoute({
   component: () => (
     <PageLoading>
       <HomePage />
+    </PageLoading>
+  ),
+});
+
+// OAuth 2.1 authorize-request params, forwarded by the client app on the
+// consent page URL (an external redirect, like our SSO/verification params).
+const oauthAuthorizeSearchSchema = yup.object({
+  client_id: yup.string(),
+  response_type: yup.string(),
+  redirect_uri: yup.string(),
+  scope: yup.string(),
+  state: yup.string(),
+  code_challenge: yup.string(),
+  code_challenge_method: yup.string(),
+});
+
+const oauthAuthorizeRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'oauth/authorize',
+  validateSearch: (search: Record<string, unknown>) =>
+    oauthAuthorizeSearchSchema.validateSync(search, { stripUnknown: true }),
+  component: () => (
+    <PageLoading>
+      <OAuthAuthorize />
     </PageLoading>
   ),
 });
@@ -609,6 +665,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       homeRoute,
       signInAdminRoute,
       signInRoute,
+      oauthAuthorizeRoute,
       signUpRoute,
       inviteRoute,
       siteMapRoute,
@@ -651,6 +708,11 @@ export const createAppRouter = (moduleRoutes: Partial<Routes> = {}) =>
   createRouter({
     routeTree: buildRouteTree(moduleRoutes),
     trailingSlash: 'preserve',
+    defaultNotFoundComponent: () => (
+      <PageLoading>
+        <PageNotFound />
+      </PageLoading>
+    ),
   });
 
 export let router = createAppRouter();

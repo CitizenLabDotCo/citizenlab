@@ -43,6 +43,7 @@ declare global {
       getTopics: typeof getTopics;
       getUserById: typeof getUserById;
       getAuthUser: typeof getAuthUser;
+      getAdminAuthUser: typeof getAdminAuthUser;
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
@@ -103,6 +104,8 @@ declare global {
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
+      deleteEventAttendances: typeof deleteEventAttendances;
+      apiRemoveIdeas: typeof apiRemoveIdeas;
     }
   }
 }
@@ -570,6 +573,21 @@ function getTopics({ excludeCode }: { excludeCode?: string }) {
 }
 
 function getAuthUser() {
+  return cy.getCookie('cl2_jwt').then((cookie) => {
+    const jwt = cookie?.value;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'GET',
+      url: 'web_api/v1/users/me',
+    });
+  });
+}
+
+function getAdminAuthUser() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1372,7 +1390,7 @@ function apiVerifyBogus(jwt: string, error?: string) {
       Authorization: `Bearer ${jwt}`,
     },
     method: 'POST',
-    url: 'web_api/v1/verification_methods/bogus/verification',
+    url: 'web_api/v1/id_methods/bogus/verification',
     body: {
       verification: {
         desired_error: error || '',
@@ -2175,6 +2193,69 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`[data-cy="${dataCyValue}"]`);
 }
 
+function deleteEventAttendances(
+  email: string,
+  password: string,
+  eventIdNoCoordinates: string
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: `web_api/v1/events/${eventIdNoCoordinates}/attendances`,
+      })
+      .then((response) => {
+        const attendances = response.body.data;
+        if (attendances.length !== 0) {
+          attendances.forEach((attendance: any) => {
+            cy.request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'DELETE',
+              url: `web_api/v1/event_attendances/${attendance.id}`,
+            });
+          });
+        }
+      });
+  });
+}
+
+function apiRemoveIdeas(projectId?: string) {
+  // When a projectId is passed, only ideas (incl. survey responses) belonging to
+  // that project are removed. Without it, ALL ideas in the tenant are deleted,
+  // which wipes seeded fixtures (e.g. the "Verified Idea") that other specs rely on.
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        method: 'GET',
+        url: `/web_api/v1/ideas`,
+        qs: projectId ? { 'projects[]': projectId } : undefined,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+      })
+      .then((response) => {
+        const ideas = response.body.data;
+        if (ideas.length !== 0) {
+          ideas.forEach((idea: any) => {
+            cy.apiRemoveIdea(idea.id);
+          });
+        }
+      });
+  });
+}
+
 Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
@@ -2202,6 +2283,7 @@ Cypress.Commands.add('getProjectById', getProjectById);
 Cypress.Commands.add('getTopics', getTopics);
 Cypress.Commands.add('getUserById', getUserById);
 Cypress.Commands.add('getAuthUser', getAuthUser);
+Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
@@ -2291,6 +2373,8 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
+Cypress.Commands.add('deleteEventAttendances', deleteEventAttendances);
+Cypress.Commands.add('apiRemoveIdeas', apiRemoveIdeas);
 
 // ReactSelect helper function
 const selectReactSelectOption = (selector: string, label: string) => {

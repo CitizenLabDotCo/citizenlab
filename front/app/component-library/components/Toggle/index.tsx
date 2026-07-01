@@ -3,12 +3,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { hideVisually, darken } from 'polished';
 import styled, { css } from 'styled-components';
 
-import {
-  colors,
-  fontSizes,
-  defaultOutline,
-  isRtl,
-} from '../../utils/styleUtils';
+import { colors, fontSizes, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
 const size = 21;
@@ -79,7 +74,7 @@ const StyledToggleWrapper = styled.div<{ checked: boolean; disabled: boolean }>`
     `};
 
   ${HiddenCheckbox}.focus-visible + & ${StyledToggle} {
-    ${defaultOutline};
+    ${focusRing}
   }
 `;
 

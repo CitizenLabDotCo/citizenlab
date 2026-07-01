@@ -81,6 +81,7 @@ const UserFollowingList = ({ value }: Props) => {
                   key={follower.id}
                   projectId={follower.relationships.followable.data.id}
                   size="small"
+                  layout="threecolumns"
                 />
               );
             } else if (

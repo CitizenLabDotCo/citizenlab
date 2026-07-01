@@ -21,7 +21,7 @@ interface Props {
 
 const descriptionMessages: Record<string, MessageDescriptor> = {
   flagged_only: messages.prescreeningModeFlaggedOnlyDescription,
-  all: messages.prescreeningModeAllDescription,
+  all: messages.prescreeningModeAllDescriptionWithWarning,
   disabled: messages.prescreeningModeOffDescription,
 };
 
@@ -89,7 +89,6 @@ const PrescreeningModeSelector = ({
     name: 'flag_inappropriate_content',
   });
 
-  // This feature flag is temporary and will be removed after rollout.
   const prescreeningFlaggedOnlyEnabled = useFeatureFlag({
     name: 'prescreening_flagged_only',
   });

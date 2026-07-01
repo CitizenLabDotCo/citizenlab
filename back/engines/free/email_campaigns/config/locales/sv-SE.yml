@@ -48,7 +48,11 @@ sv-SE:
         new_attendee: Nyligen registrerad användare
         project_review_requester: Användare som begärde projektgranskning
         project_reviewers: Projektgranskare och mapphanterare
+        user_changing_email: Användare som ändrar sin e-postadress
+        user_confirming_email: Användare som bekräftar sin e-postadress
+        user_requesting_password_reset: Användare som begärt en återställning av lösenord
         user_who_commented: Användare som kommenterade
+        user_who_is_blocked: Användare vars konto är blockerat
         user_who_is_invited_to_cosponsor_a_proposal: Användare som bjuds in att stödja ett förslag
         user_who_is_mentioned: Användare som nämns
         user_who_is_receiving_admin_rights: Användare som får administratörsrättigheter
@@ -67,6 +71,7 @@ sv-SE:
         user_with_unsubmitted_votes: Användare som inte har lämnat sina röster
         users_who_engaged_but_not_voted: Användare som engagerat sig i projektet men inte röstat
         users_who_engaged_with_the_project: Användare som engagerade sig i projektet
+        users_who_follow_or_participated: Användare som följer projektet eller har deltagit
         users_who_follow_the_input: Användare som följer bidraget
         users_who_follow_the_project: Användare som följer projektet
         users_who_follow_the_proposal: Användare som följer förslaget
@@ -104,9 +109,12 @@ sv-SE:
         registration_to_event: Anmälan till ett evenemang
         survey_1_day_after_draft_saved: 1 dag efter att användaren senast sparade enkäten i utkast
         user_accepts_invitation_to_cosponsor_a_proposal: Användaren accepterar inbjudan att vara medsponsor för ett förslag
+        user_changes_email: Användaren ändrar sin e-postadress
         user_comments: Användarens kommentarer
         user_comments_on_input: Användarkommentarer om inmatning
         user_comments_on_proposal: Användarkommentarer om förslaget
+        user_confirms_email: Användaren bekräftar sin e-postadress
+        user_is_blocked: Användarens konto är blockerat
         user_is_given_admin_rights: Användaren får administratörsrättigheter
         user_is_given_folder_manager_rights: Användaren tilldelas rättigheter som mappansvarig
         user_is_given_folder_moderator_rights: Användaren har fått rättigheter som mappmoderator
@@ -120,6 +128,7 @@ sv-SE:
         user_registers_for_the_first_time: Användaren registrerar sig för första gången
         user_replies_to_comment: Användaren svarar på kommentaren
         user_replies_to_internal_comment: Användaren svarar på intern kommentar
+        user_requests_password_reset: Användare begär en återställning av lösenord
         voting_1_day_after_last_votes: 1 dag efter att användaren senast röstade
         voting_2_days_before_phase_closes: 2 dagar innan omröstningen avslutas
         voting_basket_submitted: Rösterna är inlämnade
@@ -159,6 +168,7 @@ sv-SE:
       comment_on_your_comment: Ett svar på min kommentar
       community_monitor_report: Rapport från gemenskapens övervakare
       cosponsor_of_your_idea: En användare accepterar min inbjudan att stödja mitt förslag
+      email_confirmation: Bekräftelsekod för e-post
       event_registration_confirmation: Bekräftelse på registrering av evenemang
       idea_marked_as_spam: Skräppostrapport för idé
       idea_published: Publicering av min idé
@@ -177,6 +187,7 @@ sv-SE:
       moderator_digest: Veckoöversikt för projektledare
       native_survey_not_submitted: Enkät ej inlämnad
       new_comment_for_admin: Ny kommentar i ett projekt jag modererar
+      new_email_confirmation: Ny bekräftelsekod för e-postadress
       new_idea_for_admin_prescreening: Ny input som kräver godkännande i ett projekt I måttlig
       new_idea_for_admin_published: Ny publicerad input i ett projekt som jag modererar
       official_feedback_on_idea_you_follow: Uppdatering av en idé som du följer
@@ -195,6 +206,7 @@ sv-SE:
       status_change_on_idea_you_follow: Statusförändring av en idé som du följer
       survey_submitted: Undersökning inlämnad
       threshold_reached_for_admin: Förslaget nådde rösttröskeln
+      user_blocked: Kontot är blockerat
       user_digest: Veckoöversikt
       voting_basket_not_submitted: Röster ej inlämnade
       voting_basket_submitted: Bekräftelse av röstning
@@ -270,6 +282,15 @@ sv-SE:
       preheader: '%{cosponsorName} har accepterat din inbjudan att sponsra ditt förslag'
       subject: '%{cosponsorName} har accepterat din inbjudan att sponsra ditt förslag'
       title: '%{cosponsorName} har accepterat din inbjudan att sponsra ditt förslag'
+    email_confirmation:
+      best_regards: Med vänliga hälsningar,
+      event_description: 'Tack för ditt deltagande. Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}s plattform för medborgarinflytande:'
+      expire_code: Denna kod upphör att gälla om
+      hours_24: 24 timmar.
+      ignore_email: Om du inte har begärt en kod kan du bortse från detta e-postmeddelande.
+      preheader: Bekräfta din e-postadress för %{organizationName}
+      subject: Bekräfta din e-postadress för %{organizationName}s plattform för medborgarinflytande
+      title: Bekräfta din e-postadress
     event_registration_confirmation:
       cta_add_to_calendar: Lägg till i din kalender
       cta_button: Se evenemanget
@@ -481,6 +502,15 @@ sv-SE:
       title: '%{firstName}en ny kommentar har lagts upp på din plattform'
       today: I dag
       yesterday: I går
+    new_email_confirmation:
+      best_regards: Med vänliga hälsningar,
+      event_description: 'Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}s plattform för medborgardialog för att bekräfta din nya e-postadress:'
+      expire_code: Denna kod upphör att gälla om
+      hours_24: 24 timmar.
+      ignore_email: Om du inte har begärt en kod kan du bortse från detta e-postmeddelande.
+      preheader: Bekräfta din nya e-postadress för %{organizationName}
+      subject: Bekräfta din nya e-postadress för %{organizationName}s plattform för medborgarinflytande
+      title: Bekräfta din nya e-postadress
     new_idea_for_admin_prescreening:
       cta_button: Granska inmatningen
       days_ago: '%{numberOfDays} dagar sedan'
@@ -506,6 +536,12 @@ sv-SE:
       preheader: Det finns en återkoppling om en idé som du följer
       subject: En officiell återkoppling har publicerats på "%{input_title}"
       title: Det finns en uppdatering på "%{input_title}"
+    password_reset:
+      cta_button: Återställ ditt lösenord
+      event_description: Du har begärt en återställning av lösenordet för %{organizationName}s plattform för medborgardialog. Klicka på knappen nedan för att välja ett nytt, säkert lösenord. Länken är giltig i 1 timme.
+      preheader: Återställ ditt lösenord för %{organizationName}
+      subject: '%{organizationName}: Återställ ditt lösenord'
+      title: Välj ett nytt lösenord
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -651,6 +687,14 @@ sv-SE:
       preheader: Se till att ta nästa steg
       subject: Ett initiativ nådde rösttröskeln på din plattform
       title: Ett förslag har nått tröskeln för omröstning!
+    user_blocked:
+      for_more_information: För mer information om detta kan du läsa %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Ditt konto på %{organizationName}s plattform för medborgarinflytande har tillfälligt inaktiverats av följande anledning:'
+      paragraph_1_without_reason: Ditt konto på %{organizationName}s plattform för medborgarinflytande har tillfälligt inaktiverats på grund av en överträdelse av community-riktlinjerna.
+      preheader: Ditt konto på %{organizationName}s plattform för medborgarinflytande har tillfälligt inaktiverats
+      subject: Ditt konto har tillfälligt inaktiverats
+      title: Ditt konto har tillfälligt inaktiverats
+      you_can_sign_in_again_from: Du kan logga in igen från %{date}
     user_digest:
       commented: '%{authorFirstName} kommenterade:'
       cta_button: Gå till plattformen

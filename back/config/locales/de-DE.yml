@@ -267,6 +267,16 @@ de-DE:
       title: Alle Projekte
     proposals:
       title: Vorschläge
+  pdf_export:
+    survey_responses:
+      date: Datum
+      no_answer: (Keine Antwort)
+      prepared_by: Erstellt von
+      report_label: Bericht der Umfrageantworten
+      respondent: Teilnehmer %{number}
+      response_count:
+        one: '%{count} Antwort'
+        other: '%{count} Antworten'
   phases:
     community_monitor_title: Stimmungsbarometer
     native_survey_button: Umfrage ausfüllen
@@ -446,7 +456,7 @@ de-DE:
       neutral_reactions_count: Unsicher
       participants: Teilnehmende
       picks: Auswahl
-      project: '{orgName, select, München {Bezirke} other {Projekte}}'
+      project: Projekt
       published_at: Veröffentlicht
       registration_completed_at: Registrierung abgeschlossen am
       status: Status

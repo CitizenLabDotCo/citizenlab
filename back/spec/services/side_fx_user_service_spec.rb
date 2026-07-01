@@ -67,7 +67,7 @@ describe SideFxUserService do
       let(:invitee) { create(:invited_user) }
 
       it 'does not send a confirmation code email' do
-        expect(RequestConfirmationCodeJob).not_to receive(:perform_now)
+        expect(RequestEmailConfirmationCodeJob).not_to receive(:perform_now)
         service.after_create(invitee, current_user)
       end
     end
@@ -278,6 +278,8 @@ describe SideFxUserService do
   end
 
   describe 'after_block' do
+    # Logging this activity is what triggers the EmailCampaigns::Campaigns::UserBlocked
+    # campaign that notifies the user.
     it "logs a 'blocked' action job when a user is blocked" do
       expect { service.after_block(user, current_user) }
         .to have_enqueued_job(LogActivityJob)
@@ -292,11 +294,6 @@ describe SideFxUserService do
             block_end_at: user.block_end_at
           }
         )
-    end
-
-    it 'schedules a UserBlockedMailer job' do
-      expect { service.after_block(user, current_user) }
-        .to have_enqueued_mail(UserBlockedMailer, :send_user_blocked_email)
     end
 
     it 'expires the user token' do

@@ -7,6 +7,28 @@ import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 
 import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
+import Link, { typedStyled } from 'utils/cl-router/Link';
+
+export const CardLink = typedStyled(Link)`
+  display: block;
+  position: relative;
+  border-radius: ${({ theme }) => theme.borderRadius};
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &:focus-visible::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid ${({ theme }) => theme.colors.tenantPrimary};
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+  }
+`;
+
 export const CardContainer = styled(Box)`
   &:focus-visible {
     margin-left: 12px;

@@ -20,7 +20,7 @@ describe('AvatarBubbles Component', () => {
   });
 
   describe('when showParticipantText is on', () => {
-    it('displays user count of 999 correctly as "995 participants"', () => {
+    it('displays user count of 999 correctly as "999 participants"', () => {
       render(
         <AvatarBubbles
           avatarIds={['sample']}
@@ -30,7 +30,7 @@ describe('AvatarBubbles Component', () => {
         />
       );
       expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
-        /995 participants/
+        /999 participants/
       );
     });
 
@@ -93,7 +93,7 @@ describe('AvatarBubbles Component', () => {
   });
 
   describe('when showParticipantText is off', () => {
-    it('displays user count of 995 as "995"', () => {
+    it('displays user count of 999 as "999"', () => {
       render(
         <AvatarBubbles
           avatarIds={['sample']}
@@ -103,7 +103,7 @@ describe('AvatarBubbles Component', () => {
         />
       );
       expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
-        /995/
+        /999/
       );
     });
 

@@ -163,6 +163,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
           onClickOutside={hide}
           className="e2e-more-actions-list"
           right="0px"
+          mobileRight="0px"
           content={
             <Box role="menu">
               {actions.map((action, index) => {

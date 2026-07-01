@@ -934,6 +934,41 @@
     "verified_at": "2026-03-18T12:49:36.745075Z",
     "verified_by": "Admin"
   },
+  "pdf_export.survey_responses.date": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:46:50.850048Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "pdf_export.survey_responses.no_answer": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:46:50.850048Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "pdf_export.survey_responses.prepared_by": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:46:50.850048Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "pdf_export.survey_responses.report_label": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:46:50.850048Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "pdf_export.survey_responses.respondent": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:46:50.850048Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "pdf_export.survey_responses.response_count.one": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:46:50.850048Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "pdf_export.survey_responses.response_count.other": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:46:50.850048Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "phases.community_monitor_title": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.745075Z",

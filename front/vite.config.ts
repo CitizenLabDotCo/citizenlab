@@ -81,6 +81,19 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [
+      {
+        name: 'browser-external-empty-stub',
+        enforce: 'pre',
+        load(id) {
+          if (id.includes('browser-external')) {
+            console.warn(
+              `Warning: Attempting to import a browser-external module (${id}) which is not supported in this environment. Returning an empty stub module instead.`
+            );
+            return 'module.exports = {};';
+          }
+          return null;
+        },
+      },
       react(),
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
@@ -112,7 +125,7 @@ export default defineConfig(({ mode }) => {
         input: path.resolve(__dirname, 'app/index.html'),
         output: {
           entryFileNames: '[name].[hash].min.js', // Generate the main.*.min.js file
-          chunkFileNames: '[name].[hash].chunk.js',
+          chunkFileNames: 'assets/[name].[hash].chunk.js',
           assetFileNames: '[name].[ext]',
         },
       },
@@ -165,6 +178,7 @@ export default defineConfig(({ mode }) => {
         CIRCLE_BRANCH: process.env.CIRCLE_BRANCH,
         MATOMO_HOST: process.env.MATOMO_HOST,
         POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
+        TWEMOJI_BASE_URL: process.env.TWEMOJI_BASE_URL,
       },
     },
   };

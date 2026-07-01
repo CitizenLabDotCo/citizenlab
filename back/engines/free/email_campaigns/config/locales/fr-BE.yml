@@ -48,7 +48,11 @@ fr-BE:
         new_attendee: "L'utilisateur qui s'est inscrit"
         project_review_requester: "L'utilisateur qui a demandé l'approbation pour publier le projet"
         project_reviewers: Les réviseurs de projet et les gestionnaires de dossiers
+        user_changing_email: Utilisateur qui change son adresse e-mail
+        user_confirming_email: Utilisateur qui confirme son adresse e-mail
+        user_requesting_password_reset: Utilisateur ayant demandé une réinitialisation de mot de passe
         user_who_commented: Utilisateur qui a commenté
+        user_who_is_blocked: Utilisateur dont le compte est bloqué
         user_who_is_invited_to_cosponsor_a_proposal: L'utilisateur invité à soutenir la proposition
         user_who_is_mentioned: Utilisateur mentionné
         user_who_is_receiving_admin_rights: "L'utilisateur qui reçoit les droits d'administrateur"
@@ -67,6 +71,7 @@ fr-BE:
         user_with_unsubmitted_votes: Utilisateur qui n'a pas soumis ses votes
         users_who_engaged_but_not_voted: Utilisateurs ayant participé au projet, mais n'ayant pas voté
         users_who_engaged_with_the_project: Les utilisateurs qui ont participé au projet
+        users_who_follow_or_participated: Utilisateurs qui suivent le projet ou y ont participé
         users_who_follow_the_input: Les utilisateurs qui suivent la contribution
         users_who_follow_the_project: Les utilisateurs qui suivent le projet
         users_who_follow_the_proposal: Les utilisateurs qui suivent la proposition
@@ -104,9 +109,12 @@ fr-BE:
         registration_to_event: Inscription à un événement
         survey_1_day_after_draft_saved: 1 jour après la dernière sauvegarde du brouillon
         user_accepts_invitation_to_cosponsor_a_proposal: Un utilisateur accepte de soutenir une proposition
+        user_changes_email: L'utilisateur change son adresse e-mail
         user_comments: Nouveaux commentaires d'utilisateurs
         user_comments_on_input: L'utilisateur commente une contribution
         user_comments_on_proposal: Commentaires sur une proposition
+        user_confirms_email: L'utilisateur confirme son adresse e-mail
+        user_is_blocked: Le compte de l'utilisateur est bloqué
         user_is_given_admin_rights: "L'utilisateur reçoit des droits d'administrateur"
         user_is_given_folder_manager_rights: L'utilisateur reçoit des droits de gestionnaire de dossier
         user_is_given_folder_moderator_rights: L'utilisateur se voit attribuer des droits de gestionnaire de dossier
@@ -120,6 +128,7 @@ fr-BE:
         user_registers_for_the_first_time: "L'utilisateur s'inscrit pour la première fois"
         user_replies_to_comment: Réponse à un commentaire
         user_replies_to_internal_comment: L'utilisateur répond à un commentaire interne
+        user_requests_password_reset: L'utilisateur demande une réinitialisation de mot de passe
         voting_1_day_after_last_votes: 1 jour après le dernier vote de l'utilisateur
         voting_2_days_before_phase_closes: 2 jours avant la clôture de la phase de vote
         voting_basket_submitted: Les votes sont soumis
@@ -157,13 +166,14 @@ fr-BE:
       assignee_digest: Aperçu hebdomadaire des idées attribuées
       comment_deleted_by_admin: Suppression de mon commentaire
       comment_marked_as_spam: Commenter le rapport de spam
-      comment_on_idea_you_follow: Un commentaire sur une idée que vous suivez
+      comment_on_idea_you_follow: Un commentaire sur une contribution que vous suivez
       comment_on_your_comment: Une réponse à mon commentaire
       community_monitor_report: Rapport de l'Observatoire de communauté
       cosponsor_of_your_idea: Un utilisateur accepte de soutenir ma proposition
+      email_confirmation: Code de confirmation d'e-mail
       event_registration_confirmation: "Confirmation de l'inscription à l'événement"
       idea_marked_as_spam: Rapport sur le spam d'idées
-      idea_published: Publication de mon idée
+      idea_published: Publication de ma contribution
       internal_comment_on_idea_assigned_to_you: Commentaire interne sur une contribution qui m'est attribuée
       internal_comment_on_idea_you_commented_internally_on: Commentaire interne sur une contribution que j'ai commentée en interne
       internal_comment_on_idea_you_moderate: Commentaire interne sur les contributions dans le projet ou le dossier que je gère
@@ -179,9 +189,10 @@ fr-BE:
       moderator_digest: Aperçu hebdomadaire pour les administrateurs projet
       native_survey_not_submitted: Réponse à l'enquête non soumise
       new_comment_for_admin: Nouveau commentaire dans un projet que je modère
+      new_email_confirmation: Nouveau code de confirmation d'e-mail
       new_idea_for_admin_prescreening: Nouvelle contribution en attente d’approbation dans un projet que je modère
       new_idea_for_admin_published: Une nouvelle contribution a été publiée dans un projet que je modère
-      official_feedback_on_idea_you_follow: Mise à jour d'une idée que vous suivez
+      official_feedback_on_idea_you_follow: Mise à jour d'une contribution que vous suivez
       password_reset: Réinitialisation du mot de passe
       project_folder_moderation_rights_received: Droits d'administrateur de dossiers reçus
       project_manager_rights_received: Droits de gestionnaire de projet reçus
@@ -194,9 +205,10 @@ fr-BE:
       proposal_expired_for_admin: Proposition expirée sans atteindre le seuil de vote
       screening_digest: Rappel hebdomadaire de modération
       space_moderation_rights_received: Droits de gestionnaire d'espace reçus
-      status_change_on_idea_you_follow: Changement de statut d'une idée que vous suivez
+      status_change_on_idea_you_follow: Changement de statut d'une contribution que vous suivez
       survey_submitted: Enquête soumise
       threshold_reached_for_admin: La proposition a atteint le seuil de vote
+      user_blocked: Compte bloqué
       user_digest: Aperçu hebdomadaire
       voting_basket_not_submitted: Votes non soumis
       voting_basket_submitted: Confirmation de vote
@@ -272,6 +284,15 @@ fr-BE:
       preheader: '%{cosponsorName} a accepté de soutenir votre proposition'
       subject: '%{cosponsorName} a accepté de soutenir votre proposition'
       title: '%{cosponsorName} a accepté de soutenir votre proposition'
+    email_confirmation:
+      best_regards: Cordialement,
+      event_description: 'Merci pour votre participation. Veuillez saisir ce code de confirmation dans la fenêtre sur la plateforme de participation de %{organizationName} :'
+      expire_code: Ce code expirera dans
+      hours_24: 24 heures.
+      ignore_email: Si vous n'avez pas demandé de code, vous pouvez ignorer cet e-mail en toute sécurité.
+      preheader: Confirmez votre adresse e-mail pour %{organizationName}
+      subject: Confirmez votre adresse e-mail pour la plateforme de participation de %{organizationName}
+      title: Confirmez votre adresse e-mail
     event_registration_confirmation:
       cta_add_to_calendar: Ajouter à votre calendrier
       cta_button: Voir l'événement
@@ -483,6 +504,15 @@ fr-BE:
       title: '%{firstName}, un nouveau commentaire a été posté sur votre plateforme'
       today: Aujourd'hui
       yesterday: Hier
+    new_email_confirmation:
+      best_regards: Cordialement,
+      event_description: 'Veuillez saisir ce code de confirmation dans la fenêtre sur la plateforme de participation de %{organizationName} pour confirmer votre nouvelle adresse e-mail :'
+      expire_code: Ce code expirera dans
+      hours_24: 24 heures.
+      ignore_email: Si vous n'avez pas demandé de code, vous pouvez ignorer cet e-mail en toute sécurité.
+      preheader: Confirmez votre nouvelle adresse e-mail pour %{organizationName}
+      subject: Confirmez votre nouvelle adresse e-mail pour la plateforme de participation de %{organizationName}
+      title: Confirmez votre nouvelle adresse e-mail
     new_idea_for_admin_prescreening:
       cta_button: Examiner la contribution
       days_ago: Il y a %{numberOfDays} jours
@@ -508,6 +538,12 @@ fr-BE:
       preheader: Il y a une mise à jour sur une contribution que vous suivez
       subject: Un retour officiel a été publié sur « %{input_title} »
       title: Il y a une mise à jour sur « %{input_title} »
+    password_reset:
+      cta_button: Réinitialisez votre mot de passe
+      event_description: Vous avez demandé la réinitialisation de votre mot de passe pour la plateforme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe sécurisé. Le lien expire dans 1 heure.
+      preheader: Réinitialisez votre mot de passe pour %{organizationName}
+      subject: '%{organizationName} : Réinitialisez votre mot de passe'
+      title: Choisissez un nouveau mot de passe
     preview_data:
       author_display_name: Jeanne Dupont
       author_first_name: Jeanne
@@ -653,6 +689,14 @@ fr-BE:
       preheader: Assurez-vous de passer aux étapes suivantes
       subject: '"%{input_title}" a atteint le nombre de voix requis sur votre plateforme'
       title: Une proposition a atteint le nombre de voix requis !
+    user_blocked:
+      for_more_information: Pour plus d'informations à ce sujet, vous pouvez consulter les %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé pour la raison suivante :'
+      paragraph_1_without_reason: Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé en raison d'une violation de la charte de la communauté.
+      preheader: Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé
+      subject: Votre compte a été temporairement désactivé
+      title: Votre compte a été temporairement désactivé
+      you_can_sign_in_again_from: Vous pourrez vous reconnecter à partir du %{date}
     user_digest:
       commented: '%{authorFirstName} a commenté :'
       cta_button: Voir la plateforme

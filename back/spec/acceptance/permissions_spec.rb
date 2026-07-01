@@ -11,7 +11,8 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
-    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.save!
   end
 
   let(:project_id) { @project.id }
@@ -173,6 +174,17 @@ resource 'Permissions' do
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
+
+      context 'activity logging', document: false do
+        let(:permitted_by) { 'verified' }
+        let(:verification_expiry) { 30 }
+
+        example 'logs a "changed" and a "changed_permitted_by" activity' do
+          expect { do_request }
+            .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed', anything, anything, anything)
+            .and enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed_permitted_by', anything, anything, anything)
+        end
+      end
     end
 
     patch 'web_api/v1/phases/:phase_id/permissions/:action/reset' do
@@ -196,6 +208,13 @@ resource 'Permissions' do
         expect(response_data.dig(:attributes, :global_custom_fields)).to be true
         expect(permission.permissions_custom_fields.count).to eq 0
         expect(permission.permissions_custom_fields.count).to eq 0
+      end
+
+      example 'logs a "changed" activity', document: false do
+        permission.groups << create_list(:group, 2, projects: [@phase.project])
+
+        expect { do_request }
+          .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed', anything, anything, anything)
       end
     end
 
@@ -256,13 +275,14 @@ resource 'Permissions' do
 
       context "'everyone_confirmed_email' permissions" do
         before do
+          @user = create(:unconfirmed_user)
+          header_token_for @user
           @permission = @phase.permissions.first
           @permission.update!(permitted_by: 'everyone_confirmed_email')
           create(:custom_field_birthyear, required: true)
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
-          @user.reset_confirmation_and_counts
           @user.update!(
             first_name: 'Jack',
             last_name: nil,

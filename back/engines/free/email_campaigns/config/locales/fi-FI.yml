@@ -48,7 +48,11 @@ fi-FI:
         new_attendee: Uusi rekisteröitynyt käyttäjä
         project_review_requester: Käyttäjä, joka pyysi projektin tarkistusta
         project_reviewers: Projektien tarkastajat ja kansionhoitajat
+        user_changing_email: Käyttäjä, joka on vaihtamassa sähköpostiosoitettaan
+        user_confirming_email: Käyttäjä, joka vahvistaa sähköpostiosoitteensa
+        user_requesting_password_reset: Käyttäjä, joka pyysi salasanan nollausta
         user_who_commented: Kommentoinut käyttäjä
+        user_who_is_blocked: Käyttäjä, jonka tili on estetty
         user_who_is_invited_to_cosponsor_a_proposal: Käyttäjä, joka on kutsuttu sponsoroimaan ehdotusta
         user_who_is_mentioned: Mainittu käyttäjä
         user_who_is_receiving_admin_rights: Käyttäjä, joka saa järjestelmänvalvojan oikeudet
@@ -67,6 +71,7 @@ fi-FI:
         user_with_unsubmitted_votes: Käyttäjä, joka ei ole antanut ääniään
         users_who_engaged_but_not_voted: Käyttäjät, jotka osallistuivat projektiin, mutta eivät ole äänestäneet
         users_who_engaged_with_the_project: Käyttäjät, jotka osallistuivat projektiin
+        users_who_follow_or_participated: Käyttäjät, jotka seuraavat projektia tai ovat osallistuneet siihen
         users_who_follow_the_input: Käyttäjät, jotka seuraavat syötettä
         users_who_follow_the_project: Käyttäjät, jotka seuraavat projektia
         users_who_follow_the_proposal: Käyttäjät, jotka seuraavat ehdotusta
@@ -104,9 +109,12 @@ fi-FI:
         registration_to_event: Ilmoittautuminen tapahtumaan
         survey_1_day_after_draft_saved: 1 päivä sen jälkeen, kun käyttäjä viimeksi tallensi kyselyn luonnokseksi
         user_accepts_invitation_to_cosponsor_a_proposal: Käyttäjä hyväksyy kutsun yhteissponsoroida ehdotusta
+        user_changes_email: Käyttäjä vaihtaa sähköpostiosoitettaan
         user_comments: Käyttäjien kommentit
         user_comments_on_input: Käyttäjän kommentit syötteeseen
         user_comments_on_proposal: Käyttäjien kommentit ehdotukseen
+        user_confirms_email: Käyttäjä vahvistaa sähköpostiosoitteensa
+        user_is_blocked: Käyttäjän tili on estetty
         user_is_given_admin_rights: Käyttäjälle annetaan järjestelmänvalvojan oikeudet
         user_is_given_folder_manager_rights: Käyttäjälle annetaan kansion hallinnointioikeudet
         user_is_given_folder_moderator_rights: Käyttäjälle annetaan kansion valvojan oikeudet
@@ -120,6 +128,7 @@ fi-FI:
         user_registers_for_the_first_time: Käyttäjä rekisteröityy ensimmäistä kertaa
         user_replies_to_comment: Käyttäjä vastaa kommenttiin
         user_replies_to_internal_comment: Käyttäjä vastaa sisäiseen kommenttiin
+        user_requests_password_reset: Käyttäjä pyytää salasanan nollausta
         voting_1_day_after_last_votes: 1 päivä käyttäjän viimeisimmän äänestämisen jälkeen
         voting_2_days_before_phase_closes: 2 päivää ennen äänestysvaiheen päättymistä
         voting_basket_submitted: Äänet toimitetaan
@@ -159,6 +168,7 @@ fi-FI:
       comment_on_your_comment: Vastaus kommenttiini
       community_monitor_report: Yhteisön valvontaraportti
       cosponsor_of_your_idea: Käyttäjä hyväksyy kutsuni sponsoroida ehdotustani
+      email_confirmation: Sähköpostin vahvistuskoodi
       event_registration_confirmation: Tapahtuman ilmoittautumisvahvistus
       idea_marked_as_spam: Idea roskapostiraportti
       idea_published: Ideani julkaisu
@@ -177,6 +187,7 @@ fi-FI:
       moderator_digest: Viikkokatsaus projektipäälliköille
       native_survey_not_submitted: Kyselyä ei lähetetty
       new_comment_for_admin: Uusi kommentti moderoimassani projektissa
+      new_email_confirmation: Uuden sähköpostiosoitteen vahvistuskoodi
       new_idea_for_admin_prescreening: Uusi hyväksyntää vaativa syöte moderoimassani projektissa
       new_idea_for_admin_published: Uusi julkaistu panos moderoimassani projektissa
       official_feedback_on_idea_you_follow: Päivitä ajatus, jota seuraat
@@ -195,6 +206,7 @@ fi-FI:
       status_change_on_idea_you_follow: Seuraamasi idean tilanmuutos
       survey_submitted: Kysely lähetetty
       threshold_reached_for_admin: Ehdotus saavutti äänestyskynnyksen
+      user_blocked: Tili estetty
       user_digest: Viikkokatsaus
       voting_basket_not_submitted: Ääniä ei toimitettu
       voting_basket_submitted: Äänestyksen vahvistus
@@ -270,6 +282,15 @@ fi-FI:
       preheader: '%{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi'
       subject: '%{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi'
       title: '%{cosponsorName} on hyväksynyt kutsusi ehdotuksesi yhteisrahoittajaksi'
+    email_confirmation:
+      best_regards: Ystävällisin terveisin,
+      event_description: 'Kiitos osallistumisestasi. Syötä tämä vahvistuskoodi ikkunaan organisaation %{organizationName} osallistumisalustalla:'
+      expire_code: Tämä koodi vanhenee
+      hours_24: 24 tunnin kuluessa.
+      ignore_email: Jos et ole pyytänyt koodia, voit jättää tämän sähköpostin huomiotta.
+      preheader: Vahvista sähköpostiosoitteesi palvelussa %{organizationName}
+      subject: Vahvista sähköpostiosoitteesi organisaation %{organizationName} osallistumisalustalla
+      title: Vahvista sähköpostiosoitteesi
     event_registration_confirmation:
       cta_add_to_calendar: Lisää kalenteriisi
       cta_button: Katso tapahtuma
@@ -481,6 +502,15 @@ fi-FI:
       title: '%{firstName}, uusi kommentti on julkaistu alustallasi'
       today: Tänään
       yesterday: Eilen
+    new_email_confirmation:
+      best_regards: Ystävällisin terveisin,
+      event_description: 'Syötä tämä vahvistuskoodi organisaation %{organizationName} osallistumisalustalla vahvistaaksesi uuden sähköpostiosoitteesi:'
+      expire_code: Tämä koodi vanhenee
+      hours_24: 24 tunnin kuluessa.
+      ignore_email: Jos et ole pyytänyt koodia, voit jättää tämän sähköpostin huomiotta.
+      preheader: Vahvista uusi sähköpostiosoitteesi organisaatiolle %{organizationName}
+      subject: Vahvista uusi sähköpostiosoitteesi organisaation %{organizationName} osallistumisalustalla
+      title: Vahvista uusi sähköpostiosoitteesi
     new_idea_for_admin_prescreening:
       cta_button: Tarkista syöte
       days_ago: '%{numberOfDays} päivää sitten'
@@ -506,6 +536,12 @@ fi-FI:
       preheader: Seuraamasi syötteessä on päivitys
       subject: Virallinen palaute on lähetetty "%{input_title}"
       title: Päivitys aiheesta "%{input_title}"
+    password_reset:
+      cta_button: Nollaa salasanasi
+      event_description: Olet pyytänyt salasanan palautusta organisaation %{organizationName} osallistumisalustalle. Valitse uusi, turvallinen salasana napsauttamalla alla olevaa painiketta. Linkki vanhenee 1 tunnin kuluttua.
+      preheader: Nollaa salasanasi organisaatiolle %{organizationName}
+      subject: '%{organizationName}: Nollaa salasanasi'
+      title: Valitse uusi salasana
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -651,6 +687,14 @@ fi-FI:
       preheader: Muista ottaa seuraavat vaiheet
       subject: Ehdotus saavutti äänestyskynnyksen alustallasi
       title: Ehdotus saavutti äänikynnyksen!
+    user_blocked:
+      for_more_information: Lisätietoja tästä löydät sivulta %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Tilisi organisaation %{organizationName} osallistumisalustalla on poistettu tilapäisesti käytöstä seuraavasta syystä:'
+      paragraph_1_without_reason: Tilisi organisaation %{organizationName} osallistumisalustalla on poistettu tilapäisesti käytöstä yhteisön sääntöjen rikkomisen vuoksi.
+      preheader: Tilisi organisaation %{organizationName} osallistumisalustalla on poistettu tilapäisesti käytöstä
+      subject: Tilisi on poistettu tilapäisesti käytöstä
+      title: Tilisi on poistettu tilapäisesti käytöstä
+      you_can_sign_in_again_from: Voit kirjautua sisään jälleen %{date} alkaen
     user_digest:
       commented: '%{authorFirstName} kommentoi:'
       cta_button: Mene laiturille

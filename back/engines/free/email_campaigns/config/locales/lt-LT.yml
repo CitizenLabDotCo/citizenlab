@@ -48,7 +48,11 @@ lt-LT:
         new_attendee: Naujai užsiregistravęs naudotojas
         project_review_requester: Naudotojas, kuris paprašė peržiūrėti projektą
         project_reviewers: Projektų recenzentai ir aplankų tvarkytojai
+        user_changing_email: Naudotojas, kuris keičia savo el. pašto adresą
+        user_confirming_email: Naudotojas, patvirtinantis savo el. pašto adresą
+        user_requesting_password_reset: Naudotojas, kuris paprašė atstatyti slaptažodį
         user_who_commented: Vartotojas, kuris komentavo
+        user_who_is_blocked: Naudotojas, kurio paskyra užblokuota
         user_who_is_invited_to_cosponsor_a_proposal: Naudotojas, kuris kviečiamas bendrai remti pasiūlymą
         user_who_is_mentioned: Vartotojas, kuris paminėtas
         user_who_is_receiving_admin_rights: Naudotojas, kuriam suteikiamos administratoriaus teisės
@@ -67,6 +71,7 @@ lt-LT:
         user_with_unsubmitted_votes: Naudotojas, kuris nepateikė savo balsų
         users_who_engaged_but_not_voted: Naudotojai, kurie dalyvavo projekte, bet nebalsavo
         users_who_engaged_with_the_project: Vartotojai, dalyvavę projekte
+        users_who_follow_or_participated: Vartotojai, kurie seka projektą arba jame dalyvavo
         users_who_follow_the_input: Vartotojai, kurie seka įvestį
         users_who_follow_the_project: Vartotojai, kurie seka projektą
         users_who_follow_the_proposal: Naudotojai, kurie seka pasiūlymą
@@ -104,9 +109,12 @@ lt-LT:
         registration_to_event: Registracija į renginį
         survey_1_day_after_draft_saved: 1 diena po to, kai naudotojas paskutinį kartą išsaugojo apklausos juodraštį
         user_accepts_invitation_to_cosponsor_a_proposal: Naudotojas priima kvietimą tapti pasiūlymo bendraautoriumi
+        user_changes_email: Naudotojas keičia savo el. pašto adresą
         user_comments: Vartotojų komentarai
         user_comments_on_input: Vartotojo komentarai apie įvestį
         user_comments_on_proposal: Vartotojų pastabos dėl pasiūlymo
+        user_confirms_email: Naudotojas patvirtina savo el. pašto adresą
+        user_is_blocked: Naudotojo paskyra užblokuota
         user_is_given_admin_rights: Naudotojui suteikiamos administratoriaus teisės
         user_is_given_folder_manager_rights: Naudotojui suteikiamos aplanko valdytojo teisės
         user_is_given_folder_moderator_rights: Naudotojui suteiktos aplanko moderatoriaus teisės
@@ -120,6 +128,7 @@ lt-LT:
         user_registers_for_the_first_time: Naudotojas registruojasi pirmą kartą
         user_replies_to_comment: Vartotojo atsakymai į komentarą
         user_replies_to_internal_comment: Vartotojo atsakymai į vidinį komentarą
+        user_requests_password_reset: Naudotojas prašo atstatyti slaptažodį
         voting_1_day_after_last_votes: 1 diena po paskutinio naudotojo balsavimo
         voting_2_days_before_phase_closes: likus 2 dienoms iki balsavimo etapo pabaigos
         voting_basket_submitted: Pateikiami balsai
@@ -159,6 +168,7 @@ lt-LT:
       comment_on_your_comment: Atsakymas į mano komentarą
       community_monitor_report: Bendrijos stebėtojo ataskaita
       cosponsor_of_your_idea: Naudotojas priima mano kvietimą tapti vienu iš mano pasiūlymo rėmėjų
+      email_confirmation: El. pašto patvirtinimo kodas
       event_registration_confirmation: Renginio registracijos patvirtinimas
       idea_marked_as_spam: Pranešimas apie idėjų šlamštą
       idea_published: Mano indėlio paskelbimas
@@ -177,6 +187,7 @@ lt-LT:
       moderator_digest: Savaitės apžvalga projektų vadovams
       native_survey_not_submitted: Nepateikta apklausa
       new_comment_for_admin: Naujas komentaras projekte, kurį moderuoju
+      new_email_confirmation: Naujas el. pašto patvirtinimo kodas
       new_idea_for_admin_prescreening: Nauji duomenys, kuriuos reikia patvirtinti projekte, kurį moderuoju
       new_idea_for_admin_published: Naujai paskelbta informacija apie projektą, kuriam vadovauju
       official_feedback_on_idea_you_follow: Įvesties, kurią sekate, atnaujinimas
@@ -195,6 +206,7 @@ lt-LT:
       status_change_on_idea_you_follow: Įvesties, kurią sekate, būsenos pasikeitimas
       survey_submitted: Pateikta apklausa
       threshold_reached_for_admin: Pasiūlymas pasiekė balsavimo ribą
+      user_blocked: Paskyra užblokuota
       user_digest: Savaitės apžvalga
       voting_basket_not_submitted: Nepateikti balsai
       voting_basket_submitted: Balsavimo patvirtinimas
@@ -270,6 +282,15 @@ lt-LT:
       preheader: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
       subject: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
       title: '%{cosponsorName} priėmė jūsų kvietimą prisidėti prie jūsų pasiūlymo rėmimo.'
+    email_confirmation:
+      best_regards: Pagarbiai,
+      event_description: 'Dėkojame už dalyvavimą. Įveskite šį patvirtinimo kodą %{organizationName} dalyvavimo platformos lange:'
+      expire_code: Šio kodo galiojimo laikas baigsis po
+      hours_24: 24 valandų.
+      ignore_email: Jei kodo neprašėte, galite saugiai ignoruoti šį laišką.
+      preheader: Patvirtinkite savo „%{organizationName}“ el. pašto adresą
+      subject: Patvirtinkite savo el. pašto adresą %{organizationName} dalyvavimo platformoje
+      title: Patvirtinkite savo el. pašto adresą
     event_registration_confirmation:
       cta_add_to_calendar: Pridėti į kalendorių
       cta_button: Peržiūrėti renginį
@@ -481,6 +502,15 @@ lt-LT:
       title: '%{firstName}, jūsų platformoje buvo paskelbtas naujas komentaras'
       today: Šiandien
       yesterday: Vakar
+    new_email_confirmation:
+      best_regards: Pagarbiai,
+      event_description: 'Įveskite šį patvirtinimo kodą „%{organizationName}“ dalyvavimo platformos lange, kad patvirtintumėte savo naują el. pašto adresą:'
+      expire_code: Šio kodo galiojimo laikas baigsis po
+      hours_24: 24 valandų.
+      ignore_email: Jei kodo neprašėte, galite saugiai ignoruoti šį laišką.
+      preheader: Patvirtinkite savo naują el. pašto adresą %{organizationName}
+      subject: Patvirtinkite savo naują el. pašto adresą %{organizationName} dalyvavimo platformoje
+      title: Patvirtinkite savo naują el. pašto adresą
     new_idea_for_admin_prescreening:
       cta_button: Peržiūrėkite įvesties duomenis
       days_ago: '%{numberOfDays} prieš keletą dienų'
@@ -506,6 +536,12 @@ lt-LT:
       preheader: Atnaujinta informacija apie įvestį, kurią sekate
       subject: Oficialūs atsiliepimai buvo paskelbti "%{input_title}"
       title: Yra atnaujinta informacija apie "%{input_title}"
+    password_reset:
+      cta_button: Atstatykite slaptažodį
+      event_description: Jūs paprašėte iš naujo nustatyti slaptažodį „%{organizationName}“ dalyvavimo platformoje. Spustelėkite žemiau esantį mygtuką, kad pasirinktumėte naują, saugų slaptažodį. Nuoroda nustos galioti po 1 valandos.
+      preheader: Atstatykite savo %{organizationName} slaptažodį
+      subject: '%{organizationName}: Atstatykite slaptažodį'
+      title: Pasirinkite naują slaptažodį
     preview_data:
       author_display_name: Nepažįstama moteris
       author_first_name: Jane
@@ -651,6 +687,14 @@ lt-LT:
       preheader: Būtinai imkitės tolesnių veiksmų
       subject: '"%{input_title}" pasiekė balsavimo ribą'
       title: Pasiūlymas pasiekė balsavimo ribą!
+    user_blocked:
+      for_more_information: Norėdami gauti daugiau informacijos apie tai, galite peržiūrėti %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Jūsų paskyra %{organizationName} dalyvavimo platformoje buvo laikinai išjungta dėl šios priežasties:'
+      paragraph_1_without_reason: Jūsų paskyra %{organizationName} dalyvavimo platformoje buvo laikinai išjungta dėl bendruomenės gairių pažeidimo.
+      preheader: Jūsų paskyra %{organizationName} dalyvavimo platformoje buvo laikinai išjungta
+      subject: Jūsų paskyra laikinai išjungta
+      title: Jūsų paskyra laikinai išjungta
+      you_can_sign_in_again_from: Vėl galėsite prisijungti nuo %{date}
     user_digest:
       commented: '%{authorFirstName} komentavo:'
       cta_button: Eikite į platformą

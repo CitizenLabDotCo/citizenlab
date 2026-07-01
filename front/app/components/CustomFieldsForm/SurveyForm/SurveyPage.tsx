@@ -71,6 +71,10 @@ type SurveyPage = {
     formValues: FormValues;
     isSubmitPage: boolean;
   }) => Promise<void>;
+  // Called when this page unmounts via the Previous button so the parent can
+  // accumulate the user's in-progress answers. Forward navigation goes through
+  // onSubmit and doesn't need this callback.
+  onCapturePageValues?: (values: FormValues) => void;
   phase?: IPhaseData;
   defaultValues?: FormValues;
 };
@@ -84,6 +88,7 @@ const SurveyPage = ({
   ideaId: initialIdeaId,
   projectId,
   onSubmit,
+  onCapturePageValues,
   currentPageIndex,
   setCurrentPageIndex,
   userNavigationHistory,
@@ -283,6 +288,9 @@ const SurveyPage = ({
   const handlePrevious = () => {
     pageRef.current?.scrollTo(0, 0);
     setShowSubmitConfirmation(false);
+    // Persist whatever the user has entered on this page so it survives the
+    // remount that the page transition triggers.
+    onCapturePageValues?.(methods.getValues());
     // Remove the current page from navigation history when going back
     setUserNavigationHistory((history) => history.slice(0, -1));
     setCurrentPageIndex(previousPageNumber);

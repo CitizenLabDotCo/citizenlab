@@ -62,7 +62,13 @@ export const redirectToSSOProvider = (
     );
   }
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
-  localStorage.setItem('auth_path', window.location.pathname);
+  // Store the full path *and* query (e.g. ?phase_id=...&idea_id=...) so the
+  // user's participation params survive the SSO round trip and they land back
+  // exactly where they were.
+  localStorage.setItem(
+    'auth_path',
+    `${window.location.pathname}${window.location.search}`
+  );
 
   // Track the SSO click as a pageView
   trackVirtualPageView(`${window.location.pathname}/auth/sso/${provider}`);
@@ -79,7 +85,10 @@ function setHref(
 ) {
   const { context } = authenticationData;
 
-  const pathname = window.location.pathname;
+  // Include the query string (e.g. ?phase_id=...&idea_id=...) so that
+  // participation params survive the SSO round-trip
+  // Encoded in sso_pathname as avoids re-encoding and any potential naming clashes.
+  const pathname = `${window.location.pathname}${window.location.search}`;
   const ssoParams: SSOParams = {
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup

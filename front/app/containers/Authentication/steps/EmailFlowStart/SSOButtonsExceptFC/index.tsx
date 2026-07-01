@@ -2,9 +2,8 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IDKeycloakMethod } from 'api/verification_methods/types';
-import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
+import { IDKeycloakMethod } from 'api/id_methods/types';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
@@ -31,21 +30,16 @@ interface Props {
 }
 
 const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
-  const { ssoProviders } = useAuthConfig();
+  const { ssoProviders, azureAdSettings, azureAdB2cSettings } = useAuthConfig();
 
-  const { data: tenant } = useAppConfiguration();
-  const { data: verificationMethods } = useVerificationMethods();
+  const { data: idMethods } = useIdMethods();
 
-  const tenantSettings = tenant?.data.attributes.settings;
+  const azureProviderName = azureAdSettings?.login_mechanism_name;
+  const azureProviderLogoUrl = azureAdSettings?.logo_url;
+  const azureB2cProviderName = azureAdB2cSettings?.login_mechanism_name;
+  const azureB2cProviderLogoUrl = azureAdB2cSettings?.logo_url;
 
-  const azureProviderName =
-    tenantSettings?.azure_ad_login?.login_mechanism_name;
-  const azureProviderLogoUrl = tenantSettings?.azure_ad_login?.logo_url;
-  const azureB2cProviderName =
-    tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
-  const azureB2cProviderLogoUrl = tenantSettings?.azure_ad_b2c_login?.logo_url;
-
-  const keycloakMethod = verificationMethods?.data.find(
+  const keycloakMethod = idMethods?.data.find(
     (item) => item.attributes.name === 'keycloak'
   ) as IDKeycloakMethod | undefined;
   const keycloakIcon = keycloakMethod?.attributes.provider;
@@ -53,7 +47,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
 
   return (
     <>
-      {ssoProviders.claveUnica && (
+      {ssoProviders.clave_unica && (
         <Box mb="18px">
           <ClaveUnicaExpandedAuthProviderButton
             showConsent={true}
@@ -61,7 +55,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           />
         </Box>
       )}
-      {ssoProviders.fakeSso && (
+      {ssoProviders.fake_sso && (
         <WrappedAuthProviderButton
           icon="bullseye"
           authProvider="fake_sso"
@@ -80,16 +74,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           <FormattedMessage {...messages.continueWithHoplr} />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.nemlogIn && (
-        <WrappedAuthProviderButton
-          icon="mitid"
-          authProvider="nemlog_in"
-          onClick={onClickSSO}
-        >
-          <FormattedMessage {...messages.continueWithNemlogIn} />
-        </WrappedAuthProviderButton>
-      )}
-      {ssoProviders.idAustria && (
+      {ssoProviders.id_austria && (
         <WrappedAuthProviderButton
           icon="idaustria"
           authProvider="id_austria"
@@ -166,7 +151,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           <FormattedMessage {...messages.continueWithFedera} />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.etatLu && (
+      {ssoProviders.etat_lu && (
         <WrappedAuthProviderButton
           icon="etat_lu"
           authProvider="etat_lu"
@@ -178,7 +163,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.viennaCitizen && <ViennaSamlButton onClick={onClickSSO} />}
+      {ssoProviders.vienna_citizen && <ViennaSamlButton onClick={onClickSSO} />}
       {ssoProviders.google && (
         <WrappedAuthProviderButton
           icon="google"
@@ -197,7 +182,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           <FormattedMessage {...messages.continueWithFacebook} />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.azureAd && (
+      {ssoProviders.azureactivedirectory && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
           imageUrl={azureProviderLogoUrl}
@@ -210,7 +195,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.azureAdB2c && (
+      {ssoProviders.azureactivedirectory_b2c && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
           imageUrl={azureB2cProviderLogoUrl}

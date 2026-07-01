@@ -48,7 +48,11 @@ pt-BR:
         new_attendee: Usuário recém-registrado
         project_review_requester: Usuário que solicitou a revisão do projeto
         project_reviewers: Revisores de projetos e gerentes de pastas
+        user_changing_email: Usuário que está alterando seu endereço de e-mail
+        user_confirming_email: Usuário que está confirmando o endereço de e-mail
+        user_requesting_password_reset: Usuário que solicitou uma redefinição de senha
         user_who_commented: Usuário que comentou
+        user_who_is_blocked: Usuário cuja conta está bloqueada
         user_who_is_invited_to_cosponsor_a_proposal: Utilizador que é convidado a co-patrocinar uma proposta
         user_who_is_mentioned: Usuário mencionado
         user_who_is_receiving_admin_rights: Usuário que está recebendo direitos de administrador
@@ -67,6 +71,7 @@ pt-BR:
         user_with_unsubmitted_votes: Usuário que não enviou seus votos
         users_who_engaged_but_not_voted: Usuários que se engajaram com o projeto, mas não votaram
         users_who_engaged_with_the_project: Usuários engajados com o projeto
+        users_who_follow_or_participated: Usuários que seguem o projeto ou participaram
         users_who_follow_the_input: Usuários que seguem a entrada
         users_who_follow_the_project: Usuários que seguem o projeto
         users_who_follow_the_proposal: Usuários que seguem a proposta
@@ -104,9 +109,12 @@ pt-BR:
         registration_to_event: Inscrição em um evento
         survey_1_day_after_draft_saved: 1 dia após o usuário ter salvo o questionário pela última vez em rascunho
         user_accepts_invitation_to_cosponsor_a_proposal: O utilizador aceita o convite para co-patrocinar uma proposta
+        user_changes_email: O usuário altera seu endereço de e-mail
         user_comments: Comentários do usuário
         user_comments_on_input: Comentários dos usuários na entrada
         user_comments_on_proposal: Comentários do usuário sobre a proposta
+        user_confirms_email: O usuário confirma seu endereço de e-mail
+        user_is_blocked: A conta do usuário está bloqueada
         user_is_given_admin_rights: Usuário recebendo direitos de administrador
         user_is_given_folder_manager_rights: O usuário recebeu direitos de gerente de pasta
         user_is_given_folder_moderator_rights: Usuário recebendo direitos de moderador de pasta
@@ -120,6 +128,7 @@ pt-BR:
         user_registers_for_the_first_time: Usuário se cadastra pela primeira vez
         user_replies_to_comment: Usuário responde ao comentário
         user_replies_to_internal_comment: Respostas do usuário ao comentário interno
+        user_requests_password_reset: O usuário solicita uma redefinição de senha
         voting_1_day_after_last_votes: 1 dia após o último voto do usuário
         voting_2_days_before_phase_closes: 2 dias antes do encerramento da fase de votação
         voting_basket_submitted: Os votos são enviados
@@ -159,6 +168,7 @@ pt-BR:
       comment_on_your_comment: Uma resposta ao meu comentário
       community_monitor_report: Relatório do monitor comunitário
       cosponsor_of_your_idea: Um usuário aceita meu convite para co-patrocinar minha proposta
+      email_confirmation: Código de confirmação de e-mail
       event_registration_confirmation: Confirmação da inscrição no evento
       idea_marked_as_spam: Relatório de ideias spam
       idea_published: Publicação da minha ideia
@@ -177,6 +187,7 @@ pt-BR:
       moderator_digest: Resumo semanal para gestores de projeto
       native_survey_not_submitted: Pesquisa não enviada
       new_comment_for_admin: Novo comentário em um projeto que eu sou moderador
+      new_email_confirmation: Novo código de confirmação de e-mail
       new_idea_for_admin_prescreening: Nova entrada que requer aprovação em um projeto I moderado
       new_idea_for_admin_published: Nova entrada publicada em um projeto que eu moderei
       official_feedback_on_idea_you_follow: Atualizar uma ideia que você segue
@@ -195,6 +206,7 @@ pt-BR:
       status_change_on_idea_you_follow: Mudança de status de uma ideia que você segue
       survey_submitted: Pesquisa enviada
       threshold_reached_for_admin: Proposta atingiu o limite de votação
+      user_blocked: Conta bloqueada
       user_digest: Resumo semanal
       voting_basket_not_submitted: Votos não enviados
       voting_basket_submitted: Confirmação da votação
@@ -270,6 +282,15 @@ pt-BR:
       preheader: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
       subject: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
       title: '%{cosponsorName} aceitou o seu convite para co-patrocinar a sua proposta'
+    email_confirmation:
+      best_regards: Atenciosamente,
+      event_description: 'Agradecemos sua participação. Insira este código de confirmação na janela da plataforma de participação de %{organizationName}:'
+      expire_code: Este código expirará em
+      hours_24: 24 horas.
+      ignore_email: Se você não solicitou um código, pode ignorar este e-mail com segurança.
+      preheader: Confirme seu endereço de e-mail para %{organizationName}
+      subject: Confirme seu endereço de e-mail para a plataforma de participação de %{organizationName}
+      title: Confirme seu endereço de e-mail
     event_registration_confirmation:
       cta_add_to_calendar: Adicionar ao seu calendário
       cta_button: Veja o evento
@@ -481,6 +502,15 @@ pt-BR:
       title: '%{firstName}Se você não tiver uma conta, um novo comentário foi publicado em sua plataforma'
       today: Hoje
       yesterday: Ontem
+    new_email_confirmation:
+      best_regards: Atenciosamente,
+      event_description: 'Insira este código de confirmação na janela da plataforma de participação de %{organizationName} para confirmar seu novo endereço de e-mail:'
+      expire_code: Este código expirará em
+      hours_24: 24 horas.
+      ignore_email: Se você não solicitou um código, pode ignorar este e-mail com segurança.
+      preheader: Confirme seu novo endereço de e-mail para %{organizationName}
+      subject: Confirme seu novo endereço de e-mail para a plataforma de participação de %{organizationName}
+      title: Confirme seu novo endereço de e-mail
     new_idea_for_admin_prescreening:
       cta_button: Revisar a entrada
       days_ago: '%{numberOfDays} dias atrás'
@@ -506,6 +536,12 @@ pt-BR:
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: Há uma atualização em "%{input_title}"
+    password_reset:
+      cta_button: Redefinir sua senha
+      event_description: Você solicitou a redefinição de senha para a plataforma de participação de %{organizationName}. Clique no botão abaixo para escolher uma nova senha segura. O link expira em 1 hora.
+      preheader: Redefina sua senha para %{organizationName}
+      subject: '%{organizationName}: Redefina sua senha'
+      title: Escolha uma nova senha
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -651,6 +687,14 @@ pt-BR:
       preheader: Garantir de dar próximos passos
       subject: Uma iniciativa estourou o limite de votação na sua plataforma!
       title: Uma proposta atingiu o limite de votação!
+    user_blocked:
+      for_more_information: Para mais informações sobre isso, você pode consultar a %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Sua conta na plataforma de participação de %{organizationName} foi desativada temporariamente pelo seguinte motivo:'
+      paragraph_1_without_reason: Sua conta na plataforma de participação de %{organizationName} foi desativada temporariamente por violação das diretrizes da comunidade.
+      preheader: Sua conta na plataforma de participação de %{organizationName} foi desativada temporariamente
+      subject: Sua conta foi desativada temporariamente
+      title: Sua conta foi desativada temporariamente
+      you_can_sign_in_again_from: Você poderá entrar novamente a partir de %{date}
     user_digest:
       commented: '%{authorFirstName} comentado:'
       cta_button: Vá para a plataforma

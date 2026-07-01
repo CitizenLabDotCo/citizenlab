@@ -23,7 +23,6 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 import { useParams } from 'utils/router';
 
@@ -145,10 +144,6 @@ const InsightsContent = () => {
   };
 
   const participationMethod = phase?.data.attributes.participation_method;
-  const { start_at, end_at } = phase?.data.attributes || {};
-  const isFuturePhase = start_at
-    ? pastPresentOrFuture([start_at, end_at ?? null]) === 'future'
-    : false;
   const supportsAiAnalysis =
     participationMethod &&
     AI_ANALYSIS_SUPPORTED_METHODS.includes(participationMethod);
@@ -321,24 +316,18 @@ const InsightsContent = () => {
             <ParticipationMetrics phase={phase.data} />
           </PageBreakBox>
 
-          {!isFuturePhase && (
-            <>
-              <PageBreakBox>
-                <ParticipantsTimeline phaseId={phase.data.id} />
-              </PageBreakBox>
+          <PageBreakBox>
+            <ParticipantsTimeline phaseId={phase.data.id} />
+          </PageBreakBox>
 
-              <DemographicsSection phase={phase.data} />
+          <DemographicsSection phase={phase.data} />
 
-              <PageBreakBox>
-                <MethodSpecificInsights
-                  phaseId={phase.data.id}
-                  participationMethod={
-                    phase.data.attributes.participation_method
-                  }
-                />
-              </PageBreakBox>
-            </>
-          )}
+          <PageBreakBox>
+            <MethodSpecificInsights
+              phaseId={phase.data.id}
+              participationMethod={phase.data.attributes.participation_method}
+            />
+          </PageBreakBox>
         </Box>
       </Box>
 

@@ -138,10 +138,12 @@ export const createQuill = (
       }
 
       fileInput.onchange = () => {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const files = fileInput?.files;
         if (files && files.length) {
           quill.uploader.upload(range, files);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (fileInput) fileInput.value = '';
       };
 
@@ -223,6 +225,28 @@ export const createQuill = (
         span.textContent = label;
         btn.appendChild(span);
       }
+    });
+
+    // Close when focus moves outside the picker for keyboard and screen reader users.
+    toolbarElement.querySelectorAll('.ql-picker').forEach((picker) => {
+      picker
+        .querySelectorAll<HTMLElement>('.ql-picker-item')
+        .forEach((item) => {
+          item.tabIndex = -1;
+        });
+
+      picker.addEventListener('focusout', (event) => {
+        const nextFocused = (event as FocusEvent).relatedTarget as Node | null;
+        if (nextFocused && picker.contains(nextFocused)) return;
+
+        picker.classList.remove('ql-expanded');
+        picker
+          .querySelector('.ql-picker-label')
+          ?.setAttribute('aria-expanded', 'false');
+        picker
+          .querySelector('.ql-picker-options')
+          ?.setAttribute('aria-hidden', 'true');
+      });
     });
   }
 

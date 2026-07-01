@@ -914,6 +914,26 @@
     "verified_at": "2026-04-20T14:46:23.365900Z",
     "verified_by": "Roger"
   },
+  "pdf_export.survey_responses.date": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.no_answer": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.prepared_by": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.report_label": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
   "phases.community_monitor_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:46:23.365900Z",
@@ -989,9 +1009,19 @@
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "static_pages.privacy_policy_body": {
+    "state": "verified",
+    "verified_at": "2026-06-01T13:52:20.237337Z",
+    "verified_by": "Roger"
+  },
   "static_pages.privacy_policy_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
+    "verified_by": "Roger"
+  },
+  "static_pages.terms_and_conditions_body": {
+    "state": "verified",
+    "verified_at": "2026-06-01T13:13:35.524396Z",
     "verified_by": "Roger"
   },
   "static_pages.terms_and_conditions_title": {
@@ -1007,6 +1037,11 @@
   "time.am": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
+    "verified_by": "Roger"
+  },
+  "time.formats.hour_of_day": {
+    "state": "verified",
+    "verified_at": "2026-06-01T13:18:29.923075Z",
     "verified_by": "Roger"
   },
   "time.pm": {
@@ -1192,6 +1227,11 @@
   "user.anon_first_name": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
+    "verified_by": "Roger"
+  },
+  "user.anon_scheme.animals": {
+    "state": "verified",
+    "verified_at": "2026-06-02T06:49:57.325155Z",
     "verified_by": "Roger"
   },
   "user_blocked_mailer.send_user_blocked_email.for_more_information": {

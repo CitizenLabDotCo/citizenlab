@@ -1,0 +1,1 @@
+<%= render partial: 'application/cta_button', locals: { href: event.password_reset_url, message: cta_button_text } %>

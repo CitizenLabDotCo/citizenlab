@@ -63,11 +63,16 @@ describe 'google authentication' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['google_login'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      client_id: 'fakeclientid',
-      client_secret: 'fakeclientsecret'
+      id_methods: [
+        {
+          name: 'google',
+          client_id: 'fakeclientid',
+          client_secret: 'fakeclientsecret'
+        }
+      ]
     }
     configuration.save!
     host! 'example.org'
@@ -209,7 +214,7 @@ describe 'google authentication' do
       it 'creates unconfirmed user' do
         get '/auth/google'
         follow_redirect!
-        user = User.find_by(email: 'boris.brompton@orange.uk')
+        user = User.find_by(new_email: 'boris.brompton@orange.uk')
         expect(user.confirmation_required?).to be(true)
       end
 

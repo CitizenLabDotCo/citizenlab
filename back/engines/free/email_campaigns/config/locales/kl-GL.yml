@@ -103,7 +103,11 @@ kl-GL:
         new_attendee: Atuisoq nutaaq nalunaarsimasoq
         project_review_requester: Atuisoq suliniutip misissorneqarnissaanik kissaateqartoq
         project_reviewers: Suliniutinik nalilersuisut mappinillu aqutsisut
+        user_changing_email: Atuisoq e-mailiminik allanngortitsisoq
+        user_confirming_email: Atuisoq email-adressiminik uppernarsaasoq
+        user_requesting_password_reset: Atuisoq isissutissami nutarterneqarnissaanik piumasaqartoq
         user_who_commented: Atuisoq oqaaseqaateqartoq
+        user_who_is_blocked: Atuisoq kontua asserneqarsimasoq
         user_who_is_invited_to_cosponsor_a_proposal: Atuisoq siunnersuummut tapersersueqataasussatut aggersagaq
         user_who_is_mentioned: Atuisoq taaneqartoq
         user_who_is_receiving_admin_rights: Atuisoq aqutsisutut pisinnaatitaaffilerneqartoq
@@ -122,6 +126,7 @@ kl-GL:
         user_with_unsubmitted_votes: Atuisoq suli taasissutiminik tunniussisimanngitsoq
         users_who_engaged_but_not_voted: Atuisut suliniut pillugu peqataasut kisianni suli taasinngitsut
         users_who_engaged_with_the_project: Atuisut suliniuteqarnermi peqataasut
+        users_who_follow_or_participated: Atuisut suliniummut malinnaasut imaluunniit peqataasimasut
         users_who_follow_the_input: Atuisut siunnersuummik malinnaasut
         users_who_follow_the_project: Atuisut suliniummut malinnaasut
         users_who_follow_the_proposal: Atuisut siunnersuummik malinnittut
@@ -159,9 +164,12 @@ kl-GL:
         registration_to_event: Pisussamut nalunaarneq
         survey_1_day_after_draft_saved: Atuisup misissuinermik missingiutitut toqqorterinerata kingorna ulloq ataaseq qaangiuttoq
         user_accepts_invitation_to_cosponsor_a_proposal: Atuisup siunnersuummut tapersersueqataanissaminut qaaqqusissut akueraa
+        user_changes_email: Atuisup e-mailini allanngortippaa
         user_comments: Atuisut oqaaseqaataat
         user_comments_on_input: Atuisoq siunnersuummut oqaaseqaateqarpoq
         user_comments_on_proposal: Atuisoq siunnersuummut oqaaseqaateqarpoq
+        user_confirms_email: Atuisup e-mailini uppernarsarpaa
+        user_is_blocked: Atuisup kontua asserneqarpoq
         user_is_given_admin_rights: Atuisoq aqutsisutut pisinnaatitaaffilerneqarpoq
         user_is_given_folder_manager_rights: Atuisoq folderimi aqutsisutut pisinnaatitaaffilerneqarpoq
         user_is_given_folder_moderator_rights: Atuisoq mappimi aqutsisutut pisinnaatitaaffilerneqarpoq
@@ -175,6 +183,7 @@ kl-GL:
         user_registers_for_the_first_time: Atuisoq siullerpaamik nalunaarsortoq
         user_replies_to_comment: Atuisoq oqaaseqaammut akivoq
         user_replies_to_internal_comment: Atuisoq ilumi oqaaseqaammut akivoq
+        user_requests_password_reset: Atuisup isissutissami nutarterneqarnissaa piumasaraa
         voting_1_day_after_last_votes: Atuisup kingullermik taasineranit ullup ataatsip qaangiunnerani
         voting_2_days_before_phase_closes: Taasinissamut piffissaliussaq matunnginnerani ullut marluk sinneruttut
         voting_basket_submitted: Taasinerit tunniunneqarput
@@ -226,6 +235,7 @@ kl-GL:
       comment_on_your_initiative: Innuttaasutut siunnersuutinnut oqaaseqaat
       community_monitor_report: Innuttaasut nakkutilliisuisa nalunaarutaat
       cosponsor_of_your_idea: Atuisup siunnersuummut tapersersueqataanissat akueraa
+      email_confirmation: E-mailimut uppernarsaat
       event_registration_confirmation: Pisussamut nalunaarnermut uppernarsaat
       first_idea_published: Isumassarsiannik siullermik avammut saqqummiineq
       idea_marked_as_spam: Spam pillugit isumassarsianut nalunaarusiorneq
@@ -252,6 +262,7 @@ kl-GL:
       new_comment_on_commented_initiative: Innuttaasup isumassarsiaanut oqaaseqarfigisimasannut oqaaseqaat nutaaq
       new_comment_on_voted_idea: Isumassarsiamut taasiffigisimasannut oqaaseqaat nutaaq
       new_comment_on_voted_initiative: Isumassarsiamut siunnersuummut taasiffigisimasannut oqaaseqaat nutaaq
+      new_email_confirmation: E-mailimut nutaamut uppernarsaat
       new_idea_for_admin: Suliniummut ingerlatannut isumassarsiaq nutaaq
       new_idea_for_admin_prescreening: Suliniut aqutaranni nutaaq akuerineqartussaq
       new_idea_for_admin_published: Suliniut nakkutigisanni saqqummiussaq nutaaq
@@ -284,6 +295,7 @@ kl-GL:
       status_change_on_idea_you_follow: Saqqummiussap malitavit inissisimanerata allanngornera
       survey_submitted: Misissuineq nassiunneqarpoq
       threshold_reached_for_admin: Innuttaasut siunnersuutaasa taasiffigineqarsinnaanerata amerlassusaat anguneqarpoq
+      user_blocked: Kontu asserneqarpoq
       user_digest: Sapaatip akunneranut takussutissaq
       voting_basket_not_submitted: Taasinerit nassiunneqanngillat
       voting_basket_submitted: Taasinermut uppernarsaat
@@ -381,6 +393,15 @@ kl-GL:
       preheader: '%{cosponsorName}-p siunnersuummut tapersersueqataanissat akueraa'
       subject: '%{cosponsorName}-p siunnersuutinnut tapersersueqataanissani akueraa'
       title: '%{cosponsorName}-ip siunnersuummut tapersersueqataanissannut qaaqqussutit akueraa'
+    email_confirmation:
+      best_regards: Inuulluaqqusilluta,
+      event_description: 'Peqataaninnut qujanaq. Uppernarsaat una %{organizationName}-ip peqataatitsiviani igalaamut ikkuguk:'
+      expire_code: 'Kodi una atorunnaassaaq uani:'
+      hours_24: Akunnerit 24-t.
+      ignore_email: Kodianik piumasaqarsimanngikkuit, e-maili una sumiginnarsinnaavat.
+      preheader: '%{organizationName}-imut email-adressit uppernarsaruk'
+      subject: '%{organizationName}-ip peqataatitsiviani e-mailit uppernarsaruk'
+      title: E-mailit uppernarsaruk
     event_registration_confirmation:
       cta_add_to_calendar: Ullorsiutinnut ilannguguk
       cta_button: Pisussaq takuuk
@@ -700,6 +721,15 @@ kl-GL:
       main_header: '%{firstName}, innuttaasunut siunnersuummut taasimasannut nutaamik oqaaseqaateqarpoq'
       preheader: '%{commentAuthor} %{organizationName}p platformiani innuttaasunut siunnersuut illit qinernikuusat oqaaseqaateqarfigaa'
       subject: Innuttaasunit siunnersuummut illit taanikuusannut nutaamik oqaaseqaateqarpoq
+    new_email_confirmation:
+      best_regards: Inuulluaqqusilluta,
+      event_description: 'Uppernarsaat una %{organizationName}-p peqataatitsiviani igalaamut ikkuguk email-adressit nutaaq uppernarsarniarlugu:'
+      expire_code: 'Kodi una atorunnaassaaq uani:'
+      hours_24: Akunnerit 24-t.
+      ignore_email: Kodianik piumasaqarsimanngikkuit, e-maili una sumiginnarsinnaavat.
+      preheader: '%{organizationName}-imut e-mailit nutaaq uppernarsaruk'
+      subject: '%{organizationName}-ip peqataatitsiviani e-mailit nutaaq uppernarsaruk'
+      title: Email-adressit nutaaq uppernarsaruk
     new_idea_for_admin:
       by_author: uannga %{authorName}
       commented: '%{authorFirstName} oqaaseqaateqarpoq:'
@@ -791,6 +821,12 @@ kl-GL:
       preheader: '%{officialName} innuttaasunut siunnersuutinnut tamanut paasissutissat kingulliit ilanngullugit takussutissiivoq'
       subject: '%{organizationName}mi peqataasunut platformimi paasissutissat kingulliit ilanngullugit takussutissinneqarputit'
       updated: '%{officialName} allappoq:'
+    password_reset:
+      cta_button: Isissutissat nutarteruk
+      event_description: '%{organizationName}-p peqataatitsiviani isissutissavit taarserneqarnissaa kissaatigaat. Ataani toortagaq toqqaruk isissutissamik nutaamik isumannaatsumillu toqqaanissannut. Atassut nalunaaquttap akunnera ataaseq qaangiuppat atorunnaassaaq.'
+      preheader: '%{organizationName}-imut isissutissat nutarteruk'
+      subject: '%{organizationName}: Isissutissat nutarteruk'
+      title: Isissutissat nutaaq toqqaruk
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -992,6 +1028,14 @@ kl-GL:
       preheader: Tulliata naammassinissaa qulakkeeruk
       subject: Platforminni suliniutip taasinermi killiffissani anguaa
       title: Siunnersuut taasivigineqarnissamut killiffimmut anguivoq!
+    user_blocked:
+      for_more_information: Tamanna pillugu paasissutissat amerlanerusut %{termsAndConditionsPage}-mi atuarsinnaavatit
+      paragraph_1_with_reason: '%{organizationName}-ip peqataatitsiviani kontut utaqqiisaasumik matuneqarpoq pissut una pillugu:'
+      paragraph_1_without_reason: '%{organizationName}-ip peqataatitsiviani kontut utaqqiisaasumik matuneqarpoq inoqatigiinnut malittarisassanik unioqqutitsineq pissutigalugu.'
+      preheader: '%{organizationName}-ip peqataatitsiviani kontut utaqqiisaasumik matuneqarpoq'
+      subject: Sullissivimmi kontot piffissami killilikkami matuneqarallarpoq
+      title: Sullissivimmi kontot piffissami killilikkami matuneqarallarpoq
+      you_can_sign_in_again_from: '%{date}-miit iseqqissinnaavutit'
     user_digest:
       commented: '%{authorFirstName} oqaaseqaateqarpoq:'
       cta_button: Platformimut iserit

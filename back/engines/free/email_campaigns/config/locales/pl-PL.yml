@@ -48,7 +48,11 @@ pl-PL:
         new_attendee: Nowo zarejestrowany użytkownik
         project_review_requester: Użytkownik, który zażądał przeglądu projektu
         project_reviewers: Recenzenci projektów i menedżerowie folderów
+        user_changing_email: Użytkownik, który zmienia swój adres e-mail
+        user_confirming_email: Użytkownik potwierdzający swój adres e-mail
+        user_requesting_password_reset: Użytkownik, który poprosił o zresetowanie hasła
         user_who_commented: Użytkownik, który skomentował
+        user_who_is_blocked: Użytkownik, którego konto jest zablokowane
         user_who_is_invited_to_cosponsor_a_proposal: Użytkownik zaproszony do współsponsorowania propozycji
         user_who_is_mentioned: Użytkownik, który został wymieniony
         user_who_is_receiving_admin_rights: Użytkownik, który otrzymuje uprawnienia administratora
@@ -67,6 +71,7 @@ pl-PL:
         user_with_unsubmitted_votes: Użytkownik, który nie oddał głosu
         users_who_engaged_but_not_voted: Użytkownicy, którzy zaangażowali się w projekt, ale nie głosowali
         users_who_engaged_with_the_project: Użytkownicy, którzy zaangażowali się w projekt
+        users_who_follow_or_participated: Użytkownicy, którzy obserwują projekt lub wzięli w nim udział
         users_who_follow_the_input: Użytkownicy, którzy śledzą dane wejściowe
         users_who_follow_the_project: Użytkownicy, którzy śledzą projekt
         users_who_follow_the_proposal: Użytkownicy, którzy śledzą propozycję
@@ -104,9 +109,12 @@ pl-PL:
         registration_to_event: Rejestracja na wydarzenie
         survey_1_day_after_draft_saved: 1 dzień po ostatnim zapisaniu ankiety w wersji roboczej przez użytkownika
         user_accepts_invitation_to_cosponsor_a_proposal: Użytkownik akceptuje zaproszenie do współsponsorowania propozycji
+        user_changes_email: Użytkownik zmienia swój adres e-mail
         user_comments: Komentarze użytkowników
         user_comments_on_input: Komentarze użytkowników na temat wprowadzania danych
         user_comments_on_proposal: Komentarze użytkowników na temat propozycji
+        user_confirms_email: Użytkownik potwierdza swój adres e-mail
+        user_is_blocked: Konto użytkownika jest zablokowane
         user_is_given_admin_rights: Użytkownik otrzymuje prawa administratora
         user_is_given_folder_manager_rights: Użytkownik otrzymuje uprawnienia menedżera folderu
         user_is_given_folder_moderator_rights: Użytkownik otrzymuje prawa moderatora folderu
@@ -120,6 +128,7 @@ pl-PL:
         user_registers_for_the_first_time: Użytkownik rejestruje się po raz pierwszy
         user_replies_to_comment: Użytkownik odpowiada na komentarz
         user_replies_to_internal_comment: Użytkownik odpowiada na wewnętrzny komentarz
+        user_requests_password_reset: Użytkownik prosi o zresetowanie hasła
         voting_1_day_after_last_votes: 1 dzień po ostatnim głosowaniu użytkownika
         voting_2_days_before_phase_closes: 2 dni przed zakończeniem fazy głosowania
         voting_basket_submitted: Głosy są oddawane
@@ -159,6 +168,7 @@ pl-PL:
       comment_on_your_comment: Odpowiedź na mój komentarz
       community_monitor_report: Sprawozdanie monitora wspólnotowego
       cosponsor_of_your_idea: Użytkownik akceptuje moje zaproszenie do współsponsorowania mojej propozycji.
+      email_confirmation: Kod potwierdzający adres e-mail
       event_registration_confirmation: Potwierdzenie rejestracji na wydarzenie
       idea_marked_as_spam: Raport dot. pomysłów oznaczonych jako spam
       idea_published: Publikacja mojego pomysłu
@@ -177,6 +187,7 @@ pl-PL:
       moderator_digest: Tygodniowy przegląd dla menadżerów projektu
       native_survey_not_submitted: Ankieta nie została przesłana
       new_comment_for_admin: Nowy komentarz w projekcie, który moderuję
+      new_email_confirmation: Nowy kod potwierdzający adres e-mail
       new_idea_for_admin_prescreening: Nowe dane wejściowe wymagające zatwierdzenia w projekcie I moderate
       new_idea_for_admin_published: Nowy opublikowany wkład w projekt, który moderuję
       official_feedback_on_idea_you_follow: Zaktualizuj pomysł, który śledzisz
@@ -195,6 +206,7 @@ pl-PL:
       status_change_on_idea_you_follow: Zmiana statusu pomysłu, za którym podążasz
       survey_submitted: Przesłana ankieta
       threshold_reached_for_admin: Propozycja osiągnęła próg poparcia w głosowaniu
+      user_blocked: Konto zablokowane
       user_digest: Tygodniowy przegląd
       voting_basket_not_submitted: Nieoddane głosy
       voting_basket_submitted: Potwierdzenie głosowania
@@ -270,6 +282,15 @@ pl-PL:
       preheader: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
       subject: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
       title: '%{cosponsorName} zaakceptowała Twoje zaproszenie do współsponsorowania Twojego wniosku'
+    email_confirmation:
+      best_regards: Pozdrawiamy,
+      event_description: 'Dziękujemy za udział. Wprowadź ten kod potwierdzający w oknie na platformie partycypacyjnej %{organizationName}:'
+      expire_code: Ten kod wygaśnie za
+      hours_24: 24 godziny.
+      ignore_email: Jeśli nie prosiłeś o kod, możesz bezpiecznie zignorować tę wiadomość.
+      preheader: Potwierdź swój adres e-mail w %{organizationName}
+      subject: Potwierdź swój adres e-mail na platformie partycypacyjnej %{organizationName}
+      title: Potwierdź swój adres e-mail
     event_registration_confirmation:
       cta_add_to_calendar: Dodaj do swojego kalendarza
       cta_button: Zobacz wydarzenie
@@ -481,6 +502,15 @@ pl-PL:
       title: '%{firstName}nowy komentarz został opublikowany na twojej platformie'
       today: Dzisiaj
       yesterday: Wczoraj
+    new_email_confirmation:
+      best_regards: Pozdrawiamy,
+      event_description: 'Wprowadź ten kod potwierdzający w oknie na platformie partycypacyjnej %{organizationName}, aby potwierdzić swój nowy adres e-mail:'
+      expire_code: Ten kod wygaśnie za
+      hours_24: 24 godziny.
+      ignore_email: Jeśli nie prosiłeś o kod, możesz bezpiecznie zignorować tę wiadomość.
+      preheader: Potwierdź swój nowy adres e-mail dla %{organizationName}
+      subject: Potwierdź swój nowy adres e-mail na platformie partycypacyjnej %{organizationName}
+      title: Potwierdź swój nowy adres e-mail
     new_idea_for_admin_prescreening:
       cta_button: Przejrzyj dane wejściowe
       days_ago: '%{numberOfDays} dni temu'
@@ -506,6 +536,12 @@ pl-PL:
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: Na stronie "%{input_title}" pojawiła się aktualizacja.
+    password_reset:
+      cta_button: Zresetuj hasło
+      event_description: Zgłoszono prośbę o zresetowanie hasła do platformy partycypacyjnej %{organizationName}. Kliknij poniższy przycisk, aby wybrać nowe, bezpieczne hasło. Link wygaśnie za godzinę.
+      preheader: Zresetuj hasło dla %{organizationName}
+      subject: '%{organizationName}: Zresetuj hasło'
+      title: Wybierz nowe hasło
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -651,6 +687,14 @@ pl-PL:
       preheader: Upewnij się, że wykonasz następne kroki
       subject: Inicjatywa na Twojej platformie osiągnęła wymagany próg poparcia
       title: Propozycja osiągnęła próg głosowania!
+    user_blocked:
+      for_more_information: Aby uzyskać więcej informacji na ten temat, możesz zapoznać się z %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Twoje konto na platformie partycypacyjnej %{organizationName} zostało tymczasowo wyłączone z następującego powodu:'
+      paragraph_1_without_reason: Twoje konto na platformie partycypacyjnej %{organizationName} zostało tymczasowo wyłączone z powodu naruszenia wytycznych społeczności.
+      preheader: Twoje konto na platformie partycypacyjnej %{organizationName} zostało tymczasowo wyłączone
+      subject: Twoje konto zostało tymczasowo zablokowane
+      title: Twoje konto zostało tymczasowo zablokowane
+      you_can_sign_in_again_from: Możesz zalogować się ponownie od %{date}
     user_digest:
       commented: '%{authorFirstName} skomentował:'
       cta_button: Przejdź do platformy

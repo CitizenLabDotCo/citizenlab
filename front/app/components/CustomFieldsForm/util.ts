@@ -97,9 +97,14 @@ export function getFormCompletionPercentage({
     }
   });
 
+  // A page with no questions (e.g. a title-only page) contributes no
+  // per-page progress. Guard against dividing by zero, which would
+  // otherwise produce NaN ("NaN% complete" in the progress bar).
   const percentageOnPage =
-    ((indexOfLastFilledOutQuestion + 1) / numberOfQuestionsOnPage) *
-    percentagePerPage;
+    numberOfQuestionsOnPage === 0
+      ? 0
+      : ((indexOfLastFilledOutQuestion + 1) / numberOfQuestionsOnPage) *
+        percentagePerPage;
 
   const percentage = pageNumberPercentage + percentageOnPage;
 

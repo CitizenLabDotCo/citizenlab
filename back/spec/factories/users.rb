@@ -21,7 +21,10 @@ FactoryBot.define do
     avatar { Rails.root.join('spec/fixtures/robot.jpg').open }
     invite_status { nil }
 
-    after(:build, &:confirm)
+    after(:build) do |user|
+      user.email_confirmed_at = Time.zone.now
+      user.confirmation_required = false
+    end
 
     factory :admin do
       roles { [{ type: 'admin' }] }
@@ -40,6 +43,12 @@ FactoryBot.define do
     factory :user_with_demographics do
       gender { ['male', 'female', 'unspecified', nil][rand(4)] }
       birthyear { rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil }
+    end
+
+    factory :sso_user do
+      after(:create) do |user|
+        user.identities << create(:facebook_identity, user: user)
+      end
     end
   end
 
