@@ -40,10 +40,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
 
-  // sso verification flow
-  'sso-verification:sso-providers': messages.verificationRequired,
-  'sso-verification:sso-providers-policies': messages.verificationRequired,
-
   // post-participation flow
   'post-participation:email': messages.signUpOrLogIn,
 };

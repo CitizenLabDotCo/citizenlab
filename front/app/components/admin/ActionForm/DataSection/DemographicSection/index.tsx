@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 
-import { Box, Text, Button } from '@citizenlab/cl2-component-library';
+import { Box, Text, Button, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import useAddPermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useAddPermissionsPhaseCustomField';
@@ -107,12 +107,16 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
         onRemove={removeField}
       />
 
-      <Box mt="8px">
+      <Box mt="8px" display="flex">
         <Button
           buttonStyle="secondary-outlined"
           size="s"
           icon="plus-circle"
           onClick={() => setShowSelectionModal(true)}
+          fontSize={`${fontSizes.s}px`}
+          iconSize={`${fontSizes.s}px`}
+          padding="4px 8px"
+          width="auto"
         >
           {formatMessage(messages.addDemographicQuestion)}
         </Button>

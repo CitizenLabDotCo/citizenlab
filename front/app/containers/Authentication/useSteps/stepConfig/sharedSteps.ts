@@ -111,15 +111,6 @@ export const sharedSteps = (
         const signedIn =
           disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
-        // const isVerifiedActionFlow = permitted_by === 'verified';
-        // const userRequiresVerification = requirements.verification;
-
-        // TODO: figure out what to do with verified actions flow
-        // if (isVerifiedActionFlow && (!signedIn || userRequiresVerification)) {
-        // setCurrentStep('sso-verification:sso-providers');
-        // return;
-        // }
-
         if (signedIn) {
           const missingDataStep = checkMissingData(
             requirements,
