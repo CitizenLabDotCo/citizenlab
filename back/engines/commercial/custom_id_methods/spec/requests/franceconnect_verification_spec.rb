@@ -71,7 +71,7 @@ context 'franceconnect verification' do
     allow_any_instance_of(User).to receive(:validate_email_domain_blacklist)
   end
 
-  context "when the user has no preferred_username" do
+  context 'when the user has no preferred_username' do
     it 'successfully authenticates and verifies a new user' do
       get '/auth/franceconnect?random-passthrough-param=somevalue'
       follow_redirect!
@@ -98,7 +98,6 @@ context 'franceconnect verification' do
       expect(cookies[:cl2_jwt]).to be_present
     end
 
-
     it 'successfully verifies an existing user' do
       user = create(:user, first_name: 'Jean', last_name: 'Dupont')
       token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
@@ -119,7 +118,7 @@ context 'franceconnect verification' do
     end
   end
 
-  context "when the user has a preferred_username" do
+  context 'when the user has a preferred_username' do
     let(:auth_hash) do
       super().tap { |h| h['extra']['raw_info']['preferred_username'] = 'DUPUIS' }
     end
@@ -138,18 +137,17 @@ context 'franceconnect verification' do
         last_name: 'Dupuis'
       })
       expect(user.identities.first).to have_attributes({
-       provider: 'franceconnect',
-       user_id: user.id
+        provider: 'franceconnect',
+        user_id: user.id
      })
       expect(user.verifications.first).to have_attributes({
-        method_name: 'franceconnect',
-        user_id: user.id,
-        active: true,
-        hashed_uid: '84d610ebae19b5e09aa5621e006746c4cd568bec352e1d98d48643e6765a82e7'
+         method_name: 'franceconnect',
+         user_id: user.id,
+         active: true,
+         hashed_uid: '84d610ebae19b5e09aa5621e006746c4cd568bec352e1d98d48643e6765a82e7'
       })
       expect(cookies[:cl2_jwt]).to be_present
     end
-
 
     it 'successfully verifies an existing user' do
       user = create(:user, first_name: 'Jean', last_name: 'Dupont')
@@ -164,9 +162,9 @@ context 'franceconnect verification' do
          last_name: 'Dupuis'
        })
       expect(user.verifications.first).to have_attributes({
-        method_name: 'franceconnect',
-        user_id: user.id,
-        active: true
+         method_name: 'franceconnect',
+         user_id: user.id,
+         active: true
       })
     end
   end
