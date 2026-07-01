@@ -28,12 +28,12 @@ const VerificationWarning = ({ methodNames }: Props) => {
   const text =
     methodNames.length === 1
       ? formatMessage(messages.actionRequiresVerificationUsingMethod, {
-          method: methodNames[0],
-        })
+        method: methodNames[0],
+      })
       : formatMessage(messages.actionRequiresVerificationUsingOneOf);
 
   return (
-    <BlueShieldWarning icon="shield-checkered" mb="24px">
+    <BlueShieldWarning icon="shield-checkered" mb="12px">
       {text}
     </BlueShieldWarning>
   );

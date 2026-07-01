@@ -78,7 +78,7 @@ const VerificationVariant = ({
       {hasSignInThenVerifySection && (
         <>
           <Text mt="24px" mb="18px" fontWeight="bold" color="tenantText">
-            {formatMessage(messages.orFirstSignInThenVerify)}
+            {formatMessage(messages.alreadyHaveAnAccount)}
           </Text>
           {passwordLoginEnabled && (
             <>

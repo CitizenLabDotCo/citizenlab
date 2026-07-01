@@ -14,8 +14,8 @@ export default defineMessages({
     defaultMessage:
       'This action requires verification using one of the following methods:',
   },
-  orFirstSignInThenVerify: {
-    id: 'app.containers.Authentication.steps.EmailFlowStart.orFirstSignInThenVerify',
-    defaultMessage: 'Or, first sign in and then verify:',
+  alreadyHaveAnAccount: {
+    id: 'app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount',
+    defaultMessage: 'Already have an account?',
   },
 });
