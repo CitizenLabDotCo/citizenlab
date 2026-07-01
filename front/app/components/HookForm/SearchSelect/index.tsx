@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Label,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
 import ReactSelect from 'react-select';
@@ -97,29 +92,7 @@ const SearchSelect = ({
                   trigger(name);
                   onChange?.(option);
                 }}
-                styles={{
-                  ...selectStyles(theme),
-                  menuPortal: (base) => ({ ...base, zIndex: 1001 }),
-                  control: (base, { isFocused }) => ({
-                    ...base,
-                    minHeight: `${stylingConsts.inputHeight}px`,
-                    borderWidth: isFocused ? '2px' : '1px',
-                    borderColor: isFocused
-                      ? theme.colors.tenantPrimary
-                      : colors.borderDark,
-                    boxShadow: 'none',
-                    '&:hover': {
-                      borderColor: isFocused
-                        ? theme.colors.tenantPrimary
-                        : colors.black,
-                    },
-                  }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: colors.placeholder,
-                    fontSize: '16px',
-                  }),
-                }}
+                styles={selectStyles(theme)}
               />
             </Box>
           );

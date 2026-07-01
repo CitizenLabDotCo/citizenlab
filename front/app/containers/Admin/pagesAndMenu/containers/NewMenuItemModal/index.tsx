@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { INavbarDropdownChild, INavbarItem } from 'api/navbar/types';
@@ -16,25 +15,6 @@ import { IItemNotInNavbar } from 'utils/navbar';
 import DropdownForm from './DropdownForm';
 import messages from './messages';
 import SingleItemForm from './SingleItemForm';
-
-const Tab = styled.button<{ active: boolean }>`
-  flex: 1;
-  cursor: pointer;
-  padding: 12px 16px;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
-  background: ${({ active }) => (active ? colors.primary : 'transparent')};
-  color: ${({ active }) => (active ? colors.white : colors.textSecondary)};
-  transition: all 80ms ease-out;
-`;
-
-const TabsBar = styled.div`
-  display: flex;
-  border: 1px solid ${colors.borderDark};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  overflow: hidden;
-`;
 
 type Props = {
   opened: boolean;
@@ -84,24 +64,28 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
     >
       <Box p="24px">
         {!isEditing && (
-          <TabsBar>
-            <Tab
-              type="button"
-              active={activeTab === 'single'}
+          <Box display="flex" width="100%">
+            <Button
+              flex="1"
+              buttonStyle={activeTab === 'single' ? 'admin-dark' : 'secondary'}
               onClick={() => setActiveTab('single')}
               data-cy="e2e-new-menu-item-single-tab"
+              borderRadius="4px 0 0 4px"
             >
               {formatMessage(messages.singleItem)}
-            </Tab>
-            <Tab
-              type="button"
-              active={activeTab === 'dropdown'}
+            </Button>
+            <Button
+              flex="1"
+              buttonStyle={
+                activeTab === 'dropdown' ? 'admin-dark' : 'secondary'
+              }
               onClick={() => setActiveTab('dropdown')}
               data-cy="e2e-new-menu-item-dropdown-tab"
+              borderRadius="0 4px 4px 0"
             >
               {formatMessage(messages.dropdownMenu)}
-            </Tab>
-          </TabsBar>
+            </Button>
+          </Box>
         )}
 
         {activeTab === 'single' && !isEditing ? (

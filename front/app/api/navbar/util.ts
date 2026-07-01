@@ -8,8 +8,7 @@ export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
 };
 
 // A dropdown is a custom navbar item that groups children instead of linking
-// to a target (page, project or folder) of its own. Mirrors the backend's
-// NavBarItem#dropdown?.
+// to a target (page, project or folder) of its own.
 export function isNavbarDropdown({
   attributes: { code },
   relationships,
