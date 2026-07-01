@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
+import { Box, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
@@ -26,12 +26,11 @@ interface Props {
 }
 
 const GridContainer = ({ children }: Props) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
   const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
 
   return (
     <Box
-      px={isSmallerThanPhone ? undefined : craftComponentDefaultPadding}
+      px={craftComponentDefaultPadding}
       py={DEFAULT_Y_PADDING}
       w="100%"
       display="flex"

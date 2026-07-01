@@ -51,7 +51,7 @@ const ClearButton = styled.button`
 
 const PopoverContainer = styled.div`
   position: absolute;
-  top: 56px;
+  bottom: calc(100% + 8px);
   right: 0;
   z-index: 1000;
 `;

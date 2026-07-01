@@ -12,7 +12,7 @@ export default defineMessages({
   withThisWidget: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget2',
     defaultMessage:
-      'With this widget, you can select and determine the order in which you want spaces to show to users.',
+      'This widget lets you select custom pages, add icons to each, and organize them into sections for easy exploration.',
   },
   selectPages: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages',

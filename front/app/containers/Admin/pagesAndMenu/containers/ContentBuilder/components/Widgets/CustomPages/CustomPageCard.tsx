@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Icon, Title, colors } from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 
@@ -12,7 +12,7 @@ import Link, { typedStyled } from 'utils/cl-router/Link';
 
 const Tile = typedStyled(Link)`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
   padding: 20px;
   border: 1px solid ${colors.coolGrey300};
@@ -22,10 +22,6 @@ const Tile = typedStyled(Link)`
 
   &:hover {
     background: ${colors.grey100};
-  }
-
-  &:hover h3 {
-    color: ${({ theme }) => theme.colors.tenantPrimary};
   }
 
 `;
@@ -51,18 +47,15 @@ const CustomPageCard = ({ page, emoji }: Props) => {
         alignItems="center"
         justifyContent="center"
       >
-        {emoji ? (
-          <Emoji emoji={emoji} size="20px" />
-        ) : (
-          <Icon
-            name="page"
-            width="20px"
-            height="20px"
-            fill={colors.coolGrey500}
-          />
-        )}
+        {emoji && <Emoji emoji={emoji} size="20px" />}
       </Box>
-      <Title variant="h4" as="h3" m="0px" color="tenantText">
+      <Title
+        variant="h5"
+        as="h3"
+        m="0px"
+        color="tenantText"
+        fontWeight="semi-bold"
+      >
         {title}
       </Title>
     </Tile>
