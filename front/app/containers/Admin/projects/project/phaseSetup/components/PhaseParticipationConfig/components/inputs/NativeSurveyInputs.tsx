@@ -54,7 +54,7 @@ const NativeSurveyInputs = ({
             )
           }
           label={
-            <Box>
+            <Box ml="8px">
               <Text fontWeight="semi-bold" color="blue500" m="0px">
                 {formatMessage(parentMessages.allowMultipleResponsesLabel)}
               </Text>
