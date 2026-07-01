@@ -34,10 +34,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
-import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLink,
-} from '../../breadcrumbs';
+import { pagesBreadcrumb, pagesBreadcrumbLink } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
@@ -161,8 +158,8 @@ const AttachmentsForm = ({
             badge={<ShownOnPageBadge shownOnPage={isSectionEnabled} />}
             breadcrumbs={[
               {
-                label: formatMessage(pagesAndMenuBreadcrumb.label),
-                link: pagesAndMenuBreadcrumbLink,
+                label: formatMessage(pagesBreadcrumb.label),
+                link: pagesBreadcrumbLink,
               },
               {
                 label: localize(customPage.data.attributes.title_multiloc),
