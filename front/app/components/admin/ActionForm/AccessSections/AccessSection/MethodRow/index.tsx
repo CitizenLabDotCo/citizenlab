@@ -52,6 +52,7 @@ const MethodRow = ({
         checked={enabled}
         disabled={!available || locked}
         onChange={() => onChange({ enabled: !stateEnabled, expiry })}
+        size="small"
         label={
           <Box ml="8px">
             <Box display="flex" alignItems="center" gap="6px">

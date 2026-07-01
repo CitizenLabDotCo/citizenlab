@@ -33,6 +33,7 @@ const PiiToggle = ({
       checked={checked}
       disabled={disabled}
       onChange={onChange}
+      size="small"
       label={
         <Box ml="8px">
           <Box display="flex" alignItems="center" gap="6px">
