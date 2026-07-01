@@ -89,6 +89,7 @@ describe('Admin: add projects to folder', async () => {
           .scrollIntoView()
           .click();
 
+        cy.wait(3000);
         // Check that projects were successfuly added to folder
         cy.get('#e2e-admin-folders-projects-list')
           .contains(projectTitle1)
