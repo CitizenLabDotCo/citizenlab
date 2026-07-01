@@ -1239,6 +1239,18 @@
         }
       },
 
+      "pdf_export_responses": {
+        "type": "object",
+        "title": "PDF export of responses",
+        "description": "Temporary feature flag for the PDF export of survey/input responses, while the feature is in development. Do not enable on live platforms.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "user_fields_in_surveys": {
         "type": "object",
         "title": "User fields in surveys",

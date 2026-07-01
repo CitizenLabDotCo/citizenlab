@@ -1,0 +1,42 @@
+<% cover_only = local_assigns.fetch(:cover_only, false) %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>@page { size: A4; margin: 16mm; }</style>
+    <%# In cover-only mode (the live preview) drop the cover's trailing page
+        break so the PDF is a single page. %>
+    <% if cover_only %><style>.cover { page-break-after: auto; }</style><% end %>
+    <%= render 'export/pdf/styles', colors: colors %>
+  </head>
+  <body>
+    <% if cover[:include] %>
+      <%= render 'export/pdf/cover', cover: cover, total: total %>
+    <% end %>
+
+    <% unless cover_only %>
+    <% respondents.each do |respondent| %>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-header-label"><%= t('pdf_export.survey_responses.respondent', number: format('%03d', respondent[:number])) %></span>
+          <span class="card-header-date"><%= respondent[:date] %></span>
+        </div>
+        <div class="card-body">
+          <% respondent[:answers].each do |answer| %>
+            <div class="qa">
+              <div class="qa-question"><%= answer[:question] %></div>
+              <% if answer[:answer].present? %>
+                <div class="qa-answer"><%= answer[:answer] %></div>
+              <% else %>
+                <div class="qa-answer empty"><%= t('pdf_export.survey_responses.no_answer') %></div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="footer"><%= t('pdf_export.survey_responses.response_count', count: total) %></div>
+    <% end %>
+  </body>
+</html>

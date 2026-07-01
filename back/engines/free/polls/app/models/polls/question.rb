@@ -31,16 +31,14 @@ module Polls
     validates :max_options, numericality: { only_integer: true, greater_than_or_equal_to: 1 }, allow_nil: true, if: :multiple_options?
     validate :phase_is_poll, on: :create
 
+    delegate :project, :project_id, to: :phase
+
     def single_option?
       question_type == 'single_option'
     end
 
     def multiple_options?
       question_type == 'multiple_options'
-    end
-
-    def project_id
-      phase.try(:project_id)
     end
 
     private
