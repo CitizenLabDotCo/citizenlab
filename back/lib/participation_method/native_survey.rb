@@ -104,7 +104,7 @@ module ParticipationMethod
       # When the phase allows multiple responses, 0.seconds removes the posting
       # limit (see Permissions::PhasePermissionsService#posting_limit_reached?).
       # Otherwise nil locks it to a single response per user.
-      phase.allow_multiple_responses? ? 0.seconds : nil
+      0.seconds if phase.allow_multiple_responses?
     end
 
     def supported_email_campaigns
