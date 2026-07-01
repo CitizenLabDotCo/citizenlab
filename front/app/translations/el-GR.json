@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Ακολουθήστε το",
   "app.components.admin.UserFilterConditions.field_lives_in": "Ζει σε",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Έρευνα κοινοτικής παρακολούθησης",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Αλληλεπίδραση με εισροές",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Αλληλεπίδραση με μια εισήγηση με κατάσταση",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Συνεισέφερε στο έργο",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Δημοσίευσε κάτι με ετικέτα",

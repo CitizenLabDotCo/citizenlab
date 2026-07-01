@@ -64,6 +64,17 @@ en:
       not_reacted_idea_in: "Did not react to an idea with status %{value}"
       reacted_comment_in: "Reacted to a comment on an idea with one of the following statuses: %{value}"
       not_reacted_comment_in: "Did not react to a comment on an idea with status %{value}"
+    participated_in_input:
+      in: "Participation in one of the following inputs: %{value}"
+      not_in: "No participation in the input %{value}"
+      posted_in: "Posted one of the following inputs: %{value}"
+      not_posted_in: "Did not post the input %{value}"
+      commented_in: "Commented on one of the following inputs: %{value}"
+      not_commented_in: "Did not comment on the input %{value}"
+      reacted_idea_in: "Reacted to one of the following inputs: %{value}"
+      not_reacted_idea_in: "Did not react to the input %{value}"
+      reacted_comment_in: "Reacted to a comment on one of the following inputs: %{value}"
+      not_reacted_comment_in: "Did not react to a comment on the input %{value}"
     participated_in_project:
       in: "Participation in an idea in one of the following projects %{value}"
       not_in: "No participation in an idea in the project %{value}"

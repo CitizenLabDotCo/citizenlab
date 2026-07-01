@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Takip et",
   "app.components.admin.UserFilterConditions.field_lives_in": "Yaşadığı yer",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Toplum izleme anketi",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Girdilerle etkileşime geçti",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Durum girdisi ile etkileşim kurdu",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Projeye katkıda bulundu",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Etiket ile bir şey yayınladı",

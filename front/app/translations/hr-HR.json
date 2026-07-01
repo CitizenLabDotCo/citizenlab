@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "slijediti",
   "app.components.admin.UserFilterConditions.field_lives_in": "Živi u",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Monitoring ankete zajednice",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Interakcija s unosima",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Dodao je status unosu",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Dao je doprinos projektu",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Objavio je nešto s oznakom",
