@@ -17,6 +17,7 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
+import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
 // BaseEditor is the generic craft.js wrapper; it only needs a resolver. It is
 // shared with the (to-be-sunset) description builder for now.
 import {
@@ -53,6 +54,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         AccordionMultiloc,
         WhiteSpace,
         InfoWithAccordions,
+        RichTextMultiloc,
         ImageTextCards,
         ButtonMultiloc,
         TimelineWidget,
