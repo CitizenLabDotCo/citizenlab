@@ -12,7 +12,8 @@ class McpServer::Tools::ListGlobalTopics < McpServer::BaseTool
         'global topics',
         GlobalTopic.order(:ordering),
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc icon]
+        serializer: McpServer::Serializers::GlobalTopic,
+        params: { current_user: }
       )
     end
   end

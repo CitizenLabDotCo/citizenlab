@@ -12,7 +12,8 @@ class McpServer::Tools::ListAreas < McpServer::BaseTool
         'areas',
         Area.order(:ordering),
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc ordering]
+        serializer: McpServer::Serializers::Area,
+        params: { current_user: }
       )
     end
   end
