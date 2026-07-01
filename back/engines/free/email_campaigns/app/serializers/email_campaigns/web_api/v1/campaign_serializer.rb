@@ -171,7 +171,7 @@ module EmailCampaigns
     end
 
     def self.sms?(object)
-      object.channel == :sms
+      object.channel == 'sms'
     end
 
     def self.previewable?(object)

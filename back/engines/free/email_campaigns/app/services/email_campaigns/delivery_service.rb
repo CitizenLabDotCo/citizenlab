@@ -114,19 +114,19 @@ module EmailCampaigns
     # recipient-filter pipeline. For transactional messages that must go out
     # right away (e.g. confirmation codes).
     def send_now_to_user(campaign, recipient, event_payload = {})
-      return send_sms_now_to_user(campaign, recipient, event_payload) if campaign.channel == :sms
+      return send_sms_now_to_user(campaign, recipient, event_payload) if campaign.channel == 'sms'
 
       send_email_now_to_user(campaign, recipient, event_payload)
     end
 
     def send_preview(campaign, recipient)
-      return send_sms_preview(campaign, recipient) if campaign.channel == :sms
+      return send_sms_preview(campaign, recipient) if campaign.channel == 'sms'
 
       send_email_preview(campaign, recipient)
     end
 
     def preview_email(campaign, recipient)
-      return {} if campaign.channel == :sms
+      return {} if campaign.channel == 'sms'
 
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
@@ -252,7 +252,7 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      return send_sms_command(campaign, command) if campaign.channel == :sms
+      return send_sms_command(campaign, command) if campaign.channel == 'sms'
 
       send_email_command(campaign, command)
     end
