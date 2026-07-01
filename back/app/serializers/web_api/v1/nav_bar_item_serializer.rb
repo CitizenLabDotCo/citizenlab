@@ -11,7 +11,9 @@ class WebApi::V1::NavBarItemSerializer < WebApi::V1::BaseSerializer
     item.item_slug
   end
 
-  # Child items of a dropdown ('menu') item, in order. Empty for non-menu items.
+  # Child items of a dropdown item, in order. Empty for leaf/default items.
+  # A dropdown is a custom item that links to no target of its own; clients can
+  # tell one apart by its lack of a slug together with the presence of children.
   # Serialized inline (rather than as a JSON:API relationship) so the navbar
   # client can read them directly without parsing `included`.
   attribute :children do |item|

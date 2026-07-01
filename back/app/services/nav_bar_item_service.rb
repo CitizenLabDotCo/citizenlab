@@ -2,9 +2,9 @@
 
 class NavBarItemService
   def auto_reposition!(item)
-    # 'custom' and 'menu' (dropdown) items are user-added, not default items,
+    # 'custom' items (including dropdowns) are user-added, not default items,
     # so they go to the bottom rather than a default position.
-    if !item.custom? && !item.menu? && (position = candidate_position(item))
+    if !item.custom? && (position = candidate_position(item))
       item.insert_at position
     else
       item.move_to_bottom
@@ -12,7 +12,7 @@ class NavBarItemService
   end
 
   def default_items
-    (NavBarItem::CODES - %w[custom menu]).map.with_index do |code, ordering|
+    (NavBarItem::CODES - %w[custom]).map.with_index do |code, ordering|
       NavBarItem.new code: code, ordering: ordering
     end
   end
