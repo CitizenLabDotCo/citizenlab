@@ -25,8 +25,6 @@ const EmailFlowStart = ({ authenticationData, ...props }: Props) => {
     (p) => p.attributes.action === context.action
   );
 
-  console.log({ phaseId })
-
   const requireVerification =
     permission?.attributes.require_verification ?? false;
 
