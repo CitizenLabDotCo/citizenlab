@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Følg",
   "app.components.admin.UserFilterConditions.field_lives_in": "Bor i",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Spørreundersøkelse i lokalsamfunnet",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Interagerte med innspill",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Interagerte med en inngang med status",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Bidratt til prosjektet",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Postet noe med taggen",
