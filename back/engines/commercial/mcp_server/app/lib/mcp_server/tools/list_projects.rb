@@ -26,7 +26,7 @@ class McpServer::Tools::ListProjects < McpServer::BaseTool
         'projects',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc slug created_at]
+        serializer: McpServer::Serializers::ProjectSummary
       )
     end
   end
