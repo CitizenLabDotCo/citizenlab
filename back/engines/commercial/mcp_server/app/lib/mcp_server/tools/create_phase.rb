@@ -286,6 +286,8 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.new(**params)
+      authorize_project!(phase.project)
+      authorize(phase, :create?)
 
       SideFxPhaseService.new.before_create(phase, current_user)
       phase.save!

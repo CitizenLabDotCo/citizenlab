@@ -138,6 +138,7 @@ const ProjectsListFooter = typedStyled(Link)`
     background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
     text-decoration: none;
   }
+
 `;
 
 interface Props {

@@ -265,7 +265,9 @@ class WebApi::V1::IdeasController < ApplicationController
       end
     end
 
-    phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
+    # phase_ids/cosponsor_ids are assigned after before_update (below), not via
+    # assign_attributes, so the side-fx can snapshot the previous associations first.
+    phase_ids, cosponsor_ids = extract_deferred_relationship_ids(update_params)
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
@@ -302,7 +304,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes(update_params)
       sidefx.before_update(input, current_user)
-      input.phase_ids = phase_ids if phase_ids
+      assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
 
       authorize(input)
       validate_update!(input)
@@ -487,6 +489,21 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def sidefx
     @sidefx ||= SideFxIdeaService.new
+  end
+
+  # phase_ids/cosponsor_ids must be assigned *after* SideFxIdeaService#before_update so it
+  # can snapshot the prior associations. Assigning them via assign_attributes (which mutates
+  # the persisted record immediately) would make the before/after diff empty — e.g. no
+  # newly-added cosponsors would be detected, so their invite notifications wouldn't be sent.
+  def extract_deferred_relationship_ids(update_params)
+    phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
+    cosponsor_ids = update_params.delete(:cosponsor_ids) if update_params.key?(:cosponsor_ids)
+    [phase_ids, cosponsor_ids]
+  end
+
+  def assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
+    input.phase_ids = phase_ids if phase_ids
+    input.cosponsor_ids = cosponsor_ids if cosponsor_ids
   end
 
   def params_service

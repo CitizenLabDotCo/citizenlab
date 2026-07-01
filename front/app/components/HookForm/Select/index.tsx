@@ -62,6 +62,7 @@ const Select = ({ name, scrollErrorIntoView, ...rest }: Props) => {
           marginBottom="8px"
           text={validationError}
           scrollIntoView={scrollErrorIntoView}
+          liveRegion={false}
         />
       )}
       {apiError && (
