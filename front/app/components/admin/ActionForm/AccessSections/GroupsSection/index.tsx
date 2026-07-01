@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, Button, colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useGroups from 'api/groups/useGroups';
@@ -55,15 +55,21 @@ const GroupsSection = ({ permission, onChange }: Props) => {
               onChange({ group_ids: options.map((o) => o.value) })
             }
             placeholder={<FormattedMessage {...messages.allParticipants} />}
+            fontSize={fontSizes.s}
+            minHeight={36}
           />
         </Box>
 
-        <Box mt="12px">
+        <Box mt="12px" display="flex">
           <Button
             buttonStyle="secondary-outlined"
             size="s"
             icon="edit"
             onClick={() => setErrorMessageOpen(true)}
+            width="auto"
+            fontSize={`${fontSizes.s}px`}
+            iconSize={`${fontSizes.s}px`}
+            padding="4px 8px"
           >
             <FormattedMessage {...messages.customizeErrorMessage} />
           </Button>
