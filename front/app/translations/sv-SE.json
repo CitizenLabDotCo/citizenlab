@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Följ",
   "app.components.admin.UserFilterConditions.field_lives_in": "Bor i",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Undersökning av gemenskapens övervakare",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Interagerat med bidrag",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Interagerade med indata med status",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Bidrog till projekt",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Publicerade något med ämne",
