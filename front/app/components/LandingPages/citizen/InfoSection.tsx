@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import ContentContainer from 'components/ContentContainer';
@@ -30,6 +30,7 @@ interface Props {
 }
 
 const InfoSection = ({ multilocContent }: Props) => {
+  const theme = useTheme();
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!multilocContent || isEmptyMultiloc(multilocContent)) {
@@ -47,7 +48,7 @@ const InfoSection = ({ multilocContent }: Props) => {
 
   return (
     <StyledContentContainer>
-      <QuillEditedContent>{pageContent}</QuillEditedContent>
+      <QuillEditedContent textColor={theme.colors.tenantText}>{pageContent}</QuillEditedContent>
     </StyledContentContainer>
   );
 };

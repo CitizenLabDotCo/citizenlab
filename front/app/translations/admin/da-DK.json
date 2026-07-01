@@ -1428,7 +1428,7 @@
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Dette er AI-genereret indhold. Det er måske ikke 100% nøjagtigt. Gennemgå og krydsreferer med de faktiske input for nøjagtighed. Vær opmærksom på, at nøjagtigheden sandsynligvis forbedres, hvis antallet af valgte input reduceres.",
   "app.containers.Admin.projects.project.edit": "Rediger",
   "app.containers.Admin.projects.project.editPageContent": "Rediger sideindhold",
-  "app.containers.Admin.projects.project.editProjectPageInContentBuilder": "Rediger projektsiden i indholdsbyggeren",
+  "app.containers.Admin.projects.project.editProjectPageInContentBuilder": "Rediger projektsiden i Content Builder",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": "Da der er valgt en mappe, kan du ikke tilføje dette projekt til et rum. Projektet kommer til at ligge i samme rum som mappen.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Vælg venligst et rum.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Rum",
