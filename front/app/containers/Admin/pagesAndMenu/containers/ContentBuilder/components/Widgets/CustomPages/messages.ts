@@ -10,7 +10,7 @@ export default defineMessages({
     defaultMessage: 'Explore by departments',
   },
   withThisWidget: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget2',
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3',
     defaultMessage:
       'This widget lets you select custom pages, add icons to each, and organize them into sections for easy exploration.',
   },
