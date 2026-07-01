@@ -237,7 +237,7 @@ export const ssoIcons = {
     </Svg>
   ),
   // Red lion inspired by the arms of the Grand Duchy of Luxembourg, used as the
-  // brand mark for the etat_lu (eAccess) SSO/verification method.
+  // brand mark for the etat_lu (IAM) SSO/verification method.
   // Source: https://commons.wikimedia.org/wiki/File:Lion_rouge_inspir%C3%A9_des_armoiries_du_Grand-Duch%C3%A9_de_Luxembourg.svg
   etat_lu: (props: IconPropsWithoutName) => (
     <Svg

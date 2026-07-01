@@ -1,8 +1,16 @@
 # frozen_string_literal: true
 
 module CustomIdMethods::EtatLu
-  class EtatLuOmniauth < OmniauthMethods::Base
+  class EtatLuOmniauth < IdMethods::Base
     include EtatLuVerification
+
+    def verification?
+      true
+    end
+
+    def authentication?
+      true
+    end
 
     def profile_to_user_attrs(auth)
       {

@@ -112,7 +112,7 @@ be-up-criipto:
 fe-up-criipto:
 	cd front && npm run start
 
-# etat_lu (Luxembourg eAccess)
+# etat_lu (Luxembourg IAM)
 be-up-etat-lu:
 	docker compose down
 	docker compose run --rm web bundle exec rake 'dev:enable_id_method[etat_lu]'

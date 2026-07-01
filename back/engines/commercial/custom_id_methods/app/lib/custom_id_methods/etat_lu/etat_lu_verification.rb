@@ -2,7 +2,6 @@
 
 module CustomIdMethods::EtatLu
   module EtatLuVerification
-    include Verification::VerificationMethod
 
     def verification_method_type
       :omniauth
@@ -29,11 +28,6 @@ module CustomIdMethods::EtatLu
 
     def config_parameters_schema
       {
-        ui_method_name: {
-          type: 'string',
-          description: 'The name this verification method will have in the UI',
-          default: 'eAccess'
-        },
         issuer: {
           private: true,
           type: 'string',

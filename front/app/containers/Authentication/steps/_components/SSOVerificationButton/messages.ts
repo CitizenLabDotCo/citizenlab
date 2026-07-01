@@ -38,7 +38,7 @@ export default defineMessages({
     defaultMessage: 'Verify with SPID, CIE or CNS',
   },
   verifyEtatLu: {
-    id: 'app.components.VerificationModal.verifyEtatLu',
-    defaultMessage: 'Verify with eAccess',
+    id: 'app.components.VerificationModal.verifyEtatLu2',
+    defaultMessage: 'Verify with your IAM identifier',
   },
 });

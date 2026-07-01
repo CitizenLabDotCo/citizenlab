@@ -55,10 +55,10 @@ context 'etat_lu verification' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['verification'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{
+      id_methods: [{
         name: 'etat_lu',
         issuer: 'https://idp.etat.lu',
         client_id: 'cifwt-test',

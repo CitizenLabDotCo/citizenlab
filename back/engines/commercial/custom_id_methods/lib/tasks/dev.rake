@@ -54,7 +54,6 @@ DEV_ID_METHOD_CONFIGS = {
     'issuer' => ENV.fetch('DEFAULT_ID_ETAT_LU_ISSUER', 'https://idp.etat.lu'),
     'client_id' => ENV.fetch('DEFAULT_ID_ETAT_LU_CLIENT_ID', 'fake id'),
     'client_secret' => ENV.fetch('DEFAULT_ID_ETAT_LU_CLIENT_SECRET', 'fake secret'),
-    'ui_method_name' => 'eAccess',
     'enabled_for_verified_actions' => true
   },
   'id_austria' => {
