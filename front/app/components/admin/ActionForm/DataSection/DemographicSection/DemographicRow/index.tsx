@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import { Box, Text, Select, IconButton, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, IconButton, colors, Select } from '@citizenlab/cl2-component-library';
 
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 
@@ -29,8 +29,6 @@ const DemographicRow = ({ field, onChangeRequired, onRemove }: Props) => {
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      gap="8px"
-      py="6px"
       px="10px"
       mb="4px"
       borderRadius="6px"
@@ -39,7 +37,7 @@ const DemographicRow = ({ field, onChangeRequired, onRemove }: Props) => {
       <Text as="span" m="0" fontSize="s" color="primary">
         {title}
       </Text>
-      <Box display="flex" alignItems="center" gap="4px">
+      <Box display="flex" alignItems="center">
         <Box width="130px">
           <Select
             size="small"
