@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Seuraa",
   "app.components.admin.UserFilterConditions.field_lives_in": "Asuu",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Yhteisön seurantatutkimus",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Ollut vuorovaikutuksessa syötteiden kanssa",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Vuorovaikutus tilan syötteen kanssa",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Osallistunut projektiin",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Julkaisi jotain tagilla",

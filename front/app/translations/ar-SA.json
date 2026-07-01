@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "يتبع",
   "app.components.admin.UserFilterConditions.field_lives_in": "يعيش في",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "استطلاع رأي المجتمع",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "تفاعل مع المدخلات",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "تم التفاعل مع مُدخل بالحالة ",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "ساهم في المشروع",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "ساهم في الموضوع",

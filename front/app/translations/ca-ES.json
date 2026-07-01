@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Seguiu",
   "app.components.admin.UserFilterConditions.field_lives_in": "Viu en",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Enquesta de monitors comunitaris",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Interaccionat amb aportacions",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "S'ha interaccionat amb una entrada amb estat",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Contribuït al projecte",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Ha publicat alguna cosa amb l'etiqueta",

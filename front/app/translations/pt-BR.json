@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Seguir",
   "app.components.admin.UserFilterConditions.field_lives_in": "Mora em",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Pesquisa do monitor comunitário",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Interagiu com contribuições",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Interagiu com uma entrada com status",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Contribuiu para o projeto",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Contribuiu para o tópico",

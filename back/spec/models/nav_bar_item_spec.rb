@@ -33,11 +33,43 @@ RSpec.describe NavBarItem do
   end
 
   describe 'translations' do
-    (NavBarItem::CODES - ['custom']).each do |code|
+    # 'custom' items (including dropdowns) always carry a user-provided title,
+    # so they have no i18n fallback key.
+    (NavBarItem::CODES - %w[custom]).each do |code|
       it "exist for #{code} title" do
         key = "nav_bar_items.#{code}.title"
         expect(I18n.exists?(key)).to be true
       end
+    end
+  end
+
+  describe 'dropdown items' do
+    it 'is valid as a title-only custom parent' do
+      expect(build(:nav_bar_item, :dropdown)).to be_valid
+    end
+
+    it 'is a dropdown when custom with no target, a leaf once it links to a target' do
+      expect(build(:nav_bar_item, :dropdown)).to be_dropdown
+      expect(build(:nav_bar_item, :dropdown, static_page: create(:static_page))).not_to be_dropdown
+    end
+
+    it 'is invalid when nested under another item (a nested item must link to a target)' do
+      dropdown = create(:nav_bar_item, :dropdown)
+      expect(build(:nav_bar_item, :dropdown, parent: dropdown)).not_to be_valid
+    end
+
+    it 'requires a child\'s parent to be a dropdown item' do
+      leaf = create(:nav_bar_item, code: 'custom', static_page: create(:static_page))
+      child = build(:nav_bar_item, code: 'custom', parent: leaf, static_page: create(:static_page))
+      expect(child).not_to be_valid
+    end
+
+    it 'orders children within the parent scope independently of top-level items' do
+      create(:nav_bar_item, code: 'home')
+      dropdown = create(:nav_bar_item, :dropdown)
+      first = create(:nav_bar_item, code: 'custom', parent: dropdown, static_page: create(:static_page))
+      second = create(:nav_bar_item, code: 'custom', parent: dropdown, static_page: create(:static_page))
+      expect([first.reload.ordering, second.reload.ordering]).to eq [0, 1]
     end
   end
 end

@@ -3554,6 +3554,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.components.admin.UserFilterConditions.field_participated_in_input": {
+    "state": "verified",
+    "verified_at": "2026-07-01T07:58:46.314688Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",

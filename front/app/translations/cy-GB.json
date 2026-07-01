@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Dilyn",
   "app.components.admin.UserFilterConditions.field_lives_in": "Byw yn",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Arolwg monitro cymunedol",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Wedi rhyngweithio â mewnbynnau",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Rhyngweithio gyda mewnbwn gyda statws",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Wedi cyfrannu at y prosiect",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Wedi postio rhywbeth gyda thag",
