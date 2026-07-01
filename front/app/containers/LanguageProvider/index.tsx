@@ -13,7 +13,7 @@ import { AllMessages, IntlShapes } from './types';
 type TranslationModule = { default: Record<string, string> };
 
 const messagesGlob: Record<string, () => Promise<TranslationModule>> =
-  import.meta.glob('/i18n/*.ts') as Record<
+  import.meta.glob(['/i18n/*.ts', '!/i18n/*.test.ts']) as Record<
     string,
     () => Promise<TranslationModule>
   >;
