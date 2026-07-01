@@ -240,6 +240,78 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/:id/input_response_fields' do
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    before do
+      form = create(:custom_form, participation_context: phase)
+      create(:custom_field, resource: form, key: 'q1', title_multiloc: { 'en' => 'Favourite colour' })
+    end
+
+    context 'when visitor' do
+      example '[error] Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'List the fields available for the responses PDF export' do
+        assert_status 200
+        expect(response_data.pluck(:id)).to include('q1')
+        expect(response_data).to all(include(type: 'input_response_field'))
+      end
+
+      context 'when the phase does not support the export' do
+        let(:id) { create(:information_phase).id }
+
+        example 'Unprocessable (422)', document: false do
+          do_request
+          assert_status 422
+        end
+      end
+    end
+  end
+
+  post 'web_api/v1/phases/:id/input_responses_pdf' do
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    context 'when visitor' do
+      example '[error] Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'Generate the responses PDF' do
+        # Stub the Gotenberg-backed generation; the rendering itself is covered
+        # by the export service specs.
+        allow_any_instance_of(Export::Pdf::InputResponsesGenerator)
+          .to receive(:generate_pdf).and_return(StringIO.new('%PDF-1.4'))
+
+        do_request
+        assert_status 200
+        expect(response_body).to eq '%PDF-1.4'
+      end
+
+      context 'when the phase does not support the export' do
+        let(:id) { create(:information_phase).id }
+
+        example 'Unprocessable (422)', document: false do
+          do_request
+          assert_status 422
+        end
+      end
+    end
+  end
+
   context 'when admin' do
     before do
       admin_header_token

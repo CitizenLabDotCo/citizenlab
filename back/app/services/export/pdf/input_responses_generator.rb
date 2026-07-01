@@ -25,29 +25,27 @@ module Export
 
       attr_reader :phase, :cover
 
+      # The answer field(s) per exported field (form questions + user fields),
+      # expanding matrix questions and appending "other"/follow-up answers via the
+      # shared answer builder. Redaction is applied per field, so redacting a
+      # question also drops its matrix statements and free-text answers.
       def fields
-        @fields ||= Export::Pdf::InputFields.new(phase).fields
-          .filter_map do |field|
-            next if @redacted_field_keys.include?(field.key)
+        @fields ||= Export::InputFields.new(phase).all
+          .reject { |field| @redacted_field_keys.include?(field.key) }
+          .flat_map { |field| answer_fields_builder.fields_for(field) }
+      end
 
-            Export::CustomFieldForExport.new(field, Export::Xlsx::ValueVisitor)
-          end
+      def answer_fields_builder
+        @answer_fields_builder ||= Export::AnswerFieldsForReport.new(Export::Xlsx::ValueVisitor)
       end
 
       def inputs
-        @inputs ||= exportable_inputs
+        @inputs ||= phase.inputs_for_export
           .order(created_at: :asc)
-          .includes(:idea_files, file_attachments: :file)
+          # Eager-load everything the value visitor reads per input: the author
+          # (for author-scoped user fields), input topics, and file attachments.
+          .includes(:author, :input_topics, :idea_files, :attached_files, file_attachments: :file)
           .to_a
-      end
-
-      # The inputs included in the export. Mirrors the xlsx inputs export:
-      # non-survey methods (ideation/proposals) also hold draft/empty rows, so
-      # drop content-less inputs there.
-      def exportable_inputs
-        scope = phase.ideas.submitted_or_published
-        scope = scope.with_content unless phase.pmethod.supports_survey_form?
-        scope
       end
 
       def respondents
@@ -87,7 +85,7 @@ module Export
 
       # Cheap count for the cover preview (avoids loading every response).
       def exportable_count
-        exportable_inputs.count
+        phase.inputs_for_export.count
       end
     end
   end

@@ -65,10 +65,7 @@ module Export
       end
 
       def generate_phase_sheet(workbook, phase)
-        inputs = eager_load_inputs(phase.ideas.submitted_or_published)
-        inputs = inputs.with_content unless phase.pmethod.supports_survey_form?
-
-        generate_sheet(workbook, inputs, phase)
+        generate_sheet(workbook, eager_load_inputs(phase.inputs_for_export), phase)
       end
 
       def generate_input_sheet(workbook, input)

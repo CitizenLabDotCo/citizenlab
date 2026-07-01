@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe Export::Pdf::InputFields do
-  subject(:keys) { described_class.new(phase).fields.map(&:key) }
+describe Export::InputFields do
+  subject(:form_field_keys) { described_class.new(phase).form_fields.map(&:key) }
 
-  describe '#fields' do
+  describe '#form_fields' do
     context 'for an ideation phase (form lives on the project)' do
       let(:project) { create(:single_phase_ideation_project) }
       let(:phase) { project.phases.first }
@@ -15,11 +15,11 @@ describe Export::Pdf::InputFields do
       before { create(:custom_field_page, resource: custom_form) }
 
       it 'resolves the fields from the project form' do
-        expect(keys).to include('q_ideation')
+        expect(form_field_keys).to include('q_ideation')
       end
 
       it 'excludes page fields' do
-        input_types = described_class.new(phase).fields.map(&:input_type)
+        input_types = described_class.new(phase).form_fields.map(&:input_type)
         expect(input_types).not_to include('page')
       end
     end
@@ -30,7 +30,7 @@ describe Export::Pdf::InputFields do
       let!(:question) { create(:custom_field, resource: custom_form, key: 'q_survey') }
 
       it 'resolves the fields from the phase form' do
-        expect(keys).to include('q_survey')
+        expect(form_field_keys).to include('q_survey')
       end
     end
 
@@ -41,8 +41,24 @@ describe Export::Pdf::InputFields do
       let!(:phase_question) { create(:custom_field, resource: phase_form, key: 'q_phase') }
 
       it 'resolves the fields from the phase form, not the project form' do
-        expect(keys).to include('q_phase')
+        expect(form_field_keys).to include('q_phase')
       end
+    end
+  end
+
+  describe '#user_fields / #all' do
+    let(:phase) { create(:native_survey_phase) }
+    let!(:custom_form) { create(:custom_form, participation_context: phase) }
+    let!(:question) { create(:custom_field, resource: custom_form, key: 'q_survey') }
+    # `custom_field` defaults to a registration (resource_type User) field.
+    let!(:registration_field) { create(:custom_field, key: 'residence', title_multiloc: { 'en' => 'Residence' }) }
+
+    it 'includes out-of-form registration fields in user_fields' do
+      expect(described_class.new(phase).user_fields.map(&:key)).to include('residence')
+    end
+
+    it 'combines form and user fields in all' do
+      expect(described_class.new(phase).all.map(&:key)).to include('q_survey', 'residence')
     end
   end
 end

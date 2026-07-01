@@ -9,7 +9,8 @@ module Export
         @include_private_attributes = phase.pmethod.supports_private_attributes_in_export?
         @participation_method = phase.pmethod
         @value_visitor = Xlsx::ValueVisitor
-        @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).xlsx_exportable_fields
+        @input_fields = Export::InputFields.new(phase)
+        @fields_in_form = @input_fields.form_fields
         @multiloc_service = MultilocService.new(app_configuration: AppConfiguration.instance)
         @url_service = Frontend::UrlService.new
       end
@@ -82,13 +83,6 @@ module Export
 
       def longitude_report_field
         ComputedFieldForReport.new(column_header_for('longitude'), ->(input) { input.location_point&.coordinates&.first })
-      end
-
-      def matrix_statement_report_field(statement)
-        ComputedFieldForReport.new(
-          multiloc_service.t(statement.title_multiloc),
-          ->(input) { input.custom_field_values.dig(statement.custom_field.key, statement.key) }
-        )
       end
 
       def submitted_at_report_field
@@ -174,6 +168,9 @@ module Export
       end
 
       def process_input_report_field(field, input_fields)
+        # Title and body are rendered with a fallback locale rather than through
+        # the shared answer builder; location adds latitude/longitude columns
+        # ahead of the description answer.
         case field.code
         when 'title_multiloc'
           input_fields << title_multiloc_report_field
@@ -181,16 +178,10 @@ module Export
           input_fields << body_multiloc_report_field
         when 'location_description'
           add_location_fields(input_fields)
-          add_standard_field(field, input_fields)
+          input_fields.concat(answer_fields_builder.fields_for(field))
         else
-          if field.input_type == 'matrix_linear_scale'
-            add_matrix_fields(field, input_fields)
-          else
-            add_standard_field(field, input_fields)
-          end
+          input_fields.concat(answer_fields_builder.fields_for(field))
         end
-
-        add_supplementary_fields(field, input_fields)
       end
 
       def add_location_fields(input_fields)
@@ -198,24 +189,8 @@ module Export
         input_fields << longitude_report_field
       end
 
-      def add_matrix_fields(field, input_fields)
-        field.matrix_statements.each do |statement|
-          input_fields << matrix_statement_report_field(statement)
-        end
-      end
-
-      def add_standard_field(field, input_fields)
-        return if %w[title_multiloc body_multiloc].include?(field.code)
-
-        input_fields << Export::CustomFieldForExport.new(field, @value_visitor)
-      end
-
-      def add_supplementary_fields(field, input_fields)
-        # Skip for matrix fields which are handled differently
-        return if field.input_type == 'matrix_linear_scale'
-
-        input_fields << Export::CustomFieldForExport.new(field.other_option_text_field, @value_visitor) if field.other_option_text_field
-        input_fields << Export::CustomFieldForExport.new(field.follow_up_text_field, @value_visitor) if field.follow_up_text_field
+      def answer_fields_builder
+        @answer_fields_builder ||= Export::AnswerFieldsForReport.new(@value_visitor)
       end
 
       def author_report_fields
@@ -255,12 +230,11 @@ module Export
         end
       end
 
+      # User/registration fields answered out-of-form (empty when embedded in the
+      # form, where they arrive via fields_in_form instead). The shared builder
+      # reads them author-scoped.
       def user_report_fields
-        return [] if participation_method.user_fields_in_form_enabled? # User fields are returned from the idea if they are included in the form
-
-        registration_fields.map do |field|
-          Export::CustomFieldForExport.new(field, @value_visitor, :author)
-        end
+        @input_fields.user_fields.flat_map { |field| answer_fields_builder.fields_for(field) }
       end
 
       def all_report_fields
@@ -275,10 +249,6 @@ module Export
         all_report_fields.map do |field|
           utils.escape_formula field.value_from(input)
         end
-      end
-
-      def registration_fields
-        @registration_fields ||= CustomField.registration.includes(:options).order(:ordering).all
       end
 
       def voting_context(input, phase)

@@ -10,7 +10,7 @@ module BulkImportIdeas
       end
 
       def imported_report_field
-        Export::Xlsx::ComputedFieldForReport.new(
+        Export::ComputedFieldForReport.new(
           column_header_for('imported'),
           ->(input) { input.idea_import ? 'true' : 'false' }
         )
