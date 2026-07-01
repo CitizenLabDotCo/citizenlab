@@ -1,2 +1,2 @@
-uid,title,description,short_description,hero_image,participatory_process_group,published_at,created_at,updated_at
-decidim--process--1,"{""fr"":""Rue de demain""}","{""fr"":""<p>Concertation</p>""}","{""fr"":""<p>R&eacute;sum&eacute;&nbsp;: rue &amp; demain</p>""}",http://example.org/hero.png,decidim-participatoryprocessgroup-1,2022-07-06,2022-06-27,2025-03-06
+uid,title,description,short_description,hero_image,participatory_process_group,published_at,created_at,updated_at,url
+decidim--process--1,"{""fr"":""Rue de demain""}","{""fr"":""<p>Concertation</p>""}","{""fr"":""<p>R&eacute;sum&eacute;&nbsp;: rue &amp; demain</p>""}",http://example.org/hero.png,decidim-participatoryprocessgroup-1,2022-07-06,2022-06-27,2025-03-06,https://example.decidim.org/processes/rue-de-demain

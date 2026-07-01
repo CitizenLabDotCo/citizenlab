@@ -484,8 +484,11 @@ module DecidimImporter
     #   `http://localhost/rails/active_storage/...` blob redirects).
     # @param anonymize_users [Boolean] when true, imported users' names and emails are replaced with
     #   fake values (for non-production dumps that shouldn't carry real PII).
+    # @param original_domain [String, nil] the source Decidim host (e.g. `participer.arcueil.fr`),
+    #   used to correct links embedded in imported project descriptions and pages
+    #   ({Extractors run first}, then {LinkCorrector}). Defaults to the host of the processes' URLs.
     def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {}, import_images: true,
-      anonymize_users: false, include_source_url: false)
+      anonymize_users: false, include_source_url: false, original_domain: nil)
       @rows_by_model = rows_by_model
       @primary_locale = primary_locale
       @locale_mapper = LocaleMapper.new(locale_mapping, fallback_locale: primary_locale)
@@ -493,6 +496,7 @@ module DecidimImporter
       @import_images = import_images
       @anonymize_users = anonymize_users
       @include_source_url = include_source_url
+      @original_domain = original_domain
     end
 
     attr_reader :ref_map
@@ -513,6 +517,7 @@ module DecidimImporter
       run_static_pages
       run_files
       run_description_layouts
+      run_link_correction
       default_record_update_timestamps
       TemplateBuilder.new(ref_map)
     end
@@ -649,6 +654,58 @@ module DecidimImporter
         include_source_url: @include_source_url, attachments: rows_for(:attachments),
         attachment_collections: rows_for(:attachment_collections)
       ).run
+    end
+
+    # Corrects the links embedded in the imported project descriptions and static pages, now that every
+    # project/page/file record is registered. Rewrites Decidim's back-links to the source platform into
+    # Go Vocal equivalents (see {LinkCorrector}); a no-op without a resolvable source domain.
+    def run_link_correction
+      domain = original_domain
+      return if domain.blank?
+
+      corrector = LinkCorrector.new(original_domain: domain, resolver: ImportLinkResolver.new(ref_map))
+      ref_map.records.each do |record|
+        case record.model_name
+        when 'content_builder/layout' then correct_layout_links(record, corrector)
+        when 'static_page' then correct_static_page_links(record, corrector)
+        end
+      end
+    end
+
+    # The source Decidim host: the one passed to the importer, else the host of the processes' own URLs.
+    def original_domain
+      @original_domain || derived_original_domain
+    end
+
+    def derived_original_domain
+      url = rows_for(:projects).filter_map { |row| present_string(row['url']) }.first
+      url && URI.parse(url).host
+    rescue URI::InvalidURIError
+      nil
+    end
+
+    def present_string(value)
+      str = value.to_s.strip
+      str.empty? ? nil : str
+    end
+
+    # Corrects the links in every `TextMultiloc` block of a Content Builder layout (the project
+    # description). Node text is a `{ locale => html }` multiloc buried in the craftjs blob.
+    def correct_layout_links(record, corrector)
+      craftjs = record.attributes['craftjs_json']
+      return unless craftjs.is_a?(Hash)
+
+      craftjs.each_value do |node|
+        next unless self.class.craftjs_resolved_name(node) == 'TextMultiloc'
+
+        text = node.dig('props', 'text')
+        node['props']['text'] = corrector.correct_multiloc(text) if text.is_a?(Hash)
+      end
+    end
+
+    def correct_static_page_links(record, corrector)
+      body = record.attributes['top_info_section_multiloc']
+      record.attributes['top_info_section_multiloc'] = corrector.correct_multiloc(body) if body.is_a?(Hash)
     end
 
     # Decidim process attachments → project-level file attachments (`ProjectFile`). Runs after the

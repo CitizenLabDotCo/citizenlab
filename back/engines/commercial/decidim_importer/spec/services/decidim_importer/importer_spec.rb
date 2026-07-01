@@ -45,7 +45,7 @@ RSpec.describe DecidimImporter::Importer do
       expect(patch.dig('settings', 'core', 'organization_name')).to include('en' => 'Raynor, Heathcote and Moen')
     end
 
-    it 'imports a process\'s attachments as Files engine files attached to the project' do
+    it 'imports a process\'s attachments as Files engine files owned by (but not attached to) the project' do
       template = described_class.from_directory(export_root).build_template.models['models']
 
       espaces_verts = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Espaces verts' }
@@ -55,12 +55,39 @@ RSpec.describe DecidimImporter::Importer do
       expect(template['files/file'].map { |f| f['remote_content_url'] })
         .to all(start_with('http://example.org/files/redirect/'))
 
-      # Each file is owned by (files_project) and attached to (file_attachment) the Espaces verts project.
+      # Each file is owned by the project (files_project) so it's available and linkable from the
+      # description — but it is *not* surfaced as a project attachment (no files/file_attachment).
       expect(template['files/files_project'].map { |fp| fp['project_ref'] }).to all(be(espaces_verts))
-      expect(template['files/file_attachment'].map { |fa| fa['attachable_ref'] }).to all(be(espaces_verts))
       files = template['files/file']
       expect(template['files/files_project'].map { |fp| fp['file_ref'] }).to match_array(files)
-      expect(template['files/file_attachment'].map { |fa| fa['file_ref'] }).to match_array(files)
+      expect(template['files/file_attachment']).to be_nil
+    end
+
+    it 'keeps the Decidim slug on the imported project' do
+      template = described_class.from_directory(export_root).build_template.models['models']
+      espaces = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Espaces verts' }
+      expect(espaces['slug']).to eq('espaces-verts')
+    end
+
+    it 'corrects the links embedded in the project description' do
+      template = described_class.from_directory(export_root).build_template.models['models']
+      espaces = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Espaces verts' }
+      file = template['files/file'].find { |f| f['name'] == "Plan d'actions.pdf" }
+      text = template['content_builder/layout']
+        .find { |l| l['content_buildable_ref'].equal?(espaces) }['craftjs_json'].values
+        .select { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TextMultiloc' }
+        .map { |n| n.dig('props', 'text', 'fr-FR') }.join
+
+      # rule 2 — a same-domain process link resolves to the matched (imported) project
+      expect(text).to include('href="/projects/rue-de-demain"')
+      # rule 3 — the Decidim external-link redirect is unwrapped to its target
+      expect(text).to include('href="https://www.exemple.fr/doc"')
+      # rule 4 — the Active Storage link resolves to the imported file's content path
+      expect(text).to include(%(href="/uploads/files/file/content/#{file['id']}/Plan_d_actions.pdf"))
+      # rule 2 fallback — an unmatched relative link is made absolute against the original domain
+      expect(text).to include('href="https://example.decidim.org/processes/introuvable/f/1"')
+      # a genuine third-party link is left untouched
+      expect(text).to include('href="https://www.google.fr/"')
     end
   end
 

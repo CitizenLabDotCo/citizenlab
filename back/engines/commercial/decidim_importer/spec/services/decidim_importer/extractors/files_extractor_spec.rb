@@ -17,7 +17,7 @@ RSpec.describe DecidimImporter::Extractors::FilesExtractor do
   def row(overrides = {})
     {
       'uid' => 'decidim-attachment-1', 'decidim_participatory_process' => process_uid,
-      'title' => '{"fr":"Compte-rendu"}', 'description' => '{"fr":"Notes de réunion"}', 'weight' => '2',
+      'title' => '{"fr":"Compte-rendu"}', 'description' => '{"fr":"Notes de réunion"}',
       'file' => "http://example.org/files/redirect/abc/Plan%20d'actions.pdf"
     }.merge(overrides)
   end
@@ -42,14 +42,12 @@ RSpec.describe DecidimImporter::Extractors::FilesExtractor do
     expect(join.attributes['project_ref']).to be(project.attributes)
   end
 
-  it 'registers a file_attachment on the project, with the weight as its position' do
-    file = extract([row]).first
-    attachment = ref_map.fetch('decidim-attachment-1-file-attachment')
-
-    expect(attachment.model_name).to eq('files/file_attachment')
-    expect(attachment.attributes['file_ref']).to be(file.attributes)
-    expect(attachment.attributes['attachable_ref']).to be(project.attributes)
-    expect(attachment.attributes['position']).to eq(2)
+  it 'does not surface the file as a project attachment' do
+    extract([row])
+    # The file is available via the files_project join and linked from the description, but is not
+    # attached to the project (no Files::FileAttachment with the project as attachable).
+    file_attachments = ref_map.records.select { |r| r.model_name == 'files/file_attachment' }
+    expect(file_attachments).to be_empty
   end
 
   it 'falls back to the attachment title when the URL has no usable filename' do

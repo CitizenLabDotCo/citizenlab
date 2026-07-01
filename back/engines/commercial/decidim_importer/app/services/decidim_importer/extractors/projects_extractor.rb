@@ -20,7 +20,8 @@ module DecidimImporter
         group: 'participatory_process_group',
         published_at: 'published_at',
         created_at: 'created_at',
-        updated_at: 'updated_at'
+        updated_at: 'updated_at',
+        url: 'url'
       }.freeze
 
       def run
@@ -45,6 +46,11 @@ module DecidimImporter
         }
         hero = present_value(row[COLUMNS[:hero_image]])
         attributes['remote_header_bg_url'] = hero if hero
+        # Keep the Decidim slug (the `<slug>` in `…/processes/<slug>`) as the project's slug, so the
+        # original URLs stay stable and links between imported content can be rewritten to resolve
+        # (see {ImportLinkResolver}). Falls back to Go Vocal's title-derived slug when absent.
+        slug = decidim_slug(row)
+        attributes['slug'] = slug if slug
 
         project = ref_map.register(uid, Record.new('project', attributes))
         register_card_image(uid, project, hero) if hero
@@ -58,6 +64,12 @@ module DecidimImporter
         image = Record.new('project_image', { 'remote_image_url' => hero_url, 'ordering' => 0 })
         image.reference('project', project)
         ref_map.register("#{uid}-card-image", image)
+      end
+
+      # The Decidim slug from the process URL (`…/processes/<slug>`), or nil when there's no such URL.
+      def decidim_slug(row)
+        url = present_value(row[COLUMNS[:url]])
+        url && url[%r{/processes/([^/?#]+)}, 1]
       end
 
       # Decidim's `short_description` is HTML, but Go Vocal's `description_preview_multiloc` is a
