@@ -27,7 +27,8 @@ class McpServer::Tools::ListFolders < McpServer::BaseTool
         'folders',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc slug]
+        serializer: McpServer::Serializers::Folder,
+        params: { current_user: }
       )
     end
   end

@@ -45,7 +45,7 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
 
       ok(
         "Created project #{project.id}",
-        structured: project.as_json(only: %i[id title_multiloc slug visible_to created_at])
+        structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })
       )
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")

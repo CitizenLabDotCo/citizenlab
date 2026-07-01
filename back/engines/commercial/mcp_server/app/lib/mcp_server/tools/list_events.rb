@@ -26,7 +26,8 @@ class McpServer::Tools::ListEvents < McpServer::BaseTool
         'events',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc start_at end_at location_multiloc]
+        serializer: McpServer::Serializers::Event,
+        params: { current_user: }
       )
     end
   end

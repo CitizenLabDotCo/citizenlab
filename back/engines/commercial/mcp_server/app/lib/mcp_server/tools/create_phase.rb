@@ -306,7 +306,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
 
       ok(
         "Created phase #{phase.id}",
-        structured: phase.as_json(only: %i[id project_id title_multiloc start_at end_at participation_method])
+        structured: McpServer::Serializers::Phase.serialize(phase, params: { current_user: })
       )
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
