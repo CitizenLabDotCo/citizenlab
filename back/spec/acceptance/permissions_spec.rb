@@ -189,8 +189,7 @@ resource 'Permissions' do
       end
 
       context 'activity logging', document: false do
-        let(:permitted_by) { 'verified' }
-        let(:verification_expiry) { 30 }
+        let(:permitted_by) { 'admins_moderators' }
 
         example 'logs a "changed" and a "changed_permitted_by" activity' do
           expect { do_request }
