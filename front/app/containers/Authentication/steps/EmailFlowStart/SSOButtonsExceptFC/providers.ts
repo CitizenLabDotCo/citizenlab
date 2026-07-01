@@ -30,6 +30,9 @@ interface SplitSSOProviders {
   verificationProviders: SSOButtonProvider[];
   // Enabled providers that can only authenticate, not verify.
   nonVerificationProviders: SSOButtonProvider[];
+  // Whether at least one authentication + verification method is active
+  // (including FranceConnect, which is always shown as a verification method).
+  hasVerificationMethod: boolean;
 }
 
 /*
@@ -50,13 +53,19 @@ const useSSOProviders = (): SplitSSOProviders => {
   const allProviders = SSO_PROVIDERS_EXCEPT_FC.filter(
     (provider) => ssoProviders[provider]
   );
+  const verificationProviders = allProviders.filter(supportsVerification);
+
+  const franceConnectIsVerificationMethod =
+    !!ssoProviders.franceconnect && supportsVerification('franceconnect');
 
   return {
     allProviders,
-    verificationProviders: allProviders.filter(supportsVerification),
+    verificationProviders,
     nonVerificationProviders: allProviders.filter(
       (provider) => !supportsVerification(provider)
     ),
+    hasVerificationMethod:
+      verificationProviders.length > 0 || franceConnectIsVerificationMethod,
   };
 };
 

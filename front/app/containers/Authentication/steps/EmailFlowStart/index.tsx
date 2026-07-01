@@ -1,11 +1,12 @@
 import React from 'react';
 
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 import { SSOProvider } from 'api/authentication/singleSignOn';
-import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import { AuthenticationData, SetError } from 'containers/Authentication/typings';
 
 import DefaultVariant from './DefaultVariant';
+import useSSOProviders from './SSOButtonsExceptFC/providers';
 import VerificationVariant from './VerificationVariant';
 
 interface Props {
@@ -17,18 +18,17 @@ interface Props {
 }
 
 const EmailFlowStart = ({ authenticationData, ...props }: Props) => {
-  const { context } = authenticationData;
-  const phaseId = context.type === 'phase' ? context.id : undefined;
-
-  const { data: permissions } = usePhasePermissions({ phaseId });
-  const permission = permissions?.data.find(
-    (p) => p.attributes.action === context.action
+  const { data: requirements } = useAuthenticationRequirements(
+    authenticationData.context
   );
+  const { hasVerificationMethod } = useSSOProviders();
 
-  const requireVerification =
-    permission?.attributes.require_verification ?? false;
+  const verificationRequired =
+    requirements?.data.attributes.requirements.verification ?? false;
 
-  return requireVerification ? (
+  // Only show the verification interface when verification is required AND there
+  // is at least one method that can actually verify.
+  return verificationRequired && hasVerificationMethod ? (
     <VerificationVariant {...props} />
   ) : (
     <DefaultVariant {...props} />
