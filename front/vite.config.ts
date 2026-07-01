@@ -117,6 +117,43 @@ export default defineConfig(({ mode }) => {
         USE_HTTPS && mkcert({ hosts: [HTTPS_HOST] }), // HTTPS in development
       ],
     ],
+    optimizeDeps: {
+      // `root` is `app/`, so these globs are relative to the app source dir.
+      //
+      // By default Vite's dependency scanner only scans `index.html` and
+      // follows *static* imports. Almost everything in this app is code-split
+      // behind `lazy(() => import('containers/...'))`, and the (Rolldown) dep
+      // scanner does not crawl through those dynamic-import boundaries during
+      // pre-bundling. That left hundreds of deps that are only reachable via
+      // lazy routes/components (e.g. `@arcgis/core/*` subpaths, `lottie-react`,
+      // `@hello-pangea/dnd`, `react-select/async`) undiscovered at cold-start
+      // scan. Each one was then discovered at request time when you navigated
+      // to a page that used it, triggering a re-optimize + full page reload
+      // ("optimized dependencies changed. reloading").
+      //
+      // Scanning the source files directly makes every statically-imported dep
+      // discoverable up front, so they are all pre-bundled in the initial pass
+      // and no longer trigger reloads mid-session. This makes a cold start a
+      // bit slower (one-off, cached afterwards) in exchange for a stable dev
+      // server. Tests/stories/mocks are excluded to keep the scan lean.
+      // NOTE: test/story/mock files must be excluded. The dep scan resolves
+      // every import in every entry, and a single unresolvable import aborts
+      // the whole scan ("Failed to run dependency scan. Skipping dependency
+      // pre-bundling."), which is exactly what causes the reload storm. Test
+      // helpers import bare specifiers like `i18n/en` that only Jest resolves
+      // (via moduleNameMapper), not Vite — so they'd break the scan.
+      entries: [
+        'index.html',
+        '**/*.{ts,tsx}',
+        '!**/*.test.{ts,tsx}',
+        '!**/*.spec.{ts,tsx}',
+        '!**/*.stories.{ts,tsx}',
+        '!**/__mocks__/**',
+        '!**/__tests__/**',
+        '!**/testUtils/**',
+        '!**/*.d.ts',
+      ],
+    },
     build: {
       outDir: '../build',
       sourcemap: !isDev && !isTestBuild,
