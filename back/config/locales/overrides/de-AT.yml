@@ -1,0 +1,27 @@
+# Overrides the rails-i18n gem's Austrian (de-AT) wide month name so January
+# renders as "Januar" instead of "Jänner" (e.g. in email-campaign subjects/dates
+# via `I18n.l(..., format: :long)`). Mirrors the frontend date-fns / moment /
+# Intl overrides.
+#
+# NOT a Polyglit-managed file: it lives outside the `config/locales/{locale}.yml`
+# pattern and outside the non-recursive `config/locales/*.yml` load glob, and is
+# added to I18n.load_path explicitly by
+# config/initializers/de_at_date_month_names.rb (which also guarantees it loads
+# after the gem so this wins). Only `month_names` (the wide `%B` form) is
+# overridden; `abbr_month_names` keeps the gem's "Jän".
+de-AT:
+  date:
+    month_names:
+      -
+      - Januar
+      - Februar
+      - März
+      - April
+      - Mai
+      - Juni
+      - Juli
+      - August
+      - September
+      - Oktober
+      - November
+      - Dezember

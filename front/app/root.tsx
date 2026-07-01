@@ -1,3 +1,7 @@
+// Side-effect import: must run before any date is formatted (overrides the
+// native de-AT "Jänner" month name -> "Januar"). Keep it first.
+import 'utils/patchIntlDeAtJanuary';
+
 import React, { StrictMode, useEffect } from 'react';
 
 import 'assets/css/reset.min.css';
