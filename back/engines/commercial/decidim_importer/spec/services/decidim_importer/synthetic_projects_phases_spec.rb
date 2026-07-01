@@ -27,14 +27,12 @@ RSpec.describe DecidimImporter::Importer do
     pb = find_project('Budget participatif 2021')
     expect(pb.admin_publication.publication_status).to eq('published')
     expect(pb.admin_publication.parent.publication).to eq(folder)
-    expect(pb.phases.count).to eq(2)
-    expect(pb.phases.pluck(:participation_method).uniq).to eq(%w[information])
+    # Steps are no longer imported as phases, and the sample has no proposals/surveys, so none.
+    expect(pb.phases).to be_empty
 
     pm = find_project('Concertation mobilité')
     expect(pm.admin_publication.publication_status).to eq('draft')
     expect(pm.admin_publication.parent).to be_nil
-
-    expect(importer.skipped_phases.map { |s| s[:uid] }).to include('decidim-step-1002')
 
     henri = User.find_by(unique_code: 'decidim-user-2')
     expect(henri.project_moderator?(pb.id)).to be(true)

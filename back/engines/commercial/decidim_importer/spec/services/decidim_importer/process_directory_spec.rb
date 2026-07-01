@@ -10,12 +10,12 @@ require_relative '../../fixtures/decidim_export_fixture'
 #     02---decidim--participatory-process--1/
 #       01---participatory-process.csv
 #       02---steps.csv
-# Each process becomes a Project; each of its steps becomes an (information) Phase linked to it.
+# Each process becomes a Project. Steps are not imported as phases — only proposals/surveys are.
 RSpec.describe DecidimImporter::Importer do
   let(:export_root) { DecidimImporter::DecidimExportFixture.csv_root }
 
   describe '.from_directory (participatory processes)' do
-    it 'imports each process as a project with its steps as linked phases' do
+    it 'imports each process as a project, without turning its steps into phases' do
       template = described_class.from_directory(export_root).build_template.models['models']
 
       project = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Rue de demain' }
@@ -42,9 +42,9 @@ RSpec.describe DecidimImporter::Importer do
       expect(text_nodes.first['props']['text']['fr-FR']).to include('sum') # short_description ("Résumé …")
       expect(text_nodes.last['props']['text']['fr-FR']).to include('Concertation') # the full description
 
-      phases = template['phase'].select { |ph| ph['project_ref'].equal?(project) }
-      expect(phases.map { |ph| ph['title_multiloc']['fr-FR'] }).to eq(['État des lieux', "Plan d'actions"])
-      expect(phases.map { |ph| ph['participation_method'] }.uniq).to eq(['information'])
+      # Steps are not imported as phases, and this process has no proposals/surveys — so no phases.
+      phases = (template['phase'] || []).select { |ph| ph['project_ref'].equal?(project) }
+      expect(phases).to be_empty
     end
 
     it 'nests a grouped process under its folder via a shared admin-publication ref' do
@@ -55,12 +55,6 @@ RSpec.describe DecidimImporter::Importer do
       project = template['project'].first
       expect(project['admin_publication_attributes']['parent_attributes_ref'])
         .to equal(folder['admin_publication_attributes'])
-    end
-
-    it 'skips steps without a start date and reports them' do
-      importer = described_class.from_directory(export_root)
-      importer.build_template
-      expect(importer.skipped_phases.map { |s| s[:uid] }).to include('decidim--step--3')
     end
   end
 end

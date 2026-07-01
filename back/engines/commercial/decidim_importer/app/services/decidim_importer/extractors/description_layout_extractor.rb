@@ -120,12 +120,11 @@ module DecidimImporter
         multiloc(row[COLUMNS[:subtitle]]).transform_values { |text| "<h2>#{text}</h2>" }
       end
 
-      # Whether the project has any participation phase (anything other than the information backbone) —
-      # only then is the `AboutBox` participation widget meaningful.
+      # Whether the project has any phase — only proposals/surveys become phases, so a phase always
+      # means real participation, and only then is the `AboutBox` participation widget meaningful.
       def participation_phase?(project)
         ref_map.records.any? do |r|
-          r.model_name == 'phase' && r.attributes['project_ref'].equal?(project.attributes) &&
-            r.attributes['participation_method'] != 'information'
+          r.model_name == 'phase' && r.attributes['project_ref'].equal?(project.attributes)
         end
       end
 

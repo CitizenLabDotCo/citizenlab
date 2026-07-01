@@ -83,7 +83,8 @@ RSpec.describe DecidimImporter::Importer do
       # Process references group `decidim-participatoryprocessgroup-1` (fr title "Ipsa at non.").
       parent_folder = ProjectFolders::Folder.find_by("title_multiloc->>'fr-FR' = 'Ipsa at non.'")
       expect(project.admin_publication.parent.publication).to eq(parent_folder)
-      expect(project.phases.pluck(:participation_method)).to eq(%w[information information])
+      # Steps are no longer imported as phases, and this process has no proposals/surveys, so it has none.
+      expect(project.phases).to be_empty
 
       # Decidim scopes become flat Go Vocal areas.
       expect(Area.find_by("title_multiloc->>'en' = 'Schambergerton'")).to be_present
@@ -104,11 +105,13 @@ RSpec.describe DecidimImporter::Importer do
 
       let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'") }
 
-      it 'lays out the step, survey and proposals components as non-overlapping phases' do
-        # step (information) → survey (native_survey) → proposals (ideation), ordered by their
-        # component dates. (The page component becomes a static page, not a phase.)
+      it 'lays out only the survey and proposals components as non-overlapping phases' do
+        # Steps are dropped; only survey (native_survey) and proposals (ideation) become phases. The
+        # proposals keep their real window (2023-01-05 → last proposal), and the survey — which
+        # overlapped it — is shifted back into the free slot before it. (The page component becomes a
+        # static page, not a phase.)
         methods = project.phases.order(:start_at).pluck(:participation_method)
-        expect(methods).to eq(%w[information native_survey ideation])
+        expect(methods).to eq(%w[native_survey ideation])
         # Sequential, non-overlapping: each phase starts on/after the previous one's end.
         starts_ends = project.phases.order(:start_at).pluck(:start_at, :end_at)
         starts_ends.each_cons(2) { |(_, prev_end), (next_start, _)| expect(next_start).to be >= prev_end }

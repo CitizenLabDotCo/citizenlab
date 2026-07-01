@@ -26,11 +26,9 @@ module DecidimImporter
 
     # Glob (relative to the export root) for each participatory-process directory. Newer exports
     # nest one folder per process under `NN---participatory-processes/`, each holding the process's
-    # own CSV and a steps CSV (the steps file has no process column — the directory *is* the
-    # association). See {.read_processes}.
+    # own CSV (plus per-component subdirectories). See {.read_processes}.
     PROCESS_DIR_GLOB = '*participatory-processes/*'
     PROCESS_FILE_GLOB = '*--participatory-process.csv'
-    STEPS_FILE_GLOB = '*--steps.csv'
     ATTACHMENTS_FILE_GLOB = '*--attachments.csv'
     COLLECTIONS_FILE_GLOB = '*--attachment_collections.csv'
     ANSWERS_FILE_GLOB = '*--answers.csv'
@@ -73,16 +71,16 @@ module DecidimImporter
     end
 
     # Reads every participatory-process directory, aggregating their rows by model: process rows into
-    # `:projects`, step rows into `:phases`, attachment rows into `:attachments`, and — from each
-    # process's components — proposals into `:proposals`, their comments into `:comments`, and every
-    # component manifest into `:components` (the latter drives ideation-phase titles and skip-logging
-    # of unconsumed component types).
+    # `:projects`, attachment rows into `:attachments`, and — from each process's components —
+    # proposals into `:proposals`, their comments into `:comments`, and every component manifest into
+    # `:components` (the latter drives phase generation and skip-logging of unconsumed component
+    # types). Decidim steps are deliberately not read: only proposals/surveys become phases.
     #
     # Several of these CSVs carry no foreign-key column — the directory *is* the association — so rows
     # are stamped with their owning process (`decidim_participatory_process`) and, for proposals/
     # comments, their component (`decidim_component`).
     def self.read_processes(root)
-      acc = { projects: [], phases: [], attachments: [], attachment_collections: [], proposals: [],
+      acc = { projects: [], attachments: [], attachment_collections: [], proposals: [],
               comments: [], components: [], survey_answers: [] }
       process_dirs(root).each do |dir|
         process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
@@ -92,9 +90,6 @@ module DecidimImporter
         acc[:projects].concat(process_rows)
         process_uid = process_rows.first&.fetch('uid', nil)
         process_stamp = { 'decidim_participatory_process' => process_uid }
-
-        steps_file = Dir.glob(File.join(dir, STEPS_FILE_GLOB)).first
-        acc[:phases].concat(stamp(CsvReader.read(steps_file), process_stamp)) if steps_file
 
         attachments_file = Dir.glob(File.join(dir, ATTACHMENTS_FILE_GLOB)).first
         acc[:attachments].concat(stamp(CsvReader.read(attachments_file), process_stamp)) if attachments_file
@@ -480,7 +475,7 @@ module DecidimImporter
     end
 
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model
-    #   (:organization, :users, :scopes, :folders, :projects, :phases, :attachments, :proposals,
+    #   (:organization, :users, :scopes, :folders, :projects, :attachments, :proposals,
     #   :comments, :components, :process_roles). Missing keys are treated as "model not in this
     #   export" and silently skipped.
     # @param import_images [Boolean] when false, `remote_*_url` attributes are dropped from the
@@ -566,12 +561,7 @@ module DecidimImporter
       created_object_ids
     end
 
-    # Steps that couldn't be imported (e.g. missing dates), for surfacing back to the client.
-    def skipped_phases
-      @phases_extractor&.skipped || []
-    end
-
-    # Proposals components that couldn't be placed as a phase (e.g. no datable proposals).
+    # Participation components that couldn't be placed as a phase (never published / no datable window).
     def skipped_components
       @phase_projector&.skipped || []
     end
@@ -604,14 +594,8 @@ module DecidimImporter
     private
 
     def run_phases
-      if @rows_by_model.key?(:phases)
-        @phases_extractor = Extractors::PhasesExtractor.new(
-          rows_for(:phases), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
-        )
-        @phases_extractor.run
-      end
       @phase_projector = PhaseProjector.new(ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale)
-      @phase_projector.run(step_rows: rows_for(:phases), participation_components: participation_components)
+      @phase_projector.run(participation_components: participation_components)
     end
 
     def run_proposals
@@ -689,34 +673,42 @@ module DecidimImporter
       @static_pages_extractor.run
     end
 
-    # The phase-generating components fed to {PhaseProjector}: proposals → ideation phases (dated by
-    # their proposals' published_at) and surveys → native_survey phases (dated by the component's
-    # publication date — the export carries no responses to date them by). Pages are *not* here: they
-    # become project-level static pages via {Extractors::StaticPagesExtractor}.
+    # The phase-generating components fed to {PhaseProjector}: proposals → ideation phases and surveys
+    # → native_survey phases. Each phase starts at its component's `published_at` and ends at its last
+    # activity (a proposal's `published_at`, a survey answer's `created_at`); see {PhaseProjector}.
+    # Pages are *not* here: they become project-level static pages via {Extractors::StaticPagesExtractor}.
     def participation_components
       proposal_components + survey_phase_components
     end
 
     def proposal_components
-      names = component_name_map
-      rows_for(:proposals)
-        .group_by { |row| [row['decidim_participatory_process'], row['decidim_component']] }
-        .map do |(process_uid, component_uid), proposal_rows|
-          { process_uid: process_uid, component_uid: component_uid, name: names[component_uid],
-            method: 'ideation', dates: proposal_rows.pluck('published_at') }
-        end
+      dates_by_component = rows_for(:proposals).group_by { |row| row['decidim_component'] }
+      proposal_component_rows.map do |row|
+        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
+          name: row['name'], method: 'ideation',
+          published_at: row['published_at'], previously_published: row['previously_published'],
+          end_dates: (dates_by_component[row['uid']] || []).pluck('published_at') }
+      end
     end
 
     def survey_phase_components
+      dates_by_component = rows_for(:survey_answers).group_by { |row| row['decidim_component'] }
       survey_component_rows.map do |row|
         # The phase is titled by the component `name`; the questionnaire's own title/description (when
-        # present) render into the phase description as an <h2> heading above the body.
+        # present) render into the phase description as an <h2> heading above the body. It ends at its
+        # last answer (`created_at`).
         { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
-          name: row['name'],
+          name: row['name'], method: 'native_survey',
+          published_at: row['published_at'], previously_published: row['previously_published'],
+          end_dates: (dates_by_component[row['uid']] || []).pluck('created_at'),
           description_heading: SurveyParser.title(row['specific_data']),
-          description_body: SurveyParser.description(row['specific_data']),
-          method: 'native_survey', dates: [row['published_at']] }
+          description_body: SurveyParser.description(row['specific_data']) }
       end
+    end
+
+    # Component manifest rows whose type is `proposals` (their proposals live in a sibling CSV).
+    def proposal_component_rows
+      @proposal_component_rows ||= rows_for(:components).select { |row| row['type'] == PROPOSALS_COMPONENT }
     end
 
     # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).
@@ -727,10 +719,6 @@ module DecidimImporter
     # Component manifest rows whose type is `pages` (their body lives in `specific_data`).
     def page_component_rows
       @page_component_rows ||= rows_for(:components).select { |row| row['type'] == PAGES_COMPONENT }
-    end
-
-    def component_name_map
-      rows_for(:components).each_with_object({}) { |row, acc| acc[row['uid']] = row['name'] }
     end
 
     # Custom user fields are seeded from the organization's `extra_user_fields` config (if present)
