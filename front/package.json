@@ -189,7 +189,6 @@
     "@types/qs": "6.9.7",
     "@types/react": "18.3.1",
     "@types/react-color": "3.0.12",
-    "@types/react-datepicker": "7.0.0",
     "@types/react-dom": "18.3.1",
     "@types/react-helmet": "6.1.11",
     "@types/react-infinite-scroller": "1.2.3",
