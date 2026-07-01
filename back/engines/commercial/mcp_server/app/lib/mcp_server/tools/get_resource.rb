@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::GetResource < McpServer::BaseTool
-  RESOURCE_TYPES = {
-    'project' => 'Project',
-    'phase' => 'Phase',
-    'event' => 'Event',
-    'area' => 'Area',
-    'global_topic' => 'GlobalTopic',
-    'folder' => 'ProjectFolders::Folder',
-    'user' => 'User',
-    'cause' => 'Volunteering::Cause',
-    'poll_question' => 'Polls::Question',
-    'poll_option' => 'Polls::Option'
+  RESOURCES = {
+    'project' => { model: Project, serializer: McpServer::Serializers::Project },
+    'phase' => { model: Phase, serializer: McpServer::Serializers::Phase },
+    'event' => { model: Event, serializer: McpServer::Serializers::Event },
+    'folder' => { model: ProjectFolders::Folder, serializer: McpServer::Serializers::Folder },
+    'area' => { model: Area, serializer: McpServer::Serializers::Area },
+    'global_topic' => { model: GlobalTopic, serializer: McpServer::Serializers::GlobalTopic },
+    'cause' => { model: Volunteering::Cause, serializer: McpServer::Serializers::Cause },
+    'poll_question' => { model: Polls::Question, serializer: McpServer::Serializers::PollQuestion },
+    'poll_option' => { model: Polls::Option, serializer: McpServer::Serializers::PollOption }
   }.freeze
 
   def name = 'get_resource'
@@ -21,7 +20,7 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
   def input_schema
     {
       properties: {
-        type: { type: 'string', enum: RESOURCE_TYPES.keys, description: 'The resource type' },
+        type: { type: 'string', enum: RESOURCES.keys, description: 'The resource type' },
         id: { type: 'string', description: 'The resource ID' }
       },
       required: %w[type id]
@@ -31,10 +30,15 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       type = params[:type]
-      id = params[:id]
-      record = McpServer::Tools::GetResource::RESOURCE_TYPES[type].constantize.find(id)
+      config = RESOURCES.fetch(type)
 
-      ok("#{type} #{id}", structured: record.as_json)
+      id = params[:id]
+      record = config[:model].find(id)
+
+      ok(
+        "#{type} #{id}",
+        structured: config[:serializer].serialize(record, params: { current_user: })
+      )
     rescue ActiveRecord::RecordNotFound
       error("#{type} not found: #{id}")
     end
