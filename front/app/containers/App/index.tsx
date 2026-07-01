@@ -44,6 +44,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
 import { initiativeShowPageSlug, isPage } from 'utils/helperUtils';
+import patchMomentDeAtJanuary from 'utils/patchMomentDeAtJanuary';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 import { useLocation } from 'utils/router';
@@ -84,6 +85,12 @@ const importedLocales = new Set();
 async function importMomentLocaleFilePromise(momentLocale: string) {
   try {
     await localeGetter(momentLocale);
+    if (momentLocale === 'de-at') {
+      // date-fns' and moment's de-at locales both render January as "Jänner";
+      // we display "Januar". This overrides moment's copy once its locale file
+      // is loaded (the date-fns counterpart lives in i18n/de-AT.ts).
+      patchMomentDeAtJanuary();
+    }
     importedLocales.add(momentLocale);
   } catch (error) {
     console.error(`Error processing locale: ${momentLocale}`, error);
