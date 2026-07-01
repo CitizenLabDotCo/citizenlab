@@ -1,6 +1,6 @@
 import { Multiloc, ILinks, Pagination } from 'typings';
 
-import { ActionDescriptors } from 'api/projects/types';
+import { ProjectActionDescriptors } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -41,7 +41,7 @@ export interface MiniProjectData {
   id: string;
   type: 'project_mini';
   attributes: {
-    action_descriptors: ActionDescriptors;
+    action_descriptors: ProjectActionDescriptors;
     slug: string;
     starts_days_from_now: number | null;
     ended_days_ago: number | null;

@@ -95,7 +95,7 @@ export interface IProjectAttributes {
   scheduled_at?: string | null;
   include_all_areas: boolean;
   folder_id?: string | null;
-  action_descriptors: ActionDescriptors;
+  action_descriptors: ProjectActionDescriptors;
   uses_content_builder: boolean;
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
@@ -104,7 +104,7 @@ export interface IProjectAttributes {
   space_id?: string | null;
 }
 
-export type ActionDescriptors = {
+export type PhaseActionDescriptors = {
   posting_idea: ActionDescriptor<ProjectPostingDisabledReason>;
   commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
   // Same disabled reasons as commenting_idea at time of writing
@@ -117,8 +117,11 @@ export type ActionDescriptors = {
   taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
   annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
   voting: ActionDescriptor<ProjectVotingDisabledReason>;
-  attending_event: ActionDescriptor<ProjectDisabledReason>;
   volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
+};
+
+export type ProjectActionDescriptors = PhaseActionDescriptors & {
+  attending_event: ActionDescriptor<ProjectDisabledReason>;
 };
 
 export interface IProjectData {
