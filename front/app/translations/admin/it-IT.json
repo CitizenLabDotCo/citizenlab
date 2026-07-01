@@ -576,7 +576,7 @@
   "app.components.formBuilder.editWarningModal.deleteAQuestionDescription": "Perderai i dati di risposta collegati a quella domanda",
   "app.components.formBuilder.editWarningModal.deteleAQuestion": "Elimina una domanda",
   "app.components.formBuilder.editWarningModal.exportYouResponses2": "esporta le tue risposte.",
-  "app.components.formBuilder.editWarningModal.loseDataWarning3": "Attenzione: Potresti perdere per sempre i dati di risposta. Prima di continuare,",
+  "app.components.formBuilder.editWarningModal.loseDataWarning3": "Attenzione: Potresti perdere per sempre i dati delle risposte. Prima di continuare,",
   "app.components.formBuilder.editWarningModal.noCancel": "No, annulla",
   "app.components.formBuilder.editWarningModal.title4": "Modifica sondaggio attivo",
   "app.components.formBuilder.editWarningModal.yesContinue": "Sì, continua",
