@@ -1,142 +1,99 @@
 /**
  * Overrides the Austrian German (de-AT) January month name — "Jänner" (wide)
- * and "Jän" (short) — with "Januar" / "Jan" wherever it is produced by the
- * platform's native `Intl` API.
+ * and "Jän" (short) — with "Januar" / "Jan" wherever the platform's native
+ * `Intl` API produces it. Counterpart to the date-fns (`i18n/de-AT.ts`) and
+ * moment (`patchMomentDeAtJanuary.ts`) overrides.
  *
- * This is the counterpart to the date-fns (`i18n/de-AT.ts`) and moment
- * (`patchMomentDeAtJanuary.ts`) overrides. react-intl's `formatDate` /
- * `<FormattedDate>` — and any raw `new Intl.DateTimeFormat(...)` or
- * `Date#toLocale*` call — delegate to the browser's CLDR data, where de-AT
- * January is "Jänner"/"Jän". @formatjs reads the global `Intl.DateTimeFormat` at
- * format time, so wrapping the constructor here (plus the `Date#toLocale*`
- * helpers, which use the intrinsic directly) catches every native-Intl path.
- *
- * Because "Jän" is unique to de-AT January, the rewrite is a safe no-op for
- * every other locale. The narrow form ("J") is left untouched.
+ * react-intl's `formatDate` / `<FormattedDate>` and any raw `Intl` or
+ * `Date#toLocale*` call ultimately go through the native methods patched below,
+ * so we post-process their output — but only for the de-AT locale, leaving every
+ * other locale's formatting untouched.
  *
  * Imported for side effects at the very top of `root.tsx` so it runs before the
- * first date is formatted. Idempotent.
+ * first date is formatted. Idempotent per realm.
  */
 
-const JAEN = 'Jän'; // prefix shared by both "Jänner" (wide) and "Jän" (short)
-const PATCHED = '__deAtJanuarPatched';
-
-type DateArg = Date | number | undefined;
+const localeIsDeAt = (locale: string | undefined): boolean =>
+  !!locale && locale.toLowerCase().startsWith('de-at');
 
 // Rewrite the wide form first ("Jänner" -> "Januar"), then the short form
-// ("Jän" -> "Jan"). Order matters: "Jän" is a prefix of "Jänner", so the wide
-// replacement must run before the short one (after it, "Januar" has no "Jän").
+// ("Jän" -> "Jan"): "Jän" is a prefix of "Jänner", so the order matters.
 const januarize = (value: string): string =>
-  value.includes(JAEN)
-    ? value.split('Jänner').join('Januar').split('Jän').join('Jan')
-    : value;
+  value.split('Jänner').join('Januar').split('Jän').join('Jan');
 
-const januarizeParts = (
+const januarizeMonthParts = (
   parts: Intl.DateTimeFormatPart[]
 ): Intl.DateTimeFormatPart[] =>
   parts.map((part) =>
     part.type === 'month' ? { ...part, value: januarize(part.value) } : part
   );
 
-const isDeAt = (dtf: Intl.DateTimeFormat): boolean =>
-  dtf.resolvedOptions().locale.toLowerCase().startsWith('de-at');
+const dtfProto = Intl.DateTimeFormat.prototype;
 
-// Replace an instance method with `wrapped`. `format` is an inherited accessor
-// (getter, no setter), so a plain assignment throws in strict mode — define an
-// own data property instead.
-const define = (
-  target: object,
-  name: string,
-  wrapped: (...args: never[]) => unknown
-): void => {
-  Object.defineProperty(target, name, {
-    value: wrapped,
-    configurable: true,
-    writable: true,
+// `Intl.DateTimeFormat.prototype.format` is an accessor whose getter returns a
+// bound formatter. For de-AT, return a formatter that januarizes; every other
+// locale gets the original, untouched.
+const wrapFormatGetter = (): void => {
+  const descriptor = Object.getOwnPropertyDescriptor(dtfProto, 'format');
+  const originalGet = descriptor?.get;
+  if (!originalGet) return;
+  Object.defineProperty(dtfProto, 'format', {
+    ...descriptor,
+    get(this: Intl.DateTimeFormat) {
+      const format = originalGet.call(this) as Intl.DateTimeFormat['format'];
+      if (!localeIsDeAt(this.resolvedOptions().locale)) return format;
+      return (date?: Date | number) => januarize(format(date));
+    },
   });
 };
 
-const wrapInstance = (dtf: Intl.DateTimeFormat): void => {
-  const originalFormat = dtf.format.bind(dtf);
-  define(dtf, 'format', (date: DateArg) => januarize(originalFormat(date)));
-
-  const originalFormatToParts = dtf.formatToParts.bind(dtf);
-  define(dtf, 'formatToParts', (date: DateArg) =>
-    januarizeParts(originalFormatToParts(date))
-  );
-
-  // formatRange / formatRangeToParts exist in modern engines only.
-  const ranged = dtf as Intl.DateTimeFormat & {
-    formatRange?: (start: Date | number, end: Date | number) => string;
-    formatRangeToParts?: (
-      start: Date | number,
-      end: Date | number
-    ) => Intl.DateTimeFormatPart[];
+// formatToParts is a plain method; januarize its month part for de-AT instances.
+const wrapFormatToParts = (): void => {
+  const original = dtfProto.formatToParts;
+  dtfProto.formatToParts = function (
+    this: Intl.DateTimeFormat,
+    date?: Date | number
+  ) {
+    const parts = original.call(this, date);
+    return localeIsDeAt(this.resolvedOptions().locale)
+      ? januarizeMonthParts(parts)
+      : parts;
   };
-  if (typeof ranged.formatRange === 'function') {
-    const original = ranged.formatRange.bind(dtf);
-    define(dtf, 'formatRange', (start: Date | number, end: Date | number) =>
-      januarize(original(start, end))
-    );
-  }
-  if (typeof ranged.formatRangeToParts === 'function') {
-    const original = ranged.formatRangeToParts.bind(dtf);
-    define(
-      dtf,
-      'formatRangeToParts',
-      (start: Date | number, end: Date | number) =>
-        januarizeParts(original(start, end))
-    );
-  }
-};
-
-const patchDateTimeFormatConstructor = (): void => {
-  const Original = Intl.DateTimeFormat;
-  if ((Original as unknown as Record<string, unknown>)[PATCHED]) return;
-
-  // Kept as a plain function while we set up prototype/statics (the constructor
-  // type's `prototype` is read-only); cast to the constructor type at the end.
-  // Called only via `new` (incl. `new (Intl.DateTimeFormat).bind.apply(...)` as
-  // @formatjs does); returning an object makes `new` yield it.
-  const Patched = function (
-    locales?: string | string[],
-    options?: Intl.DateTimeFormatOptions
-  ): Intl.DateTimeFormat {
-    const dtf = new Original(locales, options);
-    if (isDeAt(dtf)) wrapInstance(dtf);
-    return dtf;
-  };
-
-  Patched.prototype = Original.prototype;
-  const patched = Patched as unknown as typeof Intl.DateTimeFormat &
-    Record<string, unknown>;
-  patched.supportedLocalesOf = Original.supportedLocalesOf.bind(Original);
-  patched[PATCHED] = true;
-
-  Intl.DateTimeFormat = patched;
 };
 
 // Date#toLocaleDateString / #toLocaleString use the %DateTimeFormat% intrinsic
-// directly, not the global we patched above, so wrap them too. januarize is
-// applied unconditionally — safe because "Jän" (the prefix it keys on) only
-// occurs for de-AT January.
-const patchDatePrototype = (): void => {
-  const proto = Date.prototype;
-  (['toLocaleDateString', 'toLocaleString'] as const).forEach((name) => {
-    const original = proto[name];
-    if ((original as unknown as Record<string, unknown>)[PATCHED]) return;
+// directly (not the prototype above), so wrap them too. There's no formatter
+// instance, so gate on the requested `locales` argument.
+type ToLocaleFn = (
+  locales?: string | string[],
+  options?: Intl.DateTimeFormatOptions
+) => string;
 
-    const wrapped = function (
-      this: Date,
-      locales?: string | string[],
-      options?: Intl.DateTimeFormatOptions
-    ): string {
-      return januarize(original.call(this, locales, options));
-    };
-    (wrapped as unknown as Record<string, unknown>)[PATCHED] = true;
-    proto[name] = wrapped;
-  });
+const wrapDateMethod = (
+  name: 'toLocaleDateString' | 'toLocaleString'
+): void => {
+  const holder = Date.prototype as unknown as Record<string, ToLocaleFn>;
+  const original = holder[name];
+  holder[name] = function (this: Date, locales, options) {
+    const result = original.call(this, locales, options);
+    const requested = Array.isArray(locales)
+      ? locales
+      : locales
+      ? [locales]
+      : [];
+    return requested.some(localeIsDeAt) ? januarize(result) : result;
+  };
 };
 
-patchDateTimeFormatConstructor();
-patchDatePrototype();
+const MARKER = '__deAtJanuarPatched';
+
+// Guard so re-importing within the same realm (e.g. Jest test files sharing the
+// global Intl) doesn't wrap twice.
+if (!Object.prototype.hasOwnProperty.call(dtfProto, MARKER)) {
+  Object.defineProperty(dtfProto, MARKER, { value: true });
+
+  wrapFormatGetter();
+  wrapFormatToParts();
+  wrapDateMethod('toLocaleDateString');
+  wrapDateMethod('toLocaleString');
+}
