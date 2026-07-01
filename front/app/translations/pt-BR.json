@@ -1290,8 +1290,6 @@
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} já está ocupado por um convite pendente. Verifique seu e-mail e clique no link para aceitar o convite. Se você não conseguir encontrar o e-mail de convite, clique no botão abaixo para reenviá-lo. O e-mail pode demorar alguns minutos para chegar.",
   "app.containers.Authentication.steps.InvitationResent.invitationResent2": "Convite reenviado!",
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Reenviar convite",
-  "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": "Você já tem uma conta? {loginLink}",
-  "app.containers.Authentication.steps.SSOVerification.logIn": "Fazer login",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "E-mails nesta categoria",
   "app.containers.CampaignsConsentForm.messageError": "Ocorreu um erro ao salvar as as suas preferências de e-mail.",
   "app.containers.CampaignsConsentForm.messageSuccess": "As suas preferências de e-mail foram salvas.",

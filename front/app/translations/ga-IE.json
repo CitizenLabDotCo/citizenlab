@@ -1290,8 +1290,6 @@
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "Tá cuireadh atá ar feitheamh ag glacadh le {email} cheana féin. Seiceáil do r-phost agus cliceáil ar an nasc chun glacadh leis an gcuireadh. Mura bhfuil tú in ann an ríomhphost cuireadh a fháil, cliceáil an cnaipe thíos chun é a athsheoladh. D’fhéadfadh sé go dtógfadh sé cúpla nóiméad ar an ríomhphost teacht.",
   "app.containers.Authentication.steps.InvitationResent.invitationResent2": "Cuireadh ar ais arís!",
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Athsheol an cuireadh",
-  "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": "An bhfuil cuntas agat cheana féin? {loginLink}",
-  "app.containers.Authentication.steps.SSOVerification.logIn": "Logáil isteach",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Ríomhphoist sa chatagóir seo",
   "app.containers.CampaignsConsentForm.messageError": "Tharla earráid agus do chuid roghanna ríomhphoist á sábháil.",
   "app.containers.CampaignsConsentForm.messageSuccess": "Tá do chuid roghanna ríomhphoist sábháilte.",

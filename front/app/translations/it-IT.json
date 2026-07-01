@@ -1290,8 +1290,6 @@
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} è già occupato da un invito in sospeso. Controlla la tua e-mail e clicca sul link per accettare l'invito. Se non riesci a trovare l'e-mail di invito, clicca sul pulsante sottostante per inviarla nuovamente. L'e-mail potrebbe impiegare qualche minuto per arrivare.",
   "app.containers.Authentication.steps.InvitationResent.invitationResent2": "Invito rispedito!",
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Invia nuovamente l'invito",
-  "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": "Hai già un account? {loginLink}",
-  "app.containers.Authentication.steps.SSOVerification.logIn": "Accedi",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Le e-mail in questa categoria",
   "app.containers.CampaignsConsentForm.messageError": "C'è stato un errore nel salvare le tue preferenze e-mail.",
   "app.containers.CampaignsConsentForm.messageSuccess": "Le tue preferenze e-mail sono state salvate.",

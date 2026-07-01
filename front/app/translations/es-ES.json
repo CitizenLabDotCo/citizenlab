@@ -1290,8 +1290,6 @@
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} ya está ocupado por una invitación pendiente. Por favor, comprueba tu correo electrónico y haz clic en el enlace para aceptar la invitación. Si no encuentras el correo electrónico de invitación, haz clic en el botón de abajo para reenviarlo. El correo electrónico puede tardar unos minutos en llegar.",
   "app.containers.Authentication.steps.InvitationResent.invitationResent2": "¡Invitación reenviada!",
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Reenviar invitación",
-  "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": "¿Ya tienes una cuenta? {loginLink}",
-  "app.containers.Authentication.steps.SSOVerification.logIn": "Conectarse",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails en esta categoría",
   "app.containers.CampaignsConsentForm.messageError": "Hubo un error al guardar tus preferencias de correo electrónico.",
   "app.containers.CampaignsConsentForm.messageSuccess": "Tus preferencias de correo electrónico se han guardado.",
