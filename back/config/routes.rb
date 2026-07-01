@@ -405,7 +405,6 @@ Rails.application.routes.draw do
 
       resources :id_methods, only: [:index] do
         get :first_enabled_verification_method, on: :collection
-        get :first_enabled_for_verified_actions, on: :collection
         get :first_enabled_authentication_method, on: :collection
         IdMethodService.new
           .all_methods
