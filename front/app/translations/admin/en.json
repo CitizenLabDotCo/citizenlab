@@ -1232,7 +1232,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Default page",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Folder",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Project",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.upToFiveItems": "A dropdown should contain up to 5 items.",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Delete page",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePageConfirmation": "Are you sure you want to delete this page? This cannot be undone.",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.editPage": "Edit page",
