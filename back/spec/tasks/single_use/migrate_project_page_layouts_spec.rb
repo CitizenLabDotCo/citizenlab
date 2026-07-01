@@ -121,11 +121,11 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
       expect(resolved_names(result)).not_to include('AboutBox')
     end
 
-    it 'places the description content between the timeline and the input feed' do
+    it 'places the description content above the timeline' do
       result = build(plain_text_description)
 
       expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
-        %w[PROJECT_PAGE_TIMELINE d_txt1 PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
+        %w[d_txt1 PROJECT_PAGE_TIMELINE PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
       )
     end
 
@@ -141,7 +141,7 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
       result = build(rich_description)
 
       expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
-        %w[PROJECT_PAGE_TIMELINE d_img1 d_col1 d_acc1 PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
+        %w[d_img1 d_col1 d_acc1 PROJECT_PAGE_TIMELINE PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
       )
       expect(result['d_col1']['nodes']).to eq(%w[d_left1 d_right1])
       expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_BODY')
@@ -163,7 +163,7 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
       expect(names).not_to include('Published', 'Selection')
       # Surviving content is kept and re-parented.
       expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
-        %w[PROJECT_PAGE_TIMELINE d_col1 d_txt1 PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
+        %w[d_col1 d_txt1 PROJECT_PAGE_TIMELINE PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
       )
       expect(result['d_left1']['nodes']).to eq(['d_keep1'])
       expect(result).not_to have_key('d_sel1')
@@ -225,7 +225,7 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
       layout = ContentBuilder::Layout.find_by(code: 'project_page', content_buildable: project)
       expect(layout.enabled).to be(true)
       expect(layout.craftjs_json['PROJECT_PAGE_BODY']['nodes']).to eq(
-        %w[PROJECT_PAGE_TIMELINE d_txt1 PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
+        %w[d_txt1 PROJECT_PAGE_TIMELINE PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
       )
     end
 
