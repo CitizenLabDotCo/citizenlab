@@ -10,13 +10,17 @@ import {
   ICampaignExampleParameters,
 } from './types';
 
-const fetchCampaignExamples = ({ campaignId }: ICampaignExampleParameters) =>
+const fetchEmailCampaignExamples = ({
+  campaignId,
+}: ICampaignExampleParameters) =>
   fetcher<ICampaignExamples>({
     path: `/campaigns/${campaignId}/examples`,
     action: 'get',
   });
 
-const useCampaignExamples = ({ campaignId }: ICampaignExampleParameters) => {
+const useEmailCampaignExamples = ({
+  campaignId,
+}: ICampaignExampleParameters) => {
   return useQuery<
     ICampaignExamples,
     CLErrors,
@@ -24,9 +28,9 @@ const useCampaignExamples = ({ campaignId }: ICampaignExampleParameters) => {
     CampaignExamplesKeys
   >({
     queryKey: campaignExamplesKeys.list({ campaignId }),
-    queryFn: () => fetchCampaignExamples({ campaignId }),
+    queryFn: () => fetchEmailCampaignExamples({ campaignId }),
     enabled: !!campaignId,
   });
 };
 
-export default useCampaignExamples;
+export default useEmailCampaignExamples;

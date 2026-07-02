@@ -607,7 +607,7 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/campaigns/:id/deliveries' do
+    get 'web_api/v1/campaigns/:id/email_deliveries' do
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of deliveries per page'
@@ -625,7 +625,46 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/campaigns/:id/stats' do
+    get 'web_api/v1/campaigns/:id/sms_deliveries' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of deliveries per page'
+      end
+
+      let(:campaign) { create(:sms_manual_campaign) }
+      let!(:id) { campaign.id }
+      let!(:sms_deliveries) { create_list(:sms_delivery, 3, campaign: campaign) }
+
+      example_request 'Get the SMS deliveries of a sent campaign. Includes the recipients.' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq sms_deliveries.size
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/sms_stats' do
+      let(:campaign) { create(:sms_manual_campaign) }
+      let!(:id) { campaign.id }
+      let!(:sms_deliveries) do
+        create_list(:sms_delivery, 4, campaign: campaign, status: 'sent')
+      end
+
+      example_request 'Get the SMS delivery statistics of a sent campaign' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data][:attributes]).to match({
+          pending: 0,
+          queued: 0,
+          sent: 4,
+          delivered: 0,
+          undelivered: 0,
+          failed: 0,
+          total: 4
+        })
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/email_stats' do
       let(:campaign) { create(:manual_campaign) }
       let!(:id) { campaign.id }
       let!(:deliveries) do
@@ -771,7 +810,7 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/campaigns/:id/stats' do
+    get 'web_api/v1/campaigns/:id/email_stats' do
       let(:campaign) { @manual_project_participants_campaign }
       let!(:deliveries) do
         create_list(

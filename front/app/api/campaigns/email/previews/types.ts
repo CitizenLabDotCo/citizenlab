@@ -2,6 +2,8 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import campaignPreviewsKeys from './keys';
 
+export type CampaignPreviewsKeys = Keys<typeof campaignPreviewsKeys>;
+
 export interface ICampaignPreview {
   data: ICampaignPreviewData;
 }
@@ -17,5 +19,3 @@ export interface ICampaignPreviewData {
     html: string;
   };
 }
-
-export type CampaignPreviewsKeys = Keys<typeof campaignPreviewsKeys>;

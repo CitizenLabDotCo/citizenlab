@@ -83,10 +83,12 @@ module EmailCampaigns
       object.manual?
     }
 
+    # Email-only inline stats. SMS campaigns expose their (differently-shaped)
+    # breakdown via the dedicated sms_stats endpoint instead.
     attribute :delivery_stats, if: proc { |object|
-      object.manual? && object.sent?
+      object.manual? && object.sent? && !object.sms?
     } do |object|
-      object.sms? ? EmailCampaigns::Sms::Delivery.status_counts(object.id) : Delivery.status_counts(object.id)
+      Delivery.status_counts(object.id)
     end
 
     attribute :sender, if: proc { |object|
@@ -95,9 +97,7 @@ module EmailCampaigns
 
     attribute :deliveries_count, if: proc { |object|
       trackable?(object) || object.sms?
-    } do |object|
-      object.sms? ? object.sms_deliveries.count : object.deliveries_count
-    end
+    }
 
     # For customised emails
     attribute :reply_to, :title_multiloc, :button_text_multiloc, if: proc { |object|

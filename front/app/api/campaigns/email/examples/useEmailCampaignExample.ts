@@ -3,25 +3,25 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignExampleKeys from './keys';
+import campaignExamplesKeys from './keys';
 import { ICampaignExample, CampaignExamplesKeys } from './types';
 
-const fetchCampaignExample = ({ id }: { id: string }) =>
+const fetchEmailCampaignExample = ({ id }: { id: string }) =>
   fetcher<ICampaignExample>({
     path: `/campaigns/examples/${id}`,
     action: 'get',
   });
 
-const useCampaignExample = (id: string) => {
+const useEmailCampaignExample = (id: string) => {
   return useQuery<
     ICampaignExample,
     CLErrors,
     ICampaignExample,
     CampaignExamplesKeys
   >({
-    queryKey: campaignExampleKeys.item({ id }),
-    queryFn: () => fetchCampaignExample({ id }),
+    queryKey: campaignExamplesKeys.item({ id }),
+    queryFn: () => fetchEmailCampaignExample({ id }),
   });
 };
 
-export default useCampaignExample;
+export default useEmailCampaignExample;

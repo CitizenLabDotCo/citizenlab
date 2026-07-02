@@ -6,17 +6,17 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import campaignStatsKeys from './keys';
 import { ICampaignStats, CampaignStatsKeys } from './types';
 
-const fetchCampaignStats = ({ campaignId }) =>
+const fetchEmailCampaignStats = ({ campaignId }: { campaignId: string }) =>
   fetcher<ICampaignStats>({
-    path: `/campaigns/${campaignId}/stats`,
+    path: `/campaigns/${campaignId}/email_stats`,
     action: 'get',
   });
 
-const useCampaignStats = (campaignId: string) => {
+const useEmailCampaignStats = (campaignId: string) => {
   return useQuery<ICampaignStats, CLErrors, ICampaignStats, CampaignStatsKeys>({
     queryKey: campaignStatsKeys.item({ campaignId }),
-    queryFn: () => fetchCampaignStats({ campaignId }),
+    queryFn: () => fetchEmailCampaignStats({ campaignId }),
   });
 };
 
-export default useCampaignStats;
+export default useEmailCampaignStats;

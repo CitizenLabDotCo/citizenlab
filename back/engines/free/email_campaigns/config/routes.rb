@@ -7,8 +7,10 @@ EmailCampaigns::Engine.routes.draw do
         post :send, action: :do_send, on: :member
         post :send_preview, on: :member
         get :preview, on: :member
-        get :deliveries, on: :member
-        get :stats, on: :member
+        get :email_deliveries, on: :member
+        get :sms_deliveries, on: :member
+        get :email_stats, on: :member
+        get :sms_stats, on: :member
         resources :examples, only: %i[index]
         get 'examples/:id', action: 'show', controller: 'examples', on: :collection
       end

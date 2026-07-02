@@ -1,11 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import campaignPreviewsKeys from 'api/campaign_previews/keys';
-
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import campaignsKeys from './keys';
+import campaignPreviewsKeys from './previews/keys';
 import { IEmailCampaign, IUpdateEmailCampaignProperties } from './types';
 
 const updateEmailCampaign = async ({

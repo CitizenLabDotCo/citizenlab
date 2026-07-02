@@ -6,18 +6,6 @@ import smsCampaignsKeys from './keys';
 
 export type SmsCampaignsKeys = Keys<typeof smsCampaignsKeys>;
 
-// Per-recipient delivery counts for an SMS campaign, keyed by the SMS delivery
-// lifecycle (Twilio-tracked). The statuses deliberately differ from email.
-export interface ISmsDeliveryStats {
-  pending: number;
-  queued: number;
-  sent: number;
-  delivered: number;
-  undelivered: number;
-  failed: number;
-  total: number;
-}
-
 interface ISmsCampaignAttributes {
   campaign_name: 'sms_manual';
   channel: 'sms';
@@ -30,7 +18,6 @@ interface ISmsCampaignAttributes {
   scheduled_at?: string | null;
   created_at: string;
   updated_at: string;
-  delivery_stats?: ISmsDeliveryStats;
 }
 
 export interface ISmsCampaignData {

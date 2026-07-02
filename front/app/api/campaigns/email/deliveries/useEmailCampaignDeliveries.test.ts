@@ -5,9 +5,9 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
 import { IDeliveryData } from './types';
-import useCampaignDeliveries from './useCampaignDeliveries';
+import useEmailCampaignDeliveries from './useEmailCampaignDeliveries';
 
-const apiPath = '*campaigns/:id/deliveries';
+const apiPath = '*campaigns/:id/email_deliveries';
 
 const campaignDeliveriesData: IDeliveryData = {
   id: '1',
@@ -34,14 +34,14 @@ const server = setupServer(
   })
 );
 
-describe('useCampaignDeliveries', () => {
+describe('useEmailCampaignDeliveries', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
     const { result } = renderHook(
       () =>
-        useCampaignDeliveries({
+        useEmailCampaignDeliveries({
           campaignId: 'campaignId',
         }),
       {
@@ -66,7 +66,7 @@ describe('useCampaignDeliveries', () => {
 
     const { result } = renderHook(
       () =>
-        useCampaignDeliveries({
+        useEmailCampaignDeliveries({
           campaignId: 'campaignId',
         }),
       {

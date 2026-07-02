@@ -1,17 +1,17 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { IParameters } from './types';
+import { ISmsDeliveriesParameters } from './types';
 
 const baseKey = {
-  type: 'campaign_delivery',
+  type: 'sms_campaign_delivery',
 };
 
-const campaignDeliveriesKeys = {
+const smsCampaignDeliveriesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: IParameters) => [
+  list: (parameters: ISmsDeliveriesParameters) => [
     { ...baseKey, operation: 'list', parameters },
   ],
 } satisfies QueryKeys;
 
-export default campaignDeliveriesKeys;
+export default smsCampaignDeliveriesKeys;

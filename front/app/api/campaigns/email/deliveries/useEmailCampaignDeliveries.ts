@@ -7,16 +7,16 @@ import campaignDeliveriesKeys from './keys';
 import {
   ICampaignDeliveries,
   CampaignDeliveriesKeys,
-  IParameters,
+  ICampaignDeliveriesParameters,
 } from './types';
 
-const fetchCampaignDeliveries = ({
+const fetchEmailCampaignDeliveries = ({
   pageNumber,
   pageSize,
   campaignId,
-}: IParameters) =>
+}: ICampaignDeliveriesParameters) =>
   fetcher<ICampaignDeliveries>({
-    path: `/campaigns/${campaignId}/deliveries`,
+    path: `/campaigns/${campaignId}/email_deliveries`,
     action: 'get',
     queryParams: {
       'page[number]': pageNumber,
@@ -24,7 +24,7 @@ const fetchCampaignDeliveries = ({
     },
   });
 
-const useCampaignDeliveries = (params: IParameters) => {
+const useEmailCampaignDeliveries = (params: ICampaignDeliveriesParameters) => {
   return useQuery<
     ICampaignDeliveries,
     CLErrors,
@@ -32,8 +32,8 @@ const useCampaignDeliveries = (params: IParameters) => {
     CampaignDeliveriesKeys
   >({
     queryKey: campaignDeliveriesKeys.list(params),
-    queryFn: () => fetchCampaignDeliveries(params),
+    queryFn: () => fetchEmailCampaignDeliveries(params),
   });
 };
 
-export default useCampaignDeliveries;
+export default useEmailCampaignDeliveries;

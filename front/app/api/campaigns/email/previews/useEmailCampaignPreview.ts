@@ -6,13 +6,13 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import campaignPreviewsKeys from './keys';
 import { ICampaignPreview, CampaignPreviewsKeys } from './types';
 
-const fetchCampaignPreview = ({ campaignId }: { campaignId: string }) =>
+const fetchEmailCampaignPreview = ({ campaignId }: { campaignId: string }) =>
   fetcher<ICampaignPreview>({
     path: `/campaigns/${campaignId}/preview`,
     action: 'get',
   });
 
-const useCampaignPreview = (campaignId: string) => {
+const useEmailCampaignPreview = (campaignId: string) => {
   return useQuery<
     ICampaignPreview,
     CLErrors,
@@ -20,8 +20,8 @@ const useCampaignPreview = (campaignId: string) => {
     CampaignPreviewsKeys
   >({
     queryKey: campaignPreviewsKeys.item({ campaignId }),
-    queryFn: () => fetchCampaignPreview({ campaignId }),
+    queryFn: () => fetchEmailCampaignPreview({ campaignId }),
   });
 };
 
-export default useCampaignPreview;
+export default useEmailCampaignPreview;

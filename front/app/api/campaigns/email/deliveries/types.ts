@@ -6,16 +6,12 @@ import campaignDeliveriesKeys from './keys';
 
 export type CampaignDeliveriesKeys = Keys<typeof campaignDeliveriesKeys>;
 
-export type IParameters = {
+export type ICampaignDeliveriesParameters = {
   campaignId: string;
   pageNumber?: number;
   pageSize?: number;
 };
 
-export interface ICampaignDeliveries {
-  data: IDeliveryData[];
-  links: ILinks;
-}
 export interface IDeliveryData {
   id: string;
   type: string;
@@ -37,4 +33,9 @@ export interface IDeliveryData {
       data: IRelationship;
     };
   };
+}
+
+export interface ICampaignDeliveries {
+  data: IDeliveryData[];
+  links: ILinks;
 }

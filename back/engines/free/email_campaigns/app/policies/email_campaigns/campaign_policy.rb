@@ -46,11 +46,19 @@ module EmailCampaigns
       show?
     end
 
-    def deliveries?
+    def email_deliveries?
       show?
     end
 
-    def stats?
+    def sms_deliveries?
+      show?
+    end
+
+    def email_stats?
+      show?
+    end
+
+    def sms_stats?
       show?
     end
 
