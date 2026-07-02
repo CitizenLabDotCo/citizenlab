@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "خطأ في تحميل مقاييس المشاركة",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "فشل تحميل ملف PDF. يرجى المحاولة مرة أخرى.",
   "app.containers.Admin.projects.project.insights.exportButton": "تصدير",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "تحميل الردود بصيغة PDF",
   "app.containers.Admin.projects.project.insights.gender": "الجنس",
   "app.containers.Admin.projects.project.insights.ideasPosted": "الأفكار المنشورة",
   "app.containers.Admin.projects.project.insights.ideation.explore": "استكشف",
