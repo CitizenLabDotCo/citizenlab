@@ -97,7 +97,7 @@ export const emailFlow = (
           claimTokens,
         });
 
-        const { requirements, disabled_reason } = await getRequirements();
+        const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
@@ -112,7 +112,7 @@ export const emailFlow = (
           return;
         }
 
-        if (doesNotMeetGroupCriteria(requirements, disabled_reason)) {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('access-denied');
           return;
         }
@@ -133,7 +133,7 @@ export const emailFlow = (
       },
       SUBMIT_CODE: async (email: string, code: string) => {
         await confirmEmailConfirmationCodeUnauthenticated(email, code);
-        const { requirements, disabled_reason } = await getRequirements();
+        const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
@@ -148,7 +148,7 @@ export const emailFlow = (
           return;
         }
 
-        if (doesNotMeetGroupCriteria(requirements, disabled_reason)) {
+        if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('access-denied');
           return;
         }
