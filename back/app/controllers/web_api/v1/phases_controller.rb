@@ -92,7 +92,7 @@ class WebApi::V1::PhasesController < ApplicationController
   # redaction. Source of truth for the export's field set.
   def input_response_fields
     fields = Export::InputFields.new(@phase).all
-    pii_keys = Export::Pdf::PiiDetector.new.personal_data_keys(fields)
+    pii_keys = Export::PiiDetector.new.personal_data_keys(fields)
     data = fields.map do |field|
       {
         id: field.key,

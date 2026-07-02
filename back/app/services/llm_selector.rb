@@ -59,7 +59,8 @@ class LLMSelector
     LLMUseCase.new(
       key: 'field_pii_detection',
       description: 'Detect which form fields collect personal data (PII)',
-      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::GPT4oMini, ::Analysis::LLM::Gemini3Flash],
+      # Only models whose chat honours response_schema (see Analysis::LLM::RubyLLM).
+      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini3Flash],
       default_model: ::Analysis::LLM::ClaudeHaiku45
     ),
     LLMUseCase.new(

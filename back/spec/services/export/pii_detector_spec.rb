@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Export::Pdf::PiiDetector do
+describe Export::PiiDetector do
   subject(:detector) { described_class.new }
 
   let(:llm) { instance_double(Analysis::LLM::ClaudeHaiku45) }
@@ -34,6 +34,12 @@ describe Export::Pdf::PiiDetector do
 
     it 'ignores keys the model returns that were not sent to it' do
       allow(llm).to receive(:chat).and_return(%w[q_name made_up])
+
+      expect(detector.personal_data_keys([name_field, colour_field])).to contain_exactly('q_name')
+    end
+
+    it 'parses models that return the JSON array as text' do
+      allow(llm).to receive(:chat).and_return('["q_name"]')
 
       expect(detector.personal_data_keys([name_field, colour_field])).to contain_exactly('q_name')
     end
