@@ -86,7 +86,7 @@ module EmailCampaigns
     attribute :delivery_stats, if: proc { |object|
       object.manual? && object.sent?
     } do |object|
-      sms?(object) ? EmailCampaigns::Sms::Delivery.status_counts(object.id) : Delivery.status_counts(object.id)
+      object.sms? ? EmailCampaigns::Sms::Delivery.status_counts(object.id) : Delivery.status_counts(object.id)
     end
 
     attribute :sender, if: proc { |object|
@@ -94,9 +94,9 @@ module EmailCampaigns
     }
 
     attribute :deliveries_count, if: proc { |object|
-      trackable?(object) || sms?(object)
+      trackable?(object) || object.sms?
     } do |object|
-      sms?(object) ? object.sms_deliveries.count : object.deliveries_count
+      object.sms? ? object.sms_deliveries.count : object.deliveries_count
     end
 
     # For customised emails
@@ -107,13 +107,13 @@ module EmailCampaigns
     # subject_multiloc is the email subject for content-configurable emails and
     # the admin-facing label for SMS campaigns (SMS has no subject line).
     attribute :subject_multiloc, if: proc { |object|
-      content_configurable?(object) || sms?(object)
+      content_configurable?(object) || object.sms?
     }
 
     attribute :body_multiloc, if: proc { |object|
-      content_configurable?(object) || sms?(object)
+      content_configurable?(object) || object.sms?
     } do |object|
-      if sms?(object)
+      if object.sms?
         object.body_multiloc
       else
         TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
@@ -168,10 +168,6 @@ module EmailCampaigns
 
     def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
-    end
-
-    def self.sms?(object)
-      object.channel == 'sms'
     end
 
     def self.previewable?(object)

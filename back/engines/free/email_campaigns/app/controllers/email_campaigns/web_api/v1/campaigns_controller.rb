@@ -129,13 +129,13 @@ module EmailCampaigns
     end
 
     def deliveries
-      return sms_deliveries if @campaign.channel == 'sms'
+      return sms_deliveries if @campaign.sms?
 
       email_deliveries
     end
 
     def stats
-      return sms_stats if @campaign.channel == 'sms'
+      return sms_stats if @campaign.sms?
 
       email_stats
     end
@@ -200,7 +200,7 @@ module EmailCampaigns
     end
 
     def campaign_params
-      return sms_campaign_params if @campaign.channel == 'sms'
+      return sms_campaign_params if @campaign.sms?
       return manual_campaign_params if @campaign.manual?
 
       automated_campaign_params
