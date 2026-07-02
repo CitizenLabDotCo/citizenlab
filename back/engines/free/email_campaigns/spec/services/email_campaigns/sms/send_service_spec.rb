@@ -36,12 +36,12 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery.message_sid).to eq('SM_abc')
     end
 
-    it 'normalizes the phone number before storing' do
-      allow(provider).to receive(:send).and_return(message_sid: 'SM_1', status: 'queued')
+    it 'normalizes the phone number before sending' do
+      expect(provider).to receive(:send)
+        .with(to: '+14155552671', body: 'hi')
+        .and_return(message_sid: 'SM_1', status: 'queued')
 
-      delivery = described_class.new.send_now(to: '1 (415) 555-2671', body: 'hi')
-
-      expect(delivery.phone_number).to eq('+14155552671')
+      described_class.new.send_now(to: '1 (415) 555-2671', body: 'hi')
     end
 
     it 'rejects invalid phone numbers without calling the provider or creating a delivery' do

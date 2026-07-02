@@ -16,7 +16,6 @@ module EmailCampaigns
         delivery = Delivery.create!(
           user_id: user_id,
           campaign_id: campaign_id,
-          phone_number: normalized_to,
           body: body,
           status: 'pending'
         )

@@ -5,10 +5,9 @@ class CreateSmsDeliveries < ActiveRecord::Migration[7.2]
       t.references :user, type: :uuid, foreign_key: true, index: true
       t.references :campaign, type: :uuid, null: true, index: true,
         foreign_key: { to_table: :email_campaigns_campaigns }
-      t.string :phone_number, null: false
       t.text :body, null: false
       t.string :message_sid
-      t.string :status, null: false
+      t.string :status, null: false, index: true
       t.string :error_message
       t.timestamps
     end

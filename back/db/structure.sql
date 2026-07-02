@@ -224,6 +224,7 @@ DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_user_id;
+DROP INDEX IF EXISTS public.index_sms_deliveries_on_status;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
@@ -3715,7 +3716,6 @@ CREATE TABLE public.sms_deliveries (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id uuid,
     campaign_id uuid,
-    phone_number character varying NOT NULL,
     body text NOT NULL,
     message_sid character varying,
     status character varying NOT NULL,
@@ -7224,6 +7224,13 @@ CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_r
 --
 
 CREATE INDEX index_sms_deliveries_on_campaign_id ON public.sms_deliveries USING btree (campaign_id);
+
+
+--
+-- Name: index_sms_deliveries_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_deliveries_on_status ON public.sms_deliveries USING btree (status);
 
 
 --
