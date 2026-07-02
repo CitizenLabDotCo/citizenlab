@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Peqataasut uuttutaannik aallernermi kukkusoqarpoq",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "PDF aaneqarsinnaanngilaq. Misileqqiguk.",
   "app.containers.Admin.projects.project.insights.exportButton": "Annissiguk",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Akissutit PDF-itut aakkit",
   "app.containers.Admin.projects.project.insights.gender": "Suiaassuseq",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Isumassarsiat saqqummiunneqartut",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Paasisaqarnerugit",

@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Fout bij het laden van deelnamestatistieken",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "PDF is niet gedownload. Probeer het opnieuw.",
   "app.containers.Admin.projects.project.insights.exportButton": "Exporteren",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Reacties downloaden als PDF",
   "app.containers.Admin.projects.project.insights.gender": "Geslacht",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Ideeën geplaatst",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Verken",

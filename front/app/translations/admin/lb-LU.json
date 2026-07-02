@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Feeler beim Luede vun de Participatiounsmetriken",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "De PDF konnt net erofgeluede ginn. Probéiert wgl. nach eng Kéier.",
   "app.containers.Admin.projects.project.insights.exportButton": "Exportéieren",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Äntwerten als PDF eroflueden",
   "app.containers.Admin.projects.project.insights.gender": "Geschlecht",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Gepostet Iddien",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Entdecken",
