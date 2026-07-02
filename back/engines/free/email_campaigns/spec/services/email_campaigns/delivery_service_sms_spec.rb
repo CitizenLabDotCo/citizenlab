@@ -25,7 +25,6 @@ describe EmailCampaigns::DeliveryService do
       delivery = campaign.sms_deliveries.sole
       expect(delivery).to have_attributes(
         user_id: recipient.id,
-        phone_number: '+14155552671',
         body: 'A short SMS update from your city.',
         status: 'pending'
       )
@@ -51,7 +50,6 @@ describe EmailCampaigns::DeliveryService do
       delivery = EmailCampaigns::Sms::Delivery.last
       expect(delivery).to have_attributes(
         user_id: previewer.id,
-        phone_number: '+14155552672',
         campaign_id: nil
       )
       expect(campaign.sent?).to be(false)

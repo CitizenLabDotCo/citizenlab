@@ -35,7 +35,7 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
 
     it 'is false with no deliveries and true once an EmailCampaigns::Sms::Delivery is linked' do
       expect(campaign.sent?).to be(false)
-      EmailCampaigns::Sms::Delivery.create!(campaign: campaign, phone_number: '+14155552671', body: 'hi', status: 'pending')
+      EmailCampaigns::Sms::Delivery.create!(campaign: campaign, body: 'hi', status: 'pending')
       expect(campaign.sent?).to be(true)
     end
   end
