@@ -27,7 +27,7 @@ import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 
 const ContentContainer = styled.nav`
   background: #fff;
-  padding: 40px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,13 +59,9 @@ const MenuItems = styled.ul`
   padding: 0;
   list-style: none;
   width: 100%;
-  /* Cap the width so dropdown rows (and their trailing chevron) don't stretch
-     across wide screens; the container centers this block while items inside
-     stay left-aligned. */
   max-width: 320px;
   text-align: left;
 
-  /* 20px between every item, except a larger gap above the trailing Search. */
   > * {
     margin-top: 20px;
   }

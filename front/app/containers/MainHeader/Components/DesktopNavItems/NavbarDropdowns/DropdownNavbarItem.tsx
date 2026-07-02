@@ -45,10 +45,8 @@ const DropdownNavbarItem = ({ navbarItem, onDropdownStateChange }: Props) => {
         return (
           <ListItemWrapper key={child.id}>
             <ProjectsListItem
-              to={link.to as Parameters<typeof ProjectsListItem>[0]['to']}
-              params={
-                link.params as Parameters<typeof ProjectsListItem>[0]['params']
-              }
+              to={link.to}
+              params={link.params}
               onClick={close}
               scrollToTop
             >
