@@ -115,8 +115,18 @@ class Permissions::UserRequirementsService
     requirements[:authentication][:missing_user_attributes].delete(:password) unless user.password_digest.nil?
     requirements[:authentication][:missing_user_attributes].delete(:confirmation) unless user.confirmation_required?
 
+    # Moderators of the permission's scope (and admins) bypass the participation
+    # gates in `denied_reason_for_action` — custom fields, verification and group
+    # membership are all checked *after* the `can_moderate?` short-circuit there
+    # — so those requirements must report satisfied for them too. Otherwise the
+    # requirements response is self-contradictory (e.g. group_membership: true
+    # with disabled_reason: nil) and the front-end auth flow wrongly blocks them.
+    # Confirmation and active status are enforced *before* that bypass, so the
+    # attribute handling above still applies to moderators.
+    moderator = UserRoleService.new.can_moderate?(permission, user)
+
     requirements[:custom_fields]&.each_key do |key|
-      requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key)
+      requirements[:custom_fields].delete(key) if moderator || user.custom_field_values.key?(key)
     end
 
     if requirements[:onboarding]
@@ -124,7 +134,7 @@ class Permissions::UserRequirementsService
     end
 
     if requirements[:group_membership]
-      requirements[:group_membership] = !user.in_any_groups?(permission.groups)
+      requirements[:group_membership] = !moderator && !user.in_any_groups?(permission.groups)
     end
 
     if user.verified?
@@ -146,7 +156,7 @@ class Permissions::UserRequirementsService
 
     return unless requirements[:verification]
 
-    requirements[:verification] = requires_verification?(permission, user)
+    requirements[:verification] = !moderator && requires_verification?(permission, user)
   end
 
   # User can be in other groups that are not verification groups and therefore not need to be verified

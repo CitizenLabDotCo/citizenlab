@@ -381,14 +381,14 @@ const ReactionButton = ({
   const customAccessDeniedMessage = useCustomAccessDeniedMessage({
     phaseId: phaseId ?? undefined,
     action: 'reacting_idea',
-    disabledReason: !isNilOrError(idea)
+    disabledReason: idea
       ? idea.data.attributes.action_descriptors.reacting_idea[
           buttonReactionMode
         ].disabled_reason
       : undefined,
   });
 
-  if (!isNilOrError(idea) && !isNilOrError(project)) {
+  if (idea && project) {
     const reactingDescriptor =
       idea.data.attributes.action_descriptors.reacting_idea;
     const buttonReactionModeEnabled =

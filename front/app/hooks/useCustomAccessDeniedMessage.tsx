@@ -49,7 +49,7 @@ export default function useCustomAccessDeniedMessage({
     {
       type: 'phase',
       action,
-      id: phaseId,
+      id: phaseId || '',
     },
     { enabled }
   );

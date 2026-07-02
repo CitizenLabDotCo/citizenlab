@@ -372,6 +372,14 @@ describe Permissions::UserRequirementsService do
           })
         end
 
+        it 'permits an admin even with required custom fields left unfilled' do
+          user.add_role 'admin'
+          user.update!(custom_field_values: {})
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements[:custom_fields]).to eq({})
+        end
+
         context 'there are groups on the permission' do
           let(:group) { create(:group) }
 
@@ -394,6 +402,26 @@ describe Permissions::UserRequirementsService do
 
           it 'permits a user if they are in the group' do
             create(:membership, user: user, group: group)
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'users',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: false
+            })
+          end
+
+          it 'marks group_membership satisfied for an admin who is not in the group' do
+            # Admins bypass group restrictions in denied_reason_for_action, so
+            # the group requirement must report satisfied for them too, keeping
+            # the requirements response consistent (no group_membership: true
+            # alongside a nil disabled_reason).
+            user.add_role 'admin'
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be true
             expect(requirements).to eq({
@@ -468,6 +496,18 @@ describe Permissions::UserRequirementsService do
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:permitted_by]).to eq 'users'
             expect(requirements[:verification]).to be true
+          end
+        end
+
+        context 'an unverified admin' do
+          before { user.update!(verified: false) }
+
+          it 'bypasses verification (moderators are exempt from participation gates)' do
+            user.add_role 'admin'
+            requirements = service.requirements(group_permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:verification]).to be false
+            expect(requirements[:group_membership]).to be false
           end
         end
 
