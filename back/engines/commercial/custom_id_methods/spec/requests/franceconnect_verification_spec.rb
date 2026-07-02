@@ -58,7 +58,7 @@ context 'franceconnect verification' do
           version: 'v2',
           identifier: 'fakeid',
           secret: 'fakesecret',
-          scope: %w[given_name family_name email]
+          scope: %w[given_name family_name email preferred_username]
         }
       ]
     }
