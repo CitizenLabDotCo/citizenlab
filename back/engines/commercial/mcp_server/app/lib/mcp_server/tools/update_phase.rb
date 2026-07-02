@@ -47,7 +47,10 @@ class McpServer::Tools::UpdatePhase < McpServer::BaseTool
       phase.save!
       SideFxPhaseService.new.after_update(phase, current_user)
 
-      ok("Updated phase #{phase.id}")
+      ok(
+        "Updated phase #{phase.id}",
+        structured: McpServer::Serializers::Phase.serialize(phase, params: { current_user: })
+      )
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e

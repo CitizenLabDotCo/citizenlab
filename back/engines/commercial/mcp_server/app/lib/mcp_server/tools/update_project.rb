@@ -43,7 +43,10 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       project.save!
       SideFxProjectService.new.after_update(project, current_user)
 
-      ok("Updated project #{project.id}")
+      ok(
+        "Updated project #{project.id}",
+        structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })
+      )
     rescue ActiveRecord::RecordNotFound
       error("Project not found: #{params[:project_id]}")
     rescue ActiveRecord::RecordInvalid => e

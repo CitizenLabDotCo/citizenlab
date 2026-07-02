@@ -21,4 +21,18 @@ describe McpServer::Tools::UpdateResource do
     expect(response).not_to be_error
     expect(cause.reload.image.file.read).to eq(fixture_path.binread)
   end
+
+  it 'returns the serialized record with merged multiloc fields' do
+    cause.update!(title_multiloc: { 'en' => 'Old', 'fr-FR' => 'Ancienne' })
+
+    response = run_mcp_tool(
+      described_class,
+      params: { type: 'cause', id: cause.id, attributes: { title_multiloc: { 'en' => 'New' } } },
+      current_user:
+    )
+
+    expect(response).not_to be_error
+    expect(response.structured_content[:id]).to eq(cause.id)
+    expect(response.structured_content[:title_multiloc]).to eq('en' => 'New', 'fr-FR' => 'Ancienne')
+  end
 end
