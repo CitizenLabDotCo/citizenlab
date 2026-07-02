@@ -48,8 +48,6 @@ const ProjectPagesList = () => {
   return (
     <Box mb="40px" p="44px">
       <Box bg={colors.white} borderRadius={stylingConsts.borderRadius} p="44px">
-        <SectionTitle>{formatMessage(messages.pagesTitle)}</SectionTitle>
-
         {pages.data.length === 0 ? (
           <Box
             display="flex"
@@ -89,6 +87,7 @@ const ProjectPagesList = () => {
           </Box>
         ) : (
           <>
+            <SectionTitle>{formatMessage(messages.pagesTitle)}</SectionTitle>
             <SectionDescription>
               {formatMessage(messages.pagesDescription)}
             </SectionDescription>

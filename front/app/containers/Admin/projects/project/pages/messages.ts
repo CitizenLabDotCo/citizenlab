@@ -11,16 +11,16 @@ export default defineMessages({
       'Add a page to share background on the consultation, an FAQ, or how the process works. You can link to these pages in the project description using the Page Link widget. Project pages are scoped only to this project and cannot be added to the navigation bar.',
   },
   newPageButton: {
-    id: 'app.containers.AdminPage.ProjectPages.newPageButton2',
-    defaultMessage: 'Create project page',
+    id: 'app.containers.AdminPage.ProjectPages.newPageButton3',
+    defaultMessage: 'Add a project page',
   },
   noPagesTitle: {
-    id: 'app.containers.AdminPage.ProjectPages.noPagesTitle',
-    defaultMessage: 'No pages yet',
+    id: 'app.containers.AdminPage.ProjectPages.noPagesTitle2',
+    defaultMessage: 'No project pages yet',
   },
   addFirstPage: {
     id: 'app.containers.AdminPage.ProjectPages.addFirstPage',
-    defaultMessage: 'Add your first page',
+    defaultMessage: 'Add your first project page',
   },
   editButton: {
     id: 'app.containers.AdminPage.ProjectPages.editButton',
