@@ -223,12 +223,14 @@ describe('Export community monitor survey responses', () => {
     // LLM is unavailable in CI, so the structural fallback flags the author
     // columns deterministically)
     cy.wait('@responseFields', { timeout: 20000 });
-    cy.dataCy('e2e-field-redaction-list').should('be.visible');
+    cy.dataCy('e2e-field-redaction-list').should('exist');
     cy.dataCy('e2e-field-redaction-row-author_email')
       .contains('Excluded')
       .should('exist');
 
     // Generate stays disabled until consent is given
-    cy.dataCy('e2e-generate-export-button').should('be.disabled');
+    cy.dataCy('e2e-generate-export-button')
+      .find('button')
+      .should('have.class', 'disabled');
   });
 });

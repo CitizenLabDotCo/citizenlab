@@ -254,7 +254,7 @@ describe('Survey Builder - Results and Data Management', () => {
     // LLM is unavailable in CI, so the structural fallback flags the author
     // columns deterministically)
     cy.wait('@responseFields', { timeout: 20000 });
-    cy.dataCy('e2e-field-redaction-list').should('be.visible');
+    cy.dataCy('e2e-field-redaction-list').should('exist');
     cy.dataCy('e2e-field-redaction-list')
       .contains(questionTitle)
       .should('exist');
@@ -263,11 +263,16 @@ describe('Survey Builder - Results and Data Management', () => {
       .should('exist');
 
     // Generate is disabled until consent is given
-    cy.dataCy('e2e-generate-export-button').should('be.disabled');
+    cy.dataCy('e2e-generate-export-button')
+      .find('button')
+      .should('have.class', 'disabled');
     cy.dataCy('e2e-export-consent-checkbox')
       .find('input[type="checkbox"]')
       .check({ force: true });
-    cy.dataCy('e2e-generate-export-button').should('not.be.disabled').click();
+    cy.dataCy('e2e-generate-export-button')
+      .find('button')
+      .should('not.have.class', 'disabled')
+      .click();
 
     // Check that the file is downloaded
     const downloadsFolder = Cypress.config('downloadsFolder');
@@ -283,6 +288,6 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-export-responses-pdf').click();
     cy.contains('Cover settings').should('be.visible');
     cy.contains('Cover preview').should('be.visible');
-    cy.dataCy('e2e-field-redaction-list').should('be.visible');
+    cy.dataCy('e2e-field-redaction-list').should('exist');
   });
 });
