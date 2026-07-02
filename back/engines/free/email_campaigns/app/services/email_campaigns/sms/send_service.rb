@@ -4,8 +4,11 @@ module EmailCampaigns
   module Sms
     class SendService
       def send_now(to:, body:, user_id: nil, campaign_id: nil)
+        # Validate/normalize up front so an invalid number raises before a
+        # delivery row is created.
+        parsed_to = parse_phone_number(to)
         delivery = create_delivery(body: body, user_id: user_id, campaign_id: campaign_id)
-        deliver(delivery, to: to)
+        deliver(delivery, to: parsed_to)
       end
 
       def create_delivery(body:, user_id: nil, campaign_id: nil)

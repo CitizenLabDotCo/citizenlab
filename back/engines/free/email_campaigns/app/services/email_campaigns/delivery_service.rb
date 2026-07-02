@@ -135,11 +135,12 @@ module EmailCampaigns
     end
 
     def send_sms_preview(campaign, recipient)
+      raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if recipient.phone_number.blank?
+
       body = MultilocService.new.t(campaign.body_multiloc, recipient.locale)
       return if body.blank?
 
       delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
-        to: recipient.phone_number,
         body: body,
         user_id: recipient.id
       )
@@ -248,7 +249,6 @@ module EmailCampaigns
       return if body.blank?
 
       delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
-        to: recipient.phone_number,
         body: body,
         user_id: recipient.id,
         campaign_id: campaign.id

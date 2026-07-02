@@ -64,11 +64,11 @@ RSpec.describe EmailCampaigns::Sms::SendService do
   end
 
   describe '#create_delivery' do
-    it 'records a pending, normalized delivery linked to the campaign without calling the provider' do
+    it 'records a pending delivery linked to the campaign without calling the provider' do
       campaign = create(:manual_campaign)
       expect(provider).not_to receive(:send)
 
-      delivery = described_class.new.create_delivery(to: '1 (415) 555-2671', body: 'hi', campaign_id: campaign.id)
+      delivery = described_class.new.create_delivery(body: 'hi', campaign_id: campaign.id)
 
       expect(delivery).to have_attributes(status: 'pending', campaign_id: campaign.id)
     end
@@ -76,7 +76,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     it 'raises and creates nothing when the SMS feature is disabled' do
       SettingsService.new.deactivate_feature!('sms')
 
-      expect { described_class.new.create_delivery(to: '+14155552671', body: 'hi') }
+      expect { described_class.new.create_delivery(body: 'hi') }
         .to raise_error(EmailCampaigns::Sms::Error, /not enabled/)
       expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
     end
