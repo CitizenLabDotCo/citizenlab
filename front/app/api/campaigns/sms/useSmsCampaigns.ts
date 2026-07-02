@@ -20,10 +20,7 @@ const fetchSmsCampaigns = ({
     action: 'get',
     queryParams: {
       manual: true,
-      // SMS campaigns are the only manual campaigns that are not email. Until the
-      // backend exposes a positive `channel` filter, exclude the email manual
-      // campaigns to narrow the list to SMS.
-      without_campaign_names: ['manual', 'manual_project_participants'],
+      channel: 'sms',
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 20,
     },

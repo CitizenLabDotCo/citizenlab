@@ -28,7 +28,6 @@ const CustomEmails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: campaigns, fetchNextPage } = useEmailCampaigns({
     manual: true,
-    withoutCampaignNames: ['sms_manual'],
     pageSize: 10,
   });
 

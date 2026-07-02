@@ -17,6 +17,8 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
+      @campaigns = @campaigns.where(channel: params[:channel]) if params[:channel].present?
+
       if campaign_context
         @campaigns = @campaigns.where(context: campaign_context)
         supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)

@@ -21,6 +21,7 @@ const fetchEmailCampaigns = (filters: QueryParameters) => {
     action: 'get',
     queryParams: {
       manual,
+      channel: 'email',
       without_campaign_names,
       'page[number]': pageNumber || 1,
       'page[size]': pageSize || 20,

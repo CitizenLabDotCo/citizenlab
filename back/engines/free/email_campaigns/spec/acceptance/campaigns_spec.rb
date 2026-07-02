@@ -44,6 +44,7 @@ resource 'Campaigns' do
       end
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
+      parameter :channel, "Filter campaigns by delivery channel ('email' or 'sms')", required: false
 
       example_request 'List all campaigns' do
         assert_status 200
@@ -55,6 +56,13 @@ resource 'Campaigns' do
         do_request(without_campaign_names: %w[manual])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
+      end
+
+      example 'List only campaigns of a given channel' do
+        sms_campaign = create(:sms_manual_campaign)
+        do_request(channel: 'sms')
+        json_response = json_parse(response_body)
+        expect(json_response[:data].map { |c| c[:id] }).to contain_exactly(sms_campaign.id)
       end
 
       example 'List all manual campaigns' do
