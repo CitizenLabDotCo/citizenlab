@@ -19,6 +19,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 import ScreenReaderCurrencyValue from 'components/ScreenReaderCurrencyValue';
 
+import { ScreenReaderOnly, joinAriaIds } from 'utils/a11y';
 import {
   isFixableByAuthentication,
   getPermissionsDisabledMessage,
@@ -178,7 +179,10 @@ const AddToBasketButton = ({
             className={`e2e-assign-budget-button ${
               ideaInBasket ? 'in-basket' : 'not-in-basket'
             }`}
-            ariaDescribedby={`idea-budget-description-${ideaId}`}
+            ariaDescribedby={joinAriaIds(
+              `idea-budget-description-${ideaId}`,
+              !!disabledExplanation && `already-submitted-${ideaId}`
+            )}
           >
             {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
             <FormattedMessage {...buttonMessage} />
@@ -189,7 +193,10 @@ const AddToBasketButton = ({
       <ScreenReaderCurrencyValue
         amount={ideaBudget}
         id={`idea-budget-description-${ideaId}`}
-      />
+      />{' '}
+      <ScreenReaderOnly id={`already-submitted-${ideaId}`}>
+        {disabledExplanation}
+      </ScreenReaderOnly>
     </Box>
   );
 };

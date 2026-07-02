@@ -19,7 +19,6 @@ module EmailCampaigns
         Delivery.create!(
           user_id: user_id,
           campaign_id: campaign_id,
-          phone_number: parsed_to.e164,
           body: body,
           status: 'pending'
         )

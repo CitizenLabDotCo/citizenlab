@@ -1,4 +1,4 @@
-import { get, set, remove, CookieAttributes } from 'js-cookie';
+import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 
 import { HighestRole } from 'api/users/types';
@@ -17,7 +17,7 @@ export interface IDecodedJwt {
 
 export function getJwt() {
   try {
-    const jwt = get(COOKIE_NAME);
+    const jwt = Cookies.get(COOKIE_NAME);
 
     if (!jwt || jwt === 'undefined') {
       removeJwt();
@@ -38,15 +38,15 @@ export function setJwt(
   const attrs = {
     secure: SECURE_COOKIE,
     sameSite: 'strict',
-  } as CookieAttributes;
+  } as Cookies.CookieAttributes;
   if (rememberMe) {
     attrs.expires = tokenLifetime; // If omitted, the cookie becomes a session cookie. Fore more info, check https://stackoverflow.com/a/36421888
   }
-  set(COOKIE_NAME, jwt, attrs);
+  Cookies.set(COOKIE_NAME, jwt, attrs);
 }
 
 export function removeJwt() {
-  remove(COOKIE_NAME);
+  Cookies.remove(COOKIE_NAME);
 }
 
 export function decode(jwt) {

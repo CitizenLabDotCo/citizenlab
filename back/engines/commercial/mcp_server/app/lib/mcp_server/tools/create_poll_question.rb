@@ -50,7 +50,10 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       phase = Phase.find(params[:phase_id])
+      authorize_project!(phase.project)
+
       question = build_question(phase)
+      authorize(question, :create?)
 
       ActiveRecord::Base.transaction do
         Polls::SideFxQuestionService.new.before_create(question, current_user)
