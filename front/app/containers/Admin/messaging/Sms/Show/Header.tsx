@@ -7,7 +7,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { ICampaignData } from 'api/campaigns/types';
+import { ISmsCampaignData } from 'api/campaigns/sms/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -18,7 +18,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  campaign: ICampaignData;
+  campaign: ISmsCampaignData;
   draft: boolean;
   onSend: () => void;
   isSending: boolean;

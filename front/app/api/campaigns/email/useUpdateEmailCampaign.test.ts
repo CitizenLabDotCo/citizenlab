@@ -4,8 +4,8 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
-import { campaignsData } from './__mocks__/useCampaigns';
-import useUpdateCampaign from './useUpdateCampaign';
+import { campaignsData } from './__mocks__/useEmailCampaigns';
+import useUpdateEmailCampaign from './useUpdateEmailCampaign';
 
 const apiPath = '*campaigns/:id';
 const server = setupServer(
@@ -14,12 +14,12 @@ const server = setupServer(
   })
 );
 
-describe('useUpdateCampaign', () => {
+describe('useUpdateEmailCampaign', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result } = renderHook(() => useUpdateCampaign(), {
+    const { result } = renderHook(() => useUpdateEmailCampaign(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -41,7 +41,7 @@ describe('useUpdateCampaign', () => {
       })
     );
 
-    const { result } = renderHook(() => useUpdateCampaign(), {
+    const { result } = renderHook(() => useUpdateEmailCampaign(), {
       wrapper: createQueryClientWrapper(),
     });
     act(() => {

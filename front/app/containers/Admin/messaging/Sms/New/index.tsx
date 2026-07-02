@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 
-import useAddCampaign from 'api/campaigns/useAddCampaign';
+import useAddSmsCampaign from 'api/campaigns/sms/useAddSmsCampaign';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -13,13 +13,10 @@ import messages from '../../messages';
 import SmsCampaignForm, { FormValues } from '../SmsCampaignForm';
 
 const NewSmsCampaign = () => {
-  const { isLoading, mutateAsync: createCampaign } = useAddCampaign();
+  const { isLoading, mutateAsync: createCampaign } = useAddSmsCampaign();
 
   const handleSubmit = async (values: FormValues) => {
-    const response = await createCampaign({
-      campaign_name: 'sms_manual',
-      ...values,
-    });
+    const response = await createCampaign(values);
     clHistory.push(`/admin/messaging/sms/${response.data.id}`);
   };
 

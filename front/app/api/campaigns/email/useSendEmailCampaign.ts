@@ -4,23 +4,23 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import campaignKeys from './keys';
-import { ICampaign } from './types';
+import { IEmailCampaign } from './types';
 
-const sendCampaign = async (id: string) =>
-  fetcher<ICampaign>({
+const sendEmailCampaign = async (id: string) =>
+  fetcher<IEmailCampaign>({
     path: `/campaigns/${id}/send`,
     action: 'post',
     body: {},
   });
 
-const useSendCampaign = () => {
+const useSendEmailCampaign = () => {
   const queryClient = useQueryClient();
-  return useMutation<ICampaign, CLErrors, string>({
-    mutationFn: sendCampaign,
+  return useMutation<IEmailCampaign, CLErrors, string>({
+    mutationFn: sendEmailCampaign,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: campaignKeys.all() });
     },
   });
 };
 
-export default useSendCampaign;
+export default useSendEmailCampaign;

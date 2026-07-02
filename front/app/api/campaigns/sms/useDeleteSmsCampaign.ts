@@ -2,25 +2,25 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignsKeys from './keys';
+import smsCampaignsKeys from './keys';
 
-const deleteCampaign = (id: string) =>
+const deleteSmsCampaign = (id: string) =>
   fetcher({
     path: `/campaigns/${id}`,
     action: 'delete',
   });
 
-const useDeleteCampaign = () => {
+const useDeleteSmsCampaign = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteCampaign,
+    mutationFn: deleteSmsCampaign,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: campaignsKeys.lists(),
+        queryKey: smsCampaignsKeys.lists(),
       });
     },
   });
 };
 
-export default useDeleteCampaign;
+export default useDeleteSmsCampaign;

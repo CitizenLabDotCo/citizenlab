@@ -1,6 +1,8 @@
-import { ICampaignData, CampaignContext } from './types';
+import { CampaignContext } from '../types';
 
-export function isDraft(campaign: ICampaignData) {
+import { IEmailCampaignData } from './types';
+
+export function isDraft(campaign: IEmailCampaignData) {
   return (
     campaign.attributes.deliveries_count === 0 &&
     !campaign.attributes.scheduled_at

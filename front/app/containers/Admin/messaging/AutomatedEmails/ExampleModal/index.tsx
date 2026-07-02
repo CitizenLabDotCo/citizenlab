@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Box, Text } from '@citizenlab/cl2-component-library';
 
 import useCampaignExamples from 'api/campaign_examples/useCampaignExamples';
-import useCampaign from 'api/campaigns/useCampaign';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
 
 import T from 'components/T';
 import Modal from 'components/UI/Modal';
@@ -26,7 +26,7 @@ const ExampleModal = ({
   onClose: () => void;
 }) => {
   const { data: examples } = useCampaignExamples({ campaignId });
-  const { data: campaign } = useCampaign(campaignId);
+  const { data: campaign } = useEmailCampaign(campaignId);
   const [selectedExampleIdx, setSelectedExampleIdx] = useState<number | null>(
     null
   );

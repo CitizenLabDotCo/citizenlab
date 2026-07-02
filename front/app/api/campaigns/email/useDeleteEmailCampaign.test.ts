@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
-import useDeleteCampaign from './useDeleteCampaign';
+import useDeleteEmailCampaign from './useDeleteEmailCampaign';
 const apiPath = '*campaigns/:id';
 
 const server = setupServer(
@@ -13,12 +13,12 @@ const server = setupServer(
   })
 );
 
-describe('useDeleteCampaign', () => {
+describe('useDeleteEmailCampaign', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result } = renderHook(() => useDeleteCampaign(), {
+    const { result } = renderHook(() => useDeleteEmailCampaign(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -36,7 +36,7 @@ describe('useDeleteCampaign', () => {
       })
     );
 
-    const { result } = renderHook(() => useDeleteCampaign(), {
+    const { result } = renderHook(() => useDeleteEmailCampaign(), {
       wrapper: createQueryClientWrapper(),
     });
 

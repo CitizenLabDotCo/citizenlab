@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 
 import { Box, colors, Text, Success } from '@citizenlab/cl2-component-library';
 
-import useCampaign from 'api/campaigns/useCampaign';
-import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
-import useSendCampaign from 'api/campaigns/useSendCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import { isDraft } from 'api/campaigns/util';
+import useDeleteSmsCampaign from 'api/campaigns/sms/useDeleteSmsCampaign';
+import useSendSmsCampaign from 'api/campaigns/sms/useSendSmsCampaign';
+import useSendSmsCampaignPreview from 'api/campaigns/sms/useSendSmsCampaignPreview';
+import useSmsCampaign from 'api/campaigns/sms/useSmsCampaign';
+import { isSmsDraft } from 'api/campaigns/sms/util';
 import { IGroupData } from 'api/groups/types';
 import useGroupsByIds from 'api/groups/useGroupsByIds';
 
@@ -28,18 +28,19 @@ import Recipients from './Recipients';
 
 const Show = () => {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
-  const { data: campaign } = useCampaign(campaignId);
+  const { data: campaign } = useSmsCampaign(campaignId);
   const {
     mutate: sendCampaign,
     isLoading: isSending,
     error: apiSendErrors,
-  } = useSendCampaign();
+  } = useSendSmsCampaign();
   const {
     mutate: sendPreview,
     isLoading: isSendingPreview,
     error: apiPreviewErrors,
-  } = useSendCampaignPreview();
-  const { mutate: deleteCampaign, isLoading: isDeleting } = useDeleteCampaign();
+  } = useSendSmsCampaignPreview();
+  const { mutate: deleteCampaign, isLoading: isDeleting } =
+    useDeleteSmsCampaign();
 
   const [showConfirm, setShowConfirm] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -51,7 +52,7 @@ const Show = () => {
 
   if (!campaign) return null;
 
-  const draft = isDraft(campaign.data);
+  const draft = isSmsDraft(campaign.data);
   const noGroupsSelected = groupIds.length === 0;
 
   const handleSend = () => {

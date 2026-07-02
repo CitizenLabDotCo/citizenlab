@@ -4,26 +4,23 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import { campaignsData, links } from './__mocks__/useCampaigns';
-import { QueryParameters } from './types';
-import useCampaigns from './useCampaigns';
+import { campaignsData } from './__mocks__/useEmailCampaigns';
+import useEmailCampaign from './useEmailCampaign';
 
-const apiPath = '*/campaigns';
-
-const params: QueryParameters = {};
+const apiPath = '*campaigns/:id';
 
 const server = setupServer(
   http.get(apiPath, () => {
-    return HttpResponse.json({ data: campaignsData, links }, { status: 200 });
+    return HttpResponse.json({ data: campaignsData[0] }, { status: 200 });
   })
 );
 
-describe('useCampaigns', () => {
+describe('useEmailCampaign', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result } = renderHook(() => useCampaigns(params), {
+    const { result } = renderHook(() => useEmailCampaign('id'), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -32,7 +29,7 @@ describe('useCampaigns', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(campaignsData);
+    expect(result.current.data?.data).toEqual(campaignsData[0]);
   });
 
   it('returns error correctly', async () => {
@@ -42,7 +39,7 @@ describe('useCampaigns', () => {
       })
     );
 
-    const { result } = renderHook(() => useCampaigns(params), {
+    const { result } = renderHook(() => useEmailCampaign('id'), {
       wrapper: createQueryClientWrapper(),
     });
 

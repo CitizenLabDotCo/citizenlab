@@ -6,22 +6,22 @@ import campaignPreviewsKeys from 'api/campaign_previews/keys';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import campaignsKeys from './keys';
-import { ICampaign, IUpdateCampaignProperties } from './types';
+import { IEmailCampaign, IUpdateEmailCampaignProperties } from './types';
 
-const updateCampaign = async ({
+const updateEmailCampaign = async ({
   id: campaignId,
   campaign,
-}: IUpdateCampaignProperties) =>
-  fetcher<ICampaign>({
+}: IUpdateEmailCampaignProperties) =>
+  fetcher<IEmailCampaign>({
     path: `/campaigns/${campaignId}`,
     action: 'patch',
     body: { campaign },
   });
 
-const useUpdateCampaign = () => {
+const useUpdateEmailCampaign = () => {
   const queryClient = useQueryClient();
-  return useMutation<ICampaign, CLErrors, IUpdateCampaignProperties>({
-    mutationFn: updateCampaign,
+  return useMutation<IEmailCampaign, CLErrors, IUpdateEmailCampaignProperties>({
+    mutationFn: updateEmailCampaign,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: campaignPreviewsKeys.all() });
@@ -29,4 +29,4 @@ const useUpdateCampaign = () => {
   });
 };
 
-export default useUpdateCampaign;
+export default useUpdateEmailCampaign;

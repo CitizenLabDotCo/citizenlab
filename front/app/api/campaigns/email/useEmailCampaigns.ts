@@ -5,10 +5,10 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import campaignsKeys from './keys';
-import { ICampaignsData, QueryParameters, CampaignsKeys } from './types';
+import { IEmailCampaignsData, QueryParameters, CampaignsKeys } from './types';
 import { getCampaignsContextPath } from './util';
 
-const fetchCampaigns = (filters: QueryParameters) => {
+const fetchEmailCampaigns = (filters: QueryParameters) => {
   const {
     manual: manual,
     withoutCampaignNames: without_campaign_names,
@@ -16,7 +16,7 @@ const fetchCampaigns = (filters: QueryParameters) => {
     pageSize,
     context,
   } = filters;
-  return fetcher<ICampaignsData>({
+  return fetcher<IEmailCampaignsData>({
     path: `/${getCampaignsContextPath(context)}`,
     action: 'get',
     queryParams: {
@@ -28,16 +28,16 @@ const fetchCampaigns = (filters: QueryParameters) => {
   });
 };
 
-const useCampaigns = (queryParams: QueryParameters) => {
+const useEmailCampaigns = (queryParams: QueryParameters) => {
   return useInfiniteQuery<
-    ICampaignsData,
+    IEmailCampaignsData,
     CLErrors,
-    ICampaignsData,
+    IEmailCampaignsData,
     CampaignsKeys
   >({
     queryKey: campaignsKeys.list(queryParams),
     queryFn: ({ pageParam }) =>
-      fetchCampaigns({ ...queryParams, pageNumber: pageParam }),
+      fetchEmailCampaigns({ ...queryParams, pageNumber: pageParam }),
     // Should still be needed for pagination in CustomEmails
     getNextPageParam: (lastPage) => {
       const hasNextPage = lastPage.links.next;
@@ -48,4 +48,4 @@ const useCampaigns = (queryParams: QueryParameters) => {
   });
 };
 
-export default useCampaigns;
+export default useEmailCampaigns;

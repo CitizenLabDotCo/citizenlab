@@ -4,8 +4,8 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
-import { campaignsData } from './__mocks__/useCampaigns';
-import useSendCampaignPreview from './useSendCampaignPreview';
+import { campaignsData } from './__mocks__/useEmailCampaigns';
+import useSendEmailCampaignPreview from './useSendEmailCampaignPreview';
 
 const apiPath = '*campaigns/:id/send_preview';
 
@@ -15,12 +15,12 @@ const server = setupServer(
   })
 );
 
-describe('useSendCampaignPreview', () => {
+describe('useSendEmailCampaignPreview', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
   it('mutates data correctly', async () => {
-    const { result } = renderHook(() => useSendCampaignPreview(), {
+    const { result } = renderHook(() => useSendEmailCampaignPreview(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -39,7 +39,7 @@ describe('useSendCampaignPreview', () => {
       })
     );
 
-    const { result } = renderHook(() => useSendCampaignPreview(), {
+    const { result } = renderHook(() => useSendEmailCampaignPreview(), {
       wrapper: createQueryClientWrapper(),
     });
 

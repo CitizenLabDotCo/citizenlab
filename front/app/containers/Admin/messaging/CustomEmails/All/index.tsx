@@ -8,8 +8,8 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import useCampaigns from 'api/campaigns/useCampaigns';
-import { isDraft } from 'api/campaigns/util';
+import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
+import { isDraft } from 'api/campaigns/email/util';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
@@ -26,7 +26,7 @@ import NewCampaignButton from './NewCampaignButton';
 
 const CustomEmails = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useCampaigns({
+  const { data: campaigns, fetchNextPage } = useEmailCampaigns({
     manual: true,
     withoutCampaignNames: ['sms_manual'],
     pageSize: 10,

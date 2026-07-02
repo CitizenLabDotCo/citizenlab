@@ -8,7 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import useCampaigns from 'api/campaigns/useCampaigns';
+import useSmsCampaigns from 'api/campaigns/sms/useSmsCampaigns';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List } from 'components/admin/ResourceList';
@@ -24,9 +24,7 @@ import SmsCampaignRow from './SmsCampaignRow';
 
 const SmsCampaigns = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useCampaigns({
-    manual: true,
-    withoutCampaignNames: ['manual', 'manual_project_participants'],
+  const { data: campaigns, fetchNextPage } = useSmsCampaigns({
     pageSize: 10,
   });
 
