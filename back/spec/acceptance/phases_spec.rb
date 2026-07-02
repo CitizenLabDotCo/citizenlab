@@ -263,10 +263,16 @@ resource 'Phases' do
     context 'when admin' do
       before { admin_header_token }
 
-      example_request 'List the fields available for the responses PDF export' do
+      example_request 'List the fields available for the responses exports' do
         assert_status 200
-        expect(response_data.pluck(:id)).to include('q1')
+        expect(response_data.pluck(:id)).to include('q1', 'input_id', 'author_email', 'submitted_at')
         expect(response_data).to all(include(type: 'input_response_field'))
+
+        by_id = response_data.index_by { |field| field[:id] }
+        expect(by_id[:q1][:attributes]).to include(title: 'Favourite colour', personal_data: false)
+        # Author columns are flagged structurally, without the LLM.
+        expect(by_id[:author_email][:attributes]).to include(personal_data: true)
+        expect(by_id[:submitted_at][:attributes]).to include(personal_data: false)
       end
 
       context 'when the phase does not support the export' do
@@ -303,6 +309,48 @@ resource 'Phases' do
         do_request
         assert_status 200
         expect(response_body).to eq '%PDF-1.4'
+      end
+
+      context 'when the phase does not support the export' do
+        let(:id) { create(:information_phase).id }
+
+        example 'Unprocessable (422)', document: false do
+          do_request
+          assert_status 422
+        end
+      end
+    end
+  end
+
+  post 'web_api/v1/phases/:id/input_responses_xlsx' do
+    parameter :redacted_field_keys, 'Keys of fields to exclude from the export', required: false
+
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    before do
+      form = create(:custom_form, participation_context: phase)
+      create(:custom_field, resource: form, key: 'q_secret', title_multiloc: { 'en' => 'Secret question' })
+      create(:custom_field, resource: form, key: 'q_public', title_multiloc: { 'en' => 'Public question' })
+    end
+
+    context 'when visitor' do
+      example '[error] Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'Generate the responses xlsx without the redacted fields' do
+        do_request(redacted_field_keys: ['q_secret'])
+        assert_status 200
+
+        headers = xlsx_contents(response_body).first[:column_headers]
+        expect(headers).to include('Public question')
+        expect(headers).not_to include('Secret question')
       end
 
       context 'when the phase does not support the export' do
@@ -1159,7 +1207,7 @@ resource 'Phases' do
             expected_params = [[survey_response1, survey_response2], active_phase]
             allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
             do_request
-            expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
+            expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params, redacted_field_keys: [])
 
             assert_status 200
             expect(xlsx_contents(response_body)).to match([
@@ -1299,7 +1347,7 @@ resource 'Phases' do
         expected_params = [[survey_response], active_phase]
         allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
         do_request
-        expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
+        expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params, redacted_field_keys: [])
         assert_status 200
         expect(xlsx_contents(response_body)).to match([
           {

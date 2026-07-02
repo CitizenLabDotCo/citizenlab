@@ -1,5 +1,3 @@
-import { Multiloc } from 'typings';
-
 import { Keys } from 'utils/cl-react-query/types';
 
 import inputResponseFieldsKeys from './keys';
@@ -10,8 +8,9 @@ export interface IInputResponseFieldData {
   id: string;
   type: string;
   attributes: {
-    title_multiloc: Multiloc;
-    // True for registration/personal-data fields (pre-selected for redaction).
+    // Localized server-side: computed columns (author, meta) have no multiloc.
+    title: string;
+    // True for personal-data fields (pre-selected for redaction).
     personal_data: boolean;
   };
 }
