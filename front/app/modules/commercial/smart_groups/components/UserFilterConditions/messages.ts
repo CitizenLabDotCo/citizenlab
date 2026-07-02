@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_participated_in_input_status',
     defaultMessage: 'Interacted with an input with status',
   },
+  field_participated_in_input: {
+    id: 'app.components.admin.UserFilterConditions.field_participated_in_input',
+    defaultMessage: 'Interacted with inputs',
+  },
   field_verified: {
     id: 'app.components.admin.UserFilterConditions.field_verified',
     defaultMessage: 'Verification',
