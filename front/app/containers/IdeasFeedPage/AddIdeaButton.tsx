@@ -31,6 +31,8 @@ const AddIdeaButton = ({ projectSlug, phaseId }: Props) => {
 
   if (!project || !phase) return null;
 
+  if (phase.data.attributes.submission_enabled === false) return null;
+
   const { enabled, authenticationRequirements } = getIdeaPostingRules({
     project: project.data,
     phase: phase.data,
