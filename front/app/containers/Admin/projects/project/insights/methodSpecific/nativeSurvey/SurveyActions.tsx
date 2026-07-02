@@ -299,6 +299,7 @@ const SurveyActions = ({ phase }: Props) => {
                       setDropdownOpened(false);
                       openPdfExportModal();
                     }}
+                    data-cy="e2e-export-responses-pdf"
                   />
                   <ExportDropdownItem
                     label={formatMessage(messages.exportResponsesToXlsx)}
@@ -306,6 +307,7 @@ const SurveyActions = ({ phase }: Props) => {
                       setDropdownOpened(false);
                       openXlsxExportModal();
                     }}
+                    data-cy="e2e-export-responses-xlsx"
                   />
                   <ExportDropdownItem
                     label={formatMessage(messages.downloadInsightsPdf)}

@@ -206,3 +206,29 @@ describe('Edit community monitor survey', () => {
     });
   });
 });
+
+describe('Export community monitor survey responses', () => {
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+  });
+
+  it('offers the responses export flow with PII review from the survey settings', () => {
+    cy.intercept('**/phases/**/input_response_fields').as('responseFields');
+    cy.visit('admin/community-monitor/settings/survey');
+
+    cy.dataCy('e2e-more-survey-actions-button').click();
+    cy.dataCy('e2e-export-responses-xlsx').click();
+
+    // The field review lists the export fields once the PII flags load (the
+    // LLM is unavailable in CI, so the structural fallback flags the author
+    // columns deterministically)
+    cy.wait('@responseFields', { timeout: 20000 });
+    cy.dataCy('e2e-field-redaction-list').should('be.visible');
+    cy.dataCy('e2e-field-redaction-row-author_email')
+      .contains('Excluded')
+      .should('exist');
+
+    // Generate stays disabled until consent is given
+    cy.dataCy('e2e-generate-export-button').should('be.disabled');
+  });
+});

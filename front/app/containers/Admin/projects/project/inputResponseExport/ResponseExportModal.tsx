@@ -78,6 +78,7 @@ const ResponseExportModal = ({
             onClick={handleGenerate}
             processing={isGenerating}
             disabled={!consent || isGenerating || isLoading || isError}
+            data-cy="e2e-generate-export-button"
           >
             <FormattedMessage {...messages.generateButton} />
           </Button>
@@ -101,15 +102,17 @@ const ResponseExportModal = ({
             />
           )}
 
-          <CheckboxWithLabel
-            checked={consent}
-            onChange={() => setConsent((prev) => !prev)}
-            label={
-              <Text m="0px" fontSize="s" color="textSecondary">
-                {formatMessage(messages.consentLabel)}
-              </Text>
-            }
-          />
+          <Box data-cy="e2e-export-consent-checkbox">
+            <CheckboxWithLabel
+              checked={consent}
+              onChange={() => setConsent((prev) => !prev)}
+              label={
+                <Text m="0px" fontSize="s" color="textSecondary">
+                  {formatMessage(messages.consentLabel)}
+                </Text>
+              }
+            />
+          </Box>
 
           {error && (
             <Text color="red600" mt="12px" mb="0px" fontSize="s">
