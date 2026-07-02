@@ -47,7 +47,6 @@ const InputXlsxExportModal = ({ phaseId, opened, onClose }: Props) => {
       opened={opened}
       onClose={onClose}
       title={<FormattedMessage {...messages.xlsxPageTitle} />}
-      generateLabel={<FormattedMessage {...messages.generateXlsxButton} />}
       onGenerate={handleGenerate}
     />
   );

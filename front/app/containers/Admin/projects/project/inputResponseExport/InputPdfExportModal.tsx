@@ -62,7 +62,6 @@ const InputPdfExportModal = ({
         opened={opened}
         onClose={onClose}
         title={<FormattedMessage {...messages.pdfPageTitle} />}
-        generateLabel={<FormattedMessage {...messages.generatePdfButton} />}
         onGenerate={handleGenerate}
         settingsSlot={<CoverPageSettings />}
         previewSlot={

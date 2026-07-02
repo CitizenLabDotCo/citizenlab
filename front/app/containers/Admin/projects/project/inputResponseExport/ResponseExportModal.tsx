@@ -20,7 +20,6 @@ type Props = {
   opened: boolean;
   onClose: () => void;
   title: JSX.Element | string;
-  generateLabel: ReactNode;
   onGenerate: (options: { redactedFieldKeys: string[] }) => Promise<void>;
   // Extra export settings rendered above the field review (e.g. the PDF cover
   // form). When previewSlot is present the modal renders two columns.
@@ -36,7 +35,6 @@ const ResponseExportModal = ({
   opened,
   onClose,
   title,
-  generateLabel,
   onGenerate,
   settingsSlot,
   previewSlot,
@@ -81,7 +79,7 @@ const ResponseExportModal = ({
             processing={isGenerating}
             disabled={!consent || isGenerating || isLoading || isError}
           >
-            {generateLabel}
+            <FormattedMessage {...messages.generateButton} />
           </Button>
         </Box>
       }

@@ -93,13 +93,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.inputResponseExport.cancelButton',
     defaultMessage: 'Cancel',
   },
-  generatePdfButton: {
-    id: 'app.containers.Admin.projects.project.inputResponseExport.generatePdfButton',
-    defaultMessage: 'Generate PDF',
-  },
-  generateXlsxButton: {
-    id: 'app.containers.Admin.projects.project.inputResponseExport.generateXlsxButton',
-    defaultMessage: 'Generate Excel file',
+  generateButton: {
+    id: 'app.containers.Admin.projects.project.inputResponseExport.generateButton',
+    defaultMessage: 'Generate file',
   },
   exportError: {
     id: 'app.containers.Admin.projects.project.inputResponseExport.exportError',
