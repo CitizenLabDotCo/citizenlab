@@ -269,10 +269,10 @@ resource 'Phases' do
         expect(response_data).to all(include(type: 'input_response_field'))
 
         by_id = response_data.index_by { |field| field[:id] }
-        expect(by_id[:q1][:attributes]).to include(title: 'Favourite colour', personal_data: false)
+        expect(by_id['q1'][:attributes]).to include(title: 'Favourite colour', personal_data: false)
         # Author columns are flagged structurally, without the LLM.
-        expect(by_id[:author_email][:attributes]).to include(personal_data: true)
-        expect(by_id[:submitted_at][:attributes]).to include(personal_data: false)
+        expect(by_id['author_email'][:attributes]).to include(personal_data: true)
+        expect(by_id['submitted_at'][:attributes]).to include(personal_data: false)
       end
 
       context 'when the phase does not support the export' do
