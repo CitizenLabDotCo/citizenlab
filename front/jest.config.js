@@ -21,7 +21,7 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!(lodash-es|d3-format|@hookform/resolvers|dnd-core|react-dnd|dnd-core|@react-dnd|@arcgis|@esri|@stencil|formdata-node|quill|@enzedonline|parchment|lit|@lit|lit-html|lit-element)).+\\.js$',
+    '<rootDir>/node_modules/(?!(lodash-es|d3-format|@hookform/resolvers|dnd-core|react-dnd|dnd-core|@react-dnd|@arcgis|@esri|@stencil|formdata-node|quill|@enzedonline|parchment|lit|@lit|lit-html|lit-element|uuid)).+\\.js$',
   ],
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],

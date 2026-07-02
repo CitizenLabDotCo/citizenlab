@@ -708,6 +708,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Śledź",
   "app.components.admin.UserFilterConditions.field_lives_in": "Mieszka w",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Ankieta monitora społeczności",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Interakcja z elementami",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Interakcja z wkładem o statusie",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Przyczynił się do projektu",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Przyczynił się do tematu",
