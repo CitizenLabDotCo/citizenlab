@@ -2,7 +2,6 @@
 
 module CustomIdMethods::EtatLu
   module EtatLuVerification
-
     def verification_method_type
       :omniauth
     end
