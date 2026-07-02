@@ -236,9 +236,7 @@ export const ssoIcons = {
       <path d="m204.3,0h-79.5l-10.6,67.3h13.5c7.4,0,14.4-3.4,17.4-8.3,1-1.6,1.4-3,1.4-4.3,0-2.8-1.9-4.9-3.8-6.3-5.2-3.9-6.3-8-6.3-10.9,0-.6,0-1.1.1-1.6,1.1-7.1,10.7-14.8,23.4-14.8,7.6,0,13.4,1.8,16.9,5.1,3.1,2.9,4.3,7,3.4,11.3-1.1,5.1-6.2,9.3-9.1,11.4-7.7,5.4-6.7,10.1-6.2,11.5,1.6,4.2,7.7,6.9,12.4,6.9h20.6v.1c28,.2,43,13.1,38.3,43.1-4.4,27.9-25.8,39.9-51.3,40.1l-10.1,64.4h14.9c62.9,0,114.3-40.4,124.4-104.2C326.6,31.6,276.3,0,204.3,0Z" />
     </Svg>
   ),
-  // Red lion inspired by the arms of the Grand Duchy of Luxembourg, used as the
-  // brand mark for the etat_lu (IAM) SSO/verification method.
-  // Source: https://commons.wikimedia.org/wiki/File:Lion_rouge_inspir%C3%A9_des_armoiries_du_Grand-Duch%C3%A9_de_Luxembourg.svg
+  // Red lion logo for Luxembourg SSO, used for the etat_lu (IAM) SSO/verification method
   etat_lu: (props: IconPropsWithoutName) => (
     <Svg
       className={`cl-icon ${props.className ? props.className : ''}`}

@@ -24,6 +24,7 @@ module CustomIdMethods
         CustomIdMethods::ClaveUnica::ClaveUnicaOmniauth.new,
         CustomIdMethods::Cow::CowVerification.new,
         CustomIdMethods::Criipto::CriiptoOmniauth.new,
+        CustomIdMethods::EtatLu::EtatLuOmniauth.new,
         CustomIdMethods::FakeSso::FakeSsoOmniauth.new,
         CustomIdMethods::Federa::FederaOmniauth.new,
         CustomIdMethods::Franceconnect::FranceconnectOmniauth.new,
@@ -36,8 +37,7 @@ module CustomIdMethods
         CustomIdMethods::OostendeRrn::OostendeRrnVerification.new,
         CustomIdMethods::Twoday::TwodayOmniauth.new,
         CustomIdMethods::ViennaSaml::EmployeeSamlOmniauth.new,
-        CustomIdMethods::ViennaSaml::CitizenSamlOmniauth.new,
-        CustomIdMethods::EtatLu::EtatLuOmniauth.new
+        CustomIdMethods::ViennaSaml::CitizenSamlOmniauth.new
       ].each do |id_method|
         IdMethods.add_method(id_method)
       end
