@@ -54,7 +54,7 @@ module CustomIdMethods::Franceconnect
     def omniauth_setup(configuration, env)
       return unless Verification::VerificationService.new.active?(configuration, name)
 
-      scope = %w[openid] + (config[:scope] || %w[email given_name family_name preferred_username])
+      scope = %w[openid] + (config[:scope] || %w[email given_name family_name])
 
       if version == 'v2'
         env['omniauth.strategy'].options.merge!(
