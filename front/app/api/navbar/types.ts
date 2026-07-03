@@ -19,6 +19,15 @@ export type TDefaultNavbarItemCode =
 
 export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
 
+export interface INavbarChild {
+  id: string;
+  title_multiloc: Multiloc;
+  slug: string | null;
+  static_page_id: string | null;
+  project_id: string | null;
+  project_folder_id: string | null;
+}
+
 export interface INavbarItem {
   id: string;
   type: 'nav_bar_item';
@@ -27,6 +36,7 @@ export interface INavbarItem {
     code: TNavbarItemCode;
     slug: string | null;
     ordering: number;
+    children?: INavbarChild[];
     created_at: string;
     updated_at: string;
   };
@@ -62,4 +72,16 @@ export interface INavbarItemAdd {
 export interface INavbarItemUpdate {
   id: string;
   title_multiloc?: Multiloc;
+}
+
+export interface INavbarDropdownChild {
+  static_page_id?: string;
+  project_id?: string;
+  project_folder_id?: string;
+}
+
+export interface INavbarDropdown {
+  id?: string;
+  title_multiloc: Multiloc;
+  children: INavbarDropdownChild[];
 }
