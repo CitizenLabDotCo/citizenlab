@@ -23,8 +23,10 @@ import messages from '../../messages';
 
 import ConfirmSendModal from './ConfirmSendModal';
 import DeleteModal from './DeleteModal';
+import DeliveriesTable from './DeliveriesTable';
 import Header from './Header';
 import Recipients from './Recipients';
+import Stats from './Stats';
 
 const Show = () => {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
@@ -115,6 +117,15 @@ const Show = () => {
         </Box>
       )}
 
+      {!draft && (
+        <Box mb="24px">
+          <Text fontWeight="bold" mb="8px">
+            <FormattedMessage {...messages.smsStatsTitle} />
+          </Text>
+          <Stats campaignId={campaignId} />
+        </Box>
+      )}
+
       <Recipients
         selectedGroups={selectedGroups}
         noGroupsSelected={noGroupsSelected}
@@ -136,6 +147,15 @@ const Show = () => {
           <T value={campaign.data.attributes.body_multiloc} />
         </Text>
       </Box>
+
+      {!draft && (
+        <Box mb="24px">
+          <Text fontWeight="bold" mb="8px">
+            <FormattedMessage {...messages.smsRecipientsTitle} />
+          </Text>
+          <DeliveriesTable campaignId={campaignId} />
+        </Box>
+      )}
 
       {draft && (
         <Box display="flex">
