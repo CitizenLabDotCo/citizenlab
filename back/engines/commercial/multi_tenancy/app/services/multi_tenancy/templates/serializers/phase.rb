@@ -18,6 +18,7 @@ module MultiTenancy
           participation_method
           poll_anonymous
           submission_enabled
+          allow_multiple_responses
           presentation_mode
           reacting_like_limited_max
           reacting_like_method
