@@ -8,7 +8,8 @@ class McpServer::Serializers::PhaseSummary < McpServer::Serializers::Base
       title_multiloc: record.title_multiloc,
       participation_method: record.participation_method,
       start_at: record.start_at,
-      end_at: record.end_at
+      end_at: record.end_at,
+      **urls(record).compact
     }
   end
 end

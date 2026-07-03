@@ -49,11 +49,6 @@ module Frontend
       path && "#{home_url(options)}/#{path}"
     end
 
-    def admin_project_folder_url(project_folder_id, locale: nil)
-      locale ||= Locale.default(config: app_config_instance)
-      "#{app_config_instance.base_frontend_uri}/#{locale.to_sym}/admin/projects/folders/#{project_folder_id}"
-    end
-
     def slug_to_url(slug, classname, options = {})
       # Does not cover phases, comments and official feedback
       subroute = nil
@@ -146,6 +141,36 @@ module Frontend
       "#{configuration.base_frontend_uri}/admin/projects/spaces/#{space_id}"
     end
 
+    def admin_folder_url(folder, configuration = app_config_instance, locale: nil)
+      locale_segment = locale ? "/#{locale.to_sym}" : ''
+      "#{configuration.base_frontend_uri}#{locale_segment}/admin/projects/folders/#{folder.id}"
+    end
+
+    def admin_phase_url(phase, configuration = app_config_instance)
+      "#{admin_phase_base_url(phase, configuration)}/setup"
+    end
+
+    def admin_event_url(event, configuration = app_config_instance)
+      "#{admin_project_url(event.project_id, configuration)}/events/#{event.id}"
+    end
+
+    def admin_cause_url(cause, configuration = app_config_instance)
+      "#{admin_phase_base_url(cause.phase, configuration)}/volunteering/causes/#{cause.id}"
+    end
+
+    # Returns the record's canonical admin URL, or nil if the record doesn't
+    # have a page that uniquely addresses it (e.g. permissions live on the
+    # phase's access-rights tab, images sit on the parent's edit page).
+    def admin_url_for(record)
+      case record
+      when Project then admin_project_url(record.id)
+      when ProjectFolders::Folder then admin_folder_url(record)
+      when Phase then admin_phase_url(record)
+      when Event then admin_event_url(record)
+      when Volunteering::Cause then admin_cause_url(record)
+      end
+    end
+
     # Generates a URL for the Input Manager with optional filters.
     #
     # @param for_phase [Phase, String, nil] Phase record or ID to scope the Input Manager to. If nil, returns global input manager URL.
@@ -163,16 +188,14 @@ module Frontend
     # @option filters [Idea, String] :selected_idea_id Pre-selected idea record or ID.
     # @return [String] The input manager URL with query parameters.
     def input_manager_url(for_phase: nil, **filters)
-      path = if for_phase
+      base_url = if for_phase
         phase = for_phase.is_a?(String) ? Phase.find(for_phase) : for_phase
-        "admin/projects/#{phase.project_id}/phases/#{phase.id}/ideas"
+        "#{admin_phase_base_url(phase)}/ideas"
       else
-        'admin/ideas'
+        admin_ideas_url
       end
 
-      base_url = "#{app_config_instance.base_frontend_uri}/#{path}"
       query_params = build_input_manager_query_params(filters)
-
       query_params.empty? ? base_url : "#{base_url}?#{query_params.to_query}"
     end
 
@@ -189,6 +212,10 @@ module Frontend
     end
 
     private
+
+    def admin_phase_base_url(phase, configuration = app_config_instance)
+      "#{admin_project_url(phase.project_id, configuration)}/phases/#{phase.id}"
+    end
 
     def build_input_manager_query_params(filters)
       params = filters.slice(:tab, :sort, :search, :page)

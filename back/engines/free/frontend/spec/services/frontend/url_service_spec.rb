@@ -85,6 +85,43 @@ describe Frontend::UrlService do
     end
   end
 
+  describe '#admin_url_for' do
+    it 'returns the project admin URL for a Project' do
+      project = create(:project)
+      expect(service.admin_url_for(project))
+        .to eq "#{base_uri}/admin/projects/#{project.id}"
+    end
+
+    it 'returns the folder admin URL for a Folder' do
+      folder = create(:project_folder)
+      expect(service.admin_url_for(folder))
+        .to eq "#{base_uri}/admin/projects/folders/#{folder.id}"
+    end
+
+    it 'returns the phase setup URL for a Phase' do
+      phase = create(:phase)
+      expect(service.admin_url_for(phase))
+        .to eq "#{base_uri}/admin/projects/#{phase.project_id}/phases/#{phase.id}/setup"
+    end
+
+    it 'returns the event admin URL for an Event' do
+      event = create(:event)
+      expect(service.admin_url_for(event))
+        .to eq "#{base_uri}/admin/projects/#{event.project_id}/events/#{event.id}"
+    end
+
+    it 'returns the cause admin URL for a Volunteering::Cause' do
+      cause = create(:cause)
+      expect(service.admin_url_for(cause))
+        .to eq "#{base_uri}/admin/projects/#{cause.phase.project_id}/phases/#{cause.phase.id}/volunteering/causes/#{cause.id}"
+    end
+
+    it 'returns nil for records without a canonical admin URL' do
+      user = create(:user)
+      expect(service.admin_url_for(user)).to be_nil
+    end
+  end
+
   describe '#input_manager_url' do
     let!(:phase) { create(:phase) }
 

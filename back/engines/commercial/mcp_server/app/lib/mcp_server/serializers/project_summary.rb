@@ -8,7 +8,8 @@ class McpServer::Serializers::ProjectSummary < McpServer::Serializers::Base
       slug: record.slug,
       publication_status: record.admin_publication.publication_status,
       folder_id: record.folder_id,
-      created_at: record.created_at
+      created_at: record.created_at,
+      **urls(record).compact
     }
   end
 end
