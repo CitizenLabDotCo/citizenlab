@@ -1449,7 +1449,6 @@
   "app.containers.IdeaButton.postingDisabled": "Naujos paraiškos šiuo metu nepriimamos",
   "app.containers.IdeaButton.postingInNonActivePhases": "Naujas paraiškas galima pridėti tik aktyviais etapais.",
   "app.containers.IdeaButton.postingInactive": "Šiuo metu naujos paraiškos nepriimamos.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Jūs jau atlikote šią apklausą. Ačiū už atsakymą!",
   "app.containers.IdeaButton.postingNoPermission": "Naujos paraiškos šiuo metu nepriimamos",
   "app.containers.IdeaButton.postingNotYetPossible": "Naujos paraiškos dar nepriimamos.",
   "app.containers.IdeaButton.signInLinkText": "prisijungti",

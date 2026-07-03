@@ -1449,7 +1449,6 @@
   "app.containers.IdeaButton.postingDisabled": "Új beadványokat jelenleg nem fogadunk el",
   "app.containers.IdeaButton.postingInNonActivePhases": "Új beadványok csak az aktív fázisokban adhatók hozzá.",
   "app.containers.IdeaButton.postingInactive": "Új pályaműveket jelenleg nem fogadunk el.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Ön már kitöltötte ezt a felmérést. Köszönöm válaszát!",
   "app.containers.IdeaButton.postingNoPermission": "Új beadványokat jelenleg nem fogadunk el",
   "app.containers.IdeaButton.postingNotYetPossible": "Új pályaműveket még nem fogadunk el.",
   "app.containers.IdeaButton.signInLinkText": "jelentkezz be",

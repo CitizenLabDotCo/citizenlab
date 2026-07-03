@@ -1449,7 +1449,6 @@
   "app.containers.IdeaButton.postingDisabled": "Vi tar for øyeblikket ikke imot nye innsendinger",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nye innleveringer kan bare legges til i aktive faser.",
   "app.containers.IdeaButton.postingInactive": "Vi tar for øyeblikket ikke imot nye bidrag.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Du har allerede fullført denne undersøkelsen. Takk for ditt svar!",
   "app.containers.IdeaButton.postingNoPermission": "Vi tar for øyeblikket ikke imot nye innsendinger",
   "app.containers.IdeaButton.postingNotYetPossible": "Vi tar ikke imot nye bidrag ennå.",
   "app.containers.IdeaButton.signInLinkText": "logg inn",

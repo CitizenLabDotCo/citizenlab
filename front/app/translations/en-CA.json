@@ -1449,7 +1449,6 @@
   "app.containers.IdeaButton.postingDisabled": "New submissions are not currently being accepted",
   "app.containers.IdeaButton.postingInNonActivePhases": "New submissions can only be added in active phases.",
   "app.containers.IdeaButton.postingInactive": "New submissions are not currently being accepted.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "You have already completed this survey. Thanks for your response!",
   "app.containers.IdeaButton.postingNoPermission": "New submissions are not currently being accepted",
   "app.containers.IdeaButton.postingNotYetPossible": "New submissions are not yet being accepted.",
   "app.containers.IdeaButton.signInLinkText": "log in",

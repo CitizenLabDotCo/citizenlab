@@ -1449,7 +1449,6 @@
   "app.containers.IdeaButton.postingDisabled": "نئی گذارشات فی الحال قبول نہیں کی جا رہی ہیں۔",
   "app.containers.IdeaButton.postingInNonActivePhases": "نئی گذارشات صرف فعال مراحل میں شامل کی جا سکتی ہیں۔",
   "app.containers.IdeaButton.postingInactive": "نئی گذارشات فی الحال قبول نہیں کی جا رہی ہیں۔",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "آپ یہ سروے پہلے ہی مکمل کر چکے ہیں۔ آپ کے جواب کے لیے شکریہ!",
   "app.containers.IdeaButton.postingNoPermission": "نئی گذارشات فی الحال قبول نہیں کی جا رہی ہیں۔",
   "app.containers.IdeaButton.postingNotYetPossible": "نئی گذارشات ابھی تک قبول نہیں کی جا رہی ہیں۔",
   "app.containers.IdeaButton.signInLinkText": "لاگ ان",

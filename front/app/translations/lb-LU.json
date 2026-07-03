@@ -1449,7 +1449,6 @@
   "app.containers.IdeaButton.postingDisabled": "Momentan gi keng nei Bäiträg méi ugeholl.",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nei Bäiträg kënnen nëmmen an aktive Phasen bäigefüügt ginn.",
   "app.containers.IdeaButton.postingInactive": "Momentan gi keng nei Bäiträg ugeholl.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Dir hutt dës Ëmfro schonn ofgeschloss. Merci fir Är Äntwert!",
   "app.containers.IdeaButton.postingNoPermission": "Momentan gi keng nei Bäiträg ugeholl.",
   "app.containers.IdeaButton.postingNotYetPossible": "Nei Bäiträg ginn nach net ugeholl.",
   "app.containers.IdeaButton.signInLinkText": "Umellen",

@@ -1449,7 +1449,6 @@
   "app.containers.IdeaButton.postingDisabled": "Novos envios não estão sendo aceitos no momento",
   "app.containers.IdeaButton.postingInNonActivePhases": "Novos envios só podem ser adicionados em fases ativas.",
   "app.containers.IdeaButton.postingInactive": "Novos envios não estão sendo aceitos no momento.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Você já respondeu a esta pesquisa. Obrigado pela sua resposta!",
   "app.containers.IdeaButton.postingNoPermission": "No momento não é possível fazer novas contribuições",
   "app.containers.IdeaButton.postingNotYetPossible": "Novos envios ainda não são aceitos aqui.",
   "app.containers.IdeaButton.signInLinkText": "conecte-se",
