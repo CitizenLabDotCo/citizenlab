@@ -119,14 +119,34 @@ module EmailCampaigns
       send_email_now_to_user(campaign, recipient, event_payload)
     end
 
-    def send_preview(campaign, recipient)
-      return send_sms_preview(campaign, recipient) if campaign.channel == 'sms'
+    def send_email_preview(campaign, recipient)
+      commands = if campaign.manual?
+        generate_commands(campaign, recipient)
+      else
+        [campaign.preview_command(recipient, campaign.context)].compact
+      end
+      return unless commands.any?
 
-      send_email_preview(campaign, recipient)
+      commands.each do |command|
+        process_command(campaign, command)
+      end
+    end
+
+    def send_sms_preview(campaign, recipient)
+      raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if recipient.phone_number.blank?
+
+      body = MultilocService.new.t(campaign.body_multiloc, recipient.locale)
+      return if body.blank?
+
+      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
+        body: body,
+        user_id: recipient.id
+      )
+      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
     end
 
     def preview_email(campaign, recipient)
-      return {} if campaign.channel == 'sms'
+      return {} if campaign.sms?
 
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
@@ -180,31 +200,6 @@ module EmailCampaigns
       EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
     end
 
-    def send_email_preview(campaign, recipient)
-      commands = if campaign.manual?
-        generate_commands(campaign, recipient)
-      else
-        [campaign.preview_command(recipient, campaign.context)].compact
-      end
-      return unless commands.any?
-
-      commands.each do |command|
-        process_command(campaign, command)
-      end
-    end
-
-    def send_sms_preview(campaign, recipient)
-      body = MultilocService.new.t(campaign.body_multiloc, recipient.locale)
-      return if body.blank?
-
-      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
-        to: recipient.phone_number,
-        body: body,
-        user_id: recipient.id
-      )
-      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
-    end
-
     # Takes options, either
     # * time: Time object when the sending command happened
     # * activity: Activity object which activity happened
@@ -252,7 +247,7 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      return send_sms_command(campaign, command) if campaign.channel == 'sms'
+      return send_sms_command(campaign, command) if campaign.sms?
 
       send_email_command(campaign, command)
     end
@@ -279,7 +274,6 @@ module EmailCampaigns
       return if body.blank?
 
       delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
-        to: recipient.phone_number,
         body: body,
         user_id: recipient.id,
         campaign_id: campaign.id

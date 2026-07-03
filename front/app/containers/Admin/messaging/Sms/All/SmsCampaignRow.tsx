@@ -8,8 +8,8 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
-import { ICampaignData } from 'api/campaigns/types';
-import { isDraft } from 'api/campaigns/util';
+import { ISmsCampaignData } from 'api/campaigns/sms/types';
+import { isSmsDraft } from 'api/campaigns/sms/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 interface Props {
-  campaign: ICampaignData;
+  campaign: ISmsCampaignData;
 }
 
 const SmsCampaignRow = ({ campaign }: Props) => {
@@ -40,7 +40,7 @@ const SmsCampaignRow = ({ campaign }: Props) => {
           {snippet}
         </Text>
         <Box display="flex" alignItems="center" gap="12px" mt="4px">
-          {isDraft(campaign) ? (
+          {isSmsDraft(campaign) ? (
             <StatusLabel
               backgroundColor={colors.orange500}
               text={<FormattedMessage {...messages.draft} />}

@@ -197,6 +197,11 @@ module EmailCampaigns
       'email'
     end
 
+    # Whether this campaign is delivered over SMS rather than email.
+    def sms?
+      channel == 'sms'
+    end
+
     def activity_context(_activity)
       nil
     end

@@ -16,10 +16,10 @@ import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaign from 'api/campaigns/useSendCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import { isDraft } from 'api/campaigns/util';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
+import useSendEmailCampaign from 'api/campaigns/email/useSendEmailCampaign';
+import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
+import { isDraft } from 'api/campaigns/email/util';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
@@ -99,7 +99,7 @@ const Show = () => {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
 
   const { data: tenant } = useAppConfiguration();
-  const { data: campaign } = useCampaign(campaignId);
+  const { data: campaign } = useEmailCampaign(campaignId);
   const { data: project } = useProjectById(
     campaign?.data.relationships.context?.data?.id
   );
@@ -112,9 +112,9 @@ const Show = () => {
     mutate: sendCampaign,
     isLoading: isSendingCampaign,
     error: apiSendErrors,
-  } = useSendCampaign();
+  } = useSendEmailCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
-    useSendCampaignPreview();
+    useSendEmailCampaignPreview();
   const searchParams = useSearch({
     from: '/$locale/admin/messaging/emails/custom/$campaignId',
   });

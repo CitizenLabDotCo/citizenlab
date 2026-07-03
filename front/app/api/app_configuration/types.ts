@@ -181,6 +181,7 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
+  parallel_participation?: AppConfigurationFeature;
   input_iq?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
@@ -206,6 +207,7 @@ export interface IAppConfigurationSettings {
   draft_phase_description?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
+  pdf_export_responses?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
-import { IDeliveryData } from 'api/campaign_deliveries/types';
+import { IDeliveryData } from 'api/campaigns/email/deliveries/types';
 import useUserById from 'api/users/useUserById';
 
 import { List, Row, TextCell } from 'components/admin/ResourceList';

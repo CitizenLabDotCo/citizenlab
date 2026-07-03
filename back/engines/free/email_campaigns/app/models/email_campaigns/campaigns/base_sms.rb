@@ -50,6 +50,12 @@ module EmailCampaigns
       sms_deliveries.exists?
     end
 
+    # Email campaigns keep a counter-culture `deliveries_count` column; SMS
+    # campaigns track their sends in a separate table, so count those instead.
+    def deliveries_count
+      sms_deliveries.count
+    end
+
     protected
 
     # SMS recipients are seeded from users with a *confirmed* phone number, not an

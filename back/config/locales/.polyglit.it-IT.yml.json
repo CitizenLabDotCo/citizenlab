@@ -914,6 +914,26 @@
     "verified_at": "2026-04-20T14:46:23.365900Z",
     "verified_by": "Roger"
   },
+  "pdf_export.survey_responses.date": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.no_answer": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.prepared_by": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.report_label": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
   "phases.community_monitor_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:46:23.365900Z",

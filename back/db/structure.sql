@@ -84,6 +84,7 @@ ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXIST
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2cfad997d;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_a2246de8b6;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_a2016447bc;
+ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_a1b9ed1ddd;
 ALTER TABLE IF EXISTS ONLY public.project_folders_folders DROP CONSTRAINT IF EXISTS fk_rails_9fde33dc89;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_9ecfc9d2b9;
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS fk_rails_9dd6f2f888;
@@ -224,6 +225,7 @@ DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_user_id;
+DROP INDEX IF EXISTS public.index_sms_deliveries_on_status;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
@@ -296,6 +298,7 @@ DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_folder_id;
+DROP INDEX IF EXISTS public.index_nav_bar_items_on_parent_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_ordering;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
@@ -3233,7 +3236,8 @@ CREATE TABLE public.nav_bar_items (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     project_id uuid,
-    project_folder_id uuid
+    project_folder_id uuid,
+    parent_id uuid
 );
 
 
@@ -3716,7 +3720,6 @@ CREATE TABLE public.sms_deliveries (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id uuid,
     campaign_id uuid,
-    phone_number character varying NOT NULL,
     body text NOT NULL,
     message_sid character varying,
     status character varying NOT NULL,
@@ -6717,6 +6720,13 @@ CREATE INDEX index_nav_bar_items_on_ordering ON public.nav_bar_items USING btree
 
 
 --
+-- Name: index_nav_bar_items_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_nav_bar_items_on_parent_id ON public.nav_bar_items USING btree (parent_id);
+
+
+--
 -- Name: index_nav_bar_items_on_project_folder_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7218,6 +7228,13 @@ CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_r
 --
 
 CREATE INDEX index_sms_deliveries_on_campaign_id ON public.sms_deliveries USING btree (campaign_id);
+
+
+--
+-- Name: index_sms_deliveries_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_deliveries_on_status ON public.sms_deliveries USING btree (status);
 
 
 --
@@ -8291,6 +8308,14 @@ ALTER TABLE ONLY public.project_folders_folders
 
 
 --
+-- Name: nav_bar_items fk_rails_a1b9ed1ddd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nav_bar_items
+    ADD CONSTRAINT fk_rails_a1b9ed1ddd FOREIGN KEY (parent_id) REFERENCES public.nav_bar_items(id);
+
+
+--
 -- Name: notifications fk_rails_a2016447bc; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8897,11 +8922,15 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260701113056'),
 ('20260630140754'),
 ('20260625093937'),
 ('20260618120100'),
 ('20260618120000'),
 ('20260617120000'),
+('20260617090200'),
+('20260617090100'),
+('20260617090000'),
 ('20260615142736'),
 ('20260611000000'),
 ('20260602120000'),

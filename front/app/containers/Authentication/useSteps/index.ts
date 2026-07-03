@@ -31,6 +31,7 @@ import {
   VerificationError,
 } from '../typings';
 
+import { restoreLocationAfterAuthReturn } from './restoreLocationAfterAuthReturn';
 import { getStepConfig } from './stepConfig';
 
 let initialized = false;
@@ -324,10 +325,6 @@ export default function useSteps() {
       const contextFromLocalStorage = localStorage.getItem('auth_context');
       localStorage.removeItem('auth_context');
 
-      // Check if there is a path in local storage
-      const pathFromLocalStorage = localStorage.getItem('auth_path');
-      localStorage.removeItem('auth_path');
-
       const context = contextFromLocalStorage
         ? JSON.parse(contextFromLocalStorage)
         : {
@@ -350,13 +347,7 @@ export default function useSteps() {
       updateState({ flow, email: emailInCaseUserNeedsToConfirm });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
-      // Check that the path is the same as the one stored in local storage
-      if (pathFromLocalStorage && pathname !== pathFromLocalStorage) {
-        clHistory.push(pathFromLocalStorage);
-      } else {
-        // Remove query string from URL as params already been captured
-        window.history.replaceState(null, '', pathname);
-      }
+      restoreLocationAfterAuthReturn(pathname);
     }
   }, [
     pathname,

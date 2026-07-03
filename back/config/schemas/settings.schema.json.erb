@@ -1179,6 +1179,18 @@
         }
       },
 
+      "parallel_participation": {
+        "type": "object",
+        "title": "Parallel participation",
+        "description": "In development: the redesigned project back office with parallel participation and a content-builder driven project page.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "authoring_assistance_prototype": {
         "type": "object",
         "title": "Experimental feature: Authoring assistance prototype",
@@ -1219,6 +1231,18 @@
         "type": "object",
         "title": "Inspiration hub",
         "description": "Temporary feature flag we are using to be able to hide our work in progress from the live platforms. Do not enable this feature!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "pdf_export_responses": {
+        "type": "object",
+        "title": "PDF export of responses",
+        "description": "Temporary feature flag for the PDF export of survey/input responses, while the feature is in development. Do not enable on live platforms.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

@@ -24,6 +24,7 @@ import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import {
   appLocalesMomentPairs,
@@ -43,6 +44,7 @@ import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
 import { initiativeShowPageSlug, isPage } from 'utils/helperUtils';
+import patchMomentDeAtJanuary from 'utils/patchMomentDeAtJanuary';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 import { useLocation } from 'utils/router';
@@ -83,6 +85,13 @@ const importedLocales = new Set();
 async function importMomentLocaleFilePromise(momentLocale: string) {
   try {
     await localeGetter(momentLocale);
+    if (momentLocale === 'de-at') {
+      // date-fns' and moment's de-at locales render January as "Jänner" (wide)
+      // and "Jän." (short); we display "Januar"/"Jan." instead. This overrides
+      // moment's copy once its locale file is loaded (the date-fns counterpart
+      // lives in i18n/de-AT.ts).
+      patchMomentDeAtJanuary();
+    }
     importedLocales.add(momentLocale);
   } catch (error) {
     console.error(`Error processing locale: ${momentLocale}`, error);
@@ -102,6 +111,14 @@ const App = ({ children }: Props) => {
   const { data: authUser } = useAuthUser();
   const appContainerClassName =
     isAdmin(authUser) || isModerator(authUser) ? 'admin-user-view' : '';
+
+  const parallelParticipation = useParallelParticipation();
+  const projectSlug = pathname.match(/\/admin\/projects\/([^/]+)/)?.[1];
+  const lockViewport =
+    parallelParticipation &&
+    !!projectSlug &&
+    projectSlug !== 'new' &&
+    projectSlug !== 'folders';
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
@@ -384,6 +401,8 @@ const App = ({ children }: Props) => {
             position="relative"
             background={colors.white}
             minHeight="100vh"
+            height={lockViewport ? '100vh' : undefined}
+            overflow={lockViewport ? 'hidden' : undefined}
           >
             <Meta />
             <ErrorBoundary>

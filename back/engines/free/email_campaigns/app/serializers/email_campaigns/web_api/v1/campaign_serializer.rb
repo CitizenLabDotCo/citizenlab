@@ -3,7 +3,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     extend GroupOrderingHelper
-    attributes :created_at, :updated_at, :enabled
+    attributes :created_at, :updated_at, :enabled, :channel
 
     attribute :campaign_name do |object|
       object.class.campaign_name
@@ -61,10 +61,6 @@ module EmailCampaigns
       object.can_be_disabled?
     end
 
-    attribute :channel do |object|
-      object.channel
-    end
-
     attribute :schedule, if: proc { |object|
       schedulable?(object) && !object.manual?
     }
@@ -83,10 +79,12 @@ module EmailCampaigns
       object.manual?
     }
 
+    # Email-only inline stats. SMS campaigns expose their (differently-shaped)
+    # breakdown via the dedicated sms_stats endpoint instead.
     attribute :delivery_stats, if: proc { |object|
-      object.manual? && object.sent?
+      object.manual? && object.sent? && !object.sms?
     } do |object|
-      sms?(object) ? EmailCampaigns::Sms::Delivery.status_counts(object.id) : Delivery.status_counts(object.id)
+      Delivery.status_counts(object.id)
     end
 
     attribute :sender, if: proc { |object|
@@ -94,10 +92,8 @@ module EmailCampaigns
     }
 
     attribute :deliveries_count, if: proc { |object|
-      trackable?(object) || sms?(object)
-    } do |object|
-      sms?(object) ? object.sms_deliveries.count : object.deliveries_count
-    end
+      trackable?(object) || object.sms?
+    }
 
     # For customised emails
     attribute :reply_to, :title_multiloc, :button_text_multiloc, if: proc { |object|
@@ -107,13 +103,13 @@ module EmailCampaigns
     # subject_multiloc is the email subject for content-configurable emails and
     # the admin-facing label for SMS campaigns (SMS has no subject line).
     attribute :subject_multiloc, if: proc { |object|
-      content_configurable?(object) || sms?(object)
+      content_configurable?(object) || object.sms?
     }
 
     attribute :body_multiloc, if: proc { |object|
-      content_configurable?(object) || sms?(object)
+      content_configurable?(object) || object.sms?
     } do |object|
-      if sms?(object)
+      if object.sms?
         object.body_multiloc
       else
         TextImageService.new.render_data_images_multiloc object.body_multiloc, field: :body_multiloc, imageable: object
@@ -168,10 +164,6 @@ module EmailCampaigns
 
     def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
-    end
-
-    def self.sms?(object)
-      object.channel == 'sms'
     end
 
     def self.previewable?(object)

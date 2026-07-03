@@ -7,7 +7,7 @@ import { IOption } from 'typings';
 import { IIdeaData } from 'api/ideas/types';
 import usePhases from 'api/phases/usePhases';
 
-import IdeaSelect from 'components/UI/IdeaSelect';
+import IdeaSingleSelect from 'components/UI/IdeaSelect/IdeaSingleSelect';
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
@@ -153,7 +153,7 @@ const Settings = () => {
 
       {phaseId && (
         <Box mb="20px">
-          <IdeaSelect
+          <IdeaSingleSelect
             selectedIdeaId={ideaId}
             onChange={handleChangeIdeaId}
             phaseId={phaseId}

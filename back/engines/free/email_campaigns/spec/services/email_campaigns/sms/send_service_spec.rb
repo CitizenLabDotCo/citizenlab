@@ -36,12 +36,12 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery.message_sid).to eq('SM_abc')
     end
 
-    it 'normalizes the phone number before storing' do
-      allow(provider).to receive(:send).and_return(message_sid: 'SM_1', status: 'queued')
+    it 'normalizes the phone number before sending' do
+      expect(provider).to receive(:send)
+        .with(to: '+14155552671', body: 'hi')
+        .and_return(message_sid: 'SM_1', status: 'queued')
 
-      delivery = described_class.new.send_now(to: '1 (415) 555-2671', body: 'hi')
-
-      expect(delivery.phone_number).to eq('+14155552671')
+      described_class.new.send_now(to: '1 (415) 555-2671', body: 'hi')
     end
 
     it 'rejects invalid phone numbers without calling the provider or creating a delivery' do
@@ -64,31 +64,31 @@ RSpec.describe EmailCampaigns::Sms::SendService do
   end
 
   describe '#create_delivery' do
-    it 'records a pending, normalized delivery linked to the campaign without calling the provider' do
+    it 'records a pending delivery linked to the campaign without calling the provider' do
       campaign = create(:manual_campaign)
       expect(provider).not_to receive(:send)
 
-      delivery = described_class.new.create_delivery(to: '1 (415) 555-2671', body: 'hi', campaign_id: campaign.id)
+      delivery = described_class.new.create_delivery(body: 'hi', campaign_id: campaign.id)
 
-      expect(delivery).to have_attributes(status: 'pending', phone_number: '+14155552671', campaign_id: campaign.id)
+      expect(delivery).to have_attributes(status: 'pending', campaign_id: campaign.id)
     end
 
     it 'raises and creates nothing when the SMS feature is disabled' do
       SettingsService.new.deactivate_feature!('sms')
 
-      expect { described_class.new.create_delivery(to: '+14155552671', body: 'hi') }
+      expect { described_class.new.create_delivery(body: 'hi') }
         .to raise_error(EmailCampaigns::Sms::Error, /not enabled/)
       expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
     end
   end
 
   describe '#deliver' do
-    let(:delivery) { EmailCampaigns::Sms::Delivery.create!(phone_number: '+14155552671', body: 'hi', status: 'pending') }
+    let(:delivery) { EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending') }
 
     it 'sends an already-created delivery through the provider and stores the status' do
       allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued')
 
-      described_class.new.deliver(delivery)
+      described_class.new.deliver(delivery, to: '+14155552671')
 
       expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d')
     end
@@ -96,7 +96,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     it 'marks the delivery failed and re-raises when the provider fails' do
       allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error, 'nope')
 
-      expect { described_class.new.deliver(delivery) }.to raise_error(EmailCampaigns::Sms::Error)
+      expect { described_class.new.deliver(delivery, to: '+14155552671') }.to raise_error(EmailCampaigns::Sms::Error)
       expect(delivery.reload.status).to eq('failed')
     end
   end

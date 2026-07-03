@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import campaignsKeys from 'api/campaigns/keys';
+import campaignsKeys from 'api/campaigns/email/keys';
 import projectsKeys from 'api/projects/keys';
 import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
 

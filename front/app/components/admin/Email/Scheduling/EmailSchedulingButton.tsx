@@ -8,15 +8,15 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { ICampaign } from 'api/campaigns/types';
-import { isDraft } from 'api/campaigns/util';
+import { IEmailCampaign } from 'api/campaigns/email/types';
+import { isDraft } from 'api/campaigns/email/util';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
-  campaign: ICampaign;
+  campaign: IEmailCampaign;
   onOpenScheduleModal: () => void;
   onOpenCancelScheduleModal: () => void;
 }

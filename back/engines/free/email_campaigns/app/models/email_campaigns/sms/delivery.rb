@@ -7,7 +7,6 @@
 #  id            :uuid             not null, primary key
 #  user_id       :uuid
 #  campaign_id   :uuid
-#  phone_number  :string           not null
 #  body          :text             not null
 #  message_sid   :string
 #  status        :string           not null
@@ -18,6 +17,7 @@
 # Indexes
 #
 #  index_sms_deliveries_on_campaign_id  (campaign_id)
+#  index_sms_deliveries_on_status       (status)
 #  index_sms_deliveries_on_user_id      (user_id)
 #
 # Foreign Keys
@@ -47,7 +47,6 @@ module EmailCampaigns
         STATUSES.index_with { |status| counts[status] || 0 }.symbolize_keys.merge(total: counts.values.sum)
       end
 
-      validates :phone_number, presence: true
       validates :body, presence: true
       validates :status, inclusion: { in: STATUSES }
 

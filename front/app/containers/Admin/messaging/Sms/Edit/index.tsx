@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 
-import useCampaign from 'api/campaigns/useCampaign';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import useSmsCampaign from 'api/campaigns/sms/useSmsCampaign';
+import useUpdateSmsCampaign from 'api/campaigns/sms/useUpdateSmsCampaign';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -16,8 +16,8 @@ import SmsCampaignForm, { FormValues } from '../SmsCampaignForm';
 
 const EditSmsCampaign = () => {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
-  const { data: campaign } = useCampaign(campaignId);
-  const { isLoading, mutateAsync: updateCampaign } = useUpdateCampaign();
+  const { data: campaign } = useSmsCampaign(campaignId);
+  const { isLoading, mutateAsync: updateCampaign } = useUpdateSmsCampaign();
 
   if (!campaign) return null;
 
