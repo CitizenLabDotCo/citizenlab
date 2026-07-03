@@ -143,10 +143,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           )}
           <PhaseSurvey phaseId={selectedPhaseId} />
           {participationMethod === 'document_annotation' && (
-            <PhaseDocumentAnnotation
-              phase={selectedPhase}
-              project={project.data}
-            />
+            <PhaseDocumentAnnotation phase={selectedPhase} />
           )}
           <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
           <PhaseVolunteering projectId={projectId} phaseId={selectedPhaseId} />
