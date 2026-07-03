@@ -146,7 +146,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <PhaseDocumentAnnotation phase={selectedPhase} />
           )}
           <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
-          <PhaseVolunteering projectId={projectId} phaseId={selectedPhaseId} />
+          <PhaseVolunteering phaseId={selectedPhaseId} />
           {showIdeas && (
             <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
           )}
