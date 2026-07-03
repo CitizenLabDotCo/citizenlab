@@ -158,7 +158,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           )}
           {participationMethod === 'common_ground' && (
             <CommonGroundTabs
-              phaseId={selectedPhase.id}
+              phase={selectedPhase}
               project={project.data}
               isPastPhase={isPastPhase}
             />
