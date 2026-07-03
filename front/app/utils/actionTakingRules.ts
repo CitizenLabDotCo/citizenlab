@@ -3,10 +3,7 @@ import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
-import { hasProjectEndedOrIsArchived } from 'components/ParticipationCTABars/utils';
-
 import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { canModerateProject } from './permissions/rules/projectPermissions';
 
@@ -148,12 +145,9 @@ export const getIdeaPostingRules = ({
       };
     }
 
-    // No active phase to post in: no current phase, the phase has ended, or the project
-    // is archived. The backend reports this as `project_inactive`; here we use the
-    // FE-owned `inactive_phase`, which renders the same disabled/unauthorized UI.
     // TODO: once the POST /ideas endpoint always carries phase_id in the path, a phase is
     // always resolved before reaching here and the no-phase case becomes unreachable.
-    if (!phase || hasProjectEndedOrIsArchived(project, phase)) {
+    if (!phase) {
       return {
         show: true,
         enabled: false,
@@ -170,6 +164,18 @@ export const getIdeaPostingRules = ({
       disabled_reason: 'user_not_permitted' as const,
     };
 
+    if (
+      disabled_reason === 'inactive_phase' ||
+      disabled_reason === 'project_inactive'
+    ) {
+      return {
+        show: true,
+        enabled: false,
+        disabledReason: disabled_reason,
+        authenticationRequirements: null,
+      };
+    }
+
     // not an enabled ideation or native survey or proposals phase
     if (
       (phase.attributes.participation_method === 'ideation' ||
@@ -181,21 +187,6 @@ export const getIdeaPostingRules = ({
         show: false,
         enabled: null,
         disabledReason: null,
-        authenticationRequirements: null,
-      };
-    }
-
-    // not the current phase (a future phase; past/archived handled above)
-    if (
-      pastPresentOrFuture([
-        phase.attributes.start_at,
-        phase.attributes.end_at,
-      ]) !== 'present'
-    ) {
-      return {
-        show: true,
-        enabled: false,
-        disabledReason: 'inactive_phase',
         authenticationRequirements: null,
       };
     }
