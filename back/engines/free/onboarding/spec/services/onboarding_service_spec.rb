@@ -29,9 +29,21 @@ describe Onboarding::OnboardingService do
       expect(service.current_campaign(user)).to eq :complete_profile
     end
 
-    it 'returns :complete_profile when the user has no avatar configured' do
+    it 'returns :complete_profile when the user has no avatar configured and user_avatars feature fag is enabled' do
+      config = AppConfiguration.instance
+      config.settings['user_avatars']['enabled'] = true
+      config.save!
+
       user.remove_avatar!
       expect(service.current_campaign(user)).to eq :complete_profile
+    end
+
+    it 'returns :default when the user has no avatar configured and user_avatars feature flag is disabled' do
+      config = AppConfiguration.instance
+      config.settings['user_avatars']['enabled'] = false
+      config.save!
+      user.remove_avatar!
+      expect(service.current_campaign(user)).to eq :default
     end
 
     it 'returns :default when a user with an incomplete profile dismissed :complete_profile' do
