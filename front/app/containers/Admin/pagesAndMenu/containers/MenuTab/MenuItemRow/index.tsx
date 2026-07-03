@@ -7,6 +7,7 @@ import {
   IconButton,
   Badge,
   stylingConsts,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -125,14 +126,16 @@ const MenuItemRow = ({
           )}
 
           {showRemoveButton && (
-            <Button
-              buttonStyle="text"
-              padding="0px"
-              onClick={onClickRemoveButton}
-              className="intercom-admin-pages-menu-remove-from-navbar-button"
-            >
-              <FormattedMessage {...messages.removeFromNavbar} />
-            </Button>
+            <Tooltip content={formatMessage(messages.removeFromMenuTooltip)}>
+              <Button
+                buttonStyle="text"
+                padding="0px"
+                onClick={onClickRemoveButton}
+                className="intercom-admin-pages-menu-remove-from-navbar-button"
+              >
+                <FormattedMessage {...messages.removeFromMenu} />
+              </Button>
+            </Tooltip>
           )}
         </Box>
       </Box>

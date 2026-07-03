@@ -8,7 +8,6 @@ import {
   IconButton,
   Label,
   Select,
-  Text,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -98,10 +97,11 @@ type Props = {
     title_multiloc: Multiloc;
     children: INavbarDropdownChild[];
   }) => Promise<void>;
+  onCancel: () => void;
   processing: boolean;
 };
 
-const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
+const DropdownForm = ({ editItem, onSubmit, onCancel, processing }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -219,16 +219,13 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
 
   return (
     <Box mt="24px">
-      <Text color="textSecondary" mt="0px">
-        {formatMessage(messages.dropdownSubtitle)}
-      </Text>
-
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Box display="flex" flexDirection="column" gap="24px">
             <InputMultilocWithLocaleSwitcher
               name="titleMultiloc"
-              label={formatMessage(messages.nameInNavbar)}
+              label={formatMessage(messages.dropdownLabel)}
+              placeholder={formatMessage(messages.dropdownLabelPlaceholder)}
             />
 
             <Box>
@@ -317,12 +314,18 @@ const DropdownForm = ({ editItem, onSubmit, processing }: Props) => {
               />
             )}
 
-            <Box display="flex">
+            <Box display="flex" justifyContent="flex-end" gap="8px">
+              <Button type="button" buttonStyle="secondary" onClick={onCancel}>
+                {formatMessage(messages.cancelButton)}
+              </Button>
               <Button
                 type="submit"
+                buttonStyle="admin-dark"
                 processing={processing || methods.formState.isSubmitting}
               >
-                {formatMessage(messages.saveButton)}
+                {formatMessage(
+                  editItem ? messages.saveButton : messages.addToMenuButton
+                )}
               </Button>
             </Box>
           </Box>

@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem',
     defaultMessage: 'Single item',
   },
-  dropdownMenu: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdownMenu',
-    defaultMessage: 'Dropdown menu',
+  dropdown: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdown',
+    defaultMessage: 'Dropdown',
   },
   selectType: {
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType',
@@ -37,9 +37,13 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectItemPlaceholder',
     defaultMessage: 'Select an item',
   },
-  navbarItemName: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemName',
-    defaultMessage: 'Name',
+  singleItemLabel: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel',
+    defaultMessage: 'Label',
+  },
+  navbarItemNamePlaceholder: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder',
+    defaultMessage: 'e.g. About us',
   },
   emptyItemError: {
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.emptyItemError',
@@ -58,22 +62,25 @@ export default defineMessages({
     defaultMessage:
       'The navigation bar will only show projects or folders the user can access.',
   },
-  addButton: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addButton',
-    defaultMessage: 'Add',
+  addToMenuButton: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addToMenuButton',
+    defaultMessage: 'Add to menu',
+  },
+  cancelButton: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.cancelButton',
+    defaultMessage: 'Cancel',
   },
   noItemsAvailable: {
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable',
     defaultMessage: 'There are no items of this type left to add.',
   },
-  dropdownSubtitle: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdownSubtitle',
-    defaultMessage:
-      'Creates a dropdown menu. Group custom pages, folders and projects under one navbar item.',
+  dropdownLabel: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdownLabel',
+    defaultMessage: 'Dropdown label',
   },
-  nameInNavbar: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.nameInNavbar',
-    defaultMessage: 'Name in navbar',
+  dropdownLabelPlaceholder: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdownLabelPlaceholder',
+    defaultMessage: 'e.g. Departments',
   },
   addItems: {
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItems',
