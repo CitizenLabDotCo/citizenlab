@@ -1206,7 +1206,7 @@
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.menuTitle": "Meny",
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.navBarMaxItems": "Du kan bara lägga till upp till 6 objekt i navigeringsfältet",
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.newMenuItem": "Nytt menyalternativ",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.accessWarning": "Navigeringsfältet kommer endast att visa projekt eller mappar som användaren har åtkomst till.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.accessWarning": "Navigeringsfältet visar endast projekt eller mappar som användaren har åtkomst till.",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItemButton": "Lägg till",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItems": "Lägg till objekt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addToMenuButton": "Lägg till i menyn",

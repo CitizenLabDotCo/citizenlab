@@ -1200,7 +1200,7 @@
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.editItem": "Edit menu item",
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.expandDropdown": "Show dropdown items",
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.removeFromMenu": "Remove from menu",
-  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.removeFromMenuTooltip": "If you remove this, you can add it back anytime from the \"New menu item\" button.",
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.removeFromMenuTooltip": "If you remove this, you can add it back any time from the \"New menu item\" button.",
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.viewItem": "View menu item",
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.menuSubtitle2": "Organise the menu that appears across your site. Add new items and drag to reorder.",
   "app.containers.Admin.pagesAndMenu.containers.MenuTab.menuTitle": "Menu",
