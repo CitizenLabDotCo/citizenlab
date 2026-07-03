@@ -117,9 +117,9 @@ module Frontend
     end
 
     def unfollow_url(follower)
-      locale = follower.user ? Locale.new(follower.user.locale) : nil
-      url = model_to_url(follower.followable, locale: follower.user.presence && locale)
-      url || "#{home_url(locale: locale)}/profile/#{follower.user.id}/following"
+      locale = Locale.new(follower.user.locale) if follower.user
+      url = model_to_url(follower.followable, locale:)
+      url || "#{home_url(locale:)}/profile/#{follower.user.id}/following"
     end
 
     def terms_conditions_url(configuration = AppConfiguration.instance)
