@@ -6384,6 +6384,11 @@
     "verified_at": "2026-07-03T11:42:15.031924Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItemButton": {
+    "state": "verified",
+    "verified_at": "2026-07-03T11:42:46.003093Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItems": {
     "state": "verified",
     "verified_at": "2026-07-03T11:42:15.031924Z",
