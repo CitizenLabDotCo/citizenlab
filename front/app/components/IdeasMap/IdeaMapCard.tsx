@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IIdeaMarkerData } from 'api/idea_markers/types';
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import T from 'components/T';
 import CloseIconButton from 'components/UI/CloseIconButton';
@@ -117,16 +117,14 @@ interface Props {
   onSelectIdea: (ideaId: string | null) => void;
   onClose?: () => void;
   className?: string;
-  projectId: string;
   phaseId?: string;
   hovered?: boolean;
 }
 
 const IdeaMapCard = memo<Props>(
-  ({ idea, onClose, className, projectId, phaseId, onSelectIdea, hovered }) => {
+  ({ idea, onClose, className, phaseId, onSelectIdea, hovered }) => {
     const { data: appConfig } = useAppConfiguration();
     const { data: phase } = usePhase(phaseId || null);
-    const { data: project } = useProjectById(projectId);
     const isMobileOrSmaller = useBreakpoint('phone');
     const phaseData = phase?.data;
 
@@ -162,23 +160,25 @@ const IdeaMapCard = memo<Props>(
       onClose?.();
     };
 
-    if (!isNilOrError(appConfig) && !isNilOrError(idea) && project) {
+    if (!isNilOrError(appConfig) && !isNilOrError(idea)) {
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const ideaBudget = idea.attributes?.budget;
-      const reactingActionDescriptor =
-        project.data.attributes.action_descriptors.reacting_idea;
+      const reactingActionDescriptor = phaseData
+        ? getPhaseActionDescriptor(phaseData, 'reacting_idea')
+        : undefined;
 
       const showDislike =
-        reactingActionDescriptor.down.enabled === true || // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        (reactingActionDescriptor.down.enabled === false &&
+        !!reactingActionDescriptor &&
+        (reactingActionDescriptor.down.enabled ||
           reactingActionDescriptor.down.disabled_reason !==
             'reacting_dislike_disabled');
 
-      const commentingEnabled =
-        project.data.attributes.action_descriptors.commenting_idea.enabled;
+      const commentingEnabled = !!(
+        phaseData &&
+        getPhaseActionDescriptor(phaseData, 'commenting_idea')?.enabled
+      );
       const ideaHasComments = idea.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || ideaHasComments;
       const phaseButNotCurrentPhase =
@@ -235,7 +235,7 @@ const IdeaMapCard = memo<Props>(
               )}
             {!isParticipatoryBudgetPhase &&
               !isVotingPhase &&
-              reactingActionDescriptor.enabled && (
+              reactingActionDescriptor?.enabled && (
                 <>
                   <FooterItem>
                     <LikeIcon name="vote-up" />

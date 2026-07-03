@@ -540,7 +540,6 @@ const IdeasMap = memo<Props>(
                         setSelectedIdea(ideaId);
                       }}
                       isClickable={true}
-                      projectId={projectId}
                       phaseId={phaseId}
                     />
                   )}
