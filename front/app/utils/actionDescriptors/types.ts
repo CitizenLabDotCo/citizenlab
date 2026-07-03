@@ -13,10 +13,12 @@ export type UserDisabledReason =
   | DisabledReasonFixable
   | DisabledReasonUnfixable;
 
-export type ProjectDisabledReason = 'project_inactive' | UserDisabledReason;
+export type ProjectDisabledReason =
+  | 'project_inactive'
+  | 'inactive_phase'
+  | UserDisabledReason;
 
 export type ProjectPostingDisabledReason =
-  | 'inactive_phase' // Note: Not returned by backend but needed for posting
   | 'posting_not_supported'
   | 'posting_disabled'
   // Only applicable to taking surveys at the moment.
@@ -65,7 +67,6 @@ export type IdeaCommentingDisabledReason =
 
 export type IdeaVotingDisabledReason =
   | 'idea_not_in_current_phase'
-  | 'inactive_phase'
   | ProjectVotingDisabledReason;
 
 export type IdeaEditingDisabledReason =

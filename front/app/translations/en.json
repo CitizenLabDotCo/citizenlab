@@ -2650,6 +2650,7 @@
   "app.utils.errors.default.api_error_too_short": "Is too short",
   "app.utils.errors.default.api_error_wrong_length": "Is the wrong length",
   "app.utils.errors.defaultapi_error_.odd": "Must be odd",
+  "app.utils.inactivePhase": "Participating is only possible when this phase is active.",
   "app.utils.notInGroup": "You do not meet the requirements to participate.",
   "app.utils.participationMethod.onSurveySubmission": "Thank you. Your response has been received.",
   "app.utils.participationMethodConfig.voting.votingDisabledProjectInactive": "Voting is no longer available, since this phase is no longer active.",

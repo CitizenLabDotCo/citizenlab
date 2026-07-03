@@ -6,6 +6,10 @@ export default defineMessages({
     id: 'app.utils.notInGroup',
     defaultMessage: 'You do not meet the requirements to participate.',
   },
+  defaultInactivePhase: {
+    id: 'app.utils.inactivePhase',
+    defaultMessage: 'Participating is only possible when this phase is active.',
+  },
 
   // 'posting_idea'
   postingDisabled: {
