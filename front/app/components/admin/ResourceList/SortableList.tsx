@@ -25,6 +25,13 @@ interface InputProps {
   lockFirstNItems?: number;
   className?: string;
   id?: string;
+  // react-dnd's HTML5Backend listens for drag events on `window` by default.
+  // When this list is rendered inside another native drag-and-drop context
+  // (e.g. the craftjs content builder), the two backends fight over the same
+  // `dragstart`/`dragover` events and craftjs' own dragging stops working.
+  // Set this to scope the backend to this list's container so it only handles
+  // drags happening inside it.
+  scopeDndToContainer?: boolean;
 }
 
 export interface RenderProps {
@@ -108,8 +115,27 @@ const SortableList = ({
   );
 };
 
-export default (props: InputProps) => (
-  <DndProvider backend={HTML5Backend}>
-    <SortableList {...props} />
-  </DndProvider>
-);
+// Scopes react-dnd's HTML5Backend to a container element (instead of `window`)
+// so it does not intercept native drags happening elsewhere on the page.
+const ScopedDndSortableList = (props: InputProps) => {
+  const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
+
+  return (
+    <div ref={setRootElement}>
+      {rootElement && (
+        <DndProvider backend={HTML5Backend} options={{ rootElement }}>
+          <SortableList {...props} />
+        </DndProvider>
+      )}
+    </div>
+  );
+};
+
+export default (props: InputProps) =>
+  props.scopeDndToContainer ? (
+    <ScopedDndSortableList {...props} />
+  ) : (
+    <DndProvider backend={HTML5Backend}>
+      <SortableList {...props} />
+    </DndProvider>
+  );

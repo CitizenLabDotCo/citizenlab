@@ -61,6 +61,7 @@ const AdminPublicationsList = ({
       items={adminPublications}
       onReorder={onReorder}
       key={adminPublications.length}
+      scopeDndToContainer
     >
       {({ itemsList, handleDragRow, handleDropRow }) => (
         <>
