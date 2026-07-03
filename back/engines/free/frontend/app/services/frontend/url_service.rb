@@ -121,40 +121,40 @@ module Frontend
       url || "#{home_url(locale: locale)}/profile/#{follower.user.id}/following"
     end
 
-    def terms_conditions_url(configuration = app_config_instance)
+    def terms_conditions_url(configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/pages/terms-and-conditions"
     end
 
-    def privacy_policy_url(configuration = app_config_instance)
+    def privacy_policy_url(configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/pages/privacy-policy"
     end
 
-    def admin_ideas_url(configuration = app_config_instance)
+    def admin_ideas_url(configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/admin/ideas"
     end
 
-    def admin_project_url(project_id, configuration = app_config_instance)
+    def admin_project_url(project_id, configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/admin/projects/#{project_id}"
     end
 
-    def admin_space_url(space_id, configuration = app_config_instance)
+    def admin_space_url(space_id, configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/admin/projects/spaces/#{space_id}"
     end
 
-    def admin_folder_url(folder, configuration = app_config_instance, locale: nil)
+    def admin_folder_url(folder, configuration = AppConfiguration.instance, locale: nil)
       locale_segment = locale ? "/#{locale.to_sym}" : ''
       "#{configuration.base_frontend_uri}#{locale_segment}/admin/projects/folders/#{folder.id}"
     end
 
-    def admin_phase_url(phase, configuration = app_config_instance)
+    def admin_phase_url(phase, configuration = AppConfiguration.instance)
       "#{admin_phase_base_url(phase, configuration)}/setup"
     end
 
-    def admin_event_url(event, configuration = app_config_instance)
+    def admin_event_url(event, configuration = AppConfiguration.instance)
       "#{admin_project_url(event.project_id, configuration)}/events/#{event.id}"
     end
 
-    def admin_cause_url(cause, configuration = app_config_instance)
+    def admin_cause_url(cause, configuration = AppConfiguration.instance)
       "#{admin_phase_base_url(cause.phase, configuration)}/volunteering/causes/#{cause.id}"
     end
 
@@ -213,7 +213,7 @@ module Frontend
 
     private
 
-    def admin_phase_base_url(phase, configuration = app_config_instance)
+    def admin_phase_base_url(phase, configuration = AppConfiguration.instance)
       "#{admin_project_url(phase.project_id, configuration)}/phases/#{phase.id}"
     end
 
@@ -253,17 +253,12 @@ module Frontend
       if tenant # Show a deprecation message is tenant options is used
         ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
       end
-      options[:app_configuration] || tenant&.configuration || app_config_instance # TODO: OS remove: tenant&.configuration
+      options[:app_configuration] || tenant&.configuration || AppConfiguration.instance # TODO: OS remove: tenant&.configuration
     end
 
     def strip_existing_locale_from_path(pathname)
       # NOTE: Assumes the path is always passed with a leading slash & locale is always the first segment
       pathname.gsub(%r{^/([a-z]{2}(-[A-Z]{2})?)(/(.*))}, '\3')
-    end
-
-    # Memoized database query
-    def app_config_instance
-      @app_config_instance ||= AppConfiguration.instance
     end
   end
 end
