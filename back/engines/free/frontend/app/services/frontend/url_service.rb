@@ -200,10 +200,6 @@ module Frontend
       "#{configuration.base_frontend_uri}/ideas/edit/#{idea_id}"
     end
 
-    def reset_confirmation_code_url(options = {})
-      "#{home_url(options)}/reset-confirmation-code"
-    end
-
     def profile_surveys_url(user_id, options = {})
       "#{home_url(options)}/profile/#{user_id}/surveys"
     end
