@@ -94,7 +94,7 @@ class CreateAdminPublicationDeletionAudit < ActiveRecord::Migration[7.2]
         $function$;
       SQL
 
-      execute <<~SQL
+      execute <<~SQL.squish
         CREATE CONSTRAINT TRIGGER audit_orphaned_admin_publication
         AFTER DELETE ON admin_publications
         DEFERRABLE INITIALLY DEFERRED
