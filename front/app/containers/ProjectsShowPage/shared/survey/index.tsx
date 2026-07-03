@@ -4,8 +4,8 @@ import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { TSurveyService } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
+import { IPhaseData, TSurveyService } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
@@ -34,23 +34,21 @@ const Container = styled.div`
 `;
 
 interface Props {
-  project: IProjectData;
-  phaseId: string | null;
+  phase: IPhaseData;
   surveyEmbedUrl: string;
   surveyService: TSurveyService;
   className?: string;
 }
 
-const Survey = ({
-  project,
-  phaseId,
-  surveyEmbedUrl,
-  surveyService,
-  className,
-}: Props) => {
+const Survey = ({ phase, surveyEmbedUrl, surveyService, className }: Props) => {
   const { data: authUser } = useAuthUser();
-  const { enabled, disabled_reason } =
-    project.attributes.action_descriptors.taking_survey;
+  const descriptor = getPhaseActionDescriptor(phase, 'taking_survey');
+
+  if (!descriptor) {
+    return null;
+  }
+
+  const { enabled, disabled_reason } = descriptor;
 
   const disabledMessage =
     getPermissionsDisabledMessage('taking_survey', disabled_reason) || null;
@@ -66,7 +64,7 @@ const Survey = ({
       id="project-survey"
       action="taking_survey"
       enabled={enabled}
-      phaseId={phaseId}
+      phaseId={phase.id}
       disabledMessage={disabledMessage}
     >
       <Container className={`${className} e2e-${surveyService}-survey enabled`}>
