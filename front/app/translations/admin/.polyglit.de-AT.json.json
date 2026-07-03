@@ -20484,6 +20484,41 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": {
+    "state": "verified",
+    "verified_at": "2026-07-03T09:23:24.820040Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": {
+    "state": "verified",
+    "verified_at": "2026-07-03T09:23:24.820040Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-03T09:23:24.820040Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-03T09:23:24.820040Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": {
+    "state": "verified",
+    "verified_at": "2026-07-03T09:23:24.820040Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": {
+    "state": "verified",
+    "verified_at": "2026-07-03T09:23:24.820040Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": {
+    "state": "verified",
+    "verified_at": "2026-07-03T09:23:24.820040Z",
+    "verified_by": "Jelena"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
