@@ -1,5 +1,9 @@
 module Permissions
   class PhasePermissionsService < BasePermissionsService
+    PHASE_DENIED_REASONS = {
+      inactive_phase: 'inactive_phase'
+    }.freeze
+
     POSTING_DENIED_REASONS = {
       posting_not_supported: 'posting_not_supported',
       posting_disabled: 'posting_disabled',
@@ -40,15 +44,19 @@ module Permissions
       not_volunteering: 'not_volunteering'
     }.freeze
 
-    def initialize(phase, user, user_requirements_service: nil, request: nil)
+    # Pass time: nil to evaluate the phase's rules regardless of its dates.
+    def initialize(phase, user, user_requirements_service: nil, request: nil, time: Time.zone.now)
       super(user, user_requirements_service: user_requirements_service)
       @request = request
       @phase ||= phase
+      @time = time
+      @timeline_service ||= TimelineService.new
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       project_reason = project_denied_reason(phase.project)
       return project_reason if project_reason
+      return PHASE_DENIED_REASONS[:inactive_phase] if time && !@timeline_service.phase_current?(phase, time)
 
       phase_denied_reason = case action
       when 'posting_idea'
@@ -107,7 +115,7 @@ module Permissions
 
     private
 
-    attr_reader :phase, :request
+    attr_reader :phase, :request, :time
 
     def descriptor(reason)
       { enabled: !reason, disabled_reason: reason }

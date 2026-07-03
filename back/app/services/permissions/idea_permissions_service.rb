@@ -112,7 +112,7 @@ module Permissions
     def future_enabled_phase(action, reaction_mode: nil)
       time = Time.zone.now
       @timeline_service.future_phases(project, time).find do |phase|
-        !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service).denied_reason_for_action(action, reaction_mode: reaction_mode)
+        !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service, time: nil).denied_reason_for_action(action, reaction_mode: reaction_mode)
       end
     end
 
