@@ -65,9 +65,10 @@ module Frontend
     end
 
     def home_url(options = {})
-      url = config_from_options(options).base_frontend_uri
+      app_config = options[:app_configuration] || AppConfiguration.instance
+      base_uri = app_config.base_frontend_uri
       locale = options[:locale]
-      locale ? "#{url}/#{locale.locale_sym}" : url
+      locale ? "#{base_uri}/#{locale.locale_sym}" : base_uri
     end
 
     def sso_return_url(options = {})
@@ -98,7 +99,7 @@ module Frontend
     end
 
     def manifest_start_url(options = {})
-      configuration = config_from_options(options)
+      configuration = options[:app_configuration] || AppConfiguration.instance
       "#{configuration.base_frontend_uri}/?utm_source=manifest"
     end
 
@@ -246,15 +247,6 @@ module Frontend
       end
     end
     alias to_ids to_id
-
-    # @return [AppConfiguration]
-    def config_from_options(options)
-      tenant = options[:tenant]
-      if tenant # Show a deprecation message is tenant options is used
-        ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
-      end
-      options[:app_configuration] || tenant&.configuration || AppConfiguration.instance # TODO: OS remove: tenant&.configuration
-    end
 
     def strip_existing_locale_from_path(pathname)
       # NOTE: Assumes the path is always passed with a leading slash & locale is always the first segment
