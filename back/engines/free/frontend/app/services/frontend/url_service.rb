@@ -103,10 +103,6 @@ module Frontend
       "#{configuration.base_frontend_uri}/?utm_source=manifest"
     end
 
-    def unsubscribe_url_template(configuration, campaign_id)
-      "#{configuration.base_frontend_uri}/email-settings?unsubscription_token={{unsubscription_token}}&campaign_id=#{campaign_id}"
-    end
-
     def unsubscribe_url(configuration, campaign_id, user_id)
       token = EmailCampaigns::UnsubscriptionToken.find_by(user_id: user_id)&.token
       if token
