@@ -7,7 +7,7 @@ import { ISmsCampaign } from './types';
 
 const sendSmsCampaignPreview = async (id: string) =>
   fetcher<ISmsCampaign>({
-    path: `/campaigns/${id}/send_preview`,
+    path: `/campaigns/${id}/send_sms_preview`,
     action: 'post',
     body: {},
   });

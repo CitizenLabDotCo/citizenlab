@@ -7,7 +7,7 @@ import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { campaignsData } from './__mocks__/useEmailCampaigns';
 import useSendEmailCampaignPreview from './useSendEmailCampaignPreview';
 
-const apiPath = '*campaigns/:id/send_preview';
+const apiPath = '*campaigns/:id/send_email_preview';
 
 const server = setupServer(
   http.post(apiPath, () => {

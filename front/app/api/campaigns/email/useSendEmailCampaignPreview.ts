@@ -7,7 +7,7 @@ import { IEmailCampaign } from './types';
 
 const sendEmailCampaignPreview = async (id: string) =>
   fetcher<IEmailCampaign>({
-    path: `/campaigns/${id}/send_preview`,
+    path: `/campaigns/${id}/send_email_preview`,
     action: 'post',
     body: {},
   });

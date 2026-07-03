@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-    before_action :set_campaign, only: %i[show update do_send send_preview preview email_deliveries sms_deliveries email_stats sms_stats destroy]
+    before_action :set_campaign, only: %i[show update do_send send_email_preview send_sms_preview email_preview email_deliveries sms_deliveries email_stats sms_stats destroy]
     skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
@@ -114,12 +114,17 @@ module EmailCampaigns
       end
     end
 
-    def send_preview
-      EmailCampaigns::DeliveryService.new.send_preview(@campaign, current_user)
+    def send_email_preview
+      EmailCampaigns::DeliveryService.new.send_email_preview(@campaign, current_user)
       head :ok
     end
 
-    def preview
+    def send_sms_preview
+      EmailCampaigns::DeliveryService.new.send_sms_preview(@campaign, current_user)
+      head :ok
+    end
+
+    def email_preview
       preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
       render json: {
         data: {

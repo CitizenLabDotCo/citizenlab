@@ -8,7 +8,7 @@ import { ICampaignPreview, CampaignPreviewsKeys } from './types';
 
 const fetchEmailCampaignPreview = ({ campaignId }: { campaignId: string }) =>
   fetcher<ICampaignPreview>({
-    path: `/campaigns/${campaignId}/preview`,
+    path: `/campaigns/${campaignId}/email_preview`,
     action: 'get',
   });
 

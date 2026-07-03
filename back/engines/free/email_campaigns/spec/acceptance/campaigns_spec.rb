@@ -226,7 +226,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:campaign) { create(:manual_campaign) }
       let(:id) { campaign.id }
 
@@ -737,7 +737,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:id) { @manual_project_participants_campaign.id }
 
       example_request 'Get a campaign HTML preview, for campaign manageable by project moderator' do
@@ -747,7 +747,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:id) { manual_project_participants_campaign_not_moderated_by_this_pm.id }
 
       example_request '[Unauthorized] Get preview, for campaign for project not moderated by project moderator', document: false do
@@ -755,7 +755,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:campaign) { create(:manual_campaign) }
       let(:id) { manual_project_participants_campaign_not_moderated_by_this_pm.id }
 

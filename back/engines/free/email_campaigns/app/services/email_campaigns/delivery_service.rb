@@ -115,12 +115,6 @@ module EmailCampaigns
       campaign.run_after_send_hooks(command)
     end
 
-    def send_preview(campaign, recipient)
-      return send_sms_preview(campaign, recipient) if campaign.sms?
-
-      send_email_preview(campaign, recipient)
-    end
-
     def send_email_preview(campaign, recipient)
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
