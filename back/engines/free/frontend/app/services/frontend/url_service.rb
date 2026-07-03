@@ -49,21 +49,6 @@ module Frontend
       path && "#{home_url(options)}/#{path}"
     end
 
-    def slug_to_url(slug, classname, options = {})
-      # Does not cover phases, comments and official feedback
-      subroute = nil
-      case classname
-      when 'Project'
-        subroute = 'projects'
-      when 'Idea'
-        subroute = 'ideas'
-      when 'Page'
-        subroute = 'pages'
-      end
-
-      subroute && slug && "#{home_url(options)}/#{subroute}/#{slug}"
-    end
-
     def home_url(options = {})
       app_config = options[:app_configuration] || AppConfiguration.instance
       base_uri = app_config.base_frontend_uri
