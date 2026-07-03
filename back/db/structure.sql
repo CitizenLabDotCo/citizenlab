@@ -175,6 +175,7 @@ ALTER TABLE IF EXISTS ONLY public.claim_tokens DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_00698f2e02;
 DROP TRIGGER IF EXISTS que_state_notify ON public.que_jobs;
 DROP TRIGGER IF EXISTS que_job_notify ON public.que_jobs;
+DROP TRIGGER IF EXISTS audit_orphaned_admin_publication ON public.admin_publications;
 DROP INDEX IF EXISTS public.users_unique_lower_email_idx;
 DROP INDEX IF EXISTS public.spam_reportable_index;
 DROP INDEX IF EXISTS public.report_builder_published_data_units_report_id_idx;
@@ -661,6 +662,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS analysis_analyses_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS admin_publications_pkey;
+ALTER TABLE IF EXISTS ONLY public.admin_publication_deletion_audits DROP CONSTRAINT IF EXISTS admin_publication_deletion_audits_pkey;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
 DROP TABLE IF EXISTS public.wise_voice_flags;
@@ -816,10 +818,12 @@ DROP TABLE IF EXISTS public.analysis_background_tasks;
 DROP TABLE IF EXISTS public.analysis_analyses;
 DROP TABLE IF EXISTS public.analysis_additional_custom_fields;
 DROP TABLE IF EXISTS public.admin_publications;
+DROP TABLE IF EXISTS public.admin_publication_deletion_audits;
 DROP TABLE IF EXISTS public.activities;
 DROP FUNCTION IF EXISTS public.que_state_notify();
 DROP FUNCTION IF EXISTS public.que_job_notify();
 DROP FUNCTION IF EXISTS public.que_determine_job_state(job public.que_jobs);
+DROP FUNCTION IF EXISTS public.log_orphaned_admin_publication();
 DROP TABLE IF EXISTS public.que_jobs;
 DROP FUNCTION IF EXISTS public.que_validate_tags(tags_array jsonb);
 DROP EXTENSION IF EXISTS vector;
@@ -977,6 +981,63 @@ WITH (fillfactor='90');
 --
 
 COMMENT ON TABLE public.que_jobs IS '6';
+
+
+--
+-- Name: log_orphaned_admin_publication(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.log_orphaned_admin_publication() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $_$
+DECLARE
+  publication_exists boolean := false;
+  pub_table text;
+BEGIN
+  IF OLD.publication_type = 'Project' THEN
+    pub_table := 'projects';
+  ELSIF OLD.publication_type = 'ProjectFolders::Folder' THEN
+    pub_table := 'project_folders_folders';
+  ELSE
+    RETURN NULL;
+  END IF;
+
+  -- Resolve tables in the trigger's OWN schema, so the check is correct
+  -- regardless of the deleting session's search_path (raw SQL included).
+  EXECUTE format('SELECT EXISTS (SELECT 1 FROM %I.%I WHERE id = $1)', TG_TABLE_SCHEMA, pub_table)
+    INTO publication_exists
+    USING OLD.publication_id;
+
+  -- Publication gone too => legitimate cascade. Only log real orphans.
+  IF NOT publication_exists THEN
+    RETURN NULL;
+  END IF;
+
+  EXECUTE format(
+    'INSERT INTO %I.admin_publication_deletion_audits
+       (id, tenant_schema, tenant_host, admin_publication_id, publication_id,
+        publication_type, parent_id, lft, rgt, ordering, publication_status,
+        deleted_at, db_user, application_name, client_addr, backend_pid,
+        transaction_id, query, created_at, updated_at)
+     VALUES (gen_random_uuid(), $9, $10, $1, $2, $3, $4, $5, $6, $7, $8,
+             clock_timestamp(), current_user,
+             current_setting(''application_name'', true), inet_client_addr(),
+             pg_backend_pid(), txid_current(), current_query(),
+             clock_timestamp(), clock_timestamp())',
+    TG_TABLE_SCHEMA)
+    USING OLD.id, OLD.publication_id, OLD.publication_type, OLD.parent_id,
+          OLD.lft, OLD.rgt, OLD.ordering, OLD.publication_status,
+          TG_TABLE_SCHEMA, replace(TG_TABLE_SCHEMA, '_', '.');
+
+  RETURN NULL;
+EXCEPTION
+  WHEN OTHERS THEN
+    -- Auditing must never break a legitimate deletion. If anything in
+    -- this trigger fails (missing table in a schema, unexpected mismatch,
+    -- etc.), silently drop the audit and allow the delete to proceed.
+    RETURN NULL;
+END;
+$_$;
 
 
 --
@@ -1145,6 +1206,35 @@ CREATE TABLE public.activities (
     acted_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
     project_id uuid
+);
+
+
+--
+-- Name: admin_publication_deletion_audits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.admin_publication_deletion_audits (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    tenant_schema character varying,
+    tenant_host character varying,
+    admin_publication_id uuid NOT NULL,
+    publication_id uuid,
+    publication_type character varying,
+    parent_id uuid,
+    lft integer,
+    rgt integer,
+    ordering integer,
+    publication_status character varying,
+    deleted_at timestamp(6) without time zone,
+    db_user character varying,
+    application_name character varying,
+    client_addr inet,
+    backend_pid integer,
+    transaction_id bigint,
+    query text,
+    reported_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3961,6 +4051,14 @@ ALTER TABLE ONLY public.que_jobs ALTER COLUMN id SET DEFAULT nextval('public.que
 
 ALTER TABLE ONLY public.activities
     ADD CONSTRAINT activities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: admin_publication_deletion_audits admin_publication_deletion_audits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.admin_publication_deletion_audits
+    ADD CONSTRAINT admin_publication_deletion_audits_pkey PRIMARY KEY (id);
 
 
 --
@@ -7509,6 +7607,13 @@ CREATE UNIQUE INDEX users_unique_lower_email_idx ON public.users USING btree (lo
 
 
 --
+-- Name: admin_publications audit_orphaned_admin_publication; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE CONSTRAINT TRIGGER audit_orphaned_admin_publication AFTER DELETE ON public.admin_publications DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.log_orphaned_admin_publication();
+
+
+--
 -- Name: que_jobs que_job_notify; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -8841,6 +8946,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260703120000'),
 ('20260701113056'),
 ('20260617120000'),
 ('20260617090200'),

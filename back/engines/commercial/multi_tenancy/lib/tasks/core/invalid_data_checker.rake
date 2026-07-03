@@ -13,6 +13,11 @@ namespace :checks do
       summary = checker.check_tenant tenant: tenant, summary: summary
     end
 
+    # Forward any admin_publication orphaning events captured by the DB trigger
+    # (see AdminPublicationDeletionAudit) to Sentry. Reuses this weekly, per-region
+    # schedule rather than a dedicated one; idempotent via `reported_at`.
+    ReportOrphanedAdminPublicationsJob.perform_now
+
     if summary[:issues].present?
       puts JSON.pretty_generate summary
       raise 'Some data is invalid.'
