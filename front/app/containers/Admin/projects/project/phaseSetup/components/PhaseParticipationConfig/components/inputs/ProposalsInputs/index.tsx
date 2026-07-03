@@ -22,6 +22,7 @@ import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
+import AllowMultipleResponsesToggle from '../_shared/AllowMultipleResponsesToggle';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
@@ -30,6 +31,7 @@ interface Props {
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
+  allow_multiple_responses?: boolean | null;
   commenting_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
@@ -43,6 +45,7 @@ interface Props {
   reactingThresholdError?: string;
   apiErrors: CLErrors | null | undefined;
   togglePostingEnabled: () => void;
+  toggleAllowMultipleResponses: () => void;
   toggleCommentingEnabled: () => void;
   toggleReactingEnabled: () => void;
   handleReactingLikeMethodOnChange: (
@@ -79,6 +82,7 @@ const ProposalsInputs = ({
   input_term,
   handleInputTermChange,
   submission_enabled,
+  allow_multiple_responses,
   commenting_enabled,
   reacting_enabled,
   reacting_like_method,
@@ -92,6 +96,7 @@ const ProposalsInputs = ({
   reactingThresholdError,
   apiErrors,
   togglePostingEnabled,
+  toggleAllowMultipleResponses,
   toggleCommentingEnabled,
   toggleReactingEnabled,
   handleReactingLikeMethodOnChange,
@@ -119,6 +124,11 @@ const ProposalsInputs = ({
 
   return (
     <>
+      <AllowMultipleResponsesToggle
+        checked={allow_multiple_responses || false}
+        onChange={toggleAllowMultipleResponses}
+        apiErrors={apiErrors}
+      />
       <CustomFieldPicker
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}

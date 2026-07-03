@@ -30,13 +30,13 @@ export default defineMessages({
     defaultMessage: 'Preview',
   },
   allowMultipleResponsesLabel: {
-    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel',
-    defaultMessage: 'Allow multiple responses',
+    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel2',
+    defaultMessage: 'Allow multiple submissions',
   },
   allowMultipleResponsesDescription: {
-    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription',
+    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription2',
     defaultMessage:
-      'When enabled, a participant can submit this survey more than once. When disabled, each participant can only respond once.',
+      'When enabled, a participant can submit more than once. When disabled, each participant can submit only once.',
   },
   defaultSurveyTitleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel',

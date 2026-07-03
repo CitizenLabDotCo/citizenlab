@@ -42,6 +42,18 @@ RSpec.describe ParticipationMethod::NativeSurvey do
         participation_method.assign_defaults_for_phase
       end.not_to change(phase, :ideas_order)
     end
+
+    it 'defaults allow_multiple_responses to false' do
+      phase.allow_multiple_responses = nil
+      participation_method.assign_defaults_for_phase
+      expect(phase.allow_multiple_responses).to be false
+    end
+
+    it 'does not overwrite an explicitly chosen allow_multiple_responses' do
+      phase.allow_multiple_responses = true
+      participation_method.assign_defaults_for_phase
+      expect(phase.allow_multiple_responses).to be true
+    end
   end
 
   describe '#generate_slug' do
@@ -183,6 +195,20 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_input_term?) { is_expected.to be false }
   its(:supports_inputs_without_author?) { is_expected.to be true }
   its(:allow_posting_again_after) { is_expected.to be_nil }
+  its(:supports_multiple_responses_setting?) { is_expected.to be true }
+
+  describe '#allow_posting_again_after' do
+    it 'returns 0.seconds (unlimited) when the phase allows multiple responses' do
+      phase.allow_multiple_responses = true
+      expect(participation_method.allow_posting_again_after).to eq 0.seconds
+    end
+
+    it 'returns nil (a single response per participant) when disabled' do
+      phase.allow_multiple_responses = false
+      expect(participation_method.allow_posting_again_after).to be_nil
+    end
+  end
+
   its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }

@@ -2582,6 +2582,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.votingMethodSelectorTooltip2": "The voting method determines the rules of how users vote",
   "app.containers.AdminPage.ProjectEdit.addNewInput": "Add an input",
   "app.containers.AdminPage.ProjectEdit.addProjectManagers": "Add project managers",
+  "app.containers.AdminPage.ProjectEdit.allowMultipleInputsEnabled": "Multiple submissions per participant",
   "app.containers.AdminPage.ProjectEdit.allowedInputTopicsTab": "Project tags",
   "app.containers.AdminPage.ProjectEdit.altText": "Alt text",
   "app.containers.AdminPage.ProjectEdit.anonymousPolling": "Anonymous polling",

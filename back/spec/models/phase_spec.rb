@@ -562,6 +562,32 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'allow_multiple_responses defaults' do
+    it 'defaults to true for a new ideation phase' do
+      expect(create(:phase, participation_method: 'ideation').allow_multiple_responses).to be true
+    end
+
+    it 'defaults to false for a new native survey phase' do
+      expect(create(:native_survey_phase).allow_multiple_responses).to be false
+    end
+
+    it 'resets to the new method default when the participation method changes' do
+      phase = create(:native_survey_phase)
+      expect(phase.allow_multiple_responses).to be false
+
+      phase.update!(participation_method: 'ideation')
+      expect(phase.reload.allow_multiple_responses).to be true
+    end
+
+    it 'keeps a value the update explicitly changes when the participation method changes' do
+      phase = create(:proposals_phase)
+      expect(phase.allow_multiple_responses).to be true
+
+      phase.update!(participation_method: 'ideation', allow_multiple_responses: false)
+      expect(phase.reload.allow_multiple_responses).to be false
+    end
+  end
+
   describe '#validate_community_monitor_phase' do
     let(:project) { create(:project) }
     let(:survey_phase) { create(:native_survey_phase, project: project, start_at: Date.current, end_at: nil) }

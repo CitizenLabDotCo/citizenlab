@@ -101,6 +101,17 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(phase.ideas_order).to eq 'trending'
     end
 
+    it 'defaults allow_multiple_responses to true' do
+      participation_method.assign_defaults_for_phase
+      expect(phase.allow_multiple_responses).to be true
+    end
+
+    it 'does not overwrite an explicitly chosen allow_multiple_responses' do
+      phase.allow_multiple_responses = false
+      participation_method.assign_defaults_for_phase
+      expect(phase.allow_multiple_responses).to be false
+    end
+
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
@@ -238,13 +249,17 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   describe '#supports_serializing?' do
-    it 'returns false for all attributes' do
+    it 'returns false for all other attributes' do
       %i[
         voting_method voting_max_total voting_min_total voting_max_votes_per_idea
         baskets_count votes_count native_survey_title_multiloc native_survey_button_multiloc
       ].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be false
       end
+    end
+
+    it 'serializes allow_multiple_responses' do
+      expect(participation_method.supports_serializing?(:allow_multiple_responses)).to be true
     end
   end
 
@@ -259,6 +274,20 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:supports_input_term?) { is_expected.to be true }
   its(:supports_inputs_without_author?) { is_expected.to be true }
   its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
+  its(:supports_multiple_responses_setting?) { is_expected.to be true }
+
+  describe '#allow_posting_again_after' do
+    it 'returns 0.seconds (unlimited) when the phase allows multiple responses' do
+      phase.allow_multiple_responses = true
+      expect(participation_method.allow_posting_again_after).to eq 0.seconds
+    end
+
+    it 'returns nil (a single input per participant) when disabled' do
+      phase.allow_multiple_responses = false
+      expect(participation_method.allow_posting_again_after).to be_nil
+    end
+  end
+
   its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }

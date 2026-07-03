@@ -205,8 +205,10 @@ class Phase < ApplicationRecord
   with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
-    validates :allow_multiple_responses, inclusion: { in: [true, false] }
   end
+
+  validates :allow_multiple_responses, inclusion: { in: [true, false] },
+    if: ->(phase) { phase.pmethod.supports_multiple_responses_setting? }
 
   validate :validate_no_inputs_on_participation_method_change, on: :update
   validate :validate_phase_participation_method
@@ -425,6 +427,10 @@ class Phase < ApplicationRecord
   def set_participation_method_defaults_on_method_change
     return unless participation_method_changed?
 
+    # The right default differs per method (true for ideation/proposals, false
+    # for surveys), so reset it to the new method's default unless this update
+    # sets it explicitly.
+    self.allow_multiple_responses = nil unless allow_multiple_responses_changed?
     pmethod.assign_defaults_for_phase
   end
 

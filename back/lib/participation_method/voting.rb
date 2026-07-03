@@ -37,6 +37,16 @@ module ParticipationMethod
       false
     end
 
+    # Participants don't post inputs in voting phases, so the
+    # allow_multiple_responses setting inherited from Ideation does not apply.
+    def allow_posting_again_after
+      0.seconds
+    end
+
+    def supports_multiple_responses_setting?
+      false
+    end
+
     def supports_vote_term?
       true
     end

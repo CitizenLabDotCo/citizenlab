@@ -13,9 +13,9 @@ export default defineMessages({
     defaultMessage: 'New submissions are not currently being accepted',
   },
   postingLimitedMaxReached: {
-    id: 'app.containers.IdeaButton.postingLimitedMaxReached',
+    id: 'app.containers.IdeaButton.postingLimitedMaxReached2',
     defaultMessage:
-      'You have already completed this survey. Thanks for your response!',
+      'You have already participated. Thanks for your contribution!',
   },
   postingNoPermission: {
     id: 'app.containers.IdeaButton.postingNoPermission',

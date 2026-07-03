@@ -177,8 +177,10 @@ module Permissions
       allow_posting_again_after = phase.pmethod.allow_posting_again_after || 10.years
       return false if allow_posting_again_after == 0.seconds
 
-      # From here, this method is only relevant for native survey and community monitor,
-      # because all other participation methods have allow_posting_again_after = 0.seconds
+      # From here, this method is only relevant for phases that limit posting:
+      # community monitor (quarterly) and any method whose phase disables
+      # allow_multiple_responses (native survey by default; ideation/proposals
+      # when configured).
 
       if user
         return true if phase.ideas.published_after(allow_posting_again_after.ago).exists?(author: user)

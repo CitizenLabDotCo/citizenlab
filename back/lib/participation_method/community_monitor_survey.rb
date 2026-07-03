@@ -70,6 +70,12 @@ module ParticipationMethod
       3.months
     end
 
+    # The quarterly cadence above is fixed; the allow_multiple_responses
+    # setting (inherited from NativeSurvey) is not configurable here.
+    def supports_multiple_responses_setting?
+      false
+    end
+
     def supports_event_attendance?
       false
     end

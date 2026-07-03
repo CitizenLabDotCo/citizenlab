@@ -170,6 +170,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const toggleAllowMultipleResponses = () => {
+    updateFormData((state) => ({
+      ...state,
+      allow_multiple_responses: !state.allow_multiple_responses,
+    }));
+  };
+
   const toggleCommentingEnabled = () => {
     updateFormData((state) => ({
       ...state,
@@ -452,6 +459,7 @@ const PhaseParticipationConfig = ({
   const {
     participation_method,
     submission_enabled,
+    allow_multiple_responses,
     commenting_enabled,
     autoshare_results_enabled,
     reacting_enabled,
@@ -579,6 +587,8 @@ const PhaseParticipationConfig = ({
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
             submission_enabled={submission_enabled}
+            allow_multiple_responses={allow_multiple_responses}
+            toggleAllowMultipleResponses={toggleAllowMultipleResponses}
             commenting_enabled={commenting_enabled}
             reacting_enabled={reacting_enabled}
             reacting_like_method={reacting_like_method}
@@ -631,6 +641,8 @@ const PhaseParticipationConfig = ({
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
             submission_enabled={submission_enabled}
+            allow_multiple_responses={allow_multiple_responses}
+            toggleAllowMultipleResponses={toggleAllowMultipleResponses}
             commenting_enabled={commenting_enabled}
             reacting_enabled={reacting_enabled}
             reacting_like_method={reacting_like_method}

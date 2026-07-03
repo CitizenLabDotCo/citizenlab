@@ -42,6 +42,9 @@ module ParticipationMethod
       phase.input_term ||= default_input_term if supports_input_term?
       phase.similarity_threshold_title ||= 0.3
       phase.similarity_threshold_body ||= 0.4
+      # Ideation historically allows posting multiple inputs, so that is the
+      # default (`||=` would overwrite an explicitly chosen `false`).
+      phase.allow_multiple_responses = true if phase.allow_multiple_responses.nil?
     end
 
     def author_in_form?(user)
@@ -342,6 +345,21 @@ module ParticipationMethod
 
     def supports_inputs_without_author?
       true
+    end
+
+    def allow_posting_again_after
+      # A `false` phase setting restricts each participant to a single input
+      # (nil, see Permissions::PhasePermissionsService#posting_limit_reached?).
+      # nil (not configured yet) keeps the historical unlimited behaviour.
+      phase.allow_multiple_responses == false ? nil : 0.seconds
+    end
+
+    def supports_multiple_responses_setting?
+      true
+    end
+
+    def supports_serializing?(attribute)
+      attribute == :allow_multiple_responses
     end
 
     def supports_permitted_by_everyone?

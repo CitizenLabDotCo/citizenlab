@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -13,9 +12,11 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 import parentMessages from '../../../../messages';
+
+import AllowMultipleResponsesToggle from './_shared/AllowMultipleResponsesToggle';
 
 interface Props {
   apiErrors: CLErrors | null;
@@ -38,36 +39,19 @@ const NativeSurveyInputs = ({
   handleAllowMultipleResponsesChange,
 }: Props) => {
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
   const { data: project } = useProjectById(
     phase?.data.relationships.project.data.id
   );
 
   return (
     <>
-      <SectionField>
-        <Toggle
-          checked={!!formData.allow_multiple_responses}
-          onChange={() =>
-            handleAllowMultipleResponsesChange(
-              !formData.allow_multiple_responses
-            )
-          }
-          label={
-            <Box>
-              <Text fontWeight="semi-bold" color="blue500" m="0px">
-                {formatMessage(parentMessages.allowMultipleResponsesLabel)}
-              </Text>
-              <Text m="0px" color="coolGrey600" fontSize="s">
-                {formatMessage(
-                  parentMessages.allowMultipleResponsesDescription
-                )}
-              </Text>
-            </Box>
-          }
-        />
-        <Error apiErrors={apiErrors && apiErrors.allow_multiple_responses} />
-      </SectionField>
+      <AllowMultipleResponsesToggle
+        checked={!!formData.allow_multiple_responses}
+        onChange={() =>
+          handleAllowMultipleResponsesChange(!formData.allow_multiple_responses)
+        }
+        apiErrors={apiErrors}
+      />
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...parentMessages.surveyTitleLabel} />

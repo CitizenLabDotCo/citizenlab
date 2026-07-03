@@ -25,6 +25,12 @@ module ParticipationMethod
       input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')
     end
 
+    def assign_defaults_for_phase
+      # Surveys are single-response by default (unlike ideation/proposals),
+      # so a duplicate submission has to be an explicit admin choice.
+      phase.allow_multiple_responses = false if phase.allow_multiple_responses.nil?
+    end
+
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
       form = CustomForm.create(participation_context: phase)
@@ -105,6 +111,10 @@ module ParticipationMethod
       # limit (see Permissions::PhasePermissionsService#posting_limit_reached?).
       # Otherwise nil locks it to a single response per user.
       phase.allow_multiple_responses? ? 0.seconds : nil
+    end
+
+    def supports_multiple_responses_setting?
+      true
     end
 
     def supported_email_campaigns

@@ -150,6 +150,14 @@ module ParticipationMethod
       0.seconds
     end
 
+    # Returns whether admins can configure the phase's allow_multiple_responses
+    # setting (whether a participant can post/submit more than once). Methods
+    # returning false either have no participant posting or a fixed cadence
+    # (e.g. community monitor's quarterly window).
+    def supports_multiple_responses_setting?
+      false
+    end
+
     def supports_permitted_by_everyone?
       false
     end

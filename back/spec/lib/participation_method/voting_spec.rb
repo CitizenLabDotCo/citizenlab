@@ -197,6 +197,15 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_input_term?) { is_expected.to be true }
   its(:supports_inputs_without_author?) { is_expected.to be false }
   its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
+  its(:supports_multiple_responses_setting?) { is_expected.to be false }
+
+  describe '#allow_posting_again_after' do
+    it 'stays unlimited regardless of the allow_multiple_responses setting' do
+      phase.allow_multiple_responses = false
+      expect(participation_method.allow_posting_again_after).to eq 0.seconds
+    end
+  end
+
   its(:supports_permitted_by_everyone?) { is_expected.to be false }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
