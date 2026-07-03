@@ -710,7 +710,7 @@
   "app.components.admin.UserFilterConditions.field_follow": "Følg",
   "app.components.admin.UserFilterConditions.field_lives_in": "Bor i",
   "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Undersøgelse af Borgerbarometer",
-  "app.components.admin.UserFilterConditions.field_participated_in_input": "Interageret med input",
+  "app.components.admin.UserFilterConditions.field_participated_in_input": "Interagerede med input",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Interagerede med et input med status",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Bidrog til projektet",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Har sendt noget med et mærke",
