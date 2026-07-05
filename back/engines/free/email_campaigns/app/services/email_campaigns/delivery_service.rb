@@ -114,9 +114,11 @@ module EmailCampaigns
     # recipient-filter pipeline. For transactional messages that must go out
     # right away (e.g. confirmation codes).
     def send_now_to_user(campaign, recipient, event_payload = {})
-      return send_sms_now_to_user(campaign, recipient, event_payload) if campaign.sms?
-
-      send_email_now_to_user(campaign, recipient, event_payload)
+      if campaign.sms?
+        send_sms_now_to_user(campaign, recipient, event_payload)
+      else
+        send_email_now_to_user(campaign, recipient, event_payload)
+      end
     end
 
     def send_email_preview(campaign, recipient)
