@@ -46,10 +46,6 @@ module EmailCampaigns
       'sms'
     end
 
-    # Sends this campaign's SMS to one recipient synchronously, in-process (for
-    # transactional messages that must go out right away, e.g. the OTP), linking
-    # the delivery to this campaign. An invalid/blank destination raises, so the
-    # caller learns the send failed.
     def deliver_now(command)
       EmailCampaigns::Sms::SendService.new.send_now(
         to: sms_destination(command),
@@ -59,24 +55,18 @@ module EmailCampaigns
       )
     end
 
-    # Persists a pending delivery linked to this campaign and hands the provider
-    # send to SendJob (which texts the recipient's confirmed phone_number).
     def deliver_later(command)
       enqueue_sms(command, campaign_id: id)
     end
 
     # Like #deliver_later, but leaves the delivery unlinked so a preview/test send
-    # doesn't count towards this campaign's deliveries/stats or sent? state. A
-    # preview is a deliberate, user-facing action, so it raises when the previewer
-    # has no number to text (rather than silently skipping like the pipeline does).
+    # doesn't count towards this campaign's deliveries/stats or sent? state.
     def deliver_preview(command)
       raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if sms_destination(command).blank?
 
       enqueue_sms(command, campaign_id: nil)
     end
 
-    # The rendered SMS text, in the recipient's locale. Concrete SMS campaigns
-    # implement this (the mailer-less analog of a mailer rendering its body).
     def sms_body(_command)
       raise NotImplementedError, "#{self.class} must implement #sms_body"
     end
@@ -107,9 +97,6 @@ module EmailCampaigns
 
     private
 
-    # Persists a pending EmailCampaigns::Sms::Delivery (linked to campaign_id, or
-    # unlinked when nil) and hands the provider send to SendJob. No-op when
-    # there's nothing to send (recipient has no number, or no body).
     def enqueue_sms(command, campaign_id:)
       return if sms_destination(command).blank? || sms_body(command).blank?
 
