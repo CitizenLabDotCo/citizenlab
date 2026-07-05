@@ -246,6 +246,7 @@ resource 'Confirmations' do
 
     context 'when user is authenticated' do
       let(:user) { create(:user) }
+      let(:new_phone_number) { '+14155552671' }
 
       # The code request sends the OTP synchronously, so the provider is invoked.
       include_context 'with stubbed SMS provider'
@@ -257,14 +258,14 @@ resource 'Confirmations' do
           'twilio_phone_number' => '+15005550006'
         })
         header_token_for user
-        RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone_number: '+14155552671')
+        RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone_number: new_phone_number)
       end
 
       example 'promotes new_phone_number to phone_number upon successful confirmation' do
         do_request(confirmation: { code: user.new_phone_confirmation.code })
         assert_status 200
         user.reload
-        expect(user.phone_number).to eq '+14155552671'
+        expect(user.phone_number).to eq new_phone_number
         expect(user.new_phone_number).to be_nil
         expect(user.phone_number_confirmed_at).to be_present
       end

@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::SmsManual do
+  let(:phone_number1) { '+14155552671' }
+  let(:phone_number2) { '+14155552672' }
+
   describe 'SmsManual default factory' do
     it 'is valid' do
       expect(build(:sms_manual_campaign)).to be_valid
@@ -65,16 +68,16 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
 
   describe '#sms_destination' do
     let(:campaign) { build(:sms_manual_campaign) }
-    let(:recipient) { create(:user, phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now) }
+    let(:recipient) { create(:user, phone_number: phone_number1, phone_number_confirmed_at: Time.zone.now) }
 
     it 'targets the recipient confirmed phone_number' do
-      expect(campaign.sms_destination({ recipient: recipient })).to eq('+14155552671')
+      expect(campaign.sms_destination({ recipient: recipient })).to eq(phone_number1)
     end
   end
 
   describe 'async SMS delivery' do
     let(:campaign) { create(:sms_manual_campaign) }
-    let(:recipient) { create(:user, locale: 'en', phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now) }
+    let(:recipient) { create(:user, locale: 'en', phone_number: phone_number1, phone_number_confirmed_at: Time.zone.now) }
     let(:command) { { recipient: recipient, body_multiloc: { 'en' => 'A short SMS update from your city.' } } }
 
     before do
@@ -128,7 +131,7 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
 
     it 'seeds recipients from users with a confirmed phone number and excludes others' do
       with_confirmed_phone = create(:user, :with_confirmed_phone)
-      with_unconfirmed_phone = create(:user, phone_number: '+14155552671', phone_number_confirmed_at: nil)
+      with_unconfirmed_phone = create(:user, phone_number: phone_number1, phone_number_confirmed_at: nil)
       without_phone = create(:user, phone_number: nil)
 
       expect(campaign.apply_recipient_filters).to include(with_confirmed_phone)
@@ -137,7 +140,7 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     end
 
     it 'filters out invitees' do
-      invitee = create(:invited_user, phone_number: '+14155552672', phone_number_confirmed_at: Time.zone.now)
+      invitee = create(:invited_user, phone_number: phone_number2, phone_number_confirmed_at: Time.zone.now)
 
       expect(campaign.apply_recipient_filters).not_to include(invitee)
     end

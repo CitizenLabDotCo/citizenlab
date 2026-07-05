@@ -159,6 +159,7 @@ RSpec.describe UserConfirmationService do
   describe '#validate_and_confirm_phone_change!' do
     let(:user) { create(:user) }
     let(:confirmation) { user.new_phone_confirmation }
+    let(:new_phone_number) { '+14155552671' }
 
     # The code request sends the OTP synchronously, so the provider is invoked.
     include_context 'with stubbed SMS provider'
@@ -169,7 +170,7 @@ RSpec.describe UserConfirmationService do
         'twilio_auth_token' => 'token',
         'twilio_phone_number' => '+15005550006'
       })
-      RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone_number: '+14155552671')
+      RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone_number: new_phone_number)
     end
 
     context 'when the code is correct' do
@@ -178,7 +179,7 @@ RSpec.describe UserConfirmationService do
 
         expect(result.success?).to be true
         user.reload
-        expect(user.phone_number).to eq('+14155552671')
+        expect(user.phone_number).to eq(new_phone_number)
         expect(user.new_phone_number).to be_nil
         expect(user.phone_number_confirmed_at).to be_present
       end
