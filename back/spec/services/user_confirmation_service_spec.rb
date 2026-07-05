@@ -160,6 +160,9 @@ RSpec.describe UserConfirmationService do
     let(:user) { create(:user) }
     let(:confirmation) { user.new_phone_confirmation }
 
+    # The code request sends the OTP synchronously, so the provider is invoked.
+    include_context 'with stubbed SMS provider'
+
     before do
       SettingsService.new.activate_feature!('sms', settings: {
         'twilio_account_sid' => 'AC_test',

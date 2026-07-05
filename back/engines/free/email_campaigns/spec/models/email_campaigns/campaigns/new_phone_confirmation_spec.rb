@@ -12,11 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
     it { expect(campaign.hidden_from_admin?).to be(true) }
   end
 
-  describe '#sms_body' do
-    let(:recipient) { create(:user, locale: 'en', new_phone_number: '+14155552671') }
-
-    it 'renders the localized body with the code interpolated' do
-      expect(campaign.sms_body(recipient, code: '1234')).to eq('Your verification code is 1234.')
-    end
+  describe '#texter_class' do
+    it { expect(campaign.texter_class).to eq(EmailCampaigns::NewPhoneConfirmationTexter) }
   end
 end

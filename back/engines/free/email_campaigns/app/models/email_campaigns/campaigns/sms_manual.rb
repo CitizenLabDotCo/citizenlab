@@ -56,6 +56,10 @@ module EmailCampaigns
       'email_campaigns.admin_labels.content_type.general'
     end
 
+    def texter_class
+      ManualCampaignTexter
+    end
+
     def generate_commands(recipient:, time: nil, activity: nil)
       [{
         author: author,

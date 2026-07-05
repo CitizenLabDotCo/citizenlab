@@ -8,6 +8,10 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
   let(:user) { create(:user) }
   let(:new_phone_number) { '+14155552671' }
 
+  # The OTP is sent synchronously (perform_now) inside the job, so the provider
+  # is actually invoked.
+  include_context 'with stubbed SMS provider'
+
   before do
     SettingsService.new.activate_feature!('sms', settings: {
       'twilio_account_sid' => 'AC_test',
@@ -22,23 +26,21 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
     expect(user.phone_number).to be_nil
   end
 
-  it 'creates a campaign-linked pending EmailCampaigns::Sms::Delivery to the new phone number' do
+  it 'creates a campaign-linked EmailCampaigns::Sms::Delivery for the user' do
     expect { job.perform(user, new_phone_number: new_phone_number) }
       .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
     delivery = EmailCampaigns::Sms::Delivery.last
-    expect(delivery).to have_attributes(
-      user_id: user.id,
-      phone_number: new_phone_number,
-      status: 'pending'
-    )
+    expect(delivery.user_id).to eq user.id
     expect(delivery.campaign).to be_a(EmailCampaigns::Campaigns::NewPhoneConfirmation)
   end
 
-  it 'enqueues an EmailCampaigns::Sms::SendJob for the created delivery' do
-    job.perform(user, new_phone_number: new_phone_number)
-    delivery = EmailCampaigns::Sms::Delivery.last
-    expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+  it 'sends the code synchronously to the pending new phone number, not via a background job' do
+    expect { job.perform(user, new_phone_number: new_phone_number) }
+      .not_to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+
+    code = user.new_phone_confirmation.code
+    expect(sms_provider).to have_received(:send).with(to: new_phone_number, body: a_string_including(code))
   end
 
   it 'sets the code delivery timestamp and resets the retry count' do

@@ -46,6 +46,13 @@ module EmailCampaigns
       'sms'
     end
 
+    # The SMS-channel analog of #mailer_class: the texter that renders this
+    # campaign's body and resolves its destination number. Concrete SMS
+    # campaigns must point at their own texter.
+    def texter_class
+      raise NotImplementedError, "#{self.class} must define #texter_class"
+    end
+
     def sent?
       sms_deliveries.exists?
     end

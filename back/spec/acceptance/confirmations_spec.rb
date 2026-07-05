@@ -247,6 +247,9 @@ resource 'Confirmations' do
     context 'when user is authenticated' do
       let(:user) { create(:user) }
 
+      # The code request sends the OTP synchronously, so the provider is invoked.
+      include_context 'with stubbed SMS provider'
+
       before do
         SettingsService.new.activate_feature!('sms', settings: {
           'twilio_account_sid' => 'AC_test',
