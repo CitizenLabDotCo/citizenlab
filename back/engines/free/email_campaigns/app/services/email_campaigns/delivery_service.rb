@@ -136,12 +136,7 @@ module EmailCampaigns
       command = generate_commands(campaign, recipient).first
       return unless command
 
-      texter = campaign.texter_class.with(campaign: campaign, command: command)
-      raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if texter.destination.blank?
-
-      # campaign_id: nil so the preview isn't linked to the campaign (no effect on
-      # its deliveries/stats or sent? state).
-      texter.deliver_later(campaign_id: nil)
+      campaign.deliver_preview(command)
     end
 
     def preview_email(campaign, recipient)
@@ -185,11 +180,11 @@ module EmailCampaigns
     end
 
     # Sends a transactional one-off SMS synchronously, in-process (e.g. the
-    # phone-confirmation OTP). The texter owns rendering, destination and the
+    # phone-confirmation OTP). The campaign owns rendering, destination and the
     # synchronous send.
     def send_sms_now_to_user(campaign, recipient, event_payload = {})
       command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
-      campaign.texter_class.with(campaign: campaign, command: command).deliver_now
+      campaign.deliver_now(command)
     end
 
     # Takes options, either
@@ -256,7 +251,7 @@ module EmailCampaigns
     end
 
     def send_sms_command(campaign, command)
-      campaign.texter_class.with(campaign: campaign, command: command).deliver_later
+      campaign.deliver_later(command)
     end
 
     def generate_commands(campaign, recipient, options = {})

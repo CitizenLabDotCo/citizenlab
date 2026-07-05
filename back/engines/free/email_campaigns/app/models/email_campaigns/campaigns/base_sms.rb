@@ -46,11 +46,44 @@ module EmailCampaigns
       'sms'
     end
 
-    # The SMS-channel analog of #mailer_class: the texter that renders this
-    # campaign's body and resolves its destination number. Concrete SMS
-    # campaigns must point at their own texter.
-    def texter_class
-      raise NotImplementedError, "#{self.class} must define #texter_class"
+    # Sends this campaign's SMS to one recipient synchronously, in-process (for
+    # transactional messages that must go out right away, e.g. the OTP), linking
+    # the delivery to this campaign. An invalid/blank destination raises, so the
+    # caller learns the send failed.
+    def deliver_now(command)
+      EmailCampaigns::Sms::SendService.new.send_now(
+        to: sms_destination(command),
+        body: sms_body(command),
+        user_id: command[:recipient].id,
+        campaign_id: id
+      )
+    end
+
+    # Persists a pending delivery linked to this campaign and hands the provider
+    # send to SendJob (which texts the recipient's confirmed phone_number).
+    def deliver_later(command)
+      enqueue_sms(command, campaign_id: id)
+    end
+
+    # Like #deliver_later, but leaves the delivery unlinked so a preview/test send
+    # doesn't count towards this campaign's deliveries/stats or sent? state. A
+    # preview is a deliberate, user-facing action, so it raises when the previewer
+    # has no number to text (rather than silently skipping like the pipeline does).
+    def deliver_preview(command)
+      raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if sms_destination(command).blank?
+
+      enqueue_sms(command, campaign_id: nil)
+    end
+
+    # The rendered SMS text, in the recipient's locale. Concrete SMS campaigns
+    # implement this (the mailer-less analog of a mailer rendering its body).
+    def sms_body(_command)
+      raise NotImplementedError, "#{self.class} must implement #sms_body"
+    end
+
+    # The phone number this campaign's SMS should be sent to.
+    def sms_destination(_command)
+      raise NotImplementedError, "#{self.class} must implement #sms_destination"
     end
 
     def sent?
@@ -70,6 +103,23 @@ module EmailCampaigns
     # number is confirmed, so phone_number_confirmed_at is the authoritative guard.
     def recipients_base_scope
       User.where.not(phone_number_confirmed_at: nil)
+    end
+
+    private
+
+    # Persists a pending EmailCampaigns::Sms::Delivery (linked to campaign_id, or
+    # unlinked when nil) and hands the provider send to SendJob. No-op when
+    # there's nothing to send (recipient has no number, or no body).
+    def enqueue_sms(command, campaign_id:)
+      return if sms_destination(command).blank? || sms_body(command).blank?
+
+      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
+        body: sms_body(command),
+        user_id: command[:recipient].id,
+        campaign_id: campaign_id
+      )
+      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
+      delivery
     end
   end
 end

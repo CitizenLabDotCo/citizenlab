@@ -53,6 +53,76 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     end
   end
 
+  describe '#sms_body' do
+    let(:campaign) { build(:sms_manual_campaign) }
+    let(:recipient) { create(:user, locale: 'en') }
+
+    it 'renders the command body_multiloc in the recipient locale' do
+      command = { recipient: recipient, body_multiloc: { 'en' => 'A short SMS update from your city.' } }
+      expect(campaign.sms_body(command)).to eq('A short SMS update from your city.')
+    end
+  end
+
+  describe '#sms_destination' do
+    let(:campaign) { build(:sms_manual_campaign) }
+    let(:recipient) { create(:user, phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now) }
+
+    it 'targets the recipient confirmed phone_number' do
+      expect(campaign.sms_destination({ recipient: recipient })).to eq('+14155552671')
+    end
+  end
+
+  describe 'async SMS delivery' do
+    let(:campaign) { create(:sms_manual_campaign) }
+    let(:recipient) { create(:user, locale: 'en', phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now) }
+    let(:command) { { recipient: recipient, body_multiloc: { 'en' => 'A short SMS update from your city.' } } }
+
+    before do
+      SettingsService.new.activate_feature!('sms', settings: {
+        'twilio_account_sid' => 'AC_test',
+        'twilio_auth_token' => 'token',
+        'twilio_phone_number' => '+15005550006'
+      })
+    end
+
+    describe '#deliver_later' do
+      it 'creates a campaign-linked pending delivery and enqueues a SendJob' do
+        delivery = nil
+        expect { delivery = campaign.deliver_later(command) }
+          .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
+
+        expect(delivery).to have_attributes(
+          user_id: recipient.id,
+          campaign_id: campaign.id,
+          body: 'A short SMS update from your city.',
+          status: 'pending'
+        )
+        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+      end
+
+      it 'is a no-op when the recipient has no phone number' do
+        recipient.update_columns(phone_number: nil, phone_number_confirmed_at: nil)
+        expect { campaign.deliver_later(command) }.not_to change(EmailCampaigns::Sms::Delivery, :count)
+      end
+    end
+
+    describe '#deliver_preview' do
+      it 'creates and enqueues the delivery, unlinked from the campaign' do
+        delivery = nil
+        expect { delivery = campaign.deliver_preview(command) }
+          .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
+
+        expect(delivery.campaign_id).to be_nil
+        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+      end
+
+      it 'raises when the previewer has no phone number' do
+        recipient.update_columns(phone_number: nil, phone_number_confirmed_at: nil)
+        expect { campaign.deliver_preview(command) }.to raise_error(EmailCampaigns::Sms::Error)
+      end
+    end
+  end
+
   describe 'apply_recipient_filters' do
     let(:campaign) { build(:sms_manual_campaign) }
 

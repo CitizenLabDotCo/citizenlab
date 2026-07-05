@@ -36,8 +36,19 @@ module EmailCampaigns
   class Campaigns::NewPhoneConfirmation < Campaigns::BaseSms
     filter :exclude_from_send_pipeline
 
-    def texter_class
-      NewPhoneConfirmationTexter
+    # A localized template with the verification code interpolated. Targets the
+    # *pending* new_phone_number being verified, not the confirmed phone_number
+    # (which may still be blank until confirmation completes).
+    def sms_body(command)
+      I18n.t(
+        'email_campaigns.new_phone_confirmation.sms_body',
+        code: command.dig(:event_payload, :code),
+        locale: command[:recipient].locale
+      )
+    end
+
+    def sms_destination(command)
+      command[:recipient].new_phone_number
     end
 
     def can_be_disabled?
