@@ -374,36 +374,39 @@ class User < ApplicationRecord
     errors.add(:email, :taken, value: new_email)
   end
 
-  # Store phone numbers in canonical E.164 form so the uniqueness constraint and
-  # SMS delivery operate on a single normalized representation. Invalid/national
-  # input is left as-is for validate_phone_number_format to reject.
   def normalize_phone_number
-    if phone_number.blank?
-      self.phone_number = nil
-      return
-    end
-
-    normalized = Phonelib.parse(phone_number).e164.presence
-    self.phone_number = normalized if normalized
+    normalize_phone(:phone_number)
   end
 
-  # The pending (not-yet-confirmed) phone number is normalized the same way as
-  # phone_number, so the confirmation flow compares and stores E.164 throughout.
   def normalize_new_phone_number
-    normalized = Phonelib.parse(new_phone_number).e164.presence
-    self.new_phone_number = normalized if normalized
+    normalize_phone(:new_phone_number)
   end
 
   def validate_phone_number_format
-    return if phone_number.blank? || Phonelib.valid?(phone_number)
-
-    errors.add(:phone_number, :invalid, value: phone_number)
+    validate_phone_format(:phone_number)
   end
 
   def validate_new_phone_number_format
-    return if new_phone_number.blank? || Phonelib.valid?(new_phone_number)
+    validate_phone_format(:new_phone_number)
+  end
 
-    errors.add(:new_phone_number, :invalid, value: new_phone_number)
+  # Store phone numbers in canonical E.164 form so the uniqueness constraint and
+  # SMS delivery operate on a single normalized representation.
+  def normalize_phone(attribute)
+    if self[attribute].blank?
+      self[attribute] = nil
+      return
+    end
+
+    normalized = Phonelib.parse(self[attribute]).e164.presence
+    self[attribute] = normalized if normalized
+  end
+
+  def validate_phone_format(attribute)
+    value = self[attribute]
+    return if value.blank? || Phonelib.valid?(value)
+
+    errors.add(attribute, :invalid, value: value)
   end
 
   def validate_not_duplicate_email
