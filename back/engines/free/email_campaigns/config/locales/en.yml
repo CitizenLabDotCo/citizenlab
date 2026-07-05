@@ -527,7 +527,7 @@ en:
       today: Today
       yesterday: Yesterday
     new_phone_confirmation:
-      sms_body: 'Your verification code is %{code}.'
+      sms_body: 'Your confirmation code is %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Go to this input
       event_description: "%{feedback_author_name} gave an update on '%{input_title}'."
