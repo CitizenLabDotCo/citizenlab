@@ -81,7 +81,7 @@ module EmailCampaigns
 
     # Campaign types that should never surface in the admin campaigns UI
     # (e.g. transactional/internal campaigns like the phone-confirmation OTP).
-    def hidden_campaign_types
+    def hidden_from_admin_campaign_types
       campaign_classes.select { |campaign| campaign.new.hidden_from_admin? }.map(&:name)
     end
 

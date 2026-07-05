@@ -25,9 +25,8 @@ module EmailCampaigns
         @campaigns = @campaigns.where(id: supported_ids)
       end
 
-      # Internal/transactional campaigns (e.g. the phone-confirmation OTP) are never
-      # managed from the admin UI.
-      @campaigns = @campaigns.where.not(type: EmailCampaigns::DeliveryService.new.hidden_campaign_types)
+      # Filter out campaigns that are hidden from the admin dashboard (e.g. the phone confirmation OTP campaign)
+      @campaigns = @campaigns.where.not(type: EmailCampaigns::DeliveryService.new.hidden_from_admin_campaign_types)
 
       @campaigns = case parse_bool(params[:manual])
       when true then manual_order(@campaigns.manual)
