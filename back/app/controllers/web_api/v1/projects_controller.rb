@@ -131,7 +131,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
+      params: jsonapi_serializer_params,
       include: %i[project_images current_phase]
     )
   end
@@ -485,9 +485,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params({
-        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      }),
+      params: jsonapi_serializer_params,
       include: %i[project_images current_phase]
     )
   end

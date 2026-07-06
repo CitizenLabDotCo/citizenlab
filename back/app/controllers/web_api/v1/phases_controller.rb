@@ -32,7 +32,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def show_mini
-    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: action_descriptor_serializer_params).serializable_hash
   end
 
   def create

@@ -84,7 +84,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   attribute :action_descriptors, if: proc { |_phase, params| params[:action_descriptors] } do |phase, params|
     user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-    Permissions::PhasePermissionsService.new(phase, current_user(params), user_requirements_service: user_requirements_service, request: params[:request]).action_descriptors
+    Permissions::PhasePermissionsService.new(phase, current_user(params), user_requirements_service:, request: params[:request]).action_descriptors
   end
 
   belongs_to :project

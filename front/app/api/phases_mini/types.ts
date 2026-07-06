@@ -1,6 +1,7 @@
 import { Multiloc, IRelationship } from 'typings';
 
 import { InputTerm, ParticipationMethod, VotingMethod } from 'api/phases/types';
+import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -21,6 +22,7 @@ export interface PhaseMiniData {
     native_survey_button_multiloc?: Multiloc;
     participation_method: ParticipationMethod;
     voting_method?: VotingMethod;
+    action_descriptors?: PhaseActionDescriptors;
   };
   relationships: {
     project: {

@@ -104,6 +104,11 @@ resource 'Phases' do
       expect(json_response.dig(:data, :id)).to eq @phase.id
       expect(json_response.dig(:data, :type)).to eq 'phase_mini'
 
+      expect(json_response.dig(:data, :attributes, :action_descriptors).keys).to match_array(%i[
+        posting_idea commenting_idea reacting_idea comment_reacting_idea
+        annotating_document taking_survey taking_poll voting volunteering
+      ])
+
       expect(json_response.dig(:data, :relationships, :project)).to match({
         data: { id: @phase.project_id, type: 'project' }
       })
