@@ -40,21 +40,12 @@ const CommonGroundCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const reactingDescriptor = getPhaseActionDescriptor(
-    currentPhase,
-    'reacting_idea'
-  );
-  const postingDescriptor = getPhaseActionDescriptor(
+  const { enabled: reactingEnabled, disabled_reason: reactingDisabledReason } =
+    getPhaseActionDescriptor(currentPhase, 'reacting_idea');
+  const { enabled: postingEnabled } = getPhaseActionDescriptor(
     currentPhase,
     'posting_idea'
   );
-  if (!reactingDescriptor || !postingDescriptor) {
-    return null;
-  }
-
-  const { enabled: reactingEnabled, disabled_reason: reactingDisabledReason } =
-    reactingDescriptor;
-  const { enabled: postingEnabled } = postingDescriptor;
   const showButtons =
     reactingEnabled || isFixableByAuthentication(reactingDisabledReason);
 

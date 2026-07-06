@@ -51,7 +51,6 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown, onFocus }: Props) => {
   const imageAltText = localize(image?.data.attributes.alt_text_multiloc);
 
   const projectLink = getProjectLinkProps(project.attributes.slug);
-  const actionDescriptors = phase?.data.attributes.action_descriptors;
 
   return (
     <CardLink
@@ -72,11 +71,11 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown, onFocus }: Props) => {
             projectStartsInDays={project.attributes.starts_days_from_now}
             projectEndedDaysAgo={project.attributes.ended_days_ago}
           />
-          {phase && actionDescriptors && (
+          {phase && (
             <Text mt="2px" mb="0px" color="textSecondary">
               {getCTAMessage({
                 phase: phase.data,
-                actionDescriptors,
+                actionDescriptors: phase.data.attributes.action_descriptors,
                 localize,
                 formatMessage,
                 hasPublicReport,

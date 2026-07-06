@@ -33,9 +33,9 @@ export function getCurrentPhase(phases: IPhaseData[] | undefined) {
 }
 
 export function getPhaseActionDescriptor<
-  K extends keyof NonNullable<IPhaseData['attributes']['action_descriptors']>
+  K extends keyof IPhaseData['attributes']['action_descriptors']
 >(phase: IPhaseData, action: K) {
-  return phase.attributes.action_descriptors?.[action];
+  return phase.attributes.action_descriptors[action];
 }
 
 export function getFirstPhase(phases: IPhaseData[] | undefined) {

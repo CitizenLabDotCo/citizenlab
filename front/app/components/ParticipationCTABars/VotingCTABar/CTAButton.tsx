@@ -82,8 +82,10 @@ const CTAButton = ({ phase, project }: Props) => {
   const [processing, setProcessing] = useState(false);
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState<boolean>(false);
 
-  const permissionsDisabledReason =
-    getPhaseActionDescriptor(phase, 'voting')?.disabled_reason ?? null;
+  const permissionsDisabledReason = getPhaseActionDescriptor(
+    phase,
+    'voting'
+  ).disabled_reason;
 
   const customAccessDeniedMessage = useCustomAccessDeniedMessage({
     phaseId: phase.id,

@@ -38,12 +38,10 @@ const CommonGroundTabs = ({ phase, project, isPastPhase }: Props) => {
   const localize = useLocalize();
   const { data: progressData } = useCommonGroundProgress(phaseId);
 
-  const descriptor = getPhaseActionDescriptor(phase, 'reacting_idea');
-  if (!descriptor) {
-    return null;
-  }
-
-  const { enabled, disabled_reason } = descriptor;
+  const { enabled, disabled_reason } = getPhaseActionDescriptor(
+    phase,
+    'reacting_idea'
+  );
   const defaultTab = isPastPhase ? 'results' : 'statements';
   const currentTab = searchParams.tab ?? defaultTab;
   const disabledMessage =

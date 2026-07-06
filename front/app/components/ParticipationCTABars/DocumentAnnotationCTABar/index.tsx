@@ -32,15 +32,10 @@ const DocumentAnnotationCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const annotationDescriptor = getPhaseActionDescriptor(
+  const { enabled, disabled_reason } = getPhaseActionDescriptor(
     currentPhase,
     'annotating_document'
   );
-  if (!annotationDescriptor) {
-    return null;
-  }
-
-  const { enabled, disabled_reason } = annotationDescriptor;
   const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
   const handleClick = () => {

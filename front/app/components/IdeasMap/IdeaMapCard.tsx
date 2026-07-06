@@ -177,7 +177,7 @@ const IdeaMapCard = memo<Props>(
 
       const commentingEnabled = !!(
         phaseData &&
-        getPhaseActionDescriptor(phaseData, 'commenting_idea')?.enabled
+        getPhaseActionDescriptor(phaseData, 'commenting_idea').enabled
       );
       const ideaHasComments = idea.attributes.comments_count > 0;
       const showCommentCount = commentingEnabled || ideaHasComments;

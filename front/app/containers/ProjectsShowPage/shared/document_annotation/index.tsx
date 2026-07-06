@@ -32,13 +32,10 @@ const isEnabled = (
 };
 
 const DocumentAnnotation = ({ phase, documentUrl }: Props) => {
-  const descriptor = getPhaseActionDescriptor(phase, 'annotating_document');
-
-  if (!descriptor) {
-    return null;
-  }
-
-  const disabledReason = descriptor.disabled_reason;
+  const disabledReason = getPhaseActionDescriptor(
+    phase,
+    'annotating_document'
+  ).disabled_reason;
 
   const disabledMessage =
     getPermissionsDisabledMessage('annotating_document', disabledReason) ||

@@ -498,17 +498,15 @@ const ProjectCard = memo<InputProps>(
       );
     }
 
-    const phaseActionDescriptors = phase?.data.attributes.action_descriptors;
-    const ctaMessage =
-      phase && phaseActionDescriptors
-        ? getCTAMessage({
-            actionDescriptors: phaseActionDescriptors,
-            phase: phase.data,
-            formatMessage,
-            localize,
-            hasPublicReport,
-          })
-        : undefined;
+    const ctaMessage = phase
+      ? getCTAMessage({
+          actionDescriptors: phase.data.attributes.action_descriptors,
+          phase: phase.data,
+          formatMessage,
+          localize,
+          hasPublicReport,
+        })
+      : undefined;
 
     const contentHeader = (
       <ContentHeader

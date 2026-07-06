@@ -189,12 +189,7 @@ const CauseCard = ({ cause, className, phase }: Props) => {
     params: { cause },
   } as const;
 
-  const descriptor = getPhaseActionDescriptor(phase, 'volunteering');
-  if (!descriptor) {
-    return null;
-  }
-
-  const { disabled_reason } = descriptor;
+  const { disabled_reason } = getPhaseActionDescriptor(phase, 'volunteering');
 
   const blocked = !!disabled_reason;
   const blockedAndUnfixable =

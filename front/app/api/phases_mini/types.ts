@@ -22,7 +22,7 @@ export interface PhaseMiniData {
     native_survey_button_multiloc?: Multiloc;
     participation_method: ParticipationMethod;
     voting_method?: VotingMethod;
-    action_descriptors?: PhaseActionDescriptors;
+    action_descriptors: PhaseActionDescriptors;
   };
   relationships: {
     project: {

@@ -153,10 +153,7 @@ export const getIdeaPostingRules = ({
     const { disabled_reason, enabled } = getPhaseActionDescriptor(
       phase,
       'posting_idea'
-    ) ?? {
-      enabled: false as const,
-      disabled_reason: 'user_not_permitted' as const,
-    };
+    );
 
     if (
       disabled_reason === 'inactive_phase' ||

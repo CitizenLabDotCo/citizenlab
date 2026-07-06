@@ -47,12 +47,10 @@ const Poll = ({ projectId, phaseId }: Props) => {
     return null;
   }
 
-  const descriptor = getPhaseActionDescriptor(phase.data, 'taking_poll');
-  if (!descriptor) {
-    return null;
-  }
-
-  const { enabled, disabled_reason } = descriptor;
+  const { enabled, disabled_reason } = getPhaseActionDescriptor(
+    phase.data,
+    'taking_poll'
+  );
 
   const disabledMessage =
     getPermissionsDisabledMessage('taking_poll', disabled_reason) || null;

@@ -39,15 +39,10 @@ const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
     return null;
   }
 
-  const surveyDescriptor = getPhaseActionDescriptor(
+  const { enabled, disabled_reason } = getPhaseActionDescriptor(
     currentPhase,
     'taking_survey'
   );
-  if (!surveyDescriptor) {
-    return null;
-  }
-
-  const { enabled, disabled_reason } = surveyDescriptor;
   const showSignIn = enabled || isFixableByAuthentication(disabled_reason);
 
   const handleTakeSurveyClick = () => {

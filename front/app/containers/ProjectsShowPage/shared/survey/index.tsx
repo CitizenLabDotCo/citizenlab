@@ -42,13 +42,10 @@ interface Props {
 
 const Survey = ({ phase, surveyEmbedUrl, surveyService, className }: Props) => {
   const { data: authUser } = useAuthUser();
-  const descriptor = getPhaseActionDescriptor(phase, 'taking_survey');
-
-  if (!descriptor) {
-    return null;
-  }
-
-  const { enabled, disabled_reason } = descriptor;
+  const { enabled, disabled_reason } = getPhaseActionDescriptor(
+    phase,
+    'taking_survey'
+  );
 
   const disabledMessage =
     getPermissionsDisabledMessage('taking_survey', disabled_reason) || null;
