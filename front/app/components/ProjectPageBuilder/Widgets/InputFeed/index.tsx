@@ -4,8 +4,10 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import { UserComponent } from '@craftjs/core';
 
 import usePhases from 'api/phases/usePhases';
-import { getLatestRelevantPhase } from 'api/phases/utils';
+import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
+
+import useLocale from 'hooks/useLocale';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -35,9 +37,14 @@ const InputFeed: UserComponent = () => {
   const { data: projectBySlug } = useProjectBySlug(slug);
   const projectIdToUse = projectId || projectBySlug?.data.id;
   const onPublicRoute = !!slug;
+  const currentLocale = useLocale();
   const canModerate = useCanModerateProject(projectIdToUse);
   const { data: phases } = usePhases(projectIdToUse);
   const hasParticipation = !!phases && !!getLatestRelevantPhase(phases.data);
+  // When the Timeline widget above hides itself (same rule as the legacy
+  // page), this becomes the first content on the grey band and needs its own
+  // top padding, normally provided by the timeline.
+  const startsGreyBand = !!phases && hideTimelineUI(phases.data, currentLocale);
 
   return (
     <Box
@@ -53,7 +60,11 @@ const InputFeed: UserComponent = () => {
           // Sits on the same grey background as the Timeline widget above it, so
           // the phases + participation content read as one section (like the old
           // page). Only wraps real content, so empty phases leave no grey strip.
-          <SectionBackground $fullBleed={onPublicRoute} pb="40px">
+          <SectionBackground
+            $fullBleed={onPublicRoute}
+            pb="40px"
+            pt={startsGreyBand ? '40px' : undefined}
+          >
             <Suspense fallback={null}>
               <PublicInputContent projectId={projectIdToUse} />
             </Suspense>
