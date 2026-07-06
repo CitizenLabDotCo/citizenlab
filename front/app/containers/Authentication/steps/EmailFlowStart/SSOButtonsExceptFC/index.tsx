@@ -1,8 +1,9 @@
 import React from 'react';
 
+import useIdMethods from 'api/id_methods/useIdMethods';
+
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
-import useSSOProviders from './providers';
 import SSOButton from './SSOButton';
 
 interface Props {
@@ -11,12 +12,22 @@ interface Props {
 
 // Renders all enabled SSO providers (except FranceConnect), in display order.
 const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
-  const { allProviders } = useSSOProviders();
+  const { data: idMethods } = useIdMethods();
+
+  const authenticationMethodsExceptFC = idMethods?.data.filter((method) => {
+    const isAuthMethod = method.attributes.authentication_method;
+    const isFC = method.attributes.name === 'franceconnect';
+    return !isFC && isAuthMethod;
+  });
 
   return (
     <>
-      {allProviders.map((provider) => (
-        <SSOButton key={provider} provider={provider} onClickSSO={onClickSSO} />
+      {authenticationMethodsExceptFC?.map((method) => (
+        <SSOButton
+          key={method.id}
+          provider={method.attributes.name}
+          onClickSSO={onClickSSO}
+        />
       ))}
     </>
   );

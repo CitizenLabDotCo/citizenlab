@@ -2,11 +2,11 @@ import React from 'react';
 
 import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 import { SSOProvider } from 'api/authentication/singleSignOn';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { AuthenticationData, SetError } from 'containers/Authentication/typings';
 
 import DefaultVariant from './DefaultVariant';
-import useSSOProviders from './SSOButtonsExceptFC/providers';
 import VerificationVariant from './VerificationVariant';
 
 interface Props {
@@ -21,7 +21,11 @@ const EmailFlowStart = ({ authenticationData, ...props }: Props) => {
   const { data: requirements } = useAuthenticationRequirements(
     authenticationData.context
   );
-  const { hasVerificationMethod } = useSSOProviders();
+  const { data: idMethods } = useIdMethods();
+
+  const hasVerificationMethod = !!idMethods?.data.some(
+    (method) => method.attributes.verification_method
+  );
 
   const verificationRequired =
     requirements?.data.attributes.requirements.verification ?? false;
