@@ -27,13 +27,15 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
     !!azureConfig && (azureAdIsVisible || showAdminOnlyMethods);
 
   const authenticationMethodsExceptFC = idMethods?.data.filter((method) => {
+    if (method.attributes.name === 'franceconnect') {
+      return false;
+    }
+
     if (method.attributes.name === 'azureactivedirectory') {
       return azureAdEnabled;
     }
 
-    const isAuthMethod = method.attributes.authentication_method;
-    const isFC = method.attributes.name === 'franceconnect';
-    return !isFC && isAuthMethod;
+    return method.attributes.authentication_method;
   });
 
   return (
