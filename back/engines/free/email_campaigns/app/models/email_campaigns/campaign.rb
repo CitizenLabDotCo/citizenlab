@@ -184,6 +184,12 @@ module EmailCampaigns
       false
     end
 
+    # Whether this campaign should be excluded from the admin campaigns UI.
+    # Transactional/internal campaigns (e.g. the phone-confirmation OTP) override this.
+    def hidden_from_admin?
+      false
+    end
+
     # Communication channel used to deliver this campaign. Persisted in the
     # `channel` column so it can be queried directly (e.g. from Metabase). The
     # value is fixed by the campaign class; SMS classes override `self.channel`.

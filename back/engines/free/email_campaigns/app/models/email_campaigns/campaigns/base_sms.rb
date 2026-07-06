@@ -46,6 +46,36 @@ module EmailCampaigns
       'sms'
     end
 
+    def deliver_now(command)
+      EmailCampaigns::Sms::SendService.new.send_now(
+        to: sms_destination(command),
+        body: sms_body(command),
+        user_id: command[:recipient].id,
+        campaign_id: id
+      )
+    end
+
+    def deliver_later(command)
+      enqueue_sms(command, campaign_id: id)
+    end
+
+    # Like #deliver_later, but leaves the delivery unlinked so a preview/test send
+    # doesn't count towards this campaign's deliveries/stats or sent? state.
+    def deliver_preview(command)
+      raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if sms_destination(command).blank?
+
+      enqueue_sms(command, campaign_id: nil)
+    end
+
+    def sms_body(_command)
+      raise NotImplementedError, "#{self.class} must implement #sms_body"
+    end
+
+    # The phone number this campaign's SMS should be sent to.
+    def sms_destination(_command)
+      raise NotImplementedError, "#{self.class} must implement #sms_destination"
+    end
+
     def sent?
       sms_deliveries.exists?
     end
@@ -58,9 +88,25 @@ module EmailCampaigns
 
     protected
 
-    # SMS recipients are seeded from users with a phone number, not an email.
+    # SMS recipients are seeded from users with a *confirmed* phone number, not an
+    # email. Under the verification flow phone_number is only populated once the
+    # number is confirmed, so phone_number_confirmed_at is the authoritative guard.
     def recipients_base_scope
-      User.where.not(phone_number: nil)
+      User.where.not(phone_number_confirmed_at: nil)
+    end
+
+    private
+
+    def enqueue_sms(command, campaign_id:)
+      return if sms_destination(command).blank? || sms_body(command).blank?
+
+      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
+        body: sms_body(command),
+        user_id: command[:recipient].id,
+        campaign_id: campaign_id
+      )
+      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
+      delivery
     end
   end
 end

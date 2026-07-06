@@ -25,6 +25,9 @@ module EmailCampaigns
         @campaigns = @campaigns.where(id: supported_ids)
       end
 
+      # Filter out campaigns that are hidden from the admin dashboard (e.g. the phone confirmation OTP campaign)
+      @campaigns = @campaigns.where.not(type: EmailCampaigns::DeliveryService.new.hidden_from_admin_campaign_types)
+
       @campaigns = case parse_bool(params[:manual])
       when true then manual_order(@campaigns.manual)
       when false then @campaigns.automatic.order(created_at: :desc)

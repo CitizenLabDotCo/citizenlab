@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::SmsManual do
+  let(:phone_number1) { '+14155552671' }
+  let(:phone_number2) { '+14155552672' }
+
   describe 'SmsManual default factory' do
     it 'is valid' do
       expect(build(:sms_manual_campaign)).to be_valid
@@ -53,19 +56,85 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     end
   end
 
+  describe '#sms_body' do
+    let(:campaign) { build(:sms_manual_campaign) }
+    let(:recipient) { create(:user, locale: 'en') }
+
+    it 'renders the command body_multiloc in the recipient locale' do
+      command = { recipient: recipient, body_multiloc: { 'en' => 'A short SMS update from your city.' } }
+      expect(campaign.sms_body(command)).to eq('A short SMS update from your city.')
+    end
+  end
+
+  describe '#sms_destination' do
+    let(:campaign) { build(:sms_manual_campaign) }
+    let(:recipient) { create(:user, phone_number: phone_number1, phone_number_confirmed_at: Time.zone.now) }
+
+    it 'targets the recipient confirmed phone_number' do
+      expect(campaign.sms_destination({ recipient: recipient })).to eq(phone_number1)
+    end
+  end
+
+  describe 'async SMS delivery' do
+    let(:campaign) { create(:sms_manual_campaign) }
+    let(:recipient) { create(:user, locale: 'en', phone_number: phone_number1, phone_number_confirmed_at: Time.zone.now) }
+    let(:command) { { recipient: recipient, body_multiloc: { 'en' => 'A short SMS update from your city.' } } }
+
+    include_context 'with sms feature enabled'
+
+    describe '#deliver_later' do
+      it 'creates a campaign-linked pending delivery and enqueues a SendJob' do
+        delivery = nil
+        expect { delivery = campaign.deliver_later(command) }
+          .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
+
+        expect(delivery).to have_attributes(
+          user_id: recipient.id,
+          campaign_id: campaign.id,
+          body: 'A short SMS update from your city.',
+          status: 'pending'
+        )
+        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+      end
+
+      it 'is a no-op when the recipient has no phone number' do
+        recipient.update_columns(phone_number: nil, phone_number_confirmed_at: nil)
+        expect { campaign.deliver_later(command) }.not_to change(EmailCampaigns::Sms::Delivery, :count)
+      end
+    end
+
+    describe '#deliver_preview' do
+      it 'creates and enqueues the delivery, unlinked from the campaign' do
+        delivery = nil
+        expect { delivery = campaign.deliver_preview(command) }
+          .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
+
+        expect(delivery.campaign_id).to be_nil
+        expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id)
+      end
+
+      it 'raises when the previewer has no phone number' do
+        recipient.update_columns(phone_number: nil, phone_number_confirmed_at: nil)
+        expect { campaign.deliver_preview(command) }.to raise_error(EmailCampaigns::Sms::Error)
+      end
+    end
+  end
+
   describe 'apply_recipient_filters' do
     let(:campaign) { build(:sms_manual_campaign) }
 
-    it 'seeds recipients from users with a phone number and excludes phone-less users' do
-      with_phone = create(:user, phone_number: '+14155552671')
+    it 'seeds recipients from users with a confirmed phone number and excludes others' do
+      with_confirmed_phone = create(:user, :with_confirmed_phone)
+      with_unconfirmed_phone = create(:user, phone_number: phone_number1, phone_number_confirmed_at: nil)
       without_phone = create(:user, phone_number: nil)
 
-      expect(campaign.apply_recipient_filters).to include(with_phone)
+      expect(campaign.apply_recipient_filters).to include(with_confirmed_phone)
+      expect(campaign.apply_recipient_filters).not_to include(with_unconfirmed_phone)
       expect(campaign.apply_recipient_filters).not_to include(without_phone)
     end
 
     it 'filters out invitees' do
-      invitee = create(:invited_user, phone_number: '+14155552672')
+      invitee = create(:invited_user, phone_number: phone_number2, phone_number_confirmed_at: Time.zone.now)
 
       expect(campaign.apply_recipient_filters).not_to include(invitee)
     end

@@ -24,6 +24,15 @@ class RequestCodePolicy < ApplicationPolicy
     true
   end
 
+  # For authenticated users adding/changing their (verified) phone number
+  def request_code_phone_change?
+    return false unless app_configuration.feature_activated?('sms')
+    return false if user.nil?
+    return false if (user.new_phone_confirmation&.code_reset_count || 0) >= max_retries - 1
+
+    true
+  end
+
   private
 
   def app_configuration

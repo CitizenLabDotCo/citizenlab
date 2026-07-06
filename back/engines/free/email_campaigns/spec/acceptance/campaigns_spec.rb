@@ -279,13 +279,7 @@ resource 'Campaigns' do
           parameter :subject_multiloc, 'An admin-facing label for the SMS campaign (reuses the subject column; SMS has no subject line)', required: true
         end
 
-        before do
-          SettingsService.new.activate_feature!('sms', settings: {
-            'twilio_account_sid' => 'AC_test',
-            'twilio_auth_token' => 'token',
-            'twilio_phone_number' => '+15005550006'
-          })
-        end
+        include_context 'with sms feature enabled'
 
         let(:campaign_name) { 'sms_manual' }
         let(:subject_multiloc) { { 'en' => 'Town hall reminder' } }
@@ -596,13 +590,10 @@ resource 'Campaigns' do
       end
 
       context 'SMS campaign' do
+        include_context 'with sms feature enabled'
+
         before do
-          SettingsService.new.activate_feature!('sms', settings: {
-            'twilio_account_sid' => 'AC_test',
-            'twilio_auth_token' => 'token',
-            'twilio_phone_number' => '+15005550006'
-          })
-          create(:user, phone_number: '+14155552671')
+          create(:user, phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now)
         end
 
         let(:campaign) { create(:sms_manual_campaign) }

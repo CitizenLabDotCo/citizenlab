@@ -63,7 +63,10 @@ module EmailCampaigns
       @campaign_classes ||= begin
         classes = CAMPAIGN_CLASSES.deep_dup
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
-        classes << Campaigns::SmsManual if AppConfiguration.instance.feature_activated?('sms')
+        if AppConfiguration.instance.feature_activated?('sms')
+          classes << Campaigns::SmsManual
+          classes << Campaigns::NewPhoneConfirmation
+        end
         classes
       end
     end
@@ -74,6 +77,12 @@ module EmailCampaigns
 
     def manual_campaign_types
       campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
+    end
+
+    # Campaign types that should never surface in the admin campaigns UI
+    # (e.g. transactional/internal campaigns like the phone-confirmation OTP).
+    def hidden_from_admin_campaign_types
+      campaign_classes.select { |campaign| campaign.new.hidden_from_admin? }.map(&:name)
     end
 
     def consentable_campaign_types_for(user)
@@ -101,18 +110,15 @@ module EmailCampaigns
       apply_send_pipeline([campaign])
     end
 
-    # Sends one campaign to one recipient immediately (synchronously) with a
-    # caller-supplied event_payload. For transactional emails that must arrive
-    # right away (e.g. confirmation codes). Runs Trackable hooks so a Delivery
-    # record is saved, but bypasses the recipient-filter pipeline.
+    # Sends one campaign to one recipient immediately, bypassing the
+    # recipient-filter pipeline. For transactional messages that must go out
+    # right away (e.g. confirmation codes).
     def send_now_to_user(campaign, recipient, event_payload = {})
-      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
-      campaign.run_before_send_hooks(command)
-      campaign.mailer_class
-        .with(campaign: campaign, command: command)
-        .campaign_mail
-        .deliver_now
-      campaign.run_after_send_hooks(command)
+      if campaign.sms?
+        send_sms_now_to_user(campaign, recipient, event_payload)
+      else
+        send_email_now_to_user(campaign, recipient, event_payload)
+      end
     end
 
     def send_email_preview(campaign, recipient)
@@ -129,16 +135,10 @@ module EmailCampaigns
     end
 
     def send_sms_preview(campaign, recipient)
-      raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if recipient.phone_number.blank?
+      command = generate_commands(campaign, recipient).first
+      return unless command
 
-      body = MultilocService.new.t(campaign.body_multiloc, recipient.locale)
-      return if body.blank?
-
-      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
-        body: body,
-        user_id: recipient.id
-      )
-      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
+      campaign.deliver_preview(command)
     end
 
     def preview_email(campaign, recipient)
@@ -168,6 +168,26 @@ module EmailCampaigns
     end
 
     private
+
+    # Renders and delivers the campaign's email synchronously. Runs Trackable
+    # hooks so a Delivery record is saved.
+    def send_email_now_to_user(campaign, recipient, event_payload = {})
+      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
+      campaign.run_before_send_hooks(command)
+      campaign.mailer_class
+        .with(campaign: campaign, command: command)
+        .campaign_mail
+        .deliver_now
+      campaign.run_after_send_hooks(command)
+    end
+
+    # Sends a transactional one-off SMS synchronously, in-process (e.g. the
+    # phone-confirmation OTP). The campaign owns rendering, destination and the
+    # synchronous send.
+    def send_sms_now_to_user(campaign, recipient, event_payload = {})
+      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
+      campaign.deliver_now(command)
+    end
 
     # Takes options, either
     # * time: Time object when the sending command happened
@@ -216,14 +236,14 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      return send_command_sms(campaign, command) if campaign.sms?
+      return send_sms_command(campaign, command) if campaign.sms?
 
-      send_command_email(campaign, command)
+      send_email_command(campaign, command)
     end
 
     # Sends the command through the internal Rails mailing stack. Campaigns
     # without a mailer (nothing to email) are a no-op.
-    def send_command_email(campaign, command)
+    def send_email_command(campaign, command)
       return unless campaign.respond_to?(:mailer_class)
 
       campaign.mailer_class
@@ -232,22 +252,8 @@ module EmailCampaigns
         .deliver_later(wait: command[:delay] || 0)
     end
 
-    # Dispatches the command over SMS. The EmailCampaigns::Sms::Delivery is created synchronously
-    # here (so the campaign's sent? guard sees it immediately), then the actual
-    # provider send happens asynchronously in EmailCampaigns::Sms::SendJob.
-    def send_command_sms(campaign, command)
-      recipient = command[:recipient]
-      return if recipient.phone_number.blank?
-
-      body = MultilocService.new.t(command[:body_multiloc], recipient.locale)
-      return if body.blank?
-
-      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
-        body: body,
-        user_id: recipient.id,
-        campaign_id: campaign.id
-      )
-      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
+    def send_sms_command(campaign, command)
+      campaign.deliver_later(command)
     end
 
     def generate_commands(campaign, recipient, options = {})

@@ -45,6 +45,35 @@ class WebApi::V1::RequestCodesController < ApplicationController
     head :ok
   end
 
+  # This endpoint is used when a logged in user wants to add or change their
+  # (verified) phone number. The submitted number is held as a pending
+  # new_phone_number and an SMS confirmation code is sent to it.
+  def request_code_phone_change
+    authorize current_user, policy_class: RequestCodePolicy
+
+    new_phone_number = request_code_phone_change_params[:new_phone_number]
+    if new_phone_number.blank?
+      render json: { errors: { new_phone_number: [{ error: 'cannot be blank' }] } }, status: :unprocessable_entity
+      return
+    end
+
+    parsed = Phonelib.parse(new_phone_number)
+    if parsed.invalid?
+      render json: { errors: { new_phone_number: [{ error: 'is invalid' }] } }, status: :unprocessable_entity
+      return
+    end
+    normalized = parsed.e164
+
+    if User.where.not(id: current_user.id).exists?(phone_number: normalized)
+      render json: { errors: { new_phone_number: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
+      return
+    end
+
+    RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone_number: normalized)
+
+    head :ok
+  end
+
   private
 
   def request_code_unauthenticated_params
@@ -53,5 +82,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   def request_code_email_change_params
     params.fetch(:request_code, {}).permit(:new_email)
+  end
+
+  def request_code_phone_change_params
+    params.fetch(:request_code, {}).permit(:new_phone_number)
   end
 end

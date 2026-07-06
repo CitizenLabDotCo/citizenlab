@@ -186,6 +186,7 @@ en:
       new_email_confirmation: New email confirmation code
       new_idea_for_admin_prescreening: New input requiring approval in a project I moderate
       new_idea_for_admin_published: New published input in a project I moderate
+      new_phone_confirmation: Phone number verification code
       official_feedback_on_idea_you_follow: Update on an input that you follow
       password_reset: Password reset
       project_folder_moderation_rights_received: Folder manager rights received
@@ -525,6 +526,8 @@ en:
       title: A new input has been published on your platform
       today: Today
       yesterday: Yesterday
+    new_phone_confirmation:
+      sms_body: 'Your confirmation code is %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Go to this input
       event_description: "%{feedback_author_name} gave an update on '%{input_title}'."

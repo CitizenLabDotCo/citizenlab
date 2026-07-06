@@ -56,6 +56,15 @@ module EmailCampaigns
       'email_campaigns.admin_labels.content_type.general'
     end
 
+    # The admin-authored body, carried on the command by #generate_commands.
+    def sms_body(command)
+      MultilocService.new.t(command[:body_multiloc], command[:recipient].locale)
+    end
+
+    def sms_destination(command)
+      command[:recipient].phone_number
+    end
+
     def generate_commands(recipient:, time: nil, activity: nil)
       [{
         author: author,
