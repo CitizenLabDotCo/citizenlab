@@ -16,6 +16,7 @@ import Link from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
 import { useParams } from 'utils/router';
 
+import EditModeHeightCap from '../EditModeHeightCap';
 import messages from '../messages';
 import useWidgetProjectId from '../useWidgetProjectId';
 
@@ -50,34 +51,36 @@ const EventsWidget: UserComponent = () => {
   }
 
   return (
-    <Box
-      id="e2e-project-page-events"
-      display="flex"
-      flexDirection="column"
-      gap="48px"
-      mx="auto"
-      mt="48px"
-      maxWidth={`${maxPageWidth}px`}
-      px={isSmallerThanTablet ? '20px' : padding}
-    >
-      <EventsViewer
-        showProjectFilter={false}
-        projectId={projectId}
-        eventsTime="currentAndFuture"
-        title={formatMessage(sharedMessages.upcomingAndOngoingEvents)}
-        fallbackMessage={sharedMessages.noUpcomingOrOngoingEvents}
-        projectPublicationStatuses={[...PUBLICATION_STATUSES]}
-      />
-      <EventsViewer
-        showProjectFilter={false}
-        projectId={projectId}
-        eventsTime="past"
-        title={formatMessage(sharedMessages.pastEvents)}
-        fallbackMessage={sharedMessages.noPastEvents}
-        projectPublicationStatuses={[...PUBLICATION_STATUSES]}
-        showDateFilter={false}
-      />
-    </Box>
+    <EditModeHeightCap>
+      <Box
+        id="e2e-project-page-events"
+        display="flex"
+        flexDirection="column"
+        gap="48px"
+        mx="auto"
+        mt="48px"
+        maxWidth={`${maxPageWidth}px`}
+        px={isSmallerThanTablet ? '20px' : padding}
+      >
+        <EventsViewer
+          showProjectFilter={false}
+          projectId={projectId}
+          eventsTime="currentAndFuture"
+          title={formatMessage(sharedMessages.upcomingAndOngoingEvents)}
+          fallbackMessage={sharedMessages.noUpcomingOrOngoingEvents}
+          projectPublicationStatuses={[...PUBLICATION_STATUSES]}
+        />
+        <EventsViewer
+          showProjectFilter={false}
+          projectId={projectId}
+          eventsTime="past"
+          title={formatMessage(sharedMessages.pastEvents)}
+          fallbackMessage={sharedMessages.noPastEvents}
+          projectPublicationStatuses={[...PUBLICATION_STATUSES]}
+          showDateFilter={false}
+        />
+      </Box>
+    </EditModeHeightCap>
   );
 };
 
