@@ -55,7 +55,6 @@ describe Permissions::PhasePermissionsService do
       end
     end
 
-
     context 'when the project is archived' do
       let(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' }) }
 
@@ -204,7 +203,6 @@ describe Permissions::PhasePermissionsService do
         expect(service.denied_reason_for_action('commenting_idea')).to eq 'commenting_disabled'
       end
     end
-
 
     context 'when the project is archived' do
       let(:project) { create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' }) }
@@ -604,7 +602,6 @@ describe Permissions::PhasePermissionsService do
         expect(service.denied_reason_for_action('voting')).to eq 'user_not_in_group'
       end
     end
-
 
     context 'when the project is archived' do
       let(:project) { create(:single_phase_budgeting_project, admin_publication_attributes: { publication_status: 'archived' }) }

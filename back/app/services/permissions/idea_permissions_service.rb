@@ -40,7 +40,7 @@ module Permissions
         # Check for idea status reason first, to avoid situations where FE presents user
         # with what looks like a possible action, (i.e. reacting), redirects user to signin flow,
         # and then once signed in, the user finds the action is not possible.
-        if action == 'reacting_idea' && (idea.voting_expired? || REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code))
+        if action == 'reacting_idea' && reacting_not_allowed?
           return IDEA_DENIED_REASONS[:reacting_not_allowed]
         end
 
@@ -118,6 +118,10 @@ module Permissions
       @timeline_service.future_phases(idea.project, time).find do |phase|
         !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service, time: nil).denied_reason_for_action(action, reaction_mode: reaction_mode)
       end
+    end
+
+    def reacting_not_allowed?
+      idea.voting_expired? || REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
     end
 
     def idea_in_current_phase?(current_phase)
