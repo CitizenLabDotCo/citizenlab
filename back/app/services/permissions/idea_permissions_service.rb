@@ -1,5 +1,5 @@
 module Permissions
-  class IdeaPermissionsService < ProjectPermissionsService
+  class IdeaPermissionsService < PhasePermissionsService
     IDEA_DENIED_REASONS = {
       idea_not_in_current_phase: 'idea_not_in_current_phase',
       votes_exist: 'votes_exist',
@@ -11,7 +11,9 @@ module Permissions
     REACTING_NOT_ALLOWED_CODES = %w[prescreening expired ineligible].freeze
 
     def initialize(idea, user, user_requirements_service: nil)
-      super(idea.project, user, user_requirements_service: user_requirements_service)
+      phase = TimelineService.new.current_phase_not_archived(idea.project)
+      phase.project = idea.project if phase # Performance optimization (keep preloaded relationships)
+      super(phase, user, user_requirements_service: user_requirements_service)
       @idea ||= idea
     end
 
@@ -26,6 +28,7 @@ module Permissions
         #    involving permissions and votes
         return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
         return IDEA_DENIED_REASONS[:not_author] if (idea.author_id != user&.id) || idea.author_id.nil? || !user&.active?
+        return PROJECT_DENIED_REASONS[:project_inactive] if !phase
 
         reason = super
         return reason if reason
@@ -41,6 +44,8 @@ module Permissions
           return IDEA_DENIED_REASONS[:reacting_not_allowed]
         end
 
+        return PROJECT_DENIED_REASONS[:project_inactive] if !phase
+
         reason = super
         return reason if reason
         return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
@@ -48,8 +53,7 @@ module Permissions
         # The input does not need to be in the current phase for editing.
         # We preserved the behaviour that was already there, but we're not
         # sure if this is the desired behaviour.
-        current_phase = @timeline_service.current_phase_not_archived project
-        IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase && !idea_in_current_phase?(current_phase)
+        IDEA_DENIED_REASONS[:idea_not_in_current_phase] if !idea_in_current_phase?(phase)
       end
     end
 
@@ -111,7 +115,7 @@ module Permissions
 
     def future_enabled_phase(action, reaction_mode: nil)
       time = Time.zone.now
-      @timeline_service.future_phases(project, time).find do |phase|
+      @timeline_service.future_phases(idea.project, time).find do |phase|
         !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service, time: nil).denied_reason_for_action(action, reaction_mode: reaction_mode)
       end
     end

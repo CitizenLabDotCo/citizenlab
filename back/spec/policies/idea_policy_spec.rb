@@ -222,7 +222,7 @@ describe IdeaPolicy do
 
     context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
       before do
-        allow_any_instance_of(Permissions::ProjectPermissionsService)
+        allow_any_instance_of(Permissions::PhasePermissionsService)
           .to receive(:denied_reason_for_action).and_return('posting_not_supported')
       end
 
