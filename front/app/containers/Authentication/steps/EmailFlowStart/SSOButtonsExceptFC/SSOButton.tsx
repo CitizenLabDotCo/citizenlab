@@ -15,7 +15,7 @@ import AuthProviderButton, {
 import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
 import sharedMessages from '../../_components/messages';
 import ViennaSamlButton from '../../_components/ViennaSamlButton';
-import { getAzureB2cConfig, getAzureConfig } from '../utils';
+import { getAzureB2cConfig, getAzureConfig } from '../../../../../api/id_methods/utils';
 
 import messages from './messages';
 import useAuthMethodNames from './methodNames';

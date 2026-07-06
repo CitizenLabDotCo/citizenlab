@@ -1,7 +1,7 @@
 import { IDKeycloakMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 
-import { getAzureB2cConfig, getAzureConfig } from '../utils';
+import { getAzureB2cConfig, getAzureConfig } from '../../../../../api/id_methods/utils';
 
 const isDev = process.env.NODE_ENV === 'development';
 

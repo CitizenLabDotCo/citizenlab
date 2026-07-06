@@ -1,4 +1,10 @@
-import { IdMethods, IDAzureAdMethod, IDAzureAdB2cMethod } from 'api/id_methods/types';
+import {
+  IdMethods,
+  IDAzureAdMethod,
+  IDAzureAdB2cMethod,
+  IdMethodName,
+  IdMethodData
+} from './types';
 
 export const getAzureConfig = (idMethods?: IdMethods) => {
   const azureAdSettings = idMethods?.data.find(
@@ -14,4 +20,14 @@ export const getAzureB2cConfig = (idMethods?: IdMethods) => {
   ) as IDAzureAdB2cMethod | undefined;
 
   return azureAdB2cSettings;
+}
+
+export function isLastIdMethod(
+  idMethodName: IdMethodName,
+  idMethods: IdMethodData[]
+) {
+  return (
+    idMethods.map((vm) => vm.attributes.name).indexOf(idMethodName) ===
+    idMethods.length - 1
+  );
 }

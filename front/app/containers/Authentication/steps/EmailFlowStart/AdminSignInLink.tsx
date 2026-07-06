@@ -8,7 +8,7 @@ import useIdMethods from 'api/id_methods/useIdMethods';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { getAzureConfig } from './utils';
+import { getAzureConfig } from '../../../../api/id_methods/utils';
 
 const StyledA = styled.a`
   font-size: ${fontSizes.base}px;
