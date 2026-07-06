@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
+import EditModeHeightCap from '../EditModeHeightCap';
 import messages from '../messages';
 import SectionBackground from '../SectionBackground';
 import useCanModerateProject from '../useCanModerateProject';
@@ -60,15 +61,17 @@ const InputFeed: UserComponent = () => {
           // Sits on the same grey background as the Timeline widget above it, so
           // the phases + participation content read as one section (like the old
           // page). Only wraps real content, so empty phases leave no grey strip.
-          <SectionBackground
-            $fullBleed={onPublicRoute}
-            pb="40px"
-            pt={startsGreyBand ? '40px' : undefined}
-          >
-            <Suspense fallback={null}>
-              <PublicInputContent projectId={projectIdToUse} />
-            </Suspense>
-          </SectionBackground>
+          <EditModeHeightCap>
+            <SectionBackground
+              $fullBleed={onPublicRoute}
+              pb="40px"
+              pt={startsGreyBand ? '40px' : undefined}
+            >
+              <Suspense fallback={null}>
+                <PublicInputContent projectId={projectIdToUse} />
+              </Suspense>
+            </SectionBackground>
+          </EditModeHeightCap>
         ) : canModerate ? (
           <EmptyInputFeed />
         ) : null)}
