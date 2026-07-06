@@ -38,13 +38,15 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
 
   return (
     <>
-      {authenticationMethodsExceptFC?.map((method) => (
-        <SSOButton
-          key={method.id}
-          provider={method.attributes.name}
-          onClickSSO={onClickSSO}
-        />
-      ))}
+      {
+        authenticationMethodsExceptFC?.map((method) => (
+          <SSOButton
+            key={method.id}
+            provider={method.attributes.name}
+            onClickSSO={onClickSSO}
+          />
+        ))
+      }
     </>
   );
 };

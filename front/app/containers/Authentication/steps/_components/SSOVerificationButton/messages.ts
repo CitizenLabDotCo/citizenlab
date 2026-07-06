@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyFedera',
     defaultMessage: 'Verify with SPID, CIE or CNS',
   },
+  verifyEtatLu: {
+    id: 'app.components.VerificationModal.verifyEtatLu2',
+    defaultMessage: 'Verify with your IAM identifier',
+  },
 });

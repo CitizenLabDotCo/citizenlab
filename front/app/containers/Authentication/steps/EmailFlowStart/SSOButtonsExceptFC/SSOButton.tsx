@@ -210,6 +210,16 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
         </WrappedAuthProviderButton>
       );
     }
+    case 'etat_lu':
+      return (
+        <WrappedAuthProviderButton
+          icon="etat_lu"
+          authProvider="etat_lu"
+          onClick={onClickSSO}
+        >
+          <FormattedMessage {...messages.continueWithLuxembourgIAM} />
+        </WrappedAuthProviderButton>
+      )
     case 'franceconnect':
       // FranceConnect is handled separately
       // (it has its own branded button), so not implemented here.
