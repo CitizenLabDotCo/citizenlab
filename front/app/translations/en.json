@@ -594,6 +594,8 @@
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "project editor",
   "app.components.ProjectPageBuilder.Widgets.projectTitleLabel": "Project title",
   "app.components.ProjectPageBuilder.Widgets.timelineEmptyTitle": "No phases yet",
+  "app.components.ProjectPageBuilder.Widgets.timelineHiddenNote": "This project has a single phase without an end date or description, so visitors won't see a timeline.",
+  "app.components.ProjectPageBuilder.Widgets.timelineHiddenTitle": "Timeline hidden",
   "app.components.ProjectPageBuilder.Widgets.timelineManagedNote": "Phases are set in the {projectEditorLink}. The timeline updates on its own as dates pass.",
   "app.components.ProjectPageBuilder.Widgets.timelineWidgetTitle": "Timeline",
   "app.components.ProjectPageBuilder.Widgets.titleWidgetTitle": "Title",
