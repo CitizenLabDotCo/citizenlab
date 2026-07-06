@@ -135,9 +135,9 @@ const ProjectsShowPage = ({ project }: Props) => {
             <ProjectHeader projectId={projectId} />
 
             {/* When the project page builder is active, the page layout (rendered
-                by ProjectHeader's ContentViewer) already includes the participation
-                box CTA, timeline, participation content and events, so the legacy
-                body — including the sticky CTA bar — is suppressed to avoid
+                by ProjectHeader's ContentViewer) already includes the sticky CTA
+                bar (below its description section), timeline, participation
+                content and events, so the legacy body is suppressed to avoid
                 rendering everything twice. */}
             {!parallelParticipation && (
               <>
