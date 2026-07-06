@@ -112,6 +112,15 @@ be-up-criipto:
 fe-up-criipto:
 	cd front && npm run start
 
+# etat_lu (Luxembourg IAM)
+be-up-etat-lu:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[etat_lu]'
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-etat-lu:
+	cd front && npm run start:sso
+
 # France connect
 be-up-franceconnect:
 	docker compose down
