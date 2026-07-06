@@ -28,7 +28,6 @@ import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProje
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
   Section,
   SectionTitle,
@@ -55,7 +54,6 @@ import { TOnProjectAttributesDiffChangeFunction } from '..';
 import GeographicAreaInputs from '../../../_shared/components/ProjectSetupForm/GeographicAreaInputs';
 import ProjectCardImageDropzone from '../../../_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
-import ProjectHeaderImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectHeaderImageTooltip';
 import {
   StyledForm,
   StyledInputMultiloc,
@@ -188,16 +186,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const handleAltTextMultilocOnChange = (altTextMultiloc: Multiloc) => {
     setSubmitState('enabled');
     setProjectCardImageAltText(altTextMultiloc);
-  };
-
-  const handleHeaderBgChange = (newImageBase64: string | null) => {
-    handleProjectAttributeDiffOnChange({ header_bg: newImageBase64 });
-  };
-
-  const handleHeaderBgAltTextChange = (altText: Multiloc) => {
-    handleProjectAttributeDiffOnChange({
-      header_bg_alt_text_multiloc: altText,
-    });
   };
 
   const handleProjectCardImageOnAdd = (projectImages: UploadFile[]) => {
@@ -461,19 +449,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
               setProjectContextError(false);
             }}
           />
-
-          <SectionField className="intercom-product-tour-project-header-image-field">
-            <SubSectionTitle>
-              <FormattedMessage {...messages.headerImageInputLabel} />
-              <ProjectHeaderImageTooltip />
-            </SubSectionTitle>
-            <HeaderBgUploader
-              imageUrl={project.data.attributes.header_bg.large}
-              headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
-              onImageChange={handleHeaderBgChange}
-              onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
-            />
-          </SectionField>
 
           <StyledSectionField>
             <SubSectionTitle>
