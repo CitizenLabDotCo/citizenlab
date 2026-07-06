@@ -145,7 +145,7 @@ describe ContentBuilder::ProjectPageLayoutService do
         'noPointerEvents' => true
       )
       %w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_DESCRIPTION
-         PROJECT_PAGE_TIMELINE PROJECT_PAGE_EVENTS].each do |id|
+        PROJECT_PAGE_TIMELINE PROJECT_PAGE_EVENTS].each do |id|
         expect(result[id]['custom']['locked']).to be(true)
       end
     end
