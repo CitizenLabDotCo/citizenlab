@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IDAzureAdMethod, IDAzureAdB2cMethod, IDKeycloakMethod, IdMethodName } from 'api/id_methods/types';
+import { IDKeycloakMethod, IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
@@ -15,6 +15,7 @@ import AuthProviderButton, {
 import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
 import sharedMessages from '../../_components/messages';
 import ViennaSamlButton from '../../_components/ViennaSamlButton';
+import { getAzureB2cConfig, getAzureConfig } from '../utils';
 
 import messages from './messages';
 import useAuthMethodNames from './methodNames';
@@ -38,14 +39,6 @@ interface Props {
 const SSOButton = ({ provider, onClickSSO }: Props) => {
   const { data: idMethods } = useIdMethods();
   const names = useAuthMethodNames();
-
-  const azureAdSettings = idMethods?.data.find(
-    (method) => method.attributes.name === 'azureactivedirectory'
-  ) as IDAzureAdMethod | undefined;
-
-  const azureAdB2cSettings = idMethods?.data.find(
-    (method) => method.attributes.name === 'azureactivedirectory_b2c'
-  ) as IDAzureAdB2cMethod | undefined;
 
   switch (provider) {
     case 'clave_unica':
@@ -181,36 +174,42 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
           <FormattedMessage {...messages.continueWithFacebook} />
         </WrappedAuthProviderButton>
       );
-    case 'azureactivedirectory':
+    case 'azureactivedirectory': {
+      const azureConfig = getAzureConfig(idMethods);
+
       return (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
-          imageUrl={azureAdSettings?.attributes.logo_url}
+          imageUrl={azureConfig?.attributes.logo_url}
           authProvider="azureactivedirectory"
           onClick={onClickSSO}
         >
           <FormattedMessage
             {...messages.continueWithAzure}
-            values={{ azureProviderName: azureAdSettings?.attributes.login_mechanism_name }}
+            values={{ azureProviderName: azureConfig?.attributes.login_mechanism_name }}
           />
         </WrappedAuthProviderButton>
       );
-    case 'azureactivedirectory_b2c':
+    }
+    case 'azureactivedirectory_b2c': {
+      const azureB2cConfig = getAzureB2cConfig(idMethods);
+
       return (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
-          imageUrl={azureAdB2cSettings?.attributes.logo_url}
+          imageUrl={azureB2cConfig?.attributes.logo_url}
           authProvider="azureactivedirectory_b2c"
           onClick={onClickSSO}
         >
           <FormattedMessage
             {...messages.continueWithAzure}
             values={{
-              azureProviderName: azureAdB2cSettings?.attributes.login_mechanism_name,
+              azureProviderName: azureB2cConfig?.attributes.login_mechanism_name,
             }}
           />
         </WrappedAuthProviderButton>
       );
+    }
     case 'franceconnect':
       // FranceConnect is handled separately
       // (it has its own branded button), so not implemented here.
