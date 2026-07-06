@@ -96,10 +96,11 @@ InputFeed.craft = {
   related: {
     settings: InputFeedSettings,
   },
+  rules: {
+    canDrag: () => false,
+  },
   custom: {
     title: messages.inputFeedWidgetTitle2,
-    // Non-deletable (the settings panel hides Delete for locked nodes), but no
-    // canDrag rule so it stays movable within the page.
     locked: true,
     noPointerEvents: true,
   },
