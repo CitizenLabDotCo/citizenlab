@@ -18,4 +18,8 @@ export default defineMessages({
     id: 'app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount',
     defaultMessage: 'Already have an account?',
   },
+  federaTitle: {
+    id: 'app.containers.Authentication.steps.EmailFlowStart.federaTitle',
+    defaultMessage: 'SPID, CIE or CNS',
+  }
 });

@@ -2,6 +2,10 @@ import { IDKeycloakMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 const isDev = process.env.NODE_ENV === 'development';
 
 /*
@@ -15,6 +19,7 @@ const isDev = process.env.NODE_ENV === 'development';
  */
 const useAuthMethodNames = () => {
   const { data: idMethods } = useIdMethods();
+  const { formatMessage } = useIntl();
 
   const azureConfig = getAzureConfig(idMethods);
   const azureB2cConfig = getAzureB2cConfig(idMethods);
@@ -29,7 +34,7 @@ const useAuthMethodNames = () => {
     twoday: 'BankID eller Freja eID+',
     acm: 'Itsme®',
     id_austria: 'ID Austria',
-    federa: 'SPID, CIE or CNS',
+    federa: formatMessage(messages.federaTitle),
     fake_sso: 'Fake SSO',
     hoplr: 'Hoplr',
     google: 'Google',
