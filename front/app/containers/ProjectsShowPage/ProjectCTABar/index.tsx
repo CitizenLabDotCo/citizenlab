@@ -33,7 +33,11 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     ? getParticipationMethod(project.data, phases?.data)
     : undefined;
 
-  if (!project || !participationMethod) {
+  if (
+    !project ||
+    !participationMethod ||
+    project.data.attributes.publication_status === 'archived'
+  ) {
     return null;
   }
 

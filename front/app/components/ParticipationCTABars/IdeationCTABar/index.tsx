@@ -5,14 +5,11 @@ import { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import {
-  CTABarProps,
-  hasProjectEndedOrIsArchived,
-} from 'components/ParticipationCTABars/utils';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,12 +25,8 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(getCurrentPhase(phases));
   }, [phases]);
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
-    return null;
-  }
 
   const { enabled } = getIdeaPostingRules({
     project,

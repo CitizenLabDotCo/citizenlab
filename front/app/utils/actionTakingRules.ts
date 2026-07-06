@@ -80,12 +80,6 @@ const ideaPostingDisabledReason = (
         disabledReason: backendReason,
         authenticationRequirements: 'sign_in_up',
       };
-    case 'project_inactive':
-    case 'inactive_phase':
-      return {
-        disabledReason: backendReason,
-        authenticationRequirements: null,
-      };
     case 'posting_disabled':
       return {
         disabledReason: backendReason,

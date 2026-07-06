@@ -4,35 +4,28 @@ import { Button } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import {
-  CTABarProps,
-  hasProjectEndedOrIsArchived,
-} from 'components/ParticipationCTABars/utils';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
 
-const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
+const VolunteeringCTABar = ({ phases }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(getCurrentPhase(phases));
   }, [phases]);
 
   const handleVolunteerClick = (event: FormEvent) => {
     event.preventDefault();
     scrollToElement({ id: 'volunteering', shouldFocus: true });
   };
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
-    return null;
-  }
 
   return (
     <ParticipationCTAContent
