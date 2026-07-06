@@ -36,6 +36,12 @@ jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
   };
 });
 
+// No project_page layout: the preview falls back to the legacy description layout.
+jest.mock('api/content_builder/useProjectPageLayout', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({ data: undefined, isInitialLoading: false })),
+}));
+
 jest.mock('@tanstack/react-router', () => {
   const originalModule = jest.requireActual('@tanstack/react-router');
   return {
