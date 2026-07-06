@@ -2,160 +2,179 @@ import { SerializedNodes } from '@craftjs/core';
 
 import {
   ensureLockedHeaderNodes,
+  defaultProjectPageLayout,
   BANNER_NODE_ID,
   TITLE_NODE_ID,
   BODY_NODE_ID,
+  DESCRIPTION_NODE_ID,
   INPUT_FEED_NODE_ID,
   TIMELINE_NODE_ID,
   EVENTS_NODE_ID,
 } from './defaultLayout';
 import widgetMessages from './Widgets/messages';
 
-// A layout shaped like the output of the project_page migration rake task: the
-// locked header, then a body of timeline → migrated description content →
-// (locked) input feed → events. No TwoColumn/AboutBox is seeded.
-const migratedLayout = (): SerializedNodes =>
+const CANONICAL_BODY = [
+  DESCRIPTION_NODE_ID,
+  TIMELINE_NODE_ID,
+  INPUT_FEED_NODE_ID,
+  EVENTS_NODE_ID,
+];
+
+const textNode = (parent: string) =>
   ({
-    ROOT: {
-      type: { resolvedName: 'ProjectPageRoot' },
-      nodes: [BANNER_NODE_ID, TITLE_NODE_ID, BODY_NODE_ID],
-      props: {},
-      custom: { region: true },
-      hidden: false,
-      isCanvas: true,
-      displayName: 'ProjectPageRoot',
-      linkedNodes: {},
-    },
-    [BANNER_NODE_ID]: {
-      type: { resolvedName: 'ProjectBanner' },
-      nodes: [],
-      props: { image: {}, alt: {} },
-      custom: {
-        title: widgetMessages.bannerWidgetTitle,
-        locked: true,
-        noPointerEvents: true,
-      },
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'ProjectBanner',
-      linkedNodes: {},
-    },
-    [TITLE_NODE_ID]: {
-      type: { resolvedName: 'ProjectTitle' },
-      nodes: [],
-      props: {},
-      custom: {
-        title: widgetMessages.titleWidgetTitle,
-        locked: true,
-        noPointerEvents: true,
-      },
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: false,
-      displayName: 'ProjectTitle',
-      linkedNodes: {},
-    },
-    [BODY_NODE_ID]: {
-      type: { resolvedName: 'ProjectPageBody' },
-      nodes: [TIMELINE_NODE_ID, 'd_txt1', INPUT_FEED_NODE_ID, EVENTS_NODE_ID],
-      props: {},
-      custom: { region: true },
-      hidden: false,
-      parent: 'ROOT',
-      isCanvas: true,
-      displayName: 'ProjectPageBody',
-      linkedNodes: {},
-    },
-    [TIMELINE_NODE_ID]: {
-      type: { resolvedName: 'TimelineWidget' },
-      nodes: [],
-      props: {},
-      custom: {
-        title: widgetMessages.timelineWidgetTitle,
-        noPointerEvents: true,
-      },
-      hidden: false,
-      parent: BODY_NODE_ID,
-      isCanvas: false,
-      displayName: 'TimelineWidget',
-      linkedNodes: {},
-    },
-    d_txt1: {
-      type: { resolvedName: 'TextMultiloc' },
-      nodes: [],
-      props: { text: { en: '<p>Hello</p>' } },
-      custom: {},
-      hidden: false,
-      parent: BODY_NODE_ID,
-      isCanvas: false,
-      displayName: 'TextMultiloc',
-      linkedNodes: {},
-    },
-    [INPUT_FEED_NODE_ID]: {
-      type: { resolvedName: 'InputFeed' },
-      nodes: [],
-      props: {},
-      custom: {
-        title: widgetMessages.inputFeedWidgetTitle2,
-        locked: true,
-        noPointerEvents: true,
-      },
-      hidden: false,
-      parent: BODY_NODE_ID,
-      isCanvas: false,
-      displayName: 'InputFeed',
-      linkedNodes: {},
-    },
-    [EVENTS_NODE_ID]: {
-      type: { resolvedName: 'EventsWidget' },
-      nodes: [],
-      props: {},
-      custom: {
-        title: widgetMessages.eventsWidgetTitle,
-        noPointerEvents: true,
-      },
-      hidden: false,
-      parent: BODY_NODE_ID,
-      isCanvas: false,
-      displayName: 'EventsWidget',
-      linkedNodes: {},
-    },
-  } as unknown as SerializedNodes);
+    type: { resolvedName: 'TextMultiloc' },
+    nodes: [],
+    props: { text: { en: '<p>Hello</p>' } },
+    custom: {},
+    hidden: false,
+    parent,
+    isCanvas: false,
+    displayName: 'TextMultiloc',
+    linkedNodes: {},
+  } as unknown as SerializedNodes[string]);
+
+// The output of the project_page migration: the canonical frozen structure with
+// the migrated description content inside the description section.
+const migratedLayout = (): SerializedNodes => {
+  const layout = defaultProjectPageLayout();
+  layout[DESCRIPTION_NODE_ID] = {
+    ...layout[DESCRIPTION_NODE_ID],
+    nodes: ['d_txt1'],
+  };
+  layout.d_txt1 = textNode(DESCRIPTION_NODE_ID);
+  return layout;
+};
+
+describe('defaultProjectPageLayout', () => {
+  it('freezes the body to description → timeline → input feed → events', () => {
+    const layout = defaultProjectPageLayout();
+
+    expect(layout.ROOT.nodes).toEqual([
+      BANNER_NODE_ID,
+      TITLE_NODE_ID,
+      BODY_NODE_ID,
+    ]);
+    expect(layout[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
+  });
+});
 
 describe('ensureLockedHeaderNodes', () => {
+  it('returns the default layout when there is no stored layout', () => {
+    expect(ensureLockedHeaderNodes(undefined)).toEqual(
+      defaultProjectPageLayout()
+    );
+    expect(ensureLockedHeaderNodes({})).toEqual(defaultProjectPageLayout());
+  });
+
   it('leaves a migrated layout unchanged (fixed point)', () => {
     const layout = migratedLayout();
 
     expect(ensureLockedHeaderNodes(layout)).toEqual(layout);
   });
 
-  it('keeps the migrated description content in place between timeline and input feed', () => {
-    const result = ensureLockedHeaderNodes(migratedLayout());
+  it('adopts loose body content into the description section', () => {
+    // A layout saved before the description section existed: the description
+    // content sits directly in the body.
+    const layout = defaultProjectPageLayout();
+    delete layout[DESCRIPTION_NODE_ID];
+    layout[BODY_NODE_ID] = {
+      ...layout[BODY_NODE_ID],
+      nodes: [TIMELINE_NODE_ID, 'd_txt1', INPUT_FEED_NODE_ID, EVENTS_NODE_ID],
+    };
+    layout.d_txt1 = textNode(BODY_NODE_ID);
 
-    expect(result[BODY_NODE_ID].nodes).toEqual([
-      TIMELINE_NODE_ID,
-      'd_txt1',
-      INPUT_FEED_NODE_ID,
-      EVENTS_NODE_ID,
+    const result = ensureLockedHeaderNodes(layout);
+
+    expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
+    expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['d_txt1']);
+    expect(result.d_txt1.parent).toBe(DESCRIPTION_NODE_ID);
+  });
+
+  it('enforces the canonical body order', () => {
+    const layout = migratedLayout();
+    layout[BODY_NODE_ID] = {
+      ...layout[BODY_NODE_ID],
+      nodes: [
+        EVENTS_NODE_ID,
+        TIMELINE_NODE_ID,
+        DESCRIPTION_NODE_ID,
+        INPUT_FEED_NODE_ID,
+      ],
+    };
+
+    expect(ensureLockedHeaderNodes(layout)[BODY_NODE_ID].nodes).toEqual(
+      CANONICAL_BODY
+    );
+  });
+
+  it('creates missing fixed sections', () => {
+    const layout = migratedLayout();
+    delete layout[TIMELINE_NODE_ID];
+    delete layout[EVENTS_NODE_ID];
+    layout[BODY_NODE_ID] = {
+      ...layout[BODY_NODE_ID],
+      nodes: [DESCRIPTION_NODE_ID, INPUT_FEED_NODE_ID],
+    };
+
+    const result = ensureLockedHeaderNodes(layout);
+
+    expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
+    expect(result[TIMELINE_NODE_ID]).toBeDefined();
+    expect(result[EVENTS_NODE_ID]).toBeDefined();
+  });
+
+  it('re-stamps the lock flags on the fixed sections', () => {
+    const layout = migratedLayout();
+    layout[TIMELINE_NODE_ID] = {
+      ...layout[TIMELINE_NODE_ID],
+      custom: { title: widgetMessages.timelineWidgetTitle },
+    };
+
+    const result = ensureLockedHeaderNodes(layout);
+
+    expect(result[TIMELINE_NODE_ID].custom).toMatchObject({ locked: true });
+  });
+
+  it('nests top-level user content of an old flat layout into the description section', () => {
+    const layout: SerializedNodes = {
+      ROOT: {
+        type: { resolvedName: 'div' },
+        nodes: ['txt1'],
+        props: {},
+        custom: {},
+        hidden: false,
+        isCanvas: true,
+        displayName: 'div',
+        linkedNodes: {},
+      } as unknown as SerializedNodes[string],
+      txt1: textNode('ROOT'),
+    };
+
+    const result = ensureLockedHeaderNodes(layout);
+
+    expect(result.ROOT.nodes).toEqual([
+      BANNER_NODE_ID,
+      TITLE_NODE_ID,
+      BODY_NODE_ID,
     ]);
+    expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
+    expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['txt1']);
+    expect(result.txt1.parent).toBe(DESCRIPTION_NODE_ID);
   });
 
   it('strips DescriptionBuilder-only widgets that crash the resolver', () => {
     const layout = migratedLayout();
-    layout[BODY_NODE_ID].nodes = [
-      TIMELINE_NODE_ID,
-      'stray',
-      INPUT_FEED_NODE_ID,
-      EVENTS_NODE_ID,
-    ];
+    layout[DESCRIPTION_NODE_ID] = {
+      ...layout[DESCRIPTION_NODE_ID],
+      nodes: ['d_txt1', 'stray'],
+    };
     layout.stray = {
       type: { resolvedName: 'Published' },
       nodes: [],
       props: {},
       custom: {},
       hidden: false,
-      parent: BODY_NODE_ID,
+      parent: DESCRIPTION_NODE_ID,
       isCanvas: false,
       displayName: 'Published',
       linkedNodes: {},
@@ -164,6 +183,6 @@ describe('ensureLockedHeaderNodes', () => {
     const result = ensureLockedHeaderNodes(layout);
 
     expect(result.stray).toBeUndefined();
-    expect(result[BODY_NODE_ID].nodes).not.toContain('stray');
+    expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['d_txt1']);
   });
 });
