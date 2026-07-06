@@ -12,14 +12,6 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
   # is actually invoked.
   include_context 'with stubbed SMS provider'
 
-  before do
-    SettingsService.new.activate_feature!('sms', settings: {
-      'twilio_account_sid' => 'AC_test',
-      'twilio_auth_token' => 'token',
-      'twilio_phone_number' => '+15005550006'
-    })
-  end
-
   it 'stores the number as the pending new_phone_number, leaving phone_number unset' do
     job.perform(user, new_phone_number: new_phone_number)
     expect(user.reload.new_phone_number).to eq new_phone_number

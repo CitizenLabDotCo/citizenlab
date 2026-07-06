@@ -6,12 +6,9 @@ RSpec.describe EmailCampaigns::Sms::SendService do
   let(:provider) { instance_double(EmailCampaigns::Sms::Providers::Twilio) }
   let(:phone_number) { '+14155552671' }
 
+  include_context 'with sms feature enabled'
+
   before do
-    SettingsService.new.activate_feature!('sms', settings: {
-      'twilio_account_sid' => 'AC_test',
-      'twilio_auth_token' => 'token',
-      'twilio_phone_number' => '+15005550006'
-    })
     allow(EmailCampaigns::Sms::Providers::Twilio).to receive(:new).and_return(provider)
   end
 

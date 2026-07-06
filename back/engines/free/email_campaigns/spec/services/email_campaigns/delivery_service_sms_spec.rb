@@ -5,13 +5,7 @@ require 'rails_helper'
 describe EmailCampaigns::DeliveryService do
   subject(:service) { described_class.new }
 
-  before do
-    SettingsService.new.activate_feature!('sms', settings: {
-      'twilio_account_sid' => 'AC_test',
-      'twilio_auth_token' => 'token',
-      'twilio_phone_number' => '+15005550006'
-    })
-  end
+  include_context 'with sms feature enabled'
 
   describe '#send_now (SMS channel)' do
     let(:campaign) { create(:sms_manual_campaign) }

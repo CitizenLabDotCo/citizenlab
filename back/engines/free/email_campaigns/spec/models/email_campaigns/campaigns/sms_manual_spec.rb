@@ -80,13 +80,7 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     let(:recipient) { create(:user, locale: 'en', phone_number: phone_number1, phone_number_confirmed_at: Time.zone.now) }
     let(:command) { { recipient: recipient, body_multiloc: { 'en' => 'A short SMS update from your city.' } } }
 
-    before do
-      SettingsService.new.activate_feature!('sms', settings: {
-        'twilio_account_sid' => 'AC_test',
-        'twilio_auth_token' => 'token',
-        'twilio_phone_number' => '+15005550006'
-      })
-    end
+    include_context 'with sms feature enabled'
 
     describe '#deliver_later' do
       it 'creates a campaign-linked pending delivery and enqueues a SendJob' do

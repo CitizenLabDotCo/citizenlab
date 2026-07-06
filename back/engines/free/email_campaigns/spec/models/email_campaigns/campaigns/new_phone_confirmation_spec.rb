@@ -37,14 +37,6 @@ RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
     let(:recipient) { create(:user, locale: 'en', new_phone_number: new_phone_number) }
     let(:command) { { recipient: recipient, event_payload: { code: '1234' } } }
 
-    before do
-      SettingsService.new.activate_feature!('sms', settings: {
-        'twilio_account_sid' => 'AC_test',
-        'twilio_auth_token' => 'token',
-        'twilio_phone_number' => '+15005550006'
-      })
-    end
-
     it 'sends synchronously to the pending number, creating a campaign-linked delivery' do
       delivery = nil
       expect { delivery = campaign.deliver_now(command) }

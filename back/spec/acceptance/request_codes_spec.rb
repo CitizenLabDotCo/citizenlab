@@ -162,13 +162,7 @@ resource 'Request codes' do
       parameter :phone_number, 'The phone number the user wants to verify.', required: true
     end
 
-    before do
-      SettingsService.new.activate_feature!('sms', settings: {
-        'twilio_account_sid' => 'AC_test',
-        'twilio_auth_token' => 'token',
-        'twilio_phone_number' => '+15005550006'
-      })
-    end
+    include_context 'with sms feature enabled'
 
     example 'It works for an authenticated user and stores the pending number' do
       user = create(:user)

@@ -165,11 +165,6 @@ RSpec.describe UserConfirmationService do
     include_context 'with stubbed SMS provider'
 
     before do
-      SettingsService.new.activate_feature!('sms', settings: {
-        'twilio_account_sid' => 'AC_test',
-        'twilio_auth_token' => 'token',
-        'twilio_phone_number' => '+15005550006'
-      })
       RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone_number: new_phone_number)
     end
 
