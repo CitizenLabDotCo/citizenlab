@@ -3,9 +3,12 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
+import useIdMethods from 'api/id_methods/useIdMethods';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useSuperAdmin from 'hooks/useSuperAdmin';
 
 import { SetError } from 'containers/Authentication/typings';
-import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import Or from 'components/UI/Or';
 
@@ -17,8 +20,6 @@ import AdminSignInLink from './AdminSignInLink';
 import EmailForm from './EmailForm';
 import FranceConnectBlock from './FranceConnectBlock';
 import messages from './messages';
-import useAuthMethodNames from './SSOButtonsExceptFC/methodNames';
-import useSSOProviders from './SSOButtonsExceptFC/providers';
 import SSOButton from './SSOButtonsExceptFC/SSOButton';
 import VerificationWarning from './VerificationWarning';
 
@@ -43,39 +44,43 @@ const VerificationVariant = ({
   onSwitchToSSO,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
-  const { verificationProviders, nonVerificationProviders } = useSSOProviders();
-  const names = useAuthMethodNames();
+  const { data: idMethods } = useIdMethods();
+  const isSuperAdmin = useSuperAdmin();
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
+  const franceConnectEnabled = !!idMethods?.data.find((method) => method.attributes.name === 'franceconnect');
 
-  const franceConnectEnabled = !!ssoProviders.franceconnect;
+  const authenticationMethodsExceptFC = idMethods?.data.filter((method) => {
+    const isFC = method.attributes.name !== 'franceconnect';
+    const isAuthMethod = method.attributes.authentication_method;
 
-  // Names of the verification-capable methods, used by the warning at the top.
-  const verificationMethodNames = [
-    ...(franceConnectEnabled ? [names.franceconnect] : []),
-    ...verificationProviders.map((provider) => names[provider]),
-  ].filter((name): name is string => !!name);
+    return !isFC && isAuthMethod;
+  }) ?? [];
 
-  const hasSignInThenVerifySection =
-    passwordLoginEnabled || nonVerificationProviders.length > 0;
+  const authenticationVerificationMethodsExceptFC = authenticationMethodsExceptFC.filter((method) => {
+    return method.attributes.verification_method;
+  });
+
+  const hasAlreadyHaveAnAccountSection =
+    passwordLoginEnabled || authenticationMethodsExceptFC.length > 0;
 
   return (
     <Box data-cy="email-flow-start">
-      <VerificationWarning methodNames={verificationMethodNames} />
+      <VerificationWarning />
 
       {franceConnectEnabled && (
         <Box mb="18px">
           <FranceConnectBlock onClick={onSwitchToSSO} />
         </Box>
       )}
-      {verificationProviders.map((provider) => (
+      {authenticationVerificationMethodsExceptFC.map((provider) => (
         <SSOButton
-          key={provider}
-          provider={provider}
+          key={provider.attributes.name}
+          provider={provider.attributes.name}
           onClickSSO={onSwitchToSSO}
         />
       ))}
 
-      {hasSignInThenVerifySection && (
+      {hasAlreadyHaveAnAccountSection && (
         <>
           <Text mt="24px" mb="18px" fontWeight="bold" color="tenantText">
             {formatMessage(messages.alreadyHaveAnAccount)}
@@ -88,17 +93,17 @@ const VerificationVariant = ({
                 setError={setError}
                 onSubmit={onSubmit}
               />
-              {nonVerificationProviders.length > 0 && (
+              {authenticationMethodsExceptFC.length > 0 && (
                 <Box mt="24px">
                   <Or />
                 </Box>
               )}
             </>
           )}
-          {nonVerificationProviders.map((provider) => (
+          {authenticationMethodsExceptFC.map((provider) => (
             <SSOButton
-              key={provider}
-              provider={provider}
+              key={provider.attributes.name}
+              provider={provider.attributes.name}
               onClickSSO={onSwitchToSSO}
             />
           ))}

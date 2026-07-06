@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'This action requires verification using {method}.',
   },
   actionRequiresVerificationUsingOneOf: {
-    id: 'app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf',
+    id: 'app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2',
     defaultMessage:
-      'This action requires verification using one of the following methods:',
+      'This action requires verification using one of the following methods: {methods}',
   },
   alreadyHaveAnAccount: {
     id: 'app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount',

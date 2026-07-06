@@ -3,9 +3,12 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
+import useIdMethods from 'api/id_methods/useIdMethods';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import useSuperAdmin from 'hooks/useSuperAdmin';
 
 import { SetError } from 'containers/Authentication/typings';
-import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import Or from 'components/UI/Or';
 
@@ -15,7 +18,6 @@ import AdminSignInLink from './AdminSignInLink';
 import EmailForm from './EmailForm';
 import FranceConnectBlock from './FranceConnectBlock';
 import SSOButtonsExceptFC from './SSOButtonsExceptFC';
-import useSSOProviders from './SSOButtonsExceptFC/providers';
 
 interface Props {
   loading: boolean;
@@ -32,17 +34,24 @@ const DefaultVariant = ({
   onSubmit,
   onSwitchToSSO,
 }: Props) => {
-  const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
-  const { allProviders } = useSSOProviders();
+  const { data: idMethods } = useIdMethods();
+  const isSuperAdmin = useSuperAdmin();
+  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
+  const franceConnectEnabled = !!idMethods?.data.find((method) => method.attributes.name === 'franceconnect');
 
-  const anySSOProviderEnabledBesidesFC = allProviders.length > 0;
+  const authMethodsEnabledBesidesFC = idMethods?.data.filter((method) => {
+    const isFC = method.attributes.name !== 'franceconnect';
+    const isAuthMethod = method.attributes.authentication_method;
+
+    return !isFC && isAuthMethod;
+  }) ?? []
 
   return (
     <Box data-cy="email-flow-start">
-      {ssoProviders.franceconnect && (
+      {franceConnectEnabled && (
         <>
           <FranceConnectBlock onClick={onSwitchToSSO} />
-          {(passwordLoginEnabled || anySSOProviderEnabledBesidesFC) && (
+          {(passwordLoginEnabled || authMethodsEnabledBesidesFC.length > 0) && (
             <Box mt="24px">
               <Or />
             </Box>
@@ -57,14 +66,14 @@ const DefaultVariant = ({
             setError={setError}
             onSubmit={onSubmit}
           />
-          {anySSOProviderEnabledBesidesFC && (
+          {authMethodsEnabledBesidesFC.length > 0 && (
             <Box mt="24px">
               <Or />
             </Box>
           )}
         </>
       )}
-      {anySSOProviderEnabledBesidesFC && (
+      {authMethodsEnabledBesidesFC.length > 0 && (
         <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
       )}
       <AdminSignInLink />

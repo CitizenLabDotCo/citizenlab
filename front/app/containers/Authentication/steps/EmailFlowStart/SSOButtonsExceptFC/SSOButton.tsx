@@ -2,11 +2,10 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { IDKeycloakMethod, IdMethodName } from 'api/id_methods/types';
+import { IDAzureAdMethod, IDAzureAdB2cMethod, IDKeycloakMethod, IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
-import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -20,10 +19,6 @@ import ViennaSamlButton from '../../_components/ViennaSamlButton';
 import messages from './messages';
 import useAuthMethodNames from './methodNames';
 
-// Providers rendered by this component. FranceConnect is handled separately
-// (it has its own branded button), hence "except FC".
-export type SSOButtonProvider = Exclude<IdMethodName, 'franceconnect'>;
-
 const WrappedAuthProviderButton = (props: AuthProviderButtonProps) => (
   <Box mb="18px">
     <AuthProviderButton {...props} />
@@ -31,7 +26,7 @@ const WrappedAuthProviderButton = (props: AuthProviderButtonProps) => (
 );
 
 interface Props {
-  provider: SSOButtonProvider;
+  provider: IdMethodName;
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
@@ -41,9 +36,16 @@ interface Props {
  * by any layout that needs to show a subset of providers.
  */
 const SSOButton = ({ provider, onClickSSO }: Props) => {
-  const { azureAdSettings, azureAdB2cSettings } = useAuthConfig();
   const { data: idMethods } = useIdMethods();
   const names = useAuthMethodNames();
+
+  const azureAdSettings = idMethods?.data.find(
+    (method) => method.attributes.name === 'azureactivedirectory'
+  ) as IDAzureAdMethod | undefined;
+
+  const azureAdB2cSettings = idMethods?.data.find(
+    (method) => method.attributes.name === 'azureactivedirectory_b2c'
+  ) as IDAzureAdB2cMethod | undefined;
 
   switch (provider) {
     case 'clave_unica':
@@ -183,13 +185,13 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
       return (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
-          imageUrl={azureAdSettings?.logo_url}
+          imageUrl={azureAdSettings?.attributes.logo_url}
           authProvider="azureactivedirectory"
           onClick={onClickSSO}
         >
           <FormattedMessage
             {...messages.continueWithAzure}
-            values={{ azureProviderName: azureAdSettings?.login_mechanism_name }}
+            values={{ azureProviderName: azureAdSettings?.attributes.login_mechanism_name }}
           />
         </WrappedAuthProviderButton>
       );
@@ -197,18 +199,22 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
       return (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
-          imageUrl={azureAdB2cSettings?.logo_url}
+          imageUrl={azureAdB2cSettings?.attributes.logo_url}
           authProvider="azureactivedirectory_b2c"
           onClick={onClickSSO}
         >
           <FormattedMessage
             {...messages.continueWithAzure}
             values={{
-              azureProviderName: azureAdB2cSettings?.login_mechanism_name,
+              azureProviderName: azureAdB2cSettings?.attributes.login_mechanism_name,
             }}
           />
         </WrappedAuthProviderButton>
       );
+    case 'franceconnect':
+      // FranceConnect is handled separately
+      // (it has its own branded button), so not implemented here.
+      return null;
     default:
       return null;
   }

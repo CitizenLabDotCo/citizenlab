@@ -1,7 +1,5 @@
-import { IDKeycloakMethod } from 'api/id_methods/types';
+import { IDAzureAdB2cMethod, IDAzureAdMethod, IDKeycloakMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
-
-import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -16,7 +14,14 @@ const isDev = process.env.NODE_ENV === 'development';
  */
 const useAuthMethodNames = () => {
   const { data: idMethods } = useIdMethods();
-  const { azureAdSettings, azureAdB2cSettings } = useAuthConfig();
+
+  const azureAdSettings = idMethods?.data.find(
+    (method) => method.attributes.name === 'azureactivedirectory'
+  ) as IDAzureAdMethod | undefined;
+
+  const azureAdB2cSettings = idMethods?.data.find(
+    (method) => method.attributes.name === 'azureactivedirectory_b2c'
+  ) as IDAzureAdB2cMethod | undefined;
 
   const keycloakMethod = idMethods?.data.find(
     (method) => method.attributes.name === 'keycloak'
@@ -36,8 +41,8 @@ const useAuthMethodNames = () => {
     clave_unica: 'ClaveÚnica',
     vienna_citizen: 'StandardPortal',
     keycloak: keycloakMethod?.attributes.method_metadata?.name ?? '',
-    azureactivedirectory: azureAdSettings?.login_mechanism_name ?? '',
-    azureactivedirectory_b2c: azureAdB2cSettings?.login_mechanism_name ?? '',
+    azureactivedirectory: azureAdSettings?.attributes.login_mechanism_name ?? '',
+    azureactivedirectory_b2c: azureAdB2cSettings?.attributes.login_mechanism_name ?? '',
   };
 };
 
