@@ -1231,7 +1231,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Selecteer type",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Enkel item",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Label",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Aangepaste pagina",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Aanpasbare pagina",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Standaardpagina",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Map",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Project",
