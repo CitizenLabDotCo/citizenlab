@@ -78,6 +78,15 @@ export default defineMessages({
     id: 'app.components.ProjectPageBuilder.Widgets.timelineEmptyTitle',
     defaultMessage: 'No phases yet',
   },
+  timelineHiddenTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.timelineHiddenTitle',
+    defaultMessage: 'Timeline hidden',
+  },
+  timelineHiddenNote: {
+    id: 'app.components.ProjectPageBuilder.Widgets.timelineHiddenNote',
+    defaultMessage:
+      "This project has a single phase without an end date or description, so visitors won't see a timeline.",
+  },
   eventsEmptyNote: {
     id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyNote',
     defaultMessage:
