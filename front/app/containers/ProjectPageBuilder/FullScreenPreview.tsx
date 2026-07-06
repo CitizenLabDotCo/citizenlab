@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { Multiloc } from 'typings';
 
 import useProjectPageLayout from 'api/content_builder/useProjectPageLayout';
 
 import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
 
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
@@ -19,13 +17,13 @@ import { useSearch } from 'utils/router';
 
 type Props = {
   projectId: string;
-  titleMultiloc: Multiloc;
 };
 
-export const FullScreenPreview = ({ projectId, titleMultiloc }: Props) => {
+// Renders only the layout: the page title is the layout's own Title widget,
+// so adding a heading here would show it twice.
+export const FullScreenPreview = ({ projectId }: Props) => {
   const search = useSearch({ strict: false });
   const selectedLocale = search.selected_locale || undefined;
-  const localize = useLocalize();
 
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
@@ -46,9 +44,6 @@ export const FullScreenPreview = ({ projectId, titleMultiloc }: Props) => {
       contentBuilderLocale={selectedLocale}
     >
       <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
-        <Title color="tenantText" variant="h1" px="20px">
-          {localize(titleMultiloc)}
-        </Title>
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
           <Box>
