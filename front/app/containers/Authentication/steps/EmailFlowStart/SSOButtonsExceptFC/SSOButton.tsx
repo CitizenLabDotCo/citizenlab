@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { IDKeycloakMethod, IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
+import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
 
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
@@ -15,10 +16,9 @@ import AuthProviderButton, {
 import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
 import sharedMessages from '../../_components/messages';
 import ViennaSamlButton from '../../_components/ViennaSamlButton';
-import { getAzureB2cConfig, getAzureConfig } from '../../../../../api/id_methods/utils';
+import useAuthMethodNames from '../methodNames';
 
 import messages from './messages';
-import useAuthMethodNames from './methodNames';
 
 const WrappedAuthProviderButton = (props: AuthProviderButtonProps) => (
   <Box mb="18px">

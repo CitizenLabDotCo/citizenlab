@@ -8,7 +8,7 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 import { useIntl } from 'utils/cl-intl';
 
-import useAuthMethodNames from './SSOButtonsExceptFC/methodNames';
+import useAuthMethodNames from './methodNames';
 
 interface Props {
   onClick: (ssoProvider: SSOProvider) => void;

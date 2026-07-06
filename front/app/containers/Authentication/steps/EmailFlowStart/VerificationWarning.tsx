@@ -10,7 +10,7 @@ import Warning from 'components/UI/Warning';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import useAuthMethodNames from './SSOButtonsExceptFC/methodNames';
+import useAuthMethodNames from './methodNames';
 
 // The Warning component has a teal (light blue) background; override the icon
 // colour to a dark blue shield to signal that verification is required.
