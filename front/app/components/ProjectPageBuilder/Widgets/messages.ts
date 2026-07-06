@@ -105,4 +105,9 @@ export default defineMessages({
     defaultMessage:
       'The project description. Edit its content by adding elements from the toolbox. It stays pinned in this position for now.',
   },
+  sectionHeightCappedNote: {
+    id: 'app.components.ProjectPageBuilder.Widgets.sectionHeightCappedNote',
+    defaultMessage:
+      'Shortened here to keep the page easy to arrange — the live page shows this section in full.',
+  },
 });
