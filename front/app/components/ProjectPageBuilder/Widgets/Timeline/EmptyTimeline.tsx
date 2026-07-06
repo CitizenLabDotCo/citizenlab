@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
@@ -21,8 +22,19 @@ const Dot = () => (
   />
 );
 
-// Admin-only placeholder shown in the builder when the project has no phases yet.
-const EmptyTimeline = () => {
+type Props = {
+  // Defaults to the "no phases yet" empty state; the widget passes the
+  // "timeline hidden" variant when the legacy visibility rule hides it.
+  titleMessage?: MessageDescriptor;
+  noteMessage?: MessageDescriptor;
+};
+
+// Admin-only placeholder shown when the timeline has nothing to render on the
+// public page, so the widget can still be seen and positioned in the builder.
+const EmptyTimeline = ({
+  titleMessage = messages.timelineEmptyTitle,
+  noteMessage,
+}: Props) => {
   const padding = useCraftComponentDefaultPadding();
 
   return (
@@ -32,7 +44,7 @@ const EmptyTimeline = () => {
       </Title>
       <EmptyStateContainer>
         <Text m="0px" color="textSecondary" fontWeight="bold">
-          <FormattedMessage {...messages.timelineEmptyTitle} />
+          <FormattedMessage {...titleMessage} />
         </Text>
         <Box width="100%" display="flex" alignItems="center" gap="8px">
           <Dot />
@@ -45,7 +57,7 @@ const EmptyTimeline = () => {
           <SkeletonBar />
           <SkeletonBar width="80%" />
         </Box>
-        <AdminOnlyNote />
+        <AdminOnlyNote message={noteMessage} />
       </EmptyStateContainer>
     </Box>
   );
