@@ -62,8 +62,7 @@ class UserConfirmationService
   def validate_and_confirm_phone_change!(user, code)
     validate_user!(user)
     validate_phone!(user.new_phone_number)
-    # complete_claim is an email/signup concern (transferring anonymous activity),
-    # not relevant to confirming a phone number.
+    # complete_claim is for claiming anonymous activity post sign up
     validate_and_confirm!(user, user.new_phone_confirmation, code, complete_claim: false)
 
     success_result(user)
