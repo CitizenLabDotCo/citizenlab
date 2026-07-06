@@ -6,8 +6,10 @@ import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getLatestRelevantPhase } from 'api/phases/utils';
+import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
+
+import useLocale from 'hooks/useLocale';
 
 import { isValidPhase } from 'containers/ProjectsShowPage/phaseParam';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
@@ -50,6 +52,7 @@ const TimelineWidget: UserComponent = () => {
     phaseNumber?: string;
   };
   const padding = useCraftComponentDefaultPadding();
+  const currentLocale = useLocale();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const canModerate = useCanModerateProject(projectId);
@@ -68,6 +71,20 @@ const TimelineWidget: UserComponent = () => {
 
   if (phases.data.length === 0) {
     return canModerate ? <EmptyTimeline /> : null;
+  }
+
+  // Same visibility rule as the legacy page (ProjectTimelineContainer): a
+  // single open-ended phase without a description shows no timeline. On the
+  // public route nothing renders — for anyone — so the page looks identical to
+  // before; in the builder a placeholder keeps the widget visible for
+  // positioning.
+  if (hideTimelineUI(phases.data, currentLocale)) {
+    return slug ? null : (
+      <EmptyTimeline
+        titleMessage={messages.timelineHiddenTitle}
+        noteMessage={messages.timelineHiddenNote}
+      />
+    );
   }
 
   // Phase tabs navigate via links; this only drives keyboard-arrow selection,
