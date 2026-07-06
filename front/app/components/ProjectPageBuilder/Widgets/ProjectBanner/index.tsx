@@ -14,6 +14,7 @@ import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
+import { BannerImageDraft } from 'components/ProjectPageBuilder/projectAttributeDrafts';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -27,19 +28,18 @@ import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyBanner from './EmptyBanner';
 
-type ImageValue = {
-  dataCode?: string;
-  imageUrl?: string;
-};
-
 type Props = {
-  image?: ImageValue;
+  // Unsaved edits of the project's `header_bg` / `header_bg_alt_text_multiloc`;
+  // committed to the project and stripped from the layout on Save (see
+  // projectAttributeDrafts.ts).
+  image?: BannerImageDraft;
   alt?: Multiloc;
 };
 
 // Locked "Project image" widget. Cannot be moved or deleted. Renders the
-// project's header image by default; admins can override it per page by
-// uploading a different image (same picker as the content Image widget).
+// project's header image (`header_bg`); the settings panel edits that same
+// attribute, so the page, the project cards, and the legacy page all show
+// one image.
 const ProjectBanner: UserComponent<Props> = ({ image, alt }) => {
   const projectId = useWidgetProjectId();
   const localize = useLocalize();
@@ -50,7 +50,9 @@ const ProjectBanner: UserComponent<Props> = ({ image, alt }) => {
     return null;
   }
 
-  const imageUrl = image?.imageUrl || project.data.attributes.header_bg.large;
+  const imageUrl =
+    image?.imageUrl ||
+    (image?.removed ? undefined : project.data.attributes.header_bg.large);
   const altText =
     (alt && localize(alt)) ||
     localize(project.data.attributes.header_bg_alt_text_multiloc);
@@ -76,8 +78,8 @@ const ProjectBanner: UserComponent<Props> = ({ image, alt }) => {
 };
 
 // Mirrors the content Image widget's settings (dropzone + alt text), but seeds
-// the dropzone with the project's current header image when there is no override,
-// so admins see and can replace the image that is actually showing.
+// the dropzone with the project's current header image when there is no pending
+// draft, so admins see and can replace the image that is actually showing.
 const ProjectBannerSettings = () => {
   const { formatMessage } = useIntl();
   const projectId = useWidgetProjectId();
@@ -88,12 +90,12 @@ const ProjectBannerSettings = () => {
     image,
     alt,
   } = useNode((node) => ({
-    image: node.data.props.image as ImageValue | undefined,
+    image: node.data.props.image as BannerImageDraft | undefined,
     alt: node.data.props.alt as Multiloc | undefined,
   }));
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
 
-  // Seed the dropzone once with the image currently showing (override, else the
+  // Seed the dropzone once with the image currently showing (draft, else the
   // project image), then let add/remove drive it. Seeding only once is what lets
   // "remove" actually empty the dropzone instead of immediately re-showing the
   // project image.
@@ -101,7 +103,8 @@ const ProjectBannerSettings = () => {
   useEffect(() => {
     if (seeded.current) return;
     const initialUrl =
-      image?.imageUrl || project?.data.attributes.header_bg.large;
+      image?.imageUrl ||
+      (image?.removed ? undefined : project?.data.attributes.header_bg.large);
     if (!image?.imageUrl && !project) return; // wait until the source is known
     seeded.current = true;
     if (initialUrl) {
@@ -109,7 +112,7 @@ const ProjectBannerSettings = () => {
         (file) => file && setImageFiles([file])
       );
     }
-  }, [image?.imageUrl, project]);
+  }, [image?.imageUrl, image?.removed, project]);
 
   const handleAdd = async (files: UploadFile[]) => {
     setImageFiles(files);
@@ -126,12 +129,12 @@ const ProjectBannerSettings = () => {
     }
   };
 
-  // Empties the dropzone and clears the per-page override; the banner falls back
-  // to the project image until a new one is uploaded.
+  // Empties the dropzone and marks the image for removal; on Save the
+  // project's header image is cleared.
   const handleRemove = () => {
     setImageFiles([]);
     setProp((props: Props) => {
-      props.image = {};
+      props.image = { removed: true };
     });
   };
 
@@ -140,6 +143,12 @@ const ProjectBannerSettings = () => {
       props.alt = value;
     });
   };
+
+  // `{}` is the untouched default; only a real edit shadows the project value.
+  const altValue =
+    alt && Object.keys(alt).length > 0
+      ? alt
+      : project?.data.attributes.header_bg_alt_text_multiloc;
 
   return (
     <Box my="20px" display="flex" flexDirection="column" gap="16px">
@@ -161,7 +170,7 @@ const ProjectBannerSettings = () => {
         </Label>
         <InputMultilocWithLocaleSwitcher
           type="text"
-          valueMultiloc={alt}
+          valueMultiloc={altValue}
           onChange={handleAltChange}
         />
       </Box>
