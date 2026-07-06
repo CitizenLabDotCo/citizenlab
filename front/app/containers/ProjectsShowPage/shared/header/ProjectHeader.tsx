@@ -38,15 +38,23 @@ import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import ProjectInfo from './ProjectInfo';
 import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
-const Container = styled.div`
+// When the project page layout owns the body ($flushBottom), its sections run
+// to the bottom edge, so the container's bottom padding would show as a stray
+// white band above the footer.
+const Container = styled.div<{ $flushBottom: boolean }>`
   padding-top: 30px;
-  padding-bottom: 65px;
+  padding-bottom: ${({ $flushBottom }) => ($flushBottom ? '0px' : '65px')};
   background: #fff;
   position: relative;
   z-index: 2;
 
   ${media.phone`
     padding-top: 30px;
+  `}
+  ${({ $flushBottom }) =>
+    $flushBottom
+      ? ''
+      : media.phone`
     padding-bottom: 35px;
   `}
 `;
@@ -86,7 +94,10 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
 
     return (
-      <Container className={className || ''}>
+      <Container
+        className={className || ''}
+        $flushBottom={parallelParticipation}
+      >
         <ContentContainer maxWidth={maxPageWidth}>
           <Box
             display="flex"
