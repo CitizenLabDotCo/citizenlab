@@ -4,8 +4,8 @@ import { Helmet } from 'react-helmet-async';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
-import { IDFacebookMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
+import { getFacebookConfig } from 'api/id_methods/utils';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
@@ -40,16 +40,16 @@ const Meta = () => {
     /* eslint-disable @typescript-eslint/no-unnecessary-condition */
     const bannerNode = homepageLayout?.data?.attributes?.craftjs_json
       ? Object.values(homepageLayout.data.attributes.craftjs_json || {}).find(
-          (node: any) => {
-            return (
-              node &&
-              node.type &&
-              typeof node.type === 'object' &&
-              'resolvedName' in node.type &&
-              node.type.resolvedName === 'HomepageBanner'
-            );
-          }
-        )
+        (node: any) => {
+          return (
+            node &&
+            node.type &&
+            typeof node.type === 'object' &&
+            'resolvedName' in node.type &&
+            node.type.resolvedName === 'HomepageBanner'
+          );
+        }
+      )
       : null;
     /* eslint-enable @typescript-eslint/no-unnecessary-condition */
 
@@ -58,10 +58,7 @@ const Meta = () => {
     const organizationNameMultiLoc = settings.core.organization_name;
     const organizationName = localize(organizationNameMultiLoc);
     const url = `https://${tenant.data.attributes.host}`;
-    const facebookMethod = idMethods?.data.find(
-      (method): method is IDFacebookMethod =>
-        method.attributes.name === 'facebook'
-    );
+    const facebookMethod = getFacebookConfig(idMethods);
     const fbAppId = facebookMethod?.attributes.app_id;
 
     const metaTitleMultiLoc = settings.core.meta_title;
@@ -99,11 +96,10 @@ const Meta = () => {
 
         {showDefaultTitleAndDescTags && (
           <title>
-            {`${
-              authUser && authUser.data.attributes.unread_notifications
+            {`${authUser && authUser.data.attributes.unread_notifications
                 ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
-            } ${metaTitle}`}
+              } ${metaTitle}`}
           </title>
         )}
         {showDefaultTitleAndDescTags && (
