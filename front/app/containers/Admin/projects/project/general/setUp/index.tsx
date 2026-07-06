@@ -17,7 +17,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -39,7 +38,6 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -49,7 +47,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams, useLocation } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
@@ -59,16 +56,13 @@ import GeographicAreaInputs from '../../../_shared/components/ProjectSetupForm/G
 import ProjectCardImageDropzone from '../../../_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
 import ProjectHeaderImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectHeaderImageTooltip';
-import ProjectNameInput from '../../../_shared/components/ProjectSetupForm/ProjectNameInput';
 import {
   StyledForm,
   StyledInputMultiloc,
   StyledSectionField,
 } from '../../../_shared/components/ProjectSetupForm/styling';
 import TopicInputs from '../../../_shared/components/ProjectSetupForm/TopicInputs';
-import { fragmentId } from '../../projectHeader';
 import messages from '../messages';
-import validateTitle from '../utils/validateTitle';
 
 interface Props {
   project: IProject;
@@ -79,7 +73,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const projectId = project.data.id;
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
-  const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
   const { pathname } = useLocation();
   const showStickySaveButton = pathname.endsWith(
@@ -109,7 +102,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
-  const [titleError, setTitleError] = useState<Multiloc | null>(null);
   const [projectContextError, setProjectContextError] = useState(false);
 
   // We should probably not have slug, publicationStatus, etc.
@@ -192,11 +184,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 
       setSubmitState(submitState);
     };
-
-  const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
-    handleProjectAttributeDiffOnChange({ title_multiloc: titleMultiloc });
-    setTitleError(null);
-  };
 
   const handleAltTextMultilocOnChange = (altTextMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -343,23 +330,12 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   };
 
   const validateForm = () => {
-    const titleError = !isNilOrError(appConfigLocales)
-      ? validateTitle(
-          appConfigLocales,
-          projectAttrs.title_multiloc,
-          formatMessage(messages.noTitleErrorMessage)
-        )
-      : null;
-    const hasTitleError = !isEmpty(titleError);
-    setTitleError(hasTitleError ? titleError : null);
-    const formIsValid = !hasTitleError;
-
     if (!validateProjectContext(projectContext, projectAttrs)) {
       setProjectContextError(true);
       return false;
     }
 
-    return formIsValid;
+    return true;
   };
 
   const selectedTopicIds = getSelectedTopicIds(
@@ -392,38 +368,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
               </SectionDescription>
             </>
           )}
-
-          <Highlighter fragmentId={fragmentId}>
-            <ProjectNameInput
-              titleMultiloc={projectAttrs.title_multiloc}
-              titleError={titleError}
-              apiErrors={apiErrors}
-              handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-            />
-          </Highlighter>
-
-          {/* Project Description Section */}
-          <Section>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.projectDescriptionSectionTitle} />
-            </SubSectionTitle>
-            <SectionDescription>
-              <FormattedMessage
-                {...messages.projectDescriptionSectionDescription}
-              />
-            </SectionDescription>
-          </Section>
-
-          {/* Main Description */}
-          <SectionField>
-            <Highlighter fragmentId="description-multiloc">
-              <DescriptionBuilderLink contentBuildableType="project" />
-            </Highlighter>
-            <Error
-              fieldName="description_multiloc"
-              apiErrors={apiErrors.description_multiloc}
-            />
-          </SectionField>
 
           {/* Homepage Description */}
           <SectionField>
