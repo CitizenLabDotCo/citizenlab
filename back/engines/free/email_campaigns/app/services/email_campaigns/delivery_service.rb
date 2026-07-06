@@ -63,6 +63,7 @@ module EmailCampaigns
       @campaign_classes ||= begin
         classes = CAMPAIGN_CLASSES.deep_dup
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+        classes << Campaigns::SmsManual if AppConfiguration.instance.feature_activated?('sms')
         classes
       end
     end
@@ -114,7 +115,7 @@ module EmailCampaigns
       campaign.run_after_send_hooks(command)
     end
 
-    def send_preview(campaign, recipient)
+    def send_email_preview(campaign, recipient)
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
       else
@@ -127,7 +128,22 @@ module EmailCampaigns
       end
     end
 
+    def send_sms_preview(campaign, recipient)
+      raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if recipient.phone_number.blank?
+
+      body = MultilocService.new.t(campaign.body_multiloc, recipient.locale)
+      return if body.blank?
+
+      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
+        body: body,
+        user_id: recipient.id
+      )
+      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
+    end
+
     def preview_email(campaign, recipient)
+      return {} if campaign.sms?
+
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
       else
@@ -200,16 +216,38 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
+      return send_command_sms(campaign, command) if campaign.sms?
+
+      send_command_email(campaign, command)
     end
 
-    # This method is triggered when the given sending command should be sent
-    # out through the interal Rails mailing stack
-    def send_command_internal(campaign, command)
+    # Sends the command through the internal Rails mailing stack. Campaigns
+    # without a mailer (nothing to email) are a no-op.
+    def send_command_email(campaign, command)
+      return unless campaign.respond_to?(:mailer_class)
+
       campaign.mailer_class
         .with(campaign: campaign, command: command)
         .campaign_mail
         .deliver_later(wait: command[:delay] || 0)
+    end
+
+    # Dispatches the command over SMS. The EmailCampaigns::Sms::Delivery is created synchronously
+    # here (so the campaign's sent? guard sees it immediately), then the actual
+    # provider send happens asynchronously in EmailCampaigns::Sms::SendJob.
+    def send_command_sms(campaign, command)
+      recipient = command[:recipient]
+      return if recipient.phone_number.blank?
+
+      body = MultilocService.new.t(command[:body_multiloc], recipient.locale)
+      return if body.blank?
+
+      delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
+        body: body,
+        user_id: recipient.id,
+        campaign_id: campaign.id
+      )
+      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
     end
 
     def generate_commands(campaign, recipient, options = {})

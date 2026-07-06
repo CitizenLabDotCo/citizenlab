@@ -41,6 +41,12 @@ module EmailCampaigns
       # The campaign that triggered this SMS, when sent as part of one.
       belongs_to :campaign, class_name: 'EmailCampaigns::Campaign', optional: true
 
+      # Per-status counts (+ total) for a campaign's SMS deliveries.
+      def self.status_counts(campaign_id)
+        counts = where(campaign_id: campaign_id).group(:status).count
+        STATUSES.index_with { |status| counts[status] || 0 }.symbolize_keys.merge(total: counts.values.sum)
+      end
+
       validates :body, presence: true
       validates :status, inclusion: { in: STATUSES }
 

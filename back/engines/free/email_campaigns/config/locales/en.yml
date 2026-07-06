@@ -197,6 +197,7 @@ en:
       project_review_state_change: Project approved
       proposal_expired_for_admin: Proposal expired without reaching the voting threshold
       screening_digest: Weekly screening reminder
+      sms_manual: Official SMS messages
       space_moderation_rights_received: Space manager rights received
       status_change_on_idea_you_follow: Status change of an input that you follow
       survey_submitted: Survey submitted

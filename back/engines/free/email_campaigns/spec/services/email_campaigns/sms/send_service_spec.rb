@@ -62,4 +62,58 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery.error_message).to eq('Provider rejected it')
     end
   end
+
+  describe '#create_delivery' do
+    it 'records a pending delivery linked to the campaign without calling the provider' do
+      campaign = create(:manual_campaign)
+      expect(provider).not_to receive(:send)
+
+      delivery = described_class.new.create_delivery(body: 'hi', campaign_id: campaign.id)
+
+      expect(delivery).to have_attributes(status: 'pending', campaign_id: campaign.id)
+    end
+
+    it 'raises and creates nothing when the SMS feature is disabled' do
+      SettingsService.new.deactivate_feature!('sms')
+
+      expect { described_class.new.create_delivery(body: 'hi') }
+        .to raise_error(EmailCampaigns::Sms::Error, /not enabled/)
+      expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
+    end
+  end
+
+  describe '#deliver' do
+    let(:delivery) { EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending') }
+
+    it 'sends an already-created delivery through the provider and stores the status' do
+      allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued')
+
+      described_class.new.deliver(delivery, to: '+14155552671')
+
+      expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d')
+    end
+
+    it 'marks the delivery failed and re-raises when the provider fails' do
+      allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error, 'nope')
+
+      expect { described_class.new.deliver(delivery, to: '+14155552671') }.to raise_error(EmailCampaigns::Sms::Error)
+      expect(delivery.reload.status).to eq('failed')
+    end
+
+    it 'leaves the delivery pending and re-raises on a rate-limit error so the job can retry it' do
+      allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error::RateLimit, 'slow down')
+
+      expect { described_class.new.deliver(delivery, to: '+14155552671') }
+        .to raise_error(EmailCampaigns::Sms::Error::RateLimit)
+      expect(delivery.reload.status).to eq('pending')
+    end
+
+    it 'refuses to send a delivery that is not pending' do
+      delivery.update!(status: 'sent')
+      expect(provider).not_to receive(:send)
+
+      expect { described_class.new.deliver(delivery, to: '+14155552671') }
+        .to raise_error(EmailCampaigns::Sms::Error, /not pending/)
+    end
+  end
 end
