@@ -3,7 +3,7 @@ import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
-import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
+import { PhasePostingDisabledReason } from 'utils/actionDescriptors/types';
 
 import { canModerateProject } from './permissions/rules/projectPermissions';
 
@@ -48,10 +48,10 @@ export type AuthenticationRequirements =
   | 'complete_registration';
 
 const ideaPostingDisabledReason = (
-  backendReason: ProjectPostingDisabledReason | null,
+  backendReason: PhasePostingDisabledReason | null,
   signedIn: boolean
 ): {
-  disabledReason: ProjectPostingDisabledReason | null;
+  disabledReason: PhasePostingDisabledReason | null;
   authenticationRequirements: AuthenticationRequirements | null;
 } => {
   switch (backendReason) {
@@ -126,7 +126,7 @@ export const getIdeaPostingRules = ({
   project: IProjectData | null | undefined;
   phase: IPhaseData | undefined;
   authUser: IUserData | undefined;
-}): ActionPermission<ProjectPostingDisabledReason> => {
+}): ActionPermission<PhasePostingDisabledReason> => {
   const signedIn = !!authUser;
 
   if (project) {
@@ -208,7 +208,7 @@ export const getIdeaPostingRules = ({
       authenticationRequirements: null,
       show: true,
       enabled: false,
-    } as ActionPermissionDisabled<ProjectPostingDisabledReason>;
+    } as ActionPermissionDisabled<PhasePostingDisabledReason>;
     // TODO enforce the validity of this by adding a test to ensure either action or disabledReason is not null
   }
   // if !project

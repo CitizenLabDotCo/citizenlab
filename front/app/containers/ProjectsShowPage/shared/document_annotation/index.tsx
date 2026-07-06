@@ -4,7 +4,7 @@ import { IPhaseData } from 'api/phases/types';
 import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
-import { ProjectDocumentAnnotationDisabledReason } from 'utils/actionDescriptors/types';
+import { PhaseDocumentAnnotationDisabledReason } from 'utils/actionDescriptors/types';
 
 import ParticipationPermission from '../ParticipationPermission';
 
@@ -16,9 +16,9 @@ interface Props {
 }
 
 const isEnabled = (
-  disabledReason: ProjectDocumentAnnotationDisabledReason | null
+  disabledReason: PhaseDocumentAnnotationDisabledReason | null
 ) => {
-  const reasonsToHideDocument: ProjectDocumentAnnotationDisabledReason[] = [
+  const reasonsToHideDocument: PhaseDocumentAnnotationDisabledReason[] = [
     'project_inactive',
     'inactive_phase',
     'user_not_in_group',

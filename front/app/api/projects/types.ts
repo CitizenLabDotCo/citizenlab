@@ -2,15 +2,15 @@ import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import {
   ActionDescriptor,
-  ProjectDisabledReason,
-  ProjectCommentingDisabledReason,
-  ProjectDocumentAnnotationDisabledReason,
-  ProjectPollDisabledReason,
-  ProjectPostingDisabledReason,
-  ProjectReactingDisabledReason,
-  ProjectSurveyDisabledReason,
-  ProjectVotingDisabledReason,
-  ProjectVolunteeringDisabledReason,
+  AttendingEventDisabledReason,
+  PhaseCommentingDisabledReason,
+  PhaseDocumentAnnotationDisabledReason,
+  PhasePollDisabledReason,
+  PhasePostingDisabledReason,
+  PhaseReactingDisabledReason,
+  PhaseSurveyDisabledReason,
+  PhaseVotingDisabledReason,
+  PhaseVolunteeringDisabledReason,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -105,23 +105,23 @@ export interface IProjectAttributes {
 }
 
 export type PhaseActionDescriptors = {
-  posting_idea: ActionDescriptor<ProjectPostingDisabledReason>;
-  commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+  posting_idea: ActionDescriptor<PhasePostingDisabledReason>;
+  commenting_idea: ActionDescriptor<PhaseCommentingDisabledReason>;
   // Same disabled reasons as commenting_idea at time of writing
-  comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
-  reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
-    up: ActionDescriptor<ProjectReactingDisabledReason>;
-    down: ActionDescriptor<ProjectReactingDisabledReason>;
+  comment_reacting_idea: ActionDescriptor<PhaseCommentingDisabledReason>;
+  reacting_idea: ActionDescriptor<PhaseReactingDisabledReason> & {
+    up: ActionDescriptor<PhaseReactingDisabledReason>;
+    down: ActionDescriptor<PhaseReactingDisabledReason>;
   };
-  taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
-  taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
-  annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
-  voting: ActionDescriptor<ProjectVotingDisabledReason>;
-  volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
+  taking_survey: ActionDescriptor<PhaseSurveyDisabledReason>;
+  taking_poll: ActionDescriptor<PhasePollDisabledReason>;
+  annotating_document: ActionDescriptor<PhaseDocumentAnnotationDisabledReason>;
+  voting: ActionDescriptor<PhaseVotingDisabledReason>;
+  volunteering: ActionDescriptor<PhaseVolunteeringDisabledReason>;
 };
 
 export type ProjectActionDescriptors = {
-  attending_event: ActionDescriptor<ProjectDisabledReason>;
+  attending_event: ActionDescriptor<AttendingEventDisabledReason>;
 };
 
 export interface IProjectData {
