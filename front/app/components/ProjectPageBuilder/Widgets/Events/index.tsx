@@ -14,9 +14,9 @@ import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/use
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
-import useCanModerateProject from '../useCanModerateProject';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyEvents from './EmptyEvents';
@@ -30,7 +30,8 @@ const EventsWidget: UserComponent = () => {
   const { formatMessage } = useIntl();
   const padding = useCraftComponentDefaultPadding();
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const canModerate = useCanModerateProject(projectId);
+  // The public project page route carries a slug; the builder routes don't.
+  const { slug } = useParams({ strict: false }) as { slug?: string };
   const { data: events } = useEvents({
     projectIds: projectId ? [projectId] : [],
     sort: '-start_at',
@@ -40,12 +41,12 @@ const EventsWidget: UserComponent = () => {
     return null;
   }
 
-  // Like the legacy public page, residents see nothing when there are no events.
-  // The empty-state placeholder is kept for moderators only (builder, admin
-  // preview, and admins viewing the live page), matching the Timeline/InputFeed
-  // widgets.
+  // With no events, the public page shows nothing — for everyone, admins
+  // included, so the live page is exactly what citizens see (matching the
+  // legacy page). The builder keeps an empty state so admins know where
+  // events will render.
   if (events.data.length === 0) {
-    return canModerate ? <EmptyEvents /> : null;
+    return slug ? null : <EmptyEvents />;
   }
 
   return (
@@ -113,8 +114,12 @@ EventsWidget.craft = {
   related: {
     settings: EventsSettings,
   },
+  rules: {
+    canDrag: () => false,
+  },
   custom: {
     title: messages.eventsWidgetTitle,
+    locked: true,
     noPointerEvents: true,
   },
 };
