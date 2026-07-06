@@ -31,7 +31,6 @@ interface SplitSSOProviders {
   // Enabled providers that can only authenticate, not verify.
   nonVerificationProviders: SSOButtonProvider[];
   // Whether at least one authentication + verification method is active
-  // (including FranceConnect, which is always shown as a verification method).
   hasVerificationMethod: boolean;
 }
 
