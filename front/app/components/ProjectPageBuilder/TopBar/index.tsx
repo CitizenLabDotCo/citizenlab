@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import useUpsertProjectPageLayout from 'api/content_builder/useUpsertProjectPageLayout';
+import { IUpdatedProjectProperties } from 'api/projects/types';
+import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -13,11 +15,18 @@ import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
+import { findNodeIdByName } from 'components/ProjectPageBuilder/defaultLayout';
+import {
+  extractProjectAttributeDrafts,
+  hasProjectAttributeDrafts,
+  stripProjectAttributeDrafts,
+} from 'components/ProjectPageBuilder/projectAttributeDrafts';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { type TypedLinkProps } from 'utils/cl-router/Link';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 import messages from '../messages';
 
@@ -49,13 +58,12 @@ const ProjectPageBuilderTopBar = ({
   previewLink,
   titleMultiloc,
 }: Props) => {
-  const { query } = useEditor();
+  const { query, actions } = useEditor();
   const localize = useLocalize();
-  const {
-    mutate: upsertProjectPageLayout,
-    isLoading,
-    isError,
-  } = useUpsertProjectPageLayout();
+  const { mutateAsync: upsertProjectPageLayout } = useUpsertProjectPageLayout();
+  const { mutateAsync: updateProject } = useUpdateProject();
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
 
   const disableSave = !!hasError || !!hasPendingState;
 
@@ -63,11 +71,63 @@ const ProjectPageBuilderTopBar = ({
     clHistory.push(backPath);
   };
 
-  const handleSave = () => {
-    upsertProjectPageLayout({
-      projectId,
-      craftjs_json: query.getSerializedNodes(),
-    });
+  // Saving commits in two steps: the Title / Project image widgets park their
+  // edits as node props (see projectAttributeDrafts.ts), which are written to
+  // the project itself here, then stripped from the layout that is persisted.
+  const handleSave = async () => {
+    if (isSaving) return;
+    setIsSaving(true);
+    setSaveError(false);
+
+    try {
+      const nodes = query.getSerializedNodes();
+      const drafts = extractProjectAttributeDrafts(nodes);
+
+      if (hasProjectAttributeDrafts(drafts)) {
+        const attributes: IUpdatedProjectProperties = { projectId };
+        if (drafts.titleMultiloc) {
+          attributes.title_multiloc = drafts.titleMultiloc;
+        }
+        if (drafts.bannerImageUrl) {
+          const file = await convertUrlToUploadFile(drafts.bannerImageUrl);
+          if (!file?.base64) {
+            throw new Error('Could not read the uploaded project image');
+          }
+          attributes.header_bg = file.base64;
+        } else if (drafts.bannerRemoved) {
+          attributes.header_bg = null;
+        }
+        if (drafts.bannerAltMultiloc) {
+          attributes.header_bg_alt_text_multiloc = drafts.bannerAltMultiloc;
+        }
+        await updateProject(attributes);
+      }
+
+      await upsertProjectPageLayout({
+        projectId,
+        craftjs_json: stripProjectAttributeDrafts(nodes),
+      });
+
+      // The drafts are now committed to the project; reset the in-editor props
+      // to match the persisted layout so the widgets read the fresh attributes.
+      const titleNodeId = findNodeIdByName(nodes, 'ProjectTitle');
+      if (titleNodeId) {
+        actions.history.ignore().setProp(titleNodeId, (props) => {
+          props.title = undefined;
+        });
+      }
+      const bannerNodeId = findNodeIdByName(nodes, 'ProjectBanner');
+      if (bannerNodeId) {
+        actions.history.ignore().setProp(bannerNodeId, (props) => {
+          props.image = {};
+          props.alt = {};
+        });
+      }
+    } catch {
+      setSaveError(true);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleSelectLocale = (locale: SupportedLocale) => {
@@ -112,10 +172,10 @@ const ProjectPageBuilderTopBar = ({
         />
         <SaveButton
           isDisabled={disableSave}
-          isLoading={isLoading}
+          isLoading={isSaving}
           onSave={handleSave}
         />
-        {isError && (
+        {saveError && (
           <Text
             color="error"
             ml="20px"
