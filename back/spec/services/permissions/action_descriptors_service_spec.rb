@@ -19,17 +19,6 @@ RSpec.describe Permissions::ActionDescriptorsService do
       it { expect(service.participation_possible?).to be true }
     end
 
-    context 'when only attending_event is enabled' do
-      let(:action_descriptors) do
-        {
-          posting_idea: descriptor(enabled: false, disabled_reason: 'posting_disabled'),
-          attending_event: descriptor(enabled: true)
-        }
-      end
-
-      it { expect(service.participation_possible?).to be false }
-    end
-
     context 'when no action is enabled but a disabled reason is user-fixable' do
       let(:action_descriptors) do
         {
@@ -46,17 +35,6 @@ RSpec.describe Permissions::ActionDescriptorsService do
         {
           posting_idea: descriptor(enabled: false, disabled_reason: 'posting_disabled'),
           taking_survey: descriptor(enabled: false, disabled_reason: 'not_survey')
-        }
-      end
-
-      it { expect(service.participation_possible?).to be false }
-    end
-
-    context 'when only attending_event has a fixable reason' do
-      let(:action_descriptors) do
-        {
-          posting_idea: descriptor(enabled: false, disabled_reason: 'posting_disabled'),
-          attending_event: descriptor(enabled: false, disabled_reason: 'user_not_signed_in')
         }
       end
 

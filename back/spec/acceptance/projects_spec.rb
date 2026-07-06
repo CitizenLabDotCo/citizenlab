@@ -203,27 +203,7 @@ resource 'Projects' do
           slug: @projects.first.slug,
           timeline_active: nil,
           action_descriptors: {
-            posting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            reacting_idea: {
-              enabled: false,
-              disabled_reason: 'project_inactive',
-              up: {
-                enabled: false,
-                disabled_reason: 'project_inactive'
-              },
-              down: {
-                enabled: false,
-                disabled_reason: 'project_inactive'
-              }
-            },
-            comment_reacting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
-            taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
-            taking_poll: { enabled: false, disabled_reason: 'project_inactive' },
-            voting: { enabled: false, disabled_reason: 'project_inactive' },
-            attending_event: { enabled: true, disabled_reason: nil },
-            volunteering: { enabled: false, disabled_reason: 'project_inactive' }
+            attending_event: { enabled: true, disabled_reason: nil }
           },
           preview_token: an_instance_of(String)
         )
@@ -2316,42 +2296,6 @@ resource 'Projects' do
         example 'Get community monitor project' do
           do_request
           assert_status 200
-        end
-
-        context 'Survey has already been submitted' do
-          let!(:response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: author_hash) }
-
-          context 'when no consent given' do
-            let(:author_hash) do
-              # No consent hash based on ip and user agent
-              user_agent = 'User-Agent: Mozilla/5.0'
-              ip = '1.2.3.4'
-              "n_#{Idea.create_author_hash(ip + user_agent, phase.project_id, true)}"
-            end
-
-            example 'Get community monitor project when survey already submitted without consent' do
-              header 'User-Agent', 'User-Agent: Mozilla/5.0'
-              header 'X-Forwarded-For', '1.2.3.4'
-              do_request
-              assert_status 200
-
-              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
-              expect(disabled_reason).to eq 'posting_limited_max_reached'
-            end
-          end
-
-          context 'when consent given - using hash from cookie' do
-            let(:author_hash) { 'COOKIE_AUTHOR_HASH' }
-
-            example 'Get community monitor project when survey already submitted with consent' do
-              header('Cookie', "#{phase.id}={\"lo\": \"#{author_hash}\"};cl2_consent={\"analytics\": true}")
-              do_request
-              assert_status 200
-
-              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
-              expect(disabled_reason).to eq 'posting_limited_max_reached'
-            end
-          end
         end
       end
     end

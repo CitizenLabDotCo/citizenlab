@@ -11,11 +11,7 @@ module Permissions
     end
 
     def participation_possible?
-      # `attending_event` is not included, as we do not check if any ongoing/future events exist for the project,
-      # nor if user is already attending such an event, in the interests of performance and simplicity.
-      descriptors = action_descriptors.except(:attending_event) # TODO: phase descriptors will be passed instead, removing this line
-
-      descriptors.values.any? do |descriptor|
+      action_descriptors.values.any? do |descriptor|
         descriptor[:enabled] || FIXABLE_DENIED_REASONS.include?(descriptor[:disabled_reason])
       end
     end

@@ -120,8 +120,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def index_with_active_participatory_phase
     projects = policy_scope(Project)
     projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
-    projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
-    projects = projects_and_descriptors[:projects]
+    projects = ProjectsFinderService.new(projects, current_user, params).participation_possible
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])

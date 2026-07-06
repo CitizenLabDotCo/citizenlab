@@ -82,5 +82,9 @@ module Permissions
     def project_denied_reason(project)
       PROJECT_DENIED_REASONS[:project_inactive] if project.admin_publication.archived?
     end
+
+    def descriptor(reason)
+      { enabled: !reason, disabled_reason: reason }
+    end
   end
 end

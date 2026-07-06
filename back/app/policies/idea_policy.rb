@@ -58,11 +58,16 @@ class IdeaPolicy < ApplicationPolicy
     return true if active? && UserRoleService.new.can_moderate_project?(record.project, user)
     return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
 
-    reason = Permissions::ProjectPermissionsService.new(
-      record.project,
-      user,
-      request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
-    ).denied_reason_for_action 'posting_idea'
+    phase = TimelineService.new.current_phase_not_archived(record.project)
+    reason = if phase
+      Permissions::PhasePermissionsService.new(
+        phase,
+        user,
+        request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
+      ).denied_reason_for_action('posting_idea')
+    else
+      Permissions::BasePermissionsService::PROJECT_DENIED_REASONS[:project_inactive]
+    end
     raise_not_authorized(reason) if reason
 
     (!user || owner?) && policy_for(record.project).show?

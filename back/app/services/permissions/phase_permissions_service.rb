@@ -117,10 +117,6 @@ module Permissions
 
     attr_reader :phase, :request, :time
 
-    def descriptor(reason)
-      { enabled: !reason, disabled_reason: reason }
-    end
-
     # Phase methods
     def posting_idea_denied_reason_for_action
       if !participation_method.supports_submission?

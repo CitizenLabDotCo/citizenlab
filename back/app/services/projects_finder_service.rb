@@ -37,34 +37,32 @@ class ProjectsFinderService
     # (e.g. user not signed in).
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
     #
-    # Step 1: Create pairs of project ids and action descriptors.
+    # Step 1: Collect the ids of projects whose current phase allows participation.
     # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
     pagination_limit = @page_size * @page_number
-    project_descriptor_pairs = {}
+    project_ids = []
 
     projects.each do |project|
-      service = Permissions::ProjectPermissionsService.new(
-        project, @user, user_requirements_service: user_requirements_service
-      )
-      action_descriptors = service.action_descriptors
-      has_participation_possible = Permissions::ActionDescriptorsService.new(action_descriptors).participation_possible?
-      next unless has_participation_possible
+      phase = TimelineService.new.current_phase_not_archived(project)
+      next if phase.nil?
 
-      project_descriptor_pairs[project.id] = action_descriptors
-      break if project_descriptor_pairs.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
+      phase.project = project # Performance optimization (keep preloaded relationships)
+      action_descriptors = Permissions::PhasePermissionsService.new(
+        phase, @user, user_requirements_service: user_requirements_service
+      ).action_descriptors
+      next if !Permissions::ActionDescriptorsService.new(action_descriptors).participation_possible?
+
+      project_ids << project.id
+      break if project_ids.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
     end
 
-    # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
-    projects = Project.where(id: project_descriptor_pairs.keys)
+    # Step 2: Use the collected project IDs to filter projects
+    projects = Project.where(id: project_ids)
 
     # We join with active phases again, to reorder by phases.end_at first, projects.created_at second, project ID third.
     # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values.
-    projects = projects_with_active_phase(projects)
+    projects_with_active_phase(projects)
       .order('phase_end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
-
-    # We pass the action descriptors to the serializer to avoid needing to get them again when serializing,
-    # so we return them along with the filtered projects.
-    { projects: projects, descriptor_pairs: project_descriptor_pairs }
   end
 
   # Returns an ActiveRecord collection of published projects that are also

@@ -124,6 +124,25 @@ resource 'Phases' do
 
     let(:id) { @phase.id }
 
+    context 'community monitor phase with everyone tracking, when the survey was already submitted' do
+      let(:phase) do
+        phase = create(:community_monitor_survey_phase, with_permissions: true)
+        phase.permissions.first.update!(permitted_by: 'everyone', everyone_tracking_enabled: true)
+        phase
+      end
+      let(:id) { phase.id }
+      let!(:survey_response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: 'COOKIE_AUTHOR_HASH') }
+
+      example 'Get a phase reports posting_limited_max_reached based on the submission cookie', document: false do
+        header('Cookie', "#{phase.id}={\"lo\": \"COOKIE_AUTHOR_HASH\"};cl2_consent={\"analytics\": true}")
+        do_request
+        assert_status 200
+
+        disabled_reason = json_response.dig(:data, :attributes, :action_descriptors, :posting_idea, :disabled_reason)
+        expect(disabled_reason).to eq 'posting_limited_max_reached'
+      end
+    end
+
     example 'Get one phase by id' do
       create_list(:idea, 2, project: @project, phases: @project.phases)
       Permissions::PermissionsUpdateService.new.update_all_permissions
