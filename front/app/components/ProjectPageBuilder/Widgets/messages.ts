@@ -78,8 +78,22 @@ export default defineMessages({
     id: 'app.components.ProjectPageBuilder.Widgets.timelineEmptyTitle',
     defaultMessage: 'No phases yet',
   },
+  eventsEmptyNote: {
+    id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyNote',
+    defaultMessage:
+      "No events yet — events added in the project editor appear here automatically. Citizens won't see this section until then.",
+  },
   untitledProject: {
     id: 'app.components.ProjectPageBuilder.Widgets.untitledProject',
     defaultMessage: 'Untitled project',
+  },
+  descriptionSectionTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle',
+    defaultMessage: 'Description',
+  },
+  descriptionSectionNote: {
+    id: 'app.components.ProjectPageBuilder.Widgets.descriptionSectionNote',
+    defaultMessage:
+      'The project description. Edit its content by adding elements from the toolbox. It stays pinned in this position for now.',
   },
 });
