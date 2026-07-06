@@ -24,6 +24,7 @@ import {
   ProjectPageRoot,
   ProjectPageBody,
 } from 'components/ProjectPageBuilder/regions';
+import ProjectDescriptionSection from 'components/ProjectPageBuilder/Widgets/DescriptionSection';
 import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
 import InputFeed from 'components/ProjectPageBuilder/Widgets/InputFeed';
 import ProjectBanner from 'components/ProjectPageBuilder/Widgets/ProjectBanner';
@@ -62,6 +63,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         InputFeed,
         ProjectBanner,
         ProjectTitle,
+        ProjectDescriptionSection,
         ProjectPageRoot,
         ProjectPageBody,
       }}
