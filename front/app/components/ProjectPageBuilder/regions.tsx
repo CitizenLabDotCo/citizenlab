@@ -41,7 +41,13 @@ export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => (
   </Box>
 );
 
+// The body's section order is frozen during the transition (see
+// defaultLayout.ts); new widgets can only be dropped inside the description
+// section, never between the fixed sections.
 ProjectPageBody.craft = {
+  rules: {
+    canMoveIn: () => false,
+  },
   custom: {
     region: true,
   },
