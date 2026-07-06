@@ -653,9 +653,9 @@ it-IT:
       title: '%{firstName}, i contributi sono in attesa di essere esaminati'
     space_moderation_rights_received:
       cta_button: Gestisci questo spazio
-      event_description: 'Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager dello spazio per la seguente area:'
+      event_description: 'Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager dello spazio per il seguente spazio:'
       no_projects: Ancora nessun progetto
-      preheader: Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager dello spazio per la seguente area
+      preheader: Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager dello spazio per il seguente spazio
       subject: Sei diventato un manager dello spazio sulla piattaforma di %{organizationName}
       text_manage_space_settings: Puoi modificare il titolo e la descrizione dello spazio, in modo che i partecipanti e gli altri manager comprendano immediatamente di cosa tratta lo spazio e come si relaziona con la tua organizzazione.
       text_organize_projects_and_folders: "In qualità di manager dello spazio, puoi gestire i progetti e le cartelle all'interno del to spazio, inclusa l'assegnazione e la rimozione dei ruoli di gestione."
