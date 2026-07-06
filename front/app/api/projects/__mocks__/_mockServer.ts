@@ -40,53 +40,9 @@ export const project1: IProjectData = {
     header_bg_alt_text_multiloc: {},
     listed: true,
     action_descriptors: {
-      posting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      commenting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      comment_reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-        up: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        down: {
-          enabled: false,
-          disabled_reason: 'reacting_dislike_disabled',
-        },
-      },
-      voting: {
-        enabled: false,
-        disabled_reason: 'not_voting',
-      },
-      taking_survey: {
-        enabled: false,
-        disabled_reason: 'not_survey',
-      },
-      taking_poll: {
-        enabled: false,
-        disabled_reason: 'not_poll',
-      },
-      annotating_document: {
-        enabled: false,
-        disabled_reason: 'not_document_annotation',
-      },
       attending_event: {
         enabled: true,
         disabled_reason: null,
-      },
-      volunteering: {
-        enabled: false,
-        disabled_reason: 'not_volunteering',
       },
     },
     avatars_count: 8,
@@ -189,53 +145,9 @@ export const project2: IProjectData = {
     header_bg_alt_text_multiloc: {},
     listed: true,
     action_descriptors: {
-      posting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      commenting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      comment_reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-        up: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        down: {
-          enabled: true,
-          disabled_reason: null,
-        },
-      },
-      voting: {
-        enabled: false,
-        disabled_reason: 'not_voting',
-      },
-      annotating_document: {
-        enabled: false,
-        disabled_reason: 'not_document_annotation',
-      },
-      taking_survey: {
-        enabled: false,
-        disabled_reason: 'not_survey',
-      },
-      taking_poll: {
-        enabled: false,
-        disabled_reason: 'not_poll',
-      },
       attending_event: {
         enabled: true,
         disabled_reason: null,
-      },
-      volunteering: {
-        enabled: false,
-        disabled_reason: 'not_volunteering',
       },
     },
     avatars_count: 6,
@@ -341,53 +253,9 @@ const votingProject: IProject = {
       header_bg_alt_text_multiloc: {},
       listed: true,
       action_descriptors: {
-        posting_idea: {
-          enabled: false,
-          disabled_reason: 'posting_not_supported',
-        },
-        commenting_idea: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        comment_reacting_idea: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        reacting_idea: {
-          enabled: false,
-          disabled_reason: 'reacting_not_supported',
-          up: {
-            enabled: false,
-            disabled_reason: 'reacting_not_supported',
-          },
-          down: {
-            enabled: false,
-            disabled_reason: 'reacting_not_supported',
-          },
-        },
-        voting: {
-          enabled: true,
-          disabled_reason: null,
-        },
         attending_event: {
           enabled: true,
           disabled_reason: null,
-        },
-        annotating_document: {
-          enabled: false,
-          disabled_reason: 'not_document_annotation',
-        },
-        taking_survey: {
-          enabled: false,
-          disabled_reason: 'not_survey',
-        },
-        taking_poll: {
-          enabled: false,
-          disabled_reason: 'not_poll',
-        },
-        volunteering: {
-          enabled: false,
-          disabled_reason: 'not_volunteering',
         },
       },
       avatars_count: 2,

@@ -120,7 +120,7 @@ export type PhaseActionDescriptors = {
   volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
 };
 
-export type ProjectActionDescriptors = PhaseActionDescriptors & {
+export type ProjectActionDescriptors = {
   attending_event: ActionDescriptor<ProjectDisabledReason>;
 };
 

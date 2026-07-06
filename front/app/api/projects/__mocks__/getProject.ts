@@ -42,31 +42,9 @@ export function getProject(
       survey_embed_url: `mockProject${id}${surveyService}Url`,
       ordering: 0,
       action_descriptors: {
-        posting_idea: {
-          enabled: true,
-          disabled_reason: null, // PostingDisabledReasons | null,
-        },
-        commenting_idea: {
+        attending_event: {
           enabled: true,
           disabled_reason: null,
-        },
-        reacting_idea: {
-          up: {
-            enabled: true,
-            disabled_reason: null,
-          },
-          down: {
-            enabled: true,
-            disabled_reason: null,
-          },
-        },
-        taking_survey: {
-          enabled: true,
-          disabled_reason: null, // SurveyDisabledReasons | null,
-        },
-        taking_poll: {
-          enabled: true,
-          disabled_reason: null, // SurveyDisabledReasons | null,
         },
       },
     },
