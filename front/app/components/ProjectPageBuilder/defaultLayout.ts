@@ -1,32 +1,31 @@
 import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
-import aboutBoxMessages from 'components/admin/ContentBuilder/Widgets/AboutBox/messages';
-import twoColumnMessages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
-
 import widgetMessages from './Widgets/messages';
 
-// The project page layout is split into two canvas regions:
+// While the new project page rolls out alongside the legacy one, the page
+// structure is frozen so both render the same sections in the same order:
 //
 //   ROOT (ProjectPageRoot, canMoveIn: false)   ← rejects all drops
 //     ├─ Project image (locked)
 //     ├─ Title         (locked)
-//     └─ ProjectPageBody                        ← the only droppable region
+//     └─ ProjectPageBody (canMoveIn: false)    ← fixed section order
+//          ├─ Description section              ← the only editable region;
+//          │                                      also edited via the legacy
+//          │                                      description editor
+//          ├─ Timeline        (locked)
+//          ├─ Phase content   (locked)
+//          └─ Events          (locked)
 //
-// The locked Banner + Title are auto-injected (never added from the toolbox) and
-// carry `locked: true` so the builder hides their delete affordance;
-// `canDrag: () => false` on the widgets prevents moving them. Because the root
-// rejects drops and the body sits below the header, nothing can be dropped above
-// the header.
+// The locks live in code — `ensureLockedHeaderNodes` re-stamps them on every
+// load — so unlocking at launch is a code change that instantly applies to
+// every stored layout, with no data migration.
 export const BANNER_NODE_ID = 'PROJECT_PAGE_BANNER';
 export const TITLE_NODE_ID = 'PROJECT_PAGE_TITLE';
 export const BODY_NODE_ID = 'PROJECT_PAGE_BODY';
+export const DESCRIPTION_NODE_ID = 'PROJECT_PAGE_DESCRIPTION';
 export const INPUT_FEED_NODE_ID = 'PROJECT_PAGE_INPUT_FEED';
 export const TIMELINE_NODE_ID = 'PROJECT_PAGE_TIMELINE';
 export const EVENTS_NODE_ID = 'PROJECT_PAGE_EVENTS';
-export const TWO_COLUMN_NODE_ID = 'PROJECT_PAGE_TWO_COLUMN';
-export const LEFT_COLUMN_NODE_ID = 'PROJECT_PAGE_LEFT_COLUMN';
-export const RIGHT_COLUMN_NODE_ID = 'PROJECT_PAGE_RIGHT_COLUMN';
-export const ABOUT_BOX_NODE_ID = 'PROJECT_PAGE_ABOUT_BOX';
 
 const ROOT_ID = 'ROOT';
 
@@ -77,7 +76,24 @@ const bodyNode = (childIds: string[]): SerializedNode =>
     linkedNodes: {},
   } as unknown as SerializedNode);
 
-// Movable but non-deletable participation content slot (ideas / survey / voting…).
+// The project description: pinned in place, but its content is freely editable
+// (both here and via the legacy description editor, which edits this subtree).
+const descriptionSectionNode = (childIds: string[]): SerializedNode =>
+  ({
+    type: { resolvedName: 'ProjectDescriptionSection' },
+    nodes: childIds,
+    props: {},
+    custom: {
+      title: widgetMessages.descriptionSectionTitle,
+      locked: true,
+    },
+    hidden: false,
+    parent: BODY_NODE_ID,
+    isCanvas: true,
+    displayName: 'ProjectDescriptionSection',
+    linkedNodes: {},
+  } as unknown as SerializedNode);
+
 const inputFeedNode = (parentId: string): SerializedNode =>
   ({
     type: { resolvedName: 'InputFeed' },
@@ -95,8 +111,6 @@ const inputFeedNode = (parentId: string): SerializedNode =>
     linkedNodes: {},
   } as unknown as SerializedNode);
 
-// Movable, deletable widgets seeded into a fresh page so the empty Phases and
-// Events sections (with their admin-only placeholders) are present by default.
 const timelineNode = (parentId: string): SerializedNode =>
   ({
     type: { resolvedName: 'TimelineWidget' },
@@ -104,6 +118,7 @@ const timelineNode = (parentId: string): SerializedNode =>
     props: {},
     custom: {
       title: widgetMessages.timelineWidgetTitle,
+      locked: true,
       noPointerEvents: true,
     },
     hidden: false,
@@ -120,64 +135,13 @@ const eventsNode = (parentId: string): SerializedNode =>
     props: {},
     custom: {
       title: widgetMessages.eventsWidgetTitle,
+      locked: true,
       noPointerEvents: true,
     },
     hidden: false,
     parent: parentId,
     isCanvas: false,
     displayName: 'EventsWidget',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
-
-// A column inside the TwoColumn widget. `id: 'left' | 'right'` mirrors the
-// canvas regions the TwoColumn component renders, so the builder treats each as
-// a droppable column.
-const columnNode = (
-  side: 'left' | 'right',
-  parentId: string,
-  childIds: string[]
-): SerializedNode =>
-  ({
-    type: { resolvedName: 'Container' },
-    nodes: childIds,
-    props: { id: side },
-    custom: {},
-    hidden: false,
-    parent: parentId,
-    isCanvas: true,
-    displayName: 'Container',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
-
-// Two-column row seeded after the title. The participation box (AboutBox) sits
-// in the narrower right column; the wider left column is left empty for the admin
-// to fill in.
-const twoColumnNode = (parentId: string): SerializedNode =>
-  ({
-    type: { resolvedName: 'TwoColumn' },
-    nodes: [LEFT_COLUMN_NODE_ID, RIGHT_COLUMN_NODE_ID],
-    props: { columnLayout: '2-1' },
-    custom: { title: twoColumnMessages.twoColumn, hasChildren: true },
-    hidden: false,
-    parent: parentId,
-    isCanvas: false,
-    displayName: 'TwoColumn',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
-
-const aboutBoxNode = (parentId: string): SerializedNode =>
-  ({
-    type: { resolvedName: 'AboutBox' },
-    nodes: [],
-    props: {},
-    custom: {
-      title: aboutBoxMessages.participationBox,
-      noPointerEvents: true,
-    },
-    hidden: false,
-    parent: parentId,
-    isCanvas: false,
-    displayName: 'AboutBox',
     linkedNodes: {},
   } as unknown as SerializedNode);
 
@@ -193,39 +157,32 @@ const rootNode = (childIds: string[]): SerializedNode =>
     linkedNodes: {},
   } as unknown as SerializedNode);
 
-// A fresh project page: the locked header above a body containing the (movable,
-// non-deletable) participation content.
+// A fresh project page: the locked header above the fixed body sections, with an
+// empty description. Mirrors the legacy public project page section for section.
 export const defaultProjectPageLayout = (): SerializedNodes => ({
   [ROOT_ID]: rootNode([BANNER_NODE_ID, TITLE_NODE_ID, BODY_NODE_ID]),
   [BANNER_NODE_ID]: bannerNode(),
   [TITLE_NODE_ID]: titleNode(),
-  // After the title: a two-column row (participation box on the right), then the
-  // timeline, the participation content feed, and events.
   [BODY_NODE_ID]: bodyNode([
-    TWO_COLUMN_NODE_ID,
+    DESCRIPTION_NODE_ID,
     TIMELINE_NODE_ID,
     INPUT_FEED_NODE_ID,
     EVENTS_NODE_ID,
   ]),
-  [TWO_COLUMN_NODE_ID]: twoColumnNode(BODY_NODE_ID),
-  [LEFT_COLUMN_NODE_ID]: columnNode('left', TWO_COLUMN_NODE_ID, []),
-  [RIGHT_COLUMN_NODE_ID]: columnNode('right', TWO_COLUMN_NODE_ID, [
-    ABOUT_BOX_NODE_ID,
-  ]),
-  [ABOUT_BOX_NODE_ID]: aboutBoxNode(RIGHT_COLUMN_NODE_ID),
-  [INPUT_FEED_NODE_ID]: inputFeedNode(BODY_NODE_ID),
+  [DESCRIPTION_NODE_ID]: descriptionSectionNode([]),
   [TIMELINE_NODE_ID]: timelineNode(BODY_NODE_ID),
+  [INPUT_FEED_NODE_ID]: inputFeedNode(BODY_NODE_ID),
   [EVENTS_NODE_ID]: eventsNode(BODY_NODE_ID),
 });
 
 const resolvedNameOf = (node: SerializedNode) =>
   typeof node.type === 'object' ? node.type.resolvedName : undefined;
 
-const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
+export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
-// Canonical `custom` for the locked header nodes, re-applied on load so the title
-// and lock flag stay current even for layouts saved with older values.
+// Canonical `custom` for the fixed nodes, re-applied on load so titles and lock
+// flags stay current even for layouts saved with older values.
 const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   ProjectBanner: {
     title: widgetMessages.bannerWidgetTitle,
@@ -237,8 +194,22 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
     locked: true,
     noPointerEvents: true,
   },
+  ProjectDescriptionSection: {
+    title: widgetMessages.descriptionSectionTitle,
+    locked: true,
+  },
+  TimelineWidget: {
+    title: widgetMessages.timelineWidgetTitle,
+    locked: true,
+    noPointerEvents: true,
+  },
   InputFeed: {
     title: widgetMessages.inputFeedWidgetTitle2,
+    locked: true,
+    noPointerEvents: true,
+  },
+  EventsWidget: {
+    title: widgetMessages.eventsWidgetTitle,
     locked: true,
     noPointerEvents: true,
   },
@@ -257,10 +228,11 @@ const REMOVED_WIDGETS = [
   'Spotlight',
 ];
 
-// Normalises a stored layout into the two-region structure: keeps the locked
-// Banner + Title at the top, nests all user content in the droppable body, drops
-// removed widgets, and re-stamps the header `custom`. Idempotent — already-migrated
-// layouts pass through unchanged.
+// Normalises a stored layout into the frozen transition structure: locked
+// Banner + Title on top, then a body fixed to description → timeline → phase
+// content → events. Free-form content found anywhere in the body is adopted
+// into the description section, so it keeps rendering on both the new and the
+// legacy page. Idempotent — canonical layouts pass through unchanged.
 export const ensureLockedHeaderNodes = (
   nodes?: SerializedNodes
 ): SerializedNodes => {
@@ -272,7 +244,7 @@ export const ensureLockedHeaderNodes = (
     REMOVED_WIDGETS.includes(resolvedNameOf(nodes[id]) ?? '')
   );
 
-  // Re-stamp header custom + drop removed-widget references.
+  // Re-stamp canonical custom + drop removed-widget references.
   const next: SerializedNodes = {};
   Object.entries(nodes).forEach(([id, node]) => {
     if (removedIds.includes(id)) return;
@@ -287,22 +259,24 @@ export const ensureLockedHeaderNodes = (
       : cleaned;
   });
 
-  // Ensure the locked header nodes exist.
-  let bannerId = findNodeIdByName(next, 'ProjectBanner');
-  if (!bannerId) {
-    bannerId = BANNER_NODE_ID;
-    next[bannerId] = bannerNode();
-  }
-  let titleId = findNodeIdByName(next, 'ProjectTitle');
-  if (!titleId) {
-    titleId = TITLE_NODE_ID;
-    next[titleId] = titleNode();
-  }
+  const ensureNode = (
+    name: string,
+    fallbackId: string,
+    build: () => SerializedNode
+  ) => {
+    const existingId = findNodeIdByName(next, name);
+    if (existingId) return existingId;
+    next[fallbackId] = build();
+    return fallbackId;
+  };
+
+  const bannerId = ensureNode('ProjectBanner', BANNER_NODE_ID, bannerNode);
+  const titleId = ensureNode('ProjectTitle', TITLE_NODE_ID, titleNode);
 
   const root = next[ROOT_ID];
 
-  // Ensure the editable body exists, moving any existing top-level user content
-  // into it (migration from the old flat structure).
+  // Ensure the body exists, moving any top-level user content into it
+  // (migration from the old flat structure).
   let bodyId = findNodeIdByName(next, 'ProjectPageBody');
   if (!bodyId) {
     const newBodyId = BODY_NODE_ID;
@@ -314,21 +288,60 @@ export const ensureLockedHeaderNodes = (
     bodyId = newBodyId;
   }
 
-  // Ensure the participation content exists in the body (non-deletable, but the
-  // admin can move it). Appended when absent; its position is otherwise preserved.
-  if (!findNodeIdByName(next, 'InputFeed')) {
-    next[INPUT_FEED_NODE_ID] = inputFeedNode(bodyId);
-    const body = next[bodyId];
-    next[bodyId] = {
-      ...body,
-      nodes: [...body.nodes, INPUT_FEED_NODE_ID],
+  const descriptionId = ensureNode(
+    'ProjectDescriptionSection',
+    DESCRIPTION_NODE_ID,
+    () => descriptionSectionNode([])
+  );
+  const timelineId = ensureNode('TimelineWidget', TIMELINE_NODE_ID, () =>
+    timelineNode(bodyId)
+  );
+  const inputFeedId = ensureNode('InputFeed', INPUT_FEED_NODE_ID, () =>
+    inputFeedNode(bodyId)
+  );
+  const eventsId = ensureNode('EventsWidget', EVENTS_NODE_ID, () =>
+    eventsNode(bodyId)
+  );
+
+  // Adopt free-form body content into the description section (layouts saved
+  // before the section existed), preserving its order.
+  const fixedBodyIds = [descriptionId, timelineId, inputFeedId, eventsId];
+  const adopted = next[bodyId].nodes.filter((id) => !fixedBodyIds.includes(id));
+  adopted.forEach((id) => {
+    next[id] = { ...next[id], parent: descriptionId };
+  });
+  if (adopted.length > 0) {
+    next[descriptionId] = {
+      ...next[descriptionId],
+      nodes: [...next[descriptionId].nodes, ...adopted],
     };
   }
 
-  // Pin the header + body directly under the root, in order.
-  next[bannerId] = { ...next[bannerId], parent: ROOT_ID };
-  next[titleId] = { ...next[titleId], parent: ROOT_ID };
-  next[bodyId] = { ...next[bodyId], parent: ROOT_ID };
+  // Pin every fixed node under its designated parent, and drop stale references
+  // to them from anywhere else (e.g. a timeline that was nested in a column).
+  const pinnedParents: Record<string, string> = {
+    [bannerId]: ROOT_ID,
+    [titleId]: ROOT_ID,
+    [bodyId]: ROOT_ID,
+    [descriptionId]: bodyId,
+    [timelineId]: bodyId,
+    [inputFeedId]: bodyId,
+    [eventsId]: bodyId,
+  };
+  Object.entries(next).forEach(([id, node]) => {
+    if (!Array.isArray(node.nodes)) return;
+    const filtered = node.nodes.filter(
+      (childId) => !(childId in pinnedParents) || pinnedParents[childId] === id
+    );
+    if (filtered.length !== node.nodes.length) {
+      next[id] = { ...node, nodes: filtered };
+    }
+  });
+  Object.entries(pinnedParents).forEach(([id, parent]) => {
+    next[id] = { ...next[id], parent };
+  });
+
+  next[bodyId] = { ...next[bodyId], nodes: fixedBodyIds };
   next[ROOT_ID] = {
     ...root,
     type: { resolvedName: 'ProjectPageRoot' },
