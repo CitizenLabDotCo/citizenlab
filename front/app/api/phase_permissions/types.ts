@@ -89,7 +89,7 @@ export type PermittedBy =
   | 'users'
   | 'admins_moderators';
 
-interface IPermissionUpdate {
+export interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: PermittedBy;
   global_custom_fields: boolean;
