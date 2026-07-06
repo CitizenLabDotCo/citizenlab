@@ -4,11 +4,11 @@ import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
+import { getAzureConfig } from 'api/id_methods/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { getAzureConfig } from '../../../../api/id_methods/utils';
 
 const StyledA = styled.a`
   font-size: ${fontSizes.base}px;
