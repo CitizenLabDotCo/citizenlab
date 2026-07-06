@@ -64,12 +64,19 @@ module AdminPublications
       [row['pairs'].to_i, row['victims'].to_i]
     end
 
-    # [orphaned_projects, orphaned_folders] for the current tenant.
+    # Publications whose admin_publication was already deleted (past damage that
+    # rebuild! cannot recover), for the current tenant.
+    def orphaned_projects
+      Project.where.missing(:admin_publication)
+    end
+
+    def orphaned_folders
+      ProjectFolders::Folder.where.missing(:admin_publication)
+    end
+
+    # [orphaned_projects, orphaned_folders] counts for the current tenant.
     def orphan_counts
-      [
-        Project.where.missing(:admin_publication).count,
-        ProjectFolders::Folder.where.missing(:admin_publication).count
-      ]
+      [orphaned_projects.count, orphaned_folders.count]
     end
 
     # ---- repair -------------------------------------------------------------

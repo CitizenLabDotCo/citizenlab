@@ -39,7 +39,7 @@ RSpec.describe AdminPublications::NestedSetIntegrity do
       folder = create(:project_folder, projects: [create(:project)])
       # The factory sets the child's parent_id via a bare update without a
       # nested-set move, so bounds don't encompass the child until rebuilt.
-      AdminPublication.rebuild!(false)
+      AdminPublication.rebuild!(false) # false = skip per-node validations while rewriting bounds
       expect(described_class.node_drifted?(folder.reload.admin_publication)).to be(false)
     end
 
