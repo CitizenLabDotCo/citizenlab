@@ -40,7 +40,7 @@ const DefaultVariant = ({
   const franceConnectEnabled = !!idMethods?.data.find((method) => method.attributes.name === 'franceconnect');
 
   const authMethodsEnabledBesidesFC = idMethods?.data.filter((method) => {
-    const isFC = method.attributes.name !== 'franceconnect';
+    const isFC = method.attributes.name === 'franceconnect';
     const isAuthMethod = method.attributes.authentication_method;
 
     return !isFC && isAuthMethod;
