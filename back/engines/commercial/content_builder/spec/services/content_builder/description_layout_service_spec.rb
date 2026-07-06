@@ -46,6 +46,19 @@ describe ContentBuilder::DescriptionLayoutService do
         expect(node['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
       end
 
+      it 'also creates an enabled project_page layout with the description in its section' do
+        project = create(:project, description_multiloc: { 'en' => '<p>Carried over</p>' })
+
+        service.provision_for(project)
+
+        layout = project.content_builder_layouts.find_by(code: 'project_page')
+        expect(layout).to be_present
+        expect(layout.enabled).to be(true)
+        expect(layout.content_buildable_type).to eq('Project')
+        section_children = layout.craftjs_json['PROJECT_PAGE_DESCRIPTION']['nodes']
+        expect(layout.craftjs_json[section_children.first]['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
+      end
+
       it 'creates the default folder layout (title + published projects) for a folder' do
         folder = create(:project_folder)
 
@@ -55,6 +68,14 @@ describe ContentBuilder::DescriptionLayoutService do
         expect(layout).to be_present
         expect(layout.enabled).to be(true)
         expect(node_types(layout)).to include('FolderTitle', 'Published')
+      end
+
+      it 'does not create a project_page layout for a folder' do
+        folder = create(:project_folder)
+
+        service.provision_for(folder)
+
+        expect(folder.content_builder_layouts.where(code: 'project_page')).to be_empty
       end
     end
 
@@ -134,12 +155,22 @@ describe ContentBuilder::DescriptionLayoutService do
       expect(node_types(layout)).to include('FolderTitle', 'TextMultiloc', 'Published')
     end
 
-    it 'is idempotent — skips when a layout already exists' do
+    it 'is idempotent — a second run changes nothing' do
       project = create(:project, description_multiloc: { 'en' => '<p>Hi</p>' })
-      create(:layout, content_buildable: project, code: 'project_description', enabled: true)
+      service.ensure_on_content_builder!(project)
 
       expect { service.ensure_on_content_builder!(project) }
         .not_to change { project.content_builder_layouts.count }
+    end
+
+    it 'only adds the missing project_page layout when the description layout already exists' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Hi</p>' })
+      description = create(:layout, content_buildable: project, code: 'project_description', enabled: true)
+
+      expect { service.ensure_on_content_builder!(project) }
+        .to change { project.content_builder_layouts.count }.by(1)
+      expect(description.reload.updated_at).to eq(description.created_at)
+      expect(project.content_builder_layouts.find_by(code: 'project_page')).to be_present
     end
   end
 
