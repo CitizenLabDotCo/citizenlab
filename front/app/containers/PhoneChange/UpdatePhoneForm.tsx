@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import { requestPhoneConfirmationCodeChangePhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
 import Input from 'components/HookForm/Input';
@@ -51,13 +51,13 @@ const UpdatePhoneForm = ({
 
   const onFormSubmit = (formValues: FormValues) => {
     try {
-      requestPhoneConfirmationCodeChangePhone(formValues.phone_number)
+      requestCodePhoneChange(formValues.phone_number)
         .then(() => {
           setOpenConfirmationModal(true);
           setError(undefined);
         })
         .catch((e) => {
-          const errorCode = e?.errors?.phone_number?.[0]?.error;
+          const errorCode = e?.errors?.new_phone_number?.[0]?.error;
           if (errorCode === 'is already taken') {
             setError('taken');
           } else if (errorCode === 'is invalid') {

@@ -3,7 +3,7 @@ import meKeys from 'api/me/keys';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-export const confirmPhoneConfirmationCodeChangePhone = async (code: string) => {
+export const confirmCodePhoneChange = async (code: string) => {
   try {
     await fetcher({
       path: `/user/confirm_code_phone_change`,
