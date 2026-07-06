@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { UserComponent, useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
 import useProjectById from 'api/projects/useProjectById';
-import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -18,9 +17,15 @@ import LockedHeaderNote from '../LockedHeaderNote';
 import messages from '../messages';
 import useWidgetProjectId from '../useWidgetProjectId';
 
+type Props = {
+  // Unsaved edit of the project's `title_multiloc`; committed to the project
+  // and stripped from the layout on Save (see projectAttributeDrafts.ts).
+  title?: Multiloc;
+};
+
 // Locked widget rendering the project title as the page heading. Cannot be moved
 // or deleted; its settings panel edits the project's `title_multiloc`.
-const ProjectTitle: UserComponent = () => {
+const ProjectTitle: UserComponent<Props> = ({ title: draftTitle }) => {
   const projectId = useWidgetProjectId();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -31,7 +36,7 @@ const ProjectTitle: UserComponent = () => {
     return null;
   }
 
-  const title = localize(project.data.attributes.title_multiloc);
+  const title = localize(draftTitle ?? project.data.attributes.title_multiloc);
 
   return (
     <Title
@@ -49,24 +54,23 @@ const ProjectTitleSettings = () => {
   const projectId = useWidgetProjectId();
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
-  const { mutate: updateProject } = useUpdateProject();
-  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
-
-  // Keep this craft node selected even while the underlying project refetches.
-  useNode();
-
-  useEffect(() => {
-    if (project) {
-      setTitleMultiloc(project.data.attributes.title_multiloc);
-    }
-  }, [project?.data.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const {
+    actions: { setProp },
+    draftTitle,
+  } = useNode((node) => ({
+    draftTitle: node.data.props.title as Multiloc | undefined,
+  }));
 
   if (!project || !projectId) {
     return null;
   }
 
-  const save = () => {
-    updateProject({ projectId, title_multiloc: titleMultiloc });
+  const titleMultiloc = draftTitle ?? project.data.attributes.title_multiloc;
+
+  const handleChange = (value: Multiloc) => {
+    setProp((props: Props) => {
+      props.title = value;
+    });
   };
 
   return (
@@ -75,9 +79,7 @@ const ProjectTitleSettings = () => {
         type="text"
         label={formatMessage(messages.projectTitleLabel)}
         valueMultiloc={titleMultiloc}
-        onChange={setTitleMultiloc}
-        onBlur={save}
-        onSelectedLocaleChange={save}
+        onChange={handleChange}
       />
       <LockedHeaderNote />
     </Box>
@@ -85,6 +87,7 @@ const ProjectTitleSettings = () => {
 };
 
 ProjectTitle.craft = {
+  props: {},
   related: {
     settings: ProjectTitleSettings,
   },
