@@ -27,9 +27,13 @@ module EmailCampaigns
       # Sends an already-created pending delivery through the provider.
       def deliver(delivery, to:)
         parsed_to = parse_phone_number(to)
+        validate_delivery_status(delivery)
         result = provider.send(to: parsed_to, body: delivery.body)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
         delivery
+      rescue Error::RateLimit
+        # Leave the delivery pending so Sms::SendJob can retry it;
+        raise
       rescue Error => e
         delivery.update!(status: 'failed', error_message: e.message)
         raise
@@ -42,6 +46,11 @@ module EmailCampaigns
         raise Error, "Invalid phone number: #{to}" unless parsed.valid?
 
         parsed.e164
+      end
+
+      # Validates that the delivery is in a state that can be sent
+      def validate_delivery_status(delivery)
+        raise Error, 'Delivery is not pending' unless delivery.status == 'pending'
       end
 
       def provider

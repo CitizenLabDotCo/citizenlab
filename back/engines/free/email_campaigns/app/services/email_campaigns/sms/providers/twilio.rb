@@ -27,6 +27,12 @@ module EmailCampaigns
           # back to `queued` for any status we don't explicitly map so the delivery
           # never lands on a non-vocabulary value.
           { message_sid: message.sid, status: STATUS_MAPPING.fetch(message.status, 'queued') }
+        rescue ::Twilio::REST::RestError => e
+          # HTTP 429 means we hit Twilio's rate limit; surface it as a retryable
+          # error so Sms::SendJob backs off and tries again.
+          raise Error::RateLimit, e.message if e.status_code == 429
+
+          raise Error, e.message
         rescue ::Twilio::REST::TwilioError => e
           raise Error, e.message
         end

@@ -99,5 +99,21 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect { described_class.new.deliver(delivery, to: '+14155552671') }.to raise_error(EmailCampaigns::Sms::Error)
       expect(delivery.reload.status).to eq('failed')
     end
+
+    it 'leaves the delivery pending and re-raises on a rate-limit error so the job can retry it' do
+      allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error::RateLimit, 'slow down')
+
+      expect { described_class.new.deliver(delivery, to: '+14155552671') }
+        .to raise_error(EmailCampaigns::Sms::Error::RateLimit)
+      expect(delivery.reload.status).to eq('pending')
+    end
+
+    it 'refuses to send a delivery that is not pending' do
+      delivery.update!(status: 'sent')
+      expect(provider).not_to receive(:send)
+
+      expect { described_class.new.deliver(delivery, to: '+14155552671') }
+        .to raise_error(EmailCampaigns::Sms::Error, /not pending/)
+    end
   end
 end
