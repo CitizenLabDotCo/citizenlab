@@ -134,8 +134,12 @@ TimelineWidget.craft = {
   related: {
     settings: TimelineSettings,
   },
+  rules: {
+    canDrag: () => false,
+  },
   custom: {
     title: messages.timelineWidgetTitle,
+    locked: true,
     noPointerEvents: true,
   },
 };
