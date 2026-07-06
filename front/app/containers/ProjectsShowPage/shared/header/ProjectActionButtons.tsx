@@ -77,7 +77,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const presentPhase = getCurrentPhase(phases?.data);
   const takingSurveyEnabled = presentPhase
-    ? !!getPhaseActionDescriptor(presentPhase, 'taking_survey')?.enabled
+    ? getPhaseActionDescriptor(presentPhase, 'taking_survey').enabled
     : false;
 
   const handleTakeSurveyClick = () => {
