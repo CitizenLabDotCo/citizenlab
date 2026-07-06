@@ -36,7 +36,9 @@ describe('Light authentication flow', () => {
         cy.apiSetPhasePermission({
           phaseId,
           permissionBody: {
-            permitted_by: 'everyone_confirmed_email',
+            permitted_by: 'users',
+            require_name: false,
+            require_password: false,
           },
           action: 'posting_idea',
         });

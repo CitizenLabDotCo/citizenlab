@@ -1550,7 +1550,7 @@ function apiRemoveAllReports() {
 
 type ApiSetPermissionTypeProps = {
   phaseId: string;
-  permissionBody?: IPermissionUpdate;
+  permissionBody?: Partial<IPermissionUpdate>;
   action: IPhasePermissionAction;
 };
 function apiSetPhasePermission({
