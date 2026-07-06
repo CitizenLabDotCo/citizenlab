@@ -6,7 +6,9 @@ import { isEmpty } from 'lodash-es';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
+import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
+import useUpsertProjectPageLayout from 'api/content_builder/useUpsertProjectPageLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -21,6 +23,8 @@ import DescriptionBuilderToolbox from 'components/DescriptionBuilder/Description
 import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionBuilderTopBar';
 import Editor from 'components/DescriptionBuilder/Editor';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
+import useProjectDescription from 'components/DescriptionBuilder/useProjectDescription';
+import { spliceDescriptionEditorData } from 'components/ProjectPageBuilder/descriptionSection';
 
 import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
@@ -54,10 +58,30 @@ const DescriptionBuilderPage = ({
   });
   const locales = useAppConfigurationLocales();
 
-  const { data: descriptionBuilderLayout } = useContentBuilderLayout(
+  const isProject = contentBuildableType === 'project';
+
+  // A project's description lives in the project_page layout's description
+  // section; the editor edits that subtree and splices it back on save. Folders
+  // (and unmigrated projects) still edit their legacy description layout.
+  const { pageLayout, projectPageJson, descriptionEditorData, legacyLayout } =
+    useProjectDescription(contentBuildableId, { enabled: isProject });
+  const { data: folderLayout } = useContentBuilderLayout(
     contentBuildableType,
-    contentBuildableId
+    contentBuildableId,
+    !isProject
   );
+  const layout = isProject ? pageLayout ?? legacyLayout : folderLayout;
+
+  const {
+    mutate: upsertProjectPageLayout,
+    isLoading: isUpsertingProjectPage,
+    isError: isUpsertProjectPageError,
+  } = useUpsertProjectPageLayout();
+  const {
+    mutate: addContentBuilderLayout,
+    isLoading: isAddingLayout,
+    isError: isAddLayoutError,
+  } = useAddContentBuilderLayout();
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
@@ -83,11 +107,7 @@ const DescriptionBuilderPage = ({
     });
   }, []);
 
-  if (
-    isNilOrError(locales) ||
-    !descriptionBuilderVisible ||
-    !descriptionBuilderLayout
-  ) {
+  if (isNilOrError(locales) || !descriptionBuilderVisible || !layout) {
     return null;
   }
 
@@ -96,10 +116,31 @@ const DescriptionBuilderPage = ({
     0;
 
   const getEditorData = () => {
-    if (!isEmpty(descriptionBuilderLayout.data.attributes.craftjs_json)) {
-      return descriptionBuilderLayout.data.attributes.craftjs_json;
+    if (isProject && pageLayout) {
+      return descriptionEditorData;
+    }
+    if (!isEmpty(layout.data.attributes.craftjs_json)) {
+      return layout.data.attributes.craftjs_json;
+    }
+    return undefined;
+  };
+
+  // Always enable the layout on save: descriptions are edited exclusively in
+  // the Content Builder, so saving a description makes it the live one.
+  const handleSave = (nodes: SerializedNodes) => {
+    if (isProject && projectPageJson) {
+      upsertProjectPageLayout({
+        projectId: contentBuildableId,
+        craftjs_json: spliceDescriptionEditorData(projectPageJson, nodes),
+        enabled: true,
+      });
     } else {
-      return undefined;
+      addContentBuilderLayout({
+        contentBuildableId,
+        contentBuildableType,
+        enabled: true,
+        craftjs_json: nodes,
+      });
     }
   };
 
@@ -131,7 +172,7 @@ const DescriptionBuilderPage = ({
   };
 
   return (
-    <ContentBuilderLayoutProvider layoutId={descriptionBuilderLayout.data.id}>
+    <ContentBuilderLayoutProvider layoutId={layout.data.id}>
       <FullscreenContentBuilder
         onErrors={handleErrors}
         onDeleteElement={handleDeleteElement}
@@ -145,11 +186,13 @@ const DescriptionBuilderPage = ({
             setPreviewEnabled={setPreviewEnabled}
             selectedLocale={selectedLocale}
             onSelectLocale={handleSelectedLocaleChange}
-            contentBuildableId={contentBuildableId}
             contentBuildableType={contentBuildableType}
             backPath={backPath}
             previewLink={previewLink}
             titleMultiloc={titleMultiloc}
+            onSave={handleSave}
+            isSaving={isUpsertingProjectPage || isAddingLayout}
+            saveHasError={isUpsertProjectPageError || isAddLayoutError}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
