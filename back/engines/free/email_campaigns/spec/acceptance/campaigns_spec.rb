@@ -593,7 +593,7 @@ resource 'Campaigns' do
         include_context 'with sms feature enabled'
 
         before do
-          create(:user, phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now)
+          create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
         end
 
         let(:campaign) { create(:sms_manual_campaign) }

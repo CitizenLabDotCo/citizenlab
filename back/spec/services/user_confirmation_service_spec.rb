@@ -159,24 +159,24 @@ RSpec.describe UserConfirmationService do
   describe '#validate_and_confirm_phone_change!' do
     let(:user) { create(:user) }
     let(:confirmation) { user.new_phone_confirmation }
-    let(:new_phone_number) { '+14155552671' }
+    let(:new_phone) { '+14155552671' }
 
     # The code request sends the OTP synchronously, so the provider is invoked.
     include_context 'with stubbed SMS provider'
 
     before do
-      RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone_number: new_phone_number)
+      RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
     end
 
     context 'when the code is correct' do
-      it 'promotes new_phone_number to phone_number and stamps it confirmed' do
+      it 'promotes new_phone to phone and stamps it confirmed' do
         result = service.validate_and_confirm_phone_change!(user, confirmation.code)
 
         expect(result.success?).to be true
         user.reload
-        expect(user.phone_number).to eq(new_phone_number)
-        expect(user.new_phone_number).to be_nil
-        expect(user.phone_number_confirmed_at).to be_present
+        expect(user.phone).to eq(new_phone)
+        expect(user.new_phone).to be_nil
+        expect(user.phone_confirmed_at).to be_present
       end
 
       it 'does not complete pending claim tokens (an email/signup concern)' do
@@ -224,7 +224,7 @@ RSpec.describe UserConfirmationService do
     end
 
     context 'when the new phone number is blank' do
-      before { user.update_columns(new_phone_number: nil) }
+      before { user.update_columns(new_phone: nil) }
 
       it 'returns a no phone error' do
         result = service.validate_and_confirm_phone_change!(user, confirmation.code)

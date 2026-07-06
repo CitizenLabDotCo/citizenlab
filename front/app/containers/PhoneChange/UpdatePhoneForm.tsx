@@ -47,17 +47,17 @@ const UpdatePhoneForm = ({
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
   const [error, setError] = useState<FormError | undefined>(undefined);
-  const currentPhone = user.data.attributes.phone_number;
+  const currentPhone = user.data.attributes.phone;
 
   const onFormSubmit = (formValues: FormValues) => {
     try {
-      requestCodePhoneChange(formValues.phone_number)
+      requestCodePhoneChange(formValues.phone)
         .then(() => {
           setOpenConfirmationModal(true);
           setError(undefined);
         })
         .catch((e) => {
-          const errorCode = e?.errors?.new_phone_number?.[0]?.error;
+          const errorCode = e?.errors?.new_phone?.[0]?.error;
           if (errorCode === 'is already taken') {
             setError('taken');
           } else if (errorCode === 'is invalid') {
@@ -92,11 +92,11 @@ const UpdatePhoneForm = ({
             width="max-content"
             margin-right="5px"
             labelMessage={messages.newPhoneLabel}
-            htmlFor="phone_number"
+            htmlFor="phone"
           />
         </LabelContainer>
         <Input
-          name="phone_number"
+          name="phone"
           type="text"
           placeholder="+14155552671"
           onBlur={() => {

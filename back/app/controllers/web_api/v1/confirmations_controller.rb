@@ -49,7 +49,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   end
 
   # This endpoint is used when a logged in user confirms a pending phone-number
-  # change. On success, new_phone_number is promoted to phone_number. The phone
+  # change. On success, new_phone is promoted to phone. The phone
   # number isn't part of the auth token, so there's no JWT cookie to refresh.
   def confirm_code_phone_change
     result = user_confirmation_service.validate_and_confirm_phone_change!(

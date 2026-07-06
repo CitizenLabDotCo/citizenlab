@@ -246,23 +246,23 @@ resource 'Confirmations' do
 
     context 'when user is authenticated' do
       let(:user) { create(:user) }
-      let(:new_phone_number) { '+14155552671' }
+      let(:new_phone) { '+14155552671' }
 
       # The code request sends the OTP synchronously, so the provider is invoked.
       include_context 'with stubbed SMS provider'
 
       before do
         header_token_for user
-        RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone_number: new_phone_number)
+        RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
       end
 
-      example 'promotes new_phone_number to phone_number upon successful confirmation' do
+      example 'promotes new_phone to phone upon successful confirmation' do
         do_request(confirmation: { code: user.new_phone_confirmation.code })
         assert_status 200
         user.reload
-        expect(user.phone_number).to eq new_phone_number
-        expect(user.new_phone_number).to be_nil
-        expect(user.phone_number_confirmed_at).to be_present
+        expect(user.phone).to eq new_phone
+        expect(user.new_phone).to be_nil
+        expect(user.phone_confirmed_at).to be_present
       end
 
       example 'sets code_reset_count to 0 upon successful confirmation' do
@@ -288,7 +288,7 @@ resource 'Confirmations' do
 
       example 'does not work if the user has no pending phone number' do
         code = user.new_phone_confirmation.code
-        user.update!(new_phone_number: nil)
+        user.update!(new_phone: nil)
         do_request(confirmation: { code: code })
         assert_status 422
       end

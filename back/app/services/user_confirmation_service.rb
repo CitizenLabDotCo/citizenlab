@@ -58,10 +58,10 @@ class UserConfirmationService
   end
 
   # Confirms a pending phone-number change for an authenticated user.
-  # On success, NewPhoneConfirmation#confirm! promotes new_phone_number -> phone_number.
+  # On success, NewPhoneConfirmation#confirm! promotes new_phone -> phone.
   def validate_and_confirm_phone_change!(user, code)
     validate_user!(user)
-    validate_phone!(user.new_phone_number)
+    validate_phone!(user.new_phone)
     # complete_claim is for claiming anonymous activity post sign up
     validate_and_confirm!(user, user.new_phone_confirmation, code, complete_claim: false)
 
@@ -93,8 +93,8 @@ class UserConfirmationService
     raise ValidationError.new(:user, :no_email) if email.blank?
   end
 
-  def validate_phone!(phone_number)
-    raise ValidationError.new(:user, :no_phone) if phone_number.blank?
+  def validate_phone!(phone)
+    raise ValidationError.new(:user, :no_phone) if phone.blank?
   end
 
   def validate_retry_count!(confirmation, code)

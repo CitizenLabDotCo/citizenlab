@@ -5,7 +5,7 @@ module EmailCampaigns
     class SendJob < ApplicationJob
       def run(delivery_id)
         delivery = Delivery.find(delivery_id)
-        SendService.new.deliver(delivery, to: delivery.user&.phone_number)
+        SendService.new.deliver(delivery, to: delivery.user&.phone)
       end
 
       # Only rate-limit errors are transient and worth retrying (Que applies its

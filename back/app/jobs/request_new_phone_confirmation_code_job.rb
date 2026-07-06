@@ -3,11 +3,11 @@
 class RequestNewPhoneConfirmationCodeJob < ApplicationJob
   self.priority = 30 # More important than default (50)
 
-  def run(user, new_phone_number:)
-    LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_phone_number: new_phone_number })
+  def run(user, new_phone:)
+    LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_phone: new_phone })
 
     ActiveRecord::Base.transaction do
-      user.update!(new_phone_number: new_phone_number)
+      user.update!(new_phone: new_phone)
       confirmation = user.new_phone_confirmation || user.create_new_phone_confirmation!
       confirmation.reset_code!
       campaign = EmailCampaigns::Campaigns::NewPhoneConfirmation.first_or_create!
@@ -21,7 +21,7 @@ class RequestNewPhoneConfirmationCodeJob < ApplicationJob
         NewPhoneConfirmation.name,
         confirmation.code
       )
-      LogActivityJob.perform_later(user, 'received_confirmation_code', user, Time.now.to_i, payload: { new_phone_number: new_phone_number })
+      LogActivityJob.perform_later(user, 'received_confirmation_code', user, Time.now.to_i, payload: { new_phone: new_phone })
     end
   end
 end

@@ -67,11 +67,11 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   attribute :new_email, if: PRIVATE
 
-  attribute :phone_number, if: PRIVATE
-  attribute :phone_number_confirmed_at, if: PRIVATE
+  attribute :phone, if: PRIVATE
+  attribute :phone_confirmed_at, if: PRIVATE
 
   attribute :phone_confirmation_pending, if: PRIVATE do |object|
-    object.new_phone_number.present?
+    object.new_phone.present?
   end
 
   def self.name_service(params)

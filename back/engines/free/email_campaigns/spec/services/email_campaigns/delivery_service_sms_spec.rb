@@ -9,9 +9,9 @@ describe EmailCampaigns::DeliveryService do
 
   describe '#send_now (SMS channel)' do
     let(:campaign) { create(:sms_manual_campaign) }
-    let!(:recipient) { create(:user, phone_number: '+14155552671', phone_number_confirmed_at: Time.zone.now, locale: 'en') }
+    let!(:recipient) { create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now, locale: 'en') }
 
-    before { create(:user, phone_number: nil) } # phone-less user is not a recipient
+    before { create(:user, phone: nil) } # phone-less user is not a recipient
 
     it 'synchronously creates a pending campaign-linked EmailCampaigns::Sms::Delivery per phone-having recipient' do
       expect { service.send_now(campaign) }.to change(EmailCampaigns::Sms::Delivery, :count).by(1)
@@ -35,7 +35,7 @@ describe EmailCampaigns::DeliveryService do
 
   describe '#send_sms_preview' do
     let(:campaign) { create(:sms_manual_campaign) }
-    let(:previewer) { create(:admin, phone_number: '+14155552672', locale: 'en') }
+    let(:previewer) { create(:admin, phone: '+14155552672', locale: 'en') }
 
     it 'sends a test SMS to the previewer without linking it to the campaign' do
       expect { service.send_sms_preview(campaign, previewer) }
@@ -51,7 +51,7 @@ describe EmailCampaigns::DeliveryService do
     end
 
     it 'raises EmailCampaigns::Sms::Error when the previewer has no phone number' do
-      previewer.update_columns(phone_number: nil)
+      previewer.update_columns(phone: nil)
       expect { service.send_sms_preview(campaign, previewer) }.to raise_error(EmailCampaigns::Sms::Error)
     end
   end

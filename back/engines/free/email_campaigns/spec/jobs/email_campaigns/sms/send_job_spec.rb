@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::Sms::SendJob do
   describe '#run' do
     it "delivers the pending delivery through the send service using the recipient's phone number" do
-      user = create(:user, phone_number: '+14155552671')
+      user = create(:user, phone: '+14155552671')
       delivery = EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending', user: user)
       send_service = instance_double(EmailCampaigns::Sms::SendService)
       allow(EmailCampaigns::Sms::SendService).to receive(:new).and_return(send_service)

@@ -24,25 +24,25 @@
 #  fk_rails_...  (user_id => users.id) ON DELETE => cascade
 #
 class NewPhoneConfirmation < Confirmation
-  # Promotes new_phone_number -> phone_number on the user, stamps it confirmed,
+  # Promotes new_phone -> phone on the user, stamps it confirmed,
   # and clears this confirmation's code state. Mirrors NewEmailConfirmation.
   def confirm!
-    return false if user.new_phone_number.blank?
+    return false if user.new_phone.blank?
 
-    new_phone_number = user.new_phone_number
+    new_phone = user.new_phone
     transaction do
       user.update!(
-        phone_number: new_phone_number,
-        new_phone_number: nil,
-        phone_number_confirmed_at: Time.zone.now
+        phone: new_phone,
+        new_phone: nil,
+        phone_confirmed_at: Time.zone.now
       )
       clear_code!
-      cancel_other_users_pending_phone_change(new_phone_number)
+      cancel_other_users_pending_phone_change(new_phone)
     end
     true
   end
 
   def pending?
-    user.new_phone_number.present?
+    user.new_phone.present?
   end
 end

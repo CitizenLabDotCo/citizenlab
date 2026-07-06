@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
   subject(:campaign) { described_class.create! }
 
-  let(:new_phone_number) { '+14155552671' }
+  let(:new_phone) { '+14155552671' }
 
   describe 'channel and flags' do
     it { expect(campaign.channel).to eq('sms') }
@@ -15,7 +15,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
   end
 
   describe '#sms_body' do
-    let(:recipient) { create(:user, locale: 'en', new_phone_number: new_phone_number) }
+    let(:recipient) { create(:user, locale: 'en', new_phone: new_phone) }
 
     it 'renders the localized body with the code interpolated' do
       command = { recipient: recipient, event_payload: { code: '1234' } }
@@ -24,17 +24,17 @@ RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
   end
 
   describe '#sms_destination' do
-    let(:recipient) { create(:user, new_phone_number: new_phone_number) }
+    let(:recipient) { create(:user, new_phone: new_phone) }
 
-    it 'targets the pending new_phone_number being verified' do
-      expect(campaign.sms_destination({ recipient: recipient })).to eq(new_phone_number)
+    it 'targets the pending new_phone being verified' do
+      expect(campaign.sms_destination({ recipient: recipient })).to eq(new_phone)
     end
   end
 
   describe '#deliver_now' do
     include_context 'with stubbed SMS provider'
 
-    let(:recipient) { create(:user, locale: 'en', new_phone_number: new_phone_number) }
+    let(:recipient) { create(:user, locale: 'en', new_phone: new_phone) }
     let(:command) { { recipient: recipient, event_payload: { code: '1234' } } }
 
     it 'sends synchronously to the pending number, creating a campaign-linked delivery' do
@@ -43,7 +43,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewPhoneConfirmation do
         .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
       expect(delivery.campaign_id).to eq(campaign.id)
-      expect(sms_provider).to have_received(:send).with(to: new_phone_number, body: 'Your confirmation code is 1234.')
+      expect(sms_provider).to have_received(:send).with(to: new_phone, body: 'Your confirmation code is 1234.')
     end
 
     it 'does not enqueue a background SendJob' do

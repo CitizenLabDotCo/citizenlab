@@ -29,7 +29,7 @@ import messages from './messages';
 import UpdatePhoneForm from './UpdatePhoneForm';
 
 export type FormValues = {
-  phone_number: string;
+  phone: string;
 };
 
 const PhoneChange = () => {
@@ -44,18 +44,18 @@ const PhoneChange = () => {
   const [updateCancelled, setUpdateCancelled] = useState(false);
 
   const schema = object({
-    phone_number: string().required(formatMessage(messages.phoneEmptyError)),
+    phone: string().required(formatMessage(messages.phoneEmptyError)),
   });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
-      phone_number: '',
+      phone: '',
     },
     resolver: yupResolver(schema),
   });
 
-  const phoneValue = methods.watch('phone_number');
+  const phoneValue = methods.watch('phone');
 
   const onPhoneConfirmation = async (code: string) => {
     setLoading(true);
@@ -67,7 +67,7 @@ const PhoneChange = () => {
       setConfirmationError(null);
       setOpenConfirmationModal(false);
       setUpdateSuccessful(true);
-      methods.reset({ phone_number: '' });
+      methods.reset({ phone: '' });
     } catch (e) {
       if (e?.code?.[0]?.error === 'invalid') {
         setConfirmationError('wrong_confirmation_code');

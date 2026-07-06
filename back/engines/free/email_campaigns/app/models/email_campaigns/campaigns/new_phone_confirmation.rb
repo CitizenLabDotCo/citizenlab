@@ -38,7 +38,7 @@ module EmailCampaigns
     filter :exclude_from_send_pipeline
 
     # A localized template with the verification code interpolated. Targets the
-    # *pending* new_phone_number being verified, not the confirmed phone_number
+    # *pending* new_phone being verified, not the confirmed phone
     # (which may still be blank until confirmation completes).
     def sms_body(command)
       I18n.t(
@@ -49,7 +49,7 @@ module EmailCampaigns
     end
 
     def sms_destination(command)
-      command[:recipient].new_phone_number
+      command[:recipient].new_phone
     end
 
     def can_be_disabled?

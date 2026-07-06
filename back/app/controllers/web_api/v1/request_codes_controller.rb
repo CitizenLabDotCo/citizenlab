@@ -47,29 +47,29 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   # This endpoint is used when a logged in user wants to add or change their
   # (verified) phone number. The submitted number is held as a pending
-  # new_phone_number and an SMS confirmation code is sent to it.
+  # new_phone and an SMS confirmation code is sent to it.
   def request_code_phone_change
     authorize current_user, policy_class: RequestCodePolicy
 
-    new_phone_number = request_code_phone_change_params[:new_phone_number]
-    if new_phone_number.blank?
-      render json: { errors: { new_phone_number: [{ error: 'cannot be blank' }] } }, status: :unprocessable_entity
+    new_phone = request_code_phone_change_params[:new_phone]
+    if new_phone.blank?
+      render json: { errors: { new_phone: [{ error: 'cannot be blank' }] } }, status: :unprocessable_entity
       return
     end
 
-    parsed = Phonelib.parse(new_phone_number)
+    parsed = Phonelib.parse(new_phone)
     if parsed.invalid?
-      render json: { errors: { new_phone_number: [{ error: 'is invalid' }] } }, status: :unprocessable_entity
+      render json: { errors: { new_phone: [{ error: 'is invalid' }] } }, status: :unprocessable_entity
       return
     end
     normalized = parsed.e164
 
-    if User.where.not(id: current_user.id).exists?(phone_number: normalized)
-      render json: { errors: { new_phone_number: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
+    if User.where.not(id: current_user.id).exists?(phone: normalized)
+      render json: { errors: { new_phone: [{ error: 'is already taken' }] } }, status: :unprocessable_entity
       return
     end
 
-    RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone_number: normalized)
+    RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
 
     head :ok
   end
@@ -85,6 +85,6 @@ class WebApi::V1::RequestCodesController < ApplicationController
   end
 
   def request_code_phone_change_params
-    params.fetch(:request_code, {}).permit(:new_phone_number)
+    params.fetch(:request_code, {}).permit(:new_phone)
   end
 end

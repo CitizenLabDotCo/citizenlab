@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Sms::SendService do
   let(:provider) { instance_double(EmailCampaigns::Sms::Providers::Twilio) }
-  let(:phone_number) { '+14155552671' }
+  let(:phone) { '+14155552671' }
 
   include_context 'with sms feature enabled'
 
@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       SettingsService.new.deactivate_feature!('sms')
 
       expect(provider).not_to receive(:send)
-      expect { described_class.new.send_now(to: phone_number, body: 'hi') }
+      expect { described_class.new.send_now(to: phone, body: 'hi') }
         .to raise_error(EmailCampaigns::Sms::Error, /not enabled/)
       expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
     end
@@ -26,7 +26,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       allow(provider).to receive(:send).and_return(message_sid: 'SM_abc', status: 'queued')
 
       delivery = nil
-      expect { delivery = described_class.new.send_now(to: phone_number, body: 'hi') }
+      expect { delivery = described_class.new.send_now(to: phone, body: 'hi') }
         .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
 
       expect(delivery).to eq(EmailCampaigns::Sms::Delivery.last)
@@ -36,7 +36,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
 
     it 'normalizes the phone number before sending' do
       expect(provider).to receive(:send)
-        .with(to: phone_number, body: 'hi')
+        .with(to: phone, body: 'hi')
         .and_return(message_sid: 'SM_1', status: 'queued')
 
       described_class.new.send_now(to: '1 (415) 555-2671', body: 'hi')
@@ -52,7 +52,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     it 'marks the delivery failed and re-raises when the provider fails' do
       allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error, 'Provider rejected it')
 
-      expect { described_class.new.send_now(to: phone_number, body: 'hi') }
+      expect { described_class.new.send_now(to: phone, body: 'hi') }
         .to raise_error(EmailCampaigns::Sms::Error)
 
       delivery = EmailCampaigns::Sms::Delivery.last
@@ -86,7 +86,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     it 'sends an already-created delivery through the provider and stores the status' do
       allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued')
 
-      described_class.new.deliver(delivery, to: phone_number)
+      described_class.new.deliver(delivery, to: phone)
 
       expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d')
     end
@@ -94,7 +94,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     it 'marks the delivery failed and re-raises when the provider fails' do
       allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error, 'nope')
 
-      expect { described_class.new.deliver(delivery, to: phone_number) }.to raise_error(EmailCampaigns::Sms::Error)
+      expect { described_class.new.deliver(delivery, to: phone) }.to raise_error(EmailCampaigns::Sms::Error)
       expect(delivery.reload.status).to eq('failed')
     end
 

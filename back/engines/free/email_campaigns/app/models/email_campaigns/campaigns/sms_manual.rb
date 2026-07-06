@@ -62,7 +62,7 @@ module EmailCampaigns
     end
 
     def sms_destination(command)
-      command[:recipient].phone_number
+      command[:recipient].phone
     end
 
     def generate_commands(recipient:, time: nil, activity: nil)

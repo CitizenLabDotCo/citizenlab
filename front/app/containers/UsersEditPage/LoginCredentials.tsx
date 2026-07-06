@@ -52,7 +52,7 @@ const LoginCredentials = ({ user }: PasswordChangeProps) => {
     ? messages.addPassword
     : messages.changePassword2;
 
-  const phoneNumberButtonText = !user.attributes.phone_number
+  const phoneNumberButtonText = !user.attributes.phone
     ? messages.addPhone
     : messages.changePhone;
 

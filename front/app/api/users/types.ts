@@ -63,8 +63,8 @@ export interface IUserAttributes {
   followings_count: number;
   last_active_at?: string | null;
   new_email?: string | null;
-  phone_number?: string | null;
-  phone_number_confirmed_at?: string | null;
+  phone?: string | null;
+  phone_confirmed_at?: string | null;
   phone_confirmation_pending?: boolean;
 }
 
