@@ -53,9 +53,10 @@ const QuestionPreview = ({
       // Track the popup interaction
       trackEventByName(tracks.communityMonitorPopupAnsweredAndRedirected);
 
-      // Redirect to full survey page
+      // Redirect to full survey page. Pass go_back so leaving the survey
+      // returns the user here rather than to the (non-public) project page.
       clHistory.push(
-        `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
+        `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}&go_back=true`
       );
     };
     if (fieldValue) {
