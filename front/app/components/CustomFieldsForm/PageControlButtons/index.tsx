@@ -64,6 +64,7 @@ const inputTermMessages: Record<string, MessageDescriptor> = {
   topic: messages.viewYourTopic,
   post: messages.viewYourPost,
   story: messages.viewYourStory,
+  observation: messages.viewYourObservation,
 };
 
 interface Props {

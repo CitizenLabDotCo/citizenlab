@@ -249,6 +249,7 @@ sv-SE:
         idea: '%{authorName} kommenterat en idé som du följer'
         initiative: '%{authorName} kommenterat ett initiativ som du följer'
         issue: '%{authorName} kommenterat en fråga som du följer'
+        observation: '%{authorName} kommenterade en observation du följer'
         option: '%{authorName} kommenterade ett alternativ som du följer'
         petition: '%{authorName} kommenterat en petition som du följer'
         post: '%{authorName} kommenterat ett inlägg som du följer'
@@ -323,6 +324,7 @@ sv-SE:
         idea: Gå till denna idé
         initiative: Gå till detta initiativ
         issue: Gå till denna utgåva
+        observation: Gå till denna observation
         option: Gå till detta alternativ
         petition: Gå till denna framställan
         post: Gå till detta inlägg
@@ -343,6 +345,7 @@ sv-SE:
         idea: Gå till ditt bidrag
         initiative: Gå till ditt initiativ
         issue: Gå till din fråga
+        observation: Gå till din observation
         option: Gå till ditt alternativ
         petition: Gå till din petition
         post: Gå till din post
@@ -376,6 +379,7 @@ sv-SE:
         idea: Din idé har publicerats
         initiative: Ditt initiativ har publicerats
         issue: Din utgåva har publicerats
+        observation: Din observation har publicerats
         option: Ditt alternativ har publicerats
         petition: Din petition har publicerats
         post: Ditt inlägg har publicerats
@@ -764,6 +768,7 @@ sv-SE:
         idea: Ditt bidrag finns i "%{prescreening_status_title}"
         initiative: Ditt initiativ finns i "%{prescreening_status_title}"
         issue: Ditt problem är i "%{prescreening_status_title}"
+        observation: Din observation är i ”%{prescreening_status_title}”
         option: Ditt alternativ finns i "%{prescreening_status_title}"
         petition: Din framställan finns i "%{prescreening_status_title}"
         post: Ditt inlägg finns i "%{prescreening_status_title}"
