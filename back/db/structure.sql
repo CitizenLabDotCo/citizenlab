@@ -683,6 +683,11 @@ DROP VIEW IF EXISTS public.reporting_projects;
 DROP VIEW IF EXISTS public.reporting_phases;
 DROP VIEW IF EXISTS public.reporting_participants;
 DROP VIEW IF EXISTS public.reporting_pageviews;
+DROP VIEW IF EXISTS public.reporting_inputs;
+DROP VIEW IF EXISTS public.reporting_input_votes;
+DROP VIEW IF EXISTS public.reporting_input_tags;
+DROP VIEW IF EXISTS public.reporting_input_statuses;
+DROP VIEW IF EXISTS public.reporting_input_reactions;
 DROP VIEW IF EXISTS public.reporting_contributions;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
@@ -3858,6 +3863,115 @@ UNION ALL
     (ea.attendee_id)::text AS participant_id
    FROM (public.events_attendances ea
      LEFT JOIN public.events e ON ((e.id = ea.event_id)));
+
+
+--
+-- Name: reporting_input_reactions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_reactions AS
+ SELECT id,
+    reactable_id AS input_id,
+    user_id,
+    created_at AS reacted_at,
+    mode
+   FROM public.reactions r
+  WHERE ((reactable_type)::text = 'Idea'::text);
+
+
+--
+-- Name: reporting_input_statuses; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_statuses AS
+ SELECT i.id AS input_id,
+    s.id AS status_id,
+    COALESCE(NULLIF((s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(s.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS status_label,
+    s.code AS status_code
+   FROM (public.ideas i
+     JOIN public.idea_statuses s ON ((s.id = i.idea_status_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
+-- Name: reporting_input_tags; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_tags AS
+ SELECT iit.id,
+    iit.idea_id AS input_id,
+    iit.input_topic_id AS tag_id,
+    COALESCE(NULLIF((it.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(it.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS tag_label,
+    it.parent_id AS parent_tag_id
+   FROM ((public.ideas_input_topics iit
+     JOIN public.input_topics it ON ((it.id = iit.input_topic_id)))
+     JOIN public.ideas i ON ((i.id = iit.idea_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
+-- Name: reporting_input_votes; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_votes AS
+ SELECT bi.id,
+    bi.idea_id AS input_id,
+    b.user_id,
+    b.submitted_at AS voted_at,
+    bi.votes AS weight
+   FROM (public.baskets_ideas bi
+     JOIN public.baskets b ON ((b.id = bi.basket_id)))
+  WHERE (b.submitted_at IS NOT NULL);
+
+
+--
+-- Name: reporting_inputs; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_inputs AS
+ SELECT i.id,
+    COALESCE(NULLIF((i.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(i.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS title,
+    i.created_at,
+    i.submitted_at,
+    i.published_at,
+    i.author_id,
+    i.project_id,
+    i.creation_phase_id,
+    COALESCE(creation_ph.participation_method, 'ideation'::character varying) AS participation_method,
+    (EXISTS ( SELECT 1
+           FROM public.idea_imports ii
+          WHERE (ii.idea_id = i.id))) AS imported,
+    ((EXISTS ( SELECT 1
+           FROM public.official_feedbacks ofb
+          WHERE (ofb.idea_id = i.id))) OR (EXISTS ( SELECT 1
+           FROM public.activities a
+          WHERE (((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = 'changed_status'::text) AND (a.item_id = i.id))))) AS received_feedback,
+    i.likes_count,
+    i.dislikes_count,
+    i.comments_count,
+    i.votes_count,
+    COALESCE(i.manual_votes_amount, 0) AS offline_votes_count
+   FROM (public.ideas i
+     LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
 
 
 --
@@ -9109,6 +9223,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260707170055'),
+('20260707170049'),
 ('20260707164520'),
 ('20260707164511'),
 ('20260707161930'),
