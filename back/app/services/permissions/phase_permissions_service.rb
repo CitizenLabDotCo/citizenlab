@@ -48,15 +48,14 @@ module Permissions
     def initialize(phase, user, user_requirements_service: nil, request: nil, time: Time.zone.now)
       super(user, user_requirements_service: user_requirements_service)
       @request = request
-      @phase ||= phase
+      @phase = phase
       @time = time
-      @timeline_service ||= TimelineService.new
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       project_reason = project_denied_reason(phase.project)
       return project_reason if project_reason
-      return PHASE_DENIED_REASONS[:inactive_phase] if time && !@timeline_service.phase_current?(phase, time)
+      return PHASE_DENIED_REASONS[:inactive_phase] if time && !timeline_service.phase_current?(phase, time)
 
       phase_denied_reason = case action
       when 'posting_idea'
@@ -116,6 +115,10 @@ module Permissions
     private
 
     attr_reader :phase, :request, :time
+
+    def timeline_service
+      @timeline_service ||= TimelineService.new
+    end
 
     # Phase methods
     def posting_idea_denied_reason_for_action

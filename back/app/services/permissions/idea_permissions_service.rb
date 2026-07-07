@@ -11,10 +11,10 @@ module Permissions
     REACTING_NOT_ALLOWED_CODES = %w[prescreening expired ineligible].freeze
 
     def initialize(idea, user, user_requirements_service: nil)
-      phase = TimelineService.new.current_phase_not_archived(idea.project)
+      phase = timeline_service.current_phase_not_archived(idea.project)
       phase.project = idea.project if phase # Performance optimization (keep preloaded relationships)
       super(phase, user, user_requirements_service: user_requirements_service)
-      @idea ||= idea
+      @idea = idea
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
@@ -115,7 +115,7 @@ module Permissions
 
     def future_enabled_phase(action, reaction_mode: nil)
       time = Time.zone.now
-      @timeline_service.future_phases(idea.project, time).find do |phase|
+      timeline_service.future_phases(idea.project, time).find do |phase|
         !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service, time: nil).denied_reason_for_action(action, reaction_mode: reaction_mode)
       end
     end

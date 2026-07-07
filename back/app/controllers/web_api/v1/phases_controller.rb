@@ -17,7 +17,7 @@ class WebApi::V1::PhasesController < ApplicationController
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
-    @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by, project: :admin_publication)
+    @phases = @phases.includes(:report, :custom_form, :manual_voters_last_updated_by, permissions: [:groups], project: :admin_publication)
 
     render json: linked_json(
       @phases,
