@@ -18,6 +18,7 @@ module DecidimImporter
       project
       project_image
       static_page
+      input_topic
       files/file
       files/files_project
       content_builder/layout
@@ -29,6 +30,7 @@ module DecidimImporter
       idea
       file_upload
       ideas_phase
+      ideas_input_topic
       comment
       official_feedback
       follower

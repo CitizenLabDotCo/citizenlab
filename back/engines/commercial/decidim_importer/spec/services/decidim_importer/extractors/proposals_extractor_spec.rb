@@ -53,6 +53,21 @@ RSpec.describe DecidimImporter::Extractors::ProposalsExtractor do
     expect(join.attributes['phase_ref']).to be(phase.attributes)
   end
 
+  it 'tags the idea with its category via an ideas_input_topic join' do
+    topic = ref_map.register('decidim--category--2', DecidimImporter::Record.new('input_topic', {}))
+    idea = extract([row('category' => 'decidim--category--2')]).first
+    join = ref_map.fetch('decidim-proposal-1-ideas-input-topic')
+
+    expect(join.model_name).to eq('ideas_input_topic')
+    expect(join.attributes['idea_ref']).to be(idea.attributes)
+    expect(join.attributes['input_topic_ref']).to be(topic.attributes)
+  end
+
+  it 'does not tag the idea when its category was not imported' do
+    extract([row('category' => 'decidim--category--999')])
+    expect(ref_map.fetch('decidim-proposal-1-ideas-input-topic')).to be_nil
+  end
+
   it 'leaves the idea author-less when no author uid resolves to an imported user' do
     attrs = extract([row('authors' => '["decidim-user-999","decidim-meetings-meeting-3"]')]).first.attributes
     expect(attrs).not_to have_key('author_ref')

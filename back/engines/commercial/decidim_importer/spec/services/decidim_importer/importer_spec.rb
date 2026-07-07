@@ -314,6 +314,20 @@ RSpec.describe DecidimImporter::Importer do
         expect(idea.reload.likes_count).to eq(2)
       end
 
+      it 'imports Decidim categories as the project input topics, preserving hierarchy' do
+        topics = InputTopic.where(project: project)
+        env = topics.find_by("title_multiloc->>'fr-FR' = 'Environnement'")
+        arbres = topics.find_by("title_multiloc->>'fr-FR' = 'Arbres'")
+
+        expect(topics.count).to eq(2)
+        expect(env.description_multiloc['fr-FR']).to include('Cat env')
+        expect(arbres.parent).to eq(env) # the Decidim parent/child hierarchy is preserved
+
+        # The proposal's category tags its idea via ideas_input_topics.
+        idea = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+        expect(idea.input_topics).to contain_exactly(arbres)
+      end
+
       it 'imports the admin answer as official feedback and the comment thread' do
         accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
         feedback = accepted.official_feedbacks.first

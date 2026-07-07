@@ -51,6 +51,7 @@ namespace :decidim_importer do
     log_model_summary(builder)
     importer.skipped_phases.each { |s| Rails.logger.warn "  skipped phase #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_components.each { |s| Rails.logger.warn "  skipped component #{s[:component]}: #{s[:reason]}" }
+    importer.skipped_categories.each { |s| Rails.logger.warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_participation.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_followers.each { |s| Rails.logger.warn "  skipped follow #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_endorsements.each { |s| Rails.logger.warn "  skipped endorsement #{s[:uid]}: #{s[:reason]}" }

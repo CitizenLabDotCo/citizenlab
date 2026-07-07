@@ -31,6 +31,7 @@ module DecidimImporter
     PROCESS_FILE_GLOB = '*--participatory-process.csv'
     ATTACHMENTS_FILE_GLOB = '*--attachments.csv'
     COLLECTIONS_FILE_GLOB = '*--attachment_collections.csv'
+    CATEGORIES_FILE_GLOB = '*--categories.csv'
     ANSWERS_FILE_GLOB = '*--answers.csv'
 
     # Each process directory holds a `NN---components/` folder with one subdirectory per Decidim
@@ -76,17 +77,19 @@ module DecidimImporter
     end
 
     # Reads every participatory-process directory, aggregating their rows by model: process rows into
-    # `:projects`, attachment rows into `:attachments`, and — from each process's components —
-    # proposals into `:proposals`, their comments into `:comments`, and every component manifest into
-    # `:components` (the latter drives phase generation and skip-logging of unconsumed component
-    # types). Decidim steps are deliberately not read: only proposals/surveys become phases.
+    # `:projects`, attachment rows into `:attachments`, category rows into `:categories`, and — from
+    # each process's components — proposals into `:proposals`, their comments into `:comments`, and every
+    # component manifest into `:components` (the latter drives phase generation and skip-logging of
+    # unconsumed component types). Decidim steps are deliberately not read: only proposals/surveys
+    # become phases.
     #
     # Several of these CSVs carry no foreign-key column — the directory *is* the association — so rows
     # are stamped with their owning process (`decidim_participatory_process`) and, for proposals/
     # comments, their component (`decidim_component`).
     def self.read_processes(root)
-      acc = { projects: [], attachments: [], attachment_collections: [], proposals: [], comments: [],
-              followers: [], endorsements: [], proposal_attachments: [], components: [], survey_answers: [] }
+      acc = { projects: [], attachments: [], attachment_collections: [], categories: [], proposals: [],
+              comments: [], followers: [], endorsements: [], proposal_attachments: [], components: [],
+              survey_answers: [] }
       process_dirs(root).each do |dir|
         process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
         next unless process_file
@@ -101,6 +104,9 @@ module DecidimImporter
 
         collections_file = Dir.glob(File.join(dir, COLLECTIONS_FILE_GLOB)).first
         acc[:attachment_collections].concat(stamp(CsvReader.read(collections_file), process_stamp)) if collections_file
+
+        categories_file = Dir.glob(File.join(dir, CATEGORIES_FILE_GLOB)).first
+        acc[:categories].concat(stamp(CsvReader.read(categories_file), process_stamp)) if categories_file
 
         read_components(dir, process_uid, acc)
       end
@@ -521,6 +527,7 @@ module DecidimImporter
       run_extractor(Extractors::ScopesExtractor, :scopes)
       run_extractor(Extractors::FoldersExtractor, :folders)
       run_extractor(Extractors::ProjectsExtractor, :projects)
+      run_categories
       run_phases
       run_proposals
       run_comments
@@ -634,6 +641,11 @@ module DecidimImporter
       @proposal_attachments_extractor&.skipped || []
     end
 
+    # Categories that couldn't be imported as input topics (no owning project / no name).
+    def skipped_categories
+      @categories_extractor&.skipped || []
+    end
+
     private
 
     def run_phases
@@ -659,37 +671,32 @@ module DecidimImporter
       @comments_extractor.run
     end
 
-    # Decidim proposal follows → `Follower`s on the imported ideas. Runs after proposals and users so
-    # each follow's idea and user resolve through the ref map.
+    # Decidim proposal follows → `Follower`s on the imported ideas (idea + user resolved).
     def run_followers
       return unless @rows_by_model.key?(:followers)
 
-      @followers_extractor = Extractors::FollowersExtractor.new(
-        rows_for(:followers), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
-      )
-      @followers_extractor.run
+      (@followers_extractor = build_extractor(Extractors::FollowersExtractor, :followers)).run
     end
 
-    # Decidim proposal endorsements → up-`Reaction`s (likes) on the imported ideas. Runs after proposals
-    # and users so each endorsement's idea and author resolve through the ref map.
+    # Decidim proposal endorsements → up-`Reaction`s (likes) on the imported ideas (idea + author resolved).
     def run_endorsements
       return unless @rows_by_model.key?(:endorsements)
 
-      @endorsements_extractor = Extractors::EndorsementsExtractor.new(
-        rows_for(:endorsements), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
-      )
-      @endorsements_extractor.run
+      (@endorsements_extractor = build_extractor(Extractors::EndorsementsExtractor, :endorsements)).run
     end
 
-    # Decidim proposal attachments → `Files::File` attachments on the imported ideas. Runs after the
-    # proposals extractor so each attachment's idea (and its project) resolve through the ref map.
+    # Decidim proposal attachments → `Files::File` attachments on the imported ideas (idea + project resolved).
     def run_proposal_attachments
       return unless @rows_by_model.key?(:proposal_attachments)
 
-      @proposal_attachments_extractor = Extractors::ProposalAttachmentsExtractor.new(
-        rows_for(:proposal_attachments), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
-      )
-      @proposal_attachments_extractor.run
+      (@proposal_attachments_extractor = build_extractor(Extractors::ProposalAttachmentsExtractor, :proposal_attachments)).run
+    end
+
+    # Decidim categories → project `InputTopic`s (after the projects extractor so the project resolves).
+    def run_categories
+      return unless @rows_by_model.key?(:categories)
+
+      (@categories_extractor = build_extractor(Extractors::CategoriesExtractor, :categories)).run
     end
 
     def run_surveys
@@ -869,7 +876,12 @@ module DecidimImporter
     def run_extractor(klass, model)
       return unless @rows_by_model.key?(model)
 
-      klass.new(rows_for(model), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale).run
+      build_extractor(klass, model).run
+    end
+
+    # Instantiates an extractor for a model with the shared ref map + locale settings.
+    def build_extractor(klass, model)
+      klass.new(rows_for(model), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale)
     end
 
     def role_assignments

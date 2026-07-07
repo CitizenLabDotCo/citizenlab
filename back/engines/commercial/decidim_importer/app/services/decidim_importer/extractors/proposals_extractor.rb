@@ -18,6 +18,7 @@ module DecidimImporter
         process: 'decidim_participatory_process',
         component: 'decidim_component',
         authors: 'authors',
+        category: 'category',
         title: 'title',
         body: 'body',
         answer: 'answer',
@@ -62,8 +63,21 @@ module DecidimImporter
         ref_map.register(uid, idea)
 
         register_ideas_phase(uid, idea, phase)
+        register_input_topic(uid, idea, row)
         register_official_feedback(uid, idea, row)
         idea
+      end
+
+      # Tags the idea with its Decidim category (imported as a project `InputTopic`), via an
+      # `ideas_input_topic` join. No-op when the proposal has no category or it wasn't imported.
+      def register_input_topic(uid, idea, row)
+        topic = ref_map.fetch(present_value(row[COLUMNS[:category]]))
+        return unless topic&.model_name == 'input_topic'
+
+        join = Record.new('ideas_input_topic', {})
+        join.reference('idea', idea)
+        join.reference('input_topic', topic)
+        ref_map.register("#{uid}-ideas-input-topic", join)
       end
 
       def idea_attributes(row)
