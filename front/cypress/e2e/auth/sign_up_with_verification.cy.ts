@@ -1,6 +1,7 @@
 import { enterUserInfo, signUpEmailConformation } from '../../support/auth';
 import { randomString } from '../../support/commands';
 import moment = require('moment');
+import { fakeSSOAuth } from './utils';
 
 describe('Sign up - verification required (bogus)', () => {
   let projectId = '';
@@ -43,6 +44,10 @@ describe('Sign up - verification required (bogus)', () => {
         });
       });
   });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  })
 
   it('works when signing up with new email', () => {
     cy.visit(`/projects/${projectTitle}`);
@@ -191,21 +196,17 @@ describe('Sign up - verification required (SSO)', () => {
       });
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  })
+
   it('works when signing up with new email', () => {
     cy.visit(`/projects/${projectTitle}`);
 
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-    signUpEmailConformation(cy);
-    enterUserInfo(cy);
-
-    // verification step: fill out bogus
-    cy.get(
-      '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
-    ).click();
-    cy.get('#e2e-verification-bogus-form');
-    cy.get('#e2e-verification-bogus-submit-button').click();
+    fakeSSOAuth(cy, 'john_doe');
 
     cy.get('#e2e-success-continue-button').click();
 
@@ -235,14 +236,7 @@ describe('Sign up - verification required (SSO)', () => {
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-      signUpEmailConformation(cy);
-
-      // verification step: fill out bogus
-      cy.get(
-        '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
-      ).click();
-      cy.get('#e2e-verification-bogus-form');
-      cy.get('#e2e-verification-bogus-submit-button').click();
+      fakeSSOAuth(cy, 'john_doe');
 
       cy.get('#e2e-success-continue-button').click();
 
@@ -273,18 +267,7 @@ describe('Sign up - verification required (SSO)', () => {
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-      signUpEmailConformation(cy);
-      cy.get('#firstName').type(randomString());
-      cy.get('#lastName').type(randomString());
-
-      cy.get('#e2e-built-in-fields-submit-button > button').click({ force: true });
-
-      // verification step: fill out bogus
-      cy.get(
-        '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
-      ).click();
-      cy.get('#e2e-verification-bogus-form');
-      cy.get('#e2e-verification-bogus-submit-button').click();
+      fakeSSOAuth(cy, 'john_doe');
 
       cy.get('#e2e-success-continue-button').click();
 
