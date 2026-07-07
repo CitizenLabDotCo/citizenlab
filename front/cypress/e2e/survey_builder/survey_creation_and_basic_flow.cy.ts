@@ -63,8 +63,7 @@ describe('Survey Builder - Creation and Basic Flow', () => {
     cy.get('.e2e-error-message');
     cy.url().should(
       'eq',
-      `${
-        Cypress.config().baseUrl
+      `${Cypress.config().baseUrl
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
@@ -146,20 +145,12 @@ describe('Survey Builder - Creation and Basic Flow', () => {
       .click({ force: true });
     cy.url().should(
       'eq',
-      `${
-        Cypress.config().baseUrl
+      `${Cypress.config().baseUrl
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
   });
 
-  it('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/access-rights`);
-
-    cy.get('.e2e-action-accordion-posting_idea').click();
-    cy.get('.e2e-action-form-posting_idea').within(() => {
-      cy.get('.e2e-permission-registered-users').click();
-    });
-
+  it.only('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();

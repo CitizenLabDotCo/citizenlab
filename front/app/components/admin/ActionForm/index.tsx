@@ -90,6 +90,7 @@ const ActionForm = ({
       >
         {/* ---- Header (always visible, click to collapse/expand) ---- */}
         <Box
+          className={`e2e-action-accordion-${action}`}
           as="button"
           type="button"
           w="100%"
