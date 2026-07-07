@@ -66,7 +66,7 @@ describe ContentBuilder::ProjectPageLayoutService do
     }
   end
 
-  let(:canonical_body) { %w[PROJECT_PAGE_DESCRIPTION PROJECT_PAGE_TIMELINE PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS] }
+  let(:canonical_body) { %w[PROJECT_PAGE_DESCRIPTION PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS] }
 
   def resolved_names(json)
     json.values.filter_map do |n|
@@ -78,7 +78,7 @@ describe ContentBuilder::ProjectPageLayoutService do
   def canonical_names
     %w[
       ProjectPageRoot ProjectBanner ProjectTitle ProjectPageBody
-      ProjectDescriptionSection TimelineWidget InputFeed EventsWidget
+      ProjectDescriptionSection PhasesWidget EventsWidget
     ]
   end
 
@@ -136,16 +136,16 @@ describe ContentBuilder::ProjectPageLayoutService do
     it 'locks every fixed section (fixed point of ensureLockedHeaderNodes)' do
       result = build(empty_description)
 
-      expect(result['PROJECT_PAGE_INPUT_FEED']['custom']).to eq(
+      expect(result['PROJECT_PAGE_PHASES']['custom']).to eq(
         'title' => {
-          'id' => 'app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle2',
-          'defaultMessage' => 'Phase content'
+          'id' => 'app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle',
+          'defaultMessage' => 'Phases'
         },
         'locked' => true,
         'noPointerEvents' => true
       )
       %w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_DESCRIPTION
-        PROJECT_PAGE_TIMELINE PROJECT_PAGE_EVENTS].each do |id|
+        PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS].each do |id|
         expect(result[id]['custom']['locked']).to be(true)
       end
     end
