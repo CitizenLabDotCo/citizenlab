@@ -277,6 +277,16 @@ RSpec.describe DecidimImporter::Importer do
         expect(evaluating.idea_status.code).to eq('under_consideration')
       end
 
+      it 'imports proposal follows as followers on the idea, skipping follows by non-imported users' do
+        idea = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+        user2 = User.find_by(unique_code: 'decidim-user-2')
+
+        followers = Follower.where(followable: idea)
+        # The follow by the unconfirmed (unimported) decidim-user-131 is skipped; only user-2 remains.
+        expect(followers.map(&:user)).to contain_exactly(user2)
+        expect(followers.first.created_at.to_date.iso8601).to eq('2023-03-11')
+      end
+
       it 'imports the admin answer as official feedback and the comment thread' do
         accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
         feedback = accepted.official_feedbacks.first

@@ -32,6 +32,7 @@ module DecidimImporter
       ideas_phase
       comment
       official_feedback
+      follower
     ].freeze
 
     def initialize(ref_map)

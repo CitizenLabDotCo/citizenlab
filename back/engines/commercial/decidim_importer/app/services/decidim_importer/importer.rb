@@ -43,6 +43,7 @@ module DecidimImporter
     COMPONENT_FILE_GLOB = '*--component.csv'
     PROPOSALS_FILE_GLOB = '*--proposals.csv'
     COMMENTS_FILE_GLOB = '*--comments.csv'
+    FOLLOWERS_FILE_GLOB = '*--followers.csv'
     PROPOSALS_COMPONENT = 'proposals'
     SURVEYS_COMPONENT = 'surveys'
     PAGES_COMPONENT = 'pages'
@@ -81,7 +82,7 @@ module DecidimImporter
     # comments, their component (`decidim_component`).
     def self.read_processes(root)
       acc = { projects: [], attachments: [], attachment_collections: [], proposals: [],
-              comments: [], components: [], survey_answers: [] }
+              comments: [], followers: [], components: [], survey_answers: [] }
       process_dirs(root).each do |dir|
         process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
         next unless process_file
@@ -103,7 +104,7 @@ module DecidimImporter
     end
 
     # Walks a process's component directories, recording each manifest under `:components` and, for
-    # proposals components, their proposals and comments (stamped with process + component uid).
+    # proposals components, their proposals, comments and followers (stamped with process + component uid).
     def self.read_components(process_dir, process_uid, acc)
       component_dirs(process_dir).each do |comp_dir|
         comp_file = Dir.glob(File.join(comp_dir, COMPONENT_FILE_GLOB)).first
@@ -120,6 +121,8 @@ module DecidimImporter
           acc[:proposals].concat(stamp(CsvReader.read(proposals_file), stamp)) if proposals_file
           comments_file = Dir.glob(File.join(comp_dir, COMMENTS_FILE_GLOB)).first
           acc[:comments].concat(stamp(CsvReader.read(comments_file), stamp)) if comments_file
+          followers_file = Dir.glob(File.join(comp_dir, FOLLOWERS_FILE_GLOB)).first
+          acc[:followers].concat(stamp(CsvReader.read(followers_file), stamp)) if followers_file
         when SURVEYS_COMPONENT
           answers_file = Dir.glob(File.join(comp_dir, ANSWERS_FILE_GLOB)).first
           acc[:survey_answers].concat(stamp(CsvReader.read(answers_file), stamp)) if answers_file
@@ -512,6 +515,7 @@ module DecidimImporter
       run_phases
       run_proposals
       run_comments
+      run_followers
       run_surveys
       run_survey_responses
       run_static_pages
@@ -584,6 +588,11 @@ module DecidimImporter
       (@proposals_extractor&.skipped || []) + (@comments_extractor&.skipped || [])
     end
 
+    # Proposal follows that couldn't be imported (followed proposal or follower user not imported).
+    def skipped_followers
+      @followers_extractor&.skipped || []
+    end
+
     # Surveys/questions that couldn't be imported (e.g. an unsupported question type).
     def skipped_surveys
       @surveys_extractor&.skipped || []
@@ -627,6 +636,17 @@ module DecidimImporter
         rows_for(:comments), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       )
       @comments_extractor.run
+    end
+
+    # Decidim proposal follows → `Follower`s on the imported ideas. Runs after proposals and users so
+    # each follow's idea and user resolve through the ref map.
+    def run_followers
+      return unless @rows_by_model.key?(:followers)
+
+      @followers_extractor = Extractors::FollowersExtractor.new(
+        rows_for(:followers), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+      @followers_extractor.run
     end
 
     def run_surveys
