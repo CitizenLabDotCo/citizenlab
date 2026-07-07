@@ -65,7 +65,7 @@ export interface IUserAttributes {
   new_email?: string | null;
   phone?: string | null;
   phone_confirmed_at?: string | null;
-  phone_confirmation_pending?: boolean;
+  new_phone?: string | null;
 }
 
 export interface IUserData {

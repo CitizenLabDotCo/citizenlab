@@ -404,7 +404,7 @@ class User < ApplicationRecord
 
   def validate_phone_field_format(attribute)
     value = self[attribute]
-    return if value.blank? || Phonelib.valid?(value)
+    return if value.nil? || Phonelib.valid?(value)
 
     errors.add(attribute, :invalid, value: value)
   end

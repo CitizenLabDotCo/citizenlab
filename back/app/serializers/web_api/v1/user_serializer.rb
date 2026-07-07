@@ -69,10 +69,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   attribute :phone, if: PRIVATE
   attribute :phone_confirmed_at, if: PRIVATE
-
-  attribute :phone_confirmation_pending, if: PRIVATE do |object|
-    object.new_phone.present?
-  end
+  attribute :new_phone, if: PRIVATE
 
   def self.name_service(params)
     UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
