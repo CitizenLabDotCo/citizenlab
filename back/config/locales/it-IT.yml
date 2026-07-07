@@ -112,6 +112,8 @@ it-IT:
           title: Qual è la tua iniziativa?
         issue:
           title: Qual è il tuo commento?
+        observation:
+          title: Qual è la tua osservazione?
         option:
           title: Qual è la tua opzione?
         petition:

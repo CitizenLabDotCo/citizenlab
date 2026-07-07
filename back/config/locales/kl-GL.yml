@@ -139,6 +139,8 @@ kl-GL:
           title: Suna suliniutigaajuk?
         issue:
           title: Suna ajornartorsiutaava?
+        observation:
+          title: Sunaana maluginiakkat?
         option:
           title: Suna toqqagassaraajuk?
         petition:

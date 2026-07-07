@@ -208,6 +208,7 @@ const IdeaButton = memo<Props>(
                     topic: messages.addATopic,
                     post: messages.addAPost,
                     story: messages.addAStory,
+                    observation: messages.addAnObservation,
                   })}
                 />
               )}
