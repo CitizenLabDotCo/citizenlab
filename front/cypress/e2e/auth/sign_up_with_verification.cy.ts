@@ -1,8 +1,8 @@
-import { logIn, signUpEmailConformation } from '../../support/auth';
+import { enterUserInfo, signUpEmailConformation } from '../../support/auth';
 import { randomString } from '../../support/commands';
 import moment = require('moment');
 
-describe('Sign up - email only', () => {
+describe('Sign up - verification required', () => {
   let projectId = '';
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
@@ -37,8 +37,7 @@ describe('Sign up - email only', () => {
           phaseId,
           permissionBody: {
             permitted_by: 'users',
-            require_name: false,
-            require_password: false,
+            require_verification: true
           },
           action: 'posting_idea',
         });
@@ -52,6 +51,14 @@ describe('Sign up - email only', () => {
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     signUpEmailConformation(cy);
+    enterUserInfo(cy);
+
+    // verification step: fill out bogus
+    cy.get(
+      '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
+    ).click();
+    cy.get('#e2e-verification-bogus-form');
+    cy.get('#e2e-verification-bogus-submit-button').click();
 
     cy.get('#e2e-success-continue-button').click();
 
@@ -59,25 +66,43 @@ describe('Sign up - email only', () => {
       'eq',
       `/en/projects/${projectTitle}/surveys/new`
     );
-    cy.logout();
   });
 
-  it('works when signing up with existing normal user', () => {
-    cy.visit(`/projects/${projectTitle}`);
+  describe('Does not require name and password', () => {
+    before(() => {
+      cy.apiSetPhasePermission({
+        phaseId,
+        permissionBody: {
+          permitted_by: 'users',
+          require_name: false,
+          require_password: false,
+          require_verification: true
+        },
+        action: 'posting_idea',
+      });
+    })
 
-    cy.get('.e2e-idea-button').first().find('button').should('exist');
-    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+    it('works when signing up with new email', () => {
+      cy.visit(`/projects/${projectTitle}`);
 
-    logIn(cy, 'admin@govocal.com', 'democracy2.0');
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-    cy.location('pathname').should(
-      'eq',
-      `/en/projects/${projectTitle}/surveys/new`
-    );
-    cy.logout();
-  });
+      signUpEmailConformation(cy);
 
-  after(() => {
-    cy.apiRemoveProject(projectId);
-  });
+      // verification step: fill out bogus
+      cy.get(
+        '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
+      ).click();
+      cy.get('#e2e-verification-bogus-form');
+      cy.get('#e2e-verification-bogus-submit-button').click();
+
+      cy.get('#e2e-success-continue-button').click();
+
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectTitle}/surveys/new`
+      );
+    });
+  })
 });
