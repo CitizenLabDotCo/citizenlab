@@ -66,6 +66,10 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.storyEmailSharingSubject',
     defaultMessage: 'Support my story: {postTitle}.',
   },
+  observationEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.observationEmailSharingSubject',
+    defaultMessage: 'Support my observation: {postTitle}.',
+  },
   ideaEmailSharingBody: {
     id: 'app.components.PostComponents.SharingModalContent.ideaEmailSharingBody',
     defaultMessage: "Support my idea '{postTitle}' at {postUrl}!",
@@ -128,6 +132,10 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.storyEmailSharingBody',
     defaultMessage: "Support my story '{postTitle}' at {postUrl}!",
   },
+  observationEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.observationEmailSharingBody',
+    defaultMessage: "Support my observation '{postTitle}' at {postUrl}!",
+  },
   ideaWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage',
     defaultMessage: 'Support my idea: {postTitle}.',
@@ -187,5 +195,9 @@ export default defineMessages({
   storyWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.storyWhatsAppMessage',
     defaultMessage: 'Support my story: {postTitle}.',
+  },
+  observationWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.observationWhatsAppMessage',
+    defaultMessage: 'Support my observation: {postTitle}.',
   },
 });

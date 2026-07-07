@@ -52,6 +52,7 @@ const IdeaSharingModal = ({
             topic: messages.topicSharingModalTitle,
             post: messages.postSharingModalTitle,
             story: messages.storySharingModalTitle,
+            observation: messages.observationSharingModalTitle,
           })
         )}
         subtitle={formatMessage(messages.sharingModalSubtitle)}
