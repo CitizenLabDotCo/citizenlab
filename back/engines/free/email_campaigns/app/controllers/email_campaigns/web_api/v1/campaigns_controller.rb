@@ -198,10 +198,13 @@ module EmailCampaigns
     end
 
     def campaign_params
-      return sms_campaign_params if @campaign.sms?
-      return manual_campaign_params if @campaign.manual?
-
-      automated_campaign_params
+      if @campaign.sms?
+        sms_campaign_params
+      elsif @campaign.manual?
+        manual_campaign_params
+      else
+        automated_campaign_params
+      end
     end
 
     def sms_campaign_params
