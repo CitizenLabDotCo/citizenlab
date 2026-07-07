@@ -98,7 +98,7 @@ describe('Submit community monitor survey', () => {
     cy.visit(`admin/community-monitor/settings/access-rights`);
     cy.get('.e2e-permission-registered-users').should('be.visible');
     cy.get('.e2e-permission-registered-users').first().click({ force: true });
-    cy.contains('Confirm your email').should('be.visible');
+    cy.contains('Confirmed email').should('be.visible');
 
     // Go to community monitor survey form as logged out user
     cy.clearAllCookies();
