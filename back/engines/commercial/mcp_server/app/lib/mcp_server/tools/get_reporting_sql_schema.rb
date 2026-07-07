@@ -16,7 +16,9 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     Analytics::Reporting::Project,
     Analytics::Reporting::Phase,
     Analytics::Reporting::Session,
-    Analytics::Reporting::Pageview
+    Analytics::Reporting::Pageview,
+    Analytics::Reporting::Contribution,
+    Analytics::Reporting::Participant
   ].freeze
 
   REPORTING_TABLE_NAMES = REPORTING_TABLES.map(&:table_name).freeze
