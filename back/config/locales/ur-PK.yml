@@ -112,6 +112,8 @@ ur-PK:
           title: آپ کی پہل کیا ہے؟
         issue:
           title: آپ کا کیا تبصرہ ہے؟
+        observation:
+          title: آپ کا مشاہدہ کیا ہے؟
         option:
           title: آپ کا آپشن کیا ہے؟
         petition:

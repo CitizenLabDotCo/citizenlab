@@ -251,6 +251,7 @@ lb-LU:
         idea: '%{authorName} kommentéiert eng Iddi déi Dir verfollegt'
         initiative: '%{authorName} huet eng Initiativ kommentéiert, déi Dir verfollegt'
         issue: '%{authorName} kommentéiert en Thema deen Dir verfollegt'
+        observation: '%{authorName} huet eng Observatioun kommentéiert, där s du follegs'
         option: '%{authorName} kommentéiert eng Optioun déi Dir verfollegt'
         petition: '%{authorName} kommentéiert eng Petitioun déi Dir verfollegt'
         post: '%{authorName} huet e Kommentar zu engem Post kommentéiert, deen Dir folgt'
@@ -325,6 +326,7 @@ lb-LU:
         idea: Gitt op dës Iddi
         initiative: Gitt op dës Initiativ
         issue: Gitt op dëst Thema
+        observation: Gitt op dës Observatioun
         option: Gitt op dës Optioun
         petition: Gitt op dës Petitioun
         post: Gitt op dëse Post
@@ -345,6 +347,7 @@ lb-LU:
         idea: Gitt op Är Iddi
         initiative: Gitt op Är Initiativ
         issue: Gitt op Äert Thema
+        observation: Géi op deng Observatioun
         option: Gitt op Är Optioun
         petition: Gitt op Är Petitioun
         post: Gitt op Äre Post
@@ -378,6 +381,7 @@ lb-LU:
         idea: Är Iddi gouf publizéiert
         initiative: Är Initiativ gouf publizéiert
         issue: Är Ausgab gouf publizéiert
+        observation: Är Observatioun gouf verëffentlecht
         option: Är Optioun gouf publizéiert
         petition: Är Petitioun gouf publizéiert
         post: Äre Beitrag gouf publizéiert
@@ -768,6 +772,7 @@ lb-LU:
         idea: Är Iddi ass an "%{prescreening_status_title}"
         initiative: Är Initiativ ass an "%{prescreening_status_title}"
         issue: Ären Thema ass an "%{prescreening_status_title}"
+        observation: Deng Observatioun ass an "%{prescreening_status_title}"
         option: Är Optioun ass an "%{prescreening_status_title}"
         petition: Är Petitioun ass an "%{prescreening_status_title}"
         post: Äre Beitrag ass an "%{prescreening_status_title}"

@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.storySharingModalTitle',
     defaultMessage: 'Thanks for submitting your story!',
   },
+  observationSharingModalTitle: {
+    id: 'app.containers.IdeasShow.observationSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your observation!',
+  },
   sharingModalSubtitle: {
     id: 'app.containers.IdeasShow.sharingModalSubtitle',
     defaultMessage: 'Reach more people and make your voice heard.',

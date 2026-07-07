@@ -589,6 +589,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.storyTerm',
     defaultMessage: 'Story',
   },
+  observationTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.observationTerm',
+    defaultMessage: 'Observation',
+  },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',
