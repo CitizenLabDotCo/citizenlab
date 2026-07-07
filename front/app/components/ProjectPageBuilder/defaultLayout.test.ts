@@ -7,18 +7,12 @@ import {
   TITLE_NODE_ID,
   BODY_NODE_ID,
   DESCRIPTION_NODE_ID,
-  INPUT_FEED_NODE_ID,
-  TIMELINE_NODE_ID,
+  PHASES_NODE_ID,
   EVENTS_NODE_ID,
 } from './defaultLayout';
 import widgetMessages from './Widgets/messages';
 
-const CANONICAL_BODY = [
-  DESCRIPTION_NODE_ID,
-  TIMELINE_NODE_ID,
-  INPUT_FEED_NODE_ID,
-  EVENTS_NODE_ID,
-];
+const CANONICAL_BODY = [DESCRIPTION_NODE_ID, PHASES_NODE_ID, EVENTS_NODE_ID];
 
 const textNode = (parent: string) =>
   ({
@@ -46,7 +40,7 @@ const migratedLayout = (): SerializedNodes => {
 };
 
 describe('defaultProjectPageLayout', () => {
-  it('freezes the body to description → timeline → input feed → events', () => {
+  it('freezes the body to description → phases → events', () => {
     const layout = defaultProjectPageLayout();
 
     expect(layout.ROOT.nodes).toEqual([
@@ -79,7 +73,7 @@ describe('ensureLockedHeaderNodes', () => {
     delete layout[DESCRIPTION_NODE_ID];
     layout[BODY_NODE_ID] = {
       ...layout[BODY_NODE_ID],
-      nodes: [TIMELINE_NODE_ID, 'd_txt1', INPUT_FEED_NODE_ID, EVENTS_NODE_ID],
+      nodes: [PHASES_NODE_ID, 'd_txt1', EVENTS_NODE_ID],
     };
     layout.d_txt1 = textNode(BODY_NODE_ID);
 
@@ -94,12 +88,7 @@ describe('ensureLockedHeaderNodes', () => {
     const layout = migratedLayout();
     layout[BODY_NODE_ID] = {
       ...layout[BODY_NODE_ID],
-      nodes: [
-        EVENTS_NODE_ID,
-        TIMELINE_NODE_ID,
-        DESCRIPTION_NODE_ID,
-        INPUT_FEED_NODE_ID,
-      ],
+      nodes: [EVENTS_NODE_ID, PHASES_NODE_ID, DESCRIPTION_NODE_ID],
     };
 
     expect(ensureLockedHeaderNodes(layout)[BODY_NODE_ID].nodes).toEqual(
@@ -109,30 +98,74 @@ describe('ensureLockedHeaderNodes', () => {
 
   it('creates missing fixed sections', () => {
     const layout = migratedLayout();
-    delete layout[TIMELINE_NODE_ID];
+    delete layout[PHASES_NODE_ID];
     delete layout[EVENTS_NODE_ID];
     layout[BODY_NODE_ID] = {
       ...layout[BODY_NODE_ID],
-      nodes: [DESCRIPTION_NODE_ID, INPUT_FEED_NODE_ID],
+      nodes: [DESCRIPTION_NODE_ID],
     };
 
     const result = ensureLockedHeaderNodes(layout);
 
     expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
-    expect(result[TIMELINE_NODE_ID]).toBeDefined();
+    expect(result[PHASES_NODE_ID]).toBeDefined();
     expect(result[EVENTS_NODE_ID]).toBeDefined();
   });
 
   it('re-stamps the lock flags on the fixed sections', () => {
     const layout = migratedLayout();
-    layout[TIMELINE_NODE_ID] = {
-      ...layout[TIMELINE_NODE_ID],
-      custom: { title: widgetMessages.timelineWidgetTitle },
+    layout[PHASES_NODE_ID] = {
+      ...layout[PHASES_NODE_ID],
+      custom: { title: widgetMessages.phasesWidgetTitle },
     };
 
     const result = ensureLockedHeaderNodes(layout);
 
-    expect(result[TIMELINE_NODE_ID].custom).toMatchObject({ locked: true });
+    expect(result[PHASES_NODE_ID].custom).toMatchObject({ locked: true });
+  });
+
+  it('replaces the pre-merge Timeline + Phase content sections with the Phases widget', () => {
+    // A layout saved when the timeline and the phase content were two widgets.
+    const layout = migratedLayout();
+    delete layout[PHASES_NODE_ID];
+    layout[BODY_NODE_ID] = {
+      ...layout[BODY_NODE_ID],
+      nodes: [
+        DESCRIPTION_NODE_ID,
+        'PROJECT_PAGE_TIMELINE',
+        'PROJECT_PAGE_INPUT_FEED',
+        EVENTS_NODE_ID,
+      ],
+    };
+    layout.PROJECT_PAGE_TIMELINE = {
+      type: { resolvedName: 'TimelineWidget' },
+      nodes: [],
+      props: {},
+      custom: { locked: true },
+      hidden: false,
+      parent: BODY_NODE_ID,
+      isCanvas: false,
+      displayName: 'TimelineWidget',
+      linkedNodes: {},
+    } as unknown as SerializedNodes[string];
+    layout.PROJECT_PAGE_INPUT_FEED = {
+      type: { resolvedName: 'InputFeed' },
+      nodes: [],
+      props: {},
+      custom: { locked: true },
+      hidden: false,
+      parent: BODY_NODE_ID,
+      isCanvas: false,
+      displayName: 'InputFeed',
+      linkedNodes: {},
+    } as unknown as SerializedNodes[string];
+
+    const result = ensureLockedHeaderNodes(layout);
+
+    expect(result.PROJECT_PAGE_TIMELINE).toBeUndefined();
+    expect(result.PROJECT_PAGE_INPUT_FEED).toBeUndefined();
+    expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
+    expect(result[PHASES_NODE_ID]).toBeDefined();
   });
 
   it('nests top-level user content of an old flat layout into the description section', () => {
