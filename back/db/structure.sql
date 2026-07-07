@@ -228,7 +228,6 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
-DROP INDEX IF EXISTS public.index_public_api_api_clients_on_name;
 DROP INDEX IF EXISTS public.index_projects_on_space_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
@@ -679,6 +678,10 @@ DROP TABLE IF EXISTS public.static_page_files;
 DROP TABLE IF EXISTS public.spam_reports;
 DROP TABLE IF EXISTS public.spaces;
 DROP TABLE IF EXISTS public.schema_migrations;
+DROP VIEW IF EXISTS public.reporting_sessions;
+DROP VIEW IF EXISTS public.reporting_projects;
+DROP VIEW IF EXISTS public.reporting_phases;
+DROP VIEW IF EXISTS public.reporting_pageviews;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
 DROP TABLE IF EXISTS public.que_values;
@@ -3690,6 +3693,92 @@ CREATE TABLE public.report_builder_reports (
     quarter integer,
     community_monitor boolean DEFAULT false NOT NULL
 );
+
+
+--
+-- Name: reporting_pageviews; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_pageviews AS
+ SELECT id,
+    session_id,
+    created_at AS viewed_at,
+    path,
+    project_id,
+        CASE
+            WHEN (split_part((path)::text, '/'::text, 2) IN ( SELECT jsonb_array_elements_text(((ac.settings -> 'core'::text) -> 'locales'::text)) AS jsonb_array_elements_text
+               FROM public.app_configurations ac)) THEN split_part((path)::text, '/'::text, 2)
+            ELSE NULL::text
+        END AS locale
+   FROM public.impact_tracking_pageviews pv;
+
+
+--
+-- Name: reporting_phases; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_phases AS
+ SELECT id,
+    project_id,
+    COALESCE(NULLIF((title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(ph.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS title,
+    start_at,
+    end_at,
+    participation_method
+   FROM public.phases ph;
+
+
+--
+-- Name: reporting_projects; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_projects AS
+ SELECT p.id,
+    COALESCE(NULLIF((p.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(p.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS title,
+    ap.publication_status,
+    phase_bounds.start_at,
+    phase_bounds.end_at,
+    folder_ap.publication_id AS folder_id,
+    p.hidden,
+    p.listed
+   FROM (((public.projects p
+     LEFT JOIN public.admin_publications ap ON (((ap.publication_id = p.id) AND ((ap.publication_type)::text = 'Project'::text))))
+     LEFT JOIN public.admin_publications folder_ap ON ((folder_ap.id = ap.parent_id)))
+     LEFT JOIN ( SELECT ph.project_id,
+            min(ph.start_at) AS start_at,
+                CASE
+                    WHEN bool_or((ph.end_at IS NULL)) THEN NULL::timestamp without time zone
+                    ELSE max(ph.end_at)
+                END AS end_at
+           FROM public.phases ph
+          GROUP BY ph.project_id) phase_bounds ON ((phase_bounds.project_id = p.id)));
+
+
+--
+-- Name: reporting_sessions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_sessions AS
+ SELECT id,
+    created_at AS started_at,
+    user_id,
+    monthly_user_hash AS anonymous_id,
+    COALESCE((user_id)::text, (monthly_user_hash)::text) AS visitor_id,
+    highest_role,
+    device_type AS device,
+    referrer
+   FROM public.impact_tracking_sessions s;
 
 
 --
@@ -7139,13 +7228,6 @@ CREATE INDEX index_projects_on_space_id ON public.projects USING btree (space_id
 
 
 --
--- Name: index_public_api_api_clients_on_name; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_public_api_api_clients_on_name ON public.public_api_api_clients USING btree (name) WHERE (name IS NOT NULL);
-
-
---
 -- Name: index_reactions_on_reactable_type_and_reactable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8849,6 +8931,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260707161930'),
+('20260707161925'),
 ('20260701113056'),
 ('20260617120000'),
 ('20260617090200'),
@@ -8868,7 +8952,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260429101252'),
 ('20260421105121'),
 ('20260420120659'),
-('20260414120848'),
 ('20260408161034'),
 ('20260408131955'),
 ('20260323120000'),

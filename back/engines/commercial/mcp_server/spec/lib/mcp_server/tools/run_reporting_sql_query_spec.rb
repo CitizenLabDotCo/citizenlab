@@ -40,6 +40,19 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
     end
   end
 
+  # A table in REPORTING_TABLES is only usable when its view exists AND carries
+  # the analytics_reader grant; a missing grant only surfaces at execution time.
+  # This guards the whole whitelist end-to-end, including future additions.
+  describe 'every whitelisted table' do
+    McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES.each do |table|
+      it "can be selected from (#{table})" do
+        response = run("SELECT * FROM #{table} LIMIT 1")
+
+        expect(response.error?).to be false
+      end
+    end
+  end
+
   describe 'layer 1 (sandbox) rejections' do
     it 'rejects a blank query before touching the database' do
       response = run('   ')

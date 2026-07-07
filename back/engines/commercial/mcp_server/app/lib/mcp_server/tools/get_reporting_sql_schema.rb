@@ -12,7 +12,11 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     Analytics::DimensionDate,
     Analytics::DimensionProject,
     Analytics::DimensionType,
-    Analytics::DimensionUser
+    Analytics::DimensionUser,
+    Analytics::Reporting::Project,
+    Analytics::Reporting::Phase,
+    Analytics::Reporting::Session,
+    Analytics::Reporting::Pageview
   ].freeze
 
   REPORTING_TABLE_NAMES = REPORTING_TABLES.map(&:table_name).freeze
