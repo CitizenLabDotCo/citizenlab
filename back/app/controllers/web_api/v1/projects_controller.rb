@@ -130,7 +130,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params(
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      ),
       include: %i[project_images current_phase]
     )
   end
@@ -180,7 +182,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
-    projects = projects.includes(phases: %i[report custom_form permissions], admin_publication: [:parent], project_images: [], groups: [])
+    projects = projects.includes(phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }], admin_publication: [:parent], project_images: [], groups: [])
 
     moderators_per_project = UserRoleService.new.moderators_per_project(
       projects.pluck(:id)
@@ -484,7 +486,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params(
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      ),
       include: %i[project_images current_phase]
     )
   end

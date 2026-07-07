@@ -22,17 +22,17 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: linked_json(
       @phases,
       WebApi::V1::PhaseSerializer,
-      params: action_descriptor_serializer_params,
+      params: phase_serializer_params,
       include: %i[permissions manual_voters_last_updated_by]
     )
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: action_descriptor_serializer_params, include: %i[permissions]).serializable_hash
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params, include: %i[permissions]).serializable_hash
   end
 
   def show_mini
-    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: action_descriptor_serializer_params).serializable_hash
+    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: phase_serializer_params).serializable_hash
   end
 
   def create
@@ -44,7 +44,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
     if @phase.save
       sidefx.after_create(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: action_descriptor_serializer_params).serializable_hash, status: :created
+      render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :created
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end
@@ -58,7 +58,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
     if @phase.save
       sidefx.after_update(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: action_descriptor_serializer_params).serializable_hash, status: :ok
+      render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end
@@ -184,9 +184,8 @@ class WebApi::V1::PhasesController < ApplicationController
 
   private
 
-  def action_descriptor_serializer_params
+  def phase_serializer_params
     jsonapi_serializer_params(
-      action_descriptors: true,
       user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
       request: request
     )

@@ -113,7 +113,9 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |object|
-    TimelineService.new.current_phase(object)
+    phase = TimelineService.new.current_phase(object)
+    phase.project = object if phase # Performance optimization (keep preloaded relationships)
+    phase
   end
 
   def self.avatars_for_project(object, _params)
