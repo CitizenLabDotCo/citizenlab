@@ -6,7 +6,9 @@ module ContentBuilder
   #
   # The structure mirrors the frontend `defaultLayout.ts` (`defaultProjectPageLayout`
   # + `ensureLockedHeaderNodes`) — keep the two in sync: a locked banner + title
-  # above a body frozen to description section → timeline → phase content → events.
+  # above a body frozen to description section → phases → events. Phases is one
+  # widget holding the timeline and the phase's participation content: the
+  # timeline's tabs drive the content, so they always move together.
   # The description section holds the project's description content; it is the
   # subtree the legacy description editor edits and the legacy project page renders.
   class ProjectPageLayoutService
@@ -17,20 +19,23 @@ module ContentBuilder
     TITLE_ID = 'PROJECT_PAGE_TITLE'
     BODY_ID = 'PROJECT_PAGE_BODY'
     DESCRIPTION_ID = 'PROJECT_PAGE_DESCRIPTION'
-    TIMELINE_ID = 'PROJECT_PAGE_TIMELINE'
-    INPUT_FEED_ID = 'PROJECT_PAGE_INPUT_FEED'
+    PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
 
     # Widgets absent from the project page resolver; left in place they crash
     # craft.js on deserialize, so they are stripped with their subtrees.
+    # TimelineWidget and InputFeed are the pre-merge separate sections, replaced
+    # by the combined PhasesWidget.
     # Keep in sync with REMOVED_WIDGETS in defaultLayout.ts.
     UNSUPPORTED_WIDGETS = %w[
       FolderFiles
       FolderTitle
+      InputFeed
       Published
       Selection
       Spotlight
       ExtraSurveysWidget
+      TimelineWidget
     ].freeze
 
     # Re-key injected nodes so they can't collide with the fixed PROJECT_PAGE_* ids.
@@ -208,7 +213,7 @@ module ContentBuilder
         },
         BODY_ID => {
           'type' => { 'resolvedName' => 'ProjectPageBody' },
-          'nodes' => [DESCRIPTION_ID, TIMELINE_ID, INPUT_FEED_ID, EVENTS_ID],
+          'nodes' => [DESCRIPTION_ID, PHASES_ID, EVENTS_ID],
           'props' => {},
           'custom' => { 'region' => true },
           'hidden' => false,
@@ -231,34 +236,19 @@ module ContentBuilder
           'displayName' => 'ProjectDescriptionSection',
           'linkedNodes' => {}
         },
-        TIMELINE_ID => {
-          'type' => { 'resolvedName' => 'TimelineWidget' },
+        PHASES_ID => {
+          'type' => { 'resolvedName' => 'PhasesWidget' },
           'nodes' => [],
           'props' => {},
           'custom' => {
-            'title' => message('app.components.ProjectPageBuilder.Widgets.timelineWidgetTitle', 'Timeline'),
+            'title' => message('app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle', 'Phases'),
             'locked' => true,
             'noPointerEvents' => true
           },
           'hidden' => false,
           'parent' => BODY_ID,
           'isCanvas' => false,
-          'displayName' => 'TimelineWidget',
-          'linkedNodes' => {}
-        },
-        INPUT_FEED_ID => {
-          'type' => { 'resolvedName' => 'InputFeed' },
-          'nodes' => [],
-          'props' => {},
-          'custom' => {
-            'title' => message('app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle2', 'Phase content'),
-            'locked' => true,
-            'noPointerEvents' => true
-          },
-          'hidden' => false,
-          'parent' => BODY_ID,
-          'isCanvas' => false,
-          'displayName' => 'InputFeed',
+          'displayName' => 'PhasesWidget',
           'linkedNodes' => {}
         },
         EVENTS_ID => {
