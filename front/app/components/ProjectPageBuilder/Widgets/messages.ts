@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  timelineWidgetTitle: {
-    id: 'app.components.ProjectPageBuilder.Widgets.timelineWidgetTitle',
-    defaultMessage: 'Timeline',
+  phasesWidgetTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle',
+    defaultMessage: 'Phases',
   },
   eventsWidgetTitle: {
     id: 'app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle',
@@ -47,10 +47,6 @@ export default defineMessages({
   projectEditorLinkText: {
     id: 'app.components.ProjectPageBuilder.Widgets.projectEditorLinkText',
     defaultMessage: 'project editor',
-  },
-  inputFeedWidgetTitle2: {
-    id: 'app.components.ProjectPageBuilder.Widgets.inputFeedWidgetTitle2',
-    defaultMessage: 'Phase content',
   },
   inputFeedManagedNote: {
     id: 'app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote',
