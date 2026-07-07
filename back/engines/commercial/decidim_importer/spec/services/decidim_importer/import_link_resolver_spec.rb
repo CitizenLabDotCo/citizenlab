@@ -32,27 +32,26 @@ RSpec.describe DecidimImporter::ImportLinkResolver do
     end
   end
 
-  describe '#file_href' do
+  describe '#file_id' do
     before do
       register('files/file', { 'id' => 'file-abc', 'name' => "Plan d'action.pdf" })
     end
 
-    it 'resolves an Active Storage link to the imported file by its (decoded) filename' do
+    it 'resolves an Active Storage link to the imported file id by its (decoded) filename' do
       # The blob URL carries the percent-encoded filename; it matches the file whose name decodes to it.
       url = "https://participer.arcueil.fr/rails/active_storage/blobs/redirect/xyz/Plan%20d'action.pdf"
-      expect(resolver.file_href(url))
-        .to eq('/uploads/files/file/content/file-abc/Plan_d_action.pdf') # spaces/apostrophes sanitised
+      expect(resolver.file_id(url)).to eq('file-abc')
     end
 
     it 'returns nil when no imported file matches the filename' do
       url = 'https://participer.arcueil.fr/rails/active_storage/blobs/redirect/xyz/Other.pdf'
-      expect(resolver.file_href(url)).to be_nil
+      expect(resolver.file_id(url)).to be_nil
     end
 
     it 'keeps the first file when two share a name, staying deterministic' do
       register('files/file', { 'id' => 'file-def', 'name' => "Plan d'action.pdf" })
       url = "https://d/rails/active_storage/blobs/xyz/Plan%20d'action.pdf"
-      expect(resolver.file_href(url)).to eq('/uploads/files/file/content/file-abc/Plan_d_action.pdf')
+      expect(resolver.file_id(url)).to eq('file-abc')
     end
   end
 end

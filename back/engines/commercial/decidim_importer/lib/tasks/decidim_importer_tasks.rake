@@ -1,11 +1,20 @@
 # frozen_string_literal: true
 
+require 'csv'
+
 # Two-step workflow — dump, then import the dumped file:
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR]
-#     → writes tmp/import_files/example.com.template.yml + tmp/import_files/example.com.app_config.json
+#     → writes tmp/import_files/example.com.template.yml + .app_config.json + .url_mapping.csv
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
+#   rake decidim_importer:correct_links[tmp/import_files/example.com.template.yml,localhost]  # run last
+#
+# `correct_links` runs *after* `import`: it reads the `.url_mapping.csv` dumped alongside the template
+# (old Decidim URL → new target, built from the same link-correction logic) and rewrites the links
+# embedded in the tenant's Content Builder layouts and static pages. File links resolve to the imported
+# file's real content URL at this point. Links that should be repointed but couldn't be resolved are
+# written to `<base>.broken_links.csv` for manual review.
 #
 # Dry-run a dumped template on a throwaway tenant that's created then destroyed:
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml]
@@ -45,6 +54,43 @@ namespace :decidim_importer do
     importer.skipped_participation.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_surveys.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
     write_app_config_json(importer, path)
+    write_url_mapping_csv(importer, path)
+  end
+
+  desc "Rewrites Decidim back-links in a tenant's Content Builder layouts and static pages from a dumped mapping."
+  task :correct_links, %i[mapping host] => [:environment] do |_t, args|
+    mapping_path = url_mapping_path(args.fetch(:mapping))
+    tenant = Tenant.find_by!(host: args[:host] || 'localhost')
+    map = DecidimImporter::LinkMap.read_csv(mapping_path)
+
+    Rails.logger.info "Decidim link correction → tenant=#{tenant.host} mapping=#{mapping_path}"
+    broken = []
+    updated = 0
+    tenant.switch do
+      # A file link resolves to the imported file's real content URL (memoised per id).
+      file_urls = Hash.new { |cache, id| cache[id] = Files::File.find_by(id: id)&.content&.url }
+      resolver = ->(file_id) { file_urls[file_id] }
+
+      ContentBuilder::Layout.find_each do |layout|
+        changed, found = correct_layout_links(layout, map, resolver)
+        if changed
+          layout.save!
+          updated += 1
+        end
+        found.each { |url| broken << broken_link_row(url, layout.content_buildable_type, layout.content_buildable_id) }
+      end
+      StaticPage.find_each do |page|
+        changed, found = correct_static_page_links(page, map, resolver)
+        if changed
+          page.save!
+          updated += 1
+        end
+        found.each { |url| broken << broken_link_row(url, 'StaticPage', page.id) }
+      end
+    end
+    Rails.logger.info "  rewrote links in #{updated} record(s)"
+    write_broken_links_csv(mapping_path, broken)
+    Rails.logger.info 'COMPLETE'
   end
 
   desc 'Imports a dumped tenant-template YAML file into the tenant matching `host`.'
@@ -180,6 +226,100 @@ namespace :decidim_importer do
     json_path = output_path(input_path, 'app_config.json')
     File.write(json_path, JSON.pretty_generate(patch))
     Rails.logger.info "Wrote #{json_path}"
+  end
+
+  # Writes the old→new link mapping next to the input as `<base>.url_mapping.csv` (unless there are no
+  # correctable links). Applied to the tenant after import by `correct_links`.
+  def write_url_mapping_csv(importer, input_path)
+    map = importer.link_map
+    if map.empty?
+      Rails.logger.info '  no correctable links → skipping URL mapping CSV'
+      return
+    end
+
+    csv_path = output_path(input_path, 'url_mapping.csv')
+    map.write_csv(csv_path)
+    Rails.logger.info "Wrote #{csv_path} (#{map.resolved_count} mapped, #{map.broken.size} broken)"
+  end
+
+  # The URL-mapping CSV for a `correct_links` argument: the path itself when a `.csv` is given, else the
+  # template path with its `.template.yml` (or plain `.yml`) suffix swapped for `.url_mapping.csv`.
+  def url_mapping_path(arg)
+    return arg if arg.downcase.end_with?('.csv')
+
+    candidate = arg.sub(/\.template\.yml\z/i, '.url_mapping.csv')
+    candidate == arg ? arg.sub(/\.ya?ml\z/i, '.url_mapping.csv') : candidate
+  end
+
+  # Applies the mapping to one layout's `TextMultiloc` text fields. Returns `[changed?, broken_urls]`.
+  # Reassigns `craftjs_json` (a deep dup) only when something changed, so ActiveRecord sees it dirty.
+  def correct_layout_links(layout, map, resolver)
+    craftjs = layout.craftjs_json
+    return [false, []] unless craftjs.is_a?(Hash)
+
+    craftjs = craftjs.deep_dup
+    changed = false
+    broken = []
+    craftjs.each_value do |node|
+      # ROOT's `type` is the plain string 'div', so guard before treating it as a component hash.
+      next unless node.is_a?(Hash) && node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'TextMultiloc'
+
+      text = node.dig('props', 'text')
+      next unless text.is_a?(Hash)
+
+      changed |= correct_multiloc!(text, map, resolver, broken)
+    end
+    layout.craftjs_json = craftjs if changed
+    [changed, broken.uniq]
+  end
+
+  # Applies the mapping to a static page's top info section. Returns `[changed?, broken_urls]`.
+  def correct_static_page_links(page, map, resolver)
+    body = page.top_info_section_multiloc
+    return [false, []] unless body.is_a?(Hash)
+
+    body = body.deep_dup
+    broken = []
+    changed = correct_multiloc!(body, map, resolver, broken)
+    page.top_info_section_multiloc = body if changed
+    [changed, broken.uniq]
+  end
+
+  # Rewrites each locale's HTML of a `{ locale => html }` multiloc in place, appending any broken URLs
+  # to `broken`. Returns whether anything changed.
+  def correct_multiloc!(multiloc, map, resolver, broken)
+    changed = false
+    multiloc.each do |locale, html|
+      new_html, found = map.apply(html, file_resolver: resolver)
+      broken.concat(found)
+      next if new_html == html
+
+      multiloc[locale] = new_html
+      changed = true
+    end
+    changed
+  end
+
+  def broken_link_row(url, container_type, container_id)
+    { old_url: url, container_type: container_type, container_id: container_id }
+  end
+
+  # Writes the unresolved ("broken") links beside the mapping as `<base>.broken_links.csv`; no-op when
+  # there are none.
+  def write_broken_links_csv(mapping_path, broken)
+    if broken.empty?
+      Rails.logger.info '  no broken links'
+      return
+    end
+
+    path = mapping_path.sub(/\.url_mapping\.csv\z/i, '.broken_links.csv')
+    path = "#{mapping_path}.broken_links.csv" if path == mapping_path
+    CSV.open(path, 'w') do |csv|
+      csv << %w[old_url container_type container_id]
+      broken.uniq { |row| [row[:old_url], row[:container_id]] }
+        .each { |row| csv << [row[:old_url], row[:container_type], row[:container_id]] }
+    end
+    Rails.logger.warn "Wrote #{path} (#{broken.size} broken link occurrence(s))"
   end
 
   # Drops the input's extension and appends `.<suffix>`, keeping the same parent directory.

@@ -69,25 +69,38 @@ RSpec.describe DecidimImporter::Importer do
       expect(espaces['slug']).to eq('espaces-verts')
     end
 
-    it 'corrects the links embedded in the project description' do
-      template = described_class.from_directory(export_root).build_template.models['models']
+    it 'builds an old→new URL mapping for the links in the project descriptions, leaving the text as-is' do
+      importer = described_class.from_directory(export_root)
+      template = importer.build_template.models['models']
+      map = importer.link_map
+
       espaces = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Espaces verts' }
-      file = template['files/file'].find { |f| f['name'] == "Plan d'actions.pdf" }
+      file = importer.ref_map.records
+        .find { |r| r.model_name == 'files/file' && r.attributes['name'] == "Plan d'actions.pdf" }
       text = template['content_builder/layout']
         .find { |l| l['content_buildable_ref'].equal?(espaces) }['craftjs_json'].values
         .select { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TextMultiloc' }
         .map { |n| n.dig('props', 'text', 'fr-FR') }.join
 
-      # rule 2 — a same-domain process link resolves to the matched (imported) project
-      expect(text).to include('href="/projects/rue-de-demain"')
-      # rule 3 — the Decidim external-link redirect is unwrapped to its target
-      expect(text).to include('href="https://www.exemple.fr/doc"')
-      # rule 4 — the Active Storage link resolves to the imported file's content path
-      expect(text).to include(%(href="/uploads/files/file/content/#{file['id']}/Plan_d_actions.pdf"))
-      # rule 2 fallback — an unmatched relative link is made absolute against the original domain
-      expect(text).to include('href="https://example.decidim.org/processes/introuvable/f/1"')
-      # a genuine third-party link is left untouched
-      expect(text).to include('href="https://www.google.fr/"')
+      expect(map.replacements).to include(
+        # rule 2 — a same-domain process link → the matched (imported) project
+        'https://example.decidim.org/processes/rue-de-demain/f/9/' => '/projects/rue-de-demain',
+        # rule 3 — the Decidim external-link redirect unwrapped to its target
+        'https://example.decidim.org/link?external_url=https%3A%2F%2Fwww.exemple.fr%2Fdoc' =>
+          'https://www.exemple.fr/doc'
+      )
+      # rule 4 — the Active Storage link → the imported file's id (its real URL is resolved after import)
+      expect(map.file_refs).to include(
+        "https://example.decidim.org/rails/active_storage/blobs/redirect/xyz/Plan%20d'actions.pdf" =>
+          file.attributes['id']
+      )
+      # an unmatched same-domain link is flagged broken; a genuine third-party link is ignored
+      expect(map.broken).to include('/processes/introuvable/f/1')
+      expect(map.replacements).not_to have_key('https://www.google.fr/')
+      expect(map.broken).not_to include('https://www.google.fr/')
+
+      # The template text itself is untouched — correction happens after import, via the rake task.
+      expect(text).to include('href="https://example.decidim.org/processes/rue-de-demain/f/9/"')
     end
   end
 

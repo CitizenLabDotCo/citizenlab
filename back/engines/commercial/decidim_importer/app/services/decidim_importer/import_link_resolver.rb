@@ -9,10 +9,9 @@ module DecidimImporter
   #     process. Projects keep their Decidim slug on import ({Extractors::ProjectsExtractor}), so the
   #     slug in the link is exactly the imported project's slug and the target is `/projects/<slug>`.
   #   * **files** (rule 4) — an Active Storage blob link resolves, by its (decoded) filename, to the
-  #     imported `Files::File` of the same name, and is repointed at that file's stored content path.
-  #     The path is derived from the file's assigned id and CarrierWave's filename sanitisation, so it
-  #     is known before upload; it is the local/unsigned storage URL (a best-effort target — a signed
-  #     or CDN-hosted deployment serves the same file under a different, non-derivable URL).
+  #     imported `Files::File` of the same name; the resolver returns that file's *id* (assigned on
+  #     import). The final URL isn't known until the file is uploaded, so it's the post-import
+  #     `correct_links` task that turns the id into the file's real `content.url`.
   class ImportLinkResolver
     def initialize(ref_map)
       @project_slugs = project_slugs(ref_map)
@@ -28,13 +27,11 @@ module DecidimImporter
       nil
     end
 
-    # An Active Storage link → an imported file's content path, or nil when nothing matches.
-    def file_href(url)
+    # An Active Storage link → the id of the imported file with the same (decoded) filename, or nil.
+    def file_id(url)
       name = filename_of(url)
       file = name && @files_by_name[name]
-      return nil unless file
-
-      "/uploads/files/file/content/#{file.attributes['id']}/#{sanitize_filename(file.attributes['name'])}"
+      file&.attributes&.fetch('id', nil)
     end
 
     private
@@ -76,13 +73,6 @@ module DecidimImporter
 
       base = File.basename(path)
       base.empty? ? nil : CGI.unescape(base)
-    end
-
-    # Replicates CarrierWave's default filename sanitisation (`SanitizedFile#sanitize`), which is what
-    # produces the on-disk filename in the file's stored URL: every character that isn't a word
-    # character, dot, dash or plus becomes an underscore.
-    def sanitize_filename(name)
-      File.basename(name.to_s.tr('\\', '/')).gsub(/[^[:word:].\-+]/, '_')
     end
   end
 end

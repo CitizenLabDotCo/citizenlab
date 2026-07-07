@@ -485,8 +485,8 @@ module DecidimImporter
     # @param anonymize_users [Boolean] when true, imported users' names and emails are replaced with
     #   fake values (for non-production dumps that shouldn't carry real PII).
     # @param original_domain [String, nil] the source Decidim host (e.g. `participer.arcueil.fr`),
-    #   used to correct links embedded in imported project descriptions and pages
-    #   ({Extractors run first}, then {LinkCorrector}). Defaults to the host of the processes' URLs.
+    #   used by {#link_map} to classify links embedded in imported project descriptions. Defaults to
+    #   the host of the processes' URLs.
     def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {}, import_images: true,
       anonymize_users: false, include_source_url: false, original_domain: nil)
       @rows_by_model = rows_by_model
@@ -517,9 +517,17 @@ module DecidimImporter
       run_static_pages
       run_files
       run_description_layouts
-      run_link_correction
       default_record_update_timestamps
       TemplateBuilder.new(ref_map)
+    end
+
+    # The old-URL → new-target mapping for the links embedded in the built Content Builder layouts
+    # (project descriptions) and static pages. Built from the registered records, so call after
+    # {#build_template}. The links aren't rewritten here — the mapping is written beside the template
+    # and applied to the tenant after import by the `decidim_importer:correct_links` task (see {LinkMap}).
+    def link_map
+      corrector = LinkCorrector.new(original_domain: original_domain, resolver: ImportLinkResolver.new(ref_map))
+      LinkMap.build(correctable_html_texts, corrector)
     end
 
     # For every record that has a `created_at` but no explicit update date, mirror `created_at` into
@@ -656,20 +664,32 @@ module DecidimImporter
       ).run
     end
 
-    # Corrects the links embedded in the imported project descriptions and static pages, now that every
-    # project/page/file record is registered. Rewrites Decidim's back-links to the source platform into
-    # Go Vocal equivalents (see {LinkCorrector}); a no-op without a resolvable source domain.
-    def run_link_correction
-      domain = original_domain
-      return if domain.blank?
-
-      corrector = LinkCorrector.new(original_domain: domain, resolver: ImportLinkResolver.new(ref_map))
-      ref_map.records.each do |record|
+    # Every rich-text HTML string (one per locale) {LinkMap} should scan for embedded links: the
+    # `TextMultiloc` blocks of the Content Builder layouts (project descriptions) and the static pages'
+    # top info sections.
+    def correctable_html_texts
+      ref_map.records.flat_map do |record|
         case record.model_name
-        when 'content_builder/layout' then correct_layout_links(record, corrector)
-        when 'static_page' then correct_static_page_links(record, corrector)
+        when 'content_builder/layout' then layout_text_values(record)
+        when 'static_page' then multiloc_values(record.attributes['top_info_section_multiloc'])
+        else []
         end
       end
+    end
+
+    def layout_text_values(record)
+      craftjs = record.attributes['craftjs_json']
+      return [] unless craftjs.is_a?(Hash)
+
+      craftjs.values.flat_map do |node|
+        next [] unless self.class.craftjs_resolved_name(node) == 'TextMultiloc'
+
+        multiloc_values(node.dig('props', 'text'))
+      end
+    end
+
+    def multiloc_values(multiloc)
+      multiloc.is_a?(Hash) ? multiloc.values : []
     end
 
     # The source Decidim host: the one passed to the importer, else the host of the processes' own URLs.
@@ -687,25 +707,6 @@ module DecidimImporter
     def present_string(value)
       str = value.to_s.strip
       str.empty? ? nil : str
-    end
-
-    # Corrects the links in every `TextMultiloc` block of a Content Builder layout (the project
-    # description). Node text is a `{ locale => html }` multiloc buried in the craftjs blob.
-    def correct_layout_links(record, corrector)
-      craftjs = record.attributes['craftjs_json']
-      return unless craftjs.is_a?(Hash)
-
-      craftjs.each_value do |node|
-        next unless self.class.craftjs_resolved_name(node) == 'TextMultiloc'
-
-        text = node.dig('props', 'text')
-        node['props']['text'] = corrector.correct_multiloc(text) if text.is_a?(Hash)
-      end
-    end
-
-    def correct_static_page_links(record, corrector)
-      body = record.attributes['top_info_section_multiloc']
-      record.attributes['top_info_section_multiloc'] = corrector.correct_multiloc(body) if body.is_a?(Hash)
     end
 
     # Decidim process attachments → project-level file attachments (`ProjectFile`). Runs after the
