@@ -68,6 +68,20 @@ module McpServer
         end
       end
 
+      # Revokes read access on relations that are no longer part of the
+      # reporting surface (they may still exist for other consumers). Missing
+      # relations and a missing role are tolerated so this stays safe at any
+      # point in the migration stream.
+      def revoke!(tables, schema = Apartment::Tenant.current)
+        return unless role_exists?
+
+        tables.each do |table|
+          next unless relation_exists?(schema, table)
+
+          execute("REVOKE SELECT ON #{quote_rel(schema, table)} FROM #{quoted_role}")
+        end
+      end
+
       # Tears down the role and all its grants across the current database.
       # The role is cluster-global, so this is guarded and safe to call per schema
       # (the first call drops everything; later calls no-op).

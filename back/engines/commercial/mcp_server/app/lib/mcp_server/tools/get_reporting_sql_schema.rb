@@ -8,11 +8,6 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
   # analytics_reader provisioner read REPORTING_TABLE_NAMES, so a table can never be
   # advertised but rejected, or vice versa.
   REPORTING_TABLES = [
-    Analytics::FactParticipation,
-    Analytics::DimensionDate,
-    Analytics::DimensionProject,
-    Analytics::DimensionType,
-    Analytics::DimensionUser,
     Analytics::Reporting::Project,
     Analytics::Reporting::Phase,
     Analytics::Reporting::Session,
@@ -35,8 +30,12 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
 
   def description
     <<~DOC.squish
-      Gets the SQL schema for the tables to run reporting queries against with the
-      `run_reporting_sql_query` tool.
+      Gets the SQL schema of the reporting tables that the `run_reporting_sql_query`
+      tool can query: a documented relational model of the platform's participation
+      data (contributions and participants, inputs with their answers, tags, statuses,
+      votes and reactions, users with their demographics, visitor sessions and
+      pageviews, projects and phases). Call this before writing SQL; the returned
+      table and column comments carry the semantics queries should follow.
     DOC
   end
 

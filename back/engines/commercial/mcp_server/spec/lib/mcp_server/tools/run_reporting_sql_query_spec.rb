@@ -31,8 +31,8 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
       expect(response.structured_content[:truncated]).to be false
     end
 
-    it 'reads the analytics fact view and returns columns + rows' do
-      response = run('SELECT count(*) AS n FROM analytics_fact_participations')
+    it 'reads a reporting view and returns columns + rows' do
+      response = run('SELECT count(*) AS n FROM reporting_contributions')
 
       expect(response.error?).to be false
       expect(response.structured_content[:columns]).to eq(['n'])
@@ -69,17 +69,24 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
     end
 
     it 'rejects a cross-tenant schema-qualified reference' do
-      response = run('SELECT * FROM other_tenant.analytics_fact_participations')
+      response = run('SELECT * FROM other_tenant.reporting_contributions')
 
       expect(response.error?).to be true
       expect(response.content.first[:text]).to match(/Query rejected/).and match(/Schema-qualified/)
+    end
+
+    it 'rejects the legacy analytics views that left the reporting surface' do
+      response = run('SELECT * FROM analytics_fact_participations')
+
+      expect(response.error?).to be true
+      expect(response.content.first[:text]).to match(/not queryable/)
     end
   end
 
   describe 'tenant-context guard' do
     it 'refuses to run a sandbox-valid query outside a real tenant (e.g. the public schema)' do
       response = Apartment::Tenant.switch('public') do
-        run('SELECT count(*) AS n FROM analytics_fact_participations')
+        run('SELECT count(*) AS n FROM reporting_contributions')
       end
 
       expect(response.error?).to be true

