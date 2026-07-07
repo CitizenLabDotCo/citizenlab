@@ -638,6 +638,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "TÖRÖL",
   "app.components.TypedConfirmationModal.typeToConfirm1": "A {entityName}törlésének megerősítéséhez írja be: {confirmationWord} alább:",
   "app.components.TypedConfirmationModal.warning": "Ez a művelet végleges és nem vonható vissza.",
+  "app.components.UI.EmojiPicker.clear": "Törlés",
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "{fileName} fájl letöltése, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Kép kibontása",
   "app.components.UI.MoreActionsMenu.actionsMenu": "Műveletek menü: {title}",

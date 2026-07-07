@@ -638,6 +638,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SCRÍOS",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Chun scriosadh {entityName}a dhearbhú, clóscríobh {confirmationWord} thíos:",
   "app.components.TypedConfirmationModal.warning": "Tá an gníomh seo buan agus ní féidir é a chealú.",
+  "app.components.UI.EmojiPicker.clear": "Glan",
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Íoslódáil comhad {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Leathnaigh an íomhá",
   "app.components.UI.MoreActionsMenu.actionsMenu": "Roghchlár gníomhartha {title}",

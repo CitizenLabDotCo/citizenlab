@@ -638,6 +638,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SLET",
   "app.components.TypedConfirmationModal.typeToConfirm1": "For at bekræfte sletningen af {entityName}skal du skrive {confirmationWord} nedenfor:",
   "app.components.TypedConfirmationModal.warning": "Denne handling er permanent og kan ikke fortrydes.",
+  "app.components.UI.EmojiPicker.clear": "Ryd",
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Download fil {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Udvid billede",
   "app.components.UI.MoreActionsMenu.actionsMenu": "Handlingsmenu {title}",

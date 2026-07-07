@@ -638,6 +638,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "POISTAA",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Vahvista {entityName}:n poisto kirjoittamalla {confirmationWord} alla olevaan kenttään:",
   "app.components.TypedConfirmationModal.warning": "Tämä toiminto on pysyvä eikä sitä voi perua.",
+  "app.components.UI.EmojiPicker.clear": "Tyhjennä",
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Lataa tiedosto {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Laajenna kuva",
   "app.components.UI.MoreActionsMenu.actionsMenu": "Toimintovalikko {title}",

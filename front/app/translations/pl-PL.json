@@ -638,6 +638,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "USUŃ",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Aby potwierdzić usunięcie {entityName}, wpisz {confirmationWord} poniżej:",
   "app.components.TypedConfirmationModal.warning": "Działanie to jest trwałe i nie można go cofnąć.",
+  "app.components.UI.EmojiPicker.clear": "Wyczyść",
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Pobierz plik {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Rozwiń obraz",
   "app.components.UI.MoreActionsMenu.actionsMenu": "Menu akcji {title}",

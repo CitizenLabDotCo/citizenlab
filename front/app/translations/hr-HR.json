@@ -638,6 +638,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "IZBRISATI",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Za potvrdu brisanja {entityName}upišite {confirmationWord} ispod:",
   "app.components.TypedConfirmationModal.warning": "Ova radnja je trajna i ne može se poništiti.",
+  "app.components.UI.EmojiPicker.clear": "Očisti",
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Preuzmi datoteku {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Proširi sliku",
   "app.components.UI.MoreActionsMenu.actionsMenu": "Izbornik radnji {title}",

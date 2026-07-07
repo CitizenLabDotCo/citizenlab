@@ -638,6 +638,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "RADERA",
   "app.components.TypedConfirmationModal.typeToConfirm1": "För att bekräfta borttagningen av {entityName}, skriv {confirmationWord} nedan:",
   "app.components.TypedConfirmationModal.warning": "Denna åtgärd är permanent och kan inte ångras.",
+  "app.components.UI.EmojiPicker.clear": "Rensa",
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Ladda ner filen {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Expandera bilden",
   "app.components.UI.MoreActionsMenu.actionsMenu": "Åtgärdsmeny {title}",
