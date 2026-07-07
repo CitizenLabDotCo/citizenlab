@@ -236,9 +236,11 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      return send_sms_command(campaign, command) if campaign.sms?
-
-      send_email_command(campaign, command)
+      if campaign.sms?
+        send_sms_command(campaign, command)
+      else
+        send_email_command(campaign, command)
+      end
     end
 
     # Sends the command through the internal Rails mailing stack. Campaigns
