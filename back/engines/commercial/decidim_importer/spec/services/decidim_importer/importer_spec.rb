@@ -48,19 +48,35 @@ RSpec.describe DecidimImporter::Importer do
     it 'imports a process\'s attachments as Files engine files owned by (but not attached to) the project' do
       template = described_class.from_directory(export_root).build_template.models['models']
 
-      espaces_verts = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Espaces verts' }
       # The file name is the URL's decoded basename, with its extension preserved.
-      expect(template['files/file'].map { |f| f['name'] })
-        .to contain_exactly('Compte-rendu réunion.pdf', "Plan d'actions.pdf")
-      expect(template['files/file'].map { |f| f['remote_content_url'] })
+      process_files = template['files/file']
+        .select { |f| f['name'].in?(['Compte-rendu réunion.pdf', "Plan d'actions.pdf"]) }
+      expect(process_files.size).to eq(2)
+      expect(process_files.map { |f| f['remote_content_url'] })
         .to all(start_with('http://example.org/files/redirect/'))
 
-      # Each file is owned by the project (files_project) so it's available and linkable from the
-      # description — but it is *not* surfaced as a project attachment (no files/file_attachment).
-      expect(template['files/files_project'].map { |fp| fp['project_ref'] }).to all(be(espaces_verts))
-      files = template['files/file']
-      expect(template['files/files_project'].map { |fp| fp['file_ref'] }).to match_array(files)
-      expect(template['files/file_attachment']).to be_nil
+      # Each file is owned by a project (files_project) so it's available and linkable from the
+      # description — but the *process* files are not surfaced as attachments (no file_attachment).
+      expect(template['files/files_project'].map { |fp| fp['project_ref'] }).to all(be_present)
+      attached_names = (template['files/file_attachment'] || []).map { |fa| fa['file_ref']['name'] }
+      expect(attached_names).not_to include('Compte-rendu réunion.pdf', "Plan d'actions.pdf")
+    end
+
+    it 'imports proposal attachments as file attachments on the idea, owned by its project' do
+      template = described_class.from_directory(export_root).build_template.models['models']
+
+      idea = template['idea'].find { |i| i['title_multiloc']['fr-FR'] == "Plus d'arbres" }
+      file = template['files/file'].find { |f| f['name'] == 'schema.pdf' }
+      expect(file).to be_present
+
+      # Attached to the idea, and owned by the idea's project so `validate_file_belongs_to_project` passes.
+      attachment = template['files/file_attachment'].find { |fa| fa['file_ref'].equal?(file) }
+      expect(attachment['attachable_ref']).to be(idea)
+      expect(template['files/files_project'].find { |fp| fp['file_ref'].equal?(file) }).to be_present
+
+      # The attachment is emitted after the idea, so its `attachable_ref` resolves on deserialize.
+      keys = template.keys
+      expect(keys.index('files/file_attachment')).to be > keys.index('idea')
     end
 
     it 'keeps the Decidim slug on the imported project' do
@@ -285,6 +301,17 @@ RSpec.describe DecidimImporter::Importer do
         # The follow by the unconfirmed (unimported) decidim-user-131 is skipped; only user-2 remains.
         expect(followers.map(&:user)).to contain_exactly(user2)
         expect(followers.first.created_at.to_date.iso8601).to eq('2023-03-11')
+      end
+
+      it 'imports proposal endorsements as up-reactions (likes) on the idea, keeping author-less ones' do
+        idea = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+        user2 = User.find_by(unique_code: 'decidim-user-2')
+
+        reactions = Reaction.where(reactable: idea)
+        expect(reactions.map(&:mode).uniq).to eq(['up'])
+        # user-2's like + the unconfirmed decidim-user-131's like (kept author-less), so the count is 2.
+        expect(reactions.map(&:user)).to contain_exactly(user2, nil)
+        expect(idea.reload.likes_count).to eq(2)
       end
 
       it 'imports the admin answer as official feedback and the comment thread' do

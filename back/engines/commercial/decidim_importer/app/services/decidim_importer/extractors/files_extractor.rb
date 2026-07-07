@@ -79,19 +79,8 @@ module DecidimImporter
         ref_map.register("#{uid}-files-project", files_project)
       end
 
-      # The download filename: the URL's percent-decoded basename (keeps the extension). Falls back to
-      # the attachment title when the URL has no usable basename (e.g. a path of `/` or empty).
       def filename_for(url, row)
-        basename = File.basename(URI.parse(url).path.to_s)
-        decoded = CGI.unescape(basename)
-        usable = present_value(decoded) unless decoded.in?(%w[/ .])
-        usable || present_value(title_text(row))
-      rescue URI::InvalidURIError
-        present_value(title_text(row))
-      end
-
-      def title_text(row)
-        multiloc(row[COLUMNS[:title]]).values.first
+        filename_from_url(url, multiloc(row[COLUMNS[:title]]).values.first)
       end
 
       def skip(uid, reason)

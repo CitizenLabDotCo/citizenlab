@@ -44,6 +44,10 @@ module DecidimImporter
     PROPOSALS_FILE_GLOB = '*--proposals.csv'
     COMMENTS_FILE_GLOB = '*--comments.csv'
     FOLLOWERS_FILE_GLOB = '*--followers.csv'
+    ENDORSEMENTS_FILE_GLOB = '*--endorsements.csv'
+    # Attachments nested *inside* a proposals component (attached to individual proposals), distinct from
+    # the process-level `ATTACHMENTS_FILE_GLOB`. Only matched within a proposals component directory.
+    PROPOSAL_ATTACHMENTS_FILE_GLOB = '*--attachments.csv'
     PROPOSALS_COMPONENT = 'proposals'
     SURVEYS_COMPONENT = 'surveys'
     PAGES_COMPONENT = 'pages'
@@ -81,8 +85,8 @@ module DecidimImporter
     # are stamped with their owning process (`decidim_participatory_process`) and, for proposals/
     # comments, their component (`decidim_component`).
     def self.read_processes(root)
-      acc = { projects: [], attachments: [], attachment_collections: [], proposals: [],
-              comments: [], followers: [], components: [], survey_answers: [] }
+      acc = { projects: [], attachments: [], attachment_collections: [], proposals: [], comments: [],
+              followers: [], endorsements: [], proposal_attachments: [], components: [], survey_answers: [] }
       process_dirs(root).each do |dir|
         process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
         next unless process_file
@@ -104,7 +108,8 @@ module DecidimImporter
     end
 
     # Walks a process's component directories, recording each manifest under `:components` and, for
-    # proposals components, their proposals, comments and followers (stamped with process + component uid).
+    # proposals components, their proposals, comments, followers, endorsements and attachments (stamped
+    # with process + component uid).
     def self.read_components(process_dir, process_uid, acc)
       component_dirs(process_dir).each do |comp_dir|
         comp_file = Dir.glob(File.join(comp_dir, COMPONENT_FILE_GLOB)).first
@@ -123,6 +128,10 @@ module DecidimImporter
           acc[:comments].concat(stamp(CsvReader.read(comments_file), stamp)) if comments_file
           followers_file = Dir.glob(File.join(comp_dir, FOLLOWERS_FILE_GLOB)).first
           acc[:followers].concat(stamp(CsvReader.read(followers_file), stamp)) if followers_file
+          endorsements_file = Dir.glob(File.join(comp_dir, ENDORSEMENTS_FILE_GLOB)).first
+          acc[:endorsements].concat(stamp(CsvReader.read(endorsements_file), stamp)) if endorsements_file
+          proposal_attachments_file = Dir.glob(File.join(comp_dir, PROPOSAL_ATTACHMENTS_FILE_GLOB)).first
+          acc[:proposal_attachments].concat(stamp(CsvReader.read(proposal_attachments_file), stamp)) if proposal_attachments_file
         when SURVEYS_COMPONENT
           answers_file = Dir.glob(File.join(comp_dir, ANSWERS_FILE_GLOB)).first
           acc[:survey_answers].concat(stamp(CsvReader.read(answers_file), stamp)) if answers_file
@@ -516,6 +525,8 @@ module DecidimImporter
       run_proposals
       run_comments
       run_followers
+      run_endorsements
+      run_proposal_attachments
       run_surveys
       run_survey_responses
       run_static_pages
@@ -593,6 +604,11 @@ module DecidimImporter
       @followers_extractor&.skipped || []
     end
 
+    # Proposal endorsements that couldn't be imported (endorsed proposal not imported / duplicate).
+    def skipped_endorsements
+      @endorsements_extractor&.skipped || []
+    end
+
     # Surveys/questions that couldn't be imported (e.g. an unsupported question type).
     def skipped_surveys
       @surveys_extractor&.skipped || []
@@ -611,6 +627,11 @@ module DecidimImporter
     # Attachments that couldn't be imported as project files (e.g. no file URL, no owning project).
     def skipped_files
       @files_extractor&.skipped || []
+    end
+
+    # Proposal attachments that couldn't be imported as idea files (proposal not imported / no URL).
+    def skipped_proposal_attachments
+      @proposal_attachments_extractor&.skipped || []
     end
 
     private
@@ -647,6 +668,28 @@ module DecidimImporter
         rows_for(:followers), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       )
       @followers_extractor.run
+    end
+
+    # Decidim proposal endorsements → up-`Reaction`s (likes) on the imported ideas. Runs after proposals
+    # and users so each endorsement's idea and author resolve through the ref map.
+    def run_endorsements
+      return unless @rows_by_model.key?(:endorsements)
+
+      @endorsements_extractor = Extractors::EndorsementsExtractor.new(
+        rows_for(:endorsements), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+      @endorsements_extractor.run
+    end
+
+    # Decidim proposal attachments → `Files::File` attachments on the imported ideas. Runs after the
+    # proposals extractor so each attachment's idea (and its project) resolve through the ref map.
+    def run_proposal_attachments
+      return unless @rows_by_model.key?(:proposal_attachments)
+
+      @proposal_attachments_extractor = Extractors::ProposalAttachmentsExtractor.new(
+        rows_for(:proposal_attachments), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
+      )
+      @proposal_attachments_extractor.run
     end
 
     def run_surveys

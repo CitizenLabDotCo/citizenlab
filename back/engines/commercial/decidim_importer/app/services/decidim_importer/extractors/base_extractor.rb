@@ -55,6 +55,17 @@ module DecidimImporter
         Parsing.truthy?(value)
       end
 
+      # The download filename for an attachment: the URL's percent-decoded basename (extension kept),
+      # or the given `fallback` (usually the attachment title) when the URL has no usable basename.
+      def filename_from_url(url, fallback)
+        basename = File.basename(URI.parse(url.to_s).path.to_s)
+        decoded = CGI.unescape(basename)
+        usable = present_value(decoded) unless decoded.in?(%w[/ .])
+        usable || present_value(fallback)
+      rescue URI::InvalidURIError
+        present_value(fallback)
+      end
+
       def present_value(value)
         str = value.to_s.strip
         str.empty? ? nil : str

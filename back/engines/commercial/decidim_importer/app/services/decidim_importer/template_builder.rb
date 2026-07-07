@@ -21,7 +21,6 @@ module DecidimImporter
       files/file
       files/files_project
       content_builder/layout
-      files/file_attachment
       phase
       custom_form
       custom_field
@@ -33,6 +32,8 @@ module DecidimImporter
       comment
       official_feedback
       follower
+      reaction
+      files/file_attachment
     ].freeze
 
     def initialize(ref_map)
