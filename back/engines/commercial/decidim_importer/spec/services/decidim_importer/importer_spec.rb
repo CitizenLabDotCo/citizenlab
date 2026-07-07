@@ -139,11 +139,30 @@ RSpec.describe DecidimImporter::Importer do
       # Process references group `decidim-participatoryprocessgroup-1` (fr title "Ipsa at non.").
       parent_folder = ProjectFolders::Folder.find_by("title_multiloc->>'fr-FR' = 'Ipsa at non.'")
       expect(project.admin_publication.parent.publication).to eq(parent_folder)
-      # Steps are no longer imported as phases, and this process has no proposals/surveys, so it has none.
-      expect(project.phases).to be_empty
+      # Steps aren't imported as phases; this process's accountability component is its one ideation phase.
+      expect(project.phases.pluck(:participation_method)).to eq(['ideation'])
 
       # Decidim scopes become flat Go Vocal areas.
       expect(Area.find_by("title_multiloc->>'en' = 'Schambergerton'")).to be_present
+    end
+
+    it 'imports an accountability component as an ideation phase, with its results as ideas carrying a progress line' do
+      described_class.from_directory(export_root, import_images: false).import
+      project = Project.find_by("title_multiloc->>'fr-FR' = 'Rue de demain'")
+
+      phase = project.phases.sole
+      expect(phase.participation_method).to eq('ideation')
+      expect(phase.title_multiloc['fr-FR']).to eq('Suivi') # titled by the component name
+
+      idea = Idea.find_by(title_multiloc: { 'fr-FR' => 'Nouvelle place' })
+      expect(idea.phases).to include(phase)
+      expect(idea.author).to be_nil # results have no author
+      # The progress %, titled by the status it maps to, is prepended to the description.
+      expect(idea.body_multiloc['fr-FR']).to eq('<p><strong>Réalisé — 100%</strong></p><p>Une place rénovée</p>')
+
+      # A result at 40% maps to the 40% status.
+      other = Idea.find_by(title_multiloc: { 'fr-FR' => 'Étude en cours' })
+      expect(other.body_multiloc['fr-FR']).to start_with("<p><strong>À l'étude — 40%</strong></p>")
     end
 
     it 'creates the extra user custom field and populates its value from extended_data' do

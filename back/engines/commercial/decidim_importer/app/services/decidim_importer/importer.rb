@@ -12,47 +12,6 @@ module DecidimImporter
   # @example
   #   DecidimImporter::Importer.from_zip('tmp/example.com.zip').import
   class Importer
-    # Maps importer model symbol → glob pattern (relative to the export root) for the matching
-    # single-file Decidim CSV. Files whose pattern doesn't match anything are silently skipped, so
-    # the importer can run on a partial export. Globs are written with `--` separators but `*`
-    # absorbs the extra dash in newer exports' `NN---name.csv` triple-dash naming, and `*` matches
-    # the empty string so the numeric `NN---` directory prefix is optional too.
-    FILE_PATTERNS = {
-      organization: '*--organization.csv',
-      users: '*--users.csv',
-      scopes: '*--scopes.csv',
-      folders: '*participatory-processes/*--participatory-process-groups.csv'
-    }.freeze
-
-    # Glob (relative to the export root) for each participatory-process directory. Newer exports
-    # nest one folder per process under `NN---participatory-processes/`, each holding the process's
-    # own CSV (plus per-component subdirectories). See {.read_processes}.
-    PROCESS_DIR_GLOB = '*participatory-processes/*'
-    PROCESS_FILE_GLOB = '*--participatory-process.csv'
-    ATTACHMENTS_FILE_GLOB = '*--attachments.csv'
-    COLLECTIONS_FILE_GLOB = '*--attachment_collections.csv'
-    CATEGORIES_FILE_GLOB = '*--categories.csv'
-    ANSWERS_FILE_GLOB = '*--answers.csv'
-
-    # Each process directory holds a `NN---components/` folder with one subdirectory per Decidim
-    # component, named `NN---decidim--component--N---<type>` (proposals, meetings, surveys, …). The
-    # type is the trailing path segment. Each component dir holds its own `01---component.csv` (the
-    # manifest) and, for proposals, `02---proposals.csv` + `03---comments.csv`. Proposals, surveys and
-    # pages are consumed (surveys/pages keep their content in the manifest's `specific_data`); other
-    # types are recorded for skip-logging but not yet imported.
-    COMPONENT_DIR_GLOB = '*components/*'
-    COMPONENT_FILE_GLOB = '*--component.csv'
-    PROPOSALS_FILE_GLOB = '*--proposals.csv'
-    COMMENTS_FILE_GLOB = '*--comments.csv'
-    FOLLOWERS_FILE_GLOB = '*--followers.csv'
-    ENDORSEMENTS_FILE_GLOB = '*--endorsements.csv'
-    # Attachments nested *inside* a proposals component (attached to individual proposals), distinct from
-    # the process-level `ATTACHMENTS_FILE_GLOB`. Only matched within a proposals component directory.
-    PROPOSAL_ATTACHMENTS_FILE_GLOB = '*--attachments.csv'
-    PROPOSALS_COMPONENT = 'proposals'
-    SURVEYS_COMPONENT = 'surveys'
-    PAGES_COMPONENT = 'pages'
-
     # Build an importer from a Decidim export zip. Extracts into a tempdir, parses every CSV into
     # memory, then tears the tempdir down.
     def self.from_zip(zip_path, **)
@@ -64,107 +23,10 @@ module DecidimImporter
       end
     end
 
-    # Build an importer by scanning a directory of already-unzipped Decidim CSVs. The directory
-    # should be the one that *directly* contains the export's CSV files
-    # (e.g. `…/localhost--20260527144704`).
+    # Build an importer by scanning a directory of already-unzipped Decidim CSVs. The directory should
+    # be the one that *directly* contains the export's CSV files (see {ExportReader}).
     def self.from_directory(path, **)
-      rows_by_model = FILE_PATTERNS.each_with_object({}) do |(model, pattern), acc|
-        file = Dir.glob(File.join(path, pattern)).first
-        acc[model] = CsvReader.read(file) if file
-      end
-      read_processes(path).each { |model, rows| rows_by_model[model] = rows if rows.any? }
-      new(rows_by_model, **)
-    end
-
-    # Reads every participatory-process directory, aggregating their rows by model: process rows into
-    # `:projects`, attachment rows into `:attachments`, category rows into `:categories`, and — from
-    # each process's components — proposals into `:proposals`, their comments into `:comments`, and every
-    # component manifest into `:components` (the latter drives phase generation and skip-logging of
-    # unconsumed component types). Decidim steps are deliberately not read: only proposals/surveys
-    # become phases.
-    #
-    # Several of these CSVs carry no foreign-key column — the directory *is* the association — so rows
-    # are stamped with their owning process (`decidim_participatory_process`) and, for proposals/
-    # comments, their component (`decidim_component`).
-    def self.read_processes(root)
-      acc = { projects: [], attachments: [], attachment_collections: [], categories: [], proposals: [],
-              comments: [], followers: [], endorsements: [], proposal_attachments: [], components: [],
-              survey_answers: [] }
-      process_dirs(root).each do |dir|
-        process_file = Dir.glob(File.join(dir, PROCESS_FILE_GLOB)).first
-        next unless process_file
-
-        process_rows = CsvReader.read(process_file)
-        acc[:projects].concat(process_rows)
-        process_uid = process_rows.first&.fetch('uid', nil)
-        process_stamp = { 'decidim_participatory_process' => process_uid }
-
-        attachments_file = Dir.glob(File.join(dir, ATTACHMENTS_FILE_GLOB)).first
-        acc[:attachments].concat(stamp(CsvReader.read(attachments_file), process_stamp)) if attachments_file
-
-        collections_file = Dir.glob(File.join(dir, COLLECTIONS_FILE_GLOB)).first
-        acc[:attachment_collections].concat(stamp(CsvReader.read(collections_file), process_stamp)) if collections_file
-
-        categories_file = Dir.glob(File.join(dir, CATEGORIES_FILE_GLOB)).first
-        acc[:categories].concat(stamp(CsvReader.read(categories_file), process_stamp)) if categories_file
-
-        read_components(dir, process_uid, acc)
-      end
-      acc
-    end
-
-    # Walks a process's component directories, recording each manifest under `:components` and, for
-    # proposals components, their proposals, comments, followers, endorsements and attachments (stamped
-    # with process + component uid).
-    def self.read_components(process_dir, process_uid, acc)
-      component_dirs(process_dir).each do |comp_dir|
-        comp_file = Dir.glob(File.join(comp_dir, COMPONENT_FILE_GLOB)).first
-        comp_row = comp_file && CsvReader.read(comp_file).first
-        next unless comp_row
-
-        type = component_type(comp_dir)
-        acc[:components] << comp_row.merge('decidim_participatory_process' => process_uid, 'type' => type)
-        stamp = { 'decidim_participatory_process' => process_uid, 'decidim_component' => comp_row['uid'] }
-
-        case type
-        when PROPOSALS_COMPONENT
-          proposals_file = Dir.glob(File.join(comp_dir, PROPOSALS_FILE_GLOB)).first
-          acc[:proposals].concat(stamp(CsvReader.read(proposals_file), stamp)) if proposals_file
-          comments_file = Dir.glob(File.join(comp_dir, COMMENTS_FILE_GLOB)).first
-          acc[:comments].concat(stamp(CsvReader.read(comments_file), stamp)) if comments_file
-          followers_file = Dir.glob(File.join(comp_dir, FOLLOWERS_FILE_GLOB)).first
-          acc[:followers].concat(stamp(CsvReader.read(followers_file), stamp)) if followers_file
-          endorsements_file = Dir.glob(File.join(comp_dir, ENDORSEMENTS_FILE_GLOB)).first
-          acc[:endorsements].concat(stamp(CsvReader.read(endorsements_file), stamp)) if endorsements_file
-          proposal_attachments_file = Dir.glob(File.join(comp_dir, PROPOSAL_ATTACHMENTS_FILE_GLOB)).first
-          acc[:proposal_attachments].concat(stamp(CsvReader.read(proposal_attachments_file), stamp)) if proposal_attachments_file
-        when SURVEYS_COMPONENT
-          answers_file = Dir.glob(File.join(comp_dir, ANSWERS_FILE_GLOB)).first
-          acc[:survey_answers].concat(stamp(CsvReader.read(answers_file), stamp)) if answers_file
-        end
-      end
-    end
-
-    def self.stamp(rows, columns)
-      rows.map { |row| row.merge(columns) }
-    end
-
-    # A process directory is any subdirectory of `*participatory-processes/` that holds a
-    # participatory-process CSV (robust to the `NN---decidim--participatory-process--N` naming).
-    def self.process_dirs(root)
-      Dir.glob(File.join(root, PROCESS_DIR_GLOB)).select do |path|
-        File.directory?(path) && Dir.glob(File.join(path, PROCESS_FILE_GLOB)).any?
-      end
-    end
-
-    def self.component_dirs(process_dir)
-      Dir.glob(File.join(process_dir, COMPONENT_DIR_GLOB)).select { |path| File.directory?(path) }
-    end
-
-    # The component type is the trailing `---<type>` segment of the directory name, e.g.
-    # `01---decidim--component--21---proposals` → `proposals`.
-    def self.component_type(comp_dir)
-      File.basename(comp_dir).split('---').last
+      new(ExportReader.read(path), **)
     end
 
     # Applies a previously dumped tenant-template YAML file to the current tenant, independent of
@@ -530,6 +392,7 @@ module DecidimImporter
       run_categories
       run_phases
       run_proposals
+      run_results
       run_comments
       run_followers
       run_endorsements
@@ -606,6 +469,11 @@ module DecidimImporter
       (@proposals_extractor&.skipped || []) + (@comments_extractor&.skipped || [])
     end
 
+    # Accountability results that couldn't be imported as ideas (no owning project/phase).
+    def skipped_results
+      @results_extractor&.skipped || []
+    end
+
     # Proposal follows that couldn't be imported (followed proposal or follower user not imported).
     def skipped_followers
       @followers_extractor&.skipped || []
@@ -660,6 +528,19 @@ module DecidimImporter
         rows_for(:proposals), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       )
       @proposals_extractor.run
+    end
+
+    # Decidim accountability results → ideas in the accountability ideation phase. Runs after the phases
+    # (the phase exists) and categories (input topics resolve); the statuses title each result's
+    # progress line.
+    def run_results
+      return unless @rows_by_model.key?(:results)
+
+      @results_extractor = Extractors::ResultsExtractor.new(
+        rows_for(:results), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
+        statuses: rows_for(:accountability_statuses)
+      )
+      @results_extractor.run
     end
 
     def run_comments
@@ -801,12 +682,23 @@ module DecidimImporter
       @static_pages_extractor.run
     end
 
-    # The phase-generating components fed to {PhaseProjector}: proposals → ideation phases and surveys
-    # → native_survey phases. Each phase starts at its component's `published_at` and ends at its last
-    # activity (a proposal's `published_at`, a survey answer's `created_at`); see {PhaseProjector}.
-    # Pages are *not* here: they become project-level static pages via {Extractors::StaticPagesExtractor}.
+    # The phase-generating components fed to {PhaseProjector}: proposals and accountability →
+    # ideation phases, surveys → native_survey phases. Each phase starts at its component's
+    # `published_at` and ends at its last activity (a proposal's/result's date, a survey answer's
+    # `created_at`); see {PhaseProjector}. Pages are *not* here: they become project-level static
+    # pages via {Extractors::StaticPagesExtractor}.
     def participation_components
-      proposal_components + survey_phase_components
+      proposal_components + survey_phase_components + accountability_components
+    end
+
+    def accountability_components
+      dates_by_component = rows_for(:results).group_by { |row| row['decidim_component'] }
+      accountability_component_rows.map do |row|
+        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
+          name: row['name'], method: 'ideation',
+          published_at: row['published_at'], previously_published: row['previously_published'],
+          end_dates: (dates_by_component[row['uid']] || []).pluck('created_at') }
+      end
     end
 
     def proposal_components
@@ -836,17 +728,22 @@ module DecidimImporter
 
     # Component manifest rows whose type is `proposals` (their proposals live in a sibling CSV).
     def proposal_component_rows
-      @proposal_component_rows ||= rows_for(:components).select { |row| row['type'] == PROPOSALS_COMPONENT }
+      @proposal_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::PROPOSALS_COMPONENT }
+    end
+
+    # Component manifest rows whose type is `accountability` (their results live in a sibling CSV).
+    def accountability_component_rows
+      @accountability_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::ACCOUNTABILITY_COMPONENT }
     end
 
     # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).
     def survey_component_rows
-      @survey_component_rows ||= rows_for(:components).select { |row| row['type'] == SURVEYS_COMPONENT }
+      @survey_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::SURVEYS_COMPONENT }
     end
 
     # Component manifest rows whose type is `pages` (their body lives in `specific_data`).
     def page_component_rows
-      @page_component_rows ||= rows_for(:components).select { |row| row['type'] == PAGES_COMPONENT }
+      @page_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::PAGES_COMPONENT }
     end
 
     # Custom user fields are seeded from the organization's `extra_user_fields` config (if present)

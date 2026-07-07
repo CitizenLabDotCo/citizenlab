@@ -13,6 +13,8 @@ module DecidimImporter
     # The imported idea carries a `idea_status_code` rather than an `idea_status_ref`: the tenant's
     # statuses already exist and are resolved to a real id at apply time by {IdeaStatuses.resolve!}.
     class ProposalsExtractor < BaseExtractor
+      include IdeaAssociations
+
       COLUMNS = {
         uid: 'uid',
         process: 'decidim_participatory_process',
@@ -63,21 +65,9 @@ module DecidimImporter
         ref_map.register(uid, idea)
 
         register_ideas_phase(uid, idea, phase)
-        register_input_topic(uid, idea, row)
+        register_input_topic(uid, idea, row[COLUMNS[:category]])
         register_official_feedback(uid, idea, row)
         idea
-      end
-
-      # Tags the idea with its Decidim category (imported as a project `InputTopic`), via an
-      # `ideas_input_topic` join. No-op when the proposal has no category or it wasn't imported.
-      def register_input_topic(uid, idea, row)
-        topic = ref_map.fetch(present_value(row[COLUMNS[:category]]))
-        return unless topic&.model_name == 'input_topic'
-
-        join = Record.new('ideas_input_topic', {})
-        join.reference('idea', idea)
-        join.reference('input_topic', topic)
-        ref_map.register("#{uid}-ideas-input-topic", join)
       end
 
       def idea_attributes(row)
@@ -107,13 +97,6 @@ module DecidimImporter
       def author_uids(row)
         parsed = parse_json_array(row[COLUMNS[:authors]])
         Array(parsed).filter_map { |uid| present_value(uid) }
-      end
-
-      def register_ideas_phase(uid, idea, phase)
-        join = Record.new('ideas_phase', {})
-        join.reference('idea', idea)
-        join.reference('phase', phase)
-        ref_map.register("#{uid}-ideas-phase", join)
       end
 
       def register_official_feedback(uid, idea, row)

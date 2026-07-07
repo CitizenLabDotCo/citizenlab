@@ -42,9 +42,9 @@ RSpec.describe DecidimImporter::Importer do
       expect(text_nodes.first['props']['text']['fr-FR']).to include('sum') # short_description ("Résumé …")
       expect(text_nodes.last['props']['text']['fr-FR']).to include('Concertation') # the full description
 
-      # Steps are not imported as phases, and this process has no proposals/surveys — so no phases.
+      # Steps are not imported as phases; the process's accountability component is its one ideation phase.
       phases = (template['phase'] || []).select { |ph| ph['project_ref'].equal?(project) }
-      expect(phases).to be_empty
+      expect(phases.map { |ph| ph['participation_method'] }).to eq(['ideation'])
     end
 
     it 'nests a grouped process under its folder via a shared admin-publication ref' do
