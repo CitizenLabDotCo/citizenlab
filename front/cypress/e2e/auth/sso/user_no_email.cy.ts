@@ -1,10 +1,10 @@
-import { fakeSSOSignup } from './utils';
+import { fakeSSOGlobalSignup } from './utils';
 import { confirmEmail } from '../../../support/auth';
 import { randomEmail } from '../../../support/commands';
 
 describe('SSO: user without email', () => {
   it('signs the user in after a round-trip through the fake OIDC provider', () => {
-    fakeSSOSignup(cy, 'jane_doe');
+    fakeSSOGlobalSignup(cy, 'jane_doe');
 
     // Enter and confirm email
     const email = randomEmail();
@@ -18,7 +18,7 @@ describe('SSO: user without email', () => {
   });
 
   it('shows error when trying to sign up with an email that already exists', () => {
-    fakeSSOSignup(cy, 'jane_doe');
+    fakeSSOGlobalSignup(cy, 'jane_doe');
 
     const existingEmail = 'admin@govocal.com';
     cy.get('#e2e-authentication-modal')
@@ -33,7 +33,7 @@ describe('SSO: user without email', () => {
   });
 
   it('allows user to re-request a code', () => {
-    fakeSSOSignup(cy, 'jane_doe');
+    fakeSSOGlobalSignup(cy, 'jane_doe');
 
     // Enter email
     const email = randomEmail();
@@ -53,7 +53,7 @@ describe('SSO: user without email', () => {
   });
 
   it('allows user to change email', () => {
-    fakeSSOSignup(cy, 'jane_doe');
+    fakeSSOGlobalSignup(cy, 'jane_doe');
 
     // Enter email
     const email = randomEmail();

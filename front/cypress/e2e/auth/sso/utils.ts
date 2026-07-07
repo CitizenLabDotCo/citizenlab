@@ -14,7 +14,7 @@ type Overrides = {
   sub?: string;
 };
 
-export const fakeSSOSignup = (
+export const fakeSSOGlobalSignup = (
   cy: Cypress.Chainable,
   profileName: ProfileName,
   { email, sub }: Overrides = {}

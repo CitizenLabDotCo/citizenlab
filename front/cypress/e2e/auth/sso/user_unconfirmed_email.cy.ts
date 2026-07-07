@@ -1,10 +1,10 @@
 import { randomEmail } from '../../../support/commands';
-import { fakeSSOSignup } from './utils';
+import { fakeSSOGlobalSignup } from './utils';
 import { confirmEmail, enterEmail } from '../../../support/auth';
 
 describe('SSO: user with unconfirmed email', () => {
   it('signs the user in after a round-trip through the fake OIDC provider', () => {
-    fakeSSOSignup(cy, 'tracy_smith');
+    fakeSSOGlobalSignup(cy, 'tracy_smith');
 
     // Expect to be on email confirmation step
     confirmEmail(cy);
@@ -15,7 +15,7 @@ describe('SSO: user with unconfirmed email', () => {
   });
 
   it('allows user to re-request a code', () => {
-    fakeSSOSignup(cy, 'tracy_smith');
+    fakeSSOGlobalSignup(cy, 'tracy_smith');
 
     // Re-request code
     cy.dataCy('resend-code').click();
@@ -26,7 +26,7 @@ describe('SSO: user with unconfirmed email', () => {
   });
 
   it('allows user to change email', () => {
-    fakeSSOSignup(cy, 'tracy_smith');
+    fakeSSOGlobalSignup(cy, 'tracy_smith');
 
     // Go to change email screen
     cy.get('#e2e-go-to-change-email').click();
@@ -69,7 +69,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.clearCookies();
 
     // Sign up through Fake SSO (return confirmed email)
-    fakeSSOSignup(cy, 'john_doe', { email });
+    fakeSSOGlobalSignup(cy, 'john_doe', { email });
 
     // We expect to arrive on the success message
     cy.get('#e2e-sign-up-success-modal').should('exist');
@@ -96,7 +96,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.clearCookies();
 
     // Sign up through Fake SSO (return unconfirmed email)
-    fakeSSOSignup(cy, 'tracy_smith', { email });
+    fakeSSOGlobalSignup(cy, 'tracy_smith', { email });
 
     // Confirm email
     confirmEmail(cy);
