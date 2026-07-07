@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Nid oes unrhyw brosiectau gweithredol ar hyn o bryd o ystyried eich dewisiadau dilyn.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Mae'r teclyn hwn yn dangos prosiectau sy'n gysylltiedig â'r \"ardaloedd\" y mae'r defnyddiwr yn eu dilyn. Nodwch y gallai eich platfform ddefnyddio enw gwahanol ar gyfer \"ardaloedd\" - gweler y tab \"Ardaloedd\" yng ngosodiadau'r platfform. Os nad yw'r defnyddiwr yn dilyn unrhyw ardaloedd eto, bydd y teclyn yn dangos yr ardaloedd sydd ar gael i'w dilyn. Yn yr achos hwn, bydd y teclyn yn dangos uchafswm o 100 o ardaloedd.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Eicon cerdyn",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Clirio",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Tudalennau personol",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Archwilio yn ôl adrannau",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Dim tudalennau wedi'u dewis",

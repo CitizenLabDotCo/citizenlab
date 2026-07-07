@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "لا يوجد حاليًا أي مشاريع نشطة بناءً على تفضيلات المتابعة الخاصة بك.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "تعرض هذه الأداة المشاريع المرتبطة بالمجالات التي يتابعها المستخدم. يُرجى ملاحظة أن منصتك قد تستخدم اسمًا مختلفًا للمجالات - راجع تبويب \"المجالات\" في إعدادات المنصة. إذا لم يتابع المستخدم أي مجال بعد، ستعرض الأداة المجالات المتاحة للمتابعة. في هذه الحالة، ستعرض الأداة 100 مجال كحد أقصى.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "أيقونة البطاقة",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "مسح",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "صفحات مخصصة",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "استكشاف حسب الإدارات",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "لم يتم تحديد أي صفحات",

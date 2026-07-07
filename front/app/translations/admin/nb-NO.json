@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Det er for øyeblikket ingen aktive prosjekter gitt dine følgepreferanser.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Denne widgeten viser prosjekter som er knyttet til \"områdene\" brukeren følger. Merk at plattformen din kan bruke et annet navn for \"områder\" - se \"Områder\"-fanen i plattforminnstillingene. Hvis brukeren ikke følger noen områder ennå, vil widgeten vise de tilgjengelige områdene som kan følges. I dette tilfellet vil widgeten vise maksimalt 100 områder.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Kortikon",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Tøm",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Egendefinerte sider",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Utforsk etter avdelinger",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Ingen sider er valgt",

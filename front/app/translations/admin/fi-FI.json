@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Seuraa-asetuksillasi ei ole tällä hetkellä aktiivisia projektia.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Tämä widget näyttää käyttäjän seuraamiin \"alueisiin\" liittyvät projektit. Huomaa, että alustasi saattaa käyttää \"alueille\" eri nimeä – katso \"Alueet\"-välilehti alustan asetuksista. Jos käyttäjä ei vielä seuraa alueita, widget näyttää seurattavissa olevat alueet. Tässä tapauksessa widget näyttää enintään 100 aluetta.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Kortin kuvake",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Tyhjennä",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Mukautetut sivut",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Tutki osastoittain",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Sivuja ei ole valittu",

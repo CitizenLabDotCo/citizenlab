@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Actualment no hi ha projectes actius segons les vostres preferències de seguiment.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Aquest giny mostra els projectes associats a les \"àrees\" que segueix l'usuari. Tingues en compte que la teva plataforma podria utilitzar un nom diferent per a les \"àrees\"; consulta la pestanya \"Àrees\" a la configuració de la plataforma. Si l'usuari encara no segueix cap àrea, el giny mostrarà les àrees disponibles per seguir. En aquest cas, el giny mostrarà un màxim de 100 àrees.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Icona de la targeta",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Neteja",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Pàgines personalitzades",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Explora per departaments",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "No s'ha seleccionat cap pàgina",

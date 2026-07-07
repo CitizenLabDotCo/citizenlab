@@ -295,7 +295,6 @@
   "app.components.GanttChart.today": "Inniu",
   "app.components.GoBackButton.group.edit.goBack": "Téigh ar ais",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Téigh ar ais go dtí an leathanach roimhe seo",
-  "app.components.HookForm.EmojiPicker.clearEmoji": "Glan",
   "app.components.HookForm.Feedback.errorTitle": "Tá fadhb ann",
   "app.components.HookForm.Feedback.submissionError": "Déan iarracht arís. Má leanann an fhadhb, déan teagmháil linn.",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Bhí fadhb ann ar ár taobh, gabh mo leithscéal",

@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Actualmente no hay proyectos activos dadas tus preferencias de seguimiento.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Este widget muestra los proyectos asociados a las \"áreas\" que sigue el usuario. Ten en cuenta que tu plataforma puede utilizar un nombre diferente para las \"áreas\"; consulta la pestaña \"Áreas\" en la configuración de la plataforma. Si el usuario aún no sigue ninguna área, el widget mostrará las áreas disponibles para seguir. En este caso, el widget mostrará un máximo de 100 áreas.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Icono de tarjeta",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Borrar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Páginas personalizadas",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Explorar por departamentos",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "No hay páginas seleccionadas",

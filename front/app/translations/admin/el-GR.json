@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Προς το παρόν δεν υπάρχουν ενεργά έργα με βάση τις προτιμήσεις παρακολούθησής σας.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Αυτό το γραφικό στοιχείο εμφανίζει έργα που σχετίζονται με τις «περιοχές» που ακολουθεί ο χρήστης. Σημειώστε ότι η πλατφόρμα σας ενδέχεται να χρησιμοποιεί διαφορετικό όνομα για τις «περιοχές» - δείτε την καρτέλα «Περιοχές» στις ρυθμίσεις της πλατφόρμας. Εάν ο χρήστης δεν ακολουθεί ακόμη καμία περιοχή, το γραφικό στοιχείο θα εμφανίσει τις διαθέσιμες περιοχές προς παρακολούθηση. Σε αυτήν την περίπτωση, το γραφικό στοιχείο θα εμφανίζει το πολύ 100 περιοχές.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Εικονίδιο κάρτας",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Εκκαθάριση",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Προσαρμοσμένες σελίδες",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Εξερεύνηση ανά τμήμα",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Δεν έχουν επιλεγεί σελίδες",

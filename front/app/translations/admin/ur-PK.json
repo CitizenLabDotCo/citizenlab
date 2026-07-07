@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "آپ کی پیروی کی ترجیحات کے پیش نظر فی الحال کوئی فعال پروجیکٹ نہیں ہے۔",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "یہ ویجیٹ ان \"علاقوں\" سے وابستہ منصوبوں کو دکھاتا ہے جن کی صارف پیروی کرتا ہے۔ نوٹ کریں کہ آپ کا پلیٹ فارم \"علاقوں\" کے لیے مختلف نام استعمال کر سکتا ہے - پلیٹ فارم کی ترتیبات میں \"علاقوں\" ٹیب کو دیکھیں۔ اگر صارف ابھی تک کسی علاقے کی پیروی نہیں کرتا ہے، تو ویجیٹ پیروی کرنے کے لیے دستیاب علاقوں کو دکھائے گا۔ اس صورت میں ویجیٹ زیادہ سے زیادہ 100 علاقے دکھائے گا۔",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "کارڈ آئیکن",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "صاف کریں",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "مخصوص صفحات",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "محکموں کے لحاظ سے دریافت کریں",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "کوئی صفحات منتخب نہیں کیے گئے",

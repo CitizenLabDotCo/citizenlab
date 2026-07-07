@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Obecnie nie ma aktywnych projektów, biorąc pod uwagę Twoje preferencje śledzenia.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Ten widżet pokazuje projekty powiązane z \"obszarami\", które śledzi użytkownik. Pamiętaj, że Twoja platforma może używać innej nazwy dla \"obszarów\" - zobacz zakładkę \"Obszary\" w ustawieniach platformy. Jeśli użytkownik nie obserwuje jeszcze żadnych obszarów, widżet pokaże dostępne obszary do obserwowania. W tym przypadku widżet pokaże maksymalnie 100 obszarów.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Ikona karty",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Wyczyść",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Strony niestandardowe",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Przeglądaj według wydziałów",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Nie wybrano żadnych stron",

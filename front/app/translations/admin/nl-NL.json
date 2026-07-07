@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Er zijn momenteel geen actieve projecten gezien je volgvoorkeuren.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Deze widget toont projecten die geassocieerd zijn met de \"gebieden\" die de gebruiker volgt. Wees er bewust van dat jouw platform een andere naam kan gebruiken voor \"gebieden\" - zie de \"Gebieden\" tab in de platform instellingen. Als de gebruiker nog geen gebieden volgt, toont de widget de beschikbare gebieden om te volgen. In dit geval zal de widget maximaal 100 gebieden tonen.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Kaarticoon",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Wissen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Aanpasbare pagina's",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Ontdek per departement",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Geen pagina's geselecteerd",

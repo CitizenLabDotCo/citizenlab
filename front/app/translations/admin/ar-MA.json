@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "لا توجد مشاريع نشطة حالياً بناءً على تفضيلات المتابعة الخاصة بك.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "تعرض هذه الأداة المشاريع المرتبطة بـ \"المناطق\" التي يتابعها المستخدم. لاحظ أن منصتكم قد تستخدم اسماً مختلفاً لـ \"المناطق\" - راجع علامة التبويب \"المناطق\" في إعدادات المنصة. إذا لم يتابع المستخدم أي مناطق بعد، فستعرض الأداة المناطق المتاحة للمتابعة. في هذه الحالة، ستعرض الأداة 100 منطقة كحد أقصى.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "أيقونة البطاقة",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "مسح",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "صفحات مخصصة",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "استكشف حسب الأقسام",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "لم يتم اختيار أي صفحات",

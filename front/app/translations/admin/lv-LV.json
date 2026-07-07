@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Pašlaik nav aktīvu projektu, ņemot vērā jūsu sekot preferences.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Šajā logrīkā tiek rādīti projekti, kas saistīti ar lietotāja sekojamajām \"jomām\". Ņemiet vērā, ka jūsu platformā \"apgabaliem\" var izmantot citu nosaukumu - skatiet platformas iestatījumu cilni \"Apgabali\". Ja lietotājs vēl neseko nevienai jomai, logrīks parādīs pieejamās jomas, kurām sekot. Šajā gadījumā logrīks rādīs ne vairāk kā 100 apgabalus.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Kartītes ikona",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Notīrīt",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Pielāgotas lapas",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Izpētīt pēc departamentiem",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Nav atlasīta neviena lapa",

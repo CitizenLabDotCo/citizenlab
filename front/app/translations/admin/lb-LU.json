@@ -4053,7 +4053,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects1": "Et ginn aktuell keng aktiv Projeten op Basis vun Ären Abonnement-Astellungen.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Dëse Widget weist Projeten un, déi mat de \"Beräicher\" verbonne sinn, deenen de Benotzer follegt. Beuecht wgl., datt Är Plattform eventuell en aneren Numm fir \"Beräicher\" benotzt – kuckt dozou den Tab \"Beräicher\" an den Astellunge vun der Plattform. Wann de Benotzer nach kengem Beräich follegt, weist de Widget déi verfügbare Beräicher un, deenen ee folge kann. An dësem Fall weist de Widget maximal 100 Beräicher un.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Kaarten-Icon",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": "Lëschen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Benotzerdefinéiert Säiten",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "No Departementer entdecken",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Keng Säiten ausgewielt",
