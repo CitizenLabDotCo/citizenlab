@@ -62,7 +62,7 @@ RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RS
     layout = ContentBuilder::Layout.find_by(code: 'project_page', content_buildable: project)
     expect(layout.enabled).to be(true)
     expect(layout.craftjs_json['PROJECT_PAGE_BODY']['nodes']).to eq(
-      %w[PROJECT_PAGE_DESCRIPTION PROJECT_PAGE_TIMELINE PROJECT_PAGE_INPUT_FEED PROJECT_PAGE_EVENTS]
+      %w[PROJECT_PAGE_DESCRIPTION PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
     )
     expect(layout.craftjs_json['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(['d_txt1'])
   end
