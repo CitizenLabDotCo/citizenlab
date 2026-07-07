@@ -1,6 +1,6 @@
-import { ICampaignExampleData } from '../types';
+import { IEmailCampaignExampleData } from '../types';
 
-export const campaignExamplesData: ICampaignExampleData[] = [
+export const emailCampaignExamplesData: IEmailCampaignExampleData[] = [
   {
     id: '1',
     type: 'example',
@@ -54,5 +54,5 @@ export const campaignExamplesData: ICampaignExampleData[] = [
 ];
 
 export default jest.fn(() => {
-  return { data: { data: campaignExamplesData } };
+  return { data: { data: emailCampaignExamplesData } };
 });

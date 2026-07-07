@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import useSupportedCampaignNames from './useSupportedCampaignNames';
+import useSupportedEmailCampaignNames from './useSupportedEmailCampaignNames';
 
 const mockCampaignTypes = [
   'manual_project_participants',
@@ -34,14 +34,14 @@ const server = setupServer(
   })
 );
 
-describe('useSupportedCampaignNames', () => {
+describe('useSupportedEmailCampaignNames', () => {
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
   it('returns data correctly for phase context', async () => {
     const { result } = renderHook(
-      () => useSupportedCampaignNames({ phaseId: 'phase-id' }),
+      () => useSupportedEmailCampaignNames({ phaseId: 'phase-id' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -55,7 +55,7 @@ describe('useSupportedCampaignNames', () => {
 
   it('returns data correctly for project context', async () => {
     const { result } = renderHook(
-      () => useSupportedCampaignNames({ projectId: 'project-id' }),
+      () => useSupportedEmailCampaignNames({ projectId: 'project-id' }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -68,7 +68,7 @@ describe('useSupportedCampaignNames', () => {
   });
 
   it('returns data correctly for global context', async () => {
-    const { result } = renderHook(() => useSupportedCampaignNames(), {
+    const { result } = renderHook(() => useSupportedEmailCampaignNames(), {
       wrapper: createQueryClientWrapper(),
     });
 
@@ -86,7 +86,7 @@ describe('useSupportedCampaignNames', () => {
     );
 
     const { result } = renderHook(
-      () => useSupportedCampaignNames({ phaseId: 'phase-id' }),
+      () => useSupportedEmailCampaignNames({ phaseId: 'phase-id' }),
       {
         wrapper: createQueryClientWrapper(),
       }

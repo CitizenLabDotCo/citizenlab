@@ -2,15 +2,15 @@ import { SupportedLocale } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
-import campaignExamplesKeys from './keys';
+import emailCampaignExamplesKeys from './keys';
 
-export type CampaignExamplesKeys = Keys<typeof campaignExamplesKeys>;
+export type EmailCampaignExamplesKeys = Keys<typeof emailCampaignExamplesKeys>;
 
-export interface ICampaignExampleParameters {
+export interface IEmailCampaignExampleParameters {
   campaignId: string;
 }
 
-export interface ICampaignExampleData {
+export interface IEmailCampaignExampleData {
   id: string;
   type: 'example';
   attributes: {
@@ -36,7 +36,7 @@ export interface ICampaignExampleData {
   };
 }
 
-export interface ICampaignExampleLinks {
+export interface IEmailCampaignExampleLinks {
   self: string;
   first: string;
   prev: string;
@@ -44,11 +44,11 @@ export interface ICampaignExampleLinks {
   last: string;
 }
 
-export interface ICampaignExamples {
-  data: ICampaignExampleData[];
-  links: ICampaignExampleLinks;
+export interface IEmailCampaignExamples {
+  data: IEmailCampaignExampleData[];
+  links: IEmailCampaignExampleLinks;
 }
 
-export interface ICampaignExample {
-  data: ICampaignExampleData;
+export interface IEmailCampaignExample {
+  data: IEmailCampaignExampleData;
 }

@@ -11,7 +11,7 @@ import moment from 'moment';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IEmailCampaignData } from 'api/campaigns/email/types';
-import { isDraft } from 'api/campaigns/email/util';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -78,7 +78,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
               </Text>
             </>
           )}
-          {isDraft(campaign) && (
+          {isEmailCampaignDraft(campaign) && (
             <StatusLabel
               backgroundColor={colors.orange500}
               text={<FormattedMessage {...messages.draft} />}

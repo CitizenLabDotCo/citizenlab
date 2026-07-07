@@ -1,13 +1,13 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { ICampaignExampleParameters } from './types';
+import { IEmailCampaignExampleParameters } from './types';
 
-const baseKey = { type: 'example' };
+const baseKey = { type: 'email_example' };
 
-const campaignExamplesKeys = {
+const emailCampaignExamplesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (params: ICampaignExampleParameters) => [
+  list: (params: IEmailCampaignExampleParameters) => [
     { ...baseKey, operation: 'list', parameters: params },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
@@ -20,4 +20,4 @@ const campaignExamplesKeys = {
   ],
 } satisfies QueryKeys;
 
-export default campaignExamplesKeys;
+export default emailCampaignExamplesKeys;

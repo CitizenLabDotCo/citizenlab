@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
-import useSupportedCampaignNames from 'api/campaigns/email/useSupportedCampaignNames';
+import useSupportedEmailCampaignNames from 'api/campaigns/email/useSupportedEmailCampaignNames';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -18,7 +18,9 @@ import messages from './messages';
 const AdminPhaseEmailWrapper = () => {
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false });
-  const { data: supportedCampaigns } = useSupportedCampaignNames({ phaseId });
+  const { data: supportedCampaigns } = useSupportedEmailCampaignNames({
+    phaseId,
+  });
   const supportedCampaignNames = supportedCampaigns?.data.attributes || [];
   const contextCampaigns = useEmailCampaigns({
     ...(phaseId ? { context: { phaseId } } : {}),

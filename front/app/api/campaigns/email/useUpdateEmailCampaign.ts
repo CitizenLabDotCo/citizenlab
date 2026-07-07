@@ -3,8 +3,8 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignsKeys from './keys';
-import campaignPreviewsKeys from './previews/keys';
+import emailCampaignsKeys from './keys';
+import emailCampaignPreviewsKeys from './previews/keys';
 import { IEmailCampaign, IUpdateEmailCampaignProperties } from './types';
 
 const updateEmailCampaign = async ({
@@ -22,8 +22,10 @@ const useUpdateEmailCampaign = () => {
   return useMutation<IEmailCampaign, CLErrors, IUpdateEmailCampaignProperties>({
     mutationFn: updateEmailCampaign,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: campaignPreviewsKeys.all() });
+      queryClient.invalidateQueries({ queryKey: emailCampaignsKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: emailCampaignPreviewsKeys.all(),
+      });
     },
   });
 };

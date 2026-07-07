@@ -4,19 +4,22 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import { campaignExamplesData } from './__mocks__/useEmailCampaignExamples';
-import { ICampaignExampleParameters } from './types';
+import { emailCampaignExamplesData } from './__mocks__/useEmailCampaignExamples';
+import { IEmailCampaignExampleParameters } from './types';
 import useEmailCampaignExamples from './useEmailCampaignExamples';
 
 const apiPath = '*/campaigns/:id/examples';
 
-const params: ICampaignExampleParameters = {
+const params: IEmailCampaignExampleParameters = {
   campaignId: '1',
 };
 
 const server = setupServer(
   http.get(apiPath, () => {
-    return HttpResponse.json({ data: campaignExamplesData }, { status: 200 });
+    return HttpResponse.json(
+      { data: emailCampaignExamplesData },
+      { status: 200 }
+    );
   })
 );
 
@@ -34,7 +37,7 @@ describe('useEmailCampaignExamples', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(campaignExamplesData);
+    expect(result.current.data?.data).toEqual(emailCampaignExamplesData);
   });
 
   it('returns error correctly', async () => {

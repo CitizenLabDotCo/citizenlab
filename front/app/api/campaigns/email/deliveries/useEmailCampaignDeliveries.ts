@@ -3,19 +3,19 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignDeliveriesKeys from './keys';
+import emailCampaignDeliveriesKeys from './keys';
 import {
-  ICampaignDeliveries,
-  CampaignDeliveriesKeys,
-  ICampaignDeliveriesParameters,
+  IEmailCampaignDeliveries,
+  EmailCampaignDeliveriesKeys,
+  IEmailDeliveriesParameters,
 } from './types';
 
 const fetchEmailCampaignDeliveries = ({
   pageNumber,
   pageSize,
   campaignId,
-}: ICampaignDeliveriesParameters) =>
-  fetcher<ICampaignDeliveries>({
+}: IEmailDeliveriesParameters) =>
+  fetcher<IEmailCampaignDeliveries>({
     path: `/campaigns/${campaignId}/email_deliveries`,
     action: 'get',
     queryParams: {
@@ -24,14 +24,14 @@ const fetchEmailCampaignDeliveries = ({
     },
   });
 
-const useEmailCampaignDeliveries = (params: ICampaignDeliveriesParameters) => {
+const useEmailCampaignDeliveries = (params: IEmailDeliveriesParameters) => {
   return useQuery<
-    ICampaignDeliveries,
+    IEmailCampaignDeliveries,
     CLErrors,
-    ICampaignDeliveries,
-    CampaignDeliveriesKeys
+    IEmailCampaignDeliveries,
+    EmailCampaignDeliveriesKeys
   >({
-    queryKey: campaignDeliveriesKeys.list(params),
+    queryKey: emailCampaignDeliveriesKeys.list(params),
     queryFn: () => fetchEmailCampaignDeliveries(params),
   });
 };

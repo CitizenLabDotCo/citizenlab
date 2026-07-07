@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
 
-import { IDeliveryData } from 'api/campaigns/email/deliveries/types';
+import { IEmailDeliveryData } from 'api/campaigns/email/deliveries/types';
 import useUserById from 'api/users/useUserById';
 
 import { List, Row, TextCell } from 'components/admin/ResourceList';
@@ -16,7 +16,7 @@ import { getFullName } from 'utils/textUtils';
 import messages from './messages';
 
 const statusColorMapping: {
-  [k in IDeliveryData['attributes']['delivery_status']]: string;
+  [k in IEmailDeliveryData['attributes']['delivery_status']]: string;
 } = {
   sent: colors.blue500,
   bounced: colors.red600,
@@ -30,7 +30,7 @@ const statusColorMapping: {
 interface Props {
   campaignId: string;
   className?: string;
-  deliveries: IDeliveryData[] | null;
+  deliveries: IEmailDeliveryData[] | null;
   currentPage: number;
   lastPage: number;
   onChangePage: (pageNumber: number) => void;
@@ -41,7 +41,7 @@ const TableRow = ({
   recipient,
 }: {
   userId: string;
-  recipient: IDeliveryData;
+  recipient: IEmailDeliveryData;
 }) => {
   const { data: user } = useUserById(userId);
   if (!user) return null;

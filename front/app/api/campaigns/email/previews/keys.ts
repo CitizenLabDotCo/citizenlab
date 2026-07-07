@@ -1,8 +1,8 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-const baseKey = { type: 'campaign_preview' };
+const baseKey = { type: 'email_campaign_preview' };
 
-const campaignPreviewsKeys = {
+const emailCampaignPreviewsKeys = {
   all: () => [baseKey],
   item: ({ campaignId }: { campaignId: string | null }) => [
     {
@@ -13,4 +13,4 @@ const campaignPreviewsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default campaignPreviewsKeys;
+export default emailCampaignPreviewsKeys;

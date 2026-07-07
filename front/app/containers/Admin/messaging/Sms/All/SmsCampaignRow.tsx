@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { ISmsCampaignData } from 'api/campaigns/sms/types';
-import { isSmsDraft } from 'api/campaigns/sms/util';
+import { isSmsCampaignDraft } from 'api/campaigns/sms/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -40,7 +40,7 @@ const SmsCampaignRow = ({ campaign }: Props) => {
           {snippet}
         </Text>
         <Box display="flex" alignItems="center" gap="12px" mt="4px">
-          {isSmsDraft(campaign) ? (
+          {isSmsCampaignDraft(campaign) ? (
             <StatusLabel
               backgroundColor={colors.orange500}
               text={<FormattedMessage {...messages.draft} />}

@@ -17,7 +17,7 @@ import { EmailCampaignFormValues } from 'api/campaigns/email/types';
 import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
 import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
-import { isDraft } from 'api/campaigns/email/util';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
@@ -84,7 +84,7 @@ const Edit = ({ campaignType }: EditProps) => {
           <Title mr="12px">
             <T value={campaign.data.attributes.subject_multiloc} />
           </Title>
-          {isDraft(campaign.data) && (
+          {isEmailCampaignDraft(campaign.data) && (
             <StatusLabel
               backgroundColor={colors.brown}
               text={<FormattedMessage {...messages.draft} />}

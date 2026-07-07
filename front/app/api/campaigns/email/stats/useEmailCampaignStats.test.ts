@@ -4,12 +4,12 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import { ICampaignStats } from './types';
+import { IEmailCampaignStats } from './types';
 import useEmailCampaignStats from './useEmailCampaignStats';
 
 const apiPath = '*campaigns/:id/email_stats';
 
-const campaignStatsData: ICampaignStats = {
+const campaignStatsData: IEmailCampaignStats = {
   data: {
     type: 'stats',
     attributes: {

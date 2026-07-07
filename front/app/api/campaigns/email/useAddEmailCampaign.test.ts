@@ -4,14 +4,14 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
-import { campaignsData } from './__mocks__/useEmailCampaigns';
+import { emailCampaignsData } from './__mocks__/useEmailCampaigns';
 import useAddEmailCampaign from './useAddEmailCampaign';
 
 const apiPath = '*campaigns';
 
 const server = setupServer(
   http.post(apiPath, () => {
-    return HttpResponse.json({ data: campaignsData[0] }, { status: 200 });
+    return HttpResponse.json({ data: emailCampaignsData[0] }, { status: 200 });
   })
 );
 
@@ -38,7 +38,7 @@ describe('useAddEmailCampaign', () => {
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.data).toEqual(campaignsData[0]);
+    expect(result.current.data?.data).toEqual(emailCampaignsData[0]);
   });
 
   it('returns error correctly', async () => {

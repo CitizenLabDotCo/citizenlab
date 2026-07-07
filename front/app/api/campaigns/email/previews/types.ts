@@ -1,14 +1,14 @@
 import { Keys } from 'utils/cl-react-query/types';
 
-import campaignPreviewsKeys from './keys';
+import emailCampaignPreviewsKeys from './keys';
 
-export type CampaignPreviewsKeys = Keys<typeof campaignPreviewsKeys>;
+export type EmailCampaignPreviewsKeys = Keys<typeof emailCampaignPreviewsKeys>;
 
-export interface ICampaignPreview {
-  data: ICampaignPreviewData;
+export interface IEmailCampaignPreview {
+  data: IEmailCampaignPreviewData;
 }
 
-export interface ICampaignPreviewData {
+export interface IEmailCampaignPreviewData {
   id: string;
   type: string;
   attributes: {

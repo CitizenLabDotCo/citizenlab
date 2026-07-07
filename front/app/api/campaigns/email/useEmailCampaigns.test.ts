@@ -4,17 +4,20 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import { campaignsData, links } from './__mocks__/useEmailCampaigns';
-import { QueryParameters } from './types';
+import { emailCampaignsData, links } from './__mocks__/useEmailCampaigns';
+import { EmailCampaignsQueryParameters } from './types';
 import useEmailCampaigns from './useEmailCampaigns';
 
 const apiPath = '*/campaigns';
 
-const params: QueryParameters = {};
+const params: EmailCampaignsQueryParameters = {};
 
 const server = setupServer(
   http.get(apiPath, () => {
-    return HttpResponse.json({ data: campaignsData, links }, { status: 200 });
+    return HttpResponse.json(
+      { data: emailCampaignsData, links },
+      { status: 200 }
+    );
   })
 );
 
@@ -32,7 +35,7 @@ describe('useEmailCampaigns', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(campaignsData);
+    expect(result.current.data?.pages[0].data).toEqual(emailCampaignsData);
   });
 
   it('returns error correctly', async () => {

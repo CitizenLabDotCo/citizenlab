@@ -19,7 +19,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
 import useSendEmailCampaign from 'api/campaigns/email/useSendEmailCampaign';
 import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
-import { isDraft } from 'api/campaigns/email/util';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
@@ -221,13 +221,13 @@ const Show = () => {
             <Title mr="12px">
               <T value={campaign.data.attributes.subject_multiloc} />
             </Title>
-            {isDraft(campaign.data) && (
+            {isEmailCampaignDraft(campaign.data) && (
               <StatusLabel
                 backgroundColor={colors.brown}
                 text={<FormattedMessage {...messages.draft} />}
               />
             )}
-            {!isDraft(campaign.data) &&
+            {!isEmailCampaignDraft(campaign.data) &&
               !campaign.data.attributes.scheduled_at && (
                 <StatusLabel
                   backgroundColor={colors.success}
@@ -248,7 +248,7 @@ const Show = () => {
               </>
             )}
           </Box>
-          {(isDraft(campaign.data) ||
+          {(isEmailCampaignDraft(campaign.data) ||
             campaign.data.attributes.scheduled_at) && (
             <Buttons>
               <ButtonWithLink
@@ -360,7 +360,7 @@ const Show = () => {
               ))}
             </div>
           </FromTo>
-          {(isDraft(campaign.data) ||
+          {(isEmailCampaignDraft(campaign.data) ||
             campaign.data.attributes.scheduled_at) && (
             <Box>
               <Button
@@ -383,7 +383,8 @@ const Show = () => {
           )}
         </Box>
 
-        {isDraft(campaign.data) || campaign.data.attributes.scheduled_at ? (
+        {isEmailCampaignDraft(campaign.data) ||
+        campaign.data.attributes.scheduled_at ? (
           <DraftCampaignDetails campaign={campaign.data} />
         ) : (
           <SentCampaignDetails campaignId={campaign.data.id} />

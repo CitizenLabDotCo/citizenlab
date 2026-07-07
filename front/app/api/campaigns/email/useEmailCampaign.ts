@@ -3,8 +3,8 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignsKeys from './keys';
-import { IEmailCampaign, CampaignsKeys } from './types';
+import emailCampaignsKeys from './keys';
+import { IEmailCampaign, EmailCampaignsKeys } from './types';
 
 const fetchEmailCampaign = ({ campaignId }: { campaignId: string }) =>
   fetcher<IEmailCampaign>({
@@ -13,10 +13,12 @@ const fetchEmailCampaign = ({ campaignId }: { campaignId: string }) =>
   });
 
 const useEmailCampaign = (campaignId: string) => {
-  return useQuery<IEmailCampaign, CLErrors, IEmailCampaign, CampaignsKeys>({
-    queryKey: campaignsKeys.item({ campaignId }),
-    queryFn: () => fetchEmailCampaign({ campaignId }),
-  });
+  return useQuery<IEmailCampaign, CLErrors, IEmailCampaign, EmailCampaignsKeys>(
+    {
+      queryKey: emailCampaignsKeys.item({ campaignId }),
+      queryFn: () => fetchEmailCampaign({ campaignId }),
+    }
+  );
 };
 
 export default useEmailCampaign;

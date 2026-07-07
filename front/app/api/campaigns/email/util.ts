@@ -2,14 +2,14 @@ import { CampaignContext } from '../types';
 
 import { IEmailCampaignData } from './types';
 
-export function isDraft(campaign: IEmailCampaignData) {
+export function isEmailCampaignDraft(campaign: IEmailCampaignData) {
   return (
     campaign.attributes.deliveries_count === 0 &&
     !campaign.attributes.scheduled_at
   );
 }
 
-export function getCampaignsContextPath({
+export function getEmailCampaignsContextPath({
   projectId,
   phaseId,
 }: CampaignContext = {}) {

@@ -9,7 +9,7 @@ import { object, string } from 'yup';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import {
   EmailCampaignFormValues,
-  EditableRegion,
+  IEmailEditableRegion,
   IEmailCampaign,
 } from 'api/campaigns/email/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -111,7 +111,7 @@ const EditCampaignForm = ({
       </>
     );
 
-  const regionFieldLabel = (region: EditableRegion) => {
+  const regionFieldLabel = (region: IEmailEditableRegion) => {
     const messageKey = messages[`editRegion_${region.key}`];
     return formatMessage(messageKey);
   };

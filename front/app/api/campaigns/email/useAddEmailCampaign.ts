@@ -3,16 +3,16 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignsKeys from './keys';
-import { IEmailCampaign, EmailCampaignAdd } from './types';
-import { getCampaignsContextPath } from './util';
+import emailCampaignsKeys from './keys';
+import { IEmailCampaign, IEmailCampaignAdd } from './types';
+import { getEmailCampaignsContextPath } from './util';
 
 const addEmailCampaign = async ({
   context,
   ...requestBody
-}: EmailCampaignAdd) => {
+}: IEmailCampaignAdd) => {
   return fetcher<IEmailCampaign>({
-    path: `/${getCampaignsContextPath(context)}`,
+    path: `/${getEmailCampaignsContextPath(context)}`,
     action: 'post',
     body: { campaign: requestBody },
   });
@@ -20,10 +20,10 @@ const addEmailCampaign = async ({
 
 const useAddEmailCampaign = () => {
   const queryClient = useQueryClient();
-  return useMutation<IEmailCampaign, CLErrors, EmailCampaignAdd>({
+  return useMutation<IEmailCampaign, CLErrors, IEmailCampaignAdd>({
     mutationFn: addEmailCampaign,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: campaignsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: emailCampaignsKeys.lists() });
     },
   });
 };

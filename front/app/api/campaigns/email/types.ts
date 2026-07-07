@@ -4,9 +4,9 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import { CampaignName, CampaignContext } from '../types';
 
-import campaignsKeys from './keys';
+import emailCampaignsKeys from './keys';
 
-export type CampaignsKeys = Keys<typeof campaignsKeys>;
+export type EmailCampaignsKeys = Keys<typeof emailCampaignsKeys>;
 
 export interface IEmailCampaignsData {
   data: IEmailCampaignData[];
@@ -44,7 +44,7 @@ export interface IEmailCampaignData {
     button_text_multiloc?: Multiloc;
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
-    editable_regions?: EditableRegion[];
+    editable_regions?: IEmailEditableRegion[];
     substitution_variable_keys?: string[];
     created_at: string;
     updated_at: string;
@@ -90,7 +90,7 @@ export interface EmailCampaignFormValues {
   scheduled_at?: string | null;
 }
 
-export interface EditableRegion {
+export interface IEmailEditableRegion {
   key: string;
   type: 'html' | 'text';
   default_value_multiloc?: Multiloc;
@@ -112,7 +112,7 @@ export interface IEmailCampaign {
   data: IEmailCampaignData;
 }
 
-export interface QueryParameters {
+export interface EmailCampaignsQueryParameters {
   context?: CampaignContext;
   manual?: boolean;
   withoutCampaignNames?: CampaignName[];
@@ -120,7 +120,7 @@ export interface QueryParameters {
   pageNumber?: number;
 }
 
-export interface EmailCampaignAdd {
+export interface IEmailCampaignAdd {
   campaign_name: string;
   context?: CampaignContext;
   enabled?: boolean;

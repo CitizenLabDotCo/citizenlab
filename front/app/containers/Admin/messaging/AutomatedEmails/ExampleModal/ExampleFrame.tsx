@@ -5,7 +5,7 @@ import Frame from 'react-frame-component';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { ICampaignExampleData } from 'api/campaigns/email/examples/types';
+import { IEmailCampaignExampleData } from 'api/campaigns/email/examples/types';
 import { IEmailCampaign } from 'api/campaigns/email/types';
 
 import T from 'components/T';
@@ -25,7 +25,7 @@ const ExampleFrame = ({
   example,
   campaign,
 }: {
-  example: ICampaignExampleData;
+  example: IEmailCampaignExampleData;
   campaign: IEmailCampaign;
 }) => {
   const { data: appConfig } = useAppConfiguration();

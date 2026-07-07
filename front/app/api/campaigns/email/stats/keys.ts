@@ -1,10 +1,10 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'stats',
+  type: 'email_stats',
 };
 
-const campaignStatsKeys = {
+const emailCampaignStatsKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ campaignId }: { campaignId: string }) => [
@@ -12,4 +12,4 @@ const campaignStatsKeys = {
   ],
 } satisfies QueryKeys;
 
-export default campaignStatsKeys;
+export default emailCampaignStatsKeys;

@@ -4,7 +4,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import { campaignExamplesData } from './__mocks__/useEmailCampaignExamples';
+import { emailCampaignExamplesData } from './__mocks__/useEmailCampaignExamples';
 import useEmailCampaignExample from './useEmailCampaignExample';
 
 const apiPath = '*campaigns/examples/:id';
@@ -12,7 +12,7 @@ const apiPath = '*campaigns/examples/:id';
 const server = setupServer(
   http.get(apiPath, () => {
     return HttpResponse.json(
-      { data: campaignExamplesData[0] },
+      { data: emailCampaignExamplesData[0] },
       { status: 200 }
     );
   })
@@ -32,7 +32,7 @@ describe('useEmailCampaignExample', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(campaignExamplesData[0]);
+    expect(result.current.data?.data).toEqual(emailCampaignExamplesData[0]);
   });
 
   it('returns error correctly', async () => {

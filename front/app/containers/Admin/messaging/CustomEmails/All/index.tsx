@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
-import { isDraft } from 'api/campaigns/email/util';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
@@ -90,7 +90,8 @@ const CustomEmails = () => {
         <Box background={colors.white} p="40px">
           <List key={campaignsList.data.map((c) => c.id).join()}>
             {campaignsList.data.map((campaign) =>
-              isDraft(campaign) || campaign.attributes.scheduled_at ? (
+              isEmailCampaignDraft(campaign) ||
+              campaign.attributes.scheduled_at ? (
                 <DraftCampaignRow
                   key={campaign.id}
                   campaign={campaign}

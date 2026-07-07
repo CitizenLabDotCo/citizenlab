@@ -4,12 +4,12 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor } from 'utils/testUtils/rtl';
 
-import { IDeliveryData } from './types';
+import { IEmailDeliveryData } from './types';
 import useEmailCampaignDeliveries from './useEmailCampaignDeliveries';
 
 const apiPath = '*campaigns/:id/email_deliveries';
 
-const campaignDeliveriesData: IDeliveryData = {
+const campaignDeliveriesData: IEmailDeliveryData = {
   id: '1',
   type: 'campaign_delivery',
   attributes: {

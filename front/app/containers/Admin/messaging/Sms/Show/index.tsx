@@ -6,7 +6,7 @@ import useDeleteSmsCampaign from 'api/campaigns/sms/useDeleteSmsCampaign';
 import useSendSmsCampaign from 'api/campaigns/sms/useSendSmsCampaign';
 import useSendSmsCampaignPreview from 'api/campaigns/sms/useSendSmsCampaignPreview';
 import useSmsCampaign from 'api/campaigns/sms/useSmsCampaign';
-import { isSmsDraft } from 'api/campaigns/sms/util';
+import { isSmsCampaignDraft } from 'api/campaigns/sms/util';
 import { IGroupData } from 'api/groups/types';
 import useGroupsByIds from 'api/groups/useGroupsByIds';
 
@@ -54,7 +54,7 @@ const Show = () => {
 
   if (!campaign) return null;
 
-  const draft = isSmsDraft(campaign.data);
+  const draft = isSmsCampaignDraft(campaign.data);
   const noGroupsSelected = groupIds.length === 0;
 
   const handleSend = () => {

@@ -3,23 +3,23 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignPreviewsKeys from './keys';
-import { ICampaignPreview, CampaignPreviewsKeys } from './types';
+import emailCampaignPreviewsKeys from './keys';
+import { IEmailCampaignPreview, EmailCampaignPreviewsKeys } from './types';
 
 const fetchEmailCampaignPreview = ({ campaignId }: { campaignId: string }) =>
-  fetcher<ICampaignPreview>({
+  fetcher<IEmailCampaignPreview>({
     path: `/campaigns/${campaignId}/email_preview`,
     action: 'get',
   });
 
 const useEmailCampaignPreview = (campaignId: string) => {
   return useQuery<
-    ICampaignPreview,
+    IEmailCampaignPreview,
     CLErrors,
-    ICampaignPreview,
-    CampaignPreviewsKeys
+    IEmailCampaignPreview,
+    EmailCampaignPreviewsKeys
   >({
-    queryKey: campaignPreviewsKeys.item({ campaignId }),
+    queryKey: emailCampaignPreviewsKeys.item({ campaignId }),
     queryFn: () => fetchEmailCampaignPreview({ campaignId }),
   });
 };

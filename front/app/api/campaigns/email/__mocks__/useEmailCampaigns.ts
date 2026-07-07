@@ -1,6 +1,6 @@
 import { IEmailCampaignData } from '../types';
 
-export const campaignsData: IEmailCampaignData[] = [
+export const emailCampaignsData: IEmailCampaignData[] = [
   {
     id: '1',
     type: 'campaign',

@@ -2,17 +2,19 @@ import { ILinks, IRelationship } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
-import campaignDeliveriesKeys from './keys';
+import emailCampaignDeliveriesKeys from './keys';
 
-export type CampaignDeliveriesKeys = Keys<typeof campaignDeliveriesKeys>;
+export type EmailCampaignDeliveriesKeys = Keys<
+  typeof emailCampaignDeliveriesKeys
+>;
 
-export type ICampaignDeliveriesParameters = {
+export type IEmailDeliveriesParameters = {
   campaignId: string;
   pageNumber?: number;
   pageSize?: number;
 };
 
-export interface IDeliveryData {
+export interface IEmailDeliveryData {
   id: string;
   type: string;
   attributes: {
@@ -35,7 +37,7 @@ export interface IDeliveryData {
   };
 }
 
-export interface ICampaignDeliveries {
-  data: IDeliveryData[];
+export interface IEmailCampaignDeliveries {
+  data: IEmailDeliveryData[];
   links: ILinks;
 }

@@ -1,10 +1,10 @@
 import { Keys } from 'utils/cl-react-query/types';
 
-import campaignStatsKeys from './keys';
+import emailCampaignStatsKeys from './keys';
 
-export type CampaignStatsKeys = Keys<typeof campaignStatsKeys>;
+export type EmailCampaignStatsKeys = Keys<typeof emailCampaignStatsKeys>;
 
-export interface ICampaignStats {
+export interface IEmailCampaignStats {
   data: {
     type: 'stats';
     attributes: {

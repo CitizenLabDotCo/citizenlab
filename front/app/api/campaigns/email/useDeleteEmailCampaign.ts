@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import campaignsKeys from './keys';
+import emailCampaignsKeys from './keys';
 
 const deleteEmailCampaign = (id: string) =>
   fetcher({
@@ -17,7 +17,7 @@ const useDeleteEmailCampaign = () => {
     mutationFn: deleteEmailCampaign,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: campaignsKeys.lists(),
+        queryKey: emailCampaignsKeys.lists(),
       });
     },
   });
