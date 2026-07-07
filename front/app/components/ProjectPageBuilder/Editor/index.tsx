@@ -26,10 +26,9 @@ import {
 } from 'components/ProjectPageBuilder/regions';
 import ProjectDescriptionSection from 'components/ProjectPageBuilder/Widgets/DescriptionSection';
 import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
-import InputFeed from 'components/ProjectPageBuilder/Widgets/InputFeed';
+import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
 import ProjectBanner from 'components/ProjectPageBuilder/Widgets/ProjectBanner';
 import ProjectTitle from 'components/ProjectPageBuilder/Widgets/ProjectTitle';
-import TimelineWidget from 'components/ProjectPageBuilder/Widgets/Timeline';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -58,9 +57,8 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         RichTextMultiloc,
         ImageTextCards,
         ButtonMultiloc,
-        TimelineWidget,
+        PhasesWidget,
         EventsWidget,
-        InputFeed,
         ProjectBanner,
         ProjectTitle,
         ProjectDescriptionSection,
