@@ -23,7 +23,10 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     Analytics::Reporting::InputTag,
     Analytics::Reporting::InputStatus,
     Analytics::Reporting::InputVote,
-    Analytics::Reporting::InputReaction
+    Analytics::Reporting::InputReaction,
+    Analytics::Reporting::User,
+    Analytics::Reporting::UserQuestionAnswer,
+    Analytics::Reporting::InputQuestionAnswer
   ].freeze
 
   REPORTING_TABLE_NAMES = REPORTING_TABLES.map(&:table_name).freeze
