@@ -2,10 +2,9 @@
 
 module EmailCampaigns
   module Sms
-    class Error < StandardError
-      # Raised when the provider rejects a message because we are being rate
-      # limited. Unlike other errors this is transient, so Sms::SendJob retries it.
-      class RateLimit < Error; end
-    end
+    # Base error for the SMS module, raised for our own validation/config failures.
+    # Failures from the external provider are raised as Sms::ProviderError (and its
+    # retryable subclasses) instead.
+    class Error < StandardError; end
   end
 end

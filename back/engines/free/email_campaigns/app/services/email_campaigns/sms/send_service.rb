@@ -31,8 +31,8 @@ module EmailCampaigns
         result = provider.send(to: parsed_to, body: delivery.body)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
         delivery
-      rescue Error::RateLimit
-        # Leave the delivery pending so Sms::SendJob can retry it;
+      rescue *ProviderError::RETRYABLE_ERRORS
+        # Transient failure — leave the delivery pending so Sms::SendJob can retry it.
         raise
       rescue Error => e
         delivery.update!(status: 'failed', error_message: e.message)

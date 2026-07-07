@@ -20,16 +20,23 @@ RSpec.describe EmailCampaigns::Sms::SendJob do
   # no-op here while `expire` is called directly by the job. That lets us assert
   # the branch purely by whether `expire` is invoked.
   describe '#handle_error' do
-    it 'retries rate-limit errors instead of expiring the job' do
-      job = described_class.new
-      expect(job).not_to receive(:expire)
+    it 'retries transient provider errors instead of expiring the job' do
+      [
+        EmailCampaigns::Sms::ProviderError::RateLimit.new('slow down'),
+        EmailCampaigns::Sms::ProviderError::ServerError.new('twilio is down'),
+        EmailCampaigns::Sms::ProviderError::ServiceUnavailable.new('unavailable')
+      ].each do |error|
+        job = described_class.new
+        expect(job).not_to receive(:expire)
 
-      job.send(:handle_error, EmailCampaigns::Sms::Error::RateLimit.new('slow down'))
+        job.send(:handle_error, error)
+      end
     end
 
-    it 'expires the job for every other error, including the generic Sms::Error' do
+    it 'expires the job for every other error, including non-retryable provider errors' do
       [
-        EmailCampaigns::Sms::Error.new('permanent provider rejection'),
+        EmailCampaigns::Sms::Error.new('our own validation error'),
+        EmailCampaigns::Sms::ProviderError.new('permanent provider rejection'),
         ActiveRecord::RecordNotFound.new('delivery is gone'),
         StandardError.new('boom')
       ].each do |error|

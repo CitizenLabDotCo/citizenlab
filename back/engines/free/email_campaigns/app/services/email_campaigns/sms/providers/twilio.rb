@@ -28,13 +28,13 @@ module EmailCampaigns
           # never lands on a non-vocabulary value.
           { message_sid: message.sid, status: STATUS_MAPPING.fetch(message.status, 'queued') }
         rescue ::Twilio::REST::RestError => e
-          # HTTP 429 means we hit Twilio's rate limit; surface it as a retryable
-          # error so Sms::SendJob backs off and tries again.
-          raise Error::RateLimit, e.message if e.status_code == 429
-
-          raise Error, e.message
+          # Translate the HTTP status into one of our provider error classes so
+          # callers (Sms::SendJob, Sms::SendService) can decide whether to retry.
+          raise error_for(e)
         rescue ::Twilio::REST::TwilioError => e
-          raise Error, e.message
+          # Non-HTTP failures (e.g. connection errors) carry no status code and
+          # are treated as permanent.
+          raise ProviderError, e.message
         end
 
         def verify_signature(request)
@@ -51,6 +51,22 @@ module EmailCampaigns
         end
 
         private
+
+        # Maps a Twilio REST error onto our provider error hierarchy by HTTP
+        # status: 429 -> RateLimit, 503 -> ServiceUnavailable, other 5xx ->
+        # ServerError (all retryable), anything else -> the permanent ProviderError.
+        def error_for(rest_error)
+          error_class_for(rest_error.status_code).new(rest_error.message)
+        end
+
+        def error_class_for(status_code)
+          case status_code
+          when 429 then ProviderError::RateLimit
+          when 503 then ProviderError::ServiceUnavailable
+          when 500..599 then ProviderError::ServerError
+          else ProviderError
+          end
+        end
 
         def callback_url
           "#{AppConfiguration.instance.base_backend_uri}/web_api/v1/sms/callbacks"
