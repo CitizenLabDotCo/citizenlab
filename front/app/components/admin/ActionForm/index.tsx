@@ -128,7 +128,11 @@ const ActionForm = ({
         </Box>
 
         {isOpen && (
-          <Box px="20px" pb="20px">
+          <Box
+            px="20px"
+            pb="20px"
+            className={`e2e-action-form-${action}`}
+          >
             <Divider mt="0" mb="20px" />
 
             {passwordLoginEnabled ? (
