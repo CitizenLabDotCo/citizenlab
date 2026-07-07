@@ -22,10 +22,6 @@ export default defineMessages({
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon',
     defaultMessage: 'Card icon',
   },
-  clearIcon: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon',
-    defaultMessage: 'Clear',
-  },
   noData: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData',
     defaultMessage: 'No pages selected',
