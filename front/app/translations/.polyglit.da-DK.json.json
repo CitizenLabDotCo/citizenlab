@@ -264,6 +264,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.AuthProviders.continueWithLuxembourgIAM": {
+    "state": "verified",
+    "verified_at": "2026-07-03T08:06:59.631230Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.AuthProviders.continueWithNemlogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -3379,6 +3384,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.VerificationModal.verifyEtatLu2": {
+    "state": "verified",
+    "verified_at": "2026-07-03T08:06:59.631230Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.VerificationModal.verifyFakeSSO": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -3553,6 +3563,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.field_participated_in_input": {
+    "state": "verified",
+    "verified_at": "2026-07-03T08:06:59.631230Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": {
     "state": "verified",

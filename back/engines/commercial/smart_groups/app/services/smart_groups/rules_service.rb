@@ -20,6 +20,7 @@ module SmartGroups
       SmartGroups::Rules::ParticipatedInProject,
       SmartGroups::Rules::ParticipatedInTopic,
       SmartGroups::Rules::ParticipatedInIdeaStatus,
+      SmartGroups::Rules::ParticipatedInInput,
       SmartGroups::Rules::Verified,
       SmartGroups::Rules::ParticipatedInCommunityMonitor
 
