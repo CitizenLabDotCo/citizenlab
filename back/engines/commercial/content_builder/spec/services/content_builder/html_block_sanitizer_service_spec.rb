@@ -6,12 +6,34 @@ describe ContentBuilder::HtmlBlockSanitizerService do
   let(:service) { described_class.new }
 
   describe 'sanitize' do
-    it 'allows paragraphs and breaks to pass through' do
+    it 'allows common tags and attributes to pass through' do
       input = <<~HTML
+        <header>
+            <h1 style="font-size:30px;">title</h1>
+            <h2 style="font-style:italic;">subtitle</h2>
+        </header>
         <p>paragraph<br>with<br>breaks</p>
+        <ul>
+          <li>list item 1</li>
+          <li>list item 2</li>
+        </ul>
+        <table>
+          <tbody>
+              <tr>
+              <td aria-label="cell 1">cell 1</td>
+              <td>cell 2</td>
+            </tr>
+          </tbody>
+        </table>
+        <footer>
+            <div>
+                <p>footer <span>content</span></p>
+            </div>
+         </footer>   
       HTML
       expect(service.sanitize(input)).to eq input
     end
+
 
     it 'allows video audio source iframe tags with their specific attributes to pass through' do
       input = <<~HTML
@@ -55,6 +77,13 @@ describe ContentBuilder::HtmlBlockSanitizerService do
         </form>
       HTML
       expect(service.sanitize(input)).to eq ''
+    end
+
+    it 'disallows script tags' do
+      input = <<~HTML
+        <scrscriptipt>alert('XSS');</scrscriptipt>
+      HTML
+      expect(service.sanitize(input)).not_to include('script')
     end
   end
 end
