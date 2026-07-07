@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
@@ -10,6 +10,7 @@ import useLocale from 'hooks/useLocale';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import { ensureLockedHeaderNodes } from 'components/ProjectPageBuilder/defaultLayout';
 import Editor from 'components/ProjectPageBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
@@ -30,12 +31,19 @@ export const FullScreenPreview = ({ projectId }: Props) => {
 
   const { data: layout } = useProjectPageLayout(projectId);
 
+  // The builder posts already-normalized draft data; the saved layout is
+  // normalized here so stale layouts render with the current fixed structure.
+  const savedEditorData = useMemo(
+    () =>
+      layout ? ensureLockedHeaderNodes(layout.data.attributes.craftjs_json) : undefined,
+    [layout]
+  );
+
   if (isNilOrError(platformLocale)) {
     return null;
   }
 
   const isLoading = layout === undefined;
-  const savedEditorData = layout?.data.attributes.craftjs_json;
   const editorData = draftData || savedEditorData;
 
   return (
