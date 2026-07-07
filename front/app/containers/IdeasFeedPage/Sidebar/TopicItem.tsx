@@ -11,8 +11,7 @@ import styled from 'styled-components';
 
 import useInputTopicById from 'api/input_topics/useInputTopicById';
 
-import useLocalize from 'hooks/useLocalize';
-
+import T from 'components/T';
 import Emoji from 'components/UI/Emoji';
 
 import { getTopicColor, getTopicProgressBarColor } from '../topicsColor';
@@ -41,7 +40,6 @@ const TopicItem = ({
   isLast = false,
 }: Props) => {
   const { data: topic } = useInputTopicById(topicId);
-  const localize = useLocalize();
   const percentage =
     totalIdeasCount > 0 ? (topicCount / totalIdeasCount) * 100 : 0;
   const topicColor = getTopicProgressBarColor(topicId);
@@ -51,7 +49,7 @@ const TopicItem = ({
       <Box
         as={StyledButton}
         data-cy="e2e-topic-item"
-        buttonStyle="secondary-outlined"
+        buttonStyle="text"
         background={isActive ? colors.teal100 : 'transparent'}
         onClick={() => onTopicSelect(topicId)}
         borderColor="transparent"
@@ -71,7 +69,7 @@ const TopicItem = ({
               <Emoji emoji={topic.data.attributes.icon} size="24px" />
             )}
             <Text m="0px" p="0px" fontWeight="bold" variant="bodyL">
-              {localize(topic?.data.attributes.title_multiloc)}
+              <T value={topic?.data.attributes.title_multiloc} supportHtml />
             </Text>
           </Box>
           <Box
@@ -89,7 +87,7 @@ const TopicItem = ({
           </Box>
         </Box>
         <Text m="0px" variant="bodyM">
-          {localize(topic?.data.attributes.description_multiloc)}
+          <T value={topic?.data.attributes.description_multiloc} supportHtml />
         </Text>
         <Box mt="8px" w="100%">
           <Box

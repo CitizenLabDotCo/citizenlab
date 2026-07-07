@@ -45,6 +45,7 @@ const SeeAllButton = ({ inputTerm, onClose }: Props) => {
             topic: messages.showAllTopics,
             post: messages.showAllPosts,
             story: messages.showAllStories,
+            observation: messages.showAllObservations,
           })}
         />
       </Button>

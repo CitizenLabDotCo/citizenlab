@@ -112,6 +112,8 @@ cy-GB:
           title: Beth yw eich menter?
         issue:
           title: Beth yw eich sylw?
+        observation:
+          title: Beth yw eich arsylwad?
         option:
           title: Beth yw eich opsiwn?
         petition:
@@ -271,6 +273,16 @@ cy-GB:
       title: Pob prosiect
     proposals:
       title: Cynigion
+  pdf_export:
+    survey_responses:
+      date: Dyddiad
+      no_answer: (Dim ateb)
+      prepared_by: Paratowyd gan
+      report_label: Adroddiad ymatebion arolwg
+      respondent: Ymatebydd %{number}
+      response_count:
+        one: '%{count} ymateb'
+        other: '%{count} o ymatebion'
   phases:
     community_monitor_title: Monitor cymunedol
     native_survey_button: Cymerwch yr arolwg

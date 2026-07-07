@@ -112,6 +112,8 @@ el-GR:
           title: Ποια είναι η πρωτοβουλία σας;
         issue:
           title: Ποιο είναι το σχόλιό σας;
+        observation:
+          title: Ποια είναι η παρατήρησή σας;
         option:
           title: Ποια είναι η επιλογή σας;
         petition:
@@ -267,6 +269,16 @@ el-GR:
       title: Δείτε εδώ
     proposals:
       title: Προτάσεις
+  pdf_export:
+    survey_responses:
+      date: Ημερομηνία
+      no_answer: (Καμία απάντηση)
+      prepared_by: Προετοιμάστηκε από
+      report_label: Αναφορά απαντήσεων έρευνας
+      respondent: Ερωτηθείς %{number}
+      response_count:
+        one: '%{count} απάντηση'
+        other: '%{count} απαντήσεις'
   phases:
     community_monitor_title: Κοινοτικός παρατηρητής
     native_survey_button: Πάρτε μέρος στην έρευνα

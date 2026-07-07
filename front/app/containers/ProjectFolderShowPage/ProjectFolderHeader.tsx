@@ -1,6 +1,11 @@
 import React, { memo } from 'react';
 
-import { useWindowSize, Box, media } from '@citizenlab/cl2-component-library';
+import {
+  useWindowSize,
+  Box,
+  media,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IProjectFolderData } from 'api/project_folders/types';
@@ -19,6 +24,13 @@ const StyledProjectFolderShareButton = styled(ProjectFolderShareButton)`
     right: 10px;
     top: 10px;
   `};
+
+  && button:focus-visible,
+  && button.focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px ${colors.white}, 0 0 0 4px ${colors.black},
+      0 0 0 6px ${colors.white};
+  }
 `;
 
 interface Props {

@@ -202,7 +202,8 @@ export type InputTerm =
   | 'suggestion'
   | 'topic'
   | 'post'
-  | 'story';
+  | 'story'
+  | 'observation';
 
 export const presentationModes = ['card', 'map', 'feed'] as const;
 export type PresentationMode = (typeof presentationModes)[number];

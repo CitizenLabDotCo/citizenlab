@@ -31,6 +31,9 @@ const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
+const AdminProjectPageNewBackoffice = lazy(
+  () => import('./project/newBackoffice/ProjectPage')
+);
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminProjectsProjectGeneralSetUp = lazy(
@@ -235,6 +238,16 @@ const projectIndexRoute = createRoute({
   component: ProjectIndexRedirect,
 });
 
+const projectPageRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'project-page',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageNewBackoffice />
+    </PageLoading>
+  ),
+});
+
 // --- General settings layout ---
 const projectGeneralRoute = createRoute({
   getParentRoute: () => projectRoute,
@@ -394,6 +407,7 @@ const projectAnalysisSearchSchema = yup.object({
     .string()
     .oneOf(['true', 'false'])
     .optional(),
+  input_follow_up_not_empty: yup.string().oneOf(['true', 'false']).optional(),
   // `[null]` is a deliberate sentinel meaning "filter to inputs without tags"
   tag_ids: yup.array().of(yup.string().nullable().defined()).optional(),
   reset_filters: yup.string().optional(),
@@ -750,6 +764,7 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
     projectIdeaPreviewRoute,
     projectRoute.addChildren([
       projectIndexRoute,
+      projectPageRoute,
       projectGeneralRoute.addChildren([
         projectGeneralIndexRoute,
         projectGeneralInputTagsRoute,

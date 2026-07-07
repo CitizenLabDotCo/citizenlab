@@ -111,6 +111,20 @@ const EsriMap = ({
 
   const mapRefAvailable = !!mapRef.current;
 
+  // ESRI's MapView preventDefault()s Tab globally, trapping focus. Run before it
+  // (capture, pre-MapView) and drop Tab so the browser's native Tab still works.
+  useEffect(() => {
+    const releaseTabFromEsriTrap = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        e.stopImmediatePropagation();
+      }
+    };
+
+    document.addEventListener('keydown', releaseTabFromEsriTrap, true);
+    return () =>
+      document.removeEventListener('keydown', releaseTabFromEsriTrap, true);
+  }, []);
+
   useEffect(() => {
     if (!mapRefAvailable) return;
 

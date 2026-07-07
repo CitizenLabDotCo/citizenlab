@@ -48,7 +48,11 @@ ur-PK:
         new_attendee: نیا رجسٹرڈ صارف
         project_review_requester: وہ صارف جس نے پروجیکٹ کے جائزے کی درخواست کی۔
         project_reviewers: پروجیکٹ کا جائزہ لینے والے اور فولڈر مینیجر
+        user_changing_email: وہ صارف جو اپنا ای میل ایڈریس تبدیل کر رہا ہے
+        user_confirming_email: وہ صارف جو اپنے ای میل ایڈریس کی تصدیق کر رہا ہے
+        user_requesting_password_reset: وہ صارف جس نے پاس ورڈ ری سیٹ کرنے کی درخواست کی
         user_who_commented: صارف جس نے تبصرہ کیا۔
+        user_who_is_blocked: وہ صارف جس کا اکاؤنٹ بلاک ہے
         user_who_is_invited_to_cosponsor_a_proposal: وہ صارف جسے کسی تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔
         user_who_is_mentioned: صارف جس کا ذکر کیا گیا ہے۔
         user_who_is_receiving_admin_rights: وہ صارف جو منتظم کے حقوق حاصل کر رہا ہے۔
@@ -105,9 +109,12 @@ ur-PK:
         registration_to_event: کسی تقریب کی رجسٹریشن
         survey_1_day_after_draft_saved: صارف کے آخری بار سروے کو ڈرافٹ میں محفوظ کرنے کے 1 دن بعد
         user_accepts_invitation_to_cosponsor_a_proposal: صارف کسی تجویز کو شریک کفیل کرنے کی دعوت قبول کرتا ہے۔
+        user_changes_email: صارف اپنا ای میل ایڈریس تبدیل کرتا ہے
         user_comments: صارف کے تبصرے۔
         user_comments_on_input: ان پٹ پر صارف کے تبصرے۔
         user_comments_on_proposal: تجویز پر صارف کے تبصرے۔
+        user_confirms_email: صارف اپنے ای میل ایڈریس کی تصدیق کرتا ہے
+        user_is_blocked: صارف کا اکاؤنٹ بلاک ہے
         user_is_given_admin_rights: صارف کو منتظم کے حقوق دیے جاتے ہیں۔
         user_is_given_folder_manager_rights: صارف کو فولڈر مینیجر کے اختیارات دے دیے گئے ہیں
         user_is_given_folder_moderator_rights: صارف کو فولڈر ماڈریٹر کے حقوق دیئے گئے ہیں۔
@@ -121,6 +128,7 @@ ur-PK:
         user_registers_for_the_first_time: صارف پہلی بار رجسٹر کرتا ہے۔
         user_replies_to_comment: صارف کا تبصرہ کرنے کا جواب
         user_replies_to_internal_comment: صارف کے اندرونی تبصرے کے جوابات
+        user_requests_password_reset: صارف پاس ورڈ ری سیٹ کرنے کی درخواست کرتا ہے
         voting_1_day_after_last_votes: صارف کے آخری ووٹ دینے کے 1 دن بعد
         voting_2_days_before_phase_closes: ووٹنگ کا مرحلہ بند ہونے سے 2 دن پہلے
         voting_basket_submitted: ووٹ جمع کرائے جاتے ہیں۔
@@ -160,6 +168,7 @@ ur-PK:
       comment_on_your_comment: میرے تبصرے کا جواب
       community_monitor_report: کمیونٹی مانیٹر رپورٹ
       cosponsor_of_your_idea: ایک صارف میری تجویز کو شریک سپانسر کرنے کے لیے میری دعوت قبول کرتا ہے۔
+      email_confirmation: ای میل کی تصدیق کا کوڈ
       event_registration_confirmation: ایونٹ رجسٹریشن کی تصدیق
       idea_marked_as_spam: آئیڈیا سپیم رپورٹ
       idea_published: میرے خیال کی اشاعت
@@ -178,6 +187,7 @@ ur-PK:
       moderator_digest: پروجیکٹ مینیجرز کے لیے ہفتہ وار جائزہ
       native_survey_not_submitted: سروے جمع نہیں ہوا۔
       new_comment_for_admin: ایک پروجیکٹ میں نیا تبصرہ جس میں میں معتدل ہوں۔
+      new_email_confirmation: ای میل کی تصدیق کا نیا کوڈ
       new_idea_for_admin_prescreening: نئے ان پٹ کو ایک پروجیکٹ میں منظوری کی ضرورت ہوتی ہے جس میں میں اعتدال کرتا ہوں۔
       new_idea_for_admin_published: ایک پروجیکٹ میں نیا شائع شدہ ان پٹ جس میں میں معتدل ہوں۔
       official_feedback_on_idea_you_follow: ایک خیال پر اپ ڈیٹ کریں جس کی آپ پیروی کرتے ہیں۔
@@ -196,6 +206,7 @@ ur-PK:
       status_change_on_idea_you_follow: کسی خیال کی حیثیت کی تبدیلی جس کی آپ پیروی کرتے ہیں۔
       survey_submitted: سروے جمع کرایا
       threshold_reached_for_admin: تجویز ووٹنگ کی حد تک پہنچ گئی۔
+      user_blocked: اکاؤنٹ بلاک کر دیا گیا
       user_digest: ہفتہ وار جائزہ
       voting_basket_not_submitted: ووٹ جمع نہیں ہوئے۔
       voting_basket_submitted: ووٹنگ کی تصدیق
@@ -238,6 +249,7 @@ ur-PK:
         idea: '%{authorName} نے ایک خیال پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         initiative: '%{authorName} نے اس اقدام پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         issue: '%{authorName} نے اس مسئلے پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        observation: '%{authorName} نے اس مشاہدے پر تبصرہ کیا ہے جس کی آپ پیروی کر رہے ہیں'
         option: '%{authorName} نے ایک آپشن پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         petition: '%{authorName} نے آپ کی پیروی کی درخواست پر تبصرہ کیا۔'
         post: '%{authorName} نے اس پوسٹ پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
@@ -271,6 +283,15 @@ ur-PK:
       preheader: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
       subject: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
       title: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+    email_confirmation:
+      best_regards: نیک تمنائیں،
+      event_description: 'آپ کی شرکت کا شکریہ۔ براہ کرم یہ تصدیقی کوڈ %{organizationName} کے شراکتی پلیٹ فارم کی ونڈو میں درج کریں:'
+      expire_code: اس کوڈ کی میعاد ختم ہو جائے گی
+      hours_24: 24 گھنٹے۔
+      ignore_email: اگر آپ نے کوڈ کی درخواست نہیں کی تھی، تو آپ اس ای میل کو نظر انداز کر سکتے ہیں۔
+      preheader: '%{organizationName} کے لیے اپنے ای میل ایڈریس کی تصدیق کریں'
+      subject: '%{organizationName} کے شراکتی پلیٹ فارم کے لیے اپنے ای میل ایڈریس کی تصدیق کریں'
+      title: اپنے ای میل ایڈریس کی تصدیق کریں
     event_registration_confirmation:
       cta_add_to_calendar: اپنے کیلنڈر میں شامل کریں۔
       cta_button: واقعہ دیکھیں
@@ -303,6 +324,7 @@ ur-PK:
         idea: اس خیال پر جائیں۔
         initiative: اس اقدام پر جائیں۔
         issue: اس مسئلے پر جائیں۔
+        observation: اس مشاہدے پر جائیں
         option: اس آپشن پر جائیں۔
         petition: اس عرضی پر جائیں۔
         post: اس پوسٹ پر جائیں۔
@@ -323,6 +345,7 @@ ur-PK:
         idea: اپنے خیال پر جائیں۔
         initiative: اپنی پہل پر جائیں۔
         issue: اپنے مسئلے پر جائیں۔
+        observation: اپنے مشاہدے پر جائیں
         option: اپنے آپشن پر جائیں۔
         petition: اپنی درخواست پر جائیں۔
         post: اپنی پوسٹ پر جائیں۔
@@ -356,6 +379,7 @@ ur-PK:
         idea: آپ کا خیال شائع ہو چکا ہے۔
         initiative: آپ کا پہل شائع ہو چکا ہے۔
         issue: آپ کا شمارہ شائع ہو چکا ہے۔
+        observation: آپ کا مشاہدہ شائع ہو گیا ہے
         option: آپ کا اختیار شائع ہو چکا ہے۔
         petition: آپ کی درخواست شائع ہو چکی ہے۔
         post: آپ کی پوسٹ شائع ہو چکی ہے۔
@@ -482,6 +506,15 @@ ur-PK:
       title: '%{firstName}، آپ کے پلیٹ فارم پر ایک نیا تبصرہ پوسٹ کیا گیا ہے۔'
       today: آج
       yesterday: کل
+    new_email_confirmation:
+      best_regards: نیک تمنائیں،
+      event_description: 'اپنے نئے ای میل ایڈریس کی تصدیق کے لیے براہ کرم یہ تصدیقی کوڈ %{organizationName} کے شراکتی پلیٹ فارم پر موجود ونڈو میں درج کریں:'
+      expire_code: اس کوڈ کی میعاد ختم ہو جائے گی
+      hours_24: 24 گھنٹے۔
+      ignore_email: اگر آپ نے کوڈ کی درخواست نہیں کی تھی، تو آپ اس ای میل کو نظر انداز کر سکتے ہیں۔
+      preheader: '%{organizationName} کے لیے اپنے نئے ای میل ایڈریس کی تصدیق کریں'
+      subject: '%{organizationName} کے شراکتی پلیٹ فارم کے لیے اپنے نئے ای میل ایڈریس کی تصدیق کریں'
+      title: اپنے نئے ای میل ایڈریس کی تصدیق کریں
     new_idea_for_admin_prescreening:
       cta_button: ان پٹ کا جائزہ لیں۔
       days_ago: '%{numberOfDays} دن پہلے'
@@ -507,6 +540,12 @@ ur-PK:
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: '"%{input_title}" پر ایک اپ ڈیٹ ہے'
+    password_reset:
+      cta_button: اپنا پاس ورڈ ری سیٹ کریں
+      event_description: آپ نے %{organizationName} کے شراکتی پلیٹ فارم کے لیے پاس ورڈ ری سیٹ کرنے کی درخواست کی تھی۔ نیا اور محفوظ پاس ورڈ منتخب کرنے کے لیے نیچے دیے گئے بٹن پر کلک کریں۔ یہ لنک 1 گھنٹے میں ختم ہو جائے گا۔
+      preheader: '%{organizationName} کے لیے اپنا پاس ورڈ ری سیٹ کریں'
+      subject: '%{organizationName}: اپنا پاس ورڈ ری سیٹ کریں'
+      title: نیا پاس ورڈ منتخب کریں
     preview_data:
       author_display_name: جین ڈو
       author_first_name: جین
@@ -652,6 +691,14 @@ ur-PK:
       preheader: اگلے اقدامات کو یقینی بنائیں
       subject: آپ کے پلیٹ فارم پر ایک تجویز ووٹنگ کی حد تک پہنچ گئی۔
       title: ایک تجویز ووٹنگ کی حد تک پہنچ گئی!
+    user_blocked:
+      for_more_information: اس بارے میں مزید معلومات کے لیے، آپ %{termsAndConditionsPage} ملاحظہ کر سکتے ہیں
+      paragraph_1_with_reason: '%{organizationName} کے شراکتی پلیٹ فارم پر آپ کا اکاؤنٹ درج ذیل وجہ سے عارضی طور پر معطل کر دیا گیا ہے:'
+      paragraph_1_without_reason: کمیونٹی گائیڈ لائنز کی خلاف ورزی کی وجہ سے %{organizationName} کے شراکتی پلیٹ فارم پر آپ کا اکاؤنٹ عارضی طور پر معطل کر دیا گیا ہے۔
+      preheader: '%{organizationName} کے شراکتی پلیٹ فارم پر آپ کا اکاؤنٹ عارضی طور پر معطل کر دیا گیا ہے'
+      subject: آپ کا اکاؤنٹ عارضی طور پر معطل کر دیا گیا ہے
+      title: آپ کا اکاؤنٹ عارضی طور پر معطل کر دیا گیا ہے
+      you_can_sign_in_again_from: آپ %{date} سے دوبارہ سائن ان کر سکتے ہیں
     user_digest:
       commented: '%{authorFirstName} تبصرہ کیا:'
       cta_button: پلیٹ فارم پر جائیں۔
@@ -721,6 +768,7 @@ ur-PK:
         idea: آپ کا خیال "%{prescreening_status_title}" میں ہے
         initiative: آپ کی پہل "%{prescreening_status_title}" میں ہے
         issue: آپ کا مسئلہ "%{prescreening_status_title}" میں ہے
+        observation: آپ کا مشاہدہ "%{prescreening_status_title}" میں ہے
         option: آپ کا اختیار "%{prescreening_status_title}" میں ہے
         petition: آپ کی درخواست "%{prescreening_status_title}" میں ہے
         post: آپ کی پوسٹ "%{prescreening_status_title}" میں ہے
