@@ -1531,7 +1531,7 @@
         "description": "Send SMS messages to users via the tenant's own Twilio account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["twilio_account_sid", "twilio_auth_token"],
+        "required-settings": ["twilio_account_sid", "twilio_auth_token", "twilio_messaging_service_sid"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false },
@@ -1545,16 +1545,10 @@
             "title": "Twilio Auth Token",
             "private": true
           },
-          "twilio_phone_number": {
-            "type": "string",
-            "title": "Twilio Phone Number (sender)",
-            "description": "Used as the 'from' number when no Messaging Service SID is set.",
-            "private": true
-          },
           "twilio_messaging_service_sid": {
             "type": "string",
             "title": "Twilio Messaging Service SID",
-            "description": "Optional. When set, takes precedence over the phone number.",
+            "description": "The Twilio Messaging Service SID used to send SMS messages.",
             "private": true
           }
         }

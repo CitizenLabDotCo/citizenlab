@@ -56,16 +56,12 @@ module EmailCampaigns
           "#{AppConfiguration.instance.base_backend_uri}/web_api/v1/sms/callbacks"
         end
 
-        # The Messaging Service SID takes precedence over the phone number when
-        # both are configured. At least one must be set.
+        # SMS is always sent through a Twilio Messaging Service, identified by its SID.
         def from_params
           messaging_service_sid = config['twilio_messaging_service_sid'].presence
-          return { messaging_service_sid: messaging_service_sid } if messaging_service_sid
+          raise Error, 'No Twilio messaging service SID configured' unless messaging_service_sid
 
-          phone_number = config['twilio_phone_number'].presence
-          raise Error, 'No Twilio sender configured (set a phone number or messaging service SID)' unless phone_number
-
-          { from: phone_number }
+          { messaging_service_sid: messaging_service_sid }
         end
 
         def client
