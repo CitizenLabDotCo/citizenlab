@@ -1823,7 +1823,7 @@
   "app.containers.IdeasShow.importedTooltipProposal": "Cette proposition a été collectée hors ligne et automatiquement mise en ligne sur la plateforme.",
   "app.containers.IdeasShow.importedTooltipQuestion": "Cette question a été collectée hors ligne et automatiquement mise en ligne sur la plateforme.",
   "app.containers.IdeasShow.importedTooltipResponse": "Cette réponse a été collectée hors ligne et automatiquement mise en ligne sur la plateforme.",
-  "app.containers.IdeasShow.importedTooltipStory": "Ce témoignage a été collecté hors ligne et automatiquement mis en ligne sur la plateforme.",
+  "app.containers.IdeasShow.importedTooltipStory": "Ce récit a été collecté hors ligne et automatiquement mis en ligne sur la plateforme.",
   "app.containers.IdeasShow.importedTooltipSuggestion": "Cette suggestion a été collectée hors ligne et automatiquement mise en ligne sur la plateforme.",
   "app.containers.IdeasShow.importedTooltipTopic": "Ce sujet a été collecté hors ligne et automatiquement mis en ligne sur la plateforme.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Soutenez l'initiative « {ideaTitle} » sur {ideaUrl} !",

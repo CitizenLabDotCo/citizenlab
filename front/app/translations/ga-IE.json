@@ -1811,7 +1811,7 @@
   "app.containers.IdeasShow.ideaWhatsAppMessage": "Tacaigh leis an smaoineamh seo: {postTitle}",
   "app.containers.IdeasShow.imported": "Iompórtáilte",
   "app.containers.IdeasShow.importedTooltipComment": "Bailíodh an trácht seo as líne agus uaslódáladh go huathoibríoch chuig an ardán é.",
-  "app.containers.IdeasShow.importedTooltipContribution": "Bailíodh an rannchuidiú seo as líne agus uaslódáladh go huathoibríoch chuig an ardán é.",
+  "app.containers.IdeasShow.importedTooltipContribution": "Bailíodh an ranníocaíocht seo as líne agus uaslódáladh go huathoibríoch chuig an ardán í.",
   "app.containers.IdeasShow.importedTooltipIdea": "Bailíodh an smaoineamh seo as líne agus uaslódáladh go huathoibríoch chuig an ardán é.",
   "app.containers.IdeasShow.importedTooltipInitiative": "Bailíodh an tionscnamh seo as líne agus uaslódáladh go huathoibríoch chuig an ardán é.",
   "app.containers.IdeasShow.importedTooltipIssue": "Bailíodh an tsaincheist seo as líne agus uaslódáladh go huathoibríoch chuig an ardán í.",
