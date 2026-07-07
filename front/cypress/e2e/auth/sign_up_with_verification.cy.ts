@@ -104,5 +104,47 @@ describe('Sign up - verification required', () => {
         `/en/projects/${projectTitle}/surveys/new`
       );
     });
+  });
+
+  describe('Requires name but not password', () => {
+    before(() => {
+      cy.apiSetPhasePermission({
+        phaseId,
+        permissionBody: {
+          permitted_by: 'users',
+          require_name: true,
+          require_password: false,
+          require_verification: true
+        },
+        action: 'posting_idea',
+      });
+    })
+
+    it('works when signing up with new email', () => {
+      cy.visit(`/projects/${projectTitle}`);
+
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+      signUpEmailConformation(cy);
+      cy.get('#firstName').type(randomString());
+      cy.get('#lastName').type(randomString());
+
+      cy.get('#e2e-built-in-fields-submit-button > button').click({ force: true });
+
+      // verification step: fill out bogus
+      cy.get(
+        '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
+      ).click();
+      cy.get('#e2e-verification-bogus-form');
+      cy.get('#e2e-verification-bogus-submit-button').click();
+
+      cy.get('#e2e-success-continue-button').click();
+
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectTitle}/surveys/new`
+      );
+    });
   })
 });
