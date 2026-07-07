@@ -42,7 +42,7 @@ module EmailCampaigns
     include ContentConfigurable
     include ContextConfigurable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages only: %w[trial active]
+    allow_lifecycle_stages only: %w[trial active demo] # demo is temp for gouda demo 7/7/26
 
     recipient_filter :filter_recipient
 
