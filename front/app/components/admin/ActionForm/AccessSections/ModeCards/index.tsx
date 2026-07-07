@@ -39,6 +39,7 @@ const ModeCards = ({
             title={formatMessage(messages.anyone)}
             description={formatMessage(messages.noAccountNeeded)}
             selected={permittedBy === 'everyone'}
+            className="e2e-permission-anyone"
             onClick={() => setMode('everyone')}
           />
         )}
@@ -47,6 +48,7 @@ const ModeCards = ({
           title={signInTitle}
           description={signInDescription}
           selected={permittedBy === 'users'}
+          className="e2e-permission-registered-users"
           onClick={() => setMode('users')}
         />
         <ModeCard
@@ -54,6 +56,7 @@ const ModeCards = ({
           title={formatMessage(messages.adminManagersOnly)}
           description={formatMessage(messages.restrictedToStaff)}
           selected={permittedBy === 'admins_moderators'}
+          className="e2e-permission-admins-managers"
           onClick={() => setMode('admins_moderators')}
         />
       </Box>

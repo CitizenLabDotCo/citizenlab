@@ -92,12 +92,14 @@ export const ModeCard = ({
   title,
   description,
   selected,
+  className,
   onClick,
 }: {
   icon: IconNames;
   title: string;
   description: string;
   selected: boolean;
+  className?: string;
   onClick: () => void;
 }) => (
   <Box
@@ -112,6 +114,7 @@ export const ModeCard = ({
     border={`1px solid ${selected ? colors.teal400 : colors.borderLight}`}
     bgColor={selected ? colors.teal50 : colors.white}
     style={{ cursor: 'pointer', textAlign: 'left' }}
+    className={className}
     onClick={onClick}
   >
     <Icon
