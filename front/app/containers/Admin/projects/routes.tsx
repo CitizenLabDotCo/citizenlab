@@ -6,6 +6,8 @@ import { reviewStates } from 'api/admin_publications/types';
 import { ideaSortValues } from 'api/ideas/types';
 import { projectSortableParams } from 'api/projects_mini_admin/types';
 
+import useParallelParticipation from 'hooks/useParallelParticipation';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import Navigate from 'utils/cl-router/Navigate';
@@ -218,11 +220,25 @@ const projectRoute = createRoute({
   ),
 });
 
-// Project index redirect
+// Project index redirect. With parallel participation a project opens on its
+// page — phases sit one click away in the rail, and with parallel phases there
+// is no single active phase to pick. Otherwise it opens on the active phase.
 const ProjectIndexRedirect = () => {
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId',
   });
+  const parallelParticipation = useParallelParticipation();
+
+  if (parallelParticipation) {
+    return (
+      <Navigate
+        to="/admin/projects/$projectId/project-page"
+        params={{ projectId }}
+        replace
+      />
+    );
+  }
+
   return (
     <Navigate
       to="/admin/projects/$projectId/phases/setup"
