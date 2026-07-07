@@ -1009,6 +1009,11 @@
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "static_pages.infopage_body": {
+    "state": "verified",
+    "verified_at": "2026-07-07T15:45:04.424780Z",
+    "verified_by": "Roger"
+  },
   "static_pages.infopage_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
