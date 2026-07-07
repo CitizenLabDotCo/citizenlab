@@ -112,6 +112,8 @@ hr-HR:
           title: Koja je vaša inicijativa?
         issue:
           title: Šta je vaša tema ?
+        observation:
+          title: Koje je vaše opažanje?
         option:
           title: Što je vaša opcija?
         petition:

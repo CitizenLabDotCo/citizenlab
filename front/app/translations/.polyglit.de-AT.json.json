@@ -1949,6 +1949,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.ParticipationCTABars.seeObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ParticipationCTABars.seeOptions": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2324,6 +2329,21 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.PostComponents.SharingModalContent.observationEmailSharingBody": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PostComponents.SharingModalContent.observationEmailSharingSubject": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PostComponents.SharingModalContent.observationWhatsAppMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PostComponents.SharingModalContent.optionEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2604,6 +2624,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.ProjectCard.submitYourObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectCard.submitYourPetition": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2678,6 +2703,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.ProjectCard.viewTheObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.components.ProjectCard.viewTheOptions": {
     "state": "verified",
@@ -3553,6 +3583,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.admin.UserFilterConditions.field_participated_in_input": {
+    "state": "verified",
+    "verified_at": "2026-07-01T07:58:46.314688Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": {
     "state": "verified",
@@ -7244,6 +7279,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.IdeaButton.addAnObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeaButton.addAnOption": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -7559,6 +7599,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.IdeaCards.xObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeaCards.xOptions2": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -7658,6 +7703,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeasEditPage.observationFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasEditPage.optionFormTitle": {
     "state": "verified",
@@ -7789,6 +7839,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.IdeasFeedPage.addAnObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasFeedPage.addAnOption": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -7858,6 +7913,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeasFeedPage.seeAllObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasFeedPage.seeAllOptions": {
     "state": "verified",
@@ -7933,6 +7993,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeasFeedPage.showAllObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasFeedPage.showAllOptions": {
     "state": "verified",
@@ -8779,6 +8844,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.IdeasNewPage.observationMetaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasNewPage.optionMetaTitle1": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -9053,6 +9123,31 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeasShow.observationEmailSharingBody": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.observationEmailSharingSubject": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.observationSharingModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.observationTwitterMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.observationWhatsAppMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasShow.optionEmailSharingBody": {
     "state": "verified",
@@ -9664,6 +9759,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.NotificationMenu.invitationToCosponsorObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.NotificationMenu.invitationToCosponsorOption": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -9778,6 +9878,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.NotificationMenu.officialFeedbackOnObservationYouFollow": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.officialFeedbackOnOptionYouFollow": {
     "state": "verified",
@@ -9908,6 +10013,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.NotificationMenu.userCommentedOnObservationYouFollow": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.userCommentedOnOptionYouFollow": {
     "state": "verified",
@@ -10553,6 +10663,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Projects.seeTheObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Projects.seeTheOptions": {
     "state": "verified",
@@ -12934,6 +13049,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.utils.IdeasNewPage.observationFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.utils.IdeasNewPage.optionFormTitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -13018,6 +13138,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.utils.IdeasNewPage.viewYourObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.utils.IdeasNewPage.viewYourOption": {
     "state": "verified",

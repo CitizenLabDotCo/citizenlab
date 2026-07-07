@@ -112,6 +112,8 @@ sv-SE:
           title: Vad är ditt initiativ?
         issue:
           title: Vad är ditt problem?
+        observation:
+          title: Vad är din observation?
         option:
           title: Vad är ditt alternativ?
         petition:

@@ -112,6 +112,8 @@ hu-HU:
           title: Mi a kezdeményezésed?
         issue:
           title: Mi a megjegyzésed?
+        observation:
+          title: Mi az észrevételed?
         option:
           title: Mi a lehetőséged?
         petition:
