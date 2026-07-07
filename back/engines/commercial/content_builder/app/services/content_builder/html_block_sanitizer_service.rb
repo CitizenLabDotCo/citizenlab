@@ -13,6 +13,12 @@ module ContentBuilder
         attributes: custom_attributes
       )
 
+      if sanitized == html
+        sanitized
+      else
+        sanitize(sanitized)
+      end
+
       force_noopener(sanitized)
     end
 
@@ -22,11 +28,13 @@ module ContentBuilder
 
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
       doc.css('a[target="_blank"]').each do |node|
-        node['rel'] = 'noopener noreferrer'
+        node['rel'] = (node['rel'].to_s.split + %w(noopener noreferrer)).uniq.join(' ')
       end
       doc.to_html
     end
 
+    # Custom tags and attributes for the sanitizer based on Loofah's whitelist
+    # with some additions (media embeds) and removals (drop form).
     def custom_tags
       Loofah::HTML5::WhiteList::ALLOWED_ELEMENTS_WITH_LIBXML2 + %w[
         video audio source iframe
