@@ -638,7 +638,7 @@
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "To confirm the deletion of {entityName}, type {confirmationWord} below:",
   "app.components.TypedConfirmationModal.warning": "This action is permanent and cannot be undone.",
-  "app.components.UI.EmojiPicker.clear": "Peeruk",
+  "app.components.UI.EmojiPicker.clear": "Piiaruk",
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": "Fiili aalliguk {fileName}, {fileSize}",
   "app.components.UI.FullscreenImage.expandImage": "Expand image",
   "app.components.UI.MoreActionsMenu.actionsMenu": "Iliuuserineqarsinnaasut {title}",
