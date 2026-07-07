@@ -1823,7 +1823,7 @@
   "app.containers.IdeasShow.importedTooltipProposal": "Questa proposta è stata raccolta offline e caricata automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.importedTooltipQuestion": "Questa domanda è stata raccolta offline e caricata automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.importedTooltipResponse": "Questa risposta è stata raccolta offline e caricata automaticamente sulla piattaforma.",
-  "app.containers.IdeasShow.importedTooltipStory": "Questa storia è stata raccolta offline e caricata automaticamente sulla piattaforma.",
+  "app.containers.IdeasShow.importedTooltipStory": "Questa esperienza è stata raccolta offline e caricata automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.importedTooltipSuggestion": "Questo suggerimento è stato raccolto offline e caricato automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.importedTooltipTopic": "Questo argomento è stato raccolto offline e caricato automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Sostieni questa iniziativa '{ideaTitle}' su {ideaUrl}!",
