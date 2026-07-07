@@ -1,5 +1,17 @@
 module Permissions
   class PhasePermissionsService < BasePermissionsService
+    SUPPORTED_ACTIONS = %w[
+      posting_idea
+      editing_idea
+      commenting_idea
+      reacting_idea
+      voting
+      annotating_document
+      taking_survey
+      taking_poll
+      volunteering
+    ].freeze
+
     PHASE_DENIED_REASONS = {
       inactive_phase: 'inactive_phase'
     }.freeze
@@ -53,6 +65,8 @@ module Permissions
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
+      raise "Unsupported action: #{action}" if SUPPORTED_ACTIONS.exclude?(action)
+
       project_reason = project_denied_reason(phase.project)
       return project_reason if project_reason
       return PHASE_DENIED_REASONS[:inactive_phase] if time && !timeline_service.phase_current?(phase, time)
@@ -76,10 +90,10 @@ module Permissions
         taking_poll_denied_reason_for_action
       when 'volunteering'
         volunteering_denied_reason_for_action
-      else
-        raise "Unsupported action: #{action}" unless supported_action? action
       end
       return phase_denied_reason if phase_denied_reason
+      # editing_idea has no corresponding Permission record
+      return if action == 'editing_idea'
 
       super(action, scope: phase)
     end

@@ -1,19 +1,5 @@
 module Permissions
   class BasePermissionsService
-    SUPPORTED_ACTIONS = %w[
-      following
-      visiting
-      posting_idea
-      commenting_idea
-      reacting_idea
-      voting
-      annotating_document
-      taking_survey
-      taking_poll
-      attending_event
-      volunteering
-    ].freeze
-
     USER_DENIED_REASONS = {
       user_not_signed_in: 'user_not_signed_in',
       user_not_active: 'user_not_active',
@@ -35,8 +21,6 @@ module Permissions
     end
 
     def denied_reason_for_action(action, scope: nil)
-      return unless supported_action? action
-
       permission = find_permission(action, scope: scope)
       user_denied_reason(permission)
     end
@@ -44,10 +28,6 @@ module Permissions
     private
 
     attr_reader :user, :user_requirements_service
-
-    def supported_action?(action)
-      SUPPORTED_ACTIONS.include? action
-    end
 
     def find_permission(action, scope: nil)
       permission = scope&.permissions&.find { |p| p[:action] == action }
@@ -60,6 +40,8 @@ module Permissions
           permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
         end
       end
+
+      raise "Unknown action '#{action}' for scope: #{scope}" if !permission
 
       permission
     end
