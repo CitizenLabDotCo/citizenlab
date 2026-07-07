@@ -264,6 +264,11 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.AuthProviders.continueWithLuxembourgIAM": {
+    "state": "verified",
+    "verified_at": "2026-07-07T15:35:09.359912Z",
+    "verified_by": "Roger"
+  },
   "app.components.AuthProviders.continueWithNemlogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
@@ -3403,6 +3408,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.components.VerificationModal.verifyEtatLu2": {
+    "state": "verified",
+    "verified_at": "2026-07-07T15:35:09.359912Z",
+    "verified_by": "Roger"
   },
   "app.components.VerificationModal.verifyFakeSSO": {
     "state": "verified",
