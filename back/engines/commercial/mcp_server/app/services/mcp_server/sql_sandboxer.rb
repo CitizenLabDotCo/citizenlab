@@ -44,7 +44,7 @@ module McpServer
       replace split_part concat concat_ws format reverse repeat
       starts_with position strpos to_char to_number
       regexp_replace regexp_match regexp_matches regexp_split_to_array md5
-      date_trunc date_part extract age date
+      date_trunc date_part extract age date now
       make_date make_timestamp to_date to_timestamp
       justify_days justify_hours justify_interval
       coalesce nullif

@@ -53,6 +53,9 @@ RSpec.describe McpServer::SqlSandboxer do
       'JOIN reporting_users u ON true JOIN reporting_sessions s ON true ' \
       'JOIN reporting_pageviews pv ON true',
 
+      # Relative date ranges, the most common LLM idiom for "last N days".
+      "SELECT count(*) FROM reporting_users WHERE registered_at >= now() - interval '90 days'",
+
       # Scoped CTE shapes the scope-aware fix must keep working.
       'WITH RECURSIVE t(n) AS (SELECT 1 UNION ALL SELECT n + 1 FROM t WHERE n < 5) SELECT sum(n) FROM t',
       'WITH a AS (WITH b AS (SELECT * FROM reporting_contributions) SELECT * FROM b) SELECT count(*) FROM a',
