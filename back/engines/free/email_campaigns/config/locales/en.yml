@@ -244,6 +244,7 @@ en:
         idea: '%{authorName} commented on an idea you follow'
         initiative: '%{authorName} commented on an initiative you follow'
         issue: '%{authorName} commented on an issue you follow'
+        observation: '%{authorName} commented on an observation you follow'
         option: '%{authorName} commented on an option you follow'
         petition: '%{authorName} commented on a petition you follow'
         post: '%{authorName} commented on a post you follow'
@@ -318,6 +319,7 @@ en:
         idea: Go to this idea
         initiative: Go to this initiative
         issue: Go to this issue
+        observation: Go to this observation
         option: Go to this option
         petition: Go to this petition
         post: Go to this post
@@ -338,6 +340,7 @@ en:
         idea: Go to your idea
         initiative: Go to your initiative
         issue: Go to your issue
+        observation: Go to your observation
         option: Go to your option
         petition: Go to your petition
         post: Go to your post
@@ -371,6 +374,7 @@ en:
         idea: Your idea has been published
         initiative: Your initiative has been published
         issue: Your issue has been published
+        observation: Your observation has been published
         option: Your option has been published
         petition: Your petition has been published
         post: Your post has been published
@@ -758,6 +762,7 @@ en:
         idea: Your idea is in "%{prescreening_status_title}"
         initiative: Your initiative is in "%{prescreening_status_title}"
         issue: Your issue is in "%{prescreening_status_title}"
+        observation: Your observation is in "%{prescreening_status_title}"
         option: Your option is in "%{prescreening_status_title}"
         petition: Your petition is in "%{prescreening_status_title}"
         post: Your post is in "%{prescreening_status_title}"

@@ -112,6 +112,8 @@ lv-LV:
           title: Kāda ir jūsu iniciatīva?
         issue:
           title: Kāda ir jūsu problēma?
+        observation:
+          title: Kāds ir tavs novērojums?
         option:
           title: Kāda ir jūsu izvēle?
         petition:

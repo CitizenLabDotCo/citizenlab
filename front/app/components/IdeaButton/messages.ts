@@ -66,6 +66,10 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.addAStory',
     defaultMessage: 'Add a story',
   },
+  addAnObservation: {
+    id: 'app.containers.IdeaButton.addAnObservation',
+    defaultMessage: 'Add an observation',
+  },
   signInLinkText: {
     id: 'app.containers.IdeaButton.signInLinkText',
     defaultMessage: 'sign in',

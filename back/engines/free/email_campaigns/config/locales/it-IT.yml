@@ -249,6 +249,7 @@ it-IT:
         idea: "%{authorName} ha commentato un'idea che segui"
         initiative: "%{authorName} ha commentato un'iniziativa che segui"
         issue: '%{authorName} ha commentato un parere che segui'
+        observation: "%{authorName} ha commentato un'osservazione che segui"
         option: "%{authorName} ha commentato un'opzione che segui"
         petition: '%{authorName} ha commentato una petizione che segui'
         post: '%{authorName} ha commentato un post che segui'
@@ -323,6 +324,7 @@ it-IT:
         idea: Vai a questa idea
         initiative: Vai a questa iniziativa
         issue: Vai a questo parere
+        observation: Vai a questa osservazione
         option: Vai a questa opzione
         petition: Vai a questa petizione
         post: Vai a questo post
@@ -343,6 +345,7 @@ it-IT:
         idea: Vai alla tua idea
         initiative: Vai alla tua iniziativa
         issue: Vai al tuo parere
+        observation: Vai alla tua osservazione
         option: Vai alla tua opzione
         petition: Vai alla tua petizione
         post: Vai al tuo post
@@ -376,6 +379,7 @@ it-IT:
         idea: La tua idea è stata pubblicata
         initiative: La tua iniziativa è stata pubblicata
         issue: Il tuo parere è stato pubblicato
+        observation: La tua osservazione è stata pubblicata
         option: La tua opzione è stata pubblicata
         petition: La tua petizione è stata pubblicata
         post: Il tuo post è stato pubblicato
@@ -764,6 +768,7 @@ it-IT:
         idea: La tua idea è in "%{prescreening_status_title}"
         initiative: La tua iniziativa è in "%{prescreening_status_title}"
         issue: Il tuo parere è in "%{prescreening_status_title}"
+        observation: La tua osservazione è in "%{prescreening_status_title}"
         option: La tua opzione è in "%{prescreening_status_title}"
         petition: La tua petizione è in "%{prescreening_status_title}"
         post: Il tuo post è in "%{prescreening_status_title}"

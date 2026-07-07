@@ -249,6 +249,7 @@ tr-TR:
         idea: '%{authorName} takip ettiğiniz bir fikir hakkında yorum yaptı'
         initiative: '%{authorName} takip ettiğiniz bir girişim hakkında yorum yaptı'
         issue: '%{authorName} takip ettiğiniz bir konu hakkında yorum yaptı'
+        observation: '%{authorName} takip ettiğiniz bir gözleme yorum yaptı'
         option: '%{authorName} takip ettiğiniz bir seçenek hakkında yorum yaptı'
         petition: '%{authorName} takip ettiğiniz bir dilekçeye yorum yaptı'
         post: '%{authorName} takip ettiğiniz bir gönderiye yorum yaptı'
@@ -323,6 +324,7 @@ tr-TR:
         idea: Bu fikre git
         initiative: Bu girişime gidin
         issue: Bu sayıya gidin
+        observation: Bu gözleme git
         option: Bu seçeneğe gidin
         petition: Bu dilekçeye gidin
         post: Bu gönderiye git
@@ -343,6 +345,7 @@ tr-TR:
         idea: Fikrinize gidin
         initiative: Girişiminize gidin
         issue: Sorununuza gidin
+        observation: Gözleminize gidin
         option: Seçeneğinize gidin
         petition: Dilekçenize gidin
         post: Gönderinize gidin
@@ -376,6 +379,7 @@ tr-TR:
         idea: Fikriniz yayınlandı
         initiative: Girişiminiz yayınlandı
         issue: Sayınız yayınlandı
+        observation: Gözleminiz yayınlandı
         option: Seçeneğiniz yayınlandı
         petition: Dilekçeniz yayınlandı
         post: Gönderiniz yayınlandı
@@ -764,6 +768,7 @@ tr-TR:
         idea: Fikriniz "%{prescreening_status_title}" adresinde yer almaktadır.
         initiative: Girişiminiz "%{prescreening_status_title}" adresinde yer almaktadır.
         issue: Sorununuz "%{prescreening_status_title}" adresinde
+        observation: Gözleminiz "%{prescreening_status_title}" durumunda
         option: Seçeneğiniz "%{prescreening_status_title}" adresinde.
         petition: Dilekçeniz "%{prescreening_status_title}" adresinde yer almaktadır.
         post: Gönderiniz "%{prescreening_status_title}" adresinde yer almaktadır.
