@@ -186,7 +186,7 @@ en:
       new_email_confirmation: New email confirmation code
       new_idea_for_admin_prescreening: New input requiring approval in a project I moderate
       new_idea_for_admin_published: New published input in a project I moderate
-      new_phone_confirmation: Phone number verification code
+      new_phone_confirmation: New phone confirmation code
       official_feedback_on_idea_you_follow: Update on an input that you follow
       password_reset: Password reset
       project_folder_moderation_rights_received: Folder manager rights received
