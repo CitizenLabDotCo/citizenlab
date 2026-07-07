@@ -12,9 +12,11 @@ import widgetMessages from './Widgets/messages';
 //          ├─ Description section              ← the only editable region;
 //          │                                      also edited via the legacy
 //          │                                      description editor
-//          ├─ Timeline        (locked)
-//          ├─ Phase content   (locked)
-//          └─ Events          (locked)
+//          ├─ Phases (locked)                  ← timeline + phase content as
+//          │                                      ONE widget: the timeline's
+//          │                                      tabs drive the content, so
+//          │                                      they always move together
+//          └─ Events (locked)
 //
 // The locks live in code — `ensureLockedHeaderNodes` re-stamps them on every
 // load — so unlocking at launch is a code change that instantly applies to
@@ -23,8 +25,7 @@ export const BANNER_NODE_ID = 'PROJECT_PAGE_BANNER';
 export const TITLE_NODE_ID = 'PROJECT_PAGE_TITLE';
 export const BODY_NODE_ID = 'PROJECT_PAGE_BODY';
 export const DESCRIPTION_NODE_ID = 'PROJECT_PAGE_DESCRIPTION';
-export const INPUT_FEED_NODE_ID = 'PROJECT_PAGE_INPUT_FEED';
-export const TIMELINE_NODE_ID = 'PROJECT_PAGE_TIMELINE';
+export const PHASES_NODE_ID = 'PROJECT_PAGE_PHASES';
 export const EVENTS_NODE_ID = 'PROJECT_PAGE_EVENTS';
 
 const ROOT_ID = 'ROOT';
@@ -94,37 +95,20 @@ const descriptionSectionNode = (childIds: string[]): SerializedNode =>
     linkedNodes: {},
   } as unknown as SerializedNode);
 
-const inputFeedNode = (parentId: string): SerializedNode =>
+const phasesNode = (parentId: string): SerializedNode =>
   ({
-    type: { resolvedName: 'InputFeed' },
+    type: { resolvedName: 'PhasesWidget' },
     nodes: [],
     props: {},
     custom: {
-      title: widgetMessages.inputFeedWidgetTitle2,
+      title: widgetMessages.phasesWidgetTitle,
       locked: true,
       noPointerEvents: true,
     },
     hidden: false,
     parent: parentId,
     isCanvas: false,
-    displayName: 'InputFeed',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
-
-const timelineNode = (parentId: string): SerializedNode =>
-  ({
-    type: { resolvedName: 'TimelineWidget' },
-    nodes: [],
-    props: {},
-    custom: {
-      title: widgetMessages.timelineWidgetTitle,
-      locked: true,
-      noPointerEvents: true,
-    },
-    hidden: false,
-    parent: parentId,
-    isCanvas: false,
-    displayName: 'TimelineWidget',
+    displayName: 'PhasesWidget',
     linkedNodes: {},
   } as unknown as SerializedNode);
 
@@ -165,13 +149,11 @@ export const defaultProjectPageLayout = (): SerializedNodes => ({
   [TITLE_NODE_ID]: titleNode(),
   [BODY_NODE_ID]: bodyNode([
     DESCRIPTION_NODE_ID,
-    TIMELINE_NODE_ID,
-    INPUT_FEED_NODE_ID,
+    PHASES_NODE_ID,
     EVENTS_NODE_ID,
   ]),
   [DESCRIPTION_NODE_ID]: descriptionSectionNode([]),
-  [TIMELINE_NODE_ID]: timelineNode(BODY_NODE_ID),
-  [INPUT_FEED_NODE_ID]: inputFeedNode(BODY_NODE_ID),
+  [PHASES_NODE_ID]: phasesNode(BODY_NODE_ID),
   [EVENTS_NODE_ID]: eventsNode(BODY_NODE_ID),
 });
 
@@ -198,13 +180,8 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
     title: widgetMessages.descriptionSectionTitle,
     locked: true,
   },
-  TimelineWidget: {
-    title: widgetMessages.timelineWidgetTitle,
-    locked: true,
-    noPointerEvents: true,
-  },
-  InputFeed: {
-    title: widgetMessages.inputFeedWidgetTitle2,
+  PhasesWidget: {
+    title: widgetMessages.phasesWidgetTitle,
     locked: true,
     noPointerEvents: true,
   },
@@ -218,14 +195,18 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
 // Widgets absent from the project page resolver: ones removed over time, plus the
 // DescriptionBuilder-only widgets that exist in project_description layouts. Their
 // nodes are stripped so craft.js doesn't crash deserializing an unknown component.
+// TimelineWidget and InputFeed are the pre-merge separate sections, replaced by
+// the combined PhasesWidget (which ensureLockedHeaderNodes recreates).
 // Keep in sync with UNSUPPORTED_WIDGETS in the project_page migration rake task.
 const REMOVED_WIDGETS = [
   'ExtraSurveysWidget',
   'FolderFiles',
   'FolderTitle',
+  'InputFeed',
   'Published',
   'Selection',
   'Spotlight',
+  'TimelineWidget',
 ];
 
 // Normalises a stored layout into the frozen transition structure: locked
@@ -293,11 +274,8 @@ export const ensureLockedHeaderNodes = (
     DESCRIPTION_NODE_ID,
     () => descriptionSectionNode([])
   );
-  const timelineId = ensureNode('TimelineWidget', TIMELINE_NODE_ID, () =>
-    timelineNode(bodyId)
-  );
-  const inputFeedId = ensureNode('InputFeed', INPUT_FEED_NODE_ID, () =>
-    inputFeedNode(bodyId)
+  const phasesId = ensureNode('PhasesWidget', PHASES_NODE_ID, () =>
+    phasesNode(bodyId)
   );
   const eventsId = ensureNode('EventsWidget', EVENTS_NODE_ID, () =>
     eventsNode(bodyId)
@@ -305,7 +283,7 @@ export const ensureLockedHeaderNodes = (
 
   // Adopt free-form body content into the description section (layouts saved
   // before the section existed), preserving its order.
-  const fixedBodyIds = [descriptionId, timelineId, inputFeedId, eventsId];
+  const fixedBodyIds = [descriptionId, phasesId, eventsId];
   const adopted = next[bodyId].nodes.filter((id) => !fixedBodyIds.includes(id));
   adopted.forEach((id) => {
     next[id] = { ...next[id], parent: descriptionId };
@@ -324,8 +302,7 @@ export const ensureLockedHeaderNodes = (
     [titleId]: ROOT_ID,
     [bodyId]: ROOT_ID,
     [descriptionId]: bodyId,
-    [timelineId]: bodyId,
-    [inputFeedId]: bodyId,
+    [phasesId]: bodyId,
     [eventsId]: bodyId,
   };
   Object.entries(next).forEach(([id, node]) => {
