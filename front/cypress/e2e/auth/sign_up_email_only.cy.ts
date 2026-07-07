@@ -2,7 +2,7 @@ import { logIn, signUpEmailConformation } from '../../support/auth';
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
-describe('Authentication with email only', () => {
+describe('Sign up - email only', () => {
   let projectId = '';
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
