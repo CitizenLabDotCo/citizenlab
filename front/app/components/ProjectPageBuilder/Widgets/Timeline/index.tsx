@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, Text, Title, isRtl } from '@citizenlab/cl2-component-library';
-import { UserComponent } from '@craftjs/core';
+import { Box, Title, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -20,7 +19,6 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
@@ -45,7 +43,8 @@ const Header = styled.div`
 // tabs/selected-phase details), reusing the public project-page components. The
 // selected phase follows the URL phase param, so clicking a phase tab (which
 // navigates) updates the highlight and details — mirroring ProjectTimelineContainer.
-const TimelineWidget: UserComponent = () => {
+// Rendered as the top half of the Phases widget; not a standalone widget.
+const TimelineSection = () => {
   const projectId = useWidgetProjectId();
   const { slug, phaseNumber } = useParams({ strict: false }) as {
     slug?: string;
@@ -118,49 +117,4 @@ const TimelineWidget: UserComponent = () => {
   );
 };
 
-// Phases aren't edited inline; the settings panel points admins to the project
-// editor, where phases are configured.
-const TimelineSettings = () => {
-  const projectId = useWidgetProjectId();
-
-  return (
-    <Box my="20px">
-      <Text color="textSecondary" fontSize="s">
-        <FormattedMessage
-          {...messages.timelineManagedNote}
-          values={{
-            projectEditorLink: projectId ? (
-              <Link
-                to="/admin/projects/$projectId/phases"
-                params={{ projectId }}
-                target="_blank"
-              >
-                <FormattedMessage {...messages.projectEditorLinkText} />
-              </Link>
-            ) : (
-              <FormattedMessage {...messages.projectEditorLinkText} />
-            ),
-          }}
-        />
-      </Text>
-    </Box>
-  );
-};
-
-TimelineWidget.craft = {
-  related: {
-    settings: TimelineSettings,
-  },
-  rules: {
-    canDrag: () => false,
-  },
-  custom: {
-    title: messages.timelineWidgetTitle,
-    locked: true,
-    noPointerEvents: true,
-  },
-};
-
-export const timelineWidgetTitle = messages.timelineWidgetTitle;
-
-export default TimelineWidget;
+export default TimelineSection;
