@@ -308,13 +308,7 @@ class User < ApplicationRecord
   end
 
   def active?
-    if !registered? || blocked?
-      return false
-    end
-
-    # You are considered active if you confirmed your email,
-    # or if you are an SSO user and your account is verified.
-    !confirmation_required? || (sso? && verified)
+    registered && !blocked? && authenticated_at_least_once?
   end
 
   def blank_and_can_be_deleted?
@@ -392,7 +386,7 @@ class User < ApplicationRecord
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
-    return if confirmation_required? || invite_pending? || registration_completed_at_changed?
+    return if !authenticated_at_least_once? || invite_pending? || registration_completed_at_changed?
 
     self.registration_completed_at ||= Time.now
   end
@@ -480,6 +474,13 @@ class User < ApplicationRecord
 
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
+  end
+
+  def authenticated_at_least_once?
+    # True if user authenticated at least once,
+    # either by confirming their email or by signing in with SSO 
+    # and being verified.
+    !confirmation_required? || (sso? && verified)
   end
 end
 
