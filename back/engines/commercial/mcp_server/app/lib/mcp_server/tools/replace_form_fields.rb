@@ -10,6 +10,15 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
 
   def name = 'replace_form_fields'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC
       Replaces the field list of the form attached to a native_survey phase or ideation

@@ -4,6 +4,15 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
   def name = 'create_poll_option'
   def title = 'Create poll option'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Adds an answer option to an existing poll question. By default the option is appended
