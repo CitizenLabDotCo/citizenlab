@@ -1247,7 +1247,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Izjava o pristupačnosti ovog web-mjesta",
   "app.containers.AccessibilityStatement.postalAddress": "Poštanska adresa:",
   "app.containers.AccessibilityStatement.publicationDate": "Datum objave",
-  "app.containers.AccessibilityStatement.publicationDate2024": "Ova izjava o pristupačnosti objavljena je 21. kolovoza 2024.",
   "app.containers.AccessibilityStatement.responsiveness": "Nastojimo odgovoriti na povratne informacije u roku od 1 – 2 radna dana.",
   "app.containers.AccessibilityStatement.statusPageText": "stranica sa statusom",
   "app.containers.AccessibilityStatement.technologiesIntro": "Pristupačnost ovog web-mjesta ovisi o sljedećim tehnologijama:",

@@ -1247,7 +1247,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Ett uttalande om tillgängligheten för den här webbplatsen",
   "app.containers.AccessibilityStatement.postalAddress": "Postadress:",
   "app.containers.AccessibilityStatement.publicationDate": "Publiceringsdatum",
-  "app.containers.AccessibilityStatement.publicationDate2024": "Detta tillgänglighetsutlåtande publicerades den 21 augusti 2024.",
   "app.containers.AccessibilityStatement.responsiveness": "Vi strävar efter att svara på återkoppling inom 1–2 arbetsdagar.",
   "app.containers.AccessibilityStatement.statusPageText": "statussida",
   "app.containers.AccessibilityStatement.technologiesIntro": "Den här webbplatsens tillgänglighet är beroende av att följande tekniker fungerar:",

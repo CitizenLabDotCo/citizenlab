@@ -1247,7 +1247,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Bu web sitesinin erişilebilirlik durumu beyanı",
   "app.containers.AccessibilityStatement.postalAddress": "Posta adresi:",
   "app.containers.AccessibilityStatement.publicationDate": "Yayınlanma tarihi",
-  "app.containers.AccessibilityStatement.publicationDate2024": "Bu erişilebilirlik beyanı 21 Ağustos 2024 tarihinde yayımlanmıştır.",
   "app.containers.AccessibilityStatement.responsiveness": "Geri bildirimlere 1-2 iş günü içinde yanıt vermeyi hedefliyoruz.",
   "app.containers.AccessibilityStatement.statusPageText": "durum sayfası",
   "app.containers.AccessibilityStatement.technologiesIntro": "Bu sitede erişilebilirlik özelliklerinin çalışması için şu teknolojilere ihtiyaç vardır:",

@@ -1247,7 +1247,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Declaració sobre l'accessibilitat d'aquest lloc web",
   "app.containers.AccessibilityStatement.postalAddress": "Adreça postal:",
   "app.containers.AccessibilityStatement.publicationDate": "Data de publicació",
-  "app.containers.AccessibilityStatement.publicationDate2024": "Aquesta declaració d'accessibilitat es va publicar el 21 d'agost de 2024.",
   "app.containers.AccessibilityStatement.responsiveness": "Pretenem respondre als comentaris en un termini d'1 a 2 dies laborables.",
   "app.containers.AccessibilityStatement.statusPageText": "pàgina d'estat",
   "app.containers.AccessibilityStatement.technologiesIntro": "L'accessibilitat d'aquest lloc es basa en les tecnologies següents per funcionar:",

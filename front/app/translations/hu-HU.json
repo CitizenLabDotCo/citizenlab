@@ -1247,7 +1247,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Nyilatkozat a weboldal elérhetőségéről",
   "app.containers.AccessibilityStatement.postalAddress": "Postacím:",
   "app.containers.AccessibilityStatement.publicationDate": "Megjelenés dátuma",
-  "app.containers.AccessibilityStatement.publicationDate2024": "Ez a hozzáférhetőségi nyilatkozat 2024. augusztus 21-én jelent meg.",
   "app.containers.AccessibilityStatement.responsiveness": "Célunk, hogy a visszajelzésekre 1-2 munkanapon belül válaszoljunk.",
   "app.containers.AccessibilityStatement.statusPageText": "állapotoldal",
   "app.containers.AccessibilityStatement.technologiesIntro": "Az oldal elérhetősége a következő technológiákon múlik:",

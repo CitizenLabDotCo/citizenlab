@@ -1247,7 +1247,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "Lausunto tämän sivuston saavutettavuudesta",
   "app.containers.AccessibilityStatement.postalAddress": "Postiosoite:",
   "app.containers.AccessibilityStatement.publicationDate": "Julkaisupäivämäärä",
-  "app.containers.AccessibilityStatement.publicationDate2024": "Tämä saavutettavuusseloste on julkaistu 21.8.2024.",
   "app.containers.AccessibilityStatement.responsiveness": "Pyrimme vastaamaan palautteeseen 1-2 arkipäivän kuluessa.",
   "app.containers.AccessibilityStatement.statusPageText": "tilasivu",
   "app.containers.AccessibilityStatement.technologiesIntro": "Tämän sivuston saavutettavuus perustuu seuraaviin tekniikoihin:",
