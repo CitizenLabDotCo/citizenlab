@@ -3129,6 +3129,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.user_blocked.for_more_information": {
+    "state": "verified",
+    "verified_at": "2026-07-07T15:55:53.577434Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.user_blocked.paragraph_1_with_reason": {
     "state": "verified",
     "verified_at": "2026-06-11T07:24:41.111194Z",

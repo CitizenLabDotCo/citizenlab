@@ -159,6 +159,7 @@ describe('ProjectDescriptionBuilderTopBar', () => {
     expect(mockAddProjectDescriptionBuilderLayout).toHaveBeenCalledWith({
       contentBuildableId: '2',
       contentBuildableType: 'project',
+      enabled: true,
       craftjs_json: {},
     });
   });
