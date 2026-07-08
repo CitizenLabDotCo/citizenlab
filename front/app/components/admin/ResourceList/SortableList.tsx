@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -8,6 +8,7 @@ import usePrevious from 'hooks/usePrevious';
 import { List } from 'components/admin/ResourceList';
 
 import { itemOrderWasUpdated } from './utils';
+export const ScopedDndContext = createContext(false);
 
 export interface Item {
   id: string;
@@ -25,13 +26,6 @@ interface InputProps {
   lockFirstNItems?: number;
   className?: string;
   id?: string;
-  // react-dnd's HTML5Backend listens for drag events on `window` by default.
-  // When this list is rendered inside another native drag-and-drop context
-  // (e.g. the craftjs content builder), the two backends fight over the same
-  // `dragstart`/`dragover` events and craftjs' own dragging stops working.
-  // Set this to scope the backend to this list's container so it only handles
-  // drags happening inside it.
-  scopeDndToContainer?: boolean;
 }
 
 export interface RenderProps {
@@ -131,11 +125,17 @@ const ScopedDndSortableList = (props: InputProps) => {
   );
 };
 
-export default (props: InputProps) =>
-  props.scopeDndToContainer ? (
+export default (props: InputProps) => {
+  // Scope react-dnd to this list's container when rendered inside another
+  // drag-and-drop context (e.g. the content builder) that provides
+  // ScopedDndContext; otherwise let it listen on `window`.
+  const scopeDndToContainer = useContext(ScopedDndContext);
+
+  return scopeDndToContainer ? (
     <ScopedDndSortableList {...props} />
   ) : (
     <DndProvider backend={HTML5Backend}>
       <SortableList {...props} />
     </DndProvider>
   );
+};

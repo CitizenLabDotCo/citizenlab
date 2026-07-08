@@ -68,12 +68,7 @@ const CustomPagesList = ({
   return isLoading ? (
     <Spinner />
   ) : (
-    <SortableList
-      items={items}
-      onReorder={onReorder}
-      key={items.length}
-      scopeDndToContainer
-    >
+    <SortableList items={items} onReorder={onReorder} key={items.length}>
       {({ itemsList, handleDragRow, handleDropRow }) => (
         <>
           {itemsList.map((item, index) => (
