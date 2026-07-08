@@ -308,7 +308,13 @@ class User < ApplicationRecord
   end
 
   def active?
-    registered? && !blocked? && !confirmation_required?
+    if !registered? || blocked?
+      false
+    end
+
+    # You are considered active if you confirmed your email,
+    # or if you are an SSO user and your account is verified.
+    !confirmation_required? || (sso? && verified)
   end
 
   def blank_and_can_be_deleted?
