@@ -11,7 +11,7 @@ import useParallelParticipation from 'hooks/useParallelParticipation';
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
-import { ensureLockedHeaderNodes } from 'components/ProjectPageBuilder/defaultLayout';
+import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
 import Editor from 'components/ProjectPageBuilder/Editor';
 
 import eventEmitter from 'utils/eventEmitter';
@@ -43,7 +43,7 @@ const ProjectPageContentViewer = ({ projectId }: Props) => {
 
   // Memoised so the frame doesn't re-deserialize on every render.
   const editorData = useMemo(
-    () => ensureLockedHeaderNodes(layout?.data.attributes.craftjs_json),
+    () => normalizeProjectPageLayout(layout?.data.attributes.craftjs_json),
     [layout]
   );
 

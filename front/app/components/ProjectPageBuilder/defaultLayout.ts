@@ -18,7 +18,7 @@ import widgetMessages from './Widgets/messages';
 //          │                                      they always move together
 //          └─ Events (locked)
 //
-// The locks live in code — `ensureLockedHeaderNodes` re-stamps them on every
+// The locks live in code — `normalizeProjectPageLayout` re-stamps them on every
 // load — so unlocking at launch is a code change that instantly applies to
 // every stored layout, with no data migration.
 export const BANNER_NODE_ID = 'PROJECT_PAGE_BANNER';
@@ -209,7 +209,7 @@ const REMOVED_WIDGETS = [
 // re-stamps the lock flags from code, so a code change (e.g. the unlock at
 // launch) applies to every stored layout without a data migration.
 // Idempotent — canonical layouts pass through unchanged.
-export const ensureLockedHeaderNodes = (
+export const normalizeProjectPageLayout = (
   nodes?: SerializedNodes
 ): SerializedNodes => {
   if (!nodes || !(ROOT_ID in nodes)) {

@@ -10,7 +10,7 @@ import useLocale from 'hooks/useLocale';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import { ensureLockedHeaderNodes } from 'components/ProjectPageBuilder/defaultLayout';
+import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
 import Editor from 'components/ProjectPageBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,7 +35,9 @@ export const FullScreenPreview = ({ projectId }: Props) => {
   // normalized here so stale layouts render with the current fixed structure.
   const savedEditorData = useMemo(
     () =>
-      layout ? ensureLockedHeaderNodes(layout.data.attributes.craftjs_json) : undefined,
+      layout
+        ? normalizeProjectPageLayout(layout.data.attributes.craftjs_json)
+        : undefined,
     [layout]
   );
 

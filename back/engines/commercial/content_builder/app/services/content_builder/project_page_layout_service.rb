@@ -259,8 +259,6 @@ module ContentBuilder
       }
     end
 
-    # craft.js persists `custom.title` as a resolved react-intl descriptor;
-    # reproduced here so the json is a fixed point of `ensureLockedHeaderNodes`.
     def message(id, default_message)
       { 'id' => id, 'defaultMessage' => default_message }
     end

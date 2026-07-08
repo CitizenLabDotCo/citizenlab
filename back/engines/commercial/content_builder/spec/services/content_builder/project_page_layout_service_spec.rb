@@ -133,7 +133,7 @@ describe ContentBuilder::ProjectPageLayoutService do
       canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
-    it 'locks every fixed section (fixed point of ensureLockedHeaderNodes)' do
+    it 'locks every fixed section (fixed point of normalizeProjectPageLayout)' do
       result = build(empty_description)
 
       expect(result['PROJECT_PAGE_PHASES']['custom']).to eq(

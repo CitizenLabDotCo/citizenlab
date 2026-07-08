@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useProjectPageLayout from 'api/content_builder/useProjectPageLayout';
 
-import { ensureLockedHeaderNodes } from 'components/ProjectPageBuilder/defaultLayout';
+import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
 import { extractDescriptionEditorData } from 'components/ProjectPageBuilder/descriptionSection';
 
 // Resolves where a project's description lives. The single source of truth is
@@ -30,7 +30,7 @@ const useProjectDescription = (
   const projectPageJson = useMemo(
     () =>
       pageLayout
-        ? ensureLockedHeaderNodes(pageLayout.data.attributes.craftjs_json)
+        ? normalizeProjectPageLayout(pageLayout.data.attributes.craftjs_json)
         : undefined,
     [pageLayout]
   );

@@ -17,7 +17,7 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
-import { ensureLockedHeaderNodes } from 'components/ProjectPageBuilder/defaultLayout';
+import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
 import ProjectPageBuilderEditModePreview from 'components/ProjectPageBuilder/EditModePreview';
 import Editor from 'components/ProjectPageBuilder/Editor';
 import ProjectPageBuilderToolbox from 'components/ProjectPageBuilder/Toolbox';
@@ -57,7 +57,7 @@ const ProjectPageBuilderPage = ({
 
   // Memoised so the frame doesn't re-deserialize on every render.
   const editorData = useMemo(
-    () => ensureLockedHeaderNodes(layout?.data.attributes.craftjs_json),
+    () => normalizeProjectPageLayout(layout?.data.attributes.craftjs_json),
     [layout]
   );
 

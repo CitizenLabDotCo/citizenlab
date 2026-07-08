@@ -1,7 +1,7 @@
 import { SerializedNodes } from '@craftjs/core';
 
 import {
-  ensureLockedHeaderNodes,
+  normalizeProjectPageLayout,
   defaultProjectPageLayout,
   BANNER_NODE_ID,
   TITLE_NODE_ID,
@@ -52,18 +52,18 @@ describe('defaultProjectPageLayout', () => {
   });
 });
 
-describe('ensureLockedHeaderNodes', () => {
+describe('normalizeProjectPageLayout', () => {
   it('returns the default layout when there is no stored layout', () => {
-    expect(ensureLockedHeaderNodes(undefined)).toEqual(
+    expect(normalizeProjectPageLayout(undefined)).toEqual(
       defaultProjectPageLayout()
     );
-    expect(ensureLockedHeaderNodes({})).toEqual(defaultProjectPageLayout());
+    expect(normalizeProjectPageLayout({})).toEqual(defaultProjectPageLayout());
   });
 
   it('leaves a migrated layout unchanged (fixed point)', () => {
     const layout = migratedLayout();
 
-    expect(ensureLockedHeaderNodes(layout)).toEqual(layout);
+    expect(normalizeProjectPageLayout(layout)).toEqual(layout);
   });
 
   it('enforces the canonical body order', () => {
@@ -73,7 +73,7 @@ describe('ensureLockedHeaderNodes', () => {
       nodes: [EVENTS_NODE_ID, PHASES_NODE_ID, DESCRIPTION_NODE_ID],
     };
 
-    expect(ensureLockedHeaderNodes(layout)[BODY_NODE_ID].nodes).toEqual(
+    expect(normalizeProjectPageLayout(layout)[BODY_NODE_ID].nodes).toEqual(
       CANONICAL_BODY
     );
   });
@@ -87,7 +87,7 @@ describe('ensureLockedHeaderNodes', () => {
       nodes: [DESCRIPTION_NODE_ID],
     };
 
-    const result = ensureLockedHeaderNodes(layout);
+    const result = normalizeProjectPageLayout(layout);
 
     expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
     expect(result[PHASES_NODE_ID]).toBeDefined();
@@ -101,7 +101,7 @@ describe('ensureLockedHeaderNodes', () => {
       custom: { title: widgetMessages.phasesWidgetTitle },
     };
 
-    const result = ensureLockedHeaderNodes(layout);
+    const result = normalizeProjectPageLayout(layout);
 
     expect(result[PHASES_NODE_ID].custom).toMatchObject({ locked: true });
   });
@@ -124,7 +124,7 @@ describe('ensureLockedHeaderNodes', () => {
       linkedNodes: {},
     } as unknown as SerializedNodes[string];
 
-    const result = ensureLockedHeaderNodes(layout);
+    const result = normalizeProjectPageLayout(layout);
 
     expect(result.stray).toBeUndefined();
     expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['d_txt1']);
