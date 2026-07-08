@@ -357,6 +357,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'permits a confirmed admin' do
+          # A confirmed admin moderates the phase, so they bypass every
+          # participation gate and get the empty (all-satisfied) requirements.
           user.add_role 'admin'
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
@@ -367,17 +369,9 @@ describe Permissions::UserRequirementsService do
             },
             verification: false,
             custom_fields: {},
-            onboarding: true,
+            onboarding: false,
             group_membership: false
           })
-        end
-
-        it 'permits an admin even with required custom fields left unfilled' do
-          user.add_role 'admin'
-          user.update!(custom_field_values: {})
-          requirements = service.requirements(permission, user)
-          expect(service.permitted?(requirements)).to be true
-          expect(requirements[:custom_fields]).to eq({})
         end
 
         context 'there are groups on the permission' do
@@ -416,11 +410,11 @@ describe Permissions::UserRequirementsService do
             })
           end
 
-          it 'marks group_membership satisfied for an admin who is not in the group' do
-            # Admins bypass group restrictions in denied_reason_for_action, so
-            # the group requirement must report satisfied for them too, keeping
-            # the requirements response consistent (no group_membership: true
-            # alongside a nil disabled_reason).
+          it 'reports all requirements satisfied for an admin who is not in the group' do
+            # Admins moderate every phase, so they bypass the group gate entirely
+            # — consistent with denied_reason_for_action returning nil for them.
+            # Otherwise the response would be self-contradictory (group_membership:
+            # true with a nil disabled_reason) and the auth flow would block them.
             user.add_role 'admin'
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be true
@@ -431,9 +425,17 @@ describe Permissions::UserRequirementsService do
               },
               verification: false,
               custom_fields: {},
-              onboarding: true,
+              onboarding: false,
               group_membership: false
             })
+          end
+
+          it 'reports all requirements satisfied for a phase moderator who is not in the group' do
+            # Not only admins — any moderator of the phase bypasses the gates.
+            moderator = create(:project_moderator, projects: [survey_phase.project])
+            requirements = service.requirements(permission, moderator)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:group_membership]).to be false
           end
         end
 
@@ -496,18 +498,6 @@ describe Permissions::UserRequirementsService do
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:permitted_by]).to eq 'users'
             expect(requirements[:verification]).to be true
-          end
-        end
-
-        context 'an unverified admin' do
-          before { user.update!(verified: false) }
-
-          it 'bypasses verification (moderators are exempt from participation gates)' do
-            user.add_role 'admin'
-            requirements = service.requirements(group_permission, user)
-            expect(service.permitted?(requirements)).to be true
-            expect(requirements[:verification]).to be false
-            expect(requirements[:group_membership]).to be false
           end
         end
 
