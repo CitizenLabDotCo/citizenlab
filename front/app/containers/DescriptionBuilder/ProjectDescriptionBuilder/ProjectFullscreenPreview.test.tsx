@@ -37,7 +37,7 @@ jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
 });
 
 // No project_page layout: the preview falls back to the legacy description layout.
-jest.mock('api/content_builder/useProjectPageLayout', () => ({
+jest.mock('api/project_page_layout/useProjectPageLayout', () => ({
   __esModule: true,
   default: jest.fn(() => ({ data: undefined, isInitialLoading: false })),
 }));

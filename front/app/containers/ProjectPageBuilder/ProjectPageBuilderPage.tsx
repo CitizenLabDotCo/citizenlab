@@ -4,7 +4,7 @@ import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import useProjectPageLayout from 'api/content_builder/useProjectPageLayout';
+import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';

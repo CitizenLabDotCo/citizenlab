@@ -4,7 +4,7 @@ import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import useUpsertProjectPageLayout from 'api/content_builder/useUpsertProjectPageLayout';
+import useUpsertProjectPageLayout from 'api/project_page_layout/useUpsertProjectPageLayout';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 

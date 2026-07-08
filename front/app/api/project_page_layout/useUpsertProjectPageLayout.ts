@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { IContentBuilderLayout } from 'api/content_builder/types';
 import fileAttachmentsKeys from 'api/file_attachments/keys';
 import projectsKeys from 'api/projects/keys';
 
@@ -8,11 +9,7 @@ import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { IContentBuilderLayout } from './types';
-import {
-  projectPageLayoutKeys,
-  projectPageLayoutPath,
-} from './useProjectPageLayout';
+import projectPageLayoutKeys from './keys';
 
 interface IUpsertProjectPageLayout {
   projectId: string;
@@ -26,7 +23,7 @@ const upsertProjectPageLayout = ({
   enabled = true,
 }: IUpsertProjectPageLayout) =>
   fetcher<IContentBuilderLayout>({
-    path: `${projectPageLayoutPath(projectId)}/upsert` as `/${string}`,
+    path: `/projects/${projectId}/content_builder_layouts/project_page/upsert`,
     action: 'post',
     body: { content_builder_layout: { craftjs_json, enabled } },
   });
@@ -38,7 +35,9 @@ const useUpsertProjectPageLayout = () => {
       mutationFn: upsertProjectPageLayout,
       onSuccess: (data, variables) => {
         queryClient.invalidateQueries({
-          queryKey: projectPageLayoutKeys.item(variables.projectId),
+          queryKey: projectPageLayoutKeys.item({
+            projectId: variables.projectId,
+          }),
         });
 
         queryClient.invalidateQueries({

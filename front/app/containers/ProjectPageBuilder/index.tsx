@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
-import useProjectPageLayout from 'api/content_builder/useProjectPageLayout';
-import useUpsertProjectPageLayout from 'api/content_builder/useUpsertProjectPageLayout';
+import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
+import useUpsertProjectPageLayout from 'api/project_page_layout/useUpsertProjectPageLayout';
 import useProjectById from 'api/projects/useProjectById';
 
 import useParallelParticipation from 'hooks/useParallelParticipation';

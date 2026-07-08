@@ -35,9 +35,6 @@ const ContentBuilderEditModePreview = React.forwardRef<
     if (!frameArea) return;
 
     const computeScale = () => {
-      // Sized against the window, not the container: the flex ancestors
-      // shrink to the (scaled) frame, so the container's width would feed the
-      // scale back into itself.
       const { top } = frameArea.getBoundingClientRect();
       const availableWidth = window.innerWidth - HORIZONTAL_MARGIN;
       const availableHeight = window.innerHeight - top - BOTTOM_MARGIN;
@@ -85,8 +82,6 @@ const ContentBuilderEditModePreview = React.forwardRef<
           display="flex"
           justifyContent="center"
         >
-          {/* Sized to the scaled frame, so the layout reserves the right space
-              while the frame itself keeps its logical size and is transformed. */}
           <Box
             width={`${frameWidth * scale}px`}
             height={`${frameHeight * scale}px`}

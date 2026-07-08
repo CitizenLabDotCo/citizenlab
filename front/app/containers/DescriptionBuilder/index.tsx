@@ -8,7 +8,7 @@ import { Multiloc, SupportedLocale } from 'typings';
 import { ContentBuildableType } from 'api/content_builder/types';
 import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
-import useUpsertProjectPageLayout from 'api/content_builder/useUpsertProjectPageLayout';
+import useUpsertProjectPageLayout from 'api/project_page_layout/useUpsertProjectPageLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';

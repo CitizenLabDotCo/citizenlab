@@ -64,7 +64,7 @@ let mockPageLayout:
   | undefined;
 let mockLegacyLayout: typeof legacyLayout | undefined;
 
-jest.mock('api/content_builder/useProjectPageLayout', () => ({
+jest.mock('api/project_page_layout/useProjectPageLayout', () => ({
   __esModule: true,
   default: jest.fn(() => ({
     data: mockPageLayout,
