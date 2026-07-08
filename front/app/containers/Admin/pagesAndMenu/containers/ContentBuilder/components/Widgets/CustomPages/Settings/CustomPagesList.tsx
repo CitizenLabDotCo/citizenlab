@@ -25,7 +25,7 @@ import messages from '../messages';
 import { getSelectedPages } from './utils';
 
 const StyledSortableRow = styled(SortableRow)`
-  .e2e-admin-list-row {
+  & > div > div {
     padding: 0px !important;
     align-items: flex-start !important;
 
