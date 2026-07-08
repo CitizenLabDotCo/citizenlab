@@ -17,25 +17,21 @@ import Settings from './Settings';
 
 interface Props {
   titleMultiloc: Multiloc;
-  customPageIds: string[];
-  pageIcons?: Record<string, string>;
+  customPage: {
+    id: string[];
+    icon: Record<string, string | null>;
+  };
 }
 
-const CustomPages = ({ titleMultiloc, customPageIds, pageIcons }: Props) => {
+const CustomPages = ({ titleMultiloc, customPage }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
   const { data: customPages, isInitialLoading } = useCustomPages();
-  const getPageEmoji = (
-    page: ICustomPageData,
-    pageIcons: Record<string, string> | undefined
-  ): string | null => {
-    return pageIcons?.[page.id] ?? null;
-  };
   const title = localizeWithFallback(titleMultiloc, messages.defaultTitle);
 
   const pagesById = new Map(
     customPages?.data.map((page) => [page.id, page]) ?? []
   );
-  const selectedPages = customPageIds
+  const selectedPages = customPage.id
     .map((id) => pagesById.get(id))
     .filter((page): page is ICustomPageData => page !== undefined);
 
@@ -59,7 +55,7 @@ const CustomPages = ({ titleMultiloc, customPageIds, pageIcons }: Props) => {
           <CustomPageCard
             key={page.id}
             page={page}
-            emoji={getPageEmoji(page, pageIcons)}
+            emoji={customPage.icon[page.id] ?? null}
           />
         ))}
       </Grid>

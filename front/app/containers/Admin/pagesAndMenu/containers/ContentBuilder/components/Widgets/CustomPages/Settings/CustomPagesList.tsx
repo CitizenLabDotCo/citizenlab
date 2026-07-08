@@ -39,16 +39,17 @@ const StyledSortableRow = styled(SortableRow)`
 `;
 
 interface Props {
-  customPageIds: string[];
-  pageIcons?: Record<string, string>;
+  customPage: {
+    id: string[];
+    icon: Record<string, string | null>;
+  };
   onReorder: (draggedItemId: string, targetIndex: number) => void;
   onDelete: (id: string) => void;
   onSetIcon: (pageId: string, emoji: string | null) => void;
 }
 
 const CustomPagesList = ({
-  customPageIds,
-  pageIcons,
+  customPage,
   onReorder,
   onDelete,
   onSetIcon,
@@ -57,7 +58,7 @@ const CustomPagesList = ({
   const { formatMessage } = useIntl();
   const { data: customPages, isLoading } = useCustomPages();
 
-  const items = getSelectedPages(customPages?.data, customPageIds).map(
+  const items = getSelectedPages(customPages?.data, customPage.id).map(
     (page, index) => ({
       ...page,
       attributes: { ...page.attributes, ordering: index },
@@ -105,7 +106,7 @@ const CustomPagesList = ({
                   <Label>{formatMessage(messages.cardIcon)}</Label>
                   <Box mb="16px">
                     <EmojiPickerInput
-                      value={pageIcons?.[item.id]}
+                      value={customPage.icon[item.id]}
                       onChange={(emoji) => onSetIcon(item.id, emoji)}
                       placement="top"
                     />

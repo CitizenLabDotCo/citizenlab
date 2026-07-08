@@ -17,25 +17,23 @@ import { getNewIdsOnDrop } from './utils';
 const Settings = () => {
   const {
     actions: { setProp },
-    customPageIds,
-    pageIcons,
+    customPage,
   } = useNode((node) => ({
-    customPageIds: node.data.props.customPageIds,
-    pageIcons: node.data.props.pageIcons,
+    customPage: node.data.props.customPage,
   }));
 
   const handleAdd = (page?: ICustomPageData) => {
     if (!page) return;
 
     setProp((props) => {
-      props.customPageIds = [...customPageIds, page.id];
+      props.customPage.id = [...props.customPage.id, page.id];
     });
   };
 
   const handleReorder = (draggedItemId: string, targetIndex: number) => {
     setProp((props) => {
-      props.customPageIds = getNewIdsOnDrop(
-        customPageIds,
+      props.customPage.id = getNewIdsOnDrop(
+        props.customPage.id,
         draggedItemId,
         targetIndex
       );
@@ -44,26 +42,28 @@ const Settings = () => {
 
   const handleDelete = (deletedId: string) => {
     setProp((props) => {
-      props.customPageIds = customPageIds.filter(
+      props.customPage.id = props.customPage.id.filter(
         (customPageId: string) => customPageId !== deletedId
       );
-      if (props.pageIcons) {
-        const nextIcons = { ...props.pageIcons };
+      if (props.customPage.icon) {
+        const nextIcons = { ...props.customPage.icon };
         delete nextIcons[deletedId];
-        props.pageIcons = nextIcons;
+        props.customPage.icon = nextIcons;
       }
     });
   };
 
   const handleSetIcon = (pageId: string, emoji: string | null) => {
     setProp((props) => {
-      const nextIcons: Record<string, string> = { ...(props.pageIcons ?? {}) };
+      const nextIcons: Record<string, string | null> = {
+        ...props.customPage.icon,
+      };
       if (emoji) {
         nextIcons[pageId] = emoji;
       } else {
         delete nextIcons[pageId];
       }
-      props.pageIcons = nextIcons;
+      props.customPage.icon = nextIcons;
     });
   };
 
@@ -80,13 +80,12 @@ const Settings = () => {
           <FormattedMessage {...messages.selectPages} />
         </Label>
         <CustomPageSearchInput
-          customPageIds={customPageIds}
+          customPageIds={customPage.id}
           onChange={handleAdd}
         />
       </Box>
       <CustomPagesList
-        customPageIds={customPageIds}
-        pageIcons={pageIcons}
+        customPage={{ id: customPage.id, icon: customPage.icon }}
         onReorder={handleReorder}
         onDelete={handleDelete}
         onSetIcon={handleSetIcon}

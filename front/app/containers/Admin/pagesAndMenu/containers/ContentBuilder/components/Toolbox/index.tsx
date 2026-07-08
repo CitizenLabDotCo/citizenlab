@@ -188,8 +188,7 @@ const HomepageBuilderToolbox = () => {
           component={
             <CustomPages
               titleMultiloc={toMultiloc(customPagesMessages.defaultTitle)}
-              customPageIds={[]}
-              pageIcons={{}}
+              customPage={{ id: [], icon: {} }}
             />
           }
           icon="page"
