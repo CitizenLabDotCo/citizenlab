@@ -49,19 +49,24 @@ const VerificationVariant = ({
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
   const franceConnectEnabled = !!idMethods?.data.find((method) => method.attributes.name === 'franceconnect');
 
-  const authenticationMethodsExceptFC = idMethods?.data.filter((method) => {
-    const isFC = method.attributes.name === 'franceconnect';
-    const isAuthMethod = method.attributes.authentication_method;
-
-    return !isFC && isAuthMethod;
+  const authenticationOnlyMethodsExceptFC = idMethods?.data.filter((method) => {
+    const { name, authentication_method, verification_method } = method.attributes;
+    if (name === 'franceconnect') {
+      return false;
+    }
+    return authentication_method && !verification_method;
   }) ?? [];
 
-  const authenticationVerificationMethodsExceptFC = authenticationMethodsExceptFC.filter((method) => {
-    return method.attributes.verification_method;
-  });
+  const authenticationVerificationMethodsExceptFC = idMethods?.data.filter((method) => {
+    const { name, verification_method, authentication_method } = method.attributes;
+    if (name === 'franceconnect') {
+      return false;
+    }
+    return authentication_method && verification_method;
+  }) ?? [];
 
   const hasAlreadyHaveAnAccountSection =
-    passwordLoginEnabled || authenticationMethodsExceptFC.length > 0;
+    passwordLoginEnabled || authenticationOnlyMethodsExceptFC.length > 0;
 
   return (
     <Box data-cy="email-flow-start">
@@ -93,14 +98,14 @@ const VerificationVariant = ({
                 setError={setError}
                 onSubmit={onSubmit}
               />
-              {authenticationMethodsExceptFC.length > 0 && (
+              {authenticationOnlyMethodsExceptFC.length > 0 && (
                 <Box mt="24px">
                   <Or />
                 </Box>
               )}
             </>
           )}
-          {authenticationMethodsExceptFC.map((provider) => (
+          {authenticationOnlyMethodsExceptFC.map((provider) => (
             <SSOButton
               key={provider.attributes.name}
               provider={provider.attributes.name}
