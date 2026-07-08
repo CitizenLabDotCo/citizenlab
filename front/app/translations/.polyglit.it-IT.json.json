@@ -264,6 +264,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.components.AuthProviders.continueWithLuxembourgIAM": {
     "state": "verified",
     "verified_at": "2026-07-07T15:35:09.359912Z",
@@ -1954,6 +1955,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.components.ParticipationCTABars.seeObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -2149,6 +2151,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.components.PostCardsComponents.feed": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.797637Z",
@@ -2334,16 +2337,19 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.components.PostComponents.SharingModalContent.observationEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
     "verified_by": "Roger"
   },
+
   "app.components.PostComponents.SharingModalContent.observationEmailSharingSubject": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
     "verified_by": "Roger"
   },
+
   "app.components.PostComponents.SharingModalContent.observationWhatsAppMessage": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -2624,6 +2630,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.components.ProjectCard.submitYourObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -2704,6 +2711,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.components.ProjectCard.viewTheObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -3409,6 +3417,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.components.VerificationModal.verifyEtatLu2": {
     "state": "verified",
     "verified_at": "2026-07-07T15:35:09.359912Z",
@@ -3589,6 +3598,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.field_participated_in_input": {
     "state": "verified",
     "verified_at": "2026-07-01T13:38:54.030433Z",
@@ -7189,6 +7199,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.EventsShow.viewLocationOnGoogleMaps": {
     "state": "verified",
     "verified_at": "2026-06-18T13:20:37.756136Z",
@@ -7284,6 +7295,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeaButton.addAnObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -7704,6 +7716,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasEditPage.observationFormTitle": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -7839,6 +7852,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasFeedPage.addAnObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -7914,6 +7928,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasFeedPage.seeAllObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -7994,6 +8009,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasFeedPage.showAllObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -8844,6 +8860,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasNewPage.observationMetaTitle1": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -9119,26 +9136,31 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasShow.observationEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
     "verified_by": "Roger"
   },
+
   "app.containers.IdeasShow.observationEmailSharingSubject": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
     "verified_by": "Roger"
   },
+
   "app.containers.IdeasShow.observationSharingModalTitle": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
     "verified_by": "Roger"
   },
+
   "app.containers.IdeasShow.observationTwitterMessage": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
     "verified_by": "Roger"
   },
+
   "app.containers.IdeasShow.observationWhatsAppMessage": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -9754,6 +9776,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.NotificationMenu.invitationToCosponsorObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -9874,6 +9897,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.NotificationMenu.officialFeedbackOnObservationYouFollow": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -10009,6 +10033,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.NotificationMenu.userCommentedOnObservationYouFollow": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -10659,6 +10684,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.containers.Projects.seeTheObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -11833,6 +11859,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ContentBuilder.richTextMultiloc": {
+    "state": "verified",
+    "verified_at": "2026-06-18T13:18:38.630787Z",
+    "verified_by": "Roger"
   },
   "app.containers.admin.ContentBuilder.selectedProjects": {
     "state": "verified",
@@ -13044,6 +13075,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.utils.IdeasNewPage.observationFormTitle": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -13134,6 +13166,7 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "app.utils.IdeasNewPage.viewYourObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T13:36:52.949317Z",
@@ -13739,21 +13772,25 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+
   "containers.OAuthAuthorize.authorizeButton": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.797637Z",
     "verified_by": "Roger"
   },
+
   "containers.OAuthAuthorize.authorizeExplanation2": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.797637Z",
     "verified_by": "Roger"
   },
+
   "containers.OAuthAuthorize.authorizeHeading": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.797637Z",
     "verified_by": "Roger"
   },
+
   "containers.OAuthAuthorize.denyButton": {
     "state": "verified",
     "verified_at": "2026-07-01T13:49:11.797637Z",
