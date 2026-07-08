@@ -13,18 +13,17 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { useIntl } from 'utils/cl-intl';
 
-import LockedHeaderNote from '../LockedHeaderNote';
+import LockedNote from '../LockedNote';
 import messages from '../messages';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 type Props = {
-  // Unsaved edit of the project's `title_multiloc`; committed to the project
-  // and stripped from the layout on Save (see projectAttributeDrafts.ts).
+  // Unsaved edit of the project's `title_multiloc`; see projectAttributeDrafts.ts.
   title?: Multiloc;
 };
 
-// Locked widget rendering the project title as the page heading. Cannot be moved
-// or deleted; its settings panel edits the project's `title_multiloc`.
+// Locked widget rendering (and, via its settings, editing) the project's
+// `title_multiloc` as the page heading.
 const ProjectTitle: UserComponent<Props> = ({ title: draftTitle }) => {
   const projectId = useWidgetProjectId();
   const localize = useLocalize();
@@ -81,7 +80,7 @@ const ProjectTitleSettings = () => {
         valueMultiloc={titleMultiloc}
         onChange={handleChange}
       />
-      <LockedHeaderNote />
+      <LockedNote message={messages.lockedHeaderNote} />
     </Box>
   );
 };

@@ -4,42 +4,39 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
+import { usePermission } from 'utils/permissions';
 import { useParams } from 'utils/router';
 
 import EditModeHeightCap from '../EditModeHeightCap';
 import SectionBackground from '../SectionBackground';
-import useCanModerateProject from '../useCanModerateProject';
+import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyInputFeed from './EmptyInputFeed';
 
 const PublicInputContent = React.lazy(() => import('./PublicInputContent'));
 
-// The project's participation content (ideas / survey / voting / …). Its
-// content is method-driven, so it isn't edited in the builder.
-//
-// It renders the live content everywhere, but is made non-interactive off the
-// public project route (i.e. in the builder/previews) so its URL-driven filters
-// and links can't fire there. Rendered as the bottom half of the Phases widget;
-// not a standalone widget.
+// The active phase's participation content (ideas / survey / voting / …),
+// rendered as the bottom half of the Phases widget. Its content is
+// method-driven, so it isn't edited in the builder; off the public route it is
+// made non-interactive so its URL-driven filters and links can't fire.
 const InputFeedSection = () => {
-  const { projectId, slug } = useParams({ strict: false }) as {
-    projectId?: string;
-    slug?: string;
-  };
-  const { data: projectBySlug } = useProjectBySlug(slug);
-  const projectIdToUse = projectId || projectBySlug?.data.id;
+  const projectId = useWidgetProjectId();
+  const { slug } = useParams({ strict: false }) as { slug?: string };
   const onPublicRoute = !!slug;
   const currentLocale = useLocale();
-  const canModerate = useCanModerateProject(projectIdToUse);
-  const { data: phases } = usePhases(projectIdToUse);
+  const { data: project } = useProjectById(projectId);
+  const canModerate = usePermission({
+    item: project?.data ?? null,
+    action: 'moderate',
+  });
+  const { data: phases } = usePhases(projectId);
   const hasParticipation = !!phases && !!getLatestRelevantPhase(phases.data);
-  // When the Timeline widget above hides itself (same rule as the legacy
-  // page), this becomes the first content on the grey band and needs its own
-  // top padding, normally provided by the timeline.
+  // With the timeline above hidden, this is the first content on the grey band
+  // and needs the top padding the timeline normally provides.
   const startsGreyBand = !!phases && hideTimelineUI(phases.data, currentLocale);
 
   return (
@@ -50,20 +47,20 @@ const InputFeedSection = () => {
       // active phase (and so no content renders).
       minHeight={onPublicRoute ? undefined : '40px'}
     >
-      {projectIdToUse &&
+      {projectId &&
         phases &&
         (hasParticipation ? (
-          // Sits on the same grey background as the Timeline widget above it, so
-          // the phases + participation content read as one section (like the old
-          // page). Only wraps real content, so empty phases leave no grey strip.
+          // Shares the timeline's grey band so phases + participation content
+          // read as one section; only wraps real content, so empty phases
+          // leave no grey strip.
           <EditModeHeightCap>
             <SectionBackground
-              $fullBleed={onPublicRoute}
+              fullBleed={onPublicRoute}
               pb="40px"
               pt={startsGreyBand ? '40px' : undefined}
             >
               <Suspense fallback={null}>
-                <PublicInputContent projectId={projectIdToUse} />
+                <PublicInputContent projectId={projectId} />
               </Suspense>
             </SectionBackground>
           </EditModeHeightCap>

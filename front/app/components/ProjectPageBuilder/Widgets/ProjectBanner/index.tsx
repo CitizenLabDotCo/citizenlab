@@ -20,31 +20,31 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+import { usePermission } from 'utils/permissions';
 
-import LockedHeaderNote from '../LockedHeaderNote';
+import LockedNote from '../LockedNote';
 import messages from '../messages';
-import useCanModerateProject from '../useCanModerateProject';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyBanner from './EmptyBanner';
 
 type Props = {
-  // Unsaved edits of the project's `header_bg` / `header_bg_alt_text_multiloc`;
-  // committed to the project and stripped from the layout on Save (see
-  // projectAttributeDrafts.ts).
+  // Unsaved edits of the project's header image; see projectAttributeDrafts.ts.
   image?: BannerImageDraft;
   alt?: Multiloc;
 };
 
-// Locked "Project image" widget. Cannot be moved or deleted. Renders the
-// project's header image (`header_bg`); the settings panel edits that same
-// attribute, so the page, the project cards, and the legacy page all show
+// Locked widget rendering (and, via its settings, editing) the project's
+// `header_bg`, so this page, the project cards and the legacy page all show
 // one image.
 const ProjectBanner: UserComponent<Props> = ({ image, alt }) => {
   const projectId = useWidgetProjectId();
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
-  const canModerate = useCanModerateProject(projectId);
+  const canModerate = usePermission({
+    item: project?.data ?? null,
+    action: 'moderate',
+  });
 
   if (!project) {
     return null;
@@ -77,9 +77,6 @@ const ProjectBanner: UserComponent<Props> = ({ image, alt }) => {
   );
 };
 
-// Mirrors the content Image widget's settings (dropzone + alt text), but seeds
-// the dropzone with the project's current header image when there is no pending
-// draft, so admins see and can replace the image that is actually showing.
 const ProjectBannerSettings = () => {
   const { formatMessage } = useIntl();
   const projectId = useWidgetProjectId();
@@ -95,9 +92,8 @@ const ProjectBannerSettings = () => {
   }));
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
 
-  // Seed the dropzone once with the image currently showing (draft, else the
-  // project image), then let add/remove drive it. Seeding only once is what lets
-  // "remove" actually empty the dropzone instead of immediately re-showing the
+  // Seed the dropzone once with the image currently showing, then let
+  // add/remove drive it — otherwise "remove" would immediately re-show the
   // project image.
   const seeded = useRef(false);
   useEffect(() => {
@@ -129,8 +125,6 @@ const ProjectBannerSettings = () => {
     }
   };
 
-  // Empties the dropzone and marks the image for removal; on Save the
-  // project's header image is cleared.
   const handleRemove = () => {
     setImageFiles([]);
     setProp((props: Props) => {
@@ -174,7 +168,7 @@ const ProjectBannerSettings = () => {
           onChange={handleAltChange}
         />
       </Box>
-      <LockedHeaderNote />
+      <LockedNote message={messages.lockedHeaderNote} />
     </Box>
   );
 };

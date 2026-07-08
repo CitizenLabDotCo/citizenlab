@@ -4,6 +4,7 @@ import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 
 import useProjectPageLayout from 'api/content_builder/useProjectPageLayout';
+import useProjectById from 'api/projects/useProjectById';
 
 import useParallelParticipation from 'hooks/useParallelParticipation';
 
@@ -12,9 +13,9 @@ import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/co
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { ensureLockedHeaderNodes } from 'components/ProjectPageBuilder/defaultLayout';
 import Editor from 'components/ProjectPageBuilder/Editor';
-import useCanModerateProject from 'components/ProjectPageBuilder/Widgets/useCanModerateProject';
 
 import eventEmitter from 'utils/eventEmitter';
+import { usePermission } from 'utils/permissions';
 
 type Props = {
   projectId: string;
@@ -29,15 +30,18 @@ const handleLoadImages = () => {
 const ProjectPageContentViewer = ({ projectId }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const parallelParticipation = useParallelParticipation();
-  const canModerate = useCanModerateProject(projectId);
+  const { data: project } = useProjectById(projectId);
+  const canModerate = usePermission({
+    item: project?.data ?? null,
+    action: 'moderate',
+  });
 
   const { data: layout, isInitialLoading } = useProjectPageLayout(
     projectId,
     parallelParticipation
   );
 
-  // Render with the locked Banner + Title at the top, injecting them into
-  // layouts that predate these widgets. Memoised so the frame doesn't re-deserialize.
+  // Memoised so the frame doesn't re-deserialize on every render.
   const editorData = useMemo(
     () => ensureLockedHeaderNodes(layout?.data.attributes.craftjs_json),
     [layout]
@@ -51,10 +55,8 @@ const ProjectPageContentViewer = ({ projectId }: Props) => {
     layout.data.attributes.enabled &&
     !isEmpty(layout.data.attributes.craftjs_json);
 
-  // Residents only see the page once it has enabled content. Admins/moderators
-  // also see the default empty-state layout (locked header + Inputs / Phases /
-  // Events placeholders), so the admin preview mirrors the builder before any
-  // content is published.
+  // Residents only see the page once it has enabled content; admins/moderators
+  // also see the default empty-state layout, mirroring the builder.
   if (!hasContent && !canModerate) return null;
 
   return (

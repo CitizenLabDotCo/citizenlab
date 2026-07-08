@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
-
 import descriptionMessages from 'containers/DescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -20,31 +18,19 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import builderMessages from 'components/ProjectPageBuilder/messages';
+import LockedNote from 'components/ProjectPageBuilder/Widgets/LockedNote';
 
 import { useIntl } from 'utils/cl-intl';
 
-// Toolbox for the project page builder. The page's section order is frozen
-// during the transition — the body rejects drops, so these widgets can only
-// land inside the description section (matching what the legacy description
-// editor can produce).
+// The body rejects drops while the page structure is frozen, so these widgets
+// can only land inside the description section (matching what the legacy
+// description editor can produce).
 const ProjectPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
 
   return (
     <Container>
-      <Box display="flex" gap="8px" p="12px" background={colors.grey100}>
-        <Box flex="0 0 auto">
-          <Icon
-            name="lock"
-            width="16px"
-            height="16px"
-            fill={colors.textSecondary}
-          />
-        </Box>
-        <Text m="0px" color="textSecondary" fontSize="s">
-          {formatMessage(builderMessages.toolboxLockedNote)}
-        </Text>
-      </Box>
+      <LockedNote message={builderMessages.toolboxLockedNote} />
       <Section>
         <DraggableElement
           id="e2e-draggable-image-text-cards"

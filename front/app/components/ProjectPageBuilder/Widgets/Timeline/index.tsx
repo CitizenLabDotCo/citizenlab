@@ -19,11 +19,11 @@ import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { usePermission } from 'utils/permissions';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import SectionBackground from '../SectionBackground';
-import useCanModerateProject from '../useCanModerateProject';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyTimeline from './EmptyTimeline';
@@ -39,10 +39,8 @@ const Header = styled.div`
   `}
 `;
 
-// Renders the project's phase timeline (heading + phase navigation arrows + the
-// tabs/selected-phase details), reusing the public project-page components. The
-// selected phase follows the URL phase param, so clicking a phase tab (which
-// navigates) updates the highlight and details — mirroring ProjectTimelineContainer.
+// The phase timeline, reusing the public project-page components; the selected
+// phase follows the URL phase param, mirroring ProjectTimelineContainer.
 // Rendered as the top half of the Phases widget; not a standalone widget.
 const TimelineSection = () => {
   const projectId = useWidgetProjectId();
@@ -54,7 +52,10 @@ const TimelineSection = () => {
   const currentLocale = useLocale();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
-  const canModerate = useCanModerateProject(projectId);
+  const canModerate = usePermission({
+    item: project?.data ?? null,
+    action: 'moderate',
+  });
 
   const selectedPhase = useMemo(() => {
     if (!phases) return undefined;
@@ -72,11 +73,8 @@ const TimelineSection = () => {
     return canModerate ? <EmptyTimeline /> : null;
   }
 
-  // Same visibility rule as the legacy page (ProjectTimelineContainer): a
-  // single open-ended phase without a description shows no timeline. On the
-  // public route nothing renders — for anyone — so the page looks identical to
-  // before; in the builder a placeholder keeps the widget visible for
-  // positioning.
+  // Same visibility rule as the legacy page: a single open-ended phase without
+  // a description shows no timeline — for anyone. The builder keeps a placeholder.
   if (hideTimelineUI(phases.data, currentLocale)) {
     return slug ? null : (
       <EmptyTimeline
@@ -86,15 +84,14 @@ const TimelineSection = () => {
     );
   }
 
-  // Phase tabs navigate via links; this only drives keyboard-arrow selection,
-  // and only on the public route (in the builder the widget is non-interactive).
+  // Tabs navigate via links; this only drives keyboard-arrow selection.
   const selectPhase = (phase: IPhaseData) => {
     if (!slug || !project) return;
     setPhaseURL(phase, phases.data, project.data);
   };
 
   return (
-    <SectionBackground $fullBleed={!!slug} py="40px">
+    <SectionBackground fullBleed={!!slug} py="40px">
       <Box
         id="e2e-project-page-timeline"
         maxWidth={`${maxPageWidth}px`}

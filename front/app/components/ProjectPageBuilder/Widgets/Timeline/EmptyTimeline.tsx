@@ -1,7 +1,9 @@
 import React from 'react';
 
-import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
+
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 
@@ -10,27 +12,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 import AdminOnlyNote from '../EmptyState/AdminOnlyNote';
 import EmptyStateContainer from '../EmptyState/EmptyStateContainer';
 import SkeletonBar from '../EmptyState/SkeletonBar';
+import SkeletonDot from '../EmptyState/SkeletonDot';
 import messages from '../messages';
 
-const Dot = () => (
-  <Box
-    flex="0 0 auto"
-    width="20px"
-    height="20px"
-    background={colors.grey200}
-    borderRadius="50%"
-  />
-);
-
 type Props = {
-  // Defaults to the "no phases yet" empty state; the widget passes the
-  // "timeline hidden" variant when the legacy visibility rule hides it.
   titleMessage?: MessageDescriptor;
   noteMessage?: MessageDescriptor;
 };
 
-// Admin-only placeholder shown when the timeline has nothing to render on the
-// public page, so the widget can still be seen and positioned in the builder.
+// Admin-only placeholder keeping the widget visible when the timeline has
+// nothing to render on the public page.
 const EmptyTimeline = ({
   titleMessage = messages.timelineEmptyTitle,
   noteMessage,
@@ -38,7 +29,7 @@ const EmptyTimeline = ({
   const padding = useCraftComponentDefaultPadding();
 
   return (
-    <Box maxWidth="1000px" margin="0 auto" px={padding}>
+    <Box maxWidth={`${maxPageWidth}px`} margin="0 auto" px={padding}>
       <Title variant="h2" color="tenantText" mb="20px">
         <FormattedMessage {...messages.phasesHeading} />
       </Title>
@@ -47,11 +38,11 @@ const EmptyTimeline = ({
           <FormattedMessage {...titleMessage} />
         </Text>
         <Box width="100%" display="flex" alignItems="center" gap="8px">
-          <Dot />
+          <SkeletonDot />
           <SkeletonBar height="2px" />
-          <Dot />
+          <SkeletonDot />
           <SkeletonBar height="2px" />
-          <Dot />
+          <SkeletonDot />
         </Box>
         <Box width="100%" display="flex" flexDirection="column" gap="10px">
           <SkeletonBar />
