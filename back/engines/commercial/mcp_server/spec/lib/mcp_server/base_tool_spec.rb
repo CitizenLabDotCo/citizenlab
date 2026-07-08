@@ -32,6 +32,12 @@ describe McpServer::BaseTool do
     end
   end
 
+  it 'requires Runner subclasses to implement #run' do
+    runner = described_class::Runner.new(params: {}, server_context: {}, current_user: nil, token_scopes: [])
+
+    expect { runner.run }.to raise_error(NotImplementedError)
+  end
+
   describe '.unauthorized_message' do
     it 'includes the reason of a NotAuthorizedErrorWithReason' do
       error = Pundit::NotAuthorizedErrorWithReason.new(reason: 'the project has inputs')
