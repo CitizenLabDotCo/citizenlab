@@ -28,10 +28,11 @@ import useAvailableItems, { MenuItemType } from './useAvailableItems';
 
 type Props = {
   onSubmit: (item: IItemNotInNavbar) => Promise<void>;
+  onCancel: () => void;
   processing: boolean;
 };
 
-const SingleItemForm = ({ onSubmit, processing }: Props) => {
+const SingleItemForm = ({ onSubmit, onCancel, processing }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -108,7 +109,8 @@ const SingleItemForm = ({ onSubmit, processing }: Props) => {
             <Box>
               <InputMultilocWithLocaleSwitcher
                 name="titleMultiloc"
-                label={formatMessage(messages.navbarItemName)}
+                label={formatMessage(messages.singleItemLabel)}
+                placeholder={formatMessage(messages.navbarItemNamePlaceholder)}
               />
             </Box>
 
@@ -144,13 +146,16 @@ const SingleItemForm = ({ onSubmit, processing }: Props) => {
               <Warning>{formatMessage(messages.accessWarning)}</Warning>
             )}
 
-            <Box display="flex">
+            <Box display="flex" justifyContent="flex-end" gap="8px">
+              <Button type="button" buttonStyle="secondary" onClick={onCancel}>
+                {formatMessage(messages.cancelButton)}
+              </Button>
               <Button
                 type="submit"
-                icon="plus-circle"
+                buttonStyle="admin-dark"
                 processing={processing || methods.formState.isSubmitting}
               >
-                {formatMessage(messages.addButton)}
+                {formatMessage(messages.addToMenuButton)}
               </Button>
             </Box>
           </Box>

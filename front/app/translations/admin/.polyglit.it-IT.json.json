@@ -74,66 +74,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.Admin.ManagementFeed.permission": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionAnnotatingDocument": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionAttendingEvent": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionCommentingIdea": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionFollowing": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionPostingIdea": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionReactingIdea": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionTakingPoll": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionTakingSurvey": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionVisiting": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionVolunteering": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.Admin.ManagementFeed.permissionActionVoting": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.Admin.ManagementFeed.phase": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -3669,16 +3609,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersList": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.PagesAndMenu.SectionToggle.projectsAndFoldersListTooltip": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.containers.Admin.PagesAndMenu.SectionToggle.projectsList": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -3869,16 +3799,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItems": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedItemsTooltip": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -4029,11 +3949,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageMetaTitle1": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageSettingsLinkText": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -4043,11 +3958,6 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
-  },
-  "app.containers.Admin.PagesAndMenu.containers.ProjectsList.pageTitle1": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
   },
   "app.containers.Admin.PagesAndMenu.containers.ProjectsList.sectionDescription": {
     "state": "verified",
@@ -6089,6 +5999,16 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.menuTab": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.pagesTab": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.accessWarning": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -6303,6 +6223,251 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.collapseDropdown": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.defaultTag": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.dropdownTag": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.editItem": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.expandDropdown": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.removeFromMenu": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.removeFromMenuTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.MenuItemRow.viewItem": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.menuSubtitle2": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.menuTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.navBarMaxItems": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.MenuTab.newMenuItem": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.accessWarning": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItemButton": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addItems": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.addToMenuButton": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.cancelButton": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdown": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdownLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.dropdownLabelPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.emptyDropdownError": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.emptyItemError": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.emptyNameError": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.folderTag": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.inThisMenu": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.resultingUrl": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.saveButton": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectItemPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePageConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.editPage": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.newCustomPage": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.noPages": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.pagesSubtitle": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.pagesTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
+  },
+  "app.containers.Admin.pagesAndMenu.containers.PagesTab.viewPage": {
+    "state": "verified",
+    "verified_at": "2026-07-06T07:18:46.947477Z",
+    "verified_by": "Roger"
   },
   "app.containers.Admin.project.Campaigns.campaignFrom": {
     "state": "verified",
@@ -7514,21 +7679,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.projects.project.edit": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.editPageContent": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.editProjectPageInContentBuilder": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -7823,16 +7973,6 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
-  },
-  "app.containers.Admin.projects.project.insights.exportButton": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.insights.gender": {
     "state": "verified",
@@ -8378,11 +8518,6 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
-  },
-  "app.containers.Admin.projects.project.newPhase": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": {
     "state": "verified",
@@ -8989,21 +9124,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.projects.project.projectPageNav": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.projectPagePreviewTitle": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.settingsNav": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.containers.Admin.projects.project.survey.aiAnalysis2": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -9023,11 +9143,6 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
-  },
-  "app.containers.Admin.projects.project.survey.analysis.autoSummaryInfo": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.survey.analysis.backgroundTaskFailedMessage": {
     "state": "verified",
@@ -9373,61 +9488,6 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.cancelButton": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.consentLabel": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.dateLabel": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.exportError": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.generateButton": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.notesLabel": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.pageTitle": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.preparedByLabel": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.previewError": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.reportSubtitleLabel": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.projects.project.surveyPdfExport.reportTitleLabel": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
   },
   "app.containers.Admin.projects.project.traffic.selectPeriod": {
     "state": "verified",
@@ -10504,46 +10564,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.tools.MCPAuthorizations.actions": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.MCPAuthorizations.clientId": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.MCPAuthorizations.clientName": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.MCPAuthorizations.noAuthorizations": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.MCPAuthorizations.pageDescription3": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.MCPAuthorizations.pageTitle": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.MCPAuthorizations.revokeAccess": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.MCPAuthorizations.revokeConfirmation": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.containers.Admin.tools.apiTokens.createTokenButton": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -10729,11 +10749,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.containers.Admin.tools.manageMcpAuthorizations": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.containers.Admin.tools.managePublicAPIKeys": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -10753,21 +10768,6 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
-  },
-  "app.containers.Admin.tools.mcpAuthorizationsDescription2": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.mcpAuthorizationsImage": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
-  "app.containers.Admin.tools.mcpAuthorizationsTitle": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
   },
   "app.containers.Admin.tools.powerBIAPIImage": {
     "state": "verified",
@@ -20499,11 +20499,6 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
-  "app.modules.navbar.admin.containers.navBarMaxItemsNumber1": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
-  },
   "app.modules.navbar.admin.containers.pageHeader": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -20513,11 +20508,6 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
-  },
-  "app.modules.navbar.admin.containers.pageSubtitle1": {
-    "state": "verified",
-    "verified_at": "2026-07-01T13:49:11.860727Z",
-    "verified_by": "Roger"
   },
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": {
     "state": "verified",

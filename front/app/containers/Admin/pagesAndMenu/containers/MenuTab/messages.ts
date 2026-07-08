@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Menu',
   },
   menuSubtitle: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.MenuTab.menuSubtitle',
+    id: 'app.containers.Admin.pagesAndMenu.containers.MenuTab.menuSubtitle2',
     defaultMessage:
-      'What appears in your site’s navigation bar. Home is locked — drag the rest to reorder.',
+      'Organise the menu that appears across your site. Add new items and drag to reorder.',
   },
   newMenuItem: {
     id: 'app.containers.Admin.pagesAndMenu.containers.MenuTab.newMenuItem',

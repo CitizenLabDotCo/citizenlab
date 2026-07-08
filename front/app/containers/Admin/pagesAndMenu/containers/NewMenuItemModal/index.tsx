@@ -59,7 +59,7 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
       opened={opened}
       close={handleClose}
       header={formatMessage(
-        isEditing ? messages.dropdownMenu : messages.modalTitle
+        isEditing ? messages.dropdown : messages.modalTitle
       )}
     >
       <Box p="24px">
@@ -83,7 +83,7 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
               data-cy="e2e-new-menu-item-dropdown-tab"
               borderRadius="0 4px 4px 0"
             >
-              {formatMessage(messages.dropdownMenu)}
+              {formatMessage(messages.dropdown)}
             </Button>
           </Box>
         )}
@@ -91,12 +91,14 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
         {activeTab === 'single' && !isEditing ? (
           <SingleItemForm
             onSubmit={onSingleSubmit}
+            onCancel={handleClose}
             processing={singleProcessing}
           />
         ) : (
           <DropdownForm
             editItem={editItem}
             onSubmit={onDropdownSubmit}
+            onCancel={handleClose}
             processing={dropdownProcessing}
           />
         )}
