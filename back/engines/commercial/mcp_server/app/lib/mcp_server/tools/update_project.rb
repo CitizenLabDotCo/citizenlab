@@ -35,7 +35,9 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      project = Project.find(params[:project_id])
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
+
       attributes = params.except(:project_id)
       project.assign_attributes(merge_multilocs(project, attributes))
 
@@ -43,14 +45,12 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       project.save!
       SideFxProjectService.new.after_update(project, current_user)
 
-      ok(
+      response(
         "Updated project #{project.id}",
         structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Project not found: #{params[:project_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 end

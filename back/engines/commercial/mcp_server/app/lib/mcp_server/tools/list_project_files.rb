@@ -26,17 +26,15 @@ class McpServer::Tools::ListProjectFiles < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      project = Project.find(params[:project_id])
-      scope = project.files.order(created_at: :desc)
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
 
       paginated_response(
         'files',
-        scope,
+        project.files.order(created_at: :desc),
         serializer: McpServer::Serializers::File,
         **params.slice(:page, :per_page)
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Project not found: #{params[:project_id]}")
     end
   end
 end
