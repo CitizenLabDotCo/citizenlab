@@ -86,7 +86,7 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     rescue ActiveRecord::RecordNotFound
       error("#{params[:type]} not found: #{params[:id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      validation_error(e.record)
     end
 
     private

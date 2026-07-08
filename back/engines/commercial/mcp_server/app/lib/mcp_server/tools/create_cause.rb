@@ -42,7 +42,7 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      validation_error(e.record)
     end
   end
 end

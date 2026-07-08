@@ -93,6 +93,9 @@ module ContentBuilder
         node = _node(node_id)
         parent = _node(node['parent'])
         parent['nodes'].delete(node_id)
+        # The node may be wired as a linkedNodes slot child (column or accordion
+        # content Container) rather than an ordinary child.
+        parent['linkedNodes']&.delete_if { |_slot, child_id| child_id == node_id }
 
         until ids_to_delete.empty?
           id = ids_to_delete.shift

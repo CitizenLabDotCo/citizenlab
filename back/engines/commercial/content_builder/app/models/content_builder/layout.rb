@@ -21,6 +21,7 @@ module ContentBuilder
   class Layout < ApplicationRecord
     include Files::FileAttachable
     TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc].freeze
+    PROJECT_DESCRIPTION_CODE = 'project_description'
 
     belongs_to :content_buildable, polymorphic: true, optional: true
 

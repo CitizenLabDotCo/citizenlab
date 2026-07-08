@@ -43,7 +43,7 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
     rescue ActiveRecord::RecordNotFound
       error("Poll question not found: #{params[:question_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      validation_error(e.record)
     end
   end
 end

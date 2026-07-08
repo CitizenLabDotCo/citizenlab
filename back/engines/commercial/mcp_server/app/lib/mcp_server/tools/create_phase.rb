@@ -300,7 +300,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
         structured: phase.as_json(only: %i[id project_id title_multiloc start_at end_at participation_method])
       )
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      validation_error(e.record)
     end
   end
 

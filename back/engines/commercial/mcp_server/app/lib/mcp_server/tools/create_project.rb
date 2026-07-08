@@ -37,7 +37,7 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
         structured: project.as_json(only: %i[id title_multiloc slug visible_to created_at])
       )
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      validation_error(e.record)
     end
   end
 end

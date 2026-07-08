@@ -18,4 +18,8 @@ module McpServer::BaseTool::ResponseHelpers
       error: true
     )
   end
+
+  def validation_error(record)
+    error("Validation failed: #{record.errors.full_messages.join(', ')}")
+  end
 end

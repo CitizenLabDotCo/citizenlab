@@ -108,7 +108,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
     rescue ActiveRecord::RecordNotFound
       error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      validation_error_response(e.record)
+      validation_error(e.record)
     end
 
     private
@@ -119,10 +119,6 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
         "Action '#{action}' does not apply to this phase (participation_method: '#{phase.participation_method}'). " \
         "Valid actions: #{valid_actions.join(', ')}."
       )
-    end
-
-    def validation_error_response(record)
-      error("Validation failed: #{record.errors.full_messages.join(', ')}")
     end
 
     # Sets global_custom_fields and the permissions_custom_fields rows on the permission.

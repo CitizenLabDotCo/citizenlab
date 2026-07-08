@@ -36,10 +36,8 @@ module ContentBuilder
         resolved_name = node['type']['resolvedName']
         take_multiloc(node, resolved_name)
 
-        children = if resolved_name == 'TwoColumn'
-          [node['linkedNodes']['left'], node['linkedNodes']['right']]
-        elsif resolved_name == 'ThreeColumn'
-          [node['linkedNodes']['column1'], node['linkedNodes']['column2'], node['linkedNodes']['column3']]
+        children = Nodes::VISUAL_SLOT_ORDER[resolved_name]&.map do |slot|
+          node['linkedNodes'][slot]
         end
 
         children = children_ordered_by_nodes_order(node_key, node) if children.nil? || children.compact == []
