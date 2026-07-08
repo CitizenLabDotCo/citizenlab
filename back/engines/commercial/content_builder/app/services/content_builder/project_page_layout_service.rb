@@ -1,16 +1,10 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Builds `project_page` craftjs layouts, used by the SideFx provisioning hooks
-  # and the one-time project page migration.
-  #
-  # The structure mirrors the frontend `defaultLayout.ts` (`defaultProjectPageLayout`
-  # + `ensureLockedHeaderNodes`) — keep the two in sync: a locked banner + title
-  # above a body frozen to description section → phases → events. Phases is one
-  # widget holding the timeline and the phase's participation content: the
-  # timeline's tabs drive the content, so they always move together.
-  # The description section holds the project's description content; it is the
-  # subtree the legacy description editor edits and the legacy project page renders.
+  # Builds `project_page` craftjs layouts for the provisioning hooks and the
+  # one-time migration: a locked banner + title above a body frozen to
+  # description section → phases → events. Mirrors the frontend
+  # `defaultLayout.ts` — keep the two in sync.
   class ProjectPageLayoutService
     CODE = 'project_page'
 
@@ -22,20 +16,16 @@ module ContentBuilder
     PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
 
-    # Widgets absent from the project page resolver; left in place they crash
-    # craft.js on deserialize, so they are stripped with their subtrees.
-    # TimelineWidget and InputFeed are the pre-merge separate sections, replaced
-    # by the combined PhasesWidget.
+    # Widgets of the description-builder resolver that are absent from the
+    # project page resolver, stripped (with their subtrees) so craft.js doesn't
+    # crash deserializing an unknown component.
     # Keep in sync with REMOVED_WIDGETS in defaultLayout.ts.
     UNSUPPORTED_WIDGETS = %w[
       FolderFiles
       FolderTitle
-      InputFeed
       Published
       Selection
       Spotlight
-      ExtraSurveysWidget
-      TimelineWidget
     ].freeze
 
     # Re-key injected nodes so they can't collide with the fixed PROJECT_PAGE_* ids.

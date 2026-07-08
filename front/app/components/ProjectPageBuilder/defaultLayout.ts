@@ -192,28 +192,23 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   },
 };
 
-// Widgets absent from the project page resolver: ones removed over time, plus the
-// DescriptionBuilder-only widgets that exist in project_description layouts. Their
-// nodes are stripped so craft.js doesn't crash deserializing an unknown component.
-// TimelineWidget and InputFeed are the pre-merge separate sections, replaced by
-// the combined PhasesWidget (which ensureLockedHeaderNodes recreates).
-// Keep in sync with UNSUPPORTED_WIDGETS in the project_page migration rake task.
+// Widgets of the description-builder resolver that are absent from the project
+// page resolver, stripped so craft.js doesn't crash deserializing an unknown
+// component. Keep in sync with UNSUPPORTED_WIDGETS in
+// ContentBuilder::ProjectPageLayoutService.
 const REMOVED_WIDGETS = [
-  'ExtraSurveysWidget',
   'FolderFiles',
   'FolderTitle',
-  'InputFeed',
   'Published',
   'Selection',
   'Spotlight',
-  'TimelineWidget',
 ];
 
-// Normalises a stored layout into the frozen transition structure: locked
-// Banner + Title on top, then a body fixed to description → timeline → phase
-// content → events. Free-form content found anywhere in the body is adopted
-// into the description section, so it keeps rendering on both the new and the
-// legacy page. Idempotent — canonical layouts pass through unchanged.
+// Normalises a stored layout into the frozen transition structure (see the
+// diagram above): injects missing fixed nodes, enforces the canonical order and
+// re-stamps the lock flags from code, so a code change (e.g. the unlock at
+// launch) applies to every stored layout without a data migration.
+// Idempotent — canonical layouts pass through unchanged.
 export const ensureLockedHeaderNodes = (
   nodes?: SerializedNodes
 ): SerializedNodes => {
@@ -253,22 +248,9 @@ export const ensureLockedHeaderNodes = (
 
   const bannerId = ensureNode('ProjectBanner', BANNER_NODE_ID, bannerNode);
   const titleId = ensureNode('ProjectTitle', TITLE_NODE_ID, titleNode);
-
-  const root = next[ROOT_ID];
-
-  // Ensure the body exists, moving any top-level user content into it
-  // (migration from the old flat structure).
-  let bodyId = findNodeIdByName(next, 'ProjectPageBody');
-  if (!bodyId) {
-    const newBodyId = BODY_NODE_ID;
-    const userIds = root.nodes.filter((n) => n !== bannerId && n !== titleId);
-    userIds.forEach((uid) => {
-      next[uid] = { ...next[uid], parent: newBodyId };
-    });
-    next[newBodyId] = bodyNode(userIds);
-    bodyId = newBodyId;
-  }
-
+  const bodyId = ensureNode('ProjectPageBody', BODY_NODE_ID, () =>
+    bodyNode([])
+  );
   const descriptionId = ensureNode(
     'ProjectDescriptionSection',
     DESCRIPTION_NODE_ID,
@@ -281,44 +263,19 @@ export const ensureLockedHeaderNodes = (
     eventsNode(bodyId)
   );
 
-  // Adopt free-form body content into the description section (layouts saved
-  // before the section existed), preserving its order.
-  const fixedBodyIds = [descriptionId, phasesId, eventsId];
-  const adopted = next[bodyId].nodes.filter((id) => !fixedBodyIds.includes(id));
-  adopted.forEach((id) => {
-    next[id] = { ...next[id], parent: descriptionId };
-  });
-  if (adopted.length > 0) {
-    next[descriptionId] = {
-      ...next[descriptionId],
-      nodes: [...next[descriptionId].nodes, ...adopted],
-    };
-  }
-
-  // Pin every fixed node under its designated parent, and drop stale references
-  // to them from anywhere else (e.g. a timeline that was nested in a column).
-  const pinnedParents: Record<string, string> = {
-    [bannerId]: ROOT_ID,
-    [titleId]: ROOT_ID,
-    [bodyId]: ROOT_ID,
-    [descriptionId]: bodyId,
-    [phasesId]: bodyId,
-    [eventsId]: bodyId,
+  // Pin every fixed node under its designated parent, in the frozen order.
+  next[bannerId] = { ...next[bannerId], parent: ROOT_ID };
+  next[titleId] = { ...next[titleId], parent: ROOT_ID };
+  next[bodyId] = {
+    ...next[bodyId],
+    parent: ROOT_ID,
+    nodes: [descriptionId, phasesId, eventsId],
   };
-  Object.entries(next).forEach(([id, node]) => {
-    if (!Array.isArray(node.nodes)) return;
-    const filtered = node.nodes.filter(
-      (childId) => !(childId in pinnedParents) || pinnedParents[childId] === id
-    );
-    if (filtered.length !== node.nodes.length) {
-      next[id] = { ...node, nodes: filtered };
-    }
-  });
-  Object.entries(pinnedParents).forEach(([id, parent]) => {
-    next[id] = { ...next[id], parent };
-  });
+  next[descriptionId] = { ...next[descriptionId], parent: bodyId };
+  next[phasesId] = { ...next[phasesId], parent: bodyId };
+  next[eventsId] = { ...next[eventsId], parent: bodyId };
 
-  next[bodyId] = { ...next[bodyId], nodes: fixedBodyIds };
+  const root = next[ROOT_ID];
   next[ROOT_ID] = {
     ...root,
     type: { resolvedName: 'ProjectPageRoot' },

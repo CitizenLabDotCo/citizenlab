@@ -66,24 +66,6 @@ describe('ensureLockedHeaderNodes', () => {
     expect(ensureLockedHeaderNodes(layout)).toEqual(layout);
   });
 
-  it('adopts loose body content into the description section', () => {
-    // A layout saved before the description section existed: the description
-    // content sits directly in the body.
-    const layout = defaultProjectPageLayout();
-    delete layout[DESCRIPTION_NODE_ID];
-    layout[BODY_NODE_ID] = {
-      ...layout[BODY_NODE_ID],
-      nodes: [PHASES_NODE_ID, 'd_txt1', EVENTS_NODE_ID],
-    };
-    layout.d_txt1 = textNode(BODY_NODE_ID);
-
-    const result = ensureLockedHeaderNodes(layout);
-
-    expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
-    expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['d_txt1']);
-    expect(result.d_txt1.parent).toBe(DESCRIPTION_NODE_ID);
-  });
-
   it('enforces the canonical body order', () => {
     const layout = migratedLayout();
     layout[BODY_NODE_ID] = {
@@ -122,77 +104,6 @@ describe('ensureLockedHeaderNodes', () => {
     const result = ensureLockedHeaderNodes(layout);
 
     expect(result[PHASES_NODE_ID].custom).toMatchObject({ locked: true });
-  });
-
-  it('replaces the pre-merge Timeline + Phase content sections with the Phases widget', () => {
-    // A layout saved when the timeline and the phase content were two widgets.
-    const layout = migratedLayout();
-    delete layout[PHASES_NODE_ID];
-    layout[BODY_NODE_ID] = {
-      ...layout[BODY_NODE_ID],
-      nodes: [
-        DESCRIPTION_NODE_ID,
-        'PROJECT_PAGE_TIMELINE',
-        'PROJECT_PAGE_INPUT_FEED',
-        EVENTS_NODE_ID,
-      ],
-    };
-    layout.PROJECT_PAGE_TIMELINE = {
-      type: { resolvedName: 'TimelineWidget' },
-      nodes: [],
-      props: {},
-      custom: { locked: true },
-      hidden: false,
-      parent: BODY_NODE_ID,
-      isCanvas: false,
-      displayName: 'TimelineWidget',
-      linkedNodes: {},
-    } as unknown as SerializedNodes[string];
-    layout.PROJECT_PAGE_INPUT_FEED = {
-      type: { resolvedName: 'InputFeed' },
-      nodes: [],
-      props: {},
-      custom: { locked: true },
-      hidden: false,
-      parent: BODY_NODE_ID,
-      isCanvas: false,
-      displayName: 'InputFeed',
-      linkedNodes: {},
-    } as unknown as SerializedNodes[string];
-
-    const result = ensureLockedHeaderNodes(layout);
-
-    expect(result.PROJECT_PAGE_TIMELINE).toBeUndefined();
-    expect(result.PROJECT_PAGE_INPUT_FEED).toBeUndefined();
-    expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
-    expect(result[PHASES_NODE_ID]).toBeDefined();
-  });
-
-  it('nests top-level user content of an old flat layout into the description section', () => {
-    const layout: SerializedNodes = {
-      ROOT: {
-        type: { resolvedName: 'div' },
-        nodes: ['txt1'],
-        props: {},
-        custom: {},
-        hidden: false,
-        isCanvas: true,
-        displayName: 'div',
-        linkedNodes: {},
-      } as unknown as SerializedNodes[string],
-      txt1: textNode('ROOT'),
-    };
-
-    const result = ensureLockedHeaderNodes(layout);
-
-    expect(result.ROOT.nodes).toEqual([
-      BANNER_NODE_ID,
-      TITLE_NODE_ID,
-      BODY_NODE_ID,
-    ]);
-    expect(result[BODY_NODE_ID].nodes).toEqual(CANONICAL_BODY);
-    expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['txt1']);
-    expect(result.txt1.parent).toBe(DESCRIPTION_NODE_ID);
   });
 
   it('strips DescriptionBuilder-only widgets that crash the resolver', () => {
