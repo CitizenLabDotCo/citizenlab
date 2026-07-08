@@ -34,7 +34,6 @@ describe ContentBuilder::HtmlBlockSanitizerService do
       expect(service.sanitize(input)).to eq input
     end
 
-
     it 'allows video audio source iframe tags with their specific attributes to pass through' do
       input = <<~HTML
         <video controls width="250"><source src="film.mp4" type="film/mp4" />

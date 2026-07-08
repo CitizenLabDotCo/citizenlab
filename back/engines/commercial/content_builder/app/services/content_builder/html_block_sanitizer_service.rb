@@ -28,7 +28,7 @@ module ContentBuilder
 
       doc = Nokogiri::HTML::DocumentFragment.parse(html)
       doc.css('a[target="_blank"]').each do |node|
-        node['rel'] = (node['rel'].to_s.split + %w(noopener noreferrer)).uniq.join(' ')
+        node['rel'] = (node['rel'].to_s.split + %w[noopener noreferrer]).uniq.join(' ')
       end
       doc.to_html
     end
