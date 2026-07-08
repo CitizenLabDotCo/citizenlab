@@ -6485,10 +6485,30 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:50:59.999980Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:50:59.999980Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:50:59.999980Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.federaTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:50:59.999980Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
