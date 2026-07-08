@@ -6,24 +6,15 @@ import { ICustomPageData } from 'api/custom_pages/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Emoji from 'components/UI/Emoji';
 
-import Link, { typedStyled } from 'utils/cl-router/Link';
+import { typedStyled } from 'utils/cl-router/Link';
 
-const Tile = typedStyled(Link)`
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px;
-  border: 1px solid ${colors.coolGrey300};
-  border-radius: 12px;
-  position: relative;
-  transition: background 0.2s ease, border-color 0.2s ease;
-
-  &:hover {
-    background: ${colors.grey100};
+const Tile = typedStyled(ButtonWithLink)`
+   .button {
+    align-items: flex-start;
   }
-
 `;
 
 interface Props {
@@ -38,26 +29,39 @@ const CustomPageCard = ({ page, emoji }: Props) => {
   const title = localize(title_multiloc);
 
   return (
-    <Tile scrollToTop to="/pages/$slug" params={{ slug }}>
-      <Box
-        flex="0 0 auto"
-        w="20px"
-        h="20px"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {emoji && <Emoji emoji={emoji} size="20px" />}
+    <Tile
+      linkTo={`/pages/${slug}`}
+      buttonStyle="text"
+      bgHoverColor={colors.grey100}
+      borderColor={colors.coolGrey300}
+      borderRadius="12px"
+      padding="20px"
+      justify="left"
+      whiteSpace="normal"
+      width="100%"
+      height="100%"
+    >
+      <Box display="flex" alignItems="flex-start" gap="16px" w="100%">
+        <Box
+          flex="0 0 auto"
+          w="20px"
+          h="20px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {emoji && <Emoji emoji={emoji} size="20px" />}
+        </Box>
+        <Title
+          variant="h5"
+          as="h3"
+          m="0px"
+          color="tenantText"
+          fontWeight="semi-bold"
+        >
+          {title}
+        </Title>
       </Box>
-      <Title
-        variant="h5"
-        as="h3"
-        m="0px"
-        color="tenantText"
-        fontWeight="semi-bold"
-      >
-        {title}
-      </Title>
     </Tile>
   );
 };
