@@ -49,9 +49,12 @@ const UpdatePhoneForm = ({
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
-  const onFormSubmit = (formValues: FormValues) => {
+  // Return the promise so react-hook-form keeps `formState.isSubmitting` true for
+  // the whole request. That's what keeps the submit button in its processing state
+  // and prevents a second click from firing a duplicate code request.
+  const onFormSubmit = async (formValues: FormValues) => {
     try {
-      requestCodePhoneChange(formValues.phone)
+      return requestCodePhoneChange(formValues.phone)
         .then(() => {
           setOpenConfirmationModal(true);
           setError(undefined);

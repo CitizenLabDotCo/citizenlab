@@ -46,7 +46,10 @@ module EmailCampaigns
         def parse_callback(params)
           {
             message_sid: params[:MessageSid],
-            status: STATUS_MAPPING[params[:MessageStatus]]
+            status: STATUS_MAPPING[params[:MessageStatus]],
+            # The provider's original status string, kept for diagnostics when it
+            # maps to nil (a status we don't track).
+            raw_status: params[:MessageStatus]
           }
         end
 

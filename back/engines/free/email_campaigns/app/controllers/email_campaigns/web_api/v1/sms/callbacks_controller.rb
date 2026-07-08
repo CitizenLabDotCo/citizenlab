@@ -10,10 +10,23 @@ module EmailCampaigns
       return head :forbidden unless provider.verify_signature(request)
 
       parsed = provider.parse_callback(params)
-      delivery = EmailCampaigns::Sms::Delivery.find_by(message_sid: parsed[:message_sid])
 
+      # A callback with no message SID can't be matched to a delivery — and
+      # find_by(message_sid: nil) would match an arbitrary un-sent (still-NULL) row.
+      return head :bad_request if parsed[:message_sid].blank?
+
+      delivery = EmailCampaigns::Sms::Delivery.find_by(message_sid: parsed[:message_sid])
       return head :not_found if delivery.nil?
-      return head :unprocessable_entity if parsed[:status].nil?
+
+      # If an unknown status is returned we log it for investigation but still
+      # return 200 so the provider stops retrying.
+      if parsed[:status].nil?
+        ErrorReporter.report_msg(
+          'SMS callback: received an unmapped provider status',
+          extra: { delivery_id: delivery.id, raw_status: parsed[:raw_status] }
+        )
+        return head :ok
+      end
 
       # advance_status! is a no-op when the callback arrives out of order; we
       # still return 200 so the provider stops retrying.
