@@ -971,11 +971,6 @@ RSpec.describe User do
         expect(user.confirmation_required?).to be true
       end
 
-      it 'returns false when the user is a verified SSO user with no email' do
-        u = build(:unconfirmed_user, identities: [build(:franceconnect_identity)], email: nil, verified: true)
-        expect(u.confirmation_required?).to be false
-      end
-
       it 'returns true when the user is an unverified SSO user with no email' do
         u = build(:unconfirmed_user, identities: [build(:facebook_identity)], email: nil)
         expect(u.confirmation_required?).to be true

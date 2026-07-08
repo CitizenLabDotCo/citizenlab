@@ -309,7 +309,7 @@ class User < ApplicationRecord
 
   def active?
     if !registered? || blocked?
-      false
+      return false
     end
 
     # You are considered active if you confirmed your email,
