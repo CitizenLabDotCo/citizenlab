@@ -18,8 +18,10 @@ describe McpServer::Tools::CreateProject do
 
     expect(response).not_to be_error
 
-    project = Project.find(response.structured_content['id'])
+    project = Project.find(response.structured_content[:id])
     expect(project.admin_publication.publication_status).to eq('draft')
+    expect(response.structured_content[:admin_url]).to end_with("/admin/projects/#{project.id}")
+    expect(response.structured_content[:public_url]).to end_with("/projects/#{project.slug}")
   end
 
   it 'attaches a remote header_bg by URL' do
@@ -34,7 +36,7 @@ describe McpServer::Tools::CreateProject do
 
     expect(response).not_to be_error
 
-    project = Project.find(response.structured_content['id'])
+    project = Project.find(response.structured_content[:id])
     expect(project.header_bg.file.read).to eq(fixture_path.binread)
   end
 end

@@ -10,6 +10,7 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
   RESOURCES = {
     'event' => {
       model: Event,
+      serializer: McpServer::Serializers::Event,
       sidefx: SideFxEventService,
       attrs: %i[
         title_multiloc description_multiloc location_multiloc address_2_multiloc attend_button_multiloc
@@ -18,22 +19,34 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     },
     'cause' => {
       model: Volunteering::Cause,
+      serializer: McpServer::Serializers::Cause,
       sidefx: Volunteering::SideFxCauseService,
       attrs: %i[title_multiloc description_multiloc ordering remote_image_url]
     },
     'poll_question' => {
       model: Polls::Question,
+      serializer: McpServer::Serializers::PollQuestion,
       sidefx: Polls::SideFxQuestionService,
       attrs: %i[title_multiloc question_type max_options ordering]
     },
     'poll_option' => {
       model: Polls::Option,
+      serializer: McpServer::Serializers::PollOption,
       sidefx: Polls::SideFxOptionService,
       attrs: %i[title_multiloc ordering]
     }
   }.freeze
 
   def name = 'update_resource'
+
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: true # Some resources (e.g. cause) accept `remote_image_url`, fetched from a public URL.
+    }
+  end
 
   def description
     intro = <<~DESC.squish
@@ -83,7 +96,10 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       record.update!(merge_multilocs(record, attributes))
       side_fx.after_update(record, current_user)
 
-      ok("Updated #{params[:type]} #{record.id}")
+      ok(
+        "Updated #{params[:type]} #{record.id}",
+        structured: config.fetch(:serializer).serialize(record, params: { current_user: })
+      )
     rescue ActiveRecord::RecordNotFound
       error("#{params[:type]} not found: #{params[:id]}")
     rescue ActiveRecord::RecordInvalid => e

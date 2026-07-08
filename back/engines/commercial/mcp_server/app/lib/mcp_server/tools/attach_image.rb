@@ -2,12 +2,21 @@
 
 class McpServer::Tools::AttachImage < McpServer::BaseTool
   CONTAINERS = {
-    'Project' => { class: Project, association: :project_images },
-    'Event' => { class: Event, association: :event_images }
+    'project' => { class: Project, association: :project_images },
+    'event' => { class: Event, association: :event_images }
   }.freeze
   private_constant :CONTAINERS
 
   def name = 'attach_image'
+
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: true # Fetches the image from an arbitrary public URL.
+    }
+  end
 
   def description
     <<~DESC.squish

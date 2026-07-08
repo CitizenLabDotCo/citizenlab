@@ -3,6 +3,15 @@
 class McpServer::Tools::CreateCause < McpServer::BaseTool
   def name = 'create_volunteering_cause'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: true # Fetches `remote_image_url` from an arbitrary public URL.
+    }
+  end
+
   def description
     <<~DESC.squish
       Creates a volunteering cause (a sign-up opportunity citizens can volunteer for)

@@ -4,6 +4,15 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
   def name = 'create_event'
   def description = 'Creates an event for a project'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: false
+    }
+  end
+
   def input_schema
     {
       properties: {
@@ -49,10 +58,7 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
 
       ok(
         "Created event #{event.id}",
-        structured: event.as_json(only: %i[
-          id project_id title_multiloc description_multiloc location_multiloc address_2_multiloc
-          attend_button_multiloc online_link address_1 using_url maximum_attendees start_at end_at
-        ])
+        structured: McpServer::Serializers::Event.serialize(event, params: { current_user: })
       )
     rescue ActiveRecord::RecordInvalid => e
       error("Validation failed: #{e.record.errors.full_messages.join(', ')}")

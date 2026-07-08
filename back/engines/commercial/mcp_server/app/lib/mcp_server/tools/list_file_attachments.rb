@@ -2,13 +2,14 @@
 
 class McpServer::Tools::ListFileAttachments < McpServer::BaseTool
   CONTAINERS = {
-    'Project' => Project,
-    'Phase' => Phase,
-    'Event' => Event
+    'project' => Project,
+    'phase' => Phase,
+    'event' => Event
   }.freeze
   private_constant :CONTAINERS
 
   def name = 'list_file_attachments'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish
