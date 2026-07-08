@@ -478,7 +478,7 @@ class User < ApplicationRecord
 
   def authenticated_at_least_once?
     # True if user authenticated at least once,
-    # either by confirming their email or by signing in with SSO 
+    # either by confirming their email or by signing in with SSO
     # and being verified.
     !confirmation_required? || (sso? && verified)
   end
