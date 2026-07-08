@@ -47,16 +47,11 @@ module EmailCampaigns
     end
 
     def deliver_now(command)
-      EmailCampaigns::Sms::SendService.new.send_now(
-        to: sms_destination(command),
-        body: sms_body(command),
-        user_id: command[:recipient].id,
-        campaign_id: id
-      )
+      dispatch_sms(command, campaign_id: id, synchronous: true)
     end
 
     def deliver_later(command)
-      enqueue_sms(command, campaign_id: id)
+      dispatch_sms(command, campaign_id: id, synchronous: false)
     end
 
     # Like #deliver_later, but leaves the delivery unlinked so a preview/test send
@@ -64,7 +59,7 @@ module EmailCampaigns
     def deliver_preview(command)
       raise EmailCampaigns::Sms::Error, 'Recipient has no phone number' if sms_destination(command).blank?
 
-      enqueue_sms(command, campaign_id: nil)
+      dispatch_sms(command, campaign_id: nil, synchronous: false)
     end
 
     def sms_body(_command)
@@ -97,15 +92,24 @@ module EmailCampaigns
 
     private
 
-    def enqueue_sms(command, campaign_id:)
-      return if sms_destination(command).blank? || sms_body(command).blank?
+    # All SMS sends go through Sms::SendJob. A synchronous send (perform_now, e.g.
+    # the OTP) passes the destination explicitly because it may target a number
+    # that isn't the recipient's confirmed `phone` yet (the pending new_phone).
+    # An async send omits it and lets the job resolve the recipient's phone.
+    def dispatch_sms(command, campaign_id:, synchronous:)
+      destination = sms_destination(command)
+      return if destination.blank? || sms_body(command).blank?
 
       delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
         body: sms_body(command),
         user_id: command[:recipient].id,
         campaign_id: campaign_id
       )
-      EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
+      if synchronous
+        EmailCampaigns::Sms::SendJob.perform_now(delivery.id, to: destination)
+      else
+        EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
+      end
       delivery
     end
   end

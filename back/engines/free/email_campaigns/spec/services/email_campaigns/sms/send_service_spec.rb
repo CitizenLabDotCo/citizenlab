@@ -12,55 +12,6 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     allow(EmailCampaigns::Sms::Providers::Twilio).to receive(:new).and_return(provider)
   end
 
-  describe '#send_now' do
-    it 'raises EmailCampaigns::Sms::Error and creates no delivery when the SMS feature is disabled' do
-      SettingsService.new.deactivate_feature!('sms')
-
-      expect(provider).not_to receive(:send)
-      expect { described_class.new.send_now(to: phone, body: 'hi') }
-        .to raise_error(EmailCampaigns::Sms::Error, /not enabled/)
-      expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
-    end
-
-    it 'creates a delivery, sends via Twilio by default, stores the returned status, and returns it' do
-      allow(provider).to receive(:send).and_return(message_sid: 'SM_abc', status: 'queued')
-
-      delivery = nil
-      expect { delivery = described_class.new.send_now(to: phone, body: 'hi') }
-        .to change(EmailCampaigns::Sms::Delivery, :count).by(1)
-
-      expect(delivery).to eq(EmailCampaigns::Sms::Delivery.last)
-      expect(delivery.status).to eq('queued')
-      expect(delivery.message_sid).to eq('SM_abc')
-    end
-
-    it 'normalizes the phone number before sending' do
-      expect(provider).to receive(:send)
-        .with(to: phone, body: 'hi')
-        .and_return(message_sid: 'SM_1', status: 'queued')
-
-      described_class.new.send_now(to: '1 (415) 555-2671', body: 'hi')
-    end
-
-    it 'rejects invalid phone numbers without calling the provider or creating a delivery' do
-      expect(provider).not_to receive(:send)
-      expect { described_class.new.send_now(to: 'not-a-phone', body: 'hi') }
-        .to raise_error(EmailCampaigns::Sms::Error, /Invalid phone number/)
-      expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
-    end
-
-    it 'marks the delivery failed and re-raises when the provider fails' do
-      allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error, 'Provider rejected it')
-
-      expect { described_class.new.send_now(to: phone, body: 'hi') }
-        .to raise_error(EmailCampaigns::Sms::Error)
-
-      delivery = EmailCampaigns::Sms::Delivery.last
-      expect(delivery.status).to eq('failed')
-      expect(delivery.error_message).to eq('Provider rejected it')
-    end
-  end
-
   describe '#create_delivery' do
     it 'records a pending delivery linked to the campaign without calling the provider' do
       campaign = create(:manual_campaign)
@@ -91,6 +42,22 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d')
     end
 
+    it 'normalizes the destination to E.164 before sending' do
+      expect(provider).to receive(:send)
+        .with(to: phone, body: 'hi')
+        .and_return(message_sid: 'SM_1', status: 'queued')
+
+      described_class.new.deliver(delivery, to: '1 (415) 555-2671')
+    end
+
+    it 'marks the delivery failed and re-raises for an invalid destination without calling the provider' do
+      expect(provider).not_to receive(:send)
+
+      expect { described_class.new.deliver(delivery, to: 'not-a-phone') }
+        .to raise_error(EmailCampaigns::Sms::Error, /Invalid phone number/)
+      expect(delivery.reload.status).to eq('failed')
+    end
+
     it 'marks the delivery failed and re-raises when the provider fails' do
       allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error, 'nope')
 
@@ -106,12 +73,20 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery.reload.status).to eq('pending')
     end
 
-    it 'refuses to send a delivery that is not pending' do
-      delivery.update!(status: 'sent')
+    it 'is a no-op for a delivery that is no longer pending, leaving its status untouched' do
+      delivery.update!(status: 'sent', message_sid: 'SM_existing')
       expect(provider).not_to receive(:send)
 
-      expect { described_class.new.deliver(delivery, to: phone) }
-        .to raise_error(EmailCampaigns::Sms::Error, /not pending/)
+      expect { described_class.new.deliver(delivery, to: phone) }.not_to raise_error
+      expect(delivery.reload).to have_attributes(status: 'sent', message_sid: 'SM_existing', error_message: nil)
+    end
+
+    it 'does not overwrite a terminal status when the job re-runs (at-least-once delivery)' do
+      delivery.update!(status: 'delivered', message_sid: 'SM_final')
+      expect(provider).not_to receive(:send)
+
+      expect { described_class.new.deliver(delivery, to: phone) }.not_to raise_error
+      expect(delivery.reload).to have_attributes(status: 'delivered', error_message: nil)
     end
   end
 end
