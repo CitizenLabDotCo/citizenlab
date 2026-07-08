@@ -48,7 +48,9 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
         remote_url: {
           type: 'string',
           format: 'uri',
-          description: 'Public URL of the file to download and attach.'
+          description: <<~DESC.squish
+            Public URL of the file to download and attach. Ignored when `file_id` is set.
+          DESC
         },
         file_id: {
           type: 'string',

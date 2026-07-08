@@ -186,6 +186,10 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.storyFormTitle',
     defaultMessage: 'Add new story',
   },
+  observationFormTitle: {
+    id: 'app.utils.IdeasNewPage.observationFormTitle',
+    defaultMessage: 'Add new observation',
+  },
   surveyTitle: {
     id: 'app.utils.IdeasNewPage.surveyTitle',
     defaultMessage: 'Survey',

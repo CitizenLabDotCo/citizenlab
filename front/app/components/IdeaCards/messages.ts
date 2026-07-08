@@ -103,6 +103,11 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {{ideasCount} stories} one {{ideasCount} story} other {{ideasCount} stories}}',
   },
+  xObservations: {
+    id: 'app.containers.IdeaCards.xObservations',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} observations} one {{ideasCount} observation} other {{ideasCount} observations}}',
+  },
   topics: {
     id: 'app.containers.IdeaCards.topics',
     defaultMessage: 'Topics',

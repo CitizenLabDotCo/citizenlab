@@ -101,6 +101,10 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.seeStories',
     defaultMessage: 'See stories',
   },
+  seeObservations: {
+    id: 'app.components.ParticipationCTABars.seeObservations',
+    defaultMessage: 'See observations',
+  },
   submit: {
     id: 'app.components.ParticipationCTABars.submit',
     defaultMessage: 'Submit',
