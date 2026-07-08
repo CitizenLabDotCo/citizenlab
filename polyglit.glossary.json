@@ -130,6 +130,9 @@
   "liked": {
     "nl-NL": "geliked"
   },
+  "timeline": {
+    "de-DE": "Zeitleiste"
+  },
   "comments (on inputs)": {
     "nl-NL": "reacties"
   },
