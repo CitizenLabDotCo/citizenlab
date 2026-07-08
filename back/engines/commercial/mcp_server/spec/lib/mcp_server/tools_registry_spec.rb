@@ -20,18 +20,14 @@ describe 'MCP tools registry' do
     end
   end
 
-  it 'every tool has a well-formed definition' do
+  # Not checked by the MCP gem: a typo here yields a tool that lists fine but
+  # rejects every call with "Missing required arguments".
+  it 'every tool declares only defined properties as required' do
     aggregate_failures do
       McpServer::McpController::TOOL_CLASSES.each do |tool_class|
-        tool = tool_class.new
+        schema = tool_class.new.input_schema
+        unknown_required = Array(schema[:required]).map(&:to_sym) - schema.fetch(:properties).keys
 
-        expect(tool.name).to match(/\A[a-z_]+\z/), "#{tool_class.name} name: #{tool.name.inspect}"
-        expect(tool.description).to be_present, "#{tool_class.name} has no description"
-
-        schema = tool.input_schema
-        expect(schema[:properties]).to be_a(Hash), "#{tool_class.name} has no properties"
-
-        unknown_required = Array(schema[:required]).map(&:to_sym) - schema[:properties].keys.map(&:to_sym)
         expect(unknown_required).to be_empty,
           "#{tool_class.name} requires fields missing from properties: #{unknown_required.inspect}"
       end
