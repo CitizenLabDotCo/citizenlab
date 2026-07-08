@@ -1247,7 +1247,7 @@
   "app.containers.AccessibilityStatement.pageDescription": "Lausunto tämän sivuston saavutettavuudesta",
   "app.containers.AccessibilityStatement.postalAddress": "Postiosoite:",
   "app.containers.AccessibilityStatement.publicationDate": "Julkaisupäivämäärä",
-  "app.containers.AccessibilityStatement.publicationDate2026": "Tämä saavutettavuusseloste on julkaistu 26. kesäkuuta 2026.",
+  "app.containers.AccessibilityStatement.publicationDate2026": "Tämä saavutettavuusseloste julkaistiin 26. kesäkuuta 2026.",
   "app.containers.AccessibilityStatement.responsiveness": "Pyrimme vastaamaan palautteeseen 1-2 arkipäivän kuluessa.",
   "app.containers.AccessibilityStatement.statusPageText": "tilasivu",
   "app.containers.AccessibilityStatement.statusPageUrl": "https://toegankelijkheidsrapport.frameless.io/rapport/govocal-2026-06-26",
