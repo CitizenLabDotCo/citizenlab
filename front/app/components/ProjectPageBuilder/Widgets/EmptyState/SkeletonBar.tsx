@@ -7,8 +7,6 @@ type Props = {
   height?: string;
 };
 
-// A neutral grey placeholder bar used to suggest where real content will appear
-// inside the empty-state placeholders.
 const SkeletonBar = ({ width = '100%', height = '12px' }: Props) => (
   <Box
     width={width}

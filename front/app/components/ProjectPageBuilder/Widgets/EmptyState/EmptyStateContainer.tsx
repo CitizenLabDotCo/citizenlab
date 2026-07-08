@@ -7,9 +7,8 @@ type Props = {
   children: React.ReactNode;
 };
 
-// Dashed, centered placeholder used by the project-page widgets when they have
-// no data yet. Only rendered for admins/moderators (see useCanModerateProject),
-// so residents never see it.
+// Dashed placeholder for widgets with no data yet; only rendered to
+// admins/moderators, never to residents.
 const EmptyStateContainer = ({ id, children }: Props) => (
   <Box
     id={id}

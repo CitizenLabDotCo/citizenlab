@@ -24,14 +24,11 @@ import EmptyEvents from './EmptyEvents';
 
 const PUBLICATION_STATUSES = ['published', 'draft', 'archived'] as const;
 
-// Renders the project's "Upcoming and ongoing" + "Past" events sections, reusing
-// the same EventsViewer the public project page uses.
 const EventsWidget: UserComponent = () => {
   const projectId = useWidgetProjectId();
   const { formatMessage } = useIntl();
   const padding = useCraftComponentDefaultPadding();
   const isSmallerThanTablet = useBreakpoint('tablet');
-  // The public project page route carries a slug; the builder routes don't.
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const { data: events } = useEvents({
     projectIds: projectId ? [projectId] : [],
@@ -42,10 +39,8 @@ const EventsWidget: UserComponent = () => {
     return null;
   }
 
-  // With no events, the public page shows nothing — for everyone, admins
-  // included, so the live page is exactly what citizens see (matching the
-  // legacy page). The builder keeps an empty state so admins know where
-  // events will render.
+  // With no events, the public page (slug route) shows nothing — for everyone,
+  // matching the legacy page; the builder keeps an empty state.
   if (events.data.length === 0) {
     return slug ? null : <EmptyEvents />;
   }
@@ -84,8 +79,6 @@ const EventsWidget: UserComponent = () => {
   );
 };
 
-// Events aren't edited inline; the settings panel points admins to the project's
-// Events editor, where events are added/edited/removed.
 const EventsSettings = () => {
   const projectId = useWidgetProjectId();
 
@@ -126,7 +119,5 @@ EventsWidget.craft = {
     noPointerEvents: true,
   },
 };
-
-export const eventsWidgetTitle = messages.eventsWidgetTitle;
 
 export default EventsWidget;

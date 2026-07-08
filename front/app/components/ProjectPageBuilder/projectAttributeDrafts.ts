@@ -3,12 +3,10 @@ import { Multiloc } from 'typings';
 
 import { findNodeIdByName } from './defaultLayout';
 
-// The Title and Project image widgets edit project attributes
-// (`title_multiloc`, `header_bg`, `header_bg_alt_text_multiloc`), but the
-// builder only persists on Save. Until then their settings panels park the
-// edits as node props ("drafts"); on Save the drafts are committed to the
-// project and stripped from the layout, so the saved layout never carries a
-// copy of a project attribute that could drift.
+// The Title and Project image widgets edit project attributes, but the builder
+// only persists on Save. Until then the edits are parked as node props
+// ("drafts"); on Save they are committed to the project and stripped from the
+// layout, so the saved layout never carries a project attribute that could drift.
 
 export type BannerImageDraft = {
   dataCode?: string;
@@ -34,8 +32,7 @@ export const extractProjectAttributeDrafts = (
   const titleId = findNodeIdByName(nodes, 'ProjectTitle');
   if (titleId) {
     const title = nodes[titleId].props.title as Multiloc | undefined;
-    // A title blank in every locale would be rejected by the API (title is
-    // required); it is dropped instead of committed.
+    // A title blank in every locale would be rejected by the API; drop it.
     if (
       isNonEmptyMultiloc(title) &&
       Object.values(title).some((value) => value && value.trim())

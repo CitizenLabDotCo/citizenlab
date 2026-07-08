@@ -28,11 +28,8 @@ type Props = {
   projectId: string;
 };
 
-// Renders the active phase's participation content (ideas / survey / voting /
-// poll / volunteering / common ground / report) for the public project page.
-// Mirrors containers/ProjectsShowPage/timeline/index.tsx and must stay in sync
-// with it. Rendered only on the public project route (where the phase params and
-// the route-bound sub-components resolve).
+// The active phase's participation content. Mirrors
+// containers/ProjectsShowPage/timeline/index.tsx and must stay in sync with it.
 const PublicInputContent = ({ projectId }: Props) => {
   const { phaseNumber } = useParams({ strict: false }) as {
     phaseNumber?: string;

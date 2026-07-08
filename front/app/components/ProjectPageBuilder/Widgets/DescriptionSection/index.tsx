@@ -16,14 +16,12 @@ type Props = {
   children?: React.ReactNode;
 };
 
-// The project description: a canvas pinned in place during the transition to
-// the new project page, so the legacy page (which renders this same subtree in
-// a fixed position) always matches. Its content is freely editable, both here
-// and via the legacy description editor.
+// The project description: a canvas pinned in place during the transition, so
+// the legacy page (which renders this same subtree in a fixed position) always
+// matches. Freely editable, both here and via the legacy description editor.
 const ProjectDescriptionSection: UserComponent<Props> = ({ children }) => {
   const padding = useCraftComponentDefaultPadding();
-  // The public route carries a slug; there an empty section takes no space.
-  // The min-height only exists in the builder, as a visible selection target.
+  // Empty section: no space on the public route, a visible drop target in the builder.
   const { slug } = useParams({ strict: false }) as { slug?: string };
 
   return (

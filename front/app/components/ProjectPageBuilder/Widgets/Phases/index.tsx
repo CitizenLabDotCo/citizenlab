@@ -11,10 +11,8 @@ import messages from '../messages';
 import TimelineSection from '../Timeline';
 import useWidgetProjectId from '../useWidgetProjectId';
 
-// The phases module: the timeline (heading + navigation + tabs) with the
-// active phase's participation content directly beneath it. They are one
-// widget because the timeline's arrows and tabs drive what the content shows —
-// splitting them would let admins place them apart and break that correlation.
+// Timeline + the active phase's participation content as one widget: the
+// timeline's tabs drive what the content shows, so they can't be placed apart.
 const PhasesWidget: UserComponent = () => (
   <>
     <TimelineSection />
@@ -22,8 +20,6 @@ const PhasesWidget: UserComponent = () => (
   </>
 );
 
-// Nothing is edited inline; the settings panel points admins to the project
-// editor, where phases and their participation methods are configured.
 const PhasesSettings = () => {
   const projectId = useWidgetProjectId();
 

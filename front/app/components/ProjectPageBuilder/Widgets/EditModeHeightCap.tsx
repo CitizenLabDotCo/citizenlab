@@ -6,10 +6,8 @@ import { useEditor } from '@craftjs/core';
 import AdminOnlyNote from './EmptyState/AdminOnlyNote';
 import messages from './messages';
 
-// Data-driven sections (phase content, events) grow with their live content
-// and can make the edit canvas thousands of pixels tall, which makes dragging
-// widgets across the page painful. In the edit canvas they are capped to this
-// height with a fade; previews and the public page always render in full.
+// Data-driven sections can make the edit canvas thousands of pixels tall, so in
+// the editor they are capped with a fade; previews and the public page render in full.
 const CAP_HEIGHT = 440;
 const FADE_HEIGHT = 96;
 

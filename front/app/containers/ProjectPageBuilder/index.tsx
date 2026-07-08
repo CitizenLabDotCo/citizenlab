@@ -19,9 +19,8 @@ const ProjectPageBuilder = () => {
   const { isError } = useProjectPageLayout(projectId, parallelParticipation);
   const { mutate: upsertProjectPageLayout } = useUpsertProjectPageLayout();
 
-  // A fresh project has no `project_page` layout yet (GET 404s). Create one
-  // seeded with the locked Banner + Title on first open so the builder always
-  // has the fixed header; further content is added by the admin and saved.
+  // A project without a `project_page` layout (GET 404s) gets the default one
+  // created on first open, so the builder always has the fixed structure.
   const bootstrapped = useRef(false);
   useEffect(() => {
     if (parallelParticipation && isError && !bootstrapped.current) {

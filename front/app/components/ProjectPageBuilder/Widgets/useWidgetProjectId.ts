@@ -2,9 +2,9 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import { useParams } from 'utils/router';
 
-// Project page widgets render both inside the builder (route param `projectId`)
-// and on the public project page (route param `slug`). Resolve the id from
-// whichever is present, mirroring the AboutBox widget.
+// Widgets render both in the builder (route param `projectId`) and on the
+// public project page (route param `slug`); resolves the id from whichever is
+// present.
 const useWidgetProjectId = () => {
   const { projectId, slug } = useParams({ strict: false }) as {
     projectId?: string;

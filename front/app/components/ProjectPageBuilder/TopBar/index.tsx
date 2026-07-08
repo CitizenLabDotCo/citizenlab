@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
-import { useEditor, SerializedNodes } from '@craftjs/core';
+import { useEditor } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import useUpsertProjectPageLayout from 'api/content_builder/useUpsertProjectPageLayout';
@@ -36,10 +36,7 @@ type Props = {
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: SupportedLocale;
-  onSelectLocale: (args: {
-    locale: SupportedLocale;
-    editorData: SerializedNodes;
-  }) => void;
+  onSelectLocale: (locale: SupportedLocale) => void;
   projectId: string;
   backPath: string;
   previewLink: TypedLinkProps;
@@ -71,9 +68,8 @@ const ProjectPageBuilderTopBar = ({
     clHistory.push(backPath);
   };
 
-  // Saving commits in two steps: the Title / Project image widgets park their
-  // edits as node props (see projectAttributeDrafts.ts), which are written to
-  // the project itself here, then stripped from the layout that is persisted.
+  // Two-step save: commit the widgets' project-attribute drafts to the project,
+  // then persist the layout with the drafts stripped (see projectAttributeDrafts.ts).
   const handleSave = async () => {
     if (isSaving) return;
     setIsSaving(true);
@@ -108,8 +104,7 @@ const ProjectPageBuilderTopBar = ({
         craftjs_json: stripProjectAttributeDrafts(nodes),
       });
 
-      // The drafts are now committed to the project; reset the in-editor props
-      // to match the persisted layout so the widgets read the fresh attributes.
+      // Reset the in-editor props so the widgets read the fresh project attributes.
       const titleNodeId = findNodeIdByName(nodes, 'ProjectTitle');
       if (titleNodeId) {
         actions.history.ignore().setProp(titleNodeId, (props) => {
@@ -130,11 +125,6 @@ const ProjectPageBuilderTopBar = ({
     }
   };
 
-  const handleSelectLocale = (locale: SupportedLocale) => {
-    const editorData = query.getSerializedNodes();
-    onSelectLocale({ locale, editorData });
-  };
-
   const handleTogglePreview = () => {
     setPreviewEnabled((previewEnabled) => !previewEnabled);
   };
@@ -151,7 +141,7 @@ const ProjectPageBuilderTopBar = ({
             {localize(titleMultiloc)}
           </Text>
         </Box>
-        <LocaleSelect locale={selectedLocale} setLocale={handleSelectLocale} />
+        <LocaleSelect locale={selectedLocale} setLocale={onSelectLocale} />
         <Box ml="24px" />
         <PreviewToggle
           checked={previewEnabled}

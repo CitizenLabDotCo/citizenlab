@@ -18,8 +18,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import BaseEditor from 'components/DescriptionBuilder/Editor/Editor';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
-// BaseEditor is the generic craft.js wrapper; it only needs a resolver. It is
-// shared with the (to-be-sunset) description builder for now.
 import {
   ProjectPageRoot,
   ProjectPageBody,
@@ -36,8 +34,6 @@ type EditorProps = {
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
 
-// Widget registry for the project page builder. The locked Title/Banner and the
-// new Timeline/Events widgets are added here in later phases.
 const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
   return (
     <BaseEditor

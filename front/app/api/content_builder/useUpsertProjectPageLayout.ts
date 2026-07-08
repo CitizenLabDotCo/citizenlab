@@ -41,7 +41,6 @@ const useUpsertProjectPageLayout = () => {
           queryKey: projectPageLayoutKeys.item(variables.projectId),
         });
 
-        // Invalidate file attachments cache for this specific layout
         queryClient.invalidateQueries({
           queryKey: fileAttachmentsKeys.list({
             attachable_id: data.data.id,

@@ -44,7 +44,6 @@ const ProjectPageBuilderPage = ({
   const parallelParticipation = useParallelParticipation();
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState(locale);
-  const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -56,8 +55,7 @@ const ProjectPageBuilderPage = ({
     useState<ContentBuilderErrors>({});
   const [imageUploading, setImageUploading] = useState(false);
 
-  // Always render with the locked Banner + Title at the top, injecting them into
-  // layouts that predate these widgets. Memoised so the frame doesn't re-deserialize.
+  // Memoised so the frame doesn't re-deserialize on every render.
   const editorData = useMemo(
     () => ensureLockedHeaderNodes(layout?.data.attributes.craftjs_json),
     [layout]
@@ -91,28 +89,14 @@ const ProjectPageBuilderPage = ({
     0;
 
   const handleEditorChange = (nodes: SerializedNodes) => {
-    iframeRef.current &&
-      iframeRef.current.contentWindow &&
-      iframeRef.current.contentWindow.postMessage(nodes, window.location.href);
+    iframeRef.current?.contentWindow?.postMessage(nodes, window.location.href);
   };
 
-  const handleSelectedLocaleChange = ({
-    locale: newLocale,
-    editorData,
-  }: {
-    locale: SupportedLocale;
-    editorData: SerializedNodes;
-  }) => {
-    if (selectedLocale !== newLocale) {
-      setDraftData({ ...draftData, [selectedLocale]: editorData });
-    }
-
-    iframeRef.current &&
-      iframeRef.current.contentWindow &&
-      iframeRef.current.contentWindow.postMessage(
-        { selectedLocale: newLocale },
-        window.location.href
-      );
+  const handleSelectedLocaleChange = (newLocale: SupportedLocale) => {
+    iframeRef.current?.contentWindow?.postMessage(
+      { selectedLocale: newLocale },
+      window.location.href
+    );
 
     setSelectedLocale(newLocale);
   };
