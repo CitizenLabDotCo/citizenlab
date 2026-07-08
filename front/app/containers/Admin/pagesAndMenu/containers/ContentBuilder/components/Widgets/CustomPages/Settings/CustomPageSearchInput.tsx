@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
@@ -19,22 +19,12 @@ interface Props {
 }
 
 const CustomPageSearchInput = ({ customPageIds, onChange }: Props) => {
-  const [search, setSearch] = useState('');
   const theme = useTheme();
   const localize = useLocalize();
 
   const { data: customPages } = useCustomPages();
 
-  const handleInputChange = (searchTerm: string) => {
-    setSearch(searchTerm);
-  };
-
-  const options = getOptions(
-    customPages?.data,
-    customPageIds,
-    search,
-    localize
-  );
+  const options = getOptions(customPages?.data, customPageIds);
 
   return (
     <Box>
@@ -44,10 +34,12 @@ const CustomPageSearchInput = ({ customPageIds, onChange }: Props) => {
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={true}
         value={null}
-        inputValue={search}
         placeholder={''}
         options={options}
         getOptionValue={getOptionId}
+        getOptionLabel={(option) =>
+          option ? localize(option.attributes.title_multiloc) : ''
+        }
         formatOptionLabel={(option) =>
           option ? (
             <Box>{localize(option.attributes.title_multiloc)}</Box>
@@ -55,8 +47,6 @@ const CustomPageSearchInput = ({ customPageIds, onChange }: Props) => {
         }
         menuPlacement="top"
         styles={selectStyles(theme)}
-        filterOption={() => true}
-        onInputChange={handleInputChange}
         onChange={onChange}
         closeMenuOnScroll={false}
         closeMenuOnSelect={false}

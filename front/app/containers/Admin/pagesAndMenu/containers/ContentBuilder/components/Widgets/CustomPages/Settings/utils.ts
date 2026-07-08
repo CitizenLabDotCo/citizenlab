@@ -1,5 +1,3 @@
-import { Multiloc } from 'typings';
-
 import { ICustomPageData } from 'api/custom_pages/types';
 
 export const getNewIdsOnDrop = (
@@ -20,24 +18,15 @@ export const getOptionId = (option: ICustomPageData) => option.id;
 
 export const getOptions = (
   customPages: ICustomPageData[] | undefined,
-  selectedIds: string[],
-  search: string,
-  localize: (multiloc: Multiloc) => string
+  selectedIds: string[]
 ): ICustomPageData[] => {
   if (!customPages) return [];
 
   const selectedIdsSet = new Set(selectedIds);
-  const normalizedSearch = search.trim().toLowerCase();
 
   return customPages
     .filter((page) => page.attributes.code === 'custom')
-    .filter((page) => !selectedIdsSet.has(page.id))
-    .filter((page) => {
-      if (!normalizedSearch) return true;
-      return localize(page.attributes.title_multiloc)
-        .toLowerCase()
-        .includes(normalizedSearch);
-    });
+    .filter((page) => !selectedIdsSet.has(page.id));
 };
 
 export const getSelectedPages = (
