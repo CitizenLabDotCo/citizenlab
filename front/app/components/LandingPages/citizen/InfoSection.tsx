@@ -48,7 +48,9 @@ const InfoSection = ({ multilocContent }: Props) => {
 
   return (
     <StyledContentContainer>
-      <QuillEditedContent textColor={theme.colors.tenantText}>{pageContent}</QuillEditedContent>
+      <QuillEditedContent textColor={theme.colors.tenantText}>
+        {pageContent}
+      </QuillEditedContent>
     </StyledContentContainer>
   );
 };

@@ -49,6 +49,7 @@ const NewIdeaButton = ({
             topic: messages.newTopic,
             post: messages.newPost,
             story: messages.newStory,
+            observation: messages.newObservation,
           })
         );
 

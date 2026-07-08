@@ -1179,6 +1179,11 @@
     "verified_at": "2026-03-30T12:57:38.560424Z",
     "verified_by": "Edwin Kato"
   },
+  "email_campaigns.comment_on_idea_you_follow.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.659153Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.comment_on_idea_you_follow.main_header.option": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.560424Z",
@@ -1494,6 +1499,11 @@
     "verified_at": "2026-03-30T12:57:38.560424Z",
     "verified_by": "Edwin Kato"
   },
+  "email_campaigns.general.cta_goto.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.659153Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.general.cta_goto.option": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.560424Z",
@@ -1588,6 +1598,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.560424Z",
     "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.general.cta_goto_your.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.659153Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.general.cta_goto_your.option": {
     "state": "verified",
@@ -1738,6 +1753,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.560424Z",
     "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.idea_published.input_type_subject.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.659153Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.idea_published.input_type_subject.option": {
     "state": "verified",
@@ -3443,6 +3463,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.560424Z",
     "verified_by": "Edwin Kato"
+  },
+  "email_campaigns.your_input_in_screening.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.659153Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.your_input_in_screening.main_header.option": {
     "state": "verified",

@@ -76,6 +76,7 @@ const getCTAMessage = ({
           topic: messages.submitYourTopic,
           post: messages.submitYourPost,
           story: messages.submitYourStory,
+          observation: messages.submitYourObservation,
         })
       );
     } else if (canReact) {
@@ -100,6 +101,7 @@ const getCTAMessage = ({
           topic: messages.viewTheTopics,
           post: messages.viewThePosts,
           story: messages.viewTheStories,
+          observation: messages.viewTheObservations,
         })
       );
     }

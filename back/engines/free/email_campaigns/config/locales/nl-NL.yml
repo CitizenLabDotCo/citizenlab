@@ -249,6 +249,7 @@ nl-NL:
         idea: '%{authorName} heeft gereageerd op een idee dat je volgt'
         initiative: '%{authorName} heeft gereageerd op een initiatief dat je volgt'
         issue: '%{authorName} heeft gereageerd op een reactie die je volgt'
+        observation: '%{authorName} heeft gereageerd op een observatie die je volgt'
         option: '%{authorName} heeft gereageerd op een optie die je volgt'
         petition: '%{authorName} heeft gereageerd op een petitie die je volgt'
         post: '%{authorName} heeft gereageerd op een bericht dat je volgt'
@@ -323,6 +324,7 @@ nl-NL:
         idea: Ga naar dit idee
         initiative: Ga naar dit initiatief
         issue: Ga naar deze reactie
+        observation: Ga naar deze observatie
         option: Ga naar deze optie
         petition: Ga naar deze petitie
         post: Ga naar dit bericht
@@ -343,6 +345,7 @@ nl-NL:
         idea: Ga naar je idee
         initiative: Ga naar je initiatief
         issue: Ga naar je reactie
+        observation: Ga naar je observatie
         option: Ga naar je optie
         petition: Ga naar je petitie
         post: Ga naar je bericht
@@ -376,6 +379,7 @@ nl-NL:
         idea: Je idee is gepubliceerd
         initiative: Je initiatief is gepubliceerd
         issue: Je stelling is gepubliceerd
+        observation: Je observatie is gepubliceerd
         option: Je optie is gepubliceerd
         petition: Je petitie is gepubliceerd
         post: Je bericht is gepubliceerd
@@ -766,6 +770,7 @@ nl-NL:
         idea: Je idee staat in "%{prescreening_status_title}"
         initiative: Je initiatief staat in "%{prescreening_status_title}"
         issue: Je reactie staat in "%{prescreening_status_title}"
+        observation: Je observatie bevindt zich in "%{prescreening_status_title}"
         option: Je optie staat op "%{prescreening_status_title}"
         petition: Je petitie staat in "%{prescreening_status_title}"
         post: Je bericht staat in "%{prescreening_status_title}"

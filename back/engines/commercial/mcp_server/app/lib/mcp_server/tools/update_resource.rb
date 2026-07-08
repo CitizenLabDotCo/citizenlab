@@ -19,7 +19,7 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     'cause' => {
       model: Volunteering::Cause,
       sidefx: Volunteering::SideFxCauseService,
-      attrs: %i[title_multiloc description_multiloc ordering]
+      attrs: %i[title_multiloc description_multiloc ordering remote_image_url]
     },
     'poll_question' => {
       model: Polls::Question,
@@ -63,7 +63,8 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
           description: 'The fields to update. Allowed keys depend on `type`.'
         }
       },
-      required: %w[type id attributes]
+      required: %w[type id attributes],
+      additionalProperties: false
     }
   end
 
