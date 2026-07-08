@@ -16,12 +16,12 @@ import useLocalize from 'hooks/useLocalize';
 
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
+import EmojiPickerInput from 'components/UI/EmojiPicker';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import PageEmojiPicker from './PageEmojiPicker';
 import { getSelectedPages } from './utils';
 
 const StyledSortableRow = styled(SortableRow)`
@@ -103,10 +103,13 @@ const CustomPagesList = ({
                 </Box>
                 <Box>
                   <Label>{formatMessage(messages.cardIcon)}</Label>
-                  <PageEmojiPicker
-                    value={pageIcons?.[item.id]}
-                    onChange={(emoji) => onSetIcon(item.id, emoji)}
-                  />
+                  <Box mb="16px">
+                    <EmojiPickerInput
+                      value={pageIcons?.[item.id]}
+                      onChange={(emoji) => onSetIcon(item.id, emoji)}
+                      placement="top"
+                    />
+                  </Box>
                 </Box>
               </Box>
             </StyledSortableRow>

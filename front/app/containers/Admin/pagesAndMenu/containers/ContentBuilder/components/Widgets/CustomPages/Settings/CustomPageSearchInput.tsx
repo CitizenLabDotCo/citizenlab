@@ -11,7 +11,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
-import OptionLabel from './OptionLabel';
 import { getOptionId, getOptions } from './utils';
 
 interface Props {
@@ -49,7 +48,11 @@ const CustomPageSearchInput = ({ customPageIds, onChange }: Props) => {
         placeholder={''}
         options={options}
         getOptionValue={getOptionId}
-        formatOptionLabel={(option) => <OptionLabel option={option} />}
+        formatOptionLabel={(option) =>
+          option ? (
+            <Box>{localize(option.attributes.title_multiloc)}</Box>
+          ) : null
+        }
         menuPlacement="top"
         styles={selectStyles(theme)}
         filterOption={() => true}
