@@ -175,6 +175,9 @@
     "fr-FR": "contributions",
     "nl-NL": "bijdragen"
   },
+  "events": {
+    "de-DE": "Veranstaltungen"
+  },
   "manager": {
     "da-DK": "projektleder",
     "de-DE": "Manager*innen",
