@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListProjects < McpServer::BaseTool
   def name = 'list_projects'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists projects. Search by title or description.'
 
   def input_schema
@@ -25,7 +26,7 @@ class McpServer::Tools::ListProjects < McpServer::BaseTool
         'projects',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc slug created_at]
+        serializer: McpServer::Serializers::ProjectSummary
       )
     end
   end

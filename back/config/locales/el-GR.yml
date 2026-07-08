@@ -112,6 +112,8 @@ el-GR:
           title: Ποια είναι η πρωτοβουλία σας;
         issue:
           title: Ποιο είναι το σχόλιό σας;
+        observation:
+          title: Ποια είναι η παρατήρησή σας;
         option:
           title: Ποια είναι η επιλογή σας;
         petition:

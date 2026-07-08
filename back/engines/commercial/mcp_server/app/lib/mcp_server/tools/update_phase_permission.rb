@@ -4,6 +4,15 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
   def name = 'update_phase_permission'
   def title = 'Update phase permission'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Updates a phase permission (auto-created with the phase). Sets who can perform an action,

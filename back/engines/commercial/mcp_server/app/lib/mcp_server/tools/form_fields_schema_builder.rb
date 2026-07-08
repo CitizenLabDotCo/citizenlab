@@ -35,7 +35,15 @@ class McpServer::Tools::FormFieldsSchemaBuilder
         key: { type: 'string' },
         ordering: { type: 'integer' },
         title_multiloc: multiloc_schema,
-        image_id: { type: %w[string null] },
+        image_id: {
+          type: %w[string null],
+          description: <<~DESC.squish
+            ID of an existing CustomFieldOptionImage. Only for multiselect_image
+            options. There is currently no MCP tool to create option images; the
+            only valid values are IDs already present on options (as seen in
+            `get_form_fields` output). Omit or pass null for new options.
+          DESC
+        },
         other: {
           type: 'boolean',
           description: 'Marks this as the "Other" free-text fallback option.'

@@ -38,6 +38,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   }.freeze
 
   def name = 'get_form_fields'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC

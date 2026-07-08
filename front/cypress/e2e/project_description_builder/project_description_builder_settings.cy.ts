@@ -15,13 +15,12 @@ describe('Settings panel options', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
+        description: '',
         publicationStatus: 'published',
         assigneeId: userId,
       })
@@ -39,10 +38,6 @@ describe('Settings panel options', () => {
         })
         .then((phase) => {
           phaseId = phase.body.data.id;
-          cy.visit(`/admin/projects/${projectId}/general`);
-          cy.get('#e2e-toggle-enable-project-description-builder').click({
-            force: true,
-          });
         });
     });
   });

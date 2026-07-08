@@ -112,6 +112,8 @@ es-ES:
           title: ¿Cuál es tu iniciativa?
         issue:
           title: ¿Cuál es su respuesta?
+        observation:
+          title: ¿Cuál es tu observación?
         option:
           title: ¿Cuál es su opción?
         petition:

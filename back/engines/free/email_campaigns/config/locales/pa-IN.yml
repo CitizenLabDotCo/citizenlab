@@ -249,6 +249,7 @@ pa-IN:
         idea: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਚਾਰ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         initiative: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੀ ਗਈ ਇੱਕ ਪਹਿਲ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         issue: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਗਏ ਮੁੱਦੇ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
+        observation: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੇ ਜਾ ਰਹੇ ਇੱਕ ਨਿਰੀਖਣ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਹੈ"
         option: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਕਲਪ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         petition: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੀ ਪਟੀਸ਼ਨ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         post: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੀ ਗਈ ਪੋਸਟ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
@@ -323,6 +324,7 @@ pa-IN:
         idea: ਇਸ ਵਿਚਾਰ 'ਤੇ ਜਾਓ
         initiative: ਇਸ ਪਹਿਲ 'ਤੇ ਜਾਓ
         issue: ਇਸ ਮੁੱਦੇ 'ਤੇ ਜਾਓ
+        observation: ਇਸ ਨਿਰੀਖਣ 'ਤੇ ਜਾਓ
         option: ਇਸ ਵਿਕਲਪ 'ਤੇ ਜਾਓ
         petition: ਇਸ ਪਟੀਸ਼ਨ 'ਤੇ ਜਾਓ
         post: ਇਸ ਪੋਸਟ 'ਤੇ ਜਾਓ
@@ -343,6 +345,7 @@ pa-IN:
         idea: ਆਪਣੇ ਵਿਚਾਰ 'ਤੇ ਜਾਓ
         initiative: ਆਪਣੀ ਪਹਿਲਕਦਮੀ 'ਤੇ ਜਾਓ
         issue: ਆਪਣੇ ਮੁੱਦੇ 'ਤੇ ਜਾਓ
+        observation: ਆਪਣੇ ਨਿਰੀਖਣ 'ਤੇ ਜਾਓ
         option: ਆਪਣੇ ਵਿਕਲਪ 'ਤੇ ਜਾਓ
         petition: ਆਪਣੀ ਪਟੀਸ਼ਨ 'ਤੇ ਜਾਓ
         post: ਆਪਣੀ ਪੋਸਟ 'ਤੇ ਜਾਓ
@@ -376,6 +379,7 @@ pa-IN:
         idea: ਤੁਹਾਡਾ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।
         initiative: ਤੁਹਾਡੀ ਪਹਿਲ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
         issue: ਤੁਹਾਡਾ ਅੰਕ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।
+        observation: ਤੁਹਾਡਾ ਨਿਰੀਖਣ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ
         option: ਤੁਹਾਡਾ ਵਿਕਲਪ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।
         petition: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
         post: ਤੁਹਾਡੀ ਪੋਸਟ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
@@ -764,6 +768,7 @@ pa-IN:
         idea: ਤੁਹਾਡਾ ਵਿਚਾਰ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         initiative: ਤੁਹਾਡੀ ਪਹਿਲ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
         issue: ਤੁਹਾਡੀ ਸਮੱਸਿਆ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
+        observation: ਤੁਹਾਡਾ ਨਿਰੀਖਣ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         option: ਤੁਹਾਡਾ ਵਿਕਲਪ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
         petition: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         post: ਤੁਹਾਡੀ ਪੋਸਟ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।

@@ -249,6 +249,7 @@ lt-LT:
         idea: '%{authorName} pakomentavo idėją, kurią sekate'
         initiative: '%{authorName} pakomentavo iniciatyvą, kurią sekate.'
         issue: '%{authorName} pakomentavo klausimą, kurį sekate.'
+        observation: '%{authorName} pakomentavo jūsų sekamą pastebėjimą'
         option: '%{authorName} pakomentavo parinktį, kurią sekate'
         petition: '%{authorName} pakomentavo peticiją, kurią sekate'
         post: '%{authorName} pakomentavo įrašą, kurį sekate'
@@ -323,6 +324,7 @@ lt-LT:
         idea: Eikite į šią idėją
         initiative: Pereikite prie šios iniciatyvos
         issue: Eikite į šį numerį
+        observation: Eiti į šį pastebėjimą
         option: Eikite į šią parinktį
         petition: Eikite į šią peticiją
         post: Eiti į šį įrašą
@@ -343,6 +345,7 @@ lt-LT:
         idea: Pereikite prie savo idėjos
         initiative: Eikite į savo iniciatyvą
         issue: Eikite į savo problemą
+        observation: Eiti į savo pastebėjimą
         option: Eikite į parinktį
         petition: Eikite į peticiją
         post: Eikite į savo pranešimą
@@ -376,6 +379,7 @@ lt-LT:
         idea: Jūsų idėja buvo paskelbta
         initiative: Jūsų iniciatyva buvo paskelbta
         issue: Jūsų numeris buvo paskelbtas
+        observation: Jūsų pastebėjimas paskelbtas
         option: Jūsų parinktis buvo paskelbta
         petition: Jūsų peticija buvo paskelbta
         post: Jūsų pranešimas buvo paskelbtas
@@ -764,6 +768,7 @@ lt-LT:
         idea: Jūsų idėja yra "%{prescreening_status_title}"
         initiative: Jūsų iniciatyva yra "%{prescreening_status_title}"
         issue: Jūsų problema yra "%{prescreening_status_title}"
+        observation: Jūsų pastebėjimas yra „%{prescreening_status_title}“
         option: Jūsų galimybė yra "%{prescreening_status_title}"
         petition: Jūsų peticija yra "%{prescreening_status_title}"
         post: Jūsų pranešimas yra "%{prescreening_status_title}"

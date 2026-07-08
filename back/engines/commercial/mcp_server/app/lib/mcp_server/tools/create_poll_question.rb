@@ -4,6 +4,15 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
   def name = 'create_poll_question'
   def title = 'Create poll question'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Creates a single question in a poll phase, optionally with its answer options in the

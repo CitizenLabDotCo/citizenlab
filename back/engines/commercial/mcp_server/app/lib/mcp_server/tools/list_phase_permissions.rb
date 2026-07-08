@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListPhasePermissions < McpServer::BaseTool
   def name = 'list_phase_permissions'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish

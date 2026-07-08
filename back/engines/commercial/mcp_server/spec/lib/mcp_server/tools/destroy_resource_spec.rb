@@ -56,6 +56,29 @@ describe McpServer::Tools::DestroyResource do
     expect { option.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
+  it 'destroys a project image' do
+    image = create(:project_image, project: draft_project)
+    response = destroy('project_image', image.id)
+    expect(response).not_to be_error
+    expect { image.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'destroys an event image' do
+    event = create(:event, project: draft_project)
+    image = create(:event_image, event: event)
+    response = destroy('event_image', image.id)
+    expect(response).not_to be_error
+    expect { image.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'destroys a file attachment' do
+    file = create(:file, projects: [draft_project])
+    attachment = create(:file_attachment, file: file, attachable: draft_project)
+    response = destroy('file_attachment', attachment.id)
+    expect(response).not_to be_error
+    expect { attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
   it 'refuses when the target project is published' do
     published_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
     phase = create(:phase, project: published_project)
