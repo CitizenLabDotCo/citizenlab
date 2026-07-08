@@ -300,7 +300,7 @@ module IdeaFeed
     end
 
     def project_description
-      description_multiloc = if (layout = ContentBuilder::Layout.find_by(content_buildable: @project, code: 'project_description', enabled: true))
+      description_multiloc = if (layout = ContentBuilder::Layout.find_by(content_buildable: @project, code: ContentBuilder::Layout::PROJECT_DESCRIPTION_CODE, enabled: true))
         ContentBuilder::Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json).extract_and_join
       else
         @project.description_multiloc

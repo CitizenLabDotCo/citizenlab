@@ -21,7 +21,10 @@ module ContentBuilder
   class Layout < ApplicationRecord
     include Files::FileAttachable
     TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc].freeze
+
+    # Well-known values of `code`, identifying what a layout is used for.
     PROJECT_DESCRIPTION_CODE = 'project_description'
+    HOMEPAGE_CODE = 'homepage'
 
     belongs_to :content_buildable, polymorphic: true, optional: true
 
@@ -105,7 +108,7 @@ module ContentBuilder
     end
 
     def set_craftjs_json
-      return if code != 'homepage' || craftjs_json.present?
+      return if code != HOMEPAGE_CODE || craftjs_json.present?
 
       craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
       json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
@@ -114,7 +117,7 @@ module ContentBuilder
 
     # This ensures we process image data in a homepage layout created from the internal templates
     def swap_data_images
-      return if code != 'homepage' || craftjs_json.blank?
+      return if code != HOMEPAGE_CODE || craftjs_json.blank?
 
       self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(craftjs_json)
     end

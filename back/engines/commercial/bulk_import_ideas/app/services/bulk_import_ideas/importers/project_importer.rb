@@ -380,7 +380,7 @@ module BulkImportIdeas::Importers
 
       ContentBuilder::Layout.create!(
         content_buildable: project,
-        code: 'project_description',
+        code: ContentBuilder::Layout::PROJECT_DESCRIPTION_CODE,
         craftjs_json: craftjs_json,
         enabled: true
       )
