@@ -1,0 +1,55 @@
+{
+  "processed_tenants": [],
+  "creates": [
+    {
+      "model_name": "OfficialFeedback",
+      "attributes": {
+        "idea_id": "ec25c335-8eab-49f0-b7c5-2163dfdd3046",
+        "body_multiloc": {
+          "en": "<p>Vielen Dank für deine inspirierende Idee zum Projekt \"True Connection\" https://beteiligen-gesundheit.at/de-DE/projects/true-connection-gemeinsam-statt-einsam! In einem ersten Schritt wurde deine Idee gemeinsam mit den bisher eingebrachten 99 \nIdeen, in einer Ideenwerkstatt und einem Kuppelgespräch in Wien mit 52 jungen Menschen, Expert:innen und Entscheidungsträger:innen diskutiert. Eine Nachschau zu der Ideenwerkstatt und den Ergebnissen findest du hier auf der Beteiligungsplattform.</p>\n  <p>Bis Ende August können noch laufend Ideen auf \"YouthVoice\" eingebracht werden: \"True Connection\" https://beteiligen-gesundheit.at/de-DE/projects/true-connection-gemeinsam-statt-einsam: Bestehende Initiativen und innovative Ansätze sind \ngleichermaßen interessant!</p>\n  <p>Im nächsten Schritt werden Organisationen dazu eingeladen, Patenschaften für einzelne Ideen zu übernehmen. Zudem werden die in der Ideenwerkstatt erarbeiteten Perspektiven als Basis zur Konzeption eines Förderschwerpunkts im Jahr 2027 herangezogen.</p>"
+        },
+        "author_multiloc": {
+          "en": "The Uber Admin"
+        },
+        "user_id": "386d255e-2ff1-4192-8e50-b3022576be50"
+      },
+      "context": {
+        "idea_id": "ec25c335-8eab-49f0-b7c5-2163dfdd3046"
+      }
+    },
+    {
+      "model_name": "OfficialFeedback",
+      "attributes": {
+        "idea_id": "6f411182-294d-4ad1-9021-95baedd00bcd",
+        "body_multiloc": {
+          "en": "<p>Vielen Dank für deine inspirierende Idee zum Projekt \"True Connection\" https://beteiligen-gesundheit.at/de-DE/projects/true-connection-gemeinsam-statt-einsam! In einem ersten Schritt wurde deine Idee gemeinsam mit den bisher eingebrachten 99 \nIdeen, in einer Ideenwerkstatt und einem Kuppelgespräch in Wien mit 52 jungen Menschen, Expert:innen und Entscheidungsträger:innen diskutiert. Eine Nachschau zu der Ideenwerkstatt und den Ergebnissen findest du hier auf der Beteiligungsplattform.</p>\n  <p>Bis Ende August können noch laufend Ideen auf \"YouthVoice\" eingebracht werden: \"True Connection\" https://beteiligen-gesundheit.at/de-DE/projects/true-connection-gemeinsam-statt-einsam: Bestehende Initiativen und innovative Ansätze sind \ngleichermaßen interessant!</p>\n  <p>Im nächsten Schritt werden Organisationen dazu eingeladen, Patenschaften für einzelne Ideen zu übernehmen. Zudem werden die in der Ideenwerkstatt erarbeiteten Perspektiven als Basis zur Konzeption eines Förderschwerpunkts im Jahr 2027 herangezogen.</p>"
+        },
+        "author_multiloc": {
+          "en": "The Uber Admin"
+        },
+        "user_id": "386d255e-2ff1-4192-8e50-b3022576be50"
+      },
+      "context": {
+        "idea_id": "6f411182-294d-4ad1-9021-95baedd00bcd"
+      }
+    }
+  ],
+  "changes": [
+    {
+      "old_value": "253896db-1bf4-4547-b1c0-4c5738dd4ee7",
+      "new_value": "ac8fc869-e3e8-4f19-ae37-34e69ab034fb",
+      "context": {
+        "idea_id": "ec25c335-8eab-49f0-b7c5-2163dfdd3046"
+      }
+    },
+    {
+      "old_value": "253896db-1bf4-4547-b1c0-4c5738dd4ee7",
+      "new_value": "ac8fc869-e3e8-4f19-ae37-34e69ab034fb",
+      "context": {
+        "idea_id": "6f411182-294d-4ad1-9021-95baedd00bcd"
+      }
+    }
+  ],
+  "deletes": [],
+  "errors": []
+}
