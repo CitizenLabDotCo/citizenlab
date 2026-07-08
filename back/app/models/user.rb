@@ -308,7 +308,7 @@ class User < ApplicationRecord
   end
 
   def active?
-    registered && !blocked? && authenticated_at_least_once?
+    registered? && !blocked? && authenticated_at_least_once?
   end
 
   def blank_and_can_be_deleted?
