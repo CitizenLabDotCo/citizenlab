@@ -43,12 +43,12 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
       project.save!
       SideFxProjectService.new.after_create(project, current_user)
 
-      ok(
+      response(
         "Created project #{project.id}",
         structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })
       )
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 end

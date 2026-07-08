@@ -56,7 +56,7 @@ describe McpServer::Tools::AttachFile do
       expect(attachment.file).to eq(existing_file)
     end
 
-    it "refuses when the file is not one of the resource's project files" do
+    it "returns a not-found error when the file is not one of the resource's project files" do
       file = create(:file)
 
       response = run_mcp_tool(
@@ -66,7 +66,7 @@ describe McpServer::Tools::AttachFile do
       )
 
       expect(response).to be_error
-      expect(response.content.first[:text]).to match(/not one of the resource's project files/)
+      expect(response.content.first[:text]).to include('File not found')
     end
   end
 
@@ -91,6 +91,6 @@ describe McpServer::Tools::AttachFile do
     )
 
     expect(response).to be_error
-    expect(response.content.first[:text]).to match(/Couldn't find Project/)
+    expect(response.content.first[:text]).to include('Resource (project) not found')
   end
 end
