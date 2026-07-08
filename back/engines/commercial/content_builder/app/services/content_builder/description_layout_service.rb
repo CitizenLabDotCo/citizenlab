@@ -49,9 +49,19 @@ module ContentBuilder
     end
 
     # Puts one buildable's description on the Content Builder, picking the widget by
-    # content (blank / media / text). Skips if a layout exists.
+    # content (blank / media / text). Skips if an enabled layout exists.
     def ensure_on_content_builder!(buildable)
-      return if buildable.content_builder_layouts.exists?
+      existing = ContentBuilder::Layout.find_by(
+        content_buildable: buildable,
+        code: layout_code(buildable)
+      )
+
+      if existing
+        unless existing.enabled
+          existing.update!(enabled: true, craftjs_json: content_aware_craftjs_json(buildable))
+        end
+        return
+      end
 
       create_layout!(buildable, content_aware_craftjs_json(buildable))
     end
