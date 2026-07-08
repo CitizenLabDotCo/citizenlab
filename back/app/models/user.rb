@@ -316,17 +316,6 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
-  # True if the user has not yet confirmed their email address.
-  #
-  # Exception: if the user registered via SSO and the SSO did not return an email,
-  # we treat them as not requiring confirmation unless they have actively requested
-  # to set an email.
-  def confirmation_required?
-    return false if sso_user_without_email?
-
-    confirmation_required
-  end
-
   def show_public_profile?
     # Only show the public profile if the user has contributed publicly to the platform,
     # either by posting ideas or comments in phases with public participation methods,
@@ -473,10 +462,6 @@ class User < ApplicationRecord
   def create_confirmations
     EmailConfirmation.create!(user: self)
     NewEmailConfirmation.create!(user: self)
-  end
-
-  def sso_user_without_email?
-    sso? && verified && email.nil? && new_email.nil?
   end
 
   def remove_initiated_notifications
