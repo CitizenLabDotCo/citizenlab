@@ -38,7 +38,7 @@ class ReworkPermissionAuthRequirements < ActiveRecord::Migration[7.2]
       execute(<<~SQL.squish)
         UPDATE permissions
         SET permitted_by = 'users',
-            require_confirmed_email = TRUE,
+            require_confirmed_email = FALSE,
             require_verification = TRUE,
             require_name = FALSE,
             require_password = FALSE
