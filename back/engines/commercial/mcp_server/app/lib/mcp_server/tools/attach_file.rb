@@ -63,10 +63,6 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
         }
       },
       required: %w[resource_type resource_id],
-      oneOf: [
-        { required: ['remote_url'] },
-        { required: ['file_id'] }
-      ],
       additionalProperties: false
     }
   end
