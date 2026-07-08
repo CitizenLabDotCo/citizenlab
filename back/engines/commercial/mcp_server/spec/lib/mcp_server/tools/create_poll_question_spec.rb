@@ -23,6 +23,40 @@ describe McpServer::Tools::CreatePollQuestion do
       end.to change { phase.reload.poll_questions.count }.by(1)
 
       expect(response).not_to be_error
+      expect(response.structured_content[:id]).to eq(phase.poll_questions.sole.id)
+    end
+
+    it 'creates the question with its options in one transaction' do
+      options = [{ title_multiloc: { 'en' => 'Yes' } }, { title_multiloc: { 'en' => 'No' } }]
+
+      response = run_mcp_tool(described_class, params: params.merge(options:), current_user:)
+
+      expect(response).not_to be_error
+      question = phase.poll_questions.sole
+      expect(question.options.order(:ordering).map { |o| o.title_multiloc['en'] }).to eq(%w[Yes No])
+      expect(response.structured_content[:options].size).to eq(2)
+    end
+
+    it 'rolls back the question when an option is invalid' do
+      options = [{ title_multiloc: { 'en' => 'Yes' } }, { title_multiloc: {} }]
+
+      response = nil
+      expect do
+        response = run_mcp_tool(described_class, params: params.merge(options:), current_user:)
+      end.not_to change { phase.reload.poll_questions.count }
+
+      expect(response).to be_error
+      expect(response.structured_content[:errors].pluck(:attribute)).to include('title_multiloc')
+    end
+
+    it 'returns a not-found error when the phase is missing' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(phase_id: SecureRandom.uuid),
+        current_user:
+      )
+
+      expect(response).to be_not_found('Phase')
     end
   end
 

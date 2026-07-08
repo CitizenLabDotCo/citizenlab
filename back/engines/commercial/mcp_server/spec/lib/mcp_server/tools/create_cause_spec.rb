@@ -23,6 +23,29 @@ describe McpServer::Tools::CreateCause do
       end.to change { phase.reload.causes.count }.by(1)
 
       expect(response).not_to be_error
+      expect(response.structured_content[:id]).to eq(phase.causes.sole.id)
+    end
+
+    it 'returns structured validation errors for invalid params' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(title_multiloc: {}),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.structured_content[:errors].pluck(:attribute)).to include('title_multiloc')
+      expect(phase.reload.causes.count).to eq(0)
+    end
+
+    it 'returns a not-found error when the phase is missing' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(phase_id: SecureRandom.uuid),
+        current_user:
+      )
+
+      expect(response).to be_not_found('Phase')
     end
 
     it 'attaches a remote image by URL' do
