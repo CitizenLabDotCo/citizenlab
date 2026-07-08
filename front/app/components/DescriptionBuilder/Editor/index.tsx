@@ -21,6 +21,7 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import FolderFiles from 'components/DescriptionBuilder/Widgets/FolderFiles';
 import FolderTitle from 'components/DescriptionBuilder/Widgets/FolderTitle';
+import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
 
 import InfoWithAccordions from '.././Widgets/InfoWithAccordions';
 
@@ -59,6 +60,9 @@ const Editor: React.FC<EditorProps> = ({
         Selection,
         FolderFiles,
         FolderTitle,
+        // Migration-only bridge widget: resolvable so migrated layouts render,
+        // but deliberately absent from the toolbox so admins can't add new ones.
+        RichTextMultiloc,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

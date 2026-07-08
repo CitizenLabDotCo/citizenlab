@@ -112,6 +112,8 @@ nl-BE:
           title: Waar is jouw initiatief?
         issue:
           title: Wat is je reactie?
+        observation:
+          title: Wat is je observatie?
         option:
           title: Wat is je optie?
         petition:

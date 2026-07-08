@@ -112,6 +112,8 @@ pl-PL:
           title: Jaka jest twoja inicjatywa?
         issue:
           title: Jaka jest Twoja sprawa ?
+        observation:
+          title: Jaka jest Twoja obserwacja?
         option:
           title: Jaka jest Twója opcja?
         petition:

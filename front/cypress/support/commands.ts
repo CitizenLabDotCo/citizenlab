@@ -54,6 +54,7 @@ declare global {
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
+      apiAddAboutBox: typeof apiAddAboutBox;
       apiEditProject: typeof apiEditProject;
       apiEditPhase: typeof apiEditPhase;
       apiCreateFolder: typeof apiCreateFolder;
@@ -881,6 +882,63 @@ function apiRemoveComment(commentId: string) {
   });
 }
 
+// The participation AboutBox widget node, serialised as the Content Builder editor
+// produces it. It renders the project sidebar (action buttons / "see ideas" etc).
+function aboutBoxNode() {
+  return {
+    type: { resolvedName: 'AboutBox' },
+    isCanvas: false,
+    props: { hideParticipationAvatars: false },
+    displayName: 'AboutBox',
+    custom: {
+      title: {
+        id: 'app.containers.admin.ContentBuilder.participationBox',
+        defaultMessage: 'Participation Box',
+      },
+      noPointerEvents: true,
+    },
+    parent: 'ROOT',
+    hidden: false,
+    nodes: [],
+    linkedNodes: {},
+  };
+}
+
+// Appends the participation AboutBox to a project's existing Content Builder
+// description layout, so its page renders the sidebar/CTAs. Idempotent — a no-op if
+// the AboutBox is already there.
+function apiAddAboutBox(projectId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const authHeaders = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${response.body.jwt}`,
+    };
+    const layoutPath = `web_api/v1/projects/${projectId}/content_builder_layouts/project_description`;
+
+    return cy
+      .request({ headers: authHeaders, method: 'GET', url: layoutPath })
+      .then((layout) => {
+        const craftjs = layout.body.data.attributes.craftjs_json;
+        const hasAboutBox = Object.values(craftjs).some(
+          (node: any) => node?.type?.resolvedName === 'AboutBox'
+        );
+        if (hasAboutBox) return;
+
+        craftjs.aboutBox = aboutBoxNode();
+        craftjs.ROOT.nodes = [...craftjs.ROOT.nodes, 'aboutBox'];
+
+        return cy.request({
+          headers: authHeaders,
+          method: 'POST',
+          url: `${layoutPath}/upsert`,
+          body: {
+            content_builder_layout: { enabled: true, craftjs_json: craftjs },
+          },
+        });
+      });
+  });
+}
+
 function apiCreateProject({
   title,
   descriptionPreview,
@@ -889,6 +947,7 @@ function apiCreateProject({
   assigneeId,
   visibleTo,
   folderId,
+  withAboutBox = false,
 }: {
   title: string;
   descriptionPreview?: string;
@@ -897,42 +956,54 @@ function apiCreateProject({
   assigneeId?: string;
   visibleTo?: IProjectAttributes['visible_to'];
   folderId?: string;
+  // When true, adds the participation AboutBox (sidebar/CTAs) to the project's Content
+  // Builder description layout, for tests that assert sidebar elements.
+  withAboutBox?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/projects',
-      body: {
-        project: {
-          admin_publication_attributes: {
-            publication_status: publicationStatus,
-          },
-          title_multiloc: {
-            en: title,
-            'nl-BE': title,
-            'nl-NL': title,
-            'fr-BE': title,
-          },
-          description_preview_multiloc: {
-            en: descriptionPreview,
-            'nl-BE': descriptionPreview,
-          },
-          description_multiloc: {
-            en: description,
-            'nl-BE': description,
-          },
-          default_assignee_id: assigneeId,
-          visible_to: visibleTo,
-          folder_id: folderId,
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
         },
-      },
-    });
+        method: 'POST',
+        url: 'web_api/v1/projects',
+        body: {
+          project: {
+            admin_publication_attributes: {
+              publication_status: publicationStatus,
+            },
+            title_multiloc: {
+              en: title,
+              'nl-BE': title,
+              'nl-NL': title,
+              'fr-BE': title,
+            },
+            description_preview_multiloc: {
+              en: descriptionPreview,
+              'nl-BE': descriptionPreview,
+            },
+            description_multiloc: {
+              en: description,
+              'nl-BE': description,
+            },
+            default_assignee_id: assigneeId,
+            visible_to: visibleTo,
+            folder_id: folderId,
+          },
+        },
+      })
+      .then((project) => {
+        // cy.wrap keeps both branches yielding `Chainable<Response>` so callers can
+        // read `project.body.data`.
+        if (!withAboutBox) {
+          return cy.wrap(project, { log: false });
+        }
+        return cy.apiAddAboutBox(project.body.data.id).then(() => project);
+      });
   });
 }
 
@@ -2084,6 +2155,10 @@ function createProjectWithNativeSurveyPhase({
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus,
+      // The project page renders via the Content Builder; add the AboutBox so the
+      // participation sidebar (survey / idea action button) is present for tests
+      // that visit the project page and click it.
+      withAboutBox: true,
     })
     .then((project) => {
       const projectId = project.body.data.id;
@@ -2287,6 +2362,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
+Cypress.Commands.add('apiAddAboutBox', apiAddAboutBox);
 Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiEditPhase', apiEditPhase);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);

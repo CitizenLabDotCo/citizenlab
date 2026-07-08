@@ -70,4 +70,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.newStory',
     defaultMessage: 'Add a story',
   },
+  newObservation: {
+    id: 'app.containers.AdminPage.ProjectEdit.newObservation',
+    defaultMessage: 'New observation',
+  },
 });

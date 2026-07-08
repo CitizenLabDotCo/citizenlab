@@ -112,6 +112,8 @@ fr-FR:
           title: Quelle est votre initiative ?
         issue:
           title: Quel est votre problème ?
+        observation:
+          title: Quelle est votre observation ?
         option:
           title: Quelle est votre option ?
         petition:

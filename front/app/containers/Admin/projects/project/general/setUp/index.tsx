@@ -38,7 +38,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -132,9 +132,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
 
   // Description state
-  const [descriptionMultiloc, setDescriptionMultiloc] = useState<Multiloc>(
-    project.data.attributes.description_multiloc
-  );
   const [descriptionPreviewMultiloc, setDescriptionPreviewMultiloc] =
     useState<Multiloc | null>(
       project.data.attributes.description_preview_multiloc
@@ -242,11 +239,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 
   const handleTopicsChange = (topicIds: string[]) => {
     handleProjectAttributeDiffOnChange({ global_topic_ids: topicIds });
-  };
-
-  const handleDescriptionChange = (description_multiloc: Multiloc) => {
-    setDescriptionMultiloc(description_multiloc);
-    handleProjectAttributeDiffOnChange({ description_multiloc });
   };
 
   const handleDescriptionPreviewChange = (
@@ -421,12 +413,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           {/* Main Description */}
           <SectionField>
             <Highlighter fragmentId="description-multiloc">
-              <DescriptionBuilderToggle
-                valueMultiloc={descriptionMultiloc}
-                onChange={handleDescriptionChange}
-                label={formatMessage(messages.descriptionLabel)}
-                contentBuildableType="project"
-              />
+              <DescriptionBuilderLink contentBuildableType="project" />
             </Highlighter>
             <Error
               fieldName="description_multiloc"

@@ -249,6 +249,7 @@ pt-BR:
         idea: '%{authorName} comentou sobre uma ideia que você segue'
         initiative: '%{authorName} comentou sobre uma iniciativa que você segue'
         issue: '%{authorName} comentou sobre um assunto que você acompanha'
+        observation: '%{authorName} comentou em uma observação que você segue'
         option: '%{authorName} comentou sobre uma opção que você segue'
         petition: '%{authorName} comentou em uma petição que você segue'
         post: '%{authorName} comentou em uma postagem que você segue'
@@ -323,6 +324,7 @@ pt-BR:
         idea: Ir para esta ideia
         initiative: Ir para esta iniciativa
         issue: Ir para esta edição
+        observation: Ir para esta observação
         option: Vá para esta opção
         petition: Vá para esta petição
         post: Ir para esta postagem
@@ -343,6 +345,7 @@ pt-BR:
         idea: Vá para a sua ideia
         initiative: Vá para sua iniciativa
         issue: Vá para o seu problema
+        observation: Ir para sua observação
         option: Vá para sua opção
         petition: Vá para sua petição
         post: Vá para sua postagem
@@ -376,6 +379,7 @@ pt-BR:
         idea: Sua ideia foi publicada
         initiative: Sua iniciativa foi publicada
         issue: Sua edição foi publicada
+        observation: Sua observação foi publicada
         option: Sua opção foi publicada
         petition: Sua petição foi publicada
         post: Sua postagem foi publicada
@@ -764,6 +768,7 @@ pt-BR:
         idea: Sua ideia está em "%{prescreening_status_title}"
         initiative: Sua iniciativa está em "%{prescreening_status_title}"
         issue: Seu problema está em "%{prescreening_status_title}"
+        observation: Sua observação está em "%{prescreening_status_title}"
         option: Sua opção está em "%{prescreening_status_title}"
         petition: Sua petição está em "%{prescreening_status_title}"
         post: Sua postagem está em "%{prescreening_status_title}"
