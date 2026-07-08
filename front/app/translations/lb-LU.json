@@ -1293,6 +1293,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Dës Aktioun erfuerdert eng Verifizéierung mat enger vun de folgende Methoden: {methods}",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klickt hei fir Iech als Admin oder Projetmanager anzeloggen",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE oder CNS",
+  "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Oder alogge mat:",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Gitt w.e.g. en Token un",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} ass scho vun enger ausstehender Invitatioun besat. Kuckt w.e.g. Är E-Mail a klickt op de Link fir d'Invitatioun ze akzeptéieren. Wann Dir d'Invitatiouns-E-Mail net fannt, klickt op de Knäppchen hei ënnendrënner fir se nach eng Kéier ze schécken. Et kéint e puer Minutten daueren, bis d'E-Mail ukënnt.",

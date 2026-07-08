@@ -1293,6 +1293,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Questa azione richiede la verifica tramite uno dei seguenti metodi: {methods}",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Clicca qui per accedere come amministratore o project manager",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE o CNS",
+  "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Oppure accedi con:",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Inserire un token",
   "app.containers.Authentication.steps.Invitation.token": "Gettone",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} è già occupato da un invito in sospeso. Controlla la tua e-mail e clicca sul link per accettare l'invito. Se non riesci a trovare l'e-mail di invito, clicca sul pulsante sottostante per inviarla nuovamente. L'e-mail potrebbe impiegare qualche minuto per arrivare.",

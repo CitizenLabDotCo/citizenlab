@@ -1293,6 +1293,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "To działanie wymaga weryfikacji za pomocą jednej z następujących metod: {methods}",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Kliknij tutaj, aby zalogować się jako administrator lub kierownik projektu",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE lub CNS",
+  "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Lub zaloguj się przez:",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Proszę wprowadzić token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} jest już zajęte przez oczekujące zaproszenie. Sprawdź swoją wiadomość e-mail i kliknij łącze, aby zaakceptować zaproszenie. Jeśli nie możesz znaleźć wiadomości e-mail z zaproszeniem, kliknij poniższy przycisk, aby wysłać ją ponownie. Dotarcie wiadomości e-mail może zająć kilka minut.",
