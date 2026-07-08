@@ -21,4 +21,20 @@ describe McpServer::Tools::CreateProject do
     project = Project.find(response.structured_content['id'])
     expect(project.admin_publication.publication_status).to eq('draft')
   end
+
+  it 'attaches a remote header_bg by URL' do
+    remote_url = 'https://example.com/header.jpg'
+    fixture_path = stub_remote_image_download(remote_url)
+
+    response = run_mcp_tool(
+      described_class,
+      params: params.merge(remote_header_bg_url: remote_url),
+      current_user:
+    )
+
+    expect(response).not_to be_error
+
+    project = Project.find(response.structured_content['id'])
+    expect(project.header_bg.file.read).to eq(fixture_path.binread)
+  end
 end
