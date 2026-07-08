@@ -55,6 +55,6 @@ describe McpServer::Tools::AttachImage do
     )
 
     expect(response).to be_error
-    expect(response.content.first[:text]).to match(/project not found/)
+    expect(response.content.first[:text]).to include('Resource (project) not found')
   end
 end

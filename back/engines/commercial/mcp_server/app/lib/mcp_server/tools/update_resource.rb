@@ -83,6 +83,8 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      return not_found_error("Resource (#{params[:type]})", params[:id]) unless record
+
       attributes = params[:attributes].symbolize_keys
       rejected = attributes.keys - config[:attrs]
 
@@ -96,20 +98,20 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
       record.update!(merge_multilocs(record, attributes))
       side_fx.after_update(record, current_user)
 
-      ok(
+      response(
         "Updated #{params[:type]} #{record.id}",
         structured: config.fetch(:serializer).serialize(record, params: { current_user: })
       )
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:type]} not found: #{params[:id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
 
     private
 
     def record
-      @record ||= config.fetch(:model).find(params[:id])
+      return @record if defined?(@record)
+
+      @record = config.fetch(:model).find_by(id: params[:id])
     end
 
     def side_fx
