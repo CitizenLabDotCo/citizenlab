@@ -7,16 +7,19 @@ import { IPhaseData } from 'api/phases/types';
 import { getCurrentPhase } from 'api/phases/utils';
 
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  useScrollToCurrentPhaseElement,
+} from 'components/ParticipationCTABars/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
 
-const VolunteeringCTABar = ({ phases }: CTABarProps) => {
+const VolunteeringCTABar = ({ phases, project }: CTABarProps) => {
   const theme = useTheme();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
+  const scrollToPhaseElement = useScrollToCurrentPhaseElement(project, phases);
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases));
@@ -24,7 +27,7 @@ const VolunteeringCTABar = ({ phases }: CTABarProps) => {
 
   const handleVolunteerClick = (event: FormEvent) => {
     event.preventDefault();
-    scrollToElement({ id: 'volunteering', shouldFocus: true });
+    scrollToPhaseElement('volunteering');
   };
 
   return (
