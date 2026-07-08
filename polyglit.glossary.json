@@ -64,6 +64,9 @@
   "drop pin": {
     "nl-NL": "pin prikken"
   },
+  "accessibility statement": {
+    "de-DE": "Richtlinie zur Barrierefreiheit"
+  },
   "preview link": {
     "nl-NL": "voorbeeldlink"
   },
