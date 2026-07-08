@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { ICustomPageData } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 
-import CarrouselTitle from '../_shared/CarrouselTitle';
 import EmptyState from '../_shared/EmptyState';
 import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
@@ -49,7 +48,9 @@ const CustomPages = ({ titleMultiloc, customPage }: Props) => {
 
   return (
     <GridContainer>
-      <CarrouselTitle>{title}</CarrouselTitle>
+      <Title variant="h2" mt="0px" color="tenantText">
+        {title}
+      </Title>
       <Grid>
         {selectedPages.map((page) => (
           <CustomPageCard
