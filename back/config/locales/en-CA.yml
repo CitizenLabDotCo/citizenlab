@@ -112,6 +112,8 @@ en-CA:
           title: What is your initiative?
         issue:
           title: What is your comment?
+        observation:
+          title: What is your observation?
         option:
           title: What is your option?
         petition:

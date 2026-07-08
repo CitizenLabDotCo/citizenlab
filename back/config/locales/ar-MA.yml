@@ -112,6 +112,8 @@ ar-MA:
           title: ما هي مبادرتك؟
         issue:
           title: ما مشكلتك؟
+        observation:
+          title: شنو هي الملاحظة ديالك؟
         option:
           title: ما خيارك؟
         petition:

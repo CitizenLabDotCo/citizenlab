@@ -36,6 +36,13 @@ describe SideFxProjectService do
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
     end
+
+    it 'provisions an enabled Content Builder description layout (content_builder patch)' do
+      service.after_create(project, user)
+
+      layout = project.content_builder_layouts.find_by(code: 'project_description')
+      expect(layout&.enabled).to be(true)
+    end
   end
 
   describe 'after_update' do
@@ -251,6 +258,23 @@ describe SideFxProjectService do
 
       expect(copied_project.default_assignee).to eq(user)
       expect(UserRoleService.new.can_moderate?(copied_project, user)).to be true
+    end
+
+    it 'wraps a carried-over description on the Content Builder rather than an empty frame' do
+      # Regression: a copy/import whose source had a description but no layout must
+      # not get an empty enabled layout (which would hide the description). Provisioning
+      # only ensures the description is on the builder — it adds no AboutBox (that is
+      # the one-time migration's concern).
+      copied_project.update!(description_multiloc: { 'en' => '<p>Carried over</p>' })
+
+      service.after_copy(source_project, copied_project, user, Time.now)
+
+      layout = copied_project.content_builder_layouts.find_by(code: 'project_description')
+      expect(layout&.enabled).to be(true)
+      node = layout.craftjs_json.values.find do |n|
+        n.is_a?(Hash) && n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TextMultiloc'
+      end
+      expect(node['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
     end
   end
 end
