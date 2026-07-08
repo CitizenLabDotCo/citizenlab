@@ -8,7 +8,7 @@ describe SmartGroups::Rules::LastActiveAt do
       {
         'ruleType' => 'last_active_at',
         'predicate' => 'is_before',
-        'value' => (Date.today - 1.day)
+        'value' => (Time.zone.today - 1.day)
       }
     end
     let(:valid_rule) { described_class.from_json(valid_json_rule) }
@@ -32,17 +32,17 @@ describe SmartGroups::Rules::LastActiveAt do
       end
 
       it "correctly filters on 'is_before' predicate" do
-        rule = described_class.new('is_before', Date.today)
+        rule = described_class.new('is_before', Time.zone.today)
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'is_after' predicate" do
-        rule = described_class.new('is_after', Date.today)
+        rule = described_class.new('is_after', Time.zone.today)
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'is_exactly' predicate" do
-        rule = described_class.new('is_exactly', Date.today)
+        rule = described_class.new('is_exactly', Time.zone.today)
         expect(rule.filter(User).count).to eq 1
       end
 
