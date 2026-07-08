@@ -65,7 +65,7 @@ const VerificationVariant = ({
     return authentication_method && verification_method;
   }) ?? [];
 
-  const hasAlreadyHaveAnAccountSection =
+  const orLoginWithSection =
     passwordLoginEnabled || authenticationOnlyMethodsExceptFC.length > 0;
 
   return (
@@ -85,10 +85,10 @@ const VerificationVariant = ({
         />
       ))}
 
-      {hasAlreadyHaveAnAccountSection && (
+      {orLoginWithSection && (
         <>
           <Text mt="24px" mb="18px" fontWeight="bold" color="tenantText">
-            {formatMessage(messages.alreadyHaveAnAccount)}
+            {formatMessage(messages.orLoginWith)}
           </Text>
           {passwordLoginEnabled && (
             <>
