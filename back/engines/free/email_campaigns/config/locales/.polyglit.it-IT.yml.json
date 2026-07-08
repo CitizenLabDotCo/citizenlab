@@ -1179,6 +1179,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.comment_on_idea_you_follow.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:36:53.105811Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.comment_on_idea_you_follow.main_header.option": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
@@ -1494,6 +1499,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.general.cta_goto.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:36:53.105811Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.general.cta_goto.option": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
@@ -1588,6 +1598,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.general.cta_goto_your.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:36:53.105811Z",
+    "verified_by": "Roger"
   },
   "email_campaigns.general.cta_goto_your.option": {
     "state": "verified",
@@ -1738,6 +1753,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.idea_published.input_type_subject.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:36:53.105811Z",
+    "verified_by": "Roger"
   },
   "email_campaigns.idea_published.input_type_subject.option": {
     "state": "verified",
@@ -3109,6 +3129,11 @@
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.user_blocked.for_more_information": {
+    "state": "verified",
+    "verified_at": "2026-07-07T15:55:53.577434Z",
+    "verified_by": "Roger"
+  },
   "email_campaigns.user_blocked.paragraph_1_with_reason": {
     "state": "verified",
     "verified_at": "2026-06-11T07:24:41.111194Z",
@@ -3438,6 +3463,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.392927Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.your_input_in_screening.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:36:53.105811Z",
+    "verified_by": "Roger"
   },
   "email_campaigns.your_input_in_screening.main_header.option": {
     "state": "verified",

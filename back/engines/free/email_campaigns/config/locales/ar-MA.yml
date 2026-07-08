@@ -249,6 +249,7 @@ ar-MA:
         idea: '%{authorName} علق على فكرة تتابعها'
         initiative: '%{authorName} علّق على مبادرة تتابعها'
         issue: '%{authorName} علق على قضية تتابعها'
+        observation: '%{authorName} علّق على ملاحظة متبعها'
         option: '%{authorName} علق على الخيار الذي تتبعه'
         petition: '%{authorName} علق على العريضة التي تتابعها'
         post: '%{authorName} علّق على منشور تتابعه'
@@ -323,6 +324,7 @@ ar-MA:
         idea: انتقل إلى هذه الفكرة
         initiative: انضم إلى هذه المبادرة
         issue: انتقل إلى هذه المشكلة
+        observation: انتقل إلى هذه الملاحظة
         option: انتقل إلى هذا الخيار
         petition: انتقل إلى هذه العريضة
         post: انتقل إلى هذا المنشور
@@ -343,6 +345,7 @@ ar-MA:
         idea: اذهب إلى فكرتك
         initiative: انطلق إلى مبادرتك
         issue: انتقل إلى مشكلتك
+        observation: انتقل للملاحظة ديالك
         option: انتقل إلى خيارك
         petition: انتقل إلى عريضتك
         post: انتقل إلى منشورك
@@ -376,6 +379,7 @@ ar-MA:
         idea: لقد تم نشر فكرتك
         initiative: تم نشر مبادرتك
         issue: لقد تم نشر مشكلتك
+        observation: تم نشر ملاحظتك
         option: لقد تم نشر خيارك
         petition: لقد تم نشر عريضتك
         post: تم نشر منشورك
@@ -764,6 +768,7 @@ ar-MA:
         idea: فكرتك موجودة في "%{prescreening_status_title}"
         initiative: مبادرتك موجودة في "%{prescreening_status_title}"
         issue: مشكلتك موجودة في "%{prescreening_status_title}"
+        observation: الملاحظة ديالك راها في حالة "%{prescreening_status_title}"
         option: خيارك موجود في "%{prescreening_status_title}"
         petition: عريضتك موجودة في "%{prescreening_status_title}"
         post: منشورك موجود في "%{prescreening_status_title}"

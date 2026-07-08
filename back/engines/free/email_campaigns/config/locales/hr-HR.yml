@@ -249,6 +249,7 @@ hr-HR:
         idea: '%{authorName} je komentirao ideju koju slijedite'
         initiative: '%{authorName} je komentirao/la inicijativu koju pratite'
         issue: '%{authorName} komentirao je problem koji pratiš'
+        observation: '%{authorName} je komentirao/la opažanje koje pratite'
         option: '%{authorName} komentirao je opciju koju slijedite'
         petition: '%{authorName} komentirao je peticiju koju pratite'
         post: '%{authorName} je komentirao/la objavu koju pratite'
@@ -323,6 +324,7 @@ hr-HR:
         idea: Idi na ovu ideju
         initiative: Idi na ovu inicijativu
         issue: Idi na ovu temu
+        observation: Idi na ovo zapažanje
         option: Idite na ovu opciju
         petition: Idi na ovu peticiju
         post: Idi na ovu objavu
@@ -343,6 +345,7 @@ hr-HR:
         idea: Idi na svoju ideju
         initiative: Idi na svoju inicijativu
         issue: Idi na svoj problem
+        observation: Idite na svoje opažanje
         option: Idi na svoju opciju
         petition: Idi na svoju peticiju
         post: Idi na svoju objavu
@@ -376,6 +379,7 @@ hr-HR:
         idea: Vaša ideja je objavljena
         initiative: Vaša inicijativa je objavljena
         issue: Vaš je problem objavljen
+        observation: Vaše zapažanje je objavljeno
         option: Vaša je opcija objavljena
         petition: Vaša peticija je objavljena
         post: Vaša objava je objavljena
@@ -764,6 +768,7 @@ hr-HR:
         idea: Vaša ideja je u "%{prescreening_status_title}"
         initiative: Vaša inicijativa je u "%{prescreening_status_title}"
         issue: Vaš problem je u "%{prescreening_status_title}"
+        observation: Vaše opažanje je u statusu "%{prescreening_status_title}"
         option: Vaša opcija je u "%{prescreening_status_title}"
         petition: Vaša peticija je u "%{prescreening_status_title}"
         post: Vaša objava je u "%{prescreening_status_title}"

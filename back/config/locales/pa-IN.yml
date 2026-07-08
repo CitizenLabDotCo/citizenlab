@@ -112,6 +112,8 @@ pa-IN:
           title: ਤੁਹਾਡੀ ਪਹਿਲ ਕੀ ਹੈ?
         issue:
           title: ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਕੀ ਹੈ?
+        observation:
+          title: ਤੁਹਾਡਾ ਨਿਰੀਖਣ ਕੀ ਹੈ?
         option:
           title: ਤੁਹਾਡਾ ਵਿਕਲਪ ਕੀ ਹੈ?
         petition:
