@@ -24,7 +24,9 @@ const EditNavbarItemForm = () => {
     navbarItemId: string;
   };
   const { formatMessage } = useIntl();
-  const { data: navbarItems } = useNavbarItems();
+  // Edits the stored title, so it must read the full (untruncated) title —
+  // otherwise submitting would persist the navbar-display-truncated version.
+  const { data: navbarItems } = useNavbarItems({ truncateTitles: false });
   const { mutateAsync: updateNavbarItem } = useUpdateNavbarItem();
 
   const navbarItem = navbarItems?.data.find((item) => item.id === navbarItemId);

@@ -7,8 +7,10 @@ import navbarKeys from './keys';
 export type NavbarKeys = Keys<typeof navbarKeys>;
 
 export type NavbarParameters = {
-  onlyDefaultItems?: boolean;
   onlyRemovedDefaultItems?: boolean;
+  // Client-side only: whether to truncate titles to the navbar display length.
+  // Defaults to true; not sent to the backend.
+  truncateTitles?: boolean;
 };
 
 export type TDefaultNavbarItemCode =
