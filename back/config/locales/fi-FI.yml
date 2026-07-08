@@ -112,6 +112,8 @@ fi-FI:
           title: Mikä on aloitteesi?
         issue:
           title: Mikä on kommenttisi?
+        observation:
+          title: Mikä on havaintosi?
         option:
           title: Mikä on vaihtoehtosi?
         petition:

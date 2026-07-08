@@ -1,18 +1,26 @@
 # frozen_string_literal: true
 
 # Dedicated update tool for projects (too side-effect-heavy for the generic update_resource).
-# Content/settings only: publication state, folder/space moves, and the header image are
-# intentionally NOT updatable here — publishing stays a deliberate human action.
+# Content/settings only: publication state and folder/space moves are intentionally NOT
+# updatable here — publishing stays a deliberate human action.
 class McpServer::Tools::UpdateProject < McpServer::BaseTool
   def name = 'update_project'
+
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: true # Fetches `remote_header_bg_url` from an arbitrary public URL.
+    }
+  end
 
   def description
     <<~DESC.squish
       Updates an existing project's content and settings. Partial update — only the fields you pass
       change, and `*_multiloc` fields merge per locale. Accepts the same content fields as
       create_project (see that tool for field semantics), except folder_id — a project can't be
-      moved between folders here. Does not change publication status (draft/published/archived) or
-      set the header image.
+      moved between folders here. Does not change publication status (draft/published/archived).
     DESC
   end
 
@@ -35,7 +43,10 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       project.save!
       SideFxProjectService.new.after_update(project, current_user)
 
-      ok("Updated project #{project.id}")
+      ok(
+        "Updated project #{project.id}",
+        structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })
+      )
     rescue ActiveRecord::RecordNotFound
       error("Project not found: #{params[:project_id]}")
     rescue ActiveRecord::RecordInvalid => e

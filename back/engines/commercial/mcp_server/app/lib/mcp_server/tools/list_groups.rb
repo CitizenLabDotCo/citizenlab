@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListGroups < McpServer::BaseTool
   def name = 'list_groups'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists user groups. Search by title or filter by project.'
 
   def input_schema

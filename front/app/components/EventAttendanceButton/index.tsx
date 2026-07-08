@@ -17,6 +17,7 @@ import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import { IUserData } from 'api/users/types';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
 import useLocalize from 'hooks/useLocalize';
 import useObserveEvent from 'hooks/useObserveEvent';
 
@@ -86,6 +87,14 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   );
 
   useObserveEvent('eventAttendance', handleEventAttendanceEvent);
+
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: currentPhase?.id ?? lastCompletedPhase?.id,
+    action: 'attending_event',
+    disabledReason:
+      project?.data.attributes.action_descriptors.attending_event
+        .disabled_reason,
+  });
 
   if (!project) return null;
 
@@ -194,7 +203,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
       <Tooltip
         disabled={userIsAttending || !buttonDisabled}
         placement="bottom"
-        content={disabledMessage}
+        content={customAccessDeniedMessage ?? disabledMessage}
         useContentWrapper={false}
       >
         <Button

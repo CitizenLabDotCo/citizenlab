@@ -58,7 +58,7 @@ context 'franceconnect verification' do
           version: 'v2',
           identifier: 'fakeid',
           secret: 'fakesecret',
-          scope: %w[given_name family_name email]
+          scope: %w[given_name family_name email preferred_username]
         }
       ]
     }
@@ -71,49 +71,102 @@ context 'franceconnect verification' do
     allow_any_instance_of(User).to receive(:validate_email_domain_blacklist)
   end
 
-  it 'successfully authenticates and verifies a new user' do
-    get '/auth/franceconnect?random-passthrough-param=somevalue'
-    follow_redirect!
+  context 'when the user has no preferred_username' do
+    it 'successfully authenticates and verifies a new user' do
+      get '/auth/franceconnect?random-passthrough-param=somevalue'
+      follow_redirect!
 
-    expect(response).to redirect_to('/fr-FR/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
+      expect(response).to redirect_to('/fr-FR/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 
-    user = User.find_by(email: 'wossewodda-3728@yopmail.com')
+      user = User.find_by(email: 'wossewodda-3728@yopmail.com')
 
-    expect(user).to have_attributes({
-      verified: true,
-      first_name: 'Angela Claire Louise',
-      last_name: 'Dubois'
-    })
-    expect(user.identities.first).to have_attributes({
-      provider: 'franceconnect',
-      user_id: user.id
-    })
-    expect(user.verifications.first).to have_attributes({
-      method_name: 'franceconnect',
-      user_id: user.id,
-      active: true,
-      hashed_uid: '84d610ebae19b5e09aa5621e006746c4cd568bec352e1d98d48643e6765a82e7'
-    })
-    expect(cookies[:cl2_jwt]).to be_present
+      expect(user).to have_attributes({
+        verified: true,
+        first_name: 'Angela Claire Louise',
+        last_name: 'Dubois'
+      })
+      expect(user.identities.first).to have_attributes({
+        provider: 'franceconnect',
+        user_id: user.id
+      })
+      expect(user.verifications.first).to have_attributes({
+        method_name: 'franceconnect',
+        user_id: user.id,
+        active: true,
+        hashed_uid: '84d610ebae19b5e09aa5621e006746c4cd568bec352e1d98d48643e6765a82e7'
+      })
+      expect(cookies[:cl2_jwt]).to be_present
+    end
+
+    it 'successfully verifies an existing user' do
+      user = create(:user, first_name: 'Jean', last_name: 'Dupont')
+      token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+      get "/auth/franceconnect?sso_verification=true&token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/yipie?sso_verification=true&random-passthrough-param=somevalue&verification_success=true')
+      expect(user.reload).to have_attributes({
+        verified: true,
+        first_name: 'Angela Claire Louise',
+        last_name: 'Dubois'
+      })
+      expect(user.verifications.first).to have_attributes({
+        method_name: 'franceconnect',
+        user_id: user.id,
+        active: true
+      })
+    end
   end
 
-  it 'successfully verifies an existing user' do
-    user = create(:user, first_name: 'Jean', last_name: 'Dupont')
-    token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-    get "/auth/franceconnect?sso_verification=true&token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
-    follow_redirect!
+  context 'when the user has a preferred_username' do
+    let(:auth_hash) do
+      super().tap { |h| h['extra']['raw_info']['preferred_username'] = 'DUPUIS' }
+    end
 
-    expect(response).to redirect_to('/en/yipie?sso_verification=true&random-passthrough-param=somevalue&verification_success=true')
-    expect(user.reload).to have_attributes({
-      verified: true,
-      first_name: 'Angela Claire Louise',
-      last_name: 'Dubois'
-    })
-    expect(user.verifications.first).to have_attributes({
-      method_name: 'franceconnect',
-      user_id: user.id,
-      active: true
-    })
+    it 'successfully authenticates and verifies a new user' do
+      get '/auth/franceconnect?random-passthrough-param=somevalue'
+      follow_redirect!
+
+      expect(response).to redirect_to('/fr-FR/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
+
+      user = User.find_by(email: 'wossewodda-3728@yopmail.com')
+
+      expect(user).to have_attributes({
+        verified: true,
+        first_name: 'Angela Claire Louise',
+        last_name: 'Dupuis'
+      })
+      expect(user.identities.first).to have_attributes({
+        provider: 'franceconnect',
+        user_id: user.id
+      })
+      expect(user.verifications.first).to have_attributes({
+        method_name: 'franceconnect',
+        user_id: user.id,
+        active: true,
+        hashed_uid: '84d610ebae19b5e09aa5621e006746c4cd568bec352e1d98d48643e6765a82e7'
+      })
+      expect(cookies[:cl2_jwt]).to be_present
+    end
+
+    it 'successfully verifies an existing user' do
+      user = create(:user, first_name: 'Jean', last_name: 'Dupont')
+      token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
+      get "/auth/franceconnect?sso_verification=true&token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/yipie?sso_verification=true&random-passthrough-param=somevalue&verification_success=true')
+      expect(user.reload).to have_attributes({
+        verified: true,
+        first_name: 'Angela Claire Louise',
+        last_name: 'Dupuis'
+      })
+      expect(user.verifications.first).to have_attributes({
+        method_name: 'franceconnect',
+        user_id: user.id,
+        active: true
+      })
+    end
   end
 
   it 'successfully authenticates a user that was previously authenticated and updates the auth_hash' do
@@ -126,7 +179,7 @@ context 'franceconnect verification' do
     })
     expect(user.identities.first.auth_hash['info']['gender']).to eq 'female'
 
-    # Change the auth hash so we can check that is is updated
+    # Change the auth hash so we can check that it is updated
     auth_hash['info']['gender'] = 'male'
     OmniAuth.config.mock_auth[:franceconnect] = OmniAuth::AuthHash.new(auth_hash)
 
