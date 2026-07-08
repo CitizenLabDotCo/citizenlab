@@ -38,8 +38,8 @@ describe SmartGroups::Rules::Imported do
       expect(rule.filter(User).count).to eq 2
     end
 
-    it "correctly filters on 'is_not_imported' predicate" do
-      rule = described_class.new('is_not_imported')
+    it "correctly filters on 'not_is_imported' predicate" do
+      rule = described_class.new('not_is_imported')
       expect(rule.filter(User).count).to eq User.count - 2
     end
   end
@@ -49,7 +49,7 @@ describe SmartGroups::Rules::Imported do
       expect(described_class.new('is_imported').description_multiloc).to include(
         'en' => 'User was imported'
       )
-      expect(described_class.new('is_not_imported').description_multiloc).to include(
+      expect(described_class.new('not_is_imported').description_multiloc).to include(
         'en' => 'User was not imported'
       )
     end

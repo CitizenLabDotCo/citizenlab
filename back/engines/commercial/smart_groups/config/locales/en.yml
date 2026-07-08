@@ -109,7 +109,7 @@ en:
       property: "last activity"
     imported:
       is_imported: "User was imported"
-      is_not_imported: "User was not imported"
+      not_is_imported: "User was not imported"
     role:
       is_admin: "Role is admin"
       not_is_admin: "Role is not admin"

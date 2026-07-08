@@ -286,8 +286,8 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_is_imported',
     defaultMessage: 'is imported',
   },
-  predicate_is_not_imported: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_not_imported',
+  predicate_not_is_imported: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_imported',
     defaultMessage: 'is not imported',
   },
   predicate_something: {

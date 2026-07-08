@@ -142,7 +142,7 @@ type TLastActivePredicate =
   | 'is_exactly'
   | 'is_after';
 
-type TImportedPredicate = 'is_imported' | 'is_not_imported';
+type TImportedPredicate = 'is_imported' | 'not_is_imported';
 
 type TParticipatedInProjectPredicate =
   | 'commented_in'
@@ -438,7 +438,7 @@ export type TRule =
     }
   | {
       ruleType?: 'imported';
-      predicate?: 'is_imported' | 'is_not_imported';
+      predicate?: 'is_imported' | 'not_is_imported';
     }
   | {
       ruleType?: 'participated_in_project';
@@ -672,7 +672,7 @@ export const ruleTypeConstraints = {
   },
   imported: {
     is_imported: null,
-    is_not_imported: null,
+    not_is_imported: null,
   },
   role: {
     is_admin: null,

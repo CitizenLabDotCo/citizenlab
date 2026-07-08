@@ -5,7 +5,7 @@ module SmartGroups::Rules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w[is_imported is_not_imported]
+    PREDICATE_VALUES = %w[is_imported not_is_imported]
 
     attr_accessor :predicate
 
@@ -51,7 +51,7 @@ module SmartGroups::Rules
       case predicate
       when 'is_imported'
         users_scope.where(imported: true)
-      when 'is_not_imported'
+      when 'not_is_imported'
         users_scope.where(imported: false)
       else
         raise "Unsupported predicate #{predicate}"
