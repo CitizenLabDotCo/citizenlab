@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nid ydych yn bodloni'r gofynion i gymryd rhan yn y broses hon.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Mae angen dilysu gan ddefnyddio {method} i gyflawni'r weithred hon.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Mae angen dilysu gan ddefnyddio un o'r dulliau canlynol i gyflawni'r weithred hon: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Oes gennych chi gyfrif eisoes?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliciwch yma i fewngofnodi fel gweinyddwr neu reolwr prosiect",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE neu CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Rhowch tocyn",

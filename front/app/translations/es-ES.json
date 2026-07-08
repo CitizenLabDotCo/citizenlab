@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No cumples con los requisitos para participar en este proceso.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Esta acción requiere verificación mediante {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Esta acción requiere verificación mediante uno de los siguientes métodos: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "¿Ya tienes una cuenta?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Haz clic aquí para iniciar sesión como administrador o jefe de proyecto",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE o CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Por favor, introduzca un token",

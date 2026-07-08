@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Et täytä tähän prosessiin osallistumisen edellytyksiä.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Tämä toiminto edellyttää vahvistusta menetelmällä {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Tämä toiminto edellyttää vahvistusta jollakin seuraavista tavoista: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Onko sinulla jo tili?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klikkaa tästä kirjautuaksesi sisään ylläpitäjänä tai projektipäällikkönä",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE tai CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Anna tunnus",

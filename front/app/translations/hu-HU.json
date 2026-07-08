@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nem felel meg a folyamatban való részvétel feltételeinek.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Ehhez a művelethez hitelesítés szükséges a következő módszerrel: {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Ehhez a művelethez hitelesítés szükséges az alábbi módszerek egyikével: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Már van fiókja?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Kattintson ide adminisztrátorként vagy projektmenedzserként való bejelentkezéshez",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE vagy CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Kérjük, adjon meg egy tokent",

@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "لا تتوفر لديك المتطلبات للمشاركة في هذه العملية.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "يتطلب هذا الإجراء التحقق باستخدام {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "يتطلب هذا الإجراء التحقق باستخدام إحدى الطرق التالية: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "هل لديك حساب بالفعل؟",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "انقر هنا لتسجيل الدخول كمسؤول أو مدير مشروع",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID أو CIE أو CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "الرجاء إدخال رمز مميز",

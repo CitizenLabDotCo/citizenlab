@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "You do not meet the requirements to participate in this process.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Iliuseq manna {method} atorlugu uppernarsarneqartariaqarpoq.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Iliuseq manna periaatsit uku arlaat atorlugu uppernarsarneqartariaqarpoq: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Iserfissaqareerpit?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Click here to login as admin or project manager",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE imaluunniit CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Please enter a token",

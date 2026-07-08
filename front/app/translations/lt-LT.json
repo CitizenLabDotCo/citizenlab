@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Neatitinkate reikalavimų, kad galėtumėte dalyvauti šiame procese.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Šiam veiksmui atlikti reikalingas patvirtinimas naudojant {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Šiam veiksmui atlikti reikalingas patvirtinimas naudojant vieną iš šių būdų: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Jau turite paskyrą?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Spustelėkite čia, jei norite prisijungti kaip administratorius arba projekto vadovas",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE arba CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Įveskite simbolį",

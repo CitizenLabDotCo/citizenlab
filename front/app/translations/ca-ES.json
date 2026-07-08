@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No compleixes els requisits per participar en aquest procés.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Aquesta acció requereix verificació mitjançant {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Aquesta acció requereix verificació mitjançant un dels mètodes següents: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Ja tens un compte?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Feu clic aquí per iniciar sessió com a administrador o gestor de projectes",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE o CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Introduïu un testimoni",

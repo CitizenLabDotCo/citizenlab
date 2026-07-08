@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Bu sürece katılmak için gereken şartları karşılamıyorsunuz.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Bu eylem, {method} kullanarak doğrulama gerektirir.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Bu eylem, şu yöntemlerden birini kullanarak doğrulama gerektirir: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Zaten bir hesabınız var mı?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Yönetici veya proje yöneticisi olarak giriş yapmak için buraya tıklayın",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE veya CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Lütfen bir belirteç girin",

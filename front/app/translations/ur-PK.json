@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "آپ اس عمل میں حصہ لینے کی ضروریات کو پورا نہیں کرتے ہیں۔",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "اس کارروائی کے لیے {method} کا استعمال کرتے ہوئے تصدیق درکار ہے۔",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "اس کارروائی کے لیے درج ذیل طریقوں میں سے کسی ایک کا استعمال کرتے ہوئے تصدیق درکار ہے: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "کیا آپ کا پہلے سے اکاؤنٹ موجود ہے؟",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "ایڈمن یا پروجیکٹ مینیجر کے طور پر لاگ ان ہونے کے لیے یہاں کلک کریں۔",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID، CIE یا CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "براہ کرم ایک ٹوکن درج کریں۔",

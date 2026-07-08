@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Ní chomhlíonann tú na ceanglais chun páirt a ghlacadh sa phróiseas seo.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Tá fíorú ag teastáil don ghníomh seo trí {method} a úsáid.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Tá fíorú ag teastáil don ghníomh seo trí cheann de na modhanna seo a leanas a úsáid: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "An bhfuil cuntas agat cheana féin?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliceáil anseo chun logáil isteach mar riarthóir nó bainisteoir tionscadail",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE nó CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Cuir isteach comhartha le do thoil",

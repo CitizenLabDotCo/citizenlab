@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Dir erfëllt net den Ufuerderunge fir un dësem Prozess deelzehuelen.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Dës Aktioun erfuerdert eng Verifizéierung mat {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Dës Aktioun erfuerdert eng Verifizéierung mat enger vun de folgende Methoden: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Hutt Dir schonn e Kont?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klickt hei fir Iech als Admin oder Projetmanager anzeloggen",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE oder CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Gitt w.e.g. en Token un",

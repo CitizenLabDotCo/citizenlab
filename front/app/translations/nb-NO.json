@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Du oppfyller ikke kravene for å delta i denne prosessen.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Denne handlingen krever verifisering med {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Denne handlingen krever verifisering med en av følgende metoder: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Har du allerede en konto?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klikk her for å logge inn som administrator eller prosjektleder",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE eller CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Vennligst skriv inn en token",

@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Jūs neatbilstat prasībām, lai piedalītos šajā procesā.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Šai darbībai nepieciešama verifikācija, izmantojot {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Šai darbībai nepieciešama verifikācija, izmantojot kādu no šīm metodēm: {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Jums jau ir konts?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Noklikšķiniet šeit, lai pieteiktos kā administrators vai projekta vadītājs",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE vai CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Lūdzu, ievadiet žetonu",

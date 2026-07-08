@@ -1291,7 +1291,6 @@
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Vous ne remplissez pas les conditions requises pour participer à ce processus.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": "Cette action nécessite une vérification via {method}.",
   "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": "Cette action nécessite une vérification à l'aide de l'une des méthodes suivantes : {methods}",
-  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": "Vous avez déjà un compte ?",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliquez ici pour vous connecter en tant qu'administrateur ou gestionnaire de projet",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE ou CNS",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Veuillez saisir le code d'invitation",
