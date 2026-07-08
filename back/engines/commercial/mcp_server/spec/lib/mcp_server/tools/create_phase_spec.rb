@@ -15,6 +15,40 @@ describe McpServer::Tools::CreatePhase do
     }
   end
 
+  describe '#input_schema' do
+    # A method, not a let: the schema is rebuilt to observe feature-flag changes.
+    def schema = described_class.new.input_schema
+
+    it 'only offers gated participation methods when their feature flag is active' do
+      SettingsService.new.deactivate_feature!('polls')
+      expect(schema.dig(:properties, :participation_method, :enum)).not_to include('poll')
+
+      SettingsService.new.activate_feature!('polls')
+      expect(schema.dig(:properties, :participation_method, :enum)).to include('poll')
+    end
+
+    it 'grows the prescreening_mode enum with the prescreening feature flags' do
+      settings = SettingsService.new
+      %w[prescreening prescreening_ideation flag_inappropriate_content].each { |flag| settings.deactivate_feature!(flag) }
+      expect(schema.dig(:properties, :prescreening_mode, :enum)).to eq([nil])
+
+      settings.activate_feature!('prescreening')
+      expect(schema.dig(:properties, :prescreening_mode, :enum)).to eq([nil, 'all'])
+
+      settings.activate_feature!('flag_inappropriate_content')
+      expect(schema.dig(:properties, :prescreening_mode, :enum)).to eq([nil, 'all', 'flagged_only'])
+    end
+
+    it 'only exposes the disliking fields when disable_disliking is active' do
+      SettingsService.new.deactivate_feature!('disable_disliking')
+      expect(schema[:properties]).not_to have_key(:reacting_dislike_enabled)
+
+      SettingsService.new.activate_feature!('disable_disliking')
+      expect(schema[:properties].keys)
+        .to include(:reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max)
+    end
+  end
+
   context 'when the project is draft' do
     let(:status) { 'draft' }
 
@@ -25,6 +59,66 @@ describe McpServer::Tools::CreatePhase do
       end.to change { project.reload.phases.count }.by(1)
 
       expect(response).not_to be_error
+      expect(response.structured_content[:id]).to eq(project.phases.sole.id)
+    end
+
+    it 'creates a native survey phase' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(
+          participation_method: 'native_survey',
+          native_survey_title_multiloc: { 'en' => 'Survey' },
+          native_survey_button_multiloc: { 'en' => 'Take the survey' }
+        ),
+        current_user:
+      )
+
+      expect(response).not_to be_error
+      phase = project.phases.sole
+      expect(phase.participation_method).to eq('native_survey')
+      expect(phase.native_survey_title_multiloc).to eq('en' => 'Survey')
+    end
+
+    it 'creates a budgeting voting phase' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(
+          participation_method: 'voting',
+          voting_method: 'budgeting',
+          voting_max_total: 1000
+        ),
+        current_user:
+      )
+
+      expect(response).not_to be_error
+      phase = project.phases.sole
+      expect(phase.voting_method).to eq('budgeting')
+      expect(phase.voting_max_total).to eq(1000)
+    end
+
+    it 'creates a poll phase when the polls feature is active' do
+      SettingsService.new.activate_feature!('polls')
+
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(participation_method: 'poll'),
+        current_user:
+      )
+
+      expect(response).not_to be_error
+      expect(project.phases.sole.participation_method).to eq('poll')
+    end
+
+    it 'returns structured validation errors for invalid params' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(end_at: '2026-06-01'),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.structured_content[:errors]).to be_present
+      expect(project.reload.phases.count).to eq(0)
     end
   end
 
@@ -49,8 +143,7 @@ describe McpServer::Tools::CreatePhase do
         current_user:
       )
 
-      expect(response).to be_error
-      expect(response.content.first[:text]).to include('Project not found')
+      expect(response).to be_not_found('Project')
     end
   end
 end
