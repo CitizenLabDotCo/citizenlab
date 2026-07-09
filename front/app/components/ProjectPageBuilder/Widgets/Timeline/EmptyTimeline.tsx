@@ -20,8 +20,6 @@ type Props = {
   noteMessage?: MessageDescriptor;
 };
 
-// Admin-only placeholder keeping the widget visible when the timeline has
-// nothing to render on the public page.
 const EmptyTimeline = ({
   titleMessage = messages.timelineEmptyTitle,
   noteMessage,

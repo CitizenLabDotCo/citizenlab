@@ -47,7 +47,6 @@ const ContentBuilderSettings = () => {
     isEnabled &&
     selectedNode.id !== ROOT_NODE &&
     selectedNode.name !== 'Box' &&
-    // Structural canvas regions (e.g. the project page root/body) aren't editable.
     !selectedNode.custom?.region ? (
     <Settings
       selectedNode={selectedNode}

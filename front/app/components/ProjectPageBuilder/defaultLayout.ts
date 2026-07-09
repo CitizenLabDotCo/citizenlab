@@ -2,25 +2,6 @@ import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
 import widgetMessages from './Widgets/messages';
 
-// While the new project page rolls out alongside the legacy one, the page
-// structure is frozen so both render the same sections in the same order:
-//
-//   ROOT (ProjectPageRoot, canMoveIn: false)   ← rejects all drops
-//     ├─ Project image (locked)
-//     ├─ Title         (locked)
-//     └─ ProjectPageBody (canMoveIn: false)    ← fixed section order
-//          ├─ Description section              ← the only editable region;
-//          │                                      also edited via the legacy
-//          │                                      description editor
-//          ├─ Phases (locked)                  ← timeline + phase content as
-//          │                                      ONE widget: the timeline's
-//          │                                      tabs drive the content, so
-//          │                                      they always move together
-//          └─ Events (locked)
-//
-// The locks live in code — `normalizeProjectPageLayout` re-stamps them on every
-// load — so unlocking at launch is a code change that instantly applies to
-// every stored layout, with no data migration.
 export const BANNER_NODE_ID = 'PROJECT_PAGE_BANNER';
 export const TITLE_NODE_ID = 'PROJECT_PAGE_TITLE';
 export const BODY_NODE_ID = 'PROJECT_PAGE_BODY';
@@ -74,8 +55,6 @@ const bodyNode = (childIds: string[]): SerializedNode => ({
   linkedNodes: {},
 });
 
-// The project description: pinned in place, but its content is freely editable
-// (both here and via the legacy description editor, which edits this subtree).
 const descriptionSectionNode = (childIds: string[]): SerializedNode => ({
   type: { resolvedName: 'ProjectDescriptionSection' },
   nodes: childIds,
@@ -135,8 +114,6 @@ const rootNode = (childIds: string[]): SerializedNode => ({
   linkedNodes: {},
 });
 
-// A fresh project page: the locked header above the fixed body sections, with an
-// empty description. Mirrors the legacy public project page section for section.
 export const defaultProjectPageLayout = (): SerializedNodes => ({
   [ROOT_ID]: rootNode([BANNER_NODE_ID, TITLE_NODE_ID, BODY_NODE_ID]),
   [BANNER_NODE_ID]: bannerNode(),
@@ -157,8 +134,6 @@ const resolvedNameOf = (node: SerializedNode) =>
 export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
-// Canonical `custom` for the fixed nodes, re-applied on load so titles and lock
-// flags stay current even for layouts saved with older values.
 const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   ProjectBanner: {
     title: widgetMessages.bannerWidgetTitle,
@@ -186,10 +161,6 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   },
 };
 
-// Widgets of the description-builder resolver that are absent from the project
-// page resolver, stripped so craft.js doesn't crash deserializing an unknown
-// component. Keep in sync with UNSUPPORTED_WIDGETS in
-// ContentBuilder::ProjectPageLayoutService.
 const REMOVED_WIDGETS = [
   'FolderFiles',
   'FolderTitle',
@@ -216,11 +187,6 @@ const collectRemovedIds = (nodes: SerializedNodes) => {
   return removed;
 };
 
-// Normalises a stored layout into the frozen transition structure (see the
-// diagram above): injects missing fixed nodes, enforces the canonical order and
-// re-stamps the lock flags from code, so a code change (e.g. the unlock at
-// launch) applies to every stored layout without a data migration.
-// Idempotent — canonical layouts pass through unchanged.
 export const normalizeProjectPageLayout = (
   nodes?: SerializedNodes
 ): SerializedNodes => {
@@ -230,7 +196,6 @@ export const normalizeProjectPageLayout = (
 
   const removedIds = collectRemovedIds(nodes);
 
-  // Re-stamp canonical custom + drop removed-widget references.
   const next: SerializedNodes = {};
   Object.entries(nodes).forEach(([id, node]) => {
     if (removedIds.has(id)) return;
@@ -281,7 +246,6 @@ export const normalizeProjectPageLayout = (
     eventsNode(bodyId)
   );
 
-  // Pin every fixed node under its designated parent, in the frozen order.
   next[bannerId] = { ...next[bannerId], parent: ROOT_ID };
   next[titleId] = { ...next[titleId], parent: ROOT_ID };
   next[bodyId] = {

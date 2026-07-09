@@ -61,9 +61,6 @@ const DescriptionBuilderPage = ({
 
   const isProject = contentBuildableType === 'project';
 
-  // A project's description lives in the project_page layout's description
-  // section; the editor edits that subtree and splices it back on save. Folders
-  // (and unmigrated projects) still edit their legacy description layout.
   const {
     pageLayout,
     projectPageJson,
@@ -131,8 +128,6 @@ const DescriptionBuilderPage = ({
     return undefined;
   };
 
-  // Always enable the layout on save: descriptions are edited exclusively in
-  // the Content Builder, so saving a description makes it the live one.
   const handleSave = async (nodes: SerializedNodes) => {
     if (isProject && projectPageJson) {
       const { data: freshLayout } = await refetchPageLayout();

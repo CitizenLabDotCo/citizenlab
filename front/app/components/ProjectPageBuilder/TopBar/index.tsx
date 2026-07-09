@@ -63,7 +63,6 @@ const ProjectPageBuilderTopBar = ({
     const saved = await onSave(nodes);
     if (!saved) return;
 
-    // Reset the in-editor props so the widgets read the fresh project attributes.
     const titleNodeId = findNodeIdByName(nodes, 'ProjectTitle');
     if (titleNodeId) {
       actions.history.ignore().setProp(titleNodeId, (props) => {

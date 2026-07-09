@@ -3,11 +3,6 @@ import { Multiloc } from 'typings';
 
 import { findNodeIdByName } from './defaultLayout';
 
-// The Title and Project image widgets edit project attributes, but the builder
-// only persists on Save. Until then the edits are parked as node props
-// ("drafts"); on Save they are committed to the project and stripped from the
-// layout, so the saved layout never carries a project attribute that could drift.
-
 export type BannerImageDraft = {
   dataCode?: string;
   imageUrl?: string;
@@ -32,7 +27,6 @@ export const extractProjectAttributeDrafts = (
   const titleId = findNodeIdByName(nodes, 'ProjectTitle');
   if (titleId) {
     const title = nodes[titleId].props.title as Multiloc | undefined;
-    // A title blank in every locale would be rejected by the API; drop it.
     if (
       isNonEmptyMultiloc(title) &&
       Object.values(title).some((value) => value && value.trim())
@@ -64,8 +58,6 @@ export const hasProjectAttributeDrafts = (drafts: ProjectAttributeDrafts) =>
   drafts.bannerRemoved === true ||
   drafts.bannerAltMultiloc !== undefined;
 
-// Returns a copy of the layout with the draft props reset to their untouched
-// defaults — what gets persisted as the page layout.
 export const stripProjectAttributeDrafts = (
   nodes: SerializedNodes
 ): SerializedNodes => {

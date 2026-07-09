@@ -27,8 +27,6 @@ const node = (
     linkedNodes: {},
   } as unknown as SerializedNodes[string]);
 
-// A project_page layout whose description section holds a text widget and a
-// two-column widget with a nested image.
 const projectPageLayout = (): SerializedNodes => {
   const layout = defaultProjectPageLayout();
   layout[DESCRIPTION_NODE_ID] = {
@@ -49,10 +47,8 @@ describe('extractDescriptionEditorData', () => {
     expect(editorData.ROOT.nodes).toEqual(['txt', 'cols']);
     expect(editorData.txt.parent).toBe('ROOT');
     expect(editorData.cols.parent).toBe('ROOT');
-    // Nested nodes keep their internal structure.
     expect(editorData.col1.parent).toBe('cols');
     expect(editorData.img.parent).toBe('col1');
-    // Nothing of the page structure leaks into the document.
     expect(editorData[DESCRIPTION_NODE_ID]).toBeUndefined();
     expect(editorData[BODY_NODE_ID]).toBeUndefined();
   });
@@ -88,12 +84,10 @@ describe('spliceDescriptionEditorData', () => {
 
     expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['newTxt']);
     expect(result.newTxt.parent).toBe(DESCRIPTION_NODE_ID);
-    // The previous subtree is gone, including nested nodes.
     expect(result.txt).toBeUndefined();
     expect(result.cols).toBeUndefined();
     expect(result.col1).toBeUndefined();
     expect(result.img).toBeUndefined();
-    // The rest of the page is untouched.
     expect(result[BODY_NODE_ID]).toEqual(layout[BODY_NODE_ID]);
     expect(result.ROOT).toEqual(layout.ROOT);
   });

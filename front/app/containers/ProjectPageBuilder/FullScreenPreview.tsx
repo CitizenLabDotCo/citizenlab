@@ -20,8 +20,6 @@ type Props = {
   projectId: string;
 };
 
-// Renders only the layout: the page title is the layout's own Title widget,
-// so adding a heading here would show it twice.
 export const FullScreenPreview = ({ projectId }: Props) => {
   const search = useSearch({ strict: false });
   const selectedLocale = search.selected_locale || undefined;
@@ -31,8 +29,6 @@ export const FullScreenPreview = ({ projectId }: Props) => {
 
   const { data: layout } = useProjectPageLayout(projectId);
 
-  // The builder posts already-normalized draft data; the saved layout is
-  // normalized here so stale layouts render with the current fixed structure.
   const savedEditorData = useMemo(
     () =>
       layout

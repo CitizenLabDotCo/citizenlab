@@ -11,8 +11,6 @@ import messages from '../messages';
 import TimelineSection from '../Timeline';
 import useWidgetProjectId from '../useWidgetProjectId';
 
-// Timeline + the active phase's participation content as one widget: the
-// timeline's tabs drive what the content shows, so they can't be placed apart.
 const PhasesWidget: UserComponent = () => (
   <>
     <TimelineSection />

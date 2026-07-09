@@ -5,8 +5,6 @@ import { MessageDescriptor } from 'react-intl';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-// Explains a lock of the frozen transition structure (locked header widgets,
-// restricted toolbox).
 const LockedNote = ({ message }: { message: MessageDescriptor }) => (
   <Box
     display="flex"

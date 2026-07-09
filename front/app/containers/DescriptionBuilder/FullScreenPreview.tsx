@@ -33,14 +33,10 @@ export const FullScreenPreview = ({
   const search = useSearch({ strict: false });
   const selectedLocale = search.selected_locale || undefined;
   const localize = useLocalize();
-
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
-
   const isProject = contentBuildableType === 'project';
 
-  // Preview what the description editor edits: a project's description section
-  // (falling back to its legacy layout), or a folder's description layout.
   const { pageLayout, descriptionEditorData, legacyLayout } =
     useProjectDescription(contentBuildableId, { enabled: isProject });
   const { data: folderLayout } = useContentBuilderLayout(

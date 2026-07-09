@@ -2,18 +2,10 @@ import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
 import { findNodeIdByName } from './defaultLayout';
 
-// The description section of a project_page layout is the single source of
-// truth for the project description. The legacy description editor and public
-// page work on it through these two inverse transforms: `extract` re-roots the
-// section's subtree as a standalone editable document, `splice` writes an
-// edited document back into the full layout.
-
 const ROOT_ID = 'ROOT';
 
 const DESCRIPTION_SECTION = 'ProjectDescriptionSection';
 
-// The root canvas the description builder expects — identical to the ROOT of a
-// legacy project_description layout.
 const editorRootNode = (childIds: string[]): SerializedNode => ({
   type: 'div',
   isCanvas: true,
@@ -42,9 +34,6 @@ const collectSubtreeIds = (nodes: SerializedNodes, startIds: string[]) => {
   return collected;
 };
 
-// Re-roots the description section's subtree as a standalone craftjs document
-// the description builder can edit. Node ids are preserved so splicing back is
-// stable. An absent or empty section yields an empty document.
 export const extractDescriptionEditorData = (
   projectPageNodes: SerializedNodes
 ): SerializedNodes => {
@@ -64,8 +53,6 @@ export const extractDescriptionEditorData = (
   return editorData;
 };
 
-// Replaces the description section's subtree with the edited document's
-// content, leaving every other node of the layout untouched.
 export const spliceDescriptionEditorData = (
   projectPageNodes: SerializedNodes,
   editedNodes: SerializedNodes

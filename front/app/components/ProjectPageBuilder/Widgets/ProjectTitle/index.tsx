@@ -18,12 +18,9 @@ import messages from '../messages';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 type Props = {
-  // Unsaved edit of the project's `title_multiloc`; see projectAttributeDrafts.ts.
   title?: Multiloc;
 };
 
-// Locked widget rendering (and, via its settings, editing) the project's
-// `title_multiloc` as the page heading.
 const ProjectTitle: UserComponent<Props> = ({ title: draftTitle }) => {
   const projectId = useWidgetProjectId();
   const localize = useLocalize();

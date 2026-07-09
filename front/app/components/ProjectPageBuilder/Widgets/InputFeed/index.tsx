@@ -35,24 +35,17 @@ const InputFeedSection = () => {
   });
   const { data: phases } = usePhases(projectId);
   const hasParticipation = !!phases && !!getLatestRelevantPhase(phases.data);
-  // With the timeline above hidden, this is the first content on the grey band
-  // and needs the top padding the timeline normally provides.
   const startsGreyBand = !!phases && hideTimelineUI(phases.data, currentLocale);
 
   return (
     <Box
       id="e2e-project-page-input-feed"
       pointerEvents={onPublicRoute ? 'auto' : 'none'}
-      // Keep the Phases widget selectable in the builder even when there is no
-      // active phase (and so no content renders).
       minHeight={inEditor ? '40px' : undefined}
     >
       {projectId &&
         phases &&
         (hasParticipation ? (
-          // Shares the timeline's grey band so phases + participation content
-          // read as one section; only wraps real content, so empty phases
-          // leave no grey strip.
           <EditModeHeightCap>
             <SectionBackground
               fullBleed={onPublicRoute}

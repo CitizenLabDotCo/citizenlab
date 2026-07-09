@@ -220,9 +220,6 @@ const projectRoute = createRoute({
   ),
 });
 
-// Project index redirect. With parallel participation a project opens on its
-// page — phases sit one click away in the rail, and with parallel phases there
-// is no single active phase to pick. Otherwise it opens on the active phase.
 const ProjectIndexRedirect = () => {
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId',

@@ -18,6 +18,12 @@ import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
+const PHONE_LOGICAL_WIDTH = 400;
+const PHONE_LOGICAL_HEIGHT = 800;
+const DEFAULT_PREVIEW_SCALE = 0.8;
+const MAX_PREVIEW_SCALE = 1;
+const PREVIEW_AREA_PADDING = 32;
+
 // Render the preview interior at a fixed logical phone viewport and scale the
 // whole thing down to fit the frame, so components keep their real proportions
 // instead of being squeezed into a narrow iframe ("scale, don't shrink"). The
@@ -116,17 +122,9 @@ const ProjectPage = () => {
   }
 
   const slug = project.data.attributes.slug;
-  // Carry the current query string (e.g. ?parallel_participation) into the
-  // preview iframe so it renders the same project-page variant the admin is
-  // editing (mirrors openContentBuilder below). When the flag is enabled
-  // server-side this is a no-op; it only matters when toggled via the URL.
-  // TODO(parallel_participation cleanup): drop the query-string forwarding once
-  // the flag is removed and the new project page is the default.
   const previewSrc = `/${locale}/projects/${slug}${window.location.search}`;
 
   const openContentBuilder = () => {
-    // Preserve the current query string (e.g. ?parallel_participation) so the
-    // builder stays gated-on when the flag is toggled via the URL.
     clHistory.push(
       `/admin/project-page-builder/projects/${projectId}${window.location.search}`
     );
@@ -213,15 +211,3 @@ const ProjectPage = () => {
 };
 
 export default ProjectPage;
-
-const PHONE_LOGICAL_WIDTH = 400;
-
-const PHONE_LOGICAL_HEIGHT = 800;
-
-const DEFAULT_PREVIEW_SCALE = 0.8;
-
-// The phone grows with the screen, but only up to its logical size — bigger
-// would just blow up the mobile rendering.
-const MAX_PREVIEW_SCALE = 1;
-
-const PREVIEW_AREA_PADDING = 32;

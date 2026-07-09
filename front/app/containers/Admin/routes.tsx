@@ -233,7 +233,6 @@ const folderPreviewRoute = createRoute({
   component: () => <FolderFullscreenPreview />,
 });
 
-// Project page builder routes (successor to the description builder)
 const projectPageBuilderRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: 'project-page-builder/projects/$projectId',

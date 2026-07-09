@@ -80,9 +80,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const projectId = project.data.id;
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
-  // With parallel participation, the title, description and header image are
-  // edited in the project page builder; without it, this form is the only
-  // edit surface for them.
   const parallelParticipation = useParallelParticipation();
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();

@@ -6,8 +6,6 @@ import { useEditor } from '@craftjs/core';
 import AdminOnlyNote from './EmptyState/AdminOnlyNote';
 import messages from './messages';
 
-// Data-driven sections can make the edit canvas thousands of pixels tall, so in
-// the editor they are capped with a fade; previews and the public page render in full.
 const CAP_HEIGHT = 440;
 const FADE_HEIGHT = 96;
 

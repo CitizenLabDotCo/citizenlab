@@ -14,10 +14,6 @@ type RegionProps = {
   children?: React.ReactNode;
 };
 
-// The two canvas regions of the frozen page structure (see defaultLayout.ts).
-// The root rejects all drops, so nothing can ever land above or between the
-// locked header widgets; the body is the only droppable region.
-
 export const ProjectPageRoot: UserComponent<RegionProps> = ({ children }) => (
   <Box id="e2e-content-builder-frame" w="100%">
     {children}
@@ -34,11 +30,6 @@ ProjectPageRoot.craft = {
   },
 };
 
-// `position: sticky` can only travel within its parent's box, so the CTA bar
-// must be a direct child of the body (spanning the whole page), not of the
-// short description section it visually follows. Flex `order` moves the
-// description above it, restoring the bar's legacy flow position; the negative
-// margins bleed the bar out of the width-constrained frame to the viewport.
 const CTA_BAR_CLASS = 'projectPageCtaBar';
 
 const BodyWithStickyCTABar = styled(Box)`
@@ -63,7 +54,6 @@ const BodyWithStickyCTABar = styled(Box)`
 `;
 
 export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => {
-  // CTA bar on the public route only: in the builder it would stick over the canvas.
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const projectId = useWidgetProjectId();
 

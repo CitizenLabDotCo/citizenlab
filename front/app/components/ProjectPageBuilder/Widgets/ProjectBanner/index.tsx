@@ -31,14 +31,10 @@ import useWidgetProjectId from '../useWidgetProjectId';
 import EmptyBanner from './EmptyBanner';
 
 type Props = {
-  // Unsaved edits of the project's header image; see projectAttributeDrafts.ts.
   image?: BannerImageDraft;
   alt?: Multiloc;
 };
 
-// Locked widget rendering (and, via its settings, editing) the project's
-// `header_bg`, so this page, the project cards and the legacy page all show
-// one image.
 const ProjectBanner: UserComponent<Props> = ({ image, alt }) => {
   const projectId = useWidgetProjectId();
   const localize = useLocalize();
@@ -93,11 +89,8 @@ const ProjectBannerSettings = () => {
     alt: node.data.props.alt as Multiloc | undefined,
   }));
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
-
-  // Seed the dropzone once with the image currently showing, then let
-  // add/remove drive it — otherwise "remove" would immediately re-show the
-  // project image.
   const seeded = useRef(false);
+
   useEffect(() => {
     if (seeded.current) return;
     const initialUrl =
@@ -144,7 +137,6 @@ const ProjectBannerSettings = () => {
     });
   };
 
-  // `{}` is the untouched default; only a real edit shadows the project value.
   const altValue =
     alt && Object.keys(alt).length > 0
       ? alt

@@ -40,9 +40,6 @@ const Header = styled.div`
   `}
 `;
 
-// The phase timeline, reusing the public project-page components; the selected
-// phase follows the URL phase param, mirroring ProjectTimelineContainer.
-// Rendered as the top half of the Phases widget; not a standalone widget.
 const TimelineSection = () => {
   const projectId = useWidgetProjectId();
   const { slug, phaseNumber } = useParams({ strict: false }) as {
@@ -77,8 +74,6 @@ const TimelineSection = () => {
     return canModerate ? <EmptyTimeline /> : null;
   }
 
-  // Same visibility rule as the legacy page: a single open-ended phase without
-  // a description shows no timeline — for anyone. The builder keeps a placeholder.
   if (hideTimelineUI(phases.data, currentLocale)) {
     return inEditor ? (
       <EmptyTimeline
@@ -88,7 +83,6 @@ const TimelineSection = () => {
     ) : null;
   }
 
-  // Tabs navigate via links; this only drives keyboard-arrow selection.
   const selectPhase = (phase: IPhaseData) => {
     if (!slug || !project) return;
     setPhaseURL(phase, phases.data, project.data);

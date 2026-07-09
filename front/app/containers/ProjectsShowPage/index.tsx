@@ -136,10 +136,6 @@ const ProjectsShowPage = ({ project }: Props) => {
         ) : (
           <ContentWrapper>
             <ProjectHeader projectId={projectId} />
-
-            {/* With the flag on, the page layout (rendered via ProjectHeader)
-                already includes the CTA bar, timeline, participation content
-                and events, so the legacy body would render everything twice. */}
             {!parallelParticipation && (
               <>
                 <ProjectCTABar projectId={projectId} />

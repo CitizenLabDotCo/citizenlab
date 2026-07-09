@@ -38,9 +38,6 @@ import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import ProjectInfo from './ProjectInfo';
 import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
-// When the project page layout owns the body ($flushBottom), its sections run
-// to the bottom edge, so the container's bottom padding would show as a stray
-// white band above the footer.
 const Container = styled.div<{ $flushBottom: boolean }>`
   padding-top: 30px;
   padding-bottom: ${({ $flushBottom }) => ($flushBottom ? '0px' : '65px')};
@@ -141,8 +138,6 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               />
             </Box>
           </Box>
-          {/* When parallel participation is on, the project page layout owns the
-              header (locked Banner widget), so the standard banner is suppressed. */}
           {!parallelParticipation && projectHeaderImageLargeUrl && (
             <HeaderImageContainer>
               <HeaderImage
