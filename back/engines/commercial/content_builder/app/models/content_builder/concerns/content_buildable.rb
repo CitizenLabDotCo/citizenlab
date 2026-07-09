@@ -65,9 +65,6 @@ module ContentBuilder
           content_builder_layouts: [Arel.sql(CRAFTJS_FOLDER_TEXT_QUERY)]
         }, using: { tsearch: { prefix: true } }
 
-        # The project_page layout is excluded: every project gets one, so
-        # counting it would make this vacuously true. Filtered in Ruby to reuse
-        # a preloaded association instead of firing a query.
         def uses_content_builder?
           content_builder_layouts.any? do |layout|
             layout.enabled && layout.code != ProjectPageLayoutService::CODE

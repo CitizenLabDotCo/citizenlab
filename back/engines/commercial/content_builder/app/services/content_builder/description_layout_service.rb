@@ -30,9 +30,6 @@ module ContentBuilder
       }
     }.freeze
 
-    # Provisions enabled description (and, for projects, project_page) layouts
-    # for a new (or copied/imported) buildable. Gated on the feature; no-op when
-    # off or the layouts already exist.
     def provision_for(buildable)
       return unless feature_activated?
 
@@ -49,11 +46,6 @@ module ContentBuilder
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
 
-    # Puts one buildable's description on the Content Builder, picking the widget by
-    # content (blank / media / text), and gives projects their project_page layout
-    # (built from the description layout, so it must be created first). A disabled
-    # description layout is re-pointed at the description and re-enabled; enabled
-    # layouts are never touched.
     def ensure_on_content_builder!(buildable)
       existing = ContentBuilder::Layout.find_by(
         content_buildable: buildable,

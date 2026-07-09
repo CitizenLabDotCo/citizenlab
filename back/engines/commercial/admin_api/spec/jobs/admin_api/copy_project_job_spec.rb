@@ -36,9 +36,6 @@ RSpec.describe AdminApi::CopyProjectJob do
       serialized_project = ProjectCopyService.new.export(project)
       model_counts = serialized_project['models'].transform_values(&:size)
       expected_model_counts = template['models'].transform_values(&:size)
-      # Imported projects are provisioned with Content Builder description and
-      # project_page layouts (see ContentBuilder::DescriptionLayoutService), so the
-      # imported project has two more layouts than this layout-less template.
       expected_model_counts['content_builder/layout'] += 2
       expect(model_counts).to eq(expected_model_counts)
     end

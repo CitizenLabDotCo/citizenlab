@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 module ContentBuilder
-  # Builds `project_page` craftjs layouts for the provisioning hooks and the
-  # one-time migration: a locked banner + title above a body frozen to
-  # description section → phases → events. Mirrors the frontend
-  # `defaultLayout.ts` — keep the two in sync.
   class ProjectPageLayoutService
     CODE = 'project_page'
 
@@ -16,10 +12,6 @@ module ContentBuilder
     PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
 
-    # Widgets of the description-builder resolver that are absent from the
-    # project page resolver, stripped (with their subtrees) so craft.js doesn't
-    # crash deserializing an unknown component.
-    # Keep in sync with REMOVED_WIDGETS in defaultLayout.ts.
     UNSUPPORTED_WIDGETS = %w[
       FolderFiles
       FolderTitle
@@ -28,12 +20,8 @@ module ContentBuilder
       Spotlight
     ].freeze
 
-    # Re-key injected nodes so they can't collide with the fixed PROJECT_PAGE_* ids.
     INJECTED_ID_PREFIX = 'd_'
 
-    # The project page layout for a project: description content comes from its
-    # project_description layout when one exists, otherwise from its
-    # description_multiloc.
     def craftjs_json_for(project)
       description_layout = Layout.find_by(
         content_buildable: project,
@@ -47,16 +35,11 @@ module ContentBuilder
       end
     end
 
-    # Injects a project_description layout's content nodes into the description
-    # section, re-keyed and stripped of unsupported widgets.
     def from_description_craftjs(description_craftjs)
       injected_nodes, injected_top_level_ids = inject_description(description_craftjs || {})
       canonical_nodes(injected_top_level_ids).merge(injected_nodes)
     end
 
-    # Wraps a WYSIWYG description in a single content node inside the section:
-    # the lossless RichTextMultiloc bridge when it holds media, a native
-    # TextMultiloc otherwise, nothing when blank.
     def from_description_multiloc(description_multiloc)
       description_service = DescriptionLayoutService.new
       return canonical_nodes([]) if description_service.description_blank?(description_multiloc)
@@ -73,8 +56,6 @@ module ContentBuilder
 
     private
 
-    # Re-keys, re-parents and strips the description's content nodes, ready to be
-    # merged into the description section. Returns [nodes_hash, ordered_top_level_ids].
     def inject_description(description)
       root = description[ROOT_ID]
       return [{}, []] unless root.is_a?(Hash)
@@ -95,14 +76,11 @@ module ContentBuilder
         .reject { |id| unsupported.include?(id) }
         .filter_map { |id| id_map[id] }
 
-      # The description's top-level children become children of the section.
       top_level_ids.each { |id| nodes[id]['parent'] = DESCRIPTION_ID }
 
       [nodes, top_level_ids]
     end
 
-    # All node ids whose widget is unsupported, plus every descendant, so an
-    # unsupported subtree is removed whole.
     def unsupported_ids(description)
       ids = Set.new
       queue = description.filter_map do |id, node|
@@ -132,8 +110,6 @@ module ContentBuilder
       end
     end
 
-    # Deep-dups a node and rewrites every id reference (parent, nodes, linkedNodes)
-    # through the id map, dropping references to stripped nodes.
     def remap_node(node, id_map, unsupported)
       remapped = Marshal.load(Marshal.dump(node))
 
