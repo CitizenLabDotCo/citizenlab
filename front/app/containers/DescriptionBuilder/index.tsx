@@ -24,6 +24,7 @@ import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionB
 import Editor from 'components/DescriptionBuilder/Editor';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
 import useProjectDescription from 'components/DescriptionBuilder/useProjectDescription';
+import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
 import { spliceDescriptionEditorData } from 'components/ProjectPageBuilder/descriptionSection';
 
 import { type TypedLinkProps } from 'utils/cl-router/Link';
@@ -63,8 +64,13 @@ const DescriptionBuilderPage = ({
   // A project's description lives in the project_page layout's description
   // section; the editor edits that subtree and splices it back on save. Folders
   // (and unmigrated projects) still edit their legacy description layout.
-  const { pageLayout, projectPageJson, descriptionEditorData, legacyLayout } =
-    useProjectDescription(contentBuildableId, { enabled: isProject });
+  const {
+    pageLayout,
+    projectPageJson,
+    descriptionEditorData,
+    legacyLayout,
+    refetchPageLayout,
+  } = useProjectDescription(contentBuildableId, { enabled: isProject });
   const { data: folderLayout } = useContentBuilderLayout(
     contentBuildableType,
     contentBuildableId,
@@ -127,11 +133,16 @@ const DescriptionBuilderPage = ({
 
   // Always enable the layout on save: descriptions are edited exclusively in
   // the Content Builder, so saving a description makes it the live one.
-  const handleSave = (nodes: SerializedNodes) => {
+  const handleSave = async (nodes: SerializedNodes) => {
     if (isProject && projectPageJson) {
+      const { data: freshLayout } = await refetchPageLayout();
+      const baseJson = freshLayout
+        ? normalizeProjectPageLayout(freshLayout.data.attributes.craftjs_json)
+        : projectPageJson;
+
       upsertProjectPageLayout({
         projectId: contentBuildableId,
-        craftjs_json: spliceDescriptionEditorData(projectPageJson, nodes),
+        craftjs_json: spliceDescriptionEditorData(baseJson, nodes),
         enabled: true,
       });
     } else {
