@@ -352,6 +352,23 @@ describe TimelineService do
     end
   end
 
+  context 'when the project has standalone phases' do
+    let(:project) { create(:project) }
+
+    before do
+      create(:phase, project:, start_at: 10.days.ago, end_at: 5.days.ago)
+      create(:phase, :standalone, project:, start_at: 1.day.ago, end_at: 1.day.from_now)
+    end
+
+    it 'excludes them from current_phase, timeline_active and overlapping_phases' do
+      expect(service.current_phase(project)).to be_nil
+      expect(service.timeline_active(project)).to eq :past
+
+      new_phase = build(:phase, project:, start_at: 1.day.ago, end_at: 1.day.from_now)
+      expect(service.overlapping_phases(new_phase)).to be_empty
+    end
+  end
+
   def create_active_phase(project, factory: :phase)
     create(factory, project: project, start_at: 2.weeks.ago, end_at: 1.day.from_now)
   end
