@@ -170,6 +170,19 @@ RSpec.describe Tenant do
     end
   end
 
+  describe 'Que jobs' do
+    it 'are deleted on destroy' do
+      tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
+      tenant_job = create(:que_job, tenant_schema_name: tenant.schema_name)
+      other_job = create(:que_job, tenant_schema_name: described_class.current.schema_name)
+
+      expect { tenant.destroy! }.to change(QueJob, :count).by(-1)
+
+      expect(QueJob.exists?(tenant_job.id)).to be false
+      expect(QueJob.exists?(other_job.id)).to be true
+    end
+  end
+
   describe 'Getting the current tenant' do
     it 'succeeds with the correct tenant' do
       tenant = described_class.find_by(host: 'example.org')

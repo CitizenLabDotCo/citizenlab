@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :que_job do
     transient do
       enqueued_at { Time.zone.now }
+      tenant_schema_name { nil }
     end
 
     priority { 100 }
@@ -27,7 +28,7 @@ FactoryBot.define do
         queue_name: 'default',
         enqueued_at: enqueued_at.iso8601,
         provider_job_id: nil,
-        tenant_schema_name: nil,
+        tenant_schema_name: tenant_schema_name,
         exception_executions: {}
       }]
     end
