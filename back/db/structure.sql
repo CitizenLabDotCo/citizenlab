@@ -4040,7 +4040,7 @@ CREATE VIEW public.reporting_inputs AS
 CREATE VIEW public.reporting_pageviews AS
  SELECT id,
     session_id,
-    created_at AS viewed_at,
+    created_at,
     path,
     project_id,
         CASE
@@ -4078,9 +4078,11 @@ CREATE VIEW public.reporting_phases AS
           WHERE (t.value <> ''::text)
           ORDER BY t.key
          LIMIT 1)) AS title,
+    title_multiloc,
     start_at,
     end_at,
-    participation_method
+    participation_method,
+    created_at
    FROM public.phases ph;
 
 
@@ -4097,12 +4099,16 @@ CREATE VIEW public.reporting_projects AS
           WHERE (t.value <> ''::text)
           ORDER BY t.key
          LIMIT 1)) AS title,
+    p.title_multiloc,
     ap.publication_status,
     phase_bounds.start_at,
     phase_bounds.end_at,
     folder_ap.publication_id AS folder_id,
     p.hidden,
-    p.listed
+    p.listed,
+    p.visible_to,
+    ap.first_published_at,
+    p.created_at
    FROM (((public.projects p
      LEFT JOIN public.admin_publications ap ON (((ap.publication_id = p.id) AND ((ap.publication_type)::text = 'Project'::text))))
      LEFT JOIN public.admin_publications folder_ap ON ((folder_ap.id = ap.parent_id)))
@@ -9342,6 +9348,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260707190000'),
 ('20260707171140'),
 ('20260707171133'),
 ('20260707170055'),

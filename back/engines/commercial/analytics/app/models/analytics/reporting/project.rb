@@ -6,12 +6,16 @@
 #
 #  id                 :uuid             primary key
 #  title              :text
+#  title_multiloc     :jsonb
 #  publication_status :string
 #  start_at           :datetime
 #  end_at             :datetime
 #  folder_id          :uuid
 #  hidden             :boolean
 #  listed             :boolean
+#  visible_to         :string
+#  first_published_at :datetime
+#  created_at         :datetime
 #
 module Analytics
   module Reporting
@@ -29,8 +33,13 @@ module Analytics
 
       def self.field_descriptions
         {
-          'id' => 'Project primary key. Joins to reporting_phases.project_id and reporting_pageviews.project_id.',
+          'id' => 'Primary key. Joins to reporting_phases.project_id and reporting_pageviews.project_id.',
           'title' => 'Project title, resolved to the platform primary locale.',
+          'title_multiloc' => <<~DOC.squish,
+            Project title in all its languages, as a JSON object keyed by locale,
+            for example {"en": "Budget 2026"}. Read one locale with the ->>
+            operator; prefer the plain title column unless a specific locale is needed.
+          DOC
           'publication_status' => <<~DOC.squish,
             Lifecycle state: 'draft' (not yet visible to residents), 'published'
             (live), or 'archived' (visible but closed). Count only 'published'
@@ -44,12 +53,17 @@ module Analytics
           DOC
           'folder_id' => 'The folder this project is grouped under, or NULL when not in a folder.',
           'hidden' => <<~DOC.squish,
-            TRUE for internal system projects that residents never see as projects
-            (for example the hidden project that holds the community monitor
-            survey). Exclude hidden projects when counting projects, but their
-            participation data is still meaningful.
+            TRUE for internal system projects that residents never see as projects, currently
+            used for the project that holds the community monitor survey. Exclude hidden projects
+            when counting projects, but their participation data is still meaningful.
           DOC
-          'listed' => 'FALSE when the project is unlisted: live and reachable via direct link, but not shown in public project listings.'
+          'listed' => 'An unlisted project is never shown in resident-facing project listings, only accessible via direct link.',
+          'visible_to' => <<~DOC.squish,
+            Who can see the project: 'public' (everyone), 'groups' (only members
+            of selected user groups), or 'admins' (only admins and moderators).
+          DOC
+          'first_published_at' => 'When the project first went live. NULL for projects that were never published.',
+          'created_at' => 'When the project was created (as a draft), which can be well before first_published_at.'
         }
       end
     end

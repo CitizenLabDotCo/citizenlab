@@ -6,7 +6,7 @@
 #
 #  id         :uuid             primary key
 #  session_id :uuid
-#  viewed_at  :datetime
+#  created_at :datetime
 #  path       :string
 #  project_id :uuid
 #  locale     :text
@@ -20,8 +20,7 @@ module Analytics
       def self.table_description
         <<~DOC.squish
           One row per pageview: a single page displayed to a visitor. Join to
-          reporting_sessions via session_id for visitor identity, device and
-          referrer. All timestamps are in UTC.
+          reporting_sessions via session_id for visitor identity, device, and referrer.
         DOC
       end
 
@@ -29,7 +28,7 @@ module Analytics
         {
           'id' => 'Pageview primary key.',
           'session_id' => 'The browser session this pageview belongs to. Joins to reporting_sessions.id.',
-          'viewed_at' => 'When the page was displayed.',
+          'created_at' => 'When the page was displayed. UTC.',
           'path' => "URL path of the page, starting with the locale segment, for example '/en/projects/my-project'.",
           'project_id' => <<~DOC.squish,
             The project the page belongs to, or NULL for pages outside any

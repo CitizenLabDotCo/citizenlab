@@ -2,7 +2,7 @@
 SELECT
     pv.id,
     pv.session_id,
-    pv.created_at AS viewed_at,
+    pv.created_at,
     pv.path,
     pv.project_id,
     -- second path segment, but only when it is one of the tenant's configured

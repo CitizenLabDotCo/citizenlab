@@ -6,7 +6,9 @@ SELECT
         NULLIF(ph.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
         (SELECT t.value FROM jsonb_each_text(ph.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
     ) AS title,
+    ph.title_multiloc,
     ph.start_at,
     ph.end_at,
-    ph.participation_method
+    ph.participation_method,
+    ph.created_at
 FROM phases ph

@@ -9,7 +9,7 @@ RSpec.describe Analytics::Reporting::Pageview do
     row = described_class.find(pageview.id)
 
     expect(row.session_id).to eq pageview.session_id
-    expect(row.viewed_at).to eq pageview.created_at
+    expect(row.created_at).to eq pageview.created_at
     expect(row.path).to eq '/en/projects/park-renewal'
     expect(row.project_id).to eq project.id
   end

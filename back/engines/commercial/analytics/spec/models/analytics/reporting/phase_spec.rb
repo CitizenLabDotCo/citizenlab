@@ -19,6 +19,8 @@ RSpec.describe Analytics::Reporting::Phase do
     expect(row.participation_method).to eq 'ideation'
     expect(row.start_at).to eq phase.start_at
     expect(row.end_at).to eq phase.end_at
+    expect(row.title_multiloc).to eq phase.title_multiloc
+    expect(row.created_at).to eq phase.reload.created_at
   end
 
   describe 'title' do
@@ -37,5 +39,10 @@ RSpec.describe Analytics::Reporting::Phase do
     phase.update!(end_at: nil)
 
     expect(row.end_at).to be_nil
+  end
+
+  it 'documents every possible participation method' do
+    description = described_class.field_descriptions['participation_method']
+    expect(description).to include(*Phase::PARTICIPATION_METHODS)
   end
 end

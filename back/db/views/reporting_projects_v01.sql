@@ -10,12 +10,16 @@ SELECT
         NULLIF(p.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
         (SELECT t.value FROM jsonb_each_text(p.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
     ) AS title,
+    p.title_multiloc,
     ap.publication_status,
     phase_bounds.start_at,
     phase_bounds.end_at,
     folder_ap.publication_id AS folder_id,
     p.hidden,
-    p.listed
+    p.listed,
+    p.visible_to,
+    ap.first_published_at,
+    p.created_at
 FROM projects p
 LEFT JOIN admin_publications ap
     ON ap.publication_id = p.id AND ap.publication_type = 'Project'

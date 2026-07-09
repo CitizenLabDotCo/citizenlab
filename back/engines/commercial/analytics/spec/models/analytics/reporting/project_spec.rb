@@ -12,6 +12,10 @@ RSpec.describe Analytics::Reporting::Project do
       expect(row.title).to eq 'Park renewal'
     end
 
+    it 'also exposes the raw multiloc' do
+      expect(row.title_multiloc).to eq('en' => 'Park renewal', 'nl-BE' => 'Parkvernieuwing')
+    end
+
     it 'falls back to another locale when the primary locale is missing' do
       project.update!(title_multiloc: { 'nl-BE' => 'Parkvernieuwing' })
 
@@ -66,5 +70,12 @@ RSpec.describe Analytics::Reporting::Project do
   it 'exposes the visibility flags' do
     expect(row.hidden).to be false
     expect(row.listed).to be true
+    expect(row.visible_to).to eq 'public'
+  end
+
+  it 'exposes the creation and first publication timestamps' do
+    expect(row.created_at).to eq project.reload.created_at
+    expect(row.first_published_at).to eq project.admin_publication.first_published_at
+    expect(row.first_published_at).to be_present
   end
 end
