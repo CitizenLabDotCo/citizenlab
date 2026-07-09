@@ -1846,7 +1846,6 @@
   "app.containers.IdeasShow.importedTooltipStory": "Denna berättelse samlades in offline och laddades upp automatiskt till plattformen.",
   "app.containers.IdeasShow.importedTooltipSuggestion": "Detta förslag samlades in offline och laddades upp automatiskt till plattformen.",
   "app.containers.IdeasShow.importedTooltipTopic": "Detta ämne samlades in offline och laddades upp automatiskt till plattformen.",
-  "app.containers.IdeasShow.importedTooltipComment": "Denna kommentar samlades in offline och laddades upp automatiskt till plattformen.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Stöd detta initiativ '{ideaTitle}' på {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Stöd detta initiativ: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Tack för att du skickade in ditt initiativ!",

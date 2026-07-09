@@ -1846,7 +1846,6 @@
   "app.containers.IdeasShow.importedTooltipStory": "Questa esperienza è stata raccolta offline e caricata automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.importedTooltipSuggestion": "Questo suggerimento è stato raccolto offline e caricato automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.importedTooltipTopic": "Questo argomento è stato raccolto offline e caricato automaticamente sulla piattaforma.",
-  "app.containers.IdeasShow.importedTooltipContribution": "Questo contributo è stato raccolto offline e caricato automaticamente sulla piattaforma.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Sostieni questa iniziativa '{ideaTitle}' su {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Sostieni questa iniziativa: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Grazie per aver inviato la tua iniziativa!",

@@ -1846,7 +1846,6 @@
   "app.containers.IdeasShow.importedTooltipStory": "Denne historien ble samlet inn offline og automatisk lastet opp til plattformen.",
   "app.containers.IdeasShow.importedTooltipSuggestion": "Dette forslaget ble samlet inn offline og automatisk lastet opp til plattformen.",
   "app.containers.IdeasShow.importedTooltipTopic": "Dette temaet ble samlet inn offline og automatisk lastet opp til plattformen.",
-  "app.containers.IdeasShow.importedTooltipComment": "Denne kommentaren ble samlet inn offline og automatisk lastet opp til plattformen.",
   "app.containers.IdeasShow.initiativeEmailSharingBody": "Støtt dette initiativet '{ideaTitle}' på {ideaUrl}!",
   "app.containers.IdeasShow.initiativeEmailSharingSubject": "Støtt dette initiativet: {ideaTitle}",
   "app.containers.IdeasShow.initiativeSharingModalTitle": "Takk for at du sendte inn initiativet ditt!",
