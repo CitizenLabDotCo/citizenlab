@@ -26,9 +26,9 @@ module Analytics
 
       def self.field_descriptions
         {
-          'id' => 'Pageview primary key.',
-          'session_id' => 'The browser session this pageview belongs to. Joins to reporting_sessions.id.',
-          'created_at' => 'When the page was displayed. UTC.',
+          'id' => 'Primary key.',
+          'session_id' => 'The browser session this pageview belongs to.',
+          'created_at' => 'When the page was displayed (UTC).',
           'path' => "URL path of the page, starting with the locale segment, for example '/en/projects/my-project'.",
           'project_id' => <<~DOC.squish,
             The project the page belongs to, or NULL for pages outside any
@@ -41,6 +41,10 @@ module Analytics
             configured locale.
           DOC
         }
+      end
+
+      def self.foreign_keys
+        { 'session_id' => 'reporting_sessions.id', 'project_id' => 'reporting_projects.id' }
       end
     end
   end

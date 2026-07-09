@@ -29,15 +29,15 @@ module Analytics
       def self.field_descriptions
         {
           'id' => 'Primary key.',
-          'project_id' => 'The project this phase belongs to. Joins to reporting_projects.id.',
+          'project_id' => 'The project this phase belongs to.',
           'title' => 'Phase title, resolved to the platform primary locale.',
           'title_multiloc' => <<~DOC.squish,
             Phase title in all its languages, as a JSON object keyed by locale,
             for example {"en": "Vote on proposals"}. Read one locale with the ->>
             operator; prefer the plain title column unless a specific locale is needed.
           DOC
-          'start_at' => 'When the phase starts.',
-          'end_at' => 'When the phase ends. NULL means the phase is open-ended.',
+          'start_at' => 'When the phase starts (UTC).',
+          'end_at' => 'When the phase ends (UTC). NULL means the phase is open-ended.',
           'participation_method' => <<~DOC.squish,
             How residents participate in this phase. One of: 'ideation' (posting
             and discussing ideas), 'proposals' (resident-initiated proposals),
@@ -49,8 +49,12 @@ module Analytics
             statements), 'document_annotation' (annotating a document), or
             'information' (no participation, informational content only).
           DOC
-          'created_at' => 'When the phase was created by an admin, not when it starts (see start_at).'
+          'created_at' => 'When the phase was created by an admin (UTC), not when it starts (see start_at).'
         }
+      end
+
+      def self.foreign_keys
+        { 'project_id' => 'reporting_projects.id' }
       end
     end
   end

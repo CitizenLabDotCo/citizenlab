@@ -26,14 +26,13 @@ module Analytics
       def self.table_description
         <<~DOC.squish
           One row per project, the container in which all participation happens.
-          A project consists of one or more phases (see reporting_phases). All
-          timestamps are in UTC.
+          A project consists of one or more phases (see reporting_phases).
         DOC
       end
 
       def self.field_descriptions
         {
-          'id' => 'Primary key. Joins to reporting_phases.project_id and reporting_pageviews.project_id.',
+          'id' => 'Primary key.',
           'title' => 'Project title, resolved to the platform primary locale.',
           'title_multiloc' => <<~DOC.squish,
             Project title in all its languages, as a JSON object keyed by locale,
@@ -45,9 +44,9 @@ module Analytics
             (live), or 'archived' (visible but closed). Count only 'published'
             and 'archived' projects unless explicitly asked about drafts.
           DOC
-          'start_at' => 'Start of the earliest phase. NULL when the project has no phases yet.',
+          'start_at' => 'Start of the earliest phase (UTC). NULL when the project has no phases yet.',
           'end_at' => <<~DOC.squish,
-            End of the latest phase. NULL when the project has no phases yet or
+            End of the latest phase (UTC). NULL when the project has no phases yet or
             when any phase is open-ended, meaning the project has no planned end.
             A project is finished when end_at is in the past.
           DOC
@@ -62,9 +61,13 @@ module Analytics
             Who can see the project: 'public' (everyone), 'groups' (only members
             of selected user groups), or 'admins' (only admins and moderators).
           DOC
-          'first_published_at' => 'When the project first went live. NULL for projects that were never published.',
-          'created_at' => 'When the project was created (as a draft), which can be well before first_published_at.'
+          'first_published_at' => 'When the project first went live (UTC). NULL for projects that were never published.',
+          'created_at' => 'When the project was created as a draft (UTC), which can be well before first_published_at.'
         }
+      end
+
+      def self.foreign_keys
+        {}
       end
     end
   end

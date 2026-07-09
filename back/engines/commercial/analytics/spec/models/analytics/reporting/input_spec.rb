@@ -8,7 +8,7 @@ RSpec.describe Analytics::Reporting::Input do
     row = described_class.find(idea.id)
 
     expect(row.title).to eq 'Plant more trees'
-    expect(row.author_id).to eq idea.author_id
+    expect(row.user_id).to eq idea.author_id
     expect(row.project_id).to eq idea.project_id
     expect(row.participation_method).to eq 'ideation'
     expect(row.likes_count).to eq idea.likes_count

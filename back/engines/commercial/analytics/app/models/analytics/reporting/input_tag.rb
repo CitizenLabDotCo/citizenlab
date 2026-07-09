@@ -27,12 +27,16 @@ module Analytics
 
       def self.field_descriptions
         {
-          'id' => 'Primary key of the input-tag association.',
-          'input_id' => 'The tagged input. Joins to reporting_inputs.id.',
+          'id' => 'Primary key.',
+          'input_id' => 'The tagged input.',
           'tag_id' => 'The tag. Multiple rows share a tag_id; group on it to count per tag.',
           'tag_label' => 'Tag name, resolved to the platform primary locale.',
           'parent_tag_id' => 'The parent tag when this tag is a child in a two-level hierarchy, NULL for top-level tags.'
         }
+      end
+
+      def self.foreign_keys
+        { 'input_id' => 'reporting_inputs.id' }
       end
     end
   end

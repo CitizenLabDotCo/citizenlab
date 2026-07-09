@@ -27,7 +27,7 @@ module Analytics
 
       def self.field_descriptions
         {
-          'input_id' => 'The input. Joins to reporting_inputs.id.',
+          'input_id' => 'The input this status belongs to.',
           'status_id' => 'The status. Group on it to count inputs per status.',
           'status_label' => 'Status name as configured by administrators, resolved to the platform primary locale.',
           'status_code' => <<~DOC.squish
@@ -38,6 +38,10 @@ module Analytics
             filtering.
           DOC
         }
+      end
+
+      def self.foreign_keys
+        { 'input_id' => 'reporting_inputs.id' }
       end
     end
   end

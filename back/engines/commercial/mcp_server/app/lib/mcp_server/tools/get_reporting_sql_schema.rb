@@ -35,7 +35,8 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
       data (contributions and participants, inputs with their answers, tags, statuses,
       votes and reactions, users with their demographics, visitor sessions and
       pageviews, projects and phases). Call this before writing SQL; the returned
-      table and column comments carry the semantics queries should follow.
+      table and column comments carry the semantics queries should follow, and the
+      relationships map shows how the tables join.
     DOC
   end
 
@@ -60,7 +61,7 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
       models = REPORTING_TABLES.select { |model| requested.nil? || requested.include?(model.table_name) }
       connection = ActiveRecord::Base.connection
 
-      schema = models.to_h do |model|
+      tables = models.to_h do |model|
         field_docs = model.field_descriptions
         columns = connection.columns(model.table_name).map do |column|
           {
@@ -74,9 +75,21 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
         [model.table_name, { description: model.table_description, columns: columns }]
       end
 
-      ok("SQL schema for #{schema.keys.join(', ')}", structured: schema)
+      ok("SQL schema for #{tables.keys.join(', ')}", structured: { tables: tables, relationships: relationships })
     rescue ActiveRecord::StatementInvalid => e
       error("Error fetching schema: #{e.message}")
+    end
+
+    private
+
+    # A compact ERD: per table, its foreign keys as column -> referenced
+    # table.column (declared by each model's .foreign_keys, guarded against
+    # drift by reporting_documentation_spec). Always returned in full, even
+    # for a filtered call: cross-table context is exactly what a subset lacks.
+    def relationships
+      REPORTING_TABLES.filter_map do |model|
+        [model.table_name, model.foreign_keys] if model.foreign_keys.any?
+      end.to_h
     end
   end
 end

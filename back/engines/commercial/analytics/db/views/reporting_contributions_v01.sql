@@ -10,8 +10,11 @@
 --   without a creation phase, and for comments and reactions, it is inferred
 --   as the project phase whose [start_at, end_at) window contains
 --   contributed_at (phases of a project never overlap).
--- * participation_method comes from the resolved phase; comments and
---   reactions fall back to the creation phase method of their input.
+-- * participation_method: for inputs it is how the input was collected (the
+--   creation phase method, defaulting to 'ideation' for phase-less inputs,
+--   mirroring reporting_inputs); for comments and reactions it is the method
+--   of the phase active at action time, falling back to the input's
+--   collection method (again defaulting to 'ideation').
 
 -- Inputs: ideas, proposals, common-ground statements and survey responses
 SELECT
@@ -21,7 +24,7 @@ SELECT
     NULL::uuid AS parent_id,
     i.contributed_at,
     i.created_at,
-    COALESCE(creation_ph.participation_method, inferred_ph.participation_method) AS participation_method,
+    COALESCE(creation_ph.participation_method, 'ideation') AS participation_method,
     i.project_id,
     COALESCE(i.creation_phase_id, inferred_ph.id) AS phase_id,
     i.author_id AS user_id,
@@ -48,7 +51,7 @@ SELECT
     c.idea_id AS parent_id,
     c.created_at AS contributed_at,
     c.created_at,
-    COALESCE(inferred_ph.participation_method, input_creation_ph.participation_method) AS participation_method,
+    COALESCE(inferred_ph.participation_method, input_creation_ph.participation_method, 'ideation') AS participation_method,
     i.project_id,
     inferred_ph.id AS phase_id,
     c.author_id AS user_id,
@@ -72,7 +75,7 @@ SELECT
     r.parent_id,
     r.created_at AS contributed_at,
     r.created_at,
-    COALESCE(inferred_ph.participation_method, input_creation_ph.participation_method) AS participation_method,
+    COALESCE(inferred_ph.participation_method, input_creation_ph.participation_method, 'ideation') AS participation_method,
     r.project_id,
     inferred_ph.id AS phase_id,
     r.user_id,

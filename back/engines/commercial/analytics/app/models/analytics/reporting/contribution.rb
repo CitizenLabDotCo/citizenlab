@@ -30,7 +30,7 @@ module Analytics
           across all participation methods. Count participants as
           COUNT(DISTINCT participant_id), optionally filtered by type, project,
           phase or date. Not covered: participation in embedded third-party
-          surveys and document annotation. All timestamps are in UTC.
+          surveys and document annotation.
         DOC
       end
 
@@ -49,22 +49,24 @@ module Analytics
             on inputs; 'comment' for reactions on comments; NULL for standalone
             actions (inputs, volunteering, poll responses, attendances).
           DOC
-          'parent_id' => 'Id of the parent input or comment. Join to reporting_contributions.id of the parent row.',
-          'contributed_at' => 'When the resident performed the action (for inputs: submission, falling back to publication).',
-          'created_at' => 'When the underlying record was first created; can predate contributed_at for drafts.',
+          'parent_id' => 'Id of the parent input or comment.',
+          'contributed_at' => 'When the resident performed the action (UTC). For inputs: submission, falling back to publication.',
+          'created_at' => 'When the underlying record was first created (UTC); can predate contributed_at for drafts.',
           'participation_method' => <<~DOC.squish,
-            Participation method of the phase this action belongs to (see
-            reporting_phases.participation_method for values). Best-effort for
-            comments and reactions; NULL when no phase could be resolved.
+            For inputs: the method the input was collected through, matching
+            reporting_inputs.participation_method. For other types: the method
+            of the phase the action belongs to (see
+            reporting_phases.participation_method for values). NULL for event
+            attendances.
           DOC
-          'project_id' => 'The project the action happened in. Joins to reporting_projects.id. NULL only for platform-wide edge cases.',
+          'project_id' => 'The project the action happened in. NULL only for platform-wide edge cases, or orphaned content.',
           'phase_id' => <<~DOC.squish,
             The phase the action belongs to. Structural where the source links
             to a phase; inferred from the action date for ideas without a
             creation phase, comments and reactions. NULL for event attendances
             and when no phase matches the date.
           DOC
-          'user_id' => 'The registered author, or NULL for anonymous or deleted authors. Joins to reporting_users.id.',
+          'user_id' => 'The registered author, or NULL for anonymous or deleted authors.',
           'participant_id' => <<~DOC.squish
             Stable identity of the author across contributions, to the best of
             our ability: the user id, or a stable per-user-per-project hash for
@@ -72,6 +74,16 @@ module Analytics
             rows each count as one participant, which can overcount people).
             Use COUNT(DISTINCT participant_id) to count participants.
           DOC
+        }
+      end
+
+      def self.foreign_keys
+        {
+          'project_id' => 'reporting_projects.id',
+          'phase_id' => 'reporting_phases.id',
+          'user_id' => 'reporting_users.id',
+          'participant_id' => 'reporting_participants.id',
+          'parent_id' => "reporting_inputs.id when parent_type = 'input', reporting_contributions.id when parent_type = 'comment'"
         }
       end
     end

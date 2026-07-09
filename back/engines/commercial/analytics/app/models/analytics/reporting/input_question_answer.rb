@@ -30,7 +30,7 @@ module Analytics
 
       def self.field_descriptions
         {
-          'input_id' => 'The input the answer belongs to. Joins to reporting_inputs.id.',
+          'input_id' => 'The input the answer belongs to.',
           'question_id' => 'Id of the form question (custom field). Group on it to aggregate per question.',
           'question_key' => 'Stable machine key of the question within its form.',
           'question_type' => <<~DOC.squish,
@@ -50,6 +50,10 @@ module Analytics
             Aggregate with AVG for scores. NULL for textual question types.
           DOC
         }
+      end
+
+      def self.foreign_keys
+        { 'input_id' => 'reporting_inputs.id' }
       end
     end
   end

@@ -21,20 +21,15 @@ module Analytics
           registrations and currently blocked accounts are excluded. The view
           carries no names or email addresses by design; demographics live in
           reporting_user_question_answers. Note that a user is not necessarily
-          a participant (see reporting_participants). All timestamps are in
-          UTC.
+          a participant (see reporting_participants).
         DOC
       end
 
       def self.field_descriptions
         {
-          'id' => <<~DOC.squish,
-            User primary key. Joins to reporting_user_question_answers.user_id,
-            reporting_contributions.user_id, reporting_participants.user_id and
-            reporting_sessions.user_id.
-          DOC
-          'registered_at' => 'When the user completed registration. Count registrations by this date.',
-          'created_at' => 'When the account was first created, possibly before completing registration.',
+          'id' => 'Primary key.',
+          'registered_at' => 'When the user completed registration (UTC). Count registrations by this date.',
+          'created_at' => 'When the account was first created (UTC), possibly before completing registration.',
           'highest_role' => <<~DOC.squish
             Highest platform role: 'admin', 'space_moderator',
             'project_folder_moderator', 'project_moderator' or 'user'
@@ -42,6 +37,10 @@ module Analytics
             from counts.
           DOC
         }
+      end
+
+      def self.foreign_keys
+        {}
       end
     end
   end

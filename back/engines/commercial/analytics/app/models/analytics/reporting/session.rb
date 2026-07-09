@@ -25,14 +25,14 @@ module Analytics
           out before sessions are recorded, and sessions are recorded regardless
           of cookie consent. Count visitors as COUNT(DISTINCT visitor_id): this
           slightly overcounts unique people because anonymous_id changes at
-          calendar-month boundaries. All timestamps are in UTC.
+          calendar-month boundaries.
         DOC
       end
 
       def self.field_descriptions
         {
-          'id' => 'Session primary key. Joins to reporting_pageviews.session_id.',
-          'started_at' => 'When the session started.',
+          'id' => 'Primary key.',
+          'started_at' => 'When the session started (UTC).',
           'user_id' => 'The signed-in user, or NULL for signed-out visitors.',
           'anonymous_id' => <<~DOC.squish,
             Privacy-preserving fingerprint of the visitor. Stable only within a
@@ -54,6 +54,10 @@ module Analytics
           'device' => "Device class: 'mobile', 'tablet', or 'desktop_or_other'. NULL when unknown.",
           'referrer' => 'Full URL the visitor came from, or NULL for direct visits.'
         }
+      end
+
+      def self.foreign_keys
+        { 'user_id' => 'reporting_users.id' }
       end
     end
   end

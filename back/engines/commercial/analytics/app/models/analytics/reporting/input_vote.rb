@@ -21,16 +21,16 @@ module Analytics
           One row per vote a user cast on an input during a voting or
           participatory-budgeting phase, from submitted ballots only. Offline
           votes are not included here; they only exist as a total in
-          reporting_inputs.offline_votes_count. All timestamps are in UTC.
+          reporting_inputs.offline_votes_count.
         DOC
       end
 
       def self.field_descriptions
         {
-          'id' => 'Vote primary key.',
-          'input_id' => 'The input the vote is for. Joins to reporting_inputs.id.',
-          'user_id' => 'The voter, or NULL for deleted users. Joins to reporting_users.id.',
-          'voted_at' => 'When the voter submitted their ballot.',
+          'id' => 'Primary key.',
+          'input_id' => 'The input the vote is for.',
+          'user_id' => 'The voter, or NULL for deleted users.',
+          'voted_at' => 'When the voter submitted their ballot (UTC).',
           'weight' => <<~DOC.squish
             Magnitude of the vote: 1 for single voting, the number of votes put
             on this input for multiple voting, and the allocated amount for
@@ -38,6 +38,10 @@ module Analytics
             total.
           DOC
         }
+      end
+
+      def self.foreign_keys
+        { 'input_id' => 'reporting_inputs.id', 'user_id' => 'reporting_users.id' }
       end
     end
   end

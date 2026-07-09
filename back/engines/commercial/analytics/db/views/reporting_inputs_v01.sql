@@ -10,7 +10,7 @@ SELECT
     i.created_at,
     i.submitted_at,
     i.published_at,
-    i.author_id,
+    i.author_id AS user_id,
     i.project_id,
     i.creation_phase_id,
     -- inputs without a creation phase were posted through a transitive method,

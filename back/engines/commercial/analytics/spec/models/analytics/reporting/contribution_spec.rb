@@ -41,6 +41,32 @@ RSpec.describe Analytics::Reporting::Contribution do
       expect(row.user_id).to be_nil
       expect(row.participant_id).to eq idea.reload.author_hash
     end
+
+    it 'keeps the collection method when the idea was published while another phase was active' do
+      project = create(:project)
+      create(:phase, project: project, participation_method: 'ideation',
+        start_at: '2026-01-01', end_at: '2026-02-01')
+      voting = create(:phase, project: project, participation_method: 'voting',
+        voting_method: 'single_voting', start_at: '2026-02-01', end_at: nil)
+      idea = create(:idea, project: project,
+        created_at: '2026-02-10', submitted_at: '2026-02-10', published_at: '2026-02-10')
+      row = described_class.find(idea.id)
+
+      expect(row.participation_method).to eq 'ideation'
+      expect(row.phase_id).to eq voting.id
+    end
+
+    it 'defaults to ideation when the idea falls outside every phase window' do
+      project = create(:project)
+      create(:phase, project: project, participation_method: 'ideation',
+        start_at: '2026-01-01', end_at: '2026-02-01')
+      idea = create(:idea, project: project,
+        created_at: '2026-03-01', submitted_at: '2026-03-01', published_at: '2026-03-01')
+      row = described_class.find(idea.id)
+
+      expect(row.participation_method).to eq 'ideation'
+      expect(row.phase_id).to be_nil
+    end
   end
 
   describe 'comments' do
@@ -74,6 +100,19 @@ RSpec.describe Analytics::Reporting::Contribution do
 
       expect(described_class.find(idea.id).phase_id).to eq ideation.id
       expect(described_class.find(comment.id).phase_id).to eq voting.id
+    end
+
+    it 'falls back to the input collection method when no phase window matches' do
+      project = create(:project)
+      create(:phase, project: project, participation_method: 'ideation',
+        start_at: '2026-01-01', end_at: '2026-02-01')
+      idea = create(:idea, project: project,
+        created_at: '2026-01-10', submitted_at: '2026-01-10', published_at: '2026-01-10')
+      comment = create(:comment, idea: idea, created_at: '2026-03-01')
+      row = described_class.find(comment.id)
+
+      expect(row.phase_id).to be_nil
+      expect(row.participation_method).to eq 'ideation'
     end
   end
 

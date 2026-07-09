@@ -9,7 +9,7 @@
 #  created_at           :datetime
 #  submitted_at         :datetime
 #  published_at         :datetime
-#  author_id            :uuid
+#  user_id              :uuid
 #  project_id           :uuid
 #  creation_phase_id    :uuid
 #  participation_method :string
@@ -32,27 +32,23 @@ module Analytics
           One row per input: the highest-level contribution, created by filling
           out and submitting a form. Depending on the participation method an
           input is an idea, a proposal, a common-ground statement or a survey
-          response. Drafts are excluded. All timestamps are in UTC.
+          response. Drafts are excluded.
         DOC
       end
 
       def self.field_descriptions
         {
-          'id' => <<~DOC.squish,
-            Input primary key. Joins to reporting_input_tags, _statuses, _votes
-            and _reactions on their input_id, and to
-            reporting_contributions.parent_id.
-          DOC
+          'id' => 'Primary key.',
           'title' => 'Input title, resolved to the platform primary locale. NULL for survey responses, which have no title.',
-          'created_at' => 'When the input was first created, possibly as a draft.',
-          'submitted_at' => 'When the participant submitted the input. NULL for older records.',
+          'created_at' => 'When the input was first created (UTC), possibly as a draft.',
+          'submitted_at' => 'When the participant submitted the input (UTC). NULL for older records.',
           'published_at' => <<~DOC.squish,
-            When the input became publicly visible. Can be later than
+            When the input became publicly visible (UTC). Can be later than
             submitted_at when administrators review inputs before publication,
             and NULL for inputs that are submitted but not (yet) published.
           DOC
-          'author_id' => 'The registered author, or NULL for anonymous or deleted authors. Joins to reporting_users.id.',
-          'project_id' => 'The project the input was posted in. Joins to reporting_projects.id.',
+          'user_id' => 'The registered author, or NULL for anonymous or deleted authors.',
+          'project_id' => 'The project the input was posted in.',
           'creation_phase_id' => <<~DOC.squish,
             The phase the input was created in, for phase-specific methods like
             surveys. NULL for ideation and proposals inputs, which live across
@@ -74,6 +70,14 @@ module Analytics
           'comments_count' => 'Number of published comments on the input.',
           'votes_count' => 'Total online votes the input received in voting/budgeting phases.',
           'offline_votes_count' => 'Manually registered offline votes, entered by administrators. 0 when none.'
+        }
+      end
+
+      def self.foreign_keys
+        {
+          'user_id' => 'reporting_users.id',
+          'project_id' => 'reporting_projects.id',
+          'creation_phase_id' => 'reporting_phases.id'
         }
       end
     end

@@ -29,7 +29,7 @@ module Analytics
 
       def self.field_descriptions
         {
-          'user_id' => 'The user who answered. Joins to reporting_users.id.',
+          'user_id' => 'The user who answered.',
           'question_id' => 'Id of the registration question (custom field).',
           'question_key' => "Stable machine key of the question, for example 'gender', 'birthyear' or 'domicile'.",
           'question_type' => "Answer format: 'select', 'multiselect', 'checkbox' or 'number'.",
@@ -41,6 +41,10 @@ module Analytics
             number questions (cast with ::numeric to aggregate).
           DOC
         }
+      end
+
+      def self.foreign_keys
+        { 'user_id' => 'reporting_users.id' }
       end
     end
   end
