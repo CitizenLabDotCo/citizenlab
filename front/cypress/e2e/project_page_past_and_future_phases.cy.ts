@@ -128,6 +128,11 @@ describe('Timeline project with past and future phases', () => {
     cy.contains(currentPollQuestionTitle).should('not.exist');
     cy.contains('can only be taken when this phase is active');
     cy.get('.e2e-poll-option').first().should('have.class', 'disabled');
+
+    // The CTA bar refers to the current phase and navigates back to it
+    cy.get('#e2e-participation-cta-poll').click();
+    cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
+    cy.contains(currentPollQuestionTitle);
   });
 
   it('does not let you volunteer for a cause of a future phase', () => {
