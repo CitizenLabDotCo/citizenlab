@@ -6,7 +6,7 @@ import { devicePreviewSizes } from './dimensions';
 import DesktopButton from './ViewButtons/DesktopButton';
 import MobileButton from './ViewButtons/MobileButton';
 
-const MAX_SCALE = 1.25;
+const MAX_SCALE = 1;
 const BOTTOM_MARGIN = 12;
 const HORIZONTAL_MARGIN = 48;
 
