@@ -3,7 +3,6 @@ import { CLErrors } from 'typings';
 
 import { IContentBuilderLayout } from 'api/content_builder/types';
 import fileAttachmentsKeys from 'api/file_attachments/keys';
-import projectsKeys from 'api/projects/keys';
 
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
@@ -46,12 +45,6 @@ const useUpsertProjectPageLayout = () => {
             attachable_type: 'ContentBuilder::Layout',
           }),
         });
-
-        if (Object.prototype.hasOwnProperty.call(variables, 'enabled')) {
-          queryClient.invalidateQueries({
-            queryKey: projectsKeys.item({ id: variables.projectId }),
-          });
-        }
       },
     }
   );
