@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box, Title, isRtl } from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -49,6 +50,9 @@ const TimelineSection = () => {
     phaseNumber?: string;
   };
   const padding = useCraftComponentDefaultPadding();
+  const { enabled: inEditor } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
   const currentLocale = useLocale();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -76,12 +80,12 @@ const TimelineSection = () => {
   // Same visibility rule as the legacy page: a single open-ended phase without
   // a description shows no timeline — for anyone. The builder keeps a placeholder.
   if (hideTimelineUI(phases.data, currentLocale)) {
-    return slug ? null : (
+    return inEditor ? (
       <EmptyTimeline
         titleMessage={messages.timelineHiddenTitle}
         noteMessage={messages.timelineHiddenNote}
       />
-    );
+    ) : null;
   }
 
   // Tabs navigate via links; this only drives keyboard-arrow selection.
