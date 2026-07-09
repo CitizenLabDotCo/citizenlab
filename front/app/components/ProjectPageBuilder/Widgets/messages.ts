@@ -53,9 +53,10 @@ export default defineMessages({
     defaultMessage:
       "This shows the participation content for the active phase. Its content is set by the phase's method in the {projectEditorLink} — here you only choose where it sits on the page.",
   },
-  onlyAdminsSeeThis: {
-    id: 'app.components.ProjectPageBuilder.Widgets.onlyAdminsSeeThis',
-    defaultMessage: 'Only admins and moderators of this project can see this',
+  onlyAdminsAndManagersSeeThis: {
+    id: 'app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis',
+    defaultMessage:
+      'Only admins and project managers of this project can see this',
   },
   bannerEmptyTitle: {
     id: 'app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle',
@@ -83,10 +84,10 @@ export default defineMessages({
     defaultMessage:
       "This project has a single phase without an end date or description, so visitors won't see a timeline.",
   },
-  eventsEmptyNote: {
-    id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyNote',
+  eventsEmptyMessage: {
+    id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage',
     defaultMessage:
-      "No events yet — events added in the project editor appear here automatically. Citizens won't see this section until then.",
+      "No events yet — events added in the project editor appear here automatically. Visitors won't see this section until then.",
   },
   untitledProject: {
     id: 'app.components.ProjectPageBuilder.Widgets.untitledProject',

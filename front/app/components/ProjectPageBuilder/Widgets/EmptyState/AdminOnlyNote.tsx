@@ -12,7 +12,9 @@ type Props = {
 };
 
 // The "eye-off" hint that tells admins a placeholder is invisible to residents.
-const AdminOnlyNote = ({ message = messages.onlyAdminsSeeThis }: Props) => (
+const AdminOnlyNote = ({
+  message = messages.onlyAdminsAndManagersSeeThis,
+}: Props) => (
   <Box display="flex" alignItems="center" gap="6px">
     <Icon
       name="eye-off"

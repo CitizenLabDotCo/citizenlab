@@ -41,7 +41,7 @@ const EmptyEvents = () => {
           height="32px"
           fill={colors.textSecondary}
         />
-        <AdminOnlyNote message={messages.eventsEmptyNote} />
+        <AdminOnlyNote message={messages.eventsEmptyMessage} />
       </EmptyStateContainer>
     </Box>
   );
