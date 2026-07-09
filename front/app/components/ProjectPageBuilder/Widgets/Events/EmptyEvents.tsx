@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  Title,
-  colors,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, Title, colors } from '@citizenlab/cl2-component-library';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
@@ -20,15 +14,9 @@ import messages from '../messages';
 
 const EmptyEvents = () => {
   const padding = useCraftComponentDefaultPadding();
-  const isSmallerThanTablet = useBreakpoint('tablet');
 
   return (
-    <Box
-      mx="auto"
-      mt="48px"
-      maxWidth={`${maxPageWidth}px`}
-      px={isSmallerThanTablet ? '20px' : padding}
-    >
+    <Box mx="auto" mt="48px" maxWidth={`${maxPageWidth}px`} px={padding}>
       <Title variant="h2" color="tenantText" mb="20px">
         <FormattedMessage {...messages.eventsWidgetTitle} />
       </Title>
