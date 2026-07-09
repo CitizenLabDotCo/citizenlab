@@ -31,7 +31,9 @@ import messages from './messages';
 
 const MenuTab = () => {
   const { formatMessage } = useIntl();
-  const { data: navbarItems } = useNavbarItems();
+  // The Menu editor edits the stored titles, so it must not receive the
+  // navbar-display-truncated versions (re-saving would persist the truncation).
+  const { data: navbarItems } = useNavbarItems({ truncateTitles: false });
   const { mutate: removeNavbarItem } = useDeleteNavbarItem();
   const { mutate: reorderNavbarItem } = useReorderNavbarItem();
 
