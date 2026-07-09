@@ -56,15 +56,18 @@ describe('Project selection page', () => {
   });
 
   it('shows the folder description', () => {
-    cy.get('.e2e-folder-description').contains(folderDescription);
+    cy.get('[data-testid="descriptionBuilderFolderPreviewContent"]').contains(
+      folderDescription
+    );
   });
 
   it('shows the contained projects', () => {
     cy.get('#e2e-folder-page');
-    cy.wait(4000); // without it sometimes the selector '.e2e-project-card-project-title' is executed
-    // when only one project is loaded. So, it never finds the project 1.
-    cy.get('.e2e-project-card-project-title').eq(0).contains(projectTwoTitle);
-    cy.get('.e2e-project-card-project-title').eq(1).contains(projectOneTitle);
+    cy.wait(4000);
+    cy.get('.e2e-published-projects-and-folders').within(() => {
+      cy.contains(projectOneTitle);
+      cy.contains(projectTwoTitle);
+    });
   });
 
   after(() => {
