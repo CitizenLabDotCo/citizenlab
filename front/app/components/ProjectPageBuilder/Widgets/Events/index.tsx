@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Box, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { UserComponent } from '@craftjs/core';
-import { isNil } from 'lodash-es';
+import { Box, Text } from '@citizenlab/cl2-component-library';
+import { UserComponent, useEditor } from '@craftjs/core';
 
 import useEvents from 'api/events/useEvents';
 
@@ -14,7 +13,6 @@ import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/use
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import sharedMessages from 'utils/messages';
-import { useParams } from 'utils/router';
 
 import EditModeHeightCap from '../EditModeHeightCap';
 import messages from '../messages';
@@ -28,19 +26,23 @@ const EventsWidget: UserComponent = () => {
   const projectId = useWidgetProjectId();
   const { formatMessage } = useIntl();
   const padding = useCraftComponentDefaultPadding();
-  const isSmallerThanTablet = useBreakpoint('tablet');
-  const { slug } = useParams({ strict: false }) as { slug?: string };
-  const { data: events } = useEvents({
-    projectIds: projectId ? [projectId] : [],
-    sort: '-start_at',
-  });
+  const { enabled: inEditor } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
+  const { data: events } = useEvents(
+    {
+      projectIds: projectId ? [projectId] : [],
+      sort: '-start_at',
+    },
+    { enabled: !!projectId }
+  );
 
-  if (!projectId || isNil(events)) {
+  if (!projectId || !events) {
     return null;
   }
 
   if (events.data.length === 0) {
-    return slug ? null : <EmptyEvents />;
+    return inEditor ? <EmptyEvents /> : null;
   }
 
   return (
@@ -51,9 +53,9 @@ const EventsWidget: UserComponent = () => {
         flexDirection="column"
         gap="48px"
         mx="auto"
-        mt="48px"
+        my="48px"
         maxWidth={`${maxPageWidth}px`}
-        px={isSmallerThanTablet ? '20px' : padding}
+        px={padding}
       >
         <EventsViewer
           showProjectFilter={false}
