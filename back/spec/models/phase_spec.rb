@@ -737,4 +737,37 @@ RSpec.describe Phase do
       end
     end
   end
+
+  describe '#update_manual_votes_count!' do
+    let(:phase) { create(:budgeting_phase) }
+
+    before do
+      create(:idea, project: phase.project, phases: [phase], manual_votes_amount: 7)
+      create(:idea, project: phase.project, phases: [phase], manual_votes_amount: 3)
+    end
+
+    it 'sums the manual votes of the ideas in the phase' do
+      phase.update_manual_votes_count!
+      expect(phase.reload.manual_votes_count).to eq 10
+    end
+
+    # Counter maintenance must not depend on the phase being valid on unrelated attributes.
+    # A phase can be persisted in an invalid state by an unvalidated bulk write, as the
+    # 20260223103753 backfill did when it dropped 'map' from `available_views`.
+    context 'when the phase is invalid on an unrelated attribute' do
+      before do
+        phase.update_column(:presentation_mode, 'map')
+        phase.update_column(:available_views, ['card'])
+      end
+
+      it 'is invalid, to confirm the setup' do
+        expect(phase.reload).not_to be_valid
+      end
+
+      it 'still updates the count' do
+        expect { phase.update_manual_votes_count! }.not_to raise_error
+        expect(phase.reload.manual_votes_count).to eq 10
+      end
+    end
+  end
 end
