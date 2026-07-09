@@ -79,6 +79,19 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
     expect(nodes_named(craftjs, 'FileAttachment').first['props']['fileId']).to eq('file-uuid-1')
   end
 
+  it 'excludes a file attached to a resource (an idea proposal attachment) from the layout' do
+    register_participation_phase
+    register_file('decidim-att-1', 'file-uuid-1')
+    # The file is attached to an idea (a proposal attachment), so it belongs to the idea, not the
+    # project description — surfacing it here would re-attach it and break the import.
+    attachment = DecidimImporter::Record.new('files/file_attachment', {})
+    attachment.reference('file', ref_map.fetch('decidim-att-1'))
+    ref_map.register('decidim-att-1-fa', attachment)
+
+    craftjs = extract([row]).first.attributes['craftjs_json']
+    expect(nodes_named(craftjs, 'FileAttachment')).to be_empty
+  end
+
   it 'puts the process subtitle as an H2 above the description in the left column' do
     register_participation_phase
     craftjs = extract([row('subtitle' => '{"fr":"Mon sous-titre"}')]).first.attributes['craftjs_json']

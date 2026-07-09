@@ -695,7 +695,7 @@ module DecidimImporter
       dates_by_component = rows_for(:results).group_by { |row| row['decidim_component'] }
       accountability_component_rows.map do |row|
         { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
-          name: row['name'], method: 'ideation',
+          name: row['name'], weight: row['weight'], method: 'ideation',
           published_at: row['published_at'], previously_published: row['previously_published'],
           end_dates: (dates_by_component[row['uid']] || []).pluck('created_at') }
       end
@@ -705,7 +705,7 @@ module DecidimImporter
       dates_by_component = rows_for(:proposals).group_by { |row| row['decidim_component'] }
       proposal_component_rows.map do |row|
         { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
-          name: row['name'], method: 'ideation',
+          name: row['name'], weight: row['weight'], method: 'ideation',
           published_at: row['published_at'], previously_published: row['previously_published'],
           end_dates: (dates_by_component[row['uid']] || []).pluck('published_at') }
       end
@@ -718,7 +718,7 @@ module DecidimImporter
         # present) render into the phase description as an <h2> heading above the body. It ends at its
         # last answer (`created_at`).
         { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
-          name: row['name'], method: 'native_survey',
+          name: row['name'], weight: row['weight'], method: 'native_survey',
           published_at: row['published_at'], previously_published: row['previously_published'],
           end_dates: (dates_by_component[row['uid']] || []).pluck('created_at'),
           description_heading: SurveyParser.title(row['specific_data']),

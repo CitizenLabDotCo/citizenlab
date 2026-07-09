@@ -103,37 +103,40 @@ RSpec.describe DecidimImporter::PhaseProjector do
     expect(ref_map.fetch('c1').attributes).not_to have_key('description_multiloc')
   end
 
-  it 'keeps the proposals dates and shifts an overlapping survey back to the nearest free slot' do
-    proposals = component('c1', method: 'ideation', published_at: '2023-01-05', end_dates: %w[2023-02-25])
-    survey = component('c2', method: 'native_survey', published_at: '2023-01-10', end_dates: %w[2023-01-12])
-    projector.run(participation_components: [survey, proposals])
+  it 'orders phases by component weight and fits the dates to that order' do
+    # c1 has the higher weight but earlier dates; the lower-weight c2 must come first, and c1 is then
+    # pushed after it (keeping its 9-day length).
+    c1 = component('c1', weight: '2', published_at: '2023-01-01', end_dates: %w[2023-01-10])
+    c2 = component('c2', method: 'native_survey', weight: '1', published_at: '2023-06-01', end_dates: %w[2023-06-05])
+    projector.run(participation_components: [c1, c2])
 
-    # Proposals keep their real window; the survey (which wanted 01-10, inside it) shifts back to end
-    # where the proposals start, preserving its 2-day length.
     expect(phases).to eq([
-      %w[native_survey 2023-01-03 2023-01-05],
-      %w[ideation 2023-01-05 2023-02-25]
+      %w[native_survey 2023-06-01 2023-06-05],
+      %w[ideation 2023-06-05 2023-06-14]
     ])
   end
 
-  it 'shifts an overlapping survey forward when the nearer free slot is after the proposals' do
-    proposals = component('c1', method: 'ideation', published_at: '2023-01-01', end_dates: %w[2023-01-20])
-    survey = component('c2', method: 'native_survey', published_at: '2023-01-18', end_dates: %w[2023-01-22])
-    projector.run(participation_components: [proposals, survey])
+  it 'keeps the real dates when the weight order already matches the chronology' do
+    c1 = component('c1', weight: '1', published_at: '2023-01-01', end_dates: %w[2023-01-20])
+    c2 = component('c2', method: 'native_survey', weight: '2', published_at: '2023-02-01', end_dates: %w[2023-02-10])
+    projector.run(participation_components: [c2, c1])
 
     expect(phases).to eq([
       %w[ideation 2023-01-01 2023-01-20],
-      %w[native_survey 2023-01-20 2023-01-24]
+      %w[native_survey 2023-02-01 2023-02-10]
     ])
   end
 
-  it 'sequences two overlapping surveys so they never overlap each other' do
-    s1 = component('c1', method: 'native_survey', published_at: '2023-03-01', end_dates: %w[2023-03-10])
-    s2 = component('c2', method: 'native_survey', published_at: '2023-03-05', end_dates: %w[2023-03-15])
-    projector.run(participation_components: [s1, s2])
+  it 'pushes an overlapping later phase forward so phases never overlap (ties break by start date)' do
+    c1 = component('c1', weight: '1', published_at: '2023-01-01', end_dates: %w[2023-01-20])
+    c2 = component('c2', method: 'native_survey', weight: '1', published_at: '2023-01-10', end_dates: %w[2023-01-25])
+    projector.run(participation_components: [c2, c1])
 
-    layout = phases
-    expect(layout.map(&:first)).to eq(%w[native_survey native_survey])
-    expect(layout[1][1]).to be >= layout[0][2] # second starts on/after the first's end
+    # Same weight → ordered by start (c1 then c2); c2 overlapped, so it's pushed to start at c1's end,
+    # keeping its 15-day length.
+    expect(phases).to eq([
+      %w[ideation 2023-01-01 2023-01-20],
+      %w[native_survey 2023-01-20 2023-02-04]
+    ])
   end
 end

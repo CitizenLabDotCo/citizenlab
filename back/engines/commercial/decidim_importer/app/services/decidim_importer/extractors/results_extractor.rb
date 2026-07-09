@@ -6,10 +6,11 @@ module DecidimImporter
     # component's ideation phase (the component becomes that phase via {PhaseProjector}).
     #
     # Each result becomes an idea (author-less — results have no author) tagged with its category, in
-    # the phase registered under the component uid. Its `progress` (a percentage) is prepended to the
-    # description as a bold line, together with the matching status's title: the progress % is mapped to
-    # the component's statuses (`02---statuses.csv`) — because a result's stored `status` and its actual
-    # `progress` can disagree — preferring the result's own status when it sits at that %.
+    # the phase registered under the component uid. A bulleted `Progress` (the percentage) + `Status`
+    # (`<name> - <description>`) block is prepended to the description. The status comes from the
+    # component's statuses (`02---statuses.csv`): the progress % is mapped to them — because a result's
+    # stored `status` and its actual `progress` can disagree — preferring the result's own status when
+    # it sits at that %. The `Progress`/`Status` labels are translatable back-end strings.
     class ResultsExtractor < BaseExtractor
       include IdeaAssociations
 
@@ -77,32 +78,60 @@ module DecidimImporter
         }
       end
 
-      # The description with the progress line prepended: `<progress>%` plus the title of the status the
-      # progress maps to. Unchanged when the result has no progress.
+      # The description with a bulleted `Progress` + `Status` block prepended, per locale. Unchanged when
+      # the result has no progress. The trailing space after the `%` keeps the two lines from running
+      # together when the body is flattened to plain text.
       def progress_description(row)
         description = multiloc(row[COLUMNS[:description]])
         pct = percent(row[COLUMNS[:progress]])
         return description if pct.nil?
 
-        title = status_title(row, pct)
-        (description.keys | title.keys | [primary_locale]).each_with_object({}) do |locale, acc|
-          label = title[locale] || title.values.first
-          heading = label ? "#{label} — #{pct}%" : "#{pct}%"
-          acc[locale] = "<p><strong>#{heading}</strong></p>#{description[locale]}"
+        status = status_for(row, pct)
+        locales = description.keys.presence || [primary_locale]
+        progress_label = label_multiloc('accountability_progress', locales)
+        status_label = label_multiloc('accountability_status', locales)
+        locales.each_with_object({}) do |locale, acc|
+          items = "<li><strong>#{at(progress_label, locale)}:</strong> #{pct}% </li>"
+          text = status_text(status, locale)
+          items << "<li><strong>#{at(status_label, locale)}:</strong> #{text}</li>" if text
+          acc[locale] = "<ul>#{items}</ul>#{description[locale]}"
         end
       end
 
-      # The status title (multiloc) for a result's progress: the component status(es) at that exact %,
-      # preferring the result's own status when it's one of them; falling back to the result's own
-      # status otherwise, or `{}` when nothing matches.
-      def status_title(row, pct)
+      # The status a result's progress maps to: the component status(es) at that exact %, preferring the
+      # result's own status when it's one of them; falling back to the result's own status, or nil.
+      def status_for(row, pct)
         statuses = statuses_for(present_value(row[COLUMNS[:component]]))
-        return {} if statuses.empty?
+        return nil if statuses.empty?
 
         own = statuses.find { |status| status[:uid] == present_value(row[COLUMNS[:status]]) }
         at_pct = statuses.select { |status| status[:pct] == pct }
-        chosen = (own if own && at_pct.include?(own)) || at_pct.first || own
-        chosen&.fetch(:name) || {}
+        (own if own && at_pct.include?(own)) || at_pct.first || own
+      end
+
+      # The status line text for a locale: `<name> - <description>` (or just the name when it has no
+      # description), or nil when there is no status.
+      def status_text(status, locale)
+        return nil unless status
+
+        name = at(status[:name], locale)
+        return nil if name.nil?
+
+        description = at(status[:description], locale)
+        description.present? ? "#{name} - #{description}" : name
+      end
+
+      # A multiloc value for a locale, falling back to the first value present.
+      def at(multiloc, locale)
+        multiloc[locale] || multiloc.values.first
+      end
+
+      # The translatable label per locale, always populated: a locale without its own translation falls
+      # back to the English string (rather than being dropped) so the label never renders empty.
+      def label_multiloc(key, locales)
+        full_key = "decidim_importer.#{key}"
+        default = I18n.t(full_key, locale: :en)
+        locales.index_with { |locale| I18n.t(full_key, locale: locale, default: default) }
       end
 
       def statuses_for(component_uid)
@@ -112,7 +141,8 @@ module DecidimImporter
       def statuses_by_component
         @statuses_by_component ||= @statuses.group_by { |row| row['decidim_component'] }.transform_values do |rows|
           rows.map do |row|
-            { uid: present_value(row['uid']), pct: percent(row['progress']), name: multiloc(row['name']) }
+            { uid: present_value(row['uid']), pct: percent(row['progress']),
+              name: multiloc(row['name']), description: multiloc(row['description']) }
           end
         end
       end

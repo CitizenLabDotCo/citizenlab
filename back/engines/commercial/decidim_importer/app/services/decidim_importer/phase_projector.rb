@@ -3,8 +3,8 @@
 module DecidimImporter
   # Projects a Decidim process's *participation components* onto Go Vocal *phases*.
   #
-  # Only two component types generate a phase: **proposals** (→ ideation) and **surveys** (→
-  # native_survey). Decidim steps are *not* imported as phases — the step narrative carries no
+  # Phase-generating components: **proposals** and **accountability** (→ ideation) and **surveys**
+  # (→ native_survey). Decidim steps are *not* imported as phases — the step narrative carries no
   # participation and Go Vocal has no equivalent "information backbone", so it's dropped.
   #
   # Each phase is dated from the component itself, not the steps:
@@ -14,10 +14,10 @@ module DecidimImporter
   #     a survey at its last answer's `created_at`.
   #   * a component that was **never published** gets no phase at all.
   #
-  # Go Vocal phases must be sequential and non-overlapping, but the source windows routinely overlap
-  # (a survey runs concurrently with proposals). The tie-break is fixed: **proposals win**. Proposals
-  # keep their real dates; each survey is shifted — back or forward, whichever is nearer — into the
-  # closest free slot around them (and around already-placed surveys), preserving its duration.
+  # Go Vocal phases must be sequential and non-overlapping. Phases run in ascending component **weight**
+  # — the order the admin arranged the components in Decidim — and their dates are made to fit that
+  # order: each phase keeps its length but is pushed forward so it starts on/after the previous phase's
+  # end (a phase whose real window already fits keeps its real dates).
   class PhaseProjector
     MIN_DURATION = 1 # day; Go Vocal rejects zero-length phases (Phase::MIN_DURATION)
 
@@ -33,11 +33,11 @@ module DecidimImporter
     attr_reader :skipped
 
     # @param participation_components [Array<Hash>] one entry per phase-generating component:
-    #   `{ process_uid:, component_uid:, name:, method: 'ideation'|'native_survey',
+    #   `{ process_uid:, component_uid:, name:, weight:, method: 'ideation'|'native_survey',
     #      published_at:, previously_published:, end_dates: [<date str>, ...] }`
     #   (surveys also carry `description_heading:`/`description_body:`). `published_at`/
     #   `previously_published` date the start; `end_dates` (proposals' published_at, a survey's answer
-    #   created_at) date the end.
+    #   created_at) date the end; `weight` orders the phases.
     def run(participation_components:)
       participation_components.group_by { |component| component[:process_uid] }.each do |process_uid, components|
         project = ref_map.fetch(process_uid)
@@ -55,32 +55,28 @@ module DecidimImporter
 
     attr_reader :ref_map, :locale_mapper, :primary_locale
 
-    # Lays out one process's proposals + survey phases as a non-overlapping sequence. Proposals are
-    # authoritative (their dates stand, only clamped so two proposals don't overlap each other); each
-    # survey is then shifted into the nearest free slot around them.
+    # Lays out one process's phases as a non-overlapping sequence in ascending component weight: each
+    # phase keeps its length but is pushed forward so it starts on/after the previous phase's end.
     def sequence(project, components)
       intents = components.filter_map { |component| build_intent(component) }
       return if intents.empty?
 
-      proposals, surveys = intents.partition { |intent| intent[:method] == 'ideation' }
-
-      occupied = [] # [start, end] Date pairs, kept sorted by start and non-overlapping
-      proposals.sort_by { |intent| intent[:start] }.each do |intent|
-        start_at = [intent[:start], occupied.last&.last].compact.max
-        end_at = [intent[:end] || start_at, start_at + MIN_DURATION].max
+      cursor = nil
+      ordered(intents).each do |intent|
+        start_at = [intent[:start], cursor].compact.max
+        end_at = start_at + duration(intent)
         register(project, intent, start_at, end_at)
-        occupied << [start_at, end_at]
-      end
-
-      surveys.sort_by { |intent| intent[:start] }.each do |intent|
-        start_at, end_at = place(intent[:start], duration(intent), occupied)
-        register(project, intent, start_at, end_at)
-        occupied = (occupied + [[start_at, end_at]]).sort_by(&:first)
+        cursor = end_at
       end
     end
 
-    # One intent per component: `{ method:, component:, start: Date, end: Date|nil }`. A component
-    # that was never published, or that carries no datable window at all, is skipped (logged).
+    # Phases ordered by ascending component weight; ties break by the natural start date, then uid.
+    def ordered(intents)
+      intents.sort_by { |intent| [intent[:weight], intent[:start], intent[:component][:component_uid].to_s] }
+    end
+
+    # One intent per component: `{ method:, component:, start: Date, end: Date|nil, weight: Integer }`.
+    # A component that was never published, or that carries no datable window at all, is skipped (logged).
     def build_intent(component)
       published_at = present(component[:published_at])
       unless published_at || truthy?(component[:previously_published])
@@ -95,46 +91,14 @@ module DecidimImporter
         return nil
       end
 
-      { method: component[:method], component: component, start: start, end: item_dates.max }
+      { method: component[:method], component: component, start: start, end: item_dates.max,
+        weight: component[:weight].to_i }
     end
 
     # The intended length of a phase in days, at least MIN_DURATION (item dates can predate the
     # publication date, which would otherwise give a zero/negative span).
     def duration(intent)
       intent[:end] ? [(intent[:end] - intent[:start]).to_i, MIN_DURATION].max : MIN_DURATION
-    end
-
-    # Finds the placement of a `duration`-day window nearest to `desired_start` that doesn't overlap any
-    # of the `occupied` (sorted, non-overlapping) intervals — shifting back or forward, whichever moves
-    # the start least. Returns `[start, end]` Dates.
-    def place(desired_start, duration, occupied)
-      return [desired_start, desired_start + duration] if occupied.empty?
-
-      best = nil
-      free_gaps(occupied).each do |low, high|
-        next if low && high && (high - low) < duration
-
-        start = desired_start
-        start = low if low && start < low
-        latest = high && (high - duration)
-        start = latest if latest && start > latest
-        displacement = (start - desired_start).abs
-        best = start if best.nil? || displacement < (best - desired_start).abs
-      end
-      [best, best + duration]
-    end
-
-    # The open intervals between (and on either side of) the occupied ones, as `[low, high]` Date pairs
-    # where a nil bound is unbounded.
-    def free_gaps(occupied)
-      gaps = []
-      previous_end = nil
-      occupied.each do |start, finish|
-        gaps << [previous_end, start]
-        previous_end = finish
-      end
-      gaps << [previous_end, nil]
-      gaps
     end
 
     # Default phase title per method when the component has no usable name.

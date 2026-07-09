@@ -8,13 +8,17 @@ require 'csv'
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
-#   rake decidim_importer:correct_links[tmp/import_files/example.com.template.yml,localhost]  # run last
+#   rake decidim_importer:finalize[tmp/import_files/example.com.template.yml,localhost]  # run last
 #
-# `correct_links` runs *after* `import`: it reads the `.url_mapping.csv` dumped alongside the template
-# (old Decidim URL → new target, built from the same link-correction logic) and rewrites the links
-# embedded in the tenant's Content Builder layouts and static pages. File links resolve to the imported
-# file's real content URL at this point. Links that should be repointed but couldn't be resolved are
-# written to `<base>.broken_links.csv` for manual review.
+# `finalize` runs *after* `import` and does two things that need the applied tenant (real ids):
+#   1. reads the `.url_mapping.csv` dumped alongside the template (old Decidim URL → new target) and
+#      rewrites the links embedded in the tenant's Content Builder layouts and static pages — file
+#      links resolve to the imported file's real content URL. Links that should be repointed but
+#      couldn't be resolved are written to `<base>.broken_links.csv` for manual review.
+#   2. gathers every top-level (ungrouped) project into a new "Consultations" folder, gives that folder
+#      a Content Builder layout with a `Selection` widget listing those projects plus the group folders,
+#      and adds the folder to the nav bar (the widget references admin-publication ids that only exist
+#      once the template is applied).
 #
 # Dry-run a dumped template on a throwaway tenant that's created then destroyed:
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml]
@@ -49,7 +53,6 @@ namespace :decidim_importer do
     File.write(yaml_path, builder.to_yaml)
     Rails.logger.info "Wrote #{yaml_path} (users #{production ? 'untouched (production)' : 'anonymised'})"
     log_model_summary(builder)
-    importer.skipped_phases.each { |s| Rails.logger.warn "  skipped phase #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_components.each { |s| Rails.logger.warn "  skipped component #{s[:component]}: #{s[:reason]}" }
     importer.skipped_categories.each { |s| Rails.logger.warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_participation.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
@@ -58,21 +61,26 @@ namespace :decidim_importer do
     importer.skipped_endorsements.each { |s| Rails.logger.warn "  skipped endorsement #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_proposal_attachments.each { |s| Rails.logger.warn "  skipped attachment #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_surveys.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_survey_responses.each { |s| Rails.logger.warn "  skipped response #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_pages.each { |s| Rails.logger.warn "  skipped page #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_files.each { |s| Rails.logger.warn "  skipped file #{s[:uid]}: #{s[:reason]}" }
     write_app_config_json(importer, path)
     write_url_mapping_csv(importer, path)
   end
 
-  desc "Rewrites Decidim back-links in a tenant's Content Builder layouts and static pages from a dumped mapping."
-  task :correct_links, %i[mapping host] => [:environment] do |_t, args|
+  desc 'Post-import finishing (run after `import`): corrects Decidim links, then gathers ungrouped ' \
+       'projects into a "Consultations" folder (+ layout and nav bar).'
+  task :finalize, %i[mapping host] => [:environment] do |_t, args|
     mapping_path = url_mapping_path(args.fetch(:mapping))
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
     map = DecidimImporter::LinkMap.read_csv(mapping_path)
 
-    Rails.logger.info "Decidim link correction → tenant=#{tenant.host} mapping=#{mapping_path}"
+    Rails.logger.info "Decidim finalize → tenant=#{tenant.host} mapping=#{mapping_path}"
     broken = []
     updated = 0
     tenant.switch do
-      # A file link resolves to the imported file's real content URL (memoised per id).
+      # 1. Rewrite Decidim back-links in Content Builder layouts and static pages. A file link resolves
+      #    to the imported file's real content URL (memoised per id).
       file_urls = Hash.new { |cache, id| cache[id] = Files::File.find_by(id: id)&.content&.url }
       resolver = ->(file_id) { file_urls[file_id] }
 
@@ -92,8 +100,13 @@ namespace :decidim_importer do
         end
         found.each { |url| broken << broken_link_row(url, 'StaticPage', page.id) }
       end
+      Rails.logger.info "  rewrote links in #{updated} record(s)"
+
+      # 2. Gather ungrouped projects into the "Consultations" folder (+ its Selection layout and nav bar).
+      consultations = DecidimImporter::ConsultationsFolder.new.run
+      Rails.logger.info "  Consultations folder #{consultations[:folder].slug}: " \
+                        "moved #{consultations[:moved_projects].size} project(s) in"
     end
-    Rails.logger.info "  rewrote links in #{updated} record(s)"
     write_broken_links_csv(mapping_path, broken)
     Rails.logger.info 'COMPLETE'
   end
@@ -234,7 +247,7 @@ namespace :decidim_importer do
   end
 
   # Writes the old→new link mapping next to the input as `<base>.url_mapping.csv` (unless there are no
-  # correctable links). Applied to the tenant after import by `correct_links`.
+  # correctable links). Applied to the tenant after import by `finalize`.
   def write_url_mapping_csv(importer, input_path)
     map = importer.link_map
     if map.empty?
@@ -247,7 +260,7 @@ namespace :decidim_importer do
     Rails.logger.info "Wrote #{csv_path} (#{map.resolved_count} mapped, #{map.broken.size} broken)"
   end
 
-  # The URL-mapping CSV for a `correct_links` argument: the path itself when a `.csv` is given, else the
+  # The URL-mapping CSV for a `finalize` argument: the path itself when a `.csv` is given, else the
   # template path with its `.template.yml` (or plain `.yml`) suffix swapped for `.url_mapping.csv`.
   def url_mapping_path(arg)
     return arg if arg.downcase.end_with?('.csv')

@@ -77,6 +77,15 @@ RSpec.describe DecidimImporter::Importer do
       # The attachment is emitted after the idea, so its `attachable_ref` resolves on deserialize.
       keys = template.keys
       expect(keys.index('files/file_attachment')).to be > keys.index('idea')
+
+      # The idea's file must NOT also be surfaced in the project-description layout — otherwise the
+      # layout would re-attach it and trip FileAttachment's idea-uniqueness validation at import.
+      espaces = template['project'].find { |p| p['title_multiloc']['fr-FR'] == 'Espaces verts' }
+      layout = template['content_builder/layout'].find { |l| l['content_buildable_ref'].equal?(espaces) }
+      layout_file_ids = layout['craftjs_json'].values
+        .select { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'FileAttachment' }
+        .map { |n| n.dig('props', 'fileId') }
+      expect(layout_file_ids).not_to include(file['id'])
     end
 
     it 'keeps the Decidim slug on the imported project' do
@@ -157,12 +166,16 @@ RSpec.describe DecidimImporter::Importer do
       idea = Idea.find_by(title_multiloc: { 'fr-FR' => 'Nouvelle place' })
       expect(idea.phases).to include(phase)
       expect(idea.author).to be_nil # results have no author
-      # The progress %, titled by the status it maps to, is prepended to the description.
-      expect(idea.body_multiloc['fr-FR']).to eq('<p><strong>Réalisé — 100%</strong></p><p>Une place rénovée</p>')
+      # A bulleted Progress + Status (name - description) block is prepended to the description. (Loose
+      # includes: the idea-body sanitiser inserts newlines between the list tags on save.)
+      body = idea.body_multiloc['fr-FR']
+      expect(body).to include('<strong>Progress:</strong> 100% ') # the space after % survives sanitisation
+      expect(body).to include('<strong>Status:</strong> Réalisé - Projet terminé')
+      expect(body).to include('Une place rénovée')
 
       # A result at 40% maps to the 40% status.
       other = Idea.find_by(title_multiloc: { 'fr-FR' => 'Étude en cours' })
-      expect(other.body_multiloc['fr-FR']).to start_with("<p><strong>À l'étude — 40%</strong></p>")
+      expect(other.body_multiloc['fr-FR']).to include("<strong>Status:</strong> À l'étude - En cours d'étude")
     end
 
     it 'creates the extra user custom field and populates its value from extended_data' do
@@ -180,13 +193,12 @@ RSpec.describe DecidimImporter::Importer do
 
       let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'") }
 
-      it 'lays out only the survey and proposals components as non-overlapping phases' do
-        # Steps are dropped; only survey (native_survey) and proposals (ideation) become phases. The
-        # proposals keep their real window (2023-01-05 → last proposal), and the survey — which
-        # overlapped it — is shifted back into the free slot before it. (The page component becomes a
-        # static page, not a phase.)
+      it 'lays out the proposals and survey components as phases ordered by component weight' do
+        # Steps are dropped; only proposals (ideation) and survey (native_survey) become phases. They're
+        # ordered by component weight (proposals weight 0, survey weight 7), and the survey — which
+        # overlapped — is pushed after the proposals to fit. (The page component becomes a static page.)
         methods = project.phases.order(:start_at).pluck(:participation_method)
-        expect(methods).to eq(%w[native_survey ideation])
+        expect(methods).to eq(%w[ideation native_survey])
         # Sequential, non-overlapping: each phase starts on/after the previous one's end.
         starts_ends = project.phases.order(:start_at).pluck(:start_at, :end_at)
         starts_ends.each_cons(2) { |(_, prev_end), (next_start, _)| expect(next_start).to be >= prev_end }

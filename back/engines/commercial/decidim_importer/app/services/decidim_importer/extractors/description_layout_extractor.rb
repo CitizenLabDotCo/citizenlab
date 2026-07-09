@@ -295,15 +295,27 @@ module DecidimImporter
           .filter_map { |r| r.attributes['id'] }
       end
 
-      # The explicit ids of the files owned by this project, via the files_project ownership join.
+      # The explicit ids of the files owned by this project, via the files_project ownership join —
+      # excluding files that are already attached to a specific resource (an idea, via a proposal
+      # attachment). Those belong to that resource, not the project description; surfacing them here
+      # would make the layout re-attach the file and trip `FileAttachment`'s idea-uniqueness validation.
       # The file records are keyed by their attributes-hash *identity*, matching how `reference` links
       # a files_project to its file (the same hash object).
       def file_ids_for(project)
+        attached = attached_file_object_ids
         files_by_attrs = {}.compare_by_identity
         ref_map.records.each { |r| files_by_attrs[r.attributes] = r if r.model_name == 'files/file' }
         ref_map.records
           .select { |r| r.model_name == 'files/files_project' && r.attributes['project_ref'].equal?(project.attributes) }
+          .reject { |fp| attached.include?(fp.attributes['file_ref'].object_id) }
           .filter_map { |fp| files_by_attrs[fp.attributes['file_ref']]&.attributes&.dig('id') }
+      end
+
+      # Object ids of the file attribute-hashes that carry a `files/file_attachment` (idea attachments).
+      def attached_file_object_ids
+        ref_map.records
+          .select { |r| r.model_name == 'files/file_attachment' }
+          .to_set { |r| r.attributes['file_ref'].object_id }
       end
     end
   end

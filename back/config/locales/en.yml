@@ -358,6 +358,8 @@ en:
     title_suffix: 'Copy'
   decidim_importer:
     documents_to_consult: Documents to consult
+    accountability_progress: Progress
+    accountability_status: Status
   user:
     anon_first_name: "User"
     anon_scheme:
