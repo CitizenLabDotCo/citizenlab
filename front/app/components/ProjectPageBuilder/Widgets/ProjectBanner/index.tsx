@@ -9,6 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { IMAGE_UPLOADING_EVENT } from 'components/admin/ContentBuilder/constants';
 import imageMessages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
 import {
   HeaderImage,
@@ -19,6 +20,7 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { usePermission } from 'utils/permissions';
 
@@ -111,7 +113,9 @@ const ProjectBannerSettings = () => {
   }, [image?.imageUrl, image?.removed, project]);
 
   const handleAdd = async (files: UploadFile[]) => {
+    const previousFiles = imageFiles;
     setImageFiles(files);
+    eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
     try {
       const response = await addContentBuilderImage(files[0].base64);
       setProp((props: Props) => {
@@ -121,7 +125,9 @@ const ProjectBannerSettings = () => {
         };
       });
     } catch {
-      // Ignore upload failures; the dropzone keeps the previous image.
+      setImageFiles(previousFiles);
+    } finally {
+      eventEmitter.emit(IMAGE_UPLOADING_EVENT, false);
     }
   };
 
