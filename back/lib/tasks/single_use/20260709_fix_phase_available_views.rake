@@ -37,6 +37,13 @@ namespace :single_use do
       reporter.add_processed_tenant(tenant)
 
       tenant.switch do
+        # Apartment migrates `Tenant.not_deleted` only, so a tenant deleted before the
+        # 20260223103753 migration never received the column, and cannot be drifted.
+        unless ActiveRecord::Base.connection.column_exists?(:phases, :available_views)
+          totals[:skipped_no_column] += 1
+          next
+        end
+
         drifted = Phase
           .where.not(presentation_mode: nil)
           .where.not('presentation_mode = ANY(available_views)')
@@ -80,6 +87,7 @@ namespace :single_use do
     Rails.logger.info(dry_run ? '📊 DRY RUN SUMMARY:' : '📊 REPAIR SUMMARY:')
     Rails.logger.info "   #{dry_run ? 'Would fix' : 'Fixed'}: #{totals[:fixed]} phase(s)"
     Rails.logger.info "   Skipped (unknown presentation_mode): #{totals[:skipped]}"
+    Rails.logger.info "   Skipped (schema predates the available_views migration): #{totals[:skipped_no_column]}"
     Rails.logger.info "   Errors: #{reporter.errors.size}"
 
     report_file = dry_run ? 'fix_phase_available_views_dry_run.json' : 'fix_phase_available_views.json'

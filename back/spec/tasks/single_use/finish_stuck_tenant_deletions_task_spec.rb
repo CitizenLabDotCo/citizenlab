@@ -102,6 +102,18 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
       expect(report['deletes'].first['context']).to include('host' => stuck_tenant.host)
     end
 
+    # test-oic-münster was deleted before the 20260223103753 migration, so its schema has no
+    # `available_views` column. A failing diagnostic must not make the tenant unprocessable.
+    it 'still destroys a tenant whose schema predates the available_views migration' do
+      allow(ActiveRecord::Base.connection).to receive(:column_exists?)
+        .with(:phases, :available_views).and_return(false)
+
+      run_task
+
+      expect(Tenant.find_by(host: stuck_tenant.host)).to be_nil
+      expect(report['errors']).to be_empty
+    end
+
     it 'leaves the tenant alone and reports when users cannot be deleted' do
       stuck_tenant.switch { create(:user) }
       allow(User).to receive(:destroy_all_async) # the sweep deletes nobody

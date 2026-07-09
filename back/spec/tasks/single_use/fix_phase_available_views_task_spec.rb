@@ -80,6 +80,23 @@ describe 'single_use:fix_phase_available_views rake task' do
     end
   end
 
+  # Apartment migrates `Tenant.not_deleted` only, so a tenant deleted before the
+  # 20260223103753 migration has no `available_views` column and cannot be drifted.
+  context 'when the schema predates the available_views migration' do
+    let!(:phase) { create(:budgeting_phase) }
+
+    before do
+      allow(ActiveRecord::Base.connection).to receive(:column_exists?)
+        .with(:phases, :available_views).and_return(false)
+    end
+
+    it 'skips the tenant without reporting an error' do
+      expect { run_task }.not_to raise_error
+      expect(report['errors']).to be_empty
+      expect(report['changes']).to be_empty
+    end
+  end
+
   context 'with DRY_RUN=true' do
     let!(:phase) { drift!(create(:budgeting_phase)) }
 

@@ -40,12 +40,20 @@ namespace :single_use do
       reporter.add_processed_tenant(tenant)
 
       stats = tenant.switch do
+        # A tenant deleted before the 20260223103753 migration never received the column
+        # (Apartment migrates `Tenant.not_deleted` only). That must not stop us finishing its
+        # deletion, so the statistic is reported as unknown rather than raising.
+        drifted_phases =
+          if ActiveRecord::Base.connection.column_exists?(:phases, :available_views)
+            Phase.where.not(presentation_mode: nil)
+              .where.not('presentation_mode = ANY(available_views)').count
+          end
+
         {
           users: User.count,
           admins: User.admin.count,
           draft_baskets: Basket.not_submitted.count,
-          drifted_phases: Phase.where.not(presentation_mode: nil)
-            .where.not('presentation_mode = ANY(available_views)').count,
+          drifted_phases: drifted_phases,
           orphaned_projects: Project.where.missing(:admin_publication).count
         }
       end
@@ -58,10 +66,11 @@ namespace :single_use do
       Rails.logger.info "#{tenant.host}  (deleted_at #{tenant.deleted_at}, #{(Time.zone.today - tenant.deleted_at.to_date).to_i} days ago)"
       Rails.logger.info "  users: #{stats[:users]} (admins: #{stats[:admins]})"
       Rails.logger.info "  draft baskets: #{stats[:draft_baskets]}"
-      Rails.logger.info "  drifted phases: #{stats[:drifted_phases]}   orphaned projects: #{stats[:orphaned_projects]}"
+      drifted = stats[:drifted_phases] || 'unknown (schema predates the available_views migration)'
+      Rails.logger.info "  drifted phases: #{drifted}   orphaned projects: #{stats[:orphaned_projects]}"
       Rails.logger.info "  DeleteUserJobs: #{pending_jobs} pending, #{jobs.expired.count} expired"
       failure_classes.each { |klass, count| Rails.logger.info "    #{count} x #{klass}" }
-      Rails.logger.info '  ⚠️  drifted phases remain — run single_use:fix_phase_available_views first' if stats[:drifted_phases].positive?
+      Rails.logger.info '  ⚠️  drifted phases remain — run single_use:fix_phase_available_views first' if stats[:drifted_phases].to_i.positive?
       Rails.logger.info '  ℹ️  a DeleteUserJob is still pending — this deletion may not be stuck' if pending_jobs.positive?
 
       next if report_only
