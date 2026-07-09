@@ -97,6 +97,26 @@ RSpec.describe DeleteUserJob do
       end
     end
 
+    # `perform_now` callers pass a user object, which skips the lookup by id, but the
+    # record can still be gone by the time the job runs.
+    context 'when a user object is given whose record was already deleted' do
+      before do
+        User.where(id: user.id).delete_all
+      end
+
+      it 'does not raise an error' do
+        expect { described_class.perform_now(user) }.not_to raise_error
+      end
+
+      it 'does not log the missing-user warning' do
+        allow(Rails.logger).to receive(:warn)
+
+        described_class.perform_now(user)
+
+        expect(Rails.logger).not_to have_received(:warn).with(/no longer exists/)
+      end
+    end
+
     context 'with ban_email: true' do
       let(:current_user) { create(:admin) }
       let(:user) { create(:user, email: 'banned.user+test@gmail.com') }
