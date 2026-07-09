@@ -120,7 +120,10 @@ const ProjectsShowPage = ({ project }: Props) => {
   }, [mounted, loading, scrollToStatusModule, scrollToIdeas]);
 
   return (
-    <main id="e2e-project-page">
+    <main
+      id="e2e-project-page"
+      style={parallelParticipation ? { overflowX: 'clip' } : undefined}
+    >
       <Container
         background={
           // TODO: Fix this the next time the file is edited.
