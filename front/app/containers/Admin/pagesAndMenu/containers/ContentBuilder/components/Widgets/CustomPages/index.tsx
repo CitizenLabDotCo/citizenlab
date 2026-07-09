@@ -16,23 +16,29 @@ import Settings from './Settings';
 
 interface Props {
   titleMultiloc: Multiloc;
-  customPage: {
-    id: string[];
-    icon: Record<string, string | null>;
-  };
+  customPages: {
+    id: string;
+    icon?: string | null;
+  }[];
 }
 
-const CustomPages = ({ titleMultiloc, customPage }: Props) => {
+const CustomPages = ({ titleMultiloc, customPages }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
-  const { data: customPages, isInitialLoading } = useCustomPages();
+  const { data: customPagesData, isInitialLoading } = useCustomPages();
   const title = localizeWithFallback(titleMultiloc, messages.defaultTitle);
 
   const pagesById = new Map(
-    customPages?.data.map((page) => [page.id, page]) ?? []
+    customPagesData?.data.map((page) => [page.id, page]) ?? []
   );
-  const selectedPages = customPage.id
-    .map((id) => pagesById.get(id))
-    .filter((page): page is ICustomPageData => page !== undefined);
+  const selectedPages = customPages
+    .map((item) => {
+      const page = pagesById.get(item.id);
+      return page ? { page, icon: item.icon ?? null } : undefined;
+    })
+    .filter(
+      (entry): entry is { page: ICustomPageData; icon: string | null } =>
+        entry !== undefined
+    );
 
   if (isInitialLoading) {
     return (
@@ -52,12 +58,8 @@ const CustomPages = ({ titleMultiloc, customPage }: Props) => {
         {title}
       </Title>
       <Grid>
-        {selectedPages.map((page) => (
-          <CustomPageCard
-            key={page.id}
-            page={page}
-            emoji={customPage.icon[page.id] ?? null}
-          />
+        {selectedPages.map(({ page, icon }) => (
+          <CustomPageCard key={page.id} page={page} emoji={icon} />
         ))}
       </Grid>
     </GridContainer>

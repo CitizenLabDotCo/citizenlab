@@ -17,53 +17,52 @@ import { getNewIdsOnDrop } from './utils';
 const Settings = () => {
   const {
     actions: { setProp },
-    customPage,
+    customPages,
   } = useNode((node) => ({
-    customPage: node.data.props.customPage,
+    customPages: node.data.props.customPages,
   }));
 
   const handleAdd = (page?: ICustomPageData) => {
     if (!page) return;
 
     setProp((props) => {
-      props.customPage.id = [...props.customPage.id, page.id];
+      props.customPages = [...props.customPages, { id: page.id }];
     });
   };
 
   const handleReorder = (draggedItemId: string, targetIndex: number) => {
     setProp((props) => {
-      props.customPage.id = getNewIdsOnDrop(
-        props.customPage.id,
+      const orderedIds = getNewIdsOnDrop(
+        props.customPages.map(
+          (item: { id: string; icon?: string | null }) => item.id
+        ),
         draggedItemId,
         targetIndex
       );
+      const itemsById = new Map(
+        props.customPages.map((item: { id: string; icon?: string | null }) => [
+          item.id,
+          item,
+        ])
+      );
+      props.customPages = orderedIds.map((id) => itemsById.get(id));
     });
   };
 
   const handleDelete = (deletedId: string) => {
     setProp((props) => {
-      props.customPage.id = props.customPage.id.filter(
-        (customPageId: string) => customPageId !== deletedId
+      props.customPages = props.customPages.filter(
+        (item: { id: string; icon?: string | null }) => item.id !== deletedId
       );
-      if (props.customPage.icon) {
-        const nextIcons = { ...props.customPage.icon };
-        delete nextIcons[deletedId];
-        props.customPage.icon = nextIcons;
-      }
     });
   };
 
   const handleSetIcon = (pageId: string, emoji: string | null) => {
     setProp((props) => {
-      const nextIcons: Record<string, string | null> = {
-        ...props.customPage.icon,
-      };
-      if (emoji) {
-        nextIcons[pageId] = emoji;
-      } else {
-        delete nextIcons[pageId];
-      }
-      props.customPage.icon = nextIcons;
+      props.customPages = props.customPages.map(
+        (item: { id: string; icon?: string | null }) =>
+          item.id === pageId ? { ...item, icon: emoji } : item
+      );
     });
   };
 
@@ -80,12 +79,12 @@ const Settings = () => {
           <FormattedMessage {...messages.selectPages} />
         </Label>
         <CustomPageSearchInput
-          customPageIds={customPage.id}
+          customPageIds={customPages.map((item) => item.id)}
           onChange={handleAdd}
         />
       </Box>
       <CustomPagesList
-        customPage={{ id: customPage.id, icon: customPage.icon }}
+        customPages={customPages}
         onReorder={handleReorder}
         onDelete={handleDelete}
         onSetIcon={handleSetIcon}
