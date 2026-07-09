@@ -25,8 +25,6 @@ const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-// Read-only renderer for the project page layout on the public project page.
-// Gated by parallel_participation; renders nothing until the layout exists.
 const ProjectPageContentViewer = ({ projectId }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const parallelParticipation = useParallelParticipation();
@@ -41,7 +39,6 @@ const ProjectPageContentViewer = ({ projectId }: Props) => {
     parallelParticipation
   );
 
-  // Memoised so the frame doesn't re-deserialize on every render.
   const editorData = useMemo(
     () => normalizeProjectPageLayout(layout?.data.attributes.craftjs_json),
     [layout]
@@ -55,8 +52,6 @@ const ProjectPageContentViewer = ({ projectId }: Props) => {
     layout.data.attributes.enabled &&
     !isEmpty(layout.data.attributes.craftjs_json);
 
-  // Residents only see the page once it has enabled content; admins/moderators
-  // also see the default empty-state layout, mirroring the builder.
   if (!hasContent && !canModerate) return null;
 
   return (

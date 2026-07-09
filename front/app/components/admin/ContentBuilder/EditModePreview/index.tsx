@@ -6,9 +6,6 @@ import { devicePreviewSizes } from './dimensions';
 import DesktopButton from './ViewButtons/DesktopButton';
 import MobileButton from './ViewButtons/MobileButton';
 
-// The device frame scales to the available space so nothing is cut off on
-// small screens, and grows on large ones — but only up to a point, so the
-// preview never looks comically large.
 const MAX_SCALE = 1.25;
 const BOTTOM_MARGIN = 12;
 const HORIZONTAL_MARGIN = 48;
@@ -86,7 +83,6 @@ const ContentBuilderEditModePreview = React.forwardRef<
             width={`${frameWidth * scale}px`}
             height={`${frameHeight * scale}px`}
           >
-            {/* Platform Container */}
             <Box
               height={`${frameHeight}px`}
               border="solid black"
@@ -100,7 +96,6 @@ const ContentBuilderEditModePreview = React.forwardRef<
                 transformOrigin: 'top left',
               }}
             >
-              {/* Iframe */}
               <Box
                 as="iframe"
                 ref={ref}

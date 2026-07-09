@@ -19,10 +19,6 @@ import EmptyInputFeed from './EmptyInputFeed';
 
 const PublicInputContent = React.lazy(() => import('./PublicInputContent'));
 
-// The active phase's participation content (ideas / survey / voting / …),
-// rendered as the bottom half of the Phases widget. Its content is
-// method-driven, so it isn't edited in the builder; off the public route it is
-// made non-interactive so its URL-driven filters and links can't fire.
 const InputFeedSection = () => {
   const projectId = useWidgetProjectId();
   const { slug } = useParams({ strict: false }) as { slug?: string };

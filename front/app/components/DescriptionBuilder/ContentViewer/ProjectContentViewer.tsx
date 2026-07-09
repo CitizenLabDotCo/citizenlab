@@ -35,9 +35,6 @@ const handleLoadImages = () => {
   eventEmitter.emit(IMAGES_LOADED_EVENT);
 };
 
-// Renders the project description on the legacy project page, from wherever it
-// lives (see useProjectDescription). The plain description_multiloc via
-// ProjectInfo remains the final fallback for projects on neither layout.
 const ProjectContentViewer = ({
   projectId,
   projectTitle,

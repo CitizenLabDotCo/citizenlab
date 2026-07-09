@@ -47,7 +47,6 @@ const useUpsertProjectPageLayout = () => {
           }),
         });
 
-        // `uses_content_builder` on the project changes with `enabled`
         if (Object.prototype.hasOwnProperty.call(variables, 'enabled')) {
           queryClient.invalidateQueries({
             queryKey: projectsKeys.item({ id: variables.projectId }),

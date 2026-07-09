@@ -16,12 +16,8 @@ type Props = {
   children?: React.ReactNode;
 };
 
-// The project description: a canvas pinned in place during the transition, so
-// the legacy page (which renders this same subtree in a fixed position) always
-// matches. Freely editable, both here and via the legacy description editor.
 const ProjectDescriptionSection: UserComponent<Props> = ({ children }) => {
   const padding = useCraftComponentDefaultPadding();
-  // Empty section: no space on the public route, a visible drop target in the builder.
   const { slug } = useParams({ strict: false }) as { slug?: string };
 
   return (

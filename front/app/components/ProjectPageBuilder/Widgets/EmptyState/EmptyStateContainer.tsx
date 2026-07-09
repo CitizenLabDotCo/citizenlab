@@ -7,8 +7,6 @@ type Props = {
   children: React.ReactNode;
 };
 
-// Dashed placeholder for widgets with no data yet; only rendered to
-// admins/moderators, never to residents.
 const EmptyStateContainer = ({ id, children }: Props) => (
   <Box
     id={id}

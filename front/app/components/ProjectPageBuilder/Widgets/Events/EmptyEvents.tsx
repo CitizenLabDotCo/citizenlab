@@ -18,8 +18,6 @@ import AdminOnlyNote from '../EmptyState/AdminOnlyNote';
 import EmptyStateContainer from '../EmptyState/EmptyStateContainer';
 import messages from '../messages';
 
-// Builder-only: on the public page the events section simply disappears while
-// the project has no events.
 const EmptyEvents = () => {
   const padding = useCraftComponentDefaultPadding();
   const isSmallerThanTablet = useBreakpoint('tablet');

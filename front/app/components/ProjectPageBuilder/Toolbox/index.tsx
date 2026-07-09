@@ -22,9 +22,6 @@ import LockedNote from 'components/ProjectPageBuilder/Widgets/LockedNote';
 
 import { useIntl } from 'utils/cl-intl';
 
-// The body rejects drops while the page structure is frozen, so these widgets
-// can only land inside the description section (matching what the legacy
-// description editor can produce).
 const ProjectPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
 

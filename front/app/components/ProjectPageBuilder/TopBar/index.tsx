@@ -68,8 +68,6 @@ const ProjectPageBuilderTopBar = ({
     clHistory.push(backPath);
   };
 
-  // Two-step save: commit the widgets' project-attribute drafts to the project,
-  // then persist the layout with the drafts stripped (see projectAttributeDrafts.ts).
   const handleSave = async () => {
     if (isSaving) return;
     setIsSaving(true);
@@ -104,7 +102,6 @@ const ProjectPageBuilderTopBar = ({
         craftjs_json: stripProjectAttributeDrafts(nodes),
       });
 
-      // Reset the in-editor props so the widgets read the fresh project attributes.
       const titleNodeId = findNodeIdByName(nodes, 'ProjectTitle');
       if (titleNodeId) {
         actions.history.ignore().setProp(titleNodeId, (props) => {

@@ -39,8 +39,6 @@ const EventsWidget: UserComponent = () => {
     return null;
   }
 
-  // With no events, the public page (slug route) shows nothing — for everyone,
-  // matching the legacy page; the builder keeps an empty state.
   if (events.data.length === 0) {
     return slug ? null : <EmptyEvents />;
   }
