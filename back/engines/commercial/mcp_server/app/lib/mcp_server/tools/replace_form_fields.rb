@@ -113,13 +113,43 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
           }
         )
       else
-        error("Validation failed: #{result.errors.to_json}")
+        validation_error(result.errors)
       end
     rescue ActiveRecord::RecordInvalid => e
       invalid_record_error(e.record)
     end
 
     private
+
+    # Actionable prose for the form-level error keys of IdeaCustomFields::UpdateAllService.
+    FORM_ERROR_MESSAGES = {
+      'empty' => 'The `fields` array must not be empty.',
+      'no_first_page' => 'The first field must be a page.',
+      'no_end_page' => "The last field must be the form-end page (`input_type: 'page'`, `key: 'form_end'`).",
+      'locked_deletion' => <<~MSG.squish,
+        A locked built-in field is missing. Locked fields must be echoed back —
+        see the constraints returned by `get_form_fields`.
+      MSG
+      'locked_attribute' => <<~MSG.squish,
+        A locked attribute of a built-in field was changed. Locked attributes must be
+        echoed back unchanged — see the constraints returned by `get_form_fields`.
+      MSG
+      'stale_data' => <<~MSG.squish
+        The form fields were modified after the given `fields_last_updated_at`.
+        Call `get_form_fields` again and re-apply your changes.
+      MSG
+    }.freeze
+
+    def validation_error(errors)
+      # Fall back to the raw error key, so unmapped validation errors still surface.
+      messages = Array(errors[:form]).map do |form_error|
+        key = form_error[:error]
+        FORM_ERROR_MESSAGES[key] || key
+      end
+
+      details = messages.any? ? messages.join(' ') : errors.to_json
+      error("Validation failed: #{details}", structured: { errors: errors })
+    end
 
     # UpdateAllService reads field params with a mix of string and symbol keys (e.g. it uses
     # field_params['code'] but field_params[:id]). Normalize to a HashWithIndifferentAccess.

@@ -80,7 +80,7 @@ describe McpServer::Tools::ReplaceFormFields do
       )
 
       expect(response).to be_error
-      expect(response.content.sole[:text]).to include('stale_data')
+      expect(response.content.sole[:text]).to include('Call `get_form_fields` again')
       expect(question.reload.title_multiloc).to eq('en' => 'Old question')
     end
 
@@ -134,7 +134,8 @@ describe McpServer::Tools::ReplaceFormFields do
     )
 
     expect(response).to be_error
-    expect(response.content.sole[:text]).to include('locked_deletion')
+    expect(response.content.sole[:text]).to include('A locked built-in field is missing')
+    expect(response.structured_content[:errors]).to eq(form: [{ error: 'locked_deletion' }])
   end
 
   it 'returns an error for an unsupported participation method' do
