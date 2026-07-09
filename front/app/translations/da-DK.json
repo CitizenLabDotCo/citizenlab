@@ -587,7 +587,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projektbillede",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": "Projektbeskrivelsen. Rediger indholdet ved at tilføje elementer fra værktøjskassen. Den forbliver fastgjort i denne position indtil videre.",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": "Beskrivelse",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Ingen begivenheder endnu — begivenheder tilføjet i projektredigeringen vises her automatisk. Besøgende vil ikke se denne sektion før da.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Ingen begivenheder endnu — begivenheder tilføjet i projektredigeringen vises her automatisk. Besøgende vil ikke se denne sektion indtil da.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Begivenheder",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Begivenheder administreres i projektredigeringen under {eventsLink}. Tilføj, rediger eller fjern dem der — de vises her automatisk.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Begivenheder",

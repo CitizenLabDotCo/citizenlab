@@ -594,7 +594,7 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": "Níl aon bhealaí le bheith rannpháirteach ann fós",
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Taispeánann sé seo an t-ábhar rannpháirtíochta don chéim ghníomhach. Socraítear a ábhar de réir mhodh na céime sa {projectEditorLink} — anseo ní roghnaíonn tú ach an áit a bhfuil sé suite ar an leathanach.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Bioraithe ag barr an leathanaigh — inchurtha in eagar, ach ní féidir é a bhogadh ná a bhaint.",
-  "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Ní féidir ach le riarthóirí agus le bainisteoirí tionscadail an tionscadail seo é seo a fheiceáil",
+  "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Ní féidir ach le riarthóirí agus bainisteoirí an tionscadail seo é seo a fheiceáil.",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Céimeanna",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Céimeanna",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "eagarthóir tionscadail",

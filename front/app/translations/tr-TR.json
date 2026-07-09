@@ -587,7 +587,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Proje görseli",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": "Proje açıklaması. İçeriğini araç kutusundan öğeler ekleyerek düzenleyin. Şimdilik bu konumda sabit kalır.",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": "Açıklama",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Henüz etkinlik yok — proje düzenleyicide eklenen etkinlikler burada otomatik olarak görünür. Ziyaretçiler o zamana kadar bu bölümü görmez.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Henüz etkinlik yok — proje düzenleyicide eklenen etkinlikler burada otomatik olarak görünür. Ziyaretçiler o zamana kadar bu bölümü görmeyecektir.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Etkinlikler",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Etkinlikler proje düzenleyicisinde, {eventsLink} altından yönetilir. Orada ekleyin, düzenleyin veya kaldırın — burada otomatik olarak görüneceklerdir.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Etkinlikler",

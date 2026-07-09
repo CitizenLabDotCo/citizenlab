@@ -587,7 +587,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Imagem do projeto",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": "A descrição do projeto. Edite seu conteúdo adicionando elementos da caixa de ferramentas. Ela permanece fixada nesta posição por enquanto.",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": "Descrição",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Ainda não há eventos — eventos adicionados no editor do projeto aparecerão aqui automaticamente. Os visitantes não verão esta seção até lá.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Ainda não há eventos — eventos adicionados no editor do projeto aparecerão aqui automaticamente. Visitantes não verão esta seção até lá.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Eventos",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Os eventos são gerenciados no editor do projeto, em {eventsLink}. Adicione, edite ou remova-os lá — eles aparecerão aqui automaticamente.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Eventos",

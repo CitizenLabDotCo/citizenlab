@@ -587,7 +587,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projektbild",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": "Die Projektbeschreibung. Bearbeiten Sie den Inhalt, indem Sie Elemente aus dem Werkzeugkasten hinzufügen. Sie bleibt vorerst an dieser Position fixiert.",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": "Beschreibung",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Noch keine Veranstaltungen – im Projekt-Editor hinzugefügte Veranstaltungen erscheinen hier automatisch. Besucher*innen sehen diesen Bereich bis dahin nicht.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Noch keine Veranstaltungen — im Projekteditor hinzugefügte Veranstaltungen erscheinen hier automatisch. Besucher*innen sehen diesen Bereich erst dann.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Veranstaltungen",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Veranstaltungen werden im Projekteditor unter {eventsLink} verwaltet. Fügen Sie sie dort hinzu, bearbeiten oder entfernen Sie sie – sie erscheinen hier automatisch.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Veranstaltungen",

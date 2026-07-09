@@ -587,7 +587,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projectafbeelding",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": "De projectbeschrijving. Bewerk de inhoud door elementen uit de toolbox toe te voegen. Deze blijft voorlopig op deze positie staan.",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": "Beschrijving",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Nog geen activiteiten — activiteiten die in de projecteditor worden toegevoegd, verschijnen hier automatisch. Bezoekers zien dit gedeelte tot die tijd niet.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Nog geen activiteiten — activiteiten die in de projecteditor worden toegevoegd, verschijnen hier automatisch. Bezoekers zien deze sectie tot die tijd niet.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Activiteiten",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Activiteiten worden beheerd in de projecteditor, onder {eventsLink}. Voeg ze daar toe, bewerk of verwijder ze — ze verschijnen hier automatisch.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Activiteiten",

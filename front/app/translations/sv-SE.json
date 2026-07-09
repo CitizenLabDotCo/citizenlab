@@ -587,7 +587,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Projektbild",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": "Projektbeskrivningen. Redigera innehållet genom att lägga till element från verktygslådan. Den förblir fastnålad i det här läget tills vidare.",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": "Beskrivning",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Inga evenemang ännu — evenemang som läggs till i projektredigeraren visas här automatiskt. Besökare ser inte det här avsnittet förrän dess.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Inga evenemang ännu — evenemang som läggs till i projektredigeraren visas här automatiskt. Besökare ser inte den här sektionen förrän dess.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Evenemang",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Evenemang hanteras i projektverktyget, under {eventsLink}. Lägg till, redigera eller ta bort dem där – de visas här automatiskt.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Evenemang",

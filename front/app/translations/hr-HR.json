@@ -587,7 +587,7 @@
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": "Slika projekta",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": "Opis projekta. Uredite sadržaj dodavanjem elemenata iz alatnog okvira. Za sada ostaje prikvačen na ovom mjestu.",
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": "Opis",
-  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Još nema događaja — događaji dodani u uređivaču projekta pojavljuju se ovdje automatski. Posjetitelji neće vidjeti ovaj odjeljak do tada.",
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": "Još nema događanja — događanja dodana u uređivaču projekta pojavit će se ovdje automatski. Posjetitelji neće vidjeti ovaj odjeljak do tada.",
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Događanja",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Događanjima se upravlja u uređivaču projekta, pod {eventsLink}. Tamo ih dodajte, uredite ili uklonite — ovdje će se pojaviti automatski.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Događanja",
