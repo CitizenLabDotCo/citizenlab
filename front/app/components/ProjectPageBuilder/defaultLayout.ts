@@ -30,116 +30,110 @@ export const EVENTS_NODE_ID = 'PROJECT_PAGE_EVENTS';
 
 const ROOT_ID = 'ROOT';
 
-const bannerNode = (): SerializedNode =>
-  ({
-    type: { resolvedName: 'ProjectBanner' },
-    nodes: [],
-    props: { image: {}, alt: {} },
-    custom: {
-      title: widgetMessages.bannerWidgetTitle,
-      locked: true,
-      noPointerEvents: true,
-    },
-    hidden: false,
-    parent: ROOT_ID,
-    isCanvas: false,
-    displayName: 'ProjectBanner',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
+const bannerNode = (): SerializedNode => ({
+  type: { resolvedName: 'ProjectBanner' },
+  nodes: [],
+  props: { image: {}, alt: {} },
+  custom: {
+    title: widgetMessages.bannerWidgetTitle,
+    locked: true,
+    noPointerEvents: true,
+  },
+  hidden: false,
+  parent: ROOT_ID,
+  isCanvas: false,
+  displayName: 'ProjectBanner',
+  linkedNodes: {},
+});
 
-const titleNode = (): SerializedNode =>
-  ({
-    type: { resolvedName: 'ProjectTitle' },
-    nodes: [],
-    props: {},
-    custom: {
-      title: widgetMessages.titleWidgetTitle,
-      locked: true,
-      noPointerEvents: true,
-    },
-    hidden: false,
-    parent: ROOT_ID,
-    isCanvas: false,
-    displayName: 'ProjectTitle',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
+const titleNode = (): SerializedNode => ({
+  type: { resolvedName: 'ProjectTitle' },
+  nodes: [],
+  props: {},
+  custom: {
+    title: widgetMessages.titleWidgetTitle,
+    locked: true,
+    noPointerEvents: true,
+  },
+  hidden: false,
+  parent: ROOT_ID,
+  isCanvas: false,
+  displayName: 'ProjectTitle',
+  linkedNodes: {},
+});
 
-const bodyNode = (childIds: string[]): SerializedNode =>
-  ({
-    type: { resolvedName: 'ProjectPageBody' },
-    nodes: childIds,
-    props: {},
-    custom: { region: true },
-    hidden: false,
-    parent: ROOT_ID,
-    isCanvas: true,
-    displayName: 'ProjectPageBody',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
+const bodyNode = (childIds: string[]): SerializedNode => ({
+  type: { resolvedName: 'ProjectPageBody' },
+  nodes: childIds,
+  props: {},
+  custom: { region: true },
+  hidden: false,
+  parent: ROOT_ID,
+  isCanvas: true,
+  displayName: 'ProjectPageBody',
+  linkedNodes: {},
+});
 
 // The project description: pinned in place, but its content is freely editable
 // (both here and via the legacy description editor, which edits this subtree).
-const descriptionSectionNode = (childIds: string[]): SerializedNode =>
-  ({
-    type: { resolvedName: 'ProjectDescriptionSection' },
-    nodes: childIds,
-    props: {},
-    custom: {
-      title: widgetMessages.descriptionSectionTitle,
-      locked: true,
-    },
-    hidden: false,
-    parent: BODY_NODE_ID,
-    isCanvas: true,
-    displayName: 'ProjectDescriptionSection',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
+const descriptionSectionNode = (childIds: string[]): SerializedNode => ({
+  type: { resolvedName: 'ProjectDescriptionSection' },
+  nodes: childIds,
+  props: {},
+  custom: {
+    title: widgetMessages.descriptionSectionTitle,
+    locked: true,
+  },
+  hidden: false,
+  parent: BODY_NODE_ID,
+  isCanvas: true,
+  displayName: 'ProjectDescriptionSection',
+  linkedNodes: {},
+});
 
-const phasesNode = (parentId: string): SerializedNode =>
-  ({
-    type: { resolvedName: 'PhasesWidget' },
-    nodes: [],
-    props: {},
-    custom: {
-      title: widgetMessages.phasesWidgetTitle,
-      locked: true,
-      noPointerEvents: true,
-    },
-    hidden: false,
-    parent: parentId,
-    isCanvas: false,
-    displayName: 'PhasesWidget',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
+const phasesNode = (parentId: string): SerializedNode => ({
+  type: { resolvedName: 'PhasesWidget' },
+  nodes: [],
+  props: {},
+  custom: {
+    title: widgetMessages.phasesWidgetTitle,
+    locked: true,
+    noPointerEvents: true,
+  },
+  hidden: false,
+  parent: parentId,
+  isCanvas: false,
+  displayName: 'PhasesWidget',
+  linkedNodes: {},
+});
 
-const eventsNode = (parentId: string): SerializedNode =>
-  ({
-    type: { resolvedName: 'EventsWidget' },
-    nodes: [],
-    props: {},
-    custom: {
-      title: widgetMessages.eventsWidgetTitle,
-      locked: true,
-      noPointerEvents: true,
-    },
-    hidden: false,
-    parent: parentId,
-    isCanvas: false,
-    displayName: 'EventsWidget',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
+const eventsNode = (parentId: string): SerializedNode => ({
+  type: { resolvedName: 'EventsWidget' },
+  nodes: [],
+  props: {},
+  custom: {
+    title: widgetMessages.eventsWidgetTitle,
+    locked: true,
+    noPointerEvents: true,
+  },
+  hidden: false,
+  parent: parentId,
+  isCanvas: false,
+  displayName: 'EventsWidget',
+  linkedNodes: {},
+});
 
-const rootNode = (childIds: string[]): SerializedNode =>
-  ({
-    type: { resolvedName: 'ProjectPageRoot' },
-    nodes: childIds,
-    props: {},
-    custom: { region: true },
-    hidden: false,
-    isCanvas: true,
-    displayName: 'ProjectPageRoot',
-    linkedNodes: {},
-  } as unknown as SerializedNode);
+const rootNode = (childIds: string[]): SerializedNode => ({
+  type: { resolvedName: 'ProjectPageRoot' },
+  nodes: childIds,
+  props: {},
+  custom: { region: true },
+  hidden: false,
+  parent: null,
+  isCanvas: true,
+  displayName: 'ProjectPageRoot',
+  linkedNodes: {},
+});
 
 // A fresh project page: the locked header above the fixed body sections, with an
 // empty description. Mirrors the legacy public project page section for section.
@@ -204,6 +198,24 @@ const REMOVED_WIDGETS = [
   'Spotlight',
 ];
 
+const collectRemovedIds = (nodes: SerializedNodes) => {
+  const removed = new Set<string>();
+  const queue = Object.keys(nodes).filter((id) =>
+    REMOVED_WIDGETS.includes(resolvedNameOf(nodes[id]) ?? '')
+  );
+
+  while (queue.length > 0) {
+    const id = queue.shift() as string;
+    const node = nodes[id] as SerializedNode | undefined;
+    if (!node || removed.has(id)) continue;
+
+    removed.add(id);
+    queue.push(...node.nodes, ...Object.values(node.linkedNodes));
+  }
+
+  return removed;
+};
+
 // Normalises a stored layout into the frozen transition structure (see the
 // diagram above): injects missing fixed nodes, enforces the canonical order and
 // re-stamps the lock flags from code, so a code change (e.g. the unlock at
@@ -216,19 +228,25 @@ export const normalizeProjectPageLayout = (
     return defaultProjectPageLayout();
   }
 
-  const removedIds = Object.keys(nodes).filter((id) =>
-    REMOVED_WIDGETS.includes(resolvedNameOf(nodes[id]) ?? '')
-  );
+  const removedIds = collectRemovedIds(nodes);
 
   // Re-stamp canonical custom + drop removed-widget references.
   const next: SerializedNodes = {};
   Object.entries(nodes).forEach(([id, node]) => {
-    if (removedIds.includes(id)) return;
+    if (removedIds.has(id)) return;
     const name = resolvedNameOf(node) ?? '';
     const canonical = name in CANONICAL_CUSTOM ? CANONICAL_CUSTOM[name] : null;
     const cleaned =
-      removedIds.length > 0 && Array.isArray(node.nodes)
-        ? { ...node, nodes: node.nodes.filter((n) => !removedIds.includes(n)) }
+      removedIds.size > 0
+        ? {
+            ...node,
+            nodes: node.nodes.filter((n) => !removedIds.has(n)),
+            linkedNodes: Object.fromEntries(
+              Object.entries(node.linkedNodes).filter(
+                ([, n]) => !removedIds.has(n)
+              )
+            ),
+          }
         : node;
     next[id] = canonical
       ? { ...cleaned, custom: { ...cleaned.custom, ...canonical } }
@@ -283,7 +301,7 @@ export const normalizeProjectPageLayout = (
     displayName: 'ProjectPageRoot',
     custom: { ...root.custom, region: true },
     nodes: [bannerId, titleId, bodyId],
-  } as unknown as SerializedNode;
+  };
 
   return next;
 };
