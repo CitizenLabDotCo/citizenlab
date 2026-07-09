@@ -26,6 +26,7 @@ const globalDisabledMessages: {
 } = {
   user_not_in_group: messages.defaultNotInGroup,
   inactive_phase: messages.defaultInactivePhase,
+  project_inactive: messages.defaultProjectInactive,
 };
 
 // Messages specific to each action

@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.utils.inactivePhase',
     defaultMessage: 'Participating is only possible when this phase is active.',
   },
+  defaultProjectInactive: {
+    id: 'app.utils.projectInactive',
+    defaultMessage: 'Participating in this project is no longer possible.',
+  },
 
   // 'posting_idea'
   postingDisabled: {

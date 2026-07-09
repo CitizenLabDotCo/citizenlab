@@ -96,6 +96,14 @@ describe('Project page without an active phase', () => {
       cy.get('#e2e-ideation-cta-button').should('not.exist');
       cy.get('.e2e-idea-button').should('not.exist');
       cy.get('#e2e-cta-bar-see-events').should('not.exist');
+
+      // Event registration is disabled, with an explanation
+      cy.get('.e2e-event-attendance-button')
+        .first()
+        .find('button')
+        .should('have.attr', 'aria-disabled', 'true');
+      cy.get('.e2e-event-attendance-button').first().trigger('mouseenter');
+      cy.contains('Participating in this project is no longer possible.');
     });
   });
 });
