@@ -9088,6 +9088,86 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.importedTooltipComment": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipContribution": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipIdea": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipInitiative": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipIssue": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipObservation": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipOption": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipPetition": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipPost": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipProject": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipProposal": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipQuestion": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipResponse": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipStory": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipSuggestion": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeasShow.importedTooltipTopic": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.770695Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasShow.initiativeEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
