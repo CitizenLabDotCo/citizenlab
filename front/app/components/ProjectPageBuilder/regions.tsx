@@ -39,16 +39,19 @@ ProjectPageRoot.craft = {
 // short description section it visually follows. Flex `order` moves the
 // description above it, restoring the bar's legacy flow position; the negative
 // margins bleed the bar out of the width-constrained frame to the viewport.
+const CTA_BAR_CLASS = 'projectPageCtaBar';
+
 const BodyWithStickyCTABar = styled(Box)`
   display: flex;
   flex-direction: column;
 
-  & > :first-child {
+  & > .${CTA_BAR_CLASS} {
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
   }
 
-  & > :nth-child(2) {
+  /* The description section, which directly follows the bar in the DOM. */
+  & > .${CTA_BAR_CLASS} + * {
     order: -1;
     /* The legacy page's breathing room above the bar, which the flushed header
        and description section no longer provide. */
@@ -74,7 +77,7 @@ export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => {
 
   return (
     <BodyWithStickyCTABar id="e2e-project-page-body" w="100%">
-      <ProjectCTABar projectId={projectId} />
+      <ProjectCTABar projectId={projectId} className={CTA_BAR_CLASS} />
       {children}
     </BodyWithStickyCTABar>
   );
