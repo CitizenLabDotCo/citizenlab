@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
 
 import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
@@ -23,6 +24,9 @@ const InputFeedSection = () => {
   const projectId = useWidgetProjectId();
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const onPublicRoute = !!slug;
+  const { enabled: inEditor } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
   const currentLocale = useLocale();
   const { data: project } = useProjectById(projectId);
   const canModerate = usePermission({
@@ -41,7 +45,7 @@ const InputFeedSection = () => {
       pointerEvents={onPublicRoute ? 'auto' : 'none'}
       // Keep the Phases widget selectable in the builder even when there is no
       // active phase (and so no content renders).
-      minHeight={onPublicRoute ? undefined : '40px'}
+      minHeight={inEditor ? '40px' : undefined}
     >
       {projectId &&
         phases &&
