@@ -4,6 +4,7 @@ import moment = require('moment');
 describe('Idea show page actions', () => {
   let projectId = '';
   let projectSlug = '';
+  let phaseId = '';
   let ideaId = '';
   let ideaSlug = '';
   const phaseTitle = randomString();
@@ -30,7 +31,8 @@ describe('Idea show page actions', () => {
         });
       })
       .then((phase) => {
-        cy.apiCreateIdea({
+        phaseId = phase.body.data.id;
+        return cy.apiCreateIdea({
           projectId,
           ideaTitle: randomString(20),
           ideaContent: randomString(),
@@ -171,6 +173,42 @@ describe('Idea show page actions', () => {
         cy.get('@dislikeBtn').contains('0');
         cy.get('@likeBtn').contains('2');
         cy.get('@likeBtn').click().wait(1000);
+      });
+    });
+
+    describe('No reaction possible when canReact is false', () => {
+      beforeEach(() => {
+        const firstName = randomString();
+        const lastName = randomString();
+        const email = randomEmail();
+        const password = randomString();
+
+        cy.apiSignup(firstName, lastName, email, password);
+        cy.setLoginCookie(email, password);
+        cy.apiUpdatePhase({
+          phaseId: phaseId,
+          canReact: false,
+        });
+        cy.reload();
+      });
+
+      it('has no up and dislike buttons', () => {
+        cy.visit(`/ideas/${ideaSlug}`);
+        cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
+
+        cy.wait('@ideaRequest');
+        cy.get('#e2e-idea-show').should('exist');
+
+        cy.get('.e2e-reaction-controls').should('not.exist');
+        cy.get('.e2e-ideacard-like-button').should('not.exist');
+        cy.get('.e2e-ideacard-dislike-button').should('not.exist');
+      });
+
+      after(() => {
+        cy.apiUpdatePhase({
+          phaseId: phaseId,
+          canReact: true,
+        });
       });
     });
 
