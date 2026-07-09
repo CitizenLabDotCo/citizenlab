@@ -113,7 +113,12 @@ class Basket < ApplicationRecord
       baskets = Basket.where(phase: count_phases).submitted
       baskets_count = baskets.count
       votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
-      update_context.update!(baskets_count: baskets_count, votes_count: votes_count)
+
+      # `update_columns` rather than `update!`: these are denormalized counters, and validating
+      # the phase or project here means an unrelated invalid attribute (persisted by a bulk write
+      # that skipped validation) makes every recount fail. `updated_at` is set explicitly to keep
+      # the behaviour `update!` had.
+      update_context.update_columns(baskets_count: baskets_count, votes_count: votes_count, updated_at: Time.current)
     end
   end
 
