@@ -55,11 +55,6 @@ export default defineMessages({
     id: 'app.components.Comments.commentingDisabledUnverified',
     defaultMessage: '{verifyIdentityLink} to comment.',
   },
-  commentingMaybeNotPermitted: {
-    id: 'app.components.Comments.commentingMaybeNotPermitted',
-    defaultMessage:
-      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
-  },
   signInToComment: {
     id: 'app.containers.Comments.signInToComment',
     defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
@@ -81,10 +76,6 @@ export default defineMessages({
   reactingDisabledFutureEnabled: {
     id: 'app.components.ReactionControl.reactingDisabledFutureEnabled',
     defaultMessage: 'Reacting will be enabled once this phase starts',
-  },
-  reactingPossibleLater: {
-    id: 'app.components.ReactionControl.reactingPossibleLater',
-    defaultMessage: 'Reacting will start on {enabledFromDate}',
   },
   reactingNotEnabled: {
     id: 'app.components.ReactionControl.reactingNotEnabled',
