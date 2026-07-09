@@ -7,7 +7,10 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
     'event' => Event,
     'cause' => Volunteering::Cause,
     'poll_question' => Polls::Question,
-    'poll_option' => Polls::Option
+    'poll_option' => Polls::Option,
+    'project_image' => ProjectImage,
+    'event_image' => EventImage,
+    'file_attachment' => Files::FileAttachment
   }.freeze
 
   SIDE_FX_SERVICES = {
@@ -16,11 +19,21 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
     Event => SideFxEventService,
     Volunteering::Cause => Volunteering::SideFxCauseService,
     Polls::Question => Polls::SideFxQuestionService,
-    Polls::Option => Polls::SideFxOptionService
+    Polls::Option => Polls::SideFxOptionService,
+    Files::FileAttachment => Files::SideFxFileAttachmentService
   }.freeze
   private_constant :SIDE_FX_SERVICES
 
   def name = 'destroy_resource'
+
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: false
+    }
+  end
 
   def description
     <<~DESC.squish
@@ -35,13 +48,18 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
         resource_type: { type: 'string', enum: RESOURCE_TYPES.keys },
         id: { type: 'string' }
       },
-      required: %w[resource_type id]
+      required: %w[resource_type id],
+      additionalProperties: false
     }
   end
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      authorize_project!(record.project)
+      unless record
+        return not_found_error("Resource (#{params[:resource_type]})", params[:id])
+      end
+
+      authorize_project!(project_for(record))
       authorize(record, :destroy?)
 
       assert_can_destroy_project!(record) if record.is_a?(Project)
@@ -49,12 +67,17 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
       destroy_with_sidefx!(record)
 
-      ok("Destroyed #{params[:resource_type]} #{params[:id]}")
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:resource_type].humanize} not found: #{params[:id]}")
+      response("Destroyed #{params[:resource_type]} #{params[:id]}")
     end
 
     private
+
+    def project_for(record)
+      case record
+      when Files::FileAttachment then record.attachable.source_project
+      else record.project
+      end
+    end
 
     # For now, we don't allow destroying projects via the MCP if any inputs would be lost
     # in the cascade.
@@ -81,17 +104,21 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
     end
 
     def record
-      @record ||= resource_class.find(params[:id])
+      return @record if defined?(@record)
+
+      @record = resource_class.find_by(id: params[:id])
     end
 
     def side_fx
-      @side_fx ||= SIDE_FX_SERVICES.fetch(resource_class).new
+      return @side_fx if defined?(@side_fx)
+
+      @side_fx = SIDE_FX_SERVICES[resource_class]&.new
     end
 
     def destroy_with_sidefx!(record)
-      side_fx.before_destroy(record, current_user)
+      side_fx&.before_destroy(record, current_user)
       record.destroy!
-      side_fx.after_destroy(record, current_user)
+      side_fx&.after_destroy(record, current_user)
     end
   end
 end

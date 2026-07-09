@@ -249,6 +249,7 @@ ca-ES:
         idea: '%{authorName} ha comentat una idea que segueixes'
         initiative: '%{authorName} ha comentat una iniciativa que segueixes'
         issue: '%{authorName} ha comentat un problema que segueixes'
+        observation: '%{authorName} ha comentat una observació que segueixes'
         option: '%{authorName} ha comentat una opció que segueixes'
         petition: '%{authorName} ha comentat una petició que segueixes'
         post: '%{authorName} ha comentat una publicació que segueixes'
@@ -323,6 +324,7 @@ ca-ES:
         idea: Aneu a aquesta idea
         initiative: Ves a aquesta iniciativa
         issue: Aneu a aquest tema
+        observation: Ves a aquesta observació
         option: Aneu a aquesta opció
         petition: Aneu a aquesta petició
         post: Ves a aquesta publicació
@@ -343,6 +345,7 @@ ca-ES:
         idea: Ves a la teva idea
         initiative: Vés a la teva iniciativa
         issue: Aneu al vostre problema
+        observation: Ves a la teva observació
         option: Aneu a la vostra opció
         petition: Aneu a la vostra petició
         post: Ves a la teva publicació
@@ -376,6 +379,7 @@ ca-ES:
         idea: La teva idea ha estat publicada
         initiative: La teva iniciativa ha estat publicada
         issue: El vostre número s'ha publicat
+        observation: La teva observació s'ha publicat
         option: La teva opció ha estat publicada
         petition: La teva petició ha estat publicada
         post: La teva publicació s'ha publicat
@@ -764,6 +768,7 @@ ca-ES:
         idea: La teva idea està a "%{prescreening_status_title}"
         initiative: La teva iniciativa és a "%{prescreening_status_title}"
         issue: El teu problema és a "%{prescreening_status_title}"
+        observation: La teva observació està en "%{prescreening_status_title}"
         option: La vostra opció és a "%{prescreening_status_title}"
         petition: La teva petició és a "%{prescreening_status_title}"
         post: La teva publicació és a "%{prescreening_status_title}"

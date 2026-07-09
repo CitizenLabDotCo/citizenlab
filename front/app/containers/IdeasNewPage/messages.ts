@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.storyMetaTitle1',
     defaultMessage: 'Add new story to project | {orgName}',
   },
+  observationMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.observationMetaTitle1',
+    defaultMessage: 'Add new observation to project | {orgName}',
+  },
   ideaNewMetaDescription: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaDescription',
     defaultMessage:

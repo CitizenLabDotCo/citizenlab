@@ -13,6 +13,7 @@ export const omniauthVerificationTypes = [
   'criipto',
   'bosa_fas',
   'clave_unica',
+  'etat_lu',
   'federa',
   'franceconnect',
   'nemlog_in',
@@ -31,6 +32,7 @@ export type IdMethodName =
   | 'clave_unica'
   | 'cow'
   | 'criipto'
+  | 'etat_lu'
   | 'facebook'
   | 'fake_sso'
   | 'federa'

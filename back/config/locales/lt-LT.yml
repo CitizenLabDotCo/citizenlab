@@ -112,6 +112,8 @@ lt-LT:
           title: Kokia yra jūsų iniciatyva?
         issue:
           title: Koks jūsų komentaras?
+        observation:
+          title: Koks jūsų pastebėjimas?
         option:
           title: Kokia yra jūsų galimybė?
         petition:

@@ -20,6 +20,8 @@ import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
 import { IProject } from 'api/projects/types';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import T from 'components/T';
@@ -191,6 +193,12 @@ const CauseCard = ({ cause, className, project }: Props) => {
   const { disabled_reason } =
     project.data.attributes.action_descriptors.volunteering;
 
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: cause.relationships.phase.data.id,
+    action: 'volunteering',
+    disabledReason: disabled_reason,
+  });
+
   const blocked = !!disabled_reason;
   const blockedAndUnfixable =
     blocked && !isFixableByAuthentication(disabled_reason);
@@ -275,10 +283,15 @@ const CauseCard = ({ cause, className, project }: Props) => {
           <Tooltip
             disabled={!blockedAndUnfixable}
             placement="bottom"
-            content={formatMessage(
-              getPermissionsDisabledMessage('volunteering', disabled_reason) ??
-                messages.notOpenParticipation
-            )}
+            content={
+              customAccessDeniedMessage ??
+              formatMessage(
+                getPermissionsDisabledMessage(
+                  'volunteering',
+                  disabled_reason
+                ) ?? messages.notOpenParticipation
+              )
+            }
           >
             <div>
               <ButtonWithLink

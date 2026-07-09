@@ -70,6 +70,7 @@ const CommonGroundTabs = ({ phaseId, project, isPastPhase }: Props) => {
         action="reacting_idea"
         enabled={true}
         phaseId={phaseId}
+        disabledReason={disabled_reason}
         disabledMessage={disabledMessage}
         projectName={projectName}
         id="common-ground-tabs"
@@ -98,6 +99,7 @@ const CommonGroundTabs = ({ phaseId, project, isPastPhase }: Props) => {
       action="reacting_idea"
       enabled={enabled}
       phaseId={phaseId}
+      disabledReason={disabled_reason}
       disabledMessage={disabledMessage}
       projectName={projectName}
       id="common-ground-tabs"

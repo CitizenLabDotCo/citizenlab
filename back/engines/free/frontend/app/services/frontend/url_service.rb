@@ -51,30 +51,11 @@ module Frontend
       path && "#{home_url(options)}/#{path}"
     end
 
-    def admin_project_folder_url(project_folder_id, locale: nil)
-      locale ||= Locale.default(config: app_config_instance)
-      "#{app_config_instance.base_frontend_uri}/#{locale.to_sym}/admin/projects/folders/#{project_folder_id}"
-    end
-
-    def slug_to_url(slug, classname, options = {})
-      # Does not cover phases, comments and official feedback
-      subroute = nil
-      case classname
-      when 'Project'
-        subroute = 'projects'
-      when 'Idea'
-        subroute = 'ideas'
-      when 'Page'
-        subroute = 'pages'
-      end
-
-      subroute && slug && "#{home_url(options)}/#{subroute}/#{slug}"
-    end
-
     def home_url(options = {})
-      url = config_from_options(options).base_frontend_uri
+      app_config = options[:app_configuration] || AppConfiguration.instance
+      base_uri = app_config.base_frontend_uri
       locale = options[:locale]
-      locale ? "#{url}/#{locale.locale_sym}" : url
+      locale ? "#{base_uri}/#{locale.locale_sym}" : base_uri
     end
 
     def sso_return_url(options = {})
@@ -105,12 +86,8 @@ module Frontend
     end
 
     def manifest_start_url(options = {})
-      configuration = config_from_options(options)
+      configuration = options[:app_configuration] || AppConfiguration.instance
       "#{configuration.base_frontend_uri}/?utm_source=manifest"
-    end
-
-    def unsubscribe_url_template(configuration, campaign_id)
-      "#{configuration.base_frontend_uri}/email-settings?unsubscription_token={{unsubscription_token}}&campaign_id=#{campaign_id}"
     end
 
     def unsubscribe_url(configuration, campaign_id, user_id)
@@ -123,29 +100,59 @@ module Frontend
     end
 
     def unfollow_url(follower)
-      locale = follower.user ? Locale.new(follower.user.locale) : nil
-      url = model_to_url(follower.followable, locale: follower.user.presence && locale)
-      url || "#{home_url(locale: locale)}/profile/#{follower.user.id}/following"
+      locale = Locale.new(follower.user.locale) if follower.user
+      url = model_to_url(follower.followable, locale:)
+      url || "#{home_url(locale:)}/profile/#{follower.user.id}/following"
     end
 
-    def terms_conditions_url(configuration = app_config_instance)
+    def terms_conditions_url(configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/pages/terms-and-conditions"
     end
 
-    def privacy_policy_url(configuration = app_config_instance)
+    def privacy_policy_url(configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/pages/privacy-policy"
     end
 
-    def admin_ideas_url(configuration = app_config_instance)
+    def admin_ideas_url(configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/admin/ideas"
     end
 
-    def admin_project_url(project_id, configuration = app_config_instance)
+    def admin_project_url(project_id, configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/admin/projects/#{project_id}"
     end
 
-    def admin_space_url(space_id, configuration = app_config_instance)
+    def admin_space_url(space_id, configuration = AppConfiguration.instance)
       "#{configuration.base_frontend_uri}/admin/projects/spaces/#{space_id}"
+    end
+
+    def admin_folder_url(folder, configuration = AppConfiguration.instance, locale: nil)
+      locale_segment = locale ? "/#{locale.to_sym}" : ''
+      "#{configuration.base_frontend_uri}#{locale_segment}/admin/projects/folders/#{folder.id}"
+    end
+
+    def admin_phase_url(phase, configuration = AppConfiguration.instance)
+      "#{admin_phase_base_url(phase, configuration)}/setup"
+    end
+
+    def admin_event_url(event, configuration = AppConfiguration.instance)
+      "#{admin_project_url(event.project_id, configuration)}/events/#{event.id}"
+    end
+
+    def admin_cause_url(cause, configuration = AppConfiguration.instance)
+      "#{admin_phase_base_url(cause.phase, configuration)}/volunteering/causes/#{cause.id}"
+    end
+
+    # Returns the record's canonical admin URL, or nil if the record doesn't
+    # have a page that uniquely addresses it (e.g. permissions live on the
+    # phase's access-rights tab, images sit on the parent's edit page).
+    def admin_url_for(record)
+      case record
+      when Project then admin_project_url(record.id)
+      when ProjectFolders::Folder then admin_folder_url(record)
+      when Phase then admin_phase_url(record)
+      when Event then admin_event_url(record)
+      when Volunteering::Cause then admin_cause_url(record)
+      end
     end
 
     # Generates a URL for the Input Manager with optional filters.
@@ -165,16 +172,14 @@ module Frontend
     # @option filters [Idea, String] :selected_idea_id Pre-selected idea record or ID.
     # @return [String] The input manager URL with query parameters.
     def input_manager_url(for_phase: nil, **filters)
-      path = if for_phase
+      base_url = if for_phase
         phase = for_phase.is_a?(String) ? Phase.find(for_phase) : for_phase
-        "admin/projects/#{phase.project_id}/phases/#{phase.id}/ideas"
+        "#{admin_phase_base_url(phase)}/ideas"
       else
-        'admin/ideas'
+        admin_ideas_url
       end
 
-      base_url = "#{app_config_instance.base_frontend_uri}/#{path}"
       query_params = build_input_manager_query_params(filters)
-
       query_params.empty? ? base_url : "#{base_url}?#{query_params.to_query}"
     end
 
@@ -182,15 +187,15 @@ module Frontend
       "#{configuration.base_frontend_uri}/ideas/edit/#{idea_id}"
     end
 
-    def reset_confirmation_code_url(options = {})
-      "#{home_url(options)}/reset-confirmation-code"
-    end
-
     def profile_surveys_url(user_id, options = {})
       "#{home_url(options)}/profile/#{user_id}/surveys"
     end
 
     private
+
+    def admin_phase_base_url(phase, configuration = AppConfiguration.instance)
+      "#{admin_project_url(phase.project_id, configuration)}/phases/#{phase.id}"
+    end
 
     def build_input_manager_query_params(filters)
       params = filters.slice(:tab, :sort, :search, :page)
@@ -222,23 +227,9 @@ module Frontend
     end
     alias to_ids to_id
 
-    # @return [AppConfiguration]
-    def config_from_options(options)
-      tenant = options[:tenant]
-      if tenant # Show a deprecation message is tenant options is used
-        ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
-      end
-      options[:app_configuration] || tenant&.configuration || app_config_instance # TODO: OS remove: tenant&.configuration
-    end
-
     def strip_existing_locale_from_path(pathname)
       # NOTE: Assumes the path is always passed with a leading slash & locale is always the first segment
       pathname.gsub(%r{^/([a-z]{2}(-[A-Z]{2})?)(/(.*))}, '\3')
-    end
-
-    # Memoized database query
-    def app_config_instance
-      @app_config_instance ||= AppConfiguration.instance
     end
   end
 end

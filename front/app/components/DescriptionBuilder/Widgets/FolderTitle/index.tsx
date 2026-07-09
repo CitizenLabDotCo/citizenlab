@@ -24,7 +24,12 @@ const FolderTitle: UserComponent = ({ folderId }: Props) => {
   }
 
   return (
-    <Title color="tenantText" variant="h1" px={craftComponentDefaultPadding}>
+    <Title
+      id="e2e-folder-title"
+      color="tenantText"
+      variant="h1"
+      px={craftComponentDefaultPadding}
+    >
       {localize(projectFolder.data.attributes.title_multiloc)}
     </Title>
   );
