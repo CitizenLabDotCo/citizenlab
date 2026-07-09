@@ -6,8 +6,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useParallelParticipation from 'hooks/useParallelParticipation';
 
-import { defaultProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
-
 import { useParams } from 'utils/router';
 
 import ProjectPageBuilderPage from './ProjectPageBuilderPage';
@@ -19,23 +17,20 @@ const ProjectPageBuilder = () => {
   const { isError } = useProjectPageLayout(projectId, parallelParticipation);
   const { mutate: upsertProjectPageLayout } = useUpsertProjectPageLayout();
 
-  // A project without a `project_page` layout (GET 404s) gets the default one
-  // created on first open, so the builder always has the fixed structure.
-  const bootstrapped = useRef(false);
+  const bootstrappedProjectId = useRef<string>();
   useEffect(() => {
-    if (parallelParticipation && isError && !bootstrapped.current) {
-      bootstrapped.current = true;
-      upsertProjectPageLayout({
-        projectId,
-        enabled: true,
-        craftjs_json: defaultProjectPageLayout(),
-      });
+    if (
+      parallelParticipation &&
+      isError &&
+      bootstrappedProjectId.current !== projectId
+    ) {
+      bootstrappedProjectId.current = projectId;
+      upsertProjectPageLayout({ projectId, enabled: true });
     }
   }, [parallelParticipation, isError, projectId, upsertProjectPageLayout]);
 
   if (!parallelParticipation || !project) return null;
 
-  // Preserve the query string (e.g. ?parallel_participation) on the way back.
   const backPath = `/admin/projects/${projectId}/project-page${window.location.search}`;
 
   return (
