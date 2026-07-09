@@ -29,6 +29,25 @@ RSpec.describe Analytics::Reporting::Input do
     expect(described_class.find(response.id).participation_method).to eq 'native_survey'
   end
 
+  describe 'status' do
+    it 'exposes the current status with label and code' do
+      status = create(:idea_status, code: 'accepted', title_multiloc: { 'en' => 'Approved', 'nl-BE' => 'Goedgekeurd' })
+      idea = create(:idea, idea_status: status)
+      row = described_class.find(idea.id)
+
+      expect(row.status_id).to eq status.id
+      expect(row.status_label).to eq 'Approved'
+      expect(row.status_code).to eq 'accepted'
+    end
+
+    it 'is NULL for inputs without a status' do
+      idea = create(:idea)
+      idea.update_column(:idea_status_id, nil)
+
+      expect(described_class.find(idea.id).status_id).to be_nil
+    end
+  end
+
   describe 'imported' do
     it 'flags inputs that were imported by administrators' do
       idea = create(:idea)

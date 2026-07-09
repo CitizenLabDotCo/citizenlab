@@ -16,6 +16,12 @@ SELECT
     -- inputs without a creation phase were posted through a transitive method,
     -- which the product resolves to ideation
     COALESCE(creation_ph.participation_method, 'ideation') AS participation_method,
+    s.id AS status_id,
+    COALESCE(
+        NULLIF(s.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
+        (SELECT t.value FROM jsonb_each_text(s.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
+    ) AS status_label,
+    s.code AS status_code,
     EXISTS (
         SELECT 1 FROM idea_imports ii WHERE ii.idea_id = i.id
     ) AS imported,
@@ -33,4 +39,5 @@ SELECT
     COALESCE(i.manual_votes_amount, 0) AS offline_votes_count
 FROM ideas i
 LEFT JOIN phases creation_ph ON creation_ph.id = i.creation_phase_id
+LEFT JOIN idea_statuses s ON s.id = i.idea_status_id
 WHERE i.publication_status IN ('submitted', 'published')

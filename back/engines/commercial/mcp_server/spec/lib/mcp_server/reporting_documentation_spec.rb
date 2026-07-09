@@ -13,8 +13,8 @@ RSpec.describe 'Reporting schema documentation' do # rubocop:disable RSpec/Descr
   fk_exempt_columns = {
     'reporting_projects' => %w[folder_id],
     'reporting_sessions' => %w[anonymous_id visitor_id],
+    'reporting_inputs' => %w[status_id],
     'reporting_input_tags' => %w[tag_id parent_tag_id],
-    'reporting_input_statuses' => %w[status_id],
     'reporting_user_question_answers' => %w[question_id],
     'reporting_input_question_answers' => %w[question_id]
   }

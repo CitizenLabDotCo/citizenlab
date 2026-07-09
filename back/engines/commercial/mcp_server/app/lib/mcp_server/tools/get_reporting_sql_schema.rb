@@ -16,7 +16,6 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     Analytics::Reporting::Participant,
     Analytics::Reporting::Input,
     Analytics::Reporting::InputTag,
-    Analytics::Reporting::InputStatus,
     Analytics::Reporting::InputVote,
     Analytics::Reporting::InputReaction,
     Analytics::Reporting::User,
@@ -27,6 +26,8 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
   REPORTING_TABLE_NAMES = REPORTING_TABLES.map(&:table_name).freeze
 
   def name = 'get_reporting_sql_schema'
+
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DOC.squish
@@ -75,7 +76,7 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
         [model.table_name, { description: model.table_description, columns: columns }]
       end
 
-      ok("SQL schema for #{tables.keys.join(', ')}", structured: { tables: tables, relationships: relationships })
+      response("SQL schema for #{tables.keys.join(', ')}", structured: { tables: tables, relationships: relationships })
     rescue ActiveRecord::StatementInvalid => e
       error("Error fetching schema: #{e.message}")
     end

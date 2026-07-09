@@ -29,6 +29,8 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
 
   def name = 'run_reporting_sql_query'
 
+  def annotations = READ_ANNOTATIONS
+
   def description
     <<~DOC.squish
       Runs a single read-only Postgres SELECT query against the reporting tables
@@ -68,7 +70,7 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
       truncated = rows.size > ROW_LIMIT
       rows = rows.first(ROW_LIMIT)
 
-      ok(
+      response(
         "Returned #{rows.size} row(s)#{truncated ? " (truncated to #{ROW_LIMIT})" : ''}.",
         structured: { columns: result.columns, rows: rows, row_count: rows.size, truncated: truncated }
       )

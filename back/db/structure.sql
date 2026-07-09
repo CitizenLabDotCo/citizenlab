@@ -688,7 +688,6 @@ DROP VIEW IF EXISTS public.reporting_pageviews;
 DROP VIEW IF EXISTS public.reporting_inputs;
 DROP VIEW IF EXISTS public.reporting_input_votes;
 DROP VIEW IF EXISTS public.reporting_input_tags;
-DROP VIEW IF EXISTS public.reporting_input_statuses;
 DROP VIEW IF EXISTS public.reporting_input_reactions;
 DROP VIEW IF EXISTS public.reporting_input_question_answers;
 DROP VIEW IF EXISTS public.reporting_contributions;
@@ -3940,26 +3939,6 @@ CREATE VIEW public.reporting_input_reactions AS
 
 
 --
--- Name: reporting_input_statuses; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.reporting_input_statuses AS
- SELECT i.id AS input_id,
-    s.id AS status_id,
-    COALESCE(NULLIF((s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
-           FROM public.app_configurations ac
-         LIMIT 1)), ''::text), ( SELECT t.value
-           FROM jsonb_each_text(s.title_multiloc) t(key, value)
-          WHERE (t.value <> ''::text)
-          ORDER BY t.key
-         LIMIT 1)) AS status_label,
-    s.code AS status_code
-   FROM (public.ideas i
-     JOIN public.idea_statuses s ON ((s.id = i.idea_status_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
-
-
---
 -- Name: reporting_input_tags; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4016,6 +3995,15 @@ CREATE VIEW public.reporting_inputs AS
     i.project_id,
     i.creation_phase_id,
     COALESCE(creation_ph.participation_method, 'ideation'::character varying) AS participation_method,
+    s.id AS status_id,
+    COALESCE(NULLIF((s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(s.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS status_label,
+    s.code AS status_code,
     (EXISTS ( SELECT 1
            FROM public.idea_imports ii
           WHERE (ii.idea_id = i.id))) AS imported,
@@ -4029,8 +4017,9 @@ CREATE VIEW public.reporting_inputs AS
     i.comments_count,
     i.votes_count,
     COALESCE(i.manual_votes_amount, 0) AS offline_votes_count
-   FROM (public.ideas i
+   FROM ((public.ideas i
      LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
+     LEFT JOIN public.idea_statuses s ON ((s.id = i.idea_status_id)))
   WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
 
 

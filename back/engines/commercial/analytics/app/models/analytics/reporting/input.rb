@@ -13,6 +13,9 @@
 #  project_id           :uuid
 #  creation_phase_id    :uuid
 #  participation_method :string
+#  status_id            :uuid
+#  status_label         :text
+#  status_code          :string
 #  imported             :boolean
 #  received_feedback    :boolean
 #  likes_count          :integer
@@ -58,6 +61,20 @@ module Analytics
             The participation method the input was originally posted through
             (see reporting_phases.participation_method for values). Filter on
             this to separate ideas from survey responses.
+          DOC
+          'status_id' => <<~DOC.squish,
+            Current status of the input, or NULL when it has none. Group on it
+            to count inputs per status. Statuses are managed by administrators
+            and only meaningful for publicly visible methods (ideation,
+            proposals), even though survey responses carry a default status too.
+          DOC
+          'status_label' => 'Status name as configured by administrators, resolved to the platform primary locale.',
+          'status_code' => <<~DOC.squish,
+            Locale-independent status category. For ideas: 'proposed', 'viewed',
+            'under_consideration', 'accepted', 'implemented', 'rejected' or
+            'custom'. For proposals also: 'threshold_reached', 'expired',
+            'answered', 'ineligible'. Prefer this over status_label for
+            filtering.
           DOC
           'imported' => 'TRUE when the input was imported by an administrator (e.g. from paper forms) rather than posted online.',
           'received_feedback' => <<~DOC.squish,
