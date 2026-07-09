@@ -594,7 +594,7 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": "Noch keine Beteiligungsmöglichkeiten",
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Hier werden die Beteiligungsinhalte für die aktive Phase angezeigt. Der Inhalt wird durch die Methode der Phase im {projectEditorLink} festgelegt – hier wählen Sie nur aus, wo er auf der Seite platziert wird.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Oben auf der Seite fixiert – bearbeitbar, kann aber nicht verschoben oder entfernt werden.",
-  "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Nur Admins und Projektmanager*innen dieses Projekts können dies sehen",
+  "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Nur Admins und Projektmanager*innen können dies sehen",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Phasen",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Phasen",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "Projekteditor",

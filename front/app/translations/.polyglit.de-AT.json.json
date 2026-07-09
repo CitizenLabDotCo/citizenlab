@@ -2944,6 +2944,11 @@
     "verified_at": "2026-07-08T12:11:44.680180Z",
     "verified_by": "Jelena"
   },
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": {
+    "state": "verified",
+    "verified_at": "2026-07-09T13:46:09.989744Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectPageBuilder.Widgets.eventsEmptyNote": {
     "state": "verified",
     "verified_at": "2026-07-08T12:11:44.680180Z",
@@ -2977,6 +2982,11 @@
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": {
     "state": "verified",
     "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": {
+    "state": "verified",
+    "verified_at": "2026-07-09T13:46:09.989744Z",
     "verified_by": "Jelena"
   },
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsSeeThis": {
@@ -9189,97 +9199,81 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
-
   "app.containers.IdeasShow.importedTooltipComment": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipContribution": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipIdea": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipInitiative": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipIssue": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipObservation": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipOption": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipPetition": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipPost": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipProject": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipProposal": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipQuestion": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipResponse": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipStory": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipSuggestion": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.IdeasShow.importedTooltipTopic": {
     "state": "verified",
     "verified_at": "2026-07-07T16:03:31.917077Z",
