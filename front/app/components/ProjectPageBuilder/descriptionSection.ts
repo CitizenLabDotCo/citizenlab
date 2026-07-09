@@ -14,17 +14,17 @@ const DESCRIPTION_SECTION = 'ProjectDescriptionSection';
 
 // The root canvas the description builder expects — identical to the ROOT of a
 // legacy project_description layout.
-const editorRootNode = (childIds: string[]): SerializedNode =>
-  ({
-    type: 'div',
-    isCanvas: true,
-    props: { id: 'e2e-content-builder-frame' },
-    displayName: 'div',
-    custom: {},
-    hidden: false,
-    nodes: childIds,
-    linkedNodes: {},
-  } as unknown as SerializedNode);
+const editorRootNode = (childIds: string[]): SerializedNode => ({
+  type: 'div',
+  isCanvas: true,
+  props: { id: 'e2e-content-builder-frame' },
+  displayName: 'div',
+  custom: {},
+  hidden: false,
+  parent: null,
+  nodes: childIds,
+  linkedNodes: {},
+});
 
 const collectSubtreeIds = (nodes: SerializedNodes, startIds: string[]) => {
   const collected = new Set<string>();
@@ -71,7 +71,7 @@ export const spliceDescriptionEditorData = (
   editedNodes: SerializedNodes
 ): SerializedNodes => {
   const sectionId = findNodeIdByName(projectPageNodes, DESCRIPTION_SECTION);
-  if (!sectionId) return projectPageNodes;
+  if (!sectionId || !(ROOT_ID in editedNodes)) return projectPageNodes;
 
   const previousSubtreeIds = collectSubtreeIds(
     projectPageNodes,
