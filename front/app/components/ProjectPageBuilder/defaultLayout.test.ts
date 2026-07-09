@@ -129,4 +129,33 @@ describe('normalizeProjectPageLayout', () => {
     expect(result.stray).toBeUndefined();
     expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['d_txt1']);
   });
+
+  it('strips the whole subtree of a removed widget, including linked nodes', () => {
+    const layout = migratedLayout();
+    layout[DESCRIPTION_NODE_ID] = {
+      ...layout[DESCRIPTION_NODE_ID],
+      nodes: ['d_txt1', 'stray'],
+    };
+    layout.stray = {
+      ...textNode(DESCRIPTION_NODE_ID),
+      type: { resolvedName: 'Spotlight' },
+      displayName: 'Spotlight',
+      nodes: ['stray_child'],
+      linkedNodes: { slot: 'stray_linked' },
+    } as SerializedNodes[string];
+    layout.stray_child = textNode('stray');
+    layout.stray_linked = textNode('stray');
+    layout.d_txt1 = {
+      ...layout.d_txt1,
+      linkedNodes: { slot: 'stray' },
+    };
+
+    const result = normalizeProjectPageLayout(layout);
+
+    expect(result.stray).toBeUndefined();
+    expect(result.stray_child).toBeUndefined();
+    expect(result.stray_linked).toBeUndefined();
+    expect(result[DESCRIPTION_NODE_ID].nodes).toEqual(['d_txt1']);
+    expect(result.d_txt1.linkedNodes).toEqual({});
+  });
 });
