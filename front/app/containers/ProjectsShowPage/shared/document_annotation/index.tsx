@@ -48,6 +48,7 @@ const DocumentAnnotation = ({ phase, documentUrl }: Props) => {
         action="annotating_document"
         enabled={isEnabled(disabledReason)}
         phaseId={phase.id}
+        disabledReason={disabledReason}
         disabledMessage={disabledMessage}
       >
         <Konveio documentUrl={documentUrl} />

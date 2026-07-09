@@ -2339,6 +2339,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.observationTerm": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:36:52.997575Z",
+    "verified_by": "Roger"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
@@ -13873,6 +13878,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.newObservation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:36:52.997575Z",
+    "verified_by": "Roger"
   },
   "app.containers.AdminPage.ProjectEdit.newOption": {
     "state": "verified",

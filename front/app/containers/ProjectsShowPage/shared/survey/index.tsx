@@ -62,6 +62,7 @@ const Survey = ({ phase, surveyEmbedUrl, surveyService, className }: Props) => {
       action="taking_survey"
       enabled={enabled}
       phaseId={phase.id}
+      disabledReason={disabled_reason}
       disabledMessage={disabledMessage}
     >
       <Container className={`${className} e2e-${surveyService}-survey enabled`}>

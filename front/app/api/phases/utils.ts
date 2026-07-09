@@ -209,6 +209,7 @@ export const INPUT_TERMS = [
   'topic',
   'post',
   'story',
+  'observation',
 ];
 
 export const IdeaSortMethodFallback = 'trending';

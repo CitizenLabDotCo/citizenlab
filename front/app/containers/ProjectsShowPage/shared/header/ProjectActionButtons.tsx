@@ -266,6 +266,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               topic: messages.seeTheTopics,
               post: messages.seeThePosts,
               story: messages.seeTheStories,
+              observation: messages.seeTheObservations,
             })}
           />
         </ButtonWithLink>

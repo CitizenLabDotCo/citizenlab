@@ -14,7 +14,6 @@ const ProjectDescriptionBuilderPage = () => {
   const parallelParticipation = useParallelParticipation();
 
   if (!project) return null;
-  if (!project.data.attributes.uses_content_builder) return null;
 
   const backPath = parallelParticipation
     ? `/admin/projects/${projectId}/project-page`

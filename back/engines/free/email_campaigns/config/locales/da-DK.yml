@@ -249,6 +249,7 @@ da-DK:
         idea: '%{authorName} kommenterede på en idé, du følger'
         initiative: '%{authorName} kommenterede et initiativ, du følger'
         issue: '%{authorName} kommenterede et emne, du følger'
+        observation: '%{authorName} har kommenteret på en observation, du følger'
         option: '%{authorName} kommenterede en mulighed, du følger'
         petition: '%{authorName} kommenterede en underskriftindsamling, du følger'
         post: '%{authorName} kommenteret et opslag, du følger'
@@ -323,6 +324,7 @@ da-DK:
         idea: Gå til denne idé
         initiative: Gå til dette initiativ
         issue: Gå til denne udgave
+        observation: Gå til denne observation
         option: Gå til denne mulighed
         petition: Gå til denne underskriftsindsamling
         post: Gå til dette opslag
@@ -343,6 +345,7 @@ da-DK:
         idea: Gå til din idé
         initiative: Gå til dit initiativ
         issue: Gå til dit input
+        observation: Gå til din observation
         option: Gå til din valgmulighed
         petition: Gå til din underskriftsindsamling
         post: Gå til dit opslag
@@ -376,6 +379,7 @@ da-DK:
         idea: Din idé er blevet offentliggjort
         initiative: Dit initiativ er blevet offentliggjort
         issue: Dit bidrag er blevet offentliggjort
+        observation: Din observation er blevet offentliggjort
         option: Din mulighed er blevet offentliggjort
         petition: Din underskriftsindsamling er blevet offentliggjort
         post: Dit opslag er blevet offentliggjort
@@ -764,6 +768,7 @@ da-DK:
         idea: Din idé er i "%{prescreening_status_title}"
         initiative: Dit initiativ er i "%{prescreening_status_title}"
         issue: Dit problem er i "%{prescreening_status_title}"
+        observation: Din observation er i "%{prescreening_status_title}"
         option: Din mulighed er i "%{prescreening_status_title}"
         petition: Din underskriftsindsamling er i "%{prescreening_status_title}"
         post: Dit opslag er i "%{prescreening_status_title}"

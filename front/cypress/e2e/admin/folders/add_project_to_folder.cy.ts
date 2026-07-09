@@ -42,17 +42,6 @@ describe('Admin: add projects to folder', async () => {
             cy.wait(2000);
           });
 
-        // Add folder description
-        cy.dataCy('e2e-project-folder-description')
-          .find('.e2e-localeswitcher')
-          .each((button) => {
-            cy.wrap(button).click();
-            cy.dataCy('e2e-project-folder-description').within(() => {
-              cy.get('#description').type(folderShortDescription);
-              cy.wait(2000);
-            });
-          });
-
         // Add folder short description
         cy.dataCy('e2e-project-folder-short-description')
           .find('.e2e-localeswitcher')
@@ -70,6 +59,22 @@ describe('Admin: add projects to folder', async () => {
         // Wait for folder page to load
         cy.get('.e2e-resource-header').should('be.visible');
         cy.get('.e2e-resource-header').contains(folderTitle);
+        cy.url().then((folderAdminUrl) => {
+          const folderId = folderAdminUrl
+            .split('/folders/')[1]
+            .split(/[/?#]/)[0];
+
+          cy.visit(`/admin/projects/folders/${folderId}/settings`);
+          cy.get('#e2e-project-description-builder-link')
+            .should('be.visible')
+            .click();
+          cy.get('.e2e-text-box').click('center');
+          cy.get('.ql-editor').click();
+          cy.get('.ql-editor').type(folderShortDescription, { force: true });
+          cy.get('#e2e-content-builder-topbar-save').click();
+
+          cy.visit(folderAdminUrl);
+        });
 
         // Check that our projects are in the list and add them to the folder
         cy.get(`[data-cy="e2e-manage-button-${projectId1}"]`).should('exist');

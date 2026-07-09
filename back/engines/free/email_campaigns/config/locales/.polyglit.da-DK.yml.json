@@ -1179,6 +1179,11 @@
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.comment_on_idea_you_follow.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:44:39.510381Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "email_campaigns.comment_on_idea_you_follow.main_header.option": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
@@ -1494,6 +1499,11 @@
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.general.cta_goto.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:44:39.510381Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "email_campaigns.general.cta_goto.option": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
@@ -1588,6 +1598,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.general.cta_goto_your.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:44:39.510381Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "email_campaigns.general.cta_goto_your.option": {
     "state": "verified",
@@ -1738,6 +1753,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.idea_published.input_type_subject.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:44:39.510381Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "email_campaigns.idea_published.input_type_subject.option": {
     "state": "verified",
@@ -3443,6 +3463,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.766851Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.your_input_in_screening.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:44:39.510381Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "email_campaigns.your_input_in_screening.main_header.option": {
     "state": "verified",
