@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
-import { useEditor } from '@craftjs/core';
+import { useEditor, SerializedNodes } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
-
-import useUpsertProjectPageLayout from 'api/project_page_layout/useUpsertProjectPageLayout';
-import { IUpdatedProjectProperties } from 'api/projects/types';
-import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -16,17 +12,11 @@ import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import { findNodeIdByName } from 'components/ProjectPageBuilder/defaultLayout';
-import {
-  extractProjectAttributeDrafts,
-  hasProjectAttributeDrafts,
-  stripProjectAttributeDrafts,
-} from 'components/ProjectPageBuilder/projectAttributeDrafts';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { type TypedLinkProps } from 'utils/cl-router/Link';
-import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 import messages from '../messages';
 
@@ -37,10 +27,12 @@ type Props = {
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: SupportedLocale;
   onSelectLocale: (locale: SupportedLocale) => void;
-  projectId: string;
   backPath: string;
   previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
+  onSave: (nodes: SerializedNodes) => Promise<boolean>;
+  isSaving: boolean;
+  saveHasError: boolean;
 };
 
 const ProjectPageBuilderTopBar = ({
@@ -50,17 +42,15 @@ const ProjectPageBuilderTopBar = ({
   onSelectLocale,
   hasError,
   hasPendingState,
-  projectId,
   backPath,
   previewLink,
   titleMultiloc,
+  onSave,
+  isSaving,
+  saveHasError,
 }: Props) => {
   const { query, actions } = useEditor();
   const localize = useLocalize();
-  const { mutateAsync: upsertProjectPageLayout } = useUpsertProjectPageLayout();
-  const { mutateAsync: updateProject } = useUpdateProject();
-  const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState(false);
 
   const disableSave = !!hasError || !!hasPendingState;
 
@@ -69,56 +59,23 @@ const ProjectPageBuilderTopBar = ({
   };
 
   const handleSave = async () => {
-    if (isSaving) return;
-    setIsSaving(true);
-    setSaveError(false);
+    const nodes = query.getSerializedNodes();
+    const saved = await onSave(nodes);
+    if (!saved) return;
 
-    try {
-      const nodes = query.getSerializedNodes();
-      const drafts = extractProjectAttributeDrafts(nodes);
-
-      if (hasProjectAttributeDrafts(drafts)) {
-        const attributes: IUpdatedProjectProperties = { projectId };
-        if (drafts.titleMultiloc) {
-          attributes.title_multiloc = drafts.titleMultiloc;
-        }
-        if (drafts.bannerImageUrl) {
-          const file = await convertUrlToUploadFile(drafts.bannerImageUrl);
-          if (!file?.base64) {
-            throw new Error('Could not read the uploaded project image');
-          }
-          attributes.header_bg = file.base64;
-        } else if (drafts.bannerRemoved) {
-          attributes.header_bg = null;
-        }
-        if (drafts.bannerAltMultiloc) {
-          attributes.header_bg_alt_text_multiloc = drafts.bannerAltMultiloc;
-        }
-        await updateProject(attributes);
-      }
-
-      await upsertProjectPageLayout({
-        projectId,
-        craftjs_json: stripProjectAttributeDrafts(nodes),
+    // Reset the in-editor props so the widgets read the fresh project attributes.
+    const titleNodeId = findNodeIdByName(nodes, 'ProjectTitle');
+    if (titleNodeId) {
+      actions.history.ignore().setProp(titleNodeId, (props) => {
+        props.title = undefined;
       });
-
-      const titleNodeId = findNodeIdByName(nodes, 'ProjectTitle');
-      if (titleNodeId) {
-        actions.history.ignore().setProp(titleNodeId, (props) => {
-          props.title = undefined;
-        });
-      }
-      const bannerNodeId = findNodeIdByName(nodes, 'ProjectBanner');
-      if (bannerNodeId) {
-        actions.history.ignore().setProp(bannerNodeId, (props) => {
-          props.image = {};
-          props.alt = {};
-        });
-      }
-    } catch {
-      setSaveError(true);
-    } finally {
-      setIsSaving(false);
+    }
+    const bannerNodeId = findNodeIdByName(nodes, 'ProjectBanner');
+    if (bannerNodeId) {
+      actions.history.ignore().setProp(bannerNodeId, (props) => {
+        props.image = {};
+        props.alt = {};
+      });
     }
   };
 
@@ -153,7 +110,6 @@ const ProjectPageBuilderTopBar = ({
           px="11px"
           py="6px"
           ml="32px"
-          disabled={!titleMultiloc}
           openLinkInNewTab
           {...previewLink}
         />
@@ -162,7 +118,7 @@ const ProjectPageBuilderTopBar = ({
           isLoading={isSaving}
           onSave={handleSave}
         />
-        {saveError && (
+        {saveHasError && (
           <Text
             color="error"
             ml="20px"
