@@ -5,6 +5,10 @@ FactoryBot.define do
     transient do
       enqueued_at { Time.zone.now }
       tenant_schema_name { nil }
+      # The ActiveJob class and its arguments, as opposed to the +job_class+ column, which
+      # holds the ActiveJob wrapper for any job enqueued through ActiveJob.
+      active_job_class { 'TestJob' }
+      job_arguments { [] }
     end
 
     priority { 100 }
@@ -22,8 +26,8 @@ FactoryBot.define do
         locale: 'en',
         priority: nil,
         timezone: 'UTC',
-        arguments: [],
-        job_class: 'TestJob',
+        arguments: job_arguments,
+        job_class: active_job_class,
         executions: 0,
         queue_name: 'default',
         enqueued_at: enqueued_at.iso8601,
