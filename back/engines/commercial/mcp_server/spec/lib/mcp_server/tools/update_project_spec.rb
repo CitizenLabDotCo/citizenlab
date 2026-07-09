@@ -31,6 +31,17 @@ describe McpServer::Tools::UpdateProject do
     expect(project.reload.header_bg.file.read).to eq(fixture_path.binread)
   end
 
+  it 'removes the header background when remote_header_bg_url is null' do
+    stub_remote_image_download('https://example.com/header.jpg')
+    project.update!(remote_header_bg_url: 'https://example.com/header.jpg')
+
+    response = nil
+    expect { response = run(project_id: project.id, remote_header_bg_url: nil) }
+      .to change { project.reload.header_bg.file }.to(nil)
+
+    expect(response).not_to be_error
+  end
+
   it 'replaces associations wholesale when their ids are given, and preserves them otherwise' do
     area_a, area_b, area_c = create_list(:area, 3)
     project.update!(areas: [area_a, area_b])

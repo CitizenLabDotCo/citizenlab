@@ -42,6 +42,13 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       authorize(project, :update?)
 
       attributes = params.except(:project_id)
+
+      # CarrierWave ignores a plain nil assignment, but an explicit null means "remove the image".
+      if attributes.key?(:remote_header_bg_url) && attributes[:remote_header_bg_url].nil?
+        attributes.delete(:remote_header_bg_url)
+        project.remove_header_bg!
+      end
+
       project.assign_attributes(merge_multilocs(project, attributes))
 
       SideFxProjectService.new.before_update(project, current_user)
