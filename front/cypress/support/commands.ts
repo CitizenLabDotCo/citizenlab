@@ -64,6 +64,7 @@ declare global {
       apiCreateCustomPage: typeof apiCreateCustomPage;
       apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
+      apiUpdatePhase: typeof apiUpdatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
       apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
       apiRemoveCustomField: typeof apiRemoveCustomField;
@@ -1395,6 +1396,93 @@ function apiCreatePhase({
   });
 }
 
+function apiUpdatePhase({
+  phaseId,
+  title,
+  startAt,
+  endAt,
+  participationMethod,
+  canPost,
+  canReact,
+  canComment,
+  description,
+  surveyUrl,
+  surveyService,
+  votingMaxTotal,
+  allow_anonymous_participation,
+  votingMethod,
+  votingMaxVotesPerIdea,
+  votingMinTotal,
+  nativeSurveyButtonMultiloc,
+  nativeSurveyTitleMultiloc,
+  presentation_mode,
+  reacting_dislike_enabled,
+  available_views,
+}: {
+  phaseId: string;
+  title?: string;
+  startAt?: string;
+  endAt?: string;
+  participationMethod?: ParticipationMethod;
+  canPost?: boolean;
+  canReact?: boolean;
+  canComment?: boolean;
+  description?: string;
+  surveyUrl?: string;
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  presentation_mode?: 'card' | 'map' | 'feed';
+  available_views?: ('card' | 'map' | 'feed')[];
+  votingMaxTotal?: number;
+  allow_anonymous_participation?: boolean;
+  votingMethod?: VotingMethod;
+  votingMaxVotesPerIdea?: number;
+  votingMinTotal?: number;
+  nativeSurveyButtonMultiloc?: Multiloc;
+  nativeSurveyTitleMultiloc?: Multiloc;
+  reacting_dislike_enabled?: boolean;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'PATCH',
+      url: `web_api/v1/phases/${phaseId}`,
+      body: {
+        phase: {
+          start_at: startAt,
+          end_at: endAt,
+          title_multiloc: title
+            ? {
+              en: title,
+              'nl-BE': title,
+            }
+            : undefined,
+          participation_method: participationMethod,
+          voting_method: votingMethod,
+          submission_enabled: canPost,
+          reacting_enabled: canReact,
+          commenting_enabled: canComment,
+          presentation_mode,
+          available_views,
+          description_multiloc: description ? { en: description } : undefined,
+          survey_embed_url: surveyUrl,
+          survey_service: surveyService,
+          voting_max_total: votingMaxTotal,
+          allow_anonymous_participation: allow_anonymous_participation,
+          voting_max_votes_per_idea: votingMaxVotesPerIdea,
+          voting_min_total: votingMinTotal,
+          native_survey_button_multiloc: nativeSurveyButtonMultiloc,
+          native_survey_title_multiloc: nativeSurveyTitleMultiloc,
+          reacting_dislike_enabled,
+        },
+      },
+    });
+  });
+}
 function apiCreateCustomField(
   fieldName: string,
   required: boolean,
@@ -2390,6 +2478,7 @@ Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiRemovePhase', apiRemovePhase);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
+Cypress.Commands.add('apiUpdatePhase', apiUpdatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
