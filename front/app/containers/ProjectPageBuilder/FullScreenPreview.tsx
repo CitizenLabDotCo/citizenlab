@@ -56,7 +56,7 @@ export const FullScreenPreview = ({ projectId }: Props) => {
       <FullScreenWrapper onUpdateDraftData={setDraftData} padding="0px">
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
-          <Box>
+          <Box ref={(el: HTMLElement | null) => el?.setAttribute('inert', '')}>
             <Editor isPreview={true}>
               <ContentBuilderFrame editorData={editorData} />
             </Editor>
