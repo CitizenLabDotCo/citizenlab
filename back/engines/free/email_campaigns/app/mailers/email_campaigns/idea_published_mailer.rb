@@ -19,6 +19,9 @@ module EmailCampaigns
 
     def preview_command(recipient, _context)
       data = preview_service.preview_data(recipient)
+      # check if the idea_images field is present and enabled in the custom form
+      image_field_presence = _context.project.custom_form.custom_fields.find_by(code: "idea_images_attributes")&.enabled
+
       {
         recipient: recipient,
         event_payload: {
@@ -28,7 +31,8 @@ module EmailCampaigns
           idea_url: data.idea.url,
           idea_images: [],
           input_term: 'idea',
-          project_title_multiloc: data.project.title_multiloc
+          project_title_multiloc: data.project.title_multiloc,
+          image_field_presence: image_field_presence
         }
       }
     end
