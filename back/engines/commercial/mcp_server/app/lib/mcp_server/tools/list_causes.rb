@@ -17,9 +17,10 @@ class McpServer::Tools::ListCauses < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      scope = Volunteering::Cause
-        .where(phase_id: params[:phase_id])
-        .order(:ordering)
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
+
+      scope = phase.causes.order(:ordering)
 
       paginated_response(
         'causes',

@@ -7,13 +7,17 @@ describe McpServer::Tools::ListCauses do
   let(:project) { create(:project) }
   let(:phase) { create(:volunteering_phase, project:) }
 
+  def list(params = {})
+    run_mcp_tool(described_class, params:, current_user:)
+  end
+
   it 'lists causes of the phase in display order' do
     cause_a = create(:cause, phase:)
     cause_b = create(:cause, phase:)
     create(:cause) # cause in another phase
     cause_b.move_to_top
 
-    response = run_mcp_tool(described_class, params: { phase_id: phase.id }, current_user:)
+    response = list(phase_id: phase.id)
 
     expect(response).not_to be_error
     expect(response.structured_content[:data].pluck(:id)).to eq([cause_b.id, cause_a.id])
@@ -22,7 +26,7 @@ describe McpServer::Tools::ListCauses do
   it 'serializes cause fields' do
     create(:cause, phase:)
 
-    response = run_mcp_tool(described_class, params: { phase_id: phase.id }, current_user:)
+    response = list(phase_id: phase.id)
 
     expect(response.structured_content[:data].first)
       .to include(:title_multiloc, :volunteers_count, :ordering)
@@ -32,10 +36,9 @@ describe McpServer::Tools::ListCauses do
     let(:base_params) { { phase_id: phase.id } }
   end
 
-  it 'returns an empty list when the phase does not exist' do
-    response = run_mcp_tool(described_class, params: { phase_id: SecureRandom.uuid }, current_user:)
+  it 'returns a not-found error when the phase is missing' do
+    response = list(phase_id: SecureRandom.uuid)
 
-    expect(response).not_to be_error
-    expect(response.structured_content[:data]).to eq([])
+    expect(response).to be_not_found('Phase')
   end
 end
