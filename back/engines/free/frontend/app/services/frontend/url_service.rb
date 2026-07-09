@@ -10,7 +10,7 @@ module Frontend
         subroute = 'projects'
         slug = model_instance.slug
       when Phase
-        return model_to_path(model_instance.project) if !model_instance.placement.presented_as_page?
+        return model_to_path(model_instance.project) if !model_instance.placement_strategy.presented_as_page?
 
         subroute = model_to_path model_instance.project
         slug = TimelineService.new.phase_number model_instance

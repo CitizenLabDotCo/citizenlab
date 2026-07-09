@@ -2,7 +2,7 @@
 
 # Strategy for how a phase is placed relative to the timeline, to enable parallel
 # participation (e.g. extra surveys running alongside the timeline phases).
-module PhasePlacement
+module PhasePlacementStrategy
   class Base
     def sequential?
       raise NotImplementedError

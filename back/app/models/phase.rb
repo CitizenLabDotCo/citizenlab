@@ -312,10 +312,10 @@ class Phase < ApplicationRecord
     end
   end
 
-  def placement
-    @placement ||= case placement_type
-    when 'standalone' then PhasePlacement::Standalone.new
-    else PhasePlacement::OnTimeline.new
+  def placement_strategy
+    @placement_strategy ||= case placement_type
+    when 'standalone' then PhasePlacementStrategy::Standalone.new
+    else PhasePlacementStrategy::OnTimeline.new
     end
   end
 
@@ -377,7 +377,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_end_at
-    return if !placement.sequential?
+    return if !placement_strategy.sequential?
     return if end_at.present? || TimelineService.new.last_phase?(self)
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
@@ -390,7 +390,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_no_other_overlapping_phases
-    return if !placement.sequential?
+    return if !placement_strategy.sequential?
 
     TimelineService.new.overlapping_phases(self).each do |other_phase|
       # Skip open-ended phases that start before this phase as they have their own
@@ -403,7 +403,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_previous_phase_can_be_closed
-    return if !placement.sequential?
+    return if !placement_strategy.sequential?
 
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
@@ -415,7 +415,7 @@ class Phase < ApplicationRecord
   end
 
   def close_previous_open_phase
-    return if !placement.sequential?
+    return if !placement_strategy.sequential?
 
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?

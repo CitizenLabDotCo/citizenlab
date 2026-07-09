@@ -106,7 +106,7 @@ class TimelineService
   private
 
   def timeline_phases(project)
-    project.phases.select { |phase| phase.placement.sequential? }
+    project.phases.select { |phase| phase.placement_strategy.sequential? }
   end
 
   def overlaps?(phase1, phase2)

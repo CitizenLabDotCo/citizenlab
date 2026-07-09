@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-module PhasePlacement
-  class OnTimeline < Base
+module PhasePlacementStrategy
+  class Standalone < Base
     def sequential?
-      true
+      false
     end
 
     def presented_as_page?
-      true
+      false
     end
   end
 end
