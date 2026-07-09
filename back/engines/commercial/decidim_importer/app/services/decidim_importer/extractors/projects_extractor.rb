@@ -2,15 +2,16 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim participatory processes (and, for early migrations, assemblies) ──▶ Go Vocal `Project`.
+    # Decidim participatory processes and assemblies ──▶ Go Vocal `Project`.
     #
-    # A process that belongs to a process group is nested under the corresponding folder by pointing
+    # A process/assembly that belongs to a group is nested under the corresponding folder by pointing
     # its `admin_publication_attributes.parent_attributes_ref` at the folder's nested
-    # admin-publication hash. Publication status is derived from whether the process was published.
+    # admin-publication hash. Publication status is derived from whether it was published.
     #
-    # Columns match the export's per-process `01---participatory-process.csv`. The
-    # `participatory_process_group` column holds the group's `uid` (blank when the process isn't
-    # grouped).
+    # Columns match the export's per-process `01---participatory-process.csv` (assemblies' `01---assembly.csv`
+    # carries the same subset). The `participatory_process_group` column holds the group's `uid` — blank
+    # when a process isn't grouped, and stamped by {ExportReader} with the synthetic Assemblies folder uid
+    # for assemblies (which have no Decidim group).
     class ProjectsExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',
@@ -66,10 +67,11 @@ module DecidimImporter
         ref_map.register("#{uid}-card-image", image)
       end
 
-      # The Decidim slug from the process URL (`…/processes/<slug>`), or nil when there's no such URL.
+      # The Decidim slug from the container URL (`…/processes/<slug>` or `…/assemblies/<slug>`), or nil
+      # when there's no such URL.
       def decidim_slug(row)
         url = present_value(row[COLUMNS[:url]])
-        url && url[%r{/processes/([^/?#]+)}, 1]
+        url && url[%r{/(?:processes|assemblies)/([^/?#]+)}, 1]
       end
 
       # Decidim's `short_description` is HTML, but Go Vocal's `description_preview_multiloc` is a
