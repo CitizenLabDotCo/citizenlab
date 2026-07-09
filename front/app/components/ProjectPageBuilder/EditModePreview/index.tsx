@@ -20,7 +20,7 @@ const ProjectPageBuilderEditModePreview = React.forwardRef<
 
   return (
     <EditModePreview
-      iframeSrc={`/${locale}/admin/project-page-builder/projects/${projectId}/preview?selected_locale=${locale}`}
+      iframeSrc={`/${locale}/admin/project-page-builder/projects/${projectId}/preview?selected_locale=${locale}&parallel_participation=true`}
       ref={ref}
     />
   );
