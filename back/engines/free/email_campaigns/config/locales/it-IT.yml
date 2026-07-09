@@ -692,7 +692,7 @@ it-IT:
       subject: '"%{input_title}" ha raggiunto la soglia di voto'
       title: Una proposta ha raggiunto la soglia di voto!
     user_blocked:
-      for_more_information: Per ulteriori informazioni a riguardo, puoi consultare la %{termsAndConditionsPage}
+      for_more_information: Per ulteriori informazioni a riguardo, puoi consultare la pagina %{termsAndConditionsPage}
       paragraph_1_with_reason: 'Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:'
       paragraph_1_without_reason: Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della community.
       preheader: Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato

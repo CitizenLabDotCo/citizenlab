@@ -16,7 +16,6 @@ export interface IGlobalTopicData {
     description_multiloc: Multiloc;
     icon: string;
     ordering: number;
-    static_page_ids: string[];
     followers_count: number;
     include_in_onboarding: boolean;
   };
