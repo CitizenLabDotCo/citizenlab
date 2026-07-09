@@ -316,6 +316,10 @@ export default defineMessages({
     id: 'app.containers.Projects.seeTheStories',
     defaultMessage: 'See the stories',
   },
+  seeTheObservations: {
+    id: 'app.containers.Projects.seeTheObservations',
+    defaultMessage: 'See the observations',
+  },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',
     defaultMessage: 'Meet the minimum budget to submit your basket.',

@@ -60,7 +60,8 @@ TRANSLATION_IDS = {
     'idea' => 'app.containers.IdeaButton.submitYourIdea',
     'option' => 'app.containers.IdeaButton.addAnOption',
     'issue' => 'app.containers.IdeaButton.submitAnIssue',
-    'initiative' => 'app.containers.IdeaButton.addAnInitiative'
+    'initiative' => 'app.containers.IdeaButton.addAnInitiative',
+    'observation' => 'app.containers.IdeaButton.addAnObservation'
   },
   'app.components.ProjectCard.x__TERM__s' => {
     'comment' => 'app.components.ProjectCard.xCommentsTerm',
@@ -99,7 +100,8 @@ TRANSLATION_IDS = {
     'idea' => 'app.containers.IdeasFeedPage.addAnIdea',
     'issue' => 'app.containers.IdeasFeedPage.addAnIssue',
     'option' => 'app.containers.IdeasFeedPage.addAnOption',
-    'initiative' => 'app.containers.IdeasFeedPage.addAnInitiative'
+    'initiative' => 'app.containers.IdeasFeedPage.addAnInitiative',
+    'observation' => 'app.containers.IdeasFeedPage.addAnObservation'
   },
   'app.containers.IdeasNewPage.__TERM__MetaTitle1' => {
     'idea' => 'app.containers.IdeasNewPage.ideaNewMetaTitle1'

@@ -112,6 +112,8 @@ nb-NO:
           title: Hva er initiativet ditt?
         issue:
           title: Hva er din kommentar?
+        observation:
+          title: Hva er din observasjon?
         option:
           title: Hva er ditt innspill?
         petition:
