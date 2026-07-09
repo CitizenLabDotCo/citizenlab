@@ -38,8 +38,56 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
     allow($stdin).to receive_messages(tty?: true, gets: "#{answer}\n")
   end
 
+  # A pending DeleteUserJob for the given schema. Built by hand rather than through factory
+  # transients, which do not exist on this branch.
+  def enqueue_delete_user_job(schema_name)
+    create(:que_job, args: [{
+      job_id: SecureRandom.uuid,
+      job_class: 'DeleteUserJob',
+      arguments: [],
+      tenant_schema_name: schema_name,
+      enqueued_at: Time.zone.now.iso8601,
+      queue_name: 'default',
+      executions: 0,
+      priority: nil,
+      locale: 'en',
+      timezone: 'UTC',
+      provider_job_id: nil,
+      exception_executions: {}
+    }])
+  end
+
   def report
     JSON.parse(File.read(report_path))
+  end
+
+  context 'when there is nothing to do' do
+    before { stuck_tenant.update_column(:deleted_at, nil) }
+
+    it 'says so' do
+      allow($stdin).to receive(:tty?).and_return(true)
+      expect($stdin).not_to receive(:gets)
+
+      expect { run_task }.to output(/No unfinished tenant deletions on this cluster/).to_stdout
+    end
+  end
+
+  # A deletion with jobs in flight is in progress, not stuck. Sweeping again would enqueue a
+  # second DeleteUserJob per user — the double sweep behind the 439k RecordNotFound events.
+  context 'when the deletion is still in progress' do
+    before do
+      allow($stdin).to receive(:tty?).and_return(true)
+      enqueue_delete_user_job(stuck_tenant.schema_name)
+    end
+
+    it 'skips the tenant without prompting' do
+      expect($stdin).not_to receive(:gets)
+      expect(User).not_to receive(:destroy_all_async)
+
+      run_task
+
+      expect(Tenant.find_by(host: stuck_tenant.host)).to be_present
+    end
   end
 
   context 'without a TTY' do
@@ -116,13 +164,27 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
 
     it 'leaves the tenant alone and reports when users cannot be deleted' do
       stuck_tenant.switch { create(:user) }
-      allow(User).to receive(:destroy_all_async) # the sweep deletes nobody
+      allow(User).to receive(:destroy_all_async) # the sweep deletes nobody, and queues nothing
 
       run_task(poll_timeout: 0)
 
       expect(Tenant.find_by(host: stuck_tenant.host)).to be_present
       expect(report['deletes']).to be_empty
       expect(report['errors'].first['error']).to match(/1 user\(s\) could not be deleted/)
+    end
+
+    # A large tenant's sweep can outlast the poll. That is not a failure, and must not be
+    # reported as one -- nor should it surface a stale error from a previous attempt.
+    it 'reports a sweep that is still running as in progress, not as a failure' do
+      stuck_tenant.switch { create(:user) }
+      allow(User).to receive(:destroy_all_async) do
+        enqueue_delete_user_job(stuck_tenant.schema_name)
+      end
+
+      run_task(poll_timeout: 0)
+
+      expect(Tenant.find_by(host: stuck_tenant.host)).to be_present
+      expect(report['errors'].first['error']).to match(/sweep still in progress/)
     end
   end
 end

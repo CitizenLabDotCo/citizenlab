@@ -19,13 +19,13 @@ namespace :single_use do
     totals = Hash.new(0)
 
     if dry_run
-      Rails.logger.info '🔍 DRY RUN MODE: analysing without writing.'
-      Rails.logger.info '⚠️  NO DATABASE WRITES WILL BE PERFORMED'
+      puts '🔍 DRY RUN MODE: analysing without writing.'
+      puts '⚠️  NO DATABASE WRITES WILL BE PERFORMED'
     else
-      Rails.logger.info '🚀 REPAIR MODE: adding the default presentation mode to available_views.'
-      Rails.logger.info '⚠️  THIS WILL MODIFY THE DATABASE'
+      puts '🚀 REPAIR MODE: adding the default presentation mode to available_views.'
+      puts '⚠️  THIS WILL MODIFY THE DATABASE'
     end
-    Rails.logger.info '=' * 80
+    puts '=' * 80
 
     # Deliberately not `Tenant.creation_finalized` or `safe_switch_each`: both skip deleted
     # tenants, and tenants stuck mid-deletion are among the ones that need repairing.
@@ -83,15 +83,15 @@ namespace :single_use do
       reporter.add_error("#{e.class}: #{e.message}", context: { tenant: tenant.host })
     end
 
-    Rails.logger.info "\n#{'=' * 80}"
-    Rails.logger.info(dry_run ? '📊 DRY RUN SUMMARY:' : '📊 REPAIR SUMMARY:')
-    Rails.logger.info "   #{dry_run ? 'Would fix' : 'Fixed'}: #{totals[:fixed]} phase(s)"
-    Rails.logger.info "   Skipped (unknown presentation_mode): #{totals[:skipped]}"
-    Rails.logger.info "   Skipped (schema predates the available_views migration): #{totals[:skipped_no_column]}"
-    Rails.logger.info "   Errors: #{reporter.errors.size}"
+    puts "\n#{'=' * 80}"
+    puts(dry_run ? '📊 DRY RUN SUMMARY:' : '📊 REPAIR SUMMARY:')
+    puts "   #{dry_run ? 'Would fix' : 'Fixed'}: #{totals[:fixed]} phase(s)"
+    puts "   Skipped (unknown presentation_mode): #{totals[:skipped]}"
+    puts "   Skipped (schema predates the available_views migration): #{totals[:skipped_no_column]}"
+    puts "   Errors: #{reporter.errors.size}"
 
     report_file = dry_run ? 'fix_phase_available_views_dry_run.json' : 'fix_phase_available_views.json'
     reporter.report!(report_file)
-    Rails.logger.info "   📝 Per-phase report: #{report_file}"
+    puts "   📝 Per-phase report: #{report_file}"
   end
 end

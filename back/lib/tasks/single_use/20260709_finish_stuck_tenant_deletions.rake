@@ -22,7 +22,7 @@ namespace :single_use do
   task finish_stuck_tenant_deletions: :environment do
     report_only = ENV['REPORT_ONLY']&.downcase == 'true'
     host = ENV.fetch('HOST', nil)
-    poll_timeout = ENV.fetch('POLL_TIMEOUT', '120').to_i
+    poll_timeout_override = ENV['POLL_TIMEOUT']&.to_i
 
     # Without a TTY `$stdin.gets` returns nil, which would silently skip every tenant and look
     # exactly like a successful run. This task destroys schemas; it must not guess.
@@ -34,7 +34,12 @@ namespace :single_use do
     reporter = ScriptReporter.new
     tenants = host ? Tenant.deleted.where(host: host) : Tenant.deleted
 
-    Rails.logger.info "Found #{tenants.count} tenant(s) with an unfinished deletion."
+    if tenants.none?
+      puts 'No unfinished tenant deletions on this cluster. Nothing to do.'
+      next
+    end
+
+    puts "Found #{tenants.count} tenant(s) with an unfinished deletion."
 
     tenants.each do |tenant|
       reporter.add_processed_tenant(tenant)
@@ -58,36 +63,55 @@ namespace :single_use do
         }
       end
 
-      jobs = QueJob.by_job_class(DeleteUserJob).all_by_tenant_schema_name(tenant.schema_name)
-      pending_jobs = jobs.not_finished.not_expired.count
-      failure_classes = jobs.expired.pluck(:last_error_message).map { |m| m.to_s.split(': ').first }.tally
+      user_jobs = QueJob.by_job_class(DeleteUserJob).all_by_tenant_schema_name(tenant.schema_name)
+      pending_user_jobs = user_jobs.not_finished.not_expired.count
+      failure_classes = user_jobs.expired.pluck(:last_error_message).map { |m| m.to_s.split(': ').first }.tally
 
-      Rails.logger.info "\n#{'=' * 80}"
-      Rails.logger.info "#{tenant.host}  (deleted_at #{tenant.deleted_at}, #{(Time.zone.today - tenant.deleted_at.to_date).to_i} days ago)"
-      Rails.logger.info "  users: #{stats[:users]} (admins: #{stats[:admins]})"
-      Rails.logger.info "  draft baskets: #{stats[:draft_baskets]}"
+      # `Tenants::DeleteJob` is enqueued outside the tenant switch, so it is not found by schema
+      # name; it references the tenant through its global id in the job arguments.
+      pending_tenant_jobs = QueJob.by_job_class(MultiTenancy::Tenants::DeleteJob)
+        .not_finished.not_expired
+        .where('args::text LIKE ?', "%#{tenant.id}%")
+        .count
+
       drifted = stats[:drifted_phases] || 'unknown (schema predates the available_views migration)'
-      Rails.logger.info "  drifted phases: #{drifted}   orphaned projects: #{stats[:orphaned_projects]}"
-      Rails.logger.info "  DeleteUserJobs: #{pending_jobs} pending, #{jobs.expired.count} expired"
-      failure_classes.each { |klass, count| Rails.logger.info "    #{count} x #{klass}" }
-      Rails.logger.info '  ⚠️  drifted phases remain — run single_use:fix_phase_available_views first' if stats[:drifted_phases].to_i.positive?
-      Rails.logger.info '  ℹ️  a DeleteUserJob is still pending — this deletion may not be stuck' if pending_jobs.positive?
+
+      puts "\n#{'=' * 80}"
+      puts "#{tenant.host}  (deleted_at #{tenant.deleted_at}, #{(Time.zone.today - tenant.deleted_at.to_date).to_i} days ago)"
+      puts "  users: #{stats[:users]} (admins: #{stats[:admins]})"
+      puts "  draft baskets: #{stats[:draft_baskets]}"
+      puts "  drifted phases: #{drifted}   orphaned projects: #{stats[:orphaned_projects]}"
+      puts "  DeleteUserJobs: #{pending_user_jobs} pending, #{user_jobs.expired.count} expired"
+      failure_classes.each { |klass, count| puts "    #{count} x #{klass}" }
+      puts '  ⚠️  drifted phases remain — run single_use:fix_phase_available_views first' if stats[:drifted_phases].to_i.positive?
 
       next if report_only
 
+      # A deletion with jobs still in flight is in progress, not stuck. Sweeping again would
+      # enqueue a second DeleteUserJob per user; because `pluck(:id)` has no ORDER BY, both
+      # sweeps walk the table in the same order and the later one fails on every user.
+      if pending_user_jobs.positive? || pending_tenant_jobs.positive?
+        puts '  ⏭️  Skipped: this deletion is still in progress (jobs pending). Sweeping again would duplicate them.'
+        next
+      end
+
       print "  Type the host to finish this deletion, 's' to skip, 'q' to quit: "
+      $stdout.flush
       answer = $stdin.gets&.strip
 
       break if answer.nil? || answer == 'q'
 
       if answer != tenant.host
-        Rails.logger.info '  Skipped.'
+        puts '  Skipped.'
         next
       end
 
       tenant_host = tenant.host
       tenant.switch { User.destroy_all_async }
 
+      # The sweep fans out at 5 jobs/sec, so the last job runs about `users / 5` seconds after it
+      # starts. A fixed timeout would report a large tenant as failed while it is still working.
+      poll_timeout = poll_timeout_override || [(stats[:users] / 5.0).ceil + 60, 120].max
       deadline = Time.zone.now + poll_timeout.seconds
       remaining = tenant.switch { User.count }
       while remaining.positive? && Time.zone.now < deadline
@@ -96,21 +120,34 @@ namespace :single_use do
       end
 
       if remaining.positive?
-        latest_error = jobs.expired.order(:expired_at).last&.last_error_message
-        reporter.add_error(
-          "#{remaining} user(s) could not be deleted. Latest job error: #{latest_error}",
-          context: { tenant: tenant_host }
-        )
-        Rails.logger.info "  ❌ #{remaining} user(s) remain; tenant not destroyed."
+        still_pending = user_jobs.not_finished.not_expired.count
+
+        if still_pending.positive?
+          puts "  ⏳ Sweep still in progress: #{remaining} user(s) left, #{still_pending} job(s) queued. Re-run later."
+          reporter.add_error(
+            "sweep still in progress after #{poll_timeout}s: #{remaining} user(s) remain, #{still_pending} job(s) queued",
+            context: { tenant: tenant_host }
+          )
+        else
+          # The *errored* jobs carry this attempt's failure. The *expired* ones carry the failure
+          # of a previous attempt, which may be months old.
+          latest_error = user_jobs.errored.order(error_count: :desc).first&.last_error_message
+          puts "  ❌ #{remaining} user(s) remain; tenant not destroyed."
+          puts "     Latest job error: #{latest_error}"
+          reporter.add_error(
+            "#{remaining} user(s) could not be deleted. Latest job error: #{latest_error}",
+            context: { tenant: tenant_host }
+          )
+        end
         next
       end
 
       MultiTenancy::Tenants::DeleteJob.perform_now(tenant)
       reporter.add_delete('Tenant', tenant.id, context: { host: tenant_host })
-      Rails.logger.info "  ✅ #{tenant_host} destroyed."
+      puts "  ✅ #{tenant_host} destroyed."
     rescue StandardError => e
       reporter.add_error("#{e.class}: #{e.message}", context: { tenant: tenant.host })
-      Rails.logger.error "  ❌ #{tenant.host}: #{e.class}: #{e.message}"
+      puts "  ❌ #{tenant.host}: #{e.class}: #{e.message}"
     end
 
     # Skipped tenants are those in `processed_tenants` that appear in neither `deletes` nor `errors`.
