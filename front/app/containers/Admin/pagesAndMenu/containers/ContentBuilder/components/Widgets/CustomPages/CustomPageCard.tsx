@@ -30,6 +30,7 @@ const CustomPageCard = ({ page, emoji }: Props) => {
 
   return (
     <Tile
+      className="e2e-custom-page-card"
       linkTo={`/pages/${slug}`}
       buttonStyle="text"
       bgHoverColor={colors.grey100}

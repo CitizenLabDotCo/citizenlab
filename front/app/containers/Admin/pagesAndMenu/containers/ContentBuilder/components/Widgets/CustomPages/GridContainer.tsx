@@ -30,6 +30,7 @@ const GridContainer = ({ children }: Props) => {
 
   return (
     <Box
+      className="e2e-custom-pages-widget"
       px={craftComponentDefaultPadding}
       py={DEFAULT_Y_PADDING}
       w="100%"
