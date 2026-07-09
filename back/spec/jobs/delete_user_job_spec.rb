@@ -70,9 +70,30 @@ RSpec.describe DeleteUserJob do
         user.destroy!
       end
 
-      it 'raise an error' do
-        expect { described_class.perform_now(user.id) }
-          .to raise_error(ActiveRecord::RecordNotFound)
+      it 'does not raise an error' do
+        expect { described_class.perform_now(user.id) }.not_to raise_error
+      end
+
+      it 'does not trigger after_destroy side effects' do
+        sidefx_service = instance_spy(SideFxUserService, 'sidefx_service')
+        allow(SideFxUserService).to receive(:new).and_return(sidefx_service)
+
+        described_class.perform_now(user.id)
+
+        expect(sidefx_service).not_to have_received(:after_destroy)
+      end
+
+      it 'does not ban the email' do
+        expect { described_class.perform_now(user.id, create(:admin), ban_email: true) }
+          .not_to change(EmailBan, :count)
+      end
+
+      it 'logs a warning' do
+        allow(Rails.logger).to receive(:warn)
+
+        described_class.perform_now(user.id)
+
+        expect(Rails.logger).to have_received(:warn).with(/user #{user.id} no longer exists/)
       end
     end
 
