@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListFolders < McpServer::BaseTool
   def name = 'list_folders'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists project folders. Search by title.'
 
   def input_schema
@@ -26,7 +27,8 @@ class McpServer::Tools::ListFolders < McpServer::BaseTool
         'folders',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc slug]
+        serializer: McpServer::Serializers::Folder,
+        params: { current_user: }
       )
     end
   end

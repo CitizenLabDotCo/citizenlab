@@ -72,6 +72,7 @@ const Poll = ({ projectId, phaseId }: Props) => {
             questions={pollQuestions.data}
             phaseId={phaseId}
             disabled={!enabled}
+            disabledReason={disabled_reason}
             disabledMessage={message}
             actionDisabledAndNotFixable={actionDisabledAndNotFixable}
           />

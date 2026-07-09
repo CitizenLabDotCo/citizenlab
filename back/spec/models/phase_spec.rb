@@ -255,6 +255,17 @@ RSpec.describe Phase do
       phase = build(:phase, project:, start_at: 2.days.after(p.end_at), end_at: nil)
       expect(phase).not_to be_valid
     end
+
+    it 'accepts a standalone phase overlapping a timeline phase' do
+      phase = build(:phase, :standalone, project:, start_at: p.start_at + 1.second, end_at: p.end_at - 1.second)
+      expect(phase).to be_valid
+    end
+
+    it 'accepts standalone phases overlapping each other' do
+      create(:phase, :standalone, project:, start_at: p.start_at, end_at: p.end_at)
+      phase = build(:phase, :standalone, project:, start_at: p.start_at, end_at: p.end_at)
+      expect(phase).to be_valid
+    end
   end
 
   describe 'voting_max_total' do
@@ -395,6 +406,26 @@ RSpec.describe Phase do
     end
   end
 
+  describe '.ordered' do
+    it 'orders by placement (timeline first), then start_at, then created_at' do
+      project = create(:project)
+      shared_start = 1.day.ago
+      timeline = create(:phase, project:, start_at: 20.days.from_now, end_at: 30.days.from_now)
+      later_standalone = create(:phase, :standalone, project:, start_at: 5.days.from_now, end_at: 10.days.from_now)
+      # Same start_at: created_at breaks the tie (set opposite to creation order to
+      # prove created_at decides it, not insertion/id order).
+      newer_standalone = create(:phase, :standalone, project:, start_at: shared_start, end_at: 2.days.from_now, created_at: 1.hour.ago)
+      older_standalone = create(:phase, :standalone, project:, start_at: shared_start, end_at: 2.days.from_now, created_at: 3.hours.ago)
+
+      expect(described_class.where(project: project).ordered).to eq [
+        timeline,         # on_timeline before standalone, despite the latest start_at
+        older_standalone, # then by start_at; for equal start_at, by created_at
+        newer_standalone,
+        later_standalone
+      ]
+    end
+  end
+
   describe '.current' do
     let(:timeline_service) { TimelineService.new }
 
@@ -509,6 +540,12 @@ RSpec.describe Phase do
       phase.start_at -= 1.day
       expect(phase).to be_valid
     end
+
+    it 'allows a standalone phase to be open-ended even when it is not the last phase' do
+      first_phase = project.phases.first
+      standalone = build(:phase, :standalone, project:, start_at: first_phase.start_at, end_at: nil)
+      expect(standalone).to be_valid
+    end
   end
 
   context 'when the project has an open-ended last phase' do
@@ -553,6 +590,16 @@ RSpec.describe Phase do
 
         expect(last_phase.reload.end_at).to eq(new_phase_start)
         expect(new_phase.previous_phase_end_at_updated?).to be true
+      end
+    end
+
+    context 'and a standalone phase is added' do
+      it 'after the last phase, it does not close the previous phase' do
+        new_phase_start = last_phase.start_at + 15.days
+        new_phase = create(:phase, :standalone, project:, start_at: new_phase_start, end_at: new_phase_start + 1.day)
+
+        expect(last_phase.reload.end_at).to be_nil
+        expect(new_phase.previous_phase_end_at_updated?).to be false
       end
     end
 

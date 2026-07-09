@@ -51,10 +51,20 @@ module ContentBuilder
 
     # Puts one buildable's description on the Content Builder, picking the widget by
     # content (blank / media / text), and gives projects their project_page layout
-    # (built from the description layout, so it must be created first). Existing
+    # (built from the description layout, so it must be created first). A disabled
+    # description layout is re-pointed at the description and re-enabled; enabled
     # layouts are never touched.
     def ensure_on_content_builder!(buildable)
-      unless ContentBuilder::Layout.exists?(content_buildable: buildable, code: layout_code(buildable))
+      existing = ContentBuilder::Layout.find_by(
+        content_buildable: buildable,
+        code: layout_code(buildable)
+      )
+
+      if existing
+        unless existing.enabled
+          existing.update!(enabled: true, craftjs_json: content_aware_craftjs_json(buildable))
+        end
+      else
         create_layout!(buildable, content_aware_craftjs_json(buildable))
       end
 

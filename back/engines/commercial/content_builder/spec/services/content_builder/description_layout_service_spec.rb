@@ -172,6 +172,19 @@ describe ContentBuilder::DescriptionLayoutService do
       expect(description.reload.updated_at).to eq(description.created_at)
       expect(project.content_builder_layouts.find_by(code: 'project_page')).to be_present
     end
+
+    it 're-points a disabled layout at the description and enables it' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Hi</p>' })
+      layout = create(:layout, content_buildable: project, code: 'project_description', enabled: false)
+
+      expect { service.ensure_on_content_builder!(project) }
+        .not_to change { project.content_builder_layouts.where(code: 'project_description').count }
+
+      expect(layout.reload.enabled).to be(true)
+      node = description_node(layout)
+      expect(node['type']['resolvedName']).to eq('TextMultiloc')
+      expect(node['props']['text']).to eq({ 'en' => '<p>Hi</p>' })
+    end
   end
 
   describe '#text_node / #bridge_node (generic builders reused by the migration)' do

@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListPollQuestions < McpServer::BaseTool
   def name = 'list_poll_questions'
+  def annotations = READ_ANNOTATIONS
   def title = 'List poll questions'
   def description = 'Lists poll questions for a phase, in display order, each with its answer options'
 
@@ -17,7 +18,8 @@ class McpServer::Tools::ListPollQuestions < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      phase = Phase.find(params[:phase_id])
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
       return wrong_method_error(phase) unless phase.poll?
 
       scope = Polls::Question
@@ -31,8 +33,6 @@ class McpServer::Tools::ListPollQuestions < McpServer::BaseTool
         **params.slice(:page, :per_page),
         serializer: McpServer::Serializers::PollQuestion
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Phase not found: #{params[:phase_id]}")
     end
 
     private
