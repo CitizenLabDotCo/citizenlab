@@ -10,14 +10,20 @@ const useProjectDescription = (
   projectId: string,
   { enabled = true, legacyEnabled = true } = {}
 ) => {
-  const { data: pageLayout, isInitialLoading: pageLayoutLoading } =
-    useProjectPageLayout(projectId, enabled);
+  const {
+    data: pageLayout,
+    isInitialLoading: pageLayoutLoading,
+    refetch: refetchPageLayout,
+  } = useProjectPageLayout(projectId, enabled);
 
   const { data: legacyLayout, isInitialLoading: legacyLayoutLoading } =
     useContentBuilderLayout(
       'project',
       projectId,
-      enabled && legacyEnabled && !pageLayoutLoading && !pageLayout
+      enabled &&
+        legacyEnabled &&
+        !pageLayoutLoading &&
+        !pageLayout?.data.attributes.enabled
     );
 
   const projectPageJson = useMemo(
@@ -39,6 +45,7 @@ const useProjectDescription = (
     projectPageJson,
     descriptionEditorData,
     legacyLayout,
+    refetchPageLayout,
   };
 };
 
