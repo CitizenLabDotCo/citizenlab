@@ -2,74 +2,135 @@
 
 require 'rails_helper'
 
+# Tested through anonymous serializers that declare exactly the feature under test,
+# so this spec depends on no domain serializer. Integration with the real web
+# serializers is covered by the tool specs.
 describe McpServer::Serializers::Base do
-  let_it_be(:current_user) { create(:super_admin) }
+  let_it_be(:record) { create(:custom_field_select, :with_options) }
 
-  describe 'wrapping a web API serializer' do
+  describe '.serialize' do
+    let(:serializer) do
+      Class.new(described_class) do
+        def attributes(record) = { id: record.id }
+      end
+    end
+
+    it 'returns a hash for a single record and an array for a relation' do
+      expect(serializer.serialize(record)).to be_a(Hash)
+      expect(serializer.serialize(CustomField.all)).to be_an(Array)
+    end
+
+    it 'returns an empty array for an empty relation' do
+      expect(serializer.serialize(CustomField.none)).to eq([])
+    end
+  end
+
+  describe 'with a wrapped upstream serializer' do
+    before do
+      stub_const('UpstreamOptionSerializer', Class.new do
+        include JSONAPI::Serializer
+        set_type :option
+        attribute :option_title, &:title_multiloc
+      end)
+
+      stub_const('UpstreamSerializer', Class.new do
+        include JSONAPI::Serializer
+        set_type :probe
+        attribute :probe_title, &:title_multiloc
+        attribute(:echo) { |_record, params| params[:probe] }
+        has_many :options, serializer: UpstreamOptionSerializer
+      end)
+    end
+
+    let(:serializer) { Class.new(described_class) { wraps UpstreamSerializer } }
+
     it 'flattens the JSONAPI output into a plain hash' do
-      project = create(:project)
+      serialized = serializer.serialize(record)
 
-      serialized = McpServer::Serializers::Project.serialize(project, params: { current_user: })
-
-      expect(serialized).to be_a(Hash)
-      expect(serialized[:id]).to eq(project.id)
-      expect(serialized[:title_multiloc]).to eq(project.title_multiloc)
-      expect(serialized).not_to include(:data, :attributes, :relationships)
-    end
-
-    it 'merges the click-through URLs when the serializer opts in' do
-      project = create(:project)
-
-      serialized = McpServer::Serializers::Project.serialize(project, params: { current_user: })
-
-      expect(serialized[:admin_url]).to end_with("/admin/projects/#{project.id}")
-      expect(serialized[:public_url]).to end_with("/projects/#{project.slug}")
-    end
-  end
-
-  describe 'inline relationships' do
-    it 'embeds the related resources instead of exposing ids' do
-      field = create(:custom_field_select, :with_options)
-
-      serialized = McpServer::Serializers::CustomField.serialize(field)
-
-      expect(serialized[:options]).to be_an(Array)
-      expect(serialized[:options].pluck(:id)).to match_array(field.options.pluck(:id))
-      expect(serialized[:options].first).to include(:title_multiloc)
-      expect(serialized).not_to include(:option_ids)
-    end
-  end
-
-  describe 'building from scratch (no wraps)' do
-    it 'uses the #attributes override' do
-      permission = create(:permission)
-
-      serialized = McpServer::Serializers::Permission.serialize(permission)
-
-      expect(serialized.keys).to eq(
-        %i[action permitted_by group_ids demographic_questions verification_expiry access_denied_explanation_multiloc]
+      expect(serialized).to match(
+        id: record.id,
+        probe_title: record.title_multiloc,
+        echo: nil,
+        option_ids: match_array(record.option_ids)
       )
+    end
+
+    it 'serializes every record of a collection, in order' do
+      other_record = create(:custom_field)
+
+      serialized = serializer.serialize([record, other_record])
+
+      expect(serialized).to match([
+        a_hash_including(id: record.id, probe_title: record.title_multiloc),
+        a_hash_including(id: other_record.id, probe_title: other_record.title_multiloc)
+      ])
+    end
+
+    it 'forwards params to the upstream serializer' do
+      serialized = serializer.serialize(record, params: { probe: 'x' })
+
+      expect(serialized[:echo]).to eq('x')
+    end
+
+    it 'embeds relationships declared as inline instead of exposing ids' do
+      serializer = Class.new(described_class) do
+        wraps UpstreamSerializer
+        inline :options
+      end
+
+      serialized = serializer.serialize(record)
+
+      expect(serialized).not_to include(:option_ids)
+      expect(serialized[:options]).to match_array(
+        record.options.map { |option| { id: option.id, option_title: option.title_multiloc } }
+      )
+    end
+  end
+
+  describe 'with a from-scratch serializer (no wraps)' do
+    let(:serializer) do
+      Class.new(described_class) do
+        def attributes(record) = { 'id' => record.id, 'kind' => 'probe' }
+      end
+    end
+
+    it 'uses the #attributes override and symbolizes its top-level keys' do
+      serialized = serializer.serialize(record)
+
+      expect(serialized).to match(id: record.id, kind: 'probe')
+    end
+
+    it 'exposes `params` to the #attributes override' do
+      serializer = Class.new(described_class) do
+        def attributes(_record) = { echo: params[:probe] }
+      end
+
+      serialized = serializer.serialize(record, params: { probe: 'x' })
+
+      expect(serialized).to eq(echo: 'x')
     end
 
     it 'raises when neither wraps nor #attributes is provided' do
       serializer = Class.new(described_class)
 
-      expect { serializer.serialize(create(:area)) }
+      expect { serializer.serialize(record) }
         .to raise_error(NotImplementedError, /wraps/)
     end
   end
 
-  describe 'collection semantics' do
-    it 'returns an array for a relation and a hash for a single record' do
-      create_list(:area, 2)
-      params = { current_user: }
+  describe '#urls' do
+    it 'returns the admin and public URLs of the record' do
+      project = create(:project)
+      serializer = Class.new(described_class) do
+        def attributes(record) = urls(record)
+      end
 
-      expect(McpServer::Serializers::Area.serialize(Area.all, params:)).to be_an(Array)
-      expect(McpServer::Serializers::Area.serialize(Area.first, params:)).to be_a(Hash)
-    end
+      serialized = serializer.serialize(project)
 
-    it 'returns an empty array for an empty relation' do
-      expect(McpServer::Serializers::Area.serialize(Area.none)).to eq([])
+      expect(serialized).to match(
+        admin_url: end_with("/admin/projects/#{project.id}"),
+        public_url: end_with("/projects/#{project.slug}")
+      )
     end
   end
 end

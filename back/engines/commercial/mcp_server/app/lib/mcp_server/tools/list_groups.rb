@@ -23,7 +23,7 @@ class McpServer::Tools::ListGroups < McpServer::BaseTool
         'groups',
         scope.order_new,
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc membership_type memberships_count]
+        serializer: McpServer::Serializers::Group
       )
     end
   end

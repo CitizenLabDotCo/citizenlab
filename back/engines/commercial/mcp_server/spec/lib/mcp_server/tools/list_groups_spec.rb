@@ -16,7 +16,7 @@ describe McpServer::Tools::ListGroups do
     response = list
 
     expect(response).not_to be_error
-    expect(response.structured_content[:data].pluck('id')).to eq([group_b.id, group_a.id])
+    expect(response.structured_content[:data].pluck(:id)).to eq([group_b.id, group_a.id])
   end
 
   it 'serializes group fields' do
@@ -25,7 +25,7 @@ describe McpServer::Tools::ListGroups do
     response = list
 
     expect(response.structured_content[:data].sole)
-      .to include('title_multiloc', 'membership_type', 'memberships_count')
+      .to include(:title_multiloc, :membership_type, :memberships_count)
   end
 
   it_behaves_like 'a paginated list tool'
@@ -37,7 +37,7 @@ describe McpServer::Tools::ListGroups do
     response = list(search: 'Seniors')
 
     expect(response).not_to be_error
-    expect(response.structured_content[:data].pluck('id')).to contain_exactly(matching.id)
+    expect(response.structured_content[:data].pluck(:id)).to contain_exactly(matching.id)
   end
 
 end
