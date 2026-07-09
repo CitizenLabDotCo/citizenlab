@@ -10,7 +10,6 @@
   "app.components.Comments.commentingDisabledInactiveProject": "Commenting is not possible because this project is currently not active.",
   "app.components.Comments.commentingDisabledProject": "Commenting in this project is currently disabled.",
   "app.components.Comments.commentingDisabledUnverified": "{verifyIdentityLink} to comment.",
-  "app.components.Comments.commentingMaybeNotPermitted": "Please {signInLink} to see what actions can be taken.",
   "app.components.Comments.invisibleTitleComments": "Comments",
   "app.components.Comments.official": "Official",
   "app.components.Comments.replyToComment": "Reply to comment",
