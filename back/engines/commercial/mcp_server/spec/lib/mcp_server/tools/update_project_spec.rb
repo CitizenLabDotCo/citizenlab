@@ -55,6 +55,17 @@ describe McpServer::Tools::UpdateProject do
     expect(project.reload.areas).to contain_exactly(area_c)
   end
 
+  it 'replaces the visibility groups' do
+    group_a, group_b = create_list(:group, 2)
+    project.update!(visible_to: 'groups', groups: [group_a])
+
+    response = run(project_id: project.id, group_ids: [group_b.id])
+
+    expect(response).not_to be_error
+    expect(project.reload.groups).to contain_exactly(group_b)
+    expect(response.structured_content).to include(group_ids: [group_b.id])
+  end
+
   it 'updates only the given attributes' do
     response = nil
     expect { response = run(project_id: project.id, listed: false) }

@@ -29,6 +29,18 @@ describe McpServer::Tools::CreateProject do
     )
   end
 
+  it 'creates a project visible to specific groups' do
+    group = create(:group)
+
+    response = run(params.merge(visible_to: 'groups', group_ids: [group.id]))
+
+    expect(response).not_to be_error
+    project = Project.find(response.structured_content[:id])
+    expect(project.visible_to).to eq('groups')
+    expect(project.groups).to contain_exactly(group)
+    expect(response.structured_content).to include(group_ids: [group.id])
+  end
+
   it 'returns structured validation errors for invalid params' do
     response = nil
 
