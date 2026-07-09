@@ -164,14 +164,7 @@ RSpec.describe Tenant do
       t.destroy
     end
 
-    it 'fails on a duplicate hostname' do
-      create(:tenant)
-      expect(build(:tenant, host: described_class.current.host)).to be_invalid
-    end
-  end
-
-  describe 'Que jobs' do
-    it 'are deleted on destroy' do
+    it 'deletes the tenant que_jobs on destroy' do
       tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
       tenant_job = create(:que_job, tenant_schema_name: tenant.schema_name)
       other_job = create(:que_job, tenant_schema_name: described_class.current.schema_name)
@@ -180,6 +173,11 @@ RSpec.describe Tenant do
 
       expect(QueJob.exists?(tenant_job.id)).to be false
       expect(QueJob.exists?(other_job.id)).to be true
+    end
+
+    it 'fails on a duplicate hostname' do
+      create(:tenant)
+      expect(build(:tenant, host: described_class.current.host)).to be_invalid
     end
   end
 
