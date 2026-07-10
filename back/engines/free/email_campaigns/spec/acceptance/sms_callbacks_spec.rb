@@ -34,6 +34,38 @@ resource 'SMS Callbacks' do
       expect(delivery.reload.status).to eq 'delivered'
     end
 
+    # The provider needs a moment to populate the segment count and price, so the read is
+    # deferred rather than fired the instant the callback lands.
+    example 'reads back what the message cost once it reaches a terminal status' do
+      freeze_time do
+        expect { do_request(callback_params) }
+          .to have_enqueued_job(EmailCampaigns::Sms::FetchMessageJob)
+          .with(delivery.id)
+          .at(EmailCampaigns::Sms::FetchMessageJob::SETTLE_DELAY.from_now)
+      end
+    end
+
+    context 'when the delivery is not yet terminal' do
+      let(:message_status) { 'sent' }
+      let!(:delivery) do
+        EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'queued', message_sid: 'SM_123')
+      end
+
+      example 'does not read the message back yet, since the price is not settled' do
+        expect { do_request(callback_params) }
+          .not_to have_enqueued_job(EmailCampaigns::Sms::FetchMessageJob)
+      end
+    end
+
+    context 'when a duplicate terminal callback arrives' do
+      before { delivery.advance_status!('delivered') }
+
+      example 'does not enqueue a second fetch' do
+        expect { do_request(callback_params) }
+          .not_to have_enqueued_job(EmailCampaigns::Sms::FetchMessageJob)
+      end
+    end
+
     context 'when the signature is invalid' do
       let(:signature_valid) { false }
 

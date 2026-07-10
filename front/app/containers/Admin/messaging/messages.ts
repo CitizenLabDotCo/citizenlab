@@ -369,6 +369,30 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.fieldSmsBodyError',
     defaultMessage: 'Provide a message for all languages',
   },
+  fieldSmsBodyTooManySegmentsError: {
+    id: 'app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError',
+    defaultMessage:
+      'Keep each message to {maxSegments, plural, one {# SMS} other {# SMS}} or fewer',
+  },
+  smsSegmentPill: {
+    id: 'app.containers.Admin.messaging.smsSegmentPill',
+    defaultMessage: '{segmentCount, plural, one {# SMS} other {# SMS}}',
+  },
+  smsSegmentCost: {
+    id: 'app.containers.Admin.messaging.smsSegmentCost',
+    defaultMessage:
+      '{segmentCount, plural, one {Sent as # message to every recipient.} other {Sent as # messages to every recipient. Each one is billed separately.}}',
+  },
+  smsSegmentCostOverLimit: {
+    id: 'app.containers.Admin.messaging.smsSegmentCostOverLimit',
+    defaultMessage:
+      'Sent as {segmentCount} messages to every recipient. The limit is {maxSegments}, so this cannot be sent.',
+  },
+  smsSegmentEncodingWarning: {
+    id: 'app.containers.Admin.messaging.smsSegmentEncodingWarning',
+    defaultMessage:
+      '{characters} switched this message to Unicode, which fits {perSegment} characters per message instead of {gsmPerSegment}.',
+  },
   manageButtonLabel: {
     id: 'app.containers.Admin.messaging.manageButtonLabel',
     defaultMessage: 'Manage',

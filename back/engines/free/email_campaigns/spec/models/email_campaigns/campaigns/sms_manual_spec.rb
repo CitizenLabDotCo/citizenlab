@@ -20,6 +20,48 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
     end
   end
 
+  # 153 GSM-7 characters per concatenated segment, 67 once the message is UCS-2.
+  describe 'segment limit, enforced only when sending' do
+    let(:max_segments) { described_class::MAX_SEGMENTS }
+
+    def body_multiloc_errors(body_multiloc)
+      campaign = build(:sms_manual_campaign, body_multiloc: body_multiloc)
+      campaign.valid?(:send)
+      campaign.errors.details[:body_multiloc].pluck(:error)
+    end
+
+    it 'allows a body of exactly the maximum number of segments' do
+      expect(body_multiloc_errors({ 'en' => 'a' * (153 * max_segments) })).to be_empty
+    end
+
+    it 'rejects a body one character over the maximum' do
+      expect(body_multiloc_errors({ 'en' => 'a' * ((153 * max_segments) + 1) }))
+        .to include(:too_many_segments)
+    end
+
+    it 'rejects when a single translation is over, even if the others fit' do
+      errors = body_multiloc_errors({
+        'en' => 'Short enough',
+        'nl-NL' => 'a' * ((153 * max_segments) + 1)
+      })
+
+      expect(errors).to include(:too_many_segments)
+    end
+
+    # A language outside GSM-7 fits 67 characters per segment, not 153, so it hits the
+    # limit at well under half the length of the English body.
+    it 'rejects a shorter body in a language that forces UCS-2' do
+      expect(body_multiloc_errors({ 'en' => 'ж' * ((67 * max_segments) + 1) }))
+        .to include(:too_many_segments)
+    end
+
+    it 'is not enforced outside the send context, so a draft can be saved over the limit' do
+      campaign = build(:sms_manual_campaign, body_multiloc: { 'en' => 'a' * 10_000 })
+
+      expect(campaign).to be_valid
+    end
+  end
+
   describe 'channel and manual flags' do
     subject(:campaign) { build(:sms_manual_campaign) }
 

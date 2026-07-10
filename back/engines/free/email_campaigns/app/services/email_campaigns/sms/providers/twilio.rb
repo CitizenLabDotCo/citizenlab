@@ -37,6 +37,20 @@ module EmailCampaigns
           raise ProviderError, e.message
         end
 
+        def fetch_message(message_sid)
+          message = client.api.v2010.messages(message_sid).fetch
+
+          {
+            num_segments: message.num_segments&.to_i,
+            price: message.price.presence&.to_d,
+            price_unit: message.price_unit.presence
+          }
+        rescue ::Twilio::REST::RestError => e
+          raise error_for(e)
+        rescue ::Twilio::REST::TwilioError => e
+          raise ProviderError, e.message
+        end
+
         def verify_signature(request)
           validator = ::Twilio::Security::RequestValidator.new(config['twilio_auth_token'])
           signature = request.headers['X-Twilio-Signature']

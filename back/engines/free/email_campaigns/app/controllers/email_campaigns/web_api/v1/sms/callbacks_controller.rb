@@ -30,7 +30,17 @@ module EmailCampaigns
 
       # advance_status! is a no-op when the callback arrives out of order; we
       # still return 200 so the provider stops retrying.
-      delivery.advance_status!(parsed[:status])
+      advanced = delivery.advance_status!(parsed[:status])
+
+      # The message is now final, so what it cost is settled. The provider never sends
+      # that in a callback, so read it back once, on the transition into a terminal
+      # status
+      # The delay gives the provider time to populate the segment count and price.
+      if advanced && delivery.terminal?
+        job = EmailCampaigns::Sms::FetchMessageJob
+        job.set(wait: job::SETTLE_DELAY).perform_later(delivery.id)
+      end
+
       head :ok
     end
 

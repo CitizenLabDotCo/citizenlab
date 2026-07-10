@@ -23,6 +23,18 @@ RSpec.describe EmailCampaigns::Sms::Delivery do
     end
   end
 
+  describe '#terminal?' do
+    it 'is true only for the statuses a message cannot move on from' do
+      described_class::TERMINAL_STATUSES.each do |status|
+        expect(described_class.new(body: 'hi', status: status)).to be_terminal
+      end
+
+      (described_class::STATUSES - described_class::TERMINAL_STATUSES).each do |status|
+        expect(described_class.new(body: 'hi', status: status)).not_to be_terminal
+      end
+    end
+  end
+
   describe '#advance_status!' do
     subject(:delivery) { described_class.create!(body: 'hi', status: 'sent') }
 

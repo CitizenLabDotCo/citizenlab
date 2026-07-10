@@ -13,6 +13,9 @@
 #  error_message :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  num_segments  :integer
+#  price         :decimal(10, 5)
+#  price_unit    :string
 #
 # Indexes
 #
@@ -50,6 +53,10 @@ module EmailCampaigns
       validates :body, presence: true
       validates :status, inclusion: { in: STATUSES }
 
+      def terminal?
+        TERMINAL_STATUSES.include?(status)
+      end
+
       # Moves the delivery to `new_status` only when that represents forward
       # progress, so out-of-order provider callbacks (Twilio warns these can arrive
       # in any order) never regress it. A delivery already in a terminal status is
@@ -57,7 +64,7 @@ module EmailCampaigns
       # @return [Boolean] whether the status actually advanced
       def advance_status!(new_status)
         raise ArgumentError, "unknown status: #{new_status.inspect}" unless STATUSES.include?(new_status)
-        return false if TERMINAL_STATUSES.include?(status)
+        return false if terminal?
         return false if STATUSES.index(new_status) <= STATUSES.index(status)
 
         update!(status: new_status)

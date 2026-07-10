@@ -3725,7 +3725,10 @@ CREATE TABLE public.sms_deliveries (
     status character varying NOT NULL,
     error_message character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    num_segments integer,
+    price numeric(10,5),
+    price_unit character varying
 );
 
 
@@ -8922,6 +8925,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260709105146'),
 ('20260701113056'),
 ('20260630140754'),
 ('20260625093937'),

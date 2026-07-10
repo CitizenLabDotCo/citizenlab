@@ -20,9 +20,13 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMult
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { MAX_SMS_SEGMENTS } from 'utils/sms/segments';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
+import validateSmsBodyMultiloc from 'utils/yup/validateSmsBodyMultiloc';
 
 import messages from '../../messages';
+
+import SegmentCounter from './SegmentCounter';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -57,8 +61,11 @@ const SmsCampaignForm = ({
     subject_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldSmsLabelError)
     ),
-    body_multiloc: validateMultilocForEveryLocale(
-      formatMessage(messages.fieldSmsBodyError)
+    body_multiloc: validateSmsBodyMultiloc(
+      formatMessage(messages.fieldSmsBodyError),
+      formatMessage(messages.fieldSmsBodyTooManySegmentsError, {
+        maxSegments: MAX_SMS_SEGMENTS,
+      })
     ),
     group_ids: array().optional(),
   });
@@ -98,7 +105,6 @@ const SmsCampaignForm = ({
               labelTooltipText={
                 <FormattedMessage {...messages.fieldSmsLabelTooltip} />
               }
-              maxCharCount={80}
             />
           </StyledSectionField>
           <StyledSectionField>
@@ -117,10 +123,16 @@ const SmsCampaignForm = ({
             />
           </StyledSectionField>
           <SectionField className="e2e-sms-campaign_body_multiloc">
+            {/*
+              No maxCharCount here: TextArea treats it as a hard cap and truncates what
+              the admin types. Going over is a cost decision, not a typo, so the limit is
+              enforced on submit instead and SegmentCounter shows the running cost.
+            */}
             <TextAreaMultilocWithLocaleSwitcher
               name="body_multiloc"
               label={formatMessage(messages.fieldSmsBody)}
-              rows={5}
+              minRows={4}
+              renderCounter={(value) => <SegmentCounter body={value} />}
             />
           </SectionField>
         </StyledSection>
