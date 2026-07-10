@@ -24,7 +24,6 @@ describe('Project description builder navigation', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.apiToggleProjectDescriptionBuilder({ projectId, enabled: false });
     cy.visit(`/admin/projects/${projectId}/general`);
   });
 
@@ -32,20 +31,7 @@ describe('Project description builder navigation', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  // The toggle's upsert mutation invalidates several queries on success, which
-  // re-renders the parent and detaches the link from the DOM mid-click. Wait
-  // for the upsert to land before resolving and clicking the link.
-  const enableBuilderAndWait = () => {
-    cy.intercept(
-      'POST',
-      '**/content_builder_layouts/project_description/upsert'
-    ).as('enableBuilder');
-    cy.dataCy('e2e-toggle-enable-project-description-builder').click();
-    cy.wait('@enableBuilder');
-  };
-
   it('navigates to project description builder when edit project description link clicked', () => {
-    enableBuilderAndWait();
     cy.get('#e2e-project-description-builder-link')
       .should('be.visible')
       .click();
@@ -58,7 +44,6 @@ describe('Project description builder navigation', () => {
   });
 
   it('navigates to project settings when content builder goBack clicked', () => {
-    enableBuilderAndWait();
     cy.get('#e2e-project-description-builder-link')
       .should('be.visible')
       .click();

@@ -189,7 +189,6 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'FolderFiles',
 
   // Project description builder widgets
-  'InfoWithAccordions',
   'AboutBox',
 ] satisfies WidgetName[]);
 

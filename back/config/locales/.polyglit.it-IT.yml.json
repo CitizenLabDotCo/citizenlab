@@ -494,9 +494,19 @@
     "verified_at": "2026-04-20T15:38:06.365179Z",
     "verified_by": "Roger"
   },
+  "form_builder.pdf_export.logic_if_answered_end": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:30.083085Z",
+    "verified_by": "Roger"
+  },
   "form_builder.pdf_export.logic_if_answered_go_to": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.365179Z",
+    "verified_by": "Roger"
+  },
+  "form_builder.pdf_export.logic_no_further_questions": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:30.083085Z",
     "verified_by": "Roger"
   },
   "form_builder.pdf_export.logic_section": {
@@ -1007,6 +1017,11 @@
   "static_pages.faq_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
+    "verified_by": "Roger"
+  },
+  "static_pages.infopage_body": {
+    "state": "verified",
+    "verified_at": "2026-07-07T15:45:04.424780Z",
     "verified_by": "Roger"
   },
   "static_pages.infopage_title": {

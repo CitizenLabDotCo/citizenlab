@@ -21,6 +21,15 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
 
   def name = 'create_phase'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Creates a new phase for a project. Some fields are conditionally required
@@ -287,20 +296,23 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
+
       phase = Phase.new(**params)
-      authorize_project!(phase.project)
+      authorize_project!(project)
       authorize(phase, :create?)
 
       SideFxPhaseService.new.before_create(phase, current_user)
       phase.save!
       SideFxPhaseService.new.after_create(phase, current_user)
 
-      ok(
+      response(
         "Created phase #{phase.id}",
-        structured: phase.as_json(only: %i[id project_id title_multiloc start_at end_at participation_method])
+        structured: McpServer::Serializers::Phase.serialize(phase, params: { current_user: })
       )
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 

@@ -67,6 +67,7 @@ const Survey = ({
       action="taking_survey"
       enabled={enabled}
       phaseId={phaseId}
+      disabledReason={disabled_reason}
       disabledMessage={disabledMessage}
     >
       <Container className={`${className} e2e-${surveyService}-survey enabled`}>
