@@ -1,0 +1,4 @@
+uid,comment,author,value,weight,created_at,updated_at
+decidim--comments--comment-vote--1,decidim--comments--comment--1,decidim-user-3,up,1,2024-01-22 12:34:48 +0100,2024-01-22 12:34:48 +0100
+decidim--comments--comment-vote--2,decidim--comments--comment--1,decidim-user-131,up,1,2024-01-22 12:35:00 +0100,2024-01-22 12:35:00 +0100
+decidim--comments--comment-vote--3,decidim--comments--comment--2,decidim-user-2,down,1,2024-01-22 12:36:00 +0100,2024-01-22 12:36:00 +0100

@@ -62,8 +62,8 @@ module DecidimImporter
     # container-level `*--attachments.csv` read by {#read_container}.
     COMPONENT_SIDECARS = {
       PROPOSALS_COMPONENT => [['*--proposals.csv', :proposals], ['*--comments.csv', :comments],
-        ['*--followers.csv', :followers], ['*--endorsements.csv', :endorsements],
-        ['*--attachments.csv', :proposal_attachments]],
+        ['*--comments-votes.csv', :comment_votes], ['*--followers.csv', :followers],
+        ['*--endorsements.csv', :endorsements], ['*--attachments.csv', :proposal_attachments]],
       SURVEYS_COMPONENT => [['*--answers.csv', :survey_answers]],
       ACCOUNTABILITY_COMPONENT => [['*--statuses.csv', :accountability_statuses], ['*--results.csv', :results]]
     }.freeze
@@ -89,8 +89,8 @@ module DecidimImporter
     # `:components` (which drives phase generation and skip-logging). Decidim steps are deliberately not read.
     def read_containers(root)
       acc = { projects: [], attachments: [], attachment_collections: [], categories: [], proposals: [],
-              comments: [], followers: [], endorsements: [], proposal_attachments: [], results: [],
-              accountability_statuses: [], components: [], survey_answers: [] }
+              comments: [], comment_votes: [], followers: [], endorsements: [], proposal_attachments: [],
+              results: [], accountability_statuses: [], components: [], survey_answers: [] }
       CONTAINERS.each do |container|
         container_dirs(root, container).each { |dir| read_container(dir, container, acc) }
       end

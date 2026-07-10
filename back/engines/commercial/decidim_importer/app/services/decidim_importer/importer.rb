@@ -394,6 +394,7 @@ module DecidimImporter
       run_proposals
       run_results
       run_comments
+      run_comment_votes
       run_followers
       run_endorsements
       run_proposal_attachments
@@ -484,6 +485,11 @@ module DecidimImporter
       @endorsements_extractor&.skipped || []
     end
 
+    # Comment votes that couldn't be imported (voted comment not imported / unknown value / duplicate).
+    def skipped_comment_votes
+      @comment_votes_extractor&.skipped || []
+    end
+
     # Surveys/questions that couldn't be imported (e.g. an unsupported question type).
     def skipped_surveys
       @surveys_extractor&.skipped || []
@@ -550,6 +556,13 @@ module DecidimImporter
         rows_for(:comments), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       )
       @comments_extractor.run
+    end
+
+    # Decidim comment votes → up/down `Reaction`s on the imported comments (comment + author resolved).
+    def run_comment_votes
+      return unless @rows_by_model.key?(:comment_votes)
+
+      (@comment_votes_extractor = build_extractor(Extractors::CommentVotesExtractor, :comment_votes)).run
     end
 
     # Decidim proposal follows → `Follower`s on the imported ideas (idea + user resolved).

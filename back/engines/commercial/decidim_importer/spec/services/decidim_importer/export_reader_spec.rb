@@ -88,4 +88,19 @@ RSpec.describe DecidimImporter::ExportReader do
       expect(component).to include('decidim_participatory_process' => 'decidim--assembly--1', 'type' => 'proposals')
     end
   end
+
+  describe 'comment votes' do
+    it 'reads a proposals component’s comments-votes sidecar, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-61', %({"fr":"Idées"})])
+      write_csv("#{comp}/08---comments-votes.csv",
+        %w[uid comment author value], %w[vote-1 comment-37 user-818 up])
+
+      votes = described_class.read(root)[:comment_votes]
+
+      expect(votes.first).to include('uid' => 'vote-1', 'comment' => 'comment-37', 'value' => 'up',
+        'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
+    end
+  end
 end

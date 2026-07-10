@@ -345,6 +345,24 @@ RSpec.describe DecidimImporter::Importer do
         expect(idea.reload.likes_count).to eq(2)
       end
 
+      it 'imports comment votes as up/down-reactions on the comments, keeping author-less ones' do
+        thread = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" }).comments.order(:created_at)
+        commented = thread.first  # comment--1
+        replied = thread.last     # comment--2
+        user2 = User.find_by(unique_code: 'decidim-user-2')
+        user3 = User.find_by(unique_code: 'decidim-user-3')
+
+        up = Reaction.where(reactable: commented)
+        expect(up.map(&:mode).uniq).to eq(['up'])
+        # user-3's like + the unconfirmed decidim-user-131's like (kept author-less), so the count is 2.
+        expect(up.map(&:user)).to contain_exactly(user3, nil)
+        expect(commented.reload.likes_count).to eq(2)
+
+        down = Reaction.where(reactable: replied)
+        expect(down.map { |r| [r.mode, r.user] }).to contain_exactly(['down', user2])
+        expect(replied.reload.dislikes_count).to eq(1)
+      end
+
       it 'imports Decidim categories as the project input topics, preserving hierarchy' do
         topics = InputTopic.where(project: project)
         env = topics.find_by("title_multiloc->>'fr-FR' = 'Environnement'")
