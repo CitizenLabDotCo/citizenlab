@@ -70,6 +70,30 @@ describe 'single_use:fix_phase_available_views rake task' do
     end
   end
 
+  # Unioning in only the presentation mode would write back a phase that still fails
+  # `must include card view`, and report it as fixed.
+  context 'when a drifted phase also omits the card view' do
+    let!(:phase) { drift!(create(:budgeting_phase), available_views: []) }
+
+    it 'restores the card view alongside the presentation mode' do
+      run_task
+      expect(phase.reload.available_views).to match_array %w[card map]
+      expect(phase.reload).to be_valid
+    end
+  end
+
+  # Invalid, but for a reason a union cannot repair: the drift query does not select a phase whose
+  # `available_views` already contains its `presentation_mode`.
+  context 'when a phase omits the card view but contains its presentation mode' do
+    let!(:phase) { drift!(create(:budgeting_phase), available_views: ['map']) }
+
+    it 'leaves it untouched and counts it in the summary' do
+      expect { run_task }.to output(/Not repairable \(available_views omits 'card'\): 1 phase/).to_stdout
+      expect(phase.reload.available_views).to eq ['map']
+      expect(report['changes']).to be_empty
+    end
+  end
+
   context 'when the presentation mode is not a known mode' do
     let!(:phase) { drift!(create(:budgeting_phase), presentation_mode: 'nonsense') }
 
