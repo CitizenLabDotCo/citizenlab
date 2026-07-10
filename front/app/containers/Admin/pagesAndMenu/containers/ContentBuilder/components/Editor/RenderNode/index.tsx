@@ -167,12 +167,9 @@ const RenderNode = ({ render }) => {
         // `pointer-events: none` still leaves the preview content keyboard-
         // focusable; `inert` removes it from the tab order too. React 18 has
         // no `inert` prop, so the attribute is set on the element directly.
-        // Never on a widget with children: unlike `pointer-events`, `inert` is
-        // inherited and a nested node cannot opt back in, which would make the
-        // widget's editable children unselectable in the editor.
         ref={(element: HTMLElement | null) => {
           if (!element) return;
-          if (noPointerEvents && name && !hasChildren(name)) {
+          if (noPointerEvents) {
             element.setAttribute('inert', '');
           } else {
             element.removeAttribute('inert');
