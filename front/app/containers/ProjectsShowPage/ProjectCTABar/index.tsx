@@ -20,9 +20,10 @@ import { getVerticalPositionProps } from './utils';
 
 type ProjectCTABarProps = {
   projectId: string;
+  className?: string;
 };
 
-const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
+const ProjectCTABar = ({ projectId, className }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { windowHeight } = useWindowSize();
 
@@ -53,7 +54,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   });
 
   return (
-    <Box {...sharedProps} {...verticalPositionProps}>
+    <Box className={className} {...sharedProps} {...verticalPositionProps}>
       {BarContents}
     </Box>
   );
