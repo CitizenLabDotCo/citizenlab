@@ -13,6 +13,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import { adminProjectsProjectLink } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
@@ -25,6 +26,7 @@ import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
+import ProjectPageContentViewer from 'components/ProjectPageBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -36,15 +38,20 @@ import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import ProjectInfo from './ProjectInfo';
 import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
-const Container = styled.div`
+const Container = styled.div<{ $flushBottom: boolean }>`
   padding-top: 30px;
-  padding-bottom: 65px;
+  padding-bottom: ${({ $flushBottom }) => ($flushBottom ? '0px' : '65px')};
   background: #fff;
   position: relative;
   z-index: 2;
 
   ${media.phone`
     padding-top: 30px;
+  `}
+  ${({ $flushBottom }) =>
+    $flushBottom
+      ? ''
+      : media.phone`
     padding-bottom: 35px;
   `}
 `;
@@ -70,6 +77,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const projectDescriptionBuilderEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
+  const parallelParticipation = useParallelParticipation();
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
   const projectFolderId = project?.data.attributes.folder_id;
@@ -83,7 +91,10 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
 
     return (
-      <Container className={className || ''}>
+      <Container
+        className={className || ''}
+        $flushBottom={parallelParticipation}
+      >
         <ContentContainer maxWidth={maxPageWidth}>
           <Box
             display="flex"
@@ -127,7 +138,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               />
             </Box>
           </Box>
-          {projectHeaderImageLargeUrl && (
+          {!parallelParticipation && projectHeaderImageLargeUrl && (
             <HeaderImageContainer>
               <HeaderImage
                 id="e2e-project-header-image"
@@ -154,14 +165,20 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               mt={projectHeaderImageLargeUrl ? '-20px' : '0px'}
             />
           )}
-          {!projectDescriptionBuilderEnabled && (
-            <ProjectInfo projectId={projectId} />
+          {parallelParticipation ? (
+            <ProjectPageContentViewer projectId={project.data.id} />
+          ) : (
+            <>
+              {!projectDescriptionBuilderEnabled && (
+                <ProjectInfo projectId={projectId} />
+              )}
+              <ProjectContentViewer
+                projectId={project.data.id}
+                projectTitle={project.data.attributes.title_multiloc}
+                enabled={project.data.attributes.uses_content_builder}
+              />
+            </>
           )}
-          <ProjectContentViewer
-            projectId={project.data.id}
-            projectTitle={project.data.attributes.title_multiloc}
-            enabled={project.data.attributes.uses_content_builder}
-          />
         </ContentContainer>
       </Container>
     );

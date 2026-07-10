@@ -29,9 +29,9 @@ interface Props {
 }
 
 const CommonGroundTabs = ({ phaseId, project, isPastPhase }: Props) => {
-  const searchParams = useSearch({
-    from: '/$locale/projects/$slug',
-  });
+  // `strict: false` so this also renders off the project route (e.g. inside the
+  // project page builder); the tab falls back to its default there.
+  const searchParams = useSearch({ strict: false });
   const localize = useLocalize();
   const defaultTab = isPastPhase ? 'results' : 'statements';
   const currentTab = searchParams.tab ?? defaultTab;
