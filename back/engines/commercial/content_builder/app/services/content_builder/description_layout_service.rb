@@ -30,8 +30,6 @@ module ContentBuilder
       }
     }.freeze
 
-    # Provisions an enabled description layout for a new (or copied/imported)
-    # buildable. Gated on the feature; no-op when off or a layout already exists.
     def provision_for(buildable)
       return unless feature_activated?
 
@@ -48,8 +46,6 @@ module ContentBuilder
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
 
-    # Puts one buildable's description on the Content Builder, picking the widget by
-    # content (blank / media / text). Skips if an enabled layout exists.
     def ensure_on_content_builder!(buildable)
       existing = ContentBuilder::Layout.find_by(
         content_buildable: buildable,
@@ -60,10 +56,11 @@ module ContentBuilder
         unless existing.enabled
           existing.update!(enabled: true, craftjs_json: content_aware_craftjs_json(buildable))
         end
-        return
+      else
+        create_layout!(buildable, content_aware_craftjs_json(buildable))
       end
 
-      create_layout!(buildable, content_aware_craftjs_json(buildable))
+      ensure_project_page!(buildable) if buildable.is_a?(Project)
     end
 
     def layout_code(buildable)
@@ -125,6 +122,17 @@ module ContentBuilder
     end
 
     private
+
+    def ensure_project_page!(project)
+      return if ContentBuilder::Layout.exists?(content_buildable: project, code: ProjectPageLayoutService::CODE)
+
+      ContentBuilder::Layout.create!(
+        content_buildable: project,
+        code: ProjectPageLayoutService::CODE,
+        enabled: true,
+        craftjs_json: ProjectPageLayoutService.new.craftjs_json_for(project)
+      )
+    end
 
     def feature_activated?
       AppConfiguration.instance.feature_activated?('project_description_builder')

@@ -99,6 +99,7 @@ const BaseUpdateFollowArea = ({
         iconPos="right"
         padding="0px"
         my="0px"
+        whiteSpace="normal"
         processing={isLoading}
         textColor={areaButtonContentColor}
         ariaPressed={!isLoading ? isFollowing : undefined}
