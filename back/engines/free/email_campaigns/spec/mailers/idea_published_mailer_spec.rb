@@ -55,9 +55,23 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
       end
     end
 
+    it 'does not include Add an image if input form does not have image field' do
+      expect(body).not_to include("Add an image to increase visibility")
+    end
+
     it 'includes the CTA' do
       expect(body).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
         with_text(/Go to your idea/)
+      end
+    end
+
+    context 'with image field enabled in input form' do
+      let(:custom_form) { create(:custom_form, participation_context: input.project) }
+      let!(:image_field) { create(:custom_field, resource: custom_form, input_type: 'image_files', code: 'idea_images_attributes') }
+
+      it 'includes Add an image if input form has image field' do
+        expect(body).to include("Add an image")
+        expect(body).to include("to increase visibility")
       end
     end
 
