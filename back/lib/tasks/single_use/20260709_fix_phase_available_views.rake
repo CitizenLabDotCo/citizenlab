@@ -9,26 +9,28 @@
 # The 20260223103753 migration rebuilt `available_views` from scratch:
 #
 #     views = ['card']
-#     views << 'map'  if location_description_enabled?(phase)  # ideation and proposals only
+#     views << 'map'  if location_description_enabled?(phase)
 #     views << 'feed' if phase.presentation_mode == 'feed'
 #
-# `location_description_enabled?` returns false for every other participation method, so a voting
-# phase set to open on the map was left offering only the card view:
+# `location_description_enabled?` returns false for every participation method other than ideation
+# and proposals, and also for an ideation or proposals phase whose `location_description` field is
+# disabled. So a voting phase set to open on the map was left offering only the card view:
 #
 #     presentation_mode: 'map', available_views: ['card']  # opens on a view it does not offer
 #
-# The migration wrote with `update_column`, which skips validation, so the row persisted. Every
-# later `update!` on such a phase re-runs the validation and raises `RecordInvalid`, whatever the
-# write was about: an admin editing the phase, `Phase#update_manual_votes_count!`, or
-# `Basket#update_basket_and_vote_counts` — and that last one runs inside `DeleteUserJob`, so the
-# bad row stalls user and tenant deletion.
+# The migration wrote with `update_column`, which skips validation, so the row persisted. Any
+# later write that validates such a phase then raises `RecordInvalid`, whatever the write was
+# about. Until this branch that included the two denormalized counter writes,
+# `Phase#update_manual_votes_count!` and `Basket#update_basket_and_vote_counts`; the latter runs
+# inside `DeleteUserJob`, so a bad row stalled user and tenant deletion. Both now use
+# `update_columns` and validate nothing, which leaves an admin editing the phase as the failure
+# this task is here to fix.
 #
-# This task adds the missing view back. `presentation_mode` is read, never written: the mode is
-# the admin's choice and was always correct; it is `available_views` the migration got wrong.
+# It adds the missing view back. `presentation_mode` is read, never written: the mode is the
+# admin's choice and was always correct; it is `available_views` the migration got wrong.
 #
-#     presentation_mode: 'map',  ['card']          ->  ['card', 'map']
-#     presentation_mode: 'map',  ['card', 'feed']  ->  ['card', 'feed', 'map']
-#     presentation_mode: 'card', ['card']          ->  untouched, not drifted
+#     presentation_mode: 'map',  ['card']  ->  ['card', 'map']
+#     presentation_mode: 'card', ['card']  ->  untouched, not drifted
 #
 # The repair is a set union, so no view is ever removed and re-running the task is a no-op.
 #

@@ -2,19 +2,22 @@
 
 # Finishes tenant deletions that stalled.
 #
-# `TenantService#delete` sets `deleted_at`, sweeps the users asynchronously, and lets
-# `Tenants::DeleteJob` destroy the tenant once no users remain. When a `DeleteUserJob` fails
-# permanently the user count stops decreasing, `Tenants::DeleteJob` raises `Aborted`, and the
-# tenant is left with `deleted_at` set, its users intact and no job that will ever retry. A
-# surviving `Tenant` row with `deleted_at` set is exactly that state, because a completed
-# deletion destroys the row.
+# `TenantService#delete` sets `deleted_at`, sweeps the users, and lets
+# `Tenants::DeleteJob` destroy the tenant once no users remain. The sweep is
+# `User.destroy_all_async`: it enqueues one `DeleteUserJob` per user, scheduled five per second, so
+# a tenant of N users is not empty until roughly N / 5 seconds after the sweep starts.
+#
+# When a `DeleteUserJob` fails permanently the user count stops decreasing, `Tenants::DeleteJob`
+# raises `Aborted`, and the tenant is left with `deleted_at` set, its users intact and no job that
+# will ever retry. A surviving `Tenant` row with `deleted_at` set is exactly that state, because a
+# completed deletion destroys the row.
 #
 # Nothing resumes those deletions on its own, so this task does it, one tenant at a time, with
 # the evidence needed to decide printed before each prompt.
 #
 # It deliberately does not call `TenantService#delete` again: that would overwrite `deleted_at`
-# (losing the record of when the deletion was actually requested) and re-run `before_destroy`,
-# which deletes Typeform webhooks that are already gone.
+# (losing the record of when the deletion was actually requested) and re-run
+# `SideFxTenantService#before_destroy`, which deletes Typeform webhooks that are already gone.
 #
 # REPORT_ONLY=true prints the report and asks nothing. HOST=<host> limits it to one tenant.
 namespace :single_use do
@@ -88,8 +91,10 @@ namespace :single_use do
       next if report_only
 
       # A deletion with jobs still in flight is in progress, not stuck. Sweeping again would
-      # enqueue a second DeleteUserJob per user; because `pluck(:id)` has no ORDER BY, both
-      # sweeps walk the table in the same order and the later one fails on every user.
+      # enqueue a second DeleteUserJob per user, and `pluck(:id)` has no ORDER BY, so the two
+      # sweeps are free to traverse the table in the same physical order and the later one loses
+      # the race on every user. Postgres guarantees no such thing, but it is the only reading that
+      # explains a RecordNotFound for each of a tenant's users rather than for half of them.
       if pending_user_jobs.positive? || pending_tenant_jobs.positive?
         puts '  ⏭️  Skipped: this deletion is still in progress (jobs pending). Sweeping again would duplicate them.'
         next

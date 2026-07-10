@@ -72,8 +72,9 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
     end
   end
 
-  # A deletion with jobs in flight is in progress, not stuck. Sweeping again would enqueue a
-  # second DeleteUserJob per user — the double sweep behind the 439k RecordNotFound events.
+  # A deletion with jobs in flight is in progress, not stuck. Running `User.destroy_all_async` again
+  # — the sweep — would enqueue a second DeleteUserJob per user, which is what produced the 439k
+  # RecordNotFound events.
   context 'when the deletion is still in progress' do
     before do
       allow($stdin).to receive(:tty?).and_return(true)
@@ -164,7 +165,7 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
 
     it 'leaves the tenant alone and reports when users cannot be deleted' do
       stuck_tenant.switch { create(:user) }
-      allow(User).to receive(:destroy_all_async) # the sweep deletes nobody, and queues nothing
+      allow(User).to receive(:destroy_all_async) # stub the sweep: it deletes nobody, and queues nothing
 
       run_task(poll_timeout: 0)
 
@@ -173,8 +174,9 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
       expect(report['errors'].first['error']).to match(/1 user\(s\) could not be deleted/)
     end
 
-    # A large tenant's sweep can outlast the poll. That is not a failure, and must not be
-    # reported as one -- nor should it surface a stale error from a previous attempt.
+    # A large tenant's `User.destroy_all_async` sweep only deletes five users per second, so it can
+    # outlast the poll. That is not a failure, and must not be reported as one -- nor should it
+    # surface a stale error from a previous attempt.
     it 'reports a sweep that is still running as in progress, not as a failure' do
       stuck_tenant.switch { create(:user) }
       allow(User).to receive(:destroy_all_async) do

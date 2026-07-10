@@ -753,7 +753,7 @@ RSpec.describe Phase do
 
     # Counter maintenance must not depend on the phase being valid on unrelated attributes.
     # A phase can be persisted in an invalid state by an unvalidated bulk write, as the
-    # 20260223103753 backfill did when it dropped 'map' from `available_views`.
+    # 20260223103753 backfill did when it omitted 'map' from the `available_views` it created.
     context 'when the phase is invalid on an unrelated attribute' do
       before do
         phase.update_column(:presentation_mode, 'map')
