@@ -68,6 +68,12 @@ const StyledButton = styled.button`
   }
 `;
 
+const MoreIcon = styled(Icon)`
+ margin-left:8px;
+ fill: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
+ color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
+`;
+
 interface NavbarItemProps extends TypedLinkProps {
   linkTo?: string;
   navigationItemTitle: Multiloc;
@@ -98,7 +104,7 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
     <li style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
       <StyledButton onClick={toggleDropdown}>
         {formatMessage(messages.more)}
-        <Icon name="dots-horizontal" ml="8px" />
+        <MoreIcon name="dots-horizontal"/>
       </StyledButton>
       <Dropdown
         opened={dropdownOpened}
