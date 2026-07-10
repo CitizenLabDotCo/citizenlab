@@ -20,8 +20,6 @@ interface Props {
   folderId?: string;
 }
 
-// On folder pages archived projects are listed alongside published ones,
-// matching the pre-content-builder folder page.
 const getPublicationStatuses = (folderId?: string): PublicationStatus[] =>
   folderId ? ['published', 'archived'] : ['published'];
 
