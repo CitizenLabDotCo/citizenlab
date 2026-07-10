@@ -114,4 +114,22 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
       '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
     );
   });
+
+  it('allows user to sign up, exit flow, and then return to the flow and confirm email', () => {
+    fakeSSOGlobalSignup(cy, 'jane_doe');
+
+    // Exit flow
+    cy.get('.e2e-modal-close-button').click();
+
+    // Re-enter flow
+    cy.get('#e2e-user-menu-container').click();
+    cy.get('#e2e-confirm-email-link > button').click();
+
+    // Confirm email
+    confirmEmail(cy);
+
+    // After confirming email, we expect to arrive on the success message
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+  });
 });
