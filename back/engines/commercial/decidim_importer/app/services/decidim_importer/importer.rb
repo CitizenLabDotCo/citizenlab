@@ -50,6 +50,7 @@ module DecidimImporter
       created = ActiveRecord::Base.no_touching do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
       end
+      recompute_voting_counts!(created)
       restore_update_timestamps(template, created)
       reconcile_permissions!
       created
@@ -98,6 +99,19 @@ module DecidimImporter
     # all permissions (idempotent) backfills the missing ones.
     def self.reconcile_permissions!
       Permissions::PermissionsUpdateService.new.update_all_permissions
+    end
+
+    # Recomputes each imported voting phase's basket/vote counters (and those of its project and ideas).
+    # The deserializer creates baskets/baskets_ideas directly, but `Basket`'s counts aren't a
+    # counter_culture cache — they're recomputed in bulk by `Basket.update_counts` (which only tallies
+    # *submitted* baskets). Runs before {.restore_update_timestamps}, so the `update!`s it does on the
+    # phase/project (bumping `updated_at`) are then reset to the template's dates. Scoped to the phases
+    # this import created, so pre-existing tenant voting phases are left untouched.
+    def self.recompute_voting_counts!(created_object_ids)
+      ids = created_object_ids['Phase'] || []
+      return if ids.empty?
+
+      Phase.where(id: ids, participation_method: 'voting').find_each { |phase| Basket.update_counts(phase) }
     end
 
     # Applies an AppConfiguration patch JSON (the companion artifact `dump_yaml` writes) to the
@@ -393,10 +407,12 @@ module DecidimImporter
       run_phases
       run_proposals
       run_results
+      run_budget_projects
       run_comments
       run_comment_votes
       run_followers
       run_endorsements
+      run_orders
       run_proposal_attachments
       run_surveys
       run_survey_responses
@@ -454,6 +470,7 @@ module DecidimImporter
       created_object_ids = ActiveRecord::Base.no_touching do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
       end
+      self.class.recompute_voting_counts!(created_object_ids)
       self.class.restore_update_timestamps(template, created_object_ids)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
       self.class.reconcile_permissions!
@@ -488,6 +505,16 @@ module DecidimImporter
     # Comment votes that couldn't be imported (voted comment not imported / unknown value / duplicate).
     def skipped_comment_votes
       @comment_votes_extractor&.skipped || []
+    end
+
+    # Budget projects that couldn't be imported as ideas (no owning project/voting phase).
+    def skipped_budget_projects
+      @budget_projects_extractor&.skipped || []
+    end
+
+    # Budget orders that couldn't be imported as baskets (no voting phase / duplicate per user + phase).
+    def skipped_orders
+      @orders_extractor&.skipped || []
     end
 
     # Surveys/questions that couldn't be imported (e.g. an unsupported question type).
@@ -556,6 +583,20 @@ module DecidimImporter
         rows_for(:comments), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
       )
       @comments_extractor.run
+    end
+
+    # Decidim budget projects → `Idea`s in the budgets component's voting phase (project + phase resolved).
+    def run_budget_projects
+      return unless @rows_by_model.key?(:budget_projects)
+
+      (@budget_projects_extractor = build_extractor(Extractors::BudgetProjectsExtractor, :budget_projects)).run
+    end
+
+    # Decidim budget orders → `Basket`s (+ `BasketsIdea`s) in the voting phase (phase + budget ideas resolved).
+    def run_orders
+      return unless @rows_by_model.key?(:orders)
+
+      (@orders_extractor = build_extractor(Extractors::OrdersExtractor, :orders)).run
     end
 
     # Decidim comment votes → up/down `Reaction`s on the imported comments (comment + author resolved).
@@ -696,12 +737,13 @@ module DecidimImporter
     end
 
     # The phase-generating components fed to {PhaseProjector}: proposals and accountability →
-    # ideation phases, surveys → native_survey phases. Each phase starts at its component's
-    # `published_at` and ends at its last activity (a proposal's/result's date, a survey answer's
-    # `created_at`); see {PhaseProjector}. Pages are *not* here: they become project-level static
-    # pages via {Extractors::StaticPagesExtractor}.
+    # ideation phases, surveys → native_survey phases, budgets → voting (budgeting) phases. Each phase
+    # starts at its component's `published_at` and ends at its last activity (a proposal's/result's date,
+    # a survey answer's `created_at`) — except budgets, dated purely from their orders; see
+    # {PhaseProjector}. Pages are *not* here: they become project-level static pages via
+    # {Extractors::StaticPagesExtractor}.
     def participation_components
-      proposal_components + survey_phase_components + accountability_components
+      proposal_components + survey_phase_components + accountability_components + budget_components
     end
 
     def accountability_components
@@ -712,6 +754,33 @@ module DecidimImporter
           published_at: row['published_at'], previously_published: row['previously_published'],
           end_dates: (dates_by_component[row['uid']] || []).pluck('created_at') }
       end
+    end
+
+    # Decidim budgets components → `voting` (budgeting) phases. The window is dated purely from the orders
+    # (first/last vote, `checked_out_at` falling back to `created_at`), not the component's publication —
+    # so `published_at` is nil and `previously_published` is forced true (a held vote), letting the
+    # projector place it on its order dates while an order-less component still drops out for lacking a
+    # window. `voting_max_total` sums the component's budgets' `total_budget`; components with no budget
+    # (nothing to cap) are dropped rather than emitted as an invalid voting phase.
+    def budget_components
+      dates_by_component = rows_for(:orders).group_by { |row| row['decidim_component'] }
+      totals = budget_totals_by_component
+      budget_component_rows.filter_map do |row|
+        total = totals[row['uid']].to_i
+        next unless total.positive?
+
+        orders = dates_by_component[row['uid']] || []
+        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
+          name: row['name'], weight: row['weight'], method: 'voting', voting_method: 'budgeting',
+          voting_max_total: total, published_at: nil, previously_published: true,
+          end_dates: orders.map { |order| order['checked_out_at'].presence || order['created_at'] } }
+      end
+    end
+
+    # Each budgets component's total budget cap: the sum of its budgets' `total_budget`.
+    def budget_totals_by_component
+      rows_for(:budgets).group_by { |row| row['decidim_component'] }
+        .transform_values { |budgets| budgets.sum { |budget| budget['total_budget'].to_i } }
     end
 
     def proposal_components
@@ -752,6 +821,11 @@ module DecidimImporter
     # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).
     def survey_component_rows
       @survey_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::SURVEYS_COMPONENT }
+    end
+
+    # Component manifest rows whose type is `budgets` (their budgets/projects/orders live in a subtree).
+    def budget_component_rows
+      @budget_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::BUDGETS_COMPONENT }
     end
 
     # Component manifest rows whose type is `pages` (their body lives in `specific_data`).

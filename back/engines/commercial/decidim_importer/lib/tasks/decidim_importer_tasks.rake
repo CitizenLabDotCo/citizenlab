@@ -60,6 +60,8 @@ namespace :decidim_importer do
     importer.skipped_followers.each { |s| Rails.logger.warn "  skipped follow #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_endorsements.each { |s| Rails.logger.warn "  skipped endorsement #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_comment_votes.each { |s| Rails.logger.warn "  skipped comment vote #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_budget_projects.each { |s| Rails.logger.warn "  skipped budget project #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_orders.each { |s| Rails.logger.warn "  skipped order #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_proposal_attachments.each { |s| Rails.logger.warn "  skipped attachment #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_surveys.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_survey_responses.each { |s| Rails.logger.warn "  skipped response #{s[:uid]}: #{s[:reason]}" }

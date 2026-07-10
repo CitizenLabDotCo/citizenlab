@@ -103,4 +103,26 @@ RSpec.describe DecidimImporter::ExportReader do
         'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
     end
   end
+
+  describe 'budgets' do
+    it 'reads a budgets component’s nested budget/projects/orders/followers, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/03---decidim--component--63---budgets'
+      budget = "#{comp}/04---decidim--budgets--budget--1"
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-63', %({"fr":"Vote"})])
+      write_csv("#{budget}/01---budget.csv", %w[uid title total_budget], ['budget-1', %({"fr":"B"}), '190000'])
+      write_csv("#{budget}/02---projects.csv", %w[uid title budget_amount], ['proj-1', %({"fr":"P"}), '30000'])
+      write_csv("#{budget}/03---orders.csv", %w[uid user checked_out_at], %w[order-1 user-1 2024-06-03])
+      write_csv("#{budget}/08---followers.csv", %w[uid user followable], %w[f-1 user-1 proj-1])
+
+      rows = described_class.read(root)
+      stamp = { 'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-63' }
+
+      expect(rows[:budgets].first).to include('uid' => 'budget-1', 'total_budget' => '190000', **stamp)
+      expect(rows[:budget_projects].first).to include('uid' => 'proj-1', 'budget_amount' => '30000', **stamp)
+      expect(rows[:orders].first).to include('uid' => 'order-1', 'checked_out_at' => '2024-06-03', **stamp)
+      # Budget followers reuse the proposal-follow path (they become follows on the budget-project idea).
+      expect(rows[:followers].first).to include('uid' => 'f-1', 'followable' => 'proj-1', **stamp)
+    end
+  end
 end

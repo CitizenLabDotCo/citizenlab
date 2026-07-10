@@ -35,6 +35,8 @@ module DecidimImporter
       official_feedback
       follower
       reaction
+      basket
+      baskets_idea
       files/file_attachment
     ].freeze
 

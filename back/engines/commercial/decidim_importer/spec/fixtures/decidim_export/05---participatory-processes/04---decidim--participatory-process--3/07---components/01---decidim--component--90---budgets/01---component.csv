@@ -1,0 +1,2 @@
+uid,manifest_name,name,settings,weight,permissions,published_at,previously_published,specific_data,participatory_space,url
+decidim--component--90,budgets,"{""fr"":""Votez pour les projets""}",,0,,2024-05-03,true,,decidim--process--3,https://example.decidim.org/processes/budget/f/90/

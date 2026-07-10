@@ -103,7 +103,7 @@ module DecidimImporter
 
     # Default phase title per method when the component has no usable name.
     DEFAULT_TITLES = {
-      'ideation' => 'Propositions', 'native_survey' => 'Questionnaire'
+      'ideation' => 'Propositions', 'native_survey' => 'Questionnaire', 'voting' => 'Vote'
     }.freeze
 
     def register(project, intent, start_at, end_at)
@@ -125,6 +125,12 @@ module DecidimImporter
       if method == 'native_survey'
         attributes['native_survey_title_multiloc'] = title
         attributes['native_survey_button_multiloc'] = native_survey_button_multiloc(title.keys)
+      end
+      # Voting phases carry the voting method + the budget cap the budgeting method validates as present
+      # (`voting_min_total` keeps its schema default of 0).
+      if method == 'voting'
+        attributes['voting_method'] = component[:voting_method]
+        attributes['voting_max_total'] = component[:voting_max_total]
       end
 
       record = Record.new('phase', attributes)

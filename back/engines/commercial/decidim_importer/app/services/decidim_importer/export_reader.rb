@@ -16,6 +16,9 @@ module DecidimImporter
   # category sidecars and a `NN---components/` subtree). Assemblies carry no Decidim process group, so
   # their project rows are stamped with the synthetic {ASSEMBLIES_FOLDER_UID} and a single "Assemblies"
   # folder is injected for them to nest under.
+  #
+  # rubocop:disable Metrics/ModuleLength -- one cohesive traversal unit (the whole export's directory
+  # layout); the CSV globs, component-type tables and per-container/-budget readers belong together.
   module ExportReader
     # Single-file CSVs at the export root, by model.
     FILE_PATTERNS = {
@@ -46,6 +49,12 @@ module DecidimImporter
     SURVEYS_COMPONENT = 'surveys'
     PAGES_COMPONENT = 'pages'
     ACCOUNTABILITY_COMPONENT = 'accountability'
+    BUDGETS_COMPONENT = 'budgets'
+
+    # A budgets component nests one directory per budget (`NN---decidim--budgets--budget--N/`) holding
+    # the budget CSV plus its projects/orders/followers — unlike the flat sidecars of other components.
+    BUDGET_DIR_GLOB = '*budgets--budget--*'
+    BUDGET_FILE_GLOB = '*--budget.csv'
 
     # The two container kinds read into the `:projects` stream. `project_stamp` is merged onto each
     # container's project rows: assemblies get the synthetic Assemblies group (routing them into that
@@ -90,7 +99,8 @@ module DecidimImporter
     def read_containers(root)
       acc = { projects: [], attachments: [], attachment_collections: [], categories: [], proposals: [],
               comments: [], comment_votes: [], followers: [], endorsements: [], proposal_attachments: [],
-              results: [], accountability_statuses: [], components: [], survey_answers: [] }
+              results: [], accountability_statuses: [], components: [], survey_answers: [],
+              budgets: [], budget_projects: [], orders: [] }
       CONTAINERS.each do |container|
         container_dirs(root, container).each { |dir| read_container(dir, container, acc) }
       end
@@ -142,6 +152,24 @@ module DecidimImporter
         acc[:components] << comp_row.merge('decidim_participatory_process' => process_uid, 'type' => type)
         columns = { 'decidim_participatory_process' => process_uid, 'decidim_component' => comp_row['uid'] }
         (COMPONENT_SIDECARS[type] || []).each { |glob, key| read_into(comp_dir, glob, columns, acc, key) }
+        read_budgets(comp_dir, columns, acc) if type == BUDGETS_COMPONENT
+      end
+    end
+
+    # A budgets component nests one directory per budget. Each budget's CSV goes to `:budgets` (it carries
+    # `total_budget`, which sizes the voting phase), its projects to `:budget_projects` (→ ideas), its
+    # orders to `:orders` (→ baskets) and its followers to `:followers` (reusing the proposal-follow path,
+    # since a budget project also becomes an idea). All are stamped with the process + component uid.
+    def read_budgets(comp_dir, columns, acc)
+      Dir.glob(File.join(comp_dir, BUDGET_DIR_GLOB)).select { |path| File.directory?(path) }.each do |budget_dir|
+        budget_file = Dir.glob(File.join(budget_dir, BUDGET_FILE_GLOB)).first
+        budget_row = budget_file && CsvReader.read(budget_file).first
+        next unless budget_row
+
+        acc[:budgets] << budget_row.merge(columns)
+        read_into(budget_dir, '*--projects.csv', columns, acc, :budget_projects)
+        read_into(budget_dir, '*--orders.csv', columns, acc, :orders)
+        read_into(budget_dir, '*--followers.csv', columns, acc, :followers)
       end
     end
 
@@ -174,4 +202,5 @@ module DecidimImporter
       File.basename(comp_dir).split('---').last
     end
   end
+  # rubocop:enable Metrics/ModuleLength
 end

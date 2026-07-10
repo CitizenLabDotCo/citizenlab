@@ -409,6 +409,56 @@ RSpec.describe DecidimImporter::Importer do
         expect(comment.updated_at.to_date.iso8601).to eq('2023-02-14')
       end
     end
+
+    context 'with a process that has a budgets component' do
+      before { described_class.from_directory(export_root, import_images: false).import }
+
+      let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Budget participatif'") }
+      let(:phase) { project.phases.find_by(participation_method: 'voting') }
+
+      it 'imports the budgets component as a budgeting voting phase dated from the orders' do
+        expect(phase.voting_method).to eq('budgeting')
+        expect(phase.voting_max_total).to eq(100_000) # the budget's total_budget
+        # Dated from the first/last order (2024-06-01 → 2024-06-02), not the component's publication.
+        expect(phase.start_at.to_date.iso8601).to eq('2024-06-01')
+        expect(phase.end_at.to_date.iso8601).to eq('2024-06-02')
+      end
+
+      it 'imports budget projects as ideas in the phase, carrying their budget' do
+        aire = Idea.find_by(title_multiloc: { 'fr-FR' => 'Terrain multisport' })
+        fontaine = Idea.find_by(title_multiloc: { 'fr-FR' => 'Fontaine à boire' })
+
+        expect(aire.budget).to eq(30_000)
+        expect(aire.location_description).to eq('12 rue des Écoles')
+        expect(aire.phases).to include(phase)
+        expect(fontaine.budget).to eq(20_000)
+      end
+
+      it 'imports orders as baskets (checked_out_at → submitted_at) with a vote per pick' do
+        user2 = User.find_by(unique_code: 'decidim-user-2')
+        basket = Basket.find_by(phase: phase, user: user2)
+        aire = Idea.find_by(title_multiloc: { 'fr-FR' => 'Terrain multisport' })
+
+        expect(basket.submitted_at).to eq(Time.zone.parse('2024-06-01 10:00:00 +0200'))
+        # user-2's basket picks both projects; votes are the ideas' budgets (30000 + 20000).
+        expect(basket.baskets_ideas.sum(:votes)).to eq(50_000)
+        expect(basket.ideas).to include(aire)
+      end
+
+      it 'recomputes the phase and idea basket/vote counts from the submitted baskets' do
+        aire = Idea.find_by(title_multiloc: { 'fr-FR' => 'Terrain multisport' })
+        fontaine = Idea.find_by(title_multiloc: { 'fr-FR' => 'Fontaine à boire' })
+
+        # Two submitted baskets (the pending order is created but excluded from counts).
+        expect(phase.reload.baskets_count).to eq(2)
+        expect(phase.votes_count).to eq(80_000) # 50000 + 30000
+        # Aire de jeux is picked in both submitted baskets; Fontaine only in one (the other pick is pending).
+        expect(aire.reload.baskets_count).to eq(2)
+        expect(aire.votes_count).to eq(60_000)
+        expect(fontaine.reload.baskets_count).to eq(1)
+        expect(fontaine.votes_count).to eq(20_000)
+      end
+    end
   end
 
   describe '.apply_template_file' do
