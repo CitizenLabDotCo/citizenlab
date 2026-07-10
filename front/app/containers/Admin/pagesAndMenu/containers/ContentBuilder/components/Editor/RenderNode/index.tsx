@@ -172,7 +172,7 @@ const RenderNode = ({ render }) => {
         // widget's editable children unselectable in the editor.
         ref={(element: HTMLElement | null) => {
           if (!element) return;
-          if (noPointerEvents && !hasChildren(name)) {
+          if (noPointerEvents && name && !hasChildren(name)) {
             element.setAttribute('inert', '');
           } else {
             element.removeAttribute('inert');
