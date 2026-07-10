@@ -77,8 +77,6 @@ export const sharedSteps = (
           const authUser = await fetchMe();
           const newEmail = authUser?.data.attributes.new_email;
 
-          console.log({ newEmail })
-
           if (newEmail) {
             // Situation 2: The SSO returned an unconfirmed email, which was put in new_email
             setCurrentStep('missing-data:email-confirmation');
