@@ -3,8 +3,24 @@
 class DeleteUserJob < ApplicationJob
   self.priority = 90 # pretty low priority (lowest is 100)
 
-  # @param [User,String] user user or user identifier. When an identifier is given and
-  #   no such user exists (anymore), the job is a no-op.
+  # A user passed to +perform_later+ is serialized as a global id, which ActiveJob resolves
+  # back into a record before +run+ is entered. If the user was deleted while the job sat in
+  # the queue, that lookup raises and the no-op guard in +run+ is never reached. Both forms
+  # of the +user+ argument should behave the same way: the user is gone, which is what this
+  # job is for, so there is nothing left to do.
+  #
+  # Only a missing +user+ is a no-op. A missing +current_user+ still raises, so that we never
+  # silently skip a deletion that was actually requested.
+  rescue_from(ActiveJob::DeserializationError) do |exception|
+    cause = exception.cause
+    missing_id = cause.id if cause.is_a?(ActiveRecord::RecordNotFound)
+    raise unless missing_id && missing_id == serialized_user_id
+
+    Rails.logger.warn("DeleteUserJob: user #{missing_id} no longer exists, skipping.")
+  end
+
+  # @param [User,String] user user or user identifier. When no such user exists (anymore),
+  #   the job is a no-op.
   # @param [User,NilClass] current_user
   # @param [Boolean] delete_participation_data When true, permanently deletes all user
   #   content instead of anonymizing it
@@ -45,5 +61,16 @@ class DeleteUserJob < ApplicationJob
       participation_data_deleted: delete_participation_data,
       update_member_counts:
     )
+  end
+
+  private
+
+  # @return [String,NilClass] the id of the +user+ argument when it was serialized as a
+  #   global id, nil when a plain identifier was given.
+  def serialized_user_id
+    argument = @serialized_arguments&.first
+    return unless argument.is_a?(Hash)
+
+    GlobalID.parse(argument['_aj_globalid'])&.model_id
   end
 end

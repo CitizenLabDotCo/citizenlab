@@ -117,6 +117,60 @@ RSpec.describe DeleteUserJob do
       end
     end
 
+    # `perform_later(user)` serializes the user as a global id. ActiveJob resolves it back
+    # into a record *before* `run` is entered, so a user deleted while the job sat in the
+    # queue raises `ActiveJob::DeserializationError` and never reaches the guard in `run`.
+    # `ActiveJob::Base.execute` is the entry point the Que adapter ultimately calls.
+    context 'when enqueued with a user object whose record is deleted before it runs' do
+      let(:serialized_job) { described_class.new(user).serialize }
+
+      before do
+        serialized_job # serialize while the user still exists
+        User.where(id: user.id).delete_all
+      end
+
+      it 'does not raise an error' do
+        expect { ActiveJob::Base.execute(serialized_job) }.not_to raise_error
+      end
+
+      it 'does not trigger after_destroy side effects' do
+        sidefx_service = instance_spy(SideFxUserService, 'sidefx_service')
+        allow(SideFxUserService).to receive(:new).and_return(sidefx_service)
+
+        ActiveJob::Base.execute(serialized_job)
+
+        expect(sidefx_service).not_to have_received(:after_destroy)
+      end
+
+      it 'logs a warning' do
+        allow(Rails.logger).to receive(:warn)
+
+        ActiveJob::Base.execute(serialized_job)
+
+        expect(Rails.logger).to have_received(:warn).with(/user #{user.id} no longer exists/)
+      end
+    end
+
+    # Only a missing `user` is a no-op. A missing `current_user` means the job was built
+    # from a state we no longer understand, so it must stay loud rather than silently
+    # skipping a deletion that was actually requested.
+    context 'when enqueued with a current_user whose record is deleted before it runs' do
+      let(:current_user) { create(:admin) }
+      let(:serialized_job) { described_class.new(user, current_user).serialize }
+
+      before do
+        serialized_job
+        User.where(id: current_user.id).delete_all
+      end
+
+      it 'raises, and does not delete the user' do
+        expect { ActiveJob::Base.execute(serialized_job) }
+          .to raise_error(ActiveJob::DeserializationError)
+
+        expect(User.exists?(user.id)).to be true
+      end
+    end
+
     context 'with ban_email: true' do
       let(:current_user) { create(:admin) }
       let(:user) { create(:user, email: 'banned.user+test@gmail.com') }
