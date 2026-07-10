@@ -116,7 +116,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
   });
 
   it('allows user to sign up, exit flow, and then return to the flow and confirm email', () => {
-    fakeSSOGlobalSignup(cy, 'jane_doe');
+    fakeSSOGlobalSignup(cy, 'tracy_smith');
 
     // Exit flow
     cy.get('.e2e-modal-close-button').click();
