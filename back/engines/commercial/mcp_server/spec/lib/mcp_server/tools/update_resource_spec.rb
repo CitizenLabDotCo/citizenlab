@@ -34,6 +34,17 @@ describe McpServer::Tools::UpdateResource do
     )
   end
 
+  it 'removes the cause image when remote_image_url is null' do
+    stub_remote_image_download('https://example.com/cause.jpg')
+    cause.update!(remote_image_url: 'https://example.com/cause.jpg')
+
+    response = nil
+    expect { response = run(type: 'cause', id: cause.id, attributes: { remote_image_url: nil }) }
+      .to change { cause.reload.image.file }.to(nil)
+
+    expect(response).not_to be_error
+  end
+
   it 'updates an event' do
     event = create(:event, project:)
 

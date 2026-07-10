@@ -19,6 +19,12 @@ describe McpServer::BaseTool::MultilocMerge do
     )
   end
 
+  it 'clears the multiloc to {} on an explicit nil' do
+    merged = merge(project, title_multiloc: nil)
+
+    expect(merged).to eq(title_multiloc: {})
+  end
+
   it 'uses the incoming value verbatim when the current value is blank' do
     project.title_multiloc = {}
 

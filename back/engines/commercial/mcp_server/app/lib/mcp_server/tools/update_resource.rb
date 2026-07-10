@@ -52,8 +52,8 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     intro = <<~DESC.squish
       Updates an existing resource. Partial update — only the fields you pass change.
       `*_multiloc` fields are deep-merged with the existing value, so pass every locale
-      you want to set. For field shapes and semantics, see the matching create_<type>
-      tool.
+      you want to set. Pass null for `remote_*_url` attributes to remove the attached file.
+      For field shapes and semantics, see the matching create_<type> tool.
     DESC
 
     allowed = RESOURCES.map do |type, config|
@@ -98,6 +98,7 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
         ERROR
       end
 
+      attributes = clear_uploaders!(record, attributes)
       record.update!(merge_multilocs(record, attributes))
       side_fx.after_update(record, current_user)
 

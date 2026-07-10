@@ -57,6 +57,14 @@ describe McpServer::Tools::UpdatePhase do
       )
     end
 
+    it 'clears end_at, making the last phase open-ended' do
+      response = nil
+      expect { response = run(phase_id: phase.id, end_at: nil) }
+        .to change { phase.reload.end_at }.to(nil)
+
+      expect(response).not_to be_error
+    end
+
     it 'rejects changing the participation method when the phase has inputs' do
       create(:idea, project:, phases: [phase])
 

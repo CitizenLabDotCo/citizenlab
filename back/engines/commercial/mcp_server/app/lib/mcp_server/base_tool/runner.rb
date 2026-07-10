@@ -25,6 +25,21 @@ class McpServer::BaseTool::Runner
 
   private
 
+  # CarrierWave ignores a plain nil assignment on `remote_<uploader>_url`, so an
+  # explicit null means "remove the file" (the web API's remove_image_if_requested!
+  # mechanism). Removes the matching uploads and returns the remaining attributes.
+  def clear_uploaders!(record, attributes)
+    record.class.uploaders.each_key do |uploader|
+      key = :"remote_#{uploader}_url"
+      next unless attributes.key?(key) && attributes[key].nil?
+
+      record.public_send(:"remove_#{uploader}!")
+      attributes = attributes.except(key)
+    end
+
+    attributes
+  end
+
   # MCP-channel guard. Tools that mutate or destroy a project (or anything inside one)
   # must call this with the target's project before doing the work.
   def authorize_project!(project)

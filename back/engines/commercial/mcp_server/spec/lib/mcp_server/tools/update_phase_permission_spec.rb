@@ -56,12 +56,21 @@ describe McpServer::Tools::UpdatePhasePermission do
       expect(permission.reload.group_ids).to be_empty
     end
 
-    it 'replaces (does not merge) the access-denied explanation' do
+    it 'merges the access-denied explanation per locale' do
       permission.update!(access_denied_explanation_multiloc: { 'en' => 'Old', 'fr-FR' => 'Ancien' })
 
       run(params.merge(access_denied_explanation_multiloc: { 'en' => 'New' }))
 
-      expect(permission.reload.access_denied_explanation_multiloc).to eq('en' => 'New')
+      expect(permission.reload.access_denied_explanation_multiloc).to eq('en' => 'New', 'fr-FR' => 'Ancien')
+    end
+
+    it 'removes the access-denied explanation when null' do
+      permission.update!(access_denied_explanation_multiloc: { 'en' => 'Old' })
+
+      response = run(params.merge(access_denied_explanation_multiloc: nil))
+
+      expect(response).not_to be_error
+      expect(permission.reload.access_denied_explanation_multiloc).to be_blank
     end
 
     context 'with a verification method enabled' do
