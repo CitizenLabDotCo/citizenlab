@@ -16,9 +16,9 @@ describe McpServer::BaseTool do
 
   describe '.unauthorized_message' do
     it 'includes the reason of a NotAuthorizedErrorWithReason' do
-      error = Pundit::NotAuthorizedErrorWithReason.new(reason: 'the project has inputs')
+      error = Pundit::NotAuthorizedErrorWithReason.new(reason: 'The project has inputs.')
 
-      expect(described_class.unauthorized_message(error)).to eq('Not allowed: the project has inputs.')
+      expect(described_class.unauthorized_message(error)).to eq('Not allowed: The project has inputs.')
     end
 
     it 'falls back to a generic message for a plain NotAuthorizedError' do

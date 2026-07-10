@@ -63,6 +63,6 @@ class McpServer::BaseTool
 
   def self.unauthorized_message(error)
     reason = error.try(:reason)
-    "Not allowed: #{reason || 'authorization failed'}."
+    "Not allowed: #{reason || 'authorization failed.'}"
   end
 end
