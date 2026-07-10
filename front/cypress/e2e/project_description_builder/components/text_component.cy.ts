@@ -39,7 +39,7 @@ describe('Project description builder Text component', () => {
   });
 
   it('handles Text component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
@@ -58,7 +58,7 @@ describe('Project description builder Text component', () => {
   });
 
   it('deletes Text component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);
