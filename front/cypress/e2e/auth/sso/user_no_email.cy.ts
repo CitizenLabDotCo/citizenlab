@@ -80,4 +80,25 @@ describe('SSO: user without email', () => {
       expect(user.body.data.attributes.email).to.equal(newEmail);
     });
   });
+
+  it('allows user to sign up, exit flow, and then return to the flow and confirm email', () => {
+    fakeSSOGlobalSignup(cy, 'jane_doe');
+
+    // Exit flow
+    cy.get('.e2e-modal-close-button').click();
+
+    // Re-enter flow
+    cy.get('#e2e-user-menu-container').click();
+    cy.get('#e2e-confirm-email-link > button').click();
+
+    // Enter and confirm email
+    const email = randomEmail();
+    cy.get('#e2e-authentication-modal').get('input[type="email"]').type(email);
+    cy.get('#e2e-built-in-fields-submit-button').click();
+    confirmEmail(cy);
+
+    // After confirming email, we expect to arrive on the success message
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-sign-up-success-modal').should('exist');
+  });
 });
