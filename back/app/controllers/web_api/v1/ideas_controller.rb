@@ -145,12 +145,7 @@ class WebApi::V1::IdeasController < ApplicationController
     render_show draft_idea, check_auth: false
   end
 
-  #   Normal users always post in an active phase. They should never provide a phase id.
-  #   Users who can moderate projects post in an active phase if no phase id is given.
-  #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    send_error and return unless phase_for_input
-
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
     # Map topic_ids to input_topic_ids for the new InputTopics system
@@ -166,8 +161,9 @@ class WebApi::V1::IdeasController < ApplicationController
       build_idea_file_attachment(input, file_params)
     end
 
+    input.project = phase_for_input.project
     input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
-    input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
+    input.phase_ids = [phase_for_input.id]
 
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
@@ -350,9 +346,8 @@ class WebApi::V1::IdeasController < ApplicationController
     idea = Idea.new idea_params_for_similarities
     service = SimilarIdeasService.new(idea)
 
-    phase_for_similarity = params[:phase_id] ? Phase.find(params[:phase_id]) : phase_for_input
-    title_threshold = phase_for_similarity.similarity_threshold_title
-    body_threshold = phase_for_similarity.similarity_threshold_body
+    title_threshold = phase_for_input.similarity_threshold_title
+    body_threshold = phase_for_input.similarity_threshold_body
     cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
 
     json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
@@ -392,21 +387,7 @@ class WebApi::V1::IdeasController < ApplicationController
   private
 
   def phase_for_input
-    return @phase_for_input if defined? @phase_for_input
-
-    project = Project.find(params.dig(:idea, :project_id))
-    phase_ids = params.dig(:idea, :phase_ids) || []
-    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
-    return false if phase_ids.any? && !(is_moderator && phase_ids.size == 1)
-
-    @phase_for_input = if is_moderator && phase_ids.any?
-      Phase.find(phase_ids.first)
-    else
-      TimelineService.new.current_phase_not_archived(project)
-    end
-    return false if !@phase_for_input
-
-    @phase_for_input
+    @phase_for_input ||= Phase.find(params[:phase_id])
   end
 
   def render_show(input, check_auth: true)

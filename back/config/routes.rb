@@ -78,6 +78,7 @@ Rails.application.routes.draw do
       resources :activities, only: [:index]
 
       resources :ideas,
+        except: %i[create],
         concerns: %i[reactable spam_reportable followable permissionable],
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         concerns :file_attachable, attachable_type: 'Idea'
@@ -248,7 +249,7 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :inputs, only: [], controller: 'ideas' do
+        resources :inputs, only: [:create], controller: 'ideas' do
           post 'copy', on: :collection
         end
 
