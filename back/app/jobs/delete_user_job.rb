@@ -3,14 +3,17 @@
 class DeleteUserJob < ApplicationJob
   self.priority = 90 # pretty low priority (lowest is 100)
 
-  # A user passed to +perform_later+ is serialized as a global id, which ActiveJob resolves
-  # back into a record before +run+ is entered. If the user was deleted while the job sat in
-  # the queue, that lookup raises and the no-op guard in +run+ is never reached. Both forms
-  # of the +user+ argument should behave the same way: the user is gone, which is what this
-  # job is for, so there is nothing left to do.
+  # When +user+ is passed as a record (rather than an id), ActiveJob serializes it as a global
+  # id and resolves it back into a record before +run+ is entered. If that user was deleted
+  # while the job sat in the queue, the lookup raises and the no-op guard in +run+ never runs.
+  # We catch that here so a record and an id behave the same way: the user is gone, which is
+  # what this job is for, so there is nothing to do.
   #
-  # Only a missing +user+ is a no-op. A missing +current_user+ still raises, so that we never
-  # silently skip a deletion that was actually requested.
+  # We only swallow the error when the record that went missing is the +user+ argument itself
+  # (the subject of the deletion). Other arguments can be records too — +current_user+ is also
+  # a user — so the guard keys on argument position, not on type: a missing +current_user+
+  # (`perform_later(user, admin)` where +admin+ is deleted before the job runs) is left to
+  # raise, rather than being mistaken for "the user-to-delete is already gone".
   rescue_from(ActiveJob::DeserializationError) do |exception|
     cause = exception.cause
     missing_id = cause.id if cause.is_a?(ActiveRecord::RecordNotFound)
