@@ -92,6 +92,8 @@ module EmailCampaigns
       idea = activity.item
       return [] if !idea.participation_method_on_creation.supports_public_visibility?
 
+      image_field_presence = idea.project.custom_form.custom_fields.find_by(code: "idea_images_attributes")&.enabled
+
       [{
         event_payload: {
           idea_id: idea.id,
@@ -105,7 +107,8 @@ module EmailCampaigns
             }
           end,
           input_term: idea.input_term,
-          project_title_multiloc: idea.project.title_multiloc
+          project_title_multiloc: idea.project.title_multiloc,
+          image_field_presence: image_field_presence
         }
       }]
     end
