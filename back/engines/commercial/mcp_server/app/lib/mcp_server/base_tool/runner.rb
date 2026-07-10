@@ -5,9 +5,9 @@
 class McpServer::BaseTool::Runner
   NOT_DRAFT_MESSAGE = 'Project is not in draft. Only draft projects can be modified via MCP.'
 
+  include Pundit::Authorization
   include McpServer::BaseTool::ResponseHelpers
   include McpServer::BaseTool::Pagination
-  include McpServer::BaseTool::Authorization
   include McpServer::BaseTool::MultilocMerge
 
   attr_reader :params, :server_context, :current_user, :token_scopes
