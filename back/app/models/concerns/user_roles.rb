@@ -126,6 +126,13 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
 
     attr_reader :highest_role_after_initialize
 
+    # Invalidate any outstanding JWT when the user's highest_role changes, so a
+    # stale `highest_role` claim can't persist (TAN-6826). Kept on the model
+    # (rather than in a side-effect service) so no role-mutation path can bypass
+    # it. Done inline in before_update to persist in the same UPDATE and to keep
+    # previous_changes intact for the other role side effects.
+    before_update :rotate_token_expiry_key_on_highest_role_change
+
     validates :roles, json: { schema: -> { UserRoles.roles_json_schema } }
   end
 
@@ -229,5 +236,19 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   def delete_role(type, options = {})
     roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
     self
+  end
+
+  # Rotates token_expiry_key (which invalidates every outstanding JWT, forcing a
+  # fresh mint with the correct claim on next login) only when this save actually
+  # changes the user's highest_role. A moderator gaining an extra project role,
+  # whose highest_role is unchanged, is therefore not logged out. Scoped to
+  # before_update: on create there is no prior token to invalidate. See the
+  # before_update declaration above.
+  def rotate_token_expiry_key_on_highest_role_change
+    return unless has_attribute?('roles')
+    return unless will_save_change_to_roles?
+    return if highest_role_after_initialize == highest_role
+
+    self.token_expiry_key = SecureRandom.hex(10)
   end
 end

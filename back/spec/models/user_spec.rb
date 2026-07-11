@@ -787,6 +787,53 @@ RSpec.describe User do
     end
   end
 
+  describe 'token_expiry_key rotation on highest_role change' do
+    # Rotating token_expiry_key invalidates any outstanding JWT, so its
+    # highest_role claim can't go stale after a role change (TAN-6826).
+
+    # Set a known key, then reload so highest_role_after_initialize reflects the
+    # persisted roles. update_column bypasses the callback we're testing.
+    def with_known_key(user)
+      user.update_column(:token_expiry_key, 'initial-key')
+      User.find(user.id)
+    end
+
+    it 'rotates when a regular user gains a role' do
+      user = with_known_key(create(:user, roles: []))
+      user.update!(roles: [{ 'type' => 'admin' }])
+      expect(user.token_expiry_key).not_to eq('initial-key')
+    end
+
+    it 'rotates when highest_role changes between two non-empty role sets' do
+      user = with_known_key(create(:admin))
+      project = create(:project)
+      user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }])
+      expect(user.token_expiry_key).not_to eq('initial-key')
+    end
+
+    it 'rotates when all roles are removed' do
+      user = with_known_key(create(:admin))
+      user.update!(roles: [])
+      expect(user.token_expiry_key).not_to eq('initial-key')
+    end
+
+    it 'does not rotate when a moderator gains an extra project role' do
+      user = with_known_key(create(:project_moderator, projects: [create(:project)]))
+      user.update!(roles: user.roles + [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+      expect(user.token_expiry_key).to eq('initial-key')
+    end
+
+    it 'does not rotate on a non-role update' do
+      user = with_known_key(create(:admin))
+      user.update!(first_name: 'Updated')
+      expect(user.token_expiry_key).to eq('initial-key')
+    end
+
+    it 'does not rotate on create (no prior token to invalidate)' do
+      expect(create(:admin).token_expiry_key).to be_nil
+    end
+  end
+
   describe 'onboarding' do
     it 'is valid when empty' do
       u = build(:user, onboarding: {})
