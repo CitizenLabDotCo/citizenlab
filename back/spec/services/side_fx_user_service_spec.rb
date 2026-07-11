@@ -221,10 +221,6 @@ describe SideFxUserService do
     end
   end
 
-  # Token invalidation on highest_role change moved to the User model
-  # (UserRoles#rotate_token_expiry_key_on_highest_role_change). Its coverage
-  # lives in spec/models/user_spec.rb.
-
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the user is destroyed" do
       freeze_time do
