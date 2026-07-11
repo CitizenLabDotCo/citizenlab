@@ -798,35 +798,77 @@ RSpec.describe User do
       User.find(user.id)
     end
 
-    it 'rotates when a regular user gains a role' do
-      user = with_known_key(create(:user, roles: []))
-      user.update!(roles: [{ 'type' => 'admin' }])
-      expect(user.token_expiry_key).not_to eq('initial-key')
+    context 'when the change alters highest_role' do
+      it 'rotates when a regular user becomes an admin' do
+        user = with_known_key(create(:user, roles: []))
+        user.update!(roles: [{ 'type' => 'admin' }])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+
+      it 'rotates when a project moderator is promoted to admin' do
+        user = with_known_key(create(:project_moderator, projects: [create(:project)]))
+        user.update!(roles: user.roles + [{ 'type' => 'admin' }])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+
+      it 'rotates when an admin is demoted to project moderator' do
+        user = with_known_key(create(:admin))
+        user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+
+      it 'rotates when a moderator gains a higher-ranked role' do
+        # project_moderator + a folder-moderator role => highest_role rises to folder
+        user = with_known_key(create(:project_moderator, projects: [create(:project)]))
+        user.update!(roles: user.roles + [{ 'type' => 'project_folder_moderator', 'project_folder_id' => create(:project_folder).id }])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+
+      it 'rotates when all roles are removed' do
+        user = with_known_key(create(:admin))
+        user.update!(roles: [])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
     end
 
-    it 'rotates when highest_role changes between two non-empty role sets' do
-      user = with_known_key(create(:admin))
-      project = create(:project)
-      user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }])
-      expect(user.token_expiry_key).not_to eq('initial-key')
-    end
+    context 'when the change leaves highest_role unchanged' do
+      it 'does not rotate when an admin also gains a moderator role' do
+        # admin + a lower-ranked moderator role => highest_role stays admin
+        user = with_known_key(create(:admin))
+        user.update!(roles: user.roles + [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
 
-    it 'rotates when all roles are removed' do
-      user = with_known_key(create(:admin))
-      user.update!(roles: [])
-      expect(user.token_expiry_key).not_to eq('initial-key')
-    end
+      it 'does not rotate when a moderator gains a lower-ranked role' do
+        # space_moderator + a lower-ranked project-moderator role => highest_role stays space
+        user = with_known_key(create(:space_moderator, spaces: [create(:space)]))
+        user.update!(roles: user.roles + [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
 
-    it 'does not rotate when a moderator gains an extra project role' do
-      user = with_known_key(create(:project_moderator, projects: [create(:project)]))
-      user.update!(roles: user.roles + [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
-      expect(user.token_expiry_key).to eq('initial-key')
-    end
+      it 'does not rotate when a project moderator gains an extra project role' do
+        user = with_known_key(create(:project_moderator, projects: [create(:project)]))
+        user.update!(roles: user.roles + [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
 
-    it 'does not rotate on a non-role update' do
-      user = with_known_key(create(:admin))
-      user.update!(first_name: 'Updated')
-      expect(user.token_expiry_key).to eq('initial-key')
+      it 'does not rotate when a folder moderator gains an extra folder role' do
+        user = with_known_key(create(:project_folder_moderator, project_folders: [create(:project_folder)]))
+        user.update!(roles: user.roles + [{ 'type' => 'project_folder_moderator', 'project_folder_id' => create(:project_folder).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
+
+      it 'does not rotate when a space moderator gains an extra space role' do
+        user = with_known_key(create(:space_moderator, spaces: [create(:space)]))
+        user.update!(roles: user.roles + [{ 'type' => 'space_moderator', 'space_id' => create(:space).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
+
+      it 'does not rotate on a non-role update' do
+        user = with_known_key(create(:admin))
+        user.update!(first_name: 'Updated')
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
     end
 
     it 'does not rotate on create (no prior token to invalidate)' do
