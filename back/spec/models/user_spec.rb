@@ -785,6 +785,14 @@ RSpec.describe User do
     it 'correctly returns the highest role a moderator posesses' do
       expect(build_stubbed(:project_moderator).highest_role).to eq :project_moderator
     end
+
+    it 'ignores a moderator role that is missing its scope id' do
+      # Mirrors moderated_*_ids (which compact out nil ids): a type-only role
+      # hash does not make the user a moderator.
+      user = build_stubbed(:user, roles: [{ 'type' => 'project_moderator' }])
+      expect(user.highest_role).to eq :user
+      expect(user.project_moderator?).to be false
+    end
   end
 
   describe 'token_expiry_key rotation on highest_role change' do

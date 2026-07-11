@@ -150,18 +150,29 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   # persisted vs pending roles when deciding whether a save actually changes the
   # user's highest_role — see #rotate_token_expiry_key_on_highest_role_change.
   def highest_role_for(role_list)
-    types = role_list.to_a.filter_map { |role| role['type'] }
-    if types.include?('admin')
+    roles_array = role_list.to_a
+    if roles_array.any? { |role| role['type'] == 'admin' }
       govocal_or_citizenlab_email? ? :super_admin : :admin
-    elsif types.include?('space_moderator')
+    elsif moderator_role_present?(roles_array, 'space_moderator', 'space_id')
       :space_moderator
-    elsif types.include?('project_folder_moderator')
+    elsif moderator_role_present?(roles_array, 'project_folder_moderator', 'project_folder_id')
       :project_folder_moderator
-    elsif types.include?('project_moderator')
+    elsif moderator_role_present?(roles_array, 'project_moderator', 'project_id')
       :project_moderator
     else
       :user
     end
+  end
+
+  # A moderator role only counts when it carries its scope id, mirroring the
+  # moderated_*_ids helpers (which compact out nil ids). Without this, a
+  # type-only role hash (e.g. one built in memory before validation) would be
+  # misclassified as a moderator, diverging from #project_moderator? et al.
+  # The roles JSON schema already requires the scope id for each moderator type,
+  # so checking it here keeps in-memory classification equivalent to persisted,
+  # schema-validated data.
+  def moderator_role_present?(roles_array, type, id_key)
+    roles_array.any? { |role| role['type'] == type && !role[id_key].nil? }
   end
 
   def super_admin?
