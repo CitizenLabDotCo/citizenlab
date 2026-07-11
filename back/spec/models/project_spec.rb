@@ -149,6 +149,20 @@ RSpec.describe Project do
 
       expect { project.destroy }.not_to raise_error
     end
+
+    it "invalidates a sole-role moderator's token when destroyed" do
+      # after_destroy -> remove_moderators strips the project_moderator role,
+      # dropping the user's highest_role to :user, which must invalidate their
+      # JWT (TAN-6826). Guards against this destroy path bypassing the model
+      # callback (e.g. if it were switched to update_columns).
+      project = create(:project)
+      moderator = create(:project_moderator, projects: [project])
+      moderator.update_column(:token_expiry_key, 'initial-key') # bypasses the callback
+
+      project.destroy!
+
+      expect(moderator.reload.token_expiry_key).not_to eq('initial-key')
+    end
   end
 
   describe 'generate_slug' do
