@@ -180,6 +180,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   end
 
   def govocal_or_citizenlab_email?
+    return false if email.blank?
+
     !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i') || email =~ Regexp.new(GOVOCAL_MEMBER_REGEX_CONTENT, 'i'))
   end
 
