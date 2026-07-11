@@ -7,6 +7,8 @@ RSpec.describe CustomFieldBins::AgeBin do
     travel_to Time.zone.local(2025, 3, 21)
   end
 
+  after { travel_back }
+
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:age_bin)).to be_valid

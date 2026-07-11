@@ -424,6 +424,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     # Ensure consistent date as stats will be different in first six months of year vs last six months
     before { travel_to(Date.parse('2025-10-01')) }
+    after { travel_back }
 
     context 'without reference distribution' do
       it 'calculates demographics data correctly' do

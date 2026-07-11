@@ -127,6 +127,8 @@ describe CommunityMonitorService do
       create(:native_survey_response, project: project, published_at: '2025-05-23')
     end
 
+    after { travel_back }
+
     context 'when there is no previous quarter report' do
       it 'creates a new report' do
         report = service.find_or_create_previous_quarter_report

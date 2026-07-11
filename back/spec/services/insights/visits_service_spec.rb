@@ -6,6 +6,8 @@ describe Insights::VisitsService do
     travel_to(Time.zone.parse('2025-12-12'))
   end
 
+  after { travel_back }
+
   context 'Phase visits' do
     # rubocop:disable RSpec/ScatteredLet
     let(:phase) { create(:single_voting_phase, start_at: 20.days.ago, end_at: 2.days.ago) }
