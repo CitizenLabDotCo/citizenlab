@@ -131,6 +131,11 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     # (rather than in a side-effect service) so no role-mutation path can bypass
     # it. Done inline in before_update to persist in the same UPDATE and to keep
     # previous_changes intact for the other role side effects.
+    #
+    # NOTE: this relies on `roles` being changed through normal persistence
+    # (save/update/add_role/delete_role). Do NOT change `roles` via
+    # update_column(s)/update_all/insert_all — those skip callbacks and would
+    # silently leave a stale highest_role claim valid.
     before_update :rotate_token_expiry_key_on_highest_role_change
 
     validates :roles, json: { schema: -> { UserRoles.roles_json_schema } }
