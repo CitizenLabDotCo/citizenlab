@@ -137,15 +137,22 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   end
 
   def highest_role
-    if super_admin?
-      :super_admin
-    elsif admin?
-      :admin
-    elsif space_moderator?
+    highest_role_for roles
+  end
+
+  # Highest role implied by an arbitrary roles array (defaults to the user's
+  # current roles via #highest_role). Array-based so we can compare the
+  # persisted vs pending roles when deciding whether a save actually changes the
+  # user's highest_role — see #rotate_token_expiry_key_on_highest_role_change.
+  def highest_role_for(role_list)
+    types = role_list.to_a.filter_map { |role| role['type'] }
+    if types.include?('admin')
+      govocal_or_citizenlab_email? ? :super_admin : :admin
+    elsif types.include?('space_moderator')
       :space_moderator
-    elsif project_folder_moderator?
+    elsif types.include?('project_folder_moderator')
       :project_folder_moderator
-    elsif project_moderator?
+    elsif types.include?('project_moderator')
       :project_moderator
     else
       :user
@@ -153,7 +160,11 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   end
 
   def super_admin?
-    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i') || email =~ Regexp.new(GOVOCAL_MEMBER_REGEX_CONTENT, 'i'))
+    admin? && govocal_or_citizenlab_email?
+  end
+
+  def govocal_or_citizenlab_email?
+    !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i') || email =~ Regexp.new(GOVOCAL_MEMBER_REGEX_CONTENT, 'i'))
   end
 
   def admin?
@@ -247,7 +258,10 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   def rotate_token_expiry_key_on_highest_role_change
     return unless has_attribute?('roles')
     return unless will_save_change_to_roles?
-    return if highest_role_after_initialize == highest_role
+    # Compare the persisted roles against the pending ones (rather than an
+    # after_initialize snapshot) so detection is accurate regardless of how the
+    # in-memory object was built.
+    return if highest_role_for(roles_in_database) == highest_role_for(roles)
 
     self.token_expiry_key = SecureRandom.hex(10)
   end
