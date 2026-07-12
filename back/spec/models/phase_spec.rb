@@ -667,76 +667,91 @@ RSpec.describe Phase do
   describe 'prescreening_mode' do
     using RSpec::Parameterized::TableSyntax
 
-    describe 'validation' do
-      def set_feature_flags(prescreening:, flag_inappropriate_content:)
-        AppConfiguration.instance.settings.tap do |settings|
-          settings['prescreening'] = { 'allowed' => true, 'enabled' => prescreening }
-          settings['prescreening_ideation'] = { 'allowed' => true, 'enabled' => prescreening }
-          settings['flag_inappropriate_content'] = { 'allowed' => true, 'enabled' => flag_inappropriate_content }
-        end
-
-        AppConfiguration.instance.save!
+    def set_feature_flags(prescreening:, flag_inappropriate_content:)
+      AppConfiguration.instance.settings.tap do |settings|
+        settings['prescreening'] = { 'allowed' => true, 'enabled' => prescreening }
+        settings['prescreening_ideation'] = { 'allowed' => true, 'enabled' => prescreening }
+        settings['flag_inappropriate_content'] = { 'allowed' => true, 'enabled' => flag_inappropriate_content }
       end
 
-      describe 'on create' do
-        where(:factory, :prescreening_mode, :prescreening, :flag_inappropriate_content, :valid) do
-          :phase | nil | false | false | true
-          :phase | 'all' | false | false | false
-          :phase | 'all' | true | false | true
-          :phase | 'flagged_only' | true | false | false
-          :phase | 'flagged_only' | true | true | true
-          :phase | 'invalid' | true | true | false
-          :proposals_phase | nil | false | false | true
-          :proposals_phase | 'all' | false | false | false
-          :proposals_phase | 'all' | true | false | true
-          :proposals_phase | 'flagged_only' | true | false | false
-          :proposals_phase | 'flagged_only' | true | true | true
-          :proposals_phase | 'invalid' | true | true | false
-        end
-
-        with_them do
-          before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
-
-          it { expect(build(factory, prescreening_mode: prescreening_mode).valid?).to eq valid }
-        end
-      end
-
-      describe 'on update' do
-        it 'remains valid when feature is disabled but prescreening_mode unchanged' do
-          set_feature_flags(prescreening: true, flag_inappropriate_content: false)
-          phase = create(:phase, prescreening_mode: 'all')
-          set_feature_flags(prescreening: false, flag_inappropriate_content: false)
-
-          expect(phase).to be_valid
-          phase.title_multiloc = { 'en' => 'Updated title' }
-          expect(phase).to be_valid
-        end
-
-        it 'becomes invalid when changing prescreening_mode to non-nil with feature disabled' do
-          set_feature_flags(prescreening: true, flag_inappropriate_content: true)
-          phase = create(:phase, prescreening_mode: 'flagged_only')
-          set_feature_flags(prescreening: false, flag_inappropriate_content: false)
-
-          expect(phase).to be_valid
-          phase.prescreening_mode = 'all'
-          expect(phase).not_to be_valid
-        end
-      end
+      AppConfiguration.instance.save!
     end
 
-    describe 'helper methods' do
-      where(:mode, :enabled, :flagged_only, :all) do
-        nil | false | false | false
-        'flagged_only' | true | true | false
-        'all' | true | false | true
+    # `prescreening_mode` is configuration data, not a feature-gated invariant: tenant
+    # templates and project copies carry it onto platforms whose features differ, so any
+    # valid mode is storable regardless of the flags. It is the *effect* that is gated -
+    # see 'effective mode' below.
+    describe 'validation' do
+      where(:factory, :prescreening_mode, :prescreening, :flag_inappropriate_content, :valid) do
+        :phase           | nil            | false | false | true
+        :phase           | 'all'          | false | false | true
+        :phase           | 'all'          | true  | false | true
+        :phase           | 'flagged_only' | false | false | true
+        :phase           | 'flagged_only' | true  | true  | true
+        :phase           | 'invalid'      | true  | true  | false
+        :proposals_phase | nil            | false | false | true
+        :proposals_phase | 'all'          | false | false | true
+        :proposals_phase | 'flagged_only' | false | false | true
+        :proposals_phase | 'invalid'      | true  | true  | false
       end
 
       with_them do
-        subject(:phase) { build(:phase, prescreening_mode: mode) }
+        before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
+
+        it { expect(build(factory, prescreening_mode: prescreening_mode).valid?).to eq valid }
+      end
+    end
+
+    # The mode only takes effect where the platform has the corresponding feature. Note
+    # ideation phases are gated on `prescreening_ideation` and proposals phases on
+    # `prescreening`; `set_feature_flags` sets both together.
+    describe 'effective mode' do
+      where(:factory, :mode, :prescreening, :flag_inappropriate_content, :enabled, :flagged_only, :all) do
+        # No mode configured: inert regardless of the flags.
+        :phase           | nil            | true  | true  | false | false | false
+        :phase           | nil            | false | false | false | false | false
+
+        # Mode configured, prescreening feature off: inert.
+        :phase           | 'all'          | false | false | false | false | false
+        :phase           | 'flagged_only' | false | true  | false | false | false
+        :proposals_phase | 'all'          | false | false | false | false | false
+
+        # Mode configured, prescreening feature on: in effect.
+        :phase           | 'all'          | true  | false | true  | false | true
+        :proposals_phase | 'all'          | true  | false | true  | false | true
+
+        # 'flagged_only' additionally requires flag_inappropriate_content.
+        :phase           | 'flagged_only' | true  | false | false | false | false
+        :phase           | 'flagged_only' | true  | true  | true  | true  | false
+        :proposals_phase | 'flagged_only' | true  | true  | true  | true  | false
+      end
+
+      with_them do
+        subject(:phase) { build(factory, prescreening_mode: mode) }
+
+        before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
 
         it { expect(phase.prescreening_enabled?).to eq enabled }
         it { expect(phase.prescreening_flagged_only?).to eq flagged_only }
         it { expect(phase.prescreening_all?).to eq all }
+      end
+
+      it 'preserves the configured mode even where the feature is off' do
+        set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+        phase = create(:phase, prescreening_mode: 'all')
+
+        expect(phase.reload.prescreening_mode).to eq 'all'
+        expect(phase.prescreening_all?).to be false
+      end
+
+      it 'takes effect once the feature is enabled, without rewriting the phase' do
+        set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+        phase = create(:phase, prescreening_mode: 'all')
+        expect(phase.prescreening_all?).to be false
+
+        set_feature_flags(prescreening: true, flag_inappropriate_content: false)
+
+        expect(phase.prescreening_all?).to be true
       end
     end
   end
