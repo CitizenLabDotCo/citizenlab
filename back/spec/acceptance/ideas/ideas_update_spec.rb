@@ -190,6 +190,24 @@ resource 'Ideas' do
           end
         end
 
+        # A phase can carry a prescreening_mode on a platform without the feature: tenant
+        # templates and project copies bring the value across from platforms that have it.
+        # The mode must not restrict the author where screening never applied.
+        context 'when prescreening_mode is all but the prescreening_ideation feature is disabled' do
+          let!(:proposed_status) { create(:idea_status_proposed) }
+
+          let(:phase) { create(:phase, :ongoing, prescreening_mode: 'all') }
+          let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
+          let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+          example 'Author can edit a published idea', document: false do
+            do_request
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
+          end
+        end
+
         context 'when prescreening_mode is flagged_only' do
           before_all do
             SettingsService.new.activate_feature!('prescreening_ideation')
