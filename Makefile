@@ -82,6 +82,7 @@ up:
 
 # Run stack with docker compose, including running npm inside of docker container
 up-docker:
+	docker compose --profile frontend down --remove-orphans
 	docker compose --profile frontend up
 
 # For testing different SSO methods using https in dev
