@@ -22,7 +22,11 @@ describe ProjectCopyService do
         slugs.each do |new_slug|
           template = Apartment::Tenant.switch('localhost') do
             project = Project.all.sample
-            service.export project, include_ideas: include_ideas, new_slug: new_slug
+            # A fresh service per export: refs are only meaningful within one template,
+            # and a reused instance can resolve a ref against a record of the previous
+            # export (e.g. a basket whose user is not exported this time), producing a
+            # template whose ref points to a record it does not contain.
+            described_class.new.export project, include_ideas: include_ideas, new_slug: new_slug
           end
 
           service.import template
