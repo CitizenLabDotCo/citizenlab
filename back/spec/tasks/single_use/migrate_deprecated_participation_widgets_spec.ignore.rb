@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'single_use:migrate_deprecated_participation_widgets' do # rubocop:disable RSpec/DescribeClass
+RSpec.describe 'single_use:migrate_deprecated_participation_widgets' do
   before_all do
     load_rake_tasks_if_not_loaded
 

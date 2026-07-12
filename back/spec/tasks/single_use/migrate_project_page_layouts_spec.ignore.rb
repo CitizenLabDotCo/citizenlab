@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # The craftjs transform itself is covered by the ContentBuilder::ProjectPageLayoutService spec.
-RSpec.describe 'single_use:migrate_project_page_layouts' do # rubocop:disable RSpec/DescribeClass
+RSpec.describe 'single_use:migrate_project_page_layouts' do
   before(:all) { load_rake_tasks_if_not_loaded } # rubocop:disable RSpec/BeforeAfterAll
 
   before { Rake::Task['single_use:migrate_project_page_layouts'].reenable }
