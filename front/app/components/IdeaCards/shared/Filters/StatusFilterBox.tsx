@@ -10,6 +10,8 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
+import useScreeningEnabled from './useScreeningEnabled';
+
 interface Props {
   selectedStatusId: string | null | undefined;
   ideaQueryParameters: IIdeasFilterCountsQueryParameters;
@@ -32,10 +34,9 @@ const StatusFilterBox = ({
   const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
   });
+  const screeningEnabled = useScreeningEnabled(phase);
   const showScreeningStatus = phase
-    ? // This prescreening_mode setting is the same for ideation and proposal phases.
-      // So no need to differentiate between prescreening and prescreening_ideation.
-      !!phase.data.attributes.prescreening_mode
+    ? screeningEnabled
     : /*
         On the All inputs page, with no phase, we show all statuses if the prescreening_ideation feature is enabled (similar to platform input manager behavior).
 

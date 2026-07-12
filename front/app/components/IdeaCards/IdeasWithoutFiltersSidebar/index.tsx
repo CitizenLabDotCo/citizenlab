@@ -32,6 +32,7 @@ import messages from '../messages';
 import SelectSort from '../shared/Filters/SortFilterDropdown';
 import StatusFilterDropdown from '../shared/Filters/StatusFilterDropdown';
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
+import useScreeningEnabled from '../shared/Filters/useScreeningEnabled';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
@@ -133,6 +134,7 @@ const IdeasWithoutFiltersSidebar = ({
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
+  const screeningEnabled = useScreeningEnabled(phase);
 
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
@@ -254,9 +256,7 @@ const IdeasWithoutFiltersSidebar = ({
                     onChange={(statuses) => handleStatusChange(statuses[0])}
                     alignment={smallerThanTablet ? 'right' : 'left'}
                     participationMethod={participationMethod}
-                    isScreeningEnabled={
-                      !!phase?.data.attributes.prescreening_mode
-                    }
+                    isScreeningEnabled={screeningEnabled}
                   />
                 )}
               </Box>
