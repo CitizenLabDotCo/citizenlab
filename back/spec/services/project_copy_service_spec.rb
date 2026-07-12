@@ -489,6 +489,39 @@ describe ProjectCopyService do
         expect(copied_project.space_id).to be_nil
       end
     end
+
+    # A project can be copied onto a platform whose features differ from the source's.
+    # The prescreening_mode travels with the phase, but only takes effect where the
+    # target platform has the corresponding feature.
+    describe 'a phase with a prescreening_mode' do
+      let(:project) do
+        SettingsService.new.activate_feature!('prescreening_ideation')
+        create(:project).tap do |project|
+          create(:phase, project: project, prescreening_mode: 'all')
+        end
+      end
+
+      it 'copies the mode, without it taking effect where the target lacks the feature' do
+        template = service.export project, local_copy: false
+        SettingsService.new.deactivate_feature!('prescreening_ideation')
+
+        copied_project = service.import template, local_copy: false
+
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.prescreening_mode).to eq 'all'
+        expect(copied_phase.prescreening_all?).to be false
+      end
+
+      it 'copies the mode, and it takes effect where the target has the feature' do
+        template = service.export project, local_copy: false
+
+        copied_project = service.import template, local_copy: false
+
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.prescreening_mode).to eq 'all'
+        expect(copied_phase.prescreening_all?).to be true
+      end
+    end
   end
 
   private
