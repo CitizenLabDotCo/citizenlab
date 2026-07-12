@@ -753,6 +753,41 @@ RSpec.describe Phase do
 
         expect(phase.prescreening_all?).to be true
       end
+
+      # The two participation methods are gated on different features, so converting a
+      # phase moves it from one gate to the other. This matters on a default-configured
+      # platform, where `prescreening` (proposals) is enabled and `prescreening_ideation`
+      # is not.
+      describe 'when the participation_method is converted' do
+        before do
+          AppConfiguration.instance.settings.tap do |settings|
+            settings['prescreening'] = { 'allowed' => true, 'enabled' => true }
+            settings['prescreening_ideation'] = { 'allowed' => false, 'enabled' => false }
+          end
+
+          AppConfiguration.instance.save!
+        end
+
+        it 'stops taking effect when proposals (feature on) becomes ideation (feature off)' do
+          phase = create(:proposals_phase, prescreening_mode: 'all')
+          expect(phase.prescreening_all?).to be true
+
+          phase.update!(participation_method: 'ideation')
+
+          expect(phase.reload.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be false
+        end
+
+        it 'starts taking effect when ideation (feature off) becomes proposals (feature on)' do
+          phase = create(:phase, prescreening_mode: 'all')
+          expect(phase.prescreening_all?).to be false
+
+          phase.update!(participation_method: 'proposals')
+
+          expect(phase.reload.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be true
+        end
+      end
     end
   end
 end
