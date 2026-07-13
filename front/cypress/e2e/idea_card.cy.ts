@@ -140,19 +140,33 @@ describe('Idea card component', () => {
   });
 
   describe('Reaction to input disabled', () => {
+    const ideaTitle = randomString();
+    const ideaContent = randomString();
+
     before(() => {
-      cy.apiUpdatePhase({
-        phaseId: phaseId,
+      cy.apiCreatePhase({
+        projectId,
+        title: "Second phase",
+        startAt: moment().subtract(1, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'ideation',
+        canPost: true,
+        canComment: true,
         canReact: false,
-      });
-      // reload the page with new permissions
-      cy.reload();
+        reacting_dislike_enabled: true,
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+      })
+      .then((user) => {
+        return cy.apiCreateIdea({
+          projectId,
+          ideaTitle,
+          ideaContent,
+        });
+      })
     });
 
     it('does not show the up and dislike buttons if canReact is false', () => {
-      cy.visit(`/projects/${projectSlug}`);
-      cy.wait(2000);
-
       cy.get('#e2e-ideas-list')
         .find('.e2e-idea-card')
         .contains(ideaTitle)
@@ -166,12 +180,6 @@ describe('Idea card component', () => {
         .closest('.e2e-idea-card')
         .find('.e2e-ideacard-dislike-button')
         .should('not.exist');
-    });
-    after(() => {
-      cy.apiUpdatePhase({
-        phaseId: phaseId,
-        canReact: true,
-      });
     });
   });
 
