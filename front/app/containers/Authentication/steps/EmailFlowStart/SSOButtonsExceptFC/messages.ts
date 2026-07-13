@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithFedera',
     defaultMessage: 'Login with SPID, CIE or CNS',
   },
+  continueWithLuxembourgIAM: {
+    id: 'app.components.AuthProviders.continueWithLuxembourgIAM',
+    defaultMessage: 'Continue with your IAM identifier',
+  },
 });

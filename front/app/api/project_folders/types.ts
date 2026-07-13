@@ -14,7 +14,9 @@ export interface IProjectFolders {
 export interface INewProjectFolderDiff {
   title_multiloc: Multiloc;
   slug: string | null;
-  description_multiloc: Multiloc;
+  // Optional: a folder can be created without a description, which is then
+  // authored in the Content Builder after creation.
+  description_multiloc?: Multiloc;
   description_preview_multiloc: Multiloc;
   header_bg?: string | null;
   header_bg_alt_text_multiloc?: Multiloc;

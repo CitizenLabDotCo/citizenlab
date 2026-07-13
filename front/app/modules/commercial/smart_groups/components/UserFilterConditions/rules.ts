@@ -46,6 +46,7 @@ export type TStaticRuleType =
   | 'participated_in_project'
   | 'participated_in_topic'
   | 'participated_in_idea_status'
+  | 'participated_in_input'
   | 'verified'
   | 'participated_in_community_monitor';
 
@@ -494,6 +495,32 @@ export type TRule =
       value?: string[];
     }
   | {
+      ruleType?: 'participated_in_input';
+      predicate?:
+        | 'not_in'
+        | 'not_posted_in'
+        | 'not_commented_in'
+        | 'not_reacted_idea_in'
+        | 'not_reacted_comment_in';
+      /**
+       * The id of an input
+       */
+      value?: string;
+    }
+  | {
+      ruleType?: 'participated_in_input';
+      predicate?:
+        | 'in'
+        | 'posted_in'
+        | 'commented_in'
+        | 'reacted_idea_in'
+        | 'reacted_comment_in';
+      /**
+       * The IDs of inputs
+       */
+      value?: string[];
+    }
+  | {
       ruleType?: 'follow';
       predicate?:
         | 'something'
@@ -661,6 +688,18 @@ export const ruleTypeConstraints = {
     not_reacted_idea_in: IdeaStatusValueSelector,
     reacted_comment_in: IdeaStatusValuesSelector,
     not_reacted_comment_in: IdeaStatusValueSelector,
+  },
+  participated_in_input: {
+    in: IdeaValuesSelector,
+    not_in: IdeaValueSelector,
+    posted_in: IdeaValuesSelector,
+    not_posted_in: IdeaValueSelector,
+    commented_in: IdeaValuesSelector,
+    not_commented_in: IdeaValueSelector,
+    reacted_idea_in: IdeaValuesSelector,
+    not_reacted_idea_in: IdeaValueSelector,
+    reacted_comment_in: IdeaValuesSelector,
+    not_reacted_comment_in: IdeaValueSelector,
   },
   verified: {
     is_verified: null,

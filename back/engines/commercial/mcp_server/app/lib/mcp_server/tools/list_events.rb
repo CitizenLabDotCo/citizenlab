@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListEvents < McpServer::BaseTool
   def name = 'list_events'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists events for a project, ordered by start date'
 
   def input_schema
@@ -25,7 +26,8 @@ class McpServer::Tools::ListEvents < McpServer::BaseTool
         'events',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc start_at end_at location_multiloc]
+        serializer: McpServer::Serializers::Event,
+        params: { current_user: }
       )
     end
   end

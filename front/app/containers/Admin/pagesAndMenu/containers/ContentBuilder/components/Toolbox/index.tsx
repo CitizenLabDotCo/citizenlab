@@ -77,6 +77,7 @@ import Spotlight, {
 } from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
+import HtmlBlockMultiloc, { htmlBlockMultilocTitle } from '../Widgets/HtmlBlockMultiloc';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 
@@ -87,7 +88,9 @@ const HomepageBuilderToolbox = () => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const followEnabled = useFeatureFlag({ name: 'follow' });
   const communityMonitorEnabled = useFeatureFlag({ name: 'community_monitor' });
-
+  const isHtmlBlockMultilocEnabled = useFeatureFlag({
+    name: 'html_block_in_content_builder',
+  });
   const { data: appConfiguration } = useAppConfiguration();
 
   if (
@@ -257,6 +260,15 @@ const HomepageBuilderToolbox = () => {
           icon="text"
           label={formatMessage(textMultilocTitle)}
         />
+        {isHtmlBlockMultilocEnabled && (
+          <DraggableElement
+            id="e2e-draggable-html-block-multiloc"
+            component={<HtmlBlockMultiloc html={{}} />}
+            icon="code"
+            label={formatMessage(htmlBlockMultilocTitle)}
+          />
+          )
+        }
         <DraggableElement
           id="e2e-draggable-white-space"
           component={<WhiteSpace size="small" />}

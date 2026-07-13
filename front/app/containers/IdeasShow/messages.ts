@@ -110,6 +110,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.storyTwitterMessage',
     defaultMessage: 'Support this story: {postTitle}',
   },
+  observationTwitterMessage: {
+    id: 'app.containers.IdeasShow.observationTwitterMessage',
+    defaultMessage: 'Support this observation: {postTitle}',
+  },
   // #input_term_copy
   ideaWhatsAppMessage: {
     id: 'app.containers.IdeasShow.ideaWhatsAppMessage',
@@ -170,6 +174,10 @@ export default defineMessages({
   storyWhatsAppMessage: {
     id: 'app.containers.IdeasShow.storyWhatsAppMessage',
     defaultMessage: 'Support this story: {postTitle}',
+  },
+  observationWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.observationWhatsAppMessage',
+    defaultMessage: 'Support this observation: {postTitle}',
   },
   // #input_term_copy
   ideaEmailSharingSubject: {
@@ -293,6 +301,14 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.storyEmailSharingBody',
     defaultMessage: "Support this story '{ideaTitle}' at {ideaUrl}!",
   },
+  observationEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.observationEmailSharingSubject',
+    defaultMessage: 'Support this observation: {ideaTitle}',
+  },
+  observationEmailSharingBody: {
+    id: 'app.containers.IdeasShow.observationEmailSharingBody',
+    defaultMessage: "Support this observation '{ideaTitle}' at {ideaUrl}!",
+  },
   share: {
     id: 'app.containers.IdeasShow.share',
     defaultMessage: 'Share',
@@ -305,10 +321,85 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.imported',
     defaultMessage: 'Imported',
   },
-  importedTooltip: {
-    id: 'app.containers.IdeasShow.importedTooltip',
+  importedTooltipIdea: {
+    id: 'app.containers.IdeasShow.importedTooltipIdea',
     defaultMessage:
-      'This {inputTerm} was collected offline and automatically uploaded to the platform.',
+      'This idea was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipOption: {
+    id: 'app.containers.IdeasShow.importedTooltipOption',
+    defaultMessage:
+      'This option was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipProject: {
+    id: 'app.containers.IdeasShow.importedTooltipProject',
+    defaultMessage:
+      'This project was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipQuestion: {
+    id: 'app.containers.IdeasShow.importedTooltipQuestion',
+    defaultMessage:
+      'This question was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipIssue: {
+    id: 'app.containers.IdeasShow.importedTooltipIssue',
+    defaultMessage:
+      'This issue was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipContribution: {
+    id: 'app.containers.IdeasShow.importedTooltipContribution',
+    defaultMessage:
+      'This contribution was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipProposal: {
+    id: 'app.containers.IdeasShow.importedTooltipProposal',
+    defaultMessage:
+      'This proposal was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipInitiative: {
+    id: 'app.containers.IdeasShow.importedTooltipInitiative',
+    defaultMessage:
+      'This initiative was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipPetition: {
+    id: 'app.containers.IdeasShow.importedTooltipPetition',
+    defaultMessage:
+      'This petition was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipComment: {
+    id: 'app.containers.IdeasShow.importedTooltipComment',
+    defaultMessage:
+      'This comment was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipResponse: {
+    id: 'app.containers.IdeasShow.importedTooltipResponse',
+    defaultMessage:
+      'This response was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipSuggestion: {
+    id: 'app.containers.IdeasShow.importedTooltipSuggestion',
+    defaultMessage:
+      'This suggestion was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipTopic: {
+    id: 'app.containers.IdeasShow.importedTooltipTopic',
+    defaultMessage:
+      'This topic was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipPost: {
+    id: 'app.containers.IdeasShow.importedTooltipPost',
+    defaultMessage:
+      'This post was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipStory: {
+    id: 'app.containers.IdeasShow.importedTooltipStory',
+    defaultMessage:
+      'This story was collected offline and automatically uploaded to the platform.',
+  },
+  importedTooltipObservation: {
+    id: 'app.containers.IdeasShow.importedTooltipObservation',
+    defaultMessage:
+      'This observation was collected offline and automatically uploaded to the platform.',
   },
   actionsMenuTitle: {
     id: 'app.containers.IdeasShow.actionsMenuTitle',

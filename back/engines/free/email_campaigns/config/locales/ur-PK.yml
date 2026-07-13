@@ -249,6 +249,7 @@ ur-PK:
         idea: '%{authorName} نے ایک خیال پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         initiative: '%{authorName} نے اس اقدام پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         issue: '%{authorName} نے اس مسئلے پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        observation: '%{authorName} نے اس مشاہدے پر تبصرہ کیا ہے جس کی آپ پیروی کر رہے ہیں'
         option: '%{authorName} نے ایک آپشن پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         petition: '%{authorName} نے آپ کی پیروی کی درخواست پر تبصرہ کیا۔'
         post: '%{authorName} نے اس پوسٹ پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
@@ -323,6 +324,7 @@ ur-PK:
         idea: اس خیال پر جائیں۔
         initiative: اس اقدام پر جائیں۔
         issue: اس مسئلے پر جائیں۔
+        observation: اس مشاہدے پر جائیں
         option: اس آپشن پر جائیں۔
         petition: اس عرضی پر جائیں۔
         post: اس پوسٹ پر جائیں۔
@@ -343,6 +345,7 @@ ur-PK:
         idea: اپنے خیال پر جائیں۔
         initiative: اپنی پہل پر جائیں۔
         issue: اپنے مسئلے پر جائیں۔
+        observation: اپنے مشاہدے پر جائیں
         option: اپنے آپشن پر جائیں۔
         petition: اپنی درخواست پر جائیں۔
         post: اپنی پوسٹ پر جائیں۔
@@ -376,6 +379,7 @@ ur-PK:
         idea: آپ کا خیال شائع ہو چکا ہے۔
         initiative: آپ کا پہل شائع ہو چکا ہے۔
         issue: آپ کا شمارہ شائع ہو چکا ہے۔
+        observation: آپ کا مشاہدہ شائع ہو گیا ہے
         option: آپ کا اختیار شائع ہو چکا ہے۔
         petition: آپ کی درخواست شائع ہو چکی ہے۔
         post: آپ کی پوسٹ شائع ہو چکی ہے۔
@@ -764,6 +768,7 @@ ur-PK:
         idea: آپ کا خیال "%{prescreening_status_title}" میں ہے
         initiative: آپ کی پہل "%{prescreening_status_title}" میں ہے
         issue: آپ کا مسئلہ "%{prescreening_status_title}" میں ہے
+        observation: آپ کا مشاہدہ "%{prescreening_status_title}" میں ہے
         option: آپ کا اختیار "%{prescreening_status_title}" میں ہے
         petition: آپ کی درخواست "%{prescreening_status_title}" میں ہے
         post: آپ کی پوسٹ "%{prescreening_status_title}" میں ہے

@@ -10,7 +10,6 @@ export const areasData: IAreaData[] = [
       },
       description_multiloc: {},
       ordering: 1,
-      static_page_ids: ['3'],
       followers_count: 3,
       include_in_onboarding: true,
     },
@@ -38,7 +37,6 @@ export const areasData: IAreaData[] = [
       description_multiloc: {},
 
       ordering: 1,
-      static_page_ids: ['4'],
       followers_count: 3,
       include_in_onboarding: true,
     },

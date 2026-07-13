@@ -99,16 +99,8 @@ describe('Space moderator: permissions', () => {
         cy.wait(300);
       });
 
-    // Add folder description
-    cy.dataCy('e2e-project-folder-description')
-      .find('.e2e-localeswitcher')
-      .each((button) => {
-        cy.wrap(button).click();
-        cy.dataCy('e2e-project-folder-description').within(() => {
-          cy.get('#description').type(folderDescription);
-          cy.wait(300);
-        });
-      });
+    // The main folder description is no longer entered at creation — it is
+    // authored in the Content Builder after the folder exists.
 
     // Add folder short description
     cy.dataCy('e2e-project-folder-short-description')
@@ -131,6 +123,21 @@ describe('Space moderator: permissions', () => {
     // Confirm  we got redirected to folder page
     cy.get('.e2e-resource-header').should('be.visible');
     cy.get('.e2e-resource-header').contains(folderName);
+
+    cy.url().then((folderAdminUrl) => {
+      const folderId = folderAdminUrl.split('/folders/')[1].split(/[/?#]/)[0];
+
+      cy.visit(`/admin/projects/folders/${folderId}/settings`);
+      cy.get('#e2e-project-description-builder-link')
+        .should('be.visible')
+        .click();
+      cy.get('.e2e-text-box').click('center');
+      cy.get('.ql-editor').click();
+      cy.get('.ql-editor').type(folderDescription, { force: true });
+      cy.get('#e2e-content-builder-topbar-save').click();
+
+      cy.visit(folderAdminUrl);
+    });
 
     // Confirm folder is in space
     cy.get('.intercom-admin-tab-settings').first().click();

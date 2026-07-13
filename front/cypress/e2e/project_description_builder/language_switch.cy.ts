@@ -14,7 +14,7 @@ describe('Project description builder language switch', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
+      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
@@ -48,7 +48,7 @@ describe('Project description builder language switch', () => {
   });
 
   it('handles language specific content correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
@@ -76,7 +76,7 @@ describe('Project description builder language switch', () => {
   });
 
   it('deletes language specific content correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 

@@ -160,3 +160,4 @@ class SideFxProjectService
 end
 
 SideFxProjectService.prepend(IdeaAssignment::Patches::SideFxProjectService)
+SideFxProjectService.prepend(ContentBuilder::Patches::SideFxProjectService)
