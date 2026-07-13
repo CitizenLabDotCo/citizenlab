@@ -7,7 +7,7 @@ describe Permissions::PhasePermissionsService do
   let(:current_phase_attrs) { {} }
   let(:user) { create(:user) }
 
-  describe '"posting_idea" denied_reason_for_action' do
+  describe 'posting_idea denied_reason_for_action' do
     context 'when posting is disabled' do
       let(:current_phase_attrs) { { submission_enabled: false } }
 
@@ -191,7 +191,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  describe '"commenting_idea" denied_reason_for_action' do
+  describe 'commenting_idea denied_reason_for_action' do
     it 'returns nil when the commenting is allowed in the current phase' do
       expect(service.denied_reason_for_action('commenting_idea')).to be_nil
     end
@@ -258,7 +258,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  describe '"reacting_idea" denied_reason_for_action' do
+  describe 'reacting_idea denied_reason_for_action' do
     context 'when reacting is enabled in the current phase' do
       let(:current_phase_attrs) { { reacting_enabled: true, reacting_dislike_enabled: true } }
 
@@ -369,7 +369,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  describe '"taking_survey" denied_reason_for_action' do
+  describe 'taking_survey denied_reason_for_action' do
     context 'when the active context is not a survey' do
       let(:current_phase_attrs) { { participation_method: 'ideation' } }
 
@@ -432,7 +432,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  describe '"annotating_document" denied_reason_for_action' do
+  describe 'annotating_document denied_reason_for_action' do
     context 'when the active context is not document_annotation' do
       let(:current_phase_attrs) { { participation_method: 'ideation' } }
 
@@ -496,7 +496,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  describe '"taking_poll" denied_reason_for_action' do
+  describe 'taking_poll denied_reason_for_action' do
     context 'when the active context is not a poll' do
       let(:current_phase_attrs) { { participation_method: 'information' } }
 
@@ -582,7 +582,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  describe '"voting" denied_reason_for_action' do
+  describe 'voting denied_reason_for_action' do
     context 'when the current phase is a voting phase' do
       let(:current_phase_attrs) { { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 } }
 
