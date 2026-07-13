@@ -199,6 +199,25 @@ resource 'Request codes' do
       expect(json_response_body).to include_response_error(:new_phone, 'is already taken')
     end
 
+    example 'It does not work if the phone number is in a country that is not allowed' do
+      SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+14155552671' }) # US number
+      expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:new_phone, 'unsupported_country')
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It works if the phone number is in an allowed country' do
+      SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['US'] })
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+14155552671' })
+      expect(response_status).to eq 200
+      expect(user.reload.new_phone).to eq '+14155552671'
+    end
+
     example 'It does not work if the user reached code_reset_count' do
       user = create(:user)
       user.new_phone_confirmation.update!(code_reset_count: 4)

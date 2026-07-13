@@ -254,8 +254,13 @@ module EmailCampaigns
         .deliver_later(wait: command[:delay] || 0)
     end
 
+    # A recipient whose number turns out to be unsendable (e.g. an allowed-country
+    # list that was narrowed after they confirmed their phone) is skipped, so the
+    # rest of the campaign's recipients still get their SMS.
     def send_sms_command(campaign, command)
       campaign.deliver_later(command)
+    rescue EmailCampaigns::Sms::Error => e
+      ErrorReporter.report(e, extra: { campaign_id: campaign.id, recipient_id: command[:recipient]&.id })
     end
 
     def generate_commands(campaign, recipient, options = {})

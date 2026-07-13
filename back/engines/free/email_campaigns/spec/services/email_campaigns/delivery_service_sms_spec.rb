@@ -31,6 +31,19 @@ describe EmailCampaigns::DeliveryService do
       expect(EmailCampaigns::Sms::SendJob).to have_been_enqueued.with(delivery.id).exactly(:once)
       expect(campaign.sent?).to be(true)
     end
+
+    it 'skips a recipient whose number is unsendable and still delivers to the others' do
+      # +32... is Belgian, +1415... (the recipient above) is not.
+      create(:user, phone: '+32470123456', phone_confirmed_at: Time.zone.now, locale: 'en')
+      SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+      allow(ErrorReporter).to receive(:report)
+
+      expect { service.send_now(campaign) }.to change(EmailCampaigns::Sms::Delivery, :count).by(1)
+
+      expect(campaign.sms_deliveries.sole.user_id).not_to eq(recipient.id)
+      expect(ErrorReporter).to have_received(:report)
+        .with(an_instance_of(EmailCampaigns::Sms::Error), hash_including(:extra))
+    end
   end
 
   describe '#send_sms_preview' do
