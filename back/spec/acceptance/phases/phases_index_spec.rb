@@ -28,6 +28,12 @@ resource 'Phases' do
         assert_status 200
         expect(json_response[:data].size).to eq 2
         expect(json_response[:included].pluck(:type)).to include 'permission'
+
+        action_descriptors = json_response[:data].first[:attributes][:action_descriptors]
+        expect(action_descriptors.keys).to match_array(%i[
+          posting_idea commenting_idea reacting_idea comment_reacting_idea
+          annotating_document taking_survey taking_poll voting volunteering
+        ])
       end
 
       example 'List phases of a hidden (community_monitor) project' do

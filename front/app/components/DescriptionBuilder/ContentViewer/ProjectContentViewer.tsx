@@ -11,7 +11,6 @@ import { Multiloc } from 'typings';
 
 import useProjectFiles from 'api/project_files/useProjectFiles';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
@@ -42,18 +41,13 @@ const ProjectContentViewer = ({
 }: ProjectContentViewerProps) => {
   const localize = useLocalize();
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const featureEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
   const { data: projectFiles } = useProjectFiles(projectId);
 
   const { isLoading, pageLayout, descriptionEditorData, legacyLayout } =
     useProjectDescription(projectId, {
-      enabled: featureEnabled,
+      enabled: true,
       legacyEnabled: enabled,
     });
-
-  if (!featureEnabled) return null;
 
   const legacyEditorData =
     enabled &&

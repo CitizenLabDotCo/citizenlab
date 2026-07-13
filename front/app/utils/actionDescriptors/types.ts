@@ -13,70 +13,72 @@ export type UserDisabledReason =
   | DisabledReasonFixable
   | DisabledReasonUnfixable;
 
-export type ProjectDisabledReason =
-  | 'project_not_visible'
+export type PhaseDisabledReason =
+  | 'project_inactive'
+  | 'inactive_phase'
+  | UserDisabledReason;
+
+export type AttendingEventDisabledReason =
   | 'project_inactive'
   | UserDisabledReason;
 
-export type ProjectPostingDisabledReason =
-  | 'future_enabled' // Note: Not returned by backend but needed for posting
-  | 'inactive_phase' // Note: Not returned by backend but needed for posting
+export type PhasePostingDisabledReason =
   | 'posting_not_supported'
   | 'posting_disabled'
   // Only applicable to taking surveys at the moment.
   // Not configurable via admin UI, determined in BE
   | 'posting_limited_max_reached'
-  | ProjectDisabledReason;
+  | PhaseDisabledReason;
 
-export type ProjectCommentingDisabledReason =
+export type PhaseCommentingDisabledReason =
   | 'commenting_not_supported'
   | 'commenting_disabled'
-  | ProjectDisabledReason;
+  | PhaseDisabledReason;
 
-export type ProjectReactingDisabledReason =
+export type PhaseReactingDisabledReason =
+  | 'future_enabled' // Note: Not returned by backend but needed for reacting
   | 'reacting_not_supported'
   | 'reacting_disabled'
   | 'reacting_dislike_disabled'
   | 'reacting_like_limited_max_reached'
   | 'reacting_dislike_limited_max_reached'
-  | ProjectDisabledReason;
+  | PhaseDisabledReason;
 
-export type ProjectSurveyDisabledReason = 'not_survey' | ProjectDisabledReason;
+export type PhaseSurveyDisabledReason = 'not_survey' | PhaseDisabledReason;
 
-export type ProjectPollDisabledReason =
+export type PhasePollDisabledReason =
   | 'not_poll'
   | 'already_responded'
-  | ProjectDisabledReason;
+  | PhaseDisabledReason;
 
-export type ProjectDocumentAnnotationDisabledReason =
+export type PhaseDocumentAnnotationDisabledReason =
   | 'not_document_annotation'
-  | ProjectDisabledReason;
+  | PhaseDisabledReason;
 
-export type ProjectVotingDisabledReason = 'not_voting' | ProjectDisabledReason;
+export type PhaseVotingDisabledReason = 'not_voting' | PhaseDisabledReason;
 
-export type ProjectVolunteeringDisabledReason =
+export type PhaseVolunteeringDisabledReason =
   | 'not_volunteering'
-  | ProjectDisabledReason;
+  | PhaseDisabledReason;
 
 export type IdeaReactingDisabledReason =
   | 'idea_not_in_current_phase'
-  | ProjectReactingDisabledReason;
+  | PhaseReactingDisabledReason;
 
 export type IdeaCommentingDisabledReason =
   | 'idea_not_in_current_phase'
-  | ProjectCommentingDisabledReason;
+  | PhaseCommentingDisabledReason;
 
 export type IdeaVotingDisabledReason =
   | 'idea_not_in_current_phase'
-  | 'inactive_phase'
-  | ProjectVotingDisabledReason;
+  | PhaseVotingDisabledReason;
 
 export type IdeaEditingDisabledReason =
   | 'idea_not_in_current_phase'
   | 'votes_exist'
   | 'published_after_screening'
   | 'not_author'
-  | ProjectDisabledReason;
+  | PhaseDisabledReason;
 
 export type ActionDescriptor<DisabledReason> =
   | { enabled: true; disabled_reason: null }
@@ -109,14 +111,14 @@ export type ActionDescriptorAction =
 // All disabled reasons
 export type DisabledReason =
   | UserDisabledReason
-  | ProjectPostingDisabledReason
-  | ProjectCommentingDisabledReason
-  | ProjectReactingDisabledReason
-  | ProjectSurveyDisabledReason
-  | ProjectPollDisabledReason
-  | ProjectDocumentAnnotationDisabledReason
-  | ProjectVotingDisabledReason
-  | ProjectVolunteeringDisabledReason
+  | PhasePostingDisabledReason
+  | PhaseCommentingDisabledReason
+  | PhaseReactingDisabledReason
+  | PhaseSurveyDisabledReason
+  | PhasePollDisabledReason
+  | PhaseDocumentAnnotationDisabledReason
+  | PhaseVotingDisabledReason
+  | PhaseVolunteeringDisabledReason
   | IdeaReactingDisabledReason
   | IdeaCommentingDisabledReason
   | IdeaVotingDisabledReason;

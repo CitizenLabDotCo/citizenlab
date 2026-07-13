@@ -127,7 +127,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(project_ids).not_to include future_project.id
     end
 
-    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'", document: false do
+    example "Excludes projects where no action is permitted & no permission is 'fixable'", document: false do
       group = create(:group)
       permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
       create(:groups_permission, permission_id: permission.id, group: group)
@@ -137,11 +137,11 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       create(:groups_permission, permission_id: permission.id, group: group)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      action_descriptors = Permissions::ProjectPermissionsService.new(
-        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      action_descriptors = Permissions::PhasePermissionsService.new(
+        active_ideation_project.phases.first, @user, user_requirements_service: user_requirements_service
       ).action_descriptors
 
-      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.all? { |_k, v| v[:enabled] == false }).to be true
 
       do_request
       expect(status).to eq(200)
@@ -149,16 +149,16 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
     end
 
-    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'", document: false do
+    example "Includes projects where no action is permitted, but a permission is 'fixable'", document: false do
       create(:custom_field, required: true)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      action_descriptors = Permissions::ProjectPermissionsService.new(
-        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      action_descriptors = Permissions::PhasePermissionsService.new(
+        active_ideation_project.phases.first, @user, user_requirements_service: user_requirements_service
       ).action_descriptors
 
-      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
-      expect(action_descriptors.except(:attending_event).count { |_k, v| v[:disabled_reason] == 'user_missing_requirements' }).to eq 4
+      expect(action_descriptors.all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.count { |_k, v| v[:disabled_reason] == 'user_missing_requirements' }).to eq 4
 
       do_request
       expect(status).to eq(200)

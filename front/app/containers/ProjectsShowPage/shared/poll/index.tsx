@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
-import useProjectById from 'api/projects/useProjectById';
 
 import {
   getPermissionsDisabledMessage,
@@ -38,18 +38,19 @@ interface Props {
 }
 
 const Poll = ({ projectId, phaseId }: Props) => {
-  const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { data: pollQuestions } = usePollQuestions({
     phaseId,
   });
 
-  if (isNilOrError(pollQuestions) || !project || !phase) {
+  if (isNilOrError(pollQuestions) || !phase) {
     return null;
   }
 
-  const { enabled, disabled_reason } =
-    project.data.attributes.action_descriptors.taking_poll;
+  const { enabled, disabled_reason } = getPhaseActionDescriptor(
+    phase.data,
+    'taking_poll'
+  );
 
   const disabledMessage =
     getPermissionsDisabledMessage('taking_poll', disabled_reason) || null;
