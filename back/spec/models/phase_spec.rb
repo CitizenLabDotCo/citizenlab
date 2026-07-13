@@ -358,6 +358,38 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#active?' do
+    it 'returns true when the phase is ongoing' do
+      phase = build(:phase, start_at: 2.days.ago, end_at: 3.days.from_now)
+      expect(phase.active?).to be true
+    end
+
+    it 'returns false before the phase starts' do
+      phase = build(:phase, start_at: 2.days.from_now, end_at: 5.days.from_now)
+      expect(phase.active?).to be false
+    end
+
+    it 'returns false after the phase ends' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?).to be false
+    end
+
+    it 'returns false at the exact end time (exclusive end)' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?(phase.end_at)).to be false
+    end
+
+    it 'returns true for an open-ended phase that has started' do
+      phase = build(:phase, start_at: 2.days.ago, end_at: nil)
+      expect(phase.active?).to be true
+    end
+
+    it 'evaluates against the given time' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?(7.days.ago)).to be true
+    end
+  end
+
   describe '#start_date' do
     it 'returns the date when start_at is set' do
       phase = build(:phase, start_at: '2025-03-15 14:30:00')

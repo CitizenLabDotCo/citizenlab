@@ -239,6 +239,11 @@ class Phase < ApplicationRecord
     ends_before?(Time.zone.now)
   end
 
+  def active?(time = Time.now)
+    time = time.in_time_zone
+    start_at <= time && (end_at.nil? || time < end_at)
+  end
+
   def permission_scope
     self
   end

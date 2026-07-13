@@ -69,7 +69,7 @@ module Permissions
 
       project_reason = project_denied_reason(phase.project)
       return project_reason if project_reason
-      return PHASE_DENIED_REASONS[:inactive_phase] if time && !timeline_service.phase_current?(phase, time)
+      return PHASE_DENIED_REASONS[:inactive_phase] if time && !phase.active?(time)
 
       phase_denied_reason = case action
       when 'posting_idea'
