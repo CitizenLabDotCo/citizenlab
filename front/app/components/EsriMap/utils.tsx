@@ -1,6 +1,5 @@
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
-import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import { substitute } from '@arcgis/core/intl';
@@ -612,6 +611,10 @@ const createFullTitleNode = (title: string) => {
   return node;
 };
 
+// The popup template each feature had before we enriched it. Keyed weakly, so
+// entries go away with the graphics themselves.
+const originalPopupTemplates = new WeakMap<Graphic, PopupTemplate>();
+
 // buildFeaturePopupTemplate
 // Description: Returns a copy of a feature's ArcGIS popup template with:
 //  - a DOM node (e.g. the "Submit an idea" button) prepended above the
@@ -687,8 +690,16 @@ export const showEsriFeaturePopup = async ({
   }
 
   features.forEach((feature) => {
-    const template = feature.getEffectivePopupTemplate();
+    // Always enrich the template the feature started with. Esri hands back the
+    // same Graphic instance across hitTests for some layer types, so reading
+    // back the template we assigned on a previous click would stack a second
+    // CTA onto it and re-truncate the already-truncated title.
+    const template =
+      originalPopupTemplates.get(feature) ??
+      feature.getEffectivePopupTemplate();
     if (!template) return;
+    originalPopupTemplates.set(feature, template);
+
     feature.popupTemplate = buildFeaturePopupTemplate(
       template,
       feature,
@@ -748,37 +759,40 @@ export const changeCursorOnFeaturePopupHover = (
 
 // pinUiElementToTop
 // Description: Adds a custom UI element to the top of the 'top-right' controls
-// stack and keeps it pinned there. ESRI only honors the `index` at insert time,
+// stack and keeps it pinned there. Esri only honors the `index` at insert time,
 // so when other widgets (zoom, fullscreen, web map defaults) finish loading on a
 // later tick, the element can otherwise end up beneath or between them depending
-// on load timing. Re-asserting on UI changes guarantees it stays on top.
-// Returns a cleanup function that removes the element and stops watching.
+// on load timing. Re-asserting on every change to the stack keeps it on top.
+// Returns a cleanup function that removes the element and stops observing.
 export const pinUiElementToTop = (
   mapView: MapView,
   element: HTMLElement,
   position: 'top-right' = 'top-right'
 ) => {
-  const moveToTop = () => {
-    const components = mapView.ui.getComponents(position);
-    // Already at the top — skip to avoid redundant DOM churn
-    if (components[0] === element) return;
-    mapView.ui.move(element, { position, index: 0 });
-  };
-
   // Ensure it's added, then force it to the very top
   mapView.ui.add(element, { position, index: 0 });
-  moveToTop();
+  mapView.ui.move(element, { position, index: 0 });
 
-  // Re-pin whenever the set of default widgets changes (e.g. a web map's
-  // widgets loading in asynchronously after this element was added)
-  const handle = reactiveUtils.watch(
-    () => mapView.ui.components.length,
-    moveToTop
-  );
+  // Esri exposes no reactive property for the components at a position
+  // (DefaultUI.components only lists the *default* widgets, and is not updated
+  // when one is added via ui.add), so observe the corner's DOM instead: any
+  // widget that loads in later and appends itself here re-triggers the pin.
+  const corner = mapView.ui.container?.querySelector(`.esri-ui-${position}`);
+  const observer = new MutationObserver(() => {
+    // Already at the top — skip, so our own move() doesn't retrigger us
+    if (corner?.firstElementChild === element) return;
+    mapView.ui.move(element, { position, index: 0 });
+  });
+  if (corner) {
+    observer.observe(corner, { childList: true });
+  }
 
   return () => {
-    handle.remove();
-    mapView.ui.remove(element);
+    observer.disconnect();
+    // The view may already have been destroyed by the EsriMap that owns it
+    if (!mapView.destroyed) {
+      mapView.ui.remove(element);
+    }
   };
 };
 
