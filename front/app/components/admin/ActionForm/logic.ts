@@ -47,11 +47,6 @@ export const getGroupIds = (permission: IPhasePermissionData): string[] =>
 export const requiresAccount = (permission: IPhasePermissionData): boolean =>
   permission.attributes.permitted_by === 'users';
 
-/** With an account required, has the user actually picked a method yet? */
-export const hasEnabledMethod = (permission: IPhasePermissionData): boolean =>
-  permission.attributes.require_confirmed_email ||
-  permission.attributes.require_verification;
-
 export interface SummaryChip {
   key: string;
   label: string;
@@ -121,16 +116,6 @@ export const buildSummary = (
       });
     }
   });
-
-  // Account required but no method chosen yet.
-  if (!hasEnabledMethod(permission)) {
-    chips.push({
-      key: 'account',
-      label: formatMessage(messages.signInRequired),
-      icon: 'user-circle',
-      tone: 'access',
-    });
-  }
 
   const groupIds = getGroupIds(permission);
   if (groupIds.length > 0) {

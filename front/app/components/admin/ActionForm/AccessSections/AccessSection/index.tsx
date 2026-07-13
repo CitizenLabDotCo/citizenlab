@@ -12,12 +12,11 @@ import { useIntl } from 'utils/cl-intl';
 
 import {
   getMethod,
-  hasEnabledMethod,
   methodChange,
   requiresAccount,
 } from '../../logic';
 import { AuthMethodKey } from '../../types';
-import { SectionHeader, Hint } from '../../ui';
+import { SectionHeader } from '../../ui';
 import GroupsSection from '../GroupsSection';
 import ModeCards from '../ModeCards';
 import { AccessSectionProps } from '../shared';
@@ -100,14 +99,6 @@ const AccessSection = ({
                 />
               );
             })}
-
-            {!hasEnabledMethod(permission) && (
-              <Box mt="8px">
-                <Hint>
-                  {formatMessage(messages.pickAtLeastOne)}
-                </Hint>
-              </Box>
-            )}
           </Box>
 
           <GroupsSection permission={permission} onChange={onChange} />
