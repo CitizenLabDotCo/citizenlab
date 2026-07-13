@@ -13,8 +13,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IProjectFolderData } from 'api/project_folders/types';
 import useProjectFolderBySlug from 'api/project_folders/useProjectFolderBySlug';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import ContentContainer from 'components/ContentContainer';
 import FolderContentViewer from 'components/DescriptionBuilder/ContentViewer/FolderContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -104,9 +102,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
 
   const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
   const descriptionBuilderEnabled =
-    useFeatureFlag({
-      name: 'project_description_builder',
-    }) && projectFolder.attributes.uses_content_builder;
+    projectFolder.attributes.uses_content_builder;
   const maxPageWidth = descriptionBuilderEnabled ? '1166px' : '1480px';
 
   return (
