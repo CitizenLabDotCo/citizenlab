@@ -373,22 +373,35 @@ export const addPointGraphicToMap = (
   }
 };
 
+// resetCursor
+// Description: Restore the default cursor. Call this when a map that used one
+// of the hover helpers below goes away — they set the cursor on document.body,
+// so without this it stays a pointer for the rest of the session.
+export const resetCursor = () => {
+  document.body.style.cursor = 'auto';
+};
+
+// changeCursorOnHoverWhen
+// Description: On map hover, show a pointer cursor when the hit result matches
+// isClickable. The hitTest is async, so the view can be torn down before it
+// resolves — bail in that case rather than leaving a stale pointer behind.
+const changeCursorOnHoverWhen = (
+  event: any,
+  mapView: MapView,
+  isClickable: (result: __esri.HitTestResult) => boolean
+) => {
+  mapView.hitTest(event).then((result) => {
+    if (mapView.destroyed) return;
+    document.body.style.cursor = isClickable(result) ? 'pointer' : 'auto';
+  });
+};
+
 // changeCursorOnHover
 // Description: On map hover, change the cursor to pointer if hovering over a graphic
 export const changeCursorOnHover = (event: any, mapView: MapView) => {
-  mapView.hitTest(event).then((result) => {
-    if (result.results.length > 0) {
-      // Hovering over marker(s)
-      result.results.forEach((r) => {
-        if (r.type === 'graphic') {
-          // Change cursor to pointer
-          document.body.style.cursor = 'pointer';
-        }
-      });
-    } else {
-      document.body.style.cursor = 'auto';
-    }
-  });
+  changeCursorOnHoverWhen(event, mapView, (result) =>
+    result.results.some((r) => r.type === 'graphic')
+  );
 };
 
 // goToMapLocation
@@ -583,18 +596,41 @@ const truncateTitle = (title: string) => {
 
 // resolveFeatureTitle
 // Description: Resolve a popup template's title for a given feature, filling in
-// its {FIELD} placeholders. Returns null when the title isn't safe to truncate
-// by character count, in which case we leave it untouched: function/promise
-// titles, references only Esri can evaluate (Arcade expressions, relationships),
-// and titles containing HTML (cutting those could slice through a tag).
+// its {FIELD} placeholders. Returns null whenever we can't reproduce exactly
+// what Esri will render in the header — we replace the header with this string,
+// so anything less than an exact match would make the title worse, not shorter.
 const resolveFeatureTitle = (
   template: PopupTemplate,
   feature: Graphic
 ): string | null => {
   const { title } = template;
+  // Titles built in code, not from a string template
   if (typeof title !== 'string') return null;
-  if (/\{[^}]*\//.test(title) || title.includes('<')) return null;
-  return substitute(title, feature.attributes ?? {}) || null;
+  // A character-count cut could slice through an HTML tag
+  if (title.includes('<')) return null;
+
+  // The graphic Esri gives us from a hitTest only carries the fields the layer
+  // has client-side; Esri fetches the template's outFields when it actually
+  // opens the popup. So a field referenced by the title may be missing here.
+  const attributes: Record<string, unknown> = feature.attributes ?? {};
+  const keysByLowerName = new Map(
+    Object.keys(attributes).map((key) => [key.toLowerCase(), key])
+  );
+
+  for (const [, placeholder] of title.matchAll(/\{([^}]*)\}/g)) {
+    // Arcade expressions and relationships ({expression/expr0}), and explicit
+    // format directives ({COST:NumberFormat(...)}), only Esri can evaluate
+    if (placeholder.includes('/') || placeholder.includes(':')) return null;
+
+    const key = keysByLowerName.get(placeholder.trim().toLowerCase());
+    const value = key === undefined ? undefined : attributes[key];
+    // Absent from the hitTest attributes, or a value Esri formats when it
+    // renders (dates, numbers) in ways substitute() does not reproduce. Only
+    // plain strings come out of substitute() byte-identical to Esri's header.
+    if (typeof value !== 'string') return null;
+  }
+
+  return substitute(title, attributes) || null;
 };
 
 // createFullTitleNode
@@ -689,7 +725,7 @@ export const showEsriFeaturePopup = async ({
     return false;
   }
 
-  features.forEach((feature) => {
+  features.forEach((feature, index) => {
     // Always enrich the template the feature started with. Esri hands back the
     // same Graphic instance across hitTests for some layer types, so reading
     // back the template we assigned on a previous click would stack a second
@@ -703,7 +739,12 @@ export const showEsriFeaturePopup = async ({
     feature.popupTemplate = buildFeaturePopupTemplate(
       template,
       feature,
-      prependContentNode
+      // The CTA is one DOM node owned by the caller, and a DOM node can only be
+      // mounted in one place. A click on overlapping features opens a popup that
+      // pages over all of them, so give the CTA to the first page only —
+      // attaching it to every feature would tear it out of whichever page the
+      // user is looking at.
+      index === 0 ? prependContentNode : undefined
     );
   });
 
@@ -751,10 +792,11 @@ export const changeCursorOnFeaturePopupHover = (
   event: any,
   mapView: MapView
 ) => {
-  mapView.hitTest(event).then((result) => {
-    document.body.style.cursor =
-      getEsriFeaturePopupFeatures(result).length > 0 ? 'pointer' : 'auto';
-  });
+  changeCursorOnHoverWhen(
+    event,
+    mapView,
+    (result) => getEsriFeaturePopupFeatures(result).length > 0
+  );
 };
 
 // pinUiElementToTop

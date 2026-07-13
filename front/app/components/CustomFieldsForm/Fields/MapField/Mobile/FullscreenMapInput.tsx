@@ -34,6 +34,7 @@ import {
   showEsriFeaturePopup,
   changeCursorOnFeaturePopupHover,
   pinUiElementToTop,
+  resetCursor,
 } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
@@ -148,7 +149,7 @@ const FullscreenMapInput = memo<Props>(
         if (mode === 'draw') {
           // Clean up explore mode leftovers
           mapView?.closePopup();
-          document.body.style.cursor = 'auto';
+          resetCursor();
         }
       },
       [mapView]

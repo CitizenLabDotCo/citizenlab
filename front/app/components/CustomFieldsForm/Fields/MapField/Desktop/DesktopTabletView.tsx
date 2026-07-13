@@ -21,6 +21,7 @@ import {
   showEsriFeaturePopup,
   changeCursorOnFeaturePopupHover,
   pinUiElementToTop,
+  resetCursor,
 } from 'components/EsriMap/utils';
 import { Option } from 'components/UI/LocationInput';
 
@@ -171,7 +172,7 @@ const DesktopView = ({
       if (mode === 'draw') {
         // Clean up explore mode leftovers
         mapView?.closePopup();
-        document.body.style.cursor = 'auto';
+        resetCursor();
       }
     },
     [mapView]

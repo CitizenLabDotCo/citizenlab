@@ -361,14 +361,20 @@ const IdeasMap = memo<Props>(
               prependContentNode: ideaPostingEnabled
                 ? startIdeaButtonNode
                 : undefined,
-            }).then((openedFeaturePopup) => {
-              if (openedFeaturePopup) {
-                // Close any open idea panel, like showAddInputPopup does
-                setSelectedIdea(null);
-              } else {
+            })
+              .then((openedFeaturePopup) => {
+                if (openedFeaturePopup) {
+                  // Close any open idea panel, like showAddInputPopup does
+                  setSelectedIdea(null);
+                } else {
+                  showSubmitPopup();
+                }
+              })
+              .catch(() => {
+                // Never leave the click doing nothing at all — fall back to the
+                // plain submit popup, as if no feature had been hit
                 showSubmitPopup();
-              }
-            });
+              });
             return;
           }
 

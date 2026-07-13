@@ -30,6 +30,7 @@ import {
   createUserLocationGraphic,
   showEsriFeaturePopup,
   changeCursorOnFeaturePopupHover,
+  resetCursor,
 } from './utils';
 
 // Custom Esri styles
@@ -310,6 +311,11 @@ const EsriMap = ({
 
     return () => {
       handle.remove();
+      // The hover handlers set the cursor on document.body, so a pending call
+      // would outlive this map — and a pointer cursor left behind would apply
+      // to the whole page.
+      debouncedHover.cancel();
+      resetCursor();
     };
   }, [onHover, esriFeaturePopupsEnabled, mapView]);
 
