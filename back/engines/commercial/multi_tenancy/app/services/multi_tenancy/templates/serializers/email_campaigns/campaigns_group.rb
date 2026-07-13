@@ -3,8 +3,10 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class Area < Base
-        attributes %i[description_multiloc include_in_onboarding ordering title_multiloc]
+      module EmailCampaigns
+        class CampaignsGroup < Base
+          ref_attributes %i[campaign group]
+        end
       end
     end
   end

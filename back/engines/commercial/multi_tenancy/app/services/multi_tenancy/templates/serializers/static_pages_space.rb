@@ -3,8 +3,8 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class Area < Base
-        attributes %i[description_multiloc include_in_onboarding ordering title_multiloc]
+      class StaticPagesSpace < Base
+        ref_attributes %i[static_page space]
       end
     end
   end
