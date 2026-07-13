@@ -186,7 +186,6 @@
   "app.components.CustomFieldsForm.notPublic1": "*Η απάντηση αυτή θα κοινοποιηθεί μόνο στους διαχειριστές του έργου και όχι στο κοινό.",
   "app.components.CustomFieldsForm.otherArea": "Κάπου αλλού",
   "app.components.CustomFieldsForm.progressBarLabel": "Πρόοδος",
-  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% ολοκληρώθηκε",
   "app.components.CustomFieldsForm.removeAnswer": "Αφαίρεση απάντησης",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Επιλέξτε όσα θέλετε",
   "app.components.CustomFieldsForm.selectBetween": "*Επιλέξτε από {minItems} έως {maxItems} απαντήσεις",

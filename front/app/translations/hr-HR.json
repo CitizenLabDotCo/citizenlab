@@ -186,7 +186,6 @@
   "app.components.CustomFieldsForm.notPublic1": "*Ovaj odgovor bit će podijeljen samo s voditeljima projekata, a ne s javnošću.",
   "app.components.CustomFieldsForm.otherArea": "Negdje drugdje",
   "app.components.CustomFieldsForm.progressBarLabel": "Napredak",
-  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% dovršeno",
   "app.components.CustomFieldsForm.removeAnswer": "Ukloni odgovor",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Odaberite koliko god želite",
   "app.components.CustomFieldsForm.selectBetween": "*Odaberite između opcija {minItems} i {maxItems}",

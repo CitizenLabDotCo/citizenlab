@@ -186,7 +186,6 @@
   "app.components.CustomFieldsForm.notPublic1": "*Ní roinnfear an freagra seo ach le bainisteoirí tionscadail, agus ní leis an bpobal.",
   "app.components.CustomFieldsForm.otherArea": "Áit éigin eile",
   "app.components.CustomFieldsForm.progressBarLabel": "Dul Chun Cinn",
-  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% críochnaithe",
   "app.components.CustomFieldsForm.removeAnswer": "Bain an freagra",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Roghnaigh an oiread agus is mian leat",
   "app.components.CustomFieldsForm.selectBetween": "*Roghnaigh idir na roghanna {minItems} agus {maxItems}",

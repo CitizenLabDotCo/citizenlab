@@ -186,7 +186,6 @@
   "app.components.CustomFieldsForm.notPublic1": "*Dim ond gyda rheolwyr prosiectau y bydd yr ateb hwn yn cael ei rannu, ac nid gyda'r cyhoedd.",
   "app.components.CustomFieldsForm.otherArea": "Rhywle arall",
   "app.components.CustomFieldsForm.progressBarLabel": "Cynnydd",
-  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% wedi'i gwblhau",
   "app.components.CustomFieldsForm.removeAnswer": "Dileu'r ateb",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Dewiswch gymaint ag y dymunwch",
   "app.components.CustomFieldsForm.selectBetween": "*Dewiswch rhwng yr opsiynau {minItems} a {maxItems}",

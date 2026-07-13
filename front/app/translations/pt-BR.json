@@ -186,7 +186,6 @@
   "app.components.CustomFieldsForm.notPublic1": "*Essa resposta será compartilhada apenas com os gerentes de projeto, e não com o público.",
   "app.components.CustomFieldsForm.otherArea": "Em outro lugar",
   "app.components.CustomFieldsForm.progressBarLabel": "Progresso",
-  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% concluído",
   "app.components.CustomFieldsForm.removeAnswer": "Remover resposta",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Selecione quantos você quiser",
   "app.components.CustomFieldsForm.selectBetween": "*Selecione entre as opções {minItems} e {maxItems}",
