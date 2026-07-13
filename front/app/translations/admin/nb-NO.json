@@ -3849,6 +3849,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "Gi administratorrettigheter",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Gi lederen rettigheter",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Du har nådd grensen for antall inkluderte seter i abonnementet ditt, og 1 ekstra sete vil bli lagt til.",
+  "app.containers.admin.content_builder.html_block.label": "HTML-blokk",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Legg til status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Standardstatuser kan ikke slettes.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Slett",
