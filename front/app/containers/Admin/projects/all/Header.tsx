@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Title, Tooltip } from '@citizenlab/cl2-component-library';
+import { useSearch } from '@tanstack/react-router';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -10,7 +11,6 @@ import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
-import { useSearch } from 'utils/router';
 
 import messages from './messages';
 
