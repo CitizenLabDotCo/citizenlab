@@ -6,7 +6,7 @@ describe Polls::ResponsePolicy do
   subject { described_class.new(user, response) }
 
   let(:scope) { Polls::ResponsePolicy::Scope.new(user, Polls::Response) }
-  let(:phase) { create(:poll_phase) }
+  let(:phase) { create(:poll_phase, start_at: 1.week.ago, end_at: 1.week.from_now) }
   let!(:response) { build(:poll_response, phase: phase) }
 
   context 'for a visitor' do
@@ -29,6 +29,20 @@ describe Polls::ResponsePolicy do
       response.save!
       expect(scope.resolve.size).to eq 0
     end
+  end
+
+  context 'for a resident when the poll phase is in the past' do
+    let(:phase) { create(:poll_phase, start_at: 2.months.ago, end_at: 1.month.ago) }
+    let(:user) { response.user }
+
+    it { is_expected.not_to permit(:create) }
+  end
+
+  context 'for a resident when the poll phase is in the future' do
+    let(:phase) { create(:poll_phase, start_at: 1.month.from_now, end_at: 2.months.from_now) }
+    let(:user) { response.user }
+
+    it { is_expected.not_to permit(:create) }
   end
 
   context 'for an admin' do

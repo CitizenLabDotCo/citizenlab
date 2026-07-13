@@ -21,18 +21,11 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :action_descriptors do |object, params|
-    if params[:project_descriptor_pairs]
-      params[:project_descriptor_pairs][object.id]
-    else
-      user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
-    end
-  end
-
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |object|
-    TimelineService.new.current_phase(object)
+  has_one :current_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |project|
+    phase = TimelineService.new.current_phase(project)
+    phase.project = project if phase # Performance optimization (keep preloaded relationships)
+    phase
   end
 end

@@ -20,7 +20,6 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 
-
 import { useIntl } from 'utils/cl-intl';
 
 const DescriptionToolboxSections = () => {
@@ -72,15 +71,14 @@ const DescriptionToolboxSections = () => {
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
         />
-        { isHtmlBlockMultilocEnabled ? (
+        {isHtmlBlockMultilocEnabled ? (
           <DraggableElement
             id="e2e-draggable-html-block"
             component={<HtmlBlockMultiloc />}
             icon="code"
             label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
           />
-        ) : null
-        }
+        ) : null}
         <DraggableElement
           id="e2e-draggable-button"
           component={
