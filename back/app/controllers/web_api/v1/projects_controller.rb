@@ -127,14 +127,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     authorize @projects, :index_with_active_participatory_phase?
 
-    render json: linked_json(
-      @projects,
-      WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params(
-        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      ),
-      include: %i[project_images current_phase]
-    )
+    base_render_mini_index
   end
 
   # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
