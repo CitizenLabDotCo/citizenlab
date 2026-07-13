@@ -33,9 +33,6 @@ describe MultiTenancy::SideFxTenantService do
 
   describe 'after_apply_template' do
     before do
-      settings = AppConfiguration.instance.settings
-      settings['project_description_builder'] = { 'enabled' => true, 'allowed' => true }
-      AppConfiguration.instance.update!(settings: settings)
       # Skip the heavy finalization (campaigns/permissions/tracking); we only assert
       # the content_builder patch runs.
       allow(MultiTenancy::TenantService).to receive(:new)
