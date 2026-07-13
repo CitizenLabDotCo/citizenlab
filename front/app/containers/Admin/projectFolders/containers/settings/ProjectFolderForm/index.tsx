@@ -395,9 +395,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         }
       } else {
         try {
+          // The description is optional: it is authored in the Content Builder,
+          // never in this form, so it is null on every folder created here.
           if (
             titleMultiloc &&
-            descriptionMultiloc &&
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
