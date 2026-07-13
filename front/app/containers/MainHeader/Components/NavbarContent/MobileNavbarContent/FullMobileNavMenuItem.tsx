@@ -13,6 +13,7 @@ import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
+  font-weight: 600;
   display: flex;
   justify-content: flex-start;
   align-items: center;

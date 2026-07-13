@@ -21,6 +21,7 @@ const DropdownButton = styled.button`
   font-size: ${fontSizes.base}px;
   color: ${colors.textPrimary};
   text-align: left;
+  font-weight: 600;
 `;
 
 const ChevronIcon = styled(Icon)<{ $expanded: boolean }>`

@@ -118,7 +118,7 @@ interface Props {
   onClose: () => void;
   // Optional id for the dropdown content list (used by e2e selectors).
   contentId?: string;
-  footer?: JSX.Element;
+  footer?: ReactNode;
   // The dropdown's list items (rendered inside the shared <ul>).
   children: ReactNode;
 }

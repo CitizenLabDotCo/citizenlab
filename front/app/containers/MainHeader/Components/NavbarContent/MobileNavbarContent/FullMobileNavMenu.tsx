@@ -71,6 +71,10 @@ const MenuItems = styled.ul`
   > *:last-child {
     margin-top: 48px;
   }
+
+  ${media.phone`
+    max-width: 100%;
+  `}
 `;
 
 const StyledFullscreenModal = styled(FullscreenModal)`
