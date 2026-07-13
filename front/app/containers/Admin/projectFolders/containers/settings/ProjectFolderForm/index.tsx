@@ -397,7 +397,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         try {
           if (
             titleMultiloc &&
-            descriptionMultiloc &&
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
@@ -491,9 +490,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   ? titleMultiloc
                   : undefined,
                 slug: changedSlug ? slug : undefined,
-                description_multiloc: changedDescriptionMultiloc
-                  ? descriptionMultiloc
-                  : undefined,
+                description_multiloc:
+                  changedDescriptionMultiloc && descriptionMultiloc
+                    ? descriptionMultiloc
+                    : undefined,
                 description_preview_multiloc: changedShortDescriptionMultiloc
                   ? shortDescriptionMultiloc
                   : undefined,
