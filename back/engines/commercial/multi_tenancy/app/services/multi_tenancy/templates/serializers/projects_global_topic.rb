@@ -3,8 +3,8 @@
 module MultiTenancy
   module Templates
     module Serializers
-      class Area < Base
-        attributes %i[description_multiloc include_in_onboarding ordering title_multiloc]
+      class ProjectsGlobalTopic < Base
+        ref_attributes %i[project global_topic]
       end
     end
   end
