@@ -685,4 +685,31 @@ describe Permissions::IdeaPermissionsService do
       end
     end
   end
+
+  describe 'on an input in a standalone phase' do
+    let(:project) { create(:project) }
+    let(:phase) do
+      create(:native_survey_phase, :standalone, project: project, with_permissions: true, start_at: 7.days.ago, end_at: 7.days.from_now)
+    end
+    let(:input) { create(:native_survey_response, project: project, creation_phase: phase, publication_status: 'draft') }
+    let(:user) { input.author }
+
+    it 'allows posting_idea while the phase is active, even without a current timeline phase' do
+      expect(service.denied_reason_for_action('posting_idea')).to be_nil
+    end
+
+    it 'allows editing_idea while the phase is active' do
+      expect(service.denied_reason_for_action('editing_idea')).to be_nil
+    end
+
+    context 'when the phase is over' do
+      let(:phase) do
+        create(:native_survey_phase, :standalone, project: project, start_at: 10.days.ago, end_at: 2.days.ago)
+      end
+
+      it "returns 'inactive_phase' for posting_idea" do
+        expect(service.denied_reason_for_action('posting_idea')).to eq 'inactive_phase'
+      end
+    end
+  end
 end
