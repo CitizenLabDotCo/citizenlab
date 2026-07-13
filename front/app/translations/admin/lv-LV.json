@@ -3849,6 +3849,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "Piešķirt administratora tiesības",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Piešķirt pārvaldnieka tiesības",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Jūs esat sasniedzis plānā iekļauto vietu limitu, {noOfSeats} tiks pievienotas papildu {noOfSeats, plural, one {sēdvietas} other {sēdvietas}} sēdvietas.",
+  "app.containers.admin.content_builder.html_block.label": "HTML bloks",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Pievienot statusu",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Noklusējuma statusus nevar dzēst.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Dzēst",

@@ -40,7 +40,7 @@ describe('Project description builder Info & Accordions section', () => {
   });
 
   it('handles Info & Accordions section correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-info-accordions').dragAndDrop(

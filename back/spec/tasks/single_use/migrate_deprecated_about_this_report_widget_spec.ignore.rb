@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'single_use:migrate_deprecated_about_this_report_widget' do # rubocop:disable RSpec/DescribeClass
+RSpec.describe 'single_use:migrate_deprecated_about_this_report_widget' do
   before(:all) { load_rake_tasks_if_not_loaded } # rubocop:disable RSpec/BeforeAfterAll
 
   before do

@@ -2359,6 +2359,7 @@
   "app.containers.VoteControl.voteErrorSubTitle": "Due to an error, your vote could not be registered. Please try again later.",
   "app.containers.VoteControl.voteErrorTitle": "Something went wrong",
   "app.containers.VoteControl.voteSuccessTitle": "Your vote was successfully registered!",
+  "app.containers.admin.content_builder.html_block.label": "HTML block",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "The default status can not be deleted.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",

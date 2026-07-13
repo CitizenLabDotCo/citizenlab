@@ -586,7 +586,9 @@ RSpec.describe Phase do
     context 'and a bounded phase is added' do
       it 'after the last phase, it closes the previous phase' do
         new_phase_start = last_phase.start_at + 15.days
-        new_phase = create(:phase, project:, start_at: new_phase_start, end_at: new_phase_start + 1.day)
+        # 2 days, not 1: a 1-day phase whose start lands the day before a DST
+        # spring-forward is only 23h, which is < MIN_DURATION (24h).
+        new_phase = create(:phase, project:, start_at: new_phase_start, end_at: new_phase_start + 2.days)
 
         expect(last_phase.reload.end_at).to eq(new_phase_start)
         expect(new_phase.previous_phase_end_at_updated?).to be true
@@ -596,7 +598,8 @@ RSpec.describe Phase do
     context 'and a standalone phase is added' do
       it 'after the last phase, it does not close the previous phase' do
         new_phase_start = last_phase.start_at + 15.days
-        new_phase = create(:phase, :standalone, project:, start_at: new_phase_start, end_at: new_phase_start + 1.day)
+        # 2 days, not 1: guards against a DST-shortened 23h day (< MIN_DURATION).
+        new_phase = create(:phase, :standalone, project:, start_at: new_phase_start, end_at: new_phase_start + 2.days)
 
         expect(last_phase.reload.end_at).to be_nil
         expect(new_phase.previous_phase_end_at_updated?).to be false
