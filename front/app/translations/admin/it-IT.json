@@ -192,7 +192,7 @@
   "app.components.admin.ActionForm.none": "Nessuno",
   "app.components.admin.ActionForm.nothingExtra": "Niente di aggiuntivo",
   "app.components.admin.ActionForm.password": "Password",
-  "app.components.admin.ActionForm.piiExcluded": "PII esclusi",
+  "app.components.admin.ActionForm.piiExcluded": "Dati personali esclusi",
   "app.components.admin.ActionForm.piiExcludedFromResults": "Dati personali esclusi dai risultati",
   "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": "Reimposta le domande e i gruppi demografici",
   "app.components.admin.ActionForm.signInRequired": "Accesso richiesto",
