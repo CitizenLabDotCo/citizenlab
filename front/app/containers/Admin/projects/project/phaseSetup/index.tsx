@@ -304,7 +304,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
           const redirectTab = getPhaseLandingTab(phaseResponse);
           window.scrollTo(0, 0);
           clHistory.push(
-            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
+            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}${window.location.search}`
           );
         } else {
           setFormData(response.data.attributes);

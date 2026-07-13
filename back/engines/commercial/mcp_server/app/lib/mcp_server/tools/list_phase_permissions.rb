@@ -23,19 +23,18 @@ class McpServer::Tools::ListPhasePermissions < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      phase = Phase.find(params[:phase_id])
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
 
       permissions = phase
         .permissions.includes(:groups, :permissions_custom_fields)
         .order_by_action(phase)
         .map { |permission| McpServer::Serializers::Permission.serialize(permission) }
 
-      ok(
+      response(
         "Found #{permissions.size} permission(s) on phase #{phase.id}",
         structured: { phase_id: phase.id, permissions: permissions }
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Phase not found: #{params[:phase_id]}")
     end
   end
 end

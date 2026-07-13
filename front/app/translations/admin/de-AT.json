@@ -3849,6 +3849,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "Admin-Rechte vergeben",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Managementrechte erteilen",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Du hast das Limit der in deiner Lizenz enthaltenen Zugänge erreicht, {noOfSeats} zusätzliche {noOfSeats, plural, one {Zugang} other {Zugänge}} werden hinzugefügt.",
+  "app.containers.admin.content_builder.html_block.label": "HTML-Block",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Status hinzufügen",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Standardstatus können nicht gelöscht werden.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Löschen",

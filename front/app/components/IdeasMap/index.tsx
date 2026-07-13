@@ -51,7 +51,7 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 import { isAdmin } from 'utils/permissions/roles';
-import { useSearch } from 'utils/router';
+import { useLocation, useSearch } from 'utils/router';
 
 import IdeaMapOverlay from './desktop/IdeaMapOverlay';
 import IdeaMapCard from './IdeaMapCard';
@@ -183,10 +183,18 @@ const IdeasMap = memo<Props>(
       return windowWidth <= viewportWidths.tablet;
     }, [windowWidth]);
 
+    // The map deliberately breaks out of the page's content column to near
+    // viewport width. Inside the project page builder canvas that would overflow
+    // the editor, so the breakout is disabled there.
+    const { pathname } = useLocation();
+    const inProjectPageBuilder = pathname.includes(
+      'admin/project-page-builder'
+    );
+
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
     const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
-      initialInnerContainerLeftMargin
+      inProjectPageBuilder ? null : initialInnerContainerLeftMargin
     );
 
     useLayoutEffect(() => {
@@ -201,9 +209,11 @@ const IdeasMap = memo<Props>(
 
     useEffect(() => {
       setInnerContainerLeftMargin(
-        getInnerContainerLeftMargin(windowWidth, containerWidth)
+        inProjectPageBuilder
+          ? null
+          : getInnerContainerLeftMargin(windowWidth, containerWidth)
       );
-    }, [windowWidth, containerWidth, tablet]);
+    }, [windowWidth, containerWidth, tablet, inProjectPageBuilder]);
 
     // Create Esri layers from mapConfig layers
     const mapLayers = useMemo(() => {
@@ -559,7 +569,6 @@ const IdeasMap = memo<Props>(
                         setSelectedIdea(ideaId);
                       }}
                       isClickable={true}
-                      projectId={projectId}
                       phaseId={phaseId}
                     />
                   )}

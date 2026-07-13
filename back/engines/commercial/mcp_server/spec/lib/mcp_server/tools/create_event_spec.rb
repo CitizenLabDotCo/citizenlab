@@ -37,4 +37,19 @@ describe McpServer::Tools::CreateEvent do
       expect(project.reload.events.count).to eq(0)
     end
   end
+
+  context 'when the project_id does not exist' do
+    let(:status) { 'draft' }
+
+    it 'returns a Project not found error' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(project_id: SecureRandom.uuid),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.content.first[:text]).to include('Project not found')
+    end
+  end
 end

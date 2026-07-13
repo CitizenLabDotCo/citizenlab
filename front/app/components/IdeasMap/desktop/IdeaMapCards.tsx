@@ -67,7 +67,6 @@ const EmptyMessageLine = styled.div`
 
 type Props = {
   ideaMarkers: IIdeaMarkers | undefined;
-  projectId: string;
   phaseId?: string;
   isFiltered: boolean;
   onSelectIdea: (ideaId: string) => void;
@@ -75,7 +74,6 @@ type Props = {
 
 const IdeaMapCards = ({
   ideaMarkers,
-  projectId,
   phaseId,
   isFiltered,
   onSelectIdea,
@@ -91,7 +89,6 @@ const IdeaMapCards = ({
         ideaMarkers.data.length > 0 &&
         ideaMarkers.data.map((ideaMarker) => (
           <StyledIdeaMapCard
-            projectId={projectId}
             idea={ideaMarker}
             key={ideaMarker.id}
             phaseId={phaseId}

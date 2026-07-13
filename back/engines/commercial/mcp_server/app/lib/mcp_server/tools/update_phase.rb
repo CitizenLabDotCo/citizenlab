@@ -35,7 +35,9 @@ class McpServer::Tools::UpdatePhase < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      phase = Phase.find(params[:phase_id])
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
+
       attributes = params.except(:phase_id)
 
       # manual_voters_amount goes through a dedicated setter that records who/when, before other assigns.
@@ -47,14 +49,12 @@ class McpServer::Tools::UpdatePhase < McpServer::BaseTool
       phase.save!
       SideFxPhaseService.new.after_update(phase, current_user)
 
-      ok(
+      response(
         "Updated phase #{phase.id}",
         structured: McpServer::Serializers::Phase.serialize(phase, params: { current_user: })
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 end

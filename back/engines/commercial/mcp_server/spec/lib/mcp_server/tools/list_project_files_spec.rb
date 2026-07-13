@@ -29,6 +29,6 @@ describe McpServer::Tools::ListProjectFiles do
     )
 
     expect(response).to be_error
-    expect(response.content.first[:text]).to match(/Project not found/)
+    expect(response.content.first[:text]).to include('Project not found')
   end
 end

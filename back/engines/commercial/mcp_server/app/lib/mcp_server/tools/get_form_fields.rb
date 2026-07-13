@@ -101,7 +101,11 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
     def run
       container = CONTAINER_TYPES
         .fetch(params[:container_type])
-        .find(params[:container_id])
+        .find_by(id: params[:container_id])
+
+      unless container
+        return not_found_error("Container (#{params[:container_type]})", params[:container_id])
+      end
 
       pmethod = container.pmethod
       return unsupported_error(pmethod) unless SUPPORTED_METHODS.include?(pmethod.class.method_str)
@@ -110,7 +114,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
       fields = IdeaCustomFieldsService.new(custom_form).all_fields
       participation_method = pmethod.class.method_str
 
-      ok(
+      response(
         "Found #{fields.size} field(s) for #{participation_method} form",
         structured: {
           container_type: params[:container_type],
@@ -123,8 +127,6 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
           fields: McpServer::Serializers::CustomField.serialize(fields, params: { constraints: nil })
         }
       )
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:container_type]} not found: #{params[:container_id]}")
     end
 
     private

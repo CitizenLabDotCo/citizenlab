@@ -23,11 +23,6 @@ const createData = (offset: number): MiniProjectData[] => {
         en: `${offset + index} - Project title, but a bit longer`,
       },
       slug: 'project-slug',
-      action_descriptors: {
-        posting_idea: { enabled: true },
-        reacting_idea: { enabled: false },
-        commenting_idea: { enabled: true },
-      } as any,
       starts_days_from_now: null,
       ended_days_ago: null,
     },

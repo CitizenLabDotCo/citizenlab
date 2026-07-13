@@ -35,6 +35,7 @@ class Tenant < ApplicationRecord
   after_update :update_tenant_schema, if: :saved_change_to_host?
   after_update :update_app_configuration, if: :config_sync_enabled
   after_destroy :delete_apartment_tenant
+  after_destroy :delete_que_jobs
 
   scope :deleted, -> { where.not(deleted_at: nil) }
   scope :not_deleted, -> { where(deleted_at: nil) }
@@ -212,6 +213,13 @@ class Tenant < ApplicationRecord
 
   def delete_apartment_tenant
     Apartment::Tenant.drop(schema_name)
+  end
+
+  # Jobs are stored in the shared +public.que_jobs+ table and only reference their tenant
+  # by schema name. Once the schema is gone, a job left behind can no longer do anything
+  # but fail and retry until it expires, so its rows are removed along with the schema.
+  def delete_que_jobs
+    QueJob.all_by_tenant_schema_name(schema_name).delete_all
   end
 
   def update_tenant_schema

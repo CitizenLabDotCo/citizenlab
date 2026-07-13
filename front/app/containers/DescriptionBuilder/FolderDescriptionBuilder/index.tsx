@@ -11,7 +11,6 @@ const FolderDescriptionBuilderPage = () => {
   const { data: folder } = useProjectFolderById(folderId);
 
   if (!folder) return null;
-  if (!folder.data.attributes.uses_content_builder) return null;
 
   return (
     <DescriptionBuilderPage
