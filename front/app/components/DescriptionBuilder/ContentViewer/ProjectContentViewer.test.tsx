@@ -80,8 +80,6 @@ jest.mock('api/content_builder/useContentBuilderLayout', () => ({
   })),
 }));
 
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
-
 describe('ProjectContentViewer', () => {
   it('renders the description section of the project_page layout', () => {
     mockPageLayout = projectPageLayoutWithDescription();
