@@ -129,14 +129,6 @@ class Permissions::UserRequirementsService
     end
 
     if user.verified?
-      if permission.require_verification
-        requirements[:authentication][:missing_user_attributes] = if user.email.present? && user.confirmation_required?
-          ['confirmation']
-        else
-          []
-        end
-      end
-
       # Remove custom fields that are locked - we should never ask them to be filled in the flow - even if they are returned empty
       locked_fields = verification_service.locked_custom_fields(user)
 

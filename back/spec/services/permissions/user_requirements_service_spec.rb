@@ -560,10 +560,10 @@ describe Permissions::UserRequirementsService do
             expect(requirements[:verification]).to be false
           end
 
-          it 'removes all missing authentication requirements if verified' do
+          it 'does not remove all missing authentication requirements if verified' do
             user.update!(unique_code: '1234abcd', email: nil, password: nil)
             requirements = service.requirements(verified_permission, user)
-            expect(requirements[:authentication][:missing_user_attributes]).to be_empty
+            expect(requirements[:authentication][:missing_user_attributes]).not_to be_empty
           end
 
           it 'removes locked custom fields if verified' do
@@ -638,7 +638,7 @@ describe Permissions::UserRequirementsService do
           expect(user.confirmation_required?).to be true
           requirements = service.requirements(verified_permission, user)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:missing_user_attributes]).to eq ['confirmation']
+          expect(requirements[:authentication][:missing_user_attributes]).to eq [:confirmation]
         end
       end
     end
