@@ -41,11 +41,6 @@ const RadioOption = styled.div<{
     box-shadow: ${({ selected, borderColor }) =>
       selected ? 'none' : `0 0 0 1px ${borderColor}`};
   }
-
-  &:focus-visible {
-    outline: 2px solid ${({ selectedBorderColor }) => selectedBorderColor};
-    outline-offset: 2px;
-  }
 `;
 
 const LinearScaleOption = ({

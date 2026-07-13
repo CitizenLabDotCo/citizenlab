@@ -42,7 +42,6 @@ const Content = styled.div<{ maxHeight: number }>`
   position: relative;
   max-height: ${(props) => props.maxHeight}px;
   overflow: clip;
-  overflow-clip-margin: 4px;
 
   &.expanded {
     max-height: none;
@@ -52,8 +51,8 @@ const Content = styled.div<{ maxHeight: number }>`
 
 const ReadMoreButton = styled(Button)`
   position: absolute;
-  bottom: 0px;
-  left: 0px;
+  bottom: 4px;
+  left: 4px;
 `;
 
 interface Props {

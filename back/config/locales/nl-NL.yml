@@ -112,6 +112,8 @@ nl-NL:
           title: Waar is jouw initiatief?
         issue:
           title: Wat is je reactie?
+        observation:
+          title: Wat is je observatie?
         option:
           title: Wat is je optie?
         petition:
@@ -267,6 +269,16 @@ nl-NL:
       title: Alle projecten
     proposals:
       title: Voorstellen
+  pdf_export:
+    survey_responses:
+      date: Datum
+      no_answer: (Geen antwoord)
+      prepared_by: Opgesteld door
+      report_label: Rapport vragenlijstreacties
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} reactie'
+        other: '%{count} reacties'
   phases:
     community_monitor_title: Tevredenheidsmonitor
     native_survey_button: Vul de vragenlijst in

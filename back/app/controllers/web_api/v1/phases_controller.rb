@@ -4,14 +4,23 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results sentiment_by_quarter
-    submission_count index_xlsx delete_inputs show_progress common_ground_results
+    show show_mini update destroy survey_results survey_responses_pdf survey_response_fields
+    sentiment_by_quarter submission_count index_xlsx delete_inputs
+    show_progress common_ground_results
+  ]
+  before_action :ensure_survey_form, only: %i[
+    survey_responses_pdf survey_response_fields
   ]
 
   def index
     @phases = policy_scope(Phase)
       .where(project_id: params[:project_id])
-      .order(:start_at)
+      .ordered
+    @phases = case params[:placement_type]
+    when 'all' then @phases
+    when 'standalone' then @phases.standalone
+    else @phases.on_timeline # default
+    end
     @phases = paginate @phases
     @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
 
@@ -27,32 +36,26 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def create
-    phase_attributes = phase_params
-    @phase = Phase.new(phase_attributes)
+    @phase = Phase.new(phase_params_for_create)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
 
-    if @phase.save
-      sidefx.after_create(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
-    else
-      render json: { errors: @phase.errors.details }, status: :unprocessable_entity
-    end
+    save_or_raise!(@phase)
+    sidefx.after_create(@phase, current_user)
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
   end
 
   def update
-    @phase.set_manual_voters(phase_params[:manual_voters_amount], current_user) if phase_params[:manual_voters_amount]
-    @phase.assign_attributes phase_params
+    update_params = phase_params_for_update
+    @phase.set_manual_voters(update_params[:manual_voters_amount], current_user) if update_params[:manual_voters_amount]
+    @phase.assign_attributes update_params
     authorize @phase
     sidefx.before_update(@phase, current_user)
 
-    if @phase.save
-      sidefx.after_update(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
-    else
-      render json: { errors: @phase.errors.details }, status: :unprocessable_entity
-    end
+    save_or_raise!(@phase)
+    sidefx.after_update(@phase, current_user)
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
   end
 
   def destroy
@@ -81,6 +84,42 @@ class WebApi::V1::PhasesController < ApplicationController
     end
 
     render json: raw_json(results)
+  end
+
+  # Lists the survey fields that will appear in the PDF export, flagging
+  # registration/personal-data fields so the UI can pre-select them for
+  # redaction. Source of truth for the export's field set.
+  def survey_response_fields
+    detector = Export::Pdf::PiiDetector.new
+    data = Export::Pdf::SurveyFields.new(@phase).fields.map do |field|
+      {
+        id: field.key,
+        type: 'survey_response_field',
+        attributes: {
+          title_multiloc: field.title_multiloc,
+          personal_data: detector.personal_data?(field)
+        }
+      }
+    end
+
+    render json: { data: data }
+  end
+
+  # Generates a PDF of native survey responses (cover page + one card per
+  # response). Field-level PII redaction is driven by `redacted_field_keys`.
+  # `cover_only` returns just the cover page (used by the live preview).
+  def survey_responses_pdf
+    cover_only = ActiveModel::Type::Boolean.new.cast(params[:cover_only])
+    pdf = I18n.with_locale(current_user.locale) do
+      Export::Pdf::SurveyResponsesGenerator.new(
+        @phase,
+        cover: cover_from_params,
+        redacted_field_keys: params[:redacted_field_keys] || [],
+        cover_only: cover_only
+      ).generate_pdf
+    end
+
+    send_data pdf.read, type: 'application/pdf', filename: 'survey_responses.pdf'
   end
 
   def common_ground_results
@@ -148,7 +187,31 @@ class WebApi::V1::PhasesController < ApplicationController
     authorize @phase
   end
 
-  def phase_params
+  def phase_params_for_create
+    # placement_type can only be set on creation, not changed afterwards.
+    params.require(:phase).permit(:placement_type, *shared_phase_params)
+  end
+
+  def phase_params_for_update
+    params.require(:phase).permit(shared_phase_params)
+  end
+
+  def ensure_survey_form
+    head :unprocessable_entity unless @phase.pmethod.supports_survey_form?
+  end
+
+  def cover_from_params
+    {
+      include: ActiveModel::Type::Boolean.new.cast(params.dig(:cover, :include)),
+      title: params.dig(:cover, :title).to_s,
+      subtitle: params.dig(:cover, :subtitle).to_s,
+      date: params.dig(:cover, :date).to_s,
+      prepared_by: params.dig(:cover, :prepared_by).to_s,
+      notes: params.dig(:cover, :notes).to_s
+    }
+  end
+
+  def shared_phase_params
     permitted = [
       :project_id,
       :start_at,
@@ -197,7 +260,7 @@ class WebApi::V1::PhasesController < ApplicationController
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
 
-    params.require(:phase).permit(permitted)
+    permitted
   end
 
   def detect_invalid_timeline_changes

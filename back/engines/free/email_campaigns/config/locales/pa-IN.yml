@@ -48,7 +48,11 @@ pa-IN:
         new_attendee: ਨਵਾਂ ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾ
         project_review_requester: ਉਪਭੋਗਤਾ ਜਿਸਨੇ ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ
         project_reviewers: ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਅਕ ਅਤੇ ਫੋਲਡਰ ਮੈਨੇਜਰ
+        user_changing_email: ਉਪਭੋਗਤਾ ਜੋ ਆਪਣਾ ਈਮੇਲ ਪਤਾ ਬਦਲ ਰਿਹਾ ਹੈ
+        user_confirming_email: ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰ ਰਿਹਾ ਹੈ
+        user_requesting_password_reset: ਉਪਭੋਗਤਾ ਜਿਸਨੇ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ
         user_who_commented: ਟਿੱਪਣੀ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ
+        user_who_is_blocked: ਉਪਭੋਗਤਾ ਜਿਸਦਾ ਖਾਤਾ ਬਲੌਕ ਕੀਤਾ ਗਿਆ ਹੈ
         user_who_is_invited_to_cosponsor_a_proposal: ਉਪਭੋਗਤਾ ਜਿਸਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ
         user_who_is_mentioned: ਉਪਭੋਗਤਾ ਜਿਸਦਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ
         user_who_is_receiving_admin_rights: ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ
@@ -105,9 +109,12 @@ pa-IN:
         registration_to_event: ਇੱਕ ਘਟਨਾ ਲਈ ਰਜਿਸਟ੍ਰੇਸ਼ਨ
         survey_1_day_after_draft_saved: ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਆਖਰੀ ਵਾਰ ਡਰਾਫਟ ਵਿੱਚ ਸਰਵੇਖਣ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਤੋਂ 1 ਦਿਨ ਬਾਅਦ
         user_accepts_invitation_to_cosponsor_a_proposal: ਉਪਭੋਗਤਾ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਸਪਾਂਸਰ ਕਰਨ ਲਈ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ
+        user_changes_email: ਉਪਭੋਗਤਾ ਆਪਣਾ ਈਮੇਲ ਪਤਾ ਬਦਲਦਾ ਹੈ
         user_comments: ਉਪਭੋਗਤਾ ਟਿੱਪਣੀਆਂ
         user_comments_on_input: ਇੰਪੁੱਟ 'ਤੇ ਉਪਭੋਗਤਾ ਦੀਆਂ ਟਿੱਪਣੀਆਂ
         user_comments_on_proposal: ਪ੍ਰਸਤਾਵ 'ਤੇ ਉਪਭੋਗਤਾ ਦੀਆਂ ਟਿੱਪਣੀਆਂ
+        user_confirms_email: ਉਪਭੋਗਤਾ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਦਾ ਹੈ
+        user_is_blocked: ਉਪਭੋਗਤਾ ਦਾ ਖਾਤਾ ਬਲੌਕ ਕੀਤਾ ਗਿਆ ਹੈ
         user_is_given_admin_rights: ਉਪਭੋਗਤਾ ਨੂੰ ਐਡਮਿਨ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
         user_is_given_folder_manager_rights: ਵਰਤੋਂਕਾਰ ਨੂੰ ਫੋਲਡਰ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
         user_is_given_folder_moderator_rights: ਉਪਭੋਗਤਾ ਨੂੰ ਫੋਲਡਰ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ
@@ -121,6 +128,7 @@ pa-IN:
         user_registers_for_the_first_time: ਉਪਭੋਗਤਾ ਪਹਿਲੀ ਵਾਰ ਰਜਿਸਟਰ ਕਰਦਾ ਹੈ
         user_replies_to_comment: ਟਿੱਪਣੀ ਲਈ ਉਪਭੋਗਤਾ ਜਵਾਬ
         user_replies_to_internal_comment: ਉਪਭੋਗਤਾ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੰਦਾ ਹੈ
+        user_requests_password_reset: ਉਪਭੋਗਤਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨ ਦੀ ਬੇਨਤੀ ਕਰਦਾ ਹੈ
         voting_1_day_after_last_votes: ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਆਖਰੀ ਵਾਰ ਵੋਟ ਕੀਤੇ ਜਾਣ ਤੋਂ 1 ਦਿਨ ਬਾਅਦ
         voting_2_days_before_phase_closes: 2 ਦਿਨ ਪਹਿਲਾਂ ਵੋਟਿੰਗ ਪੜਾਅ ਬੰਦ
         voting_basket_submitted: ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਕਰਵਾਈਆਂ ਜਾਂਦੀਆਂ ਹਨ
@@ -160,6 +168,7 @@ pa-IN:
       comment_on_your_comment: ਮੇਰੀ ਟਿੱਪਣੀ 'ਤੇ ਇੱਕ ਜਵਾਬ
       community_monitor_report: ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਰਿਪੋਰਟ
       cosponsor_of_your_idea: ਇੱਕ ਉਪਭੋਗਤਾ ਮੇਰੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਮੇਰੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ
+      email_confirmation: ਈਮੇਲ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ
       event_registration_confirmation: ਘਟਨਾ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਪੁਸ਼ਟੀ
       idea_marked_as_spam: ਆਈਡੀਆ ਸਪੈਮ ਰਿਪੋਰਟ
       idea_published: ਮੇਰੇ ਵਿਚਾਰ ਦਾ ਪ੍ਰਕਾਸ਼ਨ
@@ -178,6 +187,7 @@ pa-IN:
       moderator_digest: ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰਾਂ ਲਈ ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
       native_survey_not_submitted: ਸਰਵੇਖਣ ਜਮ੍ਹਾਂ ਨਹੀਂ ਹੋਇਆ
       new_comment_for_admin: ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵੀਂ ਟਿੱਪਣੀ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦੀ ਹਾਂ
+      new_email_confirmation: ਨਵਾਂ ਈਮੇਲ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ
       new_idea_for_admin_prescreening: ਮੇਰੇ ਵੱਲੋਂ ਸੰਚਾਲਿਤ ਕੀਤੇ ਗਏ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਪ੍ਰਵਾਨਗੀ ਦੀ ਲੋੜ ਵਾਲੇ ਨਵੇਂ ਇਨਪੁਟ
       new_idea_for_admin_published: ਮੇਰੇ ਵੱਲੋਂ ਸੰਚਾਲਿਤ ਕੀਤੇ ਗਏ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵਾਂ ਪ੍ਰਕਾਸ਼ਿਤ ਇਨਪੁਟ
       official_feedback_on_idea_you_follow: ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
@@ -196,6 +206,7 @@ pa-IN:
       status_change_on_idea_you_follow: ਕਿਸੇ ਵਿਚਾਰ ਦੀ ਸਥਿਤੀ ਤਬਦੀਲੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
       survey_submitted: ਸਰਵੇਖਣ ਪੇਸ਼ ਕੀਤਾ
       threshold_reached_for_admin: ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਗਿਆ
+      user_blocked: ਖਾਤਾ ਬਲੌਕ ਕੀਤਾ ਗਿਆ
       user_digest: ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
       voting_basket_not_submitted: ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਹੋਈਆਂ
       voting_basket_submitted: ਵੋਟਿੰਗ ਦੀ ਪੁਸ਼ਟੀ
@@ -238,6 +249,7 @@ pa-IN:
         idea: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਚਾਰ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         initiative: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੀ ਗਈ ਇੱਕ ਪਹਿਲ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         issue: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਗਏ ਮੁੱਦੇ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
+        observation: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੇ ਜਾ ਰਹੇ ਇੱਕ ਨਿਰੀਖਣ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਹੈ"
         option: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਕਲਪ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         petition: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੀ ਪਟੀਸ਼ਨ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         post: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੀ ਗਈ ਪੋਸਟ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
@@ -271,6 +283,15 @@ pa-IN:
       preheader: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
       subject: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
       title: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'
+    email_confirmation:
+      best_regards: ਸਤਿਕਾਰ ਸਹਿਤ,
+      event_description: "ਤੁਹਾਡੀ ਭਾਗੀਦਾਰੀ ਲਈ ਧੰਨਵਾਦ। ਕਿਰਪਾ ਕਰਕੇ %{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਵਿੰਡੋ ਵਿੱਚ ਇਹ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ ਦਰਜ ਕਰੋ:"
+      expire_code: ਇਹ ਕੋਡ ਇਸ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗਾ
+      hours_24: 24 ਘੰਟੇ।
+      ignore_email: ਜੇਕਰ ਤੁਸੀਂ ਕੋਡ ਦੀ ਬੇਨਤੀ ਨਹੀਂ ਕੀਤੀ ਹੈ, ਤਾਂ ਤੁਸੀਂ ਇਸ ਈਮੇਲ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੂਪ ਨਾਲ ਨਜ਼ਰਅੰਦਾਜ਼ ਕਰ ਸਕਦੇ ਹੋ।
+      preheader: '%{organizationName} ਲਈ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ'
+      subject: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ'
+      title: ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ
     event_registration_confirmation:
       cta_add_to_calendar: ਆਪਣੇ ਕੈਲੰਡਰ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ
       cta_button: ਘਟਨਾ ਵੇਖੋ
@@ -303,6 +324,7 @@ pa-IN:
         idea: ਇਸ ਵਿਚਾਰ 'ਤੇ ਜਾਓ
         initiative: ਇਸ ਪਹਿਲ 'ਤੇ ਜਾਓ
         issue: ਇਸ ਮੁੱਦੇ 'ਤੇ ਜਾਓ
+        observation: ਇਸ ਨਿਰੀਖਣ 'ਤੇ ਜਾਓ
         option: ਇਸ ਵਿਕਲਪ 'ਤੇ ਜਾਓ
         petition: ਇਸ ਪਟੀਸ਼ਨ 'ਤੇ ਜਾਓ
         post: ਇਸ ਪੋਸਟ 'ਤੇ ਜਾਓ
@@ -323,6 +345,7 @@ pa-IN:
         idea: ਆਪਣੇ ਵਿਚਾਰ 'ਤੇ ਜਾਓ
         initiative: ਆਪਣੀ ਪਹਿਲਕਦਮੀ 'ਤੇ ਜਾਓ
         issue: ਆਪਣੇ ਮੁੱਦੇ 'ਤੇ ਜਾਓ
+        observation: ਆਪਣੇ ਨਿਰੀਖਣ 'ਤੇ ਜਾਓ
         option: ਆਪਣੇ ਵਿਕਲਪ 'ਤੇ ਜਾਓ
         petition: ਆਪਣੀ ਪਟੀਸ਼ਨ 'ਤੇ ਜਾਓ
         post: ਆਪਣੀ ਪੋਸਟ 'ਤੇ ਜਾਓ
@@ -356,6 +379,7 @@ pa-IN:
         idea: ਤੁਹਾਡਾ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।
         initiative: ਤੁਹਾਡੀ ਪਹਿਲ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
         issue: ਤੁਹਾਡਾ ਅੰਕ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।
+        observation: ਤੁਹਾਡਾ ਨਿਰੀਖਣ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ
         option: ਤੁਹਾਡਾ ਵਿਕਲਪ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।
         petition: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
         post: ਤੁਹਾਡੀ ਪੋਸਟ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
@@ -482,6 +506,15 @@ pa-IN:
       title: "%{firstName}, ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ 'ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੈ।"
       today: ਅੱਜ
       yesterday: ਕੱਲ੍ਹ
+    new_email_confirmation:
+      best_regards: ਸਤਿਕਾਰ ਸਹਿਤ,
+      event_description: "ਆਪਣੇ ਨਵੇਂ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਲਈ ਕਿਰਪਾ ਕਰਕੇ %{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਵਿੰਡੋ ਵਿੱਚ ਇਹ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ ਦਰਜ ਕਰੋ:"
+      expire_code: ਇਹ ਕੋਡ ਇਸ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗਾ
+      hours_24: 24 ਘੰਟੇ।
+      ignore_email: ਜੇਕਰ ਤੁਸੀਂ ਕੋਡ ਦੀ ਬੇਨਤੀ ਨਹੀਂ ਕੀਤੀ ਹੈ, ਤਾਂ ਤੁਸੀਂ ਇਸ ਈਮੇਲ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੂਪ ਨਾਲ ਨਜ਼ਰਅੰਦਾਜ਼ ਕਰ ਸਕਦੇ ਹੋ।
+      preheader: '%{organizationName} ਲਈ ਆਪਣੇ ਨਵੇਂ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ'
+      subject: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਆਪਣੇ ਨਵੇਂ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ'
+      title: ਆਪਣੇ ਨਵੇਂ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ
     new_idea_for_admin_prescreening:
       cta_button: ਇਨਪੁੱਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ
       days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
@@ -507,6 +540,12 @@ pa-IN:
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: '"%{input_title}" ਤੇ ਇੱਕ ਅੱਪਡੇਟ ਹੈ।'
+    password_reset:
+      cta_button: ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ
+      event_description: ਤੁਸੀਂ %{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ। ਇੱਕ ਨਵਾਂ, ਸੁਰੱਖਿਅਤ ਪਾਸਵਰਡ ਚੁਣਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ 'ਤੇ ਕਲਿੱਕ ਕਰੋ। ਇਹ ਲਿੰਕ 1 ਘੰਟੇ ਵਿੱਚ ਖਤਮ ਹੋ ਜਾਵੇਗਾ।
+      preheader: '%{organizationName} ਲਈ ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ'
+      subject: '%{organizationName}: ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ'
+      title: ਇੱਕ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ
     preview_data:
       author_display_name: ਜੇਨ ਡੋ
       author_first_name: ਜੇਨ
@@ -652,6 +691,14 @@ pa-IN:
       preheader: ਅਗਲੇ ਕਦਮ ਚੁੱਕਣਾ ਯਕੀਨੀ ਬਣਾਓ
       subject: ਇੱਕ ਪ੍ਰਸਤਾਵ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ 'ਤੇ ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚ ਗਿਆ ਹੈ
       title: ਇੱਕ ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਦੀ ਹੱਦ ਤੱਕ ਪਹੁੰਚ ਗਿਆ!
+    user_blocked:
+      for_more_information: ਇਸ ਬਾਰੇ ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਲਈ, ਤੁਸੀਂ %{termsAndConditionsPage} ਦੇਖ ਸਕਦੇ ਹੋ
+      paragraph_1_with_reason: "%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਤੁਹਾਡਾ ਖਾਤਾ ਹੇਠਾਂ ਦਿੱਤੇ ਕਾਰਨ ਕਰਕੇ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਅਯੋਗ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ:"
+      paragraph_1_without_reason: "ਭਾਈਚਾਰਕ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼ਾਂ ਦੀ ਉਲੰਘਣਾ ਕਾਰਨ %{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਤੁਹਾਡਾ ਖਾਤਾ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਅਯੋਗ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।"
+      preheader: "%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਤੁਹਾਡਾ ਖਾਤਾ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਅਯੋਗ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ"
+      subject: ਤੁਹਾਡਾ ਖਾਤਾ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਬੰਦ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ
+      title: ਤੁਹਾਡਾ ਖਾਤਾ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਬੰਦ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ
+      you_can_sign_in_again_from: ਤੁਸੀਂ %{date} ਤੋਂ ਦੁਬਾਰਾ ਸਾਈਨ ਇਨ ਕਰ ਸਕਦੇ ਹੋ
     user_digest:
       commented: '%{authorFirstName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:'
       cta_button: ਪਲੇਟਫਾਰਮ 'ਤੇ ਜਾਓ
@@ -721,6 +768,7 @@ pa-IN:
         idea: ਤੁਹਾਡਾ ਵਿਚਾਰ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         initiative: ਤੁਹਾਡੀ ਪਹਿਲ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
         issue: ਤੁਹਾਡੀ ਸਮੱਸਿਆ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
+        observation: ਤੁਹਾਡਾ ਨਿਰੀਖਣ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         option: ਤੁਹਾਡਾ ਵਿਕਲਪ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
         petition: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         post: ਤੁਹਾਡੀ ਪੋਸਟ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।

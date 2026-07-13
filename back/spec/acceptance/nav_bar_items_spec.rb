@@ -34,6 +34,22 @@ resource 'NavBarItems' do
       expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) })
         .to eq %w[home custom custom custom events all_input]
     end
+
+    example 'Nests dropdown children under the parent and hides them from the top level' do
+      dropdown = create(:nav_bar_item, :dropdown)
+      child_page = create(:static_page, slug: 'child-page')
+      child = create(:nav_bar_item, code: 'custom', parent: dropdown, static_page: child_page)
+
+      do_request
+      assert_status 200
+      data = json_response_body[:data]
+      expect(data.map { |d| d[:id] }).not_to include child.id
+
+      dropdown_json = data.find { |d| d[:id] == dropdown.id }
+      children = dropdown_json.dig(:attributes, :children)
+      expect(children.size).to eq 1
+      expect(children.first[:slug]).to eq 'child-page'
+    end
   end
 
   context 'when admin' do
@@ -70,6 +86,9 @@ resource 'NavBarItems' do
         parameter :static_page_id, 'The ID of the static page for custom NavBarItems.', required: false
         parameter :project_id, 'The ID of the project for custom NavBarItems.', required: false
         parameter :project_folder_id, 'The ID of the folder for custom NavBarItems.', required: false
+        children_desc = 'Ordered child items, turning a custom NavBarItem into a dropdown. ' \
+                        'Each child references one of static_page_id, project_id or project_folder_id.'
+        parameter :children, children_desc, required: false
       end
 
       ValidationErrorHelper.new.error_fields self, NavBarItem
@@ -150,6 +169,69 @@ resource 'NavBarItems' do
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match project_folder_title_multiloc
           expect(json_response.dig(:data, :relationships, :project_folder, :data, :id)).to eq project_folder_id
         end
+      end
+
+      describe 'Adding a dropdown NavBarItem' do
+        let(:code) { 'custom' }
+        let(:title_multiloc) { { 'en' => 'Departments' } }
+        let(:page) { create(:static_page, slug: 'urban-planning') }
+        let(:project) { create(:project, slug: 'transport') }
+        let(:children) do
+          [{ static_page_id: page.id }, { project_id: project.id }]
+        end
+
+        example_request 'Add a dropdown NavBarItem with ordered children' do
+          expect(response_status).to eq 201
+          json_response = json_parse response_body
+
+          expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
+          children_json = json_response.dig(:data, :attributes, :children)
+          expect(children_json.size).to eq 2
+          expect(children_json.map { |c| c[:slug] }).to eq %w[urban-planning transport]
+
+          dropdown = NavBarItem.find json_response.dig(:data, :id)
+          expect(dropdown).to be_dropdown
+          expect(dropdown.children.order(:ordering).map(&:item_slug)).to eq %w[urban-planning transport]
+        end
+      end
+
+      describe 'Adding a dropdown with an invalid child' do
+        let(:code) { 'custom' }
+        let(:title_multiloc) { { 'en' => 'Broken' } }
+        # A child linking to no target is invalid, so the whole create rolls back.
+        let(:children) { [{ static_page_id: create(:static_page).id }, {}] }
+
+        example '[error] Rejects an invalid child and rolls back' do
+          count_before = NavBarItem.count
+          do_request
+          expect(response_status).to eq 422
+          expect(NavBarItem.count).to eq count_before
+        end
+      end
+    end
+
+    patch 'web_api/v1/nav_bar_items/:id' do
+      with_options scope: :nav_bar_item do
+        parameter :title_multiloc, 'The dropdown title, as a multiloc string'
+        parameter :children, 'Ordered child items; replaces the dropdown\'s current children'
+      end
+
+      let(:dropdown) { create(:nav_bar_item, :dropdown) }
+      let!(:old_child) do
+        create(:nav_bar_item, code: 'custom', parent: dropdown, static_page: create(:static_page))
+      end
+      let(:id) { dropdown.id }
+      let(:new_page) { create(:static_page, slug: 'new-page') }
+      let(:children) { [{ static_page_id: new_page.id }] }
+
+      example_request 'Reconcile a dropdown menu\'s children' do
+        expect(response_status).to eq 200
+        json_response = json_parse response_body
+
+        children_json = json_response.dig(:data, :attributes, :children)
+        expect(children_json.size).to eq 1
+        expect(children_json.first[:slug]).to eq 'new-page'
+        expect(NavBarItem.exists?(old_child.id)).to be false
       end
     end
 

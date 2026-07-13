@@ -112,6 +112,8 @@ hr-HR:
           title: Koja je vaša inicijativa?
         issue:
           title: Šta je vaša tema ?
+        observation:
+          title: Koje je vaše opažanje?
         option:
           title: Što je vaša opcija?
         petition:
@@ -268,6 +270,16 @@ hr-HR:
       title: Svi projekti
     proposals:
       title: Prijedlozi
+  pdf_export:
+    survey_responses:
+      date: Datum
+      no_answer: (Nema odgovora)
+      prepared_by: Pripremio/la
+      report_label: Izvješće o odgovorima ankete
+      respondent: Ispitanik %{number}
+      response_count:
+        one: '%{count} odgovor'
+        other: '%{count} odgovora'
   phases:
     community_monitor_title: Monitor zajednice
     native_survey_button: Popuni anketu

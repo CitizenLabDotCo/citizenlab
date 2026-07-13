@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListUsers < McpServer::BaseTool
   def name = 'list_users'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists users. Search by name/email, filter by role.'
 
   def input_schema

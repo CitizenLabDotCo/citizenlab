@@ -112,6 +112,8 @@ lv-LV:
           title: Kāda ir jūsu iniciatīva?
         issue:
           title: Kāda ir jūsu problēma?
+        observation:
+          title: Kāds ir tavs novērojums?
         option:
           title: Kāda ir jūsu izvēle?
         petition:
@@ -268,6 +270,16 @@ lv-LV:
       title: Visi projekti
     proposals:
       title: Priekšlikumi
+  pdf_export:
+    survey_responses:
+      date: Datums
+      no_answer: (Nav atbildes)
+      prepared_by: Sagatavoja
+      report_label: Aptaujas atbilžu ziņojums
+      respondent: Respondents %{number}
+      response_count:
+        one: '%{count} atbilde'
+        other: '%{count} atbildes'
   phases:
     community_monitor_title: Kopienas uzraudzītājs
     native_survey_button: Veiciet aptauju

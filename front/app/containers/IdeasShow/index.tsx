@@ -27,6 +27,7 @@ import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { getInputTermMessage } from 'utils/i18n';
 import { usePermission } from 'utils/permissions';
 
 import AuthoringAssistanePrototype from './components/AuthoringAssistanePrototype';
@@ -117,8 +118,24 @@ export const IdeasShow = ({
                 content={
                   <Box>
                     <FormattedMessage
-                      {...messages.importedTooltip}
-                      values={{ inputTerm: getInputTerm(phases?.data) }}
+                      {...getInputTermMessage(getInputTerm(phases?.data), {
+                        idea: messages.importedTooltipIdea,
+                        option: messages.importedTooltipOption,
+                        project: messages.importedTooltipProject,
+                        question: messages.importedTooltipQuestion,
+                        issue: messages.importedTooltipIssue,
+                        contribution: messages.importedTooltipContribution,
+                        proposal: messages.importedTooltipProposal,
+                        initiative: messages.importedTooltipInitiative,
+                        petition: messages.importedTooltipPetition,
+                        comment: messages.importedTooltipComment,
+                        response: messages.importedTooltipResponse,
+                        suggestion: messages.importedTooltipSuggestion,
+                        topic: messages.importedTooltipTopic,
+                        post: messages.importedTooltipPost,
+                        story: messages.importedTooltipStory,
+                        observation: messages.importedTooltipObservation,
+                      })}
                     />
                   </Box>
                 }

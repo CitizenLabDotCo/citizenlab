@@ -1,4 +1,4 @@
-import { get, set } from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import {
   IDestination,
@@ -18,7 +18,7 @@ export interface IConsentCookie extends Partial<Record<TCategory, boolean>> {
 
 export function getConsent(): IConsentCookie | null {
   try {
-    const json = get(COOKIE_NAME);
+    const json = Cookies.get(COOKIE_NAME);
     return json ? JSON.parse(json) : null;
   } catch (error) {
     return null;
@@ -26,5 +26,8 @@ export function getConsent(): IConsentCookie | null {
 }
 
 export function setConsent(consent: IConsentCookie) {
-  set(COOKIE_NAME, consent, { expires: 60, secure: SECURE_COOKIE });
+  Cookies.set(COOKIE_NAME, JSON.stringify(consent), {
+    expires: 60,
+    secure: SECURE_COOKIE,
+  });
 }

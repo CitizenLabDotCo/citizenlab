@@ -112,6 +112,8 @@ lt-LT:
           title: Kokia yra jūsų iniciatyva?
         issue:
           title: Koks jūsų komentaras?
+        observation:
+          title: Koks jūsų pastebėjimas?
         option:
           title: Kokia yra jūsų galimybė?
         petition:
@@ -269,6 +271,16 @@ lt-LT:
       title: Visi projektai
     proposals:
       title: Pasiūlymai
+  pdf_export:
+    survey_responses:
+      date: Data
+      no_answer: (Nėra atsakymo)
+      prepared_by: Parengė
+      report_label: Apklausos atsakymų ataskaita
+      respondent: Respondentas %{number}
+      response_count:
+        one: '%{count} atsakymas'
+        other: '%{count} atsakymai'
   phases:
     community_monitor_title: Bendrijos stebėtojas
     native_survey_button: Atlikite apklausą

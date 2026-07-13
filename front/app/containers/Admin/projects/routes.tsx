@@ -6,6 +6,8 @@ import { reviewStates } from 'api/admin_publications/types';
 import { ideaSortValues } from 'api/ideas/types';
 import { projectSortableParams } from 'api/projects_mini_admin/types';
 
+import useParallelParticipation from 'hooks/useParallelParticipation';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import Navigate from 'utils/cl-router/Navigate';
@@ -31,6 +33,9 @@ const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
+const AdminProjectPageNewBackoffice = lazy(
+  () => import('./project/newBackoffice/ProjectPage')
+);
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminProjectsProjectGeneralSetUp = lazy(
@@ -215,11 +220,22 @@ const projectRoute = createRoute({
   ),
 });
 
-// Project index redirect
 const ProjectIndexRedirect = () => {
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId',
   });
+  const parallelParticipation = useParallelParticipation();
+
+  if (parallelParticipation) {
+    return (
+      <Navigate
+        to="/admin/projects/$projectId/project-page"
+        params={{ projectId }}
+        replace
+      />
+    );
+  }
+
   return (
     <Navigate
       to="/admin/projects/$projectId/phases/setup"
@@ -233,6 +249,16 @@ const projectIndexRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: '/',
   component: ProjectIndexRedirect,
+});
+
+const projectPageRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'project-page',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageNewBackoffice />
+    </PageLoading>
+  ),
 });
 
 // --- General settings layout ---
@@ -751,6 +777,7 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
     projectIdeaPreviewRoute,
     projectRoute.addChildren([
       projectIndexRoute,
+      projectPageRoute,
       projectGeneralRoute.addChildren([
         projectGeneralIndexRoute,
         projectGeneralInputTagsRoute,

@@ -112,6 +112,8 @@ en-IE:
           title: What is your initiative?
         issue:
           title: What is your comment?
+        observation:
+          title: What is your observation?
         option:
           title: What is your option?
         petition:
@@ -267,6 +269,16 @@ en-IE:
       title: All projects
     proposals:
       title: Proposals
+  pdf_export:
+    survey_responses:
+      date: Date
+      no_answer: (No answer)
+      prepared_by: Prepared by
+      report_label: Survey response report
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} response'
+        other: '%{count} responses'
   phases:
     community_monitor_title: Community monitor
     native_survey_button: Take the survey

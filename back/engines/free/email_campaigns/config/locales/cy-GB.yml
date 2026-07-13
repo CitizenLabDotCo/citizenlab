@@ -48,7 +48,11 @@ cy-GB:
         new_attendee: Defnyddiwr sydd newydd gofrestru
         project_review_requester: Defnyddiwr a ofynnodd am adolygiad y prosiect
         project_reviewers: Adolygwyr prosiect a rheolwyr ffolderi
+        user_changing_email: Defnyddiwr sy'n newid eu cyfeiriad e-bost
+        user_confirming_email: Defnyddiwr sy'n cadarnhau eu cyfeiriad e-bost
+        user_requesting_password_reset: Defnyddiwr a ofynnodd am ailosod cyfrinair
         user_who_commented: Defnyddiwr a wnaeth sylw
+        user_who_is_blocked: Defnyddiwr y mae eu cyfrif wedi'i flocio
         user_who_is_invited_to_cosponsor_a_proposal: Defnyddiwr sy'n cael ei wahodd i gyd-noddi cynnig
         user_who_is_mentioned: Defnyddiwr sy'n cael ei grybwyll
         user_who_is_receiving_admin_rights: Defnyddiwr sy'n derbyn hawliau gweinyddol
@@ -105,9 +109,12 @@ cy-GB:
         registration_to_event: Cofrestru i ddigwyddiad
         survey_1_day_after_draft_saved: 1 diwrnod ar ôl i'r defnyddiwr arbed yr arolwg ar ffurf drafft ddiwethaf
         user_accepts_invitation_to_cosponsor_a_proposal: Defnyddiwr yn derbyn gwahoddiad i gyd-noddi cynnig
+        user_changes_email: Defnyddiwr yn newid eu cyfeiriad e-bost
         user_comments: Sylwadau defnyddwyr
         user_comments_on_input: Sylwadau defnyddwyr ar fewnbwn
         user_comments_on_proposal: Sylwadau defnyddwyr ar y cynnig
+        user_confirms_email: Defnyddiwr yn cadarnhau eu cyfeiriad e-bost
+        user_is_blocked: Cyfrif y defnyddiwr wedi'i flocio
         user_is_given_admin_rights: Rhoddir hawliau gweinyddol i'r defnyddiwr
         user_is_given_folder_manager_rights: Rhoddir hawliau rheolwr ffolder i'r defnyddiwr
         user_is_given_folder_moderator_rights: Rhoddir hawliau cymedrolwr ffolder i'r defnyddiwr
@@ -121,6 +128,7 @@ cy-GB:
         user_registers_for_the_first_time: Defnyddwyr yn cofrestru am y tro cyntaf
         user_replies_to_comment: Ymateb defnyddiwr i sylw
         user_replies_to_internal_comment: Ymateb defnyddiwr i sylwadau mewnol
+        user_requests_password_reset: Defnyddiwr yn gofyn am ailosod cyfrinair
         voting_1_day_after_last_votes: 1 diwrnod ar ôl i'r defnyddiwr bleidleisio ddiwethaf
         voting_2_days_before_phase_closes: 2 ddiwrnod cyn i'r cyfnod pleidleisio gau
         voting_basket_submitted: Cyflwynir pleidleisiau
@@ -160,6 +168,7 @@ cy-GB:
       comment_on_your_comment: Ateb ar fy sylw
       community_monitor_report: Adroddiad monitro cymunedol
       cosponsor_of_your_idea: Mae defnyddiwr yn derbyn fy ngwahoddiad i gyd-noddi fy nghynnig
+      email_confirmation: Cod cadarnhau e-bost
       event_registration_confirmation: Cadarnhad cofrestru digwyddiad
       idea_marked_as_spam: Adroddiad sbam syniad
       idea_published: Cyhoeddi fy syniad
@@ -178,6 +187,7 @@ cy-GB:
       moderator_digest: Trosolwg wythnosol ar gyfer rheolwyr prosiect
       native_survey_not_submitted: Arolwg heb ei gyflwyno
       new_comment_for_admin: Sylw newydd mewn prosiect dwi'n ei gymedroli
+      new_email_confirmation: Cod cadarnhau e-bost newydd
       new_idea_for_admin_prescreening: Mewnbwn newydd sydd angen cymeradwyaeth mewn prosiect rwy'n ei gymedroli
       new_idea_for_admin_published: Mewnbwn cyhoeddedig newydd mewn prosiect rwy'n ei gymedroli
       official_feedback_on_idea_you_follow: Diweddariad ar syniad rydych chi'n ei ddilyn
@@ -196,6 +206,7 @@ cy-GB:
       status_change_on_idea_you_follow: Newid statws syniad rydych chi'n ei ddilyn
       survey_submitted: Arolwg wedi'i gyflwyno
       threshold_reached_for_admin: Cyrhaeddodd y cynnig y trothwy pleidleisio
+      user_blocked: Cyfrif wedi'i flocio
       user_digest: Trosolwg wythnosol
       voting_basket_not_submitted: Pleidleisiau heb eu cyflwyno
       voting_basket_submitted: Cadarnhad o bleidleisio
@@ -238,6 +249,7 @@ cy-GB:
         idea: "%{authorName} sylw ar syniad rydych chi'n ei ddilyn"
         initiative: Gwnaeth %{authorName} sylw ar fenter rydych chi'n ei dilyn
         issue: Gwnaeth %{authorName} sylw ar fater rydych chi'n ei ddilyn
+        observation: Mae %{authorName} wedi gwneud sylw ar arsylwad rydych chi'n ei ddilyn
         option: Gwnaeth %{authorName} sylwadau ar opsiwn rydych chi'n ei ddilyn
         petition: '%{authorName} sylw ar ddeiseb rydych yn ei dilyn'
         post: Gwnaeth %{authorName} sylw ar bost rydych chi'n ei ddilyn
@@ -271,6 +283,15 @@ cy-GB:
       preheader: Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig
       subject: Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig
       title: Mae %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig
+    email_confirmation:
+      best_regards: Cofion gorau,
+      event_description: 'Diolch am eich cyfranogiad. Nodwch y cod cadarnhau hwn yn y ffenestr ar blatfform cyfranogi %{organizationName}:'
+      expire_code: Bydd y cod hwn yn dod i ben ymhen
+      hours_24: 24 awr.
+      ignore_email: Os na wnaethoch chi ofyn am god, gallwch anwybyddu'r e-bost hwn yn ddiogel.
+      preheader: Cadarnhewch eich cyfeiriad e-bost ar gyfer %{organizationName}
+      subject: Cadarnhewch eich cyfeiriad e-bost ar gyfer platfform cyfranogi %{organizationName}
+      title: Cadarnhewch eich cyfeiriad e-bost
     event_registration_confirmation:
       cta_add_to_calendar: Ychwanegu at eich calendr
       cta_button: Gweld y digwyddiad
@@ -303,6 +324,7 @@ cy-GB:
         idea: Ewch i'r syniad hwn
         initiative: Ewch i'r fenter hon
         issue: Ewch i'r rhifyn hwn
+        observation: Ewch i'r arsylliad hwn
         option: Ewch i'r opsiwn hwn
         petition: Ewch i'r ddeiseb hon
         post: Ewch i'r post hwn
@@ -323,6 +345,7 @@ cy-GB:
         idea: Ewch at eich syniad
         initiative: Ewch i'ch menter
         issue: Ewch at eich mater
+        observation: Mynd i'ch arsylwad
         option: Ewch i'ch opsiwn
         petition: Ewch at eich deiseb
         post: Ewch i'ch post
@@ -356,6 +379,7 @@ cy-GB:
         idea: Mae eich syniad wedi cael ei gyhoeddi
         initiative: Mae eich menter wedi'i chyhoeddi
         issue: Mae eich mater wedi'i gyhoeddi
+        observation: Mae eich arsylliad wedi cael ei gyhoeddi
         option: Mae eich opsiwn wedi'i gyhoeddi
         petition: Mae eich deiseb wedi'i chyhoeddi
         post: Mae eich post wedi cael ei gyhoeddi
@@ -482,6 +506,15 @@ cy-GB:
       title: "%{firstName}, mae sylw newydd wedi'i bostio ar eich platfform"
       today: Heddiw
       yesterday: Ddoe
+    new_email_confirmation:
+      best_regards: Cofion gorau,
+      event_description: 'Rhowch y cod cadarnhau hwn yn y ffenestr ar blatfform cyfranogi %{organizationName} i gadarnhau eich cyfeiriad e-bost newydd:'
+      expire_code: Bydd y cod hwn yn dod i ben ymhen
+      hours_24: 24 awr.
+      ignore_email: Os na wnaethoch chi ofyn am god, gallwch anwybyddu'r e-bost hwn yn ddiogel.
+      preheader: Cadarnhewch eich cyfeiriad e-bost newydd ar gyfer %{organizationName}
+      subject: Cadarnhewch eich cyfeiriad e-bost newydd ar gyfer platfform cyfranogi %{organizationName}
+      title: Cadarnhewch eich cyfeiriad e-bost newydd
     new_idea_for_admin_prescreening:
       cta_button: Adolygu'r mewnbwn
       days_ago: '%{numberOfDays} diwrnod yn ôl'
@@ -507,6 +540,12 @@ cy-GB:
       preheader: Mae diweddariad ar fewnbwn rydych chi'n ei ddilyn
       subject: Postiwyd adborth swyddogol ar "%{input_title}"
       title: Mae diweddariad ar "%{input_title}"
+    password_reset:
+      cta_button: Ailosodwch eich cyfrinair
+      event_description: Rydych wedi gofyn am ailosod eich cyfrinair ar gyfer platfform cyfranogi %{organizationName}. Cliciwch y botwm isod i ddewis cyfrinair newydd, diogel. Mae'r ddolen yn dod i ben ymhen 1 awr.
+      preheader: Ailosodwch eich cyfrinair ar gyfer %{organizationName}
+      subject: '%{organizationName}: Ailosodwch eich cyfrinair'
+      title: Dewiswch gyfrinair newydd
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -652,6 +691,14 @@ cy-GB:
       preheader: Gwnewch yn siŵr eich bod chi'n cymryd y camau nesaf
       subject: Cyrhaeddodd cynnig y trothwy pleidleisio ar eich platfform
       title: Cyrhaeddodd cynnig y trothwy pleidleisio!
+    user_blocked:
+      for_more_information: I gael rhagor o wybodaeth am hyn, gallwch edrych ar y %{termsAndConditionsPage}
+      paragraph_1_with_reason: "Mae eich cyfrif ar blatfform cyfranogi %{organizationName} wedi'i analluogi dros dro am y rheswm canlynol:"
+      paragraph_1_without_reason: "Mae eich cyfrif ar blatfform cyfranogi %{organizationName} wedi'i analluogi dros dro oherwydd torri canllawiau'r gymuned."
+      preheader: Mae eich cyfrif ar blatfform cyfranogi %{organizationName} wedi'i analluogi dros dro
+      subject: Mae eich cyfrif wedi'i analluogi dros dro
+      title: Mae eich cyfrif wedi'i analluogi dros dro
+      you_can_sign_in_again_from: Gallwch fewngofnodi eto o %{date}
     user_digest:
       commented: '%{authorFirstName} sylw:'
       cta_button: Ewch i'r platfform
@@ -721,6 +768,7 @@ cy-GB:
         idea: Mae eich syniad yn "%{prescreening_status_title}"
         initiative: Mae eich menter yn "%{prescreening_status_title}"
         issue: Mae eich problem yn "%{prescreening_status_title}"
+        observation: Mae eich arsylwad yn "%{prescreening_status_title}"
         option: Mae eich dewisiad yn "%{prescreening_status_title}"
         petition: Mae eich deiseb yn "%{prescreening_status_title}"
         post: Mae eich post yn "%{prescreening_status_title}"

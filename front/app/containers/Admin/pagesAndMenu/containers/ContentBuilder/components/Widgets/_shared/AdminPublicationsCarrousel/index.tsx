@@ -10,7 +10,10 @@ import { CARD_GAP } from '../BaseCarrousel/constants';
 import { CardContainer } from '../BaseCarrousel/Containers';
 import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
 import ScrollableCarrousel from '../BaseCarrousel/ScrollableCarrousel';
-import { skipCarrousel } from '../BaseCarrousel/ScrollableCarrousel/utils';
+import {
+  skipCarrousel,
+  scrollFocusedCardIntoView,
+} from '../BaseCarrousel/ScrollableCarrousel/utils';
 
 import AdminPublicationCard from './AdminPublicationCard';
 import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from './constants';
@@ -55,15 +58,10 @@ const AdminPublicationsCarrousel = ({
     if (e.code === 'Escape') {
       skipCarrousel(endId);
     }
-
-    if (e.code === 'Tab' && scrollContainerRef) {
-      setTimeout(() => {
-        e.shiftKey
-          ? (scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP)
-          : (scrollContainerRef.scrollLeft += cardWidth + CARD_GAP);
-      }, 50);
-    }
   };
+
+  const handleFocus = (e: React.FocusEvent<HTMLElement>) =>
+    scrollFocusedCardIntoView(e, scrollContainerRef);
 
   return (
     <ScrollableCarrousel
@@ -80,6 +78,7 @@ const AdminPublicationsCarrousel = ({
             mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
             adminPublication={adminPublication}
             onKeyDown={handleKeyDown}
+            onFocus={handleFocus}
           />
         </CardContainer>
       ))}

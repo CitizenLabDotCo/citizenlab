@@ -21,6 +21,13 @@ describe ProjectFolders::SideFxProjectFolderService do
           payload: { project_folder: clean_time_attributes(project_folder.attributes) }
         )
     end
+
+    it 'provisions an enabled Content Builder description layout (content_builder patch)' do
+      service.after_create(project_folder, user)
+
+      layout = project_folder.content_builder_layouts.find_by(code: 'project_folder_description')
+      expect(layout&.enabled).to be(true)
+    end
   end
 
   describe 'after_update' do

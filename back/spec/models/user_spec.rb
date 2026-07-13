@@ -69,6 +69,61 @@ RSpec.describe User do
       expect { described_class.destroy_all_async(scope) }
         .to have_enqueued_job(DeleteUserJob).exactly(scope.count).times
     end
+
+    context 'when a user already has a pending deletion job' do
+      let(:schema_name) { Apartment::Tenant.current }
+      let(:user) { described_class.first }
+
+      def create_deletion_job(arguments, **attrs)
+        attrs = { tenant_schema_name: schema_name }.merge(attrs)
+        create(:que_job, active_job_class: 'DeleteUserJob', job_arguments: arguments, **attrs)
+      end
+
+      it 'does not enqueue a second job for that user' do
+        create_deletion_job([user.id])
+
+        expect { described_class.destroy_all_async }
+          .not_to have_enqueued_job(DeleteUserJob).with(user.id, update_member_counts: false)
+      end
+
+      it 'still enqueues a job for the other users' do
+        create_deletion_job([user.id])
+
+        expect { described_class.destroy_all_async }
+          .to have_enqueued_job(DeleteUserJob).exactly(described_class.count - 1).times
+      end
+
+      it 'recognizes a job that was enqueued with a user rather than a user id' do
+        create_deletion_job([{ '_aj_globalid' => "gid://citizenlab/User/#{user.id}" }])
+
+        expect { described_class.destroy_all_async }
+          .to have_enqueued_job(DeleteUserJob).exactly(described_class.count - 1).times
+      end
+
+      it 'logs the users it skips' do
+        create_deletion_job([user.id])
+        allow(Rails.logger).to receive(:warn)
+
+        described_class.destroy_all_async
+
+        expect(Rails.logger).to have_received(:warn).with(/skipping 1 user/)
+      end
+
+      it 'still enqueues a job when the pending job belongs to another tenant' do
+        create_deletion_job([user.id], tenant_schema_name: 'another_tenant')
+
+        expect { described_class.destroy_all_async }
+          .to have_enqueued_job(DeleteUserJob).exactly(described_class.count).times
+      end
+
+      it 'still enqueues a job when the existing job has finished or expired' do
+        create_deletion_job([user.id], finished_at: Time.zone.now)
+        create_deletion_job([described_class.last.id], expired_at: Time.zone.now)
+
+        expect { described_class.destroy_all_async }
+          .to have_enqueued_job(DeleteUserJob).exactly(described_class.count).times
+      end
+    end
   end
 
   describe 'generate_slug' do

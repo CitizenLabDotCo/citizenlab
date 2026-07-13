@@ -4,6 +4,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { IIdea } from 'api/ideas/types';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
@@ -53,6 +55,12 @@ const CommentingIdeaDisabled = ({
     signUpIn('signup');
   };
 
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId,
+    action: 'commenting_idea',
+    disabledReason: commentingDisabledReason,
+  });
+
   const disabledMessage = getPermissionsDisabledMessage(
     'commenting_idea',
     commentingDisabledReason
@@ -68,35 +76,37 @@ const CommentingIdeaDisabled = ({
     */
     <Box mb="24px">
       <Warning className="e2e-commenting-disabled">
-        <FormattedMessage
-          {...disabledMessage}
-          values={{
-            signUpLink: (
-              <button onClick={signUp}>
-                <FormattedMessage {...messages.signUpLinkText} />
-              </button>
-            ),
-            signInLink: (
-              <button onClick={signIn}>
-                <FormattedMessage {...messages.signInLinkText} />
-              </button>
-            ),
-            completeRegistrationLink: (
-              <button
-                onClick={() => {
-                  triggerAuthenticationFlow();
-                }}
-              >
-                <FormattedMessage {...messages.completeProfileLinkText} />
-              </button>
-            ),
-            verifyIdentityLink: (
-              <button id="e2e-verify-identity-to-comment" onClick={signUp}>
-                <FormattedMessage {...messages.verifyIdentityLinkText} />
-              </button>
-            ),
-          }}
-        />
+        {customAccessDeniedMessage ?? (
+          <FormattedMessage
+            {...disabledMessage}
+            values={{
+              signUpLink: (
+                <button onClick={signUp}>
+                  <FormattedMessage {...messages.signUpLinkText} />
+                </button>
+              ),
+              signInLink: (
+                <button onClick={signIn}>
+                  <FormattedMessage {...messages.signInLinkText} />
+                </button>
+              ),
+              completeRegistrationLink: (
+                <button
+                  onClick={() => {
+                    triggerAuthenticationFlow();
+                  }}
+                >
+                  <FormattedMessage {...messages.completeProfileLinkText} />
+                </button>
+              ),
+              verifyIdentityLink: (
+                <button id="e2e-verify-identity-to-comment" onClick={signUp}>
+                  <FormattedMessage {...messages.verifyIdentityLinkText} />
+                </button>
+              ),
+            }}
+          />
+        )}
       </Warning>
     </Box>
   );
