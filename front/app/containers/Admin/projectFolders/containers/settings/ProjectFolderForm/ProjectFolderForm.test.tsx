@@ -9,8 +9,6 @@ jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 const mockUpdateProjectFolder = jest.fn();
 
-// A folder created through this form: the description is only ever authored in
-// the Content Builder, so description_multiloc comes back null.
 const folderWithoutDescription = {
   data: {
     id: 'folder-id',
@@ -55,7 +53,6 @@ describe('ProjectFolderForm', () => {
     it('saves — the description is optional, so it must not block the save', async () => {
       render(<ProjectFolderForm mode="edit" projectFolderId="folder-id" />);
 
-      // Editing a field enables the Save button.
       const titleInput = await screen.findByDisplayValue('A folder');
       await userEvent.type(titleInput, '!');
 
