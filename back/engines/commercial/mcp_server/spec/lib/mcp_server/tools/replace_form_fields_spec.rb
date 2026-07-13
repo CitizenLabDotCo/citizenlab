@@ -56,6 +56,23 @@ describe McpServer::Tools::ReplaceFormFields do
       expect(response.structured_content[:fields_last_updated_at]).to be > fetched[:fields_last_updated_at]
     end
 
+    it 'ignores read-only keys instead of assigning them' do
+      other_form = create(:custom_form)
+      fetched = run_mcp_tool(
+        McpServer::Tools::GetFormFields,
+        params: { container_type: 'phase', container_id: phase.id },
+        current_user:
+      ).structured_content
+
+      fields = fetched[:fields]
+      fields.find { |f| f[:id] == question.id }[:resource_id] = other_form.id
+
+      response = run(container_type: 'phase', container_id: phase.id, fields:)
+
+      expect(response).not_to be_error
+      expect(question.reload.resource_id).to eq(custom_form.id)
+    end
+
     it 'refuses when responses have already been submitted' do
       create(:idea, project:, phases: [phase], creation_phase: phase)
 

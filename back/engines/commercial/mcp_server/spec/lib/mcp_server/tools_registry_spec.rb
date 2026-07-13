@@ -33,4 +33,51 @@ describe 'MCP tools registry' do
       end
     end
   end
+
+  # Tripwire test. strip_readonly deliberately supports only the subset of JSON Schema we
+  # currently need: readOnly under `properties` and `items`. This detects when a schema
+  # uses it anywhere else (oneOf, patternProperties, ...), where it would be silently
+  # ignored; in that case, we'll have to extend the stripping logic (or rework the schema).
+  it 'every tool declares readOnly only where the Runner strip can reach it' do
+    aggregate_failures do
+      McpServer::McpController::TOOL_CLASSES.each do |tool_class|
+        schema = tool_class.new.input_schema
+        unreachable = all_readonly_paths(schema) - reachable_readonly_paths(schema)
+
+        expect(unreachable).to be_empty, <<~MSG.squish
+          #{tool_class.name} declares readOnly at #{unreachable.inspect}, where it will not
+          be stripped. Rework the schema or extend ReadonlyStrip#strip_readonly.
+        MSG
+      end
+    end
+  end
+
+  # Blind tree scan: no JSON Schema knowledge, complete by construction.
+  # (`== true` so a property *named* readOnly doesn't count as the annotation.)
+  def all_readonly_paths(node, path = '#', found = [])
+    case node
+    when Hash
+      found << path if node[:readOnly] == true
+      node.each { |key, value| all_readonly_paths(value, "#{path}/#{key}", found) }
+    when Array
+      node.each_with_index do |value, index|
+        all_readonly_paths(value, "#{path}/#{index}", found)
+      end
+    end
+
+    found
+  end
+
+  # Mirrors the walk of BaseTool::Runner#strip_readonly: properties (however nested)
+  # and array items only.
+  def reachable_readonly_paths(schema, path = '#', found = [])
+    schema.fetch(:properties, {}).each do |key, property|
+      property_path = "#{path}/properties/#{key}"
+      found << property_path if property[:readOnly] == true
+      reachable_readonly_paths(property, property_path, found)
+      reachable_readonly_paths(property.fetch(:items, {}), "#{property_path}/items", found)
+    end
+
+    found
+  end
 end

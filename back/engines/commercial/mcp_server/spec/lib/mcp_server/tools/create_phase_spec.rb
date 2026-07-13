@@ -23,6 +23,12 @@ describe McpServer::Tools::CreatePhase do
     # A method, not a let: the schema is rebuilt to observe feature-flag changes.
     def schema = described_class.new.input_schema
 
+    # The Runner splats params into Phase.new, so undeclared properties must be
+    # rejected at dispatch (mass-assignment guard).
+    it 'rejects undeclared properties' do
+      expect(schema[:additionalProperties]).to be(false)
+    end
+
     describe 'gated participation methods' do
       using RSpec::Parameterized::TableSyntax
 

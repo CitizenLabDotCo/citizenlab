@@ -55,10 +55,8 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
   private
 
   def field_schema
-    McpServer::Tools::FormFieldsSchemaBuilder.new(
-      mode: :input,
-      tenant_locales: AppConfiguration.instance.settings.dig('core', 'locales')
-    ).field_schema
+    tenant_locales = AppConfiguration.instance.settings.dig('core', 'locales')
+    McpServer::Tools::FormFieldsSchemaBuilder.new(tenant_locales:).field_schema
   end
 
   class Runner < McpServer::BaseTool::Runner

@@ -291,7 +291,8 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
 
         manual_voters_amount: { type: 'integer', description: 'Count of offline/manually-recorded voters. Only for voting phases.' }
       },
-      required: %w[project_id title_multiloc start_at]
+      required: %w[project_id title_multiloc start_at],
+      additionalProperties: false
     }
   end
 
