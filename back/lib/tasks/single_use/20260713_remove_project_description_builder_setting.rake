@@ -9,7 +9,7 @@ namespace :single_use do
       config = AppConfiguration.instance
       next unless config.settings.key?('project_description_builder')
 
-      config.update_column(:settings, config.settings.except('project_description_builder')) # rubocop:disable Rails/SkipsModelValidations
+      config.update_column(:settings, config.settings.except('project_description_builder'))
       reporter.add_change('present', 'removed', context: { tenant: tenant.host })
     end
 
