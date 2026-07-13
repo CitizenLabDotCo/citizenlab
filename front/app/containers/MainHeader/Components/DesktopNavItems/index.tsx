@@ -12,10 +12,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
-import AdminPublicationsNavbarItem from './AdminPublicationsNavbarItem';
 import DesktopNavbarItem from './DesktopNavbarItem';
 import getNavbarItemPropsArray from './getNavbarItemPropsArray';
 import MoreNavbarItem from './MoreNavbarItem';
+import AdminPublicationsNavbarItem from './NavbarDropdowns/AdminPublicationsNavbarItem';
+import DropdownNavbarItem from './NavbarDropdowns/DropdownNavbarItem';
 import {
   NavbarItemProps,
   calculateItemDistribution,
@@ -187,8 +188,18 @@ const DesktopNavItems = () => {
     >
       <NavbarItems>
         {visibleItems.map((navbarItemProps) => {
-          const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
+          const { linkTo, onlyActiveOnIndex, navigationItemTitle, navbarItem } =
             navbarItemProps;
+
+          if (navbarItem) {
+            return (
+              <DropdownNavbarItem
+                navbarItem={navbarItem}
+                onDropdownStateChange={setIsDropdownOpen}
+                key={navbarItem.id}
+              />
+            );
+          }
 
           if (linkTo === '/projects') {
             return (

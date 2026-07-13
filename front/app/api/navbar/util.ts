@@ -1,4 +1,4 @@
-import { TDefaultNavbarItemCode, INavbarItem } from './types';
+import { TDefaultNavbarItemCode, INavbarItem, INavbarChild } from './types';
 
 export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, string> = {
   home: '/',
@@ -50,6 +50,22 @@ export function getNavbarItemSlug({
   }
 
   // Dropdown items (custom, no target of their own) have no slug and land here.
+  return null;
+}
+
+export function getNavbarChildLink(
+  child: INavbarChild
+): { to: string; params: { slug: string } } | null {
+  if (!child.slug) return null;
+  if (child.static_page_id) {
+    return { to: '/pages/$slug', params: { slug: child.slug } };
+  }
+  if (child.project_id) {
+    return { to: '/projects/$slug', params: { slug: child.slug } };
+  }
+  if (child.project_folder_id) {
+    return { to: '/folders/$slug', params: { slug: child.slug } };
+  }
   return null;
 }
 

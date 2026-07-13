@@ -5,6 +5,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
+import { getNavbarChildLink } from 'api/navbar/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -20,11 +21,13 @@ import tracks from '../../../tracks';
 import getNavbarItemPropsArray from '../../DesktopNavItems/getNavbarItemPropsArray';
 import TenantLogo from '../../TenantLogo';
 
+import FullMobileNavMenuDropdown from './FullMobileNavMenuDropdown';
+import FullMobileNavMenuDropdownItem from './FullMobileNavMenuDropdownItem';
 import FullMobileNavMenuItem from './FullMobileNavMenuItem';
 
 const ContentContainer = styled.nav`
   background: #fff;
-  padding: 40px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,8 +56,25 @@ const StyledCloseIconButton = styled(CloseIconButton)`
 
 const MenuItems = styled.ul`
   margin: 0;
-  padding: 0px;
-  text-align: center;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  max-width: 320px;
+  text-align: left;
+
+  > * {
+    margin-top: 20px;
+  }
+  > *:first-child {
+    margin-top: 0;
+  }
+  > *:last-child {
+    margin-top: 48px;
+  }
+
+  ${media.phone`
+    max-width: 100%;
+  `}
 `;
 
 const StyledFullscreenModal = styled(FullscreenModal)`
@@ -110,8 +130,46 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
         </Box>
         <MenuItems>
           {navbarItemPropsArray.map((navbarItemProps) => {
-            const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
-              navbarItemProps;
+            const {
+              linkTo,
+              onlyActiveOnIndex,
+              navigationItemTitle,
+              navbarItem,
+            } = navbarItemProps;
+            // Dropdown items have no link of their own; render them as an
+            // expandable row that reveals their children in place.
+            if (navbarItem) {
+              const dropdownChildren = navbarItem.attributes.children ?? [];
+              return (
+                <FullMobileNavMenuDropdown
+                  key={navbarItem.id}
+                  title={localize(navbarItem.attributes.title_multiloc)}
+                >
+                  {dropdownChildren.map((child) => {
+                    const link = getNavbarChildLink(child);
+                    if (!link) return null;
+                    return (
+                      <FullMobileNavMenuDropdownItem
+                        key={child.id}
+                        to={
+                          link.to as Parameters<
+                            typeof FullMobileNavMenuDropdownItem
+                          >[0]['to']
+                        }
+                        params={
+                          link.params as Parameters<
+                            typeof FullMobileNavMenuDropdownItem
+                          >[0]['params']
+                        }
+                        navigationItemTitle={localize(child.title_multiloc)}
+                        onClick={handleOnMenuItemClick(child.id)}
+                        scrollToTop
+                      />
+                    );
+                  })}
+                </FullMobileNavMenuDropdown>
+              );
+            }
             if (linkTo) {
               return (
                 <FullMobileNavMenuItem
