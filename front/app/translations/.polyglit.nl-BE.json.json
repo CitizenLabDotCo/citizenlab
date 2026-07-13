@@ -6374,6 +6374,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.AccessibilityStatement.publicationDate2026": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:35:19.836631Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AccessibilityStatement.responsiveness": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -6383,6 +6388,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AccessibilityStatement.statusPageUrl": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:35:19.836631Z",
+    "verified_by": "Luuc"
   },
   "app.containers.AccessibilityStatement.technologiesIntro": {
     "state": "verified",
