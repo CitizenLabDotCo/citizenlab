@@ -82,6 +82,11 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation
   end
 
+  attribute :action_descriptors do |phase, params|
+    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+    Permissions::PhasePermissionsService.new(phase, current_user(params), user_requirements_service:, request: params[:request]).action_descriptors
+  end
+
   belongs_to :project
 
   has_one :user_basket, if: proc { |object, params|

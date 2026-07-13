@@ -22,17 +22,22 @@ class WebApi::V1::PhasesController < ApplicationController
     else @phases.on_timeline # default
     end
     @phases = paginate @phases
-    @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
+    @phases = @phases.includes(:report, :custom_form, :manual_voters_last_updated_by, permissions: [:groups], project: :admin_publication)
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions manual_voters_last_updated_by])
+    render json: linked_json(
+      @phases,
+      WebApi::V1::PhaseSerializer,
+      params: phase_serializer_params,
+      include: %i[permissions manual_voters_last_updated_by]
+    )
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions]).serializable_hash
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params, include: %i[permissions]).serializable_hash
   end
 
   def show_mini
-    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: phase_serializer_params).serializable_hash
   end
 
   def create
@@ -43,7 +48,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
     save_or_raise!(@phase)
     sidefx.after_create(@phase, current_user)
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :created
   end
 
   def update
@@ -55,7 +60,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
     save_or_raise!(@phase)
     sidefx.after_update(@phase, current_user)
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :ok
   end
 
   def destroy
@@ -177,6 +182,13 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   private
+
+  def phase_serializer_params
+    jsonapi_serializer_params(
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      request: request
+    )
+  end
 
   def sidefx
     @sidefx ||= SideFxPhaseService.new

@@ -42,12 +42,17 @@ describe('Project description builder HtmlBlock component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.get('#e2e-draggable-html-block').dragAndDrop('#e2e-content-builder-frame', {
-      position: 'inside',
-    });
+    cy.get('#e2e-draggable-html-block').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
 
     cy.get('div.e2e-html-block').click();
-    cy.get('#html-block-textarea-en').type('<p>Html paragraph</p>', { force: true });
+    cy.get('#html-block-textarea-en').type('<p>Html paragraph</p>', {
+      force: true,
+    });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

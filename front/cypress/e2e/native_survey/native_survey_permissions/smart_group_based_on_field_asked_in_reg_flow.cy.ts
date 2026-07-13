@@ -5,6 +5,7 @@ import { signUpEmailConformation, enterUserInfo } from '../../../support/auth';
 describe('Native survey permissions', () => {
   describe('Native survey for smart group (question defining smart group asked in registration flow)', () => {
     let customFieldId = '';
+    let customFieldKey = '';
     let customFieldOptionId = '';
     let smartGroupId = '';
     let projectId = '';
@@ -20,6 +21,7 @@ describe('Native survey permissions', () => {
       // Create custom field
       cy.apiCreateCustomField(fieldName, false, 'select').then((response) => {
         customFieldId = response.body.data.id;
+        customFieldKey = response.body.data.attributes.key;
 
         // Create custom field options
         cy.apiCreateCustomFieldOption('Option A', customFieldId).then(
@@ -103,9 +105,8 @@ describe('Native survey permissions', () => {
 
       // Select Option A
       cy.get('#e2e-signup-custom-fields-container')
-        .get('select')
-        .first()
-        .select(1);
+        .find(`select[id="${customFieldKey}"]`)
+        .select('Option A');
 
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
@@ -115,11 +116,11 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-success-continue-button > button').click({ force: true });
 
       // Expect to be redirected to survey
-      cy.wait(5000);
       cy.location('pathname').should(
         'eq',
         `/en/projects/${projectSlug}/surveys/new`
       );
+      cy.dataCy('e2e-submit-form').should('exist');
     });
 
     it('does not let you participate if you enter incorrect custom field value', () => {
@@ -138,9 +139,8 @@ describe('Native survey permissions', () => {
 
       // Select Option B
       cy.get('#e2e-signup-custom-fields-container')
-        .get('select')
-        .first()
-        .select(2);
+        .find(`select[id="${customFieldKey}"]`)
+        .select('Option B');
 
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
@@ -152,7 +152,6 @@ describe('Native survey permissions', () => {
       cy.get('.e2e-modal-close-button').click();
 
       // Expect button to be disabled
-      cy.wait(5000);
       cy.get('.e2e-idea-button')
         .first()
         .find('button')

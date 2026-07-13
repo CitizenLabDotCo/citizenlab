@@ -68,6 +68,7 @@ declare global {
       apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
+      apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
@@ -1309,6 +1310,28 @@ function apiAddPoll(
   });
 }
 
+function apiCreateCause(phaseId: string, title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/causes',
+      body: {
+        cause: {
+          phase_id: phaseId,
+          title_multiloc: { en: title },
+          description_multiloc: { en: title },
+        },
+      },
+    });
+  });
+}
+
 function apiCreatePhase({
   projectId,
   title,
@@ -2394,6 +2417,7 @@ Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
+Cypress.Commands.add('apiCreateCause', apiCreateCause);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setModeratorLoginCookie', setModeratorLoginCookie);
 Cypress.Commands.add(

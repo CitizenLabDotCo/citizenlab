@@ -13644,6 +13644,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.utils.inactivePhase": {
+    "state": "verified",
+    "verified_at": "2026-07-09T13:53:06.518856Z",
+    "verified_by": "Jelena"
+  },
   "app.utils.notInGroup": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -13678,6 +13683,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.utils.projectInactive": {
+    "state": "verified",
+    "verified_at": "2026-07-09T13:53:06.518856Z",
+    "verified_by": "Jelena"
   },
   "app.utils.votingMethodUtils.budgetParticipationEnded1": {
     "state": "verified",

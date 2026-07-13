@@ -13,6 +13,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useUpdateBasket from 'api/baskets/useUpdateBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
 import { IPhaseData } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 
 import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
@@ -81,8 +82,10 @@ const CTAButton = ({ phase, project }: Props) => {
   const [processing, setProcessing] = useState(false);
   const [isSubmitSuccessful, setIsSubmitSuccessful] = useState<boolean>(false);
 
-  const permissionsDisabledReason =
-    project.attributes.action_descriptors.voting.disabled_reason;
+  const permissionsDisabledReason = getPhaseActionDescriptor(
+    phase,
+    'voting'
+  ).disabled_reason;
 
   const customAccessDeniedMessage = useCustomAccessDeniedMessage({
     phaseId: phase.id,

@@ -35,7 +35,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id,
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       ),
       include: included
     )
@@ -66,7 +67,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id,
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       ),
       include: included_for_publications
     )
@@ -133,7 +135,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     admin_publications.includes(
       {
         publication: [
-          { phases: %i[report custom_form permissions] },
+          { phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }] },
           :admin_publication,
           :images,
           :project_images,
