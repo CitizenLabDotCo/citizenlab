@@ -729,6 +729,7 @@
   "app.containers.AdminPage.widgets.titleDimensions": "Dimensions",
   "app.containers.AdminPage.widgets.titleStyle": "Style",
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
+  "app.containers.admin.content_builder.html_block.label": "HTML block",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Edit",

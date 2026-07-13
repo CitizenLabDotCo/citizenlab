@@ -19724,6 +19724,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.content_builder.html_block.label": {
+    "state": "verified",
+    "verified_at": "2026-06-23T11:26:31.424120Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
