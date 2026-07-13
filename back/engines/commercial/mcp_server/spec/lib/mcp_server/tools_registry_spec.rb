@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Lint rules over the registered tools: conventions every tool must follow,
 # enforced here because clients consume the registry sight unseen.
-describe 'MCP tools registry' do
+describe 'MCP tools registry' do # rubocop:disable RSpec/DescribeClass -- lints all tools, no single class under test
   it 'every tool spells out all four annotation hint fields' do
     aggregate_failures do
       McpServer::McpController::TOOL_CLASSES.each do |tool_class|

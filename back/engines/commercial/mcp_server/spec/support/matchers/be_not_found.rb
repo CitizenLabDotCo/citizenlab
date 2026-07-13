@@ -21,11 +21,11 @@ RSpec::Matchers.define :be_not_found do |label = nil|
   end
 
   failure_message do |response|
-    if !values_match?(be_error, response)
-      'expected response to be a not-found error, but it succeeded'
-    else
+    if values_match?(be_error, response)
       anchor = "#{label} not found".strip
       "expected a '#{anchor}' error, got: #{response_text(response).inspect}"
+    else
+      'expected response to be a not-found error, but it succeeded'
     end
   end
 

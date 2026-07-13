@@ -39,5 +39,4 @@ describe McpServer::Tools::ListGroups do
     expect(response).not_to be_error
     expect(response.structured_content[:data].pluck(:id)).to contain_exactly(matching.id)
   end
-
 end

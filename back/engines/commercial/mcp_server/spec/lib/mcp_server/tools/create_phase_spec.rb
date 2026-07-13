@@ -32,12 +32,14 @@ describe McpServer::Tools::CreatePhase do
     describe 'gated participation methods' do
       using RSpec::Parameterized::TableSyntax
 
+      # rubocop:disable Lint/BinaryOperatorWithIdenticalOperands
       where(:participation_method, :flag) do
         'common_ground' | 'common_ground'
         'document_annotation' | 'konveio_document_annotation'
         'poll' | 'polls'
         'survey' | 'surveys'
       end
+      # rubocop:enable Lint/BinaryOperatorWithIdenticalOperands
 
       with_them do
         it 'is only available when its feature flag is active' do
@@ -96,10 +98,10 @@ describe McpServer::Tools::CreatePhase do
 
     it 'creates a native survey phase' do
       response = run(params.merge(
-          participation_method: 'native_survey',
-          native_survey_title_multiloc: { 'en' => 'Survey' },
-          native_survey_button_multiloc: { 'en' => 'Take the survey' }
-        ))
+        participation_method: 'native_survey',
+        native_survey_title_multiloc: { 'en' => 'Survey' },
+        native_survey_button_multiloc: { 'en' => 'Take the survey' }
+      ))
 
       expect(response).not_to be_error
       phase = project.phases.sole
@@ -109,10 +111,10 @@ describe McpServer::Tools::CreatePhase do
 
     it 'creates a budgeting voting phase' do
       response = run(params.merge(
-          participation_method: 'voting',
-          voting_method: 'budgeting',
-          voting_max_total: 1000
-        ))
+        participation_method: 'voting',
+        voting_method: 'budgeting',
+        voting_max_total: 1000
+      ))
 
       expect(response).not_to be_error
       phase = project.phases.sole
