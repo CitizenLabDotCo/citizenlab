@@ -372,7 +372,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'similarity_threshold_title' => phase.similarity_threshold_title,
         'voting_filtering_enabled' => phase.voting_filtering_enabled,
         'voting_term_plural_multiloc' => phase.voting_term_plural_multiloc,
-        'voting_term_singular_multiloc' => phase.voting_term_singular_multiloc
+        'voting_term_singular_multiloc' => phase.voting_term_singular_multiloc,
+        'placement_type' => phase.placement_type
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
