@@ -22,7 +22,6 @@ import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
 import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
@@ -104,10 +103,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   // A folder must exist before its description can be authored in the Content
   // Builder, so the builder link only shows once the folder is created (edit
   // mode). At creation the description is left empty and added afterwards.
-  const showDescriptionBuilder =
-    useFeatureFlag({
-      name: 'project_description_builder',
-    }) && projectFolder;
+  const showDescriptionBuilder = projectFolder;
 
   /*
     ==============

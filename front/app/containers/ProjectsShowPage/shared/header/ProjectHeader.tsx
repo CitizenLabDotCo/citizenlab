@@ -11,7 +11,6 @@ import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 import useParallelParticipation from 'hooks/useParallelParticipation';
 
@@ -35,7 +34,6 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import ProjectArchivedIndicator from './ProjectArchivedIndicator';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
-import ProjectInfo from './ProjectInfo';
 import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
 const Container = styled.div<{ $flushBottom: boolean }>`
@@ -74,9 +72,6 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const isPhoneOrSmaller = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const projectDescriptionBuilderEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
   const parallelParticipation = useParallelParticipation();
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
@@ -168,16 +163,11 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           {parallelParticipation ? (
             <ProjectPageContentViewer projectId={project.data.id} />
           ) : (
-            <>
-              {!projectDescriptionBuilderEnabled && (
-                <ProjectInfo projectId={projectId} />
-              )}
-              <ProjectContentViewer
-                projectId={project.data.id}
-                projectTitle={project.data.attributes.title_multiloc}
-                enabled={project.data.attributes.uses_content_builder}
-              />
-            </>
+            <ProjectContentViewer
+              projectId={project.data.id}
+              projectTitle={project.data.attributes.title_multiloc}
+              enabled={project.data.attributes.uses_content_builder}
+            />
           )}
         </ContentContainer>
       </Container>
