@@ -6389,6 +6389,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.AccessibilityStatement.publicationDate2026": {
+    "state": "verified",
+    "verified_at": "2026-07-08T14:05:35.585987Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AccessibilityStatement.responsiveness": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -6398,6 +6403,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AccessibilityStatement.statusPageUrl": {
+    "state": "verified",
+    "verified_at": "2026-07-08T14:05:35.585987Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.AccessibilityStatement.technologiesIntro": {
     "state": "verified",
