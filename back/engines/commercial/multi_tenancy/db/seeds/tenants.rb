@@ -82,10 +82,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            project_description_builder: {
-              enabled: true,
-              allowed: true
-            },
             custom_idea_statuses: {
               enabled: true,
               allowed: true
