@@ -28,6 +28,8 @@ import {
   getDefaultBasemap,
   handleWebMapReferenceLayers,
   createUserLocationGraphic,
+  showEsriFeaturePopup,
+  changeCursorOnFeaturePopupHover,
 } from './utils';
 
 // Custom Esri styles
@@ -81,6 +83,10 @@ export type EsriMapProps = {
   onHover?: (event: any, mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
   showUserLocation?: boolean;
+  // When no onClick handler is provided, clicking a web map feature opens the
+  // popup that was configured for it in ArcGIS (if any). Consumers with their
+  // own onClick handle feature popups themselves (see showEsriFeaturePopup).
+  esriFeaturePopupsEnabled?: boolean;
 };
 
 const EsriMap = ({
@@ -95,6 +101,7 @@ const EsriMap = ({
   initialData,
   globalMapSettings,
   showUserLocation = false,
+  esriFeaturePopupsEnabled = false,
 }: EsriMapProps) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
@@ -268,24 +275,35 @@ const EsriMap = ({
   }, [graphics, mapView]);
 
   useEffect(() => {
-    // On map click, pass the event to onClick handler if it was provided
-    if (!onClick || !mapView) return;
+    // On map click, pass the event to onClick handler if it was provided.
+    // Otherwise, open any popups configured in ArcGIS for web map features
+    // at the clicked location (read-only maps).
+    if (!mapView || (!onClick && !esriFeaturePopupsEnabled)) return;
 
     const handle = mapView.on('click', function (event) {
-      onClick(event, mapView);
+      if (onClick) {
+        onClick(event, mapView);
+        return;
+      }
+      showEsriFeaturePopup({ event, mapView });
     });
 
     return () => {
       handle.remove();
     };
-  }, [onClick, mapView]);
+  }, [onClick, esriFeaturePopupsEnabled, mapView]);
 
   useEffect(() => {
-    // On map hover, pass the event to hover handler if it was provided
-    if (!onHover || !mapView) return;
+    // On map hover, pass the event to hover handler if it was provided.
+    // Otherwise, show a pointer cursor over clickable web map features.
+    if (!mapView || (!onHover && !esriFeaturePopupsEnabled)) return;
 
     const debouncedHover = debounce((event: any) => {
-      onHover(event, mapView);
+      if (onHover) {
+        onHover(event, mapView);
+        return;
+      }
+      changeCursorOnFeaturePopupHover(event, mapView);
     }, 60);
 
     const handle = mapView.on('pointer-move', debouncedHover);
@@ -293,7 +311,7 @@ const EsriMap = ({
     return () => {
       handle.remove();
     };
-  }, [onHover, mapView]);
+  }, [onHover, esriFeaturePopupsEnabled, mapView]);
 
   useEffect(() => {
     // Sets the locale of the map

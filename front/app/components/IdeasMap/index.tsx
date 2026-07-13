@@ -36,6 +36,7 @@ import EsriMap from 'components/EsriMap';
 import {
   getClusterConfiguration,
   showAddInputPopup,
+  showEsriFeaturePopup,
   goToMapLocation,
   esriPointToGeoJson,
   changeCursorOnHover,
@@ -339,7 +340,25 @@ const IdeasMap = memo<Props>(
           );
 
           if (!graphicHit?.mapPoint) {
-            showSubmitPopup();
+            // No platform graphic was clicked. If the click hit a web map
+            // feature with popups configured in ArcGIS, show its popup with
+            // the submit CTA on top (when posting is enabled). Otherwise,
+            // fall back to the plain submit popup.
+            showEsriFeaturePopup({
+              event,
+              mapView,
+              hitTestResult: result,
+              prependContentNode: ideaPostingEnabled
+                ? startIdeaButtonNode
+                : undefined,
+            }).then((openedFeaturePopup) => {
+              if (openedFeaturePopup) {
+                // Close any open idea panel, like showAddInputPopup does
+                setSelectedIdea(null);
+              } else {
+                showSubmitPopup();
+              }
+            });
             return;
           }
 

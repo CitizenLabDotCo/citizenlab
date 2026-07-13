@@ -25,8 +25,16 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import EsriMap from 'components/EsriMap';
+import MapInteractionToggle, {
+  MapInteractionMode,
+} from 'components/EsriMap/components/MapInteractionToggle';
 import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
-import { parseLayers } from 'components/EsriMap/utils';
+import {
+  parseLayers,
+  showEsriFeaturePopup,
+  changeCursorOnFeaturePopupHover,
+  pinUiElementToTop,
+} from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -88,6 +96,14 @@ const FullscreenMapInput = memo<Props>(
     const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
     const undoButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
     const instructionRef: React.RefObject<HTMLDivElement> = React.createRef();
+    // Stable ref (not re-created each render) so the pinning effect below always
+    // references the currently-mounted toggle element
+    const interactionToggleRef = useRef<HTMLDivElement>(null);
+
+    // Draw vs Explore toggle: on web maps, users can switch to an explore mode
+    // where tapping a feature opens its ArcGIS-configured popup instead of drawing
+    const [interactionMode, setInteractionMode] =
+      useState<MapInteractionMode>('draw');
 
     // Create map layers from map configuration to load in
     const mapLayers = useMemo(() => {
@@ -99,16 +115,43 @@ const FullscreenMapInput = memo<Props>(
       setMapView(mapView);
     }, []);
 
-    // When the user clicks on the map, update the form data
+    // When the user clicks on the map, update the form data (draw mode) or
+    // open the ArcGIS-configured popup of the tapped feature (explore mode)
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
+        if (interactionMode === 'explore') {
+          showEsriFeaturePopup({ event, mapView });
+          return;
+        }
         if (inputType === 'point') {
           handleMapClickPoint(event, mapView, handleSinglePointChange);
         } else if (isLineOrPolygonInput(inputType)) {
           handleMapClickMultipoint(event, mapView, handleMultiPointChange);
         }
       },
-      [handleMultiPointChange, handleSinglePointChange, inputType]
+      [
+        handleMultiPointChange,
+        handleSinglePointChange,
+        inputType,
+        interactionMode,
+      ]
+    );
+
+    // In explore mode, show a pointer cursor over clickable web map features
+    const onMapHover = useCallback((event: any, mapView: MapView) => {
+      changeCursorOnFeaturePopupHover(event, mapView);
+    }, []);
+
+    const handleInteractionModeChange = useCallback(
+      (mode: MapInteractionMode) => {
+        setInteractionMode(mode);
+        if (mode === 'draw') {
+          // Clean up explore mode leftovers
+          mapView?.closePopup();
+          document.body.style.cursor = 'auto';
+        }
+      },
+      [mapView]
     );
 
     // Add the custom UI elements to the map
@@ -120,6 +163,15 @@ const FullscreenMapInput = memo<Props>(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
     }, [instructionRef, mapView?.ui, resetButtonRef]);
+
+    // Keep the Draw/Explore toggle pinned to the very top of the top-right
+    // controls, regardless of when the map's other widgets (zoom, fullscreen,
+    // web map defaults) finish loading in.
+    useEffect(() => {
+      const toggleEl = interactionToggleRef.current;
+      if (!isWebMap || !mapView || !toggleEl) return;
+      return pinUiElementToTop(mapView, toggleEl);
+    }, [isWebMap, mapView]);
 
     // Show graphic(s) on the map for user input
     useEffect(() => {
@@ -212,9 +264,17 @@ const FullscreenMapInput = memo<Props>(
                   onInit: onMapInit,
                 }}
                 onClick={onMapClick}
+                onHover={interactionMode === 'explore' ? onMapHover : undefined}
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
               />
               <Box>
+                {isWebMap && (
+                  <MapInteractionToggle
+                    toggleRef={interactionToggleRef}
+                    mode={interactionMode}
+                    onModeChange={handleInteractionModeChange}
+                  />
+                )}
                 <ResetMapViewButton
                   resetButtonRef={resetButtonRef}
                   mapConfig={mapConfig}
