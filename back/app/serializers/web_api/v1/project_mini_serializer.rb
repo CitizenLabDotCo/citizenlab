@@ -23,9 +23,9 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |object|
-    phase = TimelineService.new.current_phase(object)
-    phase.project = object if phase # Performance optimization (keep preloaded relationships)
+  has_one :current_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |project|
+    phase = TimelineService.new.current_phase(project)
+    phase.project = project if phase # Performance optimization (keep preloaded relationships)
     phase
   end
 end

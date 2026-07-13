@@ -11,30 +11,18 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocale from 'hooks/useLocale';
 
 import messages from 'containers/ProjectsShowPage/messages';
-import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
-import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
-import StatusModule from 'components/StatusModule';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { pastPresentOrFuture } from 'utils/dateUtils';
 import { useParams } from 'utils/router';
 
 import { isValidPhase } from '../phaseParam';
 
-import CommonGroundTabs from './CommonGround/CommonGroundTabs';
-import PhaseIdeas from './Ideas';
-import PhaseDocumentAnnotation from './PhaseDocumentAnnotation';
 import PhaseNavigation from './PhaseNavigation';
-import PhasePoll from './Poll';
+import PhaseParticipationContent from './PhaseParticipationContent';
 import setPhaseURL from './setPhaseURL';
-import PhaseSurvey from './Survey';
 import Timeline from './Timeline';
-import PhaseVolunteering from './Volunteering';
-import VotingResults from './VotingResults';
-
-const PhaseReport = React.lazy(() => import('./PhaseReport'));
 
 const StyledSectionContainer = styled(SectionContainer)`
   display: flex;
@@ -88,35 +76,11 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
   };
 
   if (selectedPhase) {
-    const selectedPhaseId = selectedPhase.id;
-    const participationMethod = selectedPhase.attributes.participation_method;
-    const votingMethod = selectedPhase.attributes.voting_method;
-    const isPastPhase =
-      !!selectedPhase.attributes.end_at &&
-      pastPresentOrFuture(selectedPhase.attributes.end_at) === 'past';
-    const isVotingPhase = participationMethod === 'voting';
-    const showIdeas =
-      participationMethod === 'ideation' ||
-      participationMethod === 'proposals' ||
-      (isVotingPhase && !isPastPhase) ||
-      (isVotingPhase && !selectedPhase.attributes.autoshare_results_enabled);
-    const showVotingResults =
-      isVotingPhase &&
-      isPastPhase &&
-      selectedPhase.attributes.autoshare_results_enabled;
-
-    const reportId = selectedPhase.relationships.report?.data?.id;
-
-    const showReport =
-      selectedPhase.attributes.participation_method === 'information' &&
-      !!reportId &&
-      selectedPhase.attributes.report_public;
-
     return (
       <StyledSectionContainer
         className={`${className || ''} e2e-project-process-page`}
       >
-        <ContentContainer maxWidth={maxPageWidth}>
+        <PhaseParticipationContent project={project.data} phase={selectedPhase}>
           {!hideTimelineUI(phases?.data, currentLocale) && (
             <>
               <Header>
@@ -134,39 +98,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
               </Box>
             </>
           )}
-          {isVotingPhase && (
-            <StatusModule
-              phase={selectedPhase}
-              project={project.data}
-              votingMethod={votingMethod}
-            />
-          )}
-          <PhaseSurvey phaseId={selectedPhaseId} />
-          {participationMethod === 'document_annotation' && (
-            <PhaseDocumentAnnotation phase={selectedPhase} />
-          )}
-          <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
-          <PhaseVolunteering phaseId={selectedPhaseId} />
-          {showIdeas && (
-            <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
-          )}
-          {showVotingResults && votingMethod && (
-            <VotingResults
-              phaseId={selectedPhaseId}
-              votingMethod={votingMethod}
-            />
-          )}
-          {participationMethod === 'common_ground' && (
-            <CommonGroundTabs
-              phase={selectedPhase}
-              project={project.data}
-              isPastPhase={isPastPhase}
-            />
-          )}
-        </ContentContainer>
-        {showReport && (
-          <PhaseReport reportId={reportId} phaseId={selectedPhaseId} />
-        )}
+        </PhaseParticipationContent>
       </StyledSectionContainer>
     );
   }

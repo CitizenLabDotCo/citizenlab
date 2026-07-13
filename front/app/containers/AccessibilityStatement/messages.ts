@@ -67,6 +67,11 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.statusPageText',
     defaultMessage: 'status page',
   },
+  statusPageUrl: {
+    id: 'app.containers.AccessibilityStatement.statusPageUrl',
+    defaultMessage:
+      'https://toegankelijkheidsrapport.frameless.io/rapport/govocal-2026-06-26',
+  },
   feedbackProcessTitle: {
     id: 'app.containers.AccessibilityStatement.feedbackProcessTitle',
     defaultMessage: 'Feedback process',
@@ -96,10 +101,10 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.publicationDate',
     defaultMessage: 'Publication date',
   },
-  publicationDate2024: {
-    id: 'app.containers.AccessibilityStatement.publicationDate2024',
+  publicationDate2026: {
+    id: 'app.containers.AccessibilityStatement.publicationDate2026',
     defaultMessage:
-      'This accessibility statement was published on August 21, 2024.',
+      'This accessibility statement was published on June 26, 2026.',
   },
   applicability: {
     id: 'app.containers.AccessibilityStatement.applicability',

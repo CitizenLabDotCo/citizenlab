@@ -4,7 +4,7 @@ describe Permissions::ProjectPermissionsService do
   let(:service) { described_class.new(project, user) }
   let(:user) { create(:user) }
 
-  describe '"attending_event" denied_reason_for_action' do
+  describe 'attending_event denied_reason_for_action' do
     context 'user not signed in' do
       let(:user) { nil }
       let(:project) { create(:project_with_current_phase) }

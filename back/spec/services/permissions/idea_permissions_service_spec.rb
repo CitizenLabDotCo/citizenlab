@@ -8,7 +8,7 @@ describe Permissions::IdeaPermissionsService do
   let(:user) { create(:user) }
   let(:reason) { service.denied_reason_for_action(action) }
 
-  describe '"commenting_idea" denied_reason_for_action' do
+  describe 'commenting_idea denied_reason_for_action' do
     let(:action) { 'commenting_idea' }
 
     it 'returns nil when the commenting is allowed in the current phase' do
@@ -115,7 +115,7 @@ describe Permissions::IdeaPermissionsService do
     end
   end
 
-  describe '"reacting_idea" denied_reason_for_action' do
+  describe 'reacting_idea denied_reason_for_action' do
     let(:action) { 'reacting_idea' }
     let(:user) { input.author }
 
@@ -453,7 +453,7 @@ describe Permissions::IdeaPermissionsService do
     end
   end
 
-  describe '"voting" disabled_reasons' do
+  describe 'voting disabled_reasons' do
     let(:action) { 'voting' }
     let(:current_phase_attrs) { { with_permissions: true, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 10_000 } }
 
@@ -562,7 +562,7 @@ describe Permissions::IdeaPermissionsService do
   describe 'future_enabled_phase' do
     let(:input) { build(:idea, project: project) }
 
-    describe '"reacting_idea"' do
+    describe 'reacting_idea' do
       context do
         let(:project) do
           create(
@@ -609,7 +609,7 @@ describe Permissions::IdeaPermissionsService do
       end
     end
 
-    describe '"commenting_idea"' do
+    describe 'commenting_idea' do
       context do
         let(:project) do
           create(
@@ -653,7 +653,7 @@ describe Permissions::IdeaPermissionsService do
       end
     end
 
-    describe '"voting"' do
+    describe 'voting' do
       let(:project) { create(:project_with_current_phase, phases_config: phases_config) }
       let(:phases_config) do
         {

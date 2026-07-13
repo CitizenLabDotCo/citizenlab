@@ -69,7 +69,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  context '"reacting_idea" denied_reason_for_action' do
+  context 'reacting_idea denied_reason_for_action' do
     context 'when reacting is enabled for the current phase, but disabled for the other phases' do
       let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xcx', c: { reacting_enabled: true, reacting_dislike_enabled: true }, x: { reacting_enabled: false } }) }
       let(:phase) { TimelineService.new.current_phase(project) }
@@ -102,7 +102,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  context '"posting_idea" denied_reason_for_action' do
+  context 'posting_idea denied_reason_for_action' do
     context 'community monitor project with everyone permissions and everyone_tracking enabled' do
       let!(:phase) do
         create(:idea_status_proposed)

@@ -58,7 +58,7 @@ describe('Project description builder display', () => {
   });
 
   it('shows a description authored in the Content Builder on the project page', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
@@ -85,7 +85,7 @@ describe('Project description builder display', () => {
 
   it('shows attachments added to the project alongside the Content Builder description', () => {
     cy.intercept(`**/files`).as('saveProjectFiles');
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 

@@ -112,9 +112,9 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     user_follower object, params
   end
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |object|
-    phase = TimelineService.new.current_phase(object)
-    phase.project = object if phase # Performance optimization (keep preloaded relationships)
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |project|
+    phase = TimelineService.new.current_phase(project)
+    phase.project = project if phase # Performance optimization (keep preloaded relationships)
     phase
   end
 
