@@ -35,10 +35,14 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  last_active_at            :datetime
 #  imported                  :boolean          default(FALSE), not null
 #  token_expiry_key          :string
+#  phone                     :string
+#  new_phone                 :string
+#  phone_confirmed_at        :datetime
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
+#  index_users_on_phone                      (phone) UNIQUE WHERE (phone IS NOT NULL)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
 #  index_users_on_token_expiry_key           (token_expiry_key)

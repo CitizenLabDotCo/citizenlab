@@ -203,6 +203,7 @@ DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
+DROP INDEX IF EXISTS public.index_users_on_phone;
 DROP INDEX IF EXISTS public.index_users_on_email;
 DROP INDEX IF EXISTS public.index_ucf_representativeness_ref_distributions_on_custom_field;
 DROP INDEX IF EXISTS public.index_tenants_on_host;
@@ -1572,7 +1573,10 @@ CREATE TABLE public.users (
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
     imported boolean DEFAULT false NOT NULL,
-    token_expiry_key character varying
+    token_expiry_key character varying,
+    phone character varying,
+    new_phone character varying,
+    phone_confirmed_at timestamp(6) without time zone
 );
 
 
@@ -3371,7 +3375,9 @@ CREATE TABLE public.permissions (
     confirmed_email_expiry integer,
     require_name boolean DEFAULT true NOT NULL,
     require_password boolean DEFAULT true NOT NULL,
-    require_verification boolean DEFAULT false NOT NULL
+    require_verification boolean DEFAULT false NOT NULL,
+    require_confirmed_phone_number boolean DEFAULT false NOT NULL,
+    confirmed_phone_number_expiry integer
 );
 
 
@@ -7318,6 +7324,13 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
+-- Name: index_users_on_phone; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_phone ON public.users USING btree (phone) WHERE (phone IS NOT NULL);
+
+
+--
 -- Name: index_users_on_registration_completed_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8846,7 +8859,10 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260713000000'),
 ('20260701113056'),
+('20260618120100'),
+('20260618120000'),
 ('20260617120000'),
 ('20260617090200'),
 ('20260617090100'),
