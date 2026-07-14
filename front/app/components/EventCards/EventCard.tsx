@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 
 import {
+  Box,
   defaultCardHoverStyle,
   defaultCardStyle,
 } from '@citizenlab/cl2-component-library';
@@ -57,9 +58,10 @@ interface Props {
   event: IEventData;
   className?: string;
   id?: string;
+  badge?: React.ReactNode;
 }
 
-const EventCard = memo<Props>(({ event, className, id }) => {
+const EventCard = memo<Props>(({ event, className, id, badge }) => {
   const localize = useLocalize();
 
   const { data: eventImage } = useEventImage(event);
@@ -78,6 +80,12 @@ const EventCard = memo<Props>(({ event, className, id }) => {
             cover={true}
           />
         </AspectRatioBox>
+      )}
+
+      {badge && (
+        <Box px="16px" pt="16px" mb="-8px">
+          {badge}
+        </Box>
       )}
 
       <EventInformation event={event} />
