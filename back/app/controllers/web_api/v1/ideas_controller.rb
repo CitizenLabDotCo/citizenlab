@@ -137,16 +137,15 @@ class WebApi::V1::IdeasController < ApplicationController
   # returns an empty idea if none found
   # used only in native survey autosave
   def draft_by_phase
-    phase = Phase.find(params[:phase_id])
     draft_idea =
-      (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
+      (current_user && Idea.find_by(creation_phase: phase, author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
 
     render_show draft_idea, check_auth: false
   end
 
   def create
-    form = phase_for_input.pmethod.custom_form
+    form = phase.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
     # Map topic_ids to input_topic_ids for the new InputTopics system
     if params[:idea].key?(:topic_ids)
@@ -156,16 +155,16 @@ class WebApi::V1::IdeasController < ApplicationController
     files_params = extract_file_params(params_for_create)
 
     input = Idea.new params_for_create
-    input.project = phase_for_input.project
-    input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
-    input.phase_ids = [phase_for_input.id]
+    input.project = phase.project
+    input.creation_phase = (phase if !phase.pmethod.transitive?)
+    input.phase_ids = [phase.id]
 
     files_params.each do |file_params|
       build_idea_file_attachment(input, file_params)
     end
 
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
-    input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
+    input.request = request if phase.pmethod.everyone_tracking_enabled?
 
     # If native survey or community monitor, and we are publishing this survey:
     # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
@@ -173,8 +172,8 @@ class WebApi::V1::IdeasController < ApplicationController
     # If we are NOT publishing this survey: we need to store the author_id
     # because otherwise we cannot PATCH it because only the author can
     published = params_for_create[:publication_status] == 'published'
-    surveylike = phase_for_input.pmethod.supports_survey_form?
-    not_all_data = phase_for_input.pmethod.user_data_collection != 'all_data'
+    surveylike = phase.pmethod.supports_survey_form?
+    not_all_data = phase.pmethod.user_data_collection != 'all_data'
 
     if published && surveylike && not_all_data
       input.anonymous = true
@@ -182,12 +181,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
     input.author ||= current_user
 
-    phase_for_input.pmethod.assign_defaults(input)
+    phase.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
 
     authorize input
-    raise ApiError, :anonymous_participation_not_allowed if anonymous_not_allowed?(phase_for_input)
+    raise ApiError, :anonymous_participation_not_allowed if anonymous_not_allowed?(phase)
     raise ApiError.new(:idea_status_not_allowed, field: :idea_status_id, value: input.idea_status_id) if idea_status_not_allowed?(input)
 
     verify_profanity input
@@ -201,12 +200,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
     if input.publication_status == 'published' && UserFieldsInFormService.should_merge_user_fields_into_idea?(
       current_user,
-      phase_for_input,
+      phase,
       input
     )
       input.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
-        phase_for_input,
+        phase,
         input.custom_field_values
       )
     end
@@ -214,10 +213,10 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)
       update_file_upload_fields input, form, params_for_create
-      sidefx.after_create(input, current_user, phase_for_input)
+      sidefx.after_create(input, current_user, phase)
       write_everyone_tracking_cookie input
 
-      permission = phase_for_input.permissions.find_by(action: 'posting_idea')
+      permission = phase.permissions.find_by(action: 'posting_idea')
       generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
 
       if generate_claim_token
@@ -345,8 +344,8 @@ class WebApi::V1::IdeasController < ApplicationController
     idea = Idea.new idea_params_for_similarities
     service = SimilarIdeasService.new(idea)
 
-    title_threshold = phase_for_input.similarity_threshold_title
-    body_threshold = phase_for_input.similarity_threshold_body
+    title_threshold = phase.similarity_threshold_title
+    body_threshold = phase.similarity_threshold_body
     cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
 
     json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
@@ -360,10 +359,9 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def copy
-    dest_phase = Phase.find(params[:phase_id])
-    authorize(dest_phase, :copy_inputs_to_phase?)
+    authorize(phase, :copy_inputs_to_phase?)
 
-    job_args = [:submitted_or_published, copy_filters, dest_phase, current_user]
+    job_args = [:submitted_or_published, copy_filters, phase, current_user]
     job_kwargs = { allow_duplicates: allow_duplicates? }.compact
 
     tracker = if dry_run?
@@ -385,8 +383,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def phase_for_input
-    @phase_for_input ||= Phase.find(params[:phase_id])
+  def phase
+    @phase ||= Phase.find(params[:phase_id])
   end
 
   def render_show(input, check_auth: true)
