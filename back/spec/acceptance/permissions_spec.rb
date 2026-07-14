@@ -191,7 +191,7 @@ resource 'Permissions' do
       end
 
       context 'require_confirmed_phone_number' do
-        before { SettingsService.new.activate_feature!('sms') }
+        before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
         let(:permitted_by) { 'users' }
         let(:require_confirmed_phone_number) { true }

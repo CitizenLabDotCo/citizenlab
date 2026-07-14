@@ -644,7 +644,7 @@ describe Permissions::UserRequirementsService do
     end
 
     context 'when a confirmed phone number is required' do
-      before { SettingsService.new.activate_feature!('sms') }
+      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
       # Only a confirmed phone number is required, so the base missing attributes
       # are just the always-required email plus the two phone attributes.

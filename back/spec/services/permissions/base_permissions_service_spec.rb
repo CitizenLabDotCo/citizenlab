@@ -279,7 +279,7 @@ describe Permissions::BasePermissionsService do
         let(:permission) { create(:permission, permitted_by: 'users', require_confirmed_phone_number: true) }
         let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
-        before { SettingsService.new.activate_feature!('sms') }
+        before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
         context 'when the user has no phone number' do
           before { user.update!(phone_number: nil, phone_confirmed_at: nil) }
