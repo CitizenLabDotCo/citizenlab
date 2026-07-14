@@ -320,6 +320,22 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#validate_standalone_participation_method' do
+    it 'accepts a standalone native survey phase' do
+      expect(build(:phase, :standalone)).to be_valid
+    end
+
+    it 'rejects a standalone phase whose method does not support standalone placement' do
+      phase = build(:phase, :standalone, participation_method: 'ideation')
+      expect(phase).not_to be_valid
+      expect(phase.errors.details[:participation_method]).to include(error: :not_supported_in_standalone_phase)
+    end
+
+    it 'accepts any participation method on timeline phases' do
+      expect(build(:phase)).to be_valid
+    end
+  end
+
   describe '#ends_before?' do
     let(:phase) { create(:phase) }
 

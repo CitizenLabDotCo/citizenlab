@@ -120,6 +120,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_standalone_placement?
+      true
+    end
+
     def supports_submission?
       true
     end
