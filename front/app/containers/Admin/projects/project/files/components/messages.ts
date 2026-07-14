@@ -220,6 +220,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.fileDescriptionLabel',
     defaultMessage: 'Description',
   },
+  fileTitleLabel: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileTitleLabel',
+    defaultMessage: 'Title',
+  },
+  fileTitleTooltip: {
+    id: 'app.containers.AdminPage.ProjectFiles.fileTitleTooltip',
+    defaultMessage: 'Add a title to show this instead of the file name when users view this file',
+  },
   askButton: {
     id: 'app.containers.AdminPage.ProjectFiles.askButton',
     defaultMessage: 'Ask',

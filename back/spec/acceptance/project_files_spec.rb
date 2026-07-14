@@ -111,6 +111,7 @@ resource 'File attachment as legacy ProjectFile' do
           file: { url: be_present },
           name: name,
           size: 130,
+          title_multiloc: {},
           created_at: be_present,
           updated_at: be_present
         }

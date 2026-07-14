@@ -12,6 +12,7 @@ import useUpdateFile from 'api/files/useUpdateFile';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
+import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
 import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMultilocWithLocaleSwitcher';
 
@@ -42,6 +43,7 @@ const FileEditForm = ({ file, setEditingMetadata }: Props) => {
       .matches(/^[^.]*$/, formatMessage(messages.fileNameCannotContainDot))
       .required(formatMessage(messages.fileNameRequired)),
     category: string().oneOf(FILE_CATEGORIES).required(),
+    title_multiloc: object().notRequired(),
     description_multiloc: object().notRequired(),
     ai_processing_allowed: boolean().notRequired(),
   });
@@ -51,6 +53,7 @@ const FileEditForm = ({ file, setEditingMetadata }: Props) => {
     defaultValues: {
       name: fileNameWithoutExtension || '',
       category: file.data.attributes.category,
+      title_multiloc: file.data.attributes.title_multiloc,
       description_multiloc: file.data.attributes.description_multiloc,
       ai_processing_allowed:
         file.data.attributes.ai_processing_allowed || false,
@@ -66,6 +69,9 @@ const FileEditForm = ({ file, setEditingMetadata }: Props) => {
           // Join the file name back with the extension before persisting.
           name: `${methods.getValues('name')}.${fileExtensionString}`,
           category: methods.getValues('category'),
+          title_multiloc:
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            methods.getValues('title_multiloc') ?? undefined,
           description_multiloc:
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             methods.getValues('description_multiloc') ?? undefined,
@@ -93,6 +99,12 @@ const FileEditForm = ({ file, setEditingMetadata }: Props) => {
             name="name"
             label={formatMessage(messages.fileNameLabel)}
             required
+          />
+
+          <InputMultilocWithLocaleSwitcher
+            name="title_multiloc"
+            label={formatMessage(messages.fileTitleLabel)}
+            labelTooltipText={formatMessage(messages.fileTitleTooltip)}
           />
 
           <Select
