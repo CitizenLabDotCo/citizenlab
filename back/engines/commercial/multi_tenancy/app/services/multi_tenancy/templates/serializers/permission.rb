@@ -12,6 +12,7 @@ module MultiTenancy
           confirmed_email_expiry
           everyone_tracking_enabled
           global_custom_fields
+          permitted_by
           require_confirmed_email
           require_name
           require_password
