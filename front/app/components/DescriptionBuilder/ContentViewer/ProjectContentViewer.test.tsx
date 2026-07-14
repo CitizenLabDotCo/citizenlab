@@ -5,7 +5,9 @@ import { SerializedNodes } from '@craftjs/core';
 import ProjectContentViewer from 'components/DescriptionBuilder/ContentViewer/ProjectContentViewer';
 import {
   defaultProjectPageLayout,
-  DESCRIPTION_NODE_ID,
+  BODY_NODE_ID,
+  PHASES_NODE_ID,
+  EVENTS_NODE_ID,
 } from 'components/ProjectPageBuilder/defaultLayout';
 
 import { render, screen } from 'utils/testUtils/rtl';
@@ -17,9 +19,9 @@ const projectTitle = {
 
 const projectPageLayoutWithDescription = () => {
   const craftjs_json = defaultProjectPageLayout();
-  craftjs_json[DESCRIPTION_NODE_ID] = {
-    ...craftjs_json[DESCRIPTION_NODE_ID],
-    nodes: ['txt'],
+  craftjs_json[BODY_NODE_ID] = {
+    ...craftjs_json[BODY_NODE_ID],
+    nodes: ['txt', PHASES_NODE_ID, EVENTS_NODE_ID],
   };
   craftjs_json.txt = {
     type: { resolvedName: 'TextMultiloc' },
@@ -27,7 +29,7 @@ const projectPageLayoutWithDescription = () => {
     props: { text: { en: '<p>Hello</p>' } },
     custom: {},
     hidden: false,
-    parent: DESCRIPTION_NODE_ID,
+    parent: BODY_NODE_ID,
     isCanvas: false,
     displayName: 'TextMultiloc',
     linkedNodes: {},
@@ -81,7 +83,7 @@ jest.mock('api/content_builder/useContentBuilderLayout', () => ({
 }));
 
 describe('ProjectContentViewer', () => {
-  it('renders the description section of the project_page layout', () => {
+  it('renders the description content of the project_page layout', () => {
     mockPageLayout = projectPageLayoutWithDescription();
     mockLegacyLayout = undefined;
 
@@ -118,9 +120,12 @@ describe('ProjectContentViewer', () => {
     ).toBeInTheDocument();
   });
 
-  it('never reads the legacy layout once a project_page layout exists, even with an empty section', () => {
+  it('never reads the legacy layout once a project_page layout exists, even without content', () => {
     mockPageLayout = projectPageLayoutWithDescription();
-    mockPageLayout.data.attributes.craftjs_json[DESCRIPTION_NODE_ID].nodes = [];
+    mockPageLayout.data.attributes.craftjs_json[BODY_NODE_ID].nodes = [
+      PHASES_NODE_ID,
+      EVENTS_NODE_ID,
+    ];
     mockLegacyLayout = legacyLayout;
 
     render(
@@ -131,7 +136,8 @@ describe('ProjectContentViewer', () => {
       />
     );
 
-    // The (empty) section renders — not the stale legacy layout, not ProjectInfo.
+    // The (empty) description projection renders — not the stale legacy
+    // layout, not ProjectInfo.
     expect(
       screen.getByTestId('descriptionBuilderProjectPreviewContent')
     ).toBeInTheDocument();
