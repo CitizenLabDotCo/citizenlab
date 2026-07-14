@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { ISmsDeliveryStats } from 'api/campaigns/sms/stats/types';
 import useSmsCampaignStats from 'api/campaigns/sms/stats/useSmsCampaignStats';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
@@ -46,8 +46,10 @@ const StatCardCount = styled.div`
   font-size: ${fontSizes.xl}px;
 `;
 
+type Status = keyof Omit<ISmsDeliveryStats, 'total'>;
+
 // The six delivery statuses, in funnel order. Displayed as one card each.
-const STATUSES: (keyof Omit<ISmsDeliveryStats, 'total'>)[] = [
+const STATUSES: Status[] = [
   'pending',
   'queued',
   'sent',
@@ -55,6 +57,15 @@ const STATUSES: (keyof Omit<ISmsDeliveryStats, 'total'>)[] = [
   'undelivered',
   'failed',
 ];
+
+const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
+  pending: messages.smsDeliveryStatus_pending,
+  queued: messages.smsDeliveryStatus_queued,
+  sent: messages.smsDeliveryStatus_sent,
+  delivered: messages.smsDeliveryStatus_delivered,
+  undelivered: messages.smsDeliveryStatus_undelivered,
+  failed: messages.smsDeliveryStatus_failed,
+};
 
 interface Props {
   campaignId: string;
@@ -81,7 +92,7 @@ const Stats = ({ campaignId, className }: Props) => {
             </StatCardPercentage>
             <StatCardCount>{count}</StatCardCount>
             <StatCardTitle>
-              <FormattedMessage {...messages[`smsDeliveryStatus_${status}`]} />
+              <FormattedMessage {...STATUS_MESSAGES[status]} />
             </StatCardTitle>
           </StatCard>
         );
