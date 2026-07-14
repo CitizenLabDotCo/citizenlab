@@ -54,10 +54,12 @@ module Export
     # expansion/redaction: questions and user fields appear once (their derived
     # matrix/other/follow-up/coordinate columns follow them implicitly).
     def reviewable_fields
-      [reviewable_computed(input_id_report_field)] +
-        reviewable_custom_fields(@input_fields.form_fields.reject { |field| field.code == 'author_id' }) +
-        (author_report_fields + meta_report_fields).map { |field| reviewable_computed(field) } +
-        reviewable_custom_fields(@input_fields.user_fields)
+      [
+        reviewable_computed(input_id_report_field),
+        *reviewable_custom_fields(question_fields),
+        *reviewable_computed_fields(author_report_fields + meta_report_fields),
+        *reviewable_custom_fields(@input_fields.user_fields)
+      ]
     end
 
     private
@@ -66,6 +68,10 @@ module Export
 
     def reject_redacted(fields)
       fields.reject { |field| @redacted_field_keys.include?(field.key) }
+    end
+
+    def reviewable_computed_fields(fields)
+      fields.map { |field| reviewable_computed(field) }
     end
 
     def reviewable_computed(field)
@@ -93,8 +99,6 @@ module Export
     # builder; the location question is preceded by latitude/longitude columns.
     def form_report_fields
       form_fields.flat_map do |field|
-        next [] if field.code == 'author_id' # Never included, because the user fields include it
-
         case field.code
         when 'title_multiloc'
           [input_multiloc_report_field(field, column_header_for('title'))]
@@ -152,8 +156,14 @@ module Export
       user_fields.flat_map { |field| answer_fields_builder.fields_for(field) }
     end
 
+    # The form questions. author_id is dropped here rather than filtered per
+    # caller: it is always reported as a computed author column instead.
+    def question_fields
+      @question_fields ||= @input_fields.form_fields.reject { |field| field.code == 'author_id' }
+    end
+
     def form_fields
-      @form_fields ||= reject_redacted(@input_fields.form_fields)
+      @form_fields ||= reject_redacted(question_fields)
     end
 
     def user_fields
