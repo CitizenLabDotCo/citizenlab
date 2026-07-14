@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Title,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import { SpaceNode } from 'api/admin_publications/types';
 import useTreeView from 'api/admin_publications/useTreeView';
-import useAuthUser from 'api/me/useAuthUser';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
@@ -12,7 +17,6 @@ import TreeView from 'components/admin/TreeView';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
-import { isSpaceModerator } from 'utils/permissions/roles';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
@@ -25,14 +29,14 @@ const ProjectsAndFolders = () => {
   const { data: treeView } = useTreeView();
   const { mutate: updateFolder } = useUpdateProjectFolder();
   const { mutate: updateProject } = useUpdateProject();
-  const { data: authUser } = useAuthUser();
 
   const [modalOpened, setModalOpened] = useState(false);
 
-  const userIsSpaceModerator = isSpaceModerator(authUser);
-  const canManageSpaceContent = usePermission({
+  // Anyone who can access this page can add items, so the button isn't gated
+  // further. Removing items from a space is admin-only.
+  const canRemoveFromSpace = usePermission({
     item: 'space',
-    action: 'manage_projects_and_folders',
+    action: 'remove_projects_and_folders',
   });
 
   if (!treeView || !spaceId) return null;
@@ -43,6 +47,12 @@ const ProjectsAndFolders = () => {
 
   const nodesInSpace = spaceNode?.children;
   if (!nodesInSpace) return null;
+
+  // Root-level projects and folders (i.e. not yet in any space) are the ones
+  // that can be added to this space.
+  const hasAddableNodes = treeView.data.attributes.nodes.some(
+    (node) => node.type === 'project' || node.type === 'folder'
+  );
 
   const handleRemove = async (
     nodeId: string,
@@ -66,34 +76,38 @@ const ProjectsAndFolders = () => {
         <Title variant="h2" color="primary" mt="0px" mb="0px">
           <FormattedMessage {...messages.projectsAndFoldersAdded} />
         </Title>
-        {canManageSpaceContent && (
+        <Tooltip
+          disabled={hasAddableNodes}
+          content={
+            <FormattedMessage {...messages.noAddableProjectsOrFolders} />
+          }
+        >
           <Button
             icon="plus"
             buttonStyle="secondary-outlined"
             dataCy="e2e-add-to-space-button"
+            disabled={!hasAddableNodes}
             onClick={() => setModalOpened(true)}
           >
             {formatMessage(messages.addNewProjectOrFolder)}
           </Button>
-        )}
+        </Tooltip>
       </Box>
-      {canManageSpaceContent && (
-        <AddToSpaceModal
-          spaceId={spaceId}
-          opened={modalOpened}
-          onClose={() => setModalOpened(false)}
-        />
-      )}
+      <AddToSpaceModal
+        spaceId={spaceId}
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
       {nodesInSpace.length > 0 ? (
         <TreeView
           nodes={nodesInSpace}
           lockedProjectTooltip={
-            userIsSpaceModerator ? undefined : messages.lockedProject
+            canRemoveFromSpace ? messages.lockedProject : undefined
           }
           removeButtonMessage={
-            userIsSpaceModerator ? undefined : messages.removeFromSpace
+            canRemoveFromSpace ? messages.removeFromSpace : undefined
           }
-          onRemove={userIsSpaceModerator ? undefined : handleRemove}
+          onRemove={canRemoveFromSpace ? handleRemove : undefined}
         />
       ) : (
         <Text>

@@ -13,6 +13,11 @@ export default defineMessages({
     id: 'app.containers.EditSpace.addNewProjectOrFolder',
     defaultMessage: 'Add new project or folder',
   },
+  noAddableProjectsOrFolders: {
+    id: 'app.containers.EditSpace.noAddableProjectsOrFolders',
+    defaultMessage:
+      'There are no folders or projects that can be added to this space.',
+  },
   addToSpace: {
     id: 'app.containers.EditSpace.addToSpace',
     defaultMessage: 'Add to space',
