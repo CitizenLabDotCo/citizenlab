@@ -196,7 +196,7 @@ describe Permissions::UserRequirementsService do
             },
             verification: false,
             custom_fields: {},
-            onboarding: true,
+            onboarding: false,
             group_membership: false
           })
         end
