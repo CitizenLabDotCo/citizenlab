@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { UserComponent } from '@craftjs/core';
+import { Node, UserComponent } from '@craftjs/core';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -11,11 +11,14 @@ import messages from '../messages';
 import TimelineSection from '../Timeline';
 import useWidgetProjectId from '../useWidgetProjectId';
 
+// Lets the docked CTA bar find phases sections on the page (see CTABar).
+export const PHASES_WIDGET_SELECTOR = '[data-project-page-phases]';
+
 const PhasesWidget: UserComponent = () => (
-  <>
+  <div data-project-page-phases="">
     <TimelineSection />
     <InputFeedSection />
-  </>
+  </div>
 );
 
 const PhasesSettings = () => {
@@ -56,11 +59,10 @@ PhasesWidget.craft = {
     settings: PhasesSettings,
   },
   rules: {
-    canDrag: () => false,
+    canDrop: (dropTarget: Node) => dropTarget.data.name === 'ProjectPageBody',
   },
   custom: {
     title: messages.phasesWidgetTitle,
-    locked: true,
     noPointerEvents: true,
   },
 };
