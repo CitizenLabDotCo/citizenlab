@@ -475,21 +475,18 @@ resource 'Ideas' do
       end
     end
 
-    post 'web_api/v1/ideas/similar_ideas' do
+    post 'web_api/v1/phases/:phase_id/inputs/similar' do
       with_options scope: :idea do
         parameter :id, 'The identifier of the idea being edited (for exclusion from results)'
         parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-        parameter :project_id, 'The identifier of the project that hosts the idea'
       end
-      parameter :phase_id, 'The phase in which the input is being posted or edited, used to fetch the similarity settings.', required: true
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of ideas per page'
       end
 
       let(:project) { create(:project_with_active_ideation_phase) }
-      let(:project_id) { project.id }
       let(:phase_id) { project.phases.first.id }
       let(:idea) { create(:idea, project:) }
       let(:title_multiloc) { { 'en' => 'My similar idea' } }
@@ -563,7 +560,7 @@ resource 'Ideas' do
           expect(json_parse(response_body)[:data].pluck(:id)).not_to include(current_idea.id)
         end
 
-        context 'when passing the phase_id' do
+        context 'when the phase in the path is not the current phase' do
           let(:project) { create(:project) }
           let!(:past_phase) { create(:phase, project:, start_at: 2.weeks.ago, end_at: 1.week.ago, similarity_threshold_title: 0.7, similarity_threshold_body: 0.4) }
           let!(:future_phase) { create(:phase, project:, start_at: 1.week.from_now, end_at: 2.weeks.from_now, similarity_threshold_title: 0.5, similarity_threshold_body: 0.3) }

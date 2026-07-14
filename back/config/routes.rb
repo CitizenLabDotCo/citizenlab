@@ -110,7 +110,6 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
 
-        post :similar_ideas, on: :collection
         resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
         resources :exposures, controller: 'idea_exposures', only: %i[create]
@@ -251,6 +250,7 @@ Rails.application.routes.draw do
 
         resources :inputs, only: [:create], controller: 'ideas' do
           post 'copy', on: :collection
+          post 'similar', on: :collection, action: 'similar_ideas'
         end
 
         resource :insights, only: [], controller: 'insights/phase_insights' do
