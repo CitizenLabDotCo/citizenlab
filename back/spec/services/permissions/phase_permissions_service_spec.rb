@@ -5,12 +5,74 @@ describe Permissions::PhasePermissionsService do
   let(:service) { described_class.new(phase, user) }
   let(:user) { create(:user) }
   let(:phase) { project.phases.first }
-  let(:project) { create(:project_with_current_phase, phases_config: phases_config) }
+  let(:project) { create(:single_phase_ideation_project) }
 
-  context '"reacting_idea" denied_reason_for_action' do
-    context 'when reacting is enabled' do
-      let(:phase) { project.phases[1] }
-      let(:phases_config) { { sequence: 'xcx', c: { reacting_enabled: true, reacting_dislike_enabled: true }, x: { reacting_enabled: false } } }
+  context 'when the project is archived' do
+    let(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { publication_status: 'archived' }) }
+
+    it 'returns `project_inactive`' do
+      expect(service.denied_reason_for_action('posting_idea')).to eq 'project_inactive'
+    end
+  end
+
+  describe 'phase currency' do
+    let(:project) { create(:project) }
+
+    context 'when the phase is current' do
+      let(:phase) { create(:phase, project: project, start_at: 1.week.ago, end_at: 1.week.from_now) }
+
+      it 'returns nil' do
+        expect(service.denied_reason_for_action('posting_idea')).to be_nil
+      end
+    end
+
+    context 'when the phase is current and open-ended' do
+      let(:phase) { create(:phase, project: project, start_at: 1.week.ago, end_at: nil) }
+
+      it 'returns nil' do
+        expect(service.denied_reason_for_action('posting_idea')).to be_nil
+      end
+    end
+
+    context 'when the phase is in the past' do
+      let(:phase) { create(:phase, project: project, start_at: 2.months.ago, end_at: 1.month.ago) }
+
+      it 'returns `inactive_phase`' do
+        expect(service.denied_reason_for_action('posting_idea')).to eq 'inactive_phase'
+      end
+    end
+
+    context 'when the phase is in the future' do
+      let(:phase) { create(:phase, project: project, start_at: 1.month.from_now, end_at: 2.months.from_now) }
+
+      it 'returns `inactive_phase`' do
+        expect(service.denied_reason_for_action('posting_idea')).to eq 'inactive_phase'
+      end
+    end
+
+    context 'when the phase is in the past and time is nil' do
+      let(:service) { described_class.new(phase, user, time: nil) }
+      let(:phase) { create(:phase, project: project, start_at: 2.months.ago, end_at: 1.month.ago) }
+
+      it 'skips the currency check' do
+        expect(service.denied_reason_for_action('posting_idea')).to be_nil
+      end
+    end
+
+    context 'when the phase is in the past and the project is archived' do
+      let(:project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let(:phase) { create(:phase, project: project, start_at: 2.months.ago, end_at: 1.month.ago) }
+
+      it 'returns `project_inactive`' do
+        expect(service.denied_reason_for_action('posting_idea')).to eq 'project_inactive'
+      end
+    end
+  end
+
+  context 'reacting_idea denied_reason_for_action' do
+    context 'when reacting is enabled for the current phase, but disabled for the other phases' do
+      let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xcx', c: { reacting_enabled: true, reacting_dislike_enabled: true }, x: { reacting_enabled: false } }) }
+      let(:phase) { TimelineService.new.current_phase(project) }
 
       it 'returns nil' do
         expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to be_nil
@@ -18,23 +80,15 @@ describe Permissions::PhasePermissionsService do
       end
     end
 
-    context 'when reacting is enabled for that phase, but disabled for the current phase' do
-      let(:phases_config) { { sequence: 'xxcxx', c: { reacting_enabled: false }, x: { reacting_enabled: true, reacting_dislike_enabled: true } } }
-
-      it 'returns nil' do
-        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to be_nil
-        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'down')).to be_nil
-      end
-    end
-
-    context 'when the like limit was reached for that phase' do
-      let(:phases_config) do
-        {
+    context 'when the like limit was reached for the current phase' do
+      let(:project) do
+        create(:project_with_current_phase, phases_config: {
           sequence: 'xxcxx',
-          c: { reacting_enabled: true, reacting_dislike_enabled: true },
-          x: { reacting_enabled: true, reacting_dislike_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 }
-        }
+          c: { reacting_enabled: true, reacting_dislike_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 },
+          x: { reacting_enabled: true, reacting_dislike_enabled: true }
+        })
       end
+      let(:phase) { TimelineService.new.current_phase(project) }
 
       it 'returns `reacting_like_limited_max_reached`' do
         ideas = create_list(:idea, 2, project: project, phases: project.phases)
@@ -77,7 +131,7 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  context '"posting_idea" denied_reason_for_action' do
+  context 'posting_idea denied_reason_for_action' do
     context 'community monitor project with everyone permissions and everyone_tracking enabled' do
       let!(:phase) do
         create(:idea_status_proposed)
@@ -170,6 +224,36 @@ describe Permissions::PhasePermissionsService do
           end
         end
       end
+    end
+  end
+
+  describe '#action_descriptors' do
+    subject(:descriptors) { service.action_descriptors }
+
+    it 'returns a descriptor with :enabled and :disabled_reason for every supported action' do
+      expect(descriptors.keys).to match_array(%i[
+        posting_idea commenting_idea reacting_idea comment_reacting_idea annotating_document
+        taking_survey taking_poll voting volunteering
+      ])
+      descriptors.each_value { |descriptor| expect(descriptor).to include(:enabled, :disabled_reason) }
+    end
+
+    it 'nests up and down under reacting_idea' do
+      expect(descriptors[:reacting_idea]).to include(:up, :down)
+      expect(descriptors[:reacting_idea][:up]).to include(:enabled, :disabled_reason)
+      expect(descriptors[:reacting_idea][:down]).to include(:enabled, :disabled_reason)
+    end
+
+    it 'mirrors commenting_idea onto comment_reacting_idea' do
+      expect(descriptors[:comment_reacting_idea]).to eq(descriptors[:commenting_idea])
+    end
+
+    it 'disables actions the participation method does not support, with method-specific reasons' do
+      expect(descriptors[:taking_survey]).to eq(enabled: false, disabled_reason: 'not_survey')
+      expect(descriptors[:taking_poll]).to eq(enabled: false, disabled_reason: 'not_poll')
+      expect(descriptors[:voting]).to eq(enabled: false, disabled_reason: 'not_voting')
+      expect(descriptors[:annotating_document]).to eq(enabled: false, disabled_reason: 'not_document_annotation')
+      expect(descriptors[:volunteering]).to eq(enabled: false, disabled_reason: 'not_volunteering')
     end
   end
 end

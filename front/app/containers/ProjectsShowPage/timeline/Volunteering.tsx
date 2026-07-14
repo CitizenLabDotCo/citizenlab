@@ -9,12 +9,11 @@ import Volunteering from '../shared/volunteering';
 const Container = styled.div``;
 
 interface Props {
-  projectId: string;
   phaseId: string | null;
   className?: string;
 }
 
-const VolunteeringContainer = ({ projectId, className, phaseId }: Props) => {
+const VolunteeringContainer = ({ className, phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
 
   if (phase?.data.attributes.participation_method === 'volunteering') {
@@ -24,7 +23,7 @@ const VolunteeringContainer = ({ projectId, className, phaseId }: Props) => {
           className || ''
         }`}
       >
-        <Volunteering phaseId={phaseId} projectId={projectId} />
+        <Volunteering phase={phase.data} />
       </Container>
     );
   }

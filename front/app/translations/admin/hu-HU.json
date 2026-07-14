@@ -3826,6 +3826,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "Adminisztrátori jogok adása",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Kezelői jogosultságok megadása",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Elérte a csomagjában foglalt helyek korlátját, 1 további hely hozzáadásra kerül.",
+  "app.containers.admin.content_builder.html_block.label": "HTML blokk",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Az alapértelmezett állapotok nem törölhetők.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",

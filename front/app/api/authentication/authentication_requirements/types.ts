@@ -19,7 +19,7 @@ interface IFollowContext {
 export interface PhaseContext {
   type: 'phase';
   action: IPhasePermissionAction;
-  id: string /* phase id */;
+  id: string;
 }
 
 interface IdeaContext {

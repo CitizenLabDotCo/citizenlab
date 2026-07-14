@@ -9,10 +9,9 @@ class Permissions::UserRequirementsService
   end
 
   def requirements(permission, user)
-    requirements = base_requirements(permission)
-    mark_satisfied_requirements! requirements, permission, user if user
-    ignore_password_for_sso! requirements, user if user
-    requirements
+    return empty_requirements(permission) if phase_moderator_bypass?(permission, user)
+
+    build_requirements(permission, user)
   end
 
   def permitted?(requirements)
@@ -25,8 +24,12 @@ class Permissions::UserRequirementsService
   end
 
   def permitted_for_permission?(permission, user)
-    requirements = requirements(permission, user)
-    permitted?(requirements)
+    # Only reached from BasePermissionsService#user_denied_reason, *after* its
+    # own can_moderate? short-circuit — so the user is never a moderator here.
+    # Build the requirements directly to skip re-running that check, which would
+    # otherwise add a role lookup per permission on hot paths (e.g. the
+    # admin_publications index).
+    permitted?(build_requirements(permission, user))
   end
 
   def requirements_custom_fields(permission)
@@ -60,6 +63,42 @@ class Permissions::UserRequirementsService
   end
 
   private
+
+  # A confirmed, active moderator of the phase (or an admin) bypasses every
+  # participation gate, so all their requirements are satisfied. This mirrors
+  # denied_reason_for_action, which short-circuits on can_moderate? — but only
+  # after the blocked / unconfirmed / inactive checks — so we apply those same
+  # guards here. Otherwise the requirements response could contradict the
+  # permission check (e.g. group_membership: true with a nil disabled_reason),
+  # wrongly blocking a moderator in the auth flow — or let an unconfirmed admin
+  # skip confirmation.
+  def phase_moderator_bypass?(permission, user)
+    user && !user.blocked? && !user.confirmation_required? && user.active? &&
+      permission.permission_scope_type == 'Phase' &&
+      UserRoleService.new.can_moderate?(permission.permission_scope, user)
+  end
+
+  def build_requirements(permission, user)
+    requirements = base_requirements(permission)
+    mark_satisfied_requirements! requirements, permission, user if user
+    ignore_password_for_sso! requirements, user if user
+    requirements
+  end
+
+  # Requirements for a user who bypasses every participation gate (a moderator
+  # of the phase or an admin): nothing is missing and nothing is required.
+  def empty_requirements(permission)
+    {
+      authentication: {
+        permitted_by: permission.permitted_by,
+        missing_user_attributes: []
+      },
+      verification: false,
+      custom_fields: {},
+      onboarding: false,
+      group_membership: false
+    }
+  end
 
   def base_requirements(permission)
     users_requirements = {

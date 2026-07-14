@@ -1047,6 +1047,7 @@
   "app.containers.admin.ReportBuilder.charts.usersByAge": "Users by age",
   "app.containers.admin.ReportBuilder.charts.usersByGender": "Users by gender",
   "app.containers.admin.ReportBuilder.charts.visitorTimeline": "Visitor timeline",
+  "app.containers.admin.content_builder.html_block.label": "Bloc HTML",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Șterge",
   "app.containers.admin.ideaStatuses.all.editButtonLabel": "Editați",

@@ -1840,7 +1840,8 @@ CREATE TABLE public.phases (
     voting_filtering_enabled boolean DEFAULT false NOT NULL,
     prescreening_mode character varying,
     available_views character varying[] DEFAULT '{card}'::character varying[] NOT NULL,
-    draft_description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL
+    draft_description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    placement_type character varying DEFAULT 'on_timeline'::character varying NOT NULL
 );
 
 
@@ -8861,6 +8862,7 @@ SET search_path TO public,shared_extensions;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260713000000'),
 ('20260701113056'),
+('20260622120000'),
 ('20260618120100'),
 ('20260618120000'),
 ('20260617120000'),

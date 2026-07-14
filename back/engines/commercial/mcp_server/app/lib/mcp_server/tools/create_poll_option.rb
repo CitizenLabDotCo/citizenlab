@@ -4,6 +4,15 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
   def name = 'create_poll_option'
   def title = 'Create poll option'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Adds an answer option to an existing poll question. By default the option is appended
@@ -25,7 +34,9 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      question = Polls::Question.find(params[:question_id])
+      question = Polls::Question.find_by(id: params[:question_id])
+      return not_found_error('Poll question', params[:question_id]) unless question
+
       authorize_project!(question.phase.project)
 
       option = Polls::Option.new(question: question, title_multiloc: params[:title_multiloc])
@@ -36,14 +47,12 @@ class McpServer::Tools::CreatePollOption < McpServer::BaseTool
       option.insert_at(params[:ordering]) if params[:ordering]
       Polls::SideFxOptionService.new.after_create(option, current_user)
 
-      ok(
+      response(
         "Created poll option #{option.id}",
         structured: McpServer::Serializers::PollOption.serialize(option.reload)
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Poll question not found: #{params[:question_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 end

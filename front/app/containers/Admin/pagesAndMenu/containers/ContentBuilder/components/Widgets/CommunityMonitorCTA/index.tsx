@@ -14,6 +14,7 @@ import { Multiloc } from 'typings';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import usePhase from 'api/phases/usePhase';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -77,9 +78,11 @@ const CommunityMonitorCTA = ({
   }
 
   // Check if the user has already submitted the survey
+  const postingDescriptor = phase
+    ? getPhaseActionDescriptor(phase.data, 'posting_idea')
+    : undefined;
   const hasSubmittedSurvey =
-    project?.data.attributes.action_descriptors.posting_idea.disabled_reason ===
-    'posting_limited_max_reached';
+    postingDescriptor?.disabled_reason === 'posting_limited_max_reached';
 
   return (
     <Box
