@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Nincs szükség fiókra",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Csak adminisztrátorok és menedzserek hajthatják végre ezt a műveletet. Más követelmény nem érvényes.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "A résztvevők a következővel jelentkeznek be: {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Válasszon legalább egy módszert, különben a résztvevők nem tudják igazolni a személyazonosságukat.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Egyszeri bejelentkezés (SSO) megkövetelése",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Bejelentkezés megkövetelése",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Csak a munkatársak számára",

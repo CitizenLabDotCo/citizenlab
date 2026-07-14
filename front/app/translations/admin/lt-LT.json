@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Paskyra nereikalinga",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Šį veiksmą gali atlikti tik administratoriai ir vadovai. Kiti reikalavimai netaikomi.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Dalyviai prisijungia naudodami {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Pasirinkite bent vieną būdą, kitaip dalyviai negalės patvirtinti savo tapatybės.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Reikalauti vienkartinio prisijungimo (SSO)",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Reikalauti prisijungimo",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Tik darbuotojams",

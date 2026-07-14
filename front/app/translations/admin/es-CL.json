@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "No se necesita cuenta",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Solo los administradores y gestores pueden realizar esta acción. No se aplican otros requisitos.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Los participantes inician sesión con {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Elige al menos un método; de lo contrario, los participantes no tendrán forma de demostrar quiénes son.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Requerir inicio de sesión único",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Requerir inicio de sesión",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Restringido al personal",

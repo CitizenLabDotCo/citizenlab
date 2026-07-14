@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Nessun account richiesto",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Solo gli amministratori e i manager possono eseguire questa azione. Non si applicano altri requisiti.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "I partecipanti effettuano l'accesso con {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Scegli almeno un metodo, altrimenti i partecipanti non avranno modo di dimostrare la propria identità.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Richiedi il Single Sign-On",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Richiedi l'accesso",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Riservato al personale",

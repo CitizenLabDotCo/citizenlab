@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "No account needed",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Only admins and managers can take this action. No other requirements apply.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Participants sign in with {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Pick at least one method, otherwise participants have no way to prove who they are.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Require single sign-on",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Require sign-in",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Restricted to staff",

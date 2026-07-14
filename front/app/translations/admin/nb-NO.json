@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Ingen konto kreves",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Bare administratorer og ledere kan utføre denne handlingen. Ingen andre krav gjelder.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Deltakere logger inn med {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Velg minst én metode, ellers har ikke deltakerne noen mulighet til å bevise hvem de er.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Krev Single Sign-On",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Krev innlogging",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Begrenset til ansatte",

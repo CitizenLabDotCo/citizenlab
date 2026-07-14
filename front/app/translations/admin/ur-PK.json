@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "کسی اکاؤنٹ کی ضرورت نہیں ہے",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "صرف ایڈمنز اور مینیجرز یہ کارروائی کر سکتے ہیں۔ کوئی دوسری شرائط لاگو نہیں ہوتیں۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "شرکاء {methodName} کے ساتھ سائن ان کرتے ہیں۔",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "کم از کم ایک طریقہ منتخب کریں، ورنہ شرکاء کے پاس اپنی شناخت ثابت کرنے کا کوئی طریقہ نہیں ہوگا۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "سنگل سائن آن درکار ہے",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "سائن ان لازمی قرار دیں",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "عملے تک محدود",

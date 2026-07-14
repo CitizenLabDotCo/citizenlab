@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Geen account nodig",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Alleen platformbeheerders en beheerders kunnen deze actie uitvoeren. Er gelden geen andere vereisten.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Deelnemers loggen in met {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Kies ten minste één methode, anders hebben deelnemers geen manier om te bewijzen wie ze zijn.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Single sign-on vereisen",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Inloggen vereisen",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Beperkt tot medewerkers",

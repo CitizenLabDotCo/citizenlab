@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Tiliä ei tarvita",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Vain ylläpitäjät ja hallinnoijat voivat suorittaa tämän toiminnon. Muita vaatimuksia ei sovelleta.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Osallistujat kirjautuvat sisään menetelmällä {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Valitse vähintään yksi menetelmä, muuten osallistujilla ei ole tapaa todistaa henkilöllisyyttään.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Vaadi kertakirjautuminen",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Vaadi kirjautuminen",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Rajoitettu henkilökunnalle",

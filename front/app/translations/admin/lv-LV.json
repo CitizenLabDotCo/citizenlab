@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Konts nav nepieciešams",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Šo darbību var veikt tikai administratori un vadītāji. Citas prasības netiek piemērotas.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Dalībnieki piesakās ar {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Izvēlieties vismaz vienu metodi, pretējā gadījumā dalībniekiem nebūs iespējas pierādīt savu identitāti.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Pieprasīt vienoto pierakstīšanos",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Pieprasīt pierakstīšanos",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Pieejams tikai darbiniekiem",

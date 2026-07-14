@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "No cal cap compte",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Només els administradors i gestors poden realitzar aquesta acció. No s'aplica cap altre requisit.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Els participants inicien sessió amb {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Tria almenys un mètode; en cas contrari, els participants no tindran cap manera de demostrar qui són.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Requereix inici de sessió únic",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Requereix inici de sessió",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Restringit al personal",

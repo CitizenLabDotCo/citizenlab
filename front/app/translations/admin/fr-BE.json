@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Aucun compte requis",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Seuls les administrateurs et les gestionnaires peuvent effectuer cette action. Aucune autre condition ne s'applique.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Les participants se connectent avec {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Choisissez au moins une méthode, sinon les participants n'auront aucun moyen de prouver leur identité.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Exiger l'authentification unique (SSO)",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Exiger la connexion",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Limité au personnel",

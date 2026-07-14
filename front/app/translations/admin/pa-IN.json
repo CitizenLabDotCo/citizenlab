@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "ਕਿਸੇ ਖਾਤੇ ਦੀ ਲੋੜ ਨਹੀਂ ਹੈ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "ਸਿਰਫ਼ ਐਡਮਿਨ ਅਤੇ ਮੈਨੇਜਰ ਹੀ ਇਹ ਕਾਰਵਾਈ ਕਰ ਸਕਦੇ ਹਨ। ਕੋਈ ਹੋਰ ਲੋੜਾਂ ਲਾਗੂ ਨਹੀਂ ਹੁੰਦੀਆਂ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "ਭਾਗੀਦਾਰ {methodName} ਨਾਲ ਸਾਈਨ ਇਨ ਕਰਦੇ ਹਨ।",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਤਰੀਕਾ ਚੁਣੋ, ਨਹੀਂ ਤਾਂ ਭਾਗੀਦਾਰਾਂ ਕੋਲ ਇਹ ਸਾਬਤ ਕਰਨ ਦਾ ਕੋਈ ਤਰੀਕਾ ਨਹੀਂ ਹੋਵੇਗਾ ਕਿ ਉਹ ਕੌਣ ਹਨ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "ਸਿੰਗਲ ਸਾਈਨ-ਆਨ ਦੀ ਲੋੜ ਹੈ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "ਸਾਈਨ-ਇਨ ਦੀ ਲੋੜ ਹੈ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "ਸਟਾਫ ਤੱਕ ਸੀਮਿਤ",

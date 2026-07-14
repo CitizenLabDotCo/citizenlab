@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "لا يلزم وجود حساب",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "يمكن للمسؤولين والمديرين فقط اتخاذ هذا الإجراء. لا تنطبق أي متطلبات أخرى.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "يسجل المشاركون الدخول باستخدام {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "اختر طريقة واحدة على الأقل، وإلا فلن يكون لدى المشاركين وسيلة لإثبات هويتهم.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "فرض تسجيل الدخول الموحد (SSO)",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "طلب تسجيل الدخول",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "يقتصر على الموظفين",
