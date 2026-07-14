@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Newidiwch eich rhif ffôn",
   "app.containers.PhoneChange.newPhoneLabel": "Rhif ffôn newydd (cynhwyswch god y wlad)",
   "app.containers.PhoneChange.phoneEmptyError": "Darparwch rif ffôn",
+  "app.containers.PhoneChange.phoneInvalid2": "Rhowch rif ffôn dilys, gan gynnwys y cod gwlad.",
   "app.containers.PhoneChange.phoneTaken": "Mae'r rhif ffôn hwn eisoes yn cael ei ddefnyddio.",
   "app.containers.PhoneChange.phoneUnknownError": "Aeth rhywbeth o'i le. Rhowch gynnig arall arni os gwelwch yn dda.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Mae'r diweddariad i'r rhif ffôn wedi'i ganslo.",

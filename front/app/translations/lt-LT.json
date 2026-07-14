@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Pakeiskite savo telefono numerį",
   "app.containers.PhoneChange.newPhoneLabel": "Naujas telefono numeris (nurodykite šalies kodą)",
   "app.containers.PhoneChange.phoneEmptyError": "Nurodykite telefono numerį",
+  "app.containers.PhoneChange.phoneInvalid2": "Nurodykite galiojantį telefono numerį, įskaitant šalies kodą.",
   "app.containers.PhoneChange.phoneTaken": "Šis telefono numeris jau naudojamas.",
   "app.containers.PhoneChange.phoneUnknownError": "Kažkas nepavyko. Bandykite dar kartą.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Telefono numerio atnaujinimas atšauktas.",

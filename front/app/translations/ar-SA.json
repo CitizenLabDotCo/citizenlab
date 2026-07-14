@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "غيّر رقم هاتفك",
   "app.containers.PhoneChange.newPhoneLabel": "رقم هاتف جديد (يرجى تضمين رمز الدولة)",
   "app.containers.PhoneChange.phoneEmptyError": "أدخل رقم هاتف",
+  "app.containers.PhoneChange.phoneInvalid2": "يرجى إدخال رقم هاتف صحيح، بما في ذلك رمز الدولة.",
   "app.containers.PhoneChange.phoneTaken": "رقم الهاتف هذا مستخدم بالفعل.",
   "app.containers.PhoneChange.phoneUnknownError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "تم إلغاء تحديث رقم الهاتف.",

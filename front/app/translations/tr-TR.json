@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Telefon numaranızı değiştirin",
   "app.containers.PhoneChange.newPhoneLabel": "Yeni telefon numarası (ülke kodu dahil)",
   "app.containers.PhoneChange.phoneEmptyError": "Bir telefon numarası girin",
+  "app.containers.PhoneChange.phoneInvalid2": "Ülke kodu dahil, geçerli bir telefon numarası girin.",
   "app.containers.PhoneChange.phoneTaken": "Bu telefon numarası zaten kullanımda.",
   "app.containers.PhoneChange.phoneUnknownError": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Telefon numarası güncelleme işlemi iptal edildi.",

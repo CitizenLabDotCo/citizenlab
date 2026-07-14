@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Ändra ditt telefonnummer",
   "app.containers.PhoneChange.newPhoneLabel": "Nytt telefonnummer (inkludera landskod)",
   "app.containers.PhoneChange.phoneEmptyError": "Ange ett telefonnummer",
+  "app.containers.PhoneChange.phoneInvalid2": "Ange ett giltigt telefonnummer, inklusive landskod.",
   "app.containers.PhoneChange.phoneTaken": "Det här telefonnumret används redan.",
   "app.containers.PhoneChange.phoneUnknownError": "Något gick fel. Försök igen.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Uppdateringen av telefonnumret har avbrutits.",

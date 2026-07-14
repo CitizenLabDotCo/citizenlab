@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Αλλάξτε τον αριθμό τηλεφώνου σας",
   "app.containers.PhoneChange.newPhoneLabel": "Νέος αριθμός τηλεφώνου (συμπεριλάβετε τον κωδικό χώρας)",
   "app.containers.PhoneChange.phoneEmptyError": "Καταχωρίστε έναν αριθμό τηλεφώνου",
+  "app.containers.PhoneChange.phoneInvalid2": "Καταχωρίστε έναν έγκυρο αριθμό τηλεφώνου, συμπεριλαμβανομένου του κωδικού χώρας.",
   "app.containers.PhoneChange.phoneTaken": "Αυτός ο αριθμός τηλεφώνου χρησιμοποιείται ήδη.",
   "app.containers.PhoneChange.phoneUnknownError": "Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε ξανά.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Η ενημέρωση του αριθμού τηλεφώνου ακυρώθηκε.",

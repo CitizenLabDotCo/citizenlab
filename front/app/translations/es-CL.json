@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Cambia tu número de teléfono",
   "app.containers.PhoneChange.newPhoneLabel": "Nuevo número de teléfono (incluye el prefijo del país)",
   "app.containers.PhoneChange.phoneEmptyError": "Indica un número de teléfono",
+  "app.containers.PhoneChange.phoneInvalid2": "Proporciona un número de teléfono válido, incluido el código de país.",
   "app.containers.PhoneChange.phoneTaken": "Este número de teléfono ya está en uso.",
   "app.containers.PhoneChange.phoneUnknownError": "Algo ha salido mal. Inténtalo de nuevo.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Se ha cancelado la actualización del número de teléfono.",

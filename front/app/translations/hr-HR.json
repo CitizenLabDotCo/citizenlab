@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Promijenite svoj broj telefona",
   "app.containers.PhoneChange.newPhoneLabel": "Novi broj telefona (uključite pozivni broj zemlje)",
   "app.containers.PhoneChange.phoneEmptyError": "Navedite broj telefona",
+  "app.containers.PhoneChange.phoneInvalid2": "Navedite važeći telefonski broj, uključujući pozivni broj zemlje.",
   "app.containers.PhoneChange.phoneTaken": "Ovaj broj telefona već se koristi.",
   "app.containers.PhoneChange.phoneUnknownError": "Nešto je pošlo po zlu. Molimo pokušajte ponovno.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Ažuriranje broja telefona je otkazano.",

@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Wijzig je telefoonnummer",
   "app.containers.PhoneChange.newPhoneLabel": "Nieuw telefoonnummer (inclusief landcode)",
   "app.containers.PhoneChange.phoneEmptyError": "Vul een telefoonnummer in",
+  "app.containers.PhoneChange.phoneInvalid2": "Geef een geldig telefoonnummer op, inclusief de landcode.",
   "app.containers.PhoneChange.phoneTaken": "Dit telefoonnummer is al in gebruik.",
   "app.containers.PhoneChange.phoneUnknownError": "Er is iets misgegaan. Probeer het opnieuw.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "De update van het telefoonnummer is geannuleerd.",

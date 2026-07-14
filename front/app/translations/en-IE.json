@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Change your mobile number",
   "app.containers.PhoneChange.newPhoneLabel": "New mobile number (include the country code)",
   "app.containers.PhoneChange.phoneEmptyError": "Provide a mobile number",
+  "app.containers.PhoneChange.phoneInvalid2": "Provide a valid phone number, including the country code.",
   "app.containers.PhoneChange.phoneTaken": "This mobile number is already in use.",
   "app.containers.PhoneChange.phoneUnknownError": "Something went wrong. Please try again.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Mobile number update has been cancelled.",

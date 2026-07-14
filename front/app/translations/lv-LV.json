@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Mainiet savu tālruņa numuru",
   "app.containers.PhoneChange.newPhoneLabel": "Jauns tālruņa numurs (iekļaujiet valsts kodu)",
   "app.containers.PhoneChange.phoneEmptyError": "Norādiet tālruņa numuru",
+  "app.containers.PhoneChange.phoneInvalid2": "Norādiet derīgu tālruņa numuru, ietverot valsts kodu.",
   "app.containers.PhoneChange.phoneTaken": "Šis tālruņa numurs jau tiek izmantots.",
   "app.containers.PhoneChange.phoneUnknownError": "Kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Tālruņa numura atjaunināšana ir atcelta.",

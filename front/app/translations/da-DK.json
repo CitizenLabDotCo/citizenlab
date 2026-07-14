@@ -2046,6 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Skift dit telefonnummer",
   "app.containers.PhoneChange.newPhoneLabel": "Nyt telefonnummer (inkluder landekode)",
   "app.containers.PhoneChange.phoneEmptyError": "Angiv et telefonnummer",
+  "app.containers.PhoneChange.phoneInvalid2": "Angiv et gyldigt telefonnummer, inklusive landekode.",
   "app.containers.PhoneChange.phoneTaken": "Dette telefonnummer er allerede i brug.",
   "app.containers.PhoneChange.phoneUnknownError": "Noget gik galt. Prøv venligst igen.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Opdatering af telefonnummer er blevet annulleret.",
