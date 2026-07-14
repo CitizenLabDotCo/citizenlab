@@ -84,6 +84,10 @@ export default defineMessages({
     defaultMessage:
       "This project has a single phase without an end date or description, so visitors won't see a timeline.",
   },
+  pastEventBadge: {
+    id: 'app.components.ProjectPageBuilder.Widgets.pastEventBadge',
+    defaultMessage: 'Past',
+  },
   eventsEmptyMessage: {
     id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage',
     defaultMessage:
