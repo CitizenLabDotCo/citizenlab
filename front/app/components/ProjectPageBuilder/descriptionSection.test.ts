@@ -68,6 +68,18 @@ describe('extractDescriptionEditorData', () => {
     ]);
   });
 
+  it('strips project widgets nested inside content from the projection', () => {
+    const layout = projectPageLayout();
+    layout.col1 = { ...layout.col1, nodes: ['img', 'nestedEvents'] };
+    layout.nestedEvents = node('EventsWidget', 'col1');
+
+    const editorData = extractDescriptionEditorData(layout);
+
+    expect(editorData.nestedEvents).toBeUndefined();
+    expect(editorData.col1.nodes).toEqual(['img']);
+    expect(editorData.img).toBeDefined();
+  });
+
   it('yields an empty document for a body without content', () => {
     expect(
       extractDescriptionEditorData(defaultProjectPageLayout()).ROOT.nodes
