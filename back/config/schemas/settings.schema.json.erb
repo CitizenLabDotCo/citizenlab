@@ -1525,6 +1525,35 @@
         }
       },
 
+      "sms": {
+        "type": "object",
+        "title": "SMS",
+        "description": "Send SMS messages to users via the tenant's own Twilio account.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["twilio_account_sid", "twilio_auth_token", "twilio_messaging_service_sid"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "twilio_account_sid": {
+            "type": "string",
+            "title": "Twilio Account SID",
+            "private": true
+          },
+          "twilio_auth_token": {
+            "type": "string",
+            "title": "Twilio Auth Token",
+            "private": true
+          },
+          "twilio_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send SMS messages.",
+            "private": true
+          }
+        }
+      },
+
       "hide_submission_removal_text": {
         "type": "object",
         "title": "Hide submission removal text",
