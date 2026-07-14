@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Stranica postavki profila {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Nakon što kliknete na ovo gumb, neće biti moguće vratiti vaš račun.",
   "app.containers.UsersEditPage.noNameWarning2": "Vaše ime je trenutno prikazano na platformi kao: \"{displayName}\" jer niste unijeli svoje ime. Ovo je automatski generirano ime. Ako ga želite promijeniti, unesite svoje ime ispod.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Kakvu vrstu obavijesti e-poštom želite primati? ",
-  "app.containers.UsersEditPage.notificationsTitle": "Obavijesti e-poštom",
   "app.containers.UsersEditPage.password": "Odaberite novu zaporku",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Unesite zaporku koja sadrži najmanje {minimumPasswordLength} znakova",
   "app.containers.UsersEditPage.passwordAddSection": "Dodajte lozinku",

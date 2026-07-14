@@ -870,8 +870,6 @@
   "app.containers.UsersEditPage.messageSuccess": "Profilul tău a fost salvat.",
   "app.containers.UsersEditPage.metaDescription": "Aceasta este pagina de setări a profilului lui {firstName} {lastName} de pe platforma de participare online a {tenantName}. Aici vă puteți confirma identitatea, modifica informațiile contului, șterge contul sau modifica preferințele de e-mail.",
   "app.containers.UsersEditPage.noGoingBack": "Odată ce apăsați acest buton nu veți mai avea posibilitatea de a vă mai recupera contul.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Ce fel de notificări prin e-mail doriți să primiți? ",
-  "app.containers.UsersEditPage.notificationsTitle": "Notificări prin e-mail",
   "app.containers.UsersEditPage.password": "Alegeți o parolă nouă",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Furnizați o parolă care să aibă cel puțin {minimumPasswordLength} caractere",
   "app.containers.UsersEditPage.passwordChangeSection": "Schimbați-vă parola",

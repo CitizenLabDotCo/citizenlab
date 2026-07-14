@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Página de configuración del perfil de {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Una vez que presiones este botón, no vamos a tener forma de recuperar tu cuenta.",
   "app.containers.UsersEditPage.noNameWarning2": "Tu nombre aparece actualmente en la plataforma como: \"{displayName}\" porque no has introducido tu nombre. Se trata de un nombre autogenerado. Si quieres cambiarlo, introduce tu nombre a continuación.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "¿Qué tipo de notificaciones por correo electrónico quiere recibir?",
-  "app.containers.UsersEditPage.notificationsTitle": "Email notificaciones",
   "app.containers.UsersEditPage.password": "Elige una contraseña nueva",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Proporcione una contraseña que tenga al menos {minimumPasswordLength} caracteres",
   "app.containers.UsersEditPage.passwordAddSection": "Añadir una contraseña",

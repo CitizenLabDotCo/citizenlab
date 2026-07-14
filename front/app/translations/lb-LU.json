@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Profil Astellungssäit vun {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Wann Dir dëse Knäppchen klickt, hu mir keng Méiglechkeet méi Äre Kont erëm hierzestellen.",
   "app.containers.UsersEditPage.noNameWarning2": "Ären Numm gëtt de Moment op der Plattform ugewisen als: \"{displayName}\" well Dir Ären Numm net aginn hutt. Dëst ass en autogeneréierten Numm. Wann Dir et wëllt änneren, gitt w.e.g. Ären Numm hei ënnen.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Wéi eng E-Mail-Benoriichtunge wëllt Dir kréien?",
-  "app.containers.UsersEditPage.notificationsTitle": "E-Mail-Benoriichtegungen",
   "app.containers.UsersEditPage.password": "Wielt en neit Passwuert",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Gitt e Passwuert un, dat mindestens {minimumPasswordLength} Zeeche laang ass.",
   "app.containers.UsersEditPage.passwordAddSection": "Füügt e Passwuert derbäi",

@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Profielinstellingenpagina van {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Wanneer je op deze knop klikt, wordt je profiel definitief verwijderd.",
   "app.containers.UsersEditPage.noNameWarning2": "Je naam wordt momenteel op het platform weergegeven als: \"{displayName}\" omdat je je naam niet hebt ingevuld. Dit is een automatisch gegenereerde naam. Als je deze wilt wijzigen, vul dan hieronder je naam in.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Wat voor soort e-mailmeldingen wil je ontvangen?",
-  "app.containers.UsersEditPage.notificationsTitle": "E-mail notificaties",
   "app.containers.UsersEditPage.password": "Kies een nieuw wachtwoord",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Voer een wachtwoord in dat minimaal {minimumPasswordLength} tekens lang is",
   "app.containers.UsersEditPage.passwordAddSection": "Voeg een wachtwoord toe",

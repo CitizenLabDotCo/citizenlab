@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Profilio nustatymų puslapis {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Paspaudę šį mygtuką, negalėsime atkurti jūsų paskyros.",
   "app.containers.UsersEditPage.noNameWarning2": "Šiuo metu jūsų vardas platformoje rodomas kaip: \"{displayName}\", nes neįvedėte savo vardo. Tai automatiškai sugeneruotas vardas. Jei norite jį pakeisti, toliau įveskite savo vardą.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Kokius el. pašto pranešimus norite gauti? ",
-  "app.containers.UsersEditPage.notificationsTitle": "Pranešimai el. paštu",
   "app.containers.UsersEditPage.password": "Pasirinkite naują slaptažodį",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "pateikti bent {minimumPasswordLength} simbolių ilgio slaptažodį.",
   "app.containers.UsersEditPage.passwordAddSection": "Pridėti slaptažodį",

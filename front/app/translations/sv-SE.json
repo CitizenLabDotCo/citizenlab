@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Profilinställningssida för {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "När du klickar på den här knappen kan vi inte återställa ditt konto på något sätt.",
   "app.containers.UsersEditPage.noNameWarning2": "Ditt namn visas för närvarande på plattformen som: \"{displayName}\" eftersom du inte har angett ditt namn. Detta är ett autogenererat namn. Om du vill ändra det, vänligen ange ditt namn nedan.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Vilka typer av e-postmeddelanden vill du få?",
-  "app.containers.UsersEditPage.notificationsTitle": "E-postmeddelanden",
   "app.containers.UsersEditPage.password": "Välj ett nytt lösenord",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Ange ett lösenord som är minst {minimumPasswordLength} tecken långt",
   "app.containers.UsersEditPage.passwordAddSection": "Lägg till ett lösenord",
