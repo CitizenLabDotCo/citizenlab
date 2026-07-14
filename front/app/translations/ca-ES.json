@@ -2046,7 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Canvia el teu número de telèfon",
   "app.containers.PhoneChange.newPhoneLabel": "Nou número de telèfon (inclou el codi de país)",
   "app.containers.PhoneChange.phoneEmptyError": "Indica un número de telèfon",
-  "app.containers.PhoneChange.phoneInvalid2": "Indica un número de telèfon vàlid, incloent-hi el prefix del país.",
+  "app.containers.PhoneChange.phoneInvalid2": "Proporciona un número de telèfon vàlid, incloent-hi el codi de país.",
   "app.containers.PhoneChange.phoneTaken": "Aquest número de telèfon ja s'està utilitzant.",
   "app.containers.PhoneChange.phoneUnknownError": "S'ha produït un error. Torna-ho a provar.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "S'ha cancel·lat l'actualització del número de telèfon.",

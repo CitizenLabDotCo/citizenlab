@@ -2046,7 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Oqarasuaativit normua allanngortiguk",
   "app.containers.PhoneChange.newPhoneLabel": "Oqarasuaatip normua nutaaq (nunap kodia ilanngullugu)",
   "app.containers.PhoneChange.phoneEmptyError": "Oqarasuaatip normua nalunaarutigiuk",
-  "app.containers.PhoneChange.phoneInvalid2": "Oqarasuaatip normua atorsinnaasoq allaguk, nunap kodia ilanngullugu.",
+  "app.containers.PhoneChange.phoneInvalid2": "Oqarasuaatip normua atorsinnaasoq allaguk, nunap kode-a ilanngullugu.",
   "app.containers.PhoneChange.phoneTaken": "Oqarasuaatip normua una atorneqareerpoq.",
   "app.containers.PhoneChange.phoneUnknownError": "Kukkusoqarpoq. Misileqqiguk.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Oqarasuaatip normuata nutarternera taamaatinneqarpoq.",

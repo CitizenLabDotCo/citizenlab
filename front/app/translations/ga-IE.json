@@ -2046,7 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Athraigh d'uimhir theileafóin",
   "app.containers.PhoneChange.newPhoneLabel": "Uimhir theileafóin nua (cuir an cód tíre san áireamh)",
   "app.containers.PhoneChange.phoneEmptyError": "Tabhair uimhir theileafóin",
-  "app.containers.PhoneChange.phoneInvalid2": "Tabhair uimhir ghutháin bhailí, lena n-áirítear an cód tíre.",
+  "app.containers.PhoneChange.phoneInvalid2": "Tabhair uimhir theileafóin bhailí, an cód tíre san áireamh.",
   "app.containers.PhoneChange.phoneTaken": "Tá an uimhir theileafóin seo in úsáid cheana féin.",
   "app.containers.PhoneChange.phoneUnknownError": "Tharla earráid. Bain triail as arís le do thoil.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Cealaíodh nuashonrú na huimhreach teileafóin.",

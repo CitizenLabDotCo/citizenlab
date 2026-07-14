@@ -2046,7 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "Ännert Är Telefonsnummer",
   "app.containers.PhoneChange.newPhoneLabel": "Nei Telefonsnummer (inklusiv de Ländercode)",
   "app.containers.PhoneChange.phoneEmptyError": "Gitt eng Telefonsnummer un",
-  "app.containers.PhoneChange.phoneInvalid2": "Gitt eng gëlteg Telefonsnummer un, inklusiv der Landesvirwahl.",
+  "app.containers.PhoneChange.phoneInvalid2": "Gitt eng gëlteg Telefonsnummer un, inklusiv dem Landecode.",
   "app.containers.PhoneChange.phoneTaken": "Dës Telefonsnummer gëtt scho benotzt.",
   "app.containers.PhoneChange.phoneUnknownError": "Eppes ass schif gaangen. Probéiert et wgl. nach eng Kéier.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "D'Aktualiséierung vun der Telefonsnummer gouf ofgebrach.",

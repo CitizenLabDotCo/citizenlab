@@ -2046,7 +2046,7 @@
   "app.containers.PhoneChange.helmetTitle": "اپنا فون نمبر تبدیل کریں",
   "app.containers.PhoneChange.newPhoneLabel": "نیا فون نمبر (ملک کا کوڈ شامل کریں)",
   "app.containers.PhoneChange.phoneEmptyError": "فون نمبر فراہم کریں",
-  "app.containers.PhoneChange.phoneInvalid2": "ایک درست فون نمبر فراہم کریں، بشمول ملک کا کوڈ۔",
+  "app.containers.PhoneChange.phoneInvalid2": "ملکی کوڈ سمیت ایک درست فون نمبر فراہم کریں۔",
   "app.containers.PhoneChange.phoneTaken": "یہ فون نمبر پہلے سے زیرِ استعمال ہے۔",
   "app.containers.PhoneChange.phoneUnknownError": "کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔",
   "app.containers.PhoneChange.phoneUpdateCancelled": "فون نمبر کی اپ ڈیٹ منسوخ کر دی گئی ہے۔",
