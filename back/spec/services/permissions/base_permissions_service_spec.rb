@@ -455,7 +455,7 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when moderator and the permission scope is global' do
-        let(:permission) { create(:permission, action: 'following', permitted_by: permitted_by, permission_scope: nil) }
+        let(:permission) { create(:permission, action: 'following', permitted_by: 'admins_moderators', permission_scope: nil) }
 
         before { user.update!(roles: [{ type: 'project_moderator', project_id: create(:project).id }]) }
 
