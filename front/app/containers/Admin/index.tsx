@@ -120,10 +120,14 @@ const AdminPage = memo<Props>(({ className }) => {
   const isDescriptionBuilderRoute = pathname.match(
     /\/admin\/description-builder/
   );
+  const isProjectPageBuilderRoute = pathname.match(
+    /\/admin\/project-page-builder/
+  );
 
   const sidebarRendered =
     !isHomePageBuilderRoute &&
     !isDescriptionBuilderRoute &&
+    !isProjectPageBuilderRoute &&
     !isReportBuilderEditorRoute;
 
   const projectsExceptNewAndFoldersAndSpaces =

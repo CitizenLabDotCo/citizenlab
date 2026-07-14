@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListUserCustomFields < McpServer::BaseTool
   def name = 'list_user_custom_fields'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists user profile fields (aka demographic questions or user custom fields).'
   def input_schema = { properties: { **PAGINATION_SCHEMA } }
 

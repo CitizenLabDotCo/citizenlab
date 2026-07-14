@@ -62,7 +62,6 @@ class WebApi::V1::ProjectsController < ApplicationController
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
       publication_email_enabled_per_project: publication_email_enabled_per_project,
       # Cannot use `find_sole_by` here: the global ProjectPublished campaign is normally seeded by
       # AssureCampaignsService on tenant finalization, but isn't guaranteed in every environment
@@ -73,7 +72,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectSerializer,
-      params: jsonapi_serializer_params(instance_options),
+      params: project_serializer_params(instance_options),
       include: %i[admin_publication project_images current_phase]
     )
   end
@@ -120,20 +119,14 @@ class WebApi::V1::ProjectsController < ApplicationController
   def index_with_active_participatory_phase
     projects = policy_scope(Project)
     projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
-    projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
-    projects = projects_and_descriptors[:projects]
+    projects = ProjectsFinderService.new(projects, current_user, params).participation_possible
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_with_active_participatory_phase?
 
-    render json: linked_json(
-      @projects,
-      WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
-      include: %i[project_images current_phase]
-    )
+    base_render_mini_index
   end
 
   # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
@@ -181,7 +174,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
-    projects = projects.includes(phases: %i[report custom_form permissions], admin_publication: [:parent], project_images: [], groups: [])
+    projects = projects.includes(phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }], admin_publication: [:parent], project_images: [], groups: [])
 
     moderators_per_project = UserRoleService.new.moderators_per_project(
       projects.pluck(:id)
@@ -481,13 +474,18 @@ class WebApi::V1::ProjectsController < ApplicationController
     admin_publication_attrs[:scheduled_by_id] = scheduling ? current_user.id : nil
   end
 
+  def project_serializer_params(extra_params = {})
+    jsonapi_serializer_params(
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      **extra_params
+    )
+  end
+
   def base_render_mini_index
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params({
-        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      }),
+      params: project_serializer_params,
       include: %i[project_images current_phase]
     )
   end

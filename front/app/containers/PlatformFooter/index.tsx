@@ -237,6 +237,17 @@ const PlatformFooter = ({ className }: Props) => {
     eventEmitter.emit('openConsentManager');
   };
 
+  // focus the main content after navigation
+  // preventScroll: the link already scrolls to top
+  const focusMainContent = () => {
+    requestAnimationFrame(() => {
+      const mainContent = document.getElementById('main-content');
+      if (!mainContent) return;
+      mainContent.setAttribute('tabindex', '-1');
+      mainContent.focus({ preventScroll: true });
+    });
+  };
+
   /* 
     Likely not the most reliable way to determine if the bar is present.
     Context would probably be better, but this is a quick fix.
@@ -325,6 +336,7 @@ const PlatformFooter = ({ className }: Props) => {
                         params={{ slug }}
                         className={index === 0 ? 'first' : ''}
                         scrollToTop={true}
+                        onClick={focusMainContent}
                       >
                         <FormattedMessage {...MESSAGES_MAP[slug]} />
                       </StyledLink>
@@ -339,7 +351,11 @@ const PlatformFooter = ({ className }: Props) => {
               </StyledButton>
             </PagesNavListItem>
             <PagesNavListItem>
-              <StyledLink to="/site-map" id="site-map-link">
+              <StyledLink
+                to="/site-map"
+                id="site-map-link"
+                onClick={focusMainContent}
+              >
                 <FormattedMessage {...messages.siteMap} />
               </StyledLink>
             </PagesNavListItem>

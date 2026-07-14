@@ -112,6 +112,8 @@ lb-LU:
           title: Wat ass Är Initiativ?
         issue:
           title: Wat ass Är Ugeleeënheet ?
+        observation:
+          title: Wat ass deng Observatioun?
         option:
           title: Wat ass Är Optioun?
         petition:
@@ -267,6 +269,16 @@ lb-LU:
       title: All Projeten
     proposals:
       title: Virschléi
+  pdf_export:
+    survey_responses:
+      date: Datum
+      no_answer: (Keng Äntwert)
+      prepared_by: Erstallt vum
+      report_label: Rapport vun den Ëmfro-Äntwerten
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} Äntwert'
+        other: '%{count} Äntwerten'
   phases:
     community_monitor_title: Communautéit Monitor
     native_survey_button: Huelt d'Ëmfro

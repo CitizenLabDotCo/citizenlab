@@ -9,6 +9,7 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
@@ -46,6 +47,8 @@ const AdminProjectPhaseIndex = ({
     }),
   };
 
+  const parallelParticipation = useParallelParticipation();
+
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
@@ -58,14 +61,16 @@ const AdminProjectPhaseIndex = ({
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      <Box mt="16px" px="24px">
-        <Timeline
-          projectId={project.id}
-          selectedPhase={selectedPhase}
-          setSelectedPhase={setSelectedPhase}
-          isBackoffice
-        />
-      </Box>
+      {!parallelParticipation && (
+        <Box mt="16px" px="24px">
+          <Timeline
+            projectId={project.id}
+            selectedPhase={selectedPhase}
+            setSelectedPhase={setSelectedPhase}
+            isBackoffice
+          />
+        </Box>
+      )}
       <Box
         p="8px 24px 24px 24px"
         display="flex"
@@ -129,11 +134,13 @@ export default () => {
     );
 
     if (stillOnPhasesPath && phases.data.length === 0 && !isFetchingPhases) {
-      clHistory.replace(`/admin/projects/${projectId}/phases/new`);
+      clHistory.replace(
+        `/admin/projects/${projectId}/phases/new${window.location.search}`
+      );
     } else if (phaseShown && pathname.endsWith('phases/setup')) {
       const redirectTab = getPhaseLandingTab(phaseShown);
       clHistory.replace(
-        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
+        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}${window.location.search}`
       );
     }
 

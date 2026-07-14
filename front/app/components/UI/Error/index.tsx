@@ -15,9 +15,9 @@ import { CLError, Multiloc } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IInviteError } from 'api/invites/types';
 import { IDAzureAdMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
+import { IInviteError } from 'api/invites/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
@@ -142,6 +142,7 @@ export interface ErrorProps {
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
   scrollIntoView?: boolean;
+  liveRegion?: boolean;
 }
 
 export interface TFieldNameMap {
@@ -263,7 +264,10 @@ const Error = (props: ErrorProps) => {
     animate = true,
     id,
     scrollIntoView = true,
+    liveRegion,
   } = props;
+
+  const isLiveRegion = liveRegion ?? true;
 
   useEffect(() => {
     if (scrollIntoView) {
@@ -297,7 +301,7 @@ const Error = (props: ErrorProps) => {
         id={id}
         marginTop={marginTop}
         marginBottom={marginBottom}
-        role="alert"
+        role={isLiveRegion ? 'alert' : undefined}
         data-testid="error-message"
       >
         <ContainerInner

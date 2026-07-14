@@ -13,9 +13,8 @@ import useLocalize from 'hooks/useLocalize';
 import getCTAMessage from 'components/ProjectCard/getCTAMessage';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 
-import { CardContainer, CardImage } from '../../BaseCard';
+import { CardContainer, CardImage, CardLink } from '../../BaseCard';
 import { CARD_WIDTH } from '../constants';
 
 import TimeIndicator from './TimeIndicator';
@@ -26,9 +25,10 @@ interface Props {
   mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
     React.KeyboardEventHandler<HTMLElement>;
+  onFocus?: React.FocusEventHandler<HTMLElement>;
 }
 
-const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
+const LightProjectCard = ({ project, ml, mr, onKeyDown, onFocus }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -53,19 +53,14 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const projectLink = getProjectLinkProps(project.attributes.slug);
 
   return (
-    <Link
+    <CardLink
       scrollToTop
       {...projectLink}
       onKeyDown={onKeyDown}
+      onFocus={onFocus}
       data-cy="e2e-light-project-card"
     >
-      <CardContainer
-        tabIndex={0}
-        w={`${CARD_WIDTH}px`}
-        ml={ml}
-        mr={mr}
-        display="block"
-      >
+      <CardContainer w={`${CARD_WIDTH}px`} ml={ml} mr={mr} display="block">
         <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
         <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
           {title}
@@ -80,7 +75,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
             <Text mt="2px" mb="0px" color="textSecondary">
               {getCTAMessage({
                 phase: phase.data,
-                actionDescriptors: project.attributes.action_descriptors,
+                actionDescriptors: phase.data.attributes.action_descriptors,
                 localize,
                 formatMessage,
                 hasPublicReport,
@@ -89,7 +84,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
           )}
         </Box>
       </CardContainer>
-    </Link>
+    </CardLink>
   );
 };
 

@@ -43,8 +43,6 @@ type Props = {
 };
 
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
-  // const location = useLocation();
-
   const { slug: projectSlug } = useParams({
     from: '/$locale/projects/$slug/surveys/new',
   });
@@ -68,6 +66,12 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   });
 
   const hasBeenSubmitted = searchParams.idea_id !== undefined;
+
+  // Whether we arrived here from within the app (e.g. the Community Monitor
+  // popup) and should return there on leave. We deliberately leave go_back in
+  // the URL: the survey's own updateSearchParams calls preserve it across
+  // paging/submission, so it survives a remount — unlike component state.
+  const goBack = searchParams.go_back === 'true';
 
   if (!project) return null;
 
@@ -96,8 +100,14 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
 
     switch (leaveFormDestination) {
       case 'go-back':
-        // If there is a back history, go back, otherwise go to the homepage
-        // location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
+        // The Community Monitor project has no public project page to return
+        // to. If we arrived here from within the app (go_back), return there;
+        // otherwise fall back to the homepage.
+        if (goBack) {
+          clHistory.back();
+        } else {
+          clHistory.push('/');
+        }
         break;
       case 'project-page':
         clHistory.push(`/projects/${projectSlug}`);

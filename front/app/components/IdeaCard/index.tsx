@@ -6,6 +6,7 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import { focusRingInset } from 'global-styles';
 import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -40,8 +41,7 @@ const StyledLink = typedStyled(Link)`
 
   &.focus-visible,
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.tenantPrimary};
-    outline-offset: -2px;
+    ${focusRingInset}
   }
 `;
 

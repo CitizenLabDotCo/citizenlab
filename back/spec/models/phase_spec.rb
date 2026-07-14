@@ -255,6 +255,17 @@ RSpec.describe Phase do
       phase = build(:phase, project:, start_at: 2.days.after(p.end_at), end_at: nil)
       expect(phase).not_to be_valid
     end
+
+    it 'accepts a standalone phase overlapping a timeline phase' do
+      phase = build(:phase, :standalone, project:, start_at: p.start_at + 1.second, end_at: p.end_at - 1.second)
+      expect(phase).to be_valid
+    end
+
+    it 'accepts standalone phases overlapping each other' do
+      create(:phase, :standalone, project:, start_at: p.start_at, end_at: p.end_at)
+      phase = build(:phase, :standalone, project:, start_at: p.start_at, end_at: p.end_at)
+      expect(phase).to be_valid
+    end
   end
 
   describe 'voting_max_total' do
@@ -330,6 +341,23 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#complete?' do
+    it 'returns true when the phase has ended' do
+      phase = create(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.complete?).to be true
+    end
+
+    it 'returns false when the phase is ongoing' do
+      phase = create(:phase, start_at: 2.days.ago, end_at: 3.days.from_now)
+      expect(phase.complete?).to be false
+    end
+
+    it 'returns false when the phase has no end date' do
+      phase = create(:phase, start_at: 2.days.ago, end_at: nil)
+      expect(phase.complete?).to be false
+    end
+  end
+
   describe '#start_date' do
     it 'returns the date when start_at is set' do
       phase = build(:phase, start_at: '2025-03-15 14:30:00')
@@ -375,6 +403,26 @@ RSpec.describe Phase do
 
     it 'returns only the phases that belong to published publications' do
       expect(described_class.published).to contain_exactly(published_phase)
+    end
+  end
+
+  describe '.ordered' do
+    it 'orders by placement (timeline first), then start_at, then created_at' do
+      project = create(:project)
+      shared_start = 1.day.ago
+      timeline = create(:phase, project:, start_at: 20.days.from_now, end_at: 30.days.from_now)
+      later_standalone = create(:phase, :standalone, project:, start_at: 5.days.from_now, end_at: 10.days.from_now)
+      # Same start_at: created_at breaks the tie (set opposite to creation order to
+      # prove created_at decides it, not insertion/id order).
+      newer_standalone = create(:phase, :standalone, project:, start_at: shared_start, end_at: 2.days.from_now, created_at: 1.hour.ago)
+      older_standalone = create(:phase, :standalone, project:, start_at: shared_start, end_at: 2.days.from_now, created_at: 3.hours.ago)
+
+      expect(described_class.where(project: project).ordered).to eq [
+        timeline,         # on_timeline before standalone, despite the latest start_at
+        older_standalone, # then by start_at; for equal start_at, by created_at
+        newer_standalone,
+        later_standalone
+      ]
     end
   end
 
@@ -492,6 +540,12 @@ RSpec.describe Phase do
       phase.start_at -= 1.day
       expect(phase).to be_valid
     end
+
+    it 'allows a standalone phase to be open-ended even when it is not the last phase' do
+      first_phase = project.phases.first
+      standalone = build(:phase, :standalone, project:, start_at: first_phase.start_at, end_at: nil)
+      expect(standalone).to be_valid
+    end
   end
 
   context 'when the project has an open-ended last phase' do
@@ -532,10 +586,23 @@ RSpec.describe Phase do
     context 'and a bounded phase is added' do
       it 'after the last phase, it closes the previous phase' do
         new_phase_start = last_phase.start_at + 15.days
-        new_phase = create(:phase, project:, start_at: new_phase_start, end_at: new_phase_start + 1.day)
+        # 2 days, not 1: a 1-day phase whose start lands the day before a DST
+        # spring-forward is only 23h, which is < MIN_DURATION (24h).
+        new_phase = create(:phase, project:, start_at: new_phase_start, end_at: new_phase_start + 2.days)
 
         expect(last_phase.reload.end_at).to eq(new_phase_start)
         expect(new_phase.previous_phase_end_at_updated?).to be true
+      end
+    end
+
+    context 'and a standalone phase is added' do
+      it 'after the last phase, it does not close the previous phase' do
+        new_phase_start = last_phase.start_at + 15.days
+        # 2 days, not 1: guards against a DST-shortened 23h day (< MIN_DURATION).
+        new_phase = create(:phase, :standalone, project:, start_at: new_phase_start, end_at: new_phase_start + 2.days)
+
+        expect(last_phase.reload.end_at).to be_nil
+        expect(new_phase.previous_phase_end_at_updated?).to be false
       end
     end
 
@@ -670,6 +737,39 @@ RSpec.describe Phase do
         it { expect(phase.prescreening_enabled?).to eq enabled }
         it { expect(phase.prescreening_flagged_only?).to eq flagged_only }
         it { expect(phase.prescreening_all?).to eq all }
+      end
+    end
+  end
+
+  describe '#update_manual_votes_count!' do
+    let(:phase) { create(:budgeting_phase) }
+
+    before do
+      create(:idea, project: phase.project, phases: [phase], manual_votes_amount: 7)
+      create(:idea, project: phase.project, phases: [phase], manual_votes_amount: 3)
+    end
+
+    it 'sums the manual votes of the ideas in the phase' do
+      phase.update_manual_votes_count!
+      expect(phase.reload.manual_votes_count).to eq 10
+    end
+
+    # Counter maintenance must not depend on the phase being valid on unrelated attributes.
+    # A phase can be persisted in an invalid state by an unvalidated bulk write, as the
+    # 20260223103753 backfill did when it omitted 'map' from the `available_views` it created.
+    context 'when the phase is invalid on an unrelated attribute' do
+      before do
+        phase.update_column(:presentation_mode, 'map')
+        phase.update_column(:available_views, ['card'])
+      end
+
+      it 'is invalid, to confirm the setup' do
+        expect(phase.reload).not_to be_valid
+      end
+
+      it 'still updates the count' do
+        expect { phase.update_manual_votes_count! }.not_to raise_error
+        expect(phase.reload.manual_votes_count).to eq 10
       end
     end
   end

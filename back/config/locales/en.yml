@@ -248,6 +248,8 @@ en:
           title: What is your post?
         story:
           title: What is your story?
+        observation:
+          title: What is your observation?
   custom_field_options:
     gender:
       male: Male
@@ -255,6 +257,16 @@ en:
       unspecified: Other
     domicile:
       outside: Somewhere else
+  pdf_export:
+    survey_responses:
+      report_label: 'Survey response report'
+      date: 'Date'
+      prepared_by: 'Prepared by'
+      respondent: 'Respondent %{number}'
+      no_answer: '(No answer)'
+      response_count:
+        one: '%{count} response'
+        other: '%{count} responses'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:

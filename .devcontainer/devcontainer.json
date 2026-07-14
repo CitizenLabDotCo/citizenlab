@@ -10,6 +10,11 @@
 
   "shutdownAction": "stopContainer",
 
+  // Self-heal: `docker compose down` (used by many make targets) deletes the
+  // compose network but leaves the stopped devcontainer pinned to the old
+  // network ID, breaking the next start. Remove it here so it gets recreated.
+  "initializeCommand": ["bash", ".devcontainer/scripts/remove-stale-devcontainer.sh"],
+
   // Initialize the development environment
   // "postCreateCommand": "../.devcontainer/scripts/post-create.sh",
 

@@ -112,6 +112,8 @@ tr-TR:
           title: Girişiminiz nedir?
         issue:
           title: Sorununuz nedir?
+        observation:
+          title: Gözleminiz nedir?
         option:
           title: Seçeneğiniz nedir ?
         petition:
@@ -267,6 +269,16 @@ tr-TR:
       title: Tüm projeler
     proposals:
       title: Öneriler
+  pdf_export:
+    survey_responses:
+      date: Tarih
+      no_answer: (Yanıt yok)
+      prepared_by: Hazırlayan
+      report_label: Anket yanıt raporu
+      respondent: Katılımcı %{number}
+      response_count:
+        one: '%{count} yanıt'
+        other: '%{count} yanıt'
   phases:
     community_monitor_title: Topluluk gözlemcisi
     native_survey_button: Ankete katılın

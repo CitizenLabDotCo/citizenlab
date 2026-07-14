@@ -50,7 +50,7 @@ class Basket < ApplicationRecord
   end
 
   def destroy_or_keep!
-    if submitted? && TimelineService.new.phase_is_complete?(phase)
+    if submitted? && phase.complete?
       update!(user: nil)
     else
       destroy!
@@ -113,7 +113,9 @@ class Basket < ApplicationRecord
       baskets = Basket.where(phase: count_phases).submitted
       baskets_count = baskets.count
       votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
-      update_context.update!(baskets_count: baskets_count, votes_count: votes_count)
+
+      # Denormalized counters: validating here would let an unrelated invalid attribute fail every recount.
+      update_context.update_columns(baskets_count: baskets_count, votes_count: votes_count, updated_at: Time.current)
     end
   end
 
