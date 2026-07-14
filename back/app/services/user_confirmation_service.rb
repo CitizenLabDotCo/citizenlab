@@ -40,7 +40,8 @@ class UserConfirmationService
     validate_password_login_enabled!
     validate_user!(user)
     validate_email!(user.email)
-    validate_and_confirm!(user, user.email_confirmation, code)
+    validate_and_confirm!(user.email_confirmation, code)
+    ClaimTokenService.complete(user)
 
     success_result(user)
   rescue ValidationError => e
@@ -50,7 +51,8 @@ class UserConfirmationService
   def validate_and_confirm_email_change!(user, code)
     validate_user!(user)
     validate_email!(user.new_email)
-    validate_and_confirm!(user, user.new_email_confirmation, code)
+    validate_and_confirm!(user.new_email_confirmation, code)
+    ClaimTokenService.complete(user)
 
     success_result(user)
   rescue ValidationError => e
@@ -62,8 +64,7 @@ class UserConfirmationService
   def validate_and_confirm_phone_change!(user, code)
     validate_user!(user)
     validate_phone!(user.new_phone)
-    # complete_claim is for claiming anonymous activity post sign up
-    validate_and_confirm!(user, user.new_phone_confirmation, code, complete_claim: false)
+    validate_and_confirm!(user.new_phone_confirmation, code)
 
     success_result(user)
   rescue ValidationError => e
@@ -72,11 +73,11 @@ class UserConfirmationService
 
   private
 
-  def validate_and_confirm!(user, confirmation, code, complete_claim: true)
+  def validate_and_confirm!(confirmation, code)
     validate_retry_count!(confirmation, code)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
-    confirm_user!(user, confirmation, complete_claim:)
+    confirm_user!(confirmation)
   end
 
   def validate_password_login_enabled!
@@ -126,14 +127,12 @@ class UserConfirmationService
     raise ValidationError.new(:base, :confirmation_not_required)
   end
 
-  def confirm_user!(user, confirmation, complete_claim: true)
-    if confirmation.confirm!
-      ClaimTokenService.complete(user) if complete_claim
-    else
-      raise ValidationError.new(
-        :user, :confirmation, message: 'Something went wrong.'
-      )
-    end
+  def confirm_user!(confirmation)
+    return if confirmation.confirm!
+
+    raise ValidationError.new(
+      :user, :confirmation, message: 'Something went wrong.'
+    )
   end
 
   def success_result(user)
