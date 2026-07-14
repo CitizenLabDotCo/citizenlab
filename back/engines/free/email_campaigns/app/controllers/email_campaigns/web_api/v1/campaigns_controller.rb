@@ -184,11 +184,7 @@ module EmailCampaigns
     end
 
     def render_deliveries(relation, serializer)
-      deliveries = relation
-        .includes(:user)
-        .order(:created_at)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
+      deliveries = paginate relation.includes(:user).order(:created_at)
       render json: linked_json(
         deliveries,
         serializer,

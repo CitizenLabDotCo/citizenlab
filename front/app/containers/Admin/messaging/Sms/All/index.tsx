@@ -24,24 +24,16 @@ import SmsCampaignRow from './SmsCampaignRow';
 
 const SmsCampaigns = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useSmsCampaigns({
+  const { data: campaigns } = useSmsCampaigns({
+    pageNumber: currentPage,
     pageSize: 10,
   });
 
-  const campaignsList = campaigns?.pages[currentPage - 1];
+  if (!campaigns) return null;
 
-  if (!campaignsList) return null;
+  const lastPage = getPageNumberFromUrl(campaigns.links.last) || 1;
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
-
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-    fetchNextPage({ pageParam: page });
-  };
-
-  if (campaignsList.data.length === 0) {
+  if (campaigns.data.length === 0) {
     return (
       <Box background={colors.white} p="40px">
         <Box
@@ -86,8 +78,8 @@ const SmsCampaigns = () => {
       </Box>
 
       <Box background={colors.white} p="40px">
-        <List key={campaignsList.data.map((c) => c.id).join()}>
-          {campaignsList.data.map((campaign) => (
+        <List key={campaigns.data.map((c) => c.id).join()}>
+          {campaigns.data.map((campaign) => (
             <SmsCampaignRow key={campaign.id} campaign={campaign} />
           ))}
         </List>
@@ -96,7 +88,7 @@ const SmsCampaigns = () => {
             <Pagination
               currentPage={currentPage}
               totalPages={lastPage}
-              loadPage={goToPage}
+              loadPage={setCurrentPage}
             />
           </Box>
         )}
