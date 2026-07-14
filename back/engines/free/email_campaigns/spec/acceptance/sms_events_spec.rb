@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'SMS Callbacks' do
+resource 'SMS Events' do
   explanation 'Endpoint that receives delivery-status callbacks from the SMS provider (Twilio)'
 
   # Use the real Twilio provider so #parse_callback runs for real, but bypass the
@@ -20,7 +20,7 @@ resource 'SMS Callbacks' do
     header 'Content-Type', 'application/json'
   end
 
-  post 'web_api/v1/sms/callbacks' do
+  post 'hooks/sms/events' do
     let!(:delivery) do
       EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'sent', message_sid: 'SM_123')
     end
