@@ -129,6 +129,11 @@ module MultiTenancy
         MultiTenancy::Seeds::Followers.new(runner: self).run
         MultiTenancy::Seeds::Events.new(runner: self).run
         MultiTenancy::Seeds::CommunityMonitor.new(runner: self).run
+
+        # Seeded projects/folders are created straight from the models, so they miss
+        # the SideFx hooks that normally put their descriptions on the Content
+        # Builder. Provision the layouts here instead, or the Content Builder 404s.
+        ContentBuilder::DescriptionLayoutService.new.provision_all_descriptions!
       end
 
       # @return [Array[String]] default seed locales

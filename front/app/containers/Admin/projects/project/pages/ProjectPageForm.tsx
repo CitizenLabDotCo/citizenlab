@@ -168,8 +168,8 @@ const ProjectPageForm = ({ project, page }: Props) => {
       }
 
       if (!page) {
-        // Move onto the saved page so further edits target the real record.
-        clHistory.push(`/admin/projects/${project.id}/pages/${pageId}`);
+        // Back to the list once the page is created.
+        clHistory.push(`/admin/projects/${project.id}/pages`);
       }
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);

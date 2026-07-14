@@ -17,6 +17,7 @@ module MultiTenancy
           ideas_order
           input_term
           participation_method
+          placement_type
           poll_anonymous
           prescreening_mode
           presentation_mode

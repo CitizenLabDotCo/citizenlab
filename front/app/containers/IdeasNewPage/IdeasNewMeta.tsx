@@ -44,6 +44,7 @@ const IdeasNewMeta = () => {
       topic: messages.topicMetaTitle1,
       post: messages.postMetaTitle1,
       story: messages.storyMetaTitle1,
+      observation: messages.observationMetaTitle1,
     })
   );
   const ideasIndexDescription = formatMessage(messages.ideaNewMetaDescription);

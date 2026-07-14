@@ -248,6 +248,8 @@ en:
           title: What is your post?
         story:
           title: What is your story?
+        observation:
+          title: What is your observation?
   custom_field_options:
     gender:
       male: Male

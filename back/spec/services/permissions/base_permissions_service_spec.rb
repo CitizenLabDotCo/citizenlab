@@ -228,6 +228,12 @@ describe Permissions::BasePermissionsService do
           it { expect(denied_reason).to eq 'user_not_in_group' }
         end
 
+        context 'when moderator of the permission scope project who is not a group member' do
+          before { user.update!(roles: [{ type: 'project_moderator', project_id: permission.permission_scope.project_id }]) }
+
+          it { expect(denied_reason).to be_nil }
+        end
+
         context 'when admin' do
           before { user.update!(roles: [{ type: 'admin' }]) }
 
@@ -426,6 +432,26 @@ describe Permissions::BasePermissionsService do
           u.email_confirmation.confirm!
           u
         end
+
+        it { expect(denied_reason).to eq 'user_not_permitted' }
+      end
+
+      context 'when moderator of the permission scope project' do
+        before { user.update!(roles: [{ type: 'project_moderator', project_id: permission.permission_scope.project_id }]) }
+
+        it { expect(denied_reason).to be_nil }
+      end
+
+      context 'when moderator of another project' do
+        before { user.update!(roles: [{ type: 'project_moderator', project_id: create(:project).id }]) }
+
+        it { expect(denied_reason).to eq 'user_not_permitted' }
+      end
+
+      context 'when moderator and the permission scope is global' do
+        let(:permission) { create(:permission, action: 'following', permitted_by: permitted_by, permission_scope: nil) }
+
+        before { user.update!(roles: [{ type: 'project_moderator', project_id: create(:project).id }]) }
 
         it { expect(denied_reason).to eq 'user_not_permitted' }
       end

@@ -32,6 +32,12 @@ export function getCurrentPhase(phases: IPhaseData[] | undefined) {
   return;
 }
 
+export function getPhaseActionDescriptor<
+  K extends keyof IPhaseData['attributes']['action_descriptors']
+>(phase: IPhaseData, action: K) {
+  return phase.attributes.action_descriptors[action];
+}
+
 export function getFirstPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
     const firstPhase = first(
@@ -203,6 +209,7 @@ export const INPUT_TERMS = [
   'topic',
   'post',
   'story',
+  'observation',
 ];
 
 export const IdeaSortMethodFallback = 'trending';

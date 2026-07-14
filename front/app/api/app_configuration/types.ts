@@ -145,7 +145,6 @@ export interface IAppConfigurationSettings {
     api_key: string;
   };
   disable_user_bios?: AppConfigurationFeature;
-  project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
@@ -205,6 +204,7 @@ export interface IAppConfigurationSettings {
   project_static_pages?: AppConfigurationFeature;
   parallel_participation?: AppConfigurationFeature;
   pdf_export_responses?: AppConfigurationFeature;
+  html_block_in_content_builder?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

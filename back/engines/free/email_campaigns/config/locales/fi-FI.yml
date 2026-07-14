@@ -249,6 +249,7 @@ fi-FI:
         idea: '%{authorName} kommentoi ideaa, jota seuraat'
         initiative: '%{authorName} kommentoi aloitetta, jota seuraat'
         issue: '%{authorName} kommentoi asiaa, jota seuraat'
+        observation: '%{authorName} kommentoi seuraamaasi havaintoa'
         option: '%{authorName} kommentoi valitsemaasi vaihtoehtoa'
         petition: '%{authorName} kommentoi seuraamaasi vetoomusta'
         post: '%{authorName} kommentoi seuraamaasi julkaisua'
@@ -323,6 +324,7 @@ fi-FI:
         idea: Siirry tähän ajatukseen
         initiative: Mene tähän aloitteeseen
         issue: Siirry tähän aiheeseen
+        observation: Siirry tähän havaintoon
         option: Siirry tähän vaihtoehtoon
         petition: Siirry tähän vetoomukseen
         post: Siirry tähän viestiin
@@ -343,6 +345,7 @@ fi-FI:
         idea: Mene ideaasi
         initiative: Mene aloitteeseesi
         issue: Siirry kommenttiisi
+        observation: Siirry havaintoosi
         option: Siirry valitsemaasi vaihtoehtoon
         petition: Mene hakemukseesi
         post: Siirry omaan viestiisi
@@ -376,6 +379,7 @@ fi-FI:
         idea: Ideasi on julkaistu
         initiative: Aloitteesi on julkaistu
         issue: Numerosi on julkaistu
+        observation: Havaintosi on julkaistu
         option: Vaihtoehtosi on julkaistu
         petition: Vetoomuksesi on julkaistu
         post: Viestisi on julkaistu
@@ -764,6 +768,7 @@ fi-FI:
         idea: Ideasi on "%{prescreening_status_title}"
         initiative: Aloitteesi on kohdassa "%{prescreening_status_title}"
         issue: Ongelmasi on kohdassa%{prescreening_status_title}
+        observation: Havaintosi tila on ”%{prescreening_status_title}”
         option: Vaihtoehtosi on "%{prescreening_status_title}"
         petition: Vetoomuksesi on "%{prescreening_status_title}"
         post: Viestisi on kategoriassa "%{prescreening_status_title}"

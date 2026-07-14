@@ -82,6 +82,7 @@ up:
 
 # Run stack with docker compose, including running npm inside of docker container
 up-docker:
+	docker compose --profile frontend down --remove-orphans
 	docker compose --profile frontend up
 
 # For testing different SSO methods using https in dev
@@ -111,6 +112,15 @@ be-up-criipto:
 
 fe-up-criipto:
 	cd front && npm run start
+
+# etat_lu (Luxembourg IAM)
+be-up-etat-lu:
+	docker compose down
+	docker compose run --rm web bundle exec rake 'dev:enable_id_method[etat_lu]'
+	BASE_DEV_URI=https://sso.dev.govocal.com ASSET_HOST_URI=https://sso.dev.govocal.com docker compose up
+
+fe-up-etat-lu:
+	cd front && npm run start:sso
 
 # France connect
 be-up-franceconnect:

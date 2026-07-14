@@ -40,7 +40,7 @@ describe McpServer::Tools::UpdatePhasePermission do
         response = run_mcp_tool(described_class, params:, current_user:)
 
         expect(response).to be_error
-        expect(response.content.first[:text]).to match(/does not apply to this phase/)
+        expect(response.content.first[:text]).to include('does not apply to this phase')
       end
     end
   end
