@@ -43,7 +43,7 @@ module Files
     # @return [Hash] Hash with locale keys and description values
     def generate_descriptions(file, locales)
       chat = RubyLLM.chat(model: SONNET_MODEL_ID, provider: :bedrock, assume_model_exists: true)
-      prompt = build_prompt(file.name, locales)
+      prompt = build_prompt(file, locales)
       prefill_msg = '{' # Prefill the response to encourage the LLM to respond with a JSON object
 
       # @type [RubyLLM::Message]
@@ -61,10 +61,15 @@ module Files
       @file_preprocessor ||= LLMFilePreprocessor.new
     end
 
-    def build_prompt(file_name, locales)
+    def build_prompt(file, locales)
+      # The title, when set, is a human-authored label for the file and is useful extra
+      # context for the LLM on top of the filename.
+      title = MultilocService.new.t(file.title_multiloc).presence
+      title_context = title ? %( and the title given to it is: "#{title}") : ''
+
       <<~PROMPT
-        Analyze the provided document and generate a concise description or abstract (2-3 sentences) that accurately summarizes its nature, main purpose, key content, and relevant context. 
-        The description should be informative and capture the essential meaning of the document. As extra context, the filename is: "#{file_name}"
+        Analyze the provided document and generate a concise description or abstract (2-3 sentences) that accurately summarizes its nature, main purpose, key content, and relevant context.
+        The description should be informative and capture the essential meaning of the document. As extra context, the filename is: "#{file.name}"#{title_context}
 
         Output the results as a properly formatted JSON object with the following requirements:
         - Avoid starting the summary with "The document is..." or similar generic introductions.

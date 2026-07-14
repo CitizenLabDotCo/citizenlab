@@ -101,6 +101,12 @@ const FileEditForm = ({ file, setEditingMetadata }: Props) => {
             required
           />
 
+          <InputMultilocWithLocaleSwitcher
+            name="title_multiloc"
+            label={formatMessage(messages.fileTitleLabel)}
+            labelTooltipText={formatMessage(messages.fileTitleTooltip)}
+          />
+
           <Select
             name="category"
             label={formatMessage(messages.categoryLabel)}
@@ -108,11 +114,6 @@ const FileEditForm = ({ file, setEditingMetadata }: Props) => {
               value: category,
               label: formatMessage(messages[category]),
             }))}
-          />
-
-          <InputMultilocWithLocaleSwitcher
-            name="title_multiloc"
-            label={formatMessage(messages.fileTitleLabel)}
           />
 
           <TextAreaMultilocWithLocaleSwitcher
