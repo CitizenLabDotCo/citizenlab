@@ -8,6 +8,7 @@ import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/Accordion
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
@@ -51,6 +52,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         WhiteSpace,
         InfoWithAccordions,
         RichTextMultiloc,
+        HtmlBlockMultiloc,
         ImageTextCards,
         ButtonMultiloc,
         PhasesWidget,
