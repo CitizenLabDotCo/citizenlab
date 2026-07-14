@@ -64,6 +64,7 @@ const ProjectsAndFolders = () => {
           <Button
             icon="plus"
             buttonStyle="secondary-outlined"
+            dataCy="e2e-add-to-space-button"
             onClick={() => setModalOpened(true)}
           >
             {formatMessage(messages.addNewProjectOrFolder)}

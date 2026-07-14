@@ -86,6 +86,7 @@ const AddToSpaceModal = ({ spaceId, opened, onClose }: Props) => {
             <Select
               value={nodeType}
               options={typeOptions}
+              dataCy="e2e-add-to-space-type-select"
               onChange={(option) => {
                 setNodeType(option.value);
                 setSelectedId(null);
@@ -96,6 +97,7 @@ const AddToSpaceModal = ({ spaceId, opened, onClose }: Props) => {
             <Select
               value={selectedId}
               options={candidateOptions}
+              dataCy="e2e-add-to-space-item-select"
               placeholder={formatMessage(
                 nodeType === 'project'
                   ? messages.projectsPlaceholder
@@ -113,6 +115,7 @@ const AddToSpaceModal = ({ spaceId, opened, onClose }: Props) => {
             onClick={handleAdd}
             disabled={!selectedId}
             processing={isUpdatingProject || isUpdatingFolder}
+            dataCy="e2e-add-to-space-submit"
           >
             {formatMessage(messages.addToSpace)}
           </Button>
