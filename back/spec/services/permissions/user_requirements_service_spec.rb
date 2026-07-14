@@ -361,6 +361,8 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'permits a confirmed admin' do
+          # A confirmed admin moderates the phase, so they bypass every
+          # participation gate and get the empty (all-satisfied) requirements.
           user.add_role 'admin'
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
@@ -371,7 +373,7 @@ describe Permissions::UserRequirementsService do
             },
             verification: false,
             custom_fields: {},
-            onboarding: true,
+            onboarding: false,
             group_membership: false
           })
         end
@@ -410,6 +412,34 @@ describe Permissions::UserRequirementsService do
               onboarding: true,
               group_membership: false
             })
+          end
+
+          it 'reports all requirements satisfied for an admin who is not in the group' do
+            # Admins moderate every phase, so they bypass the group gate entirely
+            # — consistent with denied_reason_for_action returning nil for them.
+            # Otherwise the response would be self-contradictory (group_membership:
+            # true with a nil disabled_reason) and the auth flow would block them.
+            user.add_role 'admin'
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'users',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: false,
+              group_membership: false
+            })
+          end
+
+          it 'reports all requirements satisfied for a phase moderator who is not in the group' do
+            # Not only admins — any moderator of the phase bypasses the gates.
+            moderator = create(:project_moderator, projects: [survey_phase.project])
+            requirements = service.requirements(permission, moderator)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:group_membership]).to be false
           end
         end
 

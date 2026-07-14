@@ -69,6 +69,7 @@ declare global {
       apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
+      apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
@@ -884,7 +885,7 @@ function apiRemoveComment(commentId: string) {
 
 // The participation AboutBox widget node, serialised as the Content Builder editor
 // produces it. It renders the project sidebar (action buttons / "see ideas" etc).
-function aboutBoxNode() {
+function aboutBoxNode(parent: string) {
   return {
     type: { resolvedName: 'AboutBox' },
     isCanvas: false,
@@ -897,15 +898,15 @@ function aboutBoxNode() {
       },
       noPointerEvents: true,
     },
-    parent: 'ROOT',
+    parent,
     hidden: false,
     nodes: [],
     linkedNodes: {},
   };
 }
 
-// Appends the participation AboutBox to a project's existing Content Builder
-// description layout, so its page renders the sidebar/CTAs. Idempotent — a no-op if
+// Appends the participation AboutBox to the description section of a project's
+// project_page layout, so its page renders the sidebar/CTAs. Idempotent — a no-op if
 // the AboutBox is already there.
 function apiAddAboutBox(projectId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -913,7 +914,7 @@ function apiAddAboutBox(projectId: string) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${response.body.jwt}`,
     };
-    const layoutPath = `web_api/v1/projects/${projectId}/content_builder_layouts/project_description`;
+    const layoutPath = `web_api/v1/projects/${projectId}/content_builder_layouts/project_page`;
 
     return cy
       .request({ headers: authHeaders, method: 'GET', url: layoutPath })
@@ -924,8 +925,18 @@ function apiAddAboutBox(projectId: string) {
         );
         if (hasAboutBox) return;
 
-        craftjs.aboutBox = aboutBoxNode();
-        craftjs.ROOT.nodes = [...craftjs.ROOT.nodes, 'aboutBox'];
+        const sectionId = Object.keys(craftjs).find(
+          (id) =>
+            craftjs[id]?.type?.resolvedName === 'ProjectDescriptionSection'
+        );
+        if (!sectionId) {
+          throw new Error(
+            `project_page layout of project ${projectId} has no description section`
+          );
+        }
+
+        craftjs.aboutBox = aboutBoxNode(sectionId);
+        craftjs[sectionId].nodes = [...craftjs[sectionId].nodes, 'aboutBox'];
 
         return cy.request({
           headers: authHeaders,
@@ -1296,6 +1307,28 @@ function apiAddPoll(
           });
         });
       });
+    });
+  });
+}
+
+function apiCreateCause(phaseId: string, title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/causes',
+      body: {
+        cause: {
+          phase_id: phaseId,
+          title_multiloc: { en: title },
+          description_multiloc: { en: title },
+        },
+      },
     });
   });
 }
@@ -2375,6 +2408,7 @@ Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
+Cypress.Commands.add('apiCreateCause', apiCreateCause);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setModeratorLoginCookie', setModeratorLoginCookie);
 Cypress.Commands.add(

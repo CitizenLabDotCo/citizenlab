@@ -1,5 +1,6 @@
 {
   "co-sponsors": {
+    "de-DE": "Unterstützer*innen",
     "nl-NL": "ondersteuners"
   },
   "inspiration hub": {
@@ -36,6 +37,7 @@
     "nl-NL": "vrijwilligers zoeken"
   },
   "event": {
+    "de-DE": "Veranstaltung",
     "nl-NL": "activiteit"
   },
   "rating": {
@@ -62,6 +64,9 @@
   "drop pin": {
     "nl-NL": "pin prikken"
   },
+  "accessibility statement": {
+    "de-DE": "Richtlinie zur Barrierefreiheit"
+  },
   "preview link": {
     "nl-NL": "voorbeeldlink"
   },
@@ -80,6 +85,7 @@
   },
   "Space (i.e. The container for folders and projects)": {
     "da-DK": "Rum",
+    "de-DE": "Space",
     "nl-NL": "Ruimte"
   },
   "seats overview": {
@@ -93,6 +99,7 @@
     "nl-NL": "reactie"
   },
   "auto-insights": {
+    "de-DE": "automatische Einblicke",
     "nl-NL": "auto-inzichten"
   },
   "log in": {
@@ -124,10 +131,14 @@
   },
   "Space Manager": {
     "da-DK": "Rumadministrator",
+    "de-DE": "Space-Manager*in",
     "nl-NL": "Ruimtebeheerder"
   },
   "liked": {
     "nl-NL": "geliked"
+  },
+  "timeline": {
+    "de-DE": "Zeitleiste"
   },
   "comments (on inputs)": {
     "nl-NL": "reacties"
@@ -173,6 +184,9 @@
     "de-DE": "Beiträge",
     "fr-FR": "contributions",
     "nl-NL": "bijdragen"
+  },
+  "events": {
+    "de-DE": "Veranstaltungen"
   },
   "manager": {
     "da-DK": "projektleder",
@@ -227,6 +241,7 @@
     "nl-NL": "voorstellen"
   },
   "attendees (events)": {
+    "de-DE": "Teilnehmende",
     "nl-NL": "aanwezigen"
   },
   "chart": {
@@ -261,6 +276,7 @@
     "nl-NL": "inplannen"
   },
   "campaign": {
+    "de-DE": "Kampagne",
     "nl-NL": "campagne"
   },
   "required": {

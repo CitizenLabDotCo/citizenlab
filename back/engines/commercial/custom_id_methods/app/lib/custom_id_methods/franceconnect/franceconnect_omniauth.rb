@@ -35,7 +35,7 @@ module CustomIdMethods::Franceconnect
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
-        last_name: auth.info['last_name']&.titleize, # FC returns last names in ALL CAPITALS
+        last_name: auth.extra.raw_info.preferred_username.presence&.titleize || auth.info['last_name']&.titleize, # FC returns preferred usernames && last names in ALL CAPITALS
         locale: AppConfiguration.instance.closest_locale_to('fr-FR'),
         remote_avatar_url: auth.info['image']
       }.tap do |attrs|

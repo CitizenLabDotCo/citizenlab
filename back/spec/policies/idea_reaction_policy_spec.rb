@@ -80,10 +80,10 @@ describe IdeaReactionPolicy do
     let!(:reaction) { create(:reaction, reactable: idea, user: user) }
 
     it { is_expected.to permit(:show) }
-    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:up) }
+    it { is_expected.not_to permit(:down) }
+    it { is_expected.not_to permit(:destroy) }
 
     it 'indexes the reaction' do
       expect(scope.resolve.size).to eq 1

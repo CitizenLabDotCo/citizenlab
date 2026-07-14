@@ -39,7 +39,7 @@ describe('Project description builder Three Column component', () => {
   });
 
   it('handles Three Column component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-three-column').dragAndDrop(
@@ -71,7 +71,7 @@ describe('Project description builder Three Column component', () => {
   });
 
   it('deletes Three Column component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);

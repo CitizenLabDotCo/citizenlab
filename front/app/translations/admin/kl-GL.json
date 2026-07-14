@@ -3826,6 +3826,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "Aqutsisutut pisinnaatitaaffileruk",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Aqutsisutut pisinnaatitsissutit tunniukkit",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Pilersaarutinnut ilaareersut amerlanerpaaffissaat qaangerpat, ataatsimik ilaneqassaaq.",
+  "app.containers.admin.content_builder.html_block.label": "HTML-blokki",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Statusimik ilanngussigit",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Inissisimaffiit nalinginnaasut piiarneqarsinnaanngillat.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",

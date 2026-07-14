@@ -3,6 +3,7 @@ import React from 'react';
 import { Multiloc } from 'typings';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { PublicationStatus } from 'api/projects/types';
 
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import Skeleton from '../_shared/AdminPublicationsCarrousel/Skeleton';
@@ -19,13 +20,16 @@ interface Props {
   folderId?: string;
 }
 
+const getPublicationStatuses = (folderId?: string): PublicationStatus[] =>
+  folderId ? ['published', 'archived'] : ['published'];
+
 const Published = ({ titleMultiloc, folderId }: Props) => {
   const localizeWithFallback = useLocalizeWithFallback();
 
   const { data, hasNextPage, fetchNextPage, isInitialLoading } =
     useAdminPublications({
       pageSize: 6,
-      publicationStatusFilter: ['published'],
+      publicationStatusFilter: getPublicationStatuses(folderId),
       childrenOfId: folderId,
       rootLevelOnly: !folderId,
       removeNotAllowedParents: true,

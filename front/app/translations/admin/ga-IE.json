@@ -3826,6 +3826,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "Tabhair cearta riarthóra",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Tabhair cearta do bhainisteoirí",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Tá teorainn na suíochán atá san áireamh i do phlean sroichte agat, cuirfear 1 suíochán breise leis.",
+  "app.containers.admin.content_builder.html_block.label": "Bloc HTML",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Cuir stádas leis",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Ní féidir stádais réamhshocraithe a scriosadh.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Scrios",
