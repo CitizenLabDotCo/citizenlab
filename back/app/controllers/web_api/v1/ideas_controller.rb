@@ -192,11 +192,7 @@ class WebApi::V1::IdeasController < ApplicationController
     verify_profanity input
 
     save_options = {}
-    publication_status = params.dig(:idea, :publication_status)
-
-    if publication_status == 'published'
-      save_options[:context] = :publication
-    end
+    save_options[:context] = :publication if published
 
     if input.publication_status == 'published' && UserFieldsInFormService.should_merge_user_fields_into_idea?(
       current_user,
