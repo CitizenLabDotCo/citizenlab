@@ -330,10 +330,7 @@ class Phase < ApplicationRecord
   def update_manual_votes_count!
     reload
 
-    # `update_columns` rather than `update!`: this is a denormalized counter, and validating the
-    # phase here means an unrelated invalid attribute (persisted by a bulk write that skipped
-    # validation) makes every recount fail. `updated_at` is set explicitly to keep the behaviour
-    # `update!` had.
+    # Denormalized counter: validating here would let an unrelated invalid attribute fail every recount.
     update_columns(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum, updated_at: Time.current)
   end
 
