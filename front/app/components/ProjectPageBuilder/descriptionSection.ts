@@ -52,13 +52,33 @@ export const extractDescriptionEditorData = (
   );
   const subtreeIds = collectSubtreeIds(projectPageNodes, childIds);
 
+  // Project widgets nested inside content (e.g. Events in a column) can't be
+  // rendered by the legacy editor/page — strip them from the projection.
+  const nestedWidgetIds = collectSubtreeIds(
+    projectPageNodes,
+    [...subtreeIds].filter((id) => isProjectWidget(projectPageNodes, id))
+  );
+
   const editorData: SerializedNodes = {
     [ROOT_ID]: editorRootNode(childIds.filter((id) => subtreeIds.has(id))),
   };
   subtreeIds.forEach((id) => {
+    if (nestedWidgetIds.has(id)) return;
     const node = projectPageNodes[id];
+    const cleaned =
+      nestedWidgetIds.size > 0
+        ? {
+            ...node,
+            nodes: node.nodes.filter((n) => !nestedWidgetIds.has(n)),
+            linkedNodes: Object.fromEntries(
+              Object.entries(node.linkedNodes).filter(
+                ([, n]) => !nestedWidgetIds.has(n)
+              )
+            ),
+          }
+        : node;
     editorData[id] =
-      node.parent === bodyId ? { ...node, parent: ROOT_ID } : node;
+      cleaned.parent === bodyId ? { ...cleaned, parent: ROOT_ID } : cleaned;
   });
 
   return editorData;
