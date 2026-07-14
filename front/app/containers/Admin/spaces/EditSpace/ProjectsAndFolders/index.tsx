@@ -11,6 +11,7 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import TreeView from 'components/admin/TreeView';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { usePermission } from 'utils/permissions';
 import { isSpaceModerator } from 'utils/permissions/roles';
 import { useParams } from 'utils/router';
 
@@ -29,6 +30,11 @@ const ProjectsAndFolders = () => {
   const [modalOpened, setModalOpened] = useState(false);
 
   const userIsSpaceModerator = isSpaceModerator(authUser);
+  const canManageSpaceContent = usePermission({
+    item: 'space',
+    action: 'manage_projects_and_folders',
+  });
+
   if (!treeView || !spaceId) return null;
 
   const spaceNode = treeView.data.attributes.nodes.find(
@@ -43,9 +49,9 @@ const ProjectsAndFolders = () => {
     nodeType: 'project' | 'folder'
   ) => {
     if (nodeType === 'project') {
-      await updateProject({ projectId: nodeId, space_id: null });
+      updateProject({ projectId: nodeId, space_id: null });
     } else {
-      await updateFolder({ projectFolderId: nodeId, space_id: null });
+      updateFolder({ projectFolderId: nodeId, space_id: null });
     }
   };
 
@@ -60,7 +66,7 @@ const ProjectsAndFolders = () => {
         <Title variant="h2" color="primary" mt="0px" mb="0px">
           <FormattedMessage {...messages.projectsAndFoldersAdded} />
         </Title>
-        {!userIsSpaceModerator && (
+        {canManageSpaceContent && (
           <Button
             icon="plus"
             buttonStyle="secondary-outlined"
@@ -71,7 +77,7 @@ const ProjectsAndFolders = () => {
           </Button>
         )}
       </Box>
-      {!userIsSpaceModerator && (
+      {canManageSpaceContent && (
         <AddToSpaceModal
           spaceId={spaceId}
           opened={modalOpened}
