@@ -93,15 +93,6 @@ export default defineMessages({
     id: 'app.components.ProjectPageBuilder.Widgets.untitledProject',
     defaultMessage: 'Untitled project',
   },
-  descriptionSectionTitle: {
-    id: 'app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle',
-    defaultMessage: 'Description',
-  },
-  descriptionSectionNote: {
-    id: 'app.components.ProjectPageBuilder.Widgets.descriptionSectionNote',
-    defaultMessage:
-      'The project description. Edit its content by adding elements from the toolbox. It stays pinned in this position for now.',
-  },
   sectionHeightCappedNote: {
     id: 'app.components.ProjectPageBuilder.Widgets.sectionHeightCappedNote',
     defaultMessage:
