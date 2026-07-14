@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.notPublic1": "*اس جواب کا اشتراک صرف پروجیکٹ مینیجرز کے ساتھ کیا جائے گا، عوام کے ساتھ نہیں۔",
   "app.components.CustomFieldsForm.otherArea": "کہیں اور",
   "app.components.CustomFieldsForm.progressBarLabel": "پیش رفت",
-  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% مکمل",
   "app.components.CustomFieldsForm.removeAnswer": "جواب ہٹا دیں۔",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "* جتنے چاہیں منتخب کریں۔",
   "app.components.CustomFieldsForm.selectBetween": "* {minItems} اور {maxItems} اختیارات کے درمیان منتخب کریں",
