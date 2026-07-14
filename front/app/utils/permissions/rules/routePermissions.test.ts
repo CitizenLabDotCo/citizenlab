@@ -14,16 +14,8 @@ const MODERATOR_ROUTE = route('/admin/inspiration-hub');
 
 describe('canAccessRoute', () => {
   describe('moderator-route gate must not fail open', () => {
-    // Regression guard for the fail-open bug (TAN-6826).
-    //
-    // The gate used to be `!isRegularUser(user)`. `isRegularUser` is a strict
-    // check for `highest_role === 'user'`, so it returns `false` for ANY other
-    // value — including when the private attributes (`roles` / `highest_role`)
-    // are absent from the `/users/me` payload. `!false === true` then opened
-    // every moderator route to a user who holds no moderator role at all.
-    //
-    // A user with no moderator/admin role must be denied, whether that shows up
-    // as `highest_role: 'user'` or as the private attributes being missing.
+    // Regression guard: a negative role check granted access when the role
+    // attributes were absent from the /users/me payload (TAN-6826).
     it('denies a user whose highest_role and roles are missing', () => {
       const user = makeUser({ highest_role: undefined, roles: undefined });
       expect(canAccessRoute(MODERATOR_ROUTE, user, tenant)).toBe(false);
