@@ -329,7 +329,9 @@ class Phase < ApplicationRecord
 
   def update_manual_votes_count!
     reload
-    update!(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum)
+
+    # Denormalized counter: validating here would let an unrelated invalid attribute fail every recount.
+    update_columns(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum, updated_at: Time.current)
   end
 
   # If 'disable_disliking' is NOT enabled, then disliking will always be set to enabled on creation and cannot be changed

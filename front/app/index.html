@@ -7,12 +7,15 @@
 
     <script type="module">
       if (import.meta.env.MODE === 'production') {
+        // Runtime hrefs aren't rewritten by Vite's `base` (unlike CSS url()s),
+        // so prefix them with BASE_URL to match where the fonts are deployed.
+        const base = import.meta.env.BASE_URL;
         document.write(`
-          <link rel="preload" crossorigin="anonymous" href="/PublicSans-Light.woff2" as="font" type="font/woff2" />
-          <link rel="preload" crossorigin="anonymous" href="/PublicSans-Regular.woff2" as="font" type="font/woff2" />
-          <link rel="preload" crossorigin="anonymous" href="/PublicSans-Medium.woff2" as="font" type="font/woff2" />
-          <link rel="preload" crossorigin="anonymous" href="/PublicSans-SemiBold.woff2" as="font" type="font/woff2" />
-          <link rel="preload" crossorigin="anonymous" href="/PublicSans-Bold.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="${base}PublicSans-Light.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="${base}PublicSans-Regular.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="${base}PublicSans-Medium.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="${base}PublicSans-SemiBold.woff2" as="font" type="font/woff2" />
+          <link rel="preload" crossorigin="anonymous" href="${base}PublicSans-Bold.woff2" as="font" type="font/woff2" />
         `);
       }
     </script>
