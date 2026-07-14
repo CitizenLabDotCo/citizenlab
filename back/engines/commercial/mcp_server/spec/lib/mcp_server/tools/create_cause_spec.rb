@@ -24,6 +24,21 @@ describe McpServer::Tools::CreateCause do
 
       expect(response).not_to be_error
     end
+
+    it 'attaches a remote image by URL' do
+      remote_url = 'https://example.com/cause.jpg'
+      fixture_path = stub_remote_image_download(remote_url)
+
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(remote_image_url: remote_url),
+        current_user:
+      )
+
+      expect(response).not_to be_error
+      cause = Volunteering::Cause.find(response.structured_content[:id])
+      expect(cause.image.file.read).to eq(fixture_path.binread)
+    end
   end
 
   context 'when the project is published' do

@@ -19,7 +19,6 @@ type AreaAttributes = {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   ordering: number;
-  static_page_ids: string[];
   followers_count: number;
   include_in_onboarding: boolean;
 };

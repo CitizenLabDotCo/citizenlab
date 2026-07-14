@@ -2339,6 +2339,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.observationTerm": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:44:39.392600Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -13914,6 +13919,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.newObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T13:44:39.392600Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.ProjectEdit.newOption": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -19713,6 +19723,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.content_builder.html_block.label": {
+    "state": "verified",
+    "verified_at": "2026-06-23T11:26:31.424120Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": {
     "state": "verified",

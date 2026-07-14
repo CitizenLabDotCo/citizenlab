@@ -86,10 +86,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            project_description_builder: {
-              enabled: true,
-              allowed: true
-            },
             custom_idea_statuses: {
               enabled: true,
               allowed: true
@@ -427,6 +423,10 @@ module MultiTenancy
               allowed: false
             },
             mcp_server: {
+              enabled: true,
+              allowed: true
+            },
+            html_block_in_content_builder: {
               enabled: true,
               allowed: true
             }

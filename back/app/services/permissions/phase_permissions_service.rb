@@ -1,7 +1,19 @@
 module Permissions
   class PhasePermissionsService < BasePermissionsService
+    SUPPORTED_ACTIONS = %w[
+      posting_idea
+      editing_idea
+      commenting_idea
+      reacting_idea
+      voting
+      annotating_document
+      taking_survey
+      taking_poll
+      volunteering
+    ].freeze
+
     PHASE_DENIED_REASONS = {
-      project_inactive: 'project_inactive'
+      inactive_phase: 'inactive_phase'
     }.freeze
 
     POSTING_DENIED_REASONS = {
@@ -44,21 +56,20 @@ module Permissions
       not_volunteering: 'not_volunteering'
     }.freeze
 
-    ATTENDING_EVENT_DENIED_REASONS = {
-      attending_event_not_supported: 'attending_event_not_supported'
-    }.freeze
-
-    # Actions not to block if the project is inactive - ie no current phase
-    IGNORED_PHASE_ACTIONS = %w[attending_event].freeze
-
-    def initialize(phase, user, user_requirements_service: nil, request: nil)
+    # Pass time: nil to evaluate the phase's rules regardless of its dates.
+    def initialize(phase, user, user_requirements_service: nil, request: nil, time: Time.zone.now)
       super(user, user_requirements_service: user_requirements_service)
       @request = request
-      @phase ||= phase
+      @phase = phase
+      @time = time
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
-      return PHASE_DENIED_REASONS[:project_inactive] unless phase || IGNORED_PHASE_ACTIONS.include?(action)
+      raise "Unsupported action: #{action}" if SUPPORTED_ACTIONS.exclude?(action)
+
+      project_reason = project_denied_reason(phase.project)
+      return project_reason if project_reason
+      return PHASE_DENIED_REASONS[:inactive_phase] if time && !timeline_service.phase_current?(phase, time)
 
       phase_denied_reason = case action
       when 'posting_idea'
@@ -79,19 +90,49 @@ module Permissions
         taking_poll_denied_reason_for_action
       when 'volunteering'
         volunteering_denied_reason_for_action
-      when 'attending_event'
-        attending_event_denied_reason_for_action
-      else
-        raise "Unsupported action: #{action}" unless supported_action? action
       end
       return phase_denied_reason if phase_denied_reason
+      # editing_idea has no corresponding Permission record
+      return if action == 'editing_idea'
 
       super(action, scope: phase)
     end
 
+    def action_descriptors
+      posting = denied_reason_for_action 'posting_idea'
+      commenting = denied_reason_for_action 'commenting_idea'
+      reacting = denied_reason_for_action 'reacting_idea'
+      liking = denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
+      disliking = denied_reason_for_action 'reacting_idea', reaction_mode: 'down'
+      annotating_document = denied_reason_for_action 'annotating_document'
+      taking_survey = denied_reason_for_action 'taking_survey'
+      taking_poll = denied_reason_for_action 'taking_poll'
+      voting = denied_reason_for_action 'voting'
+      volunteering = denied_reason_for_action 'volunteering'
+
+      {
+        posting_idea: descriptor(posting),
+        commenting_idea: descriptor(commenting),
+        reacting_idea: descriptor(reacting).merge(
+          up: descriptor(liking),
+          down: descriptor(disliking)
+        ),
+        comment_reacting_idea: descriptor(commenting), # You can react if you can comment.
+        annotating_document: descriptor(annotating_document),
+        taking_survey: descriptor(taking_survey),
+        taking_poll: descriptor(taking_poll),
+        voting: descriptor(voting),
+        volunteering: descriptor(volunteering)
+      }
+    end
+
     private
 
-    attr_reader :phase, :request
+    attr_reader :phase, :request, :time
+
+    def timeline_service
+      @timeline_service ||= TimelineService.new
+    end
 
     # Phase methods
     def posting_idea_denied_reason_for_action
@@ -162,12 +203,6 @@ module Permissions
     def volunteering_denied_reason_for_action
       unless phase.volunteering?
         VOLUNTEERING_DENIED_REASONS[:not_volunteering]
-      end
-    end
-
-    def attending_event_denied_reason_for_action
-      if phase && !participation_method.supports_event_attendance?
-        ATTENDING_EVENT_DENIED_REASONS[:attending_event_not_supported]
       end
     end
 

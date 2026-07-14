@@ -112,6 +112,8 @@ cy-GB:
           title: Beth yw eich menter?
         issue:
           title: Beth yw eich sylw?
+        observation:
+          title: Beth yw eich arsylwad?
         option:
           title: Beth yw eich opsiwn?
         petition:

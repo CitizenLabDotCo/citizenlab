@@ -4,6 +4,13 @@ class McpServer::BaseTool
   include McpServer::BaseTool::Multiloc
   include McpServer::BaseTool::Pagination
 
+  READ_ANNOTATIONS = {
+    read_only_hint: true,
+    destructive_hint: false,
+    idempotent_hint: true,
+    open_world_hint: false
+  }.freeze
+
   attr_reader :current_user, :token_scopes
 
   def initialize(current_user: nil, token_scopes: [])

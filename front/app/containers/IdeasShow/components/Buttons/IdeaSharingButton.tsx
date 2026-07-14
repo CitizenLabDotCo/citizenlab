@@ -70,6 +70,7 @@ const Component = ({ ideaId }: Props) => {
             topic: messages.topicWhatsAppMessage,
             post: messages.postWhatsAppMessage,
             story: messages.storyWhatsAppMessage,
+            observation: messages.observationWhatsAppMessage,
           }),
           {
             postTitle,
@@ -92,6 +93,7 @@ const Component = ({ ideaId }: Props) => {
             topic: messages.topicTwitterMessage,
             post: messages.postTwitterMessage,
             story: messages.storyTwitterMessage,
+            observation: messages.observationTwitterMessage,
           }),
           {
             postTitle,
@@ -114,6 +116,7 @@ const Component = ({ ideaId }: Props) => {
             topic: messages.topicEmailSharingSubject,
             post: messages.postEmailSharingSubject,
             story: messages.storyEmailSharingSubject,
+            observation: messages.observationEmailSharingSubject,
           }),
           {
             ideaTitle: postTitle,
@@ -136,6 +139,7 @@ const Component = ({ ideaId }: Props) => {
             topic: messages.topicEmailSharingBody,
             post: messages.postEmailSharingBody,
             story: messages.storyEmailSharingBody,
+            observation: messages.observationEmailSharingBody,
           }),
           {
             ideaUrl: postUrl,

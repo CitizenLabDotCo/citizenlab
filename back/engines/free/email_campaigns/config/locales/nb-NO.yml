@@ -249,6 +249,7 @@ nb-NO:
         idea: '%{authorName} kommenterte en idé du følger'
         initiative: '%{authorName} kommenterte et initiativ du følger'
         issue: '%{authorName} kommenterte en sak du følger'
+        observation: '%{authorName} kommenterte en observasjon du følger'
         option: '%{authorName} kommenterte et alternativ du følger'
         petition: '%{authorName} kommenterte en underskriftskampanje du følger'
         post: '%{authorName} kommentert et innlegg du følger'
@@ -323,6 +324,7 @@ nb-NO:
         idea: Gå til denne ideen
         initiative: Gå til dette initiativet
         issue: Gå til denne utgaven
+        observation: Gå til denne observasjonen
         option: Gå til dette alternativet
         petition: Gå til denne underskriftskampanjen
         post: Gå til dette innlegget
@@ -343,6 +345,7 @@ nb-NO:
         idea: Gå til ideen din
         initiative: Gå til initiativet ditt
         issue: Gå til problemet ditt
+        observation: Gå til din observasjon
         option: Gå til ditt valg
         petition: Gå til underskriftskampanjen din
         post: Gå til innlegget ditt
@@ -376,6 +379,7 @@ nb-NO:
         idea: Ideen din har blitt publisert
         initiative: Initiativet ditt har blitt publisert
         issue: Utgaven din har blitt publisert
+        observation: Observasjonen din har blitt publisert
         option: Alternativet ditt har blitt publisert
         petition: Din underskriftskampanje har blitt publisert
         post: Innlegget ditt har blitt publisert
@@ -764,6 +768,7 @@ nb-NO:
         idea: Ideen din er i "%{prescreening_status_title}"
         initiative: Initiativet ditt ligger i "%{prescreening_status_title}"
         issue: Problemet ditt er i "%{prescreening_status_title}"
+        observation: Din observasjon er i "%{prescreening_status_title}"
         option: Ditt valg er i "%{prescreening_status_title}"
         petition: Din begjæring er i "%{prescreening_status_title}"
         post: Innlegget ditt er i "%{prescreening_status_title}"
