@@ -28,7 +28,7 @@ class RequestCodePolicy < ApplicationPolicy
   def request_code_phone_change?
     return false unless app_configuration.feature_activated?('sms')
     return false if user.nil?
-    return false if (user.new_phone_confirmation&.code_reset_count || 0) >= max_retries - 1
+    return false if user.new_phone_confirmation.code_reset_count >= max_retries - 1
 
     true
   end
