@@ -1,7 +1,10 @@
 import React, { useRef } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Node, UserComponent, useEditor } from '@craftjs/core';
+import styled, { css } from 'styled-components';
+
+import { useParams } from 'utils/router';
 
 import CTABar from './CTABar';
 import useWidgetProjectId from './Widgets/useWidgetProjectId';
@@ -9,6 +12,29 @@ import useWidgetProjectId from './Widgets/useWidgetProjectId';
 type RegionProps = {
   children?: React.ReactNode;
 };
+
+// The body sits on the page background color; only cards and content boxes
+// are white. On the public page the color spans the full viewport width via a
+// backdrop, so the body itself keeps constraining its children.
+const BodyBackground = styled(Box)<{ $fullBleed: boolean }>`
+  background: ${colors.background};
+  ${({ $fullBleed }) =>
+    $fullBleed &&
+    css`
+      background: none;
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(-50vw + 50%);
+        width: 100vw;
+        background: ${colors.background};
+        z-index: -1;
+      }
+    `}
+`;
 
 export const ProjectPageRoot: UserComponent<RegionProps> = ({ children }) => (
   <Box id="e2e-content-builder-frame" w="100%">
@@ -28,23 +54,25 @@ ProjectPageRoot.craft = {
 
 export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => {
   const projectId = useWidgetProjectId();
+  const { slug } = useParams({ strict: false }) as { slug?: string };
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
 
   return (
-    <Box
+    <BodyBackground
       id="e2e-project-page-body"
       w="100%"
       minHeight={inEditor ? '60px' : undefined}
       ref={containerRef}
+      $fullBleed={!!slug}
     >
       {children}
       {!inEditor && projectId && (
         <CTABar projectId={projectId} containerRef={containerRef} />
       )}
-    </Box>
+    </BodyBackground>
   );
 };
 
