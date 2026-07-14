@@ -10,9 +10,6 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
     Rake::Task['single_use:finish_stuck_tenant_deletions'].reenable
     FileUtils.rm_f(report_path)
     FileUtils.rm_f(report_only_path)
-    ENV.delete('REPORT_ONLY')
-    ENV.delete('HOST')
-    ENV.delete('POLL_TIMEOUT')
   end
 
   let(:report_path) { Rails.root.join('finish_stuck_tenant_deletions.json') }
@@ -27,11 +24,10 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
     end
   end
 
+  # The task prompts and destroys only when passed 'execute'; `report_only: true` drops it.
   def run_task(report_only: false, poll_timeout: nil)
-    ENV['REPORT_ONLY'] = 'true' if report_only
-    ENV['POLL_TIMEOUT'] = poll_timeout.to_s if poll_timeout
-    ENV['HOST'] = stuck_tenant.host
-    Rake::Task['single_use:finish_stuck_tenant_deletions'].invoke
+    Rake::Task['single_use:finish_stuck_tenant_deletions']
+      .invoke(report_only ? nil : 'execute', stuck_tenant.host, poll_timeout&.to_s)
   end
 
   def answer_prompt_with(answer)

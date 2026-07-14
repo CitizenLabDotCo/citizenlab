@@ -39,22 +39,26 @@
 # below, and unioning would not fix it. The migration cannot produce it. The summary counts any
 # such rows so that a run tells us whether the case is real.
 #
-# DRY_RUN=true analyses without writing; HOST=<host> limits the run to one tenant.
+# Analyses without writing unless passed 'execute'; a host limits the run to one tenant:
+#
+#     rake single_use:fix_phase_available_views                     # dry run, all tenants
+#     rake 'single_use:fix_phase_available_views[execute]'          # repair all tenants
+#     rake 'single_use:fix_phase_available_views[execute,foo.com]'  # repair one tenant
 namespace :single_use do
-  desc "Add each phase's presentation_mode to its available_views, where the backfill omitted it. DRY_RUN=true to analyse only."
-  task fix_phase_available_views: :environment do
-    dry_run = ENV['DRY_RUN']&.downcase == 'true'
-    host = ENV.fetch('HOST', nil)
+  desc "Add each phase's presentation_mode to its available_views, where the backfill omitted it. Dry run unless passed 'execute'."
+  task :fix_phase_available_views, %i[execute host] => [:environment] do |_t, args|
+    execute = args[:execute] == 'execute'
+    host = args[:host]
 
     reporter = ScriptReporter.new
     totals = Hash.new(0)
 
-    if dry_run
-      puts '🔍 DRY RUN MODE: analysing without writing.'
-      puts '⚠️  NO DATABASE WRITES WILL BE PERFORMED'
-    else
+    if execute
       puts '🚀 REPAIR MODE: adding the default presentation mode to available_views.'
       puts '⚠️  THIS WILL MODIFY THE DATABASE'
+    else
+      puts '🔍 DRY RUN MODE: analysing without writing.'
+      puts '⚠️  NO DATABASE WRITES WILL BE PERFORMED'
     end
     puts '=' * 80
 
@@ -114,7 +118,7 @@ namespace :single_use do
 
           # `update_column` because we repair *to* a valid state. `update!` would re-run every
           # other validation on a phase we have not audited, and could fail for a second reason.
-          phase.update_column(:available_views, new_views) unless dry_run
+          phase.update_column(:available_views, new_views) if execute
           totals[:fixed] += 1
         end
       end
@@ -124,14 +128,14 @@ namespace :single_use do
     end
 
     puts "\n#{'=' * 80}"
-    puts(dry_run ? '📊 DRY RUN SUMMARY:' : '📊 REPAIR SUMMARY:')
-    puts "   #{dry_run ? 'Would fix' : 'Fixed'}: #{totals[:fixed]} phase(s)"
+    puts(execute ? '📊 REPAIR SUMMARY:' : '📊 DRY RUN SUMMARY:')
+    puts "   #{execute ? 'Fixed' : 'Would fix'}: #{totals[:fixed]} phase(s)"
     puts "   Skipped (unknown presentation_mode): #{totals[:skipped]}"
     puts "   Skipped (schema predates the available_views migration): #{totals[:skipped_no_column]}"
     puts "   Not repairable (available_views omits 'card'): #{totals[:missing_card]} phase(s)"
     puts "   Errors: #{reporter.errors.size}"
 
-    report_file = dry_run ? 'fix_phase_available_views_dry_run.json' : 'fix_phase_available_views.json'
+    report_file = execute ? 'fix_phase_available_views.json' : 'fix_phase_available_views_dry_run.json'
     reporter.report!(report_file)
     puts "   📝 Per-phase report: #{report_file}"
   end

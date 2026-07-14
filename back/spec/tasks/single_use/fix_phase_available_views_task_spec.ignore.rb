@@ -10,17 +10,14 @@ describe 'single_use:fix_phase_available_views rake task' do
     Rake::Task['single_use:fix_phase_available_views'].reenable
     FileUtils.rm_f(report_path)
     FileUtils.rm_f(dry_run_report_path)
-    ENV.delete('DRY_RUN')
-    ENV.delete('HOST')
   end
 
   let(:report_path) { Rails.root.join('fix_phase_available_views.json') }
   let(:dry_run_report_path) { Rails.root.join('fix_phase_available_views_dry_run.json') }
 
+  # The task writes only when passed 'execute', so most examples want it; `dry_run: true` drops it.
   def run_task(dry_run: false, host: nil)
-    ENV['DRY_RUN'] = 'true' if dry_run
-    ENV['HOST'] = host if host
-    Rake::Task['single_use:fix_phase_available_views'].invoke
+    Rake::Task['single_use:fix_phase_available_views'].invoke(dry_run ? nil : 'execute', host)
   end
 
   # Mirrors the state left by the 20260223103753 backfill, which wrote with `update_column`.

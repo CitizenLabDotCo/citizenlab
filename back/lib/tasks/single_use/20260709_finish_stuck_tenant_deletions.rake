@@ -19,19 +19,25 @@
 # (losing the record of when the deletion was actually requested) and re-run
 # `SideFxTenantService#before_destroy`, which deletes Typeform webhooks that are already gone.
 #
-# REPORT_ONLY=true prints the report and asks nothing. HOST=<host> limits it to one tenant.
+# Reports and asks nothing unless passed 'execute', which makes it interactive. A host limits it to
+# one tenant; a poll timeout overrides the one derived from the tenant's user count:
+#
+#     rake single_use:finish_stuck_tenant_deletions                       # report, all tenants
+#     rake 'single_use:finish_stuck_tenant_deletions[execute]'            # finish, all tenants
+#     rake 'single_use:finish_stuck_tenant_deletions[execute,foo.com]'    # finish, one tenant
+#     rake 'single_use:finish_stuck_tenant_deletions[execute,foo.com,600]'
 namespace :single_use do
-  desc 'Finish tenant deletions that stalled. Interactive. REPORT_ONLY=true to only report.'
-  task finish_stuck_tenant_deletions: :environment do
-    report_only = ENV['REPORT_ONLY']&.downcase == 'true'
-    host = ENV.fetch('HOST', nil)
-    poll_timeout_override = ENV['POLL_TIMEOUT']&.to_i
+  desc "Finish tenant deletions that stalled. Reports only unless passed 'execute', which is interactive."
+  task :finish_stuck_tenant_deletions, %i[execute host poll_timeout] => [:environment] do |_t, args|
+    execute = args[:execute] == 'execute'
+    host = args[:host]
+    poll_timeout_override = args[:poll_timeout]&.to_i
 
     # Without a TTY `$stdin.gets` returns nil, which would silently skip every tenant and look
     # exactly like a successful run. This task destroys schemas; it must not guess.
-    if !report_only && !$stdin.tty?
+    if execute && !$stdin.tty?
       abort 'This task destroys tenants and must be confirmed interactively. ' \
-            'Run it from a terminal, or use REPORT_ONLY=true for a non-interactive report.'
+            'Run it from a terminal, or drop the `execute` argument for a non-interactive report.'
     end
 
     reporter = ScriptReporter.new
@@ -86,9 +92,11 @@ namespace :single_use do
       puts "  drifted phases: #{drifted}   orphaned projects: #{stats[:orphaned_projects]}"
       puts "  DeleteUserJobs: #{pending_user_jobs} pending, #{user_jobs.expired.count} expired"
       failure_classes.each { |klass, count| puts "    #{count} x #{klass}" }
-      puts '  ⚠️  drifted phases remain — run single_use:fix_phase_available_views first' if stats[:drifted_phases].to_i.positive?
+      if stats[:drifted_phases].to_i.positive?
+        puts "  ⚠️  drifted phases remain — run 'single_use:fix_phase_available_views[execute,#{tenant.host}]' first"
+      end
 
-      next if report_only
+      next unless execute
 
       # A deletion with jobs still in flight is in progress, not stuck. Sweeping again would
       # enqueue a second DeleteUserJob per user, and `pluck(:id)` has no ORDER BY, so the two
@@ -156,6 +164,6 @@ namespace :single_use do
     end
 
     # Skipped tenants are those in `processed_tenants` that appear in neither `deletes` nor `errors`.
-    reporter.report!(report_only ? 'finish_stuck_tenant_deletions_report.json' : 'finish_stuck_tenant_deletions.json')
+    reporter.report!(execute ? 'finish_stuck_tenant_deletions.json' : 'finish_stuck_tenant_deletions_report.json')
   end
 end
