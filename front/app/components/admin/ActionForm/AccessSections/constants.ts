@@ -8,6 +8,7 @@ import messages from './messages';
 
 export const AUTH_METHOD_LABELS: Record<AuthMethodKey, MessageDescriptor> = {
   email: messages.confirmedEmail,
+  phone: messages.confirmedPhoneNumber,
   verification: messages.identityVerification,
 };
 
@@ -18,6 +19,10 @@ export const METHOD_META: Record<
   email: {
     icon: 'email',
     description: messages.emailMethodDescription,
+  },
+  phone: {
+    icon: 'message',
+    description: messages.phoneMethodDescription,
   },
   verification: {
     icon: 'shield-checkered',

@@ -50,7 +50,7 @@ export const requiresAccount = (permission: IPhasePermissionData): boolean =>
 export interface SummaryChip {
   key: string;
   label: string;
-  icon: 'user-circle' | 'email' | 'comment' | 'shield-checkered' | 'group' | 'lock' | 'user-data';
+  icon: 'user-circle' | 'email' | 'message' | 'comment' | 'shield-checkered' | 'group' | 'lock' | 'user-data';
   tone: 'access' | 'data' | 'open';
 }
 
@@ -104,6 +104,7 @@ export const buildSummary = (
   const chips: SummaryChip[] = [];
   const methodIcon: Record<AuthMethodKey, SummaryChip['icon']> = {
     email: 'email',
+    phone: 'message',
     verification: 'shield-checkered',
   };
   (Object.keys(METHOD_FIELDS) as AuthMethodKey[]).forEach((key) => {

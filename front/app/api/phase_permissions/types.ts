@@ -44,6 +44,8 @@ export interface IPhasePermissionData {
     permitted_by: PermittedBy;
     permitted_by_everyone_allowed: boolean;
     require_confirmed_email: boolean;
+    require_confirmed_phone_number: boolean;
+    confirmed_phone_number_expiry: number | null;
     require_name: boolean;
     require_password: boolean;
     require_verification: boolean;
@@ -98,6 +100,8 @@ export interface IPermissionUpdate {
   everyone_tracking_enabled: boolean;
   require_confirmed_email: boolean;
   confirmed_email_expiry: number | null;
+  require_confirmed_phone_number: boolean;
+  confirmed_phone_number_expiry: number | null;
   require_name: boolean;
   require_password: boolean;
   require_verification: boolean;

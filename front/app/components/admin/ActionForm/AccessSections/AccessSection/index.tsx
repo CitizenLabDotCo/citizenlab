@@ -25,11 +25,14 @@ import VerificationFieldsModal from '../VerificationFieldsModal';
 import messages from './messages';
 import MethodRow from './MethodRow';
 
-const METHOD_KEYS: AuthMethodKey[] = ['email', 'verification'];
+const METHOD_KEYS: AuthMethodKey[] = ['email', 'phone', 'verification'];
 
 const unavailableReason = (key: AuthMethodKey) => {
   if (key === 'email') {
     return messages.unavailablePasswordLogin;
+  }
+  if (key === 'phone') {
+    return messages.unavailableSms;
   }
   return messages.unavailableVerification;
 };
@@ -44,15 +47,17 @@ const AccessSection = ({
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
   // Which authentication methods the platform offers comes from live config:
-  // confirmed email needs password login; identity verification needs a
-  // configured verification method.
+  // confirmed email needs password login; a confirmed phone number needs the
+  // SMS feature; identity verification needs a configured verification method.
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+  const smsEnabled = useFeatureFlag({ name: 'sms' });
   const { data: verificationMethod } = useVerificationMethod();
   const verificationMetadata =
     verificationMethod?.data.attributes.method_metadata;
 
   const isAvailable: Record<AuthMethodKey, boolean> = {
     email: passwordLoginEnabled,
+    phone: smsEnabled,
     verification: !!verificationMetadata,
   };
 
