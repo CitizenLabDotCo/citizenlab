@@ -54,112 +54,74 @@ resource 'Ideas' do
     end
   end
 
-  post 'web_api/v1/ideas' do
+  post 'web_api/v1/phases/:phase_id/inputs' do
     with_options scope: :idea do
-      parameter :project_id, 'The identifier of the project that hosts the input', required: true
-      parameter :phase_ids, 'The identifiers of the phases that host the input. Only 1 allowed, and only for roles that are allowed to moderate projects.', required: false
       parameter :custom_field_name1, 'A value for one custom field'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
 
-    context 'when phase_ids are not given' do
-      let(:phase_ids) { [] }
-      let(:project_id) { project.id }
+    let(:phase_id) { phase.id }
+    let(:custom_form) { create(:custom_form, participation_context: phase) }
+    let!(:custom_field) do
+      create(
+        :custom_field,
+        resource: custom_form,
+        key: 'custom_field_name1',
+        enabled: true,
+        title_multiloc: { 'en' => 'What is your favourite pet?' },
+        description_multiloc: { 'en' => 'Enter one pet.' }
+      )
+    end
+    let(:custom_field_name1) { 'Cat' }
 
-      let!(:custom_field) do
-        create(
-          :custom_field,
-          resource: custom_form,
-          key: 'custom_field_name1',
-          enabled: true,
-          title_multiloc: { 'en' => 'What is your favourite pet?' },
-          description_multiloc: { 'en' => 'Enter one pet.' }
-        )
-      end
-      let(:custom_field_name1) { 'Cat' }
+    context 'in an active native survey phase' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:phase) { project.phases.first }
 
-      context 'in an active native survey phase' do
-        let(:project) { create(:project_with_active_native_survey_phase) }
-        let(:active_phase) { project.phases.first }
-        let(:custom_form) { create(:custom_form, participation_context: active_phase) }
-
-        example_request 'Create an input' do
-          assert_status 201
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-          inputs = project.reload.ideas
-          expect(inputs.size).to eq 1
-          input = inputs.first
-          expect(inputs.first.phase_ids).to eq [active_phase.id]
-          expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
-          expect(input.creation_phase_id).to eq active_phase.id
-        end
-      end
-
-      context 'without active participation context' do
-        let(:project) { create(:project_with_future_native_survey_phase) }
-        let(:future_phase) { project.phases.first }
-        let(:custom_form) { create(:custom_form, participation_context: future_phase) }
-
-        example_request '[error] Trying to create an input' do
-          assert_status 400
-          expect(json_parse(response_body)).to be_nil
-        end
+      example_request 'Create an input' do
+        assert_status 201
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project.id
+        inputs = project.reload.ideas
+        expect(inputs.size).to eq 1
+        input = inputs.first
+        expect(input.phase_ids).to eq [phase.id]
+        expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+        expect(input.creation_phase_id).to eq phase.id
       end
     end
 
-    context 'when phase_ids are given' do
-      let(:project_id) { project.id }
-      let!(:custom_field) do
-        create(
-          :custom_field,
-          resource: custom_form,
-          key: 'custom_field_name1',
-          enabled: true,
-          title_multiloc: { 'en' => 'What is your favourite pet?' },
-          description_multiloc: { 'en' => 'Enter one pet.' }
-        )
+    context 'in a future native survey phase' do
+      let(:project) { create(:project_with_active_and_future_native_survey_phase) }
+      let(:phase) { project.phases.last }
+
+      example_request 'Create an input' do
+        assert_status 201
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project.id
+        inputs = project.reload.ideas
+        expect(inputs.size).to eq 1
+        input = inputs.first
+        expect(input.phase_ids).to eq [phase.id]
+        expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+        expect(input.creation_phase_id).to eq phase.id
       end
-      let(:custom_field_name1) { 'Cat' }
+    end
 
-      context 'with an active native survey phase' do
-        let(:project) { create(:project_with_active_and_future_native_survey_phase) }
-        let(:active_phase) { project.phases.first }
-        let(:future_phase) { project.phases.last }
-        let(:phase_ids) { [future_phase.id] }
-        let(:active_custom_form) { create(:custom_form, participation_context: active_phase) }
-        let(:custom_form) { create(:custom_form, participation_context: future_phase) }
+    context 'in a future native survey phase without any active phase' do
+      let(:project) { create(:project_with_future_native_survey_phase) }
+      let(:phase) { project.phases.first }
 
-        example_request 'Create an input' do
-          assert_status 201
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-          inputs = project.reload.ideas
-          expect(inputs.size).to eq 1
-          input = inputs.first
-          expect(inputs.first.phase_ids).to eq [future_phase.id]
-          expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
-          expect(input.creation_phase_id).to eq future_phase.id
-        end
-      end
-
-      context 'without active participation context' do
-        let(:project) { create(:project_with_future_native_survey_phase) }
-        let(:future_phase) { project.phases.first }
-        let(:phase_ids) { [future_phase.id] }
-        let(:custom_form) { create(:custom_form, participation_context: future_phase) }
-
-        example_request 'Create an input' do
-          assert_status 201
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-          inputs = project.reload.ideas
-          expect(inputs.size).to eq 1
-          input = inputs.first
-          expect(inputs.first.phase_ids).to eq [future_phase.id]
-          expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
-          expect(input.creation_phase_id).to eq future_phase.id
-        end
+      example_request 'Create an input' do
+        assert_status 201
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project.id
+        inputs = project.reload.ideas
+        expect(inputs.size).to eq 1
+        input = inputs.first
+        expect(input.phase_ids).to eq [phase.id]
+        expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+        expect(input.creation_phase_id).to eq phase.id
       end
     end
   end

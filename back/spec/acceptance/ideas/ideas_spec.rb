@@ -482,7 +482,7 @@ resource 'Ideas' do
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
         parameter :project_id, 'The identifier of the project that hosts the idea'
       end
-      parameter :phase_id, 'The participation context to fetch the similarity thresholds from, if it cannot be inferred (e.g. when posting as admin before the timeline begins).'
+      parameter :phase_id, 'The phase in which the input is being posted or edited, used to fetch the similarity settings.', required: true
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of ideas per page'
@@ -490,6 +490,7 @@ resource 'Ideas' do
 
       let(:project) { create(:project_with_active_ideation_phase) }
       let(:project_id) { project.id }
+      let(:phase_id) { project.phases.first.id }
       let(:idea) { create(:idea, project:) }
       let(:title_multiloc) { { 'en' => 'My similar idea' } }
       let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }

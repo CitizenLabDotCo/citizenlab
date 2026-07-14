@@ -156,14 +156,13 @@ class WebApi::V1::IdeasController < ApplicationController
     files_params = extract_file_params(params_for_create)
 
     input = Idea.new params_for_create
+    input.project = phase_for_input.project
+    input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
+    input.phase_ids = [phase_for_input.id]
 
     files_params.each do |file_params|
       build_idea_file_attachment(input, file_params)
     end
-
-    input.project = phase_for_input.project
-    input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
-    input.phase_ids = [phase_for_input.id]
 
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?

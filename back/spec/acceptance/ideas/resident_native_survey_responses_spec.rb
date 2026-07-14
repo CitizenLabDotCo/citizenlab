@@ -54,10 +54,8 @@ resource 'Ideas' do
     end
   end
 
-  post 'web_api/v1/ideas' do
+  post 'web_api/v1/phases/:phase_id/inputs' do
     with_options scope: :idea do
-      parameter :project_id, 'The identifier of the project that hosts the input', required: true
-      parameter :phase_ids, 'The identifiers of the phases that host the input. None is allowed for normal users.', required: false
       parameter :custom_field_name1, 'A value for one custom field'
       parameter :custom_field_name2, 'A value for another custom field'
       parameter :custom_field_name2_other, 'A custom text value for an "other" option in custom fields'
@@ -67,358 +65,333 @@ resource 'Ideas' do
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
 
-    context 'when phase_ids are not given' do
-      let(:phase_ids) { [] }
-      let(:project_id) { project.id }
+    let(:phase_id) { project.phases.first.id }
 
-      context 'with two file upload fields' do
-        let(:filename1) { 'afvalkalender2022.pdf' }
-        let(:filename2) { 'afvalkalender2023.pdf' }
-        let(:fixture_filename) { 'afvalkalender.pdf' }
-        let(:fixture_mime_type) { 'application/pdf' }
-        let(:file_contents1) { file_as_base64(fixture_filename, fixture_mime_type) }
-        let(:file_contents2) { file_as_base64(fixture_filename, fixture_mime_type) }
-        let!(:files_field1) do
-          create(
-            :custom_field,
-            resource: custom_form,
-            input_type: 'file_upload',
-            key: 'custom_field_name1',
-            enabled: true,
-            title_multiloc: { 'en' => 'Please upload a plan' }
+    context 'with two file upload fields' do
+      let(:filename1) { 'afvalkalender2022.pdf' }
+      let(:filename2) { 'afvalkalender2023.pdf' }
+      let(:fixture_filename) { 'afvalkalender.pdf' }
+      let(:fixture_mime_type) { 'application/pdf' }
+      let(:file_contents1) { file_as_base64(fixture_filename, fixture_mime_type) }
+      let(:file_contents2) { file_as_base64(fixture_filename, fixture_mime_type) }
+      let!(:files_field1) do
+        create(
+          :custom_field,
+          resource: custom_form,
+          input_type: 'file_upload',
+          key: 'custom_field_name1',
+          enabled: true,
+          title_multiloc: { 'en' => 'Please upload a plan' }
+        )
+      end
+      let!(:files_field2) do
+        create(
+          :custom_field,
+          resource: custom_form,
+          input_type: 'file_upload',
+          key: 'custom_field_name2',
+          enabled: true,
+          title_multiloc: { 'en' => 'Please upload another plan' }
+        )
+      end
+      let(:custom_field_name1) do
+        {
+          content: file_contents1,
+          name: filename1
+        }
+      end
+      let(:custom_field_name2) do
+        {
+          content: file_contents2,
+          name: filename2
+        }
+      end
+      let(:project) { create(:single_phase_native_survey_project) }
+      let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+
+      context 'published idea' do
+        example_request 'Create a survey response with file upload fields' do
+          assert_status 201
+          expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project.id
+
+          # Verify that the input is saved correctly
+          input = project.reload.ideas.sole
+          expect(input.phase_ids).to eq [project.phases.first.id]
+          expect(input.creation_phase).to eq project.phases.first
+
+          # Verify that the files are saved correctly
+          expect(input.idea_files).to be_empty
+          expect(input.file_attachments.size).to eq(2)
+          expect(input.attached_files.size).to eq(2)
+
+          file_attachment1_id = response_data.dig(:attributes, :custom_field_name1, :id)
+          attachment1 = input.file_attachments.find(file_attachment1_id)
+          expect(attachment1.file.name).to eq(filename1)
+
+          file_attachment2_id = response_data.dig(:attributes, :custom_field_name2, :id)
+          attachment2 = input.file_attachments.find(file_attachment2_id)
+          expect(attachment2.file.name).to eq(filename2)
+
+          expect(input.custom_field_values).to match(
+            'custom_field_name1' => { 'id' => file_attachment1_id, 'name' => filename1 },
+            'custom_field_name2' => { 'id' => file_attachment2_id, 'name' => filename2 }
           )
-        end
-        let!(:files_field2) do
-          create(
-            :custom_field,
-            resource: custom_form,
-            input_type: 'file_upload',
-            key: 'custom_field_name2',
-            enabled: true,
-            title_multiloc: { 'en' => 'Please upload another plan' }
-          )
-        end
-        let(:custom_field_name1) do
-          {
-            content: file_contents1,
-            name: filename1
-          }
-        end
-        let(:custom_field_name2) do
-          {
-            content: file_contents2,
-            name: filename2
-          }
-        end
-        let(:project) { create(:single_phase_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
-
-        context 'published idea' do
-          example_request 'Create a survey response with file upload fields' do
-            assert_status 201
-            expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-
-            # Verify that the input is saved correctly
-            input = project.reload.ideas.sole
-            expect(input.phase_ids).to eq [project.phases.first.id]
-            expect(input.creation_phase).to eq project.phases.first
-
-            # Verify that the files are saved correctly
-            expect(input.idea_files).to be_empty
-            expect(input.file_attachments.size).to eq(2)
-            expect(input.attached_files.size).to eq(2)
-
-            file_attachment1_id = response_data.dig(:attributes, :custom_field_name1, :id)
-            attachment1 = input.file_attachments.find(file_attachment1_id)
-            expect(attachment1.file.name).to eq(filename1)
-
-            file_attachment2_id = response_data.dig(:attributes, :custom_field_name2, :id)
-            attachment2 = input.file_attachments.find(file_attachment2_id)
-            expect(attachment2.file.name).to eq(filename2)
-
-            expect(input.custom_field_values).to match(
-              'custom_field_name1' => { 'id' => file_attachment1_id, 'name' => filename1 },
-              'custom_field_name2' => { 'id' => file_attachment2_id, 'name' => filename2 }
-            )
-          end
-        end
-
-        context 'draft idea' do
-          let(:publication_status) { 'draft' }
-
-          example_request 'Create a draft survey response with a file upload field' do
-            assert_status 201
-            survey = project.reload.ideas.first
-            expect(survey.publication_status).to eq 'draft'
-            expect(survey.custom_field_values.values).to match_array(
-              survey.file_attachments.map { |attachment| { 'id' => attachment.id, 'name' => attachment.file.name } }
-            )
-          end
         end
       end
 
-      context 'with two shapefile upload fields' do
-        let(:filename1) { 'afvalkalender2022.zip' }
-        let(:filename2) { 'afvalkalender2023.pdf' }
-        let(:fixture_filename) { 'afvalkalender.pdf' }
-        let(:fixture_mime_type) { 'application/pdf' }
-        let(:file_contents1) { file_as_base64(fixture_filename, fixture_mime_type) }
-        let(:file_contents2) { file_as_base64(fixture_filename, fixture_mime_type) }
-        let!(:files_field1) do
-          create(
-            :custom_field,
-            resource: custom_form,
-            input_type: 'shapefile_upload',
-            key: 'custom_field_name1',
-            enabled: true,
-            title_multiloc: { 'en' => 'Please upload a zipfile containing shapefile(s)' }
+      context 'draft idea' do
+        let(:publication_status) { 'draft' }
+
+        example_request 'Create a draft survey response with a file upload field' do
+          assert_status 201
+          survey = project.reload.ideas.first
+          expect(survey.publication_status).to eq 'draft'
+          expect(survey.custom_field_values.values).to match_array(
+            survey.file_attachments.map { |attachment| { 'id' => attachment.id, 'name' => attachment.file.name } }
           )
-        end
-        let!(:files_field2) do
-          create(
-            :custom_field,
-            resource: custom_form,
-            input_type: 'shapefile_upload',
-            key: 'custom_field_name2',
-            enabled: true,
-            title_multiloc: { 'en' => 'Please upload another zipfile containing shapefile(s)' }
-          )
-        end
-        let(:custom_field_name1) do
-          {
-            content: file_contents1,
-            name: filename1
-          }
-        end
-        let(:custom_field_name2) do
-          {
-            content: file_contents2,
-            name: filename2
-          }
-        end
-        let(:project) { create(:single_phase_native_survey_project) }
-        let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
-
-        context 'published idea' do
-          example_request 'Create a survey response with shapefile upload fields' do
-            assert_status 201
-            expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-
-            # Verify that the input is saved correctly
-            input = project.reload.ideas.sole
-            expect(input.phase_ids).to eq [project.phases.first.id]
-            expect(input.creation_phase).to eq project.phases.first
-
-            # Verify that the files are saved correctly
-            expect(input.idea_files).to be_empty
-            expect(input.file_attachments.size).to eq(2)
-            expect(input.attached_files.size).to eq(2)
-
-            file_attachment1_id = response_data.dig(:attributes, :custom_field_name1, :id)
-            attachment1 = input.file_attachments.find(file_attachment1_id)
-            expect(attachment1.file.name).to eq(filename1)
-
-            file_attachment2_id = response_data.dig(:attributes, :custom_field_name2, :id)
-            attachment2 = input.file_attachments.find(file_attachment2_id)
-            expect(attachment2.file.name).to eq filename2
-
-            expect(input.custom_field_values).to match(
-              'custom_field_name1' => { 'id' => file_attachment1_id, 'name' => filename1 },
-              'custom_field_name2' => { 'id' => file_attachment2_id, 'name' => filename2 }
-            )
-          end
-        end
-
-        context 'draft idea' do
-          let(:publication_status) { 'draft' }
-
-          example_request 'Create a draft survey response with a shapefile upload field' do
-            assert_status 201
-            survey = project.reload.ideas.first
-            expect(survey.publication_status).to eq 'draft'
-            expect(survey.custom_field_values.values).to match_array(
-              survey.file_attachments.map { |attachment| { 'id' => attachment.id, 'name' => attachment.file.name } }
-            )
-          end
-        end
-      end
-
-      describe 'without custom_field_values_params for geo fields' do
-        file1 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_file.pdf')
-        file2 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_shapefile.pdf')
-        [
-          { factory: :custom_field_number, value: 42 },
-          { factory: :custom_field_linear_scale, value: 3 },
-          { factory: :custom_field_rating, value: 3 },
-          { factory: :custom_field_text, value: 'test value' },
-          { factory: :custom_field_multiline_text, value: 'test value' },
-          { factory: :custom_field_select, options: [:with_options], value: 'option1' },
-          { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
-          { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
-          { factory: :custom_field_file_upload, value: { 'id' => file1.id, 'name' => file1.name } },
-          { factory: :custom_field_shapefile_upload, value: { 'id' => file2.id, 'name' => file2.name } },
-          { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field does not seem to be supported by native surveys but occurs on production
-        ].each do |field_desc|
-          describe do
-            let(:project) { create(:single_phase_native_survey_project) }
-            let(:form) { create(:custom_form, participation_context: project.phases.first) }
-            let!(:survey_field) { create(field_desc[:factory], key: 'custom_field_name1', required: true, resource: form) }
-            let!(:custom_field_name1) { field_desc[:value] }
-
-            example_request "Create a response with a #{field_desc[:factory]} field" do
-              assert_status 201
-              json_response = json_parse(response_body)
-              idea_from_db = Idea.find(json_response[:data][:id])
-              expect(idea_from_db.custom_field_values).to eq({
-                'custom_field_name1' => field_desc[:value]
-              })
-            end
-          end
-        end
-      end
-
-      describe 'with custom_field_values_params for geo fields' do
-        let(:project) { create(:single_phase_native_survey_project) }
-        let(:form) { create(:custom_form, participation_context: project.phases.first) }
-
-        where(:factory, :param_value, :expected_stored_value) do
-          [
-            [:custom_field_point, 'POINT (4.31 50.85)', { 'type' => 'Point', 'coordinates' => [4.31, 50.85] }],
-            [
-              :custom_field_line,
-              'LINESTRING (4.30 50.85, 4.660 51.15)',
-              { 'type' => 'LineString', 'coordinates' => [[4.30, 50.85], [4.660, 51.15]] }
-            ],
-            [
-              :custom_field_polygon,
-              'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))',
-              { 'type' => 'Polygon', 'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]] }
-            ]
-          ]
-        end
-
-        with_them do
-          describe do
-            let!(:survey_field) { create(factory, key: 'custom_field_name1', required: true, resource: form) }
-            let!(:custom_field_name1) { param_value }
-
-            example_request "Create a response with a #{params[:factory]} field" do
-              assert_status 201
-              json_response = json_parse(response_body)
-              idea_from_db = Idea.find(json_response[:data][:id])
-              expect(idea_from_db.custom_field_values).to eq({
-                'custom_field_name1' => expected_stored_value
-              })
-            end
-          end
-        end
-      end
-
-      context 'with an active participation context' do
-        let!(:custom_field) do
-          create(
-            :custom_field,
-            resource: custom_form,
-            key: 'custom_field_name1',
-            enabled: true,
-            title_multiloc: { 'en' => 'What is your favourite pet?' },
-            description_multiloc: { 'en' => 'Enter one pet.' }
-          )
-        end
-        let(:custom_field_name1) { 'Cat' }
-
-        describe 'with an active native survey phase' do
-          let(:project) { create(:project_with_active_native_survey_phase) }
-          let(:active_phase) { project.phases.first }
-          let(:custom_form) { create(:custom_form, participation_context: active_phase) }
-
-          example_request 'Create an input' do
-            assert_status 201
-            json_response = json_parse response_body
-            expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-            inputs = project.reload.ideas
-            expect(inputs.size).to eq 1
-            input = inputs.first
-            expect(inputs.first.phase_ids).to eq [active_phase.id]
-            expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
-            expect(input.creation_phase_id).to eq active_phase.id
-          end
-
-          context 'when there is an "other" option selected for a custom field' do
-            let!(:custom_field2) { create(:custom_field_select, :with_options, key: 'custom_field_name2', resource: custom_form) }
-            let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
-
-            let(:custom_field_name2) { 'other' }
-            let(:custom_field_name2_other) { 'a text value here' }
-
-            example_request 'Create an input with an other option and text field' do
-              assert_status 201
-              input = project.reload.ideas.first
-              expect(input.custom_field_values).to match({
-                'custom_field_name1' => 'Cat',
-                'custom_field_name2' => 'other',
-                'custom_field_name2_other' => 'a text value here'
-              })
-            end
-          end
-
-          context 'when there are "other" options for a custom fields, but "other" is not selected' do
-            let!(:custom_field2) { create(:custom_field_select, key: 'custom_field_name2', resource: custom_form) }
-            let!(:first_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'first', title_multiloc: { 'en' => 'First' }) }
-            let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
-
-            let!(:custom_field3) { create(:custom_field_multiselect, key: 'custom_field_name3', resource: custom_form) }
-            let!(:an_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'something', title_multiloc: { 'en' => 'Something' }) }
-            let!(:other_other_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
-
-            let(:custom_field_name2) { 'first' }
-            let(:custom_field_name2_other) { 'a text value here' }
-            let(:custom_field_name3) { ['something'] }
-            let(:custom_field_name3_other) { 'another text value here' }
-
-            example_request 'Create an input without other text fields' do
-              assert_status 201
-              input = project.reload.ideas.first
-              expect(input.custom_field_values).to match({
-                'custom_field_name1' => 'Cat',
-                'custom_field_name2' => 'first',
-                'custom_field_name3' => ['something']
-              })
-            end
-          end
-        end
-      end
-
-      context 'without active participation context' do
-        let(:project) { create(:project_with_future_native_survey_phase) }
-
-        example_request '[error] Trying to create an input' do
-          assert_status 400
-          expect(json_parse(response_body)).to be_nil
         end
       end
     end
 
-    context 'when phase_ids are given' do
-      let(:phase_ids) { ['1234'] }
-      let(:project_id) { project.id }
+    context 'with two shapefile upload fields' do
+      let(:filename1) { 'afvalkalender2022.zip' }
+      let(:filename2) { 'afvalkalender2023.pdf' }
+      let(:fixture_filename) { 'afvalkalender.pdf' }
+      let(:fixture_mime_type) { 'application/pdf' }
+      let(:file_contents1) { file_as_base64(fixture_filename, fixture_mime_type) }
+      let(:file_contents2) { file_as_base64(fixture_filename, fixture_mime_type) }
+      let!(:files_field1) do
+        create(
+          :custom_field,
+          resource: custom_form,
+          input_type: 'shapefile_upload',
+          key: 'custom_field_name1',
+          enabled: true,
+          title_multiloc: { 'en' => 'Please upload a zipfile containing shapefile(s)' }
+        )
+      end
+      let!(:files_field2) do
+        create(
+          :custom_field,
+          resource: custom_form,
+          input_type: 'shapefile_upload',
+          key: 'custom_field_name2',
+          enabled: true,
+          title_multiloc: { 'en' => 'Please upload another zipfile containing shapefile(s)' }
+        )
+      end
+      let(:custom_field_name1) do
+        {
+          content: file_contents1,
+          name: filename1
+        }
+      end
+      let(:custom_field_name2) do
+        {
+          content: file_contents2,
+          name: filename2
+        }
+      end
+      let(:project) { create(:single_phase_native_survey_project) }
+      let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
 
-      describe 'in an active native survey phase' do
-        let(:project) { create(:project_with_active_native_survey_phase) }
+      context 'published idea' do
+        example_request 'Create a survey response with shapefile upload fields' do
+          assert_status 201
+          expect(json_response_body.dig(:data, :relationships, :project, :data, :id)).to eq project.id
 
-        example_request '[error] Trying to create an input' do
-          assert_status 400
-          expect(json_parse(response_body)).to be_nil
+          # Verify that the input is saved correctly
+          input = project.reload.ideas.sole
+          expect(input.phase_ids).to eq [project.phases.first.id]
+          expect(input.creation_phase).to eq project.phases.first
+
+          # Verify that the files are saved correctly
+          expect(input.idea_files).to be_empty
+          expect(input.file_attachments.size).to eq(2)
+          expect(input.attached_files.size).to eq(2)
+
+          file_attachment1_id = response_data.dig(:attributes, :custom_field_name1, :id)
+          attachment1 = input.file_attachments.find(file_attachment1_id)
+          expect(attachment1.file.name).to eq(filename1)
+
+          file_attachment2_id = response_data.dig(:attributes, :custom_field_name2, :id)
+          attachment2 = input.file_attachments.find(file_attachment2_id)
+          expect(attachment2.file.name).to eq filename2
+
+          expect(input.custom_field_values).to match(
+            'custom_field_name1' => { 'id' => file_attachment1_id, 'name' => filename1 },
+            'custom_field_name2' => { 'id' => file_attachment2_id, 'name' => filename2 }
+          )
         end
       end
 
-      context 'without active participation context' do
-        let(:project) { create(:project_with_future_native_survey_phase) }
+      context 'draft idea' do
+        let(:publication_status) { 'draft' }
 
-        example_request '[error] Trying to create an input' do
-          assert_status 400
-          expect(json_parse(response_body)).to be_nil
+        example_request 'Create a draft survey response with a shapefile upload field' do
+          assert_status 201
+          survey = project.reload.ideas.first
+          expect(survey.publication_status).to eq 'draft'
+          expect(survey.custom_field_values.values).to match_array(
+            survey.file_attachments.map { |attachment| { 'id' => attachment.id, 'name' => attachment.file.name } }
+          )
         end
+      end
+    end
+
+    describe 'without custom_field_values_params for geo fields' do
+      file1 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_file.pdf')
+      file2 = IdeaFile.create(file: Rails.root.join('spec/fixtures/afvalkalender.pdf').open, name: 'my_shapefile.pdf')
+      [
+        { factory: :custom_field_number, value: 42 },
+        { factory: :custom_field_linear_scale, value: 3 },
+        { factory: :custom_field_rating, value: 3 },
+        { factory: :custom_field_text, value: 'test value' },
+        { factory: :custom_field_multiline_text, value: 'test value' },
+        { factory: :custom_field_select, options: [:with_options], value: 'option1' },
+        { factory: :custom_field_multiselect, options: [:with_options], value: %w[option1 option2] },
+        { factory: :custom_field_multiselect_image, options: [:with_options], value: %w[image1] },
+        { factory: :custom_field_file_upload, value: { 'id' => file1.id, 'name' => file1.name } },
+        { factory: :custom_field_shapefile_upload, value: { 'id' => file2.id, 'name' => file2.name } },
+        { factory: :custom_field_html_multiloc, value: { 'fr-FR' => '<p>test value</p>' } } # This field does not seem to be supported by native surveys but occurs on production
+      ].each do |field_desc|
+        describe do
+          let(:project) { create(:single_phase_native_survey_project) }
+          let(:form) { create(:custom_form, participation_context: project.phases.first) }
+          let!(:survey_field) { create(field_desc[:factory], key: 'custom_field_name1', required: true, resource: form) }
+          let!(:custom_field_name1) { field_desc[:value] }
+
+          example_request "Create a response with a #{field_desc[:factory]} field" do
+            assert_status 201
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values).to eq({
+              'custom_field_name1' => field_desc[:value]
+            })
+          end
+        end
+      end
+    end
+
+    describe 'with custom_field_values_params for geo fields' do
+      let(:project) { create(:single_phase_native_survey_project) }
+      let(:form) { create(:custom_form, participation_context: project.phases.first) }
+
+      where(:factory, :param_value, :expected_stored_value) do
+        [
+          [:custom_field_point, 'POINT (4.31 50.85)', { 'type' => 'Point', 'coordinates' => [4.31, 50.85] }],
+          [
+            :custom_field_line,
+            'LINESTRING (4.30 50.85, 4.660 51.15)',
+            { 'type' => 'LineString', 'coordinates' => [[4.30, 50.85], [4.660, 51.15]] }
+          ],
+          [
+            :custom_field_polygon,
+            'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))',
+            { 'type' => 'Polygon', 'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]] }
+          ]
+        ]
+      end
+
+      with_them do
+        describe do
+          let!(:survey_field) { create(factory, key: 'custom_field_name1', required: true, resource: form) }
+          let!(:custom_field_name1) { param_value }
+
+          example_request "Create a response with a #{params[:factory]} field" do
+            assert_status 201
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values).to eq({
+              'custom_field_name1' => expected_stored_value
+            })
+          end
+        end
+      end
+    end
+
+    context 'with an active participation context' do
+      let!(:custom_field) do
+        create(
+          :custom_field,
+          resource: custom_form,
+          key: 'custom_field_name1',
+          enabled: true,
+          title_multiloc: { 'en' => 'What is your favourite pet?' },
+          description_multiloc: { 'en' => 'Enter one pet.' }
+        )
+      end
+      let(:custom_field_name1) { 'Cat' }
+
+      describe 'with an active native survey phase' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:active_phase) { project.phases.first }
+        let(:custom_form) { create(:custom_form, participation_context: active_phase) }
+
+        example_request 'Create an input' do
+          assert_status 201
+          json_response = json_parse response_body
+          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project.id
+          inputs = project.reload.ideas
+          expect(inputs.size).to eq 1
+          input = inputs.first
+          expect(inputs.first.phase_ids).to eq [active_phase.id]
+          expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
+          expect(input.creation_phase_id).to eq active_phase.id
+        end
+
+        context 'when there is an "other" option selected for a custom field' do
+          let!(:custom_field2) { create(:custom_field_select, :with_options, key: 'custom_field_name2', resource: custom_form) }
+          let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+          let(:custom_field_name2) { 'other' }
+          let(:custom_field_name2_other) { 'a text value here' }
+
+          example_request 'Create an input with an other option and text field' do
+            assert_status 201
+            input = project.reload.ideas.first
+            expect(input.custom_field_values).to match({
+              'custom_field_name1' => 'Cat',
+              'custom_field_name2' => 'other',
+              'custom_field_name2_other' => 'a text value here'
+            })
+          end
+        end
+
+        context 'when there are "other" options for a custom fields, but "other" is not selected' do
+          let!(:custom_field2) { create(:custom_field_select, key: 'custom_field_name2', resource: custom_form) }
+          let!(:first_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'first', title_multiloc: { 'en' => 'First' }) }
+          let!(:other_option) { create(:custom_field_option, custom_field: custom_field2, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+          let!(:custom_field3) { create(:custom_field_multiselect, key: 'custom_field_name3', resource: custom_form) }
+          let!(:an_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'something', title_multiloc: { 'en' => 'Something' }) }
+          let!(:other_other_option) { create(:custom_field_option, custom_field: custom_field3, other: true, key: 'other', title_multiloc: { 'en' => 'Other' }) }
+
+          let(:custom_field_name2) { 'first' }
+          let(:custom_field_name2_other) { 'a text value here' }
+          let(:custom_field_name3) { ['something'] }
+          let(:custom_field_name3_other) { 'another text value here' }
+
+          example_request 'Create an input without other text fields' do
+            assert_status 201
+            input = project.reload.ideas.first
+            expect(input.custom_field_values).to match({
+              'custom_field_name1' => 'Cat',
+              'custom_field_name2' => 'first',
+              'custom_field_name3' => ['something']
+            })
+          end
+        end
+      end
+    end
+
+    context 'without active participation context' do
+      let(:project) { create(:project_with_future_native_survey_phase) }
+      let(:publication_status) { 'published' }
+
+      example_request '[error] Trying to create an input' do
+        assert_status 401
+        expect(json_response_body).to eq({ errors: { base: [{ error: 'inactive_phase' }] } })
       end
     end
   end
