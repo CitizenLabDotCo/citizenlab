@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Pagina delle impostazioni del profilo di {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Una volta cliccato questo pulsante, non avremo modo di ripristinare il tuo account.",
   "app.containers.UsersEditPage.noNameWarning2": "Il tuo nome è attualmente visualizzato sulla piattaforma come: \"{displayName}\" perché non hai inserito il tuo nome. Si tratta di un nome autogenerato. Se vuoi cambiarlo, inserisci il tuo nome qui sotto.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Che tipo di notifiche e-mail vuoi ricevere? ",
-  "app.containers.UsersEditPage.notificationsTitle": "Notifiche via e-mail",
   "app.containers.UsersEditPage.password": "Scegli una nuova password",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Fornire una password lunga almeno {minimumPasswordLength} caratteri",
   "app.containers.UsersEditPage.passwordAddSection": "Aggiungi una password",

@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Page des paramètres du profil de {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Une fois que vous aurez cliqué sur ce bouton, nous n'aurons aucuns moyens de restaurer votre compte.",
   "app.containers.UsersEditPage.noNameWarning2": "Vous apparaissez actuellement sur la plateforme sous le nom de « {displayName} » car vous n'avez pas renseigné de nom. Il s'agit d'un nom généré automatiquement. Si vous souhaitez le modifier, veuillez saisir votre nom ci-dessous.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Quels types de notifications par email souhaitez-vous recevoir ?",
-  "app.containers.UsersEditPage.notificationsTitle": "Notifications par email",
   "app.containers.UsersEditPage.password": "Choisissez un nouveau mot de passe",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Fournissez un mot de passe d'au moins {minimumPasswordLength} caractères",
   "app.containers.UsersEditPage.passwordAddSection": "Ajouter un mot de passe",

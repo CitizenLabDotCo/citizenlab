@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "{firstName} {lastName} ਦਾ ਪ੍ਰੋਫਾਈਲ ਸੈਟਿੰਗ ਸਫ਼ਾ | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "ਇੱਕ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਇਸ ਬਟਨ 'ਤੇ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਤਾਂ ਸਾਡੇ ਕੋਲ ਤੁਹਾਡੇ ਖਾਤੇ ਨੂੰ ਬਹਾਲ ਕਰਨ ਦਾ ਕੋਈ ਤਰੀਕਾ ਨਹੀਂ ਹੋਵੇਗਾ।",
   "app.containers.UsersEditPage.noNameWarning2": "ਤੁਹਾਡਾ ਨਾਮ ਵਰਤਮਾਨ ਵਿੱਚ ਪਲੇਟਫਾਰਮ 'ਤੇ ਇਸ ਤਰ੍ਹਾਂ ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ: \"{displayName}\" ਕਿਉਂਕਿ ਤੁਸੀਂ ਆਪਣਾ ਨਾਮ ਦਰਜ ਨਹੀਂ ਕੀਤਾ ਹੈ। ਇਹ ਇੱਕ ਸਵੈ-ਤਿਆਰ ਨਾਮ ਹੈ। ਜੇਕਰ ਤੁਸੀਂ ਇਸਨੂੰ ਬਦਲਣਾ ਚਾਹੁੰਦੇ ਹੋ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਆਪਣਾ ਨਾਮ ਦਰਜ ਕਰੋ।",
-  "app.containers.UsersEditPage.notificationsSubTitle": "ਤੁਸੀਂ ਕਿਸ ਕਿਸਮ ਦੀਆਂ ਈਮੇਲ ਸੂਚਨਾਵਾਂ ਪ੍ਰਾਪਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ? ",
-  "app.containers.UsersEditPage.notificationsTitle": "ਈਮੇਲ ਸੂਚਨਾਵਾਂ",
   "app.containers.UsersEditPage.password": "ਇੱਕ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "ਇੱਕ ਪਾਸਵਰਡ ਪ੍ਰਦਾਨ ਕਰੋ ਜੋ ਘੱਟੋ-ਘੱਟ {minimumPasswordLength} ਅੱਖਰਾਂ ਦਾ ਹੋਵੇ",
   "app.containers.UsersEditPage.passwordAddSection": "ਇੱਕ ਪਾਸਵਰਡ ਸ਼ਾਮਲ ਕਰੋ",

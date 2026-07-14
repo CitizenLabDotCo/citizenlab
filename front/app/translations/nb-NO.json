@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Profilinnstillinger på {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Når du klikker på denne knappen, har vi ingen mulighet til å gjenopprette kontoen din.",
   "app.containers.UsersEditPage.noNameWarning2": "Navnet ditt vises for øyeblikket på plattformen som: \"{displayName}\" fordi du ikke har skrevet inn navnet ditt. Dette er et autogenerert navn. Hvis du ønsker å endre det, kan du skrive inn navnet ditt nedenfor.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Hva slags e-postvarsler ønsker du å motta? ",
-  "app.containers.UsersEditPage.notificationsTitle": "E-postvarsler",
   "app.containers.UsersEditPage.password": "Velg et nytt passord",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Oppgi et passord som er minst {minimumPasswordLength} tegn langt",
   "app.containers.UsersEditPage.passwordAddSection": "Legg til et passord",

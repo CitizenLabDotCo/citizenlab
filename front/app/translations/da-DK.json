@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Siden med profilindstillinger på {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Når du klikker på denne knap, vil vi ikke kunne genskabe din konto. ",
   "app.containers.UsersEditPage.noNameWarning2": "Dit navn vises i øjeblikket på platformen som: \"{displayName}\", fordi du ikke har indtastet dit navn. Dette er et autogenereret navn. Hvis du gerne vil ændre det, skal du indtaste dit navn nedenfor.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Hvilke slags e-mail-meddelelser vil du modtage?",
-  "app.containers.UsersEditPage.notificationsTitle": "E-mail notifikationer",
   "app.containers.UsersEditPage.password": "Vælg en ny adgangskode",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Angiv en adgangskode, der er mindst {minimumPasswordLength} tegn lang",
   "app.containers.UsersEditPage.passwordAddSection": "Tilføj en adgangskode",

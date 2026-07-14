@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "{firstName} {lastName} | {orgName}profil ayarları sayfası",
   "app.containers.UsersEditPage.noGoingBack": "Bu düğmeye tıkladığınızda hesabınızı geri yüklememiz mümkün olmayacaktır.",
   "app.containers.UsersEditPage.noNameWarning2": "Adınız şu anda platformda şu şekilde görüntüleniyor: \"{displayName}\" olarak görüntüleniyor çünkü adınızı girmediniz. Bu otomatik oluşturulan bir isimdir. Değiştirmek isterseniz, lütfen aşağıya adınızı girin.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Hangi tür e-posta bildirimleri almak istiyorsunuz? ",
-  "app.containers.UsersEditPage.notificationsTitle": "E-posta bildirimleri",
   "app.containers.UsersEditPage.password": "Yeni bir parola seçin",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "En az {minimumPasswordLength} karakter uzunluğunda bir parola girin",
   "app.containers.UsersEditPage.passwordAddSection": "Parola ekleme",

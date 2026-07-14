@@ -2330,8 +2330,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Profileinstellungen von {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Sobald Sie auf den Button unten klicken, haben wir keine Möglichkeit mehr, Ihr Konto wiederherzustellen.",
   "app.containers.UsersEditPage.noNameWarning2": "Ihr Name wird derzeit auf der Plattform angezeigt als: \"{displayName}\", da Sie Ihren Namen nicht eingegeben haben. Dies ist ein automatisch generierter Name. Wenn Sie ihn ändern möchten, geben Sie bitte unten Ihren Namen ein.",
-  "app.containers.UsersEditPage.notificationsSubTitle": "Welche Arten von E-Mail-Benachrichtigungen möchtest du erhalten? ",
-  "app.containers.UsersEditPage.notificationsTitle": "E-Mail-Benachrichtigungen",
   "app.containers.UsersEditPage.password": "Wählen Sie ein neues Passwort",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Stellen Sie ein Passwort zur Verfügung, das mindestens {minimumPasswordLength} Zeichen lang ist",
   "app.containers.UsersEditPage.passwordAddSection": "Ein Passwort hinzufügen",
