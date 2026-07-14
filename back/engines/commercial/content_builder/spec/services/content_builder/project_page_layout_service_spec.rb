@@ -66,7 +66,7 @@ describe ContentBuilder::ProjectPageLayoutService do
     }
   end
 
-  let(:canonical_body) { %w[PROJECT_PAGE_DESCRIPTION PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS] }
+  let(:project_widgets) { %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS] }
 
   def resolved_names(json)
     json.values.filter_map do |n|
@@ -78,7 +78,7 @@ describe ContentBuilder::ProjectPageLayoutService do
   def canonical_names
     %w[
       ProjectPageRoot ProjectBanner ProjectTitle ProjectPageBody
-      ProjectDescriptionSection PhasesWidget EventsWidget
+      PhasesWidget EventsWidget
     ]
   end
 
@@ -87,29 +87,28 @@ describe ContentBuilder::ProjectPageLayoutService do
       service.from_description_craftjs(json)
     end
 
-    it 'produces the canonical frozen structure' do
+    it 'produces the canonical structure' do
       result = build(plain_text_description)
 
       expect(result['ROOT']['nodes']).to eq(%w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_BODY])
       expect(result['ROOT']['type']).to eq({ 'resolvedName' => 'ProjectPageRoot' })
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(canonical_body)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['d_txt1'] + project_widgets)
       canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
-    it 're-keys the description content into the description section' do
+    it 're-keys the description content into the body' do
       result = build(plain_text_description)
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(['d_txt1'])
-      expect(result['d_txt1']['parent']).to eq('PROJECT_PAGE_DESCRIPTION')
+      expect(result['d_txt1']['parent']).to eq('PROJECT_PAGE_BODY')
       expect(result).not_to have_key('txt1')
     end
 
     it 'preserves nested content and remaps inner parent/child pointers' do
       result = build(rich_description)
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(%w[d_img1 d_col1 d_acc1])
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(%w[d_img1 d_col1 d_acc1] + project_widgets)
       expect(result['d_col1']['nodes']).to eq(%w[d_left1 d_right1])
-      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_DESCRIPTION')
+      expect(result['d_col1']['parent']).to eq('PROJECT_PAGE_BODY')
       expect(result['d_left1']['nodes']).to eq(['d_nested1'])
       expect(result['d_nested1']['parent']).to eq('d_left1')
     end
@@ -119,21 +118,20 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       names = resolved_names(result)
       expect(names).not_to include('Published', 'Selection')
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(%w[d_col1 d_txt1])
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(%w[d_col1 d_txt1] + project_widgets)
       expect(result['d_left1']['nodes']).to eq(['d_keep1'])
       expect(result).not_to have_key('d_sel1')
       expect(result).not_to have_key('d_pub1')
     end
 
-    it 'produces the full canonical structure with an empty section for an empty description' do
+    it 'produces the full canonical structure for an empty description' do
       result = build(empty_description)
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq([])
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(canonical_body)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(project_widgets)
       canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
-    it 'locks every fixed section (fixed point of normalizeProjectPageLayout)' do
+    it 'locks only the header widgets (fixed point of normalizeProjectPageLayout)' do
       result = build(empty_description)
 
       expect(result['PROJECT_PAGE_PHASES']['custom']).to eq(
@@ -141,26 +139,27 @@ describe ContentBuilder::ProjectPageLayoutService do
           'id' => 'app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle',
           'defaultMessage' => 'Phases'
         },
-        'locked' => true,
         'noPointerEvents' => true
       )
-      %w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_DESCRIPTION
-        PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS].each do |id|
+      %w[PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE].each do |id|
         expect(result[id]['custom']['locked']).to be(true)
+      end
+      project_widgets.each do |id|
+        expect(result[id]['custom']).not_to have_key('locked')
       end
     end
   end
 
   describe '#from_description_multiloc' do
-    it 'wraps a text-only description in a TextMultiloc inside the section' do
+    it 'wraps a text-only description in a TextMultiloc in the body' do
       result = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
 
-      section_children = result['PROJECT_PAGE_DESCRIPTION']['nodes']
-      expect(section_children.length).to eq(1)
-      content = result[section_children.first]
+      content_id = result['PROJECT_PAGE_BODY']['nodes'].first
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq([content_id] + project_widgets)
+      content = result[content_id]
       expect(content['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
       expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
-      expect(content['parent']).to eq('PROJECT_PAGE_DESCRIPTION')
+      expect(content['parent']).to eq('PROJECT_PAGE_BODY')
     end
 
     it 'wraps a description with media in the RichTextMultiloc bridge' do
@@ -168,15 +167,14 @@ describe ContentBuilder::ProjectPageLayoutService do
         { 'en' => '<p><img data-cl2-text-image-text-reference="abc"></p>' }
       )
 
-      content = result[result['PROJECT_PAGE_DESCRIPTION']['nodes'].first]
+      content = result[result['PROJECT_PAGE_BODY']['nodes'].first]
       expect(content['type']).to eq({ 'resolvedName' => 'RichTextMultiloc' })
     end
 
-    it 'leaves the section empty for a blank description' do
+    it 'leaves the body without content for a blank description' do
       result = service.from_description_multiloc({ 'en' => '<p></p>' })
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq([])
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(canonical_body)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(project_widgets)
     end
   end
 
@@ -187,7 +185,7 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      expect(result['PROJECT_PAGE_DESCRIPTION']['nodes']).to eq(['d_txt1'])
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(['d_txt1'] + project_widgets)
     end
 
     it 'builds from the description_multiloc when there is no description layout' do
@@ -195,7 +193,7 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      content = result[result['PROJECT_PAGE_DESCRIPTION']['nodes'].first]
+      content = result[result['PROJECT_PAGE_BODY']['nodes'].first]
       expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
     end
   end
