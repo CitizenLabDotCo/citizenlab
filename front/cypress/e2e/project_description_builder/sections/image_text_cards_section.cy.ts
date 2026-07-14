@@ -38,7 +38,7 @@ describe('Project description builder Image Text Cards section', () => {
   });
 
   it('handles Image Text Cards section correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-image-text-cards').dragAndDrop(
@@ -79,7 +79,7 @@ describe('Project description builder Image Text Cards section', () => {
   });
 
   it('deletes Image Text Cards section correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);

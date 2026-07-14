@@ -26,6 +26,15 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
   def name = 'destroy_resource'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Deletes a resource by id. Only works on resources whose target project is in draft.
@@ -46,6 +55,10 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      unless record
+        return not_found_error("Resource (#{params[:resource_type]})", params[:id])
+      end
+
       authorize_project!(project_for(record))
       authorize(record, :destroy?)
 
@@ -54,9 +67,7 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
       destroy_with_sidefx!(record)
 
-      ok("Destroyed #{params[:resource_type]} #{params[:id]}")
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:resource_type].humanize} not found: #{params[:id]}")
+      response("Destroyed #{params[:resource_type]} #{params[:id]}")
     end
 
     private
@@ -93,7 +104,9 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
     end
 
     def record
-      @record ||= resource_class.find(params[:id])
+      return @record if defined?(@record)
+
+      @record = resource_class.find_by(id: params[:id])
     end
 
     def side_fx

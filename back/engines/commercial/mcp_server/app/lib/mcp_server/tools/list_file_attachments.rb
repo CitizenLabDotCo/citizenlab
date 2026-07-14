@@ -2,13 +2,14 @@
 
 class McpServer::Tools::ListFileAttachments < McpServer::BaseTool
   CONTAINERS = {
-    'Project' => Project,
-    'Phase' => Phase,
-    'Event' => Event
+    'project' => Project,
+    'phase' => Phase,
+    'event' => Event
   }.freeze
   private_constant :CONTAINERS
 
   def name = 'list_file_attachments'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish
@@ -32,7 +33,14 @@ class McpServer::Tools::ListFileAttachments < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      container = CONTAINERS.fetch(params[:resource_type]).find(params[:resource_id])
+      container = CONTAINERS
+        .fetch(params[:resource_type])
+        .find_by(id: params[:resource_id])
+
+      unless container
+        return not_found_error("Resource (#{params[:resource_type]})", params[:resource_id])
+      end
+
       scope = Files::FileAttachment
         .where(attachable: container)
         .includes(:file)
@@ -44,8 +52,6 @@ class McpServer::Tools::ListFileAttachments < McpServer::BaseTool
         serializer: McpServer::Serializers::FileAttachment,
         **params.slice(:page, :per_page)
       )
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:resource_type]} not found: #{params[:resource_id]}")
     end
   end
 end

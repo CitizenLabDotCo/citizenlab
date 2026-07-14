@@ -3877,6 +3877,7 @@
   "app.containers.admin.addCollaboratorsModal.giveAdminRights": "Yönetici hakları verin",
   "app.containers.admin.addCollaboratorsModal.giveManagerRights": "Yönetici hakları verin",
   "app.containers.admin.addCollaboratorsModal.hasReachedOrIsOverLimit": "Planınız dahilindeki koltuk sınırına ulaştınız, {noOfSeats} ek {noOfSeats, plural, one {koltuk} other {koltuk}} eklenecektir.",
+  "app.containers.admin.content_builder.html_block.label": "HTML bloğu",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Durum ekleyin",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip2": "Varsayılan statüler silinemez.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Sil",

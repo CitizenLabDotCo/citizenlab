@@ -30,11 +30,7 @@ module ContentBuilder
       }
     }.freeze
 
-    # Provisions an enabled description layout for a new (or copied/imported)
-    # buildable. Gated on the feature; no-op when off or a layout already exists.
     def provision_for(buildable)
-      return unless feature_activated?
-
       ensure_on_content_builder!(buildable)
     end
 
@@ -42,18 +38,25 @@ module ContentBuilder
     # Content Builder. A failure on one buildable is reported and skipped rather
     # than aborting tenant creation.
     def provision_all_descriptions!
-      return unless feature_activated?
-
       Project.find_each { |project| safely_ensure_on_content_builder(project) }
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
 
-    # Puts one buildable's description on the Content Builder, picking the widget by
-    # content (blank / media / text). Skips if a layout exists.
     def ensure_on_content_builder!(buildable)
-      return if buildable.content_builder_layouts.exists?
+      existing = ContentBuilder::Layout.find_by(
+        content_buildable: buildable,
+        code: layout_code(buildable)
+      )
 
-      create_layout!(buildable, content_aware_craftjs_json(buildable))
+      if existing
+        unless existing.enabled
+          existing.update!(enabled: true, craftjs_json: content_aware_craftjs_json(buildable))
+        end
+      else
+        create_layout!(buildable, content_aware_craftjs_json(buildable))
+      end
+
+      ensure_project_page!(buildable) if buildable.is_a?(Project)
     end
 
     def layout_code(buildable)
@@ -116,8 +119,15 @@ module ContentBuilder
 
     private
 
-    def feature_activated?
-      AppConfiguration.instance.feature_activated?('project_description_builder')
+    def ensure_project_page!(project)
+      return if ContentBuilder::Layout.exists?(content_buildable: project, code: ProjectPageLayoutService::CODE)
+
+      ContentBuilder::Layout.create!(
+        content_buildable: project,
+        code: ProjectPageLayoutService::CODE,
+        enabled: true,
+        craftjs_json: ProjectPageLayoutService.new.craftjs_json_for(project)
+      )
     end
 
     def safely_ensure_on_content_builder(buildable)

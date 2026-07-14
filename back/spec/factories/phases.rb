@@ -163,5 +163,9 @@ FactoryBot.define do
       start_at { Time.zone.today - 7.days }
       end_at { Time.zone.today + 7.days }
     end
+
+    trait :standalone do
+      placement_type { 'standalone' }
+    end
   end
 end

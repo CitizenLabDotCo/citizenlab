@@ -154,7 +154,9 @@ module MultiTenancy
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             description_multiloc: runner.rand_description_multiloc,
             start_at: start_at,
-            end_at: (start_at += rand(1..150).days),
+            # At least 2 days: a 1-day phase spanning a DST spring-forward is only
+            # 23h, which is < Phase::MIN_DURATION (24h) and fails validation.
+            end_at: (start_at += rand(2..150).days),
             participation_method: %w[ideation voting poll information ideation ideation][rand(6)]
           })
 

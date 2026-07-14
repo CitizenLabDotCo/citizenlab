@@ -6,6 +6,15 @@
 class McpServer::Tools::UpdateProject < McpServer::BaseTool
   def name = 'update_project'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: true # Fetches `remote_header_bg_url` from an arbitrary public URL.
+    }
+  end
+
   def description
     <<~DESC.squish
       Updates an existing project's content and settings. Partial update — only the fields you pass
@@ -26,7 +35,9 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      project = Project.find(params[:project_id])
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
+
       attributes = params.except(:project_id)
       project.assign_attributes(merge_multilocs(project, attributes))
 
@@ -34,11 +45,12 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       project.save!
       SideFxProjectService.new.after_update(project, current_user)
 
-      ok("Updated project #{project.id}")
-    rescue ActiveRecord::RecordNotFound
-      error("Project not found: #{params[:project_id]}")
+      response(
+        "Updated project #{project.id}",
+        structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })
+      )
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 end

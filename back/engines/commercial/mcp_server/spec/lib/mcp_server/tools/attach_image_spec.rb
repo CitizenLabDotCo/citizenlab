@@ -11,7 +11,7 @@ describe McpServer::Tools::AttachImage do
   it 'attaches an image to a project' do
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: project.id, remote_url: remote_url },
+      params: { resource_type: 'project', resource_id: project.id, remote_url: remote_url },
       current_user:
     )
 
@@ -25,7 +25,7 @@ describe McpServer::Tools::AttachImage do
 
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Event', resource_id: event.id, remote_url: remote_url },
+      params: { resource_type: 'event', resource_id: event.id, remote_url: remote_url },
       current_user:
     )
 
@@ -39,7 +39,7 @@ describe McpServer::Tools::AttachImage do
 
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: published.id, remote_url: remote_url },
+      params: { resource_type: 'project', resource_id: published.id, remote_url: remote_url },
       current_user:
     )
 
@@ -50,11 +50,11 @@ describe McpServer::Tools::AttachImage do
   it 'returns a not-found error when the resource is missing' do
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: SecureRandom.uuid, remote_url: remote_url },
+      params: { resource_type: 'project', resource_id: SecureRandom.uuid, remote_url: remote_url },
       current_user:
     )
 
     expect(response).to be_error
-    expect(response.content.first[:text]).to match(/Project not found/)
+    expect(response.content.first[:text]).to include('Resource (project) not found')
   end
 end

@@ -12,7 +12,8 @@ import {
 } from './types';
 
 const useAccessDeniedExplanation = (
-  authenticationContext: AuthenticationContext
+  authenticationContext: AuthenticationContext,
+  { enabled = true }: { enabled?: boolean } = {}
 ) => {
   return useQuery<
     AccessDeniedExplanationResponse,
@@ -22,6 +23,7 @@ const useAccessDeniedExplanation = (
   >({
     queryKey: accessDeniedExplanationKeys.item(authenticationContext),
     queryFn: () => fetchAccessDeniedExplanation(authenticationContext),
+    enabled,
   });
 };
 

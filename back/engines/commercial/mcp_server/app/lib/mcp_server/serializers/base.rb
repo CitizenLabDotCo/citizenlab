@@ -103,4 +103,18 @@ class McpServer::Serializers::Base
 
     @flattened_jsonapi_by_id.fetch(record.id)
   end
+
+  private
+
+  # Helper that returns the admin and citizen-facing URLs for the record.
+  # Serializers that want to surface click-through URLs to the LLM should opt in
+  # by merging `urls(record).compact` into their `#attributes` output.
+  def urls(record)
+    url_service = Frontend::UrlService.new
+
+    {
+      admin_url: url_service.admin_url_for(record),
+      public_url: url_service.model_to_url(record)
+    }
+  end
 end

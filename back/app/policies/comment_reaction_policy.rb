@@ -14,7 +14,7 @@ class CommentReactionPolicy < ApplicationPolicy
   end
 
   def create?
-    return unless active? && owner?
+    return unless active? && owner? && policy_for(record.reactable.idea.project).show?
 
     reason = Permissions::IdeaPermissionsService.new(record.reactable.idea, user).denied_reason_for_action 'commenting_idea'
     reason ? raise_not_authorized(reason) : true

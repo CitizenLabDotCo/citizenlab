@@ -134,11 +134,13 @@ export default () => {
     );
 
     if (stillOnPhasesPath && phases.data.length === 0 && !isFetchingPhases) {
-      clHistory.replace(`/admin/projects/${projectId}/phases/new`);
+      clHistory.replace(
+        `/admin/projects/${projectId}/phases/new${window.location.search}`
+      );
     } else if (phaseShown && pathname.endsWith('phases/setup')) {
       const redirectTab = getPhaseLandingTab(phaseShown);
       clHistory.replace(
-        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
+        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}${window.location.search}`
       );
     }
 

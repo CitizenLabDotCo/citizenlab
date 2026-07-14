@@ -19,4 +19,18 @@ describe McpServer::Tools::UpdateProject do
     expect(response).not_to be_error
     expect(project.reload.header_bg.file.read).to eq(fixture_path.binread)
   end
+
+  it 'returns the serialized project with merged multiloc fields' do
+    project.update!(title_multiloc: { 'en' => 'Old', 'fr-FR' => 'Ancien' })
+
+    response = run_mcp_tool(
+      described_class,
+      params: { project_id: project.id, title_multiloc: { 'en' => 'New' } },
+      current_user:
+    )
+
+    expect(response).not_to be_error
+    expect(response.structured_content[:id]).to eq(project.id)
+    expect(response.structured_content[:title_multiloc]).to eq('en' => 'New', 'fr-FR' => 'Ancien')
+  end
 end

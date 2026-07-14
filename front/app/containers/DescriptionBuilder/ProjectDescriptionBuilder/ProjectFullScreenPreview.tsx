@@ -11,7 +11,6 @@ export const ProjectFullScreenPreview = () => {
   const { data: project } = useProjectById(projectId);
 
   if (!project) return null;
-  if (!project.data.attributes.uses_content_builder) return null;
 
   return (
     <FullScreenPreview
