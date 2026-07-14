@@ -1,11 +1,10 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { MessageDescriptor } from 'react-intl';
 
 import { FormSectionTitle } from 'components/UI/FormComponents';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
 import ConsentGroup from './ConsentGroup';
 import {
