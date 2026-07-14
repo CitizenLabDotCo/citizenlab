@@ -74,10 +74,7 @@ resource 'Ideas' do
     end
     let(:custom_field_name1) { 'Cat' }
 
-    context 'in an active native survey phase' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:phase) { project.phases.first }
-
+    shared_examples 'creates the input in the phase' do
       example_request 'Create an input' do
         assert_status 201
         json_response = json_parse response_body
@@ -89,40 +86,27 @@ resource 'Ideas' do
         expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
         expect(input.creation_phase_id).to eq phase.id
       end
+    end
+
+    context 'in an active native survey phase' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:phase) { project.phases.first }
+
+      include_examples 'creates the input in the phase'
     end
 
     context 'in a future native survey phase' do
       let(:project) { create(:project_with_active_and_future_native_survey_phase) }
       let(:phase) { project.phases.last }
 
-      example_request 'Create an input' do
-        assert_status 201
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project.id
-        inputs = project.reload.ideas
-        expect(inputs.size).to eq 1
-        input = inputs.first
-        expect(input.phase_ids).to eq [phase.id]
-        expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
-        expect(input.creation_phase_id).to eq phase.id
-      end
+      include_examples 'creates the input in the phase'
     end
 
     context 'in a future native survey phase without any active phase' do
       let(:project) { create(:project_with_future_native_survey_phase) }
       let(:phase) { project.phases.first }
 
-      example_request 'Create an input' do
-        assert_status 201
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project.id
-        inputs = project.reload.ideas
-        expect(inputs.size).to eq 1
-        input = inputs.first
-        expect(input.phase_ids).to eq [phase.id]
-        expect(input.custom_field_values).to eq({ 'custom_field_name1' => 'Cat' })
-        expect(input.creation_phase_id).to eq phase.id
-      end
+      include_examples 'creates the input in the phase'
     end
   end
 

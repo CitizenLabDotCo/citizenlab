@@ -693,13 +693,18 @@ describe Permissions::IdeaPermissionsService do
     end
     let(:input) { create(:native_survey_response, project: project, creation_phase: phase, publication_status: 'draft') }
     let(:user) { input.author }
+    let(:action) { 'posting_idea' }
 
     it 'allows posting_idea while the phase is active, even without a current timeline phase' do
-      expect(service.denied_reason_for_action('posting_idea')).to be_nil
+      expect(reason).to be_nil
     end
 
-    it 'allows editing_idea while the phase is active' do
-      expect(service.denied_reason_for_action('editing_idea')).to be_nil
+    context 'for editing_idea' do
+      let(:action) { 'editing_idea' }
+
+      it 'allows editing while the phase is active' do
+        expect(reason).to be_nil
+      end
     end
 
     context 'when the phase is over' do
@@ -708,7 +713,7 @@ describe Permissions::IdeaPermissionsService do
       end
 
       it "returns 'inactive_phase' for posting_idea" do
-        expect(service.denied_reason_for_action('posting_idea')).to eq 'inactive_phase'
+        expect(reason).to eq 'inactive_phase'
       end
     end
   end
