@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.notPublic1": "*Ez a válasz csak a projektmenedzserekkel lesz megosztva, a nyilvánosság számára nem.",
   "app.components.CustomFieldsForm.otherArea": "Valahol máshol",
   "app.components.CustomFieldsForm.progressBarLabel": "Előrehalad",
-  "app.components.CustomFieldsForm.progressPercentage": "{percentage}% kész",
   "app.components.CustomFieldsForm.removeAnswer": "Válasz eltávolítása",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Válassz ki annyit, amennyit szeretnél",
   "app.components.CustomFieldsForm.selectBetween": "*Válasszon a {minItems} és a {maxItems} lehetőségek közül",

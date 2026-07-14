@@ -185,7 +185,6 @@
   "app.components.CustomFieldsForm.notPublic1": "*Tämä vastaus jaetaan vain projektipäälliköiden kanssa, eikä sitä jaeta julkisesti.",
   "app.components.CustomFieldsForm.otherArea": "Jossain muualla",
   "app.components.CustomFieldsForm.progressBarLabel": "Edistyminen",
-  "app.components.CustomFieldsForm.progressPercentage": "{percentage} % valmis",
   "app.components.CustomFieldsForm.removeAnswer": "Poista vastaus",
   "app.components.CustomFieldsForm.selectAsManyAsYouLike": "*Valitse niin monta kuin haluat",
   "app.components.CustomFieldsForm.selectBetween": "*Valitse vaihtoehdoista {minItems} ja {maxItems}",
