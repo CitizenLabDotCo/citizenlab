@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { UserComponent, useEditor } from '@craftjs/core';
+import { Node, UserComponent, useEditor } from '@craftjs/core';
 
 import useEvents from 'api/events/useEvents';
 
@@ -111,11 +111,10 @@ EventsWidget.craft = {
     settings: EventsSettings,
   },
   rules: {
-    canDrag: () => false,
+    canDrop: (dropTarget: Node) => dropTarget.data.name === 'ProjectPageBody',
   },
   custom: {
     title: messages.eventsWidgetTitle,
-    locked: true,
     noPointerEvents: true,
   },
 };
