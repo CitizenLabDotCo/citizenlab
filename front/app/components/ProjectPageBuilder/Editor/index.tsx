@@ -23,7 +23,6 @@ import {
   ProjectPageRoot,
   ProjectPageBody,
 } from 'components/ProjectPageBuilder/regions';
-import ProjectDescriptionSection from 'components/ProjectPageBuilder/Widgets/DescriptionSection';
 import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
 import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
 import ProjectBanner from 'components/ProjectPageBuilder/Widgets/ProjectBanner';
@@ -59,7 +58,6 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         EventsWidget,
         ProjectBanner,
         ProjectTitle,
-        ProjectDescriptionSection,
         ProjectPageRoot,
         ProjectPageBody,
       }}
