@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Hesap gerekmiyor",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Bu eylemi yalnızca yöneticiler ve menajerler gerçekleştirebilir. Başka bir gereklilik uygulanmaz.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Katılımcılar {methodName} ile giriş yapar.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "En az bir yöntem seçin, aksi takdirde katılımcıların kim olduklarını kanıtlamalarının bir yolu olmayacaktır.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Tekli oturum açma (SSO) gerektir",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Giriş yapmayı zorunlu tut",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Personelle sınırlı",

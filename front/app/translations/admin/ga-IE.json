@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Níl aon chuntas de dhíth",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Ní féidir ach le riarthóirí agus le bainisteoirí an gníomh seo a dhéanamh. Níl aon riachtanais eile i bhfeidhm.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Síníonn rannpháirtithe isteach le {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Roghnaigh modh amháin ar a laghad, nó ní bheidh aon bhealach ag rannpháirtithe a gcéannacht a chruthú.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Éiligh logáil isteach aonair",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Éiligh logáil isteach",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Teoranta don fhoireann",

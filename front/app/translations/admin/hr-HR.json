@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Račun nije potreban",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Samo administratori i voditelji mogu poduzeti ovu radnju. Ostali uvjeti se ne primjenjuju.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Sudionici se prijavljuju putem {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Odaberite barem jednu metodu, inače sudionici nemaju načina da dokažu tko su.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Zahtijevaj jednokratnu prijavu (SSO)",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Zahtijevaj prijavu",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Ograničeno na osoblje",

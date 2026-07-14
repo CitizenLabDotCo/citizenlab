@@ -4028,7 +4028,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Inget konto behövs",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Endast administratörer och chefer kan utföra denna åtgärd. Inga andra krav gäller.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Deltagare loggar in med {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": "Välj minst en metod, annars har deltagarna inget sätt att bevisa vem de är.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Kräv enkel inloggning (SSO)",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Kräv inloggning",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Begränsat till personal",
