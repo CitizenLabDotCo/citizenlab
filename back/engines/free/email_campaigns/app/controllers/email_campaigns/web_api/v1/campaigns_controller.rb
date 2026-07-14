@@ -199,15 +199,15 @@ module EmailCampaigns
 
     def campaign_params
       if @campaign.sms?
-        sms_campaign_params
+        manual_sms_campaign_params
       elsif @campaign.manual?
-        manual_campaign_params
+        manual_email_campaign_params
       else
-        automated_campaign_params
+        automated_email_campaign_params
       end
     end
 
-    def sms_campaign_params
+    def manual_sms_campaign_params
       params.require(:campaign).permit(
         :enabled,
         group_ids: [],
@@ -216,7 +216,7 @@ module EmailCampaigns
       )
     end
 
-    def manual_campaign_params
+    def manual_email_campaign_params
       params.require(:campaign).permit(
         :enabled,
         :sender,
@@ -228,7 +228,7 @@ module EmailCampaigns
       )
     end
 
-    def automated_campaign_params
+    def automated_email_campaign_params
       params.require(:campaign).permit(
         :enabled,
         :reply_to,
