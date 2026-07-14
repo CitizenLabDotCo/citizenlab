@@ -48,6 +48,12 @@ const MapContainer = styled(Box)<{
     max-height: 120px !important;
   }
 
+  /* Esri lets popups grow to 340px anchored and 80% of the view docked; cap
+     both so they cover less of the map (content scrolls internally). */
+  .esri-popup__main-container {
+    max-height: 300px !important;
+  }
+
   .esri-layer-list {
     max-height: 200px !important;
   }

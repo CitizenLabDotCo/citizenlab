@@ -35,6 +35,7 @@ import {
   BASEMAP_AT_ATTRIBUTION,
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
+  MAP_LEGEND_EXPAND_ID,
 } from './constants';
 import { DefaultBasemapType } from './types';
 
@@ -581,7 +582,7 @@ const getEsriFeaturePopupFeatures = (
 // Popup titles are authored in ArcGIS and can be arbitrarily long. A long title
 // dominates the popup header and pushes the content out of view, so titles over
 // this length are truncated in the header and shown in full in the popup body.
-const MAX_POPUP_TITLE_LENGTH = 60;
+const MAX_POPUP_TITLE_LENGTH = 45;
 
 // truncateTitle
 // Description: Shorten a title to MAX_POPUP_TITLE_LENGTH, cutting on a word
@@ -762,6 +763,18 @@ export const showEsriFeaturePopup = async ({
       buttonEnabled: false,
       position: 'bottom-right',
     };
+  }
+
+  // The docked popup shares the bottom-right corner with the legend, which
+  // opens expanded by default on some maps — collapse it so it doesn't
+  // overlap the popup.
+  if (isSmallView) {
+    const legend = mapView.ui.find(MAP_LEGEND_EXPAND_ID) as
+      | __esri.Expand // Esri types ui.find as returning a plain widget
+      | undefined;
+    if (legend?.expanded) {
+      legend.collapse();
+    }
   }
 
   const openPopup = () => {
