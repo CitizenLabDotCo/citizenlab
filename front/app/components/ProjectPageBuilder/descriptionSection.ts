@@ -1,10 +1,14 @@
 import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
-import { findNodeIdByName } from './defaultLayout';
+import { findNodeIdByName, resolvedNameOf } from './defaultLayout';
 
 const ROOT_ID = 'ROOT';
 
-const DESCRIPTION_SECTION = 'ProjectDescriptionSection';
+const BODY_NAME = 'ProjectPageBody';
+
+// Widgets that render live project data rather than description content. The
+// legacy description projection is everything in the page body except these.
+const PROJECT_WIDGETS = ['PhasesWidget', 'EventsWidget'];
 
 const editorRootNode = (childIds: string[]): SerializedNode => ({
   type: 'div',
@@ -34,11 +38,18 @@ const collectSubtreeIds = (nodes: SerializedNodes, startIds: string[]) => {
   return collected;
 };
 
+const isProjectWidget = (nodes: SerializedNodes, id: string) => {
+  const node = nodes[id] as SerializedNode | undefined;
+  return !!node && PROJECT_WIDGETS.includes(resolvedNameOf(node) ?? '');
+};
+
 export const extractDescriptionEditorData = (
   projectPageNodes: SerializedNodes
 ): SerializedNodes => {
-  const sectionId = findNodeIdByName(projectPageNodes, DESCRIPTION_SECTION);
-  const childIds = sectionId ? projectPageNodes[sectionId].nodes : [];
+  const bodyId = findNodeIdByName(projectPageNodes, BODY_NAME);
+  const childIds = (bodyId ? projectPageNodes[bodyId].nodes : []).filter(
+    (id) => !isProjectWidget(projectPageNodes, id)
+  );
   const subtreeIds = collectSubtreeIds(projectPageNodes, childIds);
 
   const editorData: SerializedNodes = {
@@ -47,7 +58,7 @@ export const extractDescriptionEditorData = (
   subtreeIds.forEach((id) => {
     const node = projectPageNodes[id];
     editorData[id] =
-      node.parent === sectionId ? { ...node, parent: ROOT_ID } : node;
+      node.parent === bodyId ? { ...node, parent: ROOT_ID } : node;
   });
 
   return editorData;
@@ -57,12 +68,16 @@ export const spliceDescriptionEditorData = (
   projectPageNodes: SerializedNodes,
   editedNodes: SerializedNodes
 ): SerializedNodes => {
-  const sectionId = findNodeIdByName(projectPageNodes, DESCRIPTION_SECTION);
-  if (!sectionId || !(ROOT_ID in editedNodes)) return projectPageNodes;
+  const bodyId = findNodeIdByName(projectPageNodes, BODY_NAME);
+  if (!bodyId || !(ROOT_ID in editedNodes)) return projectPageNodes;
 
+  const bodyChildren = projectPageNodes[bodyId].nodes;
+  const previousChildIds = bodyChildren.filter(
+    (id) => !isProjectWidget(projectPageNodes, id)
+  );
   const previousSubtreeIds = collectSubtreeIds(
     projectPageNodes,
-    projectPageNodes[sectionId].nodes
+    previousChildIds
   );
 
   const next: SerializedNodes = {};
@@ -70,12 +85,27 @@ export const spliceDescriptionEditorData = (
     if (!previousSubtreeIds.has(id)) next[id] = node;
   });
 
-  const childIds = editedNodes[ROOT_ID].nodes;
+  const editedChildIds = editedNodes[ROOT_ID].nodes;
   Object.entries(editedNodes).forEach(([id, node]) => {
     if (id === ROOT_ID) return;
-    next[id] = node.parent === ROOT_ID ? { ...node, parent: sectionId } : node;
+    next[id] = node.parent === ROOT_ID ? { ...node, parent: bodyId } : node;
   });
-  next[sectionId] = { ...next[sectionId], nodes: childIds };
+
+  // The edited content replaces the previous description content in place:
+  // at the position of the first content element, or before everything else
+  // (the legacy page's description spot) when there was none.
+  const newBodyChildren: string[] = [];
+  let inserted = false;
+  for (const id of bodyChildren) {
+    if (isProjectWidget(projectPageNodes, id)) {
+      newBodyChildren.push(id);
+    } else if (!inserted) {
+      newBodyChildren.push(...editedChildIds);
+      inserted = true;
+    }
+  }
+  if (!inserted) newBodyChildren.unshift(...editedChildIds);
+  next[bodyId] = { ...next[bodyId], nodes: newBodyChildren };
 
   return next;
 };
