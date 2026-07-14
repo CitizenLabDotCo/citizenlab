@@ -1,15 +1,35 @@
 import React from 'react';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
+import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
+import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import DescriptionToolboxSections from 'components/DescriptionBuilder/DescriptionBuilderToolbox/DescriptionToolboxSections';
-import builderMessages from 'components/ProjectPageBuilder/messages';
-import LockedNote from 'components/ProjectPageBuilder/Widgets/LockedNote';
+import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
+import widgetMessages from 'components/ProjectPageBuilder/Widgets/messages';
+import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
+
+import { useIntl } from 'utils/cl-intl';
 
 const ProjectPageBuilderToolbox = () => {
+  const { formatMessage } = useIntl();
+
   return (
     <Container>
-      <LockedNote message={builderMessages.toolboxLockedNote} />
       <DescriptionToolboxSections />
+      <Section>
+        <DraggableElement
+          id="e2e-draggable-phases"
+          component={<PhasesWidget />}
+          icon="timeline"
+          label={formatMessage(widgetMessages.phasesWidgetTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-events"
+          component={<EventsWidget />}
+          icon="calendar"
+          label={formatMessage(widgetMessages.eventsWidgetTitle)}
+        />
+      </Section>
     </Container>
   );
 };
