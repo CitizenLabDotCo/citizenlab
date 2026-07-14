@@ -2046,7 +2046,6 @@
   "app.containers.PhoneChange.helmetTitle": "ਆਪਣਾ ਫ਼ੋਨ ਨੰਬਰ ਬਦਲੋ",
   "app.containers.PhoneChange.newPhoneLabel": "ਨਵਾਂ ਫ਼ੋਨ ਨੰਬਰ (ਦੇਸ਼ ਦਾ ਕੋਡ ਸ਼ਾਮਲ ਕਰੋ)",
   "app.containers.PhoneChange.phoneEmptyError": "ਇੱਕ ਫ਼ੋਨ ਨੰਬਰ ਦਿਓ",
-  "app.containers.PhoneChange.phoneInvalid": "ਇੱਕ ਵੈਧ ਫ਼ੋਨ ਨੰਬਰ ਦਿਓ, ਜਿਸ ਵਿੱਚ ਦੇਸ਼ ਦਾ ਕੋਡ ਸ਼ਾਮਲ ਹੋਵੇ, ਉਦਾਹਰਨ ਲਈ +1 415 555 2671",
   "app.containers.PhoneChange.phoneTaken": "ਇਹ ਫ਼ੋਨ ਨੰਬਰ ਪਹਿਲਾਂ ਹੀ ਵਰਤੋਂ ਵਿੱਚ ਹੈ।",
   "app.containers.PhoneChange.phoneUnknownError": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.PhoneChange.phoneUpdateCancelled": "ਫ਼ੋਨ ਨੰਬਰ ਅੱਪਡੇਟ ਰੱਦ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।",

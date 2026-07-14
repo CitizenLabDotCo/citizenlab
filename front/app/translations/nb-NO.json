@@ -2046,7 +2046,6 @@
   "app.containers.PhoneChange.helmetTitle": "Endre telefonnummeret ditt",
   "app.containers.PhoneChange.newPhoneLabel": "Nytt telefonnummer (inkluder landskode)",
   "app.containers.PhoneChange.phoneEmptyError": "Oppgi et telefonnummer",
-  "app.containers.PhoneChange.phoneInvalid": "Oppgi et gyldig telefonnummer, inkludert landskode, for eksempel +1 415 555 2671",
   "app.containers.PhoneChange.phoneTaken": "Dette telefonnummeret er allerede i bruk.",
   "app.containers.PhoneChange.phoneUnknownError": "Noe gikk galt. Vennligst prøv igjen.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Oppdatering av telefonnummer har blitt avbrutt.",

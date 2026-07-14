@@ -2046,7 +2046,6 @@
   "app.containers.PhoneChange.helmetTitle": "Oqarasuaativit normua allanngortiguk",
   "app.containers.PhoneChange.newPhoneLabel": "Oqarasuaatip normua nutaaq (nunap kodia ilanngullugu)",
   "app.containers.PhoneChange.phoneEmptyError": "Oqarasuaatip normua nalunaarutigiuk",
-  "app.containers.PhoneChange.phoneInvalid": "Oqarasuaatip normua atorsinnaasoq nalunaarutigiuk, nunap kodia ilanngullugu, soorlu +1 415 555 2671",
   "app.containers.PhoneChange.phoneTaken": "Oqarasuaatip normua una atorneqareerpoq.",
   "app.containers.PhoneChange.phoneUnknownError": "Kukkusoqarpoq. Misileqqiguk.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Oqarasuaatip normuata nutarternera taamaatinneqarpoq.",

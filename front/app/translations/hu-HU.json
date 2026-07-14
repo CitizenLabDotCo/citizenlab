@@ -2046,7 +2046,6 @@
   "app.containers.PhoneChange.helmetTitle": "Telefonszám módosítása",
   "app.containers.PhoneChange.newPhoneLabel": "Új telefonszám (országkóddal együtt)",
   "app.containers.PhoneChange.phoneEmptyError": "Adj meg egy telefonszámot",
-  "app.containers.PhoneChange.phoneInvalid": "Adj meg egy érvényes telefonszámot az országkóddal együtt, például: +1 415 555 2671",
   "app.containers.PhoneChange.phoneTaken": "Ez a telefonszám már használatban van.",
   "app.containers.PhoneChange.phoneUnknownError": "Valami hiba történt. Kérjük, próbáld újra.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "A telefonszám frissítése megszakítva.",

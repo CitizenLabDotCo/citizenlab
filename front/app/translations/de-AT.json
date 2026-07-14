@@ -2046,7 +2046,6 @@
   "app.containers.PhoneChange.helmetTitle": "Ändere deine Telefonnummer",
   "app.containers.PhoneChange.newPhoneLabel": "Neue Telefonnummer (inklusive Ländervorwahl)",
   "app.containers.PhoneChange.phoneEmptyError": "Gib eine Telefonnummer an",
-  "app.containers.PhoneChange.phoneInvalid": "Gib eine gültige Telefonnummer einschließlich der Ländervorwahl an, zum Beispiel +1 415 555 2671",
   "app.containers.PhoneChange.phoneTaken": "Diese Telefonnummer wird bereits verwendet.",
   "app.containers.PhoneChange.phoneUnknownError": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Die Aktualisierung der Telefonnummer wurde abgebrochen.",

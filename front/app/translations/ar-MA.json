@@ -2046,7 +2046,6 @@
   "app.containers.PhoneChange.helmetTitle": "بدل نمرة التيليفون ديالك",
   "app.containers.PhoneChange.newPhoneLabel": "نمرة تيليفون جديدة (دخل رمز الدولة)",
   "app.containers.PhoneChange.phoneEmptyError": "دخل نمرة التيليفون",
-  "app.containers.PhoneChange.phoneInvalid": "دخل نمرة تيليفون صحيحة، بما فيها رمز الدولة، مثلا +1 415 555 2671",
   "app.containers.PhoneChange.phoneTaken": "هاد نمرة التيليفون مستعملة ديجا.",
   "app.containers.PhoneChange.phoneUnknownError": "وقع مشكل. عفاك عاود حاول مرة أخرى.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "تم إلغاء تحديث نمرة التيليفون.",
