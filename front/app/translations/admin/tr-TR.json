@@ -3719,7 +3719,7 @@
   "app.containers.EditSpace.cancel": "İptal",
   "app.containers.EditSpace.folder": "Klasör",
   "app.containers.EditSpace.foldersPlaceholder": "Klasörler",
-  "app.containers.EditSpace.noAddableProjectsOrFolders": "Bu alana eklenebilecek herhangi bir klasör veya proje bulunmamaktadır.",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Bu alana eklenebilecek herhangi bir klasör veya proje bulunmuyor.",
   "app.containers.EditSpace.noProjectsAndFolders": "Bu alana hiçbir proje ve klasör eklenmemiştir.",
   "app.containers.EditSpace.project": "Proje",
   "app.containers.EditSpace.projectsAndFolders": "Projeler ve klasörler",
