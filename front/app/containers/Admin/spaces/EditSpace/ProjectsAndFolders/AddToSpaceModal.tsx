@@ -82,14 +82,16 @@ const AddToSpaceModal = ({ spaceId, opened, onClose }: Props) => {
     >
       <Box p="32px">
         <Box display="flex" gap="16px" mb="32px">
-          <Select
-            value={nodeType}
-            options={typeOptions}
-            onChange={(option) => {
-              setNodeType(option.value);
-              setSelectedId(null);
-            }}
-          />
+          <Box width="140px">
+            <Select
+              value={nodeType}
+              options={typeOptions}
+              onChange={(option) => {
+                setNodeType(option.value);
+                setSelectedId(null);
+              }}
+            />
+          </Box>
           <Box flex="1">
             <Select
               value={selectedId}
