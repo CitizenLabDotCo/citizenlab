@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       campaign = create(:manual_campaign)
       expect(provider).not_to receive(:send)
 
-      delivery = described_class.new.create_delivery(body: 'hi', campaign_id: campaign.id)
+      delivery = described_class.new.create_delivery(body: 'hi', to: phone, campaign_id: campaign.id)
 
       expect(delivery).to have_attributes(status: 'pending', campaign_id: campaign.id)
     end
@@ -25,8 +25,23 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     it 'raises and creates nothing when the SMS feature is disabled' do
       SettingsService.new.deactivate_feature!('sms')
 
-      expect { described_class.new.create_delivery(body: 'hi') }
+      expect { described_class.new.create_delivery(body: 'hi', to: phone) }
         .to raise_error(EmailCampaigns::Sms::Error, /not enabled/)
+      expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
+    end
+
+    it 'raises and creates nothing when the destination is not a valid phone number' do
+      expect { described_class.new.create_delivery(body: 'hi', to: 'not-a-phone') }
+        .to raise_error(EmailCampaigns::Sms::Error, /Invalid phone number/)
+      expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
+    end
+
+    it 'raises and creates nothing when the destination country is not allowed' do
+      # +14155552671 is a US number.
+      SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+
+      expect { described_class.new.create_delivery(body: 'hi', to: phone) }
+        .to raise_error(EmailCampaigns::Sms::Error, /not allowed/)
       expect(EmailCampaigns::Sms::Delivery.count).to eq(0)
     end
   end
@@ -87,6 +102,36 @@ RSpec.describe EmailCampaigns::Sms::SendService do
 
       expect { described_class.new.deliver(delivery, to: phone) }.not_to raise_error
       expect(delivery.reload).to have_attributes(status: 'delivered', error_message: nil)
+    end
+
+    context 'with an allowed-country list configured' do
+      # +14155552671 is a US number.
+      it 'sends when the destination country is on the allow-list' do
+        SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['US'] })
+        allow(provider).to receive(:send).and_return(message_sid: 'SM_ok', status: 'queued')
+
+        described_class.new.deliver(delivery, to: phone)
+
+        expect(delivery.reload.status).to eq('queued')
+      end
+
+      it 'marks the delivery failed and re-raises when the destination country is not allowed' do
+        SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+        expect(provider).not_to receive(:send)
+
+        expect { described_class.new.deliver(delivery, to: phone) }
+          .to raise_error(EmailCampaigns::Sms::Error, /not allowed/)
+        expect(delivery.reload.status).to eq('failed')
+      end
+
+      it 'sends to any country when the allow-list is empty' do
+        SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => [] })
+        allow(provider).to receive(:send).and_return(message_sid: 'SM_ok', status: 'queued')
+
+        described_class.new.deliver(delivery, to: phone)
+
+        expect(delivery.reload.status).to eq('queued')
+      end
     end
   end
 end

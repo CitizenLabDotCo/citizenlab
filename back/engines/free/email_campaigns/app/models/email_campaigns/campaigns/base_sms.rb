@@ -102,6 +102,7 @@ module EmailCampaigns
 
       delivery = EmailCampaigns::Sms::SendService.new.create_delivery(
         body: sms_body(command),
+        to: destination,
         user_id: command[:recipient].id,
         campaign_id: campaign_id
       )

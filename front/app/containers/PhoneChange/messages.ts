@@ -31,12 +31,15 @@ export default defineMessages({
   },
   phoneInvalid: {
     id: 'app.containers.PhoneChange.phoneInvalid',
-    defaultMessage:
-      'Provide a valid phone number, including the country code, for example +1 415 555 2671',
+    defaultMessage: 'Provide a valid phone number, including the country code.',
   },
   phoneTaken: {
     id: 'app.containers.PhoneChange.phoneTaken',
     defaultMessage: 'This phone number is already in use.',
+  },
+  phoneUnsupportedCountry: {
+    id: 'app.containers.PhoneChange.phoneUnsupportedCountry',
+    defaultMessage: 'SMS messages cannot be sent to this country.',
   },
   phoneUnknownError: {
     id: 'app.containers.PhoneChange.phoneUnknownError',

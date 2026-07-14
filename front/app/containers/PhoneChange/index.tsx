@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import { object, string } from 'yup';
 
 import { confirmCodePhoneChange } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
@@ -44,7 +45,11 @@ const PhoneChange = () => {
   const [updateCancelled, setUpdateCancelled] = useState(false);
 
   const schema = object({
-    phone: string().required(formatMessage(messages.phoneEmptyError)),
+    phone: string()
+      .required(formatMessage(messages.phoneEmptyError))
+      .test('is-valid-phone', formatMessage(messages.phoneInvalid), (value) =>
+        value ? isValidPhoneNumber(value) : false
+      ),
   });
 
   const methods = useForm<FormValues>({

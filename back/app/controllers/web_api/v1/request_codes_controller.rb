@@ -62,6 +62,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
       render json: { errors: { new_phone: [{ error: 'is invalid' }] } }, status: :unprocessable_entity
       return
     end
+
+    unless EmailCampaigns::Sms::AllowedCountries.allowed?(parsed.country)
+      render json: { errors: { new_phone: [{ error: 'unsupported_country' }] } }, status: :unprocessable_entity
+      return
+    end
+
     normalized = parsed.e164
 
     if User.where.not(id: current_user.id).exists?(phone: normalized)

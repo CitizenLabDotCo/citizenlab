@@ -75,6 +75,9 @@ export interface IAppConfigurationSettings {
   sms?: {
     allowed: boolean;
     enabled: boolean;
+    // ISO 3166-1 alpha-2 country codes whose phone numbers may receive SMS.
+    // Empty / absent means all countries are allowed.
+    allowed_country_codes?: string[];
   };
   password_login?: {
     allowed: boolean;
