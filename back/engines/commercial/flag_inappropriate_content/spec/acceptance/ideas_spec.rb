@@ -10,7 +10,7 @@ resource 'Ideas' do
     header_token_for @user
   end
 
-  post 'web_api/v1/ideas' do
+  post 'web_api/v1/phases/:phase_id/inputs' do
     before do
       create(:idea_status_proposed)
       SettingsService.new.activate_feature! 'moderation'
@@ -19,7 +19,6 @@ resource 'Ideas' do
     end
 
     with_options scope: :idea do
-      parameter :project_id
       parameter :publication_status
       parameter :title_multiloc
       parameter :body_multiloc
@@ -28,7 +27,7 @@ resource 'Ideas' do
     end
 
     let(:idea) { build(:idea) }
-    let(:project_id) { @project.id }
+    let(:phase_id) { @project.phases.first.id }
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
     let(:body_multiloc) { idea.body_multiloc }
