@@ -153,7 +153,7 @@ RSpec.describe Project do
     it "invalidates a sole-role moderator's token when destroyed" do
       # after_destroy -> remove_moderators strips the project_moderator role,
       # dropping the user's highest_role to :user, which must invalidate their
-      # JWT (TAN-6826). Guards against this destroy path bypassing the model
+      # JWT. Guards against this destroy path bypassing the model
       # callback (e.g. if it were switched to update_columns).
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])

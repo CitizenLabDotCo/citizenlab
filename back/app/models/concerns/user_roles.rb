@@ -137,10 +137,10 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     highest_role_for roles
   end
 
-  # Highest role implied by an arbitrary roles array (defaults to the user's
-  # current roles via #highest_role). Array-based so we can compare the
-  # persisted vs pending roles when deciding whether a save actually changes the
-  # user's highest_role — see #rotate_token_expiry_key_on_highest_role_change.
+  # Highest role implied by an arbitrary roles array, so that the persisted and the
+  # pending roles of one user can be compared — see
+  # #rotate_token_expiry_key_on_highest_role_change. #highest_role passes the user's
+  # current roles.
   def highest_role_for(role_list)
     roles_array = role_list.to_a
     if roles_array.any? { |role| role['type'] == 'admin' }
