@@ -99,10 +99,6 @@ export const canAccessRoute = (
       return isCommunityMonitorModerator(user, tenant);
     }
 
-    // Require a positive moderator signal. A negative `!isRegularUser` check
-    // fails open when the role attributes are missing from the user payload,
-    // granting moderator routes to users who hold no moderator role (TAN-6826).
-    // Admins are already handled above.
     if (user && isModerator(user) && isModeratorRoute(item)) {
       return true;
     }
