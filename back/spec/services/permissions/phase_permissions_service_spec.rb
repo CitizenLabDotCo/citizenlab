@@ -62,17 +62,17 @@ describe Permissions::PhasePermissionsService do
     end
 
     it 'denies a user without a confirmed phone number' do
-      user.update!(phone_number: nil, phone_confirmed_at: nil)
+      user.update!(phone: nil, phone_confirmed_at: nil)
       expect(service.denied_reason_for_action('posting_idea')).to eq 'user_missing_requirements'
     end
 
     it 'denies a user with an unconfirmed phone number' do
-      user.update!(phone_number: '+3212345678', phone_confirmed_at: nil)
+      user.update!(phone: '+3212345678', phone_confirmed_at: nil)
       expect(service.denied_reason_for_action('posting_idea')).to eq 'user_missing_requirements'
     end
 
     it 'permits a user with a confirmed phone number' do
-      user.update!(phone_number: '+3212345678', phone_confirmed_at: Time.now)
+      user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
       expect(service.denied_reason_for_action('posting_idea')).to be_nil
     end
   end

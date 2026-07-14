@@ -282,19 +282,19 @@ describe Permissions::BasePermissionsService do
         before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
         context 'when the user has no phone number' do
-          before { user.update!(phone_number: nil, phone_confirmed_at: nil) }
+          before { user.update!(phone: nil, phone_confirmed_at: nil) }
 
           it { expect(denied_reason).to eq 'user_missing_requirements' }
         end
 
         context 'when the user has an unconfirmed phone number' do
-          before { user.update!(phone_number: '+3212345678', phone_confirmed_at: nil) }
+          before { user.update!(phone: '+3212345678', phone_confirmed_at: nil) }
 
           it { expect(denied_reason).to eq 'user_missing_requirements' }
         end
 
         context 'when the user has a confirmed phone number' do
-          before { user.update!(phone_number: '+3212345678', phone_confirmed_at: Time.now) }
+          before { user.update!(phone: '+3212345678', phone_confirmed_at: Time.now) }
 
           it { expect(denied_reason).to be_nil }
         end
