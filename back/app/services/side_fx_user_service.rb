@@ -102,9 +102,6 @@ class SideFxUserService
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user)
-    # Token invalidation on highest_role change now lives on the User model
-    # (before_update), so it can't be bypassed by role-mutation paths that skip
-    # this service. See UserRoles#rotate_token_expiry_key_on_highest_role_change.
   end
 
   def role_created_side_fx(role, user, current_user)

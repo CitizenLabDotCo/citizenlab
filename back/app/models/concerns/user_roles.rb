@@ -126,16 +126,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
 
     attr_reader :highest_role_after_initialize
 
-    # Invalidate any outstanding JWT when the user's highest_role changes, so a
-    # stale `highest_role` claim can't persist (TAN-6826). Kept on the model
-    # (rather than in a side-effect service) so no role-mutation path can bypass
-    # it. Done inline in before_update to persist in the same UPDATE and to keep
-    # previous_changes intact for the other role side effects.
-    #
-    # NOTE: this relies on `roles` being changed through normal persistence
-    # (save/update/add_role/delete_role). Do NOT change `roles` via
-    # update_column(s)/update_all/insert_all — those skip callbacks and would
-    # silently leave a stale highest_role claim valid.
+    # Never change `roles` via update_column(s)/update_all/insert_all: those skip
+    # this callback, leaving a stale highest_role claim valid in outstanding JWTs.
     before_update :rotate_token_expiry_key_on_highest_role_change
 
     validates :roles, json: { schema: -> { UserRoles.roles_json_schema } }
@@ -164,13 +156,9 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     end
   end
 
-  # A moderator role only counts when it carries its scope id, mirroring the
-  # moderated_*_ids helpers (which compact out nil ids). Without this, a
-  # type-only role hash (e.g. one built in memory before validation) would be
-  # misclassified as a moderator, diverging from #project_moderator? et al.
-  # The roles JSON schema already requires the scope id for each moderator type,
-  # so checking it here keeps in-memory classification equivalent to persisted,
-  # schema-validated data.
+  # The scope id is required so that a type-only role hash, built in memory before
+  # validation, isn't classified as a moderator. Mirrors the moderated_*_ids
+  # helpers, which compact out nil ids.
   def moderator_role_present?(roles_array, type, id_key)
     roles_array.any? { |role| role['type'] == type && !role[id_key].nil? }
   end
@@ -267,18 +255,12 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     self
   end
 
-  # Rotates token_expiry_key (which invalidates every outstanding JWT, forcing a
-  # fresh mint with the correct claim on next login) only when this save actually
-  # changes the user's highest_role. A moderator gaining an extra project role,
-  # whose highest_role is unchanged, is therefore not logged out. Scoped to
-  # before_update: on create there is no prior token to invalidate. See the
-  # before_update declaration above.
+  # Rotating token_expiry_key invalidates every outstanding JWT, so the next login
+  # mints one with the correct highest_role claim. Only a change of highest_role
+  # rotates it: a moderator gaining a further project moderator role is not logged out.
   def rotate_token_expiry_key_on_highest_role_change
     return unless has_attribute?('roles')
     return unless will_save_change_to_roles?
-    # Compare the persisted roles against the pending ones (rather than an
-    # after_initialize snapshot) so detection is accurate regardless of how the
-    # in-memory object was built.
     return if highest_role_for(roles_in_database) == highest_role_for(roles)
 
     self.token_expiry_key = SecureRandom.hex(10)
