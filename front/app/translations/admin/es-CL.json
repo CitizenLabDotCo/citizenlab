@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Cancelar",
   "app.containers.EditSpace.folder": "Carpeta",
   "app.containers.EditSpace.foldersPlaceholder": "Carpetas",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "No hay carpetas ni proyectos que se puedan añadir a este espacio.",
   "app.containers.EditSpace.noProjectsAndFolders": "No se han añadido proyectos ni carpetas a este espacio.",
   "app.containers.EditSpace.project": "Proyecto",
   "app.containers.EditSpace.projectsAndFolders": "Proyectos y carpetas",

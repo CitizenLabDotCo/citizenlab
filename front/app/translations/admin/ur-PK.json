@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "منسوخ کریں",
   "app.containers.EditSpace.folder": "فولڈر",
   "app.containers.EditSpace.foldersPlaceholder": "فولڈرز",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "اس اسپیس میں شامل کرنے کے لیے کوئی فولڈرز یا پروجیکٹس موجود نہیں ہیں۔",
   "app.containers.EditSpace.noProjectsAndFolders": "اس جگہ میں کوئی پروجیکٹ اور فولڈر شامل نہیں کیے گئے ہیں۔",
   "app.containers.EditSpace.project": "منصوبہ",
   "app.containers.EditSpace.projectsAndFolders": "پروجیکٹس اور فولڈرز",

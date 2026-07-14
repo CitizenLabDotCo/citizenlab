@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Annuller",
   "app.containers.EditSpace.folder": "Mappe",
   "app.containers.EditSpace.foldersPlaceholder": "Mapper",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Der er ingen mapper eller projekter, der kan føjes til dette område.",
   "app.containers.EditSpace.noProjectsAndFolders": "Ingen projekter og mapper er tilføjet til dette rum.",
   "app.containers.EditSpace.project": "Projekt",
   "app.containers.EditSpace.projectsAndFolders": "Projekter og mapper",

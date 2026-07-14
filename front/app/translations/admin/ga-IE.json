@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Cealaigh",
   "app.containers.EditSpace.folder": "Fillteán",
   "app.containers.EditSpace.foldersPlaceholder": "Fillteáin",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Níl aon fhillteáin ná tionscadail ann ar féidir iad a chur leis an spás seo.",
   "app.containers.EditSpace.noProjectsAndFolders": "Níl aon tionscadail ná fillteáin curtha leis an spás seo.",
   "app.containers.EditSpace.project": "Tionscadal",
   "app.containers.EditSpace.projectsAndFolders": "Tionscadail agus fillteáin",

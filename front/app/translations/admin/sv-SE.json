@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Avbryt",
   "app.containers.EditSpace.folder": "Mapp",
   "app.containers.EditSpace.foldersPlaceholder": "Mappar",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Det finns inga mappar eller projekt som kan läggas till i den här ytan.",
   "app.containers.EditSpace.noProjectsAndFolders": "Inga projekt och mappar läggs till i det här utrymmet.",
   "app.containers.EditSpace.project": "Projekt",
   "app.containers.EditSpace.projectsAndFolders": "Projekt och mappar",

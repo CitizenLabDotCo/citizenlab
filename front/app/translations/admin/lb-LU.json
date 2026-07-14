@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Ofbriechen",
   "app.containers.EditSpace.folder": "Dossier",
   "app.containers.EditSpace.foldersPlaceholder": "Dossieren",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Et gëtt keng Dossieren oder Projeten, déi dësem Space bäigefüügt kënne ginn.",
   "app.containers.EditSpace.noProjectsAndFolders": "Keng Projeten an Dossieren an dësem Beräich bäigefüügt.",
   "app.containers.EditSpace.project": "Projet",
   "app.containers.EditSpace.projectsAndFolders": "Projeten an Dossieren",

@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Canslo",
   "app.containers.EditSpace.folder": "Ffolder",
   "app.containers.EditSpace.foldersPlaceholder": "Ffolderi",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Nid oes unrhyw ffolderi na phrosiectau y gellir eu hychwanegu at y gofod hwn.",
   "app.containers.EditSpace.noProjectsAndFolders": "Dim prosiectau na ffolderi wedi'u hychwanegu at y gofod hwn.",
   "app.containers.EditSpace.project": "Prosiect",
   "app.containers.EditSpace.projectsAndFolders": "Prosiectau a ffolderi",
