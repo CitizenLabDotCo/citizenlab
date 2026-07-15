@@ -173,7 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "ਪਹਿਲਾ ਅਤੇ ਆਖਰੀ ਨਾਮ ਪੁੱਛੋ।",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "ਪਾਸਵਰਡ",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "ਖਾਤੇ 'ਤੇ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ।",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "ਪਾਸਵਰਡ ਸਿਰਫ਼ ਉਨ੍ਹਾਂ ਉਪਭੋਗਤਾਵਾਂ ਤੋਂ ਮੰਗਿਆ ਜਾਂਦਾ ਹੈ ਜੋ ਈਮੇਲ ਰਾਹੀਂ ਸਾਈਨ ਅੱਪ ਕਰਦੇ ਹਨ। ਕਿਸੇ ਹੋਰ ਤਰੀਕੇ (ਜਿਵੇਂ ਕਿ ਸਿੰਗਲ ਸਾਈਨ-ਓਨ) ਰਾਹੀਂ ਸਾਈਨ ਅੱਪ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਕਦੇ ਵੀ ਪਾਸਵਰਡ ਸੈੱਟ ਕਰਨ ਲਈ ਨਹੀਂ ਕਿਹਾ ਜਾਂਦਾ।",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "ਪਾਸਵਰਡ ਸਿਰਫ਼ ਉਨ੍ਹਾਂ ਉਪਭੋਗਤਾਵਾਂ ਤੋਂ ਮੰਗਿਆ ਜਾਂਦਾ ਹੈ ਜੋ ਈਮੇਲ ਰਾਹੀਂ ਸਾਈਨ ਅੱਪ ਕਰਦੇ ਹਨ। ਦੂਜੇ ਤਰੀਕੇ (ਜਿਵੇਂ ਕਿ ਸਿੰਗਲ ਸਾਈਨ-ਓਨ) ਨਾਲ ਸਾਈਨ ਅੱਪ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਕਦੇ ਵੀ ਪਾਸਵਰਡ ਸੈੱਟ ਕਰਨ ਲਈ ਨਹੀਂ ਕਿਹਾ ਜਾਂਦਾ।",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "ਨਿੱਜੀ ਜਾਣਕਾਰੀ",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "ਅਸੀਂ ਕੀ ਇਕੱਠਾ ਕਰਦੇ ਹਾਂ",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "ਭਾਗੀਦਾਰਾਂ ਤੋਂ ਇਕੱਠੀ ਕੀਤੀ ਗਈ ਜਾਣਕਾਰੀ, ਅਤੇ ਇਸਨੂੰ ਉਹਨਾਂ ਦੀ ਸਬਮਿਸ਼ਨ ਦੇ ਨਾਲ ਕਿਵੇਂ ਸਟੋਰ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।",

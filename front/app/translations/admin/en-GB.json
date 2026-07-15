@@ -173,7 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Ask for first and last name.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Password",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Require a password on the account.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "A password is only requested from users who sign up with an email address. Users who sign up in another way (e.g. single sign-on) are never asked to set one.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "A password is only requested from users who sign up with email. Users who sign up in another way (e.g. single sign-on) are never asked to set one.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Personal info",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "What we collect",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Information collected from participants, and how it is stored alongside their submission.",

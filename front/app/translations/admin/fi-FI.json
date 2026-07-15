@@ -173,7 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Kysy etu- ja sukunimeä.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Salasana",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Vaadi tilille salasana.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Salasanaa pyydetään vain käyttäjiltä, jotka rekisteröityvät sähköpostilla. Käyttäjiltä, jotka rekisteröityvät muulla tavalla (esim. kertakirjautumisella), ei koskaan pyydetä asettamaan sellaista.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Salasanaa pyydetään vain käyttäjiltä, jotka rekisteröityvät sähköpostilla. Käyttäjiltä, jotka rekisteröityvät muulla tavalla (esim. kertakirjautumisella), ei koskaan pyydetä salasanan asettamista.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Henkilötiedot",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Mitä keräämme",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Osallistujilta kerättävät tiedot ja se, miten ne tallennetaan heidän vastauksensa yhteyteen.",
