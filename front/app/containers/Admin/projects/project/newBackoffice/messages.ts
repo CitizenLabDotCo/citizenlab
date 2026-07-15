@@ -37,4 +37,20 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.phaseNoEndDate',
     defaultMessage: 'No end date',
   },
+  extras: {
+    id: 'app.containers.Admin.projects.project.extras',
+    defaultMessage: 'Extras',
+  },
+  newSurvey: {
+    id: 'app.containers.Admin.projects.project.newSurvey',
+    defaultMessage: 'New survey',
+  },
+  ongoing: {
+    id: 'app.containers.Admin.projects.project.ongoing',
+    defaultMessage: 'Ongoing',
+  },
+  notOnProjectPage: {
+    id: 'app.containers.Admin.projects.project.notOnProjectPage',
+    defaultMessage: 'Not on the project page',
+  },
 });
