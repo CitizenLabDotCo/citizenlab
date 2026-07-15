@@ -2,17 +2,17 @@
 
 class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
   def name = 'get_project_layout'
-  def title = 'Get project description layout'
+  def title = 'Get project page layout'
   def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish
-      Reads a project's description-page layout (a craft.js node graph). Returns the raw
-      craftjs_json plus an outline listing every node in visual order with its id, widget
-      type, parent, slot and a text snippet — use the outline to find the node ids to
-      target with update_project_layout. Returns exists: false plus a format_guide when the
-      project has no custom layout yet (create one by calling update_project_layout with a
-      full node graph).
+      Reads a project's page layout (a craft.js node graph). Returns the raw craftjs_json
+      plus an outline listing every node in visual order with its id, widget type, parent,
+      slot and a text snippet — use the outline to find the node ids to target with
+      update_project_layout. Outline entries marked locked are the fixed page scaffold
+      (banner, title, phase timeline, events); the editable content is the subtree of the
+      ProjectDescriptionSection node.
     DESC
   end
 
@@ -29,13 +29,11 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
     {
       type: 'object',
       properties: {
-        exists: { type: 'boolean' },
-        format_guide: { type: 'string', description: 'The craftjs format and widget reference. Only when exists is false.' },
         enabled: { type: 'boolean' },
         outline: McpServer::Serializers::LayoutOutline::JSON_SCHEMA,
         craftjs_json: { type: 'object' }
       },
-      required: %w[exists]
+      required: %w[enabled outline craftjs_json]
     }
   end
 
@@ -44,15 +42,15 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
       project = Project.find(params[:project_id])
       layout = ContentBuilder::Layout.find_by(
         content_buildable: project,
-        code: ContentBuilder::Layout::PROJECT_DESCRIPTION_CODE
+        code: ContentBuilder::ProjectPageLayoutService::CODE
       )
 
+      # Every project gets a page layout at creation (and a rake task backfilled older
+      # ones), so a missing layout is a data anomaly rather than a state to repair here.
       if layout.nil?
-        return response(
-          "Project #{project.id} has no custom description layout. To create one, follow " \
-          'the format guide below and send the complete graph to update_project_layout ' \
-          'with enabled: true.',
-          structured: { exists: false, format_guide: McpServer::Tools::LayoutWidgets::CHEATSHEET }
+        return error(
+          "Project #{project.id} has no page layout. It should have been provisioned " \
+          'at project creation; this needs fixing outside this tool.'
         )
       end
 
@@ -60,9 +58,8 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
       craftjs_json = ContentBuilder::LayoutImageService.new.render_data_images(layout.craftjs_json)
 
       response(
-        "Description layout for project #{project.id}",
+        "Page layout for project #{project.id}",
         structured: {
-          exists: true,
           enabled: layout.enabled,
           outline: McpServer::Serializers::LayoutOutline.new(craftjs_json).entries,
           craftjs_json: craftjs_json
