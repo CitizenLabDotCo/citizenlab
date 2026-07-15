@@ -114,4 +114,102 @@ export default defineMessages({
     defaultMessage:
       'Shortened here to keep the page easy to arrange — the live page shows this section in full.',
   },
+  extraSurveysWidgetTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle',
+    defaultMessage: 'Extra surveys',
+  },
+  extraSurveysManagedNote: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote',
+    defaultMessage:
+      'Only surveys under Extras can be linked. Add them in the {projectEditorLink}.',
+  },
+  extraSurveysSurveyLabel: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysSurveyLabel',
+    defaultMessage: 'Survey',
+  },
+  extraSurveysSelectPlaceholder: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysSelectPlaceholder',
+    defaultMessage: 'Select a survey…',
+  },
+  extraSurveysFormatLabel: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysFormatLabel',
+    defaultMessage: 'Survey button format',
+  },
+  extraSurveysFormatButton: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysFormatButton',
+    defaultMessage: 'Button',
+  },
+  extraSurveysFormatCard: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysFormatCard',
+    defaultMessage: 'Card view',
+  },
+  extraSurveysStyleLabel: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysStyleLabel',
+    defaultMessage: 'Button style',
+  },
+  extraSurveysStylePrimary: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysStylePrimary',
+    defaultMessage: 'Primary',
+  },
+  extraSurveysStyleSecondary: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysStyleSecondary',
+    defaultMessage: 'Secondary',
+  },
+  extraSurveysButtonTextLabel: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysButtonTextLabel',
+    defaultMessage: 'Button text',
+  },
+  extraSurveysDefaultButtonText: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysDefaultButtonText',
+    defaultMessage: 'Take the survey',
+  },
+  extraSurveysBadgeOpen: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeOpen',
+    defaultMessage: 'Open',
+  },
+  extraSurveysBadgeUpcoming: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeUpcoming',
+    defaultMessage: 'Upcoming',
+  },
+  extraSurveysBadgeClosed: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeClosed',
+    defaultMessage: 'Closed',
+  },
+  extraSurveysBadgeCompleted: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeCompleted',
+    defaultMessage: 'Completed',
+  },
+  extraSurveysBadgeRestricted: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysBadgeRestricted',
+    defaultMessage: 'Restricted',
+  },
+  extraSurveysOpensOn: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysOpensOn',
+    defaultMessage: 'Opens {date}',
+  },
+  extraSurveysClosedTimeAgo: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysClosedTimeAgo',
+    defaultMessage: 'Closed {timeAgo}',
+  },
+  extraSurveysClosed: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysClosed',
+    defaultMessage: 'Survey closed',
+  },
+  extraSurveysResponseReceived: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysResponseReceived',
+    defaultMessage: 'Thanks — your response was received',
+  },
+  extraSurveysNotEligible: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysNotEligible',
+    defaultMessage: "You're not eligible to take this survey",
+  },
+  extraSurveysNoSurveyTitle: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle',
+    defaultMessage: 'No survey linked yet',
+  },
+  extraSurveysNoSurveyNote: {
+    id: 'app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote',
+    defaultMessage:
+      'Pick a survey in the settings panel to show it on the page.',
+  },
 });
