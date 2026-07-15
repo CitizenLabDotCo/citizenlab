@@ -672,6 +672,90 @@ describe Permissions::UserRequirementsService do
         end
       end
     end
+
+    # These specs document a deliberate quirk: for a user who signed up via SSO
+    # (i.e. has a linked identity), the service NEVER asks for a password, even
+    # when the permission has require_password enabled. In other words, the
+    # require_password setting is effectively ignored for SSO sign-ups.
+    #
+    # This is admittedly a little weird - you would expect require_password to be
+    # honoured regardless of how the account was created - but it is intentional
+    # for now. In practice, 9 times out of 10, an admin who configures an SSO
+    # login method does NOT want to additionally prompt those users to pick a
+    # password. If we honoured require_password here it would be far too easy for
+    # an admin to overlook the setting and accidentally leave it enabled, forcing
+    # an unwanted password step onto every SSO user. So we drop the password
+    # requirement for SSO users unconditionally.
+    #
+    # See UserRequirementsService#ignore_password_for_sso!.
+    context 'when the user signed up via SSO (has a linked identity)' do
+      let(:permission) do
+        create(:permission, permitted_by: 'users', require_name: true, require_password: true)
+      end
+
+      # An SSO user: has a name and (confirmed) email from the provider, a linked
+      # identity (so #sso? is true), and no password of their own.
+      let(:sso_user) do
+        user = create(
+          :user,
+          first_name: 'Jane',
+          last_name: 'Jacobs',
+          email: 'jane@jacobs.com',
+          email_confirmed_at: Time.now
+        )
+        user.update!(password_digest: nil)
+        create(:identity, user: user, provider: 'fake_sso')
+        user.reload
+      end
+
+      it 'does not require a password, even though require_password is true' do
+        expect(permission.require_password).to be true
+        expect(sso_user.sso?).to be true
+
+        requirements = service.requirements(permission, sso_user)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:password)
+      end
+
+      it 'DOES require a password from an equivalent non-SSO user (proving the SSO exception is what drops it)' do
+        # Same permission, same missing password - but this user has no linked
+        # identity, so the SSO exception does not apply and the password is asked.
+        non_sso_user = create(
+          :user,
+          first_name: 'Jane',
+          last_name: 'Jacobs',
+          email: 'jane@jacobs.com',
+          email_confirmed_at: Time.now
+        )
+        non_sso_user.update!(password_digest: nil)
+        expect(non_sso_user.sso?).to be false
+
+        requirements = service.requirements(permission, non_sso_user)
+        expect(requirements[:authentication][:missing_user_attributes]).to include(:password)
+      end
+
+      context 'and require_confirmed_email is disabled (verification then backs the account)' do
+        before do
+          # A 'users' permission must be backed by at least one authentication
+          # method, so turning off confirmed email requires verification to be
+          # enabled (otherwise the permission is invalid).
+          AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+          AppConfiguration.instance.save!
+          permission.update!(require_verification: true, require_confirmed_email: false)
+        end
+
+        it 'leaves no missing authentication attributes at all - the SSO user is never prompted for a password' do
+          requirements = service.requirements(permission, sso_user)
+          # Why the list is empty:
+          # - :confirmation is dropped because require_confirmed_email is false
+          # - :first_name / :last_name / :email are provided by the SSO identity
+          # - :password is dropped by the SSO exception, despite require_password
+          # Nothing is left to ask, which is exactly why the require_password
+          # setting silently has no effect for SSO sign-ups. (Verification is a
+          # separate requirement key and is unaffected by this.)
+          expect(requirements[:authentication][:missing_user_attributes]).to be_empty
+        end
+      end
+    end
   end
 
   describe '#requirements_fields' do
