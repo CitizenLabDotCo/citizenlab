@@ -100,8 +100,9 @@ module EmailCampaigns
       content_configurable?(object)
     }
 
-    # subject_multiloc is the email subject for content-configurable emails and
-    # the admin-facing label for SMS campaigns (SMS has no subject line).
+    # For content-configurable emails, subject_multiloc is the email's subject line
+    # SMS has no subject, so SMS campaigns reuse this column to
+    # store a campaign name (which in the UI translates to the campaign's label), never sent to recipients.
     attribute :subject_multiloc, if: proc { |object|
       content_configurable?(object) || object.sms?
     }
