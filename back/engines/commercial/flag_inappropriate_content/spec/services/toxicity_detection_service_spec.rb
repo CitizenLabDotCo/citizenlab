@@ -52,6 +52,54 @@ describe FlagInappropriateContent::ToxicityDetectionService do
     end
   end
 
+  describe 'check_toxicity' do
+    let(:llm) { instance_double(Analysis::LLM::ClaudeHaiku45) }
+
+    before do
+      SettingsService.new.activate_feature! 'moderation'
+      SettingsService.new.activate_feature! 'flag_inappropriate_content'
+      stub_const('ENV', ENV.to_h.merge('AWS_TOXICITY_DETECTION_REGION' => 'eu-central-1'))
+      allow(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm)
+    end
+
+    it 'classifies with the default categories when no custom guidelines are configured' do
+      idea = create(:idea, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
+
+      expect(llm).to receive(:chat) do |prompt, response_schema:|
+        expect(prompt).to include 'An idea for my fellow wankers'
+        expect(prompt).not_to include '<guidelines>'
+        expect(response_schema.dig(:properties, :category, :enum)).to eq %w[A B C D E]
+        { 'category' => 'A', 'reason' => 'Contains an insult.' }
+      end
+
+      expect(service.check_toxicity(idea, attributes: [:title_multiloc]))
+        .to eq({ toxicity_label: 'insult', ai_reason: 'Contains an insult.' })
+    end
+
+    it 'checks content against custom guidelines when configured' do
+      config = AppConfiguration.instance
+      config.settings['flag_inappropriate_content']['custom_guidelines'] = 'Messages may not contain links.'
+      config.save!
+      comment = create(:comment, body_multiloc: { 'en' => 'Visit https://spam.example.com' })
+
+      expect(llm).to receive(:chat) do |prompt, response_schema:|
+        expect(prompt).to include 'Messages may not contain links.'
+        expect(response_schema.dig(:properties, :category, :enum)).to eq %w[A B C D E F]
+        { 'category' => 'F', 'reason' => 'The message contains a link.' }
+      end
+
+      expect(service.check_toxicity(comment))
+        .to eq({ toxicity_label: 'guideline_violation', ai_reason: 'The message contains a link.' })
+    end
+
+    it 'returns nil for non-toxic content' do
+      comment = create(:comment, body_multiloc: { 'en' => 'What a nice idea' })
+      allow(llm).to receive(:chat).and_return({ 'category' => 'E', 'reason' => 'Not toxic.' })
+
+      expect(service.check_toxicity(comment)).to be_nil
+    end
+  end
+
   private
 
   def stub_classify_toxicity!(service)
