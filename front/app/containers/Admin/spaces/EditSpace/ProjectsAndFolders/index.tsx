@@ -8,12 +8,8 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 
-import { getModeratedItems } from 'api/admin_publications/getModeratedItems';
-import {
-  FolderNode,
-  ProjectNode,
-  SpaceNode,
-} from 'api/admin_publications/types';
+import { getAddableNodes } from 'api/admin_publications/getAddableNodes';
+import { SpaceNode } from 'api/admin_publications/types';
 import useTreeView from 'api/admin_publications/useTreeView';
 import useAuthUser from 'api/me/useAuthUser';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
@@ -23,7 +19,6 @@ import TreeView from 'components/admin/TreeView';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
-import { isAdmin } from 'utils/permissions/roles';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
@@ -56,24 +51,7 @@ const ProjectsAndFolders = () => {
   const nodesInSpace = spaceNode?.children;
   if (!nodesInSpace) return null;
 
-  // A project or folder can be added when it sits at the root of the tree (not
-  // in any space) and the current user is allowed to manage it: admins can
-  // manage everything, moderators only the items they moderate. This mirrors
-  // what the backend authorizes, so we never offer a project that would 401.
-  const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
-    authUser.data,
-    treeView
-  );
-  const moderatedIds = new Set(
-    [...projectsUserModerates, ...foldersUserModerates].map((node) => node.id)
-  );
-  const userIsAdmin = isAdmin(authUser);
-
-  const addableNodes = treeView.data.attributes.nodes.filter(
-    (node): node is ProjectNode | FolderNode =>
-      (node.type === 'project' || node.type === 'folder') &&
-      (userIsAdmin || moderatedIds.has(node.id))
-  );
+  const addableNodes = getAddableNodes(authUser, treeView);
   const hasAddableNodes = addableNodes.length > 0;
 
   const handleRemove = async (
