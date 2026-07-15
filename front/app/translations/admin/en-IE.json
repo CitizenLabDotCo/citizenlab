@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Ask for first name and surname.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Password",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Require a password on the account.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Requires the “Confirmed email” method to be enabled.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Personal info",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "What we collect",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Information collected from participants, and how it is stored alongside their submission.",

@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Bed om for- og efternavn.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Adgangskode",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Kræv en adgangskode til kontoen.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Kræver, at metoden \"Bekræftet e-mail\" er aktiveret.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Personlige oplysninger",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Hvad vi indsamler",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Information indsamlet fra deltagere, og hvordan den gemmes sammen med deres bidrag.",

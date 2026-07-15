@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Pedir nome e sobrenome.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Senha",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Exigir uma senha na conta.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Requer que o método “E-mail confirmado” esteja ativado.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Informações pessoais",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "O que coletamos",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Informações coletadas dos participantes e como são armazenadas junto com sua contribuição.",

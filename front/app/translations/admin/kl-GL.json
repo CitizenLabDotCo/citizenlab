@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Ateq kingullerlu aperigit.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Isissutissaq",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Kontomi isissutissamik piumasaqaateqarneq.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "\"E-maili uppernarsagaq\" atorneqarnissaa piumasaqaataavoq.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Inuk pillugu paasissutissat",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Suut katersornerigut",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Peqataasunit paasissutissat katersat, aamma tunniussamut qanoq ilanngullugit toqqortarineqartarnerat.",

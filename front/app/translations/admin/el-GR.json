@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Ζητήστε όνομα και επώνυμο.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Κωδικός πρόσβασης",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Απαίτηση κωδικού πρόσβασης στον λογαριασμό.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Απαιτεί την ενεργοποίηση της μεθόδου «Επιβεβαιωμένο email».",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Προσωπικές πληροφορίες",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Τι συλλέγουμε",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Πληροφορίες που συλλέγονται από τους συμμετέχοντες και πώς αποθηκεύονται μαζί με την υποβολή τους.",

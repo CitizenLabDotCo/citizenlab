@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Kysy etu- ja sukunimeä.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Salasana",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Vaadi tilille salasana.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Vaatii, että ”Vahvistettu sähköposti” -menetelmä on käytössä.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Henkilötiedot",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Mitä keräämme",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Osallistujilta kerättävät tiedot ja se, miten ne tallennetaan heidän vastauksensa yhteyteen.",

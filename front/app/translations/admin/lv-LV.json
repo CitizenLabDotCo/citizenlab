@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Jautāt vārdu un uzvārdu.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Parole",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Pieprasīt konta paroli.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Nepieciešams, lai būtu iespējota metode “Apstiprināts e-pasts”.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Personiskā informācija",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Ko mēs ievācam",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "No dalībniekiem ievāktā informācija un veids, kā tā tiek glabāta kopā ar viņu iesniegumu.",

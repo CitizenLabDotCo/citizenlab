@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Pedir nombre y apellidos.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Contraseña",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Requerir una contraseña en la cuenta.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Requiere que el método «Correo confirmado» esté activado.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Información personal",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Qué recopilamos",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Información recopilada de los participantes y cómo se almacena junto con su aportación.",

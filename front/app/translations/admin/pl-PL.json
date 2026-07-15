@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Poproś o imię i nazwisko.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Hasło",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Wymagaj hasła do konta.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Wymaga włączenia metody „Potwierdzony e-mail”.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Dane osobowe",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Co zbieramy",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Informacje zbierane od uczestników oraz sposób ich przechowywania wraz ze zgłoszeniem.",

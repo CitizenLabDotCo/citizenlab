@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Nach Vor- und Nachnamen fragen.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Passwort",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Passwort für das Konto anfordern.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Erfordert die Aktivierung der Methode „Bestätigte E-Mail“.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Persönliche Informationen",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Was wir erfassen",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Von Teilnehmer*innen gesammelte Informationen und wie diese zusammen mit ihrem Beitrag gespeichert werden.",

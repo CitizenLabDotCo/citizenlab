@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Fråga efter för- och efternamn.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Lösenord",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Kräv ett lösenord på kontot.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Kräver att metoden ”Bekräftad e-post” är aktiverad.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Personlig information",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Vad vi samlar in",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Information som samlas in från deltagare och hur den lagras tillsammans med deras bidrag.",
