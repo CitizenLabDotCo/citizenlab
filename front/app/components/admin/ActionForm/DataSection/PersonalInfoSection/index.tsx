@@ -3,7 +3,10 @@
 
 import React from 'react';
 
+import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -16,21 +19,22 @@ import messages from './messages';
 
 interface Props {
   permission: IPhasePermissionData;
-  passwordAvailable: boolean;
-  // The password requirement is specific to email/password accounts; SSO-only
-  // variants hide it entirely.
-  showPassword?: boolean;
   onChange: (changes: Changes) => void;
 }
 
-const PersonalInfoSection = ({
-  permission,
-  passwordAvailable,
-  showPassword = true,
-  onChange,
-}: Props) => {
+const PersonalInfoSection = ({ permission, onChange }: Props) => {
   const { attributes } = permission;
   const { formatMessage } = useIntl();
+  // The password requirement is specific to email/password accounts; SSO-only
+  // platforms (password login disabled) hide it entirely.
+  const showPassword = useFeatureFlag({ name: 'password_login' });
+  // Whether at least one SSO authentication method is enabled. When there is
+  // none the endpoint returns 204 (→ null), so a truthy value means SSO sign-up
+  // is possible - in which case the password requirement only applies to users
+  // who sign up by email, which we explain via a tooltip. (This query is shared
+  // and cached, so calling it here does not trigger an extra fetch.)
+  const { data: authenticationMethod } = useAuthenticationMethod();
+  const hasSSOAuthMethod = !!authenticationMethod;
 
   return (
     <Expander
@@ -49,13 +53,13 @@ const PersonalInfoSection = ({
         <PiiToggle
           icon="lock"
           title={formatMessage(messages.password)}
-          description={
-            passwordAvailable
-              ? formatMessage(messages.passwordAvailableDescription)
-              : formatMessage(messages.passwordUnavailableDescription)
+          description={formatMessage(messages.passwordAvailableDescription)}
+          tooltip={
+            hasSSOAuthMethod
+              ? formatMessage(messages.passwordOnlyForEmailSignupTooltip)
+              : undefined
           }
           checked={attributes.require_password}
-          disabled={!passwordAvailable}
           onChange={() =>
             onChange({ require_password: !attributes.require_password })
           }

@@ -7,6 +7,7 @@ import {
   Text,
   Icon,
   IconNames,
+  IconTooltip,
   Toggle,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -17,6 +18,7 @@ interface Props {
   description: string;
   checked: boolean;
   disabled?: boolean;
+  tooltip?: string;
   onChange: () => void;
 }
 
@@ -26,6 +28,7 @@ const PiiToggle = ({
   description,
   checked,
   disabled,
+  tooltip,
   onChange,
 }: Props) => (
   <Box py="8px">
@@ -46,6 +49,7 @@ const PiiToggle = ({
             <Text as="span" m="0" fontSize="s" fontWeight="semi-bold" color="primary">
               {title}
             </Text>
+            {tooltip && <IconTooltip content={tooltip} iconSize="14px" />}
           </Box>
           <Text as="span" m="0" fontSize="xs" color="coolGrey600">
             {description}

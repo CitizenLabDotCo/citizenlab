@@ -22,20 +22,10 @@ import PersonalInfoSection from './PersonalInfoSection';
 interface Props {
   permission: IPhasePermissionData;
   phaseId: string;
-  passwordAvailable: boolean;
-  // The password requirement is specific to email/password accounts; SSO-only
-  // variants hide it entirely.
-  showPassword?: boolean;
   onChange: (changes: Changes) => void;
 }
 
-const DataSection = ({
-  permission,
-  phaseId,
-  passwordAvailable,
-  showPassword = true,
-  onChange,
-}: Props) => {
+const DataSection = ({ permission, phaseId, onChange }: Props) => {
   const { attributes } = permission;
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
@@ -59,12 +49,7 @@ const DataSection = ({
 
       <Box border={`1px solid ${colors.borderLight}`} borderRadius="8px" px="14px">
         {showPIISection && (
-          <PersonalInfoSection
-            permission={permission}
-            passwordAvailable={passwordAvailable}
-            showPassword={showPassword}
-            onChange={onChange}
-          />
+          <PersonalInfoSection permission={permission} onChange={onChange} />
         )}
 
         {/* Demographics — available in every mode. */}
