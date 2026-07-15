@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Annuleren",
   "app.containers.EditSpace.folder": "Map",
   "app.containers.EditSpace.foldersPlaceholder": "Mappen",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Er zijn geen mappen of projecten die aan deze ruimte kunnen worden toegevoegd.",
   "app.containers.EditSpace.noProjectsAndFolders": "Geen projecten en mappen toegevoegd aan deze ruimte.",
   "app.containers.EditSpace.project": "Project",
   "app.containers.EditSpace.projectsAndFolders": "Projecten en mappen",

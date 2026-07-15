@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Taamaatiguk",
   "app.containers.EditSpace.folder": "Folderi",
   "app.containers.EditSpace.foldersPlaceholder": "Folderit",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Folderinik suliniutinilluunniit uunga inissamut ilanngunneqarsinnaasunik peqanngilaq.",
   "app.containers.EditSpace.noProjectsAndFolders": "Inimi uani suliassanik toqqorsivinnilluunniit ikkussisoqarsimanngilaq.",
   "app.containers.EditSpace.project": "Suliassaq",
   "app.containers.EditSpace.projectsAndFolders": "Suliassat toqqorsiviillu",

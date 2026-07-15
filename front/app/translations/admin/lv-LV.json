@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Atcelt",
   "app.containers.EditSpace.folder": "Mape",
   "app.containers.EditSpace.foldersPlaceholder": "Mapes",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Nav mapju vai projektu, ko varētu pievienot šai telpai.",
   "app.containers.EditSpace.noProjectsAndFolders": "Šajā vietā nav pievienoti projekti un mapes.",
   "app.containers.EditSpace.project": "Projekts",
   "app.containers.EditSpace.projectsAndFolders": "Projekti un mapes",

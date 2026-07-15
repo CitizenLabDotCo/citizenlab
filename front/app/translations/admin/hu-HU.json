@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Mégse",
   "app.containers.EditSpace.folder": "Mappa",
   "app.containers.EditSpace.foldersPlaceholder": "Mappák",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Nincsenek olyan mappák vagy projektek, amelyek hozzáadhatók ehhez a térhez.",
   "app.containers.EditSpace.noProjectsAndFolders": "Nincsenek projektek és mappák hozzáadva ehhez a térhez.",
   "app.containers.EditSpace.project": "Projekt",
   "app.containers.EditSpace.projectsAndFolders": "Projektek és mappák",

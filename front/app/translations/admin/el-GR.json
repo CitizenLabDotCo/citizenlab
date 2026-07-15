@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Ακύρωση",
   "app.containers.EditSpace.folder": "Φάκελος",
   "app.containers.EditSpace.foldersPlaceholder": "Φάκελοι",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Δεν υπάρχουν φάκελοι ή έργα που μπορούν να προστεθούν σε αυτόν τον χώρο.",
   "app.containers.EditSpace.noProjectsAndFolders": "Δεν έχουν προστεθεί έργα και φάκελοι σε αυτόν τον χώρο.",
   "app.containers.EditSpace.project": "Έργο",
   "app.containers.EditSpace.projectsAndFolders": "Έργα και φάκελοι",

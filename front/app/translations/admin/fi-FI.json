@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Peruuta",
   "app.containers.EditSpace.folder": "Kansio",
   "app.containers.EditSpace.foldersPlaceholder": "Kansiot",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Tähän tilaan ei ole lisättävissä olevia kansioita tai projekteja.",
   "app.containers.EditSpace.noProjectsAndFolders": "Tähän tilaan ei ole lisätty projektia tai kansioita.",
   "app.containers.EditSpace.project": "Hanke",
   "app.containers.EditSpace.projectsAndFolders": "Projektit ja kansiot",

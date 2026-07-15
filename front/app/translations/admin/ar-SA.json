@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "إلغاء",
   "app.containers.EditSpace.folder": "مجلد",
   "app.containers.EditSpace.foldersPlaceholder": "مجلدات",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "لا توجد مجلدات أو مشاريع يمكن إضافتها إلى هذه المساحة.",
   "app.containers.EditSpace.noProjectsAndFolders": "لم تتم إضافة أي مشاريع أو مجلدات إلى هذه المساحة.",
   "app.containers.EditSpace.project": "مشروع",
   "app.containers.EditSpace.projectsAndFolders": "المشاريع والمجلدات",

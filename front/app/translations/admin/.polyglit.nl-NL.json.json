@@ -19044,10 +19044,45 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.EditSpace.addNewProjectOrFolder": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.addToSpace": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.cancel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.folder": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.foldersPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.noAddableProjectsOrFolders": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.EditSpace.noProjectsAndFolders": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EditSpace.project": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
   },
   "app.containers.EditSpace.projectsAndFolders": {
     "state": "verified",
@@ -19058,6 +19093,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EditSpace.projectsPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
   },
   "app.containers.EditSpace.settings": {
     "state": "verified",

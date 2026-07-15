@@ -3719,6 +3719,7 @@
   "app.containers.EditSpace.cancel": "Atšaukti",
   "app.containers.EditSpace.folder": "Aplankas",
   "app.containers.EditSpace.foldersPlaceholder": "Aplankai",
+  "app.containers.EditSpace.noAddableProjectsOrFolders": "Nėra aplankų ar projektų, kuriuos būtų galima pridėti prie šios erdvės.",
   "app.containers.EditSpace.noProjectsAndFolders": "Į šią vietą nepridėta jokių projektų ir aplankų.",
   "app.containers.EditSpace.project": "Projektas",
   "app.containers.EditSpace.projectsAndFolders": "Projektai ir aplankai",
