@@ -100,7 +100,6 @@ const SurveyForm = ({
         id: draftIdea.data.id,
         requestBody: {
           ...mergedValues,
-          project_id: projectId,
           publication_status: isSubmitPage ? 'published' : 'draft',
         },
       });
