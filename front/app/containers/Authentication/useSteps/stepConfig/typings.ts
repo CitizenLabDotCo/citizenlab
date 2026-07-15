@@ -17,8 +17,8 @@ export type Step =
   | 'invite:taken'
 
   // missing data (if signed in already)
-  | 'missing-data:built-in'
   | 'missing-data:email-confirmation'
+  | 'missing-data:built-in'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'
 
