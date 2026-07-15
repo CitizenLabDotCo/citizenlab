@@ -20,9 +20,6 @@ const InputIQ = ({
   const isInputIQEnabled = useFeatureFlag({
     name: 'input_iq',
   });
-  const showSimilarInputs = !!(
-    phase?.attributes.similarity_enabled && isInputIQEnabled
-  );
 
   const titleMultiloc = watch('title_multiloc');
   const bodyMultiloc = watch('body_multiloc');
@@ -42,7 +39,7 @@ const InputIQ = ({
     return () => clearTimeout(timer);
   }, [titleMultiloc, bodyMultiloc]);
 
-  if (!showSimilarInputs) {
+  if (!phase?.attributes.similarity_enabled || !isInputIQEnabled) {
     return null;
   }
 

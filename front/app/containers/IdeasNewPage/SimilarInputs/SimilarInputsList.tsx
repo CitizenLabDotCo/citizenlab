@@ -10,10 +10,7 @@ import {
 import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
-import useIdeaById from 'api/ideas/useIdeaById';
 import { IPhaseData } from 'api/phases/types';
-import useProjectById from 'api/projects/useProjectById';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
 import useSimilarIdeas from 'api/similar_ideas/useSimilarIdeas';
 
 import useLocale from 'hooks/useLocale';
@@ -33,29 +30,17 @@ const SimilarIdeasList = ({
 }: {
   titleMultiloc?: Multiloc;
   bodyMultiloc?: Multiloc;
-  phase: IPhaseData | undefined;
+  phase: IPhaseData;
 }) => {
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
   const selectedIdeaRef = useRef<HTMLDivElement>(null);
   const lastClickedIdeaRef = useRef<HTMLElement | null>(null);
   const ideaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
-  const { slug: projectSlug, projectId: urlProjectId } = useParams({
-    strict: false,
-  }) as {
-    slug?: string;
-    projectId?: string;
-  };
   const searchParams = useSearch({ strict: false });
   const { ideaId: idea_id } = useParams({ strict: false });
   const ideaId = searchParams.idea_id || idea_id;
   const selectedIdeaId = searchParams.selected_idea_id;
-  const { data: idea } = useIdeaById(ideaId ?? undefined);
-  const projectId = idea?.data.relationships.project.data.id || urlProjectId;
-  const projectById = useProjectById(projectId);
-  // If we have the projectId, we can use it to fetch the project directly so we don't need to fetch it by slug
-  const projectBySlug = useProjectBySlug(projectId ? undefined : projectSlug);
-  const project = projectById.data ?? projectBySlug.data;
 
   const title = titleMultiloc && titleMultiloc[currentLocale];
   const body = bodyMultiloc && bodyMultiloc[currentLocale];
@@ -92,22 +77,18 @@ const SimilarIdeasList = ({
         searchParams.selected_idea_id === ideaId ? undefined : ideaId,
     });
   };
-  const { data: ideas, isLoading } = useSimilarIdeas(
-    {
-      idea: {
-        id: ideaId,
-        project_id: project?.data.id,
-        ...((title || '').trim() && {
-          title_multiloc: { [currentLocale]: title },
-        }),
-        ...((body || '').trim() && {
-          body_multiloc: { [currentLocale]: body },
-        }),
-      },
-      phase_id: phase?.id,
+  const { data: ideas, isLoading } = useSimilarIdeas({
+    idea: {
+      id: ideaId,
+      ...((title || '').trim() && {
+        title_multiloc: { [currentLocale]: title },
+      }),
+      ...((body || '').trim() && {
+        body_multiloc: { [currentLocale]: body },
+      }),
     },
-    { enabled: !!project?.data.id }
-  );
+    phase_id: phase.id,
+  });
 
   if (isLoading) {
     return (
