@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "ਭਾਗੀਦਾਰੀ ਮੈਟ੍ਰਿਕਸ ਲੋਡ ਕਰਨ ਵੇਲੇ ਗੜਬੜ ਹੋਈ",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "PDF ਡਾਊਨਲੋਡ ਕਰਨ ਵਿੱਚ ਅਸਫਲ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.Admin.projects.project.insights.exportButton": "ਐਕਸਪੋਰਟ ਕਰੋ",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "ਜਵਾਬਾਂ ਨੂੰ PDF ਵਜੋਂ ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.Admin.projects.project.insights.gender": "ਲਿੰਗ",
   "app.containers.Admin.projects.project.insights.ideasPosted": "ਵਿਚਾਰ ਪੋਸਟ ਕੀਤੇ ਗਏ",
   "app.containers.Admin.projects.project.insights.ideation.explore": "ਪੜਚੋਲ ਕਰੋ",

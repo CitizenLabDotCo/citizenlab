@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Σφάλμα κατά τη φόρτωση των μετρήσεων συμμετοχής",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Αποτυχία λήψης PDF. Παρακαλούμε δοκιμάστε ξανά.",
   "app.containers.Admin.projects.project.insights.exportButton": "Εξαγωγή",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Λήψη απαντήσεων ως PDF",
   "app.containers.Admin.projects.project.insights.gender": "Φύλο",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Ιδέες που δημοσιεύτηκαν",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Εξερευνήστε",

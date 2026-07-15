@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Fehler beim Laden von Beteiligungsmetriken",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "PDF-Download fehlgeschlagen. Bitte versuchen Sie es erneut.",
   "app.containers.Admin.projects.project.insights.exportButton": "Exportieren",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Antworten als PDF herunterladen",
   "app.containers.Admin.projects.project.insights.gender": "Geschlecht",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Ideen veröffentlicht",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Erkunden",

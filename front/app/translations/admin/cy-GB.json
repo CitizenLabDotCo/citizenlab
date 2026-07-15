@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Gwall wrth lwytho metrigau cyfranogiad",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Methwyd lawrlwytho'r PDF. Rhowch gynnig arall arni.",
   "app.containers.Admin.projects.project.insights.exportButton": "Allforio",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Lawrlwytho ymatebion fel PDF",
   "app.containers.Admin.projects.project.insights.gender": "Rhyw",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Syniadau wedi'u postio",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Archwilio",

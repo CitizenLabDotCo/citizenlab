@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Kļūda ielādējot līdzdalības rādītājus",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Fail to download PDF. Lūdzu, mēģiniet vēlreiz.",
   "app.containers.Admin.projects.project.insights.exportButton": "Eksportēt",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Lejupielādēt atbildes kā PDF",
   "app.containers.Admin.projects.project.insights.gender": "Dzimums",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Publicētās idejas",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Izpētīt",

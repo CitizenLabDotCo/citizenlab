@@ -1732,7 +1732,7 @@ resource 'Projects' do
           allow(Export::Xlsx::InputSheetGenerator).to receive(:new)
             .and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
           do_request
-          expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
+          expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params, redacted_field_keys: [])
           assert_status 200
 
           expect(xlsx_contents(response_body)).to match([
