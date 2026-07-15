@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Chiedi nome e cognome.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Password",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Richiedi una password per l'account.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Richiede l'abilitazione del metodo \"Email confermata\".",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Informazioni personali",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Cosa raccogliamo",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Informazioni raccolte dai partecipanti e come vengono memorizzate insieme al loro contributo.",

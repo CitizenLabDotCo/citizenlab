@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Vraag om voor- en achternaam.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Wachtwoord",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Wachtwoord op het account vereisen.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Vereist dat de methode “Bevestigd e-mailadres” is ingeschakeld.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Persoonlijke informatie",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Wat we verzamelen",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Informatie verzameld van deelnemers, en hoe deze wordt opgeslagen bij hun inzending.",

@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Iarr céadainm agus sloinne.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Pasfhocal",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Pasfhocal a éileamh ar an gcuntas.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "Éilíonn sé go mbeadh an modh “Ríomhphost deimhnithe” cumasaithe.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Faisnéis phearsanta",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Cad a bhailímid",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Faisnéis a bhailítear ó rannpháirtithe, agus an chaoi a stóráiltear í in éineacht lena n-aighneacht.",

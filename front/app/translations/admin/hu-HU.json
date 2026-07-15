@@ -173,7 +173,6 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Vezetéknév és keresztnév bekérése.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Jelszó",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Jelszó megkövetelése a fiókhoz.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": "A „Megerősített e-mail” módszer engedélyezése szükséges.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Személyes adatok",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Milyen adatokat gyűjtünk",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "A résztvevőktől gyűjtött információk, és azok tárolási módja a beküldött anyaggal együtt.",
