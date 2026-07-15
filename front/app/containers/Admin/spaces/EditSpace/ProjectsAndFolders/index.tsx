@@ -8,7 +8,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 
-import { getAddableNodes } from 'api/admin_publications/getAddableNodes';
 import { SpaceNode } from 'api/admin_publications/types';
 import useTreeView from 'api/admin_publications/useTreeView';
 import useAuthUser from 'api/me/useAuthUser';
@@ -24,6 +23,7 @@ import { useParams } from 'utils/router';
 import messages from '../messages';
 
 import AddToSpaceModal from './AddToSpaceModal';
+import { getAddableNodes } from './getAddableNodes';
 
 const ProjectsAndFolders = () => {
   const { spaceId } = useParams({ strict: false });

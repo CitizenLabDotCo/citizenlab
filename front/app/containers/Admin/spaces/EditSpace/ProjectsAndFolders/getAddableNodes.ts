@@ -1,9 +1,12 @@
+import { getModeratedItems } from 'api/admin_publications/getModeratedItems';
+import {
+  FolderNode,
+  ProjectNode,
+  TreeView,
+} from 'api/admin_publications/types';
 import { IUser } from 'api/users/types';
 
 import { isAdmin } from 'utils/permissions/roles';
-
-import { getModeratedItems } from './getModeratedItems';
-import { FolderNode, ProjectNode, TreeView } from './types';
 
 /**
  * Returns the projects and folders the given user can add to a space, derived
