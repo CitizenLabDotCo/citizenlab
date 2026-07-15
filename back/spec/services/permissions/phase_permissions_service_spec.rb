@@ -103,7 +103,7 @@ describe Permissions::PhasePermissionsService do
   end
 
   context '"posting_idea" with a confirmed phone number requirement' do
-    let(:phase) { create(:native_survey_phase, with_permissions: true) }
+    let(:phase) { create(:active_native_survey_phase, with_permissions: true) }
     let(:service) { described_class.new(phase, user) }
     let(:user) { create(:user) }
 
