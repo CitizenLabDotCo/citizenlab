@@ -199,6 +199,18 @@ class Permissions::UserRequirementsService
     @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (!GlobalTopic.where(include_in_onboarding: true).empty? || !Area.where(include_in_onboarding: true).empty?)
   end
 
+  # For a user who signed up via SSO (i.e. has a linked identity), we NEVER ask
+  # for a password, even when the permission has require_password enabled. In
+  # other words, require_password is effectively ignored for SSO sign-ups.
+  #
+  # This is admittedly a little weird - you would expect require_password to be
+  # honoured regardless of how the account was created - but it is intentional
+  # for now. In practice, 9 times out of 10, an admin who configures an SSO login
+  # method does NOT want to additionally prompt those users to pick a password.
+  # If we honoured require_password here it would be far too easy for an admin to
+  # overlook the setting and accidentally leave it enabled, forcing an unwanted
+  # password step onto every SSO user. So we drop the password requirement for
+  # SSO users unconditionally. See the SSO specs in user_requirements_service_spec.rb.
   def ignore_password_for_sso!(requirements, user)
     return requirements unless user
 
