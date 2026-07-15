@@ -8,18 +8,32 @@ import Link from 'utils/cl-router/Link';
 
 import InputFeedSection from '../InputFeed';
 import messages from '../messages';
+import {
+  SectionBackgroundChoice,
+  useDefaultSectionBackground,
+} from '../SectionBackground';
+import SectionBackgroundSetting from '../SectionBackgroundSetting';
 import TimelineSection from '../Timeline';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 // Lets the docked CTA bar find phases sections on the page (see CTABar).
 export const PHASES_WIDGET_SELECTOR = '[data-project-page-phases]';
 
-const PhasesWidget: UserComponent = () => (
-  <div data-project-page-phases="">
-    <TimelineSection />
-    <InputFeedSection />
-  </div>
-);
+type Props = {
+  sectionBackground?: SectionBackgroundChoice;
+};
+
+const PhasesWidget: UserComponent<Props> = ({ sectionBackground }) => {
+  const defaultBackground = useDefaultSectionBackground();
+  const colored = (sectionBackground ?? defaultBackground) === 'colored';
+
+  return (
+    <div data-project-page-phases="">
+      <TimelineSection colored={colored} />
+      <InputFeedSection colored={colored} />
+    </div>
+  );
+};
 
 const PhasesSettings = () => {
   const projectId = useWidgetProjectId();
@@ -38,6 +52,7 @@ const PhasesSettings = () => {
 
   return (
     <Box my="20px" display="flex" flexDirection="column" gap="12px">
+      <SectionBackgroundSetting />
       <Text m="0px" color="textSecondary" fontSize="s">
         <FormattedMessage
           {...messages.timelineManagedNote}
