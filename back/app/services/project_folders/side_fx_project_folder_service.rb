@@ -65,3 +65,7 @@ module ProjectFolders
     end
   end
 end
+
+ProjectFolders::SideFxProjectFolderService.prepend(
+  ContentBuilder::Patches::ProjectFolders::SideFxProjectFolderService
+)

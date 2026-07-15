@@ -69,13 +69,52 @@ class User < ApplicationRecord
   class << self
     # Asynchronously deletes all users in a specified scope with associated side effects.
     # By default, this method deletes all users on the platform.
+    #
+    # Users that already have a pending +DeleteUserJob+ are skipped. Because the jobs are
+    # spread out over time, a sweep is still in flight long after it was started, and a
+    # second sweep would otherwise enqueue a duplicate job for every remaining user.
     def destroy_all_async(scope = User)
-      scope.pluck(:id).each.with_index do |id, idx|
+      pending = user_ids_with_pending_deletion_job
+      ids, skipped = scope.pluck(:id).partition { |id| pending.exclude?(id) }
+
+      if skipped.any?
+        Rails.logger.warn(
+          "User.destroy_all_async: skipping #{skipped.size} user(s) that already have a pending DeleteUserJob."
+        )
+      end
+
+      ids.each.with_index do |id, idx|
         # Spread out the deletion of users to avoid throttling.
         # Note: No need to update member counts if we're deleting all users, as the count will never be seen.
         DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id, update_member_counts: false)
       end
     end
+
+    # @return [Set<String>] ids of the users of the current tenant that have a
+    #   +DeleteUserJob+ enqueued which has not run to completion yet.
+    def user_ids_with_pending_deletion_job
+      QueJob
+        .by_job_class(DeleteUserJob)
+        .all_by_tenant_schema_name(Apartment::Tenant.current)
+        .not_finished
+        .not_expired
+        .pluck(:args)
+        .filter_map { |args| deletion_job_user_id(args.first) }
+        .to_set
+    end
+    private :user_ids_with_pending_deletion_job
+
+    # +DeleteUserJob+ accepts either a user id or a user, the latter being serialized by
+    # ActiveJob as a global id.
+    def deletion_job_user_id(job_data)
+      argument = job_data&.dig('arguments', 0)
+
+      case argument
+      when String then argument
+      when Hash then argument['_aj_globalid']&.split('/')&.last
+      end
+    end
+    private :deletion_job_user_id
 
     def onboarding_json_schema
       {

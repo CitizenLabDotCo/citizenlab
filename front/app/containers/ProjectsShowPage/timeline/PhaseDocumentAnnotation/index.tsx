@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
 
 import DocumentAnnotation from 'containers/ProjectsShowPage/shared/document_annotation';
 
@@ -12,11 +11,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  project: IProjectData;
   phase: IPhaseData;
 }
 
-const PhaseDocumentAnnotation = ({ phase, project }: Props) => {
+const PhaseDocumentAnnotation = ({ phase }: Props) => {
   const documentUrl = phase.attributes.document_annotation_embed_url;
 
   if (documentUrl) {
@@ -26,11 +24,7 @@ const PhaseDocumentAnnotation = ({ phase, project }: Props) => {
           <FormattedMessage {...messages.document} />
         </Title>
 
-        <DocumentAnnotation
-          project={project}
-          phaseId={phase.id}
-          documentUrl={documentUrl}
-        />
+        <DocumentAnnotation phase={phase} documentUrl={documentUrl} />
       </Box>
     );
   }

@@ -61,9 +61,11 @@ module MultiTenancy
           ProjectFolders::Folder => serialize_records(ProjectFolders::Folder),
           ProjectFolders::Image => serialize_records(ProjectFolders::Image),
           ProjectImage => serialize_records(ProjectImage),
+          ProjectsGlobalTopic => serialize_records(ProjectsGlobalTopic),
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
           Space => serialize_records(Space),
           StaticPagesGlobalTopic => serialize_records(StaticPagesGlobalTopic),
+          StaticPagesSpace => serialize_records(StaticPagesSpace),
           StaticPage => serialize_records(StaticPage),
           StaticPageFile => serialize_records(StaticPageFile),
           GlobalTopic => serialize_records(GlobalTopic),
@@ -77,6 +79,7 @@ module MultiTenancy
             )
           ),
           CustomFieldOptionImage => serialize_records(CustomFieldOptionImage),
+          CustomFieldMatrixStatement => serialize_records(CustomFieldMatrixStatement),
 
           # Custom maps
           CustomMaps::Layer => serialize_records(CustomMaps::Layer),
@@ -113,6 +116,8 @@ module MultiTenancy
 
           # EmailCampaigns
           EmailCampaigns::Campaign => serialize_records(email_campaigns),
+          EmailCampaigns::CampaignsGroup => serialize_records(EmailCampaigns::CampaignsGroup.where(campaign: email_campaigns, group: groups)),
+          EmailCampaigns::Consent => serialize_records(EmailCampaigns::Consent.where(user: users)),
           EmailCampaigns::UnsubscriptionToken => serialize_records(EmailCampaigns::UnsubscriptionToken.where(user: users)),
 
           # Users

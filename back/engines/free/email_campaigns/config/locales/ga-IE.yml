@@ -249,6 +249,7 @@ ga-IE:
         idea: Rinne %{authorName} trácht ar smaoineamh a leanann tú
         initiative: Rinne %{authorName} trácht ar thionscnamh a leanann tú
         issue: Rinne %{authorName} trácht ar cheist a leanann tú
+        observation: Rinne %{authorName} trácht ar bhreathnóireacht a leanann tú
         option: Rinne %{authorName} trácht ar rogha a leanann tú
         petition: Rinne %{authorName} trácht ar achainí a leanann tú
         post: Rinne %{authorName} trácht ar phost a leanann tú
@@ -323,6 +324,7 @@ ga-IE:
         idea: Téigh chuig an smaoineamh seo
         initiative: Téigh chuig an tionscnamh seo
         issue: Téigh chuig an tsaincheist seo
+        observation: Téigh chuig an mbreathnóireacht seo
         option: Téigh go dtí an rogha seo
         petition: Téigh chuig an achainí seo
         post: Téigh go dtí an post seo
@@ -343,6 +345,7 @@ ga-IE:
         idea: Téigh chuig do smaoineamh
         initiative: Téigh chuig do thionscnamh
         issue: Téigh chuig do cheist
+        observation: Téigh chuig do bhreathnóireacht
         option: Téigh chuig do rogha
         petition: Téigh chuig d’achainí
         post: Téigh chuig do phost
@@ -376,6 +379,7 @@ ga-IE:
         idea: Tá do smaoineamh foilsithe
         initiative: Tá do thionscnamh foilsithe
         issue: Tá do cheist foilsithe
+        observation: Tá do bhreathnóireacht foilsithe
         option: Tá do rogha foilsithe
         petition: Tá d’achainí foilsithe
         post: Tá do phost foilsithe
@@ -764,6 +768,7 @@ ga-IE:
         idea: Tá do smaoineamh i "%{prescreening_status_title}"
         initiative: Tá do thionscnamh i "%{prescreening_status_title}"
         issue: Tá do cheist i "%{prescreening_status_title}"
+        observation: Tá do bhreathnóireacht i "%{prescreening_status_title}"
         option: Tá do rogha i "%{prescreening_status_title}"
         petition: Tá d’achainí i "%{prescreening_status_title}"
         post: Tá do phost i "%{prescreening_status_title}"

@@ -296,6 +296,7 @@ const ReactionControl = ({
           iconName="vote-up"
           reactionsCount={likesCount}
           ideaId={idea.data.id}
+          phaseId={phaseId}
           variant={variant}
         />
         {variant === 'icon' && showDislike && (
@@ -309,6 +310,7 @@ const ReactionControl = ({
             iconName="vote-down"
             reactionsCount={dislikesCount}
             ideaId={idea.data.id}
+            phaseId={phaseId}
           />
         )}
         <ScreenReaderOnly aria-live="polite">

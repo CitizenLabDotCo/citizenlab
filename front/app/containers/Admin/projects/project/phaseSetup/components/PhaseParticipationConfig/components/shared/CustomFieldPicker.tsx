@@ -31,6 +31,7 @@ const LABEL_MESSAGES: {
   topic: messages.topicTerm,
   post: messages.postTerm,
   story: messages.storyTerm,
+  observation: messages.observationTerm,
 };
 
 export const getInputTermOptions = (formatMessage: FormatMessage) => {

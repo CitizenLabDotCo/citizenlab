@@ -1949,6 +1949,12 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.components.ParticipationCTABars.seeObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ParticipationCTABars.seeOptions": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -2324,6 +2330,24 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.components.PostComponents.SharingModalContent.observationEmailSharingBody": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
+
+  "app.components.PostComponents.SharingModalContent.observationEmailSharingSubject": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
+
+  "app.components.PostComponents.SharingModalContent.observationWhatsAppMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.PostComponents.SharingModalContent.optionEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -2604,6 +2628,12 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.components.ProjectCard.submitYourObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ProjectCard.submitYourPetition": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -2678,6 +2708,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.components.ProjectCard.viewTheObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.ProjectCard.viewTheOptions": {
     "state": "verified",
@@ -7149,6 +7185,7 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
   "app.containers.EventsShow.viewLocationOnGoogleMaps": {
     "state": "verified",
     "verified_at": "2026-06-19T09:35:34.178166Z",
@@ -7243,6 +7280,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.IdeaButton.addAnObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.IdeaButton.addAnOption": {
     "state": "verified",
@@ -7559,6 +7602,12 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.IdeaCards.xObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.IdeaCards.xOptions2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -7658,6 +7707,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.IdeasEditPage.observationFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.IdeasEditPage.optionFormTitle": {
     "state": "verified",
@@ -7789,6 +7844,12 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.IdeasFeedPage.addAnObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.IdeasFeedPage.addAnOption": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -7858,6 +7919,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.IdeasFeedPage.seeAllObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.IdeasFeedPage.seeAllOptions": {
     "state": "verified",
@@ -7933,6 +8000,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.IdeasFeedPage.showAllObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.IdeasFeedPage.showAllOptions": {
     "state": "verified",
@@ -8779,6 +8852,12 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.IdeasNewPage.observationMetaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.IdeasNewPage.optionMetaTitle1": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -9053,6 +9132,36 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.IdeasShow.observationEmailSharingBody": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
+
+  "app.containers.IdeasShow.observationEmailSharingSubject": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
+
+  "app.containers.IdeasShow.observationSharingModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
+
+  "app.containers.IdeasShow.observationTwitterMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
+
+  "app.containers.IdeasShow.observationWhatsAppMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.IdeasShow.optionEmailSharingBody": {
     "state": "verified",
@@ -9664,6 +9773,12 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.NotificationMenu.invitationToCosponsorObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.NotificationMenu.invitationToCosponsorOption": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -9778,6 +9893,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.NotificationMenu.officialFeedbackOnObservationYouFollow": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.NotificationMenu.officialFeedbackOnOptionYouFollow": {
     "state": "verified",
@@ -9908,6 +10029,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.NotificationMenu.userCommentedOnObservationYouFollow": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.NotificationMenu.userCommentedOnOptionYouFollow": {
     "state": "verified",
@@ -10553,6 +10680,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Projects.seeTheObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Projects.seeTheOptions": {
     "state": "verified",
@@ -11723,6 +11856,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ContentBuilder.richTextMultiloc": {
+    "state": "verified",
+    "verified_at": "2026-06-19T09:36:38.312242Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.admin.ContentBuilder.selectedProjects": {
     "state": "verified",
@@ -12934,6 +13072,12 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.utils.IdeasNewPage.observationFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
+  },
   "app.utils.IdeasNewPage.optionFormTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -13018,6 +13162,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+
+  "app.utils.IdeasNewPage.viewYourObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.483040Z",
+    "verified_by": "Cindy EB"
   },
   "app.utils.IdeasNewPage.viewYourOption": {
     "state": "verified",

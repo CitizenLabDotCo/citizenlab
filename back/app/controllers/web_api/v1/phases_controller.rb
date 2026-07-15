@@ -15,48 +15,52 @@ class WebApi::V1::PhasesController < ApplicationController
   def index
     @phases = policy_scope(Phase)
       .where(project_id: params[:project_id])
-      .order(:start_at)
+      .ordered
+    @phases = case params[:placement_type]
+    when 'all' then @phases
+    when 'standalone' then @phases.standalone
+    else @phases.on_timeline # default
+    end
     @phases = paginate @phases
-    @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
+    @phases = @phases.includes(:report, :custom_form, :manual_voters_last_updated_by, permissions: [:groups], project: :admin_publication)
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions manual_voters_last_updated_by])
+    render json: linked_json(
+      @phases,
+      WebApi::V1::PhaseSerializer,
+      params: phase_serializer_params,
+      include: %i[permissions manual_voters_last_updated_by]
+    )
   end
 
   def show
-    render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions]).serializable_hash
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params, include: %i[permissions]).serializable_hash
   end
 
   def show_mini
-    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
+    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: phase_serializer_params).serializable_hash
   end
 
   def create
-    phase_attributes = phase_params
-    @phase = Phase.new(phase_attributes)
+    @phase = Phase.new(phase_params_for_create)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
 
-    if @phase.save
-      sidefx.after_create(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
-    else
-      render json: { errors: @phase.errors.details }, status: :unprocessable_entity
-    end
+    save_or_raise!(@phase)
+    sidefx.after_create(@phase, current_user)
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :created
   end
 
   def update
-    @phase.set_manual_voters(phase_params[:manual_voters_amount], current_user) if phase_params[:manual_voters_amount]
-    @phase.assign_attributes phase_params
+    update_params = phase_params_for_update
+    @phase.set_manual_voters(update_params[:manual_voters_amount], current_user) if update_params[:manual_voters_amount]
+    @phase.assign_attributes update_params
     authorize @phase
     sidefx.before_update(@phase, current_user)
 
-    if @phase.save
-      sidefx.after_update(@phase, current_user)
-      render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :ok
-    else
-      render json: { errors: @phase.errors.details }, status: :unprocessable_entity
-    end
+    save_or_raise!(@phase)
+    sidefx.after_update(@phase, current_user)
+    render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :ok
   end
 
   def destroy
@@ -179,6 +183,13 @@ class WebApi::V1::PhasesController < ApplicationController
 
   private
 
+  def phase_serializer_params
+    jsonapi_serializer_params(
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      request: request
+    )
+  end
+
   def sidefx
     @sidefx ||= SideFxPhaseService.new
   end
@@ -186,6 +197,15 @@ class WebApi::V1::PhasesController < ApplicationController
   def set_phase
     @phase = Phase.find params[:id]
     authorize @phase
+  end
+
+  def phase_params_for_create
+    # placement_type can only be set on creation, not changed afterwards.
+    params.require(:phase).permit(:placement_type, *shared_phase_params)
+  end
+
+  def phase_params_for_update
+    params.require(:phase).permit(shared_phase_params)
   end
 
   def ensure_input_pdf_export
@@ -203,7 +223,7 @@ class WebApi::V1::PhasesController < ApplicationController
     }
   end
 
-  def phase_params
+  def shared_phase_params
     permitted = [
       :project_id,
       :start_at,
@@ -252,7 +272,7 @@ class WebApi::V1::PhasesController < ApplicationController
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
 
-    params.require(:phase).permit(permitted)
+    permitted
   end
 
   def detect_invalid_timeline_changes
