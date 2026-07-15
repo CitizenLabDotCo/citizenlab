@@ -24,6 +24,7 @@ import {
   ProjectPageBody,
 } from 'components/ProjectPageBuilder/regions';
 import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
+import ExtraSurveysWidget from 'components/ProjectPageBuilder/Widgets/ExtraSurveys';
 import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
 import ProjectBanner from 'components/ProjectPageBuilder/Widgets/ProjectBanner';
 import ProjectTitle from 'components/ProjectPageBuilder/Widgets/ProjectTitle';
@@ -56,6 +57,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         ButtonMultiloc,
         PhasesWidget,
         EventsWidget,
+        ExtraSurveysWidget,
         ProjectBanner,
         ProjectTitle,
         ProjectPageRoot,
