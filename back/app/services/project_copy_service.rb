@@ -562,7 +562,10 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'block_start_at' => user.block_start_at,
       'block_end_at' => user.block_end_at,
       'block_reason' => user.block_reason,
-      'unique_code' => user.unique_code
+      'unique_code' => user.unique_code,
+      'phone' => user.phone,
+      'phone_confirmed_at' => user.phone_confirmed_at,
+      'new_phone' => user.new_phone,
     }.tap do |yml_user|
       unless yml_user['password_digest']
         yml_user['password'] = SecureRandom.urlsafe_base64 32
@@ -663,7 +666,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
         'user_fields_in_form' => p.user_fields_in_form,
-        'user_data_collection' => p.user_data_collection
+        'user_data_collection' => p.user_data_collection,
+        'require_confirmed_phone_number' => p.require_confirmed_phone_number,
+        'confirmed_phone_number_expiry' => p.confirmed_phone_number_expiry
       }
       store_ref yml_permission, p.id, :permission
       yml_permission
