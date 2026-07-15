@@ -4,6 +4,9 @@ module MultiTenancy
   module Templates
     module Serializers
       class StaticPage < Base
+        # Only set on project-scoped pages; global pages have no project.
+        ref_attribute :project
+
         upload_attribute :header_bg
 
         # Project-scoped (project-level) static pages belong to a project; nil for global pages,
