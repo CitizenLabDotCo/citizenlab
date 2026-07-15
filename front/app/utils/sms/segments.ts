@@ -1,7 +1,8 @@
 import { SegmentedMessage } from 'sms-segments-calculator';
 
-// Keep in step with EmailCampaigns::Campaigns::SmsManual::MAX_SEGMENTS, which enforces
-// the same limit on the API.
+// The cap on how many segments a single SMS body may cost. Enforced client-side only
+// for now (the compose form blocks going over); a matching server-side guard will land
+// with the backend segment checks in a later PR.
 export const MAX_SMS_SEGMENTS = 8;
 
 const GSM_7 = 'GSM-7';

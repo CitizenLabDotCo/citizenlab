@@ -39,11 +39,6 @@ module EmailCampaigns
     include RecipientConfigurable
     include LifecycleStageRestrictable
 
-    # SMS is billed per segment, so a long message multiplies the cost of a campaign by
-    # its recipient count. This caps that blast radius. Raise it deliberately.
-    # The admin UI blocks the same limit while composing; this is the guard on the API.
-    MAX_SEGMENTS = 8
-
     allow_lifecycle_stages except: %w[trial churned]
 
     recipient_filter :user_filter_no_invitees
@@ -52,8 +47,6 @@ module EmailCampaigns
 
     validates :subject_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true }
-
-    validate :body_within_segment_limit, on: :send
 
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.registered_users'
@@ -102,24 +95,6 @@ module EmailCampaigns
     end
 
     private
-
-    # Each recipient is sent the body in their own language, so every translation is its
-    # own message and has to fit within the limit on its own. A language that falls
-    # outside GSM-7 (Arabic, Cyrillic, Greek, or a stray emoji) fits far fewer characters
-    # per segment, so one translation can exceed the limit while the others do not.
-    def body_within_segment_limit
-      over_limit = body_multiloc.to_h.filter_map do |locale, body|
-        segments = Sms::SegmentedMessage.new(body).segments_count
-        locale if segments > MAX_SEGMENTS
-      end
-      return if over_limit.empty?
-
-      errors.add(
-        :body_multiloc,
-        :too_many_segments,
-        message: "is longer than #{MAX_SEGMENTS} SMS segments for: #{over_limit.join(', ')}"
-      )
-    end
 
     def user_filter_no_invitees(users_scope, _options = {})
       users_scope.active
