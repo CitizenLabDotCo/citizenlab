@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription',
     defaultMessage: 'Require a password on the account.',
   },
-  passwordUnavailableDescription: {
-    id: 'app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription',
+  passwordOnlyForEmailSignupTooltip: {
+    id: 'app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip',
     defaultMessage:
-      'Requires the “Confirmed email” method to be enabled.',
+      'A password is only requested from users who sign up with email. Users who sign up another way (e.g. single sign-on) are never asked to set one.',
   },
 });

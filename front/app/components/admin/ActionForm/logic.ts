@@ -246,11 +246,16 @@ export const groupsSummary = (
 
 export const piiSummary = (
   permission: IPhasePermissionData,
-  formatMessage: FormatMessage
+  formatMessage: FormatMessage,
+  // Password is never asked when password login is off, so it must not appear
+  // in the summary either - it would advertise a field that can't be collected.
+  showPassword = true
 ): string => {
   const parts: string[] = [];
   if (permission.attributes.require_name) parts.push(formatMessage(messages.name));
-  if (permission.attributes.require_password) parts.push(formatMessage(messages.password));
+  if (showPassword && permission.attributes.require_password) {
+    parts.push(formatMessage(messages.password));
+  }
   return parts.length ? parts.join(' · ') : formatMessage(messages.nothingExtra);
 };
 

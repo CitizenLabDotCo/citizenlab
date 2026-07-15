@@ -58,10 +58,6 @@ const ActionForm = ({
   // Whether the "Anyone" option is offered is a property of the permission.
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
-  // The password requirement only applies with password login enabled, and then
-  // only alongside the confirmed-email method.
-  const passwordAvailable =
-    passwordLoginEnabled && attributes.require_confirmed_email;
 
   const summary = passwordLoginEnabled
     ? buildSummary(permissionData, customFields, formatMessage)
@@ -158,8 +154,6 @@ const ActionForm = ({
                 <DataSection
                   permission={permissionData}
                   phaseId={phaseId}
-                  passwordAvailable={passwordAvailable}
-                  showPassword={passwordLoginEnabled}
                   onChange={onChange}
                 />
               </>

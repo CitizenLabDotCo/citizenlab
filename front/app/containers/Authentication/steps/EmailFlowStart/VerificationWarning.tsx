@@ -25,26 +25,26 @@ const VerificationWarning = () => {
   const names = useAuthMethodNames();
   const { data: idMethods } = useIdMethods();
 
-  const authenticationVerificationMethods = idMethods?.data.filter(method => {
-    const isAuthMethod = method.attributes.authentication_method;
-    const isVerificationMethod = method.attributes.verification_method;
+  const authenticationVerificationMethodNames = (idMethods?.data ?? [])
+    .filter((method) => {
+      const { authentication_method, verification_method } = method.attributes;
+      return authentication_method && verification_method;
+    })
+    .map((method) => names[method.attributes.name])
+    .filter(
+      (name): name is string => typeof name === 'string' && name.trim().length > 0
+    );
 
-    return isAuthMethod && isVerificationMethod;
-  }) ?? [];
-
-  const authenticationVerificationMethodNames = authenticationVerificationMethods.map(method => {
-    const methodName = method.attributes.name;
-    return names[methodName];
-  });
+  if (authenticationVerificationMethodNames.length === 0) return null;
 
   const text =
     authenticationVerificationMethodNames.length === 1
       ? formatMessage(messages.actionRequiresVerificationUsingMethod, {
-        method: authenticationVerificationMethodNames[0],
-      })
+          method: authenticationVerificationMethodNames[0],
+        })
       : formatMessage(messages.actionRequiresVerificationUsingOneOf, {
-        methods: authenticationVerificationMethodNames.join(', '),
-      });
+          methods: authenticationVerificationMethodNames.join(', '),
+        });
 
   return (
     <BlueShieldWarning icon="shield-checkered" mb="12px">

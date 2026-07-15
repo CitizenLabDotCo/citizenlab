@@ -34,7 +34,7 @@ FactoryBot.define do
     trait :by_verified do
       permitted_by { 'users' }
       require_verification { true }
-      require_confirmed_email { true }
+      require_confirmed_email { false }
       require_name { false }
       require_password { false }
     end

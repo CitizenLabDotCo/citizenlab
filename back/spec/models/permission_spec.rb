@@ -285,6 +285,8 @@ RSpec.describe Permission do
 
         it 'does not cause a problem if set and require_verification is later disabled' do
           permission = create(:permission, :by_verified, verification_expiry: 1.day)
+          # First need to enable email so that the validation does not fail when require_verification is disabled
+          permission.update!(require_confirmed_email: true)
           permission.update!(require_verification: false)
           expect(permission.verification_expiry).to eq(1.day)
         end
