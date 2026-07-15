@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Obligatorisk",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Still demografiske spørsmål før brukeren deltar",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Samle inn demografi ved å legge til en ny side på slutten av skjemaet",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "Når det skal spørres",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Fullt navn",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Be om fornavn og etternavn.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Passord",

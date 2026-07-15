@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Obavezno",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Postavi demografska pitanja prije sudjelovanja korisnika",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Prikupite demografske podatke dodavanjem nove stranice na kraj obrasca",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "Kada zatražiti",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Puno ime i prezime",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Zatraži ime i prezime.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Lozinka",

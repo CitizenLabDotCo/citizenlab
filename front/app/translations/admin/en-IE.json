@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Required",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Ask demographic questions before the user participates",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Collect demographics by adding a new page to the end of the form",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "When to ask",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Full name",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Ask for first name and surname.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Password",

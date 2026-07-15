@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Obligāts",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Uzdot demogrāfiskos jautājumus pirms lietotāja dalības",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Ievākt demogrāfiskos datus, pievienojot jaunu lapu veidlapas beigās",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "Kad jautāt",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Vārds, uzvārds",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Jautāt vārdu un uzvārdu.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Parole",

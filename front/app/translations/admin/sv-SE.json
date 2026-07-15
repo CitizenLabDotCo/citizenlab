@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Obligatorisk",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Ställ demografiska frågor innan användaren deltar",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Samla in demografi genom att lägga till en ny sida i slutet av formuläret",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "När frågor ska ställas",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Fullständigt namn",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Fråga efter för- och efternamn.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Lösenord",

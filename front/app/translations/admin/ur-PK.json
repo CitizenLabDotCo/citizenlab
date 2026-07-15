@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "ضروری",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "صارف کی شرکت سے پہلے آبادیاتی سوالات پوچھیں",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "فارم کے آخر میں ایک نیا صفحہ شامل کر کے آبادیاتی معلومات جمع کریں",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "کب پوچھنا ہے",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "پورا نام",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "پہلا اور آخری نام پوچھیں۔",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "پاس ورڈ",

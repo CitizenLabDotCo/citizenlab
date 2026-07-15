@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Απαιτείται",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Υποβολή δημογραφικών ερωτήσεων πριν από τη συμμετοχή του χρήστη",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Συλλογή δημογραφικών στοιχείων με την προσθήκη μιας νέας σελίδας στο τέλος της φόρμας",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "Πότε να γίνεται η ερώτηση",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Ονοματεπώνυμο",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Ζητήστε όνομα και επώνυμο.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Κωδικός πρόσβασης",

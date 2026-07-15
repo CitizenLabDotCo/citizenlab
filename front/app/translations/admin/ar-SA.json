@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "مطلوب",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "طرح أسئلة ديموغرافية قبل مشاركة المستخدم",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "جمع البيانات الديموغرافية عن طريق إضافة صفحة جديدة في نهاية النموذج",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "متى يتم الطلب",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "الاسم الكامل",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "طلب الاسم الأول واسم العائلة.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "كلمة المرور",

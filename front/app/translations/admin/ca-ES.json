@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Obligatori",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Fes preguntes demogràfiques abans que l'usuari hi participi",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Recull dades demogràfiques afegint una pàgina nova al final del formulari",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "Quan demanar-ho",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Nom complet",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Demana el nom i els cognoms.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Contrasenya",

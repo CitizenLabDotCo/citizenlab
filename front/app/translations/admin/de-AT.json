@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Erforderlich",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Demografische Fragen stellen, bevor die Nutzer*in teilnimmt",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Demografische Daten erfassen, indem eine neue Seite am Ende des Formulars hinzugefügt wird",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "Wann gefragt werden soll",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Vollständiger Name",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Nach Vor- und Nachnamen fragen.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Passwort",
