@@ -24,41 +24,55 @@ RSpec.describe McpServer::Tools::GetReportingSqlSchema do
       response = run
 
       expect(response.error?).to be false
-      expect(response.structured_content.keys)
+      expect(response.structured_content[:tables].keys)
         .to match_array(McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES)
     end
 
-    it 'returns column metadata for the participations fact view' do
-      table = run.structured_content.fetch('analytics_fact_participations')
+    it 'returns column metadata for the contributions fact view' do
+      table = run.structured_content[:tables].fetch('reporting_contributions')
 
       expect(table[:columns].map { |c| c[:name] })
-        .to include('participant_id', 'dimension_project_id', 'dimension_date_created_id')
+        .to include('participant_id', 'project_id', 'contributed_at')
       expect(table[:columns].first.keys).to match_array(%i[name type null default comment])
     end
 
     it 'includes the documentation comments for the table and its columns' do
-      table = run.structured_content.fetch('analytics_fact_participations')
+      table = run.structured_content[:tables].fetch('reporting_contributions')
 
-      expect(table[:description]).to match(/one row per participation action/)
+      expect(table[:description]).to match(/one row per action/)
       participant_id = table[:columns].find { |c| c[:name] == 'participant_id' }
-      expect(participant_id[:comment]).to match(/distinct counts/)
+      expect(participant_id[:comment]).to match(/Stable identity/)
+    end
+
+    it 'maps the relationships between the reporting tables' do
+      relationships = run.structured_content[:relationships]
+
+      expect(relationships['reporting_pageviews'])
+        .to eq('session_id' => 'reporting_sessions.id', 'project_id' => 'reporting_projects.id')
+      expect(relationships['reporting_contributions']['parent_id']).to include('reporting_inputs.id')
     end
 
     it 'filters to the requested tables' do
-      response = run(table_names: ['analytics_fact_participations'])
+      response = run(table_names: ['reporting_contributions'])
 
-      expect(response.structured_content.keys).to eq(['analytics_fact_participations'])
+      expect(response.structured_content[:tables].keys).to eq(['reporting_contributions'])
+    end
+
+    it 'returns the full relationship map even for a filtered call' do
+      response = run(table_names: ['reporting_pageviews'])
+
+      expect(response.structured_content[:relationships]).to include('reporting_contributions')
     end
 
     it 'ignores table names outside the whitelist' do
       response = run(table_names: %w[users does_not_exist])
 
       expect(response.error?).to be false
-      expect(response.structured_content).to eq({})
+      expect(response.structured_content[:tables]).to eq({})
     end
 
     it 'duplicates the structured content into a text block' do
-      expect(run.content.first[:text]).to include('analytics_fact_participations')
+      expect(run.content.first[:text]).to include('reporting_contributions')
     end
   end
 end

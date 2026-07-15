@@ -53,10 +53,32 @@ module McpServer
         execute("GRANT #{quoted_role} TO CURRENT_USER")
       end
 
+      # Relations missing from the schema are skipped rather than raised on:
+      # REPORTING_TABLE_NAMES reflects the newest code, but during a fresh
+      # `db:migrate` an older provisioning migration runs before the migrations
+      # that create the newer reporting views. Every view-adding change ships
+      # its own provision! migration, so skipped grants are always picked up by
+      # a later step in the same stream.
       def grant!(schema = Apartment::Tenant.current)
         execute("GRANT USAGE ON SCHEMA #{quote_ident(schema)} TO #{quoted_role}")
         reporting_tables.each do |table|
+          next unless relation_exists?(schema, table)
+
           execute("GRANT SELECT ON #{quote_rel(schema, table)} TO #{quoted_role}")
+        end
+      end
+
+      # Revokes read access on relations that are no longer part of the
+      # reporting surface (they may still exist for other consumers). Missing
+      # relations and a missing role are tolerated so this stays safe at any
+      # point in the migration stream.
+      def revoke!(tables, schema = Apartment::Tenant.current)
+        return unless role_exists?
+
+        tables.each do |table|
+          next unless relation_exists?(schema, table)
+
+          execute("REVOKE SELECT ON #{quote_rel(schema, table)} FROM #{quoted_role}")
         end
       end
 
@@ -78,6 +100,14 @@ module McpServer
 
       def reporting_tables
         McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES
+      end
+
+      def relation_exists?(schema, table)
+        connection.select_value(<<~SQL.squish).present?
+          SELECT 1 FROM pg_catalog.pg_class c
+          JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+          WHERE n.nspname = #{connection.quote(schema)} AND c.relname = #{connection.quote(table)}
+        SQL
       end
 
       def quoted_role = quote_ident(ROLE)

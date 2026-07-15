@@ -20,7 +20,7 @@ module McpServer
   #   - every referenced base relation is either a CTE name in lexical scope or
   #     one of the unqualified reporting tables exposed by GetReportingSqlSchema.
   #     Forbidding the schema/catalog qualifier is what stops
-  #     `other_tenant.analytics_fact_x` from bypassing the tenant `search_path`
+  #     `other_tenant.reporting_x` from bypassing the tenant `search_path`
   #     (the one cross-tenant hole layer 2 cannot close, since the role is granted
   #     on every tenant schema). The CTE exemption is scope-aware: a CTE named
   #     like a real relation (e.g. `pg_user`) does NOT exempt a same-named
@@ -44,7 +44,7 @@ module McpServer
       replace split_part concat concat_ws format reverse repeat
       starts_with position strpos to_char to_number
       regexp_replace regexp_match regexp_matches regexp_split_to_array md5
-      date_trunc date_part extract age date
+      date_trunc date_part extract age date now
       make_date make_timestamp to_date to_timestamp
       justify_days justify_hours justify_interval
       coalesce nullif
