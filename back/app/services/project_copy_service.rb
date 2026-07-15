@@ -565,7 +565,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'unique_code' => user.unique_code,
       'phone' => user.phone,
       'phone_confirmed_at' => user.phone_confirmed_at,
-      'new_phone' => user.new_phone,
+      'new_phone' => user.new_phone
     }.tap do |yml_user|
       unless yml_user['password_digest']
         yml_user['password'] = SecureRandom.urlsafe_base64 32
