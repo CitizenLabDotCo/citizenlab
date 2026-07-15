@@ -173,6 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Zatraži ime i prezime.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Lozinka",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Zahtijevaj lozinku na računu.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Lozinka se traži samo od korisnika koji se registriraju putem e-pošte. Od korisnika koji se registriraju na drugi način (npr. putem jedinstvene prijave) nikada se ne traži da je postave.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Osobni podaci",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Što prikupljamo",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Informacije prikupljene od sudionika i način na koji se pohranjuju uz njihov doprinos.",

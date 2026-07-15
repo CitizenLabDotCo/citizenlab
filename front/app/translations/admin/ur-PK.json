@@ -173,6 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "پہلا اور آخری نام پوچھیں۔",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "پاس ورڈ",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "اکاؤنٹ پر پاس ورڈ درکار ہے۔",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "پاس ورڈ صرف ان صارفین سے طلب کیا جاتا ہے جو ای میل کے ذریعے سائن اپ کرتے ہیں۔ وہ صارفین جو کسی دوسرے طریقے سے سائن اپ کرتے ہیں (مثلاً سنگل سائن آن) ان سے کبھی بھی اسے سیٹ کرنے کے لیے نہیں کہا جاتا۔",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "ذاتی معلومات",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "ہم کیا جمع کرتے ہیں",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "شرکاء سے جمع کی گئی معلومات، اور اسے ان کی گذارشات کے ساتھ کیسے محفوظ کیا جاتا ہے۔",

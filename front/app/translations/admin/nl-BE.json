@@ -173,6 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Vraag om voor- en achternaam.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Wachtwoord",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Wachtwoord op het account vereisen.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Een wachtwoord wordt alleen gevraagd aan gebruikers die zich registreren met e-mail. Gebruikers die zich op een andere manier registreren (bijv. via single sign-on) wordt nooit gevraagd om er een in te stellen.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Persoonlijke informatie",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Wat we verzamelen",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Informatie verzameld van deelnemers, en hoe deze wordt opgeslagen bij hun inzending.",

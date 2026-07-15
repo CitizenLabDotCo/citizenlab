@@ -173,6 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Nach Vor- und Nachnamen fragen.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Passwort",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Passwort für das Konto anfordern.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Ein Passwort wird nur von Nutzenden abgefragt, die sich per E-Mail registrieren. Nutzende, die sich auf andere Weise registrieren (z. B. Single Sign-on), werden nie aufgefordert, eines festzulegen.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Persönliche Informationen",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Was wir erfassen",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Von Teilnehmer*innen gesammelte Informationen und wie diese zusammen mit ihrem Beitrag gespeichert werden.",

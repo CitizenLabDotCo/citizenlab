@@ -173,6 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Jautāt vārdu un uzvārdu.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Parole",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Pieprasīt konta paroli.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Parole tiek pieprasīta tikai tiem lietotājiem, kuri reģistrējas ar e-pastu. Lietotājiem, kuri reģistrējas citā veidā (piemēram, izmantojot vienoto pieteikšanos), nekad netiek lūgts to iestatīt.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Personiskā informācija",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Ko mēs ievācam",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "No dalībniekiem ievāktā informācija un veids, kā tā tiek glabāta kopā ar viņu iesniegumu.",

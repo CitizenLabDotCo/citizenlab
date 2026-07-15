@@ -173,6 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Be om fornavn og etternavn.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Passord",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Krev et passord på kontoen.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Passord kreves kun fra brukere som registrerer seg med e-post. Brukere som registrerer seg på en annen måte (f.eks. enkel pålogging), blir aldri bedt om å angi et.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Personopplysninger",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Hva vi samler inn",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Informasjon som samles inn fra deltakere, og hvordan den lagres sammen med bidraget deres.",

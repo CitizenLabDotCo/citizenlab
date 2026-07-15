@@ -173,6 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Iarr céadainm agus sloinne.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Pasfhocal",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Pasfhocal a éileamh ar an gcuntas.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Ní iarrtar pasfhocal ach ar úsáideoirí a chláraíonn trí ríomhphost. Ní iarrtar ar úsáideoirí a chláraíonn ar bhealach eile (m.sh. logáil isteach aonair) ceann a shocrú riamh.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Faisnéis phearsanta",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Cad a bhailímid",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Faisnéis a bhailítear ó rannpháirtithe, agus an chaoi a stóráiltear í in éineacht lena n-aighneacht.",

@@ -173,6 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Gofyn am enw cyntaf a chyfenw.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Cyfrinair",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Angen cyfrinair ar y cyfrif.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Dim ond gan ddefnyddwyr sy'n cofrestru drwy e-bost y gofynnir am gyfrinair. Ni ofynnir byth i ddefnyddwyr sy'n cofrestru mewn ffordd arall (e.e. mewngofnodi sengl) osod un.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Gwybodaeth bersonol",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Beth rydym yn ei gasglu",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Gwybodaeth a gesglir gan gyfranogwyr, a sut y caiff ei storio ochr yn ochr â'u cyflwyniad.",
