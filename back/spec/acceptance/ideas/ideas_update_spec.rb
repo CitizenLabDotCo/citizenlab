@@ -756,6 +756,15 @@ resource 'Ideas' do
             idea = Idea.find(response_data[:id])
             expect(idea.custom_field_values['u_age']).to eq 30
           end
+
+          context 'when the phase is standalone' do
+            before { input.creation_phase.update!(placement_type: 'standalone') }
+
+            example_request 'Can change a survey response from draft to published in a standalone phase' do
+              assert_status 200
+              expect(response_data[:attributes][:publication_status]).to eq 'published'
+            end
+          end
         end
       end
 
