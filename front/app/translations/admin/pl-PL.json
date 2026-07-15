@@ -1516,7 +1516,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Błąd ładowania metryk uczestnictwa",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Nie udało się pobrać pliku PDF. Spróbuj ponownie.",
   "app.containers.Admin.projects.project.insights.exportButton": "Eksportuj",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Pobierz odpowiedzi jako PDF",
   "app.containers.Admin.projects.project.insights.gender": "Płeć",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Opublikowane pomysły",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Eksploruj",

@@ -1516,7 +1516,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Fel vid laddning av mätvärden för deltagande",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Misslyckades med att ladda ner PDF. Vänligen försök igen.",
   "app.containers.Admin.projects.project.insights.exportButton": "Exportera",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Ladda ner svar som PDF",
   "app.containers.Admin.projects.project.insights.gender": "Kön",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Idéer publicerade",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Utforska",

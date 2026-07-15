@@ -1516,7 +1516,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Erreur lors du chargement des indicateurs de participation",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Le téléchargement du PDF a échoué. Veuillez réessayer.",
   "app.containers.Admin.projects.project.insights.exportButton": "Exporter",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Télécharger les réponses au format PDF",
   "app.containers.Admin.projects.project.insights.gender": "Genre",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Idées publiées",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Explorer",

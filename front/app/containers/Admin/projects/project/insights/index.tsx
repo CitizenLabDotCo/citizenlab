@@ -18,7 +18,7 @@ import usePhase from 'api/phases/usePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
-import useInputPdfExport from 'containers/Admin/projects/project/inputPdfExport/useInputPdfExport';
+import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
@@ -50,10 +50,11 @@ const AI_ANALYSIS_SUPPORTED_METHODS = [
   'native_survey',
 ];
 
-// Methods handled by this generic action bar that offer the responses PDF
-// export. Native survey has its own action bar (SurveyActions) and is excluded
-// here; voting/common_ground have no fillable response form.
-const INPUT_PDF_EXPORT_METHODS = ['ideation', 'proposals'];
+// Methods handled by this generic action bar that offer the responses exports
+// (PDF/Excel with PII review). Native survey has its own action bar
+// (SurveyActions) and is excluded here; voting/common_ground have no fillable
+// response form.
+const INPUT_RESPONSE_EXPORT_METHODS = ['ideation', 'proposals'];
 
 // Hidden container styles for PDF rendering (offscreen, but must remain "visible" for SVG rendering)
 // Note: visibility: hidden breaks Recharts SVG path rendering, so we use positioning instead
@@ -78,7 +79,7 @@ const InsightsContent = () => {
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
   const [dropdownOpened, setDropdownOpened] = useState(false);
-  const inputPdfExport = useInputPdfExport({ projectId, phaseId });
+  const inputResponseExport = useInputResponseExport({ projectId, phaseId });
 
   const {
     downloadPdf,
@@ -192,9 +193,9 @@ const InsightsContent = () => {
   }
 
   const isNativeSurvey = participationMethod === 'native_survey';
-  const showInputPdfExport =
+  const showInputResponseExport =
     !!participationMethod &&
-    INPUT_PDF_EXPORT_METHODS.includes(participationMethod);
+    INPUT_RESPONSE_EXPORT_METHODS.includes(participationMethod);
 
   return (
     <>
@@ -261,17 +262,29 @@ const InsightsContent = () => {
                           gap="4px"
                           style={{ whiteSpace: 'nowrap' }}
                         >
-                          {showInputPdfExport && (
-                            <DropdownListItem
-                              onClick={() => {
-                                setDropdownOpened(false);
-                                inputPdfExport.openModal();
-                              }}
-                            >
-                              <FormattedMessage
-                                {...messages.exportResponsesToPdf}
-                              />
-                            </DropdownListItem>
+                          {showInputResponseExport && (
+                            <>
+                              <DropdownListItem
+                                onClick={() => {
+                                  setDropdownOpened(false);
+                                  inputResponseExport.openPdfExportModal();
+                                }}
+                              >
+                                <FormattedMessage
+                                  {...messages.exportResponsesToPdf}
+                                />
+                              </DropdownListItem>
+                              <DropdownListItem
+                                onClick={() => {
+                                  setDropdownOpened(false);
+                                  inputResponseExport.openXlsxExportModal();
+                                }}
+                              >
+                                <FormattedMessage
+                                  {...messages.exportResponsesToXlsx}
+                                />
+                              </DropdownListItem>
+                            </>
                           )}
                           <DropdownListItem onClick={handleDownloadPdf}>
                             <FormattedMessage {...messages.downloadPdf} />
@@ -353,7 +366,7 @@ const InsightsContent = () => {
         </Box>
       </Box>
 
-      {inputPdfExport.modal}
+      {inputResponseExport.modal}
 
       {isDownloadingPdf && (
         <div style={hiddenContainerStyle}>

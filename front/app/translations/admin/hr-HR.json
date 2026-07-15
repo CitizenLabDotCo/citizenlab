@@ -1516,7 +1516,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Pogreška pri učitavanju metrike sudjelovanja",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Preuzimanje PDF-a nije uspjelo. Pokušajte ponovno.",
   "app.containers.Admin.projects.project.insights.exportButton": "Izvezi",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Preuzmi odgovore kao PDF",
   "app.containers.Admin.projects.project.insights.gender": "Spol",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Objavljene ideje",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Istražiti",

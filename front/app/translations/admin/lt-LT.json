@@ -1516,7 +1516,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Klaida įkeliant dalyvavimo rodiklius",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Nepavyko atsisiųsti PDF. Bandykite dar kartą.",
   "app.containers.Admin.projects.project.insights.exportButton": "Eksportuoti",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Atsisiųsti atsakymus PDF formatu",
   "app.containers.Admin.projects.project.insights.gender": "Lytis",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Paskelbtos idėjos",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Naršykite",

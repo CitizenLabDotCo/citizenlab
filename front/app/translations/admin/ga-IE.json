@@ -1516,7 +1516,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Earráid ag lódáil méadrachtaí rannpháirtíochta",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Theip ar an PDF a íoslódáil. Déan iarracht arís.",
   "app.containers.Admin.projects.project.insights.exportButton": "Easpórtáil",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Íoslódáil freagraí mar PDF",
   "app.containers.Admin.projects.project.insights.gender": "Inscne",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Smaointe curtha suas",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Taiscéal",

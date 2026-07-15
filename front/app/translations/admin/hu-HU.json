@@ -1516,7 +1516,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Hiba történt a részvételi mutatók betöltésekor",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "A PDF letöltése sikertelen. Kérjük, próbálja újra.",
   "app.containers.Admin.projects.project.insights.exportButton": "Exportálás",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Válaszok letöltése PDF-ben",
   "app.containers.Admin.projects.project.insights.gender": "Nem",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Közzétett ötletek",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Felfedezés",

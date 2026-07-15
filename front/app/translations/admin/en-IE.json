@@ -1516,7 +1516,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Error loading participation metrics",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Failed to download PDF. Please try again.",
   "app.containers.Admin.projects.project.insights.exportButton": "Export",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Download responses as PDF",
   "app.containers.Admin.projects.project.insights.gender": "Gender",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Ideas posted",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Explore",
