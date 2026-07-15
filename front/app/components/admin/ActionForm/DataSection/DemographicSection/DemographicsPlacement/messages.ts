@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter',
     defaultMessage: 'Collect demographics by adding a new page to the end of the form',
   },
+  whenToAsk: {
+    id: 'app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk',
+    defaultMessage: 'When to ask',
+  }
 });
