@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Piumasaqaataavoq",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Atuisup peqataannginnerani inoqassutsikkut apeqqutinik apeqquteqarfigiuk",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Inunnik nalunaarsuiffinnik immersugassap naggataanut quppernernik ilanngussilluni katersineq",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "Qaqugu aperisoqassanersoq",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Ateq tamakkerlugu",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Ateq kingullerlu aperigit.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Isissutissaq",

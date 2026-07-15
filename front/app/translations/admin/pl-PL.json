@@ -168,6 +168,7 @@
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": "Wymagane",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": "Zadaj pytania demograficzne przed wzięciem udziału przez użytkownika",
   "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": "Zbieraj dane demograficzne, dodając nową stronę na końcu formularza",
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": "Kiedy pytać",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": "Imię i nazwisko",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Poproś o imię i nazwisko.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Hasło",
