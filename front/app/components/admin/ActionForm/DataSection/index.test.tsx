@@ -123,6 +123,18 @@ describe('<DataSection />', () => {
       expect(screen.queryByText('Password')).not.toBeInTheDocument();
     });
 
+    it('excludes Password from the collapsed summary when password login is disabled', () => {
+      // require_password is still true, but the password toggle is not shown
+      // when password login is off - so the summary must not mention Password
+      // either (otherwise it advertises a field that can never be collected).
+      mockPasswordLoginEnabled = false;
+      renderSection({ require_name: true, require_password: true });
+
+      // The expander is collapsed, so its one-line summary is visible.
+      expect(screen.queryByText(/Password/)).not.toBeInTheDocument();
+      expect(screen.getByText('Name')).toBeInTheDocument();
+    });
+
     it('shows the "only asked to email sign-ups" tooltip when an SSO method is enabled', async () => {
       renderSection();
       await openPersonalInfo();

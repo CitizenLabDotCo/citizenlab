@@ -40,7 +40,7 @@ const PersonalInfoSection = ({ permission, onChange }: Props) => {
     <Expander
       icon="user-circle"
       title={formatMessage(messages.personalInfo)}
-      summary={piiSummary(permission, formatMessage)}
+      summary={piiSummary(permission, formatMessage, showPassword)}
     >
       <PiiToggle
         icon="user-circle"
