@@ -17,7 +17,12 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
     {
       properties: {
         title_multiloc: { **multiloc_schema, description: 'Project title.' },
-        description_multiloc: { **multiloc_schema, description: 'Project description (HTML).' },
+        description_multiloc: {
+          **multiloc_schema,
+          description: 'Project description (HTML). Seeds the project page at creation only; ' \
+                       'after that the page renders from its layout — use update_project_layout ' \
+                       'to change page content.'
+        },
         description_preview_multiloc: { **multiloc_schema, description: 'Plain-text summary for search/previews.' },
         visible_to: { type: 'string', enum: %w[public groups admins], description: 'Who can see the project. Defaults to "public".' },
         area_ids: { type: 'array', items: { type: 'string' }, description: 'Array of area IDs to associate with the project. Use list_areas to find valid IDs.' },
