@@ -6,6 +6,12 @@ import {
 } from 'api/admin_publications/types';
 import { IUserData } from 'api/users/types';
 
+/**
+ * Derives the spaces, folders and projects a user moderates from the
+ * admin_publications tree view, based on the user's roles, grouped by type.
+ * Reusable wherever the tree view needs to be scoped to what a given user can
+ * manage (e.g. the users table, adding items to a space).
+ */
 export const getModeratedItems = (user: IUserData, treeView: TreeView) => {
   const folderIds = user.attributes.roles
     ?.filter(

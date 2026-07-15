@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Box, Button, Select } from '@citizenlab/cl2-component-library';
 
 import { FolderNode, ProjectNode } from 'api/admin_publications/types';
-import useTreeView from 'api/admin_publications/useTreeView';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
@@ -19,14 +18,15 @@ type NodeType = 'project' | 'folder';
 
 interface Props {
   spaceId: string;
+  // Projects and folders the current user is allowed to add to this space.
+  addableNodes: (ProjectNode | FolderNode)[];
   opened: boolean;
   onClose: () => void;
 }
 
-const AddToSpaceModal = ({ spaceId, opened, onClose }: Props) => {
+const AddToSpaceModal = ({ spaceId, addableNodes, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data: treeView } = useTreeView();
   const { mutate: updateProject, isLoading: isUpdatingProject } =
     useUpdateProject();
   const { mutate: updateFolder, isLoading: isUpdatingFolder } =
@@ -35,12 +35,7 @@ const AddToSpaceModal = ({ spaceId, opened, onClose }: Props) => {
   const [nodeType, setNodeType] = useState<NodeType>('project');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Only top-level projects and folders (i.e. not already in a space)
-  // are eligible to be added.
-  const candidates =
-    treeView?.data.attributes.nodes.filter(
-      (node): node is FolderNode | ProjectNode => node.type === nodeType
-    ) ?? [];
+  const candidates = addableNodes.filter((node) => node.type === nodeType);
 
   const handleClose = () => {
     setNodeType('project');

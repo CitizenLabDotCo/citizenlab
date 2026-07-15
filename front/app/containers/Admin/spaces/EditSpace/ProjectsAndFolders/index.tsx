@@ -8,8 +8,14 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 
-import { SpaceNode } from 'api/admin_publications/types';
+import { getModeratedItems } from 'api/admin_publications/getModeratedItems';
+import {
+  FolderNode,
+  ProjectNode,
+  SpaceNode,
+} from 'api/admin_publications/types';
 import useTreeView from 'api/admin_publications/useTreeView';
+import useAuthUser from 'api/me/useAuthUser';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
@@ -17,6 +23,7 @@ import TreeView from 'components/admin/TreeView';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
+import { isAdmin } from 'utils/permissions/roles';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
@@ -27,6 +34,7 @@ const ProjectsAndFolders = () => {
   const { spaceId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const { data: treeView } = useTreeView();
+  const { data: authUser } = useAuthUser();
   const { mutate: updateFolder } = useUpdateProjectFolder();
   const { mutate: updateProject } = useUpdateProject();
 
@@ -39,7 +47,7 @@ const ProjectsAndFolders = () => {
     action: 'remove_projects_and_folders',
   });
 
-  if (!treeView || !spaceId) return null;
+  if (!treeView || !spaceId || !authUser) return null;
 
   const spaceNode = treeView.data.attributes.nodes.find(
     (node): node is SpaceNode => node.type === 'space' && node.id === spaceId
@@ -48,11 +56,25 @@ const ProjectsAndFolders = () => {
   const nodesInSpace = spaceNode?.children;
   if (!nodesInSpace) return null;
 
-  // Root-level projects and folders (i.e. not yet in any space) are the ones
-  // that can be added to this space.
-  const hasAddableNodes = treeView.data.attributes.nodes.some(
-    (node) => node.type === 'project' || node.type === 'folder'
+  // A project or folder can be added when it sits at the root of the tree (not
+  // in any space) and the current user is allowed to manage it: admins can
+  // manage everything, moderators only the items they moderate. This mirrors
+  // what the backend authorizes, so we never offer a project that would 401.
+  const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
+    authUser.data,
+    treeView
   );
+  const moderatedIds = new Set(
+    [...projectsUserModerates, ...foldersUserModerates].map((node) => node.id)
+  );
+  const userIsAdmin = isAdmin(authUser);
+
+  const addableNodes = treeView.data.attributes.nodes.filter(
+    (node): node is ProjectNode | FolderNode =>
+      (node.type === 'project' || node.type === 'folder') &&
+      (userIsAdmin || moderatedIds.has(node.id))
+  );
+  const hasAddableNodes = addableNodes.length > 0;
 
   const handleRemove = async (
     nodeId: string,
@@ -95,6 +117,7 @@ const ProjectsAndFolders = () => {
       </Box>
       <AddToSpaceModal
         spaceId={spaceId}
+        addableNodes={addableNodes}
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
       />
