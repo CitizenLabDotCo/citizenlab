@@ -10,7 +10,7 @@ import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import useLocalize from './useLocalize';
 
 interface UseCustomAccessDeniedMessageParams {
-  phaseId: string;
+  phaseId?: string;
   action: IPhasePermissionAction;
   disabledReason?: string | null;
 }
@@ -38,11 +38,21 @@ export default function useCustomAccessDeniedMessage({
 }: UseCustomAccessDeniedMessageParams): JSX.Element | null {
   const localize = useLocalize();
 
-  const { data: accessDenied } = useAccessDeniedExplanation({
-    type: 'phase',
-    action,
-    id: phaseId,
-  });
+  // A custom message can only ever be shown when the action is disabled for a
+  // reason that authentication can't fix (e.g. the user isn't in the required
+  // group). Only fetch in that case — otherwise we'd issue a request (and an
+  // extra re-render once it resolves) for every enabled button on the page.
+  const enabled =
+    !!phaseId && !!disabledReason && !isFixableByAuthentication(disabledReason);
+
+  const { data: accessDenied } = useAccessDeniedExplanation(
+    {
+      type: 'phase',
+      action,
+      id: phaseId || '',
+    },
+    { enabled }
+  );
 
   return useMemo(() => {
     if (!disabledReason) {

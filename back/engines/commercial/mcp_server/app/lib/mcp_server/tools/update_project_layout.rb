@@ -29,6 +29,15 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
   def name = 'update_project_layout'
   def title = 'Update project description layout'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: true # Imports ImageMultiloc images from arbitrary public URLs.
+    }
+  end
+
   # Deliberately compact: MCP clients truncate long tool descriptions, so the full
   # widget/format reference travels in tool RESPONSES instead (get_project_layout when no
   # layout exists, and validation-error responses from this tool).
@@ -126,7 +135,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       authorize(layout, :update?)
       save_layout(layout, created)
 
-      ok(
+      response(
         "#{created ? 'Created' : 'Updated'} description layout for project #{project.id}",
         structured: {
           enabled: layout.enabled,
@@ -136,9 +145,9 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     rescue PatchError => e
       error(e.message)
     rescue ActiveRecord::RecordNotFound
-      error("Project not found: #{params[:project_id]}")
+      not_found_error('Project', params[:project_id])
     rescue ActiveRecord::RecordInvalid => e
-      e.record.is_a?(ContentBuilder::LayoutImage) ? image_import_error(e.record) : validation_error(e.record)
+      e.record.is_a?(ContentBuilder::LayoutImage) ? image_import_error(e.record) : invalid_record_error(e.record)
     end
 
     private

@@ -4,6 +4,15 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
   def name = 'update_phase_permission'
   def title = 'Update phase permission'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Updates a phase permission (auto-created with the phase). Sets who can perform an action,
@@ -81,11 +90,13 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      phase = Phase.find(params[:phase_id])
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
+
       authorize_project!(phase.project)
 
       permission = phase.permissions.find_by(action: params[:action])
-      return invalid_action_response(phase, params[:action]) if permission.nil?
+      return invalid_action_response(phase, params[:action]) unless permission
 
       authorize(permission, :update?)
 
@@ -101,14 +112,12 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
         replace_demographic_questions(permission, params[:demographic_questions]) if params.key?(:demographic_questions)
       end
 
-      ok(
+      response(
         "Updated #{params[:action]} permission on phase #{phase.id}",
         structured: McpServer::Serializers::Permission.serialize(permission.reload)
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      validation_error(e.record)
+      invalid_record_error(e.record)
     end
 
     private

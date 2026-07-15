@@ -4,6 +4,15 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
   def name = 'create_poll_question'
   def title = 'Create poll question'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC.squish
       Creates a single question in a poll phase, optionally with its answer options in the
@@ -49,7 +58,9 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      phase = Phase.find(params[:phase_id])
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
+
       authorize_project!(phase.project)
 
       question = build_question(phase)
@@ -63,14 +74,12 @@ class McpServer::Tools::CreatePollQuestion < McpServer::BaseTool
         Array.wrap(params[:options]).each { |option_params| create_option(question, option_params) }
       end
 
-      ok(
+      response(
         "Created poll question #{question.id} with #{question.options.size} option(s)",
         structured: McpServer::Serializers::PollQuestion.serialize(question.reload)
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      validation_error(e.record)
+      invalid_record_error(e.record)
     end
 
     private

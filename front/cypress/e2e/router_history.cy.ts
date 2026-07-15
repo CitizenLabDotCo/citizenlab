@@ -8,6 +8,9 @@ describe('router history', () => {
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
+    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
+      cy.apiAddAboutBox(project.body.data.id);
+    });
   });
 
   beforeEach(() => {

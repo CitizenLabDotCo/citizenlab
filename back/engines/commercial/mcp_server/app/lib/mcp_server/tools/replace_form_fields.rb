@@ -10,6 +10,15 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
 
   def name = 'replace_form_fields'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: true,
+      idempotent_hint: true,
+      open_world_hint: false
+    }
+  end
+
   def description
     <<~DESC
       Replaces the field list of the form attached to a native_survey phase or ideation
@@ -54,7 +63,14 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      container = CONTAINER_TYPES.fetch(params[:container_type]).find(params[:container_id])
+      container = CONTAINER_TYPES
+        .fetch(params[:container_type])
+        .find_by(id: params[:container_id])
+
+      unless container
+        return not_found_error("Container (#{params[:container_type]})", params[:container_id])
+      end
+
       pmethod = container.pmethod
       return unsupported_error(pmethod) unless SUPPORTED_METHODS.include?(pmethod.class.method_str)
 
@@ -82,7 +98,7 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         custom_form.reload
         fields = IdeaCustomFieldsService.new(custom_form).all_fields
 
-        ok(
+        response(
           "Replaced fields on #{params[:container_type]} #{container.id}: #{fields.size} field(s)",
           structured: {
             container_type: params[:container_type],
@@ -96,10 +112,8 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       else
         error("Validation failed: #{result.errors.to_json}")
       end
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:container_type]} not found: #{params[:container_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      validation_error(e.record)
+      invalid_record_error(e.record)
     end
 
     private

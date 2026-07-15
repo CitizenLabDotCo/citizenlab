@@ -2339,6 +2339,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.observationTerm": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.732481Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -13679,6 +13684,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.newObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.732481Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.ProjectEdit.newOption": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -19468,6 +19478,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.content_builder.html_block.label": {
+    "state": "verified",
+    "verified_at": "2026-06-24T07:14:30.807370Z",
+    "verified_by": "stephanie"
   },
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": {
     "state": "verified",

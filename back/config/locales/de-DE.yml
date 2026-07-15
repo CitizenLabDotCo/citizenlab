@@ -112,6 +112,8 @@ de-DE:
           title: Was ist Ihre Initiative?
         issue:
           title: Was ist Ihr Kommentar?
+        observation:
+          title: Was ist Ihre Beobachtung?
         option:
           title: Was ist Ihre Option?
         petition:

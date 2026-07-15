@@ -441,6 +441,7 @@ resource 'Users' do
     context 'when admin' do
       before do
         @user.update!(roles: [{ type: 'admin' }])
+        header_token_for @user # role change invalidates the earlier token; re-authenticate
       end
 
       get 'web_api/v1/users' do
@@ -1883,6 +1884,7 @@ resource 'Users' do
 
         before do
           @user.update!(roles: [{ type: 'admin' }])
+          header_token_for @user # role change invalidates the earlier token; re-authenticate
           @subject_user = create(:admin)
         end
 
@@ -1996,6 +1998,7 @@ resource 'Users' do
       before do
         project = create(:project)
         @user.update!(roles: [{ type: 'project_moderator', project_id: project.id }])
+        header_token_for @user # role change invalidates the earlier token; re-authenticate
       end
 
       get 'web_api/v1/users/me/ping' do

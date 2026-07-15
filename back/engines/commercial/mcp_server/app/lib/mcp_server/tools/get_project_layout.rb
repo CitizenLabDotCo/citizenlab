@@ -3,6 +3,7 @@
 class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
   def name = 'get_project_layout'
   def title = 'Get project description layout'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish
@@ -47,7 +48,7 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
       )
 
       if layout.nil?
-        return ok(
+        return response(
           "Project #{project.id} has no custom description layout. To create one, follow " \
           'the format guide below and send the complete graph to update_project_layout ' \
           'with enabled: true.',
@@ -58,7 +59,7 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
       authorize(layout, :show?)
       craftjs_json = ContentBuilder::LayoutImageService.new.render_data_images(layout.craftjs_json)
 
-      ok(
+      response(
         "Description layout for project #{project.id}",
         structured: {
           exists: true,
@@ -68,7 +69,7 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
         }
       )
     rescue ActiveRecord::RecordNotFound
-      error("Project not found: #{params[:project_id]}")
+      not_found_error('Project', params[:project_id])
     end
   end
 end

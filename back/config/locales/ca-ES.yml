@@ -112,6 +112,8 @@ ca-ES:
           title: Quina és la teva iniciativa?
         issue:
           title: Quin és el vostre comentari?
+        observation:
+          title: Quina és la teva observació?
         option:
           title: Quina és la vostra opció ?
         petition:

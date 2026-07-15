@@ -4,6 +4,15 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
   def name = 'create_event'
   def description = 'Creates an event for a project'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: false
+    }
+  end
+
   def input_schema
     {
       properties: {
@@ -40,22 +49,22 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
+
       event = Event.new(**params)
-      authorize_project!(event.project)
+      authorize_project!(project)
       authorize(event, :create?)
 
       event.save!
       SideFxEventService.new.after_create(event, current_user)
 
-      ok(
+      response(
         "Created event #{event.id}",
-        structured: event.as_json(only: %i[
-          id project_id title_multiloc description_multiloc location_multiloc address_2_multiloc
-          attend_button_multiloc online_link address_1 using_url maximum_attendees start_at end_at
-        ])
+        structured: McpServer::Serializers::Event.serialize(event, params: { current_user: })
       )
     rescue ActiveRecord::RecordInvalid => e
-      validation_error(e.record)
+      invalid_record_error(e.record)
     end
   end
 end

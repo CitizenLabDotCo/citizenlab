@@ -2,6 +2,7 @@
 
 class McpServer::Tools::ListCauses < McpServer::BaseTool
   def name = 'list_volunteering_causes'
+  def annotations = READ_ANNOTATIONS
   def description = 'Lists volunteering causes for a phase, in display order'
 
   def input_schema

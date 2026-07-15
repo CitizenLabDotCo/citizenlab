@@ -20,6 +20,7 @@ describe('Information with events CTA', () => {
       })
       .then(() => {
         cy.apiCreateProject({
+          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,

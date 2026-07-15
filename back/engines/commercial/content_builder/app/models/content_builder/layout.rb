@@ -20,7 +20,10 @@
 module ContentBuilder
   class Layout < ApplicationRecord
     include Files::FileAttachable
-    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc].freeze
+    # RichTextMultiloc is the migration-only "bridge" widget holding legacy WYSIWYG
+    # (Quill) HTML. Listing it here gives it the same HTML sanitization and text
+    # extraction as the native text widgets.
+    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc RichTextMultiloc HtmlBlockMultiloc].freeze
 
     # Well-known values of `code`, identifying what a layout is used for.
     PROJECT_DESCRIPTION_CODE = 'project_description'

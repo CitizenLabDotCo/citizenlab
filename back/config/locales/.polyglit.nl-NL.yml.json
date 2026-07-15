@@ -314,6 +314,11 @@
     "verified_at": "2026-03-18T11:49:32.439428Z",
     "verified_by": "Admin"
   },
+  "custom_forms.categories.main_content.observation.title": {
+    "state": "verified",
+    "verified_at": "2026-07-01T08:21:13.782335Z",
+    "verified_by": "Luuc"
+  },
   "custom_forms.categories.main_content.option.title": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.439428Z",

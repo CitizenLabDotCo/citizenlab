@@ -343,6 +343,7 @@ kl-GL:
         idea: '%{authorName} isumassarsiamut malittarissannut oqaaseqaateqarpoq'
         initiative: '%{authorName} suliniut malitannut oqaaseqaateqarpoq'
         issue: '%{authorName} suliassamut malinnaaffigisannut oqaaseqaateqarpoq'
+        observation: '%{authorName} maluginiakkami malinnaaffigisanni oqaaseqaateqarpoq'
         option: '%{authorName} periarfissamut malittarissannut oqaaseqaateqarpoq'
         petition: '%{authorName} atsiornernik katersinermut malinnaaffigisannut oqaaseqarpoq'
         post: '%{authorName} malitannut oqaaseqaateqarpoq'
@@ -453,6 +454,7 @@ kl-GL:
         idea: Isumassarsiaq uunga iserfigiuk
         initiative: Suliniut una takuuk
         issue: Suliassamut uunga iserit
+        observation: Maluginiakkamut uunngarit
         option: Periarfissaq una takuuk
         petition: Atsiornernik katersineq una takuuk
         post: Saqqummiussaq una takuuk
@@ -473,6 +475,7 @@ kl-GL:
         idea: Isumassarsiannut iserit
         initiative: Suliniutinnut iserit
         issue: Apeqqutinnut iserit
+        observation: Maluginiakkannut iserit
         option: Toqqakkannut iserit
         petition: Atsiornernik katersivinnut iserit
         post: Allatannut iserit
@@ -511,6 +514,7 @@ kl-GL:
         idea: Isumassarsiat saqqummiunneqarpoq
         initiative: Suliniutit saqqummiunneqarpoq
         issue: Suliassat saqqummerpoq
+        observation: Illit maluginiakkat saqqummiunneqarpoq
         option: Toqqagassat saqqummiunneqarpoq
         petition: Atsiornernik katersinerit saqqummiunneqarpoq
         post: Saqqummiussat saqqummiunneqarpoq
@@ -1116,6 +1120,7 @@ kl-GL:
         idea: Isumassarsiat uunga inissisimavoq "%{prescreening_status_title}"
         initiative: Suliniutit "%{prescreening_status_title}"-imiippoq
         issue: 'Suliassat uaniippoq: "%{prescreening_status_title}"'
+        observation: Maluginiakkat ima inissisimavoq "%{prescreening_status_title}"
         option: Toqqagassat uunga inissisimavoq "%{prescreening_status_title}"
         petition: Akerliussutsimik ersersitsiniutit "%{prescreening_status_title}"-imiippoq
         post: Ilanngussat "%{prescreening_status_title}"-imiippoq

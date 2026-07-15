@@ -75,10 +75,6 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.progressBarLabel',
     defaultMessage: 'Progress',
   },
-  progressPercentage: {
-    id: 'app.components.CustomFieldsForm.progressPercentage',
-    defaultMessage: '{percentage}% complete',
-  },
   selectMany: {
     id: 'app.components.CustomFieldsForm.selectMany',
     defaultMessage: '*Choose as many as you like',
@@ -336,6 +332,10 @@ export default defineMessages({
   viewYourStory: {
     id: 'app.utils.IdeasNewPage.viewYourStory',
     defaultMessage: 'View your story',
+  },
+  viewYourObservation: {
+    id: 'app.utils.IdeasNewPage.viewYourObservation',
+    defaultMessage: 'View your observation',
   },
   valueOutOfTotalWithLabel: {
     id: 'app.components.form.controls.valueOutOfTotalWithLabel',
