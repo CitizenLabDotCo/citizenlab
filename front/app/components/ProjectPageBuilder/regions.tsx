@@ -13,11 +13,12 @@ type RegionProps = {
   children?: React.ReactNode;
 };
 
-// The body sits on the page background color; only cards and content boxes
-// are white. On the public page the color spans the full viewport width via a
-// backdrop, so the body itself keeps constraining its children.
+// The body paints a neutral white so the page look doesn't depend on the
+// legacy page container's background; sections tint themselves through their
+// background setting. On the public page the white spans the full viewport
+// width via a backdrop, so the body itself keeps constraining its children.
 const BodyBackground = styled(Box)<{ $fullBleed: boolean }>`
-  background: ${colors.background};
+  background: ${colors.white};
   ${({ $fullBleed }) =>
     $fullBleed &&
     css`
@@ -30,7 +31,7 @@ const BodyBackground = styled(Box)<{ $fullBleed: boolean }>`
         bottom: 0;
         left: calc(-50vw + 50%);
         width: 100vw;
-        background: ${colors.background};
+        background: ${colors.white};
         z-index: -1;
       }
     `}
