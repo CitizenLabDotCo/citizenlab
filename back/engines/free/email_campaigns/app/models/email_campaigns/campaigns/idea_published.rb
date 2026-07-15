@@ -91,6 +91,7 @@ module EmailCampaigns
     def generate_commands(recipient:, activity:)
       idea = activity.item
       return [] if !idea.participation_method_on_creation.supports_public_visibility?
+
       # check if the idea_images field is present and enabled in the custom form
       custom_form = idea.project&.custom_form
       image_field_presence = custom_form.present? ? custom_form.custom_fields&.find_by(code: 'idea_images_attributes')&.enabled : false
