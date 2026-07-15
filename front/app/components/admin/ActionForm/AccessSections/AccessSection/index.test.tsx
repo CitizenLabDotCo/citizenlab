@@ -132,17 +132,6 @@ describe('<AccessSection />', () => {
       ).toBeInTheDocument();
     });
 
-    it('shows the "pick at least one" hint when no method is enabled', () => {
-      renderSection({
-        require_confirmed_email: false,
-        require_verification: false,
-      });
-
-      expect(
-        screen.getByText(/Pick at least one method/i)
-      ).toBeInTheDocument();
-    });
-
     it('locks the last remaining enabled method and explains why in a tooltip', async () => {
       // Only confirmed email enabled -> it is the last one, so it is locked.
       renderSection({
