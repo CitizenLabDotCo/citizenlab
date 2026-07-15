@@ -15,7 +15,11 @@ import { useParams } from 'utils/router';
 
 import EditModeHeightCap from '../EditModeHeightCap';
 import messages from '../messages';
-import SectionBackground from '../SectionBackground';
+import SectionBackground, {
+  SectionBackgroundChoice,
+  useDefaultSectionBackground,
+} from '../SectionBackground';
+import SectionBackgroundSetting from '../SectionBackgroundSetting';
 import useIsPageBodyChild from '../useIsPageBodyChild';
 import useWidgetProjectId from '../useWidgetProjectId';
 
@@ -27,7 +31,13 @@ const PUBLICATION_STATUSES = ['published', 'draft', 'archived'] as const;
 // more than this.
 const PAGE_SIZE = 100;
 
-const EventsWidget: UserComponent = () => {
+type Props = {
+  sectionBackground?: SectionBackgroundChoice;
+};
+
+const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
+  const defaultBackground = useDefaultSectionBackground();
+  const colored = (sectionBackground ?? defaultBackground) === 'colored';
   const projectId = useWidgetProjectId();
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const isPageBodyChild = useIsPageBodyChild();
@@ -59,7 +69,11 @@ const EventsWidget: UserComponent = () => {
 
   return (
     <EditModeHeightCap>
-      <SectionBackground fullBleed={!!slug && isPageBodyChild} py="40px">
+      <SectionBackground
+        colored={colored}
+        fullBleed={!!slug && isPageBodyChild}
+        py="40px"
+      >
         <Box
           id="e2e-project-page-events"
           mx="auto"
@@ -84,6 +98,7 @@ const EventsSettings = () => {
 
   return (
     <Box my="20px">
+      <SectionBackgroundSetting />
       <Text color="textSecondary" fontSize="s">
         <FormattedMessage
           {...messages.eventsManagedNote}
