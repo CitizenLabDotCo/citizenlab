@@ -54,10 +54,7 @@ const ProjectsAndFolders = () => {
   const addableNodes = getAddableNodes(authUser, treeView);
   const hasAddableNodes = addableNodes.length > 0;
 
-  const handleRemove = async (
-    nodeId: string,
-    nodeType: 'project' | 'folder'
-  ) => {
+  const handleRemove = (nodeId: string, nodeType: 'project' | 'folder') => {
     if (nodeType === 'project') {
       updateProject({ projectId: nodeId, space_id: null });
     } else {
