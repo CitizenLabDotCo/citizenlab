@@ -1,0 +1,96 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe McpServer::Tools::RunReportingSqlQuery do
+  # Layer 2's restricted role is cluster-global; provision it idempotently for
+  # every tenant so the tool can be exercised end-to-end (never drop it, since it
+  # may be referenced by sibling databases on the same cluster).
+  # rubocop:disable RSpec/BeforeAfterAll -- role is cluster-global; set up once.
+  before(:all) do
+    McpServer::AnalyticsReaderProvisioner.ensure_role!
+    Apartment.tenant_names.each { |schema| McpServer::AnalyticsReaderProvisioner.grant!(schema) }
+  end
+  # rubocop:enable RSpec/BeforeAfterAll
+
+  def run(query)
+    described_class::Runner.new(
+      params: { query: query },
+      server_context: {},
+      current_user: nil,
+      token_scopes: []
+    ).run
+  end
+
+  describe 'layer 2 (execution under the restricted role)' do
+    it 'runs the query as the analytics_reader role' do
+      response = run('SELECT current_user AS u')
+
+      expect(response.error?).to be false
+      expect(response.structured_content[:rows]).to eq([{ 'u' => 'analytics_reader' }])
+      expect(response.structured_content[:truncated]).to be false
+    end
+
+    it 'reads a reporting view and returns columns + rows' do
+      response = run('SELECT count(*) AS n FROM reporting_contributions')
+
+      expect(response.error?).to be false
+      expect(response.structured_content[:columns]).to eq(['n'])
+      expect(response.structured_content[:row_count]).to eq(1)
+    end
+  end
+
+  # A table in REPORTING_TABLES is only usable when its view exists AND carries
+  # the analytics_reader grant; a missing grant only surfaces at execution time.
+  # This guards the whole whitelist end-to-end, including future additions.
+  describe 'every whitelisted table' do
+    McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES.each do |table|
+      it "can be selected from (#{table})" do
+        response = run("SELECT * FROM #{table} LIMIT 1")
+
+        expect(response.error?).to be false
+      end
+    end
+  end
+
+  describe 'layer 1 (sandbox) rejections' do
+    it 'rejects a blank query before touching the database' do
+      response = run('   ')
+
+      expect(response.error?).to be true
+      expect(response.content.first[:text]).to match(/non-empty/)
+    end
+
+    it 'rejects a non-whitelisted table with an actionable reason' do
+      response = run('SELECT * FROM users')
+
+      expect(response.error?).to be true
+      expect(response.content.first[:text]).to match(/Query rejected/).and match(/not queryable/)
+    end
+
+    it 'rejects a cross-tenant schema-qualified reference' do
+      response = run('SELECT * FROM other_tenant.reporting_contributions')
+
+      expect(response.error?).to be true
+      expect(response.content.first[:text]).to match(/Query rejected/).and match(/Schema-qualified/)
+    end
+
+    it 'rejects the legacy analytics views that left the reporting surface' do
+      response = run('SELECT * FROM analytics_fact_participations')
+
+      expect(response.error?).to be true
+      expect(response.content.first[:text]).to match(/not queryable/)
+    end
+  end
+
+  describe 'tenant-context guard' do
+    it 'refuses to run a sandbox-valid query outside a real tenant (e.g. the public schema)' do
+      response = Apartment::Tenant.switch('public') do
+        run('SELECT count(*) AS n FROM reporting_contributions')
+      end
+
+      expect(response.error?).to be true
+      expect(response.content.first[:text]).to match(/No tenant context/)
+    end
+  end
+end
