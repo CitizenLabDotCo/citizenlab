@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Errore nel caricamento delle metriche di partecipazione",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Impossibile scaricare il PDF. Riprova.",
   "app.containers.Admin.projects.project.insights.exportButton": "Esporta",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Scarica le risposte in PDF",
   "app.containers.Admin.projects.project.insights.gender": "Genere",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Idee pubblicate",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Esplora",

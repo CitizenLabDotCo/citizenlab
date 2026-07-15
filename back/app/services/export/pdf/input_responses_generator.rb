@@ -25,26 +25,20 @@ module Export
 
       attr_reader :phase, :cover
 
-      # The answer field(s) per exported field (form questions + user fields),
-      # expanding matrix questions and appending "other"/follow-up answers via the
-      # shared answer builder. Redaction is applied per field, so redacting a
-      # question also drops its matrix statements and free-text answers.
+      # The full export column set (id, form questions, author, meta and user
+      # fields), assembled by the builder shared with the xlsx export. Redaction
+      # is applied per field, so redacting a question also drops its matrix
+      # statements and free-text answers.
       def fields
-        @fields ||= Export::InputFields.new(phase).all
-          .reject { |field| @redacted_field_keys.include?(field.key) }
-          .flat_map { |field| answer_fields_builder.fields_for(field) }
-      end
-
-      def answer_fields_builder
-        @answer_fields_builder ||= Export::AnswerFieldsForReport.new(Export::Xlsx::ValueVisitor)
+        @fields ||= Export::InputReportFields
+          .new(phase, redacted_field_keys: @redacted_field_keys)
+          .all
       end
 
       def inputs
         @inputs ||= phase.inputs_for_export
           .order(created_at: :asc)
-          # Eager-load everything the value visitor reads per input: the author
-          # (for author-scoped user fields), input topics, and file attachments.
-          .includes(:author, :input_topics, :idea_files, :attached_files, file_attachments: :file)
+          .includes(*Export::InputReportFields::EAGER_LOADS)
           .to_a
       end
 
@@ -54,9 +48,20 @@ module Export
             number: index + 1,
             date: I18n.l(input.created_at.to_date),
             answers: fields.map do |field|
-              { question: field.column_header, answer: field.value_from(input).to_s }
+              { question: field.column_header, answer: format_answer(field.value_from(input)) }
             end
           }
+        end
+      end
+
+      # Timestamps read as Time objects for the xlsx cell format; render them
+      # as localized dates in the pdf.
+      def format_answer(value)
+        case value
+        when ActiveSupport::TimeWithZone, Time, DateTime
+          I18n.l(value.to_date)
+        else
+          value.to_s
         end
       end
 

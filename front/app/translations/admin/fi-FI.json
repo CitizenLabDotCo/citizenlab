@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Osallistumismittareita ladattaessa tapahtui virhe",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "PDF-tiedoston lataus epäonnistui. Yritä uudelleen.",
   "app.containers.Admin.projects.project.insights.exportButton": "Vie",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Lataa vastaukset PDF-muodossa",
   "app.containers.Admin.projects.project.insights.gender": "Sukupuoli",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Ideat lähetetty",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Tutkia",

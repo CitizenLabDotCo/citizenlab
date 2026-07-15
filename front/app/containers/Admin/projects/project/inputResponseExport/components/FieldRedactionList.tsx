@@ -42,7 +42,11 @@ const FieldRedactionList = ({ fields, onToggleField, isLoading }: Props) => {
               <FormattedMessage {...messages.fieldReviewNoFlags} />
             )}
           </Text>
-          <Box display="flex" flexDirection="column">
+          <Box
+            display="flex"
+            flexDirection="column"
+            data-cy="e2e-field-redaction-list"
+          >
             {fields.map((field) => (
               <FieldRedactionRow
                 key={field.key}

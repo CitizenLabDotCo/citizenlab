@@ -1515,7 +1515,6 @@
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Feil ved innlasting av deltakelsesmålinger",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Kunne ikke laste ned PDF-filen. Vennligst prøv igjen.",
   "app.containers.Admin.projects.project.insights.exportButton": "Eksporter",
-  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": "Last ned svar som PDF",
   "app.containers.Admin.projects.project.insights.gender": "Kjønn",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Ideer lagt ut",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Utforsk",

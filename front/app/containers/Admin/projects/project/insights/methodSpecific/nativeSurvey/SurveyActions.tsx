@@ -25,7 +25,7 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 import useLocale from 'hooks/useLocale';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
-import useInputPdfExport from 'containers/Admin/projects/project/inputPdfExport/useInputPdfExport';
+import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
 
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -51,8 +51,11 @@ const SurveyActions = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
-  const { openModal: openPdfExportModal, modal: pdfExportModal } =
-    useInputPdfExport({ projectId, phaseId });
+  const {
+    openPdfExportModal,
+    openXlsxExportModal,
+    modal: responseExportModal,
+  } = useInputResponseExport({ projectId, phaseId });
 
   const {
     downloadPdf,
@@ -296,6 +299,15 @@ const SurveyActions = ({ phase }: Props) => {
                       setDropdownOpened(false);
                       openPdfExportModal();
                     }}
+                    data-cy="e2e-export-responses-pdf"
+                  />
+                  <ExportDropdownItem
+                    label={formatMessage(messages.exportResponsesToXlsx)}
+                    onClick={() => {
+                      setDropdownOpened(false);
+                      openXlsxExportModal();
+                    }}
+                    data-cy="e2e-export-responses-xlsx"
                   />
                   <ExportDropdownItem
                     label={formatMessage(messages.downloadInsightsPdf)}
@@ -365,7 +377,7 @@ const SurveyActions = ({ phase }: Props) => {
         closeDeleteModal={closeDeleteModal}
         deleteResults={deleteResults}
       />
-      {pdfExportModal}
+      {responseExportModal}
     </>
   );
 };
