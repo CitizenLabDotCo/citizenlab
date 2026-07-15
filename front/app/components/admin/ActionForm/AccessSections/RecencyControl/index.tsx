@@ -33,8 +33,8 @@ const RecencyControl = ({ expiry, verb, onChange }: Props) => {
       >
         <FormattedMessage
           {...(verb === 'Re-verify'
-            ? messages.reverifyIfOlderThan
-            : messages.reconfirmIfOlderThan
+            ? messages.requireRecentVerification
+            : messages.requireRecentConfirmation
           )}
         />
       </Text>
