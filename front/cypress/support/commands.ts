@@ -673,7 +673,7 @@ function apiCreateInputTopic({
 }
 
 type IdeaType = {
-  projectId: string;
+  phaseId: string;
   ideaTitle: string;
   ideaContent: string;
   locationGeoJSON?: { type: string; coordinates: number[] };
@@ -681,12 +681,11 @@ type IdeaType = {
   jwt?: string;
   budget?: number;
   anonymous?: boolean;
-  phaseIds?: string[];
   topicIds?: string[];
 };
 
 function apiCreateIdea({
-  projectId,
+  phaseId,
   ideaTitle,
   ideaContent,
   locationGeoJSON,
@@ -694,7 +693,6 @@ function apiCreateIdea({
   jwt,
   budget,
   anonymous,
-  phaseIds,
   topicIds,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
@@ -704,10 +702,9 @@ function apiCreateIdea({
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/ideas',
+      url: `web_api/v1/phases/${phaseId}/inputs`,
       body: {
         idea: {
-          project_id: projectId,
           publication_status: 'published',
           title_multiloc: {
             en: ideaTitle,
@@ -721,7 +718,6 @@ function apiCreateIdea({
           location_description: locationDescription,
           budget,
           anonymous,
-          phase_ids: phaseIds,
           topic_ids: topicIds,
         },
       },
@@ -1944,12 +1940,12 @@ function apiCreateSurveyResponse(
   {
     email,
     password,
-    project_id,
+    phase_id,
     fields,
   }: {
     email?: string;
     password?: string;
-    project_id: string;
+    phase_id: string;
     fields: Record<string, any>;
   },
   jwt?: any
@@ -1961,21 +1957,11 @@ function apiCreateSurveyResponse(
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/ideas',
+      url: `web_api/v1/phases/${phase_id}/inputs`,
       body: {
         idea: {
           publication_status: 'published',
-          project_id,
           ...fields,
-        },
-        method: 'POST',
-        url: 'web_api/v1/ideas',
-        body: {
-          idea: {
-            publication_status: 'published',
-            project_id,
-            ...fields,
-          },
         },
       },
     });

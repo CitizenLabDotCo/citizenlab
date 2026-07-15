@@ -3,6 +3,7 @@ import moment = require('moment');
 
 describe('Idea show page actions', () => {
   let projectId = '';
+  let phaseId = '';
   let projectSlug = '';
   let ideaId = '';
   let ideaSlug = '';
@@ -30,11 +31,11 @@ describe('Idea show page actions', () => {
         });
       })
       .then((phase) => {
+        phaseId = phase.body.data.id;
         cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: randomString(20),
           ideaContent: randomString(),
-          phaseIds: [phase.body.data.id],
         }).then((idea) => {
           ideaId = idea.body.data.id;
           ideaSlug = idea.body.data.attributes.slug;
@@ -187,7 +188,7 @@ describe('Idea show page actions', () => {
         cy.apiSignup(firstName, lastName, email, password);
 
         cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: randomString(20),
           ideaContent: randomString(),
         }).then((idea) => {
