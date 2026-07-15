@@ -173,7 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Demana el nom i els cognoms.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Contrasenya",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Requereix una contrasenya al compte.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Només es demana una contrasenya als usuaris que es registren amb el correu electrònic. Als usuaris que es registren d'una altra manera (p. ex., inici de sessió únic) mai se'ls demana que en defineixin una.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Només es demana una contrasenya als usuaris que es registren amb el correu electrònic. Als usuaris que es registren d'una altra manera (p. ex., mitjançant inici de sessió únic) mai se'ls demana que en defineixin una.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Informació personal",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Què recollim",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Informació recollida dels participants i com s'emmagatzema juntament amb la seva aportació.",

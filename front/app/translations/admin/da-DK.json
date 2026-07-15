@@ -173,7 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Bed om for- og efternavn.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Adgangskode",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Kræv en adgangskode til kontoen.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "En adgangskode kræves kun af brugere, der tilmelder sig med e-mail. Brugere, der tilmelder sig på en anden måde (f.eks. single sign-on), bliver aldrig bedt om at oprette en.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "En adgangskode kræves kun af brugere, der tilmelder sig med e-mail. Brugere, der tilmelder sig på en anden måde (f.eks. single sign-on), bliver aldrig bedt om at angive en.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Personlige oplysninger",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Hvad vi indsamler",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Information indsamlet fra deltagere, og hvordan den gemmes sammen med deres bidrag.",

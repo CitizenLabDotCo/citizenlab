@@ -173,7 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Prašyti vardo ir pavardės.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Slaptažodis",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Reikalauti paskyros slaptažodžio.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Slaptažodžio prašoma tik iš naudotojų, kurie registruojasi el. paštu. Naudotojų, kurie registruojasi kitu būdu (pvz., per vieningąją prisijungimo sistemą), niekada neprašoma jo nustatyti.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Slaptažodžio reikalaujama tik iš naudotojų, kurie registruojasi el. paštu. Naudotojų, kurie registruojasi kitu būdu (pvz., per vieningąją prisijungimo sistemą), niekada neprašoma jo nustatyti.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Asmeninė informacija",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Ką renkame",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Iš dalyvių renkama informacija ir tai, kaip ji saugoma kartu su jų pateiktais duomenimis.",

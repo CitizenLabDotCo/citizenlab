@@ -173,7 +173,7 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": "Ad ve soyad isteyin.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": "Şifre",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": "Hesapta bir şifre bulunmasını zorunlu kıl.",
-  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Şifre yalnızca e-posta ile kaydolan kullanıcılardan istenir. Başka bir yöntemle (örneğin, tekli oturum açma) kaydolan kullanıcılardan asla bir şifre belirlemeleri istenmez.",
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": "Şifre yalnızca e-posta ile kaydolan kullanıcılardan istenir. Başka bir yöntemle (örneğin, tek oturum açma) kaydolan kullanıcılardan asla bir şifre belirlemeleri istenmez.",
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": "Kişisel bilgiler",
   "app.components.admin.ActionForm.DataSection.whatWeCollect": "Neler topluyoruz",
   "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": "Katılımcılardan toplanan bilgiler ve bu bilgilerin gönderileriyle birlikte nasıl saklandığı.",
