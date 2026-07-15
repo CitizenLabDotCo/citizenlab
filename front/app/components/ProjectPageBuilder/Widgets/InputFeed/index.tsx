@@ -21,7 +21,11 @@ import EmptyInputFeed from './EmptyInputFeed';
 
 const PublicInputContent = React.lazy(() => import('./PublicInputContent'));
 
-const InputFeedSection = () => {
+type Props = {
+  colored: boolean;
+};
+
+const InputFeedSection = ({ colored }: Props) => {
   const projectId = useWidgetProjectId();
   const isPageBodyChild = useIsPageBodyChild();
   const { slug } = useParams({ strict: false }) as { slug?: string };
@@ -50,6 +54,7 @@ const InputFeedSection = () => {
         (hasParticipation ? (
           <EditModeHeightCap>
             <SectionBackground
+              colored={colored}
               fullBleed={onPublicRoute && isPageBodyChild}
               pb="40px"
               pt={startsGreyBand ? '40px' : undefined}
