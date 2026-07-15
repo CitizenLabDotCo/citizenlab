@@ -39,6 +39,25 @@ describe McpServer::Tools::LayoutWidgets do
     end
   end
 
+  describe 'SCAFFOLD_WIDGETS' do
+    it 'are all registered widgets, without insertable docs' do
+      described_class::SCAFFOLD_WIDGETS.each do |name|
+        expect(described_class::WIDGETS).to have_key(name)
+        expect(described_class::WIDGETS[name]['doc']).to be_nil,
+          "scaffold widget #{name} must not be advertised as insertable"
+      end
+    end
+
+    it 'matches the canonical nodes the backend seeds' do
+      seeded = ContentBuilder::ProjectPageLayoutService.new
+        .from_description_multiloc({})
+        .values
+        .map { |node| node.dig('type', 'resolvedName') }
+
+      expect(seeded).to match_array(described_class::SCAFFOLD_WIDGETS)
+    end
+  end
+
   describe 'CHEATSHEET' do
     it 'includes the doc of every documented widget' do
       described_class::WIDGETS.each do |name, widget|
@@ -46,6 +65,12 @@ describe McpServer::Tools::LayoutWidgets do
 
         expect(described_class::CHEATSHEET).to include(widget['doc']),
           "expected the cheatsheet to include the #{name} doc"
+        expect(described_class::CHEATSHEET).to include(name)
+      end
+    end
+
+    it 'documents every scaffold widget' do
+      described_class::SCAFFOLD_WIDGETS.each do |name|
         expect(described_class::CHEATSHEET).to include(name)
       end
     end
