@@ -665,6 +665,7 @@ describe Permissions::UserRequirementsService do
         let(:user) { create(:unconfirmed_user, verified: true) }
 
         it 'requires email confirmation' do
+          verified_permission.update!(require_confirmed_email: true)
           expect(user.confirmation_required?).to be true
           requirements = service.requirements(verified_permission, user)
           expect(service.permitted?(requirements)).to be false
