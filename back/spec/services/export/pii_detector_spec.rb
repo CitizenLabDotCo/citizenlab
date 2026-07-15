@@ -12,6 +12,8 @@ describe Export::PiiDetector do
   let(:colour_field) { create(:custom_field, resource: form, key: 'q_colour', title_multiloc: { 'en' => 'Favourite colour' }) }
   # `custom_field` defaults to a registration (resource_type 'User') field.
   let(:user_field) { create(:custom_field, key: 'residence') }
+  # User field embedded in the form (key prefixed by UserFieldsInFormService).
+  let(:user_field_in_form) { create(:custom_field, resource: form, key: UserFieldsInFormService.prefix_key('gender')) }
 
   before do
     allow_any_instance_of(LLMSelector).to receive(:llm_class_for_use_case)
@@ -48,7 +50,8 @@ describe Export::PiiDetector do
       allow(llm).to receive(:chat).and_raise(StandardError)
       allow(ErrorReporter).to receive(:report)
 
-      expect(detector.personal_data_keys([name_field, user_field])).to contain_exactly('residence')
+      expect(detector.personal_data_keys([name_field, user_field, user_field_in_form]))
+        .to contain_exactly('residence', 'u_gender')
       expect(ErrorReporter).to have_received(:report)
     end
   end

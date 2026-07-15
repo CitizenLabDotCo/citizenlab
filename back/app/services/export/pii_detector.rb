@@ -43,7 +43,7 @@ module Export
     end
 
     def structural_pii?(field)
-      field.resource_type == 'User' || field.key.start_with?('u_')
+      field.user_type? || field.user_field_in_form?
     end
 
     def fields_for_prompt(fields)
