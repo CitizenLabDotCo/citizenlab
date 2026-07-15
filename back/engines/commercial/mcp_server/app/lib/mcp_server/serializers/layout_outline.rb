@@ -20,6 +20,7 @@ class McpServer::Serializers::LayoutOutline
         parent: { type: 'string', description: 'Absent on ROOT.' },
         depth: { type: 'integer' },
         canvas: { type: 'boolean', description: 'Present (true) when children can be placed inside this node.' },
+        locked: { type: 'boolean', description: 'Present (true) on canonical page-scaffold nodes that must not be added, moved, deleted or edited.' },
         slot: { type: 'string', description: "The parent's linkedNodes slot this node fills (e.g. left, accordion-content)." },
         text: { type: 'string', description: 'Plain-text snippet of the node text or title.' }
       },
@@ -36,8 +37,8 @@ class McpServer::Serializers::LayoutOutline
   end
 
   # One entry per node, in visual order. Full entry shape (keys with nil values are
-  # omitted, so `parent`/`canvas`/`slot`/`text` are only present when meaningful):
-  #   { id:, widget:, parent:, depth:, canvas: true, slot:, text: }
+  # omitted, so `parent`/`canvas`/`locked`/`slot`/`text` are only present when meaningful):
+  #   { id:, widget:, parent:, depth:, canvas: true, locked: true, slot:, text: }
   def entries
     walk('ROOT', depth: 0, slot: nil, visited: Set.new)
   end
@@ -61,9 +62,17 @@ class McpServer::Serializers::LayoutOutline
       parent: node['parent'],
       depth: depth,
       canvas: node['isCanvas'] ? true : nil,
+      locked: locked?(node) ? true : nil,
       slot: slot,
       text: text_snippet(node)
     }.compact
+  end
+
+  # The FE marks the fixed page-scaffold nodes with custom.locked (widgets pinned in
+  # place) or custom.region (structural canvases); both are off-limits to edits.
+  def locked?(node)
+    custom = node['custom']
+    custom.is_a?(Hash) && (custom['locked'] || custom['region']) ? true : false
   end
 
   # @return [Array<[String, String|nil]>] ordered pairs of [child id, slot name]

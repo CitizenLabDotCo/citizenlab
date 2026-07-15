@@ -56,6 +56,14 @@ describe McpServer::Serializers::LayoutOutline do
         expect(by_id['TL'][:parent]).to eq('CL')
       end
 
+      it 'marks custom.locked and custom.region nodes with locked: true and omits the key elsewhere' do
+        json['TC']['custom'] = { 'locked' => true }
+        json['CL']['custom'] = { 'region' => true }
+
+        locked = entries.to_h { |entry| [entry[:id], entry[:locked]] }
+        expect(locked).to include('TC' => true, 'CL' => true, 'TL' => nil, 'ROOT' => nil)
+      end
+
       it 'omits slot on nodes that are ordinary children' do
         by_id = entries.index_by { |entry| entry[:id] }
         expect(by_id['TL']).not_to have_key(:slot)
