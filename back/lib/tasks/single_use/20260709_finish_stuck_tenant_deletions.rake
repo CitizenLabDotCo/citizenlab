@@ -26,12 +26,20 @@
 # sweeping, this task brings the schema forward just enough to delete — and no further. It runs only
 # the *missing*, *within-schema*, *additive* structural migrations (create_table / add_column /
 # add_reference / rename_* / change_column), each in its own rescue and in version order, so one
-# failure cannot halt the rest. It deliberately skips, per tenant:
+# failure cannot halt the rest. The additive test is a *necessary* filter, not a purity check: it
+# excludes any migration whose *only* work is one of the following, since none of them adds structure —
 #   - data backfills — they run app-model code with side effects (jobs, callbacks, external calls),
 #   - indexes and constraints — a unique index can fail on the tenant's own duplicate rows,
-#   - roles and grants — cluster-global; they must never run to finish one tenant's deletion.
-# A gap those skips leave open is not silently swallowed: it resurfaces as the `DeleteUserJob` error
-# reported below, not as a stalled sweep.
+#   - roles and grants — a `GRANT`/`CREATE ROLE` is not schema-scoped (it ignores `search_path` and
+#     so would reach every tenant on the server).
+# — but it does not prove a *selected* migration contains nothing else. A migration that adds a column
+# *and* backfills it in the same file (a common pattern) is run, backfill included; that backfill runs
+# inside `tenant.switch`, against only this doomed tenant's own data, so it reaches no other tenant, and
+# the tenant is about to be deleted anyway. The one mix that *would* escape the schema — additive DDL
+# alongside a not-schema-scoped grant — occurs in no migration in the tree. Ordinary structural DDL
+# Postgres confines to the switched-in schema regardless, so it cannot touch another tenant.
+# A gap those exclusions leave open is not silently swallowed: it resurfaces as the `DeleteUserJob`
+# error reported below, not as a stalled sweep.
 #
 # Reports and asks nothing unless passed 'execute', which makes it interactive. A host limits it to
 # one tenant; a poll timeout overrides the one derived from the tenant's user count:
@@ -72,19 +80,21 @@ namespace :single_use do
     migrations_by_version = ActiveRecord::Base.connection_pool.migration_context.migrations.index_by(&:version)
 
     additive_ddl = /\b(create_table|create_join_table|add_column|add_reference|add_belongs_to|rename_column|rename_table|change_column|change_column_null)\b/
-    # Roles and grants act on cluster-global objects, not the tenant schema. `execute`d SQL is the
-    # only place they can hide, so the body is scanned as well as the filename.
-    cluster_wide = /\b(GRANT|REVOKE|CREATE\s+ROLE|ALTER\s+ROLE|DROP\s+ROLE)\b/i
 
-    # Classification depends only on the migration, so do it once. A migration is safe to run to
-    # finish a deletion when it makes an additive, within-schema structural change and touches no
-    # cluster-global role/grant. Everything else (data backfills, indexes, constraints, drops,
-    # reporting views, grants) is left out; the sweep is the backstop for anything actually needed.
+    # Classification depends only on the migration, so do it once. The test is a *necessary* filter,
+    # not a purity check: a migration is eligible only if its body makes an additive structural change.
+    # That excludes anything whose *only* work is unsafe — a pure data backfill, a pure index/constraint,
+    # a pure roles/grants migration all carry none of these keywords, so none is selected. It does NOT
+    # prove a selected migration contains nothing else:
+    #   - additive + backfill in one file (common) IS selected, and the backfill runs — but inside
+    #     `tenant.switch`, so it touches only this doomed tenant's own data; it reaches no other tenant,
+    #     and the tenant is about to be deleted anyway.
+    #   - additive + GRANT/CREATE ROLE would be the one genuinely unsafe mix, since a grant is not
+    #     schema-scoped — but no migration in the tree does both, so a separate guard would cover an
+    #     empty set. (A filename match on "role" is worse than useless: it drops benign columns like
+    #     `add_internal_role_to_projects`.)
     structural_versions = migrations_by_version.select do |_version, migration|
-      body = File.read(migration.filename)
-      body.match?(additive_ddl) &&
-        !migration.filename.match?(/grant|revoke|role|reporting_view/i) &&
-        !body.match?(cluster_wide)
+      File.read(migration.filename).match?(additive_ddl)
     rescue StandardError
       false # unreadable/unusual migration: never auto-run it — a real gap will surface in the sweep
     end.keys.to_set
@@ -180,14 +190,14 @@ namespace :single_use do
       # Bring the schema forward just enough to delete (see header). Per-migration and in version
       # order, each in its own rescue: a failure here — or a migration that needs data this frozen
       # schema no longer has — must not abort the deletion. Anything genuinely still missing shows up
-      # as the DeleteUserJob error after the sweep. `connection_pool.migration_context.run` (not the
-      # removed `connection.migration_context`) records the version in, and applies the DDL to, the
-      # switched-in schema.
+      # as the DeleteUserJob error after the sweep. `Apartment::Migrator.run` switches into the tenant,
+      # then applies and records the one migration there — the supported per-tenant path, already
+      # correct for Rails 7.2's `connection_pool.migration_context` accessor.
       if runnable_migrations.any?
         puts "  Applying #{runnable_migrations.size} missing structural migration(s) to #{tenant.schema_name}…"
         applied_now = 0
         runnable_migrations.each do |version|
-          tenant.switch { ActiveRecord::Base.connection_pool.migration_context.run(:up, version) }
+          Apartment::Migrator.run(:up, tenant.schema_name, version)
           applied_now += 1
         rescue StandardError => e
           puts "    ⚠️  #{version} #{migrations_by_version[version].name}: #{e.class}: #{e.message.lines.first&.strip}"

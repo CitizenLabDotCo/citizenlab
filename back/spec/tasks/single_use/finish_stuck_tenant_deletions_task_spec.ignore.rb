@@ -230,11 +230,13 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
         ActiveRecord::MigrationProxy,
         version: skipped_version, name: 'AddUniqueIndexToThings', filename: '/fake/skipped.rb'
       )
-      # Additive AND grants: only the body scan catches it. It must still be skipped — grants are
-      # cluster-global and must never run to finish one tenant's deletion.
+      # A pure roles/grants migration: a GRANT is not schema-scoped (it would reach every tenant on
+      # the server) — but, crucially, it carries no additive DDL, so the positive allowlist leaves it
+      # out on its own, with no dedicated grant filter. (Ordinary structural DDL, by contrast, Postgres
+      # confines to the switched-in schema, so it cannot reach another tenant.)
       grant = instance_double(
         ActiveRecord::MigrationProxy,
-        version: grant_version, name: 'AddBarToThingsAndGrant', filename: '/fake/grant.rb'
+        version: grant_version, name: 'GrantSelectOnThings', filename: '/fake/grant.rb'
       )
       allow(ActiveRecord::Base.connection_pool).to receive(:migration_context).and_return(migration_context)
       allow(migration_context).to receive(:migrations).and_return([structural, skipped, grant])
@@ -243,7 +245,7 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
       allow(File).to receive(:read).with('/fake/structural.rb').and_return('add_column :things, :foo, :string')
       allow(File).to receive(:read).with('/fake/skipped.rb').and_return('add_index :things, :foo, unique: true')
       allow(File).to receive(:read).with('/fake/grant.rb')
-        .and_return("add_column :things, :bar, :string\n    execute 'GRANT SELECT ON things TO analytics_reader'")
+        .and_return("execute 'GRANT SELECT ON things TO analytics_reader'")
 
       answer_prompt_with(stuck_tenant.host)
       allow(User).to receive(:destroy_all_async) { stuck_tenant.switch { User.delete_all } }
@@ -284,9 +286,10 @@ describe 'single_use:finish_stuck_tenant_deletions rake task' do
 
   # The safety property the whole design rests on: a migration run to finish one deletion must not
   # reach any other tenant. Unlike the examples above this runs a *real* migration — nothing about
-  # `run` is stubbed — which also confirms `connection_pool.migration_context.run` behaves on this
-  # Rails/PostGIS build. A bystander tenant is left in the identical "missing" state and must be
-  # untouched, proving the DDL is confined to the switched-in schema.
+  # `run` is stubbed — which also confirms `Apartment::Migrator.run` (and the
+  # `connection_pool.migration_context.run` it wraps) behaves on this Rails/PostGIS build. A bystander
+  # tenant is left in the identical "missing" state and must be untouched, proving the DDL is confined
+  # to the switched-in schema.
   context 'when a real migration is applied' do
     let!(:bystander) { create(:tenant, host: 'bystander.example.com') }
     let(:version) { 20_260_622_120_000 } # add_placement_type_to_phases — additive, within-schema
