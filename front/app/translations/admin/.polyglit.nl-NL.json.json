@@ -1029,6 +1029,11 @@
     "verified_at": "2026-07-10T12:33:55.014112Z",
     "verified_by": "Luuc"
   },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": {
+    "state": "verified",
+    "verified_at": "2026-07-15T14:52:20.371435Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.014112Z",
@@ -1047,6 +1052,11 @@
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.014112Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-15T14:52:20.371435Z",
     "verified_by": "Luuc"
   },
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": {
