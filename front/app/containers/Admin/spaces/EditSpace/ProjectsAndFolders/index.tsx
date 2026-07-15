@@ -30,8 +30,8 @@ const ProjectsAndFolders = () => {
   const { formatMessage } = useIntl();
   const { data: treeView } = useTreeView();
   const { data: authUser } = useAuthUser();
-  const { mutate: updateFolder } = useUpdateProjectFolder();
-  const { mutate: updateProject } = useUpdateProject();
+  const { mutateAsync: updateFolder } = useUpdateProjectFolder();
+  const { mutateAsync: updateProject } = useUpdateProject();
 
   const [modalOpened, setModalOpened] = useState(false);
 
@@ -54,9 +54,12 @@ const ProjectsAndFolders = () => {
   const addableNodes = getAddableNodes(authUser, treeView);
   const hasAddableNodes = addableNodes.length > 0;
 
-  const handleRemove = (nodeId: string, nodeType: 'project' | 'folder') => {
+  const handleRemove = async (
+    nodeId: string,
+    nodeType: 'project' | 'folder'
+  ) => {
     if (nodeType === 'project') {
-      updateProject({ projectId: nodeId, space_id: null });
+      await updateProject({ projectId: nodeId, space_id: null });
     } else {
       updateFolder({ projectFolderId: nodeId, space_id: null });
     }
