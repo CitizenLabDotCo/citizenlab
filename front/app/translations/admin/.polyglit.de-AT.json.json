@@ -919,6 +919,11 @@
     "verified_at": "2026-07-08T07:51:00.235120Z",
     "verified_by": "Jelena"
   },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:43:48.117743Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
@@ -938,6 +943,11 @@
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
     "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:43:48.117743Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": {
     "state": "verified",
