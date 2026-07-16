@@ -1190,7 +1190,7 @@
   "app.containers.Admin.inspirationHub.resetFilters": "Réinitialiser les filtres",
   "app.containers.Admin.inspirationHub.seemsLike": "C'est tout pour le moment. Si vous souhaitez voir d'autres projets, essayez de changer les {filters}.",
   "app.containers.Admin.messaging.addSmsCampaignButton": "Créer un SMS",
-  "app.containers.Admin.messaging.addSmsCampaignTitle": "Nouveau message SMS",
+  "app.containers.Admin.messaging.addSmsCampaignTitle": "Nouveau SMS",
   "app.containers.Admin.messaging.automated.editModalTitle": "Modifier les champs de la campagne e-mail",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Vous pouvez utiliser les variables suivantes dans votre message :",
   "app.containers.Admin.messaging.cancelButton": "Annuler",
