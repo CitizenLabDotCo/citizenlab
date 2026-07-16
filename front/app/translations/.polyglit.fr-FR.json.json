@@ -6569,6 +6569,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.CampaignsConsentForm.ally_categoryLabel2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T21:53:09.402453Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T09:37:26.567130Z",
