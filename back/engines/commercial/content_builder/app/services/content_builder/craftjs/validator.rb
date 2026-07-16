@@ -65,7 +65,7 @@ module ContentBuilder
         errors << "node ROOT: must not have a 'parent'" if @json['ROOT']['parent'].present?
 
         @json.each do |id, node|
-          Nodes.child_references(node).each do |via, child_id|
+          Query.child_references(node).each do |via, child_id|
             reference_counts[child_id] += 1
             child = @json[child_id]
             if child_id == 'ROOT'
@@ -101,7 +101,7 @@ module ContentBuilder
           next if reachable.include?(id) || !@json.key?(id)
 
           reachable << id
-          queue.concat(Nodes.child_references(@json[id]).map(&:last))
+          queue.concat(Query.child_references(@json[id]).map(&:last))
         end
 
         (@json.keys - reachable.to_a).map { |node_id| "node #{node_id}: not reachable from ROOT" }
@@ -119,7 +119,7 @@ module ContentBuilder
         @json.each do |id, node|
           next if id == 'ROOT' || !in_scope?(id)
 
-          name = Nodes.resolved_name(node)
+          name = Query.resolved_name(node)
           spec = @widget_specs[name]
           if spec.nil?
             errors << "node #{id}: widget '#{name}' is not supported. Supported: #{@widget_specs.keys.join(', ')}"
