@@ -115,4 +115,12 @@ export default defineMessages({
     id: 'app.containers.Authentication.authenticationDialog',
     defaultMessage: 'Authentication',
   },
+  enterYourPhoneNumber: {
+    id: 'app.containers.Authentication.enterYourPhoneNumber',
+    defaultMessage: 'Enter your phone number',
+  },
+  confirmYourPhoneNumber: {
+    id: 'app.containers.Authentication.confirmYourPhoneNumber',
+    defaultMessage: 'Confirm your phone number',
+  }
 });

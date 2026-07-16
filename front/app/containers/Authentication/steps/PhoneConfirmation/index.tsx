@@ -21,7 +21,7 @@ import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  state: State;
+  state: Partial<State>;
   loading: boolean;
   setError: SetError;
   onConfirm: (code: string) => void | Promise<void>;

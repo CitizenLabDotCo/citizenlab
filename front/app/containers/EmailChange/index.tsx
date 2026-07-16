@@ -143,6 +143,7 @@ const EmailChange = () => {
                 prefilledBuiltInFields: null,
                 ssoProvider: null,
                 claimTokens: null,
+                phoneNumber: null,
               }}
               loading={loading}
               setError={setConfirmationError}

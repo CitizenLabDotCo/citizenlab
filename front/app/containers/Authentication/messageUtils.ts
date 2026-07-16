@@ -30,8 +30,10 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'invite:taken': messages.signUp,
 
   // missing data flow
-  'missing-data:built-in': messages.completeYourProfile,
   'missing-data:email-confirmation': messages.confirmYourEmail,
+  'missing-data:phone': messages.enterYourPhoneNumber,
+  'missing-data:phone-confirmation': messages.confirmYourPhoneNumber,
+  'missing-data:built-in': messages.completeYourProfile,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
   'missing-data:onboarding': messages.whatAreYouInterestedIn,
