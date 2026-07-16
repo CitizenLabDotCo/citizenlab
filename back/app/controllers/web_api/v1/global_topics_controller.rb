@@ -21,7 +21,7 @@ class WebApi::V1::GlobalTopicsController < ApplicationController
       when '-projects_count'
         global_topics.order_projects_count(:asc)
       else
-        raise 'Unsupported sort method'
+        raise ApiError.new(:unsupported_sort_parameter, status: 400)
       end
 
     global_topics = paginate global_topics
