@@ -61,15 +61,15 @@ const ActionForm = ({
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
 
-  const authMethodName = ssoMethodName(authenticationMethod);
-  const readableAuthMethodName = authMethodNames[authMethodName as any] || authMethodName;
+  const nameInConfig = ssoMethodName(authenticationMethod);
+  const methodName = authMethodNames[nameInConfig as any] || nameInConfig;
 
   const summary = passwordLoginEnabled
     ? buildSummary(permissionData, customFields, formatMessage)
     : buildSummarySSO(
       permissionData,
       customFields,
-      readableAuthMethodName,
+      methodName,
       formatMessage
     );
 
