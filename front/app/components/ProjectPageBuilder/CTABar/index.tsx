@@ -16,9 +16,11 @@ type Props = {
 };
 
 /**
- * Docks the CTA bar the moment the first phases section scrolls into view,
- * keeps it docked while the user is below that point, and releases it when
- * they scroll back above it. Without a phases section the bar never shows.
+ * Docks the CTA bar once the user scrolls to the first phases section — the
+ * moment its top passes under the platform navbar, where the classic project
+ * page's sticky bar would pin. It stays docked while the user is below that
+ * point and releases when they scroll back above it. Without a phases
+ * section the bar never shows.
  */
 const CTABar = ({ projectId, containerRef }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -38,7 +40,7 @@ const CTABar = ({ projectId, containerRef }: Props) => {
       }
       setDocked(
         !!phasesElement &&
-          phasesElement.getBoundingClientRect().top <= window.innerHeight
+          phasesElement.getBoundingClientRect().top <= stylingConsts.menuHeight
       );
     };
 
