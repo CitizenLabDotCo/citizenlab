@@ -10279,6 +10279,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.PhoneChange.confirmationModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:21:54.472498Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneConfirmation.codeInput": {
     "state": "verified",
     "verified_at": "2026-07-16T16:00:17.561417Z",

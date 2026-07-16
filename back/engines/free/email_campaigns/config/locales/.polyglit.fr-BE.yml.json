@@ -2434,6 +2434,11 @@
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.new_phone_confirmation.sms_body": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:21:54.736722Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.official_feedback_on_idea_you_follow.cta_button": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
