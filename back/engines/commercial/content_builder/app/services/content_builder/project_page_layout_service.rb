@@ -131,8 +131,7 @@ module ContentBuilder
     end
 
     def resolved_name(node)
-      type = node['type']
-      type.is_a?(Hash) ? type['resolvedName'] : type
+      Craftjs::Query.resolved_name(node)
     end
 
     def canonical_nodes(description_ids)

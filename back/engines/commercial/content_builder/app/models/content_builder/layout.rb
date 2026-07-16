@@ -88,11 +88,7 @@ module ContentBuilder
     private
 
     def file_attachment_widget?(node)
-      return false unless node.is_a?(Hash)
-
-      type = node['type']
-      resolved_name = type.is_a?(Hash) ? type['resolvedName'] : type
-      resolved_name == 'FileAttachment'
+      node.is_a?(Hash) && Craftjs::Query.resolved_name(node) == 'FileAttachment'
     end
 
     def validate_iframe_urls
