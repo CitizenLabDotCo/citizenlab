@@ -16,7 +16,7 @@ import AuthProviderButton, {
 import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
 import sharedMessages from '../../_components/messages';
 import ViennaSamlButton from '../../_components/ViennaSamlButton';
-import useAuthMethodNames from '../methodNames';
+import useAuthMethodNames from '../../../../../hooks/useAuthMethodNames';
 
 import messages from './messages';
 
