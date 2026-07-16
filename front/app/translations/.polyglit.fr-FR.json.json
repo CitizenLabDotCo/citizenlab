@@ -10349,6 +10349,16 @@
     "verified_at": "2026-07-16T20:33:09.844499Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneConfirmation.verifyAndContinue": {
+    "state": "verified",
+    "verified_at": "2026-07-16T21:17:35.796040Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneConfirmation.wrongNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-16T21:17:35.796040Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.ProjectFolderCards.allProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
