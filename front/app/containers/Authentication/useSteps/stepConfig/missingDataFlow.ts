@@ -1,6 +1,7 @@
 import requirementKeys from 'api/authentication/authentication_requirements/keys';
 import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode'
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -84,11 +85,11 @@ export const missingDataFlow = (
 
     'missing-data:phone': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (userId: string, phone: string) => {
+      SUBMIT: async (phone: string) => {
         updateState({ phone });
-
-        await updateUser({ userId, phone });
+        await requestCodePhoneChange(phone);
         invalidateCacheAfterUpdateUser(queryClient);
+        setCurrentStep('missing-data:phone-confirmation');
       }
     },
 
