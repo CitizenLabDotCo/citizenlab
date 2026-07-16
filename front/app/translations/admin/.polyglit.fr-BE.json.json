@@ -6319,6 +6319,11 @@
     "verified_at": "2026-07-16T20:14:04.664795Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.smsDeliveryStatus_sent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:19:54.184467Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.smsRecipientsTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T16:00:17.791260Z",
