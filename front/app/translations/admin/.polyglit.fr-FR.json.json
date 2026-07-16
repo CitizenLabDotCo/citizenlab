@@ -6304,6 +6304,11 @@
     "verified_at": "2026-07-16T15:58:15.777091Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.confirmSendSmsHeader": {
+    "state": "verified",
+    "verified_at": "2026-07-16T21:40:03.460543Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.deleteSmsButton": {
     "state": "verified",
     "verified_at": "2026-07-16T15:58:15.777091Z",
@@ -6337,6 +6342,11 @@
   "app.containers.Admin.messaging.fieldSmsLabelError": {
     "state": "verified",
     "verified_at": "2026-07-16T20:17:14.810169Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabelTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T21:40:03.460543Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.messaging.helmetTitle": {
