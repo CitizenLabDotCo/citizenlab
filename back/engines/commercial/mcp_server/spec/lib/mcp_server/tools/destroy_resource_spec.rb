@@ -71,12 +71,13 @@ describe McpServer::Tools::DestroyResource do
     expect { image.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
-  it 'destroys a file attachment' do
+  it 'destroys a file attachment but keeps the file in the project pool' do
     file = create(:file, projects: [draft_project])
     attachment = create(:file_attachment, file: file, attachable: draft_project)
     response = destroy('file_attachment', attachment.id)
     expect(response).not_to be_error
     expect { attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect(file.reload.projects).to include(draft_project)
   end
 
   it 'refuses when the target project is published' do
@@ -119,7 +120,6 @@ describe McpServer::Tools::DestroyResource do
 
   it 'returns a not-found error when the record does not exist' do
     response = destroy('phase', SecureRandom.uuid)
-    expect(response).to be_error
-    expect(response.content.first[:text]).to match(/not found/i)
+    expect(response).to be_not_found('Resource (phase)')
   end
 end

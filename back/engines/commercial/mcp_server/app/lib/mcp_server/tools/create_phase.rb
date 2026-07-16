@@ -45,10 +45,11 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
         description_multiloc: { **multiloc_schema, description: 'Phase description (HTML).' },
         start_at: { type: 'string', description: 'Phase start date (ISO 8601 format)' },
         end_at: {
-          type: 'string',
+          type: %w[string null],
           description: <<~DESC.squish
-            Phase end date (ISO 8601 format). Optional on the last phase,
-            which then runs indefinitely.
+            Phase end date (ISO 8601 format). Required except on the last phase,
+            where a missing end date makes the phase run indefinitely: omit the
+            field on create, or pass null on update to clear it.
           DESC
         },
         participation_method: {
@@ -290,7 +291,8 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
 
         manual_voters_amount: { type: 'integer', description: 'Count of offline/manually-recorded voters. Only for voting phases.' }
       },
-      required: %w[project_id title_multiloc start_at]
+      required: %w[project_id title_multiloc start_at],
+      additionalProperties: false
     }
   end
 
