@@ -96,7 +96,7 @@ const Row = ({
   });
   const canModerateThisSpace = usePermission({
     item: 'space',
-    action: 'moderate',
+    action: 'manage_projects_and_folders',
     context: { spaceId },
   });
   const showSpace = spacesEnabled && !!space_title_multiloc && !!spaceId;

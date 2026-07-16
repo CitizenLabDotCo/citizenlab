@@ -77,7 +77,7 @@ const Row = ({ folder, moderatorsById }: Props) => {
     folder.attributes;
   const canModerateThisSpace = usePermission({
     item: 'space',
-    action: 'moderate',
+    action: 'manage_projects_and_folders',
     context: { spaceId: space_id },
   });
   const showSpace = spacesEnabled && !!space_title_multiloc && !!space_id;
