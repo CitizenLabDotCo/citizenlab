@@ -6269,9 +6269,19 @@
     "verified_at": "2026-07-16T15:58:15.979193Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.editSmsCampaignTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:14:04.664795Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.fieldSmsBody": {
     "state": "verified",
     "verified_at": "2026-07-16T15:58:15.979193Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:14:04.664795Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.messaging.helmetTitle": {
@@ -6279,9 +6289,19 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.noSmsCampaignsDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:14:04.664795Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.noSmsCampaignsHeader": {
     "state": "verified",
     "verified_at": "2026-07-16T19:50:20.045199Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.smsCampaignsDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:14:04.664795Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.messaging.smsRecipientsTitle": {
