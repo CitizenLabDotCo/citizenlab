@@ -203,8 +203,11 @@ export interface IAppConfigurationSettings {
   hide_submission_removal_text?: AppConfigurationFeature;
   project_static_pages?: AppConfigurationFeature;
   parallel_participation?: AppConfigurationFeature;
-  pdf_export_responses?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
+  sms?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

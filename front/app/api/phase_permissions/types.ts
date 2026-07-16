@@ -37,15 +37,21 @@ export interface IPhasePermissionData {
   attributes: {
     access_denied_explanation_multiloc: Multiloc;
     action: IPhasePermissionAction;
-    permitted_by: PermittedBy;
+    confirmed_email_expiry: number | null;
     created_at: string;
-    updated_at: string;
-    global_custom_fields: boolean;
-    verification_enabled: boolean;
-    verification_expiry: number | null;
     everyone_tracking_enabled: boolean;
+    global_custom_fields: boolean;
+    permitted_by: PermittedBy;
+    permitted_by_everyone_allowed: boolean;
+    require_confirmed_email: boolean;
+    require_name: boolean;
+    require_password: boolean;
+    require_verification: boolean;
+    updated_at: string;
     user_data_collection: UserDataCollection;
     user_fields_in_form_descriptor: UserFieldsInFormFrontendDescriptor;
+    verification_enabled: boolean;
+    verification_expiry: number | null;
   };
   relationships: {
     permission_scope: {
@@ -78,18 +84,18 @@ export type ResetPermissionParams = {
   action: IPhasePermissionAction;
 };
 
-export type PermittedBy =
-  | 'everyone'
-  | 'users'
-  | 'admins_moderators'
-  | 'everyone_confirmed_email'
-  | 'verified';
+export type PermittedBy = 'everyone' | 'users' | 'admins_moderators';
 
-interface IPermissionUpdate {
+export interface IPermissionUpdate {
   group_ids: string[];
   permitted_by: PermittedBy;
   global_custom_fields: boolean;
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
   everyone_tracking_enabled: boolean;
+  require_confirmed_email: boolean;
+  confirmed_email_expiry: number | null;
+  require_name: boolean;
+  require_password: boolean;
+  require_verification: boolean;
 }

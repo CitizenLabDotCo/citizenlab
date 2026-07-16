@@ -6609,10 +6609,30 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:55.160812Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:55.160812Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.federaTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:55.160812Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:55.160812Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
@@ -6654,15 +6674,40 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.CampaignsConsentForm.ally_categoryLabel2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.CampaignsConsentForm.emailNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.CampaignsConsentForm.messageError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.CampaignsConsentForm.messageError2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.CampaignsConsentForm.messageSuccess": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CampaignsConsentForm.messageSuccess2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
   },
   "app.containers.CampaignsConsentForm.notificationsSubTitle": {
     "state": "verified",
@@ -6673,6 +6718,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CampaignsConsentForm.smsNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.CampaignsConsentForm.smsNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
   },
   "app.containers.CampaignsConsentForm.submit": {
     "state": "verified",
@@ -10434,6 +10489,131 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.PhoneChange.backToProfile": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.confirmationModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.currentPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.helmetDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.helmetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.newPhoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneEmptyError": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneInvalid2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneTaken": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneUnknownError": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneUpdateCancelled": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneUpdateCancelledDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.submitButton": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.titleAddPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.titleChangePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.updateSuccessful": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.changeYourNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.codeInput": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveFourDigits": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.confirmationCodeSent": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.didntGetAnSMS": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.sendNewCode": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.verifyAndContinue": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.wrongNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.ProjectFolderCards.allProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -11564,6 +11744,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersEditPage.addPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -11608,6 +11793,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.UsersEditPage.changePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
   },
   "app.containers.UsersEditPage.clickHereToUpdateVerification": {
     "state": "verified",

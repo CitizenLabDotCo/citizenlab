@@ -192,6 +192,7 @@ fr-BE:
       new_email_confirmation: Nouveau code de confirmation d'e-mail
       new_idea_for_admin_prescreening: Nouvelle contribution en attente d’approbation dans un projet que je modère
       new_idea_for_admin_published: Une nouvelle contribution a été publiée dans un projet que je modère
+      new_phone_confirmation: Nouveau code de confirmation de téléphone
       official_feedback_on_idea_you_follow: Mise à jour d'une contribution que vous suivez
       password_reset: Réinitialisation du mot de passe
       project_folder_moderation_rights_received: Droits d'administrateur de dossiers reçus
@@ -204,6 +205,7 @@ fr-BE:
       project_review_state_change: Projet approuvé
       proposal_expired_for_admin: Proposition expirée sans atteindre le seuil de vote
       screening_digest: Rappel hebdomadaire de modération
+      sms_manual: SMS officiels
       space_moderation_rights_received: Droits de gestionnaire d'espace reçus
       status_change_on_idea_you_follow: Changement de statut d'une contribution que vous suivez
       survey_submitted: Enquête soumise
@@ -536,6 +538,8 @@ fr-BE:
       title: Une nouvelle contribution a été publiée sur votre plateforme
       today: Aujourd'hui
       yesterday: Hier
+    new_phone_confirmation:
+      sms_body: Votre code de confirmation est %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Voir la contribution
       event_description: '%{feedback_author_name} a publié une mise à jour sur « %{input_title} ».'

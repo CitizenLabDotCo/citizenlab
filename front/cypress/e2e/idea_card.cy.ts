@@ -11,6 +11,7 @@ describe('Idea card component', () => {
   const commentContent = randomString();
   let projectId: string;
   let projectSlug: string;
+  let phaseId: string;
   let ideaId: string;
   let userId: string;
 
@@ -36,7 +37,8 @@ describe('Idea card component', () => {
           reacting_dislike_enabled: true,
         });
       })
-      .then(() => {
+      .then((phase) => {
+        phaseId = phase.body.data.id;
         return cy.apiSignup(firstName, lastName, email, password);
       })
       .then((user) => {
@@ -135,6 +137,50 @@ describe('Idea card component', () => {
       .closest('.e2e-idea-card')
       .find('.e2e-ideacard-comment-count')
       .contains('2');
+  });
+
+  describe('Reaction to input disabled', () => {
+    const ideaTitle = randomString();
+    const ideaContent = randomString();
+
+    before(() => {
+      cy.apiCreatePhase({
+        projectId,
+        title: 'Second phase',
+        startAt: moment().subtract(1, 'month').format('DD/MM/YYYY'),
+        participationMethod: 'ideation',
+        canPost: true,
+        canComment: true,
+        canReact: false,
+        reacting_dislike_enabled: true,
+      })
+        .then((phase) => {
+          phaseId = phase.body.data.id;
+        })
+        .then((user) => {
+          return cy.apiCreateIdea({
+            projectId,
+            ideaTitle,
+            ideaContent,
+          });
+        });
+    });
+
+    it('does not show the up and dislike buttons if canReact is false', () => {
+      cy.get('#e2e-ideas-list')
+        .find('.e2e-idea-card')
+        .contains(ideaTitle)
+        .closest('.e2e-idea-card')
+        .find('.e2e-ideacard-like-button')
+        .should('not.exist');
+
+      cy.get('#e2e-ideas-list')
+        .find('.e2e-idea-card')
+        .contains(ideaTitle)
+        .closest('.e2e-idea-card')
+        .find('.e2e-ideacard-dislike-button')
+        .should('not.exist');
+    });
   });
 
   after(() => {
