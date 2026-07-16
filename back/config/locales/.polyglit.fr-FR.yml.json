@@ -939,6 +939,11 @@
     "verified_at": "2026-03-18T11:50:36.611698Z",
     "verified_by": "Admin"
   },
+  "pdf_export.input_responses.date": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.854473Z",
+    "verified_by": "Adrien"
+  },
   "phases.community_monitor_title": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.611698Z",
