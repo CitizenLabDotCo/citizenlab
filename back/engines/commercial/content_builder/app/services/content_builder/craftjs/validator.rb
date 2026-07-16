@@ -145,6 +145,7 @@ module ContentBuilder
           errors.concat(prop_errors(id, node, spec))
         end
 
+        errors.concat(slot_canvas_errors)
         errors
       end
 
@@ -161,11 +162,25 @@ module ContentBuilder
 
       def slot_errors(id, node, spec)
         allowed = spec['slots'] || []
-        node['linkedNodes'].filter_map do |slot, child_id|
+        node['linkedNodes'].keys.filter_map do |slot|
           if allowed.exclude?(slot)
             suffix = allowed.any? ? " (allowed: #{allowed.join(', ')})" : ''
             "node #{id}: unknown linkedNodes slot '#{slot}'#{suffix}"
-          elsif @json[child_id] && !@json[child_id]['isCanvas']
+          end
+        end
+      end
+
+      # Slot containers must be canvases. Checked over every linkedNodes edge in the
+      # graph — not per in-scope parent — so a patch that flips a stored container to
+      # isCanvas: false without re-sending its parent widget is still caught. The edge
+      # counts as in scope when either side of it is.
+      def slot_canvas_errors
+        @json.flat_map do |id, node|
+          node['linkedNodes'].filter_map do |_slot, child_id|
+            child = @json[child_id]
+            next unless child && !child['isCanvas']
+            next unless in_scope?(id) || in_scope?(child_id)
+
             "node #{child_id}: slot containers must be a canvas (isCanvas: true)"
           end
         end

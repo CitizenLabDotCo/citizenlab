@@ -203,6 +203,23 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       )
     end
 
+    context 'when a patch flips a slot container to isCanvas: false without re-sending its parent' do
+      let(:json) do
+        {
+          'ROOT' => craftjs_root(['TC']),
+          'TC' => craftjs_node('TwoColumn', parent: 'ROOT', linkedNodes: { 'left' => 'C' }),
+          'C' => craftjs_node('Container', parent: 'TC', isCanvas: false)
+        }
+      end
+      let(:convention_scope) { %w[C] }
+
+      it 'still rejects the non-canvas slot container' do
+        expect(errors).to contain_exactly(
+          match(/\Anode C: slot containers must be a canvas/)
+        )
+      end
+    end
+
     it 'rejects a prop value outside its enum' do
       json['ROOT']['nodes'] = ['B']
       json.delete('T')
