@@ -4057,7 +4057,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Ce widget affiche les projets associés aux « zones » suivies par l’utilisateur. Notez que votre plateforme peut être configurée pour utiliser un autre terme que « zones » ; consultez l’onglet « Zones géographiques » dans les paramètres de la plateforme. Si l’utilisateur ne suit encore aucune zone, le widget lui proposera les zones disponibles à suivre (jusqu’à 100 maximum).",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Icône de carte",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Pages personnalisées",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Explorer par départements",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Explorer par service",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Aucune page sélectionnée",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": "Sélectionner des pages personnalisées",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": "Ce widget vous permet de sélectionner des pages personnalisées, d'ajouter des icônes à chacune d'elles et de les organiser en sections pour faciliter l'exploration.",
