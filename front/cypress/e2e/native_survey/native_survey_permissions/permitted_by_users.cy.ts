@@ -125,7 +125,7 @@ describe('Native survey permitted by: users', () => {
     cy.get('fieldset').first().find('input').first().check({ force: true });
 
     // Intercept submit request
-    cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+    cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
 
     // Submit survey
     cy.dataCy('e2e-submit-form').click();
