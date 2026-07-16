@@ -6354,6 +6354,11 @@
     "verified_at": "2026-07-16T19:50:19.871096Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.sendSmsPreviewButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:26:33.270418Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.smsCampaignsDescription": {
     "state": "verified",
     "verified_at": "2026-07-16T20:14:04.489346Z",

@@ -1207,7 +1207,7 @@
   "app.containers.Admin.messaging.manageButtonLabel": "Gérer",
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Contactez par SMS les utilisateurs qui ont renseigné un numéro de téléphone.",
   "app.containers.Admin.messaging.noSmsCampaignsHeader": "Envoyez votre premier SMS",
-  "app.containers.Admin.messaging.sendSmsPreviewButton": "Envoyer un aperçu",
+  "app.containers.Admin.messaging.sendSmsPreviewButton": "Envoyer un SMS de test",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Envoie un message texte de test à votre propre numéro de téléphone.",
   "app.containers.Admin.messaging.smsCampaignsDescription": "Envoyez des SMS à vos utilisateurs.",
   "app.containers.Admin.messaging.smsDeliveryStatus_delivered": "Remis",
