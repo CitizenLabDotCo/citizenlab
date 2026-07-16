@@ -82,6 +82,30 @@ export const missingDataFlow = (
       },
     },
 
+    'missing-data:phone': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: async (_phoneNumber: string) => {
+        // TODO
+        // await updateUser({ userId, phone });
+        // invalidateCacheAfterUpdateUser(queryClient);
+      }
+    },
+
+    'missing-data:phone-confirmation': {
+      CLOSE: () => setCurrentStep('closed'),
+      CHANGE_PHONE: async () => {
+        setCurrentStep('missing-data:phone');
+      },
+      SUBMIT_CODE: async (_code: string) => {
+        // TODO
+        // await confirmPhoneConfirmationCode(userId, code);
+        // await queryClient.invalidateQueries(requirementKeys.all());
+      },
+      RESEND_CODE: async () => {
+        // TODO
+      }
+    },
+
     'missing-data:built-in': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (
