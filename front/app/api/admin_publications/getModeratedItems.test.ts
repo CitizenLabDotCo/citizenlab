@@ -1,4 +1,4 @@
-import { getModeratedItems } from './utils';
+import { getModeratedItems } from './getModeratedItems';
 
 describe('getModeratedItems', () => {
   describe('without spaces', () => {
