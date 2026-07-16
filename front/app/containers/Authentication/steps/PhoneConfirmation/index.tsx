@@ -14,14 +14,14 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import { SetError } from '../../typings';
+import { SetError, State } from '../../typings';
 
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  phoneNumber: string;
+  state: State;
   loading: boolean;
   setError: SetError;
   onConfirm: (code: string) => void | Promise<void>;
@@ -42,7 +42,7 @@ const isWrongConfirmationCodeError = (e: any) => {
 };
 
 const PhoneConfirmation = ({
-  phoneNumber,
+  state,
   loading,
   setError,
   onConfirm,
@@ -109,16 +109,16 @@ const PhoneConfirmation = ({
 
   const handleChangePhone = onChangePhone
     ? (e: FormEvent) => {
-        e.preventDefault();
-        onChangePhone();
-      }
+      e.preventDefault();
+      onChangePhone();
+    }
     : undefined;
 
   return (
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage phoneNumber={phoneNumber} codeResent={codeResent} />
+          <CodeSentMessage phoneNumber={state.phoneNumber ?? ''} codeResent={codeResent} />
         </Box>
         <Box>
           <Input

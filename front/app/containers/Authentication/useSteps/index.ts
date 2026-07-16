@@ -83,6 +83,7 @@ export default function useSteps() {
     prefilledBuiltInFields: null,
     ssoProvider: null,
     claimTokens: null,
+    phoneNumber: null
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);
@@ -328,10 +329,10 @@ export default function useSteps() {
       const context = contextFromLocalStorage
         ? JSON.parse(contextFromLocalStorage)
         : {
-            type: sso_verification_type,
-            action: sso_verification_action,
-            id: sso_verification_id,
-          };
+          type: sso_verification_type,
+          action: sso_verification_action,
+          id: sso_verification_id,
+        };
 
       authenticationDataRef.current = {
         successAction:

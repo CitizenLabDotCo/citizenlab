@@ -155,6 +155,7 @@ const CurrentStep = ({
     case 'missing-data:phone-confirmation':
       return (
         <PhoneConfirmation
+          state={state}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
