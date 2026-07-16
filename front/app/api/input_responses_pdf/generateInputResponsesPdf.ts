@@ -4,7 +4,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { requestBlob } from 'utils/requestBlob';
 
-export type SurveyPdfCover = {
+export type InputPdfCover = {
   include: boolean;
   title: string;
   subtitle: string;
@@ -15,7 +15,7 @@ export type SurveyPdfCover = {
 
 type RequestParams = {
   phaseId: string;
-  cover: SurveyPdfCover;
+  cover: InputPdfCover;
   redactedFieldKeys?: string[];
   coverOnly?: boolean;
 };
@@ -28,7 +28,7 @@ const requestPdfBlob = ({
   coverOnly = false,
 }: RequestParams): Promise<Blob> =>
   requestBlob(
-    `${API_PATH}/phases/${phaseId}/survey_responses_pdf`,
+    `${API_PATH}/phases/${phaseId}/input_responses_pdf`,
     'application/pdf',
     undefined,
     {
@@ -49,14 +49,14 @@ const requestPdfBlob = ({
   );
 
 // Full export — downloads the PDF.
-export const generateSurveyResponsesPdf = async ({
+export const generateInputResponsesPdf = async ({
   phaseId,
   cover,
   redactedFieldKeys,
   fileName,
 }: {
   phaseId: string;
-  cover: SurveyPdfCover;
+  cover: InputPdfCover;
   redactedFieldKeys: string[];
   fileName: string;
 }): Promise<void> => {
@@ -67,5 +67,5 @@ export const generateSurveyResponsesPdf = async ({
 // Cover-only PDF for the live preview.
 export const fetchCoverPreviewPdf = (params: {
   phaseId: string;
-  cover: SurveyPdfCover;
+  cover: InputPdfCover;
 }): Promise<Blob> => requestPdfBlob({ ...params, coverOnly: true });

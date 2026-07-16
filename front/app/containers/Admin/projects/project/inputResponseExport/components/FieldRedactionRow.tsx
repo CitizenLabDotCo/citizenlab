@@ -29,6 +29,7 @@ const FieldRedactionRow = ({ field, onToggle }: Props) => {
       gap="12px"
       py="8px"
       borderTop={`1px solid ${colors.borderLight}`}
+      data-cy={`e2e-field-redaction-row-${field.key}`}
     >
       <Box display="flex" alignItems="center" gap="10px">
         <PlainToggle checked={!field.redact} onChange={onToggle} />
