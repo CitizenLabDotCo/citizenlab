@@ -6239,6 +6239,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.addSmsCampaignButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:05:37.821394Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.addSmsCampaignTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T19:58:51.165778Z",
