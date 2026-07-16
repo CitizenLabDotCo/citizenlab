@@ -42,6 +42,7 @@
 class Project < ApplicationRecord
   include Files::FileAttachable
   include PgSearch::Model
+  include PurgesRelatedQueJobs
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
 
