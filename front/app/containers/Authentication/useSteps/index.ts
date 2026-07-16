@@ -83,7 +83,7 @@ export default function useSteps() {
     prefilledBuiltInFields: null,
     ssoProvider: null,
     claimTokens: null,
-    phoneNumber: null
+    phone: null
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);

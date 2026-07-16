@@ -84,10 +84,11 @@ export const missingDataFlow = (
 
     'missing-data:phone': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (_phoneNumber: string) => {
-        // TODO
-        // await updateUser({ userId, phone });
-        // invalidateCacheAfterUpdateUser(queryClient);
+      SUBMIT: async (userId: string, phone: string) => {
+        updateState({ phone });
+
+        await updateUser({ userId, phone });
+        invalidateCacheAfterUpdateUser(queryClient);
       }
     },
 

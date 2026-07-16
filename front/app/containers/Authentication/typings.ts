@@ -38,7 +38,7 @@ export interface State {
   } | null;
   ssoProvider: SSOProvider | null;
   claimTokens: string[] | null;
-  phoneNumber: string | null;
+  phone: string | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;

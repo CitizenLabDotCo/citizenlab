@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import { SetError } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
@@ -23,22 +25,23 @@ import messages from './messages';
 import { FormValues } from './types';
 
 const DEFAULT_VALUES: Partial<FormValues> = {
-  phoneNumber: undefined,
+  phone: undefined,
 };
 
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (phoneNumber: string) => void;
+  onSubmit: (userId: string, phone: string) => void;
 }
 
 const Phone = ({ loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
 
   const schema = useMemo(
     () =>
       object({
-        phoneNumber: string()
+        phone: string()
           .required(formatMessage(messages.phoneNumberMissingError))
           .test(
             '',
@@ -56,9 +59,11 @@ const Phone = ({ loading, setError, onSubmit }: Props) => {
     shouldFocusError: true,
   });
 
-  const handleSubmit = async ({ phoneNumber }: FormValues) => {
+  if (!authUser) return null;
+
+  const handleSubmit = async ({ phone }: FormValues) => {
     try {
-      await onSubmit(phoneNumber);
+      await onSubmit(authUser.data.id, phone);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -78,7 +83,7 @@ const Phone = ({ loading, setError, onSubmit }: Props) => {
           </Text>
           <Box data-cy="phone-flow-start-phone-number-input">
             <Input
-              name="phoneNumber"
+              name="phone"
               type="tel"
               autocomplete="tel"
               label={formatMessage(messages.phoneNumber)}

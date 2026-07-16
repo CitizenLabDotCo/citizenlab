@@ -118,7 +118,7 @@ const PhoneConfirmation = ({
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage phoneNumber={state.phoneNumber ?? ''} codeResent={codeResent} />
+          <CodeSentMessage phoneNumber={state.phone ?? ''} codeResent={codeResent} />
         </Box>
         <Box>
           <Input
