@@ -4,7 +4,7 @@ import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../containers/Authentication/steps/EmailFlowStart/messages';
+import messages from './messages';
 
 const isDev = process.env.NODE_ENV === 'development';
 
