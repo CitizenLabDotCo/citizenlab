@@ -102,11 +102,14 @@ definePermissionRule(
   }
 );
 
+// Pass the folder id via `context` (e.g. `{ folderId, folderSpaceId }`) so the
+// rule can check moderation of that specific folder. `folderSpaceId` lets
+// moderators of the folder's space moderate it too.
 definePermissionRule(
   'project_folder',
   'moderate',
-  (folder: IProjectFolderData, user) => {
-    return userModeratesFolder(user, folder.id);
+  (_folder, user, _tenant, context) => {
+    return userModeratesFolder(user, context?.folderId, context?.folderSpaceId);
   }
 );
 

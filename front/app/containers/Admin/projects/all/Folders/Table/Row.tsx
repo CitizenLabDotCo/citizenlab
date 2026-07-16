@@ -5,6 +5,7 @@ import {
   Tr,
   Td,
   Text,
+  Icon,
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -14,6 +15,7 @@ import useProjectFolderImage from 'api/project_folder_images/useProjectFolderIma
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
 import { IUserData } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import FolderMoreActionsMenu from 'containers/Admin/projects/projectFolders/components/ProjectFolderRow/FolderMoreActionsMenu';
@@ -23,6 +25,7 @@ import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconB
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { usePermission } from 'utils/permissions';
 
 import { PUBLICATION_STATUS_LABELS } from '../../_shared/constants';
 import ManagerBubbles from '../../_shared/ManagerBubbles';
@@ -38,6 +41,12 @@ const StyledTd = styled(Td)`
       text-decoration: underline;
     }
   }
+  .folder-table-row-space {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 interface Props {
@@ -48,6 +57,7 @@ interface Props {
 const Row = ({ folder, moderatorsById }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -63,7 +73,14 @@ const Row = ({ folder, moderatorsById }: Props) => {
     ? moderatorIds.map((id) => moderatorsById[id])
     : [];
 
-  const { publication_status } = folder.attributes;
+  const { publication_status, space_id, space_title_multiloc } =
+    folder.attributes;
+  const canModerateThisSpace = usePermission({
+    item: 'space',
+    action: 'moderate',
+    context: { spaceId: space_id },
+  });
+  const showSpace = spacesEnabled && !!space_title_multiloc && !!space_id;
 
   return (
     <Tr dataCy="projects-overview-folder-table-row">
@@ -87,11 +104,59 @@ const Row = ({ folder, moderatorsById }: Props) => {
             >
               {localize(folder.attributes.title_multiloc)}
             </Text>
-            <Text m="0" fontSize="xs" color="textSecondary">
-              {formatMessage(messages.numberOfProjects, {
-                numberOfProjects: folder.attributes.visible_projects_count,
-              })}
-            </Text>
+            <Box
+              display="flex"
+              alignItems="center"
+              flexWrap="wrap"
+              gap="2px 4px"
+            >
+              {showSpace && (
+                <>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    gap="2px"
+                    flexShrink={0}
+                  >
+                    <Icon
+                      name="spaces"
+                      fill={colors.textSecondary}
+                      width="14px"
+                    />
+                    <Text
+                      m="0"
+                      fontSize="xs"
+                      color="textSecondary"
+                      className={
+                        canModerateThisSpace
+                          ? 'folder-table-row-space'
+                          : undefined
+                      }
+                      onClick={
+                        canModerateThisSpace
+                          ? (event) => {
+                              event.stopPropagation();
+                              clHistory.push(
+                                `/admin/projects/spaces/${space_id}`
+                              );
+                            }
+                          : undefined
+                      }
+                    >
+                      {localize(space_title_multiloc)}
+                    </Text>
+                  </Box>
+                  <Text m="0" fontSize="xs" color="textSecondary">
+                    ·
+                  </Text>
+                </>
+              )}
+              <Text m="0" fontSize="xs" color="textSecondary">
+                {formatMessage(messages.numberOfProjects, {
+                  numberOfProjects: folder.attributes.visible_projects_count,
+                })}
+              </Text>
+            </Box>
           </Box>
           {isBeingDeleted && (
             <Box ml="16px">
