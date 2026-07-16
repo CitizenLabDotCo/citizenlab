@@ -6309,6 +6309,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.smsRecipientsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T16:00:17.609817Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.FollowedItems.thisWidgetShows": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -10718,6 +10723,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.tools.MCPAuthorizations.actions": {
+    "state": "verified",
+    "verified_at": "2026-07-16T16:00:17.609817Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.tools.apiTokens.createTokenButton": {
     "state": "verified",

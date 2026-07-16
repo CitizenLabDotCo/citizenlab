@@ -2919,6 +2919,16 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T16:00:17.744995Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.eventsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-16T16:00:17.744995Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T15:58:15.925055Z",
@@ -10268,6 +10278,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.PhoneConfirmation.codeInput": {
+    "state": "verified",
+    "verified_at": "2026-07-16T16:00:17.744995Z",
+    "verified_by": "Adrien"
   },
   "app.containers.ProjectFolderCards.allProjects": {
     "state": "verified",
