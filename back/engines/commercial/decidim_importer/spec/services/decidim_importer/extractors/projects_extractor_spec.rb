@@ -22,6 +22,18 @@ RSpec.describe DecidimImporter::Extractors::ProjectsExtractor do
     expect(attrs['slug']).to eq('collectifsdequartiers')
   end
 
+  it 'keeps a Decidim slug only for the first claimant, so a process and assembly sharing one don’t clash' do
+    # Decidim lets a process and an assembly share the slug `bacasable`; Go Vocal slugs are global.
+    process, assembly = extract([
+      { 'uid' => 'p1', 'title' => '{"fr":"Bac"}', 'url' => 'https://x.fr/processes/bacasable' },
+      { 'uid' => 'a1', 'title' => '{"fr":"Bac"}', 'url' => 'https://x.fr/assemblies/bacasable' }
+    ])
+
+    expect(process.attributes['slug']).to eq('bacasable')
+    # The duplicate drops its slug and falls back to Go Vocal's (auto-deduped) title-derived one.
+    expect(assembly.attributes).not_to have_key('slug')
+  end
+
   it 'nests an assembly under the Assemblies folder via its stamped group' do
     folder = DecidimImporter::Extractors::FoldersExtractor.new(
       [{ 'uid' => DecidimImporter::ExportReader::ASSEMBLIES_FOLDER_UID, 'title' => 'Assemblies' }],

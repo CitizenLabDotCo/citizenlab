@@ -61,17 +61,15 @@ RSpec.describe DecidimImporter::AppConfigMapper do
   end
 
   it 'always allows and enables the features the import relies on' do
-    # Project-level static pages and the Content Builder project description need their flags on.
+    # Project-level static pages need their flag on for the imported pages to be usable.
     settings = patch_for('name' => '{"fr":"X"}')['settings']
     expect(settings['project_static_pages']).to eq('allowed' => true, 'enabled' => true)
-    expect(settings['project_description_builder']).to eq('allowed' => true, 'enabled' => true)
   end
 
   it 'still turns on those features when there is no organization row' do
     expect(patch_for(nil)).to eq(
       'settings' => {
-        'project_static_pages' => { 'allowed' => true, 'enabled' => true },
-        'project_description_builder' => { 'allowed' => true, 'enabled' => true }
+        'project_static_pages' => { 'allowed' => true, 'enabled' => true }
       }
     )
   end

@@ -529,8 +529,8 @@ RSpec.describe DecidimImporter::Importer do
 
   describe '.prune_unreachable_embedded_images!' do
     it 'drops only the embedded images whose source is unreachable, keeping the rest and the text' do
-      allow(described_class).to receive(:image_reachable?).with('http://live/ok.png').and_return(true)
-      allow(described_class).to receive(:image_reachable?).with('http://dead/gone.png').and_return(false)
+      allow(described_class).to receive(:image_importable?).with('http://live/ok.png').and_return(true)
+      allow(described_class).to receive(:image_importable?).with('http://dead/gone.png').and_return(false)
       template = { 'models' => { 'idea' => [{
         'body_multiloc' => { 'fr-FR' => '<p>A</p><img src="http://live/ok.png"><img src="http://dead/gone.png"><p>B</p>' }
       }] } }
@@ -542,7 +542,7 @@ RSpec.describe DecidimImporter::Importer do
     end
 
     it 'leaves base64 images untouched and probes each distinct url only once' do
-      allow(described_class).to receive(:image_reachable?).and_return(true)
+      allow(described_class).to receive(:image_importable?).and_return(true)
       template = { 'models' => { 'idea' => [
         { 'body_multiloc' => { 'fr-FR' => '<img src="http://x/a.png"><img src="data:image/png;base64,AAAA">' } },
         { 'body_multiloc' => { 'en' => '<img src="http://x/a.png">' } }
@@ -551,7 +551,7 @@ RSpec.describe DecidimImporter::Importer do
       described_class.prune_unreachable_embedded_images!(template)
 
       expect(template['models']['idea'].first['body_multiloc']['fr-FR']).to include('data:image/png;base64,AAAA')
-      expect(described_class).to have_received(:image_reachable?).once # memoised across records/locales
+      expect(described_class).to have_received(:image_importable?).once # memoised across records/locales
     end
   end
 
@@ -614,13 +614,17 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
-  describe '.image_reachable?' do
+  describe '.image_importable?' do
+    # PNG / JPEG magic bytes for sniffing the real content type.
+    let(:png_bytes) { "\x89PNG\r\n\x1a\n\x00\x00\x00\x0DIHDR".b }
+    let(:jpeg_bytes) { "\xFF\xD8\xFF\xE0\x00\x10JFIF\x00\x01".b }
+
     it 'is reachable via a ranged GET even when HEAD is forbidden (presigned S3 URL)' do
       # Active Storage redirects to presigned S3 URLs signed for GET only: HEAD → 403, GET → 200.
       stub_request(:head, 'https://s3.example/file.pdf').to_return(status: 403)
       stub_request(:get, 'https://s3.example/file.pdf').to_return(status: 200)
 
-      expect(described_class.image_reachable?('https://s3.example/file.pdf')).to be(true)
+      expect(described_class.image_importable?('https://s3.example/file.pdf')).to be(true)
     end
 
     it 'follows redirects to the underlying blob (206 Partial Content counts as reachable)' do
@@ -628,20 +632,39 @@ RSpec.describe DecidimImporter::Importer do
         .to_return(status: 302, headers: { 'Location' => 'https://s3.example/blob.pdf' })
       stub_request(:get, 'https://s3.example/blob.pdf').to_return(status: 206)
 
-      expect(described_class.image_reachable?('https://app.example/redirect/file.pdf')).to be(true)
+      expect(described_class.image_importable?('https://app.example/redirect/file.pdf')).to be(true)
     end
 
     it 'is false for a genuinely missing file' do
       stub_request(:get, 'https://s3.example/gone.pdf').to_return(status: 404)
 
-      expect(described_class.image_reachable?('https://s3.example/gone.pdf')).to be(false)
+      expect(described_class.image_importable?('https://s3.example/gone.pdf')).to be(false)
+    end
+
+    it 'keeps an image whose content matches its extension' do
+      stub_request(:get, 'https://s3.example/logo.png').to_return(status: 200, body: png_bytes)
+
+      expect(described_class.image_importable?('https://s3.example/logo.png')).to be(true)
+    end
+
+    it 'drops a reachable image whose content type disagrees with its extension (JPEG named .png)' do
+      # This is exactly what aborts the import at exif-stripping time, so it must be pruned beforehand.
+      stub_request(:get, 'https://s3.example/logo.png').to_return(status: 200, body: jpeg_bytes)
+
+      expect(described_class.image_importable?('https://s3.example/logo.png')).to be(false)
+    end
+
+    it 'treats .jpg and .jpeg as the same format (no false conflict)' do
+      stub_request(:get, 'https://s3.example/photo.jpg').to_return(status: 200, body: jpeg_bytes)
+
+      expect(described_class.image_importable?('https://s3.example/photo.jpg')).to be(true)
     end
   end
 
   describe '.prune_unreachable_remote_urls!' do
     it 'drops only the remote_*_url attachments that are unreachable' do
-      allow(described_class).to receive(:image_reachable?).with('http://live/a.png').and_return(true)
-      allow(described_class).to receive(:image_reachable?).with('http://dead/b.png').and_return(false)
+      allow(described_class).to receive(:image_importable?).with('http://live/a.png').and_return(true)
+      allow(described_class).to receive(:image_importable?).with('http://dead/b.png').and_return(false)
       template = { 'models' => {
         'user' => [{ 'email' => 'a@b.co', 'remote_avatar_url' => 'http://dead/b.png' }],
         'project' => [{ 'remote_header_bg_url' => 'http://live/a.png' }]

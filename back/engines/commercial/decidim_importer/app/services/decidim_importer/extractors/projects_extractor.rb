@@ -25,6 +25,11 @@ module DecidimImporter
         url: 'url'
       }.freeze
 
+      def initialize(*args, **kwargs)
+        super
+        @claimed_slugs = Set.new
+      end
+
       def run
         rows.filter_map { |row| build_project(row) }
       end
@@ -49,8 +54,10 @@ module DecidimImporter
         attributes['remote_header_bg_url'] = hero if hero
         # Keep the Decidim slug (the `<slug>` in `…/processes/<slug>`) as the project's slug, so the
         # original URLs stay stable and links between imported content can be rewritten to resolve
-        # (see {ImportLinkResolver}). Falls back to Go Vocal's title-derived slug when absent.
-        slug = decidim_slug(row)
+        # (see {ImportLinkResolver}). Decidim slugs are unique only *within* a space type, so a process
+        # and an assembly can share one; Go Vocal's `Project#slug` is global, so we only keep the first
+        # claim and let the rest fall back to Go Vocal's (auto-deduped) title-derived slug.
+        slug = claim_slug(decidim_slug(row))
         attributes['slug'] = slug if slug
 
         project = ref_map.register(uid, Record.new('project', attributes))
@@ -72,6 +79,13 @@ module DecidimImporter
       def decidim_slug(row)
         url = present_value(row[COLUMNS[:url]])
         url && url[%r{/(?:processes|assemblies)/([^/?#]+)}, 1]
+      end
+
+      # Returns the slug the first time it's seen (claiming it), or nil once it's already been claimed by
+      # an earlier project — so only one imported project keeps a given Decidim slug and the rest fall
+      # back to a title-derived one, avoiding a `Project#slug` uniqueness clash on import.
+      def claim_slug(slug)
+        slug if slug && @claimed_slugs.add?(slug)
       end
 
       # Decidim's `short_description` is HTML, but Go Vocal's `description_preview_multiloc` is a

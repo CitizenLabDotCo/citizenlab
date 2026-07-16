@@ -11,6 +11,9 @@ module DecidimImporter
   #
   # @example
   #   DecidimImporter::Importer.from_zip('tmp/example.com.zip').import
+  #
+  # rubocop:disable Metrics/ClassLength -- the import orchestrator: extractor wiring plus the template's
+  # image/link preprocessing and deserialize passes all belong on one object.
   class Importer
     # Build an importer from a Decidim export zip. Extracts into a tempdir, parses every CSV into
     # memory, then tears the tempdir down.
@@ -170,9 +173,9 @@ module DecidimImporter
     # there.
     def self.prepare_images!(template, import_images:)
       if import_images
-        reachability = {}
-        prune_unreachable_remote_urls!(template, reachability)
-        prune_unreachable_embedded_images!(template, reachability)
+        importable = {} # url → importable?, shared so each distinct image is probed only once
+        prune_unreachable_remote_urls!(template, importable)
+        prune_unreachable_embedded_images!(template, importable)
       else
         strip_remote_image_urls!(template)
         strip_embedded_images!(template)
@@ -268,16 +271,17 @@ module DecidimImporter
       rewrite_multiloc_html!(template) { |html| html.gsub(/<img\b[^>]*>/i, '') }
     end
 
-    # Drops each `remote_*_url` attachment attribute whose URL can't be reached, leaving the reachable
-    # ones for CarrierWave to fetch.
-    def self.prune_unreachable_remote_urls!(template, reachability = {})
+    # Drops each `remote_*_url` attachment attribute the import can't safely fetch — unreachable, or an
+    # image whose real content type disagrees with its filename extension (see {.image_importable?}) —
+    # leaving the good ones for CarrierWave to fetch.
+    def self.prune_unreachable_remote_urls!(template, importable = {})
       template['models'].each_value do |records|
         records.each do |attrs|
           attrs.reject! do |key, value|
             next false unless remote_image_url?(key) && value.is_a?(String)
 
-            reachability[value] = image_reachable?(value) unless reachability.key?(value)
-            !reachability[value]
+            importable[value] = image_importable?(value) unless importable.key?(value)
+            !importable[value]
           end
         end
       end
@@ -287,47 +291,87 @@ module DecidimImporter
       key.is_a?(String) && key.start_with?('remote_') && key.end_with?('_url')
     end
 
-    # Drops only the embedded `<img>` tags whose remote source can't be reached, keeping the rest.
-    # Each distinct URL is probed once (cache shared with the attachment pass).
-    def self.prune_unreachable_embedded_images!(template, reachability = {})
+    # Drops the embedded `<img>` tags the import can't safely fetch, keeping the rest and the text. Each
+    # distinct URL is probed once (cache shared with the attachment pass).
+    def self.prune_unreachable_embedded_images!(template, importable = {})
       rewrite_multiloc_html!(template) do |html|
         html.gsub(/<img\b[^>]*>/i) do |tag|
-          src = tag[%r{\bsrc\s*=\s*["']?(https?://[^"' >]+)}i, 1]
-          next tag if src.nil? # base64 / relative sources are left untouched
+          src = tag[/\bsrc\s*=\s*["']?([^"' >]+)/i, 1]
+          # A `data:` (inline) image is kept as-is; an `<img>` with no src or a non-fetchable src — a
+          # root-relative `/rails/...` path, say — is dropped, because the rich-text image handler
+          # would fail to download it (an empty URI scheme aborts the whole import). Root-relative
+          # srcs are made absolute at dump time ({#absolutize_embedded_images!}); this is the backstop
+          # for any that still aren't `http(s)`.
+          next tag if src.nil? || src.start_with?('data:')
+          next '' unless src.match?(%r{\Ahttps?://}i)
 
-          reachability[src] = image_reachable?(src) unless reachability.key?(src)
-          reachability[src] ? tag : ''
+          importable[src] = image_importable?(src) unless importable.key?(src)
+          importable[src] ? tag : ''
         end
       end
     end
 
-    # True only when the URL resolves to a 2xx (following redirects); any non-success or error → false,
-    # so a missing file/image is dropped rather than risking a download failure mid-import.
+    # Whether the import can safely fetch a remote image: it must be reachable *and*, when it's a
+    # recognised raster image, its real content type must match its filename extension. Decidim now and
+    # then serves an image under the wrong extension (e.g. a JPEG named `.png`); Go Vocal's exif-stripping
+    # (exiftool) then refuses the file — "Not a valid PNG (looks more like a JPEG)" — and aborts the
+    # *whole* import, so such images are dropped rather than let through. Non-images (PDFs, etc.) and
+    # unrecognised bytes carry no extension conflict, so they're judged purely on reachability.
+    def self.image_importable?(url)
+      reachable, bytes = probe_image(url)
+      reachable && !image_format_conflict?(url, bytes)
+    end
+
+    # A single ranged GET (following redirects): `[reachable?, leading_bytes_of_body]`.
     #
-    # Uses a single-byte ranged GET (`Range: bytes=0-0`), not HEAD: Active Storage redirects to
-    # presigned S3 URLs that are signed for GET only and answer HEAD with 403, so a HEAD probe would
-    # wrongly mark a perfectly reachable file unreachable. The body is left unread (the request is
-    # streamed and the connection closed), so nothing is actually downloaded. A 206 Partial Content is
-    # a `Net::HTTPSuccess`, so it's covered alongside a 200 (servers that ignore the Range header).
-    def self.image_reachable?(url, redirects_left = 5)
+    # Uses a ranged GET (`Range: bytes=0-31`), not HEAD: Active Storage redirects to presigned S3 URLs
+    # signed for GET only that answer HEAD with 403, so a HEAD probe would wrongly mark a reachable file
+    # unreachable. Only the first bytes are read — enough to sniff the image's real format (see
+    # {.detect_image_format}) without downloading the whole file. A 206 Partial Content is a
+    # `Net::HTTPSuccess`, so it's covered alongside a 200 (a server ignoring the Range header only has
+    # these leading bytes inspected regardless).
+    def self.probe_image(url, redirects_left = 5)
       uri = URI.parse(url)
-      return false unless uri.is_a?(URI::HTTP)
+      return [false, ''] unless uri.is_a?(URI::HTTP)
 
       response = nil
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https',
         open_timeout: 5, read_timeout: 5) do |http|
         request = Net::HTTP::Get.new(uri.request_uri)
-        request['Range'] = 'bytes=0-0'
-        http.request(request) { |res| response = res } # body intentionally left unread
+        request['Range'] = 'bytes=0-31'
+        response = http.request(request)
       end
       case response
-      when Net::HTTPSuccess then true
+      when Net::HTTPSuccess then [true, response.body.to_s]
       when Net::HTTPRedirection
-        redirects_left.positive? && image_reachable?(URI.join(url, response['location']).to_s, redirects_left - 1)
-      else false
+        redirects_left.positive? ? probe_image(URI.join(url, response['location']).to_s, redirects_left - 1) : [false, '']
+      else [false, '']
       end
     rescue StandardError
+      [false, '']
+    end
+
+    # True when `bytes` sniff to a known image format that disagrees with the URL's filename extension.
+    def self.image_format_conflict?(url, bytes)
+      ext = File.extname(URI.parse(url).path.to_s).delete('.').downcase
+      ext = 'jpeg' if ext == 'jpg'
+      detected = detect_image_format(bytes)
+      detected.present? && ext.present? && detected != ext
+    rescue URI::InvalidURIError
       false
+    end
+
+    # The image format sniffed from a file's leading magic bytes, or nil when the bytes aren't a
+    # recognised raster image (a document, an SVG, too few bytes → no extension conflict is inferred).
+    def self.detect_image_format(bytes)
+      head = bytes.to_s.b
+      return 'png' if head.start_with?("\x89PNG\r\n\x1a\n".b)
+      return 'jpeg' if head.start_with?("\xFF\xD8\xFF".b)
+      return 'gif' if head.start_with?('GIF87a'.b, 'GIF89a'.b)
+      return 'webp' if head[0, 4] == 'RIFF'.b && head[8, 4] == 'WEBP'.b
+      return 'avif' if head[4, 4] == 'ftyp'.b && head[8, 4].to_s.include?('avif')
+
+      nil
     end
 
     # Rewrites every rich-text `*_multiloc` HTML string in the template through the given block,
@@ -419,6 +463,7 @@ module DecidimImporter
       run_static_pages
       run_files
       run_description_layouts
+      absolutize_embedded_images!
       default_record_update_timestamps
       TemplateBuilder.new(ref_map)
     end
@@ -430,6 +475,38 @@ module DecidimImporter
     def link_map
       corrector = LinkCorrector.new(original_domain: original_domain, resolver: ImportLinkResolver.new(ref_map))
       LinkMap.build(correctable_html_texts, corrector)
+    end
+
+    # Decidim renders rich-text embedded images with root-relative srcs (`<img src="/rails/active_storage/…">`),
+    # which Go Vocal's rich-text image handler can't download — a host-less path has an empty URI scheme,
+    # and the whole import aborts on it. Rewrite each root-relative `<img>` src to an absolute URL on the
+    # source domain so it can be fetched at import (and pruned when unreachable, by {.prepare_images!}).
+    # Absolute, `data:` and protocol-relative (`//…`) srcs are left as-is; a no-op when the source domain
+    # isn't known. Covers every rich-text multiloc and the `TextMultiloc` blocks inside layout craftjs.
+    def absolutize_embedded_images!
+      origin = original_domain.presence && "https://#{original_domain}"
+      return unless origin
+
+      absolutize = ->(html) { html.is_a?(String) ? absolutize_img_srcs(html, origin) : html }
+      ref_map.records.each do |record|
+        record.attributes.each do |key, value|
+          next unless value.is_a?(Hash)
+
+          if key.to_s.end_with?('_multiloc')
+            value.transform_values!(&absolutize)
+          elsif key == 'craftjs_json'
+            self.class.rewrite_craftjs_text!(value) { |html| absolutize.call(html) }
+          end
+        end
+      end
+    end
+
+    # Prefixes `origin` onto each `<img>`'s root-relative `src` (`/…`, but not `//…`), leaving absolute
+    # and `data:` srcs untouched.
+    def absolutize_img_srcs(html, origin)
+      html.gsub(/<img\b[^>]*>/i) do |tag|
+        tag.sub(%r{(\ssrc\s*=\s*["'])(/(?!/)[^"']*)}i) { "#{Regexp.last_match(1)}#{origin}#{Regexp.last_match(2)}" }
+      end
     end
 
     # For every record that has a `created_at` but no explicit update date, mirror `created_at` into
@@ -880,4 +957,5 @@ module DecidimImporter
       @rows_by_model[model] || []
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
