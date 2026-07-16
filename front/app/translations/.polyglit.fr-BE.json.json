@@ -2919,6 +2919,31 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.925055Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.phasesHeading": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.925055Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.925055Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.projectTitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.925055Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.titleWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.925055Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectTemplatePreview.alsoUsedIn": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",

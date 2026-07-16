@@ -6289,6 +6289,21 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.cancelButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.deleteSmsButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.fieldSmsBody": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.helmetTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -7953,6 +7968,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.inputResponseExport.cancelButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.inputResponseExport.dateLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.inputResponseExport.reportSubtitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.insights": {
     "state": "verified",
@@ -19129,10 +19159,30 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.EditSpace.cancel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.EditSpace.folder": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.EditSpace.foldersPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.EditSpace.noProjectsAndFolders": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EditSpace.project": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
   },
   "app.containers.EditSpace.projectsAndFolders": {
     "state": "verified",
@@ -19143,6 +19193,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EditSpace.projectsPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-16T15:58:15.777091Z",
+    "verified_by": "Adrien"
   },
   "app.containers.EditSpace.settings": {
     "state": "verified",
