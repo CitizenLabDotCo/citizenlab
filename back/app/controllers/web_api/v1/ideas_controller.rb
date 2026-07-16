@@ -137,40 +137,34 @@ class WebApi::V1::IdeasController < ApplicationController
   # returns an empty idea if none found
   # used only in native survey autosave
   def draft_by_phase
-    phase = Phase.find(params[:phase_id])
     draft_idea =
-      (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
+      (current_user && Idea.find_by(creation_phase: phase, author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
 
     render_show draft_idea, check_auth: false
   end
 
-  #   Normal users always post in an active phase. They should never provide a phase id.
-  #   Users who can moderate projects post in an active phase if no phase id is given.
-  #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    send_error and return unless phase_for_input
-
-    form = phase_for_input.pmethod.custom_form
+    form = phase.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
     # Map topic_ids to input_topic_ids for the new InputTopics system
     if params[:idea].key?(:topic_ids)
       params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
     end
-    params_for_create = idea_params form
+    params_for_create = idea_params(form).except(:project_id)
     files_params = extract_file_params(params_for_create)
 
     input = Idea.new params_for_create
+    input.project = phase.project
+    input.creation_phase = (phase if !phase.pmethod.transitive?)
+    input.phase_ids = [phase.id]
 
     files_params.each do |file_params|
       build_idea_file_attachment(input, file_params)
     end
 
-    input.creation_phase = (phase_for_input if !phase_for_input.pmethod.transitive?)
-    input.phase_ids = [phase_for_input.id] if params.dig(:idea, :phase_ids).blank?
-
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
-    input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
+    input.request = request if phase.pmethod.everyone_tracking_enabled?
 
     # If native survey or community monitor, and we are publishing this survey:
     # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
@@ -178,8 +172,8 @@ class WebApi::V1::IdeasController < ApplicationController
     # If we are NOT publishing this survey: we need to store the author_id
     # because otherwise we cannot PATCH it because only the author can
     published = params_for_create[:publication_status] == 'published'
-    surveylike = phase_for_input.pmethod.supports_survey_form?
-    not_all_data = phase_for_input.pmethod.user_data_collection != 'all_data'
+    surveylike = phase.pmethod.supports_survey_form?
+    not_all_data = phase.pmethod.user_data_collection != 'all_data'
 
     if published && surveylike && not_all_data
       input.anonymous = true
@@ -187,31 +181,27 @@ class WebApi::V1::IdeasController < ApplicationController
 
     input.author ||= current_user
 
-    phase_for_input.pmethod.assign_defaults(input)
+    phase.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
 
     authorize input
-    raise ApiError, :anonymous_participation_not_allowed if anonymous_not_allowed?(phase_for_input)
+    raise ApiError, :anonymous_participation_not_allowed if anonymous_not_allowed?(phase)
     raise ApiError.new(:idea_status_not_allowed, field: :idea_status_id, value: input.idea_status_id) if idea_status_not_allowed?(input)
 
     verify_profanity input
 
     save_options = {}
-    publication_status = params.dig(:idea, :publication_status)
-
-    if publication_status == 'published'
-      save_options[:context] = :publication
-    end
+    save_options[:context] = :publication if published
 
     if input.publication_status == 'published' && UserFieldsInFormService.should_merge_user_fields_into_idea?(
       current_user,
-      phase_for_input,
+      phase,
       input
     )
       input.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
-        phase_for_input,
+        phase,
         input.custom_field_values
       )
     end
@@ -219,10 +209,10 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       save_or_raise!(input, **save_options)
       update_file_upload_fields input, form, params_for_create
-      sidefx.after_create(input, current_user, phase_for_input)
+      sidefx.after_create(input, current_user, phase)
       write_everyone_tracking_cookie input
 
-      permission = phase_for_input.permissions.find_by(action: 'posting_idea')
+      permission = phase.permissions.find_by(action: 'posting_idea')
       generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
 
       if generate_claim_token
@@ -348,16 +338,15 @@ class WebApi::V1::IdeasController < ApplicationController
     require_feature! 'input_iq'
 
     idea = Idea.new idea_params_for_similarities
+    idea.project = phase.project
     service = SimilarIdeasService.new(idea)
 
-    phase_for_similarity = params[:phase_id] ? Phase.find(params[:phase_id]) : phase_for_input
-    title_threshold = phase_for_similarity.similarity_threshold_title
-    body_threshold = phase_for_similarity.similarity_threshold_body
+    title_threshold = phase.similarity_threshold_title
+    body_threshold = phase.similarity_threshold_body
     cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
 
     json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
-      scope = policy_scope(Idea)
-      scope = scope.where(project_id: idea.project_id) if idea.project_id
+      scope = policy_scope(Idea).where(project_id: idea.project_id)
       results = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
       WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
     end
@@ -366,10 +355,9 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def copy
-    dest_phase = Phase.find(params[:phase_id])
-    authorize(dest_phase, :copy_inputs_to_phase?)
+    authorize(phase, :copy_inputs_to_phase?)
 
-    job_args = [:submitted_or_published, copy_filters, dest_phase, current_user]
+    job_args = [:submitted_or_published, copy_filters, phase, current_user]
     job_kwargs = { allow_duplicates: allow_duplicates? }.compact
 
     tracker = if dry_run?
@@ -391,22 +379,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def phase_for_input
-    return @phase_for_input if defined? @phase_for_input
-
-    project = Project.find(params.dig(:idea, :project_id))
-    phase_ids = params.dig(:idea, :phase_ids) || []
-    is_moderator = current_user && UserRoleService.new.can_moderate_project?(project, current_user)
-    return false if phase_ids.any? && !(is_moderator && phase_ids.size == 1)
-
-    @phase_for_input = if is_moderator && phase_ids.any?
-      Phase.find(phase_ids.first)
-    else
-      TimelineService.new.current_phase_not_archived(project)
-    end
-    return false if !@phase_for_input
-
-    @phase_for_input
+  def phase
+    @phase ||= Phase.find(params[:phase_id])
   end
 
   def render_show(input, check_auth: true)
@@ -575,7 +549,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_params_for_similarities
-    params.require(:idea).permit([:id, :project_id, { title_multiloc: CL2_SUPPORTED_LOCALES, body_multiloc: CL2_SUPPORTED_LOCALES }])
+    params.require(:idea).permit([:id, { title_multiloc: CL2_SUPPORTED_LOCALES, body_multiloc: CL2_SUPPORTED_LOCALES }])
   end
 
   def submittable_custom_fields(custom_form)
@@ -662,7 +636,8 @@ class WebApi::V1::IdeasController < ApplicationController
   def validate_update!(input)
     can_moderate = UserRoleService.new.can_moderate?(input.project, current_user)
 
-    if !can_moderate && anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
+    current_phase = TimelineService.new.current_phase_not_archived(input.project)
+    if !can_moderate && current_phase && anonymous_not_allowed?(current_phase)
       raise ApiError, :anonymous_participation_not_allowed
     end
 

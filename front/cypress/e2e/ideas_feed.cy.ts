@@ -133,11 +133,10 @@ describe('Ideas Feed (Perspectives)', () => {
           chain = chain.then(() => {
             return cy
               .apiCreateIdea({
-                projectId,
+                phaseId,
                 ideaTitle: title,
                 ideaContent: `Content for ${title}. This is a test idea for the ideas feed e2e test.`,
                 topicIds: topicAssignments[index],
-                phaseIds: [phaseId],
               })
               .then((idea) => {
                 ideaIds.push(idea.body.data.id);

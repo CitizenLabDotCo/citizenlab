@@ -166,6 +166,9 @@ FactoryBot.define do
 
     trait :standalone do
       placement_type { 'standalone' }
+      participation_method { 'native_survey' }
+      native_survey_title_multiloc { { 'en' => 'Survey' } }
+      native_survey_button_multiloc { { 'en' => 'Take the survey' } }
     end
   end
 end

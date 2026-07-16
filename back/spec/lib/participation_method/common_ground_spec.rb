@@ -92,6 +92,7 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be(true) }
   its(:supports_status?) { is_expected.to be(false) }
   its(:supports_inputs_without_author?) { is_expected.to be(false) }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be(true) }
   its(:allow_posting_again_after) { is_expected.to eq(0.seconds) }
   its(:follow_idea_on_idea_submission?) { is_expected.to be(false) }

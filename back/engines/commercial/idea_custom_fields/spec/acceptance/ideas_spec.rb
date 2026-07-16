@@ -17,7 +17,6 @@ resource 'Ideas' do
     before { create(:idea_status_proposed) }
 
     with_options scope: :idea do
-      parameter :project_id, 'The identifier of the project that hosts the idea', extra: ''
       parameter :publication_status, 'Publication status', required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(',')}"
       parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
@@ -28,7 +27,7 @@ resource 'Ideas' do
 
     let(:idea) { build(:idea) }
     let(:project) { create(:single_phase_ideation_project) }
-    let(:project_id) { project.id }
+    let(:phase_id) { project.phases.first.id }
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
     let(:body_multiloc) { idea.body_multiloc }
@@ -42,7 +41,7 @@ resource 'Ideas' do
       context 'when the field value is given' do
         # TODO: Refactoring
         # - Validate input types in params + spec (can't create html_multiloc field in ideation or native survey)
-        post 'web_api/v1/ideas' do
+        post 'web_api/v1/phases/:phase_id/inputs' do
           [
             { factory: :custom_field_number, value: 42 },
             { factory: :custom_field_linear_scale, value: 3 },
@@ -73,7 +72,7 @@ resource 'Ideas' do
       context 'when the field value is not given', skip: 'Cannot be implemented yet' do
         let(:custom_field_name1) { nil }
 
-        post 'web_api/v1/ideas' do
+        post 'web_api/v1/phases/:phase_id/inputs' do
           example_request 'Create an idea with an extra field' do
             assert_status 422
             json_response = json_parse(response_body)
@@ -91,7 +90,7 @@ resource 'Ideas' do
         let(:custom_field_name1) { 'test value' }
         let(:custom_field_name2) { 'unknown_option' }
 
-        post 'web_api/v1/ideas' do
+        post 'web_api/v1/phases/:phase_id/inputs' do
           example_request 'Create an idea with an invalid value for an extra field' do
             assert_status 422
             json_response = json_parse(response_body)
@@ -112,7 +111,7 @@ resource 'Ideas' do
       context 'when the field value is given' do
         let(:custom_field_name1) { 'test value' }
 
-        post 'web_api/v1/ideas' do
+        post 'web_api/v1/phases/:phase_id/inputs' do
           example_request 'Create an idea with an extra field' do
             assert_status 201
             json_response = json_parse(response_body)
@@ -125,7 +124,7 @@ resource 'Ideas' do
       end
 
       context 'when the field value is not given' do
-        post 'web_api/v1/ideas' do
+        post 'web_api/v1/phases/:phase_id/inputs' do
           example_request 'Create an idea with an extra field' do
             assert_status 201
             json_response = json_parse(response_body)

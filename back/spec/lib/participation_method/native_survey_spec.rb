@@ -187,6 +187,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
+  its(:supports_standalone_placement?) { is_expected.to be true }
   its(:supports_submission?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }

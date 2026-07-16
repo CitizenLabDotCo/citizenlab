@@ -11,6 +11,7 @@ describe('Idea card component', () => {
   const commentContent = randomString();
   let projectId: string;
   let projectSlug: string;
+  let phaseId: string;
   let ideaId: string;
   let userId: string;
 
@@ -36,13 +37,14 @@ describe('Idea card component', () => {
           reacting_dislike_enabled: true,
         });
       })
-      .then(() => {
+      .then((phase) => {
+        phaseId = phase.body.data.id;
         return cy.apiSignup(firstName, lastName, email, password);
       })
       .then((user) => {
         userId = user.body.data.id;
         return cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle,
           ideaContent,
         });

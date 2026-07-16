@@ -320,6 +320,22 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#validate_standalone_participation_method' do
+    it 'accepts a standalone native survey phase' do
+      expect(build(:phase, :standalone)).to be_valid
+    end
+
+    it 'rejects a standalone phase whose method does not support standalone placement' do
+      phase = build(:phase, :standalone, participation_method: 'ideation')
+      expect(phase).not_to be_valid
+      expect(phase.errors.details[:participation_method]).to include(error: :not_supported_in_standalone_phase)
+    end
+
+    it 'accepts any participation method on timeline phases' do
+      expect(build(:phase)).to be_valid
+    end
+  end
+
   describe '#ends_before?' do
     let(:phase) { create(:phase) }
 
@@ -355,6 +371,38 @@ RSpec.describe Phase do
     it 'returns false when the phase has no end date' do
       phase = create(:phase, start_at: 2.days.ago, end_at: nil)
       expect(phase.complete?).to be false
+    end
+  end
+
+  describe '#active?' do
+    it 'returns true when the phase is ongoing' do
+      phase = build(:phase, start_at: 2.days.ago, end_at: 3.days.from_now)
+      expect(phase.active?).to be true
+    end
+
+    it 'returns false before the phase starts' do
+      phase = build(:phase, start_at: 2.days.from_now, end_at: 5.days.from_now)
+      expect(phase.active?).to be false
+    end
+
+    it 'returns false after the phase ends' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?).to be false
+    end
+
+    it 'returns false at the exact end time (exclusive end)' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?(phase.end_at)).to be false
+    end
+
+    it 'returns true for an open-ended phase that has started' do
+      phase = build(:phase, start_at: 2.days.ago, end_at: nil)
+      expect(phase.active?).to be true
+    end
+
+    it 'evaluates against the given time' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?(7.days.ago)).to be true
     end
   end
 

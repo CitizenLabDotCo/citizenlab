@@ -11,10 +11,8 @@ module Permissions
     REACTING_NOT_ALLOWED_CODES = %w[prescreening expired ineligible].freeze
 
     def initialize(idea, user, user_requirements_service: nil)
-      phase = timeline_service.current_phase_not_archived(idea.project)
-      phase.project = idea.project if phase # Performance optimization (keep preloaded relationships)
-      super(phase, user, user_requirements_service: user_requirements_service)
       @idea = idea
+      super(permission_phase, user, user_requirements_service:)
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
@@ -112,6 +110,23 @@ module Permissions
     private
 
     attr_reader :idea
+
+    # Inputs in standalone phases are checked against their own phase; timeline
+    # inputs are checked against the project's current phase, as before.
+    # Ideally, both would be checked against the input's own active phase
+    # (idea.phases.find(&:active?)), but that changes the denied reasons, the
+    # moderator exceptions and the editing of past inputs for timeline inputs
+    # in ways we don't want to take on right now.
+    def permission_phase
+      creation_phase = idea.creation_phase
+      phase = if creation_phase && !creation_phase.placement_strategy.sequential?
+        creation_phase
+      else
+        timeline_service.current_phase_not_archived(idea.project)
+      end
+      phase.project = idea.project if phase # Performance optimization (keep preloaded relationships)
+      phase
+    end
 
     def future_enabled_phase(action, reaction_mode: nil)
       time = Time.zone.now

@@ -24,10 +24,8 @@ resource 'Ideas' do
     create(:idea_status_proposed)
   end
 
-  post 'web_api/v1/ideas' do
+  post 'web_api/v1/phases/:phase_id/inputs' do
     with_options scope: :idea do
-      parameter :project_id, 'The identifier of the project that hosts the idea', required: true
-      parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, 'Publication status', required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(',')}"
       parameter :anonymous, 'Post this idea anonymously'
@@ -37,7 +35,7 @@ resource 'Ideas' do
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
     response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
-    let(:project_id) { project.id }
+    let(:phase_id) { project.phases.first.id }
 
     context 'in an ideation phase' do
       public_input_params(self)
@@ -95,7 +93,7 @@ resource 'Ideas' do
 
         example_request 'Create an idea' do
           assert_status 201
-          expect(response_data.dig(:relationships, :project, :data, :id)).to eq project_id
+          expect(response_data.dig(:relationships, :project, :data, :id)).to eq project.id
           expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
           expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
           expect(response_data.dig(:attributes, :location_description)).to eq location_description
@@ -220,7 +218,7 @@ resource 'Ideas' do
           example 'Creates an idea', document: false do
             do_request
             assert_status 201
-            expect(response_data.dig(:relationships, :project, :data, :id)).to eq project_id
+            expect(response_data.dig(:relationships, :project, :data, :id)).to eq project.id
             expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
             expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
             expect(response_data.dig(:attributes, :location_description)).to eq location_description
@@ -277,6 +275,7 @@ resource 'Ideas' do
                 participation_method: 'information'
               })
             end
+            let(:phase_id) { TimelineService.new.current_phase(project).id }
 
             example_request '[error] Creating an idea in a project with an active information phase' do
               assert_status 401
@@ -285,10 +284,10 @@ resource 'Ideas' do
           end
 
           describe do
-            let(:project_id) { nil }
+            let(:phase_id) { 'unknown-phase-id' }
 
-            example_request '[error] Create an idea without a project' do
-              expect(response_status).to be >= 400
+            example_request '[error] Create an idea in an unknown phase' do
+              assert_status 404
             end
           end
 
@@ -349,11 +348,11 @@ resource 'Ideas' do
 
         describe do
           let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
-          let(:phase_ids) { project.phase_ids.take(1) }
+          let(:phase_id) { project.phases.first.id }
 
-          example_request 'Creating an idea in specific (inactive) phases' do
+          example_request 'Creating an idea in a specific (inactive) phase' do
             assert_status 201
-            expect(response_data.dig(:relationships, :phases, :data).pluck(:id)).to match_array phase_ids
+            expect(response_data.dig(:relationships, :phases, :data).pluck(:id)).to eq [phase_id]
           end
         end
 
@@ -369,7 +368,6 @@ resource 'Ideas' do
               end
             end
           end
-          let(:phase_ids) { project.phase_ids.take(1) }
           let(:title_multiloc) { { 'nl-BE' => 'An idea with a proposed budget' } }
           let(:body_multiloc) { { 'nl-BE' => 'An idea with a proposed budget for testing' } }
           let(:proposed_budget) { 1234 }
@@ -397,25 +395,12 @@ resource 'Ideas' do
 
         describe 'when posting an idea in an ideation phase, the creation_phase is not set' do
           let!(:custom_form) { create(:custom_form, participation_context: project) }
-          let(:phase_ids) { project.phase_ids.take(1) }
 
           example 'Post an idea in an ideation phase', document: false do
             do_request
             assert_status 201
             idea = Idea.find(response_data[:id])
             expect(idea.creation_phase).to be_nil
-          end
-        end
-
-        describe do
-          let(:other_project) { create(:project_with_active_ideation_phase) }
-          let(:phase_ids) { other_project.phase_ids.take(1) }
-
-          example_request '[error] Creating an idea linked to a phase from a different project', document: false do
-            do_request
-
-            assert_status 422
-            expect(json_response_body).to include_response_error(:ideas_phases, 'invalid')
           end
         end
       end
@@ -520,7 +505,6 @@ resource 'Ideas' do
               project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
             end
           end
-          let(:project_id) { project.id }
           let(:extra_field_name) { 'custom_field_name1' }
           let(:form) { create(:custom_form, participation_context: project.phases.first) }
           let!(:text_field) { create(:custom_field_text, key: extra_field_name, required: true, resource: form) }
@@ -861,9 +845,39 @@ resource 'Ideas' do
       context 'when admin-like' do
         before { admin_header_token }
 
-        let(:phase_ids) { [phase.id] }
-
         include_examples 'create_common_ground_input'
+      end
+    end
+
+    context 'in a standalone native survey phase' do
+      let(:project) { create(:project) } # A project without any timeline phases
+      let(:phase) do
+        create(:phase, :standalone, project: project, with_permissions: true, start_at: 7.days.ago, end_at: 7.days.from_now)
+      end
+      let(:phase_id) { phase.id }
+      let!(:custom_form) { create(:custom_form, participation_context: phase) }
+      let(:publication_status) { 'published' }
+
+      context 'when resident' do
+        before { header_token_for(create(:user)) }
+
+        example_request 'Create a survey response in an active standalone phase' do
+          assert_status 201
+          input = phase.reload.ideas.sole
+          expect(input.creation_phase_id).to eq phase.id
+          expect(input.phase_ids).to eq [phase.id]
+        end
+
+        context 'when the standalone phase is over' do
+          let(:phase) do
+            create(:phase, :standalone, project: project, with_permissions: true, start_at: 10.days.ago, end_at: 2.days.ago)
+          end
+
+          example_request '[error] Create a survey response in a closed standalone phase' do
+            assert_status 401
+            expect(json_response_body).to eq({ errors: { base: [{ error: 'inactive_phase' }] } })
+          end
+        end
       end
     end
   end

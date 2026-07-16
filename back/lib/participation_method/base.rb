@@ -176,6 +176,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_standalone_placement?
+      false
+    end
+
     # Returns whether this participation method supports idea statuses?
     def supports_status?
       false

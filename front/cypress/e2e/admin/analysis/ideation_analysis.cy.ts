@@ -38,24 +38,21 @@ describe('Admin: ideation analysis', () => {
 
           const ideaContent = randomString();
           cy.apiCreateIdea({
-            projectId,
+            phaseId,
             ideaTitle: ideaTitle1,
             ideaContent: ideaContent,
-            phaseIds: [phaseId],
           }).then((idea) => {
             cy.apiAddComment(idea.body.data.id, 'The first comment');
           });
           cy.apiCreateIdea({
-            projectId,
+            phaseId,
             ideaTitle: ideaTitle2,
             ideaContent: ideaContent,
-            phaseIds: [phaseId],
           });
           cy.apiCreateIdea({
-            projectId,
+            phaseId,
             ideaTitle: ideaTitle3,
             ideaContent: ideaContent,
-            phaseIds: [phaseId],
           });
         });
     });
