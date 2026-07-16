@@ -4,7 +4,6 @@ import { colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
@@ -12,9 +11,7 @@ import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { canModerateProjectByIds } from 'utils/permissions/rules/projectPermissions';
-import { isAdmin } from 'utils/permissions/roles';
+import { usePermission } from 'utils/permissions';
 
 import messages from '../messages';
 
@@ -32,21 +29,15 @@ const AdminCustomPageEditButton = ({
   projectId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { data: authUser } = useAuthUser();
-  // Only fetched for project-scoped pages (the hook is disabled when id is
-  // nullish), so we can pass the project's folder/space to mirror the backend's
-  // StaticPagePolicy#update?, which lets project/folder/space moderators edit.
+  // Only fetched for project pages (hook disabled when id is nullish); passed
+  // as the rule's context to resolve moderator access.
   const { data: project } = useProjectById(projectId);
 
-  const userCanEditPage = projectId
-    ? canModerateProjectByIds({
-        projectId,
-        folderId: project?.data.attributes.folder_id,
-        spaceId: project?.data.attributes.space_id,
-        user: authUser,
-      })
-    : // Global (projectless) pages remain admin-only.
-      !isNilOrError(authUser) && isAdmin(authUser);
+  const userCanEditPage = usePermission({
+    item: { type: 'static_page' },
+    action: 'edit',
+    context: project?.data,
+  });
 
   const editLink = projectId
     ? { linkTo: `/admin/projects/${projectId}/pages/${pageId}` }

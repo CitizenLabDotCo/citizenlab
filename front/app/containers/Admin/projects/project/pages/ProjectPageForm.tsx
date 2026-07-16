@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import {
   Box,
+  Button,
   Title,
   Label,
   colors,
@@ -39,7 +40,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { slugRegEx } from 'utils/textUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
@@ -55,8 +55,7 @@ interface FormValues {
 
 interface Props {
   project: IProjectData;
-  // Omitted when creating a new page; the same form then doubles as the
-  // create form so page creation is a single step.
+  // Omitted when creating; the same form then doubles as the create form.
   page?: ICustomPageData;
 }
 
@@ -99,20 +98,18 @@ const ProjectPageForm = ({ project, page }: Props) => {
     title_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.titleError)
     ),
-    ...(isEditing && {
-      slug: string()
-        .matches(slugRegEx, formatMessage(messages.slugRegexError))
-        .required(formatMessage(messages.slugRequiredError)),
-    }),
-    top_info_section_multiloc: mixed(),
-    local_page_files: mixed(),
+    slug: isEditing
+      ? string()
+          .matches(slugRegEx, formatMessage(messages.slugRegexError))
+          .required(formatMessage(messages.slugRequiredError))
+      : string(),
+    top_info_section_multiloc: mixed<Multiloc>(),
+    local_page_files: mixed<UploadFile[]>().nullable(),
   });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
-    // yup's inferred schema type doesn't line up with FormValues for the
-    // mixed() fields; cast as in the sibling CustomPageSettingsForm.
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(schema),
     defaultValues: {
       title_multiloc: page?.attributes.title_multiloc,
       slug: page?.attributes.slug,
@@ -153,9 +150,8 @@ const ProjectPageForm = ({ project, page }: Props) => {
             })
           ).data.id;
 
-      if (!isNilOrError(local_page_files)) {
-        // On create, `files` is empty so this only adds; on edit it diffs
-        // against the page's existing files.
+      if (local_page_files) {
+        // Empty `files` on create, so this only adds; on edit it diffs.
         await Promise.all([
           handleAddPageFiles(pageId, local_page_files, files, addPageFile),
           handleRemovePageFiles(
@@ -168,7 +164,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
       }
 
       if (!page) {
-        // Back to the list once the page is created.
+        // Created: return to the list.
         clHistory.push(`/admin/projects/${project.id}/pages`);
       }
     } catch (error) {
@@ -256,12 +252,12 @@ const ProjectPageForm = ({ project, page }: Props) => {
                 justifyContent="flex-start"
               >
                 <Box py="8px" px={`${defaultAdminCardPadding}px`}>
-                  <ButtonWithLink
+                  <Button
                     type="submit"
                     processing={methods.formState.isSubmitting}
                     disabled={!methods.formState.isDirty}
                     bgColor={colors.blue500}
-                    data-cy={
+                    dataCy={
                       isEditing
                         ? 'e2e-save-project-page'
                         : 'e2e-create-project-page'
@@ -270,7 +266,7 @@ const ProjectPageForm = ({ project, page }: Props) => {
                     {isEditing
                       ? formatMessage(messages.saveButton)
                       : formatMessage(messages.createButton)}
-                  </ButtonWithLink>
+                  </Button>
                 </Box>
               </Box>
             </form>

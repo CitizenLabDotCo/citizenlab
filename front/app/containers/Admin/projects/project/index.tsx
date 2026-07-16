@@ -114,7 +114,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
             label={
               <Box display="flex" alignItems="center" gap="8px">
                 {formatMessage(messages.pagesTab)}
-                <NewLabel />
+                <NewLabel expiryDate={new Date('2026-12-01')} />
               </Box>
             }
             url={`/admin/projects/${projectId}/pages`}

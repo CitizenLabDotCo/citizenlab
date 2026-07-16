@@ -172,9 +172,8 @@ const FileAttachmentSettings = () => {
     return !isFileUsed;
   });
 
-  // Only take over the whole panel on the initial load; background refetches
-  // (e.g. the refresh button below) keep the panel visible.
-  if (isFetchingFiles && !files) {
+  // Full-panel spinner on initial load only; refetches keep the panel visible.
+  if (!files) {
     return <Spinner />;
   }
 
