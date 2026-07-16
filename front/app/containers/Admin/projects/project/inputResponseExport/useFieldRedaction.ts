@@ -34,11 +34,24 @@ const useFieldRedaction = (phaseId: string) => {
     setRedactOverrides((prev) => ({ ...prev, [key]: !current }));
   };
 
+  const setAllFields = (redact: boolean) => {
+    setRedactOverrides(
+      Object.fromEntries(fields.map((field) => [field.key, redact]))
+    );
+  };
+
   const redactedFieldKeys = fields
     .filter((field) => field.redact)
     .map((field) => field.key);
 
-  return { fields, toggleField, redactedFieldKeys, isLoading, isError };
+  return {
+    fields,
+    toggleField,
+    setAllFields,
+    redactedFieldKeys,
+    isLoading,
+    isError,
+  };
 };
 
 export default useFieldRedaction;

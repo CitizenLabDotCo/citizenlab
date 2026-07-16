@@ -41,8 +41,14 @@ const ResponseExportModal = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const { fields, toggleField, redactedFieldKeys, isLoading, isError } =
-    useFieldRedaction(phaseId);
+  const {
+    fields,
+    toggleField,
+    setAllFields,
+    redactedFieldKeys,
+    isLoading,
+    isError,
+  } = useFieldRedaction(phaseId);
 
   const [consent, setConsent] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -68,25 +74,56 @@ const ResponseExportModal = ({
       width={previewSlot ? 1100 : 640}
       header={title}
       footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
-          <Button buttonStyle="secondary-outlined" onClick={onClose}>
-            <FormattedMessage {...messages.cancelButton} />
-          </Button>
-          <Button
-            buttonStyle="admin-dark"
-            icon="download"
-            onClick={handleGenerate}
-            processing={isGenerating}
-            disabled={!consent || isGenerating || isLoading || isError}
-            data-cy="e2e-generate-export-button"
+        // Consent lives in the fixed footer so it stays visible without
+        // scrolling past the field list.
+        <Box w="100%">
+          {error && (
+            <Text color="red600" mt="0px" mb="8px" fontSize="s">
+              <FormattedMessage {...messages.exportError} />
+            </Text>
+          )}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            gap="16px"
           >
-            <FormattedMessage {...messages.generateButton} />
-          </Button>
+            <Box
+              flex="1 1 0"
+              minWidth="0"
+              data-cy="e2e-export-consent-checkbox"
+            >
+              <CheckboxWithLabel
+                checked={consent}
+                onChange={() => setConsent((prev) => !prev)}
+                label={
+                  <Text m="0px" fontSize="s" color="textSecondary">
+                    {formatMessage(messages.consentLabel)}
+                  </Text>
+                }
+              />
+            </Box>
+            <Box display="flex" gap="8px" flexShrink={0}>
+              <Button buttonStyle="secondary-outlined" onClick={onClose}>
+                <FormattedMessage {...messages.cancelButton} />
+              </Button>
+              <Button
+                buttonStyle="admin-dark"
+                icon="download"
+                onClick={handleGenerate}
+                processing={isGenerating}
+                disabled={!consent || isGenerating || isLoading || isError}
+                data-cy="e2e-generate-export-button"
+              >
+                <FormattedMessage {...messages.generateButton} />
+              </Button>
+            </Box>
+          </Box>
         </Box>
       }
     >
       <Box display="flex" gap="32px" p="24px" h="70vh">
-        {/* Left: settings + field review + consent (scrolls) */}
+        {/* Left: settings + field review (scrolls; consent sits in the fixed footer) */}
         <Box flex="1 1 0" minWidth="0" h="100%" overflowY="auto" pr="8px">
           {settingsSlot}
 
@@ -98,26 +135,9 @@ const ResponseExportModal = ({
             <FieldRedactionList
               fields={fields}
               onToggleField={toggleField}
+              onSetAllFields={setAllFields}
               isLoading={isLoading}
             />
-          )}
-
-          <Box data-cy="e2e-export-consent-checkbox">
-            <CheckboxWithLabel
-              checked={consent}
-              onChange={() => setConsent((prev) => !prev)}
-              label={
-                <Text m="0px" fontSize="s" color="textSecondary">
-                  {formatMessage(messages.consentLabel)}
-                </Text>
-              }
-            />
-          </Box>
-
-          {error && (
-            <Text color="red600" mt="12px" mb="0px" fontSize="s">
-              <FormattedMessage {...messages.exportError} />
-            </Text>
           )}
         </Box>
 

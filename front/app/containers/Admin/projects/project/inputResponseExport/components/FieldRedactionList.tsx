@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Spinner, Text } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -13,11 +13,18 @@ import SectionLabel from './SectionLabel';
 type Props = {
   fields: RedactionField[];
   onToggleField: (key: string) => void;
+  onSetAllFields: (redact: boolean) => void;
   isLoading?: boolean;
 };
 
-const FieldRedactionList = ({ fields, onToggleField, isLoading }: Props) => {
+const FieldRedactionList = ({
+  fields,
+  onToggleField,
+  onSetAllFields,
+  isLoading,
+}: Props) => {
   const flaggedCount = fields.filter((field) => field.redact).length;
+  const allIncluded = fields.length > 0 && flaggedCount === 0;
 
   return (
     <Box mb="24px">
@@ -32,7 +39,7 @@ const FieldRedactionList = ({ fields, onToggleField, isLoading }: Props) => {
         </Box>
       ) : (
         <>
-          <Text color="textSecondary" mt="0px" mb="12px">
+          <Text color="textSecondary" mt="0px" mb="4px">
             {flaggedCount > 0 ? (
               <FormattedMessage
                 {...messages.fieldReviewWithFlags}
@@ -42,6 +49,21 @@ const FieldRedactionList = ({ fields, onToggleField, isLoading }: Props) => {
               <FormattedMessage {...messages.fieldReviewNoFlags} />
             )}
           </Text>
+          <Box display="flex" justifyContent="flex-end" mb="4px">
+            <Button
+              buttonStyle="text"
+              padding="0"
+              fontSize="14px"
+              onClick={() => onSetAllFields(allIncluded)}
+              data-cy="e2e-field-redaction-select-all"
+            >
+              {allIncluded ? (
+                <FormattedMessage {...messages.deselectAllFields} />
+              ) : (
+                <FormattedMessage {...messages.selectAllFields} />
+              )}
+            </Button>
+          </Box>
           <Box
             display="flex"
             flexDirection="column"

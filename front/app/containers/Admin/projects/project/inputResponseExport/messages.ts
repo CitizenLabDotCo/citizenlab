@@ -51,6 +51,14 @@ export default defineMessages({
     defaultMessage:
       'No fields were automatically flagged as personal data. Toggle any field to exclude it from the export.',
   },
+  selectAllFields: {
+    id: 'app.containers.Admin.projects.project.inputResponseExport.selectAllFields',
+    defaultMessage: 'Select all',
+  },
+  deselectAllFields: {
+    id: 'app.containers.Admin.projects.project.inputResponseExport.deselectAllFields',
+    defaultMessage: 'Deselect all',
+  },
   fieldsError: {
     id: 'app.containers.Admin.projects.project.inputResponseExport.fieldsError',
     defaultMessage:
