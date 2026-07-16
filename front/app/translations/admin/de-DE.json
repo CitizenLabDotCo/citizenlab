@@ -1158,7 +1158,7 @@
   "app.containers.Admin.messaging.automated.editModalTitle": "Kampagnenfelder bearbeiten",
   "app.containers.Admin.messaging.automated.variablesToolTip": "Sie können die folgenden Variablen in Ihrer Nachricht verwenden:",
   "app.containers.Admin.messaging.cancelButton": "Abbrechen",
-  "app.containers.Admin.messaging.confirmSendSmsHeader": "Diese SMS an alle Teilnehmer*innen mit einer Telefonnummer senden?",
+  "app.containers.Admin.messaging.confirmSendSmsHeader": "Diese SMS an alle Teilnehmende mit einer Telefonnummer senden?",
   "app.containers.Admin.messaging.deleteSmsButton": "Löschen",
   "app.containers.Admin.messaging.deleteSmsConfirmation": "Sind Sie sicher, dass Sie diese SMS-Nachricht löschen möchten?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "SMS-Nachricht bearbeiten",
