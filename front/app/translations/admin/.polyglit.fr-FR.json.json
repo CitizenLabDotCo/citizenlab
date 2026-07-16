@@ -6389,6 +6389,11 @@
     "verified_at": "2026-07-16T16:00:17.609817Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.smsStatsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:44:39.997828Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.tabSms": {
     "state": "verified",
     "verified_at": "2026-07-16T19:50:19.871096Z",
