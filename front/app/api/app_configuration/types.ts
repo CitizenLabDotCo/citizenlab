@@ -72,6 +72,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  sms?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   password_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -203,7 +207,6 @@ export interface IAppConfigurationSettings {
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
-  pdf_export_responses?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

@@ -190,6 +190,7 @@ hu-HU:
       new_email_confirmation: Új e-mail-megerősítő kód
       new_idea_for_admin_prescreening: Új bemenet, amely jóváhagyást igényel egy moderált projektben
       new_idea_for_admin_published: Új közzétett hozzászólás egy általam moderált projektben
+      new_phone_confirmation: Új telefonszám-megerősítő kód
       official_feedback_on_idea_you_follow: Frissítse a követett bemenetet
       password_reset: Jelszó visszaállítása
       project_folder_moderation_rights_received: Mappakezelői jogok megérkeztek
@@ -202,6 +203,7 @@ hu-HU:
       project_review_state_change: Projekt jóváhagyva
       proposal_expired_for_admin: A javaslat lejárt a szavazati küszöb elérése nélkül
       screening_digest: Heti szűrővizsgálati emlékeztető
+      sms_manual: Hivatalos SMS-üzenetek
       space_moderation_rights_received: Térkezelői jogosultságok megadva
       status_change_on_idea_you_follow: A követett bemenet állapotának változása
       survey_submitted: Felmérés benyújtva
@@ -534,6 +536,8 @@ hu-HU:
       title: Új bejegyzés jelent meg a platformodon.
       today: Ma
       yesterday: Tegnap
+    new_phone_confirmation:
+      sms_body: 'A megerősítő kódod: %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ugrás erre a bemenetre
       event_description: "%{feedback_author_name} frissítést adott a(z) '%{input_title}' témában."

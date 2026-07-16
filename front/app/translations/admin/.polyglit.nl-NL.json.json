@@ -6249,6 +6249,16 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.addSmsCampaignButton": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.addSmsCampaignTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.messaging.automated.editModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
@@ -6259,10 +6269,140 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.cancelButton": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsHeader": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.deleteSmsButton": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.deleteSmsConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.editSmsCampaignTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.fieldSmsBody": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.fieldSmsBodyError": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabelError": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabelTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.messaging.helmetTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.messaging.manageButtonLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.noSmsCampaignsDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.noSmsCampaignsHeader": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewButton": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsCampaignsDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_delivered": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_failed": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_pending": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_queued": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_sent": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_undelivered": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsPreviewSentConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsRecipientsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsStatsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.tabSms": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.FollowedItems.thisWidgetShows": {
     "state": "verified",
@@ -19334,10 +19474,45 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.EditSpace.addNewProjectOrFolder": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.addToSpace": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.cancel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.folder": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.foldersPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.EditSpace.noAddableProjectsOrFolders": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.EditSpace.noProjectsAndFolders": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EditSpace.project": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
   },
   "app.containers.EditSpace.projectsAndFolders": {
     "state": "verified",
@@ -19348,6 +19523,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EditSpace.projectsPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:04:31.893039Z",
+    "verified_by": "Luuc"
   },
   "app.containers.EditSpace.settings": {
     "state": "verified",

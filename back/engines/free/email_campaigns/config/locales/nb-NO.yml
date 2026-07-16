@@ -190,6 +190,7 @@ nb-NO:
       new_email_confirmation: Ny bekreftelseskode for e-post
       new_idea_for_admin_prescreening: Ny input som krever godkjenning i et prosjekt jeg modererer
       new_idea_for_admin_published: Nye publiserte innspill i et prosjekt jeg leder
+      new_phone_confirmation: Ny bekreftelseskode for telefon
       official_feedback_on_idea_you_follow: Oppdatering på et innspill som du følger
       password_reset: Tilbakestilling av passord
       project_folder_moderation_rights_received: Mappeadministratorrettigheter mottatt
@@ -202,6 +203,7 @@ nb-NO:
       project_review_state_change: Prosjektet er godkjent
       proposal_expired_for_admin: Forslag utløpt uten å nå stemmeterskelen
       screening_digest: Ukentlig påminnelse om screening
+      sms_manual: Offisielle SMS-meldinger
       space_moderation_rights_received: Rettigheter som områdeansvarlig mottatt
       status_change_on_idea_you_follow: Statusendring for en inngang som du følger
       survey_submitted: Innsendt spørreundersøkelse
@@ -534,6 +536,8 @@ nb-NO:
       title: Et nytt innspill har blitt publisert på plattformen din
       today: I dag
       yesterday: I går
+    new_phone_confirmation:
+      sms_body: Din bekreftelseskode er %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Gå til denne inngangen
       event_description: "%{feedback_author_name} ga en oppdatering på '%{input_title}'."

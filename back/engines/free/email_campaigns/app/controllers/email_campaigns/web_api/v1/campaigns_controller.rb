@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-    before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
+    before_action :set_campaign, only: %i[show update do_send send_email_preview send_sms_preview email_preview email_deliveries sms_deliveries email_stats sms_stats destroy]
     skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
@@ -17,11 +17,16 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
+      @campaigns = @campaigns.where(channel: params[:channel]) if params[:channel].present?
+
       if campaign_context
         @campaigns = @campaigns.where(context: campaign_context)
         supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)
         @campaigns = @campaigns.where(id: supported_ids)
       end
+
+      # Filter out campaigns that are hidden from the admin dashboard (e.g. the phone confirmation OTP campaign)
+      @campaigns = @campaigns.where.not(type: EmailCampaigns::DeliveryService.new.hidden_from_admin_campaign_types)
 
       @campaigns = case parse_bool(params[:manual])
       when true then manual_order(@campaigns.manual)
@@ -112,12 +117,17 @@ module EmailCampaigns
       end
     end
 
-    def send_preview
-      EmailCampaigns::DeliveryService.new.send_preview(@campaign, current_user)
+    def send_email_preview
+      EmailCampaigns::DeliveryService.new.send_email_preview(@campaign, current_user)
       head :ok
     end
 
-    def preview
+    def send_sms_preview
+      EmailCampaigns::DeliveryService.new.send_sms_preview(@campaign, current_user)
+      head :ok
+    end
+
+    def email_preview
       preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
       render json: {
         data: {
@@ -128,22 +138,20 @@ module EmailCampaigns
       }
     end
 
-    def deliveries
-      @deliveries = @campaign.deliveries
-        .includes(:user)
-        .order(:created_at)
-        .page(params.dig(:page, :number))
-        .per(params.dig(:page, :size))
-      render json: linked_json(
-        @deliveries,
-        WebApi::V1::DeliverySerializer,
-        params: jsonapi_serializer_params,
-        include: [:user]
-      )
+    def email_deliveries
+      render_deliveries(@campaign.deliveries, WebApi::V1::DeliverySerializer)
     end
 
-    def stats
+    def sms_deliveries
+      render_deliveries(@campaign.sms_deliveries, WebApi::V1::Sms::DeliverySerializer)
+    end
+
+    def email_stats
       render json: raw_json(EmailCampaigns::Delivery.status_counts(@campaign.id))
+    end
+
+    def sms_stats
+      render json: raw_json(EmailCampaigns::Sms::Delivery.status_counts(@campaign.id))
     end
 
     def supported_campaign_names
@@ -175,11 +183,36 @@ module EmailCampaigns
       @campaign_context = context_model.find(context_id)
     end
 
-    def campaign_params
-      @campaign.manual? ? manual_campaign_params : automated_campaign_params
+    def render_deliveries(relation, serializer)
+      deliveries = paginate relation.includes(:user).order(:created_at)
+      render json: linked_json(
+        deliveries,
+        serializer,
+        params: jsonapi_serializer_params,
+        include: [:user]
+      )
     end
 
-    def manual_campaign_params
+    def campaign_params
+      if @campaign.sms?
+        manual_sms_campaign_params
+      elsif @campaign.manual?
+        manual_email_campaign_params
+      else
+        automated_email_campaign_params
+      end
+    end
+
+    def manual_sms_campaign_params
+      params.require(:campaign).permit(
+        :enabled,
+        group_ids: [],
+        subject_multiloc: I18n.available_locales,
+        body_multiloc: I18n.available_locales
+      )
+    end
+
+    def manual_email_campaign_params
       params.require(:campaign).permit(
         :enabled,
         :sender,
@@ -191,7 +224,7 @@ module EmailCampaigns
       )
     end
 
-    def automated_campaign_params
+    def automated_email_campaign_params
       params.require(:campaign).permit(
         :enabled,
         :reply_to,
