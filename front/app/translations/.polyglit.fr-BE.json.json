@@ -10319,9 +10319,24 @@
     "verified_at": "2026-07-16T21:45:00.703285Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.phoneUpdateCancelled": {
+    "state": "verified",
+    "verified_at": "2026-07-16T21:48:43.583330Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.submitButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T21:48:43.583330Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneChange.titleChangePhone": {
     "state": "verified",
     "verified_at": "2026-07-16T20:42:18.518328Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.updateSuccessful": {
+    "state": "verified",
+    "verified_at": "2026-07-16T21:48:43.583330Z",
     "verified_by": "Adrien"
   },
   "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": {
