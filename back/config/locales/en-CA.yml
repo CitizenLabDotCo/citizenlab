@@ -270,6 +270,15 @@ en-CA:
     proposals:
       title: Proposals
   pdf_export:
+    input_responses:
+      date: Date
+      no_answer: (No answer)
+      prepared_by: Prepared by
+      report_label: Response report
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} response'
+        other: '%{count} responses'
     survey_responses:
       date: Date
       no_answer: (No answer)
