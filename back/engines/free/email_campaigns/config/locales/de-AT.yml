@@ -190,6 +190,7 @@ de-AT:
       new_email_confirmation: Neuer E-Mail-Bestätigungscode
       new_idea_for_admin_prescreening: Neuer Beitrag, der in einem von mir moderierten Projekt genehmigt werden muss
       new_idea_for_admin_published: Neuer Beitrag in einem Projekt, das ich moderiere
+      new_phone_confirmation: Neuer Bestätigungscode für die Telefonnummer
       official_feedback_on_idea_you_follow: Offizielles Update zu einer Idee, der Sie folgen
       password_reset: Zurücksetzen des Passworts
       project_folder_moderation_rights_received: Ordnermanagementrechte erhalten
@@ -202,6 +203,7 @@ de-AT:
       project_review_state_change: Projekt freigegeben
       proposal_expired_for_admin: Vorschlag abgelaufen, ohne die Abstimmungsschwelle zu erreichen
       screening_digest: Wöchentliche Überprüfungs-Erinnerung
+      sms_manual: Offizielle SMS-Nachrichten
       space_moderation_rights_received: Space-Manager*innen-Rechte erhalten
       status_change_on_idea_you_follow: Statusänderung einer Idee, der Sie folgen
       survey_submitted: Umfrage eingereicht
@@ -534,6 +536,8 @@ de-AT:
       title: Ein neuer Beitrag wurde auf Ihrer Plattform veröffentlicht
       today: Heute
       yesterday: Gestern
+    new_phone_confirmation:
+      sms_body: Dein Bestätigungscode lautet %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Zum Beitrag
       event_description: "%{feedback_author_name} hat ein offizielles Update zu %{input_title} gegeben'."

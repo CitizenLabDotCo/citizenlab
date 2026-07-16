@@ -190,6 +190,7 @@ cy-GB:
       new_email_confirmation: Cod cadarnhau e-bost newydd
       new_idea_for_admin_prescreening: Mewnbwn newydd sydd angen cymeradwyaeth mewn prosiect rwy'n ei gymedroli
       new_idea_for_admin_published: Mewnbwn cyhoeddedig newydd mewn prosiect rwy'n ei gymedroli
+      new_phone_confirmation: Cod cadarnhau ffôn newydd
       official_feedback_on_idea_you_follow: Diweddariad ar syniad rydych chi'n ei ddilyn
       password_reset: Ailosod cyfrinair
       project_folder_moderation_rights_received: Hawliau rheolwr ffolder wedi'u derbyn
@@ -202,6 +203,7 @@ cy-GB:
       project_review_state_change: Prosiect wedi'i gymeradwyo
       proposal_expired_for_admin: Cynnig wedi dod i ben heb gyrraedd y trothwy pleidleisio
       screening_digest: Nodyn atgoffa sgrinio wythnosol
+      sms_manual: Negeseuon SMS swyddogol
       space_moderation_rights_received: Hawliau rheolwr gofod wedi'u derbyn
       status_change_on_idea_you_follow: Newid statws syniad rydych chi'n ei ddilyn
       survey_submitted: Arolwg wedi'i gyflwyno
@@ -534,6 +536,8 @@ cy-GB:
       title: Mae mewnbwn newydd wedi'i gyhoeddi ar eich platfform
       today: Heddiw
       yesterday: Ddoe
+    new_phone_confirmation:
+      sms_body: Eich cod cadarnhau yw %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ewch i'r mewnbwn hwn
       event_description: "Rhoddodd %{feedback_author_name} ddiweddariad ar '%{input_title}'."

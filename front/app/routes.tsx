@@ -30,6 +30,7 @@ const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
 const EmailChange = lazy(() => import('containers/EmailChange'));
+const PhoneChange = lazy(() => import('containers/PhoneChange'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
@@ -282,6 +283,16 @@ const changeEmailRoute = createRoute({
   component: () => (
     <PageLoading>
       <EmailChange />
+    </PageLoading>
+  ),
+});
+
+const changePhoneRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'profile/change-phone',
+  component: () => (
+    <PageLoading>
+      <PhoneChange />
     </PageLoading>
   ),
 });
@@ -673,6 +684,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       profileEditRoute,
       changePasswordRoute,
       changeEmailRoute,
+      changePhoneRoute,
       createUserShowPageRoutes(),
       ideasEditRoute,
       ideasIndexRoute,

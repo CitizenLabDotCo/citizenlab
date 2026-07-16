@@ -7,9 +7,9 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 
+import useAddEmailCampaign from 'api/campaigns/email/useAddEmailCampaign';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { CampaignContext } from 'api/campaigns/types';
-import useAddCampaign from 'api/campaigns/useAddCampaign';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -34,8 +34,8 @@ type Props = {
 const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { mutate: addCampaign } = useAddCampaign();
-  const { mutate: updateCampaign } = useUpdateCampaign();
+  const { mutate: addCampaign } = useAddEmailCampaign();
+  const { mutate: updateCampaign } = useUpdateEmailCampaign();
   const unpersistedContextCampaign =
     context && !campaign.relationships.context?.data?.id;
 
