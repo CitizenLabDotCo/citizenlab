@@ -2082,7 +2082,7 @@
   "app.containers.PhoneChange.currentPhone": "Votre numéro de téléphone actuel est :",
   "app.containers.PhoneChange.helmetDescription": "Modifier votre numéro de téléphone",
   "app.containers.PhoneChange.helmetTitle": "Modifier votre numéro de téléphone",
-  "app.containers.PhoneChange.newPhoneLabel": "Nouveau numéro de téléphone (inclure l'indicatif pays)",
+  "app.containers.PhoneChange.newPhoneLabel": "Nouveau numéro de téléphone (avec l'indicatif du pays)",
   "app.containers.PhoneChange.phoneEmptyError": "Renseignez un numéro de téléphone",
   "app.containers.PhoneChange.phoneInvalid2": "Veuillez indiquer un numéro de téléphone valide, y compris l'indicatif du pays.",
   "app.containers.PhoneChange.phoneTaken": "Ce numéro de téléphone est déjà utilisé.",

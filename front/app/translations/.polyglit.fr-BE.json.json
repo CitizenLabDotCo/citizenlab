@@ -10284,6 +10284,21 @@
     "verified_at": "2026-07-16T20:21:54.623944Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.currentPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:42:18.518328Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.newPhoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:42:18.518328Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.titleChangePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:42:18.518328Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": {
     "state": "verified",
     "verified_at": "2026-07-16T20:33:10.034537Z",
