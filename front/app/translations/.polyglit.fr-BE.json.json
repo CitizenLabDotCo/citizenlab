@@ -10284,9 +10284,34 @@
     "verified_at": "2026-07-16T20:21:54.623944Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:33:10.034537Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneConfirmation.codeInput": {
     "state": "verified",
     "verified_at": "2026-07-16T16:00:17.744995Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveFourDigits": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:33:10.034537Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneConfirmation.confirmationCodeSent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:33:10.034537Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneConfirmation.didntGetAnSMS": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:33:10.034537Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneConfirmation.sendNewCode": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:33:10.034537Z",
     "verified_by": "Adrien"
   },
   "app.containers.ProjectFolderCards.allProjects": {

@@ -6344,6 +6344,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.manageButtonLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:33:09.892907Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.noSmsCampaignsDescription": {
     "state": "verified",
     "verified_at": "2026-07-16T20:14:04.489346Z",
