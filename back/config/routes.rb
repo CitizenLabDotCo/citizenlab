@@ -170,9 +170,11 @@ Rails.application.routes.draw do
       scope path: 'user' do
         post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
         post 'request_code_email_change', to: 'request_codes#request_code_email_change'
+        post 'request_code_phone_change', to: 'request_codes#request_code_phone_change'
 
         post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
+        post 'confirm_code_phone_change', to: 'confirmations#confirm_code_phone_change'
       end
 
       resources :global_topics do
@@ -234,8 +236,9 @@ Rails.application.routes.draw do
 
         member do
           get 'survey_results'
-          get 'survey_response_fields'
-          post 'survey_responses_pdf'
+          get 'input_response_fields'
+          post 'input_responses_pdf'
+          post 'input_responses_xlsx'
           get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'

@@ -230,4 +230,68 @@ resource 'Confirmations' do
       end
     end
   end
+
+  post 'web_api/v1/user/confirm_code_phone_change' do
+    with_options scope: :confirmation do
+      parameter :code, 'The 4-digit confirmation code received by SMS.'
+    end
+
+    context 'when user is not authenticated' do
+      let(:code) { '1234' }
+
+      example_request 'returns an unauthorized status when the user is not authenticated' do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when user is authenticated' do
+      let(:user) { create(:user) }
+      let(:new_phone) { '+14155552671' }
+
+      # The code request sends the OTP synchronously, so the provider is invoked.
+      include_context 'with stubbed SMS provider'
+
+      before do
+        header_token_for user
+        RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
+      end
+
+      example 'promotes new_phone to phone upon successful confirmation' do
+        do_request(confirmation: { code: user.new_phone_confirmation.code })
+        assert_status 200
+        user.reload
+        expect(user.phone).to eq new_phone
+        expect(user.new_phone).to be_nil
+        expect(user.phone_confirmed_at).to be_present
+      end
+
+      example 'sets code_reset_count to 0 upon successful confirmation' do
+        user.new_phone_confirmation.update!(code_reset_count: 3)
+        do_request(confirmation: { code: user.new_phone_confirmation.code })
+        assert_status 200
+        expect(user.new_phone_confirmation.reload.code_reset_count).to eq 0
+      end
+
+      example 'returns a code.blank error code when no code is passed' do
+        do_request(confirmation: { code: nil })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:code, 'blank')
+      end
+
+      example 'returns a code.invalid error code when the code is invalid' do
+        do_request(confirmation: { code: 'badcode' })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:code, 'invalid')
+      end
+
+      example 'does not work if the user has no pending phone number' do
+        code = user.new_phone_confirmation.code
+        user.update!(new_phone: nil)
+        do_request(confirmation: { code: code })
+        assert_status 422
+      end
+    end
+  end
 end

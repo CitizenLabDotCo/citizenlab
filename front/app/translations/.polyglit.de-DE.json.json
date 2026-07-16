@@ -264,6 +264,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.AuthProviders.continueWithLuxembourgIAM": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.721318Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.components.AuthProviders.continueWithNemlogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -3539,6 +3544,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.VerificationModal.verifyEtatLu2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.721318Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.components.VerificationModal.verifyFakeSSO": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -6684,15 +6694,40 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.CampaignsConsentForm.ally_categoryLabel2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.CampaignsConsentForm.emailNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.CampaignsConsentForm.messageError": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.CampaignsConsentForm.messageError2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.CampaignsConsentForm.messageSuccess": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CampaignsConsentForm.messageSuccess2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.CampaignsConsentForm.notificationsSubTitle": {
     "state": "verified",
@@ -6703,6 +6738,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CampaignsConsentForm.smsNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.CampaignsConsentForm.smsNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.CampaignsConsentForm.submit": {
     "state": "verified",
@@ -10464,6 +10509,131 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.PhoneChange.backToProfile": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.confirmationModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.currentPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.helmetDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.helmetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.newPhoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneEmptyError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneInvalid2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneTaken": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneUnknownError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneUpdateCancelled": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneUpdateCancelledDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.submitButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.titleAddPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.titleChangePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.updateSuccessful": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.changeYourNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.codeInput": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveFourDigits": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.confirmationCodeSent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.didntGetAnSMS": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.sendNewCode": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.verifyAndContinue": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneConfirmation.wrongNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.ProjectFolderCards.allProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -11594,6 +11764,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersEditPage.addPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -11638,6 +11813,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.UsersEditPage.changePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.055315Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.UsersEditPage.clickHereToUpdateVerification": {
     "state": "verified",

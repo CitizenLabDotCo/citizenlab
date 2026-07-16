@@ -190,6 +190,7 @@ fi-FI:
       new_email_confirmation: Uuden sähköpostiosoitteen vahvistuskoodi
       new_idea_for_admin_prescreening: Uusi hyväksyntää vaativa syöte moderoimassani projektissa
       new_idea_for_admin_published: Uusi julkaistu panos moderoimassani projektissa
+      new_phone_confirmation: Uusi puhelinnumeron vahvistuskoodi
       official_feedback_on_idea_you_follow: Päivitä ajatus, jota seuraat
       password_reset: Salasanan nollaus
       project_folder_moderation_rights_received: Kansionhallintaoikeudet vastaanotettu
@@ -202,6 +203,7 @@ fi-FI:
       project_review_state_change: Projekti hyväksytty
       proposal_expired_for_admin: Ehdotus vanhentui saavuttamatta äänestyskynnystä
       screening_digest: Viikoittainen seulontamuistutus
+      sms_manual: Viralliset tekstiviestit
       space_moderation_rights_received: Tilan hallinnointioikeudet vastaanotettu
       status_change_on_idea_you_follow: Seuraamasi idean tilanmuutos
       survey_submitted: Kysely lähetetty
@@ -534,6 +536,8 @@ fi-FI:
       title: Uusi syöte on julkaistu alustallasi
       today: Tänään
       yesterday: Eilen
+    new_phone_confirmation:
+      sms_body: Vahvistuskoodisi on %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Siirry tähän syötteeseen
       event_description: "%{feedback_author_name} antoi päivityksen kohteesta '%{input_title}'."

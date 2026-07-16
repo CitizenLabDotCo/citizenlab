@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaign do
+  describe '#channel' do
+    it "defaults to 'email' and persists it" do
+      campaign = create(:welcome_campaign)
+      expect(campaign.channel).to eq('email')
+      expect(campaign.reload.channel).to eq('email')
+    end
+  end
+
   describe '#apply_recipient_filters' do
     let(:campaign) { create(:invite_received_campaign) }
     let(:invite) { create(:invite) }
