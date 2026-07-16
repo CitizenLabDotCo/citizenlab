@@ -6269,6 +6269,11 @@
     "verified_at": "2026-07-16T15:58:15.979193Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.deleteSmsConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:17:14.984859Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.editSmsCampaignTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T20:14:04.664795Z",
@@ -6279,9 +6284,19 @@
     "verified_at": "2026-07-16T15:58:15.979193Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.fieldSmsBodyError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:17:14.984859Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.fieldSmsLabel": {
     "state": "verified",
     "verified_at": "2026-07-16T20:14:04.664795Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabelError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:17:14.984859Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.messaging.helmetTitle": {
