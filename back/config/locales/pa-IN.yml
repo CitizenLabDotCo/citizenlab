@@ -270,6 +270,15 @@ pa-IN:
     proposals:
       title: ਪ੍ਰਸਤਾਵ
   pdf_export:
+    input_responses:
+      date: ਮਿਤੀ
+      no_answer: (ਕੋਈ ਉੱਤਰ ਨਹੀਂ)
+      prepared_by: ਦੁਆਰਾ ਤਿਆਰ ਕੀਤਾ ਗਿਆ
+      report_label: ਉੱਤਰ ਰਿਪੋਰਟ
+      respondent: ਉੱਤਰਦਾਤਾ %{number}
+      response_count:
+        one: '%{count} ਉੱਤਰ'
+        other: '%{count} ਉੱਤਰ'
     survey_responses:
       date: ਮਿਤੀ
       no_answer: (ਕੋਈ ਜਵਾਬ ਨਹੀਂ)

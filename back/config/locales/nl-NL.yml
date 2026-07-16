@@ -270,6 +270,15 @@ nl-NL:
     proposals:
       title: Voorstellen
   pdf_export:
+    input_responses:
+      date: Datum
+      no_answer: (Geen antwoord)
+      prepared_by: Opgesteld door
+      report_label: Reactierapport
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} reactie'
+        other: '%{count} reacties'
     survey_responses:
       date: Datum
       no_answer: (Geen antwoord)
