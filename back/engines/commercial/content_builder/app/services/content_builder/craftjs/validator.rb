@@ -10,7 +10,8 @@ module ContentBuilder
     #   references bidirectional, no orphans, double references or cycles, everything
     #   reachable). Always applied to the whole graph.
     # - conventions (only when `widget_specs` is given): platform rules — allowed widget
-    #   types, linkedNodes slot names, prop enums and multiloc shapes. The specs table maps
+    #   types, node id format, undeclared node keys, linkedNodes slot names, prop enums
+    #   and multiloc shapes. The specs table maps
     #   resolvedName => { 'slots' => [...], 'enums' => { prop => [...] }, 'multilocs' => [...] }.
     #   Pass `convention_scope` (an array of node ids) to check only those nodes — callers
     #   applying a partial update use this so pre-existing nodes they did not touch (legacy
@@ -21,6 +22,14 @@ module ContentBuilder
         'linkedNodes' => Hash,
         'props' => Hash
       }.freeze
+
+      # The exact key set craftjs nodes carry (the cheatsheet already documents it as
+      # exhaustive); anything else would be silently persisted into the stored jsonb.
+      ALLOWED_NODE_KEYS = %w[type parent props custom hidden isCanvas displayName nodes linkedNodes].freeze
+
+      # craft.js generates 10-char nanoid ids from this alphabet. Only the alphabet and
+      # a generous length cap are enforced, so hand-written ids remain possible.
+      ID_FORMAT = /\A[A-Za-z0-9_-]{1,64}\z/
 
       def initialize(craftjs_json, widget_specs: nil, convention_scope: nil)
         @json = craftjs_json
@@ -114,10 +123,16 @@ module ContentBuilder
           root = @json['ROOT']
           errors << "node ROOT: 'type' must be the string 'div'" if root['type'] != 'div'
           errors << 'node ROOT: must be a canvas (isCanvas: true)' unless root['isCanvas']
+          errors.concat(unknown_key_errors('ROOT', root))
         end
 
         @json.each do |id, node|
           next if id == 'ROOT' || !in_scope?(id)
+
+          unless ID_FORMAT.match?(id)
+            errors << "node #{id.inspect}: node ids must be 1-64 characters of A-Z, a-z, 0-9, '-' or '_'"
+          end
+          errors.concat(unknown_key_errors(id, node))
 
           name = Query.resolved_name(node)
           spec = @widget_specs[name]
@@ -135,6 +150,13 @@ module ContentBuilder
 
       def in_scope?(id)
         @convention_scope.nil? || @convention_scope.include?(id)
+      end
+
+      def unknown_key_errors(id, node)
+        unknown = node.keys - ALLOWED_NODE_KEYS
+        return [] if unknown.none?
+
+        ["node #{id}: unknown keys: #{unknown.join(', ')} (allowed: #{ALLOWED_NODE_KEYS.join(', ')})"]
       end
 
       def slot_errors(id, node, spec)

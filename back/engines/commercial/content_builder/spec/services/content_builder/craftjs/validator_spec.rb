@@ -139,6 +139,40 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       expect(errors).to eq([])
     end
 
+    it 'rejects an empty-string node id' do
+      json['ROOT']['nodes'] = ['T', '']
+      json[''] = text_node(parent: 'ROOT')
+
+      expect(errors).to contain_exactly(
+        match(/\Anode "": node ids must be 1-64 characters/)
+      )
+    end
+
+    it 'rejects a node id containing whitespace or newlines' do
+      json['ROOT']['nodes'] = ['T', "bad id\n"]
+      json["bad id\n"] = text_node(parent: 'ROOT')
+
+      expect(errors).to contain_exactly(
+        match(/node ids must be 1-64 characters/)
+      )
+    end
+
+    it 'rejects undeclared node keys' do
+      json['T']['clazz'] = 'zoomed'
+
+      expect(errors).to contain_exactly(
+        match(/\Anode T: unknown keys: clazz \(allowed:/)
+      )
+    end
+
+    it 'rejects undeclared keys on ROOT' do
+      json['ROOT']['theme'] = 'dark'
+
+      expect(errors).to contain_exactly(
+        match(/\Anode ROOT: unknown keys: theme \(allowed:/)
+      )
+    end
+
     it 'rejects an unsupported widget' do
       json['T']['type'] = { 'resolvedName' => 'UnknownWidget' }
 
