@@ -151,7 +151,7 @@ class WebApi::V1::IdeasController < ApplicationController
     if params[:idea].key?(:topic_ids)
       params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
     end
-    params_for_create = idea_params(form).except(:project_id)
+    params_for_create = idea_params(form).except(:project_id, :phase_ids)
     files_params = extract_file_params(params_for_create)
 
     input = Idea.new params_for_create
