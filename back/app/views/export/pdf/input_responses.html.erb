@@ -18,7 +18,7 @@
     <% respondents.each do |respondent| %>
       <div class="card">
         <div class="card-header">
-          <span class="card-header-label"><%= t('pdf_export.survey_responses.respondent', number: format('%03d', respondent[:number])) %></span>
+          <span class="card-header-label"><%= t('pdf_export.input_responses.respondent', number: format('%03d', respondent[:number])) %></span>
           <span class="card-header-date"><%= respondent[:date] %></span>
         </div>
         <div class="card-body">
@@ -28,7 +28,7 @@
               <% if answer[:answer].present? %>
                 <div class="qa-answer"><%= answer[:answer] %></div>
               <% else %>
-                <div class="qa-answer empty"><%= t('pdf_export.survey_responses.no_answer') %></div>
+                <div class="qa-answer empty"><%= t('pdf_export.input_responses.no_answer') %></div>
               <% end %>
             </div>
           <% end %>
@@ -36,7 +36,7 @@
       </div>
     <% end %>
 
-    <div class="footer"><%= t('pdf_export.survey_responses.response_count', count: total) %></div>
+    <div class="footer"><%= t('pdf_export.input_responses.response_count', count: total) %></div>
     <% end %>
   </body>
 </html>

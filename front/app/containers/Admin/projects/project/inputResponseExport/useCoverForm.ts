@@ -2,16 +2,16 @@ import { useMemo } from 'react';
 
 import { useForm, useWatch, UseFormReturn } from 'react-hook-form';
 
+import { InputPdfCover } from 'api/input_responses_pdf/generateInputResponsesPdf';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
-import { SurveyPdfCover } from 'api/survey_responses_pdf/generateSurveyResponsesPdf';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { getFullName } from 'utils/textUtils';
 
-const EMPTY_COVER: SurveyPdfCover = {
+const EMPTY_COVER: InputPdfCover = {
   include: true,
   title: '',
   subtitle: '',
@@ -26,9 +26,9 @@ type Args = {
 };
 
 type Result = {
-  methods: UseFormReturn<SurveyPdfCover>;
+  methods: UseFormReturn<InputPdfCover>;
   // Referentially stable — only changes when a field is edited.
-  cover: SurveyPdfCover;
+  cover: InputPdfCover;
 };
 
 // Owns the cover-page form: seeds it from the phase/project/current user once
@@ -39,7 +39,7 @@ const useCoverForm = ({ phaseId, projectId }: Args): Result => {
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
 
-  const coverValues = useMemo<SurveyPdfCover | undefined>(() => {
+  const coverValues = useMemo<InputPdfCover | undefined>(() => {
     if (!phase || !project || !authUser) return undefined;
     return {
       include: true,
@@ -51,7 +51,7 @@ const useCoverForm = ({ phaseId, projectId }: Args): Result => {
     };
   }, [phase, project, authUser, localize]);
 
-  const methods = useForm<SurveyPdfCover>({
+  const methods = useForm<InputPdfCover>({
     defaultValues: EMPTY_COVER,
     values: coverValues,
   });
@@ -65,7 +65,7 @@ const useCoverForm = ({ phaseId, projectId }: Args): Result => {
   const date = useWatch({ control, name: 'date' });
   const preparedBy = useWatch({ control, name: 'preparedBy' });
   const notes = useWatch({ control, name: 'notes' });
-  const cover = useMemo<SurveyPdfCover>(
+  const cover = useMemo<InputPdfCover>(
     () => ({ include, title, subtitle, date, preparedBy, notes }),
     [include, title, subtitle, date, preparedBy, notes]
   );

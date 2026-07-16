@@ -12,8 +12,8 @@ import { pdfjs, Document, Page } from 'react-pdf';
 
 import {
   fetchCoverPreviewPdf,
-  SurveyPdfCover,
-} from 'api/survey_responses_pdf/generateSurveyResponsesPdf';
+  InputPdfCover,
+} from 'api/input_responses_pdf/generateInputResponsesPdf';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -27,7 +27,7 @@ const ZOOM_MAX = 3;
 const ZOOM_STEP = 0.25;
 
 type Props = {
-  cover: SurveyPdfCover;
+  cover: InputPdfCover;
   phaseId: string;
 };
 

@@ -2,11 +2,12 @@
 
 module Export
   module Pdf
-    # Builds the "survey responses" PDF: a branded cover page followed by one
+    # Builds the "input responses" PDF: a branded cover page followed by one
     # card per response. Answers are formatted with the shared export field
     # visitor (so every question type is supported consistently with the xlsx
-    # export), and rendered to PDF via Gotenberg (HTML -> Chromium).
-    class SurveyResponsesGenerator
+    # export), and rendered to PDF via Gotenberg (HTML -> Chromium). Works for
+    # any participation method whose pmethod supports_input_pdf_export?.
+    class InputResponsesGenerator
       # cover_only renders just the cover page (used by the live preview); it
       # skips loading responses entirely.
       def initialize(phase, cover:, redacted_field_keys: [], cover_only: false)
@@ -24,19 +25,20 @@ module Export
 
       attr_reader :phase, :cover
 
+      # The full export column set (id, form questions, author, meta and user
+      # fields), assembled by the builder shared with the xlsx export. Redaction
+      # is applied per field, so redacting a question also drops its matrix
+      # statements and free-text answers.
       def fields
-        @fields ||= Export::Pdf::SurveyFields.new(phase).fields
-          .filter_map do |field|
-            next if @redacted_field_keys.include?(field.key)
-
-            Export::CustomFieldForExport.new(field, Export::Xlsx::ValueVisitor)
-          end
+        @fields ||= Export::InputReportFields
+          .new(phase, redacted_field_keys: @redacted_field_keys)
+          .all
       end
 
       def inputs
-        @inputs ||= phase.ideas.supports_survey.published
+        @inputs ||= phase.inputs_for_export
           .order(created_at: :asc)
-          .includes(:idea_files, file_attachments: :file)
+          .includes(*Export::InputReportFields::EAGER_LOADS)
           .to_a
       end
 
@@ -46,18 +48,29 @@ module Export
             number: index + 1,
             date: I18n.l(input.created_at.to_date),
             answers: fields.map do |field|
-              { question: field.column_header, answer: field.value_from(input).to_s }
+              { question: field.column_header, answer: format_answer(field.value_from(input)) }
             end
           }
         end
       end
 
+      # Timestamps read as Time objects for the xlsx cell format; render them
+      # as localized dates in the pdf.
+      def format_answer(value)
+        case value
+        when ActiveSupport::TimeWithZone, Time, DateTime
+          I18n.l(value.to_date)
+        else
+          value.to_s
+        end
+      end
+
       def render_html
         render_template(
-          'export/pdf/survey_responses',
+          'export/pdf/input_responses',
           cover: cover,
           respondents: @cover_only ? [] : respondents,
-          total: @cover_only ? published_count : inputs.size,
+          total: @cover_only ? exportable_count : inputs.size,
           cover_only: @cover_only,
           colors: palette
         )
@@ -76,8 +89,8 @@ module Export
       end
 
       # Cheap count for the cover preview (avoids loading every response).
-      def published_count
-        phase.ideas.supports_survey.published.count
+      def exportable_count
+        phase.inputs_for_export.count
       end
     end
   end
