@@ -275,7 +275,7 @@ de-AT:
       no_answer: (Keine Antwort)
       prepared_by: Erstellt von
       report_label: Bericht der Umfrageantworten
-      respondent: Teilnehmer %{number}
+      respondent: Teilnehmende %{number}
       response_count:
         one: '%{count} Antwort'
         other: '%{count} Antworten'

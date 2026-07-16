@@ -939,6 +939,41 @@
     "verified_at": "2026-03-30T12:57:38.526133Z",
     "verified_by": "Edwin Kato"
   },
+  "pdf_export.survey_responses.date": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:33.097409Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "pdf_export.survey_responses.no_answer": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:33.097409Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "pdf_export.survey_responses.prepared_by": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:33.097409Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "pdf_export.survey_responses.report_label": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:33.097409Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "pdf_export.survey_responses.respondent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:33.097409Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "pdf_export.survey_responses.response_count.one": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:33.097409Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "pdf_export.survey_responses.response_count.other": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:33.097409Z",
+    "verified_by": "eva@govocal.com"
+  },
   "phases.community_monitor_title": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.526133Z",
