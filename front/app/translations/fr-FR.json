@@ -1324,7 +1324,7 @@
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifications dans cette catégorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Quels types de notifications par e-mail souhaitez-vous recevoir ?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Notifications par e-mail",
-  "app.containers.CampaignsConsentForm.messageError2": "Une erreur est survenue lors de l'enregistrement de vos préférences de notification.",
+  "app.containers.CampaignsConsentForm.messageError2": "Une erreur est survenue lors de l'enregistrement de vos préférences.",
   "app.containers.CampaignsConsentForm.messageSuccess2": "Vos préférences de notification ont été enregistrées.",
   "app.containers.CampaignsConsentForm.smsNotificationsSubTitle": "Quels types de notifications par SMS souhaitez-vous recevoir ?",
   "app.containers.CampaignsConsentForm.smsNotificationsTitle": "Notifications par SMS",

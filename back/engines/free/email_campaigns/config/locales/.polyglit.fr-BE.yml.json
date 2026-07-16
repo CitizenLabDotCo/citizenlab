@@ -964,6 +964,11 @@
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.sms_manual": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:49:44.803723Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.campaign_type_description.space_moderation_rights_received": {
     "state": "verified",
     "verified_at": "2026-04-13T14:12:09.016502Z",
