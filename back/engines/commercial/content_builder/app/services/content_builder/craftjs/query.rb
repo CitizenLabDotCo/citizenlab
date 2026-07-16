@@ -9,12 +9,6 @@ module ContentBuilder
     # outline) must use these instead of re-deriving node facts, so the
     # interpretations cannot drift.
     module Query
-      # Widgets whose linkedNodes slots have a visual left-to-right order.
-      VISUAL_SLOT_ORDER = {
-        'TwoColumn' => %w[left right],
-        'ThreeColumn' => %w[column1 column2 column3]
-      }.freeze
-
       module_function
 
       # @return [String, nil] the widget name: 'type' is either a plain string
@@ -31,12 +25,14 @@ module ContentBuilder
           (node['linkedNodes'] || {}).map { |slot, child_id| ["linkedNodes[#{slot}]", child_id] }
       end
 
-      # linkedNodes slot names in visual order, for widgets where that order matters.
+      # linkedNodes slot names in visual order: the widget's declared slots
+      # (WidgetSpecs 'slots', in visual order) first, then any undeclared slots a
+      # stored graph carries, so lenient readers still visit those.
       # @return [Array<String>]
       def ordered_slots(node)
         linked_nodes = node['linkedNodes'] || {}
-        VISUAL_SLOT_ORDER.fetch(resolved_name(node)) { linked_nodes.keys }
-          .select { |slot| linked_nodes.key?(slot) }
+        declared = WidgetSpecs::SPECS.dig(resolved_name(node), 'slots') || []
+        declared.select { |slot| linked_nodes.key?(slot) } + (linked_nodes.keys - declared)
       end
 
       # Walks the graph from ROOT in visual order — `nodes` children top to bottom,

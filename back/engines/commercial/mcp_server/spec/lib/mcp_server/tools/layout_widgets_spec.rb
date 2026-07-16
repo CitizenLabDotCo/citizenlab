@@ -2,16 +2,19 @@
 
 require 'rails_helper'
 
-# Guards against the widget registry, the validator rules and the LLM-facing
-# cheatsheet drifting apart.
+# Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs), the
+# LLM-facing docs and the cheatsheet drifting apart.
 describe McpServer::Tools::LayoutWidgets do
-  describe 'WIDGETS' do
-    it 'documents every enum value (except the legacy empty string) in the widget doc' do
-      described_class::WIDGETS.each do |name, widget|
-        doc = widget['doc']
-        next if doc.nil?
+  describe 'DOCS' do
+    it 'documents only widgets that exist in the widget specs' do
+      undeclared = described_class::DOCS.keys - ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys
 
-        enums = widget.dig('rules', 'enums') || {}
+      expect(undeclared).to be_empty
+    end
+
+    it 'documents every enum value (except the legacy empty string) in the widget doc' do
+      described_class::DOCS.each do |name, doc|
+        enums = ContentBuilder::Craftjs::WidgetSpecs::SPECS.dig(name, 'enums') || {}
         enums.each do |prop, values|
           values.reject { |value| value == '' }.each do |value|
             expect(doc).to include(value),
@@ -22,29 +25,19 @@ describe McpServer::Tools::LayoutWidgets do
     end
 
     it 'documents every linkedNodes slot name in the widget doc' do
-      described_class::WIDGETS.each do |name, widget|
-        doc = widget['doc']
-        next if doc.nil?
-
-        (widget.dig('rules', 'slots') || []).each do |slot|
+      described_class::DOCS.each do |name, doc|
+        slots = ContentBuilder::Craftjs::WidgetSpecs::SPECS.dig(name, 'slots') || []
+        slots.each do |slot|
           expect(doc).to include(slot), "expected the #{name} doc to mention slot '#{slot}'"
         end
       end
     end
   end
 
-  describe 'VALIDATOR_SPECS' do
-    it 'covers exactly the widgets in WIDGETS' do
-      expect(described_class::VALIDATOR_SPECS.keys).to match_array(described_class::WIDGETS.keys)
-    end
-  end
-
   describe 'CHEATSHEET' do
     it 'includes the doc of every documented widget' do
-      described_class::WIDGETS.each do |name, widget|
-        next if widget['doc'].nil?
-
-        expect(described_class::CHEATSHEET).to include(widget['doc']),
+      described_class::DOCS.each do |name, doc|
+        expect(described_class::CHEATSHEET).to include(doc),
           "expected the cheatsheet to include the #{name} doc"
         expect(described_class::CHEATSHEET).to include(name)
       end

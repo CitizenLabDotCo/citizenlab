@@ -205,7 +205,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
 
       errors = ContentBuilder::Craftjs::Validator.new(
         graph,
-        widget_specs: McpServer::Tools::LayoutWidgets::VALIDATOR_SPECS,
+        widget_specs: ContentBuilder::Craftjs::WidgetSpecs::SPECS,
         # Widget conventions apply only to the nodes this patch touches, so legacy
         # widgets elsewhere in a stored graph cannot fail an unrelated update.
         convention_scope: patch_nodes.keys
