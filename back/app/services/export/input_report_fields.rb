@@ -6,6 +6,18 @@ module Export
   # Every returned field responds to #key, #column_header, #value_from(input)
   # and #hyperlink? (CustomFieldForExport / ComputedFieldForReport).
   #
+  # This class is the entry point of the Export services; the map:
+  #   InputFields           — which fields a phase's export covers
+  #                           (form questions + out-of-form user fields);
+  #   AnswerFieldsForReport — how one field expands into answer columns
+  #                           (matrix statements, "other"/follow-up answers);
+  #   InputReportFields     — this class: the full column list in sheet order,
+  #                           plus computed columns (author, meta) and redaction;
+  #   CustomFieldForExport / ComputedFieldForReport — the uniform column objects
+  #                           everything above returns.
+  # The xlsx/pdf generators iterate `all`; the review endpoint lists
+  # `reviewable_fields` (one entry per question, before expansion).
+  #
   # `redacted_field_keys` removes fields by key. Raw fields are rejected before
   # expansion, so redacting a question also drops its matrix statements,
   # "other"/follow-up answers and location coordinates; computed columns (e.g.
