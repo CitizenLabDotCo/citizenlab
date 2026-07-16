@@ -1196,7 +1196,7 @@
   "app.containers.Admin.messaging.cancelButton": "Annuler",
   "app.containers.Admin.messaging.confirmSendSmsHeader": "Envoyer ce message texte à tous les participants disposant d'un numéro de téléphone ?",
   "app.containers.Admin.messaging.deleteSmsButton": "Supprimer",
-  "app.containers.Admin.messaging.deleteSmsConfirmation": "Voulez-vous vraiment supprimer ce message SMS ?",
+  "app.containers.Admin.messaging.deleteSmsConfirmation": "Êtes-vous sûr de vouloir supprimer ce SMS ?",
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Modifier le SMS",
   "app.containers.Admin.messaging.fieldSmsBody": "Message",
   "app.containers.Admin.messaging.fieldSmsBodyError": "Fournissez un message pour toutes les langues",
