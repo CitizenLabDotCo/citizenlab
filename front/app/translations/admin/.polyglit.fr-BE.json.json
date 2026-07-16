@@ -6269,9 +6269,19 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.noSmsCampaignsHeader": {
+    "state": "verified",
+    "verified_at": "2026-07-16T19:50:20.045199Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.smsRecipientsTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T16:00:17.791260Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.tabSms": {
+    "state": "verified",
+    "verified_at": "2026-07-16T19:50:20.045199Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.FollowedItems.thisWidgetShows": {

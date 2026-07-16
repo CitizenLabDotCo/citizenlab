@@ -1206,7 +1206,7 @@
   "app.containers.Admin.messaging.helmetTitle": "Messagerie",
   "app.containers.Admin.messaging.manageButtonLabel": "Gérer",
   "app.containers.Admin.messaging.noSmsCampaignsDescription": "Contactez les participants ayant partagé un numéro de téléphone par un court message texte.",
-  "app.containers.Admin.messaging.noSmsCampaignsHeader": "Envoyez votre premier message texte",
+  "app.containers.Admin.messaging.noSmsCampaignsHeader": "Envoyez votre premier SMS",
   "app.containers.Admin.messaging.sendSmsPreviewButton": "Envoyer un aperçu",
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Envoie un message texte de test à votre propre numéro de téléphone.",
   "app.containers.Admin.messaging.smsCampaignsDescription": "Envoyez des messages texte à vos participants.",
