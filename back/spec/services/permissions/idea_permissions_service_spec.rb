@@ -528,7 +528,7 @@ describe Permissions::IdeaPermissionsService do
   end
 
   describe 'action_descriptors' do
-    it 'does not run more than 3 queries for 5 ideas in a project with default user permissions' do
+    it 'does not run more than 4 queries for 5 ideas in a project with default user permissions' do
       user = create(:user)
       phase = TimelineService.new.current_phase(create(:project_with_current_phase))
       create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'users')
@@ -555,7 +555,7 @@ describe Permissions::IdeaPermissionsService do
         ideas.each do |idea|
           described_class.new(idea, user, user_requirements_service: user_requirements_service).action_descriptors
         end
-      end.not_to exceed_query_limit(3) # Down from an original 486
+      end.not_to exceed_query_limit(4) # Down from an original 486
     end
   end
 

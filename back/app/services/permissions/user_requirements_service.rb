@@ -39,13 +39,14 @@ class Permissions::UserRequirementsService
         field.required = permissions_custom_field.required
       end
     end
+
     fields.reject(&:hidden?) # Should not return hidden fields
   end
 
-  # Verification requirement can now come from either a group or the "verified" permitted_by value
+  # Verification requirement can now come from either a group or the require_verification attribute
   def requires_verification?(permission, user)
-    if permission.permitted_by == 'verified'
-      # Only check requirements for when we require verification again if permitted_by is 'verified'
+    if permission.require_verification
+      # Only check requirements for when we require verification again if require_verification is set
       if !permission.verification_expiry.nil? && user.verifications.present?
         expiry_offset = permission.verification_expiry == 0 ? MIN_VERIFICATION_EXPIRY : permission.verification_expiry.days
         last_verification_time = user.verifications.last&.updated_at
@@ -102,8 +103,8 @@ class Permissions::UserRequirementsService
   def base_requirements(permission)
     users_requirements = {
       authentication: {
-        permitted_by: disable_everyone_confirmed_email?(permission) ? 'users' : permission.permitted_by,
-        missing_user_attributes: %i[first_name last_name email confirmation password]
+        permitted_by: permission.permitted_by,
+        missing_user_attributes: base_missing_user_attributes(permission)
       },
       verification: false,
       custom_fields: {},
@@ -115,21 +116,15 @@ class Permissions::UserRequirementsService
       users_requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] }
     end
 
-    everyone_confirmed_email_requirements = users_requirements.deep_dup.tap do |requirements|
-      requirements[:authentication][:missing_user_attributes] = %i[email confirmation]
-      requirements[:onboarding] = false
-    end
-
-    everyone_requirements = everyone_confirmed_email_requirements.deep_dup.tap do |requirements|
+    everyone_requirements = users_requirements.deep_dup.tap do |requirements|
       requirements[:authentication][:missing_user_attributes] = []
+      requirements[:onboarding] = false
     end
 
     requirements = case permission.permitted_by
     when 'everyone'
       everyone_requirements
-    when 'everyone_confirmed_email'
-      disable_everyone_confirmed_email?(permission) ? users_requirements : everyone_confirmed_email_requirements
-    else # users | groups | verified | admins_moderators
+    else # users | admins_moderators
       users_requirements
     end
 
@@ -139,10 +134,16 @@ class Permissions::UserRequirementsService
     requirements
   end
 
-  def disable_everyone_confirmed_email?(permission)
-    return false unless permission.permitted_by == 'everyone_confirmed_email'
-
-    permission.action == 'following' && !app_configuration.feature_activated?('password_login')
+  # The attributes a user needs to provide, derived from the permission's
+  # require_* flags. An email (and thus an account) is always required for a
+  # non-"everyone" permission; the name, confirmation and password are only
+  # required when their respective flag is set.
+  def base_missing_user_attributes(permission)
+    attributes = %i[first_name last_name email confirmation password]
+    attributes -= %i[first_name last_name] unless permission.require_name
+    attributes.delete(:confirmation) unless permission.require_confirmed_email
+    attributes.delete(:password) unless permission.require_password
+    attributes
   end
 
   def mark_satisfied_requirements!(requirements, permission, user)
@@ -152,7 +153,7 @@ class Permissions::UserRequirementsService
       requirements[:authentication][:missing_user_attributes].delete(attribute) unless user.send(attribute).nil?
     end
     requirements[:authentication][:missing_user_attributes].delete(:password) unless user.password_digest.nil?
-    requirements[:authentication][:missing_user_attributes].delete(:confirmation) unless user.confirmation_required?
+    requirements[:authentication][:missing_user_attributes].delete(:confirmation) unless permission.require_confirmed_email && user.confirmation_required?
 
     requirements[:custom_fields]&.each_key do |key|
       requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key)
@@ -167,14 +168,6 @@ class Permissions::UserRequirementsService
     end
 
     if user.verified?
-      if permission.permitted_by == 'verified'
-        requirements[:authentication][:missing_user_attributes] = if user.email.present? && user.confirmation_required?
-          ['confirmation']
-        else
-          []
-        end
-      end
-
       # Remove custom fields that are locked - we should never ask them to be filled in the flow - even if they are returned empty
       locked_fields = verification_service.locked_custom_fields(user)
 
@@ -206,6 +199,18 @@ class Permissions::UserRequirementsService
     @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (!GlobalTopic.where(include_in_onboarding: true).empty? || !Area.where(include_in_onboarding: true).empty?)
   end
 
+  # For a user who signed up via SSO (i.e. has a linked identity), we NEVER ask
+  # for a password, even when the permission has require_password enabled. In
+  # other words, require_password is effectively ignored for SSO sign-ups.
+  #
+  # This is admittedly a little weird - you would expect require_password to be
+  # honoured regardless of how the account was created - but it is intentional
+  # for now. In practice, 9 times out of 10, an admin who configures an SSO login
+  # method does NOT want to additionally prompt those users to pick a password.
+  # If we honoured require_password here it would be far too easy for an admin to
+  # overlook the setting and accidentally leave it enabled, forcing an unwanted
+  # password step onto every SSO user. So we drop the password requirement for
+  # SSO users unconditionally. See the SSO specs in user_requirements_service_spec.rb.
   def ignore_password_for_sso!(requirements, user)
     return requirements unless user
 

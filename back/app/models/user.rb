@@ -357,23 +357,12 @@ class User < ApplicationRecord
   end
 
   def active?
-    registered? && !blocked? && !confirmation_required?
+    registered? && !blocked? && authenticated_at_least_once?
   end
 
   def blank_and_can_be_deleted?
     # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
-  end
-
-  # True if the user has not yet confirmed their email address.
-  #
-  # Exception: if the user registered via SSO and the SSO did not return an email,
-  # we treat them as not requiring confirmation unless they have actively requested
-  # to set an email.
-  def confirmation_required?
-    return false if sso_user_without_email?
-
-    confirmation_required
   end
 
   def show_public_profile?
@@ -481,7 +470,7 @@ class User < ApplicationRecord
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
-    return if confirmation_required? || invite_pending? || registration_completed_at_changed?
+    return if !authenticated_at_least_once? || invite_pending? || registration_completed_at_changed?
 
     self.registration_completed_at ||= Time.now
   end
@@ -560,10 +549,6 @@ class User < ApplicationRecord
     NewPhoneConfirmation.create!(user: self)
   end
 
-  def sso_user_without_email?
-    sso? && verified && email.nil? && new_email.nil?
-  end
-
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
       unless notification.update initiating_user: nil
@@ -574,6 +559,13 @@ class User < ApplicationRecord
 
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
+  end
+
+  def authenticated_at_least_once?
+    # True if user authenticated at least once,
+    # either by confirming their email or by signing in with SSO
+    # and being verified.
+    !confirmation_required? || (sso? && verified)
   end
 end
 
