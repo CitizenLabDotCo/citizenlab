@@ -4,7 +4,7 @@ describe Permissions::BasePermissionsService do
   let(:service) { described_class.new(user) }
 
   before do
-    # To allow permitted_by 'verified' we need to enable at least one verification method
+    # To allow require_verification we need to enable at least one verification method
     AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
     AppConfiguration.instance.save!
   end
@@ -35,11 +35,9 @@ describe Permissions::BasePermissionsService do
       )
     end
 
-    let(:permission) { create(:permission, permitted_by: permitted_by) }
-    let(:denied_reason) { service.send(:user_denied_reason, permission) }
-
     context 'when permitted by everyone' do
-      let(:permitted_by) { 'everyone' }
+      let(:permission) { create(:permission, permitted_by: 'everyone') }
+      let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
       context 'when not signed in' do
         let(:user) { nil }
@@ -66,8 +64,9 @@ describe Permissions::BasePermissionsService do
       end
     end
 
-    context 'when permitted by light users' do
-      let(:permitted_by) { 'everyone_confirmed_email' }
+    context 'when permitted by users' do
+      let(:permission) { create(:permission, permitted_by: 'users') }
+      let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
       context 'when not signed in' do
         let(:user) { nil }
@@ -75,73 +74,7 @@ describe Permissions::BasePermissionsService do
         it { expect(denied_reason).to eq 'user_not_signed_in' }
       end
 
-      context 'when light unconfirmed resident' do
-        let(:user) { create(:unconfirmed_user) }
-
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
-      end
-
-      context 'when light confirmed resident' do
-        let(:user) do
-          u = create(:unconfirmed_user)
-          RequestEmailConfirmationCodeJob.perform_now(u)
-          u.email_confirmation.confirm!
-          u
-        end
-
-        it { expect(denied_reason).to be_nil }
-      end
-
-      context 'when fully registered unconfirmed resident' do
-        before do
-          user.update!(confirmation_required: true, email_confirmed_at: nil)
-        end
-
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
-      end
-
-      context 'when fully registered confirmed resident' do
-        it { expect(denied_reason).to be_nil }
-      end
-
-      context 'when fully registered confirmed inactive resident' do
-        before { user.update!(registration_completed_at: nil) }
-
-        it { expect(denied_reason).to eq 'user_not_active' }
-      end
-
-      context 'when unconfirmed admin' do
-        before do
-          user.update!(confirmation_required: true, email_confirmed_at: nil)
-          user.update!(roles: [{ type: 'admin' }])
-        end
-
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
-      end
-
-      context 'when confirmed admin' do
-        before { user.update!(roles: [{ type: 'admin' }]) }
-
-        it { expect(denied_reason).to be_nil }
-      end
-
-      context 'when confirmed inactive admin' do
-        before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
-
-        it { expect(denied_reason).to eq 'user_not_active' }
-      end
-    end
-
-    context 'when permitted by full residents' do
-      let(:permitted_by) { 'users' }
-
-      context 'when not signed in' do
-        let(:user) { nil }
-
-        it { expect(denied_reason).to eq 'user_not_signed_in' }
-      end
-
-      context 'when light confirmed resident' do
+      context 'when confirmed resident without any other attributes' do
         let(:user) do
           u = create(:unconfirmed_user)
           RequestEmailConfirmationCodeJob.perform_now(u)
@@ -150,6 +83,47 @@ describe Permissions::BasePermissionsService do
         end
 
         it { expect(denied_reason).to eq 'user_missing_requirements' }
+
+        it 'works if name, password and custom field requirements are disabled' do
+          permission = create(
+            :permission,
+            permitted_by: 'users',
+            require_name: false,
+            require_password: false,
+            global_custom_fields: false
+          )
+          permission.update!(global_custom_fields: false)
+          permission.permissions_custom_fields.destroy_all
+
+          denied_reason = service.send(:user_denied_reason, permission)
+          expect(denied_reason).to be_nil
+        end
+
+        it 'does not work if name not required but password required, custom field requirements disabled' do
+          permission = create(
+            :permission,
+            permitted_by: 'users',
+            require_name: false,
+            require_password: true
+          )
+          permission.update!(global_custom_fields: false)
+          permission.permissions_custom_fields.destroy_all
+
+          denied_reason = service.send(:user_denied_reason, permission)
+          expect(denied_reason).to eq 'user_missing_requirements'
+        end
+
+        it 'does not work if neither name nor password required, but there is a required custom field' do
+          permission = create(
+            :permission,
+            permitted_by: 'users',
+            require_name: false,
+            require_password: false
+          )
+
+          denied_reason = service.send(:user_denied_reason, permission)
+          expect(denied_reason).to eq 'user_missing_requirements'
+        end
       end
 
       context 'when fully registered unconfirmed resident' do
@@ -295,129 +269,130 @@ describe Permissions::BasePermissionsService do
             create(:verification, user: user, method_name: 'fake_sso')
           end
 
-          it 'ignores the verification value if permitted_by is not "verified"' do
-            group_permission.update!(permitted_by: 'verified', verification_expiry: 1)
-            group_permission.update!(permitted_by: 'users')
+          it 'ignores the verification value if require_verification: false' do
+            # Hack to avoid model validation: we need to set require_verification: true
+            # otherwise the validation fails. We then set it back to false.
+            group_permission.update!(require_verification: true, verification_expiry: 1)
+            group_permission.update!(require_verification: false)
             travel_to Time.now + 2.days do
               expect(service.send(:user_denied_reason, group_permission)).to be_nil
             end
           end
         end
       end
-    end
 
-    context 'when permitted by "verified"' do
-      let(:permitted_by) { 'verified' }
+      context 'when verification is required' do
+        let(:permission) { create(:permission, permitted_by: 'users', require_verification: true) }
 
-      context 'without groups' do
-        # let(:verified_permission) { create(:permission, permitted_by: 'verified') }
+        context 'without groups' do
+          context 'when not signed in' do
+            let(:user) { nil }
 
-        context 'when not signed in' do
-          let(:user) { nil }
-
-          it { expect(denied_reason).to eq 'user_not_signed_in' }
-        end
-
-        context 'when user is admin' do
-          let(:user) { create(:admin) }
-
-          it { expect(denied_reason).to be_nil }
-        end
-
-        context 'when verified resident' do
-          before { user.update!(verified: true) }
-
-          it { expect(denied_reason).to be_nil }
-        end
-
-        context 'when unverified resident' do
-          before { user.update!(verified: false) }
-
-          it { expect(denied_reason).to eq 'user_not_verified' }
-        end
-
-        context 'permission has a verification expiry value' do
-          before do
-            user.update!(verified: true)
-            create(:verification, user: user, method_name: 'fake_sso')
+            it { expect(denied_reason).to eq 'user_not_signed_in' }
           end
 
-          it 'does not requires verification before 1 day' do
-            permission.update!(verification_expiry: 1)
-            travel_to Time.now + 23.hours do
-              expect(denied_reason).to be_nil
+          context 'when user is admin' do
+            let(:user) { create(:admin) }
+
+            it { expect(denied_reason).to be_nil }
+          end
+
+          context 'when verified resident' do
+            before { user.update!(verified: true) }
+
+            it { expect(denied_reason).to be_nil }
+          end
+
+          context 'when unverified resident' do
+            before { user.update!(verified: false) }
+
+            it { expect(denied_reason).to eq 'user_not_verified' }
+          end
+
+          context 'permission has a verification expiry value' do
+            before do
+              user.update!(verified: true)
+              create(:verification, user: user, method_name: 'fake_sso')
+            end
+
+            it 'does not require verification before 1 day' do
+              permission.update!(verification_expiry: 1)
+              travel_to Time.now + 23.hours do
+                expect(denied_reason).to be_nil
+              end
+            end
+
+            it 'requires verification after 1 day' do
+              permission.update!(verification_expiry: 1)
+              travel_to Time.now + 2.days do
+                expect(denied_reason).to eq 'user_not_verified'
+              end
             end
           end
+        end
 
-          it 'requires verification after 1 day' do
-            permission.update!(verification_expiry: 1)
-            travel_to Time.now + 2.days do
-              expect(denied_reason).to eq 'user_not_verified'
-            end
+        context 'when groups are also required' do
+          let(:groups) { create_list(:group, 2) }
+          let(:permission) { create(:permission, permitted_by: 'users', require_verification: true, groups: groups) }
+
+          context 'when not signed in' do
+            let(:user) { nil }
+
+            it { expect(denied_reason).to eq 'user_not_signed_in' }
           end
-        end
-      end
 
-      context 'when groups are also required' do
-        let(:groups) { create_list(:group, 2) }
-        let(:permission) { create(:permission, permitted_by: 'verified', groups: groups) }
+          context 'when unconfirmed resident who is group member' do
+            let(:user) { create(:unconfirmed_user, manual_groups: [groups.last]) }
 
-        context 'when not signed in' do
-          let(:user) { nil }
+            it { expect(denied_reason).to eq 'user_missing_requirements' }
+          end
 
-          it { expect(denied_reason).to eq 'user_not_signed_in' }
-        end
+          context 'when unconfirmed resident who is not a group member' do
+            let(:user) { create(:unconfirmed_user) }
 
-        context 'when light unconfirmed resident who is group member' do
-          let(:user) { create(:unconfirmed_user, manual_groups: [groups.last]) }
+            it { expect(denied_reason).to eq 'user_missing_requirements' }
+          end
 
-          it { expect(denied_reason).to eq 'user_missing_requirements' }
-        end
+          context 'when fully registered resident who is not a group member' do
+            it { expect(denied_reason).to eq 'user_not_verified' }
+          end
 
-        context 'when light unconfirmed resident who is not a group member' do
-          let(:user) { create(:unconfirmed_user) }
+          context 'when verified resident who is not a group member' do
+            before { user.update!(verified: true) }
 
-          it { expect(denied_reason).to eq 'user_missing_requirements' }
-        end
+            it { expect(denied_reason).to eq 'user_not_in_group' }
+          end
 
-        context 'when fully registered resident who is not a group member' do
-          it { expect(denied_reason).to eq 'user_not_verified' }
-        end
+          context 'when unverified resident, belonging to group' do
+            before { user.update!(verified: false, manual_groups: groups) }
 
-        context 'when verified resident who is not a group member' do
-          before { user.update!(verified: true) }
+            it { expect(denied_reason).to eq 'user_not_verified' }
+          end
 
-          it { expect(denied_reason).to eq 'user_not_in_group' }
-        end
+          context 'when verified resident, belonging to group' do
+            before { user.update!(verified: true, manual_groups: groups) }
 
-        context 'when unverified resident, belonging to group' do
-          before { user.update!(verified: false, manual_groups: groups) }
+            it { expect(denied_reason).to be_nil }
+          end
 
-          it { expect(denied_reason).to eq 'user_not_verified' }
-        end
+          context 'when admin' do
+            before { user.update!(roles: [{ type: 'admin' }]) }
 
-        context 'when verified resident, belonging to group' do
-          before { user.update!(verified: true, manual_groups: groups) }
+            it { expect(denied_reason).to be_nil }
+          end
 
-          it { expect(denied_reason).to be_nil }
-        end
+          context 'when confirmed inactive admin' do
+            before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
 
-        context 'when admin' do
-          before { user.update!(roles: [{ type: 'admin' }]) }
-
-          it { expect(denied_reason).to be_nil }
-        end
-
-        context 'when confirmed inactive admin' do
-          before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
-
-          it { expect(denied_reason).to eq 'user_not_active' }
+            it { expect(denied_reason).to eq 'user_not_active' }
+          end
         end
       end
     end
 
     context 'when permitted by moderators' do
-      let(:permitted_by) { 'admins_moderators' }
+      let(:permission) { create(:permission, permitted_by: 'admins_moderators') }
+      let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
       context 'when not signed in' do
         let(:user) { nil }
@@ -449,7 +424,7 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when moderator and the permission scope is global' do
-        let(:permission) { create(:permission, action: 'following', permitted_by: permitted_by, permission_scope: nil) }
+        let(:permission) { create(:permission, action: 'following', permitted_by: 'admins_moderators', permission_scope: nil) }
 
         before { user.update!(roles: [{ type: 'project_moderator', project_id: create(:project).id }]) }
 

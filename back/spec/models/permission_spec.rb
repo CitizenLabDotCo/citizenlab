@@ -64,51 +64,202 @@ RSpec.describe Permission do
     end
   end
 
-  describe 'verification' do
-    context 'verification enabled for an action' do
+  describe 'default values' do
+    it 'defaults the authentication requirements' do
+      permission = described_class.new
+      expect(permission.require_confirmed_email).to be true
+      expect(permission.require_name).to be true
+      expect(permission.require_password).to be true
+      expect(permission.require_verification).to be false
+      expect(permission.confirmed_email_expiry).to be_nil
+    end
+  end
+
+  describe 'permitted_by' do
+    it 'is valid for everyone, users and admins_moderators' do
+      %w[everyone users admins_moderators].each do |value|
+        expect(build(:permission, permitted_by: value)).to be_valid
+      end
+    end
+
+    it 'is no longer valid for the removed everyone_confirmed_email value' do
+      expect(build(:permission, permitted_by: 'everyone_confirmed_email')).not_to be_valid
+    end
+
+    it 'is no longer valid for the removed verified value' do
+      expect(build(:permission, permitted_by: 'verified')).not_to be_valid
+    end
+
+    it "is valid as 'everyone' when the action is 'posting_idea' and the method supports it" do
+      expect(build(:permission, permitted_by: 'everyone', action: 'posting_idea')).to be_valid
+    end
+
+    it "is valid as 'everyone' for 'taking_survey' on an external survey phase" do
+      permission = build(:permission, permitted_by: 'everyone', action: 'taking_survey', permission_scope: create(:typeform_survey_phase))
+      expect(permission).to be_valid
+    end
+
+    it "is invalid as 'everyone' for global (scope-less) permissions" do
+      permission = build(:global_permission, permitted_by: 'everyone', action: 'visiting')
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:permitted_by]).to include(error: :everyone_not_allowed_for_action)
+    end
+
+    it "is invalid as 'everyone' when the action does not allow it" do
+      permission = build(:permission, permitted_by: 'everyone', action: 'commenting_idea')
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:permitted_by]).to include(error: :everyone_not_allowed_for_action)
+    end
+
+    it "allows other permitted_by values for actions that do not allow 'everyone'" do
+      expect(build(:permission, permitted_by: 'users', action: 'commenting_idea')).to be_valid
+    end
+  end
+
+  describe 'following permission default' do
+    it 'defaults to a users permission that only requires a confirmed email' do
+      permission = create(:global_permission, action: 'following', permitted_by: nil)
+      expect(permission.permitted_by).to eq('users')
+      expect(permission.require_confirmed_email).to be true
+      expect(permission.require_name).to be false
+      expect(permission.require_password).to be false
+    end
+  end
+
+  describe 'require_confirmed_email' do
+    # A permission must always keep at least one authentication method, so these
+    # cases require verification while toggling the confirmed-email requirement.
+    before do
+      AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      AppConfiguration.instance.save!
+    end
+
+    it 'can be required when password login signup is enabled' do
+      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
+      permission.update!(require_confirmed_email: true)
+      expect(permission.reload.require_confirmed_email).to be true
+    end
+
+    it 'cannot be required when the password_login feature is not activated' do
+      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
+      SettingsService.new.deactivate_feature!('password_login')
+      expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+
+    it 'cannot be required when password login signup is disabled' do
+      permission = create(:permission, :by_users, require_verification: true, require_confirmed_email: false)
+      config = AppConfiguration.instance
+      config.settings['password_login']['enable_signup'] = false
+      config.save!
+      expect { permission.update!(require_confirmed_email: true) }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
+
+  describe 'authentication method requirement' do
+    it 'is invalid when neither a confirmed email nor verification is required' do
+      permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: false)
+      expect(permission).not_to be_valid
+      expect(permission.errors.details[:base]).to include(error: :authentication_method_required)
+    end
+
+    it 'is valid when only a confirmed email is required' do
+      permission = build(:permission, :by_users, require_confirmed_email: true, require_verification: false)
+      expect(permission).to be_valid
+    end
+
+    context 'when a verification method is enabled' do
       before do
-        AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
 
-      describe 'permitted_by' do
-        it 'can set the verified permitted_by' do
-          permission = create(:permission, :by_verified, global_custom_fields: nil)
-          expect(permission.permitted_by).to eq('verified')
-        end
+      it 'is valid when only verification is required' do
+        permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: true)
+        expect(permission).to be_valid
+      end
+
+      it 'is valid when both are required' do
+        permission = build(:permission, :by_users, require_confirmed_email: true, require_verification: true)
+        expect(permission).to be_valid
+      end
+    end
+
+    it 'does not apply when participation does not require an account' do
+      expect(build(:permission, :by_everyone, require_confirmed_email: false, require_verification: false)).to be_valid
+      expect(build(:permission, :by_admins_moderators, require_confirmed_email: false, require_verification: false)).to be_valid
+    end
+  end
+
+  describe 'require_verification' do
+    context 'when a verification method is enabled' do
+      before do
+        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.save!
+      end
+
+      it 'can be required' do
+        permission = create(:permission, :by_users, require_verification: true)
+        expect(permission.require_verification).to be true
+      end
+    end
+
+    context 'when no verification method is enabled' do
+      it 'cannot be required' do
+        expect { create(:permission, :by_users, require_verification: true) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+  end
+
+  describe 'verification' do
+    context 'when a verification method is enabled' do
+      before do
+        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.save!
       end
 
       describe 'global_custom_fields' do
-        it 'is true when created for a "verified" permitted_by' do
+        it 'is true when created for a permission that requires verification' do
           permission = create(:permission, :by_verified, global_custom_fields: nil)
           expect(permission.global_custom_fields).to be_truthy
         end
       end
 
       describe 'verification_expiry' do
-        it 'can set the verification_expiry when permitted_by is "verified"' do
+        it 'can be set when verification is required' do
           permission = create(:permission, :by_verified, verification_expiry: 1.day)
           expect(permission.verification_expiry).to eq(1.day)
         end
 
-        it 'cannot set the verification_expiry when permitted_by is not "verified"' do
+        it 'cannot be set when verification is not required' do
           expect { create(:permission, :by_users, verification_expiry: 1.day) }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
-        it 'does not cause a problem if set and permitted_by is changed' do
+        it 'does not cause a problem if set and require_verification is later disabled' do
           permission = create(:permission, :by_verified, verification_expiry: 1.day)
-          permission.update!(permitted_by: 'users')
+          # First need to enable email so that the validation does not fail when require_verification is disabled
+          permission.update!(require_confirmed_email: true)
+          permission.update!(require_verification: false)
           expect(permission.verification_expiry).to eq(1.day)
         end
       end
     end
+  end
 
-    context 'verification not enabled for any actions' do
-      describe 'permitted_by' do
-        it 'returns an error if no methods are enabled' do
-          expect { create(:permission, :by_verified, global_custom_fields: nil) }.to raise_error(ActiveRecord::RecordInvalid)
-        end
-      end
+  describe '#verification_enabled?' do
+    it 'is true when require_verification is true' do
+      expect(build(:permission, :by_users, require_verification: true).verification_enabled?).to be true
+    end
+
+    it 'is false when verification is not required and there is no verification group' do
+      expect(build(:permission, :by_users).verification_enabled?).to be false
+    end
+  end
+
+  describe '#allow_global_custom_fields?' do
+    it 'is true only for a users permission' do
+      expect(build(:permission, :by_users).allow_global_custom_fields?).to be true
+      expect(build(:permission, :by_everyone).allow_global_custom_fields?).to be false
+      expect(build(:permission, :by_admins_moderators).allow_global_custom_fields?).to be false
     end
   end
 
