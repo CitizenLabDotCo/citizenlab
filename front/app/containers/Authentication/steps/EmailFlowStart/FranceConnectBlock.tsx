@@ -2,13 +2,13 @@ import React from 'react';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
 
+import useAuthMethodNames from 'hooks/useAuthMethodNames';
+
 import oldMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 
 import { useIntl } from 'utils/cl-intl';
-
-import useAuthMethodNames from '../../../../hooks/useAuthMethodNames';
 
 interface Props {
   onClick: (ssoProvider: SSOProvider) => void;

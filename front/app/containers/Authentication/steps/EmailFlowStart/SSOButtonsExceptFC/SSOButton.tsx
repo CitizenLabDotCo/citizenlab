@@ -6,6 +6,8 @@ import { IDKeycloakMethod, IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
 
+import useAuthMethodNames from 'hooks/useAuthMethodNames';
+
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +18,6 @@ import AuthProviderButton, {
 import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
 import sharedMessages from '../../_components/messages';
 import ViennaSamlButton from '../../_components/ViennaSamlButton';
-import useAuthMethodNames from '../../../../../hooks/useAuthMethodNames';
 
 import messages from './messages';
 
