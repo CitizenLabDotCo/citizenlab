@@ -57,6 +57,7 @@ class IdeaPolicy < ApplicationPolicy
     return true if record.draft?
     return true if active? && UserRoleService.new.can_moderate_project?(record.project, user)
     return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
+    return false if !record.creation_phase_with_fallback
 
     reason = Permissions::PhasePermissionsService.new(
       record.creation_phase_with_fallback,
