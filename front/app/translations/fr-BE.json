@@ -2077,7 +2077,7 @@
   "app.containers.PasswordReset.submitError": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.PasswordReset.title": "Réinitialisez votre mot de passe",
   "app.containers.PasswordReset.updatePassword": "Confirmer le nouveau mot de passe",
-  "app.containers.PhoneChange.backToProfile": "Retour aux paramètres du profil",
+  "app.containers.PhoneChange.backToProfile": "Retour aux réglages",
   "app.containers.PhoneChange.confirmationModalTitle": "Confirmez votre numéro de téléphone",
   "app.containers.PhoneChange.currentPhone": "Votre numéro de téléphone actuel est :",
   "app.containers.PhoneChange.helmetDescription": "Page de modification du numéro de téléphone",
