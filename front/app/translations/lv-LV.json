@@ -2372,7 +2372,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Profila iestatījumu lapa {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Tiklīdz noklikšķināsiet uz šīs pogas, mēs nevarēsim atjaunot jūsu kontu.",
   "app.containers.UsersEditPage.noNameWarning2": "Pašlaik platformā jūsu vārds un uzvārds tiek parādīts kā: \"{displayName}\", jo neesat ievadījis savu vārdu. Tas ir automātiski ģenerēts vārds. Ja vēlaties to mainīt, lūdzu, ievadiet savu vārdu zemāk.",
-  "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-pasta paziņojumi",
   "app.containers.UsersEditPage.password": "Izvēlieties jaunu paroli",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Norādiet paroli, kas ir vismaz {minimumPasswordLength} rakstu zīmes gara",
   "app.containers.UsersEditPage.passwordAddSection": "Paroles pievienošana",

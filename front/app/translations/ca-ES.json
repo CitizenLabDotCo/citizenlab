@@ -2372,7 +2372,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Pàgina de configuració del perfil de {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Un cop feu clic a aquest botó, no tindrem cap manera de restaurar el vostre compte.",
   "app.containers.UsersEditPage.noNameWarning2": "El vostre nom es mostra actualment a la plataforma com a: \"{displayName}\" perquè no heu introduït el vostre nom. Aquest és un nom generat automàticament. Si voleu canviar-lo, introduïu el vostre nom a continuació.",
-  "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Notificacions per correu electrònic",
   "app.containers.UsersEditPage.password": "Trieu una contrasenya nova",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Proporcioneu una contrasenya que tingui com a mínim {minimumPasswordLength} caràcters",
   "app.containers.UsersEditPage.passwordAddSection": "Afegeix una contrasenya",

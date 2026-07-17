@@ -2372,7 +2372,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Leathanach socruithe próifíle {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Nuair a chliceálann tú an cnaipe seo, ní bheidh aon bhealach againn do chuntas a athbhunú.",
   "app.containers.UsersEditPage.noNameWarning2": "Tá d'ainm le feiceáil ar an ardán faoi láthair mar: \"{displayName}\" mar nach bhfuil d'ainm curtha isteach agat. Is ainm uathghinte é seo. Más mian leat é a athrú, cuir isteach d'ainm thíos le do thoil.",
-  "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Fógraí ríomhphoist",
   "app.containers.UsersEditPage.password": "Roghnaigh pasfhocal nua",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Cuir pasfhocal ar fáil atá {minimumPasswordLength} carachtar ar fhad ar a laghad",
   "app.containers.UsersEditPage.passwordAddSection": "Cuir pasfhocal leis",

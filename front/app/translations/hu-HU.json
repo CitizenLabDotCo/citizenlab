@@ -2372,7 +2372,6 @@
   "app.containers.UsersEditPage.metaTitle1": "{firstName} {lastName} | profilbeállítási oldala {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Ha erre a gombra kattint, nem áll módunkban visszaállítani fiókját.",
   "app.containers.UsersEditPage.noNameWarning2": "Az Ön neve jelenleg a következőképpen jelenik meg a platformon: \"{displayName}\", mert nem adta meg a nevét. Ez egy automatikusan generált név. Ha meg szeretné változtatni, kérjük, írja be a nevét alább.",
-  "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-mail értesítések",
   "app.containers.UsersEditPage.password": "Válasszon új jelszót",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Adjon meg egy legalább {minimumPasswordLength} karakter hosszú jelszót",
   "app.containers.UsersEditPage.passwordAddSection": "Adjon hozzá egy jelszót",

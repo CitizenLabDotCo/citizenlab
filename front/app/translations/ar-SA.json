@@ -2372,7 +2372,6 @@
   "app.containers.UsersEditPage.metaTitle1": "صفحة إعدادات الملف الشخصي لـ {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "بمجرد نقرك على هذا الزر، فلن نتمكن أبدًا من استعادة حسابك.",
   "app.containers.UsersEditPage.noNameWarning2": "يظهر اسمك حاليًا على المنصة على النحو التالي: \"{displayName}\" لأنك لم تدخل اسمك. هذا اسم تم إنشاؤه تلقائيًا. إذا كنت ترغب في تغييره، فيرجى إدخال اسمك أدناه.",
-  "app.containers.CampaignsConsentForm.emailNotificationsTitle": "إشعارات البريد الإلكتروني",
   "app.containers.UsersEditPage.password": "اختر كلمة مرور جديدة",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "أدخل كلمة مرور لا يقل طولها عن {minimumPasswordLength} حروف",
   "app.containers.UsersEditPage.passwordAddSection": "أضف كلمة مرور",
