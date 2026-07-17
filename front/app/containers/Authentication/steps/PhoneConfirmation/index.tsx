@@ -26,7 +26,7 @@ interface Props {
   setError: SetError;
   onConfirm: (code: string) => void | Promise<void>;
   onChangePhone?: () => void;
-  onResendCode: () => Promise<void>;
+  onResendCode: (phone: string) => Promise<void>;
 }
 
 interface FormValues {
@@ -96,7 +96,9 @@ const PhoneConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    onResendCode()
+    if (!state.phone) return;
+
+    onResendCode(state.phone)
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);

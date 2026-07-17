@@ -120,8 +120,8 @@ export const missingDataFlow = (
 
         setCurrentStep('success');
       },
-      RESEND_CODE: async () => {
-        // TODO
+      RESEND_CODE: async (phone: string) => {
+        await requestCodePhoneChange(phone);
       }
     },
 
