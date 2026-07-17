@@ -24,8 +24,8 @@ module WebApi
         respond_with(method)
       end
 
-      def first_enabled_for_verified_actions
-        method = ::Verification::VerificationService.new.first_method_enabled_for_verified_actions
+      def first_enabled_authentication_method
+        method = ::AuthenticationService.new.first_method_enabled
         authorize method, policy_class: IdMethodPolicy
         respond_with(method)
       end

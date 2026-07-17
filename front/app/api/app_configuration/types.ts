@@ -81,6 +81,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     enable_signup: boolean;
     minimum_length?: number;
+    minimum_strength?: number;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -207,7 +208,6 @@ export interface IAppConfigurationSettings {
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
-  pdf_export_responses?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

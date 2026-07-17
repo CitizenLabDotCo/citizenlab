@@ -88,7 +88,10 @@ module McpServer
       McpServer::Tools::AttachFile,
       McpServer::Tools::ListAttachedImages,
       McpServer::Tools::ListFileAttachments,
-      McpServer::Tools::ListProjectFiles
+      McpServer::Tools::ListProjectFiles,
+
+      McpServer::Tools::GetReportingSqlSchema,
+      McpServer::Tools::RunReportingSqlQuery
     ].freeze
 
     def tools

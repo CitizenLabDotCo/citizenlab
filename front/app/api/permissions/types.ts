@@ -20,13 +20,19 @@ export interface IGlobalPermissionData {
   attributes: {
     access_denied_explanation_multiloc: Multiloc;
     action: IGlobalPermissionAction;
-    permitted_by: PermittedBy;
+    confirmed_email_expiry: number | null;
     created_at: string;
-    updated_at: string;
+    everyone_tracking_enabled: boolean;
     global_custom_fields: boolean;
+    permitted_by: PermittedBy;
+    permitted_by_everyone_allowed: false;
+    require_confirmed_email: boolean;
+    require_name: boolean;
+    require_password: boolean;
+    require_verification: boolean;
+    updated_at: string;
     verification_enabled: boolean;
     verification_expiry: number | null;
-    everyone_tracking_enabled: boolean;
   };
   relationships: {
     permission_scope: {
@@ -58,4 +64,9 @@ export interface PermissionUpdateParams {
   global_custom_fields: boolean;
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
+  require_confirmed_email: boolean;
+  confirmed_email_expiry: number | null;
+  require_name: boolean;
+  require_password: boolean;
+  require_verification: boolean;
 }
