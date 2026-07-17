@@ -5,7 +5,6 @@ import {
   Tr,
   Td,
   Text,
-  Icon,
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -29,6 +28,7 @@ import { usePermission } from 'utils/permissions';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
+import RowLabel from '../../_shared/RowLabel';
 
 import CurrentPhase from './CurrentPhase';
 import Visibility from './Visibility';
@@ -170,40 +170,16 @@ const Row = ({
                 gap="2px 4px"
               >
                 {showSpace && (
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="2px"
-                    flexShrink={0}
-                  >
-                    <Icon
-                      name="spaces"
-                      fill={colors.textSecondary}
-                      width="14px"
-                    />
-                    <Text
-                      m="0"
-                      fontSize="xs"
-                      color="textSecondary"
-                      textDecoration={
-                        hover === 'space' && canModerateThisSpace
-                          ? 'underline'
-                          : 'none'
-                      }
-                      onMouseEnter={
-                        canModerateThisSpace
-                          ? () => setHover('space')
-                          : undefined
-                      }
-                      onMouseLeave={
-                        canModerateThisSpace
-                          ? () => setHover('project')
-                          : undefined
-                      }
-                    >
-                      {localize(space_title_multiloc)}
-                    </Text>
-                  </Box>
+                  <RowLabel
+                    iconName="spaces"
+                    titleMultiloc={space_title_multiloc}
+                    underline={hover === 'space' && canModerateThisSpace}
+                    onHoverChange={
+                      canModerateThisSpace
+                        ? (hovering) => setHover(hovering ? 'space' : 'project')
+                        : undefined
+                    }
+                  />
                 )}
                 {showSpace && folder_title_multiloc && (
                   <Text m="0" fontSize="xs" color="textSecondary">
@@ -211,40 +187,17 @@ const Row = ({
                   </Text>
                 )}
                 {folder_title_multiloc && (
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="2px"
-                    flexShrink={0}
-                  >
-                    <Icon
-                      name="folder-solid"
-                      fill={colors.textSecondary}
-                      width="14px"
-                    />
-                    <Text
-                      m="0"
-                      fontSize="xs"
-                      color="textSecondary"
-                      textDecoration={
-                        hover === 'folder' && canModerateThisFolder
-                          ? 'underline'
-                          : 'none'
-                      }
-                      onMouseEnter={
-                        canModerateThisFolder
-                          ? () => setHover('folder')
-                          : undefined
-                      }
-                      onMouseLeave={
-                        canModerateThisFolder
-                          ? () => setHover('project')
-                          : undefined
-                      }
-                    >
-                      {localize(folder_title_multiloc)}
-                    </Text>
-                  </Box>
+                  <RowLabel
+                    iconName="folder-solid"
+                    titleMultiloc={folder_title_multiloc}
+                    underline={hover === 'folder' && canModerateThisFolder}
+                    onHoverChange={
+                      canModerateThisFolder
+                        ? (hovering) =>
+                            setHover(hovering ? 'folder' : 'project')
+                        : undefined
+                    }
+                  />
                 )}
               </Box>
             </Box>

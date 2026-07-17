@@ -5,7 +5,6 @@ import {
   Tr,
   Td,
   Text,
-  Icon,
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -30,6 +29,7 @@ import { usePermission } from 'utils/permissions';
 import { PUBLICATION_STATUS_LABELS } from '../../_shared/constants';
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
+import RowLabel from '../../_shared/RowLabel';
 import { getStatusColor } from '../../_shared/utils';
 
 import messages from './messages';
@@ -38,12 +38,6 @@ const StyledTd = styled(Td)`
   &:hover {
     cursor: pointer;
     .project-table-row-title {
-      text-decoration: underline;
-    }
-  }
-  .folder-table-row-space {
-    cursor: pointer;
-    &:hover {
       text-decoration: underline;
     }
   }
@@ -59,6 +53,7 @@ const Row = ({ folder, moderatorsById }: Props) => {
   const { formatMessage } = useIntl();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
+  const [hoveringSpace, setHoveringSpace] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const { data: folderImage } = useProjectFolderImage({
@@ -100,7 +95,9 @@ const Row = ({ folder, moderatorsById }: Props) => {
               m="0"
               fontSize="s"
               color="black"
-              className="project-table-row-title"
+              // Suspend the Td-hover underline while the space label is
+              // hovered, so only the actual click target is underlined.
+              className={hoveringSpace ? undefined : 'project-table-row-title'}
             >
               {localize(folder.attributes.title_multiloc)}
             </Text>
@@ -112,40 +109,24 @@ const Row = ({ folder, moderatorsById }: Props) => {
             >
               {showSpace && (
                 <>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="2px"
-                    flexShrink={0}
-                  >
-                    <Icon
-                      name="spaces"
-                      fill={colors.textSecondary}
-                      width="14px"
-                    />
-                    <Text
-                      m="0"
-                      fontSize="xs"
-                      color="textSecondary"
-                      className={
-                        canModerateThisSpace
-                          ? 'folder-table-row-space'
-                          : undefined
-                      }
-                      onClick={
-                        canModerateThisSpace
-                          ? (event) => {
-                              event.stopPropagation();
-                              clHistory.push(
-                                `/admin/projects/spaces/${space_id}`
-                              );
-                            }
-                          : undefined
-                      }
-                    >
-                      {localize(space_title_multiloc)}
-                    </Text>
-                  </Box>
+                  <RowLabel
+                    iconName="spaces"
+                    titleMultiloc={space_title_multiloc}
+                    underline={hoveringSpace}
+                    onHoverChange={
+                      canModerateThisSpace ? setHoveringSpace : undefined
+                    }
+                    onClick={
+                      canModerateThisSpace
+                        ? (event) => {
+                            event.stopPropagation();
+                            clHistory.push(
+                              `/admin/projects/spaces/${space_id}`
+                            );
+                          }
+                        : undefined
+                    }
+                  />
                   <Text m="0" fontSize="xs" color="textSecondary">
                     ·
                   </Text>
