@@ -171,8 +171,8 @@ export const sharedSteps = (
 
           // Kind of hacky, since this should actually be handled by the checkMissingData function.
           // But because of the way the requirements api works, we need to handle this case separately.
-          // For a similar reason as the huge comment above (below if (signedIn))
-          // We might need to rework the requirements api at some point,
+          // For a similar reason as the huge comment above (below if (signedIn)).
+          // We will need to rework the requirements api at some point,
           // but out of scope for now.
           if (missingDataStep === 'missing-data:phone' && newPhone) {
             setCurrentStep('missing-data:phone-confirmation');
