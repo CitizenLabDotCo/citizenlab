@@ -18,7 +18,7 @@ export const checkMissingData = (
   flow: 'signup' | 'signin',
   userIsAuthenticated: boolean
 ) => {
-  if (confirmationRequired(requirements)) {
+  if (emailConfirmationRequired(requirements)) {
     return userIsAuthenticated
       ? 'missing-data:email-confirmation'
       : 'email:confirmation';
@@ -66,7 +66,7 @@ export const doesNotMeetGroupCriteria = (
   return requirements.group_membership;
 };
 
-export const confirmationRequired = (
+const emailConfirmationRequired = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
   return requirements.authentication.missing_user_attributes.includes(
