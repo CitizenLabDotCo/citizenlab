@@ -589,7 +589,7 @@
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": "Événements",
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": "Les événements sont gérés dans le back-office de projet, sous {eventsLink}. Ajoutez-les, modifiez-les ou supprimez-les à cet endroit — ils apparaîtront ici automatiquement.",
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": "Événements",
-  "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": "Aucune modalité de participation pour le moment",
+  "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": "Il n'y a pas encore de possibilité de participer",
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Ceci affiche le contenu de participation pour la phase active. Son contenu est défini par la méthode de la phase dans l'{projectEditorLink} — ici, vous choisissez seulement son emplacement sur la page.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Épinglé en haut de la page — modifiable, mais ne peut être ni déplacé ni supprimé.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Seuls les administrateurs et les gestionnaires de ce projet peuvent voir ceci",
