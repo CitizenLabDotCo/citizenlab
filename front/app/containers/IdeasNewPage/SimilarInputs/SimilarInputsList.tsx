@@ -77,20 +77,26 @@ const SimilarIdeasList = ({
         searchParams.selected_idea_id === ideaId ? undefined : ideaId,
     });
   };
-  const { data: ideas, isLoading } = useSimilarIdeas({
-    idea: {
-      id: ideaId,
-      ...((title || '').trim() && {
-        title_multiloc: { [currentLocale]: title },
-      }),
-      ...((body || '').trim() && {
-        body_multiloc: { [currentLocale]: body },
-      }),
-    },
-    phase_id: phase.id,
-  });
+  const isTitleShort = !title || title.trim().length < 3;
+  const isDescriptionShort = !body || body.trim().length < 3;
 
-  if (isLoading) {
+  const { data: ideas, isInitialLoading } = useSimilarIdeas(
+    {
+      idea: {
+        id: ideaId,
+        ...(!isTitleShort && {
+          title_multiloc: { [currentLocale]: title },
+        }),
+        ...(!isDescriptionShort && {
+          body_multiloc: { [currentLocale]: body },
+        }),
+      },
+      phase_id: phase.id,
+    },
+    { enabled: !(isTitleShort && isDescriptionShort) }
+  );
+
+  if (isInitialLoading) {
     return (
       <Box display="flex" mt="16px" alignItems="center">
         <Box w="20px" mr="4px">
@@ -102,9 +108,6 @@ const SimilarIdeasList = ({
       </Box>
     );
   }
-  const isTitleShort = !title || title.length < 3;
-  const isDescriptionShort = !body || body.length < 3;
-
   if (!ideas || (isTitleShort && isDescriptionShort)) return null;
 
   if (ideas.data.length === 0) {
