@@ -114,10 +114,10 @@ export const sharedSteps = (
       // done by the user
       TRIGGER_AUTHENTICATION_FLOW: async (
         flow: 'signup' | 'signin',
-        email: string | null = null
+        newEmail: string | null = null
       ) => {
         updateState({
-          email,
+          email: newEmail,
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
@@ -149,9 +149,6 @@ export const sharedSteps = (
           if (requirements.authentication.missing_user_attributes.includes('email')) {
             // Now we check if it's situation 1 or 2 by seeing if the user has a 
             // new_email attribute
-            const authUser = await fetchMe();
-            const newEmail = authUser?.data.attributes.new_email;
-
             if (newEmail) {
               // Situation 2: The SSO returned an unconfirmed email, which was put in new_email
               setCurrentStep('missing-data:email-confirmation');
