@@ -61,26 +61,67 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
       end
     end
 
+    # no custom_form, default fields are used, which includes the image field
+    it 'includes Add an image if input form has image field' do
+      expect(body).to include('Add an image')
+      expect(body).to include('to increase visibility')
+    end
+
     context 'with custom form' do
       let!(:custom_form) { create(:custom_form, participation_context: input.project) }
+      let!(:text_field) { create(:custom_field, resource: custom_form, input_type: 'text_multiloc', code: 'title_multiloc') }
 
       before { input.reload }
 
-      context 'without image field enabled in input form' do
-        # no image field created for the custom form
-        it 'does not include Add an image if input form does not have image field' do
+      context 'and image field enabled in input form' do
+        let!(:image_field) { create(:custom_field, resource: custom_form, input_type: 'image_files', code: 'idea_images_attributes') }
+
+        it 'includes Add an image if input form has an image field' do
+          expect(body).to include('Add an image')
+          expect(body).to include('to increase visibility')
+        end
+      end
+
+      context 'and without image field enabled in input form' do
+        it 'does not include Add an image if input form has no image field' do
           expect(body).not_to include('Add an image')
           expect(body).not_to include('to increase visibility')
         end
       end
+    end
 
-      context 'with image field enabled in input form' do
-        # image field is created for the custom form
-        let!(:image_field) { create(:custom_field, resource: custom_form, input_type: 'image_files', code: 'idea_images_attributes') }
+    context 'with proposal as an input' do
+      let!(:input) { create(:proposal, author: recipient) }
+      let!(:activity) { create(:activity, item: input, action: 'published') }
 
+      context 'and no custom form' do
+        # no custom_form, default fields are used, which includes the image field
         it 'includes Add an image if input form has image field' do
           expect(body).to include('Add an image')
           expect(body).to include('to increase visibility')
+        end
+      end
+
+      context 'and with custom form' do
+        let(:custom_form) { create(:custom_form, participation_context: input.creation_phase) }
+        let!(:text_field) { create(:custom_field, resource: custom_form, input_type: 'text_multiloc', code: 'title_multiloc') }
+
+        before { input.reload }
+
+        context 'and with image field enabled in input form' do
+          let!(:image_field) { create(:custom_field, resource: custom_form, input_type: 'image_files', code: 'idea_images_attributes') }
+
+          it 'includes Add an image if input form has an image field' do
+            expect(body).to include('Add an image')
+            expect(body).to include('to increase visibility')
+          end
+        end
+
+        context 'and without image field enabled in input form' do
+          it 'does not include Add an image if input form has no image field' do
+            expect(body).not_to include('Add an image')
+            expect(body).not_to include('to increase visibility')
+          end
         end
       end
     end
