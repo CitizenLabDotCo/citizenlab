@@ -51,9 +51,9 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       The patch is merged into the stored graph and validated; on failure nothing is saved
       and the errors (with a widget reference) tell you what to fix.
 
-      ALWAYS call get_project_layout first. When no layout exists, its response includes the
-      full widget/format reference — follow it to build the complete graph (ROOT + all
-      nodes) and pass enabled: true. When editing, copy the exact shape of existing nodes.
+      ALWAYS call get_project_layout first — to copy the exact shape of existing nodes, or,
+      when no layout exists, for the format reference to build the complete graph from
+      (pass enabled: true when creating).
 
       Recipes: edit or replace = send just that node (no delete needed). Insert/move = send
       the node (with `parent` set) AND the parent with its updated `nodes` array (order =
