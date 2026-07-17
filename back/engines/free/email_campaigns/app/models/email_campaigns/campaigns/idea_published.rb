@@ -93,8 +93,7 @@ module EmailCampaigns
       return [] if !idea.participation_method_on_creation.supports_public_visibility?
 
       # check if the idea_images field is present and enabled in the custom form
-      custom_form = idea.project&.custom_form
-      image_field_presence = custom_form.present? ? custom_form.custom_fields&.find_by(code: 'idea_images_attributes')&.enabled : false
+      image_field_presence = IdeaCustomFieldsService.new(idea.custom_form).enabled_fields.any? { |f| f.code == 'idea_images_attributes' }
 
       [{
         event_payload: {

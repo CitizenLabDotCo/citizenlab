@@ -19,9 +19,13 @@ module EmailCampaigns
 
     def preview_command(recipient, context)
       data = preview_service.preview_data(recipient)
-      # check if the idea_images field is present and enabled in the custom form
-      custom_form = context&.project&.custom_form
-      image_field_presence = custom_form.present? ? custom_form.custom_fields&.find_by(code: 'idea_images_attributes')&.enabled : false
+      # if context is present, check in the custom_form of the context if the idea_images field is present and enabled
+      # if no context, return true to show 'Add an image' by default
+      image_field_presence = if context.present?
+        IdeaCustomFieldsService.new(context.pmethod.custom_form).enabled_fields.any? { |f| f.code == 'idea_images_attributes' }
+      else
+        true
+      end
 
       {
         recipient: recipient,
