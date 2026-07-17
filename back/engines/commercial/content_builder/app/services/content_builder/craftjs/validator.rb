@@ -2,8 +2,9 @@
 
 module ContentBuilder
   module Craftjs
-    # Validates a craftjs_json node graph. Returns a list of error strings (empty = valid),
-    # each referencing the offending node id, so an API client can correct and retry.
+    # Validates a craftjs_json node graph. Returns a list of Error values (empty =
+    # valid), each carrying the offending node id and a machine-readable code, and
+    # stringifying to a client-facing message so an API client can correct and retry.
     #
     # Two layers of checks:
     # - structural: the graph is a consistent craft.js document (ROOT present, parent/child
@@ -31,16 +32,28 @@ module ContentBuilder
       # a generous length cap are enforced, so hand-written ids remain possible.
       ID_FORMAT = /\A[A-Za-z0-9_-]{1,64}\z/
 
+      # One validation problem. `node_id` is the offending node (nil for document-level
+      # problems), `code` is a stable machine-readable symbol, `message` the client-facing
+      # prose. to_s renders the full message as API clients see it.
+      Error = Data.define(:node_id, :code, :message) do
+        def to_s
+          return message if node_id.nil?
+
+          printable_id = ID_FORMAT.match?(node_id) ? node_id : node_id.inspect
+          "node #{printable_id}: #{message}"
+        end
+      end
+
       def initialize(craftjs_json, widget_specs: nil, convention_scope: nil)
         @json = craftjs_json
         @widget_specs = widget_specs
         @convention_scope = convention_scope
       end
 
-      # @return [Array<String>]
+      # @return [Array<Error>]
       def errors
-        return ['craftjs_json must be a JSON object'] unless @json.is_a?(Hash)
-        return ['ROOT node is missing'] unless @json.key?('ROOT')
+        return [error(nil, :not_an_object, 'craftjs_json must be a JSON object')] unless @json.is_a?(Hash)
+        return [error(nil, :root_missing, 'ROOT node is missing')] unless @json.key?('ROOT')
 
         errors = @json.filter_map { |id, node| malformed_node_error(id, node) }
         # Reference checks assume well-formed nodes; report shape problems alone first.
@@ -53,14 +66,20 @@ module ContentBuilder
 
       private
 
+      def error(node_id, code, message)
+        Error.new(node_id: node_id, code: code, message: message)
+      end
+
       def malformed_node_error(id, node)
-        return "node #{id}: must be a JSON object" unless node.is_a?(Hash)
+        return error(id, :malformed_node, 'must be a JSON object') unless node.is_a?(Hash)
 
         NODE_KEYS.each do |key, type|
-          return "node #{id}: '#{key}' must be a #{type.name.downcase}" unless node[key].is_a?(type)
+          unless node[key].is_a?(type)
+            return error(id, :malformed_node, "'#{key}' must be a #{type.name.downcase}")
+          end
         end
 
-        return "node #{id}: 'parent' is required" if id != 'ROOT' && !node['parent'].is_a?(String)
+        return error(id, :missing_parent, "'parent' is required") if id != 'ROOT' && !node['parent'].is_a?(String)
 
         nil
       end
@@ -71,18 +90,19 @@ module ContentBuilder
 
         # ROOT is the document root: nothing may point at it and it has no parent.
         # Together with the exactly-one-reference rule below this also rules out cycles.
-        errors << "node ROOT: must not have a 'parent'" if @json['ROOT']['parent'].present?
+        errors << error('ROOT', :root_with_parent, "must not have a 'parent'") if @json['ROOT']['parent'].present?
 
         @json.each do |id, node|
           Query.child_references(node).each do |via, child_id|
             reference_counts[child_id] += 1
             child = @json[child_id]
             if child_id == 'ROOT'
-              errors << "node #{id}: must not reference ROOT as a #{via} child"
+              errors << error(id, :root_referenced, "must not reference ROOT as a #{via} child")
             elsif child.nil?
-              errors << "node #{id}: #{via} references missing node '#{child_id}'"
+              errors << error(id, :missing_child, "#{via} references missing node '#{child_id}'")
             elsif child['parent'] != id
-              errors << "node #{child_id}: 'parent' is '#{child['parent']}' but the node is a #{via} child of '#{id}'"
+              errors << error(child_id, :parent_mismatch,
+                "'parent' is '#{child['parent']}' but the node is a #{via} child of '#{id}'")
             end
           end
           # NOTE: no isCanvas requirement for parents with `nodes` children — legacy graphs
@@ -94,8 +114,11 @@ module ContentBuilder
           next if id == 'ROOT'
 
           count = reference_counts[id]
-          errors << "node #{id}: not referenced by any parent's 'nodes' or 'linkedNodes'" if count.zero?
-          errors << "node #{id}: referenced by #{count} parents; every node must have exactly one" if count > 1
+          if count.zero?
+            errors << error(id, :unreferenced, "not referenced by any parent's 'nodes' or 'linkedNodes'")
+          elsif count > 1
+            errors << error(id, :multiple_parents, "referenced by #{count} parents; every node must have exactly one")
+          end
         end
 
         errors.concat(unreachable_node_errors)
@@ -113,7 +136,7 @@ module ContentBuilder
           queue.concat(Query.child_references(@json[id]).map(&:last))
         end
 
-        (@json.keys - reachable.to_a).map { |node_id| "node #{node_id}: not reachable from ROOT" }
+        (@json.keys - reachable.to_a).map { |node_id| error(node_id, :unreachable, 'not reachable from ROOT') }
       end
 
       def convention_errors
@@ -121,8 +144,8 @@ module ContentBuilder
 
         if in_scope?('ROOT')
           root = @json['ROOT']
-          errors << "node ROOT: 'type' must be the string 'div'" if root['type'] != 'div'
-          errors << 'node ROOT: must be a canvas (isCanvas: true)' unless root['isCanvas']
+          errors << error('ROOT', :root_type, "'type' must be the string 'div'") if root['type'] != 'div'
+          errors << error('ROOT', :root_not_canvas, 'must be a canvas (isCanvas: true)') unless root['isCanvas']
           errors.concat(unknown_key_errors('ROOT', root))
         end
 
@@ -130,14 +153,15 @@ module ContentBuilder
           next if id == 'ROOT' || !in_scope?(id)
 
           unless ID_FORMAT.match?(id)
-            errors << "node #{id.inspect}: node ids must be 1-64 characters of A-Z, a-z, 0-9, '-' or '_'"
+            errors << error(id, :invalid_id, "node ids must be 1-64 characters of A-Z, a-z, 0-9, '-' or '_'")
           end
           errors.concat(unknown_key_errors(id, node))
 
           name = Query.resolved_name(node)
           spec = @widget_specs[name]
           if spec.nil?
-            errors << "node #{id}: widget '#{name}' is not supported. Supported: #{@widget_specs.keys.join(', ')}"
+            errors << error(id, :unsupported_widget,
+              "widget '#{name}' is not supported. Supported: #{@widget_specs.keys.join(', ')}")
             next
           end
 
@@ -157,7 +181,7 @@ module ContentBuilder
         unknown = node.keys - ALLOWED_NODE_KEYS
         return [] if unknown.none?
 
-        ["node #{id}: unknown keys: #{unknown.join(', ')} (allowed: #{ALLOWED_NODE_KEYS.join(', ')})"]
+        [error(id, :unknown_keys, "unknown keys: #{unknown.join(', ')} (allowed: #{ALLOWED_NODE_KEYS.join(', ')})")]
       end
 
       def slot_errors(id, node, spec)
@@ -165,7 +189,7 @@ module ContentBuilder
         node['linkedNodes'].keys.filter_map do |slot|
           if allowed.exclude?(slot)
             suffix = allowed.any? ? " (allowed: #{allowed.join(', ')})" : ''
-            "node #{id}: unknown linkedNodes slot '#{slot}'#{suffix}"
+            error(id, :unknown_slot, "unknown linkedNodes slot '#{slot}'#{suffix}")
           end
         end
       end
@@ -181,7 +205,7 @@ module ContentBuilder
             next unless child && !child['isCanvas']
             next unless in_scope?(id) || in_scope?(child_id)
 
-            "node #{child_id}: slot containers must be a canvas (isCanvas: true)"
+            error(child_id, :slot_not_canvas, 'slot containers must be a canvas (isCanvas: true)')
           end
         end
       end
@@ -193,7 +217,8 @@ module ContentBuilder
           value = node['props'][prop]
           next if value.nil? || values.include?(value)
 
-          errors << "node #{id}: props.#{prop} is '#{value}' but must be one of: #{values.join(', ')}"
+          errors << error(id, :invalid_enum_value,
+            "props.#{prop} is '#{value}' but must be one of: #{values.join(', ')}")
         end
 
         (spec['multilocs'] || []).each do |prop|
@@ -208,14 +233,14 @@ module ContentBuilder
 
       def multiloc_errors(id, prop, value)
         unless value.is_a?(Hash) && value.values.all?(String)
-          return ["node #{id}: props.#{prop} must be a multiloc object mapping locales to strings"]
+          return [error(id, :invalid_multiloc, "props.#{prop} must be a multiloc object mapping locales to strings")]
         end
 
         bad_locales = value.keys - CL2_SUPPORTED_LOCALES.map(&:to_s)
         return [] if bad_locales.none?
 
-        ["node #{id}: props.#{prop} keys must be locales (like 'en' or 'fr-BE'); " \
-         "unknown: #{bad_locales.join(', ')}"]
+        [error(id, :unknown_locales,
+          "props.#{prop} keys must be locales (like 'en' or 'fr-BE'); unknown: #{bad_locales.join(', ')}")]
       end
     end
   end

@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe ContentBuilder::Craftjs::Validator do
   subject(:errors) do
+    error_objects.map(&:to_s)
+  end
+
+  let(:error_objects) do
     described_class.new(json, widget_specs: widget_specs, convention_scope: convention_scope).errors
   end
 
@@ -37,11 +41,11 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
     end
 
     it 'flags a non-hash document' do
-      expect(described_class.new('not a hash').errors).to eq(['craftjs_json must be a JSON object'])
+      expect(described_class.new('not a hash').errors.map(&:to_s)).to eq(['craftjs_json must be a JSON object'])
     end
 
     it 'flags a missing ROOT node' do
-      expect(described_class.new({}).errors).to eq(['ROOT node is missing'])
+      expect(described_class.new({}).errors.map(&:to_s)).to eq(['ROOT node is missing'])
     end
 
     it 'flags a node missing the nodes key' do
@@ -112,6 +116,27 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       json['C'] = text_node(parent: 'A')
 
       expect(errors).to be_empty
+    end
+  end
+
+  context 'error objects' do
+    let(:json) do
+      {
+        'ROOT' => craftjs_root(['A']),
+        'A' => text_node(parent: 'elsewhere')
+      }
+    end
+
+    it 'carry the offending node id and a machine-readable code' do
+      expect(error_objects).to contain_exactly(
+        have_attributes(node_id: 'A', code: :parent_mismatch)
+      )
+    end
+
+    it 'uses a nil node id for document-level problems' do
+      expect(described_class.new('not a hash').errors).to contain_exactly(
+        have_attributes(node_id: nil, code: :not_an_object)
+      )
     end
   end
 
