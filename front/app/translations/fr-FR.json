@@ -2088,7 +2088,7 @@
   "app.containers.PhoneChange.phoneTaken": "Ce numéro de téléphone est déjà utilisé.",
   "app.containers.PhoneChange.phoneUnknownError": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Modification annulée",
-  "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Votre numéro de téléphone n'a pas été modifié. Vous pouvez recommencer à tou",
+  "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Votre numéro de téléphone n'a pas été mis à jour. Veuillez recommencer depuis les réglages.",
   "app.containers.PhoneChange.submitButton": "Valider",
   "app.containers.PhoneChange.titleAddPhone": "Ajoutez votre numéro de téléphone",
   "app.containers.PhoneChange.titleChangePhone": "Modifier votre numéro de téléphone",
