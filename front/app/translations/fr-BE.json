@@ -2080,7 +2080,7 @@
   "app.containers.PhoneChange.backToProfile": "Retour aux paramètres du profil",
   "app.containers.PhoneChange.confirmationModalTitle": "Confirmez votre numéro de téléphone",
   "app.containers.PhoneChange.currentPhone": "Votre numéro de téléphone actuel est :",
-  "app.containers.PhoneChange.helmetDescription": "Modifier votre numéro de téléphone",
+  "app.containers.PhoneChange.helmetDescription": "Page de modification du numéro de téléphone",
   "app.containers.PhoneChange.helmetTitle": "Modifier votre numéro de téléphone",
   "app.containers.PhoneChange.newPhoneLabel": "Nouveau numéro de téléphone (avec l'indicatif du pays)",
   "app.containers.PhoneChange.phoneEmptyError": "Renseignez un numéro de téléphone",

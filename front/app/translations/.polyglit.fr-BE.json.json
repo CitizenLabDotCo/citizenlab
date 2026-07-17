@@ -10314,6 +10314,16 @@
     "verified_at": "2026-07-16T20:42:18.518328Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.helmetDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-17T07:40:57.623120Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.helmetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-17T07:40:57.623120Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneChange.newPhoneLabel": {
     "state": "verified",
     "verified_at": "2026-07-16T20:42:18.518328Z",
@@ -10332,6 +10342,11 @@
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-16T21:48:43.583330Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.titleAddPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-17T07:40:57.623120Z",
     "verified_by": "Adrien"
   },
   "app.containers.PhoneChange.titleChangePhone": {
