@@ -264,6 +264,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.AuthProviders.continueWithLuxembourgIAM": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.AuthProviders.continueWithNemlogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -2919,20 +2924,65 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T16:00:17.561417Z",
     "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": {
     "state": "verified",
     "verified_at": "2026-07-16T16:00:17.561417Z",
     "verified_by": "Adrien"
   },
+  "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T15:58:15.729877Z",
     "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": {
     "state": "verified",
@@ -2944,15 +2994,45 @@
     "verified_at": "2026-07-16T15:58:15.729877Z",
     "verified_by": "Adrien"
   },
+  "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ProjectPageBuilder.Widgets.projectTitleLabel": {
     "state": "verified",
     "verified_at": "2026-07-16T15:58:15.729877Z",
     "verified_by": "Adrien"
   },
+  "app.components.ProjectPageBuilder.Widgets.timelineEmptyTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.timelineHiddenNote": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.timelineHiddenTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.timelineManagedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.ProjectPageBuilder.Widgets.titleWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-16T15:58:15.729877Z",
     "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.untitledProject": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.ProjectTemplatePreview.alsoUsedIn": {
     "state": "verified",
@@ -3444,6 +3524,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.VerificationModal.verifyEtatLu2": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.VerificationModal.verifyFakeSSO": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -3618,6 +3703,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.field_participated_in_input": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": {
     "state": "verified",
@@ -6279,6 +6369,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.AccessibilityStatement.publicationDate2026": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AccessibilityStatement.responsiveness": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -6288,6 +6383,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AccessibilityStatement.statusPageUrl": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.AccessibilityStatement.technologiesIntro": {
     "state": "verified",
@@ -6527,6 +6627,11 @@
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": {
     "state": "verified",
     "verified_at": "2026-07-08T07:34:35.977092Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
@@ -9154,6 +9259,86 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.importedTooltipComment": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipContribution": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipIdea": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipInitiative": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipIssue": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipObservation": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipOption": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipPetition": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipPost": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipProject": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipProposal": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipQuestion": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipResponse": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipStory": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipSuggestion": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.importedTooltipTopic": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.IdeasShow.initiativeEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -10478,6 +10663,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ProjectPageBuilder.projectPageHeading": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.ProjectPageBuilder.saveError": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.ProjectPageBuilder.toolboxLockedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Projects.PollForm.document": {
     "state": "verified",
@@ -13629,6 +13829,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.utils.inactivePhase": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
   "app.utils.notInGroup": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -13663,6 +13868,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.utils.projectInactive": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
   },
   "app.utils.votingMethodUtils.budgetParticipationEnded1": {
     "state": "verified",
