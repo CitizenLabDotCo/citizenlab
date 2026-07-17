@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs), the
 # LLM-facing docs and the cheatsheet drifting apart.
-describe McpServer::Tools::LayoutWidgets do
+describe McpServer::LayoutWidgets do
   describe 'DOCS' do
     it 'documents only widgets that exist in the widget specs' do
       undeclared = described_class::DOCS.keys - ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys

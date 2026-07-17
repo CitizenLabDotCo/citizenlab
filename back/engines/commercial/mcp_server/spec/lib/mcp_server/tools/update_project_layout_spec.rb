@@ -224,9 +224,9 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(response).to be_error
         text = response.content.first[:text]
         expect(text).to include('T3')
-        expect(text).to include(McpServer::Tools::LayoutWidgets::FORMAT_RULES)
-        expect(text).to include(McpServer::Tools::LayoutWidgets::DOCS['TextMultiloc'])
-        expect(text).not_to include(McpServer::Tools::LayoutWidgets::DOCS['IframeMultiloc'])
+        expect(text).to include(McpServer::LayoutWidgets::FORMAT_RULES)
+        expect(text).to include(McpServer::LayoutWidgets::DOCS['TextMultiloc'])
+        expect(text).not_to include(McpServer::LayoutWidgets::DOCS['IframeMultiloc'])
         expect(layout.reload.craftjs_json).to eq(original_json)
       end
 

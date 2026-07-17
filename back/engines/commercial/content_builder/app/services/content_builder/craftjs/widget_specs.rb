@@ -8,7 +8,7 @@ module ContentBuilder
     # be read from stored graphs because jsonb does not preserve key order.
     #
     # The LLM-facing documentation of these widgets lives in
-    # McpServer::Tools::LayoutWidgets; a spec there asserts docs and specs cannot
+    # McpServer::LayoutWidgets; a spec there asserts docs and specs cannot
     # drift. The rules live here and not there because consumers of Query and
     # Validator (core app, analysis, admin_api) cannot depend on the mcp_server
     # engine.

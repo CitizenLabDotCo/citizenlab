@@ -52,7 +52,7 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
           "Project #{project.id} has no custom description layout. To create one, follow " \
           'the format guide below and send the complete graph to update_project_layout ' \
           'with enabled: true.',
-          structured: { exists: false, format_guide: McpServer::Tools::LayoutWidgets::CHEATSHEET }
+          structured: { exists: false, format_guide: McpServer::LayoutWidgets::CHEATSHEET }
         )
       end
 

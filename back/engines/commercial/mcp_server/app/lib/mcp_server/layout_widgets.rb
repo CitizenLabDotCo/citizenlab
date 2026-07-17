@@ -14,7 +14,7 @@
 # metadata for the editor sidebar (nodes without them render fine) and the FE may rename
 # ids at any time; we include the current ids for visual parity in the editor, accepting
 # that stale ids degrade gracefully to the defaultMessage.
-class McpServer::Tools::LayoutWidgets
+class McpServer::LayoutWidgets
   DOCS = {
     'TextMultiloc' => <<~DOC,
       TextMultiloc — rich text. props: {"text":{"<locale>":"<p>html</p> or <h2>html</h2>"}}

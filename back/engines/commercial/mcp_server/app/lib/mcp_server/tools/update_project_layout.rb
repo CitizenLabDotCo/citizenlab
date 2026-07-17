@@ -230,7 +230,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       widgets = errors.filter_map do |e|
         e.node_id && ContentBuilder::Craftjs::Query.resolved_name(graph[e.node_id] || {})
       end
-      McpServer::Tools::LayoutWidgets.reference_for(widgets)
+      McpServer::LayoutWidgets.reference_for(widgets)
     end
 
     def save_layout(layout, created)

@@ -23,7 +23,7 @@ describe McpServer::Tools::GetProjectLayout do
       expect(response).not_to be_error
       expect(response.structured_content[:exists]).to be(false)
       expect(response.structured_content[:format_guide])
-        .to eq(McpServer::Tools::LayoutWidgets::CHEATSHEET)
+        .to eq(McpServer::LayoutWidgets::CHEATSHEET)
     end
   end
 
