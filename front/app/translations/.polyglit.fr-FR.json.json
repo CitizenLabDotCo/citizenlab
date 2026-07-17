@@ -10359,6 +10359,11 @@
     "verified_at": "2026-07-16T21:48:43.456670Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.phoneUpdateCancelledDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-17T08:13:45.230201Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-16T21:48:43.456670Z",
