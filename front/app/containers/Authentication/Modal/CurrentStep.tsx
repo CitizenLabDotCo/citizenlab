@@ -146,6 +146,7 @@ const CurrentStep = ({
     case 'missing-data:phone':
       return (
         <Phone
+          state={state}
           loading={loading}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}

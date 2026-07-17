@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
-import { SetError } from 'containers/Authentication/typings';
+import { SetError, State } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -22,17 +22,14 @@ import sharedMessages from '../messages';
 import messages from './messages';
 import { FormValues } from './types';
 
-const DEFAULT_VALUES: Partial<FormValues> = {
-  phone: undefined,
-};
-
 interface Props {
+  state: State;
   loading: boolean;
   setError: SetError;
   onSubmit: (phone: string) => void;
 }
 
-const Phone = ({ loading, setError, onSubmit }: Props) => {
+const Phone = ({ state, loading, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = useMemo(
@@ -51,7 +48,7 @@ const Phone = ({ loading, setError, onSubmit }: Props) => {
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: { phone: state.phone ?? undefined },
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });

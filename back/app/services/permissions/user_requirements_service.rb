@@ -144,6 +144,7 @@ class Permissions::UserRequirementsService
     attributes.delete(:confirmation) unless permission.require_confirmed_email
     attributes.delete(:password) unless permission.require_password
     attributes += %i[phone phone_confirmation] if permission.require_confirmed_phone_number
+
     attributes
   end
 
