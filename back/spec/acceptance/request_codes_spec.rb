@@ -207,6 +207,15 @@ resource 'Request codes' do
       expect(response_status).to eq 401
     end
 
+    example 'It works for a user with no phone confirmation record yet' do
+      user = create(:user)
+      user.new_phone_confirmation.destroy!
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+14155552671' })
+      expect(response_status).to eq 200
+      expect(user.reload.new_phone).to eq '+14155552671'
+    end
+
     example 'It does not work if the SMS feature is disabled' do
       SettingsService.new.deactivate_feature!('sms')
       user = create(:user)
