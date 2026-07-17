@@ -55,7 +55,7 @@ module ContentBuilder
         return [error(nil, :not_an_object, 'craftjs_json must be a JSON object')] unless @json.is_a?(Hash)
         return [error(nil, :root_missing, 'ROOT node is missing')] unless @json.key?('ROOT')
 
-        errors = @json.filter_map { |id, node| malformed_node_error(id, node) }
+        errors = @json.flat_map { |id, node| malformed_node_errors(id, node) }
         # Reference checks assume well-formed nodes; report shape problems alone first.
         return errors if errors.any?
 
@@ -70,18 +70,14 @@ module ContentBuilder
         Error.new(node_id: node_id, code: code, message: message)
       end
 
-      def malformed_node_error(id, node)
-        return error(id, :malformed_node, 'must be a JSON object') unless node.is_a?(Hash)
+      def malformed_node_errors(id, node)
+        return [error(id, :malformed_node, 'must be a JSON object')] unless node.is_a?(Hash)
 
-        NODE_KEYS.each do |key, type|
-          unless node[key].is_a?(type)
-            return error(id, :malformed_node, "'#{key}' must be a #{type.name.downcase}")
-          end
+        errors = NODE_KEYS.filter_map do |key, type|
+          error(id, :malformed_node, "'#{key}' must be a #{type.name.downcase}") unless node[key].is_a?(type)
         end
-
-        return error(id, :missing_parent, "'parent' is required") if id != 'ROOT' && !node['parent'].is_a?(String)
-
-        nil
+        errors << error(id, :missing_parent, "'parent' is required") if id != 'ROOT' && !node['parent'].is_a?(String)
+        errors
       end
 
       def reference_errors

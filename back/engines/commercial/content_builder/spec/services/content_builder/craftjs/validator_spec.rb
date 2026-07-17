@@ -54,6 +54,18 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       expect(errors).to eq(["node A: 'nodes' must be a array"])
     end
 
+    it 'reports every shape problem of a node at once' do
+      json['A'].delete('nodes')
+      json['A']['linkedNodes'] = 'nope'
+      json['A'].delete('parent')
+
+      expect(errors).to contain_exactly(
+        "node A: 'nodes' must be a array",
+        "node A: 'linkedNodes' must be a hash",
+        "node A: 'parent' is required"
+      )
+    end
+
     it "flags a ROOT node that has a 'parent'" do
       json['ROOT']['parent'] = 'A'
 
