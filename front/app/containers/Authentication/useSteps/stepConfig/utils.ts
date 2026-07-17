@@ -24,6 +24,10 @@ export const checkMissingData = (
       : 'email:confirmation';
   }
 
+  if (phoneConfirmationRequired(requirements)) {
+    return 'missing-data:phone';
+  }
+
   if (requiredBuiltInFields(requirements)) {
     return 'missing-data:built-in';
   }
@@ -73,6 +77,14 @@ const emailConfirmationRequired = (
     'confirmation'
   );
 };
+
+const phoneConfirmationRequired = (
+  requirements: AuthenticationRequirements['requirements']
+) => {
+  return requirements.authentication.missing_user_attributes.includes(
+    'phone_confirmation'
+  );
+}
 
 export const showOnboarding = (
   requirements: AuthenticationRequirements['requirements']
