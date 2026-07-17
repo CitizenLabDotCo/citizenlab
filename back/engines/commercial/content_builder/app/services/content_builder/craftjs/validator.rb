@@ -156,6 +156,7 @@ module ContentBuilder
             errors << error(id, :invalid_id, "node ids must be 1-64 characters of A-Z, a-z, 0-9, '-' or '_'")
           end
           errors.concat(unknown_key_errors(id, node))
+          errors.concat(type_key_errors(id, node))
 
           name = Query.resolved_name(node)
           spec = @widget_specs[name]
@@ -182,6 +183,18 @@ module ContentBuilder
         return [] if unknown.none?
 
         [error(id, :unknown_keys, "unknown keys: #{unknown.join(', ')} (allowed: #{ALLOWED_NODE_KEYS.join(', ')})")]
+      end
+
+      # An object 'type' carries exactly craft.js's single key; anything else would
+      # be silently persisted into the stored jsonb.
+      def type_key_errors(id, node)
+        type = node['type']
+        return [] unless type.is_a?(Hash)
+
+        unknown = type.keys - ['resolvedName']
+        return [] if unknown.none?
+
+        [error(id, :unknown_keys, "unknown keys in 'type': #{unknown.join(', ')} (allowed: resolvedName)")]
       end
 
       def slot_errors(id, node, spec)

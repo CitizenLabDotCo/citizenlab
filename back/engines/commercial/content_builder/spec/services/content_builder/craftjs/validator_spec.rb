@@ -190,6 +190,14 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       )
     end
 
+    it "rejects undeclared keys inside an object 'type'" do
+      json['T']['type'] = { 'resolvedName' => 'TextMultiloc', 'version' => 2 }
+
+      expect(errors).to contain_exactly(
+        match(/\Anode T: unknown keys in 'type': version \(allowed: resolvedName\)/)
+      )
+    end
+
     it 'rejects undeclared keys on ROOT' do
       json['ROOT']['theme'] = 'dark'
 
