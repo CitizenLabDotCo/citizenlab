@@ -42,7 +42,7 @@ const isWrongConfirmationCodeError = (e: any) => {
 };
 
 const PhoneConfirmation = ({
-  state,
+  state: { phone },
   loading,
   setError,
   onConfirm,
@@ -71,6 +71,8 @@ const PhoneConfirmation = ({
     resolver: yupResolver(schema),
   });
 
+  if (!phone) return null;
+
   const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
     setCodeResent(false);
@@ -96,9 +98,7 @@ const PhoneConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    if (!state.phone) return;
-
-    onResendCode(state.phone)
+    onResendCode(phone)
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);
@@ -120,7 +120,7 @@ const PhoneConfirmation = ({
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage phoneNumber={state.phone ?? ''} codeResent={codeResent} />
+          <CodeSentMessage phoneNumber={phone} codeResent={codeResent} />
         </Box>
         <Box>
           <Input
