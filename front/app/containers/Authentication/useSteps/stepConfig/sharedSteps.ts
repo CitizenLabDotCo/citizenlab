@@ -114,7 +114,8 @@ export const sharedSteps = (
       // done by the user
       TRIGGER_AUTHENTICATION_FLOW: async (
         flow: 'signup' | 'signin',
-        newEmail: string | null = null
+        newEmail: string | null = null,
+        newPhone: string | null = null
       ) => {
         updateState({
           email: newEmail,
@@ -123,6 +124,7 @@ export const sharedSteps = (
           ssoProvider: null,
           claimTokens: null,
           flow,
+          phone: newPhone
         });
 
         const { requirements, disabled_reason } = await getRequirements();
@@ -166,6 +168,16 @@ export const sharedSteps = (
             flow,
             true
           );
+
+          // Kind of hacky, since this should actually be handled by the checkMissingData function.
+          // But because of the way the requirements api works, we need to handle this case separately.
+          // For a similar reason as the huge comment above (below if (signedIn))
+          // We might need to rework the requirements api at some point,
+          // but out of scope for now.
+          if (missingDataStep === 'missing-data:phone' && newPhone) {
+            setCurrentStep('missing-data:phone-confirmation');
+            return;
+          }
 
           if (missingDataStep) {
             setCurrentStep(missingDataStep);

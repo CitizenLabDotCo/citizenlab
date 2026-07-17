@@ -178,9 +178,12 @@ export default function useSteps() {
       const emailInCaseUserNeedsToConfirm =
         authUser?.data.attributes.new_email ?? null;
 
+      const phoneInCaseUserNEedsToConfirm = authUser?.data.attributes.new_phone ?? null;
+
       transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(
         flow,
-        emailInCaseUserNeedsToConfirm
+        emailInCaseUserNeedsToConfirm,
+        phoneInCaseUserNEedsToConfirm
       );
     });
 
