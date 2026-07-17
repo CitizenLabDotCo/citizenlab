@@ -2090,7 +2090,7 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Modification annulée",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Votre numéro de téléphone n'a pas été mis à jour. Veuillez recommencer depuis les réglages.",
   "app.containers.PhoneChange.submitButton": "Valider",
-  "app.containers.PhoneChange.titleAddPhone": "Ajoutez votre numéro de téléphone",
+  "app.containers.PhoneChange.titleAddPhone": "Ajouter votre numéro de téléphone",
   "app.containers.PhoneChange.titleChangePhone": "Modifier votre numéro de téléphone",
   "app.containers.PhoneChange.updateSuccessful": "Votre numéro de téléphone a été mis à jour.",
   "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": "Un SMS contenant un code de confirmation a été envoyé au {phoneNumber}.",
