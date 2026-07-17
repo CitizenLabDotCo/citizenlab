@@ -2083,7 +2083,7 @@
   "app.containers.PhoneChange.helmetDescription": "Page de modification du numéro de téléphone",
   "app.containers.PhoneChange.helmetTitle": "Modifier votre numéro de téléphone",
   "app.containers.PhoneChange.newPhoneLabel": "Nouveau numéro de téléphone (avec l'indicatif du pays)",
-  "app.containers.PhoneChange.phoneEmptyError": " Veuillez saisir votre numéro de téléphone.",
+  "app.containers.PhoneChange.phoneEmptyError": "Veuillez saisir votre numéro de téléphone.",
   "app.containers.PhoneChange.phoneInvalid2": "Veuillez saisir un numéro de téléphone valide, avec l'indicatif du pays.",
   "app.containers.PhoneChange.phoneTaken": "Ce numéro de téléphone est déjà utilisé.",
   "app.containers.PhoneChange.phoneUnknownError": "Une erreur est survenue. Veuillez réessayer.",
