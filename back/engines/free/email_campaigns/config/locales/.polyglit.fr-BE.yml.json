@@ -904,6 +904,11 @@
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.new_phone_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-17T07:58:20.913934Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.campaign_type_description.official_feedback_on_idea_you_follow": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
