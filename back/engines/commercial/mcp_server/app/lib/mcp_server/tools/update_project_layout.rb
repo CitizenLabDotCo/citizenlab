@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
+  # Sanity ceiling, not a computed limit: a rich, fully structured description
+  # (columns, accordions, spacers) lands around 30-40 nodes, so this is ~10x that —
+  # room for any legitimate page, while bounding runaway LLM patches and the
+  # graph/outline payloads echoed back in responses.
   MAX_NODES = 300
 
   # Permissive shape of a single craftjs node in the patch; the full rules live in
@@ -173,7 +177,8 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       return if delete_node_ids.empty?
 
       if delete_node_ids.include?('ROOT')
-        raise PatchError, 'Cannot delete ROOT. To start over, send a complete new graph in `nodes`.'
+        raise PatchError, 'Cannot delete ROOT. To start over, send a complete new graph in `nodes` ' \
+                          "and list the current top-level nodes (ROOT's `nodes`) in `delete_node_ids`."
       end
 
       overlap = delete_node_ids & patch_nodes.keys
