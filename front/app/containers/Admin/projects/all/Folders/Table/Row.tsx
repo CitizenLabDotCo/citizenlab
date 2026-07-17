@@ -76,6 +76,10 @@ const Row = ({ folder, moderatorsById }: Props) => {
     context: { spaceId: space_id },
   });
   const showSpace = spacesEnabled && !!space_title_multiloc && !!space_id;
+  // `hoveringSpace` goes stale if the label unmounts or loses its handlers
+  // while hovered (React fires no onMouseLeave on unmount), so derive the live
+  // condition rather than trusting the raw state.
+  const spaceLabelHovered = hoveringSpace && showSpace && canModerateThisSpace;
 
   return (
     <Tr dataCy="projects-overview-folder-table-row">
@@ -97,7 +101,9 @@ const Row = ({ folder, moderatorsById }: Props) => {
               color="black"
               // Suspend the Td-hover underline while the space label is
               // hovered, so only the actual click target is underlined.
-              className={hoveringSpace ? undefined : 'project-table-row-title'}
+              className={
+                spaceLabelHovered ? undefined : 'project-table-row-title'
+              }
             >
               {localize(folder.attributes.title_multiloc)}
             </Text>
@@ -112,7 +118,7 @@ const Row = ({ folder, moderatorsById }: Props) => {
                   <RowLabel
                     iconName="spaces"
                     titleMultiloc={space_title_multiloc}
-                    underline={hoveringSpace}
+                    underline={spaceLabelHovered}
                     onHoverChange={
                       canModerateThisSpace ? setHoveringSpace : undefined
                     }
