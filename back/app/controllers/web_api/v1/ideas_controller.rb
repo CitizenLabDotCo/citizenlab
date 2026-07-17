@@ -157,7 +157,7 @@ class WebApi::V1::IdeasController < ApplicationController
     input = Idea.new params_for_create
     input.project = phase.project
     input.creation_phase = (phase if !phase.pmethod.transitive?)
-    input.phase_ids = [phase.id]
+    input.phases = [phase]
 
     files_params.each do |file_params|
       build_idea_file_attachment(input, file_params)
@@ -338,7 +338,7 @@ class WebApi::V1::IdeasController < ApplicationController
     require_feature! 'input_iq'
 
     idea = Idea.new idea_params_for_similarities
-    idea.project = phase.project
+    idea.project_id = phase.project_id
     service = SimilarIdeasService.new(idea)
 
     title_threshold = phase.similarity_threshold_title
