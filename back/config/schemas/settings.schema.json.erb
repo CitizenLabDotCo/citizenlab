@@ -589,7 +589,7 @@
           "tracking_id": {
             "type": "string",
             "description": "The tracking ID the front-end send it's data to. Format UA-XXXXXXXXX-XX",
-            "pattern": "^(UA|YT|MO)\-[0-9]+\-[0-9]+$",
+            "pattern": "^(UA|YT|MO)-[0-9]+-[0-9]+$",
             "default": "<%= ENV.fetch('DEFAULT_GA_TRACKING_ID', '')%>"
           }
         }
@@ -1187,6 +1187,18 @@
         }
       },
 
+      "parallel_participation": {
+        "type": "object",
+        "title": "Parallel participation",
+        "description": "In development: the redesigned project back office with parallel participation and a content-builder driven project page.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "authoring_assistance_prototype": {
         "type": "object",
         "title": "Experimental feature: Authoring assistance prototype",
@@ -1227,6 +1239,18 @@
         "type": "object",
         "title": "Inspiration hub",
         "description": "Temporary feature flag we are using to be able to hide our work in progress from the live platforms. Do not enable this feature!",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "pdf_export_responses": {
+        "type": "object",
+        "title": "PDF export of responses",
+        "description": "Temporary feature flag for the PDF export of survey/input responses, while the feature is in development. Do not enable on live platforms.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1449,6 +1473,18 @@
         }
       },
 
+      "html_block_in_content_builder": {
+        "type": "object",
+        "title": "HTML block in content builder",
+        "description": "Allows the use of HTML blocks in the content builder.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "custom_smtp": {
         "type": "object",
         "title": "Custom SMTP Server",
@@ -1504,6 +1540,34 @@
             "type": "string",
             "title": "OpenSSL Verify Mode",
             "enum": ["none", "peer"],
+            "private": true
+          }
+        }
+      },
+
+      "sms": {
+        "type": "object",
+        "title": "SMS (DO NOT USE YET)",
+        "description": "(DO NOT USE YET) Send SMS messages to users via the tenant's own Twilio account.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "twilio_account_sid": {
+            "type": "string",
+            "title": "Twilio Account SID",
+            "private": true
+          },
+          "twilio_auth_token": {
+            "type": "string",
+            "title": "Twilio Auth Token",
+            "private": true
+          },
+          "twilio_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send SMS messages.",
             "private": true
           }
         }

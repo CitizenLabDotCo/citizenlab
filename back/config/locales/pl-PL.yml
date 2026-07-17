@@ -112,6 +112,8 @@ pl-PL:
           title: Jaka jest twoja inicjatywa?
         issue:
           title: Jaka jest Twoja sprawa ?
+        observation:
+          title: Jaka jest Twoja obserwacja?
         option:
           title: Jaka jest Twója opcja?
         petition:
@@ -269,6 +271,25 @@ pl-PL:
       title: Wszystkie projekty
     proposals:
       title: Propozycje
+  pdf_export:
+    input_responses:
+      date: Data
+      no_answer: (Brak odpowiedzi)
+      prepared_by: Przygotowane przez
+      report_label: Raport odpowiedzi
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} odpowiedź'
+        other: '%{count} odpowiedzi'
+    survey_responses:
+      date: Data
+      no_answer: (Brak odpowiedzi)
+      prepared_by: Przygotowane przez
+      report_label: Raport z odpowiedzi w ankiecie
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} odpowiedź'
+        other: '%{count} odpowiedzi'
   phases:
     community_monitor_title: Monitor społeczności
     native_survey_button: Weź udział w ankiecie

@@ -190,6 +190,7 @@ de-AT:
       new_email_confirmation: Neuer E-Mail-Bestätigungscode
       new_idea_for_admin_prescreening: Neuer Beitrag, der in einem von mir moderierten Projekt genehmigt werden muss
       new_idea_for_admin_published: Neuer Beitrag in einem Projekt, das ich moderiere
+      new_phone_confirmation: Neuer Bestätigungscode für die Telefonnummer
       official_feedback_on_idea_you_follow: Offizielles Update zu einer Idee, der Sie folgen
       password_reset: Zurücksetzen des Passworts
       project_folder_moderation_rights_received: Ordnermanagementrechte erhalten
@@ -202,6 +203,7 @@ de-AT:
       project_review_state_change: Projekt freigegeben
       proposal_expired_for_admin: Vorschlag abgelaufen, ohne die Abstimmungsschwelle zu erreichen
       screening_digest: Wöchentliche Überprüfungs-Erinnerung
+      sms_manual: Offizielle SMS-Nachrichten
       space_moderation_rights_received: Space-Manager*innen-Rechte erhalten
       status_change_on_idea_you_follow: Statusänderung einer Idee, der Sie folgen
       survey_submitted: Umfrage eingereicht
@@ -249,6 +251,7 @@ de-AT:
         idea: '%{authorName} hat eine Idee kommentiert, der Sie folgen'
         initiative: '%{authorName} hat eine Initiative kommentiert, der Sie folgen'
         issue: '%{authorName} hat ein Problem kommentiert, dem Sie folgen'
+        observation: '%{authorName} hat eine Beobachtung kommentiert, der du folgst'
         option: '%{authorName} hat eine Option kommentiert, der Sie folgen'
         petition: '%{authorName} hat eine Petition kommentiert, der Sie folgen'
         post: '%{authorName} hat einen Beitrag kommentiert, dem Sie folgen'
@@ -323,6 +326,7 @@ de-AT:
         idea: Zur Idee
         initiative: Zur Initiative
         issue: Zum Mangel
+        observation: Zu dieser Beobachtung
         option: Zur Option
         petition: Zur Petition
         post: Zum Beitrag
@@ -343,6 +347,7 @@ de-AT:
         idea: Zur Idee
         initiative: Zur Initiative
         issue: Zum Mangel
+        observation: Zu deiner Beobachtung
         option: Zur Option
         petition: Zur Petition
         post: Zu Ihrem Beitrag
@@ -376,6 +381,7 @@ de-AT:
         idea: Ihre Idee wurde veröffentlicht
         initiative: Initiative wurde veröffentlicht
         issue: Ihr Mangel wurde veröffentlicht
+        observation: Deine Beobachtung wurde veröffentlicht
         option: Ihre Option wurde veröffentlicht
         petition: Ihre Petition wurde veröffentlicht
         post: Beitrag wurde veröffentlicht
@@ -530,6 +536,8 @@ de-AT:
       title: Ein neuer Beitrag wurde auf Ihrer Plattform veröffentlicht
       today: Heute
       yesterday: Gestern
+    new_phone_confirmation:
+      sms_body: Dein Bestätigungscode lautet %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Zum Beitrag
       event_description: "%{feedback_author_name} hat ein offizielles Update zu %{input_title} gegeben'."
@@ -764,6 +772,7 @@ de-AT:
         idea: Ihr Beitrag ist in "%{prescreening_status_title}"
         initiative: Ihre Initiative ist in "%{prescreening_status_title}"
         issue: Ihr Mangel ist in "%{prescreening_status_title}"
+        observation: Deine Beobachtung befindet sich im Status "%{prescreening_status_title}"
         option: Ihre Option ist in "%{prescreening_status_title}"
         petition: Ihre Petition ist in "%{prescreening_status_title}"
         post: Ihr Beitrag ist in "%{prescreening_status_title}"

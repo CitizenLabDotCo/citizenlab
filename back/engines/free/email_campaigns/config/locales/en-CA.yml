@@ -190,6 +190,7 @@ en-CA:
       new_email_confirmation: New email confirmation code
       new_idea_for_admin_prescreening: New input requiring approval in a project I moderate
       new_idea_for_admin_published: New published input in a project I moderate
+      new_phone_confirmation: New phone confirmation code
       official_feedback_on_idea_you_follow: Update on an input that you follow
       password_reset: Password reset
       project_folder_moderation_rights_received: Folder manager rights received
@@ -202,6 +203,7 @@ en-CA:
       project_review_state_change: Project approved
       proposal_expired_for_admin: Proposal expired without reaching the voting threshold
       screening_digest: Weekly screening reminder
+      sms_manual: Official SMS messages
       space_moderation_rights_received: Space manager rights received
       status_change_on_idea_you_follow: Status change of an input that you follow
       survey_submitted: Survey submitted
@@ -249,6 +251,7 @@ en-CA:
         idea: '%{authorName} commented on an idea you follow'
         initiative: '%{authorName} commented on an initiative you follow'
         issue: '%{authorName} commented on an issue you follow'
+        observation: '%{authorName} commented on an observation you follow'
         option: '%{authorName} commented on an option you follow'
         petition: '%{authorName} commented on a petition you follow'
         post: '%{authorName} commented on a post you follow'
@@ -323,6 +326,7 @@ en-CA:
         idea: Go to this idea
         initiative: Go to this initiative
         issue: Go to this issue
+        observation: Go to this observation
         option: Go to this option
         petition: Go to this petition
         post: Go to this post
@@ -343,6 +347,7 @@ en-CA:
         idea: Go to your idea
         initiative: Go to your initiative
         issue: Go to your issue
+        observation: Go to your observation
         option: Go to your option
         petition: Go to your petition
         post: Go to your post
@@ -376,6 +381,7 @@ en-CA:
         idea: Your idea has been published
         initiative: Your initiative has been published
         issue: Your issue has been published
+        observation: Your observation has been published
         option: Your option has been published
         petition: Your petition has been published
         post: Your post has been published
@@ -530,6 +536,8 @@ en-CA:
       title: A new input has been published on your platform
       today: Today
       yesterday: Yesterday
+    new_phone_confirmation:
+      sms_body: Your confirmation code is %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Go to this input
       event_description: "%{feedback_author_name} gave an update on '%{input_title}'."
@@ -764,6 +772,7 @@ en-CA:
         idea: Your idea is in "%{prescreening_status_title}"
         initiative: Your initiative is in "%{prescreening_status_title}"
         issue: Your issue is in "%{prescreening_status_title}"
+        observation: Your observation is in "%{prescreening_status_title}"
         option: Your option is in "%{prescreening_status_title}"
         petition: Your petition is in "%{prescreening_status_title}"
         post: Your post is in "%{prescreening_status_title}"

@@ -5,6 +5,7 @@ import {
   createRootRoute,
   createRouter,
   Outlet,
+  retainSearchParams,
 } from '@tanstack/react-router';
 import * as yup from 'yup';
 
@@ -23,12 +24,14 @@ import PageLoading from 'components/UI/PageLoading';
 import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
 
+
 const HomePage = lazy(() => import('containers/HomePage'));
 const OAuthAuthorize = lazy(() => import('containers/OAuthAuthorize'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
 const EmailChange = lazy(() => import('containers/EmailChange'));
+const PhoneChange = lazy(() => import('containers/PhoneChange'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
@@ -70,10 +73,10 @@ const TanStackRouterDevtools =
   process.env.NODE_ENV === 'production'
     ? () => null
     : lazy(() =>
-        import('@tanstack/react-router-devtools').then((mod) => ({
-          default: mod.TanStackRouterDevtools,
-        }))
-      );
+      import('@tanstack/react-router-devtools').then((mod) => ({
+        default: mod.TanStackRouterDevtools,
+      }))
+    );
 
 // Root search schema — SSO/auth callback params that can appear on any route
 const rootSearchSchema = yup.object({
@@ -107,14 +110,44 @@ const rootSearchSchema = yup.object({
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
   lat: yup.number().optional(),
   lng: yup.number().optional(),
+  // Enables `parallel_participation` without the feature flag —
+  // `?parallel_participation=true`. Retained across navigation by the root
+  // route's search middleware so it sticks while moving between pages; lives
+  // only in the URL (no cookie/localStorage). See useParallelParticipation.
+  parallel_participation: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
+
+const normalizeParallelParticipation = ({
+  search,
+  next,
+}: {
+  search: RootSearchParams;
+  next: (search: RootSearchParams) => RootSearchParams;
+}): RootSearchParams => {
+  const result = next(search);
+  const value = result.parallel_participation;
+
+  if (value !== undefined && value !== 'false' && value !== 'true') {
+    return { ...result, parallel_participation: 'true' };
+  }
+
+  return result;
+};
 
 // Root route
 const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),
+  search: {
+    // Keep `parallel_participation` in the URL across client-side navigations
+    // so it persists while moving between pages
+    middlewares: [
+      retainSearchParams(['parallel_participation']),
+      normalizeParallelParticipation,
+    ],
+  },
   component: () => (
     <App>
       <Outlet />
@@ -255,6 +288,16 @@ const changeEmailRoute = createRoute({
   ),
 });
 
+const changePhoneRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'profile/change-phone',
+  component: () => (
+    <PageLoading>
+      <PhoneChange />
+    </PageLoading>
+  ),
+});
+
 // Ideas routes
 const ideasEditSearchSchema = yup.object({
   idea_id: yup.string().optional(),
@@ -345,6 +388,7 @@ const projectIdeaNewRoute = createRoute({
 const projectSurveyNewSearchSchema = yup.object({
   phase_id: yup.string().optional(),
   idea_id: yup.string().optional(),
+  go_back: yup.string().optional(),
 });
 
 type ProjectSurveyNewSearchParams = yup.InferType<
@@ -641,6 +685,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       profileEditRoute,
       changePasswordRoute,
       changeEmailRoute,
+      changePhoneRoute,
       createUserShowPageRoutes(),
       ideasEditRoute,
       ideasIndexRoute,

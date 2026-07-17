@@ -26,7 +26,7 @@ const TreeView = ({
   onRemove,
 }: Props) => {
   return (
-    <Box maxWidth="800px">
+    <Box>
       {nodes.map((node) => (
         <Box key={node.id}>
           {node.type === 'space' && (

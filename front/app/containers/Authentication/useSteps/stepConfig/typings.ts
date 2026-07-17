@@ -29,10 +29,6 @@ export type Step =
   | 'verification-only'
   | 'verification-success'
 
-  // sso verification flow
-  | 'sso-verification:sso-providers'
-  | 'sso-verification:sso-providers-policies'
-
   // post-participation flow (sign up after participation)
   | 'post-participation:email';
 

@@ -112,6 +112,8 @@ ar-SA:
           title: ما هي مبادرتك؟
         issue:
           title: ما مشكلتك؟
+        observation:
+          title: ما هي ملاحظتك؟
         option:
           title: ما خيارك؟
         petition:
@@ -271,6 +273,25 @@ ar-SA:
       title: جميع المشاريع
     proposals:
       title: المُقترحات
+  pdf_export:
+    input_responses:
+      date: التاريخ
+      no_answer: (لا توجد إجابة)
+      prepared_by: أعده
+      report_label: تقرير الردود
+      respondent: المجيب %{number}
+      response_count:
+        one: '%{count} رد'
+        other: '%{count} ردود'
+    survey_responses:
+      date: التاريخ
+      no_answer: (لا توجد إجابة)
+      prepared_by: أُعد بواسطة
+      report_label: تقرير ردود الاستبيان
+      respondent: المجيب %{number}
+      response_count:
+        one: '%{count} رد'
+        other: '%{count} ردود'
   phases:
     community_monitor_title: مراقب المجتمع
     native_survey_button: خذ الاستطلاع

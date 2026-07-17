@@ -30,6 +30,32 @@ describe ContentBuilder::SideFxLayoutService do
       expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(layout.craftjs_json)
       service.before_update(layout, user)
     end
+
+    it 'extracts new inline images in RichTextMultiloc bridge nodes into TextImages' do
+      layout.craftjs_json = {
+        'ROOT' => {
+          'type' => 'div', 'isCanvas' => true, 'props' => {},
+          'displayName' => 'div', 'nodes' => ['bridge'], 'linkedNodes' => {}
+        },
+        'bridge' => {
+          'type' => { 'resolvedName' => 'RichTextMultiloc' },
+          'props' => {
+            'text' => {
+              'en' => '<p>Hi</p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">'
+            }
+          },
+          'parent' => 'ROOT', 'nodes' => [], 'linkedNodes' => {}
+        }
+      }
+
+      expect { service.before_update(layout, user) }.to change(TextImage, :count).by(1)
+
+      text_image = TextImage.order(:created_at).last
+      expect(text_image.imageable).to eq(layout.content_buildable)
+      html = layout.craftjs_json['bridge']['props']['text']['en']
+      expect(html).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+      expect(html).not_to include('base64')
+    end
   end
 
   describe 'before_destroy' do

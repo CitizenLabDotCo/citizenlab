@@ -1,0 +1,26 @@
+<section class="cover">
+  <div class="cover-label"><%= t('pdf_export.input_responses.report_label') %></div>
+  <div class="cover-title"><%= cover[:title] %></div>
+  <% if cover[:subtitle].present? %>
+    <div class="cover-subtitle"><%= cover[:subtitle] %></div>
+  <% end %>
+  <div class="cover-spacer"></div>
+  <div class="cover-meta">
+    <% if cover[:date].present? %>
+      <div>
+        <div class="cover-meta-label"><%= t('pdf_export.input_responses.date') %></div>
+        <div class="cover-meta-value"><%= cover[:date] %></div>
+      </div>
+    <% end %>
+    <% if cover[:prepared_by].present? %>
+      <div>
+        <div class="cover-meta-label"><%= t('pdf_export.input_responses.prepared_by') %></div>
+        <div class="cover-meta-value"><%= cover[:prepared_by] %></div>
+      </div>
+    <% end %>
+  </div>
+  <div class="cover-count"><%= t('pdf_export.input_responses.response_count', count: total) %></div>
+  <% if cover[:notes].present? %>
+    <div class="cover-notes"><%= cover[:notes] %></div>
+  <% end %>
+</section>

@@ -15,8 +15,8 @@ import { CLError, Multiloc } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IDAzureAdMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
+import { getAzureConfig } from 'api/id_methods/utils';
 import { IInviteError } from 'api/invites/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -247,10 +247,7 @@ const Error = (props: ErrorProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const ssoEnforcedForDomainMultiloc = idMethods?.data.find(
-    (method): method is IDAzureAdMethod =>
-      method.attributes.name === 'azureactivedirectory'
-  )?.attributes.enforced_email_domain_error_multiloc;
+  const ssoEnforcedForDomainMultiloc = getAzureConfig(idMethods)?.attributes.enforced_email_domain_error_multiloc;
 
   const {
     text,
@@ -343,7 +340,7 @@ const Error = (props: ErrorProps) => {
                       const errorMessage = customErrorMessage
                         ? customErrorMessage
                         : errorMessageDescriptor &&
-                          formatMessage(errorMessageDescriptor, values);
+                        formatMessage(errorMessageDescriptor, values);
 
                       if (!errorMessage) return null;
 

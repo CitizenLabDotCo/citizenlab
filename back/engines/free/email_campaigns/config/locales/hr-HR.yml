@@ -190,6 +190,7 @@ hr-HR:
       new_email_confirmation: Novi kod za potvrdu e-adrese
       new_idea_for_admin_prescreening: Novi unos koji zahtijeva odobrenje u projektu koji moderiram
       new_idea_for_admin_published: Novi objavljeni unos u projektu koji moderiram
+      new_phone_confirmation: Novi kôd za potvrdu broja telefona
       official_feedback_on_idea_you_follow: Ažuriranje ideje koju slijedite
       password_reset: Ponovno postavljanje lozinke
       project_folder_moderation_rights_received: Primljena prava upravitelja mape
@@ -202,6 +203,7 @@ hr-HR:
       project_review_state_change: Projekt odobren
       proposal_expired_for_admin: Prijedlog je istekao bez dostizanja praga za glasovanje
       screening_digest: Podsjetnik na tjedni pregled
+      sms_manual: Službene SMS poruke
       space_moderation_rights_received: Primljena prava voditelja prostora
       status_change_on_idea_you_follow: Promjena statusa ideje koju slijedite
       survey_submitted: Anketa poslana
@@ -249,6 +251,7 @@ hr-HR:
         idea: '%{authorName} je komentirao ideju koju slijedite'
         initiative: '%{authorName} je komentirao/la inicijativu koju pratite'
         issue: '%{authorName} komentirao je problem koji pratiš'
+        observation: '%{authorName} je komentirao/la opažanje koje pratite'
         option: '%{authorName} komentirao je opciju koju slijedite'
         petition: '%{authorName} komentirao je peticiju koju pratite'
         post: '%{authorName} je komentirao/la objavu koju pratite'
@@ -323,6 +326,7 @@ hr-HR:
         idea: Idi na ovu ideju
         initiative: Idi na ovu inicijativu
         issue: Idi na ovu temu
+        observation: Idi na ovo zapažanje
         option: Idite na ovu opciju
         petition: Idi na ovu peticiju
         post: Idi na ovu objavu
@@ -343,6 +347,7 @@ hr-HR:
         idea: Idi na svoju ideju
         initiative: Idi na svoju inicijativu
         issue: Idi na svoj problem
+        observation: Idite na svoje opažanje
         option: Idi na svoju opciju
         petition: Idi na svoju peticiju
         post: Idi na svoju objavu
@@ -376,6 +381,7 @@ hr-HR:
         idea: Vaša ideja je objavljena
         initiative: Vaša inicijativa je objavljena
         issue: Vaš je problem objavljen
+        observation: Vaše zapažanje je objavljeno
         option: Vaša je opcija objavljena
         petition: Vaša peticija je objavljena
         post: Vaša objava je objavljena
@@ -530,6 +536,8 @@ hr-HR:
       title: Na vašoj platformi objavljen je novi unos
       today: Danas
       yesterday: Jučer
+    new_phone_confirmation:
+      sms_body: Vaš kôd za potvrdu je %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Idi na ovaj ulaz
       event_description: "%{feedback_author_name} je dao/la ažuriranje o '%{input_title}'."
@@ -764,6 +772,7 @@ hr-HR:
         idea: Vaša ideja je u "%{prescreening_status_title}"
         initiative: Vaša inicijativa je u "%{prescreening_status_title}"
         issue: Vaš problem je u "%{prescreening_status_title}"
+        observation: Vaše opažanje je u statusu "%{prescreening_status_title}"
         option: Vaša opcija je u "%{prescreening_status_title}"
         petition: Vaša peticija je u "%{prescreening_status_title}"
         post: Vaša objava je u "%{prescreening_status_title}"

@@ -42,19 +42,22 @@ const fetchEvents = (filters: InputParameters) => {
 
 const newDate = new Date().toJSON();
 
-const useEvents = ({
-  projectIds,
-  staticPageId,
-  currentAndFutureOnly,
-  pastOnly,
-  pageSize,
-  sort,
-  projectPublicationStatuses,
-  pageNumber,
-  attendeeId,
-  ongoing_during,
-  show_unlisted_events_user_can_moderate,
-}: InputParameters) => {
+const useEvents = (
+  {
+    projectIds,
+    staticPageId,
+    currentAndFutureOnly,
+    pastOnly,
+    pageSize,
+    sort,
+    projectPublicationStatuses,
+    pageNumber,
+    attendeeId,
+    ongoing_during,
+    show_unlisted_events_user_can_moderate,
+  }: InputParameters,
+  { enabled = true } = {}
+) => {
   const queryParams: InputParameters = {
     projectPublicationStatuses,
     sort: sort || (currentAndFutureOnly ? 'start_at' : '-start_at'),
@@ -72,6 +75,7 @@ const useEvents = ({
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({
     queryKey: eventsKeys.list(queryParams),
     queryFn: () => fetchEvents(queryParams),
+    enabled,
   });
 };
 

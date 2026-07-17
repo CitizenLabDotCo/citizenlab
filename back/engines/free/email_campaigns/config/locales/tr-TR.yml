@@ -190,6 +190,7 @@ tr-TR:
       new_email_confirmation: Yeni e-posta onay kodu
       new_idea_for_admin_prescreening: Ilımlı bir projede onay gerektiren yeni girdi
       new_idea_for_admin_published: Yönettiğim bir projede yeni yayınlanmış girdi
+      new_phone_confirmation: Yeni telefon doğrulama kodu
       official_feedback_on_idea_you_follow: Takip ettiğiniz bir fikir hakkında güncelleme
       password_reset: Parola sıfırla
       project_folder_moderation_rights_received: Klasör yöneticisi hakları alındı
@@ -202,6 +203,7 @@ tr-TR:
       project_review_state_change: Proje onaylandı
       proposal_expired_for_admin: Öneri oylama eşiğine ulaşamadan süresi doldu
       screening_digest: Haftalık tarama hatırlatması
+      sms_manual: Resmi SMS mesajları
       space_moderation_rights_received: Alan yöneticisi yetkileri alındı
       status_change_on_idea_you_follow: Takip ettiğiniz bir fikrin durum değişikliği
       survey_submitted: Anket gönderildi
@@ -249,6 +251,7 @@ tr-TR:
         idea: '%{authorName} takip ettiğiniz bir fikir hakkında yorum yaptı'
         initiative: '%{authorName} takip ettiğiniz bir girişim hakkında yorum yaptı'
         issue: '%{authorName} takip ettiğiniz bir konu hakkında yorum yaptı'
+        observation: '%{authorName} takip ettiğiniz bir gözleme yorum yaptı'
         option: '%{authorName} takip ettiğiniz bir seçenek hakkında yorum yaptı'
         petition: '%{authorName} takip ettiğiniz bir dilekçeye yorum yaptı'
         post: '%{authorName} takip ettiğiniz bir gönderiye yorum yaptı'
@@ -323,6 +326,7 @@ tr-TR:
         idea: Bu fikre git
         initiative: Bu girişime gidin
         issue: Bu sayıya gidin
+        observation: Bu gözleme git
         option: Bu seçeneğe gidin
         petition: Bu dilekçeye gidin
         post: Bu gönderiye git
@@ -343,6 +347,7 @@ tr-TR:
         idea: Fikrinize gidin
         initiative: Girişiminize gidin
         issue: Sorununuza gidin
+        observation: Gözleminize gidin
         option: Seçeneğinize gidin
         petition: Dilekçenize gidin
         post: Gönderinize gidin
@@ -376,6 +381,7 @@ tr-TR:
         idea: Fikriniz yayınlandı
         initiative: Girişiminiz yayınlandı
         issue: Sayınız yayınlandı
+        observation: Gözleminiz yayınlandı
         option: Seçeneğiniz yayınlandı
         petition: Dilekçeniz yayınlandı
         post: Gönderiniz yayınlandı
@@ -530,6 +536,8 @@ tr-TR:
       title: Platformunuzda yeni bir girdi yayınlandı
       today: Bugün
       yesterday: Dün
+    new_phone_confirmation:
+      sms_body: 'Doğrulama kodunuz: %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Bu girişe gidin
       event_description: "%{feedback_author_name} '%{input_title}' adresinde bir güncelleme yaptı."
@@ -764,6 +772,7 @@ tr-TR:
         idea: Fikriniz "%{prescreening_status_title}" adresinde yer almaktadır.
         initiative: Girişiminiz "%{prescreening_status_title}" adresinde yer almaktadır.
         issue: Sorununuz "%{prescreening_status_title}" adresinde
+        observation: Gözleminiz "%{prescreening_status_title}" durumunda
         option: Seçeneğiniz "%{prescreening_status_title}" adresinde.
         petition: Dilekçeniz "%{prescreening_status_title}" adresinde yer almaktadır.
         post: Gönderiniz "%{prescreening_status_title}" adresinde yer almaktadır.

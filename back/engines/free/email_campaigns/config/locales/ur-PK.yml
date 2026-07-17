@@ -190,6 +190,7 @@ ur-PK:
       new_email_confirmation: ای میل کی تصدیق کا نیا کوڈ
       new_idea_for_admin_prescreening: نئے ان پٹ کو ایک پروجیکٹ میں منظوری کی ضرورت ہوتی ہے جس میں میں اعتدال کرتا ہوں۔
       new_idea_for_admin_published: ایک پروجیکٹ میں نیا شائع شدہ ان پٹ جس میں میں معتدل ہوں۔
+      new_phone_confirmation: فون کی تصدیق کا نیا کوڈ
       official_feedback_on_idea_you_follow: ایک خیال پر اپ ڈیٹ کریں جس کی آپ پیروی کرتے ہیں۔
       password_reset: پاس ورڈ ری سیٹ
       project_folder_moderation_rights_received: فولڈر مینیجر کے حقوق موصول ہوئے۔
@@ -202,6 +203,7 @@ ur-PK:
       project_review_state_change: پروجیکٹ کی منظوری دی گئی۔
       proposal_expired_for_admin: ووٹنگ کی حد تک پہنچے بغیر تجویز کی میعاد ختم ہو گئی
       screening_digest: ہفتہ وار اسکریننگ کی یاد دہانی
+      sms_manual: سرکاری ایس ایم ایس پیغامات
       space_moderation_rights_received: اسپیس مینیجر کے اختیارات موصول ہو گئے
       status_change_on_idea_you_follow: کسی خیال کی حیثیت کی تبدیلی جس کی آپ پیروی کرتے ہیں۔
       survey_submitted: سروے جمع کرایا
@@ -249,6 +251,7 @@ ur-PK:
         idea: '%{authorName} نے ایک خیال پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         initiative: '%{authorName} نے اس اقدام پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         issue: '%{authorName} نے اس مسئلے پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        observation: '%{authorName} نے اس مشاہدے پر تبصرہ کیا ہے جس کی آپ پیروی کر رہے ہیں'
         option: '%{authorName} نے ایک آپشن پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
         petition: '%{authorName} نے آپ کی پیروی کی درخواست پر تبصرہ کیا۔'
         post: '%{authorName} نے اس پوسٹ پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
@@ -323,6 +326,7 @@ ur-PK:
         idea: اس خیال پر جائیں۔
         initiative: اس اقدام پر جائیں۔
         issue: اس مسئلے پر جائیں۔
+        observation: اس مشاہدے پر جائیں
         option: اس آپشن پر جائیں۔
         petition: اس عرضی پر جائیں۔
         post: اس پوسٹ پر جائیں۔
@@ -343,6 +347,7 @@ ur-PK:
         idea: اپنے خیال پر جائیں۔
         initiative: اپنی پہل پر جائیں۔
         issue: اپنے مسئلے پر جائیں۔
+        observation: اپنے مشاہدے پر جائیں
         option: اپنے آپشن پر جائیں۔
         petition: اپنی درخواست پر جائیں۔
         post: اپنی پوسٹ پر جائیں۔
@@ -376,6 +381,7 @@ ur-PK:
         idea: آپ کا خیال شائع ہو چکا ہے۔
         initiative: آپ کا پہل شائع ہو چکا ہے۔
         issue: آپ کا شمارہ شائع ہو چکا ہے۔
+        observation: آپ کا مشاہدہ شائع ہو گیا ہے
         option: آپ کا اختیار شائع ہو چکا ہے۔
         petition: آپ کی درخواست شائع ہو چکی ہے۔
         post: آپ کی پوسٹ شائع ہو چکی ہے۔
@@ -530,6 +536,8 @@ ur-PK:
       title: آپ کے پلیٹ فارم پر ایک نیا ان پٹ شائع کیا گیا ہے۔
       today: آج
       yesterday: کل
+    new_phone_confirmation:
+      sms_body: آپ کی تصدیق کا کوڈ %{code} ہے۔
     official_feedback_on_idea_you_follow:
       cta_button: اس ان پٹ پر جائیں۔
       event_description: "%{feedback_author_name} نے '%{input_title}' پر ایک اپ ڈیٹ دیا۔"
@@ -764,6 +772,7 @@ ur-PK:
         idea: آپ کا خیال "%{prescreening_status_title}" میں ہے
         initiative: آپ کی پہل "%{prescreening_status_title}" میں ہے
         issue: آپ کا مسئلہ "%{prescreening_status_title}" میں ہے
+        observation: آپ کا مشاہدہ "%{prescreening_status_title}" میں ہے
         option: آپ کا اختیار "%{prescreening_status_title}" میں ہے
         petition: آپ کی درخواست "%{prescreening_status_title}" میں ہے
         post: آپ کی پوسٹ "%{prescreening_status_title}" میں ہے

@@ -190,6 +190,7 @@ fi-FI:
       new_email_confirmation: Uuden sähköpostiosoitteen vahvistuskoodi
       new_idea_for_admin_prescreening: Uusi hyväksyntää vaativa syöte moderoimassani projektissa
       new_idea_for_admin_published: Uusi julkaistu panos moderoimassani projektissa
+      new_phone_confirmation: Uusi puhelinnumeron vahvistuskoodi
       official_feedback_on_idea_you_follow: Päivitä ajatus, jota seuraat
       password_reset: Salasanan nollaus
       project_folder_moderation_rights_received: Kansionhallintaoikeudet vastaanotettu
@@ -202,6 +203,7 @@ fi-FI:
       project_review_state_change: Projekti hyväksytty
       proposal_expired_for_admin: Ehdotus vanhentui saavuttamatta äänestyskynnystä
       screening_digest: Viikoittainen seulontamuistutus
+      sms_manual: Viralliset tekstiviestit
       space_moderation_rights_received: Tilan hallinnointioikeudet vastaanotettu
       status_change_on_idea_you_follow: Seuraamasi idean tilanmuutos
       survey_submitted: Kysely lähetetty
@@ -249,6 +251,7 @@ fi-FI:
         idea: '%{authorName} kommentoi ideaa, jota seuraat'
         initiative: '%{authorName} kommentoi aloitetta, jota seuraat'
         issue: '%{authorName} kommentoi asiaa, jota seuraat'
+        observation: '%{authorName} kommentoi seuraamaasi havaintoa'
         option: '%{authorName} kommentoi valitsemaasi vaihtoehtoa'
         petition: '%{authorName} kommentoi seuraamaasi vetoomusta'
         post: '%{authorName} kommentoi seuraamaasi julkaisua'
@@ -323,6 +326,7 @@ fi-FI:
         idea: Siirry tähän ajatukseen
         initiative: Mene tähän aloitteeseen
         issue: Siirry tähän aiheeseen
+        observation: Siirry tähän havaintoon
         option: Siirry tähän vaihtoehtoon
         petition: Siirry tähän vetoomukseen
         post: Siirry tähän viestiin
@@ -343,6 +347,7 @@ fi-FI:
         idea: Mene ideaasi
         initiative: Mene aloitteeseesi
         issue: Siirry kommenttiisi
+        observation: Siirry havaintoosi
         option: Siirry valitsemaasi vaihtoehtoon
         petition: Mene hakemukseesi
         post: Siirry omaan viestiisi
@@ -376,6 +381,7 @@ fi-FI:
         idea: Ideasi on julkaistu
         initiative: Aloitteesi on julkaistu
         issue: Numerosi on julkaistu
+        observation: Havaintosi on julkaistu
         option: Vaihtoehtosi on julkaistu
         petition: Vetoomuksesi on julkaistu
         post: Viestisi on julkaistu
@@ -530,6 +536,8 @@ fi-FI:
       title: Uusi syöte on julkaistu alustallasi
       today: Tänään
       yesterday: Eilen
+    new_phone_confirmation:
+      sms_body: Vahvistuskoodisi on %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Siirry tähän syötteeseen
       event_description: "%{feedback_author_name} antoi päivityksen kohteesta '%{input_title}'."
@@ -764,6 +772,7 @@ fi-FI:
         idea: Ideasi on "%{prescreening_status_title}"
         initiative: Aloitteesi on kohdassa "%{prescreening_status_title}"
         issue: Ongelmasi on kohdassa%{prescreening_status_title}
+        observation: Havaintosi tila on ”%{prescreening_status_title}”
         option: Vaihtoehtosi on "%{prescreening_status_title}"
         petition: Vetoomuksesi on "%{prescreening_status_title}"
         post: Viestisi on kategoriassa "%{prescreening_status_title}"

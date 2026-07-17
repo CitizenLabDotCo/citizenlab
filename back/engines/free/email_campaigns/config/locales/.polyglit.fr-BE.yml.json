@@ -964,6 +964,11 @@
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.sms_manual": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:49:44.803723Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.campaign_type_description.space_moderation_rights_received": {
     "state": "verified",
     "verified_at": "2026-04-13T14:12:09.016502Z",
@@ -1178,6 +1183,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.comment_on_idea_you_follow.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.887726Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.comment_on_idea_you_follow.main_header.option": {
     "state": "verified",
@@ -1494,6 +1504,11 @@
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.general.cta_goto.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.887726Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.general.cta_goto.option": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
@@ -1588,6 +1603,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.general.cta_goto_your.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.887726Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.general.cta_goto_your.option": {
     "state": "verified",
@@ -1738,6 +1758,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.idea_published.input_type_subject.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.887726Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.idea_published.input_type_subject.option": {
     "state": "verified",
@@ -2413,6 +2438,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.new_phone_confirmation.sms_body": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:21:54.736722Z",
+    "verified_by": "Adrien"
   },
   "email_campaigns.official_feedback_on_idea_you_follow.cta_button": {
     "state": "verified",
@@ -3443,6 +3473,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.your_input_in_screening.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.887726Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.your_input_in_screening.main_header.option": {
     "state": "verified",

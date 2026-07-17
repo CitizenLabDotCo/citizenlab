@@ -192,6 +192,7 @@ fr-BE:
       new_email_confirmation: Nouveau code de confirmation d'e-mail
       new_idea_for_admin_prescreening: Nouvelle contribution en attente d’approbation dans un projet que je modère
       new_idea_for_admin_published: Une nouvelle contribution a été publiée dans un projet que je modère
+      new_phone_confirmation: Nouveau code de confirmation de téléphone
       official_feedback_on_idea_you_follow: Mise à jour d'une contribution que vous suivez
       password_reset: Réinitialisation du mot de passe
       project_folder_moderation_rights_received: Droits d'administrateur de dossiers reçus
@@ -204,6 +205,7 @@ fr-BE:
       project_review_state_change: Projet approuvé
       proposal_expired_for_admin: Proposition expirée sans atteindre le seuil de vote
       screening_digest: Rappel hebdomadaire de modération
+      sms_manual: SMS officiels
       space_moderation_rights_received: Droits de gestionnaire d'espace reçus
       status_change_on_idea_you_follow: Changement de statut d'une contribution que vous suivez
       survey_submitted: Enquête soumise
@@ -251,6 +253,7 @@ fr-BE:
         idea: '%{authorName} a commenté une idée que vous suivez'
         initiative: '%{authorName} a commenté une initiative que vous suivez'
         issue: '%{authorName} a commenté un problème que vous suivez'
+        observation: '%{authorName} a commenté une observation que vous suivez'
         option: '%{authorName} a commenté une option que vous suivez'
         petition: '%{authorName} a commenté une pétition que vous suivez'
         post: '%{authorName} a commenté une publication que vous suivez'
@@ -325,6 +328,7 @@ fr-BE:
         idea: Voir l'idée
         initiative: Voir l'initiative
         issue: Voir le problème
+        observation: Voir cette observation
         option: Voir l'option
         petition: Voir la pétition
         post: Voir la publication
@@ -345,6 +349,7 @@ fr-BE:
         idea: Accédez à votre idée
         initiative: Voir votre initiative
         issue: Accédez à votre problème
+        observation: Accéder à votre observation
         option: Accédez à votre option
         petition: Accédez à votre pétition
         post: Voir votre publication
@@ -378,6 +383,7 @@ fr-BE:
         idea: Votre idée a été publiée
         initiative: Votre initiative a été publiée
         issue: Votre problème a été publié
+        observation: Votre observation a été publiée
         option: Votre option a été publiée
         petition: Votre pétition a été publiée
         post: Votre message a été publié
@@ -532,6 +538,8 @@ fr-BE:
       title: Une nouvelle contribution a été publiée sur votre plateforme
       today: Aujourd'hui
       yesterday: Hier
+    new_phone_confirmation:
+      sms_body: Votre code de confirmation est %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Voir la contribution
       event_description: '%{feedback_author_name} a publié une mise à jour sur « %{input_title} ».'
@@ -766,6 +774,7 @@ fr-BE:
         idea: Le statut de votre idée est « %{prescreening_status_title} »
         initiative: Le statut de votre initiative est « %{prescreening_status_title} »
         issue: Le statut de votre problème est « %{prescreening_status_title} »
+        observation: Votre observation est en « %{prescreening_status_title} »
         option: Le statut de votre option est « %{prescreening_status_title} »
         petition: Le statut de votre pétition est « %{prescreening_status_title} »
         post: Votre message est dans "%{prescreening_status_title}"

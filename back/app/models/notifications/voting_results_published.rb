@@ -80,7 +80,8 @@ module Notifications
       if phase.voting? && phase.autoshare_results_enabled
         user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
         ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
-          next if Permissions::PhasePermissionsService.new(phase, recipient).denied_reason_for_action 'voting'
+          # time: nil - the phase has just ended
+          next if Permissions::PhasePermissionsService.new(phase, recipient, time: nil).denied_reason_for_action 'voting'
 
           new(
             recipient: recipient,

@@ -112,6 +112,8 @@ pt-BR:
           title: Qual é a iniciativa de vocês?
         issue:
           title: Qual é o seu problema?
+        observation:
+          title: Qual é a sua observação?
         option:
           title: Qual é a sua opção?
         petition:
@@ -267,6 +269,25 @@ pt-BR:
       title: Todos os projetos
     proposals:
       title: Propostas
+  pdf_export:
+    input_responses:
+      date: Data
+      no_answer: (Sem resposta)
+      prepared_by: Preparado por
+      report_label: Relatório de respostas
+      respondent: Respondente %{number}
+      response_count:
+        one: '%{count} resposta'
+        other: '%{count} respostas'
+    survey_responses:
+      date: Data
+      no_answer: (Sem resposta)
+      prepared_by: Preparado por
+      report_label: Relatório de respostas da pesquisa
+      respondent: Respondente %{number}
+      response_count:
+        one: '%{count} resposta'
+        other: '%{count} respostas'
   phases:
     community_monitor_title: Monitoramento da comunidade
     native_survey_button: Responda à pesquisa
