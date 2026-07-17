@@ -21,7 +21,7 @@ export const METHOD_META: Record<
     description: messages.emailMethodDescription,
   },
   phone: {
-    icon: 'message',
+    icon: 'tablet',
     description: messages.phoneMethodDescription,
   },
   verification: {
