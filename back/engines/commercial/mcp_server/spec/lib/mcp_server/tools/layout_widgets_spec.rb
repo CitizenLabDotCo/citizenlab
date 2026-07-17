@@ -34,6 +34,22 @@ describe McpServer::Tools::LayoutWidgets do
     end
   end
 
+  describe '.reference_for' do
+    it 'includes the format rules and only the requested widget docs' do
+      reference = described_class.reference_for(%w[TextMultiloc TextMultiloc])
+
+      expect(reference).to include(described_class::FORMAT_RULES)
+      expect(reference).to include(described_class::DOCS['TextMultiloc'])
+      expect(reference).not_to include(described_class::DOCS['TwoColumn'])
+    end
+
+    it 'ignores widgets without a doc' do
+      expect(described_class.reference_for(%w[Container Unknown])).to eq(
+        described_class.reference_for([])
+      )
+    end
+  end
+
   describe 'CHEATSHEET' do
     it 'includes the doc of every documented widget' do
       described_class::DOCS.each do |name, doc|

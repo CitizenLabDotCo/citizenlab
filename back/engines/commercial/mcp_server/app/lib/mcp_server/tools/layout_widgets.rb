@@ -68,7 +68,7 @@ class McpServer::Tools::LayoutWidgets
     DOC
   }.freeze
 
-  CHEATSHEET = <<~CHEATSHEET.freeze
+  FORMAT_RULES = <<~RULES
     # craftjs_json format
 
     The layout is a flat JSON object mapping node-id to node. It must contain a "ROOT"
@@ -79,7 +79,10 @@ class McpServer::Tools::LayoutWidgets
 
     Every other node has exactly these keys:
     {"type":{"resolvedName":"<Widget>"},"isCanvas":false,"props":{...},"displayName":"<Widget>","custom":{...},"parent":"<parent-id>","hidden":false,"nodes":[],"linkedNodes":{}}
+  RULES
 
+  CHEATSHEET = <<~CHEATSHEET.freeze
+    #{FORMAT_RULES}
     Design tips — a page of only text blocks reads as a wall of text; vary the widgets:
     - Recommended shape for a project description: intro text → TwoColumn or ThreeColumn
       for parallel content (process stages, "why / what you influence") → ButtonMultiloc
@@ -93,4 +96,12 @@ class McpServer::Tools::LayoutWidgets
 
     #{DOCS.values.join("\n")}
   CHEATSHEET
+
+  # The compact reference for a validation-failure response: the format rules plus
+  # docs for just the given widgets. Deliberately NOT the full cheatsheet — every
+  # failed attempt puts its reference into the client's context, so full copies
+  # would accumulate across retries.
+  def self.reference_for(widget_names)
+    [FORMAT_RULES, *DOCS.values_at(*widget_names.uniq).compact].join("\n")
+  end
 end

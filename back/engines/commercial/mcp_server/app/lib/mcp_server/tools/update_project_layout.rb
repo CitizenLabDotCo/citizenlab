@@ -38,9 +38,11 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     }
   end
 
-  # Deliberately compact: MCP clients truncate long tool descriptions, so the full
-  # widget/format reference travels in tool RESPONSES instead (get_project_layout when no
-  # layout exists, and validation-error responses from this tool).
+  # Deliberately compact: MCP clients truncate long tool descriptions, so the
+  # widget/format reference travels in tool RESPONSES instead — the full cheatsheet
+  # once, when get_project_layout finds no layout, and only a targeted subset
+  # (format rules + docs for the offending widgets) on validation errors, so
+  # retries don't accumulate full copies in the client's context.
   def description
     <<~DESC
       Creates or updates a project's description-page layout (a craft.js node graph) with a
@@ -214,7 +216,16 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
 
       raise PatchError,
         "Layout NOT saved. Fix these problems and retry:\n" \
-        "#{errors.map { |e| "- #{e}" }.join("\n")}\n\n#{McpServer::Tools::LayoutWidgets::CHEATSHEET}"
+        "#{errors.map { |e| "- #{e}" }.join("\n")}\n\n#{error_reference(errors, graph)}"
+    end
+
+    # Docs for just the widgets the errors point at — a full cheatsheet here would
+    # add another complete copy to the client's context on every failed retry.
+    def error_reference(errors, graph)
+      widgets = errors.filter_map do |e|
+        e.node_id && ContentBuilder::Craftjs::Query.resolved_name(graph[e.node_id] || {})
+      end
+      McpServer::Tools::LayoutWidgets.reference_for(widgets)
     end
 
     def save_layout(layout, created)
