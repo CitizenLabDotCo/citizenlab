@@ -16,9 +16,6 @@ module MultiTenancy
           locale
           password_digest
           verified
-          phone
-          phone_confirmed_at
-          new_phone
         ]
 
         # To fix invalid SSO users without email addresses without having to serialize the Identity model
