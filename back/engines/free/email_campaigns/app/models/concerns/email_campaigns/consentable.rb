@@ -24,11 +24,25 @@ module EmailCampaigns
           user.send(:"#{role}?")
         end
       end
+
+      # Whether a user counts as consented when they have no consent row yet.
+      # Opt-out campaigns (the default, e.g. email) treat a missing row as
+      # consented; opt-in campaigns (e.g. marketing SMS) override this to false.
+      def consented_by_default?
+        true
+      end
     end
 
     def filter_users_with_consent(users_scope, _options = {})
-      users_scope
-        .where.not(id: Consent.where(campaign_type: type, consented: false).pluck(:user_id))
+      if self.class.consented_by_default?
+        # Opt-out: everyone except users who explicitly opted out.
+        opted_out = Consent.where(campaign_type: type, consented: false).pluck(:user_id)
+        users_scope.where.not(id: opted_out)
+      else
+        # Opt-in: only users who explicitly opted in.
+        opted_in = Consent.where(campaign_type: type, consented: true).pluck(:user_id)
+        users_scope.where(id: opted_in)
+      end
     end
   end
 end

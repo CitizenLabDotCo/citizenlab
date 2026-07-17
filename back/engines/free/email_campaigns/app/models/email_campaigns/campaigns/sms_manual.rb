@@ -56,6 +56,12 @@ module EmailCampaigns
       'email_campaigns.admin_labels.content_type.general'
     end
 
+    # Marketing SMS is opt-in: users only receive it after explicitly consenting,
+    # so a missing consent row means "not consented" (see Consentable).
+    def self.consented_by_default?
+      false
+    end
+
     # The admin-authored body, carried on the command by #generate_commands.
     def sms_body(command)
       MultilocService.new.t(command[:body_multiloc], command[:recipient].locale)

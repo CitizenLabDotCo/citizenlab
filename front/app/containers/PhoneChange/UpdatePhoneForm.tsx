@@ -6,6 +6,7 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Input from 'components/HookForm/Input';
 import {
   Title,
@@ -109,6 +110,20 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
+        <Box mt="20px">
+          <CheckboxWithLabel
+            name="smsVerificationConsent"
+            label={formatMessage(messages.smsVerificationConsentLabel)}
+            dataTestId="sms-verification-consent"
+          />
+        </Box>
+        <Box mt="16px" mb="8px">
+          <CheckboxWithLabel
+            name="smsManualCampaignConsent"
+            label={formatMessage(messages.smsManualCampaignConsentLabel)}
+            dataTestId="sms-manual-campaign-consent"
+          />
+        </Box>
         <StyledButton
           type="submit"
           size="m"

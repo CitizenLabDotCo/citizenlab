@@ -65,4 +65,18 @@ export default defineMessages({
     id: 'app.containers.PhoneChange.backToProfile',
     defaultMessage: 'Back to profile settings',
   },
+  smsVerificationConsentLabel: {
+    id: 'app.containers.PhoneChange.smsVerificationConsentLabel',
+    defaultMessage: 'I agree to receive one-time verification codes by SMS.',
+  },
+  smsVerificationConsentError: {
+    id: 'app.containers.PhoneChange.smsVerificationConsentError',
+    defaultMessage:
+      'You must agree to receive verification codes by SMS to continue.',
+  },
+  smsManualCampaignConsentLabel: {
+    id: 'app.containers.PhoneChange.smsManualCampaignConsentLabel',
+    defaultMessage:
+      "I'd also like to receive updates and campaign messages by SMS. You can opt out at any time.",
+  },
 });
