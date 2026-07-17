@@ -10329,9 +10329,24 @@
     "verified_at": "2026-07-16T20:42:18.365433Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.phoneEmptyError": {
+    "state": "verified",
+    "verified_at": "2026-07-17T07:44:21.420851Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.phoneInvalid2": {
+    "state": "verified",
+    "verified_at": "2026-07-17T07:44:21.420851Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneChange.phoneTaken": {
     "state": "verified",
     "verified_at": "2026-07-16T21:45:00.550145Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.PhoneChange.phoneUnknownError": {
+    "state": "verified",
+    "verified_at": "2026-07-17T07:44:21.420851Z",
     "verified_by": "Adrien"
   },
   "app.containers.PhoneChange.phoneUpdateCancelled": {
