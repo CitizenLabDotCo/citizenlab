@@ -142,7 +142,11 @@ const TimelinePhases = ({ projectId }: Props) => {
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
 
   return (
-    <Box p="12px" borderTop={`1px solid ${colors.grey200}`}>
+    <Box
+      className="intercom-product-tour-project-timeline"
+      p="12px"
+      borderTop={`1px solid ${colors.grey200}`}
+    >
       <Text
         m="0 0 8px 0"
         px="10px"
