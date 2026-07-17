@@ -16,10 +16,8 @@ module FlagInappropriateContent
     }
 
     def initialize
-      # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
-      return if ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil).blank?
-
-      @llm = LLMSelector.new.llm_class_for_use_case('toxicity_detection').new
+      region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
+      @llm = Analysis::LLM::Claude3Haiku.new(region: region) if region
     end
 
     # @return [InappropriateContentFlag, nil] The flag if one was created, nil otherwise
@@ -72,38 +70,20 @@ module FlagInappropriateContent
       return if !@llm # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
 
       prompt = Analysis::LLM::Prompt.new.fetch('toxicity_detection', text:, custom_guidelines:)
-      response = @llm.chat(prompt, response_schema:)
-      toxicity_label = MAP_TOXICITY_LABEL[response['category']]
-      return if !toxicity_label
-
-      { toxicity_label:, ai_reason: response['reason'] }
+      response = @llm.chat(prompt, assistant_prefix: 'My answer is (').strip
+      toxicity_label = MAP_TOXICITY_LABEL.find do |class_id, _|
+        response.starts_with? "#{class_id})"
+      end&.last
+      if toxicity_label
+        ai_reason = response[2, response.length].strip
+        { toxicity_label: toxicity_label, ai_reason: ai_reason }
+      end
     end
 
     def custom_guidelines
       return @custom_guidelines if defined? @custom_guidelines
 
       @custom_guidelines = AppConfiguration.instance.settings('flag_inappropriate_content', 'custom_guidelines').presence
-    end
-
-    def response_schema
-      categories = MAP_TOXICITY_LABEL.keys
-      categories -= ['F'] if custom_guidelines.blank?
-      {
-        type: 'object',
-        additionalProperties: false,
-        required: %w[category reason],
-        properties: {
-          category: {
-            type: 'string',
-            enum: categories,
-            description: 'The category that best describes the message'
-          },
-          reason: {
-            type: 'string',
-            description: 'A short explanation of why the chosen category applies'
-          }
-        }
-      }
     end
   end
 end
