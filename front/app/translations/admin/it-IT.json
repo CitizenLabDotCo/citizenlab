@@ -3005,7 +3005,7 @@
   "app.containers.AdminPage.ProjectTimeline.descriptionLabel": "Descrizione della fase",
   "app.containers.AdminPage.ProjectTimeline.descriptionSave": "Salva",
   "app.containers.AdminPage.ProjectTimeline.draftDescription.beta": "BETA",
-  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Scarta le modifiche",
+  "app.containers.AdminPage.ProjectTimeline.draftDescriptionDiscardChanges": "Annulla modifiche",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftBadge": "BOZZA",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionDraftTooltip": "Stai modificando una bozza. Pubblica per renderla visibile ai partecipanti, oppure scarta per annullare le modifiche.",
   "app.containers.AdminPage.ProjectTimeline.draftDescriptionPublish1": "Pubblica la descrizione della fase",

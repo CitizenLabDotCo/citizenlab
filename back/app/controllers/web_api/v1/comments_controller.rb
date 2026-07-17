@@ -29,7 +29,7 @@ class WebApi::V1::CommentsController < ApplicationController
     when nil
       root_comments.order(lft: :asc)
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
     root_comments = paginate root_comments
 
