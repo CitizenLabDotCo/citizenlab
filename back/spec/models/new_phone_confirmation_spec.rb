@@ -35,9 +35,9 @@ RSpec.describe NewPhoneConfirmation do
   end
 
   describe '#generate_code' do
-    it "returns '1234' when the sms use_dummy_code setting is enabled" do
+    it "returns '1234' when the sms use_test_mode setting is enabled" do
       config = AppConfiguration.instance
-      config.settings['sms'] = { 'allowed' => true, 'enabled' => true, 'use_dummy_code' => true }
+      config.settings['sms'] = { 'allowed' => true, 'enabled' => true, 'use_test_mode' => true }
       config.save!
 
       user = create(:user)
