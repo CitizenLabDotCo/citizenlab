@@ -236,13 +236,15 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     def save_layout(layout, created)
       layout.enabled = params[:enabled] unless params[:enabled].nil?
 
+      # Same sequence as ContentBuilderLayoutsController, deliberately with NO
+      # transaction: the before_ hooks download remote images (LayoutImage.create!
+      # from imageUrl), which must not hold a DB connection for the duration of a
+      # slow download. If the save then fails, imported LayoutImage rows are left
+      # behind without a layout — the same tolerated state the FE flow produces by
+      # uploading images before the layout is first saved.
       side_fx = ContentBuilder::SideFxLayoutService.new
-      # The before_ hooks import new images (LayoutImage.create! from imageUrl); the
-      # transaction keeps those rows from being orphaned when a later step aborts.
-      ActiveRecord::Base.transaction do
-        created ? side_fx.before_create(layout, current_user) : side_fx.before_update(layout, current_user)
-        layout.save!
-      end
+      created ? side_fx.before_create(layout, current_user) : side_fx.before_update(layout, current_user)
+      layout.save!
       created ? side_fx.after_create(layout, current_user) : side_fx.after_update(layout, current_user)
     end
 
