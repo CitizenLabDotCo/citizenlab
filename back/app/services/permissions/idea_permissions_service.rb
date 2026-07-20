@@ -142,5 +142,9 @@ module Permissions
     def idea_in_current_phase?(current_phase)
       idea.ideas_phases.find { |ip| ip.phase_id == current_phase.id }
     end
+
+    def timeline_service
+      @timeline_service ||= TimelineService.new
+    end
   end
 end

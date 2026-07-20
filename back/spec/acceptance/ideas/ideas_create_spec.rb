@@ -348,7 +348,6 @@ resource 'Ideas' do
 
         describe do
           let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
-          let(:phase_id) { project.phases.first.id }
 
           example_request 'Creating an idea in a specific (inactive) phase' do
             assert_status 201

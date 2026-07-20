@@ -130,10 +130,6 @@ module Permissions
 
     attr_reader :phase, :request, :time
 
-    def timeline_service
-      @timeline_service ||= TimelineService.new
-    end
-
     # Phase methods
     def posting_idea_denied_reason_for_action
       if !participation_method.supports_submission?
