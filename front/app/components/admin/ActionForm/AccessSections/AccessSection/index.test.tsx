@@ -32,7 +32,7 @@ jest.mock(
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/IdMethodFieldsModal/Trigger',
+  'components/admin/ActionForm/AccessSections/IdMethodsModal/Trigger',
   () => () => <div data-testid="id-method-fields-trigger" />
 );
 
