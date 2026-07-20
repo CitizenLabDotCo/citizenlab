@@ -112,9 +112,9 @@ const UpdatePhoneForm = ({
         )}
         <Box mt="20px">
           <CheckboxWithLabel
-            name="smsVerificationConsent"
-            label={formatMessage(messages.smsVerificationConsentLabel)}
-            dataTestId="sms-verification-consent"
+            name="smsConfirmationConsent"
+            label={formatMessage(messages.smsConfirmationConsentLabel)}
+            dataTestId="sms-confirmation-consent"
           />
         </Box>
         <Box mt="16px" mb="8px">

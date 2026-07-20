@@ -30,7 +30,7 @@ import UpdatePhoneForm from './UpdatePhoneForm';
 
 export type FormValues = {
   phone: string;
-  smsVerificationConsent: boolean;
+  smsConfirmationConsent: boolean;
   smsManualCampaignConsent: boolean;
 };
 
@@ -49,9 +49,9 @@ const PhoneChange = () => {
 
   const schema = object({
     phone: string().required(formatMessage(messages.phoneEmptyError)),
-    smsVerificationConsent: boolean()
+    smsConfirmationConsent: boolean()
       .default(false)
-      .test('', formatMessage(messages.smsVerificationConsentError), isTruthy),
+      .test('', formatMessage(messages.smsConfirmationConsentError), isTruthy),
     smsManualCampaignConsent: boolean().default(false),
   });
 
@@ -59,7 +59,7 @@ const PhoneChange = () => {
     mode: 'onBlur',
     defaultValues: {
       phone: '',
-      smsVerificationConsent: false,
+      smsConfirmationConsent: false,
       smsManualCampaignConsent: false,
     },
     resolver: yupResolver(schema),
@@ -80,7 +80,7 @@ const PhoneChange = () => {
       setUpdateSuccessful(true);
       methods.reset({
         phone: '',
-        smsVerificationConsent: false,
+        smsConfirmationConsent: false,
         smsManualCampaignConsent: false,
       });
     } catch (e) {
