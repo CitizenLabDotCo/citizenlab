@@ -8,19 +8,20 @@ require 'csv'
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
-#   rake decidim_importer:finalize[tmp/import_files/example.com.template.yml,localhost]  # run last
 #
-# `finalize` runs *after* `import` and does two things that need the applied tenant (real ids):
+# `import` deserializes the template into the tenant, then runs the post-import finishing that needs
+# the applied tenant (real ids):
 #   1. reads the `.url_mapping.csv` dumped alongside the template (old Decidim URL → new target) and
 #      rewrites the links embedded in the tenant's Content Builder layouts and static pages — file
-#      links resolve to the imported file's real content URL. Links that should be repointed but
-#      couldn't be resolved are written to `<base>.broken_links.csv` for manual review.
+#      links resolve to the imported file's real content URL (see {DecidimImporter::LinkCorrection}).
+#      Links that should be repointed but couldn't be resolved are written to `<base>.broken_links.csv`
+#      for manual review.
 #   2. gathers every top-level (ungrouped) project into a new "Consultations" folder, gives every folder
 #      (Consultations, Assemblies and the imported group folders) the standard folder description layout
 #      (title + description + a published-projects widget) and a homepage preview description, adds a
 #      widget to the Consultations folder linking out to the other folders (except Assemblies), and
 #      rebuilds the nav bar down to Home plus the Consultations and Assemblies folders (dropping the
-#      default items).
+#      default items). See {DecidimImporter::ConsultationsFolder}.
 #
 # Dry-run a dumped template on a throwaway tenant that's created then destroyed:
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml]
@@ -30,8 +31,8 @@ require 'csv'
 # a tenant. `import` and `verify` both consume the dumped tenant-template YAML: `import` deserializes
 # it into the tenant matching `host` (its 3rd argument disables image fetching, for templates whose
 # `remote_*_url` values point at an unreachable host, e.g. the source Decidim's `http://localhost/...`
-# redirects); `verify` deserializes it into a fresh throwaway tenant and destroys it afterwards, so a
-# template can be smoke-tested without touching a real tenant.
+# redirects) and then runs the finishing steps above; `verify` deserializes it into a fresh throwaway
+# tenant and destroys it afterwards, so a template can be smoke-tested without touching a real tenant.
 #
 # `dump_yaml` also writes `<base>.app_config.json` — the subset of `01--organization.csv` that maps
 # onto Go Vocal AppConfiguration settings. `import` looks for that sibling file (same base name,
@@ -73,51 +74,8 @@ namespace :decidim_importer do
     write_url_mapping_csv(importer, path)
   end
 
-  desc 'Post-import finishing (run after `import`): corrects Decidim links, then gathers ungrouped ' \
-       'projects into a "Consultations" folder (+ layout) and rebuilds the nav bar.'
-  task :finalize, %i[mapping host] => [:environment] do |_t, args|
-    mapping_path = url_mapping_path(args.fetch(:mapping))
-    tenant = Tenant.find_by!(host: args[:host] || 'localhost')
-    map = DecidimImporter::LinkMap.read_csv(mapping_path)
-
-    Rails.logger.info "Decidim finalize → tenant=#{tenant.host} mapping=#{mapping_path}"
-    broken = []
-    updated = 0
-    tenant.switch do
-      # 1. Rewrite Decidim back-links in Content Builder layouts and static pages. A file link resolves
-      #    to the imported file's real content URL (memoised per id).
-      file_urls = Hash.new { |cache, id| cache[id] = Files::File.find_by(id: id)&.content&.url }
-      resolver = ->(file_id) { file_urls[file_id] }
-
-      ContentBuilder::Layout.find_each do |layout|
-        changed, found = correct_layout_links(layout, map, resolver)
-        if changed
-          layout.save!
-          updated += 1
-        end
-        found.each { |url| broken << broken_link_row(url, layout.content_buildable_type, layout.content_buildable_id) }
-      end
-      StaticPage.find_each do |page|
-        changed, found = correct_static_page_links(page, map, resolver)
-        if changed
-          page.save!
-          updated += 1
-        end
-        found.each { |url| broken << broken_link_row(url, 'StaticPage', page.id) }
-      end
-      Rails.logger.info "  rewrote links in #{updated} record(s)"
-
-      # 2. Gather ungrouped projects into the "Consultations" folder (+ its Selection layout) and
-      #    rebuild the nav bar down to Home + the Consultations and Assemblies folders.
-      consultations = DecidimImporter::ConsultationsFolder.new.run
-      Rails.logger.info "  Consultations folder #{consultations[:folder].slug}: " \
-                        "moved #{consultations[:moved_projects].size} project(s) in"
-    end
-    write_broken_links_csv(mapping_path, broken)
-    Rails.logger.info 'COMPLETE'
-  end
-
-  desc 'Imports a dumped tenant-template YAML file into the tenant matching `host`.'
+  desc 'Imports a dumped tenant-template YAML file into the tenant matching `host`, then runs the ' \
+       'post-import finishing (link correction + Consultations/Assemblies folder structure).'
   task :import, %i[file host import_images] => [:environment] do |_t, args|
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
     file = args.fetch(:file)
@@ -126,6 +84,7 @@ namespace :decidim_importer do
     json = app_config_sibling(file)
 
     Rails.logger.info "Decidim import → tenant=#{tenant.host} file=#{file} import_images=#{import_images}"
+    broken = []
     tenant.switch do
       # App config first: it sets the tenant's locales, which the template's records rely on.
       if DecidimImporter::Importer.apply_app_config_file(json, import_images: import_images)
@@ -135,8 +94,33 @@ namespace :decidim_importer do
       end
       created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
       created.each { |klass, ids| Rails.logger.info "  created #{ids.size} #{klass}" }
+
+      broken = finalize_import!(file)
     end
+    write_broken_links_csv(url_mapping_path(file), broken)
     Rails.logger.info 'COMPLETE'
+  end
+
+  # Post-import finishing, run inside the target tenant after the template is applied: correct the
+  # embedded Decidim links (when a mapping was dumped), then build the Consultations/Assemblies folder
+  # structure. Returns the broken links for the report CSV.
+  def finalize_import!(file)
+    mapping_path = url_mapping_path(file)
+    broken =
+      if File.exist?(mapping_path)
+        correction = DecidimImporter::LinkCorrection.from_csv(mapping_path)
+        result = correction.run
+        Rails.logger.info "  rewrote links in #{correction.updated_count} record(s)"
+        result
+      else
+        Rails.logger.info "  no URL mapping at #{mapping_path} → skipping link correction"
+        []
+      end
+
+    consultations = DecidimImporter::ConsultationsFolder.new.run
+    Rails.logger.info "  Consultations folder #{consultations[:folder].slug}: " \
+                      "moved #{consultations[:moved_projects].size} project(s) in"
+    broken
   end
 
   desc 'Applies a dumped template YAML to a throwaway tenant to confirm it deserializes, then destroys it.'
@@ -253,7 +237,7 @@ namespace :decidim_importer do
   end
 
   # Writes the old→new link mapping next to the input as `<base>.url_mapping.csv` (unless there are no
-  # correctable links). Applied to the tenant after import by `finalize`.
+  # correctable links). Applied to the tenant during the `import` task's post-import finishing.
   def write_url_mapping_csv(importer, input_path)
     map = importer.link_map
     if map.empty?
@@ -266,66 +250,13 @@ namespace :decidim_importer do
     Rails.logger.info "Wrote #{csv_path} (#{map.resolved_count} mapped, #{map.broken.size} broken)"
   end
 
-  # The URL-mapping CSV for a `finalize` argument: the path itself when a `.csv` is given, else the
+  # The URL-mapping CSV beside a template path: the path itself when a `.csv` is given, else the
   # template path with its `.template.yml` (or plain `.yml`) suffix swapped for `.url_mapping.csv`.
   def url_mapping_path(arg)
     return arg if arg.downcase.end_with?('.csv')
 
     candidate = arg.sub(/\.template\.yml\z/i, '.url_mapping.csv')
     candidate == arg ? arg.sub(/\.ya?ml\z/i, '.url_mapping.csv') : candidate
-  end
-
-  # Applies the mapping to one layout's `TextMultiloc` text fields. Returns `[changed?, broken_urls]`.
-  # Reassigns `craftjs_json` (a deep dup) only when something changed, so ActiveRecord sees it dirty.
-  def correct_layout_links(layout, map, resolver)
-    craftjs = layout.craftjs_json
-    return [false, []] unless craftjs.is_a?(Hash)
-
-    craftjs = craftjs.deep_dup
-    changed = false
-    broken = []
-    craftjs.each_value do |node|
-      # ROOT's `type` is the plain string 'div', so guard before treating it as a component hash.
-      next unless node.is_a?(Hash) && node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'TextMultiloc'
-
-      text = node.dig('props', 'text')
-      next unless text.is_a?(Hash)
-
-      changed |= correct_multiloc!(text, map, resolver, broken)
-    end
-    layout.craftjs_json = craftjs if changed
-    [changed, broken.uniq]
-  end
-
-  # Applies the mapping to a static page's top info section. Returns `[changed?, broken_urls]`.
-  def correct_static_page_links(page, map, resolver)
-    body = page.top_info_section_multiloc
-    return [false, []] unless body.is_a?(Hash)
-
-    body = body.deep_dup
-    broken = []
-    changed = correct_multiloc!(body, map, resolver, broken)
-    page.top_info_section_multiloc = body if changed
-    [changed, broken.uniq]
-  end
-
-  # Rewrites each locale's HTML of a `{ locale => html }` multiloc in place, appending any broken URLs
-  # to `broken`. Returns whether anything changed.
-  def correct_multiloc!(multiloc, map, resolver, broken)
-    changed = false
-    multiloc.each do |locale, html|
-      new_html, found = map.apply(html, file_resolver: resolver)
-      broken.concat(found)
-      next if new_html == html
-
-      multiloc[locale] = new_html
-      changed = true
-    end
-    changed
-  end
-
-  def broken_link_row(url, container_type, container_id)
-    { old_url: url, container_type: container_type, container_id: container_id }
   end
 
   # Writes the unresolved ("broken") links beside the mapping as `<base>.broken_links.csv`; no-op when
