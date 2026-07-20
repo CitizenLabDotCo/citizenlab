@@ -1482,7 +1482,6 @@
   "app.containers.IdeaButton.postingDisabled": "Les nouvelles soumissions ne sont pas acceptées actuellement",
   "app.containers.IdeaButton.postingInNonActivePhases": "Les nouvelles soumissions ne peuvent être ajoutées que dans les phases actives.",
   "app.containers.IdeaButton.postingInactive": "Les nouvelles soumissions ne sont actuellement pas acceptées.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Vous avez déjà répondu à cette enquête. Merci pour votre réponse !",
   "app.containers.IdeaButton.postingNoPermission": "Il n’est pas possible de commenter actuellement",
   "app.containers.IdeaButton.signInLinkText": "vous connecter",
   "app.containers.IdeaButton.signUpLinkText": "s'inscrire",

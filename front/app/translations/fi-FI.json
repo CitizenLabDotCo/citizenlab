@@ -1482,7 +1482,6 @@
   "app.containers.IdeaButton.postingDisabled": "Uusia ehdotuksia ei tällä hetkellä oteta vastaan",
   "app.containers.IdeaButton.postingInNonActivePhases": "Uusia lähetyksiä voidaan lisätä vain aktiivisissa vaiheissa.",
   "app.containers.IdeaButton.postingInactive": "Uusia ehdotuksia ei tällä hetkellä oteta vastaan.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Olet jo suorittanut tämän kyselyn. Kiitos vastauksestasi!",
   "app.containers.IdeaButton.postingNoPermission": "Uusia ehdotuksia ei tällä hetkellä oteta vastaan",
   "app.containers.IdeaButton.signInLinkText": "Kirjaudu sisään",
   "app.containers.IdeaButton.signUpLinkText": "Rekisteröidy",

@@ -1482,7 +1482,6 @@
   "app.containers.IdeaButton.postingDisabled": "ਨਵੀਆਂ ਬੇਨਤੀਆਂ ਵਰਤਮਾਨ ਵਿੱਚ ਸਵੀਕਾਰ ਨਹੀਂ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ",
   "app.containers.IdeaButton.postingInNonActivePhases": "ਨਵੀਆਂ ਸਬਮਿਸ਼ਨਾਂ ਸਿਰਫ਼ ਸਰਗਰਮ ਪੜਾਵਾਂ ਵਿੱਚ ਹੀ ਸ਼ਾਮਲ ਕੀਤੀਆਂ ਜਾ ਸਕਦੀਆਂ ਹਨ।",
   "app.containers.IdeaButton.postingInactive": "ਨਵੀਆਂ ਸਬਮਿਸ਼ਨਾਂ ਵਰਤਮਾਨ ਵਿੱਚ ਸਵੀਕਾਰ ਨਹੀਂ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ।",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਇਹ ਸਰਵੇਖਣ ਪੂਰਾ ਕਰ ਲਿਆ ਹੈ। ਤੁਹਾਡੇ ਜਵਾਬ ਲਈ ਧੰਨਵਾਦ!",
   "app.containers.IdeaButton.postingNoPermission": "ਨਵੀਆਂ ਬੇਨਤੀਆਂ ਵਰਤਮਾਨ ਵਿੱਚ ਸਵੀਕਾਰ ਨਹੀਂ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ",
   "app.containers.IdeaButton.signInLinkText": "ਲਾਗਿਨ",
   "app.containers.IdeaButton.signUpLinkText": "ਸਾਇਨ ਅਪ",

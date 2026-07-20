@@ -1482,7 +1482,6 @@
   "app.containers.IdeaButton.postingDisabled": "Nid yw cyflwyniadau newydd yn cael eu derbyn ar hyn o bryd",
   "app.containers.IdeaButton.postingInNonActivePhases": "Dim ond mewn cyfnodau gweithredol y gellir ychwanegu cyflwyniadau newydd.",
   "app.containers.IdeaButton.postingInactive": "Nid yw cyflwyniadau newydd yn cael eu derbyn ar hyn o bryd.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Rydych chi eisoes wedi cwblhau'r arolwg hwn. Diolch am eich ymateb!",
   "app.containers.IdeaButton.postingNoPermission": "Nid yw cyflwyniadau newydd yn cael eu derbyn ar hyn o bryd",
   "app.containers.IdeaButton.signInLinkText": "Mewngofnodi",
   "app.containers.IdeaButton.signUpLinkText": "cofrestru",

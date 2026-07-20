@@ -1482,7 +1482,6 @@
   "app.containers.IdeaButton.postingDisabled": "Derzeit werden keine neuen Beiträge mehr entgegengenommen\n",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nur in aktiven Phasen können neue Beiträge hinzugefügt werden",
   "app.containers.IdeaButton.postingInactive": "Du kannst derzeit nicht an diesem Projekt teilnehmen.",
-  "app.containers.IdeaButton.postingLimitedMaxReached": "Du hast diese Umfrage bereits abgeschlossen. Vielen Dank für deine Antwort!",
   "app.containers.IdeaButton.postingNoPermission": "Du kannst derzeit nicht an diesem Projekt teilnehmen.",
   "app.containers.IdeaButton.signInLinkText": "melden Sie sich an",
   "app.containers.IdeaButton.signUpLinkText": "registrieren Sie sich",
