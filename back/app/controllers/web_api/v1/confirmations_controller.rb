@@ -85,7 +85,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     return if manual_campaign_consent.nil?
 
     EmailCampaigns::Consent
-      .find_or_initialize_by(user_id: current_user.id, campaign_type: 'EmailCampaigns::Campaigns::SmsManual')
+      .find_or_initialize_by(user_id: current_user.id, campaign_type: EmailCampaigns::Campaigns::SmsManual.name)
       .update!(consented: manual_campaign_consent)
   end
 
