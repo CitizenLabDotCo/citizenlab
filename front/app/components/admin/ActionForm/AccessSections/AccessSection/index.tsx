@@ -19,7 +19,7 @@ import {
 import { AuthMethodKey } from '../../types';
 import { SectionHeader, Hint } from '../../ui';
 import GroupsSection from '../GroupsSection';
-import IdMethodFieldsTrigger from '../IdMethodFieldsModal/Trigger';
+import IdMethodsModalTrigger from '../IdMethodsModal/Trigger';
 import ModeCards from '../ModeCards';
 import { AccessSectionProps } from '../shared';
 
@@ -108,7 +108,7 @@ const AccessSection = ({
             {/* Belongs to the methods above as a group, not to any one of
                 them — identification covers authentication and verification
                 alike. */}
-            <IdMethodFieldsTrigger />
+            <IdMethodsModalTrigger />
           </Box>
 
           <GroupsSection permission={permission} onChange={onChange} />

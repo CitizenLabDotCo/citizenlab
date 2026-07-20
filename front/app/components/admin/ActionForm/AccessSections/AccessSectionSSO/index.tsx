@@ -18,7 +18,7 @@ import { requiresAccount } from '../../logic';
 import { SectionHeader } from '../../ui';
 import accessSectionMessages from '../AccessSection/messages';
 import GroupsSection from '../GroupsSection';
-import IdMethodFieldsModal from '../IdMethodFieldsModal';
+import IdMethodFieldsModal from '../IdMethodsModal';
 import sharedMessages from '../messages';
 import ModeCards from '../ModeCards';
 import { AccessSectionProps, linkStyle } from '../shared';

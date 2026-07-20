@@ -6,7 +6,7 @@ import { IdMethodData, MethodMetadata } from 'api/id_methods/types';
 
 import { render, screen, userEvent, within } from 'utils/testUtils/rtl';
 
-import IdMethodFieldsModal from '.';
+import IdMethodsModal from '.';
 
 // The modal reads every configured id method and shows the fields each of the
 // *active* ones (authentication and/or verification) hands back.
@@ -84,14 +84,13 @@ const buildMethod = ({
     },
   } as IdMethodData);
 
-const renderModal = () =>
-  render(<IdMethodFieldsModal opened onClose={jest.fn()} />);
+const renderModal = () => render(<IdMethodsModal opened onClose={jest.fn()} />);
 
 beforeEach(() => {
   mockIdMethods = { data: [] };
 });
 
-describe('<IdMethodFieldsModal />', () => {
+describe('<IdMethodsModal />', () => {
   // What a method can be used for is shown per method, since a method can be an
   // authentication method, a verification method, or both at once.
   describe('method capabilities', () => {

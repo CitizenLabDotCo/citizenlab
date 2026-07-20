@@ -18,9 +18,9 @@ import { linkStyle } from '../shared';
 import messages from './messages';
 import { getActiveMethods } from './utils';
 
-import IdMethodFieldsModal from './index';
+import IdMethodsModal from './index';
 
-const Trigger = () => {
+const IdMethodsModalTrigger = () => {
   const { formatMessage } = useIntl();
   const idMethodNames = useIdMethodNames();
   const { data: idMethods } = useIdMethods();
@@ -70,9 +70,9 @@ const Trigger = () => {
           : formatMessage(messages.seeWhichIdMethodsAreEnabled)}
       </Text>
 
-      <IdMethodFieldsModal opened={opened} onClose={() => setOpened(false)} />
+      <IdMethodsModal opened={opened} onClose={() => setOpened(false)} />
     </Box>
   );
 };
 
-export default Trigger;
+export default IdMethodsModalTrigger;

@@ -69,7 +69,7 @@ const MethodName = ({ children }: { children: React.ReactNode }) => (
   </Text>
 );
 
-const IdMethodFieldsModal = ({ opened, onClose }: Props) => {
+const IdMethodsModal = ({ opened, onClose }: Props) => {
   const localize = useLocalize();
   const idMethodNames = useIdMethodNames();
   const { data: idMethods } = useIdMethods();
@@ -160,4 +160,4 @@ const IdMethodFieldsModal = ({ opened, onClose }: Props) => {
   );
 };
 
-export default IdMethodFieldsModal;
+export default IdMethodsModal;
