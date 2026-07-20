@@ -248,7 +248,7 @@ resource 'Confirmations' do
     context 'when user is authenticated' do
       let(:user) { create(:user) }
       let(:new_phone) { '+14155552671' }
-      let(:sms_manual_type) { 'EmailCampaigns::Campaigns::SmsManual' }
+      let(:sms_manual_type) { EmailCampaigns::Campaigns::SmsManual.name }
 
       # The code request sends the OTP synchronously, so the provider is invoked.
       include_context 'with stubbed SMS provider'

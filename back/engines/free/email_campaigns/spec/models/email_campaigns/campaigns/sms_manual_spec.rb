@@ -122,17 +122,14 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
 
   describe 'apply_recipient_filters' do
     let(:campaign) { build(:sms_manual_campaign) }
-    let(:sms_campaign_type) { 'EmailCampaigns::Campaigns::SmsManual' }
-
-    def opt_in(user)
-      create(:consent, user: user, campaign_type: sms_campaign_type, consented: true)
-    end
 
     it 'seeds recipients from opted-in users with a confirmed phone number and excludes others' do
       with_confirmed_phone = create(:user, :with_confirmed_phone)
       with_unconfirmed_phone = create(:user, phone: phone1, phone_confirmed_at: nil)
       without_phone = create(:user, phone: nil)
-      [with_confirmed_phone, with_unconfirmed_phone, without_phone].each { |user| opt_in(user) }
+      [with_confirmed_phone, with_unconfirmed_phone, without_phone].each do |user|
+        create(:consent, :sms_manual, user: user)
+      end
 
       expect(campaign.apply_recipient_filters).to include(with_confirmed_phone)
       expect(campaign.apply_recipient_filters).not_to include(with_unconfirmed_phone)
@@ -141,16 +138,16 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
 
     it 'filters out invitees' do
       invitee = create(:invited_user, phone: phone2, phone_confirmed_at: Time.zone.now)
-      opt_in(invitee)
+      create(:consent, :sms_manual, user: invitee)
 
       expect(campaign.apply_recipient_filters).not_to include(invitee)
     end
 
     it 'only includes users who explicitly opted in to Manual SMS campaigns' do
       opted_in = create(:user, :with_confirmed_phone)
-      create(:consent, user: opted_in, campaign_type: sms_campaign_type, consented: true)
+      create(:consent, :sms_manual, user: opted_in, consented: true)
       opted_out = create(:user, :with_confirmed_phone)
-      create(:consent, user: opted_out, campaign_type: sms_campaign_type, consented: false)
+      create(:consent, :sms_manual, user: opted_out, consented: false)
       never_asked = create(:user, :with_confirmed_phone)
 
       recipients = campaign.apply_recipient_filters
