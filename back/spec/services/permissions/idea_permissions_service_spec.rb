@@ -21,6 +21,14 @@ describe Permissions::IdeaPermissionsService do
       it 'returns `commenting_disabled`' do
         expect(reason).to eq 'commenting_disabled'
       end
+
+      context 'for a moderator' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it 'returns `commenting_disabled`, because moderators do not overrule the phase configuration' do
+          expect(reason).to eq 'commenting_disabled'
+        end
+      end
     end
 
     context "when the timeline hasn't started" do
@@ -61,6 +69,14 @@ describe Permissions::IdeaPermissionsService do
 
       it "returns 'idea_not_in_current_phase'" do
         expect(reason).to eq 'idea_not_in_current_phase'
+      end
+
+      context 'for a moderator' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it 'returns nil, because moderators can act on inputs outside the current phase' do
+          expect(reason).to be_nil
+        end
       end
     end
 
@@ -527,6 +543,55 @@ describe Permissions::IdeaPermissionsService do
     end
   end
 
+  describe 'editing_idea denied_reason_for_action' do
+    let(:action) { 'editing_idea' }
+    let(:user) { input.author }
+
+    it 'returns nil for the author of an input in the current phase' do
+      expect(reason).to be_nil
+    end
+
+    context 'when the phase the input belongs to is over' do
+      let(:input) { create(:idea, project: project, phases: [project.phases[1]]) }
+
+      it 'returns nil, because the author can keep editing after the phase ended' do
+        expect(reason).to be_nil
+      end
+    end
+
+    context 'when the user is not the author' do
+      let(:user) { create(:user) }
+
+      it "returns 'not_author'" do
+        expect(reason).to eq 'not_author'
+      end
+    end
+
+    context 'for a moderator who is not the author' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it 'returns nil' do
+        expect(reason).to be_nil
+      end
+    end
+
+    context 'when the project is archived' do
+      let(:project) { create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' }) }
+
+      it "returns 'project_inactive'" do
+        expect(reason).to eq 'project_inactive'
+      end
+
+      context 'for a moderator' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it 'returns nil, because moderators can edit in an archived project' do
+          expect(reason).to be_nil
+        end
+      end
+    end
+  end
+
   describe 'action_descriptors' do
     it 'does not run more than 3 queries for 5 ideas in a project with default user permissions' do
       user = create(:user)
@@ -714,6 +779,22 @@ describe Permissions::IdeaPermissionsService do
 
       it "returns 'inactive_phase' for posting_idea" do
         expect(reason).to eq 'inactive_phase'
+      end
+
+      context 'for commenting_idea' do
+        let(:action) { 'commenting_idea' }
+
+        it "returns 'inactive_phase'" do
+          expect(reason).to eq 'inactive_phase'
+        end
+      end
+
+      context 'for editing_idea' do
+        let(:action) { 'editing_idea' }
+
+        it "returns 'inactive_phase'" do
+          expect(reason).to eq 'inactive_phase'
+        end
       end
     end
   end
