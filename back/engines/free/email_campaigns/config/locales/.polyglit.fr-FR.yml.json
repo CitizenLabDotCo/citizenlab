@@ -214,10 +214,30 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.recipient_segment.user_changing_email": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.admin_labels.recipient_segment.user_confirming_email": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.admin_labels.recipient_segment.user_requesting_password_reset": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.admin_labels.recipient_segment.user_who_commented": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.recipient_segment.user_who_is_blocked": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.admin_labels.recipient_segment.user_who_is_invited_to_cosponsor_a_proposal": {
     "state": "verified",
@@ -494,6 +514,11 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.user_changes_email": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.admin_labels.trigger.user_comments": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -508,6 +533,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.trigger.user_confirms_email": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.admin_labels.trigger.user_is_blocked": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.admin_labels.trigger.user_is_given_admin_rights": {
     "state": "verified",
@@ -573,6 +608,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.trigger.user_requests_password_reset": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.admin_labels.trigger.voting_1_day_after_last_votes": {
     "state": "verified",
@@ -754,6 +794,11 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.email_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.campaign_type_description.event_registration_confirmation": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -844,6 +889,11 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.new_email_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.campaign_type_description.new_idea_for_admin_prescreening": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -853,6 +903,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.new_phone_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-17T07:58:20.802985Z",
+    "verified_by": "Adrien"
   },
   "email_campaigns.campaign_type_description.official_feedback_on_idea_you_follow": {
     "state": "verified",
@@ -914,6 +969,11 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.sms_manual": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:49:44.607633Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.campaign_type_description.space_moderation_rights_received": {
     "state": "verified",
     "verified_at": "2026-04-13T14:12:08.834777Z",
@@ -933,6 +993,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.user_blocked": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.campaign_type_description.user_digest": {
     "state": "verified",
@@ -1124,6 +1189,11 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.comment_on_idea_you_follow.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.641448Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.comment_on_idea_you_follow.main_header.option": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -1274,6 +1344,46 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.email_confirmation.best_regards": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.email_confirmation.event_description": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.email_confirmation.expire_code": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.email_confirmation.hours_24": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.email_confirmation.ignore_email": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.email_confirmation.preheader": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.email_confirmation.subject": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.email_confirmation.title": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.event_registration_confirmation.cta_add_to_calendar": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -1399,6 +1509,11 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.general.cta_goto.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.641448Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.general.cta_goto.option": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -1493,6 +1608,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.general.cta_goto_your.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.641448Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.general.cta_goto_your.option": {
     "state": "verified",
@@ -1643,6 +1763,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.idea_published.input_type_subject.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.641448Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.idea_published.input_type_subject.option": {
     "state": "verified",
@@ -2194,6 +2319,46 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.new_email_confirmation.best_regards": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.new_email_confirmation.event_description": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.new_email_confirmation.expire_code": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.new_email_confirmation.hours_24": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.new_email_confirmation.ignore_email": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.new_email_confirmation.preheader": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.new_email_confirmation.subject": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.new_email_confirmation.title": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.new_idea_for_admin_prescreening.cta_button": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -2279,6 +2444,11 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.new_phone_confirmation.sms_body": {
+    "state": "verified",
+    "verified_at": "2026-07-16T20:21:54.588344Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.official_feedback_on_idea_you_follow.cta_button": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -2303,6 +2473,31 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.password_reset.cta_button": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.password_reset.event_description": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.password_reset.preheader": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.password_reset.subject": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.password_reset.title": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.preview_data.author_display_name": {
     "state": "verified",
@@ -2949,6 +3144,41 @@
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.user_blocked.for_more_information": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.user_blocked.paragraph_1_with_reason": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.user_blocked.paragraph_1_without_reason": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.user_blocked.preheader": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.user_blocked.subject": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.user_blocked.title": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
+  "email_campaigns.user_blocked.you_can_sign_in_again_from": {
+    "state": "verified",
+    "verified_at": "2026-06-15T12:51:59.339090Z",
+    "verified_by": "Cindy EB"
+  },
   "email_campaigns.user_digest.commented": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
@@ -3248,6 +3478,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.629201Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.your_input_in_screening.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:19:48.641448Z",
+    "verified_by": "Cindy EB"
   },
   "email_campaigns.your_input_in_screening.main_header.option": {
     "state": "verified",

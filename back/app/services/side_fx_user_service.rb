@@ -61,6 +61,8 @@ class SideFxUserService
 
   def after_block(user, current_user)
     TrackUserJob.perform_later(user)
+    # Logging the 'blocked' activity triggers the EmailCampaigns::Campaigns::UserBlocked
+    # campaign, which notifies the user that their account was blocked.
     LogActivityJob.perform_later(
       user,
       'blocked',
@@ -72,7 +74,6 @@ class SideFxUserService
         block_end_at: user.block_end_at
       }
     )
-    UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
     user.expire_token! # Stop any active sessions of the blocked user
   end
 
@@ -101,7 +102,6 @@ class SideFxUserService
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user)
-    expire_token_on_role_change!(user)
   end
 
   def role_created_side_fx(role, user, current_user)
@@ -148,14 +148,6 @@ class SideFxUserService
   def gained_roles(user)
     old_roles, new_roles = user.roles_previous_change
     new_roles.to_a - old_roles.to_a
-  end
-
-  # Expire the user's token when they first get roles or all roles are removed.
-  # NOTE: Must be called after all other side effects that depend on previous_changes,
-  # since expire_token! calls update! which resets previous_changes.
-  def expire_token_on_role_change!(user)
-    old_roles, new_roles = user.roles_previous_change
-    user.expire_token! if old_roles.blank? || new_roles.blank?
   end
 
   def create_followers(user)

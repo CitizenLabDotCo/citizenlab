@@ -12,9 +12,12 @@ const useCraftComponentDefaultPadding = () => {
 
   if (!parent) return DEFAULT_PADDING;
   const parentNode = query.node(parent);
+  const parentName = parentNode.get().data.displayName;
 
   return isSmallerThanTablet &&
-    (parent === ROOT_NODE || parentNode.get().data.displayName === 'Box')
+    (parent === ROOT_NODE ||
+      parentName === 'Box' ||
+      parentName === 'ProjectPageBody')
     ? DEFAULT_PADDING
     : '0px';
 };

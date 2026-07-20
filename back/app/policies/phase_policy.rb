@@ -27,6 +27,18 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def input_responses_pdf?
+    active_moderator?
+  end
+
+  def input_responses_xlsx?
+    active_moderator?
+  end
+
+  def input_response_fields?
+    active_moderator?
+  end
+
   def common_ground_results?
     policy_for(record.project).show?
   end

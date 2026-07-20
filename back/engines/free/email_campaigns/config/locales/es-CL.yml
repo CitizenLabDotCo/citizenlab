@@ -48,7 +48,11 @@ es-CL:
         new_attendee: Usuario recién registrado
         project_review_requester: Usuario que solicitó la revisión del proyecto
         project_reviewers: Revisores de proyectos y gestores de carpetas
+        user_changing_email: Usuario que está cambiando su dirección de correo
+        user_confirming_email: Usuario que está confirmando su dirección de correo
+        user_requesting_password_reset: Usuario que solicitó un restablecimiento de contraseña
         user_who_commented: Usuario que comentó
+        user_who_is_blocked: Usuario cuya cuenta está bloqueada
         user_who_is_invited_to_cosponsor_a_proposal: Usuario al que se invita a copatrocinar una propuesta
         user_who_is_mentioned: Usuario al que se menciona
         user_who_is_receiving_admin_rights: Usuario que recibe derechos de administrador
@@ -105,9 +109,12 @@ es-CL:
         registration_to_event: Inscripción a un acto
         survey_1_day_after_draft_saved: 1 día después de la última vez que el usuario guardó la encuesta en borrador
         user_accepts_invitation_to_cosponsor_a_proposal: El usuario acepta la invitación para co-patrocinar una propuesta
+        user_changes_email: El usuario cambia su dirección de correo
         user_comments: Comentarios de los usuarios
         user_comments_on_input: Comentarios de los usuarios sobre el aporte
         user_comments_on_proposal: Comentarios de los usuarios sobre la propuesta
+        user_confirms_email: El usuario confirma su dirección de correo
+        user_is_blocked: La cuenta del usuario está bloqueada
         user_is_given_admin_rights: El usuario tiene derechos de administrador
         user_is_given_folder_manager_rights: El usuario recibe permisos de gestor de carpeta
         user_is_given_folder_moderator_rights: El usuario tiene derechos de moderador de carpeta
@@ -121,6 +128,7 @@ es-CL:
         user_registers_for_the_first_time: El usuario se registra por primera vez
         user_replies_to_comment: El usuario responde al comentario
         user_replies_to_internal_comment: El usuario responde al comentario interno
+        user_requests_password_reset: El usuario solicita un restablecimiento de contraseña
         voting_1_day_after_last_votes: 1 día después de la última votación del usuario
         voting_2_days_before_phase_closes: 2 días antes del cierre de la fase de votación
         voting_basket_submitted: Se envían los votos
@@ -160,6 +168,7 @@ es-CL:
       comment_on_your_comment: Una respuesta a mi comentario
       community_monitor_report: Informe del barómetro de satisfacción ciudadana
       cosponsor_of_your_idea: Un usuario acepta mi invitación a copatrocinar mi propuesta
+      email_confirmation: Código de confirmación del correo
       event_registration_confirmation: Confirmación de inscripción al evento
       idea_marked_as_spam: Informar de spam de ideas
       idea_published: Publicación de mi idea
@@ -178,8 +187,10 @@ es-CL:
       moderator_digest: Resumen semanal para administradores de proyecto
       native_survey_not_submitted: Encuesta no presentada
       new_comment_for_admin: Nuevo comentario en un proyecto moderado por mí
+      new_email_confirmation: Nuevo código de confirmación del correo
       new_idea_for_admin_prescreening: Nuevo aporte que requiere aprobación en un proyecto que modero
       new_idea_for_admin_published: Nuevo aporte publicado en un proyecto que modero
+      new_phone_confirmation: Nuevo código de confirmación de teléfono
       official_feedback_on_idea_you_follow: Actualización de una idea que sigues
       password_reset: Restablecimiento de contraseña
       project_folder_moderation_rights_received: Derechos de administrador de carpetas recibidos
@@ -192,10 +203,12 @@ es-CL:
       project_review_state_change: Proyecto aprobado
       proposal_expired_for_admin: La propuesta ha caducado sin alcanzar el umbral de votación
       screening_digest: Recordatorio de evaluación semanal
+      sms_manual: Mensajes SMS oficiales
       space_moderation_rights_received: Permisos de gestor de espacio recibidos
       status_change_on_idea_you_follow: Cambio de estado de una idea que sigues
       survey_submitted: Encuesta enviada
       threshold_reached_for_admin: La propuesta ha alcanzado el umbral de votación
+      user_blocked: Cuenta bloqueada
       user_digest: Resumen semanal
       voting_basket_not_submitted: Votos no presentados
       voting_basket_submitted: Confirmación de voto
@@ -238,6 +251,7 @@ es-CL:
         idea: '%{authorName} comentó en una idea que sigues'
         initiative: '%{authorName} comentó en una iniciativa que sigues'
         issue: '%{authorName} comentó en un comentario que sigues'
+        observation: '%{authorName} ha comentado en una observación que sigues'
         option: '%{authorName} comentó en una opción que sigues'
         petition: '%{authorName} comentó en una petición que sigues'
         post: '%{authorName} has comentado un post que sigues'
@@ -271,6 +285,15 @@ es-CL:
       preheader: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
       subject: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
       title: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
+    email_confirmation:
+      best_regards: Un saludo,
+      event_description: 'Gracias por tu participación. Introduce este código de confirmación en la ventana de la plataforma de participación de %{organizationName}:'
+      expire_code: Este código caducará en
+      hours_24: 24 horas.
+      ignore_email: Si no has solicitado ningún código, puedes ignorar este correo.
+      preheader: Confirma tu dirección de correo para %{organizationName}
+      subject: Confirma tu dirección de correo para la plataforma de participación de %{organizationName}
+      title: Confirma tu dirección de correo
     event_registration_confirmation:
       cta_add_to_calendar: Añadir a tu calendario
       cta_button: Ver el evento
@@ -303,6 +326,7 @@ es-CL:
         idea: Ir a esta idea
         initiative: Ir a esta iniciativa
         issue: Ir a este comentario
+        observation: Ir a esta observación
         option: Ir a esta opción
         petition: Ir a esta petición
         post: Ir a este post
@@ -323,6 +347,7 @@ es-CL:
         idea: Ir a tu idea
         initiative: Ve a tu iniciativa
         issue: Ir a tu comentario
+        observation: Ir a tu observación
         option: Ve a tu opción
         petition: Ir a tu petición
         post: Ir a tu puesto
@@ -356,6 +381,7 @@ es-CL:
         idea: Tu idea ha sido publicada
         initiative: Tu iniciativa ha sido publicada
         issue: Tu comentario ha sido publicado
+        observation: Tu observación ha sido publicada
         option: Tu opción ha sido publicada
         petition: Tu petición ha sido publicada
         post: Tu entrada ha sido publicada
@@ -482,6 +508,15 @@ es-CL:
       title: '%{firstName}, un nuevo comentario ha sido posteado en tu plataforma'
       today: Hoy
       yesterday: Ayer
+    new_email_confirmation:
+      best_regards: Un saludo,
+      event_description: 'Introduce este código de confirmación en la ventana de la plataforma de participación de %{organizationName} para confirmar tu nueva dirección de correo:'
+      expire_code: Este código caducará en
+      hours_24: 24 horas.
+      ignore_email: Si no has solicitado ningún código, puedes ignorar este correo.
+      preheader: Confirma tu nueva dirección de correo para %{organizationName}
+      subject: Confirma tu nueva dirección de correo para la plataforma de participación de %{organizationName}
+      title: Confirma tu nueva dirección de correo
     new_idea_for_admin_prescreening:
       cta_button: Revisa el aporte
       days_ago: hace %{numberOfDays} días
@@ -501,12 +536,20 @@ es-CL:
       title: Se ha publicado una nuevo aporte en tu plataforma
       today: Hoy
       yesterday: Ayer
+    new_phone_confirmation:
+      sms_body: Tu código de confirmación es %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ir a esta entrada
       event_description: "%{feedback_author_name} dejó una respuesta oficial sobre %{input_title}'."
       preheader: Hay una actualización en un aporte que sigues
       subject: Se publicaron comentarios oficiales en "%{input_title}"
       title: Hay una actualización en "%{input_title}"
+    password_reset:
+      cta_button: Restablece tu contraseña
+      event_description: Has solicitado restablecer tu contraseña para la plataforma de participación de %{organizationName}. Haz clic en el botón de abajo para elegir una contraseña nueva y segura. El enlace caduca en 1 hora.
+      preheader: Restablece tu contraseña para %{organizationName}
+      subject: '%{organizationName}: Restablece tu contraseña'
+      title: Elige una nueva contraseña
     preview_data:
       author_display_name: María Rodríguez
       author_first_name: Jane
@@ -652,6 +695,14 @@ es-CL:
       preheader: Asegúrese de seguir los siguientes pasos
       subject: '"%{input_title}" alcanzó el número requerido de votos'
       title: Una propuesta alcanzó el número requerido de votos!
+    user_blocked:
+      for_more_information: Para más información al respecto, puedes consultar los %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Tu cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por el siguiente motivo:'
+      paragraph_1_without_reason: Tu cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por incumplir las normas de la comunidad.
+      preheader: Tu cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente
+      subject: Tu cuenta ha sido desactivada temporalmente
+      title: Tu cuenta ha sido desactivada temporalmente
+      you_can_sign_in_again_from: Podrás volver a iniciar sesión a partir del %{date}
     user_digest:
       commented: '%{authorFirstName} comentó:'
       cta_button: Ir a la plataforma
@@ -721,6 +772,7 @@ es-CL:
         idea: Tu idea está en "%{prescreening_status_title}"
         initiative: Tu iniciativa está en "%{prescreening_status_title}"
         issue: Tu comentario está en "%{prescreening_status_title}"
+        observation: Tu observación está en "%{prescreening_status_title}"
         option: Tu opción está en "%{prescreening_status_title}"
         petition: Tu petición está en "%{prescreening_status_title}"
         post: Tu mensaje está en "%{prescreening_status_title}"

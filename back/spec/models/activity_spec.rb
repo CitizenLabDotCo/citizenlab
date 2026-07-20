@@ -54,6 +54,16 @@ RSpec.describe Activity do
         expect(described_class.management).not_to include(activity)
       end
 
+      it "includes Permission 'changed' activities" do
+        activity = create(:activity, item: create(:permission), action: 'changed', user: admin)
+        expect(described_class.management).to include(activity)
+      end
+
+      it "excludes Permission 'changed_permitted_by' activities" do
+        activity = create(:activity, item: create(:permission), action: 'changed_permitted_by', user: admin)
+        expect(described_class.management).not_to include(activity)
+      end
+
       it 'excludes activities where actor is not an admin or moderator' do
         activity = create(:idea_created_activity, user: user)
         expect(described_class.management).not_to include(activity)

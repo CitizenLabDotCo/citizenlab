@@ -53,13 +53,13 @@ module PosthogIntegration
 
       private
 
-      def retry_request(retries: 0)
+      def retry_request(retries: 0, &)
         response = yield
         return response if response.status.code != 429 || retries <= 0
 
-        # Retry after waiting between 30 seconds and 2 minutes
+        # Retry after 30s–2min. `&` forwards the block so the recursion can still yield.
         sleep rand(30..120)
-        retry_request(retries: retries - 1)
+        retry_request(retries: retries - 1, &)
       end
 
       def http

@@ -15,9 +15,9 @@ import { CLError, Multiloc } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { IInviteError } from 'api/invites/types';
-import { IDAzureAdMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
+import { getAzureConfig } from 'api/id_methods/utils';
+import { IInviteError } from 'api/invites/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
@@ -142,6 +142,7 @@ export interface ErrorProps {
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
   scrollIntoView?: boolean;
+  liveRegion?: boolean;
 }
 
 export interface TFieldNameMap {
@@ -246,10 +247,8 @@ const Error = (props: ErrorProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const ssoEnforcedForDomainMultiloc = idMethods?.data.find(
-    (method): method is IDAzureAdMethod =>
-      method.attributes.name === 'azureactivedirectory'
-  )?.attributes.enforced_email_domain_error_multiloc;
+  const ssoEnforcedForDomainMultiloc =
+    getAzureConfig(idMethods)?.attributes.enforced_email_domain_error_multiloc;
 
   const {
     text,
@@ -263,7 +262,10 @@ const Error = (props: ErrorProps) => {
     animate = true,
     id,
     scrollIntoView = true,
+    liveRegion,
   } = props;
+
+  const isLiveRegion = liveRegion ?? true;
 
   useEffect(() => {
     if (scrollIntoView) {
@@ -297,7 +299,7 @@ const Error = (props: ErrorProps) => {
         id={id}
         marginTop={marginTop}
         marginBottom={marginBottom}
-        role="alert"
+        role={isLiveRegion ? 'alert' : undefined}
         data-testid="error-message"
       >
         <ContainerInner

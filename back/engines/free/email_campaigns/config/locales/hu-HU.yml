@@ -48,7 +48,11 @@ hu-HU:
         new_attendee: Újonnan regisztrált felhasználó
         project_review_requester: Felhasználó, aki kérte a projekt felülvizsgálatát
         project_reviewers: Projektellenőrök és mappakezelők
+        user_changing_email: Felhasználó, aki megváltoztatja az e-mail-címét
+        user_confirming_email: Az e-mail-címét megerősítő felhasználó
+        user_requesting_password_reset: Felhasználó, aki jelszó-visszaállítást kért
         user_who_commented: Felhasználó, aki hozzászólt
+        user_who_is_blocked: Felhasználó, akinek a fiókja blokkolva van
         user_who_is_invited_to_cosponsor_a_proposal: Felhasználó, akit meghívtak egy javaslat társszponzorálására
         user_who_is_mentioned: Az említett felhasználó
         user_who_is_receiving_admin_rights: Felhasználó, aki rendszergazdai jogokat kap
@@ -105,9 +109,12 @@ hu-HU:
         registration_to_event: Regisztráció egy eseményre
         survey_1_day_after_draft_saved: 1 nappal azután, hogy a felhasználó utoljára elmentette a felmérést vázlatként
         user_accepts_invitation_to_cosponsor_a_proposal: A felhasználó elfogadja a felkérést egy ajánlat társszponzorálására
+        user_changes_email: A felhasználó megváltoztatja az e-mail-címét
         user_comments: Felhasználói megjegyzések
         user_comments_on_input: Felhasználói megjegyzések a bevitelhez
         user_comments_on_proposal: Felhasználói megjegyzések az ajánlathoz
+        user_confirms_email: A felhasználó megerősíti az e-mail-címét
+        user_is_blocked: A felhasználó fiókja blokkolva van
         user_is_given_admin_rights: A felhasználó rendszergazdai jogokat kap
         user_is_given_folder_manager_rights: A felhasználó mappakezelői jogosultságokat kapott
         user_is_given_folder_moderator_rights: A felhasználó mappamoderátori jogokat kap
@@ -121,6 +128,7 @@ hu-HU:
         user_registers_for_the_first_time: A felhasználó először regisztrál
         user_replies_to_comment: Felhasználó válaszol a megjegyzésre
         user_replies_to_internal_comment: Felhasználó válaszol a belső megjegyzésre
+        user_requests_password_reset: A felhasználó jelszó-visszaállítást kér
         voting_1_day_after_last_votes: 1 nappal a felhasználó utolsó szavazása után
         voting_2_days_before_phase_closes: 2 nappal a szavazási szakasz lezárása előtt
         voting_basket_submitted: A szavazatokat leadják
@@ -160,6 +168,7 @@ hu-HU:
       comment_on_your_comment: Válasz a hozzászólásomra
       community_monitor_report: Közösségi megfigyelő jelentés
       cosponsor_of_your_idea: Egy felhasználó elfogadja a meghívásomat, hogy társszponzorálja ajánlatomat
+      email_confirmation: E-mail-megerősítő kód
       event_registration_confirmation: Esemény regisztráció megerősítése
       idea_marked_as_spam: Idea spam jelentés
       idea_published: Hozzászólásom közzététele
@@ -178,8 +187,10 @@ hu-HU:
       moderator_digest: Heti áttekintés projektmenedzsereknek
       native_survey_not_submitted: A felmérés nem került benyújtásra
       new_comment_for_admin: Új megjegyzés egy általam moderált projektben
+      new_email_confirmation: Új e-mail-megerősítő kód
       new_idea_for_admin_prescreening: Új bemenet, amely jóváhagyást igényel egy moderált projektben
       new_idea_for_admin_published: Új közzétett hozzászólás egy általam moderált projektben
+      new_phone_confirmation: Új telefonszám-megerősítő kód
       official_feedback_on_idea_you_follow: Frissítse a követett bemenetet
       password_reset: Jelszó visszaállítása
       project_folder_moderation_rights_received: Mappakezelői jogok megérkeztek
@@ -192,10 +203,12 @@ hu-HU:
       project_review_state_change: Projekt jóváhagyva
       proposal_expired_for_admin: A javaslat lejárt a szavazati küszöb elérése nélkül
       screening_digest: Heti szűrővizsgálati emlékeztető
+      sms_manual: Hivatalos SMS-üzenetek
       space_moderation_rights_received: Térkezelői jogosultságok megadva
       status_change_on_idea_you_follow: A követett bemenet állapotának változása
       survey_submitted: Felmérés benyújtva
       threshold_reached_for_admin: A javaslat elérte a szavazati küszöböt
+      user_blocked: Fiók blokkolva
       user_digest: Heti áttekintés
       voting_basket_not_submitted: A szavazatokat nem nyújtották be
       voting_basket_submitted: A szavazás megerősítése
@@ -238,6 +251,7 @@ hu-HU:
         idea: '%{authorName} megjegyzést fűzött egy Ön által követett ötlethez'
         initiative: '%{authorName} hozzászólást fűzött egy általad követett kezdeményezéshez'
         issue: '%{authorName} megjegyzést fűzött egy Ön által követett problémához'
+        observation: '%{authorName} hozzászólt egy általad követett észrevételhez'
         option: '%{authorName} megjegyzést fűzött egy általad követett lehetőséghez'
         petition: '%{authorName} megjegyzést fűzött egy Ön által követett petícióhoz'
         post: '%{authorName} hozzászólást fűzött egy bejegyzéshez, amit követsz'
@@ -271,6 +285,15 @@ hu-HU:
       preheader: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
       subject: '%{cosponsorName} elfogadta a felkérését, hogy társszponzorálja ajánlatát'
       title: '%{cosponsorName} elfogadta a javaslatod társtámogatóként való meghívását'
+    email_confirmation:
+      best_regards: 'Üdvözlettel:'
+      event_description: 'Köszönjük részvételét. Kérjük, adja meg ezt a megerősítő kódot a(z) %{organizationName} részvételi platformján található ablakban:'
+      expire_code: 'Ez a kód lejár:'
+      hours_24: 24 óra.
+      ignore_email: Ha nem Ön kért kódot, nyugodtan hagyja figyelmen kívül ezt az e-mailt.
+      preheader: Erősítse meg e-mail-címét a(z) %{organizationName} platformon
+      subject: Erősítse meg e-mail-címét %{organizationName} részvételi platformján
+      title: Erősítse meg e-mail-címét
     event_registration_confirmation:
       cta_add_to_calendar: Add hozzá a naptáradhoz
       cta_button: Tekintse meg az eseményt
@@ -303,6 +326,7 @@ hu-HU:
         idea: Menj ehhez az ötlethez
         initiative: Látogass el ehhez a kezdeményezéshez
         issue: Tovább a kérdéshez
+        observation: Ugrás ehhez az észrevételhez
         option: Menjen erre a lehetőségre
         petition: Tovább a petícióhoz
         post: Ugrás erre a bejegyzésre
@@ -323,6 +347,7 @@ hu-HU:
         idea: Menj az ötletedhez
         initiative: Hajrá a kezdeményezésedre
         issue: Menjen a problémájához
+        observation: Ugrás az észrevételedhez
         option: Menjen a választott lehetőségre
         petition: Menj a petíciódhoz
         post: Menj a bejegyzésedhez
@@ -356,6 +381,7 @@ hu-HU:
         idea: Az ötleted megjelent
         initiative: A kezdeményezésed megjelent
         issue: A számod megjelent
+        observation: Az észrevétele közzétételre került
         option: A lehetőséged közzétéve
         petition: A petícióját közzétettük
         post: A bejegyzésed megjelent
@@ -482,6 +508,15 @@ hu-HU:
       title: '%{firstName}, új hozzászólás érkezett a platformodon'
       today: Ma
       yesterday: Tegnap
+    new_email_confirmation:
+      best_regards: 'Üdvözlettel:'
+      event_description: 'Kérjük, adja meg ezt a megerősítő kódot a(z) %{organizationName} részvételi platformján megjelenő ablakban az új e-mail-címe megerősítéséhez:'
+      expire_code: 'Ez a kód lejár:'
+      hours_24: 24 óra.
+      ignore_email: Ha nem Ön kért kódot, nyugodtan hagyja figyelmen kívül ezt az e-mailt.
+      preheader: Erősítse meg új e-mail-címét a(z) %{organizationName} platformon
+      subject: Erősítse meg új e-mail-címét %{organizationName} részvételi platformján
+      title: Erősítse meg új e-mail-címét
     new_idea_for_admin_prescreening:
       cta_button: Tekintse át a bemenetet
       days_ago: '%{numberOfDays} nappal ezelőtt'
@@ -501,12 +536,20 @@ hu-HU:
       title: Új bejegyzés jelent meg a platformodon.
       today: Ma
       yesterday: Tegnap
+    new_phone_confirmation:
+      sms_body: 'A megerősítő kódod: %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ugrás erre a bemenetre
       event_description: "%{feedback_author_name} frissítést adott a(z) '%{input_title}' témában."
       preheader: Frissítés érkezett az Ön által követett bemenethez
       subject: 'A hivatalos visszajelzés a következő helyen jelent meg: "%{input_title}"'
       title: Frissítés érkezett a(z) "%{input_title}" témában
+    password_reset:
+      cta_button: Jelszó visszaállítása
+      event_description: Jelszó-visszaállítást kért a(z) %{organizationName} részvételi platformján. Kattintson az alábbi gombra egy új, biztonságos jelszó megadásához. A link 1 óra múlva lejár.
+      preheader: Állítsa vissza jelszavát a(z) %{organizationName} platformon
+      subject: '%{organizationName}: Jelszó visszaállítása'
+      title: Válasszon új jelszót
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -652,6 +695,14 @@ hu-HU:
       preheader: Mindenképpen tegye meg a következő lépéseket
       subject: '"%{input_title}" elérte a szavazati küszöböt'
       title: Egy javaslat elérte a szavazati küszöböt!
+    user_blocked:
+      for_more_information: További információért tekintse meg a %{termsAndConditionsPage} oldalt
+      paragraph_1_with_reason: 'Az Ön fiókját %{organizationName} részvételi platformján ideiglenesen felfüggesztettük a következő okból:'
+      paragraph_1_without_reason: Az Ön fiókját %{organizationName} részvételi platformján ideiglenesen felfüggesztettük a közösségi irányelvek megsértése miatt.
+      preheader: Az Ön fiókját %{organizationName} részvételi platformján ideiglenesen felfüggesztettük
+      subject: Fiókját ideiglenesen felfüggesztettük
+      title: Fiókját ideiglenesen felfüggesztettük
+      you_can_sign_in_again_from: '%{date} időponttól jelentkezhet be újra'
     user_digest:
       commented: '%{authorFirstName} hozzászólt:'
       cta_button: Menj a peronra
@@ -721,6 +772,7 @@ hu-HU:
         idea: 'Az Ön ötlete itt található: "%{prescreening_status_title}"'
         initiative: 'A kezdeményezésed a következő helyen van: "%{prescreening_status_title}"'
         issue: 'A probléma itt található: "%{prescreening_status_title}"'
+        observation: 'Az észrevételed állapota: „%{prescreening_status_title}”'
         option: 'Az Ön beállítása a következőben található: "%{prescreening_status_title}"'
         petition: 'Az Ön petíciója itt található: "%{prescreening_status_title}"'
         post: 'A bejegyzésed a következő helyen található: "%{prescreening_status_title}"'

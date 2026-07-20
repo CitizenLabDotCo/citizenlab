@@ -248,6 +248,8 @@ en:
           title: What is your post?
         story:
           title: What is your story?
+        observation:
+          title: What is your observation?
   custom_field_options:
     gender:
       male: Male
@@ -255,13 +257,16 @@ en:
       unspecified: Other
     domicile:
       outside: Somewhere else
-  reset_password_mailer:
-    send_reset_password:
-      preheader: 'Reset your password for %{organizationName}'
-      cta_reset_password: 'Reset your password'
-      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
-      subject: '%{organizationName}: Reset your password'
-      title_reset_your_password: 'Choose a new password'
+  pdf_export:
+    input_responses:
+      report_label: 'Response report'
+      date: 'Date'
+      prepared_by: 'Prepared by'
+      respondent: 'Respondent %{number}'
+      no_answer: '(No answer)'
+      response_count:
+        one: '%{count} response'
+        other: '%{count} responses'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:
@@ -353,30 +358,6 @@ en:
       logic_if_answered_end: 'If you answered <strong>%{option}</strong> for Question %{question}, you <strong>do not</strong> need to answer any further questions.'
   project_copy:
     title_suffix: 'Copy'
-  confirmations_mailer:
-    send_confirmation_code:
-      subject: "Confirm your email address for %{organizationName}'s participation platform"
-      preheader: 'Confirm your email address for %{organizationName}'
-      header: "Your Confirmation Code"
-      header_message: "Hi %{firstName}!"
-      confirm_email_address: "Confirm your email address"
-      thanks_for_signing_up1: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
-      best_regards: "Best regards,"
-      ignore_email: "If you didn't request a code, you can safely ignore this email."
-      expire_code: "This code will expire in "
-      24_hours: "24 hours."
-      copy_paste_the_link_below: "Copy and paste the code below into the registration form on the platform."
-      the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
-      did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
-  user_blocked_mailer:
-    send_user_blocked_email:
-      subject: 'Your account has been temporarily disabled'
-      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
-      title_user_blocked: 'Your account has been temporarily disabled'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
-      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "You can sign in again from %{date}"
   user:
     anon_first_name: "User"
     anon_scheme:

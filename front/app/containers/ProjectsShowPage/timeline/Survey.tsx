@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
-import { IProjectData } from 'api/projects/types';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
@@ -17,12 +16,11 @@ const Container = styled.div`
 `;
 
 interface Props {
-  project: IProjectData;
   phaseId: string | null;
   className?: string;
 }
 
-const SurveyContainer = memo<Props>(({ project, phaseId, className }) => {
+const SurveyContainer = memo<Props>(({ phaseId, className }) => {
   const { data: phase } = usePhase(phaseId);
 
   if (
@@ -38,8 +36,7 @@ const SurveyContainer = memo<Props>(({ project, phaseId, className }) => {
         </ScreenReaderOnly>
         <Survey
           className={className}
-          project={project}
-          phaseId={phase.data.id}
+          phase={phase.data}
           surveyEmbedUrl={phase.data.attributes.survey_embed_url}
           surveyService={phase.data.attributes.survey_service}
         />

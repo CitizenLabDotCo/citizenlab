@@ -112,6 +112,8 @@ fi-FI:
           title: Mikä on aloitteesi?
         issue:
           title: Mikä on kommenttisi?
+        observation:
+          title: Mikä on havaintosi?
         option:
           title: Mikä on vaihtoehtosi?
         petition:
@@ -267,6 +269,25 @@ fi-FI:
       title: Kaikki projektit
     proposals:
       title: ehdotuksia
+  pdf_export:
+    input_responses:
+      date: Päivämäärä
+      no_answer: (Ei vastausta)
+      prepared_by: Laatinut
+      report_label: Vastausraportti
+      respondent: Vastaaja %{number}
+      response_count:
+        one: '%{count} vastaus'
+        other: '%{count} vastausta'
+    survey_responses:
+      date: Päivämäärä
+      no_answer: (Ei vastausta)
+      prepared_by: Laatija
+      report_label: Kyselyvastausraportti
+      respondent: Vastaaja %{number}
+      response_count:
+        one: '%{count} vastaus'
+        other: '%{count} vastausta'
   phases:
     community_monitor_title: yhteisön valvoja
     native_survey_button: Vastaa kyselyyn

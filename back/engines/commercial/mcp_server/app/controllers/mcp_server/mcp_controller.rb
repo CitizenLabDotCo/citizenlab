@@ -20,7 +20,14 @@ module McpServer
       transport = MCP::Server::Transports::StreamableHTTPTransport.new(
         server,
         stateless: true,
-        enable_json_response: true
+        enable_json_response: true,
+        # mcp >= 0.23 validates the request Host header for DNS-rebinding protection,
+        # defaulting to loopback hosts only. Allow this tenant's canonical host so
+        # requests to the hosted endpoint aren't rejected. In production the endpoint
+        # is served at https://#{host} (see AppConfiguration#base_uri), so this matches
+        # the incoming Host. NOTE: does not cover proxy/LB rewrites, custom-domain
+        # aliases, or browser clients (Origin).
+        allowed_hosts: [AppConfiguration.instance.host]
       )
 
       status, headers, body = transport.handle_request(request)
@@ -53,34 +60,49 @@ module McpServer
       response.headers['WWW-Authenticate'] = existing.present? ? "#{existing}, #{challenge}" : challenge
     end
 
+    TOOL_CLASSES = [
+      McpServer::Tools::CreateProject,
+      McpServer::Tools::CreatePhase,
+      McpServer::Tools::CreateEvent,
+      McpServer::Tools::CreateCause,
+      McpServer::Tools::CreatePollQuestion,
+      McpServer::Tools::CreatePollOption,
+      McpServer::Tools::DestroyResource,
+      McpServer::Tools::UpdateResource,
+      McpServer::Tools::UpdateProject,
+      McpServer::Tools::UpdatePhase,
+      McpServer::Tools::GetResource,
+      McpServer::Tools::GetFormFields,
+      McpServer::Tools::ReplaceFormFields,
+      McpServer::Tools::ListProjects,
+      McpServer::Tools::ListPhases,
+      McpServer::Tools::ListEvents,
+      McpServer::Tools::ListCauses,
+      McpServer::Tools::ListPollQuestions,
+      McpServer::Tools::ListAreas,
+      McpServer::Tools::ListGlobalTopics,
+      McpServer::Tools::ListFolders,
+      McpServer::Tools::ListUserCustomFields,
+      McpServer::Tools::ListGroups,
+
+      # TODO: re-enable once PII redaction is sorted (drop email, redact last_name, etc.).
+      # Also restore the default_assignee_id field on create_project (dropped since the
+      # LLM has no way to look up user IDs without this tool).
+      # McpServer::Tools::ListUsers,
+      McpServer::Tools::ListPhasePermissions,
+      McpServer::Tools::UpdatePhasePermission,
+      McpServer::Tools::AttachImage,
+      McpServer::Tools::AttachFile,
+      McpServer::Tools::ListAttachedImages,
+      McpServer::Tools::ListFileAttachments,
+      McpServer::Tools::ListProjectFiles,
+
+      McpServer::Tools::GetReportingSqlSchema,
+      McpServer::Tools::RunReportingSqlQuery
+    ].freeze
+
     def tools
-      @tools ||= [
-        McpServer::Tools::CreateProject,
-        McpServer::Tools::CreatePhase,
-        McpServer::Tools::CreateEvent,
-        McpServer::Tools::CreateCause,
-        McpServer::Tools::CreatePollQuestion,
-        McpServer::Tools::CreatePollOption,
-        McpServer::Tools::GetResource,
-        McpServer::Tools::GetFormFields,
-        McpServer::Tools::ReplaceFormFields,
-        McpServer::Tools::ListProjects,
-        McpServer::Tools::ListPhases,
-        McpServer::Tools::ListEvents,
-        McpServer::Tools::ListCauses,
-        McpServer::Tools::ListPollQuestions,
-        McpServer::Tools::ListAreas,
-        McpServer::Tools::ListGlobalTopics,
-        McpServer::Tools::ListFolders,
-        # TODO: re-enable once PII redaction is sorted (drop email, redact last_name, etc.).
-        # Also restore the default_assignee_id field on create_project (dropped since the
-        # LLM has no way to look up user IDs without this tool).
-        # McpServer::Tools::ListUsers,
-        McpServer::Tools::ListPhasePermissions,
-        McpServer::Tools::UpdatePhasePermission,
-        McpServer::Tools::ListUserCustomFields,
-        McpServer::Tools::ListGroups
-      ].map { |klass| klass.for(current_user:, token_scopes:) }
+      @tools ||= TOOL_CLASSES.map { |klass| klass.for(current_user:, token_scopes:) }
     end
 
     def current_user

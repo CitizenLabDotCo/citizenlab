@@ -19,7 +19,18 @@ import messages from './messages';
 
 import { Props as WrapperProps } from './';
 
-const PasswordStrengthBar = lazy(() => import('react-password-strength-bar'));
+const PasswordStrengthBar = lazy(() =>
+  // react-password-strength-bar is a CommonJS module (exports.default + __esModule).
+  // Vite's dev dep-optimizer double-wraps its default export, so in dev `module.default`
+  // is `{ default: Component }` rather than the component itself, which makes React.lazy
+  // throw "Element type is invalid". Unwrap the inner default when present (production is fine).
+  import('react-password-strength-bar').then((module) => {
+    const imported = module.default as typeof module.default & {
+      default?: typeof module.default;
+    };
+    return { default: imported.default ?? imported };
+  })
+);
 
 const Container = styled.div`
   position: relative;
@@ -62,6 +73,7 @@ const PasswordInputComponent = ({
   ariaInvalid,
   ariaDescribedBy,
   required,
+  userInputs,
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
@@ -153,7 +165,11 @@ const PasswordInputComponent = ({
             <div aria-hidden="true">
               <Suspense fallback={null}>
                 <PasswordStrengthBar
+                  // The bar only re-scores on `password` change, so key on
+                  // userInputs to remount it when the email/name are edited.
+                  key={userInputs?.join(' ')}
                   password={password || undefined}
+                  userInputs={userInputs}
                   minLength={minimumPasswordLength}
                   shortScoreWord={formatMessage(
                     messages.initialPasswordStrengthCheckerMessage,

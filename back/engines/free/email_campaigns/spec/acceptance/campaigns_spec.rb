@@ -44,6 +44,7 @@ resource 'Campaigns' do
       end
       parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
       parameter :manual, 'Filter manual campaigns - only manual if true, only automatic if false', required: false, type: 'boolean'
+      parameter :channel, "Filter campaigns by delivery channel ('email' or 'sms')", required: false
 
       example_request 'List all campaigns' do
         assert_status 200
@@ -55,6 +56,13 @@ resource 'Campaigns' do
         do_request(without_campaign_names: %w[manual])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
+      end
+
+      example 'List only campaigns of a given channel' do
+        sms_campaign = create(:sms_manual_campaign)
+        do_request(channel: 'sms')
+        json_response = json_parse(response_body)
+        expect(json_response[:data].map { |c| c[:id] }).to contain_exactly(sms_campaign.id)
       end
 
       example 'List all manual campaigns' do
@@ -73,7 +81,7 @@ resource 'Campaigns' do
         end
 
         do_request(manual: false)
-        expect(response_data.size).to eq 51
+        expect(response_data.size).to eq 55
       end
 
       example 'List all manual campaigns when one has been sent' do
@@ -218,7 +226,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:campaign) { create(:manual_campaign) }
       let(:id) { campaign.id }
 
@@ -263,6 +271,28 @@ resource 'Campaigns' do
           it_behaves_like 'creates record with text images',
             model_class: EmailCampaigns::Campaign,
             field: :body_multiloc
+        end
+      end
+
+      context 'SMS campaigns' do
+        with_options scope: :campaign do
+          parameter :subject_multiloc, 'An admin-facing label for the SMS campaign (reuses the subject column; SMS has no subject line)', required: true
+        end
+
+        include_context 'with sms feature enabled'
+
+        let(:campaign_name) { 'sms_manual' }
+        let(:subject_multiloc) { { 'en' => 'Town hall reminder' } }
+        let(:body_multiloc) { { 'en' => 'A short SMS update from your city.' } }
+
+        example_request 'Create an SMS campaign' do
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :channel)).to eq 'sms'
+          expect(json_response.dig(:data, :attributes, :subject_multiloc).stringify_keys).to match subject_multiloc
+          expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+          expect(json_response.dig(:data, :attributes, :title_multiloc)).to be_nil
+          expect(json_response.dig(:data, :attributes, :sender)).to be_nil
         end
       end
     end
@@ -558,9 +588,25 @@ resource 'Campaigns' do
         assert_status 422
         expect(json_response_body).to include_response_error(:base, 'already_sent')
       end
+
+      context 'SMS campaign' do
+        include_context 'with sms feature enabled'
+
+        before do
+          create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
+        end
+
+        let(:campaign) { create(:sms_manual_campaign) }
+
+        example 'Send out the SMS campaign now' do
+          expect { do_request }.to have_enqueued_job(EmailCampaigns::Sms::SendJob)
+          assert_status 200
+          expect(response_data.dig(:attributes, :deliveries_count)).to be >= 1
+        end
+      end
     end
 
-    get 'web_api/v1/campaigns/:id/deliveries' do
+    get 'web_api/v1/campaigns/:id/email_deliveries' do
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of deliveries per page'
@@ -578,7 +624,46 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/campaigns/:id/stats' do
+    get 'web_api/v1/campaigns/:id/sms_deliveries' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of deliveries per page'
+      end
+
+      let(:campaign) { create(:sms_manual_campaign) }
+      let!(:id) { campaign.id }
+      let!(:sms_deliveries) { create_list(:sms_delivery, 3, campaign: campaign) }
+
+      example_request 'Get the SMS deliveries of a sent campaign. Includes the recipients.' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq sms_deliveries.size
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/sms_stats' do
+      let(:campaign) { create(:sms_manual_campaign) }
+      let!(:id) { campaign.id }
+      let!(:sms_deliveries) do
+        create_list(:sms_delivery, 4, campaign: campaign, status: 'sent')
+      end
+
+      example_request 'Get the SMS delivery statistics of a sent campaign' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data][:attributes]).to match({
+          pending: 0,
+          queued: 0,
+          sent: 4,
+          delivered: 0,
+          undelivered: 0,
+          failed: 0,
+          total: 4
+        })
+      end
+    end
+
+    get 'web_api/v1/campaigns/:id/email_stats' do
       let(:campaign) { create(:manual_campaign) }
       let!(:id) { campaign.id }
       let!(:deliveries) do
@@ -643,7 +728,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:id) { @manual_project_participants_campaign.id }
 
       example_request 'Get a campaign HTML preview, for campaign manageable by project moderator' do
@@ -653,7 +738,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:id) { manual_project_participants_campaign_not_moderated_by_this_pm.id }
 
       example_request '[Unauthorized] Get preview, for campaign for project not moderated by project moderator', document: false do
@@ -661,7 +746,7 @@ resource 'Campaigns' do
       end
     end
 
-    get '/web_api/v1/campaigns/:id/preview' do
+    get '/web_api/v1/campaigns/:id/email_preview' do
       let(:campaign) { create(:manual_campaign) }
       let(:id) { manual_project_participants_campaign_not_moderated_by_this_pm.id }
 
@@ -724,7 +809,7 @@ resource 'Campaigns' do
       end
     end
 
-    get 'web_api/v1/campaigns/:id/stats' do
+    get 'web_api/v1/campaigns/:id/email_stats' do
       let(:campaign) { @manual_project_participants_campaign }
       let!(:deliveries) do
         create_list(

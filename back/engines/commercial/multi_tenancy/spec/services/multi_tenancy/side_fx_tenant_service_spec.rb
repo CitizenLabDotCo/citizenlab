@@ -31,6 +31,24 @@ describe MultiTenancy::SideFxTenantService do
     end
   end
 
+  describe 'after_apply_template' do
+    before do
+      # Skip the heavy finalization (campaigns/permissions/tracking); we only assert
+      # the content_builder patch runs.
+      allow(MultiTenancy::TenantService).to receive(:new)
+        .and_return(instance_double(MultiTenancy::TenantService, finalize_creation: true))
+    end
+
+    it 'provisions Content Builder description layouts for the tenant (content_builder patch)' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Templated description</p>' })
+
+      service.after_apply_template(tenant, 'base', current_user)
+
+      layout = project.content_builder_layouts.find_by(code: 'project_description')
+      expect(layout&.enabled).to be(true)
+    end
+  end
+
   describe 'after_update' do
     it "logs a 'changed' action job when the tenant has changed" do
       tenant.update!(name: "new-#{tenant.name}")

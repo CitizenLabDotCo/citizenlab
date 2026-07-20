@@ -13,6 +13,8 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
     description: <<~DESC.squish,
       Form-wide constraints keyed by field `code`. Marks built-in fields (e.g. ideation's
       `title_multiloc`) that cannot be deleted or have certain attributes changed.
+      Locked attributes must be echoed back to `replace_form_fields` with the exact same
+      value as received, including any parts that look unfamiliar or extraneous.
     DESC
     additionalProperties: {
       type: 'object',
@@ -36,6 +38,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   }.freeze
 
   def name = 'get_form_fields'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC
@@ -98,7 +101,11 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
     def run
       container = CONTAINER_TYPES
         .fetch(params[:container_type])
-        .find(params[:container_id])
+        .find_by(id: params[:container_id])
+
+      unless container
+        return not_found_error("Container (#{params[:container_type]})", params[:container_id])
+      end
 
       pmethod = container.pmethod
       return unsupported_error(pmethod) unless SUPPORTED_METHODS.include?(pmethod.class.method_str)
@@ -107,7 +114,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
       fields = IdeaCustomFieldsService.new(custom_form).all_fields
       participation_method = pmethod.class.method_str
 
-      ok(
+      response(
         "Found #{fields.size} field(s) for #{participation_method} form",
         structured: {
           container_type: params[:container_type],
@@ -120,8 +127,6 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
           fields: McpServer::Serializers::CustomField.serialize(fields, params: { constraints: nil })
         }
       )
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:container_type]} not found: #{params[:container_id]}")
     end
 
     private

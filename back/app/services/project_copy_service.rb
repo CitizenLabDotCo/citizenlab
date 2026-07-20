@@ -364,7 +364,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'similarity_threshold_title' => phase.similarity_threshold_title,
         'voting_filtering_enabled' => phase.voting_filtering_enabled,
         'voting_term_plural_multiloc' => phase.voting_term_plural_multiloc,
-        'voting_term_singular_multiloc' => phase.voting_term_singular_multiloc
+        'voting_term_singular_multiloc' => phase.voting_term_singular_multiloc,
+        'placement_type' => phase.placement_type
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -621,6 +622,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'access_denied_explanation_multiloc' => p.access_denied_explanation_multiloc,
         'everyone_tracking_enabled' => p.everyone_tracking_enabled,
         'verification_expiry' => p.verification_expiry,
+        'require_confirmed_email' => p.require_confirmed_email,
+        'confirmed_email_expiry' => p.confirmed_email_expiry,
+        'require_name' => p.require_name,
+        'require_password' => p.require_password,
+        'require_verification' => p.require_verification,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
         'user_fields_in_form' => p.user_fields_in_form,

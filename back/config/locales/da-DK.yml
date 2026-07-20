@@ -112,6 +112,8 @@ da-DK:
           title: Hvad er dit forslag?
         issue:
           title: Hvad er dit Høringssvar?
+        observation:
+          title: Hvad er din observation?
         option:
           title: Hvad er din mulighed?
         petition:
@@ -267,6 +269,25 @@ da-DK:
       title: Alle projekter
     proposals:
       title: Forslag
+  pdf_export:
+    input_responses:
+      date: Dato
+      no_answer: (Intet svar)
+      prepared_by: Udarbejdet af
+      report_label: Besvarelsesrapport
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} besvarelse'
+        other: '%{count} besvarelser'
+    survey_responses:
+      date: Dato
+      no_answer: (Intet svar)
+      prepared_by: Udarbejdet af
+      report_label: Rapport over spørgeskemabesvarelser
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} besvarelse'
+        other: '%{count} besvarelser'
   phases:
     community_monitor_title: Fællesskabsovervågning
     native_survey_button: Besvar spørgeskemaet

@@ -35,4 +35,9 @@ export default defineMessages({
     defaultMessage:
       "All inputs require admin review before publication. Inputs will not be visible until an admin reviews and approves them. Authors can't edit inputs after they are screened or reacted on.",
   },
+  prescreeningModeAllDescriptionWithWarning: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningModeAllDescriptionWithWarning',
+    defaultMessage:
+      "All inputs require admin review before publication. Inputs will not be visible until an admin reviews and approves them. Authors can't edit inputs after they are screened or reacted on. Use for exceptional cases only. Pre-screening all inputs can impact democratic participation. Enable only after consulting your government success manager.",
+  },
 });

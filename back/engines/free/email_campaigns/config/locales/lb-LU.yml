@@ -48,7 +48,11 @@ lb-LU:
         new_attendee: Nei registréiert Benotzer
         project_review_requester: Benotzer deen de Projet review gefrot
         project_reviewers: Project Rezensiounen an Dossier Manager
+        user_changing_email: Benotzer, deen seng E-Mail-Adress ännert
+        user_confirming_email: Benotzer, deen seng E-Mail-Adress bestätegt
+        user_requesting_password_reset: Benotzer, deen d'Zerécksetze vum Passwuert ugefrot huet
         user_who_commented: Benotzer deen kommentéiert
+        user_who_is_blocked: Benotzer, deem säi Kont gespaart ass
         user_who_is_invited_to_cosponsor_a_proposal: Benotzer deen invitéiert ass eng Propositioun ze co-sponsoren
         user_who_is_mentioned: Benotzer deen ernimmt gëtt
         user_who_is_receiving_admin_rights: Benotzer deen Admin Rechter kritt
@@ -105,9 +109,12 @@ lb-LU:
         registration_to_event: Aschreiwung op en Event
         survey_1_day_after_draft_saved: "1 Dag nodeems de Benotzer fir d'lescht d'Ëmfro am Entworf gespäichert huet"
         user_accepts_invitation_to_cosponsor_a_proposal: De Benotzer acceptéiert d'Invitatioun fir eng Propositioun ze sponsoren
+        user_changes_email: Benotzer ännert seng E-Mail-Adress
         user_comments: Benotzer Kommentaren
         user_comments_on_input: Benotzer Kommentaren op Input
         user_comments_on_proposal: Benotzer Kommentaren op Propositioun
+        user_confirms_email: Benotzer bestätegt seng E-Mail-Adress
+        user_is_blocked: De Kont vum Benotzer ass gespaart
         user_is_given_admin_rights: De Benotzer gëtt Admin Rechter
         user_is_given_folder_manager_rights: Dem Benotzer ginn Dossier-Manager-Rechter ginn
         user_is_given_folder_moderator_rights: Benotzer gëtt Dossier Moderator Rechter
@@ -121,6 +128,7 @@ lb-LU:
         user_registers_for_the_first_time: Benotzer registréiert fir d'éischte Kéier
         user_replies_to_comment: Benotzer Äntwerten op Commentaire
         user_replies_to_internal_comment: Benotzer Äntwerten op intern Kommentar
+        user_requests_password_reset: Benotzer freet d'Zerécksetze vum Passwuert un
         voting_1_day_after_last_votes: 1 Dag nodeems de Benotzer lescht gestëmmt huet
         voting_2_days_before_phase_closes: 2 Deeg virum Ofstëmmungsphase zou
         voting_basket_submitted: D'Stëmmen ginn agereecht
@@ -162,6 +170,7 @@ lb-LU:
       comment_on_your_comment: Eng Äntwert op mäi Kommentar
       community_monitor_report: Communautéit Monitor Rapport
       cosponsor_of_your_idea: E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
+      email_confirmation: Bestätegungscode fir d'E-Mail
       event_registration_confirmation: Event Aschreiwung Bestätegung
       idea_marked_as_spam: Spambericht iwwer d'Iddien
       idea_published: Verëffentlechung vu menger Iddi
@@ -180,8 +189,10 @@ lb-LU:
       moderator_digest: Wéchentlech Iwwersiicht fir Projetsmanageren
       native_survey_not_submitted: Ëmfro net presentéiert
       new_comment_for_admin: Neie Kommentar an engem Projet, deen ech moderéieren
+      new_email_confirmation: Neie Bestätegungscode fir d'E-Mail
       new_idea_for_admin_prescreening: Nei Input, deen an engem Projet, deen ech moderéieren, Genehmegung brauch
       new_idea_for_admin_published: Nei publizéiert Input an engem Projet, deen ech moderéieren
+      new_phone_confirmation: Neie Bestätegungscode fir d'Telefonsnummer
       official_feedback_on_idea_you_follow: Update op eng Iddi déi Dir verfollegt
       password_reset: Passwuert zerécksetzen
       project_folder_moderation_rights_received: Administratorrechter fir Dossier'en kritt
@@ -194,10 +205,12 @@ lb-LU:
       project_review_state_change: Projet guttgeheescht
       proposal_expired_for_admin: Propositioun ofgelaf, ouni d'Mindestzuel u Stëmmen ze erreechen
       screening_digest: Wëchentlech Screening-Erënnerung
+      sms_manual: Offiziell SMS-Messagen
       space_moderation_rights_received: Space-Manager-Rechter kritt
       status_change_on_idea_you_follow: Status Ännerung vun enger Iddi déi Dir verfollegt
       survey_submitted: Ëmfro presentéiert
       threshold_reached_for_admin: "Virschlag huet d'Schwell vun de Stëmmen erreecht.\_"
+      user_blocked: Kont gespaart
       user_digest: Wéchentlech Iwwersiicht
       voting_basket_not_submitted: Stëmmen net agereecht
       voting_basket_submitted: Bestätegung vum Vote
@@ -240,6 +253,7 @@ lb-LU:
         idea: '%{authorName} kommentéiert eng Iddi déi Dir verfollegt'
         initiative: '%{authorName} huet eng Initiativ kommentéiert, déi Dir verfollegt'
         issue: '%{authorName} kommentéiert en Thema deen Dir verfollegt'
+        observation: '%{authorName} huet eng Observatioun kommentéiert, där s du follegs'
         option: '%{authorName} kommentéiert eng Optioun déi Dir verfollegt'
         petition: '%{authorName} kommentéiert eng Petitioun déi Dir verfollegt'
         post: '%{authorName} huet e Kommentar zu engem Post kommentéiert, deen Dir folgt'
@@ -273,6 +287,15 @@ lb-LU:
       preheader: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
       subject: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze sponsoren'
       title: "%{cosponsorName} huet Är Invitatioun ugeholl, Äre Virschlag mat z'ënnerstëtzen."
+    email_confirmation:
+      best_regards: Mat frëndleche Gréiss,
+      event_description: 'Merci fir Är Participatioun. Gitt wgl. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vu %{organizationName} an:'
+      expire_code: Dëse Code leeft of an
+      hours_24: 24 Stonnen.
+      ignore_email: Wann Dir kee Code ugefrot hutt, kënnt Dir dës E-Mail einfach ignoréieren.
+      preheader: Bestätegt Är E-Mail-Adress fir %{organizationName}
+      subject: Bestätegt Är E-Mail-Adress fir d'Participatiounsplattform vu %{organizationName}
+      title: Bestätegt Är E-Mail-Adress
     event_registration_confirmation:
       cta_add_to_calendar: An Äre Kalenner androen
       cta_button: Kuckt d'Evenement
@@ -305,6 +328,7 @@ lb-LU:
         idea: Gitt op dës Iddi
         initiative: Gitt op dës Initiativ
         issue: Gitt op dëst Thema
+        observation: Gitt op dës Observatioun
         option: Gitt op dës Optioun
         petition: Gitt op dës Petitioun
         post: Gitt op dëse Post
@@ -325,6 +349,7 @@ lb-LU:
         idea: Gitt op Är Iddi
         initiative: Gitt op Är Initiativ
         issue: Gitt op Äert Thema
+        observation: Géi op deng Observatioun
         option: Gitt op Är Optioun
         petition: Gitt op Är Petitioun
         post: Gitt op Äre Post
@@ -358,6 +383,7 @@ lb-LU:
         idea: Är Iddi gouf publizéiert
         initiative: Är Initiativ gouf publizéiert
         issue: Är Ausgab gouf publizéiert
+        observation: Är Observatioun gouf verëffentlecht
         option: Är Optioun gouf publizéiert
         petition: Är Petitioun gouf publizéiert
         post: Äre Beitrag gouf publizéiert
@@ -484,6 +510,15 @@ lb-LU:
       title: '%{firstName}, en neie Kommentar gouf op Ärer Plattform gepost'
       today: Haut
       yesterday: Gëschter
+    new_email_confirmation:
+      best_regards: Mat frëndleche Gréiss,
+      event_description: 'Gitt wgl. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vu %{organizationName} an, fir Är nei E-Mail-Adress ze bestätegen:'
+      expire_code: Dëse Code leeft of an
+      hours_24: 24 Stonnen.
+      ignore_email: Wann Dir kee Code ugefrot hutt, kënnt Dir dës E-Mail einfach ignoréieren.
+      preheader: Bestätegt Är nei E-Mail-Adress fir %{organizationName}
+      subject: Bestätegt Är nei E-Mail-Adress fir d'Participatiounsplattform vu %{organizationName}
+      title: Bestätegt Är nei E-Mail-Adress
     new_idea_for_admin_prescreening:
       cta_button: Iwwerpréift den Input
       days_ago: virun %{numberOfDays} Deeg
@@ -503,12 +538,20 @@ lb-LU:
       title: En neien Input gouf op Ärer Plattform publizéiert
       today: Haut
       yesterday: Gëschter
+    new_phone_confirmation:
+      sms_body: Däi Bestätegungscode ass %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Gitt op dësen Input
       event_description: "%{feedback_author_name} huet en Update zu '%{input_title}' ginn."
       preheader: Et gëtt en Update op engem Input deen Dir verfollegt
       subject: Offiziell Feedback gouf op "%{input_title}" gepost
       title: Et gëtt en Update op "%{input_title}"
+    password_reset:
+      cta_button: Setzt Äert Passwuert zeréck
+      event_description: Dir hutt eng Zerécksetzung vum Passwuert fir d'Participatiounsplattform vu %{organizationName} ugefrot. Klickt op de Knäppchen hei drënner, fir en neit, séchert Passwuert ze wielen. De Link leeft an 1 Stonn of.
+      preheader: Setzt Äert Passwuert fir %{organizationName} zeréck
+      subject: '%{organizationName}: Setzt Äert Passwuert zeréck'
+      title: Wielt en neit Passwuert
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -656,6 +699,14 @@ lb-LU:
       preheader: Stellt sécher, datt Dir déi nächst Schrëtter maacht
       subject: E Virschlag op Ärer Plattform huet d'Schwell vun den Ofstëmmungen erreecht
       title: E Virschlag huet d'Walschwell erreecht!
+    user_blocked:
+      for_more_information: Fir méi Informatiounen dozou kënnt Dir d' %{termsAndConditionsPage} consultéieren.
+      paragraph_1_with_reason: 'Äre Kont op der Participatiounsplattform vu %{organizationName} gouf aus dësem Grond temporär deaktivéiert:'
+      paragraph_1_without_reason: Äre Kont op der Participatiounsplattform vu %{organizationName} gouf wéinst engem Verstouss géint d'Communautéitsrichtlinnen temporär deaktivéiert.
+      preheader: Äre Kont op der Participatiounsplattform vu %{organizationName} gouf temporär deaktivéiert
+      subject: Äre Kont gouf temporär desaktivéiert
+      title: Äre Kont gouf temporär desaktivéiert
+      you_can_sign_in_again_from: Dir kënnt Iech vum %{date} un erëm aloggen
     user_digest:
       commented: '%{authorFirstName} huet kommentéiert:'
       cta_button: Gitt op d'Plattform
@@ -725,6 +776,7 @@ lb-LU:
         idea: Är Iddi ass an "%{prescreening_status_title}"
         initiative: Är Initiativ ass an "%{prescreening_status_title}"
         issue: Ären Thema ass an "%{prescreening_status_title}"
+        observation: Deng Observatioun ass an "%{prescreening_status_title}"
         option: Är Optioun ass an "%{prescreening_status_title}"
         petition: Är Petitioun ass an "%{prescreening_status_title}"
         post: Äre Beitrag ass an "%{prescreening_status_title}"

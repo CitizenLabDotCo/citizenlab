@@ -114,6 +114,8 @@ const HealthScoreWidget = ({
               ml="4px"
               iconSize="16px"
               icon="info-outline"
+              placement={isMobileOrSmaller ? 'bottom' : 'right-end'}
+              maxTooltipWidth={isMobileOrSmaller ? 250 : undefined}
               content={formatMessage(messages.healthScoreDescription)}
             />
           </Box>

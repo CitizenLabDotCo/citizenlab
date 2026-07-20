@@ -48,7 +48,11 @@ nb-NO:
         new_attendee: Nyregistrert bruker
         project_review_requester: Bruker som har bedt om prosjektgjennomgang
         project_reviewers: Prosjektgranskere og mappeansvarlige
+        user_changing_email: Bruker som endrer e-postadressen sin
+        user_confirming_email: Bruker som bekrefter e-postadressen sin
+        user_requesting_password_reset: Bruker som ba om tilbakestilling av passord
         user_who_commented: Bruker som kommenterte
+        user_who_is_blocked: Bruker hvis konto er blokkert
         user_who_is_invited_to_cosponsor_a_proposal: Bruker som er invitert til å være medsponsor for et forslag
         user_who_is_mentioned: Bruker som er nevnt
         user_who_is_receiving_admin_rights: Bruker som får administratorrettigheter
@@ -105,9 +109,12 @@ nb-NO:
         registration_to_event: Påmelding til et arrangement
         survey_1_day_after_draft_saved: 1 dag etter at brukeren sist lagret undersøkelsen i utkast
         user_accepts_invitation_to_cosponsor_a_proposal: Bruker aksepterer invitasjon til å være medsponsor for et forslag
+        user_changes_email: Bruker endrer e-postadressen sin
         user_comments: Brukerkommentarer
         user_comments_on_input: Brukerkommentarer om innspill
         user_comments_on_proposal: Brukerkommentarer til forslaget
+        user_confirms_email: Bruker bekrefter e-postadressen sin
+        user_is_blocked: Brukerens konto er blokkert
         user_is_given_admin_rights: Brukeren får administratorrettigheter
         user_is_given_folder_manager_rights: Bruker tildeles rettigheter som mappeansvarlig
         user_is_given_folder_moderator_rights: Brukeren får rettigheter som mappemoderator
@@ -121,6 +128,7 @@ nb-NO:
         user_registers_for_the_first_time: Brukeren registrerer seg for første gang
         user_replies_to_comment: Bruker svarer på kommentar
         user_replies_to_internal_comment: Bruker svarer på intern kommentar
+        user_requests_password_reset: Bruker ber om tilbakestilling av passord
         voting_1_day_after_last_votes: 1 dag etter at brukeren sist stemte
         voting_2_days_before_phase_closes: 2 dager før avstemningsfasen avsluttes
         voting_basket_submitted: Stemmene sendes inn
@@ -160,6 +168,7 @@ nb-NO:
       comment_on_your_comment: Et svar på min kommentar
       community_monitor_report: Rapport fra fellesskapsovervåkeren
       cosponsor_of_your_idea: En bruker aksepterer min invitasjon til å være medsponsor for forslaget mitt
+      email_confirmation: Bekreftelseskode for e-post
       event_registration_confirmation: Bekreftelse på påmelding til arrangementet
       idea_marked_as_spam: Idé spam-rapport
       idea_published: Offentliggjøring av mine innspill
@@ -178,8 +187,10 @@ nb-NO:
       moderator_digest: Ukentlig oversikt for prosjektledere
       native_survey_not_submitted: Undersøkelsen er ikke sendt inn
       new_comment_for_admin: Ny kommentar i et prosjekt jeg modererer
+      new_email_confirmation: Ny bekreftelseskode for e-post
       new_idea_for_admin_prescreening: Ny input som krever godkjenning i et prosjekt jeg modererer
       new_idea_for_admin_published: Nye publiserte innspill i et prosjekt jeg leder
+      new_phone_confirmation: Ny bekreftelseskode for telefon
       official_feedback_on_idea_you_follow: Oppdatering på et innspill som du følger
       password_reset: Tilbakestilling av passord
       project_folder_moderation_rights_received: Mappeadministratorrettigheter mottatt
@@ -192,10 +203,12 @@ nb-NO:
       project_review_state_change: Prosjektet er godkjent
       proposal_expired_for_admin: Forslag utløpt uten å nå stemmeterskelen
       screening_digest: Ukentlig påminnelse om screening
+      sms_manual: Offisielle SMS-meldinger
       space_moderation_rights_received: Rettigheter som områdeansvarlig mottatt
       status_change_on_idea_you_follow: Statusendring for en inngang som du følger
       survey_submitted: Innsendt spørreundersøkelse
       threshold_reached_for_admin: Forslaget nådde terskelen for avstemning
+      user_blocked: Konto blokkert
       user_digest: Ukentlig oversikt
       voting_basket_not_submitted: Ikke avgitte stemmer
       voting_basket_submitted: Bekreftelse av stemmegivning
@@ -238,6 +251,7 @@ nb-NO:
         idea: '%{authorName} kommenterte en idé du følger'
         initiative: '%{authorName} kommenterte et initiativ du følger'
         issue: '%{authorName} kommenterte en sak du følger'
+        observation: '%{authorName} kommenterte en observasjon du følger'
         option: '%{authorName} kommenterte et alternativ du følger'
         petition: '%{authorName} kommenterte en underskriftskampanje du følger'
         post: '%{authorName} kommentert et innlegg du følger'
@@ -271,6 +285,15 @@ nb-NO:
       preheader: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
       subject: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
       title: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
+    email_confirmation:
+      best_regards: Med vennlig hilsen,
+      event_description: 'Takk for din deltakelse. Vennligst skriv inn denne bekreftelseskoden i vinduet på %{organizationName} sin medvirkningsplattform:'
+      expire_code: Denne koden utløper om
+      hours_24: 24 timer.
+      ignore_email: Hvis du ikke ba om en kode, kan du se bort fra denne e-posten.
+      preheader: Bekreft e-postadressen din for %{organizationName}
+      subject: Bekreft e-postadressen din for %{organizationName} sin medvirkningsplattform
+      title: Bekreft e-postadressen din
     event_registration_confirmation:
       cta_add_to_calendar: Legg til i kalenderen din
       cta_button: Se arrangementet
@@ -303,6 +326,7 @@ nb-NO:
         idea: Gå til denne ideen
         initiative: Gå til dette initiativet
         issue: Gå til denne utgaven
+        observation: Gå til denne observasjonen
         option: Gå til dette alternativet
         petition: Gå til denne underskriftskampanjen
         post: Gå til dette innlegget
@@ -323,6 +347,7 @@ nb-NO:
         idea: Gå til ideen din
         initiative: Gå til initiativet ditt
         issue: Gå til problemet ditt
+        observation: Gå til din observasjon
         option: Gå til ditt valg
         petition: Gå til underskriftskampanjen din
         post: Gå til innlegget ditt
@@ -356,6 +381,7 @@ nb-NO:
         idea: Ideen din har blitt publisert
         initiative: Initiativet ditt har blitt publisert
         issue: Utgaven din har blitt publisert
+        observation: Observasjonen din har blitt publisert
         option: Alternativet ditt har blitt publisert
         petition: Din underskriftskampanje har blitt publisert
         post: Innlegget ditt har blitt publisert
@@ -482,6 +508,15 @@ nb-NO:
       title: '%{firstName}, en ny kommentar har blitt lagt ut på plattformen din'
       today: I dag
       yesterday: I går
+    new_email_confirmation:
+      best_regards: Med vennlig hilsen,
+      event_description: 'Vennligst skriv inn denne bekreftelseskoden i vinduet på %{organizationName} sin plattform for innbyggerinvolvering for å bekrefte din nye e-postadresse:'
+      expire_code: Denne koden utløper om
+      hours_24: 24 timer.
+      ignore_email: Hvis du ikke ba om en kode, kan du se bort fra denne e-posten.
+      preheader: Bekreft din nye e-postadresse for %{organizationName}
+      subject: Bekreft din nye e-postadresse for %{organizationName} sin medvirkningsplattform
+      title: Bekreft din nye e-postadresse
     new_idea_for_admin_prescreening:
       cta_button: Gå gjennom inndataene
       days_ago: '%{numberOfDays} dager siden'
@@ -501,12 +536,20 @@ nb-NO:
       title: Et nytt innspill har blitt publisert på plattformen din
       today: I dag
       yesterday: I går
+    new_phone_confirmation:
+      sms_body: Din bekreftelseskode er %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Gå til denne inngangen
       event_description: "%{feedback_author_name} ga en oppdatering på '%{input_title}'."
       preheader: Det er en oppdatering på et innspill du følger
       subject: Offisiell tilbakemelding ble lagt ut på "%{input_title}"
       title: Det er en oppdatering på "%{input_title}"
+    password_reset:
+      cta_button: Tilbakestill passordet ditt
+      event_description: Du har bedt om å tilbakestille passordet for %{organizationName} sin plattform for innbyggerinvolvering. Klikk på knappen nedenfor for å velge et nytt, sikkert passord. Lenken utløper om 1 time.
+      preheader: Tilbakestill passordet ditt for %{organizationName}
+      subject: '%{organizationName}: Tilbakestill passordet ditt'
+      title: Velg et nytt passord
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -652,6 +695,14 @@ nb-NO:
       preheader: Sørg for å ta de neste trinnene
       subject: '"%{input_title}" nådde terskelen for stemmegivning'
       title: Et forslag nådde terskelen for avstemning!
+    user_blocked:
+      for_more_information: For mer informasjon om dette kan du se %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Din konto på %{organizationName} sin medvirkningsplattform har blitt midlertidig deaktivert av følgende årsak:'
+      paragraph_1_without_reason: Din konto på %{organizationName} sin medvirkningsplattform har blitt midlertidig deaktivert på grunn av brudd på retningslinjene for fellesskapet.
+      preheader: Din konto på %{organizationName} sin medvirkningsplattform har blitt midlertidig deaktivert
+      subject: Kontoen din har blitt midlertidig deaktivert
+      title: Kontoen din har blitt midlertidig deaktivert
+      you_can_sign_in_again_from: Du kan logge inn igjen fra %{date}
     user_digest:
       commented: '%{authorFirstName} kommenterte:'
       cta_button: Gå til plattformen
@@ -721,6 +772,7 @@ nb-NO:
         idea: Ideen din er i "%{prescreening_status_title}"
         initiative: Initiativet ditt ligger i "%{prescreening_status_title}"
         issue: Problemet ditt er i "%{prescreening_status_title}"
+        observation: Din observasjon er i "%{prescreening_status_title}"
         option: Ditt valg er i "%{prescreening_status_title}"
         petition: Din begjæring er i "%{prescreening_status_title}"
         post: Innlegget ditt er i "%{prescreening_status_title}"

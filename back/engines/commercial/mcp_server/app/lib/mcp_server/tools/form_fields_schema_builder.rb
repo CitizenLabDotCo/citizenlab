@@ -35,7 +35,15 @@ class McpServer::Tools::FormFieldsSchemaBuilder
         key: { type: 'string' },
         ordering: { type: 'integer' },
         title_multiloc: multiloc_schema,
-        image_id: { type: %w[string null] },
+        image_id: {
+          type: %w[string null],
+          description: <<~DESC.squish
+            ID of an existing CustomFieldOptionImage. Only for multiselect_image
+            options. There is currently no MCP tool to create option images; the
+            only valid values are IDs already present on options (as seen in
+            `get_form_fields` output). Omit or pass null for new options.
+          DESC
+        },
         other: {
           type: 'boolean',
           description: 'Marks this as the "Other" free-text fallback option.'
@@ -105,9 +113,12 @@ class McpServer::Tools::FormFieldsSchemaBuilder
     @common_field_properties ||= {
       code: {
         type: %w[string null],
+        # Also includes user-profile codes, but it should not be a problem. They just
+        # won't show up in responses.
+        enum: [*CustomField::CODES, nil],
         description: <<~DESC.squish
-          Reserved code for built-in fields (e.g. `title_multiloc` on ideation). null for
-          custom-added fields. Do not invent codes.
+          Reserved code for built-in fields. On existing fields, echo the code received 
+          from get_form_fields or omit it. When creating a new field, use null.
         DESC
       },
       key: {
@@ -119,11 +130,20 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       },
       input_type: {
         type: 'string',
-        description: <<~DESC.squish,
-          Field type. The set of types you can use for new fields depends on the
-          participation method. The types `text_multiloc`, `html_multiloc`, `image_files`,
-          `files`, and `topic_ids` are reserved for built-in ideation fields and cannot be
-          used for new fields.
+        description: <<~DESC,
+          Field type. Each participation method allows a specific set of input_types
+          for new (custom) fields:
+
+          - native_survey: page, number, linear_scale, rating, text, multiline_text,
+            select, multiselect, multiselect_image, file_upload, shapefile_upload,
+            point, line, polygon, ranking, matrix_linear_scale, sentiment_linear_scale
+          - ideation: page, number, linear_scale, rating, text, multiline_text,
+            select, multiselect, multiselect_image, ranking, sentiment_linear_scale,
+            matrix_linear_scale
+
+          The types text_multiloc, html_multiloc, image_files, files, topic_ids, and
+          cosponsor_ids are reserved for built-in fields (identified by a non-null
+          `code`) and cannot be used for new fields.
         DESC
         enum: %w[
           page number linear_scale rating text multiline_text select multiselect
@@ -205,20 +225,15 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       # Scale family
       maximum: {
         type: 'integer',
-        minimum: 2,
-        maximum: 11,
+        minimum: CustomField::LINEAR_SCALE_MAX_RANGE.min,
+        maximum: CustomField::LINEAR_SCALE_MAX_RANGE.max,
         description: <<~DESC.squish
           Only for linear_scale / rating / sentiment_linear_scale / matrix_linear_scale.
-          Top of the scale (2..11).
+          The scale runs from 1 to this value; label slots beyond it are ignored. Set
+          labels for the slots in use using `linear_scale_label_<n>_multiloc` attributes.
         DESC
       },
-      linear_scale_label_1_multiloc: {
-        **multiloc_schema,
-        description: <<~DESC.squish
-          Only for linear_scale / sentiment_linear_scale / matrix_linear_scale. Labels
-          1..11 — only indices in 1..maximum are meaningful.
-        DESC
-      },
+      linear_scale_label_1_multiloc: multiloc_schema,
       linear_scale_label_2_multiloc: multiloc_schema,
       linear_scale_label_3_multiloc: multiloc_schema,
       linear_scale_label_4_multiloc: multiloc_schema,
