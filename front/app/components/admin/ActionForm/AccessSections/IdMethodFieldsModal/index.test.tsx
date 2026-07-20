@@ -6,7 +6,7 @@ import { IdMethodData, MethodMetadata } from 'api/id_methods/types';
 
 import { render, screen, userEvent, within } from 'utils/testUtils/rtl';
 
-import VerificationFieldsModal from '.';
+import IdMethodFieldsModal from '.';
 
 // The modal reads every configured id method and shows the fields each of the
 // *active* ones (authentication and/or verification) hands back.
@@ -85,13 +85,13 @@ const buildMethod = ({
   } as IdMethodData);
 
 const renderModal = () =>
-  render(<VerificationFieldsModal opened onClose={jest.fn()} />);
+  render(<IdMethodFieldsModal opened onClose={jest.fn()} />);
 
 beforeEach(() => {
   mockIdMethods = { data: [] };
 });
 
-describe('<VerificationFieldsModal />', () => {
+describe('<IdMethodFieldsModal />', () => {
   describe('with a single active method', () => {
     beforeEach(() => {
       mockIdMethods = { data: [buildMethod()] };
@@ -190,7 +190,7 @@ describe('<VerificationFieldsModal />', () => {
       renderModal();
 
       expect(
-        screen.getByText('Fields returned by sign-in methods')
+        screen.getByText('Fields returned by identification methods')
       ).toBeInTheDocument();
       expect(screen.queryByText('Fields returned by ItsMe')).toBeNull();
       expect(screen.queryByText('Fields returned by FranceConnect')).toBeNull();
@@ -353,7 +353,7 @@ describe('<VerificationFieldsModal />', () => {
       renderModal();
 
       expect(
-        screen.getByText('No sign-in methods are currently active.')
+        screen.getByText('No identification methods are currently active.')
       ).toBeInTheDocument();
     });
 
@@ -362,7 +362,7 @@ describe('<VerificationFieldsModal />', () => {
       renderModal();
 
       expect(
-        screen.getByText('No sign-in methods are currently active.')
+        screen.getByText('No identification methods are currently active.')
       ).toBeInTheDocument();
     });
   });

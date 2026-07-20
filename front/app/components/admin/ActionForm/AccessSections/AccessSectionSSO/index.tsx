@@ -18,10 +18,10 @@ import { requiresAccount } from '../../logic';
 import { SectionHeader } from '../../ui';
 import accessSectionMessages from '../AccessSection/messages';
 import GroupsSection from '../GroupsSection';
+import IdMethodFieldsModal from '../IdMethodFieldsModal';
 import sharedMessages from '../messages';
 import ModeCards from '../ModeCards';
 import { AccessSectionProps, linkStyle } from '../shared';
-import VerificationFieldsModal from '../VerificationFieldsModal';
 
 import messages from './messages';
 
@@ -58,7 +58,9 @@ const AccessSectionSSO = ({
 
       {hasAccount && (
         <>
-          {/* Fixed sign-in method — no options to configure. */}
+          {/* Fixed identification method — no options to configure. This
+              variant assumes exactly one method is enabled, so the link can
+              speak about "this" method. */}
           <Box
             p="14px"
             borderRadius={stylingConsts.borderRadius}
@@ -102,7 +104,7 @@ const AccessSectionSSO = ({
         </>
       )}
 
-      <VerificationFieldsModal
+      <IdMethodFieldsModal
         opened={returnedFieldsOpen}
         onClose={() => setReturnedFieldsOpen(false)}
       />

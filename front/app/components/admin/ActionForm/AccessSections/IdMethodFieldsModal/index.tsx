@@ -1,8 +1,9 @@
-// Preview which fields the active sign-in methods hand back, and which of them
-// are locked (not editable by the participant). Both authentication (SSO) and
-// verification methods can return fields, and several of them can be active at
-// the same time — hence one section per active method, collapsed into
-// accordions as soon as there is more than one.
+// Preview which fields the active identification methods hand back, and which
+// of them are locked (not editable by the participant). Identification methods
+// covers both authentication (SSO) and verification methods — both kinds can
+// return fields, and several of them can be active at the same time, hence one
+// section per active method, collapsed into accordions as soon as there is more
+// than one.
 
 import React from 'react';
 
@@ -26,7 +27,7 @@ interface Props {
   onClose: () => void;
 }
 
-const VerificationFieldsModal = ({ opened, onClose }: Props) => {
+const IdMethodFieldsModal = ({ opened, onClose }: Props) => {
   const localize = useLocalize();
   const authMethodNames = useAuthMethodNames();
   const { data: idMethods } = useIdMethods();
@@ -40,9 +41,11 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
       opened={opened}
       close={onClose}
       niceHeader
-      width="480px"
+      width="620px"
       header={
-        <Title ml="20px" variant="h3" color="primary">
+        // The close button is absolutely positioned over the full-width header,
+        // so the title has to keep clear of it on the right.
+        <Title ml="20px" mr="56px" variant="h3" color="primary">
           {singleMethod ? (
             <FormattedMessage
               {...messages.fieldsReturnedByMethod}
@@ -93,8 +96,15 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
               {activeMethods.map((method) => (
                 <Accordion
                   key={method.id}
+                  mb="8px"
                   title={
-                    <Text m="0" fontWeight="bold" color="primary">
+                    <Text
+                      m="0"
+                      py="12px"
+                      fontSize="l"
+                      fontWeight="bold"
+                      color="primary"
+                    >
                       {getMethodName(method, authMethodNames)}
                     </Text>
                   }
@@ -115,4 +125,4 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
   );
 };
 
-export default VerificationFieldsModal;
+export default IdMethodFieldsModal;

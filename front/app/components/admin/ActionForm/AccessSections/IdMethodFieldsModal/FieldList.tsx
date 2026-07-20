@@ -24,7 +24,7 @@ interface Props {
 const FieldList = ({ fields }: Props) => {
   if (fields.length === 0) {
     return (
-      <Text m="0" color="coolGrey600">
+      <Text m="0" fontSize="s" color="coolGrey600">
         <FormattedMessage {...messages.noFieldsReturned} />
       </Text>
     );
@@ -44,7 +44,7 @@ const FieldList = ({ fields }: Props) => {
           borderRadius={stylingConsts.borderRadius}
           bgColor={colors.grey50}
         >
-          <Text m="0" color="primary">
+          <Text m="0" fontSize="s" color="primary">
             {field.label}
           </Text>
           <Box display="flex" alignItems="center" gap="4px">

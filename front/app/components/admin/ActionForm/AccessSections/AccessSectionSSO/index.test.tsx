@@ -7,7 +7,7 @@ import { render, screen } from 'utils/testUtils/rtl';
 import AccessSectionSSO from '.';
 
 // The SSO variant reads the single enabled authentication (SSO) method to name
-// the fixed sign-in method. `null` models "no SSO method configured".
+// the fixed identification method. `null` models "no SSO method configured".
 let mockAuthenticationMethod: unknown = {
   data: { attributes: { method_metadata: { name: 'ItsMe' } } },
 };
@@ -21,7 +21,7 @@ jest.mock(
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/VerificationFieldsModal',
+  'components/admin/ActionForm/AccessSections/IdMethodFieldsModal',
   () => () => null
 );
 
@@ -77,7 +77,7 @@ describe('<AccessSectionSSO />', () => {
   });
 
   describe('when an account is required (permitted_by: users)', () => {
-    it('names the configured SSO method as the fixed sign-in method', () => {
+    it('names the configured SSO method as the fixed identification method', () => {
       renderSection();
       expect(
         screen.getByText('Participants sign in with ItsMe.')
@@ -94,7 +94,7 @@ describe('<AccessSectionSSO />', () => {
   });
 
   describe('when no account is required (permitted_by: everyone)', () => {
-    it('does not show the fixed sign-in method row', () => {
+    it('does not show the fixed identification method row', () => {
       renderSection({ permitted_by: 'everyone' });
       expect(
         screen.queryByText(/Participants sign in with/)

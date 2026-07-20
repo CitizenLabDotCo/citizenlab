@@ -182,7 +182,7 @@ export const buildSummary = (
   return chips;
 };
 
-// Summary for the SSO variant: the sign-in method is fixed, so the per-method
+// Summary for the SSO variant: the identification method is fixed, so the per-method
 // chips are replaced by a single SSO chip.
 export const buildSummarySSO = (
   permission: IPhasePermissionData,

@@ -48,7 +48,7 @@ jest.mock(
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/VerificationFieldsModal',
+  'components/admin/ActionForm/AccessSections/IdMethodFieldsModal',
   () => () => null
 );
 jest.mock(
