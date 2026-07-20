@@ -44,10 +44,13 @@ module ContentBuilder
         end
       end
 
-      def initialize(craftjs_json, widget_specs: nil, convention_scope: nil)
+      # root_type is the literal `type` value the ROOT node must carry: 'div' for
+      # description layouts, { 'resolvedName' => 'ProjectPageRoot' } for project pages.
+      def initialize(craftjs_json, widget_specs: nil, convention_scope: nil, root_type: 'div')
         @json = craftjs_json
         @widget_specs = widget_specs
         @convention_scope = convention_scope
+        @root_type = root_type
       end
 
       # @return [Array<Error>]
@@ -140,7 +143,7 @@ module ContentBuilder
 
         if in_scope?('ROOT')
           root = @json['ROOT']
-          errors << error('ROOT', :root_type, "'type' must be the string 'div'") if root['type'] != 'div'
+          errors << error('ROOT', :root_type, "'type' must be #{@root_type.to_json}") if root['type'] != @root_type
           errors << error('ROOT', :root_not_canvas, 'must be a canvas (isCanvas: true)') unless root['isCanvas']
           errors.concat(unknown_key_errors('ROOT', root))
         end

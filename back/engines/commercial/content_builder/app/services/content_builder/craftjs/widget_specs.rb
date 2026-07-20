@@ -13,10 +13,11 @@ module ContentBuilder
     # Validator (core app, analysis, admin_api) cannot depend on the mcp_server
     # engine.
     #
-    # Allowlist = the FE project-description toolbox (ProjectDescriptionBuilderToolbox)
-    # plus node types that occur inside existing graphs. Folder/homepage-only widgets
-    # (FolderTitle, Published, Selection, Spotlight, FolderFiles) are deliberately
-    # absent.
+    # Allowlist = the FE project page toolbox (the description-builder widget set plus
+    # HtmlBlockMultiloc), the fixed page scaffold (McpServer::LayoutWidgets::
+    # SCAFFOLD_WIDGETS), and node types that occur inside existing graphs. The widgets
+    # the FE purges on read (FolderTitle, Published, Selection, Spotlight, FolderFiles)
+    # are deliberately absent.
     #
     # The '' entries in enums: the FE craft.props defaults write empty strings for
     # size and columnLayout (the renderer falls back to small / 1-2), so stored
@@ -51,10 +52,21 @@ module ContentBuilder
           'enums' => { 'columnLayout' => ['1-1', '2-1', '1-2', ''] }
         },
         'ThreeColumn' => { 'slots' => %w[column1 column2 column3] },
+        'HtmlBlockMultiloc' => { 'multilocs' => %w[html] },
         'Container' => {},
         'Box' => {},
         'ImageTextCards' => { 'slots' => %w[image-text-cards] },
-        'InfoWithAccordions' => { 'slots' => %w[info-with-accordions] }
+        'InfoWithAccordions' => { 'slots' => %w[info-with-accordions] },
+        # Legacy bridge nodes carrying a migrated project description; edit in place, never create.
+        'RichTextMultiloc' => { 'multilocs' => %w[text] },
+        # The fixed project page scaffold (no rules: locked nodes patches may not touch).
+        'ProjectPageRoot' => {},
+        'ProjectBanner' => {},
+        'ProjectTitle' => {},
+        'ProjectPageBody' => {},
+        'ProjectDescriptionSection' => {},
+        'PhasesWidget' => {},
+        'EventsWidget' => {}
       }.freeze
     end
   end
