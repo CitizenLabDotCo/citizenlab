@@ -1,19 +1,14 @@
-// Preview which fields the identity-verification method hands back, and which
-// of them are locked (not editable by the participant). The fields and the
-// method name come straight from the configured verification method's metadata.
+// Preview which fields the active sign-in methods hand back, and which of them
+// are locked (not editable by the participant). Both authentication (SSO) and
+// verification methods can return fields, and several of them can be active at
+// the same time — hence one section per active method, collapsed into
+// accordions as soon as there is more than one.
 
 import React from 'react';
 
-import {
-  Box,
-  Title,
-  Text,
-  Icon,
-  colors,
-  stylingConsts,
-} from '@citizenlab/cl2-component-library';
+import { Accordion, Box, Title, Text } from '@citizenlab/cl2-component-library';
 
-import useVerificationMethod from 'api/id_methods/useVerificationMethod';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -21,7 +16,9 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import FieldList from './FieldList';
 import messages from './messages';
+import { getActiveMethods } from './utils';
 
 interface Props {
   opened: boolean;
@@ -30,32 +27,11 @@ interface Props {
 
 const VerificationFieldsModal = ({ opened, onClose }: Props) => {
   const localize = useLocalize();
-  const { data: verificationMethod } = useVerificationMethod();
+  const { data: idMethods } = useIdMethods();
 
-  const metadata = verificationMethod?.data.attributes.method_metadata;
-  if (!metadata) return null;
-
-  const methodName = metadata.name;
-  // Locked fields come straight from the official register; the rest the
-  // participant can still edit.
-  const fields = [
-    ...metadata.locked_attributes.map((m) => ({
-      label: localize(m),
-      locked: true,
-    })),
-    ...metadata.locked_custom_fields.map((m) => ({
-      label: localize(m),
-      locked: true,
-    })),
-    ...metadata.other_attributes.map((m) => ({
-      label: localize(m),
-      locked: false,
-    })),
-    ...metadata.other_custom_fields.map((m) => ({
-      label: localize(m),
-      locked: false,
-    })),
-  ];
+  const activeMethods = getActiveMethods(idMethods, localize);
+  const singleMethod =
+    activeMethods.length === 1 ? activeMethods[0] : undefined;
 
   return (
     <Modal
@@ -65,57 +41,59 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
       width="480px"
       header={
         <Title ml="20px" variant="h3" color="primary">
-          <FormattedMessage
-            {...messages.fieldsReturnedByMethod}
-            values={{ methodName }}
-          />
+          {singleMethod ? (
+            <FormattedMessage
+              {...messages.fieldsReturnedByMethod}
+              values={{ methodName: singleMethod.name }}
+            />
+          ) : (
+            <FormattedMessage {...messages.fieldsReturnedByMethods} />
+          )}
         </Title>
       }
     >
       <Box p="24px">
-        <Text mt="0" color="coolGrey600">
-          <FormattedMessage
-            {...messages.whenAParticipantVerifiesThroughMethod}
-            values={{ methodName }}
-          />
-        </Text>
+        {activeMethods.length === 0 && (
+          <Text mt="0" color="coolGrey600">
+            <FormattedMessage {...messages.noActiveMethods} />
+          </Text>
+        )}
 
-        <Box mt="12px">
-          {fields.map((field) => (
-            <Box
-              key={field.label}
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              py="10px"
-              px="12px"
-              mb="6px"
-              borderRadius={stylingConsts.borderRadius}
-              bgColor={colors.grey50}
-            >
-              <Text m="0" color="primary">
-                {field.label}
-              </Text>
-              <Box display="flex" alignItems="center" gap="4px">
-                <Icon
-                  name={field.locked ? 'lock' : 'edit'}
-                  width="14px"
-                  height="14px"
-                  fill={field.locked ? colors.coolGrey600 : colors.teal500}
-                />
-                <Text
-                  m="0"
-                  fontSize="xs"
-                  color={field.locked ? 'coolGrey600' : 'teal500'}
-                >
-                  <FormattedMessage
-                    {...(field.locked ? messages.locked : messages.editable)}
-                  />
-                </Text>
-              </Box>
+        {singleMethod && (
+          <>
+            <Text mt="0" color="coolGrey600">
+              <FormattedMessage
+                {...messages.whenAParticipantVerifiesThroughMethod}
+                values={{ methodName: singleMethod.name }}
+              />
+            </Text>
+            <Box mt="12px">
+              <FieldList fields={singleMethod.fields} />
             </Box>
-          ))}
-        </Box>
+          </>
+        )}
+
+        {activeMethods.length > 1 && (
+          <>
+            <Text mt="0" color="coolGrey600">
+              <FormattedMessage {...messages.multipleMethodsDescription} />
+            </Text>
+            <Box mt="12px">
+              {activeMethods.map((method) => (
+                <Accordion
+                  key={method.id}
+                  title={
+                    <Text m="0" fontWeight="bold" color="primary">
+                      {method.name}
+                    </Text>
+                  }
+                >
+                  <FieldList fields={method.fields} />
+                </Accordion>
+              ))}
+            </Box>
+          </>
+        )}
       </Box>
     </Modal>
   );
