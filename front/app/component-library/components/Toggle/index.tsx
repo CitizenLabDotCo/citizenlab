@@ -15,7 +15,7 @@ const padding = 3;
 const SIZES: Record<Size, number> = {
   small: smallSize,
   medium: mediumSize,
-}
+};
 
 const Container = styled.div`
   display: inline-block;
@@ -60,7 +60,7 @@ const StyledToggle = styled.i<{
 
   &.enabled:hover {
     background: ${(props) =>
-    props.checked ? darken(0.05, colors.success) : '#bbb'};
+      props.checked ? darken(0.05, colors.success) : '#bbb'};
   }
 
   ${(props) =>
@@ -72,7 +72,11 @@ const StyledToggle = styled.i<{
     `};
 `;
 
-const StyledToggleWrapper = styled.div<{ checked: boolean; disabled: boolean; sizeInPixels: number }>`
+const StyledToggleWrapper = styled.div<{
+  checked: boolean;
+  disabled: boolean;
+  sizeInPixels: number;
+}>`
   height: ${(props) => props.sizeInPixels + padding * 2}px;
   display: flex;
   align-items: center;

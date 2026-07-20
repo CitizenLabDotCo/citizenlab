@@ -63,7 +63,8 @@ describe('Survey Builder - Creation and Basic Flow', () => {
     cy.get('.e2e-error-message');
     cy.url().should(
       'eq',
-      `${Cypress.config().baseUrl
+      `${
+        Cypress.config().baseUrl
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
@@ -145,7 +146,8 @@ describe('Survey Builder - Creation and Basic Flow', () => {
       .click({ force: true });
     cy.url().should(
       'eq',
-      `${Cypress.config().baseUrl
+      `${
+        Cypress.config().baseUrl
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
   });

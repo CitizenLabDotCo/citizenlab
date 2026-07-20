@@ -35,7 +35,7 @@ const AccessSectionSSO = ({
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
   const { data: authenticationMethod } = useAuthenticationMethod();
-  const authMethodNames = useAuthMethodNames()
+  const authMethodNames = useAuthMethodNames();
   const nameInConfig = ssoMethodName(authenticationMethod);
   const methodName = authMethodNames[nameInConfig as any] || nameInConfig;
 
@@ -74,7 +74,13 @@ const AccessSectionSSO = ({
               fill={colors.teal500}
             />
             <Box display="flex" flexDirection="column" gap="2px">
-              <Text as="span" m="0" fontSize="s" fontWeight="semi-bold" color="primary">
+              <Text
+                as="span"
+                m="0"
+                fontSize="s"
+                fontWeight="semi-bold"
+                color="primary"
+              >
                 {formatMessage(messages.participantsSignInWith, { methodName })}
               </Text>
               <Text

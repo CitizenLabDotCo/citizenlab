@@ -53,15 +53,15 @@ export const setupProject = ({
       const extra =
         participationMethod === 'ideation'
           ? {
-            allow_anonymous_participation: true,
-            canComment: true,
-            canPost: true,
-            canReact: true,
-          }
+              allow_anonymous_participation: true,
+              canComment: true,
+              canPost: true,
+              canReact: true,
+            }
           : {
-            nativeSurveyButtonMultiloc: { en: 'bla' },
-            nativeSurveyTitleMultiloc: { en: 'bla' },
-          };
+              nativeSurveyButtonMultiloc: { en: 'bla' },
+              nativeSurveyTitleMultiloc: { en: 'bla' },
+            };
 
       return cy.apiCreatePhase({
         projectId,
@@ -93,7 +93,7 @@ export const updatePermission = ({
   user_fields_in_form,
   user_data_collection,
   permission = 'posting_idea',
-  global_custom_fields
+  global_custom_fields,
 }: {
   adminJwt?: string;
   phaseId: string;

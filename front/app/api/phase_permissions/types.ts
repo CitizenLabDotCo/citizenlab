@@ -84,10 +84,7 @@ export type ResetPermissionParams = {
   action: IPhasePermissionAction;
 };
 
-export type PermittedBy =
-  | 'everyone'
-  | 'users'
-  | 'admins_moderators';
+export type PermittedBy = 'everyone' | 'users' | 'admins_moderators';
 
 export interface IPermissionUpdate {
   group_ids: string[];

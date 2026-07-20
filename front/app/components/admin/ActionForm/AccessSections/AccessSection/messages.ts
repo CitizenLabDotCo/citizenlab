@@ -30,6 +30,7 @@ export default defineMessages({
   },
   pickAtLeastOne: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne',
-    defaultMessage: 'Pick at least one method, otherwise participants have no way to prove who they are.',
+    defaultMessage:
+      'Pick at least one method, otherwise participants have no way to prove who they are.',
   },
-})
+});

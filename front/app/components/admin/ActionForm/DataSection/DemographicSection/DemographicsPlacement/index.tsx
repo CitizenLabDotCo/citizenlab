@@ -46,7 +46,14 @@ const DemographicsPlacement = ({
   return (
     <Box>
       {/* Where the questions are asked. */}
-      <Text as="p" mt="0" mb="6px" fontSize="xs" fontWeight="bold" color="coolGrey600">
+      <Text
+        as="p"
+        mt="0"
+        mb="6px"
+        fontSize="xs"
+        fontWeight="bold"
+        color="coolGrey600"
+      >
         {formatMessage(messages.whenToAsk)}
       </Text>
       {PLACEMENT_OPTIONS.map((option) => (

@@ -61,7 +61,13 @@ export const Chip = ({ chip }: { chip: SummaryChip }) => {
       bgColor={tone.bg}
     >
       <Icon name={chip.icon} width="12px" height="12px" fill={tone.fg} />
-      <Text as="span" m="0" fontSize="xs" fontWeight="semi-bold" color="coolGrey700">
+      <Text
+        as="span"
+        m="0"
+        fontSize="xs"
+        fontWeight="semi-bold"
+        color="coolGrey700"
+      >
         {chip.label}
       </Text>
     </Box>
@@ -79,7 +85,12 @@ export const Hint = ({ children }: { children: ReactNode }) => (
     borderRadius={stylingConsts.borderRadius}
     bgColor={colors.grey50}
   >
-    <Icon name="info-outline" width="14px" height="14px" fill={colors.coolGrey500} />
+    <Icon
+      name="info-outline"
+      width="14px"
+      height="14px"
+      fill={colors.coolGrey500}
+    />
     <Text as="span" m="0" fontSize="xs" color="coolGrey600">
       {children}
     </Text>
@@ -175,8 +186,19 @@ export const Expander = ({
           height="16px"
           fill={colors.coolGrey600}
         />
-        <Icon name={icon} width="16px" height="16px" fill={colors.coolGrey600} />
-        <Text as="span" m="0" fontSize="s" fontWeight="semi-bold" color="primary">
+        <Icon
+          name={icon}
+          width="16px"
+          height="16px"
+          fill={colors.coolGrey600}
+        />
+        <Text
+          as="span"
+          m="0"
+          fontSize="s"
+          fontWeight="semi-bold"
+          color="primary"
+        >
           {title}
         </Text>
         <Box flex="1 1 auto" />

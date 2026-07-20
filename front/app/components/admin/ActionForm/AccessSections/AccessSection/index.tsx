@@ -103,9 +103,7 @@ const AccessSection = ({
 
             {!hasEnabledMethod(permission) && (
               <Box mt="8px">
-                <Hint>
-                  {formatMessage(messages.pickAtLeastOne)}
-                </Hint>
+                <Hint>{formatMessage(messages.pickAtLeastOne)}</Hint>
               </Box>
             )}
           </Box>
