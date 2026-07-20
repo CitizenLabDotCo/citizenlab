@@ -55,6 +55,20 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable',
     defaultMessage: 'Editable',
   },
+  canSignUpWith: {
+    id: `${PREFIX}.canSignUpWith`,
+    defaultMessage:
+      'Besides email, participants can sign up with {methodName}.',
+  },
+  canVerifyWith: {
+    id: `${PREFIX}.canVerifyWith`,
+    defaultMessage: 'Participants can prove their identity with {methodName}.',
+  },
+  canSignUpOrVerifyWith: {
+    id: `${PREFIX}.canSignUpOrVerifyWith`,
+    defaultMessage:
+      'Besides email, participants can sign up or prove their identity with {methodName}.',
+  },
   seeWhichIdMethodsAreEnabled: {
     id: `${PREFIX}.seeWhichIdMethodsAreEnabled`,
     defaultMessage: 'See which identification methods are enabled',

@@ -72,6 +72,24 @@ describe('<Trigger />', () => {
       expect(screen.getByText('View ItsMe settings')).toBeInTheDocument();
     });
 
+    it('explains what a verification-only method can be used for', () => {
+      render(<Trigger />);
+      expect(
+        screen.getByText('Participants can prove their identity with ItsMe.')
+      ).toBeInTheDocument();
+    });
+
+    it('explains signing up when the method is an authentication method', () => {
+      mockIdMethods = {
+        data: [buildMethod({ authentication: true, verification: false })],
+      };
+      render(<Trigger />);
+
+      expect(
+        screen.getByText('Besides email, participants can sign up with ItsMe.')
+      ).toBeInTheDocument();
+    });
+
     it('opens the modal when clicked', async () => {
       render(<Trigger />);
       expect(modalOpened).toBe(false);
@@ -83,7 +101,7 @@ describe('<Trigger />', () => {
   });
 
   describe('with several active identification methods', () => {
-    it('uses a generic link that does not name a single method', () => {
+    beforeEach(() => {
       mockIdMethods = {
         data: [
           buildMethod({ id: 'method-1' }),
@@ -95,6 +113,15 @@ describe('<Trigger />', () => {
           }),
         ],
       };
+    });
+
+    it('leaves out the explanation, which the link already covers', () => {
+      render(<Trigger />);
+
+      expect(screen.queryByText(/participants can/i)).toBeNull();
+    });
+
+    it('uses a generic link that does not name a single method', () => {
       render(<Trigger />);
 
       expect(

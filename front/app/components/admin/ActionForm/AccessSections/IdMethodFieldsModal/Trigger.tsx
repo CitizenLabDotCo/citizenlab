@@ -34,8 +34,26 @@ const Trigger = () => {
   const singleMethod =
     activeMethods.length === 1 ? activeMethods[0] : undefined;
 
+  // What the method can actually be used for decides the wording: a
+  // verification-only method is no way to sign up, so promising that would be
+  // wrong. Only worth saying when we can name the method — across several
+  // methods the sentence turns into vague filler, and the link says it better.
+  const explanation = singleMethod?.attributes.authentication_method
+    ? singleMethod.attributes.verification_method
+      ? messages.canSignUpOrVerifyWith
+      : messages.canSignUpWith
+    : messages.canVerifyWith;
+
   return (
     <Box mt="8px">
+      {singleMethod && (
+        <Text as="span" m="0" fontSize="xs" color="coolGrey600">
+          {formatMessage(explanation, {
+            methodName: getMethodName(singleMethod, idMethodNames),
+          })}{' '}
+        </Text>
+      )}
+
       <Text
         as="span"
         m="0"
