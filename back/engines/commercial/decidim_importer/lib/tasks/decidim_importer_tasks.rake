@@ -15,10 +15,12 @@ require 'csv'
 #      rewrites the links embedded in the tenant's Content Builder layouts and static pages — file
 #      links resolve to the imported file's real content URL. Links that should be repointed but
 #      couldn't be resolved are written to `<base>.broken_links.csv` for manual review.
-#   2. gathers every top-level (ungrouped) project into a new "Consultations" folder, gives that folder
-#      a Content Builder layout with a `Selection` widget listing those projects plus the group folders,
-#      and adds the folder to the nav bar (the widget references admin-publication ids that only exist
-#      once the template is applied).
+#   2. gathers every top-level (ungrouped) project into a new "Consultations" folder, gives every folder
+#      (Consultations, Assemblies and the imported group folders) the standard folder description layout
+#      (title + description + a published-projects widget) and a homepage preview description, adds a
+#      widget to the Consultations folder linking out to the other folders (except Assemblies), and
+#      rebuilds the nav bar down to Home plus the Consultations and Assemblies folders (dropping the
+#      default items).
 #
 # Dry-run a dumped template on a throwaway tenant that's created then destroyed:
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml]
@@ -72,7 +74,7 @@ namespace :decidim_importer do
   end
 
   desc 'Post-import finishing (run after `import`): corrects Decidim links, then gathers ungrouped ' \
-       'projects into a "Consultations" folder (+ layout and nav bar).'
+       'projects into a "Consultations" folder (+ layout) and rebuilds the nav bar.'
   task :finalize, %i[mapping host] => [:environment] do |_t, args|
     mapping_path = url_mapping_path(args.fetch(:mapping))
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
@@ -105,7 +107,8 @@ namespace :decidim_importer do
       end
       Rails.logger.info "  rewrote links in #{updated} record(s)"
 
-      # 2. Gather ungrouped projects into the "Consultations" folder (+ its Selection layout and nav bar).
+      # 2. Gather ungrouped projects into the "Consultations" folder (+ its Selection layout) and
+      #    rebuild the nav bar down to Home + the Consultations and Assemblies folders.
       consultations = DecidimImporter::ConsultationsFolder.new.run
       Rails.logger.info "  Consultations folder #{consultations[:folder].slug}: " \
                         "moved #{consultations[:moved_projects].size} project(s) in"
