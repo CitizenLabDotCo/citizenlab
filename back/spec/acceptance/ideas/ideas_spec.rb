@@ -635,6 +635,7 @@ resource 'Ideas' do
       create(
         :idea,
         project: project,
+        phases: project.phases,
         idea_status: create(:proposals_status, code: 'ineligible')
       )
     end
@@ -643,6 +644,7 @@ resource 'Ideas' do
       create(
         :idea,
         project: project,
+        phases: project.phases,
         idea_status: create(:proposals_status, code: 'expired')
       )
     end
@@ -651,6 +653,7 @@ resource 'Ideas' do
       create(
         :idea,
         project: project,
+        phases: project.phases,
         idea_status: create(:proposals_status, code: 'proposed')
       )
     end

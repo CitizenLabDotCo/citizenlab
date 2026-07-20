@@ -77,6 +77,14 @@ describe Permissions::IdeaPermissionsService do
         it 'returns nil, because moderators can act on inputs outside the current phase' do
           expect(reason).to be_nil
         end
+
+        context 'when commenting is disabled in the current phase' do
+          let(:project) { create(:project_with_current_phase, current_phase_attrs: { commenting_enabled: false }) }
+
+          it 'returns nil, because the current phase does not govern an input outside it' do
+            expect(reason).to be_nil
+          end
+        end
       end
     end
 
@@ -605,9 +613,10 @@ describe Permissions::IdeaPermissionsService do
       ideas = Idea.includes(
         :idea_images, :idea_trending_info, :input_topics,
         :idea_import,
-        :phases,
         :idea_status,
         {
+          phases: { permissions: [:groups] },
+          creation_phase: { permissions: [:groups] },
           project: [:admin_publication, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
           author: [:unread_notifications]
         }
