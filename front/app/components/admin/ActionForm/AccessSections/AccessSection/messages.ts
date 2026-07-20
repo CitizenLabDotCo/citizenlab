@@ -32,4 +32,4 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.mustProveIdentity',
     defaultMessage: 'Must prove who they are first.',
   },
-})
+});

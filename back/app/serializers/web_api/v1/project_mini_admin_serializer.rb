@@ -40,6 +40,10 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     object.folder&.title_multiloc
   end
 
+  attribute :space_title_multiloc do |object|
+    object.space&.title_multiloc
+  end
+
   has_one :folder
 
   has_one :space

@@ -10,5 +10,4 @@ export default defineMessages({
     defaultMessage:
       'Information collected from participants, and how it is stored alongside their submission.',
   },
-
 });

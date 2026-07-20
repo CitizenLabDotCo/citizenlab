@@ -34,7 +34,8 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
   const showPIISection = attributes.permitted_by === 'users';
 
   const permissionHasForm = attributes.action === 'posting_idea';
-  const isNativeSurveyPhase = phase?.data.attributes.participation_method === 'native_survey';
+  const isNativeSurveyPhase =
+    phase?.data.attributes.participation_method === 'native_survey';
 
   // The anonymity settings are only implemented for native surveys atm.
   const isNativeSurveySubmission = permissionHasForm && isNativeSurveyPhase;
@@ -47,16 +48,18 @@ const DataSection = ({ permission, phaseId, onChange }: Props) => {
         tooltip={formatMessage(messages.whatWeCollectTooltip)}
       />
 
-      <Box border={`1px solid ${colors.borderLight}`} borderRadius="8px" px="14px">
+      <Box
+        border={`1px solid ${colors.borderLight}`}
+        borderRadius="8px"
+        px="14px"
+      >
         {showPIISection && (
           <PersonalInfoSection permission={permission} onChange={onChange} />
         )}
 
         {/* Demographics — available in every mode. */}
         <Box
-          borderTop={
-            showPIISection ? `1px solid ${colors.divider}` : undefined
-          }
+          borderTop={showPIISection ? `1px solid ${colors.divider}` : undefined}
         >
           <DemographicSection
             permission={permission}

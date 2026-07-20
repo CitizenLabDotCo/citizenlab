@@ -211,12 +211,12 @@ const ProjectSetupForm = ({ authUser }: Props) => {
 
       const projectFilesPromise = projectFileAttachments
         ? syncProjectFiles({
-          attachableId: projectId,
-          attachableType: 'Project',
-          fileAttachments: projectFileAttachments,
-          fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-          fileAttachmentOrdering: {},
-        })
+            attachableId: projectId,
+            attachableType: 'Project',
+            fileAttachments: projectFileAttachments,
+            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
+            fileAttachmentOrdering: {},
+          })
         : undefined;
 
       await Promise.all([
@@ -249,10 +249,10 @@ const ProjectSetupForm = ({ authUser }: Props) => {
   const validateForm = () => {
     const titleError = !isNilOrError(appConfigLocales)
       ? validateTitle(
-        appConfigLocales,
-        projectAttrs.title_multiloc,
-        formatMessage(messages.noTitleErrorMessage)
-      )
+          appConfigLocales,
+          projectAttrs.title_multiloc,
+          formatMessage(messages.noTitleErrorMessage)
+        )
       : null;
     const hasTitleError = !isEmpty(titleError);
     setTitleError(hasTitleError ? titleError : null);

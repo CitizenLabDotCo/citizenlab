@@ -50,7 +50,15 @@ export const requiresAccount = (permission: IPhasePermissionData): boolean =>
 export interface SummaryChip {
   key: string;
   label: string;
-  icon: 'user-circle' | 'email' | 'tablet' | 'comment' | 'shield-checkered' | 'group' | 'lock' | 'user-data';
+  icon:
+    | 'user-circle'
+    | 'email'
+    | 'tablet'
+    | 'comment'
+    | 'shield-checkered'
+    | 'group'
+    | 'lock'
+    | 'user-data';
   tone: 'access' | 'data' | 'open';
 }
 
@@ -95,7 +103,7 @@ export const buildSummary = (
         key: 'open',
         label: formatMessage(messages.anyoneCanParticipate),
         icon: 'user-circle',
-        tone: 'open'
+        tone: 'open',
       },
       ...demographicsChip(customFields, formatMessage),
     ];
@@ -133,7 +141,7 @@ export const buildSummary = (
       key: 'name',
       label: formatMessage(messages.name),
       icon: 'user-circle',
-      tone: 'data'
+      tone: 'data',
     });
   }
   if (attributes.require_password) {
@@ -141,7 +149,7 @@ export const buildSummary = (
       key: 'password',
       label: formatMessage(messages.password),
       icon: 'lock',
-      tone: 'data'
+      tone: 'data',
     });
   }
 
@@ -189,14 +197,19 @@ export const buildSummarySSO = (
         key: 'open',
         label: formatMessage(messages.anyoneCanParticipate),
         icon: 'user-circle',
-        tone: 'open'
+        tone: 'open',
       },
       ...demographicsChip(customFields, formatMessage),
     ];
   }
 
   const chips: SummaryChip[] = [
-    { key: 'signin', label: signInLabel, icon: 'shield-checkered', tone: 'access' },
+    {
+      key: 'signin',
+      label: signInLabel,
+      icon: 'shield-checkered',
+      tone: 'access',
+    },
   ];
   const groupIds = getGroupIds(permission);
   if (groupIds.length > 0) {
@@ -212,7 +225,7 @@ export const buildSummarySSO = (
       key: 'name',
       label: formatMessage(messages.name),
       icon: 'user-circle',
-      tone: 'data'
+      tone: 'data',
     });
   }
   chips.push(...demographicsChip(customFields, formatMessage));
@@ -252,11 +265,15 @@ export const piiSummary = (
   showPassword = true
 ): string => {
   const parts: string[] = [];
-  if (permission.attributes.require_name) parts.push(formatMessage(messages.name));
+  if (permission.attributes.require_name) {
+    parts.push(formatMessage(messages.name));
+  }
   if (showPassword && permission.attributes.require_password) {
     parts.push(formatMessage(messages.password));
   }
-  return parts.length ? parts.join(' · ') : formatMessage(messages.nothingExtra);
+  return parts.length
+    ? parts.join(' · ')
+    : formatMessage(messages.nothingExtra);
 };
 
 export const demographicsSummary = (
@@ -264,10 +281,15 @@ export const demographicsSummary = (
   formatMessage: FormatMessage
 ): string => {
   const n = customFields.length;
-  return n === 0 ? formatMessage(messages.none) : formatMessage(messages.nQuestions, { nQuestions: n });
+  return n === 0
+    ? formatMessage(messages.none)
+    : formatMessage(messages.nQuestions, { nQuestions: n });
 };
 
-export const DATA_COLLECTION_SUMMARY: Record<UserDataCollection, MessageDescriptor> = {
+export const DATA_COLLECTION_SUMMARY: Record<
+  UserDataCollection,
+  MessageDescriptor
+> = {
   all_data: messages.linkedToProfile,
   demographics_only: messages.piiExcludedFromResults,
   anonymous: messages.fullyAnonymous,

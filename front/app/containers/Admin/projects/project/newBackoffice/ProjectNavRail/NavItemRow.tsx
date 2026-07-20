@@ -64,7 +64,12 @@ const NavItemRow = ({
   const active = pathname.includes(item.to.replace('$projectId', projectId));
 
   return (
-    <Row className={active ? 'active' : undefined} pr={trailing ? '8px' : '0'}>
+    <Row
+      className={`intercom-product-tour-project-nav-item-${item.name}${
+        active ? ' active' : ''
+      }`}
+      pr={trailing ? '8px' : '0'}
+    >
       <RowLink to={item.to} params={{ projectId }}>
         <Box flexGrow={1} minWidth="0">
           <Text

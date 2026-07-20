@@ -89,9 +89,7 @@ describe('<AccessSectionSSO />', () => {
       mockAuthenticationMethod = null;
       renderSection();
       // methodName falls back to an empty string, but the row is still shown.
-      expect(
-        screen.getByText(/Participants sign in with/)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Participants sign in with/)).toBeInTheDocument();
     });
   });
 

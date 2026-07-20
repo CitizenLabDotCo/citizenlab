@@ -147,8 +147,8 @@ const MultipleSelect = ({
             backgroundColor: state.isFocused
               ? colors.grey300
               : state.isDisabled
-                ? colors.grey100
-                : '#fff',
+              ? colors.grey100
+              : '#fff',
           }),
         }}
         menuPosition="fixed"

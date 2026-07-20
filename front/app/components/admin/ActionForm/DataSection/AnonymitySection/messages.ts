@@ -3,7 +3,8 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   allDataLabel: {
     id: 'app.components.admin.ActionForm.DataSection.AnonymitySection.allDataLabel',
-    defaultMessage: 'Link submissions to the participant’s profile (recommended)',
+    defaultMessage:
+      'Link submissions to the participant’s profile (recommended)',
   },
   demographicsOnlyLabel: {
     id: 'app.components.admin.ActionForm.DataSection.AnonymitySection.demographicsOnlyLabel',
@@ -16,8 +17,7 @@ export default defineMessages({
   },
   anonymousLabel: {
     id: 'app.components.admin.ActionForm.DataSection.AnonymitySection.anonymousLabel',
-    defaultMessage:
-      'Fully anonymous — unlink personal info and demographics',
+    defaultMessage: 'Fully anonymous — unlink personal info and demographics',
   },
   anonymousWarning: {
     id: 'app.components.admin.ActionForm.DataSection.AnonymitySection.anonymousWarning',
@@ -32,5 +32,5 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation',
     defaultMessage:
       'Independent of what you ask above: you can collect a name yet still keep the submission unlinked from the participant’s profile.',
-  }
+  },
 });

@@ -32,15 +32,17 @@ describe('Idea show page actions', () => {
       })
       .then((phase) => {
         phaseId = phase.body.data.id;
-        return cy.apiCreateIdea({
-          projectId,
-          ideaTitle: randomString(20),
-          ideaContent: randomString(),
-          phaseIds: [phase.body.data.id],
-        }).then((idea) => {
-          ideaId = idea.body.data.id;
-          ideaSlug = idea.body.data.attributes.slug;
-        });
+        return cy
+          .apiCreateIdea({
+            projectId,
+            ideaTitle: randomString(20),
+            ideaContent: randomString(),
+            phaseIds: [phase.body.data.id],
+          })
+          .then((idea) => {
+            ideaId = idea.body.data.id;
+            ideaSlug = idea.body.data.attributes.slug;
+          });
       });
   });
 
@@ -190,7 +192,7 @@ describe('Idea show page actions', () => {
         cy.setLoginCookie(email, password);
         cy.apiCreatePhase({
           projectId,
-          title: "Second phase",
+          title: 'Second phase',
           startAt: moment().subtract(1, 'month').format('DD/MM/YYYY'),
           participationMethod: 'ideation',
           canPost: true,
@@ -198,21 +200,21 @@ describe('Idea show page actions', () => {
           canReact: false,
           reacting_dislike_enabled: true,
         })
-        .then((phase) => {
-          phaseId = phase.body.data.id;
-        })
-        .then((user) => {
-          return cy.apiCreateIdea({
-            projectId,
-            ideaTitle: randomString(20),
-            ideaContent: randomString(),
-            phaseIds: [phaseId],
+          .then((phase) => {
+            phaseId = phase.body.data.id;
+          })
+          .then((user) => {
+            return cy.apiCreateIdea({
+              projectId,
+              ideaTitle: randomString(20),
+              ideaContent: randomString(),
+              phaseIds: [phaseId],
+            });
+          })
+          .then((idea) => {
+            ideaIdBis = idea.body.data.id;
+            ideaSlugBis = idea.body.data.attributes.slug;
           });
-        })
-        .then((idea) => {
-          ideaIdBis = idea.body.data.id;
-          ideaSlugBis = idea.body.data.attributes.slug;
-        });
       });
 
       after(() => {

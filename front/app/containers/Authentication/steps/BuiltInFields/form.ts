@@ -3,7 +3,9 @@ import { string, object } from 'yup';
 
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
-import { getEmailSchema, getPasswordSchema } from '../InviteSignUp/form';
+import { getPasswordSchema } from 'components/UI/PasswordInput/passwordSchema';
+
+import { getEmailSchema } from '../InviteSignUp/form';
 import sharedMessages from '../messages';
 
 export const DEFAULT_VALUES = {
@@ -20,7 +22,9 @@ const _if = (condition: boolean, key: string, value: any) => {
 export const getSchema = (
   minimumPasswordLength: number,
   formatMessage: FormatMessage,
-  requirements: AuthenticationRequirements
+  requirements: AuthenticationRequirements,
+  minimumStrength?: number,
+  extraUserInputs: string[] = []
 ) => {
   const missingAttributes = new Set(
     requirements.requirements.authentication.missing_user_attributes
@@ -48,7 +52,11 @@ export const getSchema = (
     ..._if(
       missingAttributes.has('password'),
       'password',
-      getPasswordSchema(minimumPasswordLength, formatMessage)
+      getPasswordSchema(formatMessage, {
+        minimumPasswordLength,
+        minimumStrength,
+        staticUserInputs: extraUserInputs,
+      })
     ),
   });
 

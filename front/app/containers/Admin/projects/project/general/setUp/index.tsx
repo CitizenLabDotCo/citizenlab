@@ -286,12 +286,12 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 
       const projectFilesPromise = projectFileAttachments
         ? syncProjectFiles({
-          attachableId: projectId,
-          attachableType: 'Project',
-          fileAttachments: projectFileAttachments,
-          fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-          fileAttachmentOrdering: initialFileAttachmentOrdering,
-        })
+            attachableId: projectId,
+            attachableType: 'Project',
+            fileAttachments: projectFileAttachments,
+            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
+            fileAttachmentOrdering: initialFileAttachmentOrdering,
+          })
         : undefined;
 
       await Promise.all([
@@ -346,10 +346,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     if (!parallelParticipation) {
       const titleError = !isNilOrError(appConfigLocales)
         ? validateTitle(
-          appConfigLocales,
-          projectAttrs.title_multiloc,
-          formatMessage(messages.noTitleErrorMessage)
-        )
+            appConfigLocales,
+            projectAttrs.title_multiloc,
+            formatMessage(messages.noTitleErrorMessage)
+          )
         : null;
       const hasTitleError = !isEmpty(titleError);
       setTitleError(hasTitleError ? titleError : null);

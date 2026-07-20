@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Text, Button, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Button,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useGroups from 'api/groups/useGroups';
