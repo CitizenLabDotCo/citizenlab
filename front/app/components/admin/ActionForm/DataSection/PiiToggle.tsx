@@ -46,7 +46,13 @@ const PiiToggle = ({
               height="16px"
               fill={checked ? colors.teal500 : colors.coolGrey500}
             />
-            <Text as="span" m="0" fontSize="s" fontWeight="semi-bold" color="primary">
+            <Text
+              as="span"
+              m="0"
+              fontSize="s"
+              fontWeight="semi-bold"
+              color="primary"
+            >
               {title}
             </Text>
             {tooltip && <IconTooltip content={tooltip} iconSize="14px" />}

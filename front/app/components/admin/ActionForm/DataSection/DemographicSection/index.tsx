@@ -4,7 +4,12 @@
 
 import React, { useState } from 'react';
 
-import { Box, Text, Button, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Button,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import useAddPermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useAddPermissionsPhaseCustomField';
@@ -31,7 +36,12 @@ interface Props {
   onChange: (changes: Changes) => void;
 }
 
-const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }: Props) => {
+const DemographicSection = ({
+  permission,
+  phaseId,
+  permissionHasForm,
+  onChange,
+}: Props) => {
   const { attributes } = permission;
   const { action } = attributes;
   const [showSelectionModal, setShowSelectionModal] = useState(false);
@@ -66,11 +76,11 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
       field.attributes.persisted
         ? { id: field.id, required }
         : {
-          id: field.id,
-          permission_id: field.relationships.permission.data.id,
-          custom_field_id: field.relationships.custom_field.data.id,
-          required,
-        }
+            id: field.id,
+            permission_id: field.relationships.permission.data.id,
+            custom_field_id: field.relationships.custom_field.data.id,
+            required,
+          }
     );
 
   const removeField = (field: IPermissionsPhaseCustomFieldData) =>
@@ -95,7 +105,14 @@ const DemographicSection = ({ permission, phaseId, permissionHasForm, onChange }
         />
       )}
 
-      <Text as="p" mt="0" mb="8px" fontSize="xs" fontWeight="bold" color="coolGrey600">
+      <Text
+        as="p"
+        mt="0"
+        mb="8px"
+        fontSize="xs"
+        fontWeight="bold"
+        color="coolGrey600"
+      >
         {formatMessage(messages.questions)}
       </Text>
 

@@ -138,9 +138,7 @@ describe('<AccessSection />', () => {
         require_verification: false,
       });
 
-      expect(
-        screen.getByText(/Pick at least one method/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Pick at least one method/i)).toBeInTheDocument();
     });
 
     it('locks the last remaining enabled method and explains why in a tooltip', async () => {

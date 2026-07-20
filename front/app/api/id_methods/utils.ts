@@ -4,7 +4,7 @@ import {
   IDAzureAdB2cMethod,
   IDFacebookMethod,
   IdMethodName,
-  IdMethodData
+  IdMethodData,
 } from './types';
 
 export const getAzureConfig = (idMethods?: IdMethods) => {
@@ -13,7 +13,7 @@ export const getAzureConfig = (idMethods?: IdMethods) => {
   ) as IDAzureAdMethod | undefined;
 
   return azureAdConfig;
-}
+};
 
 export const getAzureB2cConfig = (idMethods?: IdMethods) => {
   const azureAdB2cConfig = idMethods?.data.find(
@@ -21,7 +21,7 @@ export const getAzureB2cConfig = (idMethods?: IdMethods) => {
   ) as IDAzureAdB2cMethod | undefined;
 
   return azureAdB2cConfig;
-}
+};
 
 export const getFacebookConfig = (idMethods?: IdMethods) => {
   const facebookConfig = idMethods?.data.find(
@@ -30,7 +30,7 @@ export const getFacebookConfig = (idMethods?: IdMethods) => {
   );
 
   return facebookConfig;
-}
+};
 
 export function isLastIdMethod(
   idMethodName: IdMethodName,

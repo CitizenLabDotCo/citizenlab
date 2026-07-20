@@ -39,10 +39,22 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
   // Locked fields come straight from the official register; the rest the
   // participant can still edit.
   const fields = [
-    ...metadata.locked_attributes.map((m) => ({ label: localize(m), locked: true })),
-    ...metadata.locked_custom_fields.map((m) => ({ label: localize(m), locked: true })),
-    ...metadata.other_attributes.map((m) => ({ label: localize(m), locked: false })),
-    ...metadata.other_custom_fields.map((m) => ({ label: localize(m), locked: false })),
+    ...metadata.locked_attributes.map((m) => ({
+      label: localize(m),
+      locked: true,
+    })),
+    ...metadata.locked_custom_fields.map((m) => ({
+      label: localize(m),
+      locked: true,
+    })),
+    ...metadata.other_attributes.map((m) => ({
+      label: localize(m),
+      locked: false,
+    })),
+    ...metadata.other_custom_fields.map((m) => ({
+      label: localize(m),
+      locked: false,
+    })),
   ];
 
   return (
@@ -53,7 +65,10 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
       width="480px"
       header={
         <Title ml="20px" variant="h3" color="primary">
-          <FormattedMessage {...messages.fieldsReturnedByMethod} values={{ methodName }} />
+          <FormattedMessage
+            {...messages.fieldsReturnedByMethod}
+            values={{ methodName }}
+          />
         </Title>
       }
     >
