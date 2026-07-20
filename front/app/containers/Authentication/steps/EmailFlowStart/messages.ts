@@ -18,8 +18,4 @@ export default defineMessages({
     id: 'app.containers.Authentication.steps.EmailFlowStart.orLoginWith',
     defaultMessage: 'Or login with:',
   },
-  federaTitle: {
-    id: 'app.containers.Authentication.steps.EmailFlowStart.federaTitle',
-    defaultMessage: 'SPID, CIE or CNS',
-  },
 });

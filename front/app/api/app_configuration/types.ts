@@ -77,6 +77,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     enable_signup: boolean;
     minimum_length?: number;
+    minimum_strength?: number;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;

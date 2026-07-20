@@ -22,7 +22,10 @@ class AuthenticationService
   end
 
   def first_method_enabled
-    active_methods(AppConfiguration.instance).first
+    # Temporary hack: we never want to return vienna_employee,
+    # because in the places in the UI where this endpoint is used,
+    # we always want to show the `vienna_citizen` method instead.
+    active_methods(AppConfiguration.instance).reject { |method| method.name == 'vienna_employee' }.first
   end
 
   def logout_url(provider, user)

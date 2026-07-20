@@ -10,6 +10,8 @@ import {
 
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 
+import useAuthMethodNames from 'hooks/useAuthMethodNames';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { requiresAccount, ssoMethodName } from '../../logic';
@@ -33,7 +35,9 @@ const AccessSectionSSO = ({
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
   const { data: authenticationMethod } = useAuthenticationMethod();
-  const methodName = ssoMethodName(authenticationMethod);
+  const authMethodNames = useAuthMethodNames();
+  const nameInConfig = ssoMethodName(authenticationMethod);
+  const methodName = authMethodNames[nameInConfig as any] || nameInConfig;
 
   return (
     <Box>

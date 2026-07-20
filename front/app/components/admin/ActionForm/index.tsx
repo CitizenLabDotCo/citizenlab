@@ -13,6 +13,7 @@ import {
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
+import useAuthMethodNames from 'hooks/useAuthMethodNames';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -50,6 +51,7 @@ const ActionForm = ({
     action,
   });
   const { data: authenticationMethod } = useAuthenticationMethod();
+  const authMethodNames = useAuthMethodNames();
 
   if (!permissionsCustomFields) return null;
 
@@ -59,14 +61,12 @@ const ActionForm = ({
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
 
+  const nameInConfig = ssoMethodName(authenticationMethod);
+  const methodName = authMethodNames[nameInConfig as any] || nameInConfig;
+
   const summary = passwordLoginEnabled
     ? buildSummary(permissionData, customFields, formatMessage)
-    : buildSummarySSO(
-        permissionData,
-        customFields,
-        ssoMethodName(authenticationMethod),
-        formatMessage
-      );
+    : buildSummarySSO(permissionData, customFields, methodName, formatMessage);
 
   // Reset clears the account-only customisations (groups + persisted questions);
   // it has nothing to undo for the open / admins-only gates.

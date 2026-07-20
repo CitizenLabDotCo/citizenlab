@@ -42,7 +42,7 @@ class SortByParamsService
     when 'budget' then scope.order(budget: :desc)
     when '-budget' then scope.order(budget: :asc)
     else
-      raise "Unsupported sorting parameter #{params[:sort]}"
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
   # rubocop:enable Metrics/CyclomaticComplexity
@@ -52,7 +52,7 @@ class SortByParamsService
     when 'start_at' then scope.order(start_at: :desc)
     when '-start_at' then scope.order(start_at: :asc)
     else
-      raise "Unsupported sorting parameter #{params[:sort]}"
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
 
@@ -61,7 +61,7 @@ class SortByParamsService
     when 'acted_at' then scope.order(acted_at: :desc)
     when '-acted_at' then scope.order(acted_at: :asc)
     else
-      raise "Unsupported sorting parameter #{params[:sort]}"
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
 
