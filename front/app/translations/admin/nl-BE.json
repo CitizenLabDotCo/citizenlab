@@ -4098,7 +4098,7 @@
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.canVerifyWith": "Deelnemers kunnen hun identiteit bewijzen met {methodName}.",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.identificationExplanation": "“Identificatie” is de overkoepelende term voor beide manieren waarop een methode kan worden gebruikt:",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.identificationMethods": "Identificatiemethoden",
-  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.introDescription": "Dit zijn de identificatiemethoden{tooltip} die actief zijn op dit platform, waarvoor ze elk kunnen worden gebruikt en de velden die ze automatisch invullen. Vergrendelde velden komen rechtstreeks uit het officiële register en kunnen niet door de deelnemer worden gewijzigd.",
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.introDescription": "Dit zijn de identificatiemethoden{tooltip} die actief zijn op dit platform, waarvoor ze elk kunnen worden gebruikt, en de velden die ze automatisch invullen. Vergrendelde velden komen rechtstreeks uit het officiële register en kunnen niet door de deelnemer worden gewijzigd.",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.noActiveMethods": "Er zijn momenteel geen identificatiemethoden actief.",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.noFieldsReturned": "Deze methode retourneert geen velden.",
   "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.seeWhichIdMethodsAreEnabled": "Bekijk welke identificatiemethoden zijn ingeschakeld",
