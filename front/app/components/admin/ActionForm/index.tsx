@@ -66,12 +66,7 @@ const ActionForm = ({
 
   const summary = passwordLoginEnabled
     ? buildSummary(permissionData, customFields, formatMessage)
-    : buildSummarySSO(
-      permissionData,
-      customFields,
-      methodName,
-      formatMessage
-    );
+    : buildSummarySSO(permissionData, customFields, methodName, formatMessage);
 
   // Reset clears the account-only customisations (groups + persisted questions);
   // it has nothing to undo for the open / admins-only gates.
@@ -120,7 +115,13 @@ const ActionForm = ({
 
           {/* When collapsed, the summary chips stand in for the whole panel. */}
           {!isOpen && (
-            <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap" ml="4px">
+            <Box
+              display="flex"
+              alignItems="center"
+              gap="6px"
+              flexWrap="wrap"
+              ml="4px"
+            >
               {summary.map((chip) => (
                 <Chip key={chip.key} chip={chip} />
               ))}
@@ -129,11 +130,7 @@ const ActionForm = ({
         </Box>
 
         {isOpen && (
-          <Box
-            px="20px"
-            pb="20px"
-            className={`e2e-action-form-${action}`}
-          >
+          <Box px="20px" pb="20px" className={`e2e-action-form-${action}`}>
             <Divider mt="0" mb="20px" />
 
             {passwordLoginEnabled ? (
@@ -173,7 +170,9 @@ const ActionForm = ({
                   onClick={onReset}
                 >
                   <span style={{ textDecorationLine: 'underline' }}>
-                    <FormattedMessage {...messages.resetDemographicQuestionsAndGroups} />
+                    <FormattedMessage
+                      {...messages.resetDemographicQuestionsAndGroups}
+                    />
                   </span>
                 </Button>
               </Box>

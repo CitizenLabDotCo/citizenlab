@@ -6,4 +6,4 @@ export default defineMessages({
     defaultMessage:
       'At least one authentication method must stay enabled, so this one can’t be turned off.',
   },
-})
+});

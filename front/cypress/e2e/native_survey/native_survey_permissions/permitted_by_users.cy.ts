@@ -36,7 +36,7 @@ describe('Native survey permitted by: users', () => {
           return updatePermission({
             adminJwt,
             phaseId,
-            global_custom_fields: false
+            global_custom_fields: false,
           }).then(() => {
             // Add one permissions custom field
             return addPermissionsCustomField({

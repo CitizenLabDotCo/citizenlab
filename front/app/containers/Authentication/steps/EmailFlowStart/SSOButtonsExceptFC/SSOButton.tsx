@@ -187,7 +187,9 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
         >
           <FormattedMessage
             {...messages.continueWithAzure}
-            values={{ azureProviderName: azureConfig?.attributes.login_mechanism_name }}
+            values={{
+              azureProviderName: azureConfig?.attributes.login_mechanism_name,
+            }}
           />
         </WrappedAuthProviderButton>
       );
@@ -205,7 +207,8 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
           <FormattedMessage
             {...messages.continueWithAzure}
             values={{
-              azureProviderName: azureB2cConfig?.attributes.login_mechanism_name,
+              azureProviderName:
+                azureB2cConfig?.attributes.login_mechanism_name,
             }}
           />
         </WrappedAuthProviderButton>
@@ -220,7 +223,7 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
         >
           <FormattedMessage {...messages.continueWithLuxembourgIAM} />
         </WrappedAuthProviderButton>
-      )
+      );
     case 'franceconnect':
       // FranceConnect is handled separately
       // (it has its own branded button), so not implemented here.

@@ -12,11 +12,13 @@ export default defineMessages({
   },
   defaultErrorMessage: {
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.defaultErrorMessage',
-    defaultMessage: 'You do not meet the requirements to participate in this process.',
+    defaultMessage:
+      'You do not meet the requirements to participate in this process.',
   },
   overrideItBelow: {
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.overrideItBelow',
-    defaultMessage: 'Override it below for any language. Leave a language empty to keep the default for it.',
+    defaultMessage:
+      'Override it below for any language. Leave a language empty to keep the default for it.',
   },
   customMessage: {
     id: 'app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.customMessage',

@@ -23,21 +23,21 @@ const ANONYMITY_OPTIONS: {
   label: MessageDescriptor;
   warning?: MessageDescriptor;
 }[] = [
-    {
-      value: 'all_data',
-      label: messages.allDataLabel,
-    },
-    {
-      value: 'demographics_only',
-      label: messages.demographicsOnlyLabel,
-      warning: messages.demographicsOnlyWarning,
-    },
-    {
-      value: 'anonymous',
-      label: messages.anonymousLabel,
-      warning: messages.anonymousWarning,
-    },
-  ];
+  {
+    value: 'all_data',
+    label: messages.allDataLabel,
+  },
+  {
+    value: 'demographics_only',
+    label: messages.demographicsOnlyLabel,
+    warning: messages.demographicsOnlyWarning,
+  },
+  {
+    value: 'anonymous',
+    label: messages.anonymousLabel,
+    warning: messages.anonymousWarning,
+  },
+];
 
 interface Props {
   permission: IPhasePermissionData;
@@ -55,7 +55,9 @@ const AnonymitySection = ({ permission, onChange }: Props) => {
     <Expander
       icon="shield-checkered"
       title={formatMessage(messages.anonymityInResults)}
-      summary={formatMessage(DATA_COLLECTION_SUMMARY[attributes.user_data_collection])}
+      summary={formatMessage(
+        DATA_COLLECTION_SUMMARY[attributes.user_data_collection]
+      )}
     >
       <Text as="p" mt="0" mb="10px" fontSize="xs" color="coolGrey600">
         {formatMessage(messages.anonymityExplanation)}

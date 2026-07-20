@@ -24,7 +24,6 @@ import PageLoading from 'components/UI/PageLoading';
 import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
 
-
 const HomePage = lazy(() => import('containers/HomePage'));
 const OAuthAuthorize = lazy(() => import('containers/OAuthAuthorize'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
@@ -73,10 +72,10 @@ const TanStackRouterDevtools =
   process.env.NODE_ENV === 'production'
     ? () => null
     : lazy(() =>
-      import('@tanstack/react-router-devtools').then((mod) => ({
-        default: mod.TanStackRouterDevtools,
-      }))
-    );
+        import('@tanstack/react-router-devtools').then((mod) => ({
+          default: mod.TanStackRouterDevtools,
+        }))
+      );
 
 // Root search schema — SSO/auth callback params that can appear on any route
 const rootSearchSchema = yup.object({
