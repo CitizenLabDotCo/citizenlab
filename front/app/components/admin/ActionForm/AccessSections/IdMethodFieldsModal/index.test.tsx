@@ -92,14 +92,67 @@ beforeEach(() => {
 });
 
 describe('<IdMethodFieldsModal />', () => {
+  // What a method can be used for is shown per method, since a method can be an
+  // authentication method, a verification method, or both at once.
+  describe('method capabilities', () => {
+    it('marks a verification-only method as verification, not authentication', () => {
+      mockIdMethods = {
+        data: [buildMethod({ authentication: false, verification: true })],
+      };
+      renderModal();
+
+      expect(screen.getByText('Verification')).toBeInTheDocument();
+      expect(screen.queryByText('Authentication')).toBeNull();
+    });
+
+    it('marks an authentication-only method as authentication, not verification', () => {
+      mockIdMethods = {
+        data: [buildMethod({ authentication: true, verification: false })],
+      };
+      renderModal();
+
+      expect(screen.getByText('Authentication')).toBeInTheDocument();
+      expect(screen.queryByText('Verification')).toBeNull();
+    });
+
+    it('marks a method that is both with both capabilities', () => {
+      mockIdMethods = {
+        data: [buildMethod({ authentication: true, verification: true })],
+      };
+      renderModal();
+
+      expect(screen.getByText('Authentication')).toBeInTheDocument();
+      expect(screen.getByText('Verification')).toBeInTheDocument();
+    });
+
+    it('explains identification and both terms it covers in a tooltip', async () => {
+      mockIdMethods = { data: [buildMethod()] };
+      renderModal();
+
+      await userEvent.hover(screen.getByTestId('tooltip-icon-button'));
+
+      expect(
+        await screen.findByText(/is the umbrella term for both ways/i)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/participants can create an account and log in/i)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/prove a participant’s identity through an official/i)
+      ).toBeInTheDocument();
+    });
+  });
+
   describe('with a single active method', () => {
     beforeEach(() => {
       mockIdMethods = { data: [buildMethod()] };
     });
 
-    it('names the method in the header', () => {
+    it('uses the generic header and names the method in the body', () => {
       renderModal();
-      expect(screen.getByText('Fields returned by ItsMe')).toBeInTheDocument();
+
+      expect(screen.getByText('Identification methods')).toBeInTheDocument();
+      expect(screen.getByText('ItsMe')).toBeInTheDocument();
     });
 
     it('lists every returned field, without accordions', () => {
@@ -186,14 +239,10 @@ describe('<IdMethodFieldsModal />', () => {
       };
     });
 
-    it('uses a generic header that does not mention a single method', () => {
+    it('uses the generic header', () => {
       renderModal();
 
-      expect(
-        screen.getByText('Fields returned by identification methods')
-      ).toBeInTheDocument();
-      expect(screen.queryByText('Fields returned by ItsMe')).toBeNull();
-      expect(screen.queryByText('Fields returned by FranceConnect')).toBeNull();
+      expect(screen.getByText('Identification methods')).toBeInTheDocument();
     });
 
     it('renders one accordion per active method', () => {
@@ -275,7 +324,7 @@ describe('<IdMethodFieldsModal />', () => {
       };
       renderModal();
 
-      expect(screen.getByText('Fields returned by Itsme®')).toBeInTheDocument();
+      expect(screen.getByText('Itsme®')).toBeInTheDocument();
     });
 
     it('falls back to the name the method reports', () => {
@@ -289,9 +338,7 @@ describe('<IdMethodFieldsModal />', () => {
       };
       renderModal();
 
-      expect(
-        screen.getByText('Fields returned by Fake SSO')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Fake SSO')).toBeInTheDocument();
     });
 
     it('falls back to the config name when neither name is set', () => {
@@ -301,9 +348,7 @@ describe('<IdMethodFieldsModal />', () => {
       };
       renderModal();
 
-      expect(
-        screen.getByText('Fields returned by keycloak')
-      ).toBeInTheDocument();
+      expect(screen.getByText('keycloak')).toBeInTheDocument();
     });
   });
 
@@ -327,7 +372,7 @@ describe('<IdMethodFieldsModal />', () => {
       renderModal();
 
       // Only one method is active, so we get the single-method layout.
-      expect(screen.getByText('Fields returned by ItsMe')).toBeInTheDocument();
+      expect(screen.getByText('ItsMe')).toBeInTheDocument();
       expect(screen.queryByText(/Bogus/)).toBeNull();
     });
 
@@ -343,7 +388,7 @@ describe('<IdMethodFieldsModal />', () => {
       };
       renderModal();
 
-      expect(screen.getByText('Fields returned by ItsMe')).toBeInTheDocument();
+      expect(screen.getByText('ItsMe')).toBeInTheDocument();
     });
   });
 

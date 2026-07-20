@@ -95,7 +95,7 @@ const AccessSectionSSO = ({
                 tabIndex={0}
                 onClick={() => setReturnedFieldsOpen(true)}
               >
-                {formatMessage(sharedMessages.seeWhichFieldsThisReturns)}
+                {formatMessage(sharedMessages.seeMethodProperties)}
               </Text>
             </Box>
           </Box>
