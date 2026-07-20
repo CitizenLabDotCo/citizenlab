@@ -1,6 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 
 import { UserDataCollection } from 'api/phase_permissions/types';
+import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -86,6 +87,7 @@ export interface IPhaseAttributes {
   similarity_threshold_body?: number | null;
   user_data_collection: UserDataCollection;
   user_fields_in_form_enabled: boolean;
+  action_descriptors: PhaseActionDescriptors;
 }
 
 export interface IPhases {
@@ -204,7 +206,8 @@ export type InputTerm =
   | 'suggestion'
   | 'topic'
   | 'post'
-  | 'story';
+  | 'story'
+  | 'observation';
 
 export const presentationModes = ['card', 'map', 'feed'] as const;
 export type PresentationMode = (typeof presentationModes)[number];

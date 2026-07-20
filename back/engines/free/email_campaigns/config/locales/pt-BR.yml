@@ -190,6 +190,7 @@ pt-BR:
       new_email_confirmation: Novo código de confirmação de e-mail
       new_idea_for_admin_prescreening: Nova entrada que requer aprovação em um projeto I moderado
       new_idea_for_admin_published: Nova entrada publicada em um projeto que eu moderei
+      new_phone_confirmation: Novo código de confirmação de telefone
       official_feedback_on_idea_you_follow: Atualizar uma ideia que você segue
       password_reset: Redefinir a senha
       project_folder_moderation_rights_received: Direitos de moderação da pasta de projetos recebidos
@@ -202,6 +203,7 @@ pt-BR:
       project_review_state_change: Projeto aprovado
       proposal_expired_for_admin: Proposta expirou sem atingir o limiar de votação
       screening_digest: Lembrete semanal de triagem
+      sms_manual: Mensagens SMS oficiais
       space_moderation_rights_received: Direitos de gerente de espaço recebidos
       status_change_on_idea_you_follow: Mudança de status de uma ideia que você segue
       survey_submitted: Pesquisa enviada
@@ -249,6 +251,7 @@ pt-BR:
         idea: '%{authorName} comentou sobre uma ideia que você segue'
         initiative: '%{authorName} comentou sobre uma iniciativa que você segue'
         issue: '%{authorName} comentou sobre um assunto que você acompanha'
+        observation: '%{authorName} comentou em uma observação que você segue'
         option: '%{authorName} comentou sobre uma opção que você segue'
         petition: '%{authorName} comentou em uma petição que você segue'
         post: '%{authorName} comentou em uma postagem que você segue'
@@ -323,6 +326,7 @@ pt-BR:
         idea: Ir para esta ideia
         initiative: Ir para esta iniciativa
         issue: Ir para esta edição
+        observation: Ir para esta observação
         option: Vá para esta opção
         petition: Vá para esta petição
         post: Ir para esta postagem
@@ -343,6 +347,7 @@ pt-BR:
         idea: Vá para a sua ideia
         initiative: Vá para sua iniciativa
         issue: Vá para o seu problema
+        observation: Ir para sua observação
         option: Vá para sua opção
         petition: Vá para sua petição
         post: Vá para sua postagem
@@ -376,6 +381,7 @@ pt-BR:
         idea: Sua ideia foi publicada
         initiative: Sua iniciativa foi publicada
         issue: Sua edição foi publicada
+        observation: Sua observação foi publicada
         option: Sua opção foi publicada
         petition: Sua petição foi publicada
         post: Sua postagem foi publicada
@@ -530,6 +536,8 @@ pt-BR:
       title: Uma nova entrada foi publicada em sua plataforma
       today: Hoje
       yesterday: Ontem
+    new_phone_confirmation:
+      sms_body: Seu código de confirmação é %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ir para esta entrada
       event_description: "%{feedback_author_name} apresentou uma atualização sobre o '%{input_title}'."
@@ -764,6 +772,7 @@ pt-BR:
         idea: Sua ideia está em "%{prescreening_status_title}"
         initiative: Sua iniciativa está em "%{prescreening_status_title}"
         issue: Seu problema está em "%{prescreening_status_title}"
+        observation: Sua observação está em "%{prescreening_status_title}"
         option: Sua opção está em "%{prescreening_status_title}"
         petition: Sua petição está em "%{prescreening_status_title}"
         post: Sua postagem está em "%{prescreening_status_title}"

@@ -112,6 +112,8 @@ es-CL:
           title: ¿Cuál es tu iniciativa?
         issue:
           title: ¿Cuál es su respuesta?
+        observation:
+          title: ¿Cuál es tu observación?
         option:
           title: ¿Cuál es su opción?
         petition:
@@ -268,6 +270,15 @@ es-CL:
     proposals:
       title: Propuestas
   pdf_export:
+    input_responses:
+      date: Fecha
+      no_answer: (Sin respuesta)
+      prepared_by: Preparado por
+      report_label: Informe de respuestas
+      respondent: Encuestado %{number}
+      response_count:
+        one: '%{count} respuesta'
+        other: '%{count} respuestas'
     survey_responses:
       date: Fecha
       no_answer: (Sin respuesta)

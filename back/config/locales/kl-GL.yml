@@ -139,6 +139,8 @@ kl-GL:
           title: Suna suliniutigaajuk?
         issue:
           title: Suna ajornartorsiutaava?
+        observation:
+          title: Sunaana maluginiakkat?
         option:
           title: Suna toqqagassaraajuk?
         petition:
@@ -302,6 +304,15 @@ kl-GL:
     proposals:
       title: Proposals
   pdf_export:
+    input_responses:
+      date: Ulloq
+      no_answer: (Akineqanngilaq)
+      prepared_by: Suliarineqartoq uannga
+      report_label: Akissutinut nalunaarusiaq
+      respondent: Akissuteqartoq %{number}
+      response_count:
+        one: '%{count} akissut'
+        other: '%{count} akissutit'
     survey_responses:
       date: Ulloq
       no_answer: (Akineqanngilaq)

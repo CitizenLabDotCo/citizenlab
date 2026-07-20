@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.showAllStories',
     defaultMessage: 'Show stories',
   },
+  showAllObservations: {
+    id: 'app.containers.IdeasFeedPage.showAllObservations',
+    defaultMessage: 'Show observations',
+  },
   // #input_term_copy
   seeAllIdeas: {
     id: 'app.containers.IdeasFeedPage.seeAllIdeas2',
@@ -122,6 +126,10 @@ export default defineMessages({
   seeAllStories: {
     id: 'app.containers.IdeasFeedPage.seeAllStories',
     defaultMessage: 'See all {ideasCount} stories',
+  },
+  seeAllObservations: {
+    id: 'app.containers.IdeasFeedPage.seeAllObservations',
+    defaultMessage: 'See all {ideasCount} observations',
   },
   allTopics: {
     id: 'app.containers.IdeasFeedPage.allTopics',
@@ -207,6 +215,10 @@ export default defineMessages({
   addAStory: {
     id: 'app.containers.IdeasFeedPage.addAStory',
     defaultMessage: 'Add a story',
+  },
+  addAnObservation: {
+    id: 'app.containers.IdeasFeedPage.addAnObservation',
+    defaultMessage: 'Add an observation',
   },
   noIdeasForTag: {
     id: 'app.containers.IdeasFeedPage.noIdeasForTag',

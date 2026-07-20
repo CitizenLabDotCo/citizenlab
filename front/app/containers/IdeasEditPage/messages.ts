@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.storyFormTitle',
     defaultMessage: 'Edit story',
   },
+  observationFormTitle: {
+    id: 'app.containers.IdeasEditPage.observationFormTitle',
+    defaultMessage: 'Edit observation',
+  },
   save: {
     id: 'app.containers.IdeasEditPage.save',
     defaultMessage: 'Save',

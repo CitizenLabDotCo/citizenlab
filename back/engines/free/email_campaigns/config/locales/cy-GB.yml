@@ -190,6 +190,7 @@ cy-GB:
       new_email_confirmation: Cod cadarnhau e-bost newydd
       new_idea_for_admin_prescreening: Mewnbwn newydd sydd angen cymeradwyaeth mewn prosiect rwy'n ei gymedroli
       new_idea_for_admin_published: Mewnbwn cyhoeddedig newydd mewn prosiect rwy'n ei gymedroli
+      new_phone_confirmation: Cod cadarnhau ffôn newydd
       official_feedback_on_idea_you_follow: Diweddariad ar syniad rydych chi'n ei ddilyn
       password_reset: Ailosod cyfrinair
       project_folder_moderation_rights_received: Hawliau rheolwr ffolder wedi'u derbyn
@@ -202,6 +203,7 @@ cy-GB:
       project_review_state_change: Prosiect wedi'i gymeradwyo
       proposal_expired_for_admin: Cynnig wedi dod i ben heb gyrraedd y trothwy pleidleisio
       screening_digest: Nodyn atgoffa sgrinio wythnosol
+      sms_manual: Negeseuon SMS swyddogol
       space_moderation_rights_received: Hawliau rheolwr gofod wedi'u derbyn
       status_change_on_idea_you_follow: Newid statws syniad rydych chi'n ei ddilyn
       survey_submitted: Arolwg wedi'i gyflwyno
@@ -249,6 +251,7 @@ cy-GB:
         idea: "%{authorName} sylw ar syniad rydych chi'n ei ddilyn"
         initiative: Gwnaeth %{authorName} sylw ar fenter rydych chi'n ei dilyn
         issue: Gwnaeth %{authorName} sylw ar fater rydych chi'n ei ddilyn
+        observation: Mae %{authorName} wedi gwneud sylw ar arsylwad rydych chi'n ei ddilyn
         option: Gwnaeth %{authorName} sylwadau ar opsiwn rydych chi'n ei ddilyn
         petition: '%{authorName} sylw ar ddeiseb rydych yn ei dilyn'
         post: Gwnaeth %{authorName} sylw ar bost rydych chi'n ei ddilyn
@@ -323,6 +326,7 @@ cy-GB:
         idea: Ewch i'r syniad hwn
         initiative: Ewch i'r fenter hon
         issue: Ewch i'r rhifyn hwn
+        observation: Ewch i'r arsylliad hwn
         option: Ewch i'r opsiwn hwn
         petition: Ewch i'r ddeiseb hon
         post: Ewch i'r post hwn
@@ -343,6 +347,7 @@ cy-GB:
         idea: Ewch at eich syniad
         initiative: Ewch i'ch menter
         issue: Ewch at eich mater
+        observation: Mynd i'ch arsylwad
         option: Ewch i'ch opsiwn
         petition: Ewch at eich deiseb
         post: Ewch i'ch post
@@ -376,6 +381,7 @@ cy-GB:
         idea: Mae eich syniad wedi cael ei gyhoeddi
         initiative: Mae eich menter wedi'i chyhoeddi
         issue: Mae eich mater wedi'i gyhoeddi
+        observation: Mae eich arsylliad wedi cael ei gyhoeddi
         option: Mae eich opsiwn wedi'i gyhoeddi
         petition: Mae eich deiseb wedi'i chyhoeddi
         post: Mae eich post wedi cael ei gyhoeddi
@@ -530,6 +536,8 @@ cy-GB:
       title: Mae mewnbwn newydd wedi'i gyhoeddi ar eich platfform
       today: Heddiw
       yesterday: Ddoe
+    new_phone_confirmation:
+      sms_body: Eich cod cadarnhau yw %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ewch i'r mewnbwn hwn
       event_description: "Rhoddodd %{feedback_author_name} ddiweddariad ar '%{input_title}'."
@@ -764,6 +772,7 @@ cy-GB:
         idea: Mae eich syniad yn "%{prescreening_status_title}"
         initiative: Mae eich menter yn "%{prescreening_status_title}"
         issue: Mae eich problem yn "%{prescreening_status_title}"
+        observation: Mae eich arsylwad yn "%{prescreening_status_title}"
         option: Mae eich dewisiad yn "%{prescreening_status_title}"
         petition: Mae eich deiseb yn "%{prescreening_status_title}"
         post: Mae eich post yn "%{prescreening_status_title}"

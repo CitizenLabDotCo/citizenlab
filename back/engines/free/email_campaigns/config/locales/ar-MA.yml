@@ -190,6 +190,7 @@ ar-MA:
       new_email_confirmation: رمز تأكيد البريد الإلكتروني الجديد
       new_idea_for_admin_prescreening: مدخلات جديدة تتطلب الموافقة في مشروع أقوم بإدارته
       new_idea_for_admin_published: مدخلات منشورة جديدة في مشروع أقوم بإدارته
+      new_phone_confirmation: رمز جديد لتأكيد رقم الهاتف
       official_feedback_on_idea_you_follow: تحديث على فكرة تتابعها
       password_reset: تمت إعادة تعيين كلمة المرور
       project_folder_moderation_rights_received: تم استلام حقوق الإشراف على مجلد المشروع
@@ -202,6 +203,7 @@ ar-MA:
       project_review_state_change: تمت الموافقة على المشروع
       proposal_expired_for_admin: انتهت صلاحية المقترح دون الوصول إلى عتبة التصويت
       screening_digest: تذكير بالفحص الأسبوعي
+      sms_manual: رسائل SMS رسمية
       space_moderation_rights_received: تم استلام صلاحيات مسير فضاء
       status_change_on_idea_you_follow: تغيير حالة الفكرة التي تتابعها
       survey_submitted: تم تقديم الاستطلاع
@@ -249,6 +251,7 @@ ar-MA:
         idea: '%{authorName} علق على فكرة تتابعها'
         initiative: '%{authorName} علّق على مبادرة تتابعها'
         issue: '%{authorName} علق على قضية تتابعها'
+        observation: '%{authorName} علّق على ملاحظة متبعها'
         option: '%{authorName} علق على الخيار الذي تتبعه'
         petition: '%{authorName} علق على العريضة التي تتابعها'
         post: '%{authorName} علّق على منشور تتابعه'
@@ -323,6 +326,7 @@ ar-MA:
         idea: انتقل إلى هذه الفكرة
         initiative: انضم إلى هذه المبادرة
         issue: انتقل إلى هذه المشكلة
+        observation: انتقل إلى هذه الملاحظة
         option: انتقل إلى هذا الخيار
         petition: انتقل إلى هذه العريضة
         post: انتقل إلى هذا المنشور
@@ -343,6 +347,7 @@ ar-MA:
         idea: اذهب إلى فكرتك
         initiative: انطلق إلى مبادرتك
         issue: انتقل إلى مشكلتك
+        observation: انتقل للملاحظة ديالك
         option: انتقل إلى خيارك
         petition: انتقل إلى عريضتك
         post: انتقل إلى منشورك
@@ -376,6 +381,7 @@ ar-MA:
         idea: لقد تم نشر فكرتك
         initiative: تم نشر مبادرتك
         issue: لقد تم نشر مشكلتك
+        observation: تم نشر ملاحظتك
         option: لقد تم نشر خيارك
         petition: لقد تم نشر عريضتك
         post: تم نشر منشورك
@@ -530,6 +536,8 @@ ar-MA:
       title: تم نشر مدخلات جديدة على منصتك
       today: اليوم
       yesterday: أمس
+    new_phone_confirmation:
+      sms_body: رمز التأكيد الخاص بك هو %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: انتقل إلى هذا الإدخال
       event_description: "%{feedback_author_name} أعطى تحديثًا حول '%{input_title}'."
@@ -764,6 +772,7 @@ ar-MA:
         idea: فكرتك موجودة في "%{prescreening_status_title}"
         initiative: مبادرتك موجودة في "%{prescreening_status_title}"
         issue: مشكلتك موجودة في "%{prescreening_status_title}"
+        observation: الملاحظة ديالك راها في حالة "%{prescreening_status_title}"
         option: خيارك موجود في "%{prescreening_status_title}"
         petition: عريضتك موجودة في "%{prescreening_status_title}"
         post: منشورك موجود في "%{prescreening_status_title}"

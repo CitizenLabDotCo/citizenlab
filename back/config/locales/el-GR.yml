@@ -112,6 +112,8 @@ el-GR:
           title: Ποια είναι η πρωτοβουλία σας;
         issue:
           title: Ποιο είναι το σχόλιό σας;
+        observation:
+          title: Ποια είναι η παρατήρησή σας;
         option:
           title: Ποια είναι η επιλογή σας;
         petition:
@@ -268,6 +270,15 @@ el-GR:
     proposals:
       title: Προτάσεις
   pdf_export:
+    input_responses:
+      date: Ημερομηνία
+      no_answer: (Καμία απάντηση)
+      prepared_by: Προετοιμάστηκε από
+      report_label: Αναφορά απαντήσεων
+      respondent: Ερωτώμενος %{number}
+      response_count:
+        one: '%{count} απάντηση'
+        other: '%{count} απαντήσεις'
     survey_responses:
       date: Ημερομηνία
       no_answer: (Καμία απάντηση)

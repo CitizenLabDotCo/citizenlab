@@ -378,6 +378,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_input_pdf_export?
+      true
+    end
+
     def supports_input_topics?
       true
     end

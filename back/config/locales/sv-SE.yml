@@ -112,6 +112,8 @@ sv-SE:
           title: Vad är ditt initiativ?
         issue:
           title: Vad är ditt problem?
+        observation:
+          title: Vad är din observation?
         option:
           title: Vad är ditt alternativ?
         petition:
@@ -268,6 +270,15 @@ sv-SE:
     proposals:
       title: Förslag
   pdf_export:
+    input_responses:
+      date: Datum
+      no_answer: (Inget svar)
+      prepared_by: Framtagen av
+      report_label: Svarsrapport
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} svar'
+        other: '%{count} svar'
     survey_responses:
       date: Datum
       no_answer: (Inget svar)

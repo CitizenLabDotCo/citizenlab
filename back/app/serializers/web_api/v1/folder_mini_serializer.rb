@@ -3,6 +3,10 @@
 class WebApi::V1::FolderMiniSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :space_id
 
+  attribute :space_title_multiloc do |object|
+    object.space&.title_multiloc
+  end
+
   attribute :visible_projects_count do |object, params|
     params.dig(:visible_children_count_by_parent_id, object.admin_publication.id)
   end

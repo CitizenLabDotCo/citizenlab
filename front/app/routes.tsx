@@ -30,6 +30,7 @@ const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
 const EmailChange = lazy(() => import('containers/EmailChange'));
+const PhoneChange = lazy(() => import('containers/PhoneChange'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
@@ -286,6 +287,16 @@ const changeEmailRoute = createRoute({
   ),
 });
 
+const changePhoneRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'profile/change-phone',
+  component: () => (
+    <PageLoading>
+      <PhoneChange />
+    </PageLoading>
+  ),
+});
+
 // Ideas routes
 const ideasEditSearchSchema = yup.object({
   idea_id: yup.string().optional(),
@@ -376,6 +387,7 @@ const projectIdeaNewRoute = createRoute({
 const projectSurveyNewSearchSchema = yup.object({
   phase_id: yup.string().optional(),
   idea_id: yup.string().optional(),
+  go_back: yup.string().optional(),
 });
 
 type ProjectSurveyNewSearchParams = yup.InferType<
@@ -672,6 +684,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       profileEditRoute,
       changePasswordRoute,
       changeEmailRoute,
+      changePhoneRoute,
       createUserShowPageRoutes(),
       ideasEditRoute,
       ideasIndexRoute,

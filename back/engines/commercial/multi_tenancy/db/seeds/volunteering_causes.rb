@@ -34,7 +34,9 @@ module MultiTenancy
           title_multiloc: volunteering_project.title_multiloc,
           description_multiloc: volunteering_project.description_multiloc,
           start_at: phase_start_at,
-          end_at: (phase_start_at + rand(150).days),
+          # At least 2 days: `rand(150)` can be 0 (zero-length phase), and a 1-day
+          # phase spanning a DST spring-forward is only 23h < Phase::MIN_DURATION.
+          end_at: (phase_start_at + rand(2..150).days),
           participation_method: 'volunteering'
         })
 

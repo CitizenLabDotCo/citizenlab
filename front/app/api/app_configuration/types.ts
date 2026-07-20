@@ -72,11 +72,16 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  sms?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   password_login?: {
     allowed: boolean;
     enabled: boolean;
     enable_signup: boolean;
     minimum_length?: number;
+    minimum_strength?: number;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -145,7 +150,6 @@ export interface IAppConfigurationSettings {
     api_key: string;
   };
   disable_user_bios?: AppConfigurationFeature;
-  project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
@@ -203,7 +207,7 @@ export interface IAppConfigurationSettings {
   draft_phase_description?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
-  pdf_export_responses?: AppConfigurationFeature;
+  html_block_in_content_builder?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

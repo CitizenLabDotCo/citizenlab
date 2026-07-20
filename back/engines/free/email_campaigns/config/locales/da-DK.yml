@@ -190,6 +190,7 @@ da-DK:
       new_email_confirmation: Ny bekræftelseskode til e-mail
       new_idea_for_admin_prescreening: Nyt input, der kræver godkendelse i et projekt jeg modererer
       new_idea_for_admin_published: Nyt offentliggjort input i et projekt jeg modererer
+      new_phone_confirmation: Ny bekræftelseskode til telefon
       official_feedback_on_idea_you_follow: Opdatering af en idé, som du følger
       password_reset: Nulstilling af adgangskode
       project_folder_moderation_rights_received: Projekt-mappens moderationsrettigheder modtaget
@@ -202,6 +203,7 @@ da-DK:
       project_review_state_change: Projekt godkendt
       proposal_expired_for_admin: Forslag udløbet uden at have nået stemmetærsklen
       screening_digest: Ugentlig påmindelse om screening
+      sms_manual: Officielle SMS-beskeder
       space_moderation_rights_received: Rettigheder som områdeprojektleder modtaget
       status_change_on_idea_you_follow: Statusændring af en idé, som du følger
       survey_submitted: Undersøgelse indsendt
@@ -249,6 +251,7 @@ da-DK:
         idea: '%{authorName} kommenterede på en idé, du følger'
         initiative: '%{authorName} kommenterede et initiativ, du følger'
         issue: '%{authorName} kommenterede et emne, du følger'
+        observation: '%{authorName} har kommenteret på en observation, du følger'
         option: '%{authorName} kommenterede en mulighed, du følger'
         petition: '%{authorName} kommenterede en underskriftindsamling, du følger'
         post: '%{authorName} kommenteret et opslag, du følger'
@@ -323,6 +326,7 @@ da-DK:
         idea: Gå til denne idé
         initiative: Gå til dette initiativ
         issue: Gå til denne udgave
+        observation: Gå til denne observation
         option: Gå til denne mulighed
         petition: Gå til denne underskriftsindsamling
         post: Gå til dette opslag
@@ -343,6 +347,7 @@ da-DK:
         idea: Gå til din idé
         initiative: Gå til dit initiativ
         issue: Gå til dit input
+        observation: Gå til din observation
         option: Gå til din valgmulighed
         petition: Gå til din underskriftsindsamling
         post: Gå til dit opslag
@@ -376,6 +381,7 @@ da-DK:
         idea: Din idé er blevet offentliggjort
         initiative: Dit initiativ er blevet offentliggjort
         issue: Dit bidrag er blevet offentliggjort
+        observation: Din observation er blevet offentliggjort
         option: Din mulighed er blevet offentliggjort
         petition: Din underskriftsindsamling er blevet offentliggjort
         post: Dit opslag er blevet offentliggjort
@@ -530,6 +536,8 @@ da-DK:
       title: der er blevet offentliggjort et nyt input på jeres platform
       today: I dag
       yesterday: I går
+    new_phone_confirmation:
+      sms_body: Din bekræftelseskode er %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Gå til dette input
       event_description: "%{feedback_author_name} kom med en officiel opdatering på %{input_title}'."
@@ -764,6 +772,7 @@ da-DK:
         idea: Din idé er i "%{prescreening_status_title}"
         initiative: Dit initiativ er i "%{prescreening_status_title}"
         issue: Dit problem er i "%{prescreening_status_title}"
+        observation: Din observation er i "%{prescreening_status_title}"
         option: Din mulighed er i "%{prescreening_status_title}"
         petition: Din underskriftsindsamling er i "%{prescreening_status_title}"
         post: Dit opslag er i "%{prescreening_status_title}"

@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import ideasKeys from './keys';
 import { IIdeas, IIdeaQueryParameters, IdeasKeys } from './types';
 
-// TODO: use front/app/components/UI/IdeaSelect/index.tsx instead of increasing this number.
+// TODO: use front/app/components/UI/IdeaSelect/IdeaSingleSelect.tsx instead of increasing this number.
 export const defaultPageSize = 26;
 
 const fetchIdeas = (queryParameters: IIdeaQueryParameters) =>

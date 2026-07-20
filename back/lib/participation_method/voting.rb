@@ -47,6 +47,12 @@ module ParticipationMethod
       false
     end
 
+    # Voting reuses ideation inputs but has no admin-fillable response form to
+    # export (overrides the `true` inherited from Ideation).
+    def supports_input_pdf_export?
+      false
+    end
+
     def supports_vote_term?
       true
     end

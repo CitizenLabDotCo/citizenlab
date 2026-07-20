@@ -190,6 +190,7 @@ pl-PL:
       new_email_confirmation: Nowy kod potwierdzający adres e-mail
       new_idea_for_admin_prescreening: Nowe dane wejściowe wymagające zatwierdzenia w projekcie I moderate
       new_idea_for_admin_published: Nowy opublikowany wkład w projekt, który moderuję
+      new_phone_confirmation: Nowy kod potwierdzający numer telefonu
       official_feedback_on_idea_you_follow: Zaktualizuj pomysł, który śledzisz
       password_reset: Zmiana hasła
       project_folder_moderation_rights_received: Przydzielono uprawnienia menedżera folderów
@@ -202,6 +203,7 @@ pl-PL:
       project_review_state_change: Projekt zatwierdzony
       proposal_expired_for_admin: Propozycja wygasła bez osiągnięcia progu głosowania
       screening_digest: Cotygodniowe przypomnienie o badaniu przesiewowym
+      sms_manual: Oficjalne wiadomości SMS
       space_moderation_rights_received: Otrzymano uprawnienia menedżera obszaru
       status_change_on_idea_you_follow: Zmiana statusu pomysłu, za którym podążasz
       survey_submitted: Przesłana ankieta
@@ -249,6 +251,7 @@ pl-PL:
         idea: '%{authorName} skomentowałeś pomysł, który śledzisz'
         initiative: '%{authorName} skomentowałeś inicjatywę, którą śledzisz'
         issue: '%{authorName} skomentowałeś sprawę, którą śledzisz'
+        observation: '%{authorName} skomentował(a) obserwację, którą obserwujesz'
         option: '%{authorName} skomentowałeś opcję, którą obserwujesz'
         petition: '%{authorName} skomentowałeś petycję, którą śledzisz'
         post: '%{authorName} skomentowałeś post, który obserwujesz'
@@ -323,6 +326,7 @@ pl-PL:
         idea: Przejdź do tego pomysłu
         initiative: Przejdź do tej inicjatywy
         issue: Przejdź do tego wydania
+        observation: Przejdź do tej obserwacji
         option: Przejdź do tej opcji
         petition: Przejdź do tej petycji
         post: Przejdź do tego wpisu
@@ -343,6 +347,7 @@ pl-PL:
         idea: Przejdź do swojego pomysłu
         initiative: Przejdź do swojej inicjatywy
         issue: Przejdź do swojej sprawy
+        observation: Przejdź do swojej obserwacji
         option: Przejdź do swojej opcji
         petition: Przejdź do swojej petycji
         post: Przejdź do swojego postu
@@ -376,6 +381,7 @@ pl-PL:
         idea: Twój pomysł został opublikowany
         initiative: Twoja inicjatywa została opublikowana
         issue: Twój numer został opublikowany
+        observation: Twoja obserwacja została opublikowana
         option: Twoja opcja została opublikowana
         petition: Twoja petycja została opublikowana
         post: Twój post został opublikowany
@@ -530,6 +536,8 @@ pl-PL:
       title: Nowe dane wejściowe zostały opublikowane na Twojej platformie
       today: Dzisiaj
       yesterday: Wczoraj
+    new_phone_confirmation:
+      sms_body: Twój kod potwierdzający to %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Przejdź do tego wejścia
       event_description: '%{feedback_author_name} przedstawił aktualizację na stronie "%{input_title}".'
@@ -764,6 +772,7 @@ pl-PL:
         idea: Twój pomysł jest w "%{prescreening_status_title}".
         initiative: Twoja inicjatywa jest w "%{prescreening_status_title}".
         issue: Twój problem jest w "%{prescreening_status_title}".
+        observation: Twoja obserwacja ma status „%{prescreening_status_title}”
         option: Twoja opcja znajduje się w "%{prescreening_status_title}".
         petition: Twoja petycja znajduje się na stronie "%{prescreening_status_title}".
         post: Twój post znajduje się w "%{prescreening_status_title}".

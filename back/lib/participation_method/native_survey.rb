@@ -141,6 +141,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_input_pdf_export?
+      true
+    end
+
     def supports_toxicity_detection?
       false
     end
