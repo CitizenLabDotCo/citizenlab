@@ -1328,7 +1328,7 @@
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": "Rhowch eich rhif ffôn i barhau.",
   "app.containers.Authentication.steps.Phone.phoneNumber": "Rhif ffôn",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Rhowch rif ffôn yn y fformat cywir, er enghraifft +32 470 12 34 56",
-  "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Rhowch rif ffôn",
+  "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Darparwch rif ffôn",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Hysbysiadau yn y categori hwn",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Pa fathau o hysbysiadau e-bost hoffech chi eu cael?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Hysbysiadau e-bost",

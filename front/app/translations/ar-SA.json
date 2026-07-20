@@ -1327,7 +1327,7 @@
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "إعادة إرسال الدعوة",
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": "أدخل رقم هاتفك للمتابعة.",
   "app.containers.Authentication.steps.Phone.phoneNumber": "رقم الهاتف",
-  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "يرجى تقديم رقم هاتف بالتنسيق الصحيح، على سبيل المثال 56 34 12 470 32+",
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "يرجى تقديم رقم هاتف بالتنسيق الصحيح، على سبيل المثال +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "يرجى تقديم رقم هاتف",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "الإشعارات في هذه الفئة",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "ما هي أنواع إشعارات البريد الإلكتروني التي ترغب في تلقيها؟",

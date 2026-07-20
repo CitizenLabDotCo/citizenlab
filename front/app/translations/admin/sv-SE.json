@@ -4089,7 +4089,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Se vilka fält detta returnerar",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Logga in via det konfigurerade SSO-kontot.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Otillgängligt: lösenordsinloggning är avstängd för denna plattform.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Inte tillgängligt: SMS är inaktiverat för den här plattformen.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Otillgängligt: SMS är avstängt för den här plattformen.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Otillgänglig: ingen metod för identitetsverifiering har konfigurerats.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Deltagaren styrker sin identitet via ett externt register.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Vem kan delta",

@@ -4089,7 +4089,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Δείτε ποια πεδία επιστρέφει αυτό",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Συνδεθείτε μέσω του ρυθμισμένου λογαριασμού SSO.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Μη διαθέσιμο: η σύνδεση με κωδικό πρόσβασης είναι απενεργοποιημένη για αυτήν την πλατφόρμα.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Μη διαθέσιμο: Τα SMS είναι απενεργοποιημένα για αυτήν την πλατφόρμα.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Μη διαθέσιμο: Το SMS είναι απενεργοποιημένο για αυτήν την πλατφόρμα.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Μη διαθέσιμο: δεν έχει ρυθμιστεί μέθοδος επαλήθευσης ταυτότητας.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Ο συμμετέχων αποδεικνύει την ταυτότητά του μέσω εξωτερικού μητρώου.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Ποιος μπορεί να συμμετάσχει",

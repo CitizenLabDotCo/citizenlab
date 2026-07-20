@@ -1327,7 +1327,7 @@
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "دعوت نامہ دوبارہ بھیجیں۔",
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": "جاری رکھنے کے لیے اپنا فون نمبر درج کریں۔",
   "app.containers.Authentication.steps.Phone.phoneNumber": "فون نمبر",
-  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "درست فارمیٹ میں فون نمبر فراہم کریں، مثال کے طور پر 56 34 12 470 32+",
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "فون نمبر درست فارمیٹ میں فراہم کریں، مثال کے طور پر 56 34 12 470 32+",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "فون نمبر فراہم کریں",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "اس زمرے میں اطلاعات",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "آپ کس قسم کی ای میل اطلاعات موصول کرنا چاہتے ہیں؟",

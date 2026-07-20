@@ -1327,7 +1327,7 @@
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Einladung erneut senden",
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": "Geben Sie Ihre Telefonnummer ein, um fortzufahren.",
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
-  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Geben Sie eine Telefonnummer im korrekten Format an, zum Beispiel +32 470 12 34 56",
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Geben Sie eine Telefonnummer im richtigen Format an, zum Beispiel +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Geben Sie eine Telefonnummer an",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Benachrichtigungen in dieser Kategorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Welche Arten von E-Mail-Benachrichtigungen möchtest du erhalten?",

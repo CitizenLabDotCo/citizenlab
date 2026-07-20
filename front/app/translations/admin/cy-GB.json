@@ -4082,7 +4082,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Dim angen cyfrif",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Dim ond gweinyddwyr a rheolwyr sy'n gallu cyflawni'r weithred hon. Nid oes unrhyw ofynion eraill yn berthnasol.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "Mae cyfranogwyr yn mewngofnodi gyda {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription": "Mae'r cyfranogwr yn cadarnhau rhif ffôn gyda chod un tro a anfonir trwy SMS.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription": "Mae cyfranogwr yn cadarnhau rhif ffôn gyda chod un tro a anfonwyd trwy SMS.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Ei gwneud yn ofynnol defnyddio mewngofnodi sengl",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Ei gwneud yn ofynnol mewngofnodi",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Cyfyngedig i staff",

@@ -1327,7 +1327,7 @@
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Invitatioun nei schécken",
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": "Gitt Är Telefonsnummer an, fir weiderzefueren.",
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonsnummer",
-  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Gitt eng Telefonsnummer am korrekte Format un, zum Beispill +32 470 12 34 56",
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Gitt eng Telefonsnummer am richtege Format un, zum Beispill +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Gitt eng Telefonsnummer un",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifikatiounen an dëser Kategorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Wéi eng Zort E-Mail-Notifikatioune wëllt Dir kréien?",

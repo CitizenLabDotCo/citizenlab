@@ -4082,7 +4082,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": "Nessun account richiesto",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": "Solo gli amministratori e i manager possono eseguire questa azione. Non si applicano altri requisiti.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": "I partecipanti effettuano l'accesso con {methodName}.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription": "Il partecipante conferma un numero di telefono con un codice monouso inviato tramite SMS.",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription": "Il partecipante conferma il numero di telefono tramite un codice monouso inviato via SMS.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": "Richiedi il Single Sign-On",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": "Richiedi l'accesso",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Riservato al personale",
