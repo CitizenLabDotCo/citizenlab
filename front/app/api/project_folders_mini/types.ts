@@ -25,6 +25,7 @@ export interface MiniProjectFolder {
     visible_projects_count: number;
     publication_status: PublicationStatus;
     space_id: string | null;
+    space_title_multiloc: Multiloc | null;
   };
   relationships: {
     moderators: {
