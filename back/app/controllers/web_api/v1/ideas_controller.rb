@@ -7,7 +7,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   before_action :authorize_project_or_ideas, only: %i[index_xlsx]
   skip_before_action :authenticate_user # TODO: temp fix to pass tests
-  skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
+  skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts index_survey_submissions similar_ideas]
   after_action :verify_policy_scoped, only: %i[index index_mini]
 
   def index
@@ -24,11 +24,11 @@ class WebApi::V1::IdeasController < ApplicationController
       :idea_images,
       :idea_trending_info,
       :input_topics,
-      :phases,
       :idea_status,
-      :creation_phase,
       :manual_votes_last_updated_by,
       {
+        phases: { permissions: [:groups] },
+        creation_phase: { permissions: [:groups] },
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
         author: [:unread_notifications]
       }
@@ -383,7 +383,8 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def render_show(input, check_auth: true)
-    authorize input if check_auth # we should usually check auth, except when we're returning an empty draft idea
+    # We should usually check auth, except when we're returning an empty draft idea.
+    check_auth ? authorize(input) : skip_authorization
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,
