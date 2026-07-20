@@ -21,8 +21,8 @@ services:
     container_name: ${WORKTREE_PREFIX:-cl}-back-web
     depends_on:
       - "postgres"
-      - "mailcatcher"
-      - "rabbitmq"
+      # rabbitmq & mailcatcher omitted: both degrade gracefully in dev, letting
+      # `make be-up-lite` skip them.
       # - 'memcached'
     build:
       context: .
@@ -45,6 +45,9 @@ services:
       - USER_UID=${USER_UID:-1000}
       - USER_GID=${USER_GID:-1000}
       - ASSET_HOST_URI
+      # `-` (not `:-`) keeps an explicit empty value, so `make be-up-lite` can
+      # blank it to skip RabbitMQ.
+      - RABBITMQ_URI=${RABBITMQ_URI-amqp://guest:guest@rabbitmq:5672}
     tty: true
     stdin_open: true
 
@@ -52,8 +55,7 @@ services:
     container_name: ${WORKTREE_PREFIX:-cl}-que
     depends_on:
       - "postgres"
-      - "mailcatcher"
-      - "rabbitmq"
+      # rabbitmq & mailcatcher omitted — see the `web` service note.
     build:
       context: .
       dockerfile: back/Dockerfile.development
@@ -73,6 +75,7 @@ services:
       - BASE_DEV_URI
       - USER_UID=${USER_UID:-1000}
       - USER_GID=${USER_GID:-1000}
+      - RABBITMQ_URI=${RABBITMQ_URI-amqp://guest:guest@rabbitmq:5672}
     tty: true
     stdin_open: true
 

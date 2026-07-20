@@ -1,4 +1,4 @@
-.PHONY: build reset-dev-env claude-setup configure-worktree migrate be-up be-up-debug be-up-fake-sso fe-up up up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
+.PHONY: build reset-dev-env claude-setup configure-worktree migrate be-up be-up-lite be-up-debug be-up-fake-sso fe-up up up-lite up-fake-sso c rails-console rails-console-exec e2e-setup e2e-setup-and-up e2e-setup-and-up-fake-sso e2e-run-test e2e-ci-env-setup e2e-ci-env-setup-and-up e2e-ci-env-run-test ci-regenerate-templates ci-trigger-build ci-run-e2e release_pr
 
 # You can run this file with `make` command:
 # make reset-dev-env
@@ -71,6 +71,12 @@ migrate:
 be-up:
 	docker compose up
 
+# Lightweight stack: skips RabbitMQ, Gotenberg and Mailcatcher (all degrade
+# gracefully in dev). RABBITMQ_URI is blanked so boot skips the broker;
+# --scale ...=0 keeps every other service, including any added later.
+be-up-lite:
+	RABBITMQ_URI= docker compose up --scale rabbitmq=0 --scale gotenberg=0 --scale mailcatcher=0
+
 be-up-debug:
 	docker compose -f docker-compose.yml -f docker-compose.debug.yml up
 
@@ -79,6 +85,10 @@ fe-up:
 
 up:
 	make -j 2 be-up fe-up
+
+# Lightweight full-stack (back-end without RabbitMQ/Gotenberg + front-end).
+up-lite:
+	make -j 2 be-up-lite fe-up
 
 # Run stack with docker compose, including running npm inside of docker container
 up-docker:
