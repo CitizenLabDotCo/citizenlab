@@ -19,7 +19,7 @@ import {
 
 import useIdMethods from 'api/id_methods/useIdMethods';
 
-import useAuthMethodNames, { getMethodName } from 'hooks/useAuthMethodNames';
+import useIdMethodNames, { getMethodName } from 'hooks/useIdMethodNames';
 import useLocalize from 'hooks/useLocalize';
 
 import Modal from 'components/UI/Modal';
@@ -71,7 +71,7 @@ const MethodName = ({ children }: { children: React.ReactNode }) => (
 
 const IdMethodFieldsModal = ({ opened, onClose }: Props) => {
   const localize = useLocalize();
-  const authMethodNames = useAuthMethodNames();
+  const idMethodNames = useIdMethodNames();
   const { data: idMethods } = useIdMethods();
 
   const activeMethods = getActiveMethods(idMethods);
@@ -112,7 +112,7 @@ const IdMethodFieldsModal = ({ opened, onClose }: Props) => {
               {singleMethod ? (
                 <>
                   <MethodName>
-                    {getMethodName(singleMethod, authMethodNames)}
+                    {getMethodName(singleMethod, idMethodNames)}
                   </MethodName>
                   <Box mb="12px">
                     <MethodBadges method={singleMethod} />
@@ -137,7 +137,7 @@ const IdMethodFieldsModal = ({ opened, onClose }: Props) => {
                         flexWrap="wrap"
                       >
                         <MethodName>
-                          {getMethodName(method, authMethodNames)}
+                          {getMethodName(method, idMethodNames)}
                         </MethodName>
                         <MethodBadges method={method} />
                       </Box>

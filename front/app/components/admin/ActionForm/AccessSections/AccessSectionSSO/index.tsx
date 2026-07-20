@@ -10,7 +10,7 @@ import {
 
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 
-import useAuthMethodNames, { getMethodName } from 'hooks/useAuthMethodNames';
+import useIdMethodNames, { getMethodName } from 'hooks/useIdMethodNames';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -35,9 +35,9 @@ const AccessSectionSSO = ({
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
   const { data: authenticationMethod } = useAuthenticationMethod();
-  const authMethodNames = useAuthMethodNames();
+  const idMethodNames = useIdMethodNames();
   const methodName = authenticationMethod
-    ? getMethodName(authenticationMethod.data, authMethodNames)
+    ? getMethodName(authenticationMethod.data, idMethodNames)
     : '';
 
   return (

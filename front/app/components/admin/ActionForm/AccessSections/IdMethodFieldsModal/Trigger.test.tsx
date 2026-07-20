@@ -14,8 +14,8 @@ jest.mock('api/id_methods/useIdMethods', () =>
   jest.fn(() => ({ data: mockIdMethods }))
 );
 
-jest.mock('hooks/useAuthMethodNames', () => ({
-  ...jest.requireActual('hooks/useAuthMethodNames'),
+jest.mock('hooks/useIdMethodNames', () => ({
+  ...jest.requireActual('hooks/useIdMethodNames'),
   __esModule: true,
   default: jest.fn(() => ({ franceconnect: 'FranceConnect' })),
 }));

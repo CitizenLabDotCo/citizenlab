@@ -13,7 +13,7 @@ import messages from './messages';
 const isDev = process.env.NODE_ENV === 'development';
 
 /*
- * Single source of truth for the human-readable name of each authentication
+ * Single source of truth for the human-readable name of each identification
  * method. Used both to label the SSO buttons ("Continue with {name}") and to
  * reference a method by name elsewhere (e.g. the verification warning that
  * tells the user which method(s) they can verify with). Keeping the names here
@@ -21,7 +21,7 @@ const isDev = process.env.NODE_ENV === 'development';
  *
  * Some names are dynamic (configured per tenant), hence this is a hook.
  */
-const useAuthMethodNames = () => {
+const useIdMethodNames = () => {
   const { data: idMethods } = useIdMethods();
   const { formatMessage } = useIntl();
 
@@ -53,7 +53,7 @@ const useAuthMethodNames = () => {
   };
 };
 
-export default useAuthMethodNames;
+export default useIdMethodNames;
 
 /**
  * The name to show for a method: the shared human-readable name above where we
@@ -63,8 +63,8 @@ export default useAuthMethodNames;
  */
 export const getMethodName = (
   method: IdMethodData,
-  authMethodNames: Partial<Record<IdMethodName, string>>
+  idMethodNames: Partial<Record<IdMethodName, string>>
 ): string =>
-  authMethodNames[method.attributes.name] ||
+  idMethodNames[method.attributes.name] ||
   method.attributes.method_metadata?.name ||
   method.attributes.name;

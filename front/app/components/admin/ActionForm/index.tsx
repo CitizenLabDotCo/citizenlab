@@ -13,8 +13,8 @@ import {
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
-import useAuthMethodNames, { getMethodName } from 'hooks/useAuthMethodNames';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useIdMethodNames, { getMethodName } from 'hooks/useIdMethodNames';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -46,7 +46,7 @@ const ActionForm = ({
     action,
   });
   const { data: authenticationMethod } = useAuthenticationMethod();
-  const authMethodNames = useAuthMethodNames();
+  const idMethodNames = useIdMethodNames();
 
   if (!permissionsCustomFields) return null;
 
@@ -57,7 +57,7 @@ const ActionForm = ({
   const isAdmins = attributes.permitted_by === 'admins_moderators';
 
   const methodName = authenticationMethod
-    ? getMethodName(authenticationMethod.data, authMethodNames)
+    ? getMethodName(authenticationMethod.data, idMethodNames)
     : '';
 
   const summary = passwordLoginEnabled

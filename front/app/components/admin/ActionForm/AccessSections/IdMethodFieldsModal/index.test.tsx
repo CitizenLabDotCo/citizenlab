@@ -22,9 +22,9 @@ jest.mock('hooks/useLocalize', () =>
 
 // The shared, human-readable names. Only covers part of the methods, so the
 // modal has to fall back for the rest.
-jest.mock('hooks/useAuthMethodNames', () => ({
+jest.mock('hooks/useIdMethodNames', () => ({
   // Keep the real `getMethodName` — only the names themselves are stubbed.
-  ...jest.requireActual('hooks/useAuthMethodNames'),
+  ...jest.requireActual('hooks/useIdMethodNames'),
   __esModule: true,
   default: jest.fn(() => ({
     franceconnect: 'FranceConnect',

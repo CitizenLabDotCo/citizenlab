@@ -9,7 +9,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
 
-import useAuthMethodNames, { getMethodName } from 'hooks/useAuthMethodNames';
+import useIdMethodNames, { getMethodName } from 'hooks/useIdMethodNames';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,7 +22,7 @@ import IdMethodFieldsModal from './index';
 
 const Trigger = () => {
   const { formatMessage } = useIntl();
-  const authMethodNames = useAuthMethodNames();
+  const idMethodNames = useIdMethodNames();
   const { data: idMethods } = useIdMethods();
   const [opened, setOpened] = useState(false);
 
@@ -47,7 +47,7 @@ const Trigger = () => {
       >
         {singleMethod
           ? formatMessage(messages.viewMethodSettings, {
-              methodName: getMethodName(singleMethod, authMethodNames),
+              methodName: getMethodName(singleMethod, idMethodNames),
             })
           : formatMessage(messages.seeWhichIdMethodsAreEnabled)}
       </Text>
