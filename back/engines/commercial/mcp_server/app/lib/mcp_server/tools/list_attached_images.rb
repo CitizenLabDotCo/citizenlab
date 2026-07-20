@@ -2,12 +2,13 @@
 
 class McpServer::Tools::ListAttachedImages < McpServer::BaseTool
   CONTAINERS = {
-    'Project' => { class: Project, association: :project_images },
-    'Event' => { class: Event, association: :event_images }
+    'project' => { class: Project, association: :project_images },
+    'event' => { class: Event, association: :event_images }
   }.freeze
   private_constant :CONTAINERS
 
   def name = 'list_attached_images'
+  def annotations = READ_ANNOTATIONS
 
   def description
     <<~DESC.squish
@@ -31,7 +32,8 @@ class McpServer::Tools::ListAttachedImages < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     def run
       config = CONTAINERS.fetch(params[:resource_type])
-      container = config[:class].find(params[:resource_id])
+      container = config[:class].find_by(id: params[:resource_id])
+      return not_found_error("Resource (#{params[:resource_type]})", params[:resource_id]) unless container
 
       scope = container
         .public_send(config[:association])
@@ -43,8 +45,6 @@ class McpServer::Tools::ListAttachedImages < McpServer::BaseTool
         serializer: McpServer::Serializers::Image,
         **params.slice(:page, :per_page)
       )
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:resource_type]} not found: #{params[:resource_id]}")
     end
   end
 end

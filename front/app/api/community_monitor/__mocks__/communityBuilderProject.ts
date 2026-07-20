@@ -38,54 +38,9 @@ export const project: IProjectData = {
     },
     header_bg_alt_text_multiloc: {},
     action_descriptors: {
-      posting_idea: {
-        enabled: true,
-        disabled_reason: null,
-        future_enabled_at: null,
-      },
-      commenting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      comment_reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-      },
-      reacting_idea: {
-        enabled: true,
-        disabled_reason: null,
-        up: {
-          enabled: true,
-          disabled_reason: null,
-        },
-        down: {
-          enabled: false,
-          disabled_reason: 'reacting_dislike_disabled',
-        },
-      },
-      voting: {
-        enabled: false,
-        disabled_reason: 'not_voting',
-      },
-      taking_survey: {
-        enabled: false,
-        disabled_reason: 'not_survey',
-      },
-      taking_poll: {
-        enabled: false,
-        disabled_reason: 'not_poll',
-      },
-      annotating_document: {
-        enabled: false,
-        disabled_reason: 'not_document_annotation',
-      },
       attending_event: {
         enabled: true,
         disabled_reason: null,
-      },
-      volunteering: {
-        enabled: false,
-        disabled_reason: 'not_volunteering',
       },
     },
     avatars_count: 8,

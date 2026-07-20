@@ -4,10 +4,13 @@ import styled from 'styled-components';
 
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
+
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import Warning from 'components/UI/Warning';
 
+import { DisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -25,6 +28,7 @@ interface Props {
   phaseId: string | null;
   children: ReactNode;
   action: IPhasePermissionAction;
+  disabledReason: DisabledReason | null;
   disabledMessage: MessageDescriptor | null;
   enabled: boolean;
   className?: string;
@@ -37,10 +41,17 @@ const ParticipationPermission = ({
   className,
   children,
   action,
+  disabledReason,
   disabledMessage,
   enabled,
   projectName,
 }: Props) => {
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: phaseId ?? undefined,
+    action,
+    disabledReason,
+  });
+
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!phaseId) return;
 
@@ -74,34 +85,36 @@ const ParticipationPermission = ({
       {disabledMessage && (
         <Container className={`warning ${className || ''}`}>
           <Warning icon="lock">
-            <FormattedMessage
-              {...disabledMessage}
-              values={{
-                projectName,
-                verificationLink: (
-                  <button onClick={signUp}>
-                    <FormattedMessage {...messages.verificationLinkText} />
-                  </button>
-                ),
-                signUpLink: (
-                  <button onClick={signUp}>
-                    <FormattedMessage {...messages.signUpLinkText} />
-                  </button>
-                ),
-                completeRegistrationLink: (
-                  <button onClick={signUp}>
-                    <FormattedMessage
-                      {...messages.completeRegistrationLinkText}
-                    />
-                  </button>
-                ),
-                logInLink: (
-                  <button onClick={signIn}>
-                    <FormattedMessage {...messages.logInLinkText} />
-                  </button>
-                ),
-              }}
-            />
+            {customAccessDeniedMessage ?? (
+              <FormattedMessage
+                {...disabledMessage}
+                values={{
+                  projectName,
+                  verificationLink: (
+                    <button onClick={signUp}>
+                      <FormattedMessage {...messages.verificationLinkText} />
+                    </button>
+                  ),
+                  signUpLink: (
+                    <button onClick={signUp}>
+                      <FormattedMessage {...messages.signUpLinkText} />
+                    </button>
+                  ),
+                  completeRegistrationLink: (
+                    <button onClick={signUp}>
+                      <FormattedMessage
+                        {...messages.completeRegistrationLinkText}
+                      />
+                    </button>
+                  ),
+                  logInLink: (
+                    <button onClick={signIn}>
+                      <FormattedMessage {...messages.logInLinkText} />
+                    </button>
+                  ),
+                }}
+              />
+            )}
           </Warning>
         </Container>
       )}

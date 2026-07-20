@@ -30,7 +30,7 @@ export default defineMessages({
     defaultMessage: 'Provide a phone number',
   },
   phoneInvalid: {
-    id: 'app.containers.PhoneChange.phoneInvalid',
+    id: 'app.containers.PhoneChange.phoneInvalid2',
     defaultMessage: 'Provide a valid phone number, including the country code.',
   },
   phoneTaken: {

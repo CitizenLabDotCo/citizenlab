@@ -60,7 +60,15 @@ module EmailCampaigns
       end
 
       def provider
-        Providers::Twilio.new
+        fake_sms_sends? ? Providers::Fake.new : Providers::Twilio.new
+      end
+
+      # In development, skip the real Twilio API unless the tenant has credentials filled in.
+      def fake_sms_sends?
+        return false unless Rails.env.development?
+
+        config = AppConfiguration.instance.settings('sms') || {}
+        config.values_at('twilio_account_sid', 'twilio_auth_token', 'twilio_messaging_service_sid').any?(&:blank?)
       end
     end
   end

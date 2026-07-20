@@ -236,8 +236,9 @@ Rails.application.routes.draw do
 
         member do
           get 'survey_results'
-          get 'survey_response_fields'
-          post 'survey_responses_pdf'
+          get 'input_response_fields'
+          post 'input_responses_pdf'
+          post 'input_responses_xlsx'
           get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'
@@ -407,7 +408,7 @@ Rails.application.routes.draw do
 
       resources :id_methods, only: [:index] do
         get :first_enabled_verification_method, on: :collection
-        get :first_enabled_for_verified_actions, on: :collection
+        get :first_enabled_authentication_method, on: :collection
         IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }

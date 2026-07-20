@@ -268,7 +268,7 @@ context 'id_austria verification' do
 
       expect(user.email).to be_nil
       expect(user.active?).to be(true)
-      expect(user.confirmation_required?).to be(false)
+      expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(0)
 
       post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
@@ -293,7 +293,7 @@ context 'id_austria verification' do
       user = User.order(created_at: :asc).last
       expect_user_to_be_verified_and_identified(user)
       expect(user.email).to be_nil
-      expect(user.confirmation_required?).to be(false)
+      expect(user.confirmation_required?).to be(true)
       expect(user.active?).to be(true)
     end
 

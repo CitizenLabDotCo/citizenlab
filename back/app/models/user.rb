@@ -73,13 +73,52 @@ class User < ApplicationRecord
   class << self
     # Asynchronously deletes all users in a specified scope with associated side effects.
     # By default, this method deletes all users on the platform.
+    #
+    # Users that already have a pending +DeleteUserJob+ are skipped. Because the jobs are
+    # spread out over time, a sweep is still in flight long after it was started, and a
+    # second sweep would otherwise enqueue a duplicate job for every remaining user.
     def destroy_all_async(scope = User)
-      scope.pluck(:id).each.with_index do |id, idx|
+      pending = user_ids_with_pending_deletion_job
+      ids, skipped = scope.pluck(:id).partition { |id| pending.exclude?(id) }
+
+      if skipped.any?
+        Rails.logger.warn(
+          "User.destroy_all_async: skipping #{skipped.size} user(s) that already have a pending DeleteUserJob."
+        )
+      end
+
+      ids.each.with_index do |id, idx|
         # Spread out the deletion of users to avoid throttling.
         # Note: No need to update member counts if we're deleting all users, as the count will never be seen.
         DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id, update_member_counts: false)
       end
     end
+
+    # @return [Set<String>] ids of the users of the current tenant that have a
+    #   +DeleteUserJob+ enqueued which has not run to completion yet.
+    def user_ids_with_pending_deletion_job
+      QueJob
+        .by_job_class(DeleteUserJob)
+        .all_by_tenant_schema_name(Apartment::Tenant.current)
+        .not_finished
+        .not_expired
+        .pluck(:args)
+        .filter_map { |args| deletion_job_user_id(args.first) }
+        .to_set
+    end
+    private :user_ids_with_pending_deletion_job
+
+    # +DeleteUserJob+ accepts either a user id or a user, the latter being serialized by
+    # ActiveJob as a global id.
+    def deletion_job_user_id(job_data)
+      argument = job_data&.dig('arguments', 0)
+
+      case argument
+      when String then argument
+      when Hash then argument['_aj_globalid']&.split('/')&.last
+      end
+    end
+    private :deletion_job_user_id
 
     def onboarding_json_schema
       {
@@ -158,7 +197,6 @@ class User < ApplicationRecord
   has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
   has_many :files, class_name: 'Files::File', foreign_key: :uploader_id, inverse_of: :uploader, dependent: :nullify
   has_many :claim_tokens, foreign_key: :pending_claimer_id, inverse_of: :pending_claimer, dependent: :destroy
-  has_many :sms_deliveries, class_name: 'EmailCampaigns::Sms::Delivery', dependent: :nullify
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?
@@ -319,23 +357,12 @@ class User < ApplicationRecord
   end
 
   def active?
-    registered? && !blocked? && !confirmation_required?
+    registered? && !blocked? && authenticated_at_least_once?
   end
 
   def blank_and_can_be_deleted?
     # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
-  end
-
-  # True if the user has not yet confirmed their email address.
-  #
-  # Exception: if the user registered via SSO and the SSO did not return an email,
-  # we treat them as not requiring confirmation unless they have actively requested
-  # to set an email.
-  def confirmation_required?
-    return false if sso_user_without_email?
-
-    confirmation_required
   end
 
   def show_public_profile?
@@ -443,7 +470,7 @@ class User < ApplicationRecord
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
-    return if confirmation_required? || invite_pending? || registration_completed_at_changed?
+    return if !authenticated_at_least_once? || invite_pending? || registration_completed_at_changed?
 
     self.registration_completed_at ||= Time.now
   end
@@ -522,10 +549,6 @@ class User < ApplicationRecord
     NewPhoneConfirmation.create!(user: self)
   end
 
-  def sso_user_without_email?
-    sso? && verified && email.nil? && new_email.nil?
-  end
-
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
       unless notification.update initiating_user: nil
@@ -536,6 +559,13 @@ class User < ApplicationRecord
 
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
+  end
+
+  def authenticated_at_least_once?
+    # True if user authenticated at least once,
+    # either by confirming their email or by signing in with SSO
+    # and being verified.
+    !confirmation_required? || (sso? && verified)
   end
 end
 

@@ -88,6 +88,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['ideas_phase']            = yml_ideas_phases exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['comment']                = yml_comments exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['official_feedback']      = yml_official_feedback exported_ideas, shift_timestamps: shift_timestamps
+      @template['models']['cosponsorship']          = yml_cosponsorships exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['reaction']               = yml_reactions exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['follower']               = yml_followers exported_ideas, shift_timestamps: shift_timestamps
       @template['models']['volunteering/volunteer'] = yml_volunteers shift_timestamps: shift_timestamps
@@ -146,6 +147,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     ([@project.custom_form] + @project.phases.map(&:custom_form)).compact.map do |cf|
       yml_custom_form = {
         'participation_context_ref' => lookup_ref(cf.participation_context_id, %i[project phase]),
+        'print_start_multiloc' => cf.print_start_multiloc,
+        'print_end_multiloc' => cf.print_end_multiloc,
+        'print_personal_data_fields' => cf.print_personal_data_fields,
         'created_at' => shift_timestamp(cf.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(cf.updated_at, shift_timestamps)&.iso8601
       }
@@ -171,6 +175,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'code' => field.code,
         'hidden' => field.hidden,
         'maximum' => field.maximum,
+        'min_characters' => field.min_characters,
+        'max_characters' => field.max_characters,
         'ask_follow_up' => field.ask_follow_up,
         'question_category' => field.question_category,
         'include_in_printed_form' => field.include_in_printed_form,
@@ -275,6 +281,10 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       'include_all_areas' => @project.include_all_areas,
       'hidden' => @project.hidden,
       'live_auto_input_topics_enabled' => @project.live_auto_input_topics_enabled,
+      'header_bg_alt_text_multiloc' => @project.header_bg_alt_text_multiloc,
+      'internal_role' => @project.internal_role,
+      'listed' => @project.listed,
+      'track_participation_location' => @project.track_participation_location,
       'space_id' => @local_copy ? @project.space_id : nil
     }
     yml_project['slug'] = new_slug if new_slug.present?
@@ -300,6 +310,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       {
         'project_ref' => lookup_ref(p.project_id, :project),
         'remote_image_url' => p.image_url,
+        'alt_text_multiloc' => p.alt_text_multiloc,
         'ordering' => p.ordering,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
@@ -350,7 +361,19 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
         'prescreening_mode' => phase.prescreening_mode,
         'expire_days_limit' => phase.expire_days_limit,
-        'reacting_threshold' => phase.reacting_threshold
+        'reacting_threshold' => phase.reacting_threshold,
+        'allow_anonymous_participation' => phase.allow_anonymous_participation,
+        'draft_description_multiloc' => phase.draft_description_multiloc,
+        'manual_voters_amount' => phase.manual_voters_amount,
+        'manual_voters_last_updated_at' => shift_timestamp(phase.manual_voters_last_updated_at, shift_timestamps)&.iso8601,
+        'manual_voters_last_updated_by_ref' => lookup_ref(phase.manual_voters_last_updated_by_id, :user),
+        'similarity_enabled' => phase.similarity_enabled,
+        'similarity_threshold_body' => phase.similarity_threshold_body,
+        'similarity_threshold_title' => phase.similarity_threshold_title,
+        'voting_filtering_enabled' => phase.voting_filtering_enabled,
+        'voting_term_plural_multiloc' => phase.voting_term_plural_multiloc,
+        'voting_term_singular_multiloc' => phase.voting_term_singular_multiloc,
+        'placement_type' => phase.placement_type
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -505,6 +528,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
     user_ids += Basket.joins(:baskets_ideas).where(baskets_ideas: { idea_id: idea_ids }).pluck(:user_id)
     user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
+    user_ids += Cosponsorship.where(idea_id: idea_ids).pluck(:user_id)
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id) unless limit_num_ideas
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
@@ -576,6 +600,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'address_2_multiloc' => event.address_2_multiloc,
         'using_url' => event.using_url,
         'attend_button_multiloc' => event.attend_button_multiloc,
+        'maximum_attendees' => event.maximum_attendees,
         'created_at' => shift_timestamp(event.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(event.updated_at, shift_timestamps)&.iso8601,
         'text_images_attributes' => event.text_images.map do |text_image|
@@ -611,6 +636,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       {
         'event_ref' => lookup_ref(image.event_id, :event),
         'remote_image_url' => image.image_url,
+        'alt_text_multiloc' => image.alt_text_multiloc,
         'ordering' => image.ordering,
         'created_at' => shift_timestamp(image.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(image.updated_at, shift_timestamps)&.iso8601
@@ -626,6 +652,14 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'permitted_by' => p.permitted_by,
         'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
         'global_custom_fields' => p.global_custom_fields,
+        'access_denied_explanation_multiloc' => p.access_denied_explanation_multiloc,
+        'everyone_tracking_enabled' => p.everyone_tracking_enabled,
+        'verification_expiry' => p.verification_expiry,
+        'require_confirmed_email' => p.require_confirmed_email,
+        'confirmed_email_expiry' => p.confirmed_email_expiry,
+        'require_name' => p.require_name,
+        'require_password' => p.require_password,
+        'require_verification' => p.require_verification,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
         'user_fields_in_form' => p.user_fields_in_form,
@@ -658,6 +692,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'proposed_budget' => idea.proposed_budget,
         'baskets_count' => idea.baskets_count,
         'votes_count' => idea.votes_count,
+        'manual_votes_amount' => idea.manual_votes_amount,
+        'manual_votes_last_updated_at' => shift_timestamp(idea.manual_votes_last_updated_at, shift_timestamps)&.iso8601,
+        'manual_votes_last_updated_by_ref' => lookup_ref(idea.manual_votes_last_updated_by_id, :user),
         'text_images_attributes' => idea.text_images.map do |text_image|
           {
             'imageable_field' => text_image.imageable_field,
@@ -757,6 +794,18 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       }
       store_ref yml_official_feedback, o.id, :official_feedback
       yml_official_feedback
+    end
+  end
+
+  def yml_cosponsorships(exported_ideas, shift_timestamps: 0)
+    Cosponsorship.where(idea: exported_ideas).map do |c|
+      {
+        'idea_ref' => lookup_ref(c.idea_id, :idea),
+        'user_ref' => lookup_ref(c.user_id, :user),
+        'status' => c.status,
+        'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601
+      }
     end
   end
 

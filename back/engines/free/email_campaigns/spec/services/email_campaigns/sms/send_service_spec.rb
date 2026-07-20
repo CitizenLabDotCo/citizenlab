@@ -12,6 +12,37 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     allow(EmailCampaigns::Sms::Providers::Twilio).to receive(:new).and_return(provider)
   end
 
+  describe '#provider' do
+    let(:blank_credentials) do
+      { 'twilio_account_sid' => '', 'twilio_auth_token' => '', 'twilio_messaging_service_sid' => '' }
+    end
+
+    it 'uses the fake provider in development when Twilio credentials are missing' do
+      allow(Rails.env).to receive(:development?).and_return(true)
+      SettingsService.new.activate_feature!('sms', settings: blank_credentials)
+      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
+
+      described_class.new.send(:provider)
+    end
+
+    it 'uses the Twilio provider in development when Twilio credentials are configured' do
+      allow(Rails.env).to receive(:development?).and_return(true)
+      expect(EmailCampaigns::Sms::Providers::Twilio).to receive(:new)
+      expect(EmailCampaigns::Sms::Providers::Fake).not_to receive(:new)
+
+      described_class.new.send(:provider)
+    end
+
+    it 'always uses the Twilio provider outside development, even without credentials' do
+      allow(Rails.env).to receive(:development?).and_return(false)
+      SettingsService.new.activate_feature!('sms', settings: blank_credentials)
+      expect(EmailCampaigns::Sms::Providers::Twilio).to receive(:new)
+      expect(EmailCampaigns::Sms::Providers::Fake).not_to receive(:new)
+
+      described_class.new.send(:provider)
+    end
+  end
+
   describe '#create_delivery' do
     it 'records a pending delivery linked to the campaign without calling the provider' do
       campaign = create(:manual_campaign)

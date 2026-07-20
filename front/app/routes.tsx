@@ -387,6 +387,7 @@ const projectIdeaNewRoute = createRoute({
 const projectSurveyNewSearchSchema = yup.object({
   phase_id: yup.string().optional(),
   idea_id: yup.string().optional(),
+  go_back: yup.string().optional(),
 });
 
 type ProjectSurveyNewSearchParams = yup.InferType<

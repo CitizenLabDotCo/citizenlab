@@ -168,15 +168,28 @@ class ApplicationController < ActionController::API
     # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
     url = request.url.sub(/\?.*$/, '')
     pageparams = Rack::Utils.parse_nested_query(request.query_string)
-    pageparams['page'] ||= {}
+    # `page` may arrive as a scalar (`?page=foo`); reset it before assigning below.
+    pageparams['page'] = {} unless pageparams['page'].is_a?(Hash)
     pageparams['page']['number'] = number
     "#{url}?#{pageparams.to_param}"
   end
 
   def paginate(collection)
     collection
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+      .page(pagination_param(:number))
+      .per(pagination_param(:size))
+  end
+
+  # Reads `page[number]`/`page[size]` defensively: malformed input yields nil so Kaminari
+  # uses its defaults instead of raising (`String does not have #dig`, `to_i` on Parameters).
+  def pagination_param(key)
+    page = params[:page]
+    return nil unless page.is_a?(ActionController::Parameters)
+
+    value = page[key]
+    return nil unless value.is_a?(String) || value.is_a?(Integer)
+
+    Integer(value, exception: false)
   end
 
   def remove_image_if_requested!(resource, resource_params, image_field_name)

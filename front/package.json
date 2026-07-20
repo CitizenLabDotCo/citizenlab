@@ -154,7 +154,8 @@
     "vite-plugin-commonjs": "^0.10.4",
     "webfontloader": "1.6.28",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
-    "yup": "^1.7.1"
+    "yup": "^1.7.1",
+    "zxcvbn": "4.4.2"
   },
   "devDependencies": {
     "@babel/cli": "7.x",
@@ -200,6 +201,7 @@
     "@types/styled-components": "5.1.26",
     "@types/twemoji": "^13.1.2",
     "@types/webfontloader": "1.6.35",
+    "@types/zxcvbn": "4.4.5",
     "@typescript-eslint/eslint-plugin": "8.55.0",
     "@typescript-eslint/parser": "8.55.0",
     "@vitejs/plugin-react": "^6.0.2",

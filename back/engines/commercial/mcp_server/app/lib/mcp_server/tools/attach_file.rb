@@ -2,13 +2,28 @@
 
 class McpServer::Tools::AttachFile < McpServer::BaseTool
   CONTAINERS = {
-    'Project' => Project,
-    'Phase' => Phase,
-    'Event' => Event
+    'project' => Project,
+    'phase' => Phase,
+    'event' => Event
   }.freeze
   private_constant :CONTAINERS
 
   def name = 'attach_file'
+
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      # The `remote_url` branch isn't idempotent: each call downloads and stores a fresh
+      # file, so two identical calls end up with two attachments. The `file_id` branch is
+      # idempotent at the state level (a unique constraint on
+      # `(file_id, attachable_type, attachable_id)` prevents duplicates), but not at the
+      # response level (the second call errors out instead of returning the existing
+      # attachment).
+      idempotent_hint: false,
+      open_world_hint: true # The `remote_url` branch fetches from an arbitrary public URL.
+    }
+  end
 
   def description
     <<~DESC.squish
@@ -56,9 +71,15 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      unless container
+        return not_found_error("Resource (#{params[:resource_type]})", params[:resource_id])
+      end
+
       authorize_project!(container.project)
 
       file = params[:file_id] ? existing_file : build_new_file
+      return not_found_error('File', params[:file_id]) unless file
+
       attachment = Files::FileAttachment.new(file: file, attachable: container)
       authorize(attachment, :create?)
 
@@ -69,14 +90,12 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
       end
       side_fx.after_create(attachment, current_user)
 
-      ok(
+      response(
         "Attached file to #{params[:resource_type]} #{container.id}",
         structured: McpServer::Serializers::FileAttachment.serialize(attachment)
       )
-    rescue ActiveRecord::RecordNotFound => e
-      error(e.message)
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     rescue CarrierWave::DownloadError, CarrierWave::IntegrityError => e
       error("Could not fetch #{params[:remote_url]}: #{e.message}")
     end
@@ -86,7 +105,11 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
     def container
       @container ||= CONTAINERS
         .fetch(params[:resource_type])
-        .find(params[:resource_id])
+        .find_by(id: params[:resource_id])
+    end
+
+    def existing_file
+      container.project.files.find_by(id: params[:file_id])
     end
 
     def build_new_file
@@ -97,14 +120,6 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
       ).tap do |file|
         file.files_projects.build(project: container.project)
       end
-    end
-
-    def existing_file
-      @existing_file ||= container.project.files.find(params[:file_id])
-    rescue ActiveRecord::RecordNotFound
-      raise ActiveRecord::RecordNotFound, <<~MSG.squish
-        File #{params[:file_id]} is not one of the resource's project files
-      MSG
     end
 
     def side_fx
