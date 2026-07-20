@@ -6,7 +6,7 @@ require 'rails_helper'
 # mcp >= 0.23 DNS-rebinding Host validation and our allowed_hosts config.
 # The test tenant host is 'example.org' (non-loopback), so these specs exercise
 # the real hosted-host allow path, which a localhost dev run cannot.
-describe 'MCP endpoint (POST /mcp)' do
+describe McpServer::McpController do
   let(:user) { create(:super_admin) }
 
   let(:oauth_app) do
