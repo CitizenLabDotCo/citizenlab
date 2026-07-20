@@ -13,7 +13,7 @@ import {
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
-import useAuthMethodNames from 'hooks/useAuthMethodNames';
+import useAuthMethodNames, { getMethodName } from 'hooks/useAuthMethodNames';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -21,12 +21,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import AccessSection from './AccessSections/AccessSection';
 import AccessSectionSSO from './AccessSections/AccessSectionSSO';
 import DataSection from './DataSection';
-import {
-  buildSummary,
-  buildSummarySSO,
-  getGroupIds,
-  ssoMethodName,
-} from './logic';
+import { buildSummary, buildSummarySSO, getGroupIds } from './logic';
 import messages from './messages';
 import { Props } from './types';
 import { Chip } from './ui';
@@ -61,8 +56,9 @@ const ActionForm = ({
   const showAnyone = attributes.permitted_by_everyone_allowed;
   const isAdmins = attributes.permitted_by === 'admins_moderators';
 
-  const nameInConfig = ssoMethodName(authenticationMethod);
-  const methodName = authMethodNames[nameInConfig as any] || nameInConfig;
+  const methodName = authenticationMethod
+    ? getMethodName(authenticationMethod.data, authMethodNames)
+    : '';
 
   const summary = passwordLoginEnabled
     ? buildSummary(permissionData, customFields, formatMessage)

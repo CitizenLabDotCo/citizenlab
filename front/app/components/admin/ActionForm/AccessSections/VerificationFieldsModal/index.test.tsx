@@ -20,6 +20,20 @@ jest.mock('hooks/useLocalize', () =>
   jest.fn(() => (multiloc: Multiloc) => multiloc.en)
 );
 
+// The shared, human-readable names. Only covers part of the methods, so the
+// modal has to fall back for the rest.
+jest.mock('hooks/useAuthMethodNames', () => ({
+  // Keep the real `getMethodName` — only the names themselves are stubbed.
+  ...jest.requireActual('hooks/useAuthMethodNames'),
+  __esModule: true,
+  default: jest.fn(() => ({
+    franceconnect: 'FranceConnect',
+    acm: 'Itsme®',
+    // Configured per tenant — empty when the tenant hasn't set one.
+    keycloak: '',
+  })),
+}));
+
 // Render the modal inline instead of through the portal, which isn't mounted
 // yet on the first render pass in jsdom.
 jest.mock('react-dom', () => ({
@@ -246,6 +260,50 @@ describe('<VerificationFieldsModal />', () => {
 
       expect(within(itsMeRegion).getByText('First name')).toBeInTheDocument();
       expect(within(itsMeRegion).queryByText('Email')).toBeNull();
+    });
+  });
+
+  describe('method naming', () => {
+    it('prefers the shared human-readable name over the one the method reports', () => {
+      mockIdMethods = {
+        data: [
+          buildMethod({
+            name: 'acm',
+            metadata: buildMetadata({ name: 'ACM' }),
+          }),
+        ],
+      };
+      renderModal();
+
+      expect(screen.getByText('Fields returned by Itsme®')).toBeInTheDocument();
+    });
+
+    it('falls back to the name the method reports', () => {
+      mockIdMethods = {
+        data: [
+          buildMethod({
+            name: 'fake_sso',
+            metadata: buildMetadata({ name: 'Fake SSO' }),
+          }),
+        ],
+      };
+      renderModal();
+
+      expect(
+        screen.getByText('Fields returned by Fake SSO')
+      ).toBeInTheDocument();
+    });
+
+    it('falls back to the config name when neither name is set', () => {
+      mockIdMethods = {
+        // Keycloak's name is configured per tenant and empty here.
+        data: [buildMethod({ name: 'keycloak', metadata: null })],
+      };
+      renderModal();
+
+      expect(
+        screen.getByText('Fields returned by keycloak')
+      ).toBeInTheDocument();
     });
   });
 

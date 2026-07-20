@@ -10,6 +10,7 @@ import { Accordion, Box, Title, Text } from '@citizenlab/cl2-component-library';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
 
+import useAuthMethodNames, { getMethodName } from 'hooks/useAuthMethodNames';
 import useLocalize from 'hooks/useLocalize';
 
 import Modal from 'components/UI/Modal';
@@ -18,7 +19,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import FieldList from './FieldList';
 import messages from './messages';
-import { getActiveMethods } from './utils';
+import { getActiveMethods, getFields } from './utils';
 
 interface Props {
   opened: boolean;
@@ -27,9 +28,10 @@ interface Props {
 
 const VerificationFieldsModal = ({ opened, onClose }: Props) => {
   const localize = useLocalize();
+  const authMethodNames = useAuthMethodNames();
   const { data: idMethods } = useIdMethods();
 
-  const activeMethods = getActiveMethods(idMethods, localize);
+  const activeMethods = getActiveMethods(idMethods);
   const singleMethod =
     activeMethods.length === 1 ? activeMethods[0] : undefined;
 
@@ -44,7 +46,9 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
           {singleMethod ? (
             <FormattedMessage
               {...messages.fieldsReturnedByMethod}
-              values={{ methodName: singleMethod.name }}
+              values={{
+                methodName: getMethodName(singleMethod, authMethodNames),
+              }}
             />
           ) : (
             <FormattedMessage {...messages.fieldsReturnedByMethods} />
@@ -64,11 +68,18 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
             <Text mt="0" color="coolGrey600">
               <FormattedMessage
                 {...messages.whenAParticipantVerifiesThroughMethod}
-                values={{ methodName: singleMethod.name }}
+                values={{
+                  methodName: getMethodName(singleMethod, authMethodNames),
+                }}
               />
             </Text>
             <Box mt="12px">
-              <FieldList fields={singleMethod.fields} />
+              <FieldList
+                fields={getFields(
+                  singleMethod.attributes.method_metadata,
+                  localize
+                )}
+              />
             </Box>
           </>
         )}
@@ -84,11 +95,16 @@ const VerificationFieldsModal = ({ opened, onClose }: Props) => {
                   key={method.id}
                   title={
                     <Text m="0" fontWeight="bold" color="primary">
-                      {method.name}
+                      {getMethodName(method, authMethodNames)}
                     </Text>
                   }
                 >
-                  <FieldList fields={method.fields} />
+                  <FieldList
+                    fields={getFields(
+                      method.attributes.method_metadata,
+                      localize
+                    )}
+                  />
                 </Accordion>
               ))}
             </Box>

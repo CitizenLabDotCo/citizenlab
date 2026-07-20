@@ -10,11 +10,11 @@ import {
 
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 
-import useAuthMethodNames from 'hooks/useAuthMethodNames';
+import useAuthMethodNames, { getMethodName } from 'hooks/useAuthMethodNames';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { requiresAccount, ssoMethodName } from '../../logic';
+import { requiresAccount } from '../../logic';
 import { SectionHeader } from '../../ui';
 import accessSectionMessages from '../AccessSection/messages';
 import GroupsSection from '../GroupsSection';
@@ -36,8 +36,9 @@ const AccessSectionSSO = ({
 
   const { data: authenticationMethod } = useAuthenticationMethod();
   const authMethodNames = useAuthMethodNames();
-  const nameInConfig = ssoMethodName(authenticationMethod);
-  const methodName = authMethodNames[nameInConfig as any] || nameInConfig;
+  const methodName = authenticationMethod
+    ? getMethodName(authenticationMethod.data, authMethodNames)
+    : '';
 
   return (
     <Box>

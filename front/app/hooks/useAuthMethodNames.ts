@@ -1,4 +1,8 @@
-import { IDKeycloakMethod } from 'api/id_methods/types';
+import {
+  IDKeycloakMethod,
+  IdMethodData,
+  IdMethodName,
+} from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
 
@@ -50,3 +54,17 @@ const useAuthMethodNames = () => {
 };
 
 export default useAuthMethodNames;
+
+/**
+ * The name to show for a method: the shared human-readable name above where we
+ * have one (some are configured per tenant, and empty when the tenant hasn't
+ * set one), then the name the method itself reports, and the bare config name
+ * only as a last resort.
+ */
+export const getMethodName = (
+  method: IdMethodData,
+  authMethodNames: Partial<Record<IdMethodName, string>>
+): string =>
+  authMethodNames[method.attributes.name] ||
+  method.attributes.method_metadata?.name ||
+  method.attributes.name;
