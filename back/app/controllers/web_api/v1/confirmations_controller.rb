@@ -80,10 +80,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     params.require(:confirmation).permit(:code, :sms_manual_campaign_consent)
   end
 
-  # Recorded once the phone is confirmed, so an abandoned confirmation never
-  # persists consent for an unverified number.
   def record_sms_manual_campaign_consent
-    manual_campaign_consent = confirm_code_phone_change_params[:sms_manual_campaign_consent]
+    manual_campaign_consent = parse_bool(confirm_code_phone_change_params[:sms_manual_campaign_consent])
     return if manual_campaign_consent.nil?
 
     EmailCampaigns::Consent

@@ -315,6 +315,13 @@ resource 'Confirmations' do
         expect(EmailCampaigns::Consent.where(user: user, campaign_type: sms_manual_type)).to be_empty
       end
 
+      # A form-encoded client sends an empty string for an unchecked checkbox.
+      example 'does not record consent when the field is blank' do
+        do_request(confirmation: { code: user.new_phone_confirmation.code, sms_manual_campaign_consent: '' })
+        assert_status 200
+        expect(EmailCampaigns::Consent.where(user: user, campaign_type: sms_manual_type)).to be_empty
+      end
+
       example 'does not record consent when the code is invalid' do
         do_request(confirmation: { code: 'badcode', sms_manual_campaign_consent: true })
         assert_status 422
