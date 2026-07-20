@@ -39,6 +39,11 @@ export default defineMessages({
     defaultMessage:
       'This password can be easily guessed. Please choose a stronger password.',
   },
+  too_weak: {
+    id: 'app.errors.too_weak',
+    defaultMessage:
+      'This password can be easily guessed. Please choose a stronger password, for example by making it longer or using several unrelated words.',
+  },
   confirmation_code_invalid: {
     id: 'app.errors.confirmation_code_invalid',
     defaultMessage:

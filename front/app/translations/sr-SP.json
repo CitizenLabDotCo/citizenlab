@@ -1271,7 +1271,6 @@
   "app.containers.ChangePassword.helmetTitle": "Промените своју лозинку",
   "app.containers.ChangePassword.newPasswordLabel": "Нова лозинка",
   "app.containers.ChangePassword.newPasswordRequired": "Унесите своју нову лозинку",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Наведите лозинку која има најмање {minimumPasswordLength} знакова",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Ваша лозинка је успешно ажурирана",
   "app.containers.ChangePassword.passwordEmptyError": "Унесите лозинку",
   "app.containers.ChangePassword.passwordsDontMatch": "Потврдите нову лозинку",

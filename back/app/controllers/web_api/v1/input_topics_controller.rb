@@ -25,7 +25,7 @@ class WebApi::V1::InputTopicsController < ApplicationController
       when '-ideas_count'
         input_topics.order_ideas_count(filter_ideas, direction: :desc)
       else
-        raise 'Unsupported sort method'
+        raise ApiError.new(:unsupported_sort_parameter, status: 400)
       end
 
     input_topics = paginate input_topics

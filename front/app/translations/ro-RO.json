@@ -460,7 +460,6 @@
   "app.containers.ChangePassword.helmetTitle": "Schimbați-vă parola",
   "app.containers.ChangePassword.newPasswordLabel": "Parolă nouă",
   "app.containers.ChangePassword.newPasswordRequired": "Introduceți noua dvs. parolă",
-  "app.containers.ChangePassword.password.minimumPasswordLengthError": "Furnizați o parolă care să aibă cel puțin {minimumPasswordLength} caractere.",
   "app.containers.ChangePassword.passwordChangeSuccessMessage": "Parola dvs. a fost actualizată cu succes",
   "app.containers.ChangePassword.passwordEmptyError": "Introduceți parola dvs.",
   "app.containers.ChangePassword.passwordsDontMatch": "Confirmați noua parolă",
