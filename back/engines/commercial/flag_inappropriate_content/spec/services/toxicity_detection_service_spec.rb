@@ -62,17 +62,45 @@ describe FlagInappropriateContent::ToxicityDetectionService do
       allow(Analysis::LLM::ClaudeHaiku45).to receive(:new).and_return(llm)
     end
 
-    it 'classifies with the default categories when no custom guidelines are configured' do
-      idea = create(:idea, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
+    it 'classifies the serialized input with project context and the default categories' do
+      project = create(:project, title_multiloc: { 'en' => 'Park renewal' })
+      idea = create(:idea, project:, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
 
       expect(llm).to receive(:chat) do |prompt, response_schema:|
-        expect(prompt).to include 'An idea for my fellow wankers'
+        expect(prompt).to include 'the participation project "Park renewal"'
+        expect(prompt).to include "### Title\nAn idea for my fellow wankers"
         expect(prompt).not_to include '<guidelines>'
         expect(response_schema.dig(:properties, :category, :enum)).to eq %w[A B C D E]
         { 'category' => 'A', 'reason' => 'Contains an insult.' }
       end
 
       expect(service.check_toxicity(idea, attributes: [:title_multiloc]))
+        .to eq({ toxicity_label: 'insult', ai_reason: 'Contains an insult.' })
+    end
+
+    it 'does not classify the location of an idea' do
+      idea = create(:idea, title_multiloc: { 'en' => 'Broken street sign' }, location_description: '123 Fake Street')
+
+      expect(llm).to receive(:chat) do |prompt, **|
+        expect(prompt).not_to include '123 Fake Street'
+        { 'category' => 'E', 'reason' => 'Not toxic.' }
+      end
+
+      expect(service.check_toxicity(idea)).to be_nil
+    end
+
+    it 'includes the parent post context for comments' do
+      idea = create(:idea, title_multiloc: { 'en' => 'Better bike lanes' })
+      comment = create(:comment, idea:, body_multiloc: { 'en' => '<p>You are all idiots</p>' })
+
+      expect(llm).to receive(:chat) do |prompt, **|
+        expect(prompt).to include 'the discussion on "Better bike lanes"'
+        expect(prompt).to include 'You are all idiots'
+        expect(prompt).not_to include '<p>'
+        { 'category' => 'A', 'reason' => 'Contains an insult.' }
+      end
+
+      expect(service.check_toxicity(comment))
         .to eq({ toxicity_label: 'insult', ai_reason: 'Contains an insult.' })
     end
 
