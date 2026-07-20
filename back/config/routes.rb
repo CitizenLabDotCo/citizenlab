@@ -234,8 +234,9 @@ Rails.application.routes.draw do
 
         member do
           get 'survey_results'
-          get 'survey_response_fields'
-          post 'survey_responses_pdf'
+          get 'input_response_fields'
+          post 'input_responses_pdf'
+          post 'input_responses_xlsx'
           get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'

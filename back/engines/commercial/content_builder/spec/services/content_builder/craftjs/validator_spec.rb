@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe ContentBuilder::Craftjs::Validator do
   subject(:errors) do
+    error_objects.map(&:to_s)
+  end
+
+  let(:error_objects) do
     described_class.new(
       json, widget_specs: widget_specs, convention_scope: convention_scope, root_type: root_type
     ).errors
@@ -40,17 +44,29 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
     end
 
     it 'flags a non-hash document' do
-      expect(described_class.new('not a hash').errors).to eq(['craftjs_json must be a JSON object'])
+      expect(described_class.new('not a hash').errors.map(&:to_s)).to eq(['craftjs_json must be a JSON object'])
     end
 
     it 'flags a missing ROOT node' do
-      expect(described_class.new({}).errors).to eq(['ROOT node is missing'])
+      expect(described_class.new({}).errors.map(&:to_s)).to eq(['ROOT node is missing'])
     end
 
     it 'flags a node missing the nodes key' do
       json['A'].delete('nodes')
 
       expect(errors).to eq(["node A: 'nodes' must be a array"])
+    end
+
+    it 'reports every shape problem of a node at once' do
+      json['A'].delete('nodes')
+      json['A']['linkedNodes'] = 'nope'
+      json['A'].delete('parent')
+
+      expect(errors).to contain_exactly(
+        "node A: 'nodes' must be a array",
+        "node A: 'linkedNodes' must be a hash",
+        "node A: 'parent' is required"
+      )
     end
 
     it "flags a ROOT node that has a 'parent'" do
@@ -118,6 +134,27 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
     end
   end
 
+  context 'error objects' do
+    let(:json) do
+      {
+        'ROOT' => craftjs_root(['A']),
+        'A' => text_node(parent: 'elsewhere')
+      }
+    end
+
+    it 'carry the offending node id and a machine-readable code' do
+      expect(error_objects).to contain_exactly(
+        have_attributes(node_id: 'A', code: :parent_mismatch)
+      )
+    end
+
+    it 'uses a nil node id for document-level problems' do
+      expect(described_class.new('not a hash').errors).to contain_exactly(
+        have_attributes(node_id: nil, code: :not_an_object)
+      )
+    end
+  end
+
   context 'convention checks (with widget_specs)' do
     let(:widget_specs) do
       {
@@ -140,6 +177,48 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
 
     it 'is empty for a graph that follows every convention' do
       expect(errors).to eq([])
+    end
+
+    it 'rejects an empty-string node id' do
+      json['ROOT']['nodes'] = ['T', '']
+      json[''] = text_node(parent: 'ROOT')
+
+      expect(errors).to contain_exactly(
+        match(/\Anode "": node ids must be 1-64 characters/)
+      )
+    end
+
+    it 'rejects a node id containing whitespace or newlines' do
+      json['ROOT']['nodes'] = ['T', "bad id\n"]
+      json["bad id\n"] = text_node(parent: 'ROOT')
+
+      expect(errors).to contain_exactly(
+        match(/node ids must be 1-64 characters/)
+      )
+    end
+
+    it 'rejects undeclared node keys' do
+      json['T']['clazz'] = 'zoomed'
+
+      expect(errors).to contain_exactly(
+        match(/\Anode T: unknown keys: clazz \(allowed:/)
+      )
+    end
+
+    it "rejects undeclared keys inside an object 'type'" do
+      json['T']['type'] = { 'resolvedName' => 'TextMultiloc', 'version' => 2 }
+
+      expect(errors).to contain_exactly(
+        match(/\Anode T: unknown keys in 'type': version \(allowed: resolvedName\)/)
+      )
+    end
+
+    it 'rejects undeclared keys on ROOT' do
+      json['ROOT']['theme'] = 'dark'
+
+      expect(errors).to contain_exactly(
+        match(/\Anode ROOT: unknown keys: theme \(allowed:/)
+      )
     end
 
     it 'rejects an unsupported widget' do
@@ -170,6 +249,23 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       expect(errors).to contain_exactly(
         match(/\Anode C: slot containers must be a canvas/)
       )
+    end
+
+    context 'when a patch flips a slot container to isCanvas: false without re-sending its parent' do
+      let(:json) do
+        {
+          'ROOT' => craftjs_root(['TC']),
+          'TC' => craftjs_node('TwoColumn', parent: 'ROOT', linkedNodes: { 'left' => 'C' }),
+          'C' => craftjs_node('Container', parent: 'TC', isCanvas: false)
+        }
+      end
+      let(:convention_scope) { %w[C] }
+
+      it 'still rejects the non-canvas slot container' do
+        expect(errors).to contain_exactly(
+          match(/\Anode C: slot containers must be a canvas/)
+        )
+      end
     end
 
     it 'rejects a prop value outside its enum' do

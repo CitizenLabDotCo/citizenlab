@@ -283,6 +283,14 @@ class Phase < ApplicationRecord
     participation_method == 'ideation'
   end
 
+  # The inputs that belong in an export/report of this phase: submitted or
+  # published inputs, minus content-less rows for methods that keep drafts
+  # (ideation/proposals). Survey methods keep every submission.
+  def inputs_for_export
+    scope = ideas.submitted_or_published
+    pmethod.supports_survey_form? ? scope : scope.with_content
+  end
+
   def pmethod
     @pmethod = case participation_method
     when 'information'

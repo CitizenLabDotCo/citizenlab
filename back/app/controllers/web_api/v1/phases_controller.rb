@@ -4,12 +4,12 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results survey_responses_pdf survey_response_fields
-    sentiment_by_quarter submission_count index_xlsx delete_inputs
+    show show_mini update destroy survey_results input_responses_pdf input_responses_xlsx
+    input_response_fields sentiment_by_quarter submission_count index_xlsx delete_inputs
     show_progress common_ground_results
   ]
-  before_action :ensure_survey_form, only: %i[
-    survey_responses_pdf survey_response_fields
+  before_action :ensure_input_export_review, only: %i[
+    input_responses_pdf input_responses_xlsx input_response_fields
   ]
 
   def index
@@ -91,18 +91,23 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: raw_json(results)
   end
 
-  # Lists the survey fields that will appear in the PDF export, flagging
-  # registration/personal-data fields so the UI can pre-select them for
-  # redaction. Source of truth for the export's field set.
-  def survey_response_fields
-    detector = Export::Pdf::PiiDetector.new
-    data = Export::Pdf::SurveyFields.new(@phase).fields.map do |field|
+  # Lists the fields of the responses export (shared by the pdf and xlsx
+  # flavours), flagging personal-data fields so the UI can pre-select them for
+  # redaction: form/user fields are classified by the LLM, computed columns
+  # (author/assignee) carry a structural flag. Source of truth for the exports'
+  # field set.
+  def input_response_fields
+    fields = I18n.with_locale(current_user.locale) do
+      Export::InputReportFields.new(@phase).reviewable_fields
+    end
+    pii_keys = Export::PiiDetector.new.personal_data_keys(fields.filter_map(&:custom_field))
+    data = fields.map do |field|
       {
         id: field.key,
-        type: 'survey_response_field',
+        type: 'input_response_field',
         attributes: {
-          title_multiloc: field.title_multiloc,
-          personal_data: detector.personal_data?(field)
+          title: field.title,
+          personal_data: field.custom_field ? pii_keys.include?(field.key) : field.personal_data
         }
       }
     end
@@ -110,13 +115,13 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: { data: data }
   end
 
-  # Generates a PDF of native survey responses (cover page + one card per
-  # response). Field-level PII redaction is driven by `redacted_field_keys`.
-  # `cover_only` returns just the cover page (used by the live preview).
-  def survey_responses_pdf
+  # Generates a PDF of input responses (cover page + one card per response).
+  # Field-level PII redaction is driven by `redacted_field_keys`. `cover_only`
+  # returns just the cover page (used by the live preview).
+  def input_responses_pdf
     cover_only = ActiveModel::Type::Boolean.new.cast(params[:cover_only])
     pdf = I18n.with_locale(current_user.locale) do
-      Export::Pdf::SurveyResponsesGenerator.new(
+      Export::Pdf::InputResponsesGenerator.new(
         @phase,
         cover: cover_from_params,
         redacted_field_keys: params[:redacted_field_keys] || [],
@@ -124,7 +129,19 @@ class WebApi::V1::PhasesController < ApplicationController
       ).generate_pdf
     end
 
-    send_data pdf.read, type: 'application/pdf', filename: 'survey_responses.pdf'
+    send_data pdf.read, type: 'application/pdf', filename: 'input_responses.pdf'
+  end
+
+  # Generates an xlsx of input responses: the regular full data dump, minus the
+  # fields redacted via `redacted_field_keys` (same review flow as the pdf).
+  def input_responses_xlsx
+    I18n.with_locale(current_user.locale) do
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_phase(
+        @phase.id,
+        redacted_field_keys: params[:redacted_field_keys] || []
+      )
+      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'input_responses.xlsx'
+    end
   end
 
   def common_ground_results
@@ -208,8 +225,8 @@ class WebApi::V1::PhasesController < ApplicationController
     params.require(:phase).permit(shared_phase_params)
   end
 
-  def ensure_survey_form
-    head :unprocessable_entity unless @phase.pmethod.supports_survey_form?
+  def ensure_input_export_review
+    head :unprocessable_entity unless @phase.pmethod.supports_input_pdf_export?
   end
 
   def cover_from_params

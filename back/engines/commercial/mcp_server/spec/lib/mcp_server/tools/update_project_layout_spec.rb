@@ -133,7 +133,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(layout.craftjs_json.keys).to match_array(scaffold_ids + ['T1'])
       end
 
-      it 'rejects a patch that leaves a node unreferenced, returning the widget cheatsheet' do
+      it 'rejects a patch that leaves a node unreferenced, returning a reference for just the offending widgets' do
         original_json = layout.craftjs_json.deep_dup
 
         response = run_mcp_tool(
@@ -143,8 +143,11 @@ describe McpServer::Tools::UpdateProjectLayout do
         )
 
         expect(response).to be_error
-        expect(response.content.first[:text]).to include('T3')
-        expect(response.content.first[:text]).to include(McpServer::Tools::LayoutWidgets::CHEATSHEET)
+        text = response.content.first[:text]
+        expect(text).to include('T3')
+        expect(text).to include(McpServer::LayoutWidgets::FORMAT_RULES)
+        expect(text).to include(McpServer::LayoutWidgets::DOCS['TextMultiloc'])
+        expect(text).not_to include(McpServer::LayoutWidgets::DOCS['IframeMultiloc'])
         expect(layout.reload.craftjs_json).to eq(original_json)
       end
 

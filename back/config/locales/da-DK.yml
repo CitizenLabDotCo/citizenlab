@@ -270,6 +270,15 @@ da-DK:
     proposals:
       title: Forslag
   pdf_export:
+    input_responses:
+      date: Dato
+      no_answer: (Intet svar)
+      prepared_by: Udarbejdet af
+      report_label: Besvarelsesrapport
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} besvarelse'
+        other: '%{count} besvarelser'
     survey_responses:
       date: Dato
       no_answer: (Intet svar)

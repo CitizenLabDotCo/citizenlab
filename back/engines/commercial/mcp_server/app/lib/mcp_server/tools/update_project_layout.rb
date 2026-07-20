@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
+  # Sanity ceiling, not a computed limit: a rich, fully structured description
+  # (columns, accordions, spacers) lands around 30-40 nodes, so this is ~10x that —
+  # room for any legitimate page, while bounding runaway LLM patches and the
+  # graph/outline payloads echoed back in responses.
   MAX_NODES = 300
 
   # Permissive shape of a single craftjs node in the patch; the full rules live in
@@ -38,8 +42,10 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     }
   end
 
-  # Deliberately compact: MCP clients truncate long tool descriptions, so the full
-  # widget/format reference travels in the validation-error responses of this tool.
+  # Deliberately compact: MCP clients truncate long tool descriptions, so the
+  # widget/format reference travels in the validation-error responses of this tool
+  # instead — only a targeted subset (format rules + docs for the offending widgets),
+  # so retries don't accumulate full copies in the client's context.
   def description
     <<~DESC
       Updates a project's page layout (a craft.js node graph) with a sparse patch: send
@@ -116,7 +122,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     # correctable error. Nothing is persisted when this is raised.
     PatchError = Class.new(StandardError)
 
-    SCAFFOLD_WIDGETS = McpServer::Tools::LayoutWidgets::SCAFFOLD_WIDGETS
+    SCAFFOLD_WIDGETS = McpServer::LayoutWidgets::SCAFFOLD_WIDGETS
     DESCRIPTION_WIDGET = 'ProjectDescriptionSection'
     # Widgets that render from the project record; their layout props are transient.
     PROJECT_RECORD_WIDGETS = %w[ProjectBanner ProjectTitle].freeze
@@ -245,7 +251,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     end
 
     def resolved_name(node)
-      ContentBuilder::Craftjs::Nodes.resolved_name(node)
+      ContentBuilder::Craftjs::Query.resolved_name(node)
     end
 
     def patched_graph(layout)
@@ -289,8 +295,8 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
 
       errors = ContentBuilder::Craftjs::Validator.new(
         graph,
-        widget_specs: McpServer::Tools::LayoutWidgets::VALIDATOR_SPECS,
-        root_type: McpServer::Tools::LayoutWidgets::ROOT_TYPE,
+        widget_specs: ContentBuilder::Craftjs::WidgetSpecs::SPECS,
+        root_type: McpServer::LayoutWidgets::ROOT_TYPE,
         # Widget conventions apply only to the nodes this patch touches, so legacy
         # widgets elsewhere in a stored graph cannot fail an unrelated update.
         convention_scope: patch_nodes.keys
@@ -299,19 +305,30 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
 
       raise PatchError,
         "Layout NOT saved. Fix these problems and retry:\n" \
-        "#{errors.map { |e| "- #{e}" }.join("\n")}\n\n#{McpServer::Tools::LayoutWidgets::CHEATSHEET}"
+        "#{errors.map { |e| "- #{e}" }.join("\n")}\n\n#{error_reference(errors, graph)}"
+    end
+
+    # Docs for just the widgets the errors point at — a full cheatsheet here would
+    # add another complete copy to the client's context on every failed retry.
+    def error_reference(errors, graph)
+      widgets = errors.filter_map do |e|
+        e.node_id && ContentBuilder::Craftjs::Query.resolved_name(graph[e.node_id] || {})
+      end
+      McpServer::LayoutWidgets.reference_for(widgets)
     end
 
     def save_layout(layout)
       layout.enabled = params[:enabled] unless params[:enabled].nil?
 
+      # Same sequence as ContentBuilderLayoutsController, deliberately with NO
+      # transaction: the before_ hooks download remote images (LayoutImage.create!
+      # from imageUrl), which must not hold a DB connection for the duration of a
+      # slow download. If the save then fails, imported LayoutImage rows are left
+      # behind without a layout — the same tolerated state the FE flow produces by
+      # uploading images before the layout is first saved.
       side_fx = ContentBuilder::SideFxLayoutService.new
-      # The before_ hook imports new images (LayoutImage.create! from imageUrl); the
-      # transaction keeps those rows from being orphaned when a later step aborts.
-      ActiveRecord::Base.transaction do
-        side_fx.before_update(layout, current_user)
-        layout.save!
-      end
+      side_fx.before_update(layout, current_user)
+      layout.save!
       side_fx.after_update(layout, current_user)
     end
 

@@ -24,7 +24,10 @@ class IdeaCustomFieldsService
     fields
   end
 
-  def xlsx_exportable_fields
+  # Fields included in tabular/report exports (xlsx + pdf): the form fields plus
+  # the appended user/registration fields, minus non-exportable ones (pages,
+  # image uploads).
+  def exportable_fields
     UserFieldsInFormService
       .add_user_fields_to_form(all_fields, participation_method, custom_form)
       .filter(&:supports_xlsx_export?)
