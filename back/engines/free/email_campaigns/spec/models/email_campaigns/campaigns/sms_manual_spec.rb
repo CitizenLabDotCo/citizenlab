@@ -146,7 +146,7 @@ RSpec.describe EmailCampaigns::Campaigns::SmsManual do
       expect(campaign.apply_recipient_filters).not_to include(invitee)
     end
 
-    it 'only includes users who explicitly opted in to marketing SMS' do
+    it 'only includes users who explicitly opted in to Manual SMS campaigns' do
       opted_in = create(:user, :with_confirmed_phone)
       create(:consent, user: opted_in, campaign_type: sms_campaign_type, consented: true)
       opted_out = create(:user, :with_confirmed_phone)
