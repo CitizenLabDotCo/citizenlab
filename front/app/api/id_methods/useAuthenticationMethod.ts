@@ -13,13 +13,10 @@ const fetchAuthenticationMethod = () =>
   });
 
 const useAuthenticationMethod = () => {
-  return useQuery<
-    IdMethod,
-    CLErrors,
-    IdMethod,
-    IdMethodsKeys
-  >({
-    queryKey: idMethodsKeys.item({ endpoint: 'first_enabled_authentication_method' }),
+  return useQuery<IdMethod, CLErrors, IdMethod, IdMethodsKeys>({
+    queryKey: idMethodsKeys.item({
+      endpoint: 'first_enabled_authentication_method',
+    }),
     queryFn: () => fetchAuthenticationMethod(),
   });
 };

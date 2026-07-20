@@ -52,4 +52,4 @@ export const fakeSSOAuth = (
   // reloading the page the cookies are properly set and the user
   // will be logged in correctly
   cy.reload();
-}
+};

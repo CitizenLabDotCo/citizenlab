@@ -38,7 +38,7 @@ describe('Sign up - verification required (bogus)', () => {
           phaseId,
           permissionBody: {
             permitted_by: 'users',
-            require_verification: true
+            require_verification: true,
           },
           action: 'posting_idea',
         });
@@ -47,7 +47,7 @@ describe('Sign up - verification required (bogus)', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
-  })
+  });
 
   it('works when signing up with new email', () => {
     cy.visit(`/projects/${projectTitle}`);
@@ -81,11 +81,11 @@ describe('Sign up - verification required (bogus)', () => {
           permitted_by: 'users',
           require_name: false,
           require_password: false,
-          require_verification: true
+          require_verification: true,
         },
         action: 'posting_idea',
       });
-    })
+    });
 
     it('works when signing up with new email', () => {
       cy.visit(`/projects/${projectTitle}`);
@@ -119,11 +119,11 @@ describe('Sign up - verification required (bogus)', () => {
           permitted_by: 'users',
           require_name: true,
           require_password: false,
-          require_verification: true
+          require_verification: true,
         },
         action: 'posting_idea',
       });
-    })
+    });
 
     it('works when signing up with new email', () => {
       cy.visit(`/projects/${projectTitle}`);
@@ -135,7 +135,9 @@ describe('Sign up - verification required (bogus)', () => {
       cy.get('#firstName').type(randomString());
       cy.get('#lastName').type(randomString());
 
-      cy.get('#e2e-built-in-fields-submit-button > button').click({ force: true });
+      cy.get('#e2e-built-in-fields-submit-button > button').click({
+        force: true,
+      });
 
       // verification step: fill out bogus
       cy.get(
@@ -151,7 +153,7 @@ describe('Sign up - verification required (bogus)', () => {
         `/en/projects/${projectTitle}/surveys/new`
       );
     });
-  })
+  });
 });
 
 describe('Sign up - verification required (SSO)', () => {
@@ -189,7 +191,7 @@ describe('Sign up - verification required (SSO)', () => {
           phaseId,
           permissionBody: {
             permitted_by: 'users',
-            require_verification: true
+            require_verification: true,
           },
           action: 'posting_idea',
         });
@@ -198,7 +200,7 @@ describe('Sign up - verification required (SSO)', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
-  })
+  });
 
   it('works when signing up with new email', () => {
     cy.visit(`/projects/${projectTitle}`);
@@ -224,11 +226,11 @@ describe('Sign up - verification required (SSO)', () => {
           permitted_by: 'users',
           require_name: false,
           require_password: false,
-          require_verification: true
+          require_verification: true,
         },
         action: 'posting_idea',
       });
-    })
+    });
 
     it('works when signing up with new email', () => {
       cy.visit(`/projects/${projectTitle}`);
@@ -255,11 +257,11 @@ describe('Sign up - verification required (SSO)', () => {
           permitted_by: 'users',
           require_name: true,
           require_password: false,
-          require_verification: true
+          require_verification: true,
         },
         action: 'posting_idea',
       });
-    })
+    });
 
     it('works when signing up with new email', () => {
       cy.visit(`/projects/${projectTitle}`);
@@ -276,5 +278,5 @@ describe('Sign up - verification required (SSO)', () => {
         `/en/projects/${projectTitle}/surveys/new`
       );
     });
-  })
+  });
 });

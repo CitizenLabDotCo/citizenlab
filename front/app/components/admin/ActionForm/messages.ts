@@ -7,7 +7,8 @@ export default defineMessages({
   },
   nQuestions: {
     id: 'app.components.admin.ActionForm.nQuestions',
-    defaultMessage: '{nQuestions, plural, one {1 question} other {{nQuestions} questions}}'
+    defaultMessage:
+      '{nQuestions, plural, one {1 question} other {{nQuestions} questions}}',
   },
   adminsManagersOnly: {
     id: 'app.components.admin.ActionForm.adminsManagersOnly',
@@ -23,7 +24,7 @@ export default defineMessages({
   },
   nGroups: {
     id: 'app.components.admin.ActionForm.nGroups',
-    defaultMessage: '{nGroups, plural, one {1 group} other {{nGroups} groups}}'
+    defaultMessage: '{nGroups, plural, one {1 group} other {{nGroups} groups}}',
   },
   name: {
     id: 'app.components.admin.ActionForm.name',

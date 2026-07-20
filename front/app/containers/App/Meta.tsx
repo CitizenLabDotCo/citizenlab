@@ -40,16 +40,16 @@ const Meta = () => {
     /* eslint-disable @typescript-eslint/no-unnecessary-condition */
     const bannerNode = homepageLayout?.data?.attributes?.craftjs_json
       ? Object.values(homepageLayout.data.attributes.craftjs_json || {}).find(
-        (node: any) => {
-          return (
-            node &&
-            node.type &&
-            typeof node.type === 'object' &&
-            'resolvedName' in node.type &&
-            node.type.resolvedName === 'HomepageBanner'
-          );
-        }
-      )
+          (node: any) => {
+            return (
+              node &&
+              node.type &&
+              typeof node.type === 'object' &&
+              'resolvedName' in node.type &&
+              node.type.resolvedName === 'HomepageBanner'
+            );
+          }
+        )
       : null;
     /* eslint-enable @typescript-eslint/no-unnecessary-condition */
 
@@ -96,10 +96,11 @@ const Meta = () => {
 
         {showDefaultTitleAndDescTags && (
           <title>
-            {`${authUser && authUser.data.attributes.unread_notifications
+            {`${
+              authUser && authUser.data.attributes.unread_notifications
                 ? `(${authUser.data.attributes.unread_notifications}) `
                 : ''
-              } ${metaTitle}`}
+            } ${metaTitle}`}
           </title>
         )}
         {showDefaultTitleAndDescTags && (
