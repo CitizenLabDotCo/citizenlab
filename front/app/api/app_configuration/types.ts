@@ -178,7 +178,6 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
-  parallel_participation?: AppConfigurationFeature;
   input_iq?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
@@ -204,7 +203,13 @@ export interface IAppConfigurationSettings {
   draft_phase_description?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
+  project_static_pages?: AppConfigurationFeature;
+  parallel_participation?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
+  sms?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

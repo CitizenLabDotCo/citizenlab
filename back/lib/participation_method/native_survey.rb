@@ -101,7 +101,10 @@ module ParticipationMethod
     end
 
     def allow_posting_again_after
-      nil # Never allow posting again
+      # When the phase allows multiple responses, 0.seconds removes the posting
+      # limit (see Permissions::PhasePermissionsService#posting_limit_reached?).
+      # Otherwise nil locks it to a single response per user.
+      0.seconds if phase.allow_multiple_responses?
     end
 
     def supported_email_campaigns
@@ -113,7 +116,7 @@ module ParticipationMethod
     end
 
     def supports_serializing?(attribute)
-      %i[native_survey_title_multiloc native_survey_button_multiloc].include?(attribute)
+      %i[native_survey_title_multiloc native_survey_button_multiloc allow_multiple_responses].include?(attribute)
     end
 
     def destroy_ideas_on_phase_destroy?

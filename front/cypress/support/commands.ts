@@ -1359,6 +1359,7 @@ function apiCreatePhase({
   surveyService,
   votingMaxTotal,
   allow_anonymous_participation,
+  allow_multiple_responses,
   votingMethod,
   votingMaxVotesPerIdea,
   votingMinTotal,
@@ -1383,6 +1384,7 @@ function apiCreatePhase({
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
+  allow_multiple_responses?: boolean;
   votingMethod?: VotingMethod;
   votingMaxVotesPerIdea?: number;
   votingMinTotal?: number;
@@ -1420,6 +1422,7 @@ function apiCreatePhase({
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
+          allow_multiple_responses: allow_multiple_responses,
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
