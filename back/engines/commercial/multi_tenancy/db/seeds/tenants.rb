@@ -47,6 +47,10 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
+            project_static_pages: {
+              allowed: true,
+              enabled: true
+            },
             maps: {
               enabled: true,
               allowed: true,
