@@ -1327,7 +1327,7 @@
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Send invitation igen",
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": "Indtast dit telefonnummer for at fortsætte.",
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
-  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Angiv et telefonnummer i det korrekte format, for eksempel +32 470 12 34 56",
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Angiv et telefonnummer i det korrekte format, for eksempel +45 26464719",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Angiv et telefonnummer",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifikationer i denne kategori",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Hvilke typer e-mailnotifikationer ønsker du at modtage?",
