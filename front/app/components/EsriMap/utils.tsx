@@ -824,7 +824,6 @@ export const pinUiElementToTop = (
   element: HTMLElement,
   position: 'top-right' = 'top-right'
 ) => {
-  // Ensure it's added, then force it to the very top
   mapView.ui.add(element, { position, index: 0 });
   mapView.ui.move(element, { position, index: 0 });
 

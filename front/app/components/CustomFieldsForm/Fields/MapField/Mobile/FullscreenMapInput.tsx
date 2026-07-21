@@ -138,7 +138,6 @@ const FullscreenMapInput = memo<Props>(
       ]
     );
 
-    // In explore mode, show a pointer cursor over clickable web map features
     const onMapHover = useCallback((event: any, mapView: MapView) => {
       changeCursorOnFeaturePopupHover(event, mapView);
     }, []);
