@@ -1,3 +1,3 @@
 export interface FormValues {
-  phone: string;
+  new_phone: string;
 }

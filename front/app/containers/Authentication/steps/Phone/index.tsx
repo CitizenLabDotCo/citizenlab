@@ -34,7 +34,7 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
   const schema = useMemo(
     () =>
       object({
-        phone: string()
+        new_phone: string()
           .required(formatMessage(messages.phoneNumberMissingError))
           .test(
             '',
@@ -47,14 +47,14 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: { phone: state.phone ?? undefined },
+    defaultValues: { new_phone: state.phone ?? undefined },
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });
 
-  const handleSubmit = async ({ phone }: FormValues) => {
+  const handleSubmit = async ({ new_phone }: FormValues) => {
     try {
-      await onSubmit(phone);
+      await onSubmit(new_phone);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -74,7 +74,7 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
           </Text>
           <Box data-cy="phone-number-input">
             <Input
-              name="phone"
+              name="new_phone"
               type="tel"
               autocomplete="tel"
               label={formatMessage(messages.phoneNumber)}
