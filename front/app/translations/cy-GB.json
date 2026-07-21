@@ -2369,7 +2369,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Tudalen gosodiadau proffil o {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Ar ôl i chi glicio ar y botwm hwn, ni fydd gennym unrhyw ffordd i adfer eich cyfrif.",
   "app.containers.UsersEditPage.noNameWarning2": "Mae eich enw ar hyn o bryd yn cael ei ddangos ar y platfform fel: \"{displayName}\" oherwydd nad ydych wedi rhoi eich enw. Enw wedi'i gynhyrchu'n awtomatig yw hwn. Os hoffech ei newid, rhowch eich enw isod.",
-  "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Hysbysiadau e-bost",
   "app.containers.UsersEditPage.password": "Dewiswch gyfrinair newydd",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Darparwch gyfrinair sydd o leiaf {minimumPasswordLength} nod o hyd",
   "app.containers.UsersEditPage.passwordAddSection": "Ychwanegu cyfrinair",

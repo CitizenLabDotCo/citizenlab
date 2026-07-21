@@ -2369,7 +2369,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Página de configurações de perfil de {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Uma vez que você clique neste botão, não teremos como restaurar a sua conta.",
   "app.containers.UsersEditPage.noNameWarning2": "No momento, seu nome é exibido na plataforma como: \"{displayName}\" porque você não digitou seu nome. Esse é um nome gerado automaticamente. Se você quiser alterá-lo, digite seu nome abaixo.",
-  "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Notificações por e-mail",
   "app.containers.UsersEditPage.password": "Alterar senha",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Crie uma senha com, pelo menos, {minimumPasswordLength} caracteres",
   "app.containers.UsersEditPage.passwordAddSection": "Adicionar uma palavra-passe",

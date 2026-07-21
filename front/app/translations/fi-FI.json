@@ -2369,7 +2369,6 @@
   "app.containers.UsersEditPage.metaTitle1": "Profiilin asetussivu {firstName} {lastName} | {orgName}",
   "app.containers.UsersEditPage.noGoingBack": "Kun napsautat tätä painiketta, emme voi enää palauttaa tiliäsi.",
   "app.containers.UsersEditPage.noNameWarning2": "Nimesi näkyy tällä hetkellä alustalla muodossa: \"{displayName}\", koska et ole kirjoittanut nimeäsi. Tämä on automaattisesti luotu nimi. Jos haluat muuttaa sitä, kirjoita nimesi alle.",
-  "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Sähköposti-ilmoitukset",
   "app.containers.UsersEditPage.password": "Valitse uusi salasana",
   "app.containers.UsersEditPage.password.minimumPasswordLengthError": "Anna salasana, joka on vähintään {minimumPasswordLength} merkkiä pitkä",
   "app.containers.UsersEditPage.passwordAddSection": "Lisää salasana",
