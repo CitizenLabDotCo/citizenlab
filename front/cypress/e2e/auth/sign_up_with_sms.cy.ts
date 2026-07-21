@@ -4,7 +4,7 @@ import {
   randomString,
   randomEmail,
 } from '../../support/commands';
-import { createNativeSurveyProjectWithPermission } from './utils';
+import { createNativeSurveyProjectWithPermission, fakeSSOAuth } from './utils';
 
 describe('Sign up - email and SMS (2FA)', () => {
   let projectId = '';
@@ -144,5 +144,50 @@ describe('Sign up - email and SMS (2FA)', () => {
 });
 
 describe('Sign up - SSO and SMS (2FA)', () => {
-  // TODO
+  let projectId = '';
+  const projectTitle = randomString();
+
+  before(() => {
+    createNativeSurveyProjectWithPermission({
+      projectTitle,
+      permissionBody: {
+        permitted_by: 'users',
+        require_confirmed_phone_number: true,
+        require_confirmed_email: false,
+        require_verification: true,
+      },
+    }).then(({ projectId: id }) => {
+      projectId = id;
+    });
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+
+  it('works after returning from SSO', () => {
+    cy.visit(`/projects/${projectTitle}`);
+
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    fakeSSOAuth(cy, 'john_doe');
+
+    // Enter phone number
+    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-continue-button').click();
+
+    // Confirm phone number
+    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-confirm-button').click();
+
+    enterUserInfo(cy);
+
+    cy.get('#e2e-success-continue-button').click();
+
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectTitle}/surveys/new`
+    );
+  });
 });
