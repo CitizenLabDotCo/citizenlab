@@ -375,4 +375,13 @@ export default defineMessages({
     defaultMessage:
       "You're viewing real-time data. Participant counts are continuously updated for administrators. Please note that regular users see cached data, which may result in slight differences in the numbers.",
   },
+  participateNWays: {
+    id: 'app.containers.Projects.participateNWays',
+    defaultMessage: 'Participate · {count} ways',
+  },
+  noOpenParticipationAdminMessage: {
+    id: 'app.containers.Projects.noOpenParticipationAdminMessage',
+    defaultMessage:
+      'There are no open ways to participate right now. Only administrators can see this message.',
+  },
 });
