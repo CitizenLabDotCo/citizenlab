@@ -161,8 +161,10 @@ describe('Sign up - email and SMS (2FA)', () => {
       cy.dataCy('phone-number-input').find('input').type(phoneNumber);
       cy.dataCy('phone-continue-button').click();
 
-      // TODO assert error message
-      cy.wait(10000);
+      // Assert error
+      cy.get('.e2e-error-message')
+        .first()
+        .should('include.text', 'This phone number is already taken');
     });
   });
 });
