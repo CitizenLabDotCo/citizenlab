@@ -158,7 +158,7 @@ describe('Sign up - email and SMS (2FA)', () => {
       signUpEmailConformation(cy);
 
       // Enter phone number
-      cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+      cy.dataCy('phone-number-input').find('input').type(phoneNumber);
       cy.dataCy('phone-continue-button').click();
 
       // TODO assert error message
