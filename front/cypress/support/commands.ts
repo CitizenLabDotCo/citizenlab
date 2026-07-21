@@ -138,6 +138,11 @@ export function randomEmail() {
     .toLowerCase()}.com`;
 }
 
+export function randomPhoneNumber() {
+  const randomDigits = Math.floor(Math.random() * 9000000000) + 1000000000; // Generates a random 10-digit number
+  return `+1${randomDigits}`; // Returns the number in E.164 format
+}
+
 function unregisterServiceWorkers() {
   if (navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
