@@ -1,5 +1,9 @@
 import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
-import { randomPhoneNumber, randomString } from '../../support/commands';
+import {
+  randomPhoneNumber,
+  randomString,
+  randomEmail,
+} from '../../support/commands';
 import moment = require('moment');
 
 describe('Sign up - email and SMS (2FA)', () => {
@@ -95,5 +99,70 @@ describe('Sign up - email and SMS (2FA)', () => {
     cy.get('.e2e-error-message')
       .first()
       .should('include.text', 'Invalid confirmation code.');
+  });
+
+  describe('if confirmed phone number already exists', () => {
+    const phoneNumber = randomPhoneNumber();
+    let userId: string;
+
+    before(() => {
+      const email = randomEmail();
+      const password = randomString();
+      cy.apiSignup(randomString(), randomString(), email, password).then(
+        (response) => {
+          userId = response.body.data.id;
+
+          return cy.apiLogin(email, password).then((response) => {
+            const jwt = response.body.jwt;
+
+            return cy
+              .request({
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwt}`,
+                },
+                method: 'POST',
+                url: `web_api/v1/user/request_code_phone_change`,
+                body: {
+                  request_code: { new_phone: phoneNumber },
+                },
+              })
+              .then(() => {
+                return cy.request({
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwt}`,
+                  },
+                  method: 'POST',
+                  url: `web_api/v1/user/confirm_code_phone_change`,
+                  body: {
+                    confirmation: { code: '1234' },
+                  },
+                });
+              });
+          });
+        }
+      );
+    });
+
+    after(() => {
+      cy.apiRemoveUser(userId);
+    });
+
+    it('fails when entering existing phone number', () => {
+      cy.visit(`/projects/${projectTitle}`);
+
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+      signUpEmailConformation(cy);
+
+      // Enter phone number
+      cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+      cy.dataCy('phone-continue-button').click();
+
+      // TODO assert error message
+      cy.wait(10000);
+    });
   });
 });
