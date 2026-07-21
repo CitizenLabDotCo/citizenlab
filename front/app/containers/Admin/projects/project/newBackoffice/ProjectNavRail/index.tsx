@@ -16,7 +16,7 @@ interface Props {
 const ProjectNavRail = ({ projectId }: Props) => {
   const projectPageItem: NavItem = {
     name: 'project-page',
-    label: messages.projectPageNav,
+    label: messages.projectHomepage,
     to: '/admin/projects/$projectId/project-page',
   };
 
