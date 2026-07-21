@@ -2,29 +2,26 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useAuthUser from 'api/me/useAuthUser';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+import { usePermission } from 'utils/permissions';
 
 import Table from './Table';
 
 const Spaces = () => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
-  const { data: user } = useAuthUser();
+  const canManageSpaces = usePermission({
+    item: 'space',
+    action: 'manage_projects_and_folders',
+  });
 
-  if (!spacesEnabled) return null;
+  if (!spacesEnabled || !canManageSpaces) return null;
 
-  if (isAdmin(user) || isSpaceModerator(user)) {
-    return (
-      <Box>
-        <Table />
-      </Box>
-    );
-  }
-
-  return null;
+  return (
+    <Box>
+      <Table />
+    </Box>
+  );
 };
 
 export default Spaces;

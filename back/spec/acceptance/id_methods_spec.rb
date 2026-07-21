@@ -119,38 +119,6 @@ resource 'Id methods' do
     end
   end
 
-  get 'web_api/v1/id_methods/first_enabled_for_verified_actions' do
-    example_request 'Returns the first id method enabled for verified actions' do
-      expect(status).to eq(200)
-      expect(response_data).to eq(
-        {
-          id: '8bb00a8d-26a5-4e00-866d-36e23986d441',
-          type: 'id_method',
-          attributes: {
-            name: 'fake_sso',
-            authentication_method: true,
-            verification_method: true,
-            method_metadata: {
-              allowed_for_verified_actions: true,
-              name: 'Fake SSO',
-              locked_attributes: [
-                { en: 'First name(s)', 'fr-FR': 'Prénom(s)', 'nl-NL': 'Voornamen' },
-                { en: 'Last name', 'fr-FR': 'Nom de famille', 'nl-NL': 'Achternaam' }
-              ],
-              other_attributes: [
-                { en: 'Email', 'fr-FR': 'E-mail', 'nl-NL': 'E-mail' }
-              ],
-              locked_custom_fields: [
-                { en: 'gender' }, { en: 'birthyear' }
-              ],
-              other_custom_fields: []
-            }
-          }
-        }
-      )
-    end
-  end
-
   get 'web_api/v1/id_methods/first_enabled_verification_method' do
     example_request 'Returns the first id method enabled' do
       expect(status).to eq(200)

@@ -15,6 +15,10 @@ const CustomEmailsNew = lazy(() => import('./CustomEmails/New'));
 const CustomEmailsShow = lazy(() => import('./CustomEmails/Show'));
 const AutomatedEmails = lazy(() => import('./AutomatedEmails'));
 const EmailsEdit = lazy(() => import('./Edit'));
+const SmsIndex = lazy(() => import('./Sms/All'));
+const SmsNew = lazy(() => import('./Sms/New'));
+const SmsShow = lazy(() => import('./Sms/Show'));
+const SmsEdit = lazy(() => import('./Sms/Edit'));
 
 // Messaging edit search schema
 const messagingEditSearchSchema = yup.object({
@@ -116,6 +120,46 @@ const automatedEmailsEditRoute = createRoute({
   ),
 });
 
+const smsRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: 'sms',
+  component: () => (
+    <PageLoading>
+      <SmsIndex />
+    </PageLoading>
+  ),
+});
+
+const smsNewRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: 'sms/new',
+  component: () => (
+    <PageLoading>
+      <SmsNew />
+    </PageLoading>
+  ),
+});
+
+const smsShowRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: 'sms/$campaignId',
+  component: () => (
+    <PageLoading>
+      <SmsShow />
+    </PageLoading>
+  ),
+});
+
+const smsEditRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: 'sms/$campaignId/edit',
+  component: () => (
+    <PageLoading>
+      <SmsEdit />
+    </PageLoading>
+  ),
+});
+
 const createAdminMessagingRoutes = () => {
   return messagingRoute.addChildren([
     messagingIndexRoute,
@@ -125,6 +169,10 @@ const createAdminMessagingRoutes = () => {
     customEmailsEditRoute,
     automatedEmailsRoute,
     automatedEmailsEditRoute,
+    smsRoute,
+    smsNewRoute,
+    smsShowRoute,
+    smsEditRoute,
   ]);
 };
 

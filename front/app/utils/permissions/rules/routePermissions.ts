@@ -8,7 +8,7 @@ import {
 
 import {
   isAdmin,
-  isRegularUser,
+  isModerator,
   isProjectModerator,
   isSuperAdmin,
 } from '../roles';
@@ -99,7 +99,7 @@ export const canAccessRoute = (
       return isCommunityMonitorModerator(user, tenant);
     }
 
-    if (user && !isRegularUser(user) && isModeratorRoute(item)) {
+    if (user && isModerator(user) && isModeratorRoute(item)) {
       return true;
     }
 

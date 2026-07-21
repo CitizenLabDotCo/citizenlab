@@ -190,6 +190,7 @@ el-GR:
       new_email_confirmation: Νέος κωδικός επιβεβαίωσης email
       new_idea_for_admin_prescreening: Νέες εισροές που απαιτούν έγκριση σε ένα έργο που μετριάζω
       new_idea_for_admin_published: Νέα δημοσιευμένη συνεισφορά σε ένα έργο που συντονίζω
+      new_phone_confirmation: Νέος κωδικός επιβεβαίωσης τηλεφώνου
       official_feedback_on_idea_you_follow: Ενημέρωση για μια ιδέα που ακολουθείτε
       password_reset: Επαναφορά κωδικού πρόσβασης
       project_folder_moderation_rights_received: Δικαιώματα διαχειριστή φακέλων
@@ -202,6 +203,7 @@ el-GR:
       project_review_state_change: Το έργο εγκρίθηκε
       proposal_expired_for_admin: Η πρόταση έληξε χωρίς να συμπληρώσει το όριο ψήφων
       screening_digest: Εβδομαδιαία υπενθύμιση ελέγχου
+      sms_manual: Επίσημα μηνύματα SMS
       space_moderation_rights_received: Λήφθηκαν δικαιώματα διαχειριστή χώρου
       status_change_on_idea_you_follow: Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
       survey_submitted: Υποβληθείσα έρευνα
@@ -534,6 +536,8 @@ el-GR:
       title: Μια νέα είσοδος έχει δημοσιευτεί στην πλατφόρμα σας
       today: Σήμερα
       yesterday: Χθες
+    new_phone_confirmation:
+      sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Πηγαίνετε σε αυτή την είσοδο
       event_description: "%{feedback_author_name} ενημέρωσε για το '%{input_title}'."

@@ -47,6 +47,10 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
+            project_static_pages: {
+              allowed: true,
+              enabled: true
+            },
             maps: {
               enabled: true,
               allowed: true,
@@ -79,10 +83,6 @@ module MultiTenancy
               allowed: true
             },
             anonymous_participation: {
-              enabled: true,
-              allowed: true
-            },
-            project_description_builder: {
               enabled: true,
               allowed: true
             },

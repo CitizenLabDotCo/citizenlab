@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import styled from 'styled-components';
 
-import useCampaignDeliveries from 'api/campaign_deliveries/useCampaignDeliveries';
+import useEmailCampaignDeliveries from 'api/campaigns/email/deliveries/useEmailCampaignDeliveries';
 
 import CampaignStats from 'components/admin/Email/CampaignStats';
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
@@ -33,7 +33,7 @@ interface Props {
 
 const SentCampaignDetails = ({ campaignId }: Props) => {
   const [pageNumber, setPageNumber] = useState(1);
-  const { data: deliveries } = useCampaignDeliveries({
+  const { data: deliveries } = useEmailCampaignDeliveries({
     campaignId,
     pageNumber,
     pageSize: 10,

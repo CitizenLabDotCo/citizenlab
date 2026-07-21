@@ -10,7 +10,6 @@ import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
@@ -305,9 +304,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       setProjectFileAttachmentsToRemove([]);
       setProcessing(false);
 
-      queryClient.invalidateQueries({
-        queryKey: projectPermissionKeys.list({ projectId }),
-      });
       queryClient.invalidateQueries({
         queryKey: projectsKeys.item({ slug: project.data.attributes.slug }),
       });
