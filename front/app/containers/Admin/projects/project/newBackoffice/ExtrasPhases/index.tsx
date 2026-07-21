@@ -91,11 +91,6 @@ const ExtrasPhases = ({ projectId }: Props) => {
                     m="0"
                     fontSize="s"
                     color={status === 'past' ? 'textSecondary' : 'textPrimary'}
-                    style={
-                      status === 'past'
-                        ? { textDecoration: 'line-through' }
-                        : undefined
-                    }
                   >
                     {localize(phase.attributes.title_multiloc)}
                   </Text>
