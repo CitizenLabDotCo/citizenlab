@@ -570,11 +570,12 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "b8:7b:38:ee:7d:8c:8c:e0:84:74:88:b6:98:2d:0f:f6"
-      # The SSH agent holds the read-only checkout keys as well as the write-enabled
-      # deploy key, and SSH stops at the first key the server accepts. Pin the push to
-      # the write-enabled key, with `IdentitiesOnly=yes` so a read-only key can't win the race.
+      # Public half of the write-enabled deploy key, for the pinned push below.
       - run: echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC1jYnbcBaiZWvLybJWgxTjJ/uoBwf5rFhVGpSCTIyveumm3+HB5/IyPdjtalg6/0MhzFZ8erg6vRJHetbfd6Mg1hOdX5NEJ507CP3YLDBeq7axw5YMeDXs0lWcKn1KM/bZF7XnHxKlfCL+lIMq/28EgMpJpNfNY+RC/z0oSBK7lL8qdvCQbYLL5pSXVyro7/fLIV5L7hCTk7NX4hNgPSIe7ZrtBiJY5x+ZTKaP5StWI8mg0Bg7+H2pp4eXGayHYMG7NgwPaTasoNOd3zP0oyyDd/seLwkb1wE1J5I8SJcYHniC/uKD0eR1XD3lI/DcFYUQB8ovZrZFqZKqUdevsmUJy6wzPdbUxR7w5+CGcoqkcmKVJiOLgi/iu5HycO2xjXgFYMj0I2XffmJRhX3KpPVInAzsBsysEuhQIfkqf1fokR8dyXZ/qebT7FcXbHctEuxmJWYU3lVfZnsJdLXXDoSdtgNXEPy6VVz0Zh7HherOoCOcwKZbyAF5Hb8Ehm2B3NvpAtOHhyt1Sp1l8OipjgGV4gYDUlPwkOLDTb06aRJNdyUAtZAjy6zkUGwcFAbpDFSntSyfnhoHWv80dpxAX6XcuPwBkiArZVG+XcYhDj0P/PfaG0e1du3/869YWjoqzkTWalGUoLMDULqsIDca6qy6LnRjoW0AbFwdeb7MyzMkhQ==' > ~/.ssh/ci_push.pub
       - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
+      # The agent also holds CircleCI's read-only checkout keys, and ssh stops at the first
+      # key the server accepts - so pin to the key above via `IdentitiesOnly=yes`, or a
+      # read-only key wins and the push is rejected.
       - run: GIT_SSH_COMMAND="ssh -i ~/.ssh/ci_push.pub -o IdentitiesOnly=yes" git push origin $CIRCLE_BRANCH
 
   # FRONT-END
