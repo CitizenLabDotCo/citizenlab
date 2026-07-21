@@ -567,11 +567,9 @@ jobs:
       - run: git add app/translations/admin/*.json
       - run: git config --global user.email "hello@citizenlab.co"
       - run: git config --global user.name "CircleCI"
-      - add_ssh_keys:
-          fingerprints:
-            - "b8:7b:38:ee:7d:8c:8c:e0:84:74:88:b6:98:2d:0f:f6"
+      - add_ssh_keys
       - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
-      - run: git push origin $CIRCLE_BRANCH
+      - run: GIT_SSH_COMMAND="ssh -v" git push origin $CIRCLE_BRANCH
 
   # FRONT-END
   front-test:
