@@ -58,7 +58,7 @@ const Settings = () => {
 
   const projectEditorLink = projectId ? (
     <Link
-      to="/admin/projects/$projectId/phases"
+      to="/admin/projects/$projectId/project-page"
       params={{ projectId }}
       target="_blank"
     >
