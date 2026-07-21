@@ -139,8 +139,8 @@ export function randomEmail() {
 }
 
 export function randomPhoneNumber() {
-  const randomDigits = Math.floor(Math.random() * 9000000000) + 1000000000; // Generates a random 10-digit number
-  return `+1${randomDigits}`; // Returns the number in E.164 format
+  const randomDigits = Math.floor(Math.random() * 9000000) + 1000000; // Generates a random 7-digit number
+  return `+1800${randomDigits}`; // Returns the number in E.164 format
 }
 
 function unregisterServiceWorkers() {

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
@@ -8,7 +8,6 @@ import { string, object } from 'yup';
 import { SetError, State } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -53,7 +52,6 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
     shouldFocusError: true,
   });
 
-
   const handleSubmit = async ({ phone }: FormValues) => {
     try {
       await onSubmit(phone);
@@ -68,13 +66,13 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
   };
 
   return (
-    <Box data-cy="phone-flow-start">
+    <Box>
       <FormProvider {...methods}>
         <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
           <Text mt="0px" mb="32px" color="tenantText">
             {formatMessage(messages.enterYourPhoneNumber)}
           </Text>
-          <Box data-cy="phone-flow-start-phone-number-input">
+          <Box data-cy="phone-number-input">
             <Input
               name="phone"
               type="tel"
@@ -84,15 +82,15 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
             />
           </Box>
           <Box w="100%" display="flex" mt="32px">
-            <ButtonWithLink
-              dataCy="phone-flow-start-continue-button"
+            <Button
+              dataCy="phone-continue-button"
               type="submit"
               width="100%"
               disabled={loading}
               processing={loading}
             >
               {formatMessage(sharedMessages.continue)}
-            </ButtonWithLink>
+            </Button>
           </Box>
         </form>
       </FormProvider>

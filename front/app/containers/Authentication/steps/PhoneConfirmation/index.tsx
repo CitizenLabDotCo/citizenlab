@@ -1,12 +1,11 @@
 import React, { useMemo, useState, FormEvent } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
 import Input from 'components/HookForm/Input';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -111,9 +110,9 @@ const PhoneConfirmation = ({
 
   const handleChangePhone = onChangePhone
     ? (e: FormEvent) => {
-      e.preventDefault();
-      onChangePhone();
-    }
+        e.preventDefault();
+        onChangePhone();
+      }
     : undefined;
 
   return (
@@ -122,7 +121,7 @@ const PhoneConfirmation = ({
         <Box mt="-8px">
           <CodeSentMessage phoneNumber={phone} codeResent={codeResent} />
         </Box>
-        <Box>
+        <Box data-cy="phone-code-input">
           <Input
             name="code"
             type="text"
@@ -131,15 +130,15 @@ const PhoneConfirmation = ({
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
-          <ButtonWithLink
-            id="e2e-verify-phone-button"
+          <Button
+            dataCy="phone-confirm-button"
             type="submit"
             width="auto"
             disabled={busy}
             processing={busy}
           >
             {formatMessage(messages.verifyAndContinue)}
-          </ButtonWithLink>
+          </Button>
         </Box>
         <Box mt="24px">
           <FooterNotes

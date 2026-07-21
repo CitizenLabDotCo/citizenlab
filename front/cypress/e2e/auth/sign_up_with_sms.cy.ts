@@ -1,5 +1,5 @@
-import { logIn, signUpEmailConformation } from '../../support/auth';
-import { randomString } from '../../support/commands';
+import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
+import { randomPhoneNumber, randomString } from '../../support/commands';
 import moment = require('moment');
 
 describe('Sign up - email and SMS (2FA)', () => {
@@ -51,7 +51,16 @@ describe('Sign up - email and SMS (2FA)', () => {
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     signUpEmailConformation(cy);
-    // TODO SMS
+
+    // Enter phone number
+    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-continue-button').click();
+
+    // Confirm phone number
+    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-confirm-button').click();
+
+    enterUserInfo(cy);
 
     cy.get('#e2e-success-continue-button').click();
 
