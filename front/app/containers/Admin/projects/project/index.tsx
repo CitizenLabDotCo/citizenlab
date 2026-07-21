@@ -7,6 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
@@ -27,6 +28,9 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const newBackoffice = useParallelParticipation();
+  const projectStaticPagesEnabled = useFeatureFlag({
+    name: 'project_static_pages',
+  });
   const projectId = project.id;
 
   if (!canModerateProject(project, authUser)) {
@@ -104,12 +108,24 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
           url={`/admin/projects/${projectId}/events`}
           active={pathname.includes(`/admin/projects/${projectId}/events`)}
         />
+        {projectStaticPagesEnabled && (
+          <Tab
+            className="intercom-admin-project-pages-tab"
+            label={
+              <Box display="flex" alignItems="center" gap="8px">
+                {formatMessage(messages.pagesTab)}
+                <NewLabel expiryDate={new Date('2026-12-01')} />
+              </Box>
+            }
+            url={`/admin/projects/${projectId}/pages`}
+            active={pathname.includes(`/admin/projects/${projectId}/pages`)}
+          />
+        )}
         <Tab
           className="intercom-admin-project-files-tab"
           label={
             <Box display="flex" alignItems="center" gap="8px">
               {formatMessage(messages.filesTab)}
-              <NewLabel />
             </Box>
           }
           url={`/admin/projects/${projectId}/files`}
