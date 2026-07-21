@@ -168,3 +168,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     });
   });
 });
+
+describe('Sign up - SSO and SMS (2FA)', () => {
+  // TODO
+});
