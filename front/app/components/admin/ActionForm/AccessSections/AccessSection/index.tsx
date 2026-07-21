@@ -10,11 +10,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import {
-  getMethod,
-  methodChange,
-  requiresAccount,
-} from '../../logic';
+import { getMethod, methodChange, requiresAccount } from '../../logic';
 import { AuthMethodKey } from '../../types';
 import { SectionHeader } from '../../ui';
 import GroupsSection from '../GroupsSection';
@@ -27,15 +23,12 @@ import MethodRow from './MethodRow';
 
 const METHOD_KEYS: AuthMethodKey[] = ['email', 'phone', 'verification'];
 
-const unavailableReason = (key: AuthMethodKey) => {
-  if (key === 'email') {
-    return messages.unavailablePasswordLogin;
-  }
-  if (key === 'phone') {
-    return messages.unavailableSms;
-  }
-  return messages.unavailableVerification;
-};
+// Phone is hidden entirely when SMS is off (see below), so it never renders in
+// an unavailable state — only email and verification do.
+const unavailableReason = (key: AuthMethodKey) =>
+  key === 'email'
+    ? messages.unavailablePasswordLogin
+    : messages.unavailableVerification;
 
 const AccessSection = ({
   permission,
@@ -61,7 +54,13 @@ const AccessSection = ({
     verification: !!verificationMetadata,
   };
 
-  const enabledMethodCount = METHOD_KEYS.filter(
+  // The phone method is hidden entirely when SMS is off, rather than shown as
+  // unavailable (email and verification keep their "unavailable" state).
+  const visibleMethodKeys = METHOD_KEYS.filter(
+    (key) => key !== 'phone' || smsEnabled
+  );
+
+  const enabledMethodCount = visibleMethodKeys.filter(
     (key) => getMethod(permission, key).enabled
   ).length;
 
@@ -85,7 +84,7 @@ const AccessSection = ({
         <>
           {/* Authentication methods (the primary decision — always shown) */}
           <Box>
-            {METHOD_KEYS.map((key) => {
+            {visibleMethodKeys.map((key) => {
               const { enabled, expiry } = getMethod(permission, key);
               // Don't let the last enabled method be turned off: a permission
               // must always keep at least one (mirrors the backend validation).

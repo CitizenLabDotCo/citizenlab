@@ -6,10 +6,6 @@ export default defineMessages({
     defaultMessage:
       'Unavailable: password login is turned off for this platform.',
   },
-  unavailableSms: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms',
-    defaultMessage: 'Unavailable: SMS is turned off for this platform.',
-  },
   unavailableVerification: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification',
     defaultMessage:
