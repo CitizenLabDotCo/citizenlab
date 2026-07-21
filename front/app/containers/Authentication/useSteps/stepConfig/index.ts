@@ -11,7 +11,6 @@ import { emailFlow } from './emailFlow';
 import { inviteFlow } from './inviteFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
-import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
 import { handleSubmitEmail, handleSSOClick } from './utils';
 
@@ -52,13 +51,6 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       setError,
-      updateState
-    ),
-
-    ...ssoVerificationFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
       updateState
     ),
 

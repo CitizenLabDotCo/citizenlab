@@ -419,6 +419,14 @@
             "minimum": 5,
             "maximum": 72,
             "default": 8
+          },
+          "minimum_strength": {
+            "type": "number",
+            "title": "Minimum password strength",
+            "description": "The minimum password strength score required for a password (0-4 - reflecting the strength bar on signup). The default value is 0 - this disables enforcement and makes password strength meter only a recommendation. A value of at least 3 is recommended for stronger security in line with NCSC guidance. Changes only apply to users that create a new account or update their existing password (existing accounts remain the same).",
+            "minimum": 0,
+            "maximum": 4,
+            "default": 0
           }
         }
       },
@@ -1532,6 +1540,34 @@
             "type": "string",
             "title": "OpenSSL Verify Mode",
             "enum": ["none", "peer"],
+            "private": true
+          }
+        }
+      },
+
+      "sms": {
+        "type": "object",
+        "title": "SMS (DO NOT USE YET)",
+        "description": "(DO NOT USE YET) Send SMS messages to users via the tenant's own Twilio account.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "twilio_account_sid": {
+            "type": "string",
+            "title": "Twilio Account SID",
+            "private": true
+          },
+          "twilio_auth_token": {
+            "type": "string",
+            "title": "Twilio Auth Token",
+            "private": true
+          },
+          "twilio_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send SMS messages.",
             "private": true
           }
         }

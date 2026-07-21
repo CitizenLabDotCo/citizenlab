@@ -8,9 +8,9 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
+import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -30,11 +30,11 @@ const Edit = () => {
 
   const { formatMessage } = useIntl();
 
-  const { data: campaign } = useCampaign(campaignId);
+  const { data: campaign } = useEmailCampaign(campaignId);
 
-  const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
+  const { mutateAsync: updateCampaign, isLoading } = useUpdateEmailCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
-    useSendCampaignPreview();
+    useSendEmailCampaignPreview();
   const [previewSent, setPreviewSent] = useState(false);
   const goBack = () => {
     clHistory.push(

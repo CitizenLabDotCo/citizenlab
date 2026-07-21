@@ -84,7 +84,7 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
             })}, ${optionTitle}, ${formatMessage(
               messages.averageRankAccessible,
               {
-                averageRank: parseFloat(option.averageRank.toFixed(1)),
+                averageRank: parseFloat(option.averageRank.toFixed(2)),
               }
             )}`}
           >
@@ -117,7 +117,7 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
                 <FormattedMessage
                   {...messages.averageRank}
                   values={{
-                    averageRank: parseFloat(option.averageRank.toFixed(1)),
+                    averageRank: parseFloat(option.averageRank.toFixed(2)),
                     b: (chunks: React.ReactNode) => <b>{chunks}</b>,
                   }}
                 />

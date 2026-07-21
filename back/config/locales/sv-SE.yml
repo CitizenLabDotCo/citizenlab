@@ -270,6 +270,15 @@ sv-SE:
     proposals:
       title: Förslag
   pdf_export:
+    input_responses:
+      date: Datum
+      no_answer: (Inget svar)
+      prepared_by: Framtagen av
+      report_label: Svarsrapport
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} svar'
+        other: '%{count} svar'
     survey_responses:
       date: Datum
       no_answer: (Inget svar)
