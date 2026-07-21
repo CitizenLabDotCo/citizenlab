@@ -1782,7 +1782,6 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Defnyddwyr yn ôl rhyw",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Cael trosolwg o'r cyfranogwyr ar y prosiect hwn sydd â chyfrif. Ni chyfrifir cyfranogiad dienw.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Dim dyddiad gorffen",
-  "app.containers.Admin.projects.project.projectPageNav": "Tudalen y prosiect",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Rhagolwg tudalen y prosiect",
   "app.containers.Admin.projects.project.settingsNav": "Gosodiadau",
   "app.containers.Admin.projects.project.survey.allFiles": "Pob ffeil",

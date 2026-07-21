@@ -1782,7 +1782,6 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Lietotāji pēc dzimuma",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Saņemiet pārskatu par šā projekta dalībniekiem, kuriem ir konts. Anonīma dalība netiek ņemta vērā.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Nav beigu datuma",
-  "app.containers.Admin.projects.project.projectPageNav": "Projekta lapa",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Projekta lapas priekšskatījums",
   "app.containers.Admin.projects.project.settingsNav": "Iestatījumi",
   "app.containers.Admin.projects.project.survey.allFiles": "Visi faili",

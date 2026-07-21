@@ -2113,7 +2113,6 @@
   "app.containers.ProjectFolderShowPage.readMore": "Léigh tuilleadh",
   "app.containers.ProjectFolderShowPage.seeLess": "Féach níos lú",
   "app.containers.ProjectFolderShowPage.share": "Comhroinn",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Leathanach tionscadail",
   "app.containers.ProjectPageBuilder.saveError": "Tharla earráid agus leathanach an tionscadail á shábháil.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Tá rannóga an leathanaigh faoi ghlas faoi láthair. Is féidir giuirléidí a chur laistigh de rannóg an Chur Síos.",
   "app.containers.Projects.PollForm.document": "Doiciméad",

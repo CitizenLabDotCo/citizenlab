@@ -2113,7 +2113,6 @@
   "app.containers.ProjectFolderShowPage.readMore": "Läs mer",
   "app.containers.ProjectFolderShowPage.seeLess": "Se mindre",
   "app.containers.ProjectFolderShowPage.share": "Dela",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Projektsida",
   "app.containers.ProjectPageBuilder.saveError": "Ett fel uppstod när projektsidan skulle sparas.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Sidsektionerna är låsta för tillfället. Widgetar kan placeras i sektionen Beskrivning.",
   "app.containers.Projects.PollForm.document": "Dokument",

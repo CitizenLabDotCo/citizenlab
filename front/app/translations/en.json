@@ -2113,7 +2113,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Read more",
   "app.containers.ProjectFolderShowPage.seeLess": "See less",
   "app.containers.ProjectFolderShowPage.share": "Share",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Project page",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Project homepage",
   "app.containers.ProjectPageBuilder.saveError": "There was an error saving the project page.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "The page sections are locked for now. Widgets can be placed inside the Description section.",
   "app.containers.Projects.PollForm.document": "Document",

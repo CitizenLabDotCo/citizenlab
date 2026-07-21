@@ -1782,7 +1782,6 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Brukere etter kjønn",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Få en oversikt over deltakerne på dette prosjektet som har en konto. Anonym deltakelse regnes ikke med.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Ingen sluttdato",
-  "app.containers.Admin.projects.project.projectPageNav": "Prosjektside",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Forhåndsvisning av prosjektside",
   "app.containers.Admin.projects.project.settingsNav": "Innstillinger",
   "app.containers.Admin.projects.project.survey.allFiles": "Alle filer",

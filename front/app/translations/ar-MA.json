@@ -2113,7 +2113,6 @@
   "app.containers.ProjectFolderShowPage.readMore": "تحميل المزيد",
   "app.containers.ProjectFolderShowPage.seeLess": "شاهد أقل",
   "app.containers.ProjectFolderShowPage.share": "مشاركة",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "صفحة المشروع",
   "app.containers.ProjectPageBuilder.saveError": "حدث خطأ أثناء حفظ صفحة المشروع.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "أقسام الصفحة مقفولة حالياً. يمكن وضع العناصر داخل قسم الوصف.",
   "app.containers.Projects.PollForm.document": "وثيقة",

@@ -2113,7 +2113,6 @@
   "app.containers.ProjectFolderShowPage.readMore": "Llegir més",
   "app.containers.ProjectFolderShowPage.seeLess": "Veure menys",
   "app.containers.ProjectFolderShowPage.share": "Compartir",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Pàgina del projecte",
   "app.containers.ProjectPageBuilder.saveError": "S'ha produït un error en desar la pàgina del projecte.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Les seccions de la pàgina estan bloquejades de moment. Els ginys es poden col·locar dins de la secció Descripció.",
   "app.containers.Projects.PollForm.document": "Document",
