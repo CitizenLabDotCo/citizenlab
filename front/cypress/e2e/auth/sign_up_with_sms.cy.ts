@@ -181,8 +181,6 @@ describe('Sign up - SSO and SMS (2FA)', () => {
     cy.dataCy('phone-code-input').find('input').type('1234');
     cy.dataCy('phone-confirm-button').click();
 
-    enterUserInfo(cy);
-
     cy.get('#e2e-success-continue-button').click();
 
     cy.location('pathname').should(
