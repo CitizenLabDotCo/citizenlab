@@ -91,7 +91,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     cy.dataCy('phone-code-input').find('input').type('9999');
     cy.dataCy('phone-confirm-button').click();
 
-    // TODO assert error
+    // Assert error
     cy.get('.e2e-error-message')
       .first()
       .should('include.text', 'Invalid confirmation code.');
