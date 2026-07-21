@@ -1,6 +1,6 @@
 import React from 'react';
 
-import useParallelParticipation from 'hooks/useParallelParticipation';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -15,7 +15,9 @@ import { useIntl } from 'utils/cl-intl';
 
 const ProjectPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
-  const parallelParticipation = useParallelParticipation();
+  const extraSurveysEnabled = useFeatureFlag({
+    name: 'parallel_participation',
+  });
 
   return (
     <Container>
@@ -33,7 +35,7 @@ const ProjectPageBuilderToolbox = () => {
           icon="calendar"
           label={formatMessage(widgetMessages.eventsWidgetTitle)}
         />
-        {parallelParticipation && (
+        {extraSurveysEnabled && (
           <DraggableElement
             id="e2e-draggable-extra-surveys"
             component={<ExtraSurveysWidget />}
