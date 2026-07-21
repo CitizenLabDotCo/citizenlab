@@ -10,7 +10,6 @@ import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
@@ -20,6 +19,7 @@ import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
 import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
@@ -39,7 +39,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -79,6 +79,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const projectId = project.data.id;
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
+  const parallelParticipation = useParallelParticipation();
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
   const { pathname } = useLocation();
@@ -133,9 +134,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
 
   // Description state
-  const [descriptionMultiloc, setDescriptionMultiloc] = useState<Multiloc>(
-    project.data.attributes.description_multiloc
-  );
   const [descriptionPreviewMultiloc, setDescriptionPreviewMultiloc] =
     useState<Multiloc | null>(
       project.data.attributes.description_preview_multiloc
@@ -245,11 +243,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     handleProjectAttributeDiffOnChange({ global_topic_ids: topicIds });
   };
 
-  const handleDescriptionChange = (description_multiloc: Multiloc) => {
-    setDescriptionMultiloc(description_multiloc);
-    handleProjectAttributeDiffOnChange({ description_multiloc });
-  };
-
   const handleDescriptionPreviewChange = (
     description_preview_multiloc: Multiloc
   ) => {
@@ -312,9 +305,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       setProcessing(false);
 
       queryClient.invalidateQueries({
-        queryKey: projectPermissionKeys.list({ projectId }),
-      });
-      queryClient.invalidateQueries({
         queryKey: projectsKeys.item({ slug: project.data.attributes.slug }),
       });
     } catch (errors) {
@@ -351,16 +341,20 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   };
 
   const validateForm = () => {
-    const titleError = !isNilOrError(appConfigLocales)
-      ? validateTitle(
-          appConfigLocales,
-          projectAttrs.title_multiloc,
-          formatMessage(messages.noTitleErrorMessage)
-        )
-      : null;
-    const hasTitleError = !isEmpty(titleError);
-    setTitleError(hasTitleError ? titleError : null);
-    const formIsValid = !hasTitleError;
+    let formIsValid = true;
+
+    if (!parallelParticipation) {
+      const titleError = !isNilOrError(appConfigLocales)
+        ? validateTitle(
+            appConfigLocales,
+            projectAttrs.title_multiloc,
+            formatMessage(messages.noTitleErrorMessage)
+          )
+        : null;
+      const hasTitleError = !isEmpty(titleError);
+      setTitleError(hasTitleError ? titleError : null);
+      formIsValid = !hasTitleError;
+    }
 
     if (!validateProjectContext(projectContext, projectAttrs)) {
       setProjectContextError(true);
@@ -401,42 +395,43 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
             </>
           )}
 
-          <Highlighter fragmentId={fragmentId}>
-            <ProjectNameInput
-              titleMultiloc={projectAttrs.title_multiloc}
-              titleError={titleError}
-              apiErrors={apiErrors}
-              handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-            />
-          </Highlighter>
+          {!parallelParticipation && (
+            <>
+              <Highlighter fragmentId={fragmentId}>
+                <ProjectNameInput
+                  titleMultiloc={projectAttrs.title_multiloc}
+                  titleError={titleError}
+                  apiErrors={apiErrors}
+                  handleTitleMultilocOnChange={handleTitleMultilocOnChange}
+                />
+              </Highlighter>
 
-          {/* Project Description Section */}
-          <Section>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.projectDescriptionSectionTitle} />
-            </SubSectionTitle>
-            <SectionDescription>
-              <FormattedMessage
-                {...messages.projectDescriptionSectionDescription}
-              />
-            </SectionDescription>
-          </Section>
+              {/* Project Description Section */}
+              <Section>
+                <SubSectionTitle>
+                  <FormattedMessage
+                    {...messages.projectDescriptionSectionTitle}
+                  />
+                </SubSectionTitle>
+                <SectionDescription>
+                  <FormattedMessage
+                    {...messages.projectDescriptionSectionDescription}
+                  />
+                </SectionDescription>
+              </Section>
 
-          {/* Main Description */}
-          <SectionField>
-            <Highlighter fragmentId="description-multiloc">
-              <DescriptionBuilderToggle
-                valueMultiloc={descriptionMultiloc}
-                onChange={handleDescriptionChange}
-                label={formatMessage(messages.descriptionLabel)}
-                contentBuildableType="project"
-              />
-            </Highlighter>
-            <Error
-              fieldName="description_multiloc"
-              apiErrors={apiErrors.description_multiloc}
-            />
-          </SectionField>
+              {/* Main Description */}
+              <SectionField>
+                <Highlighter fragmentId="description-multiloc">
+                  <DescriptionBuilderLink contentBuildableType="project" />
+                </Highlighter>
+                <Error
+                  fieldName="description_multiloc"
+                  apiErrors={apiErrors.description_multiloc}
+                />
+              </SectionField>
+            </>
+          )}
 
           {/* Homepage Description */}
           <SectionField>
@@ -531,18 +526,20 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
             }}
           />
 
-          <SectionField className="intercom-product-tour-project-header-image-field">
-            <SubSectionTitle>
-              <FormattedMessage {...messages.headerImageInputLabel} />
-              <ProjectHeaderImageTooltip />
-            </SubSectionTitle>
-            <HeaderBgUploader
-              imageUrl={project.data.attributes.header_bg.large}
-              headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
-              onImageChange={handleHeaderBgChange}
-              onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
-            />
-          </SectionField>
+          {!parallelParticipation && (
+            <SectionField className="intercom-product-tour-project-header-image-field">
+              <SubSectionTitle>
+                <FormattedMessage {...messages.headerImageInputLabel} />
+                <ProjectHeaderImageTooltip />
+              </SubSectionTitle>
+              <HeaderBgUploader
+                imageUrl={project.data.attributes.header_bg.large}
+                headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
+                onImageChange={handleHeaderBgChange}
+                onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
+              />
+            </SectionField>
+          )}
 
           <StyledSectionField>
             <SubSectionTitle>

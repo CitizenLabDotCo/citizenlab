@@ -190,6 +190,7 @@ hu-HU:
       new_email_confirmation: Új e-mail-megerősítő kód
       new_idea_for_admin_prescreening: Új bemenet, amely jóváhagyást igényel egy moderált projektben
       new_idea_for_admin_published: Új közzétett hozzászólás egy általam moderált projektben
+      new_phone_confirmation: Új telefonszám-megerősítő kód
       official_feedback_on_idea_you_follow: Frissítse a követett bemenetet
       password_reset: Jelszó visszaállítása
       project_folder_moderation_rights_received: Mappakezelői jogok megérkeztek
@@ -202,6 +203,7 @@ hu-HU:
       project_review_state_change: Projekt jóváhagyva
       proposal_expired_for_admin: A javaslat lejárt a szavazati küszöb elérése nélkül
       screening_digest: Heti szűrővizsgálati emlékeztető
+      sms_manual: Hivatalos SMS-üzenetek
       space_moderation_rights_received: Térkezelői jogosultságok megadva
       status_change_on_idea_you_follow: A követett bemenet állapotának változása
       survey_submitted: Felmérés benyújtva
@@ -249,6 +251,7 @@ hu-HU:
         idea: '%{authorName} megjegyzést fűzött egy Ön által követett ötlethez'
         initiative: '%{authorName} hozzászólást fűzött egy általad követett kezdeményezéshez'
         issue: '%{authorName} megjegyzést fűzött egy Ön által követett problémához'
+        observation: '%{authorName} hozzászólt egy általad követett észrevételhez'
         option: '%{authorName} megjegyzést fűzött egy általad követett lehetőséghez'
         petition: '%{authorName} megjegyzést fűzött egy Ön által követett petícióhoz'
         post: '%{authorName} hozzászólást fűzött egy bejegyzéshez, amit követsz'
@@ -323,6 +326,7 @@ hu-HU:
         idea: Menj ehhez az ötlethez
         initiative: Látogass el ehhez a kezdeményezéshez
         issue: Tovább a kérdéshez
+        observation: Ugrás ehhez az észrevételhez
         option: Menjen erre a lehetőségre
         petition: Tovább a petícióhoz
         post: Ugrás erre a bejegyzésre
@@ -343,6 +347,7 @@ hu-HU:
         idea: Menj az ötletedhez
         initiative: Hajrá a kezdeményezésedre
         issue: Menjen a problémájához
+        observation: Ugrás az észrevételedhez
         option: Menjen a választott lehetőségre
         petition: Menj a petíciódhoz
         post: Menj a bejegyzésedhez
@@ -376,6 +381,7 @@ hu-HU:
         idea: Az ötleted megjelent
         initiative: A kezdeményezésed megjelent
         issue: A számod megjelent
+        observation: Az észrevétele közzétételre került
         option: A lehetőséged közzétéve
         petition: A petícióját közzétettük
         post: A bejegyzésed megjelent
@@ -530,6 +536,8 @@ hu-HU:
       title: Új bejegyzés jelent meg a platformodon.
       today: Ma
       yesterday: Tegnap
+    new_phone_confirmation:
+      sms_body: 'A megerősítő kódod: %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ugrás erre a bemenetre
       event_description: "%{feedback_author_name} frissítést adott a(z) '%{input_title}' témában."
@@ -764,6 +772,7 @@ hu-HU:
         idea: 'Az Ön ötlete itt található: "%{prescreening_status_title}"'
         initiative: 'A kezdeményezésed a következő helyen van: "%{prescreening_status_title}"'
         issue: 'A probléma itt található: "%{prescreening_status_title}"'
+        observation: 'Az észrevételed állapota: „%{prescreening_status_title}”'
         option: 'Az Ön beállítása a következőben található: "%{prescreening_status_title}"'
         petition: 'Az Ön petíciója itt található: "%{prescreening_status_title}"'
         post: 'A bejegyzésed a következő helyen található: "%{prescreening_status_title}"'

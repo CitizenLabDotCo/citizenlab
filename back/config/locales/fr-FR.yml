@@ -112,6 +112,8 @@ fr-FR:
           title: Quelle est votre initiative ?
         issue:
           title: Quel est votre problème ?
+        observation:
+          title: Quelle est votre observation ?
         option:
           title: Quelle est votre option ?
         petition:
@@ -268,6 +270,15 @@ fr-FR:
     proposals:
       title: Propositions
   pdf_export:
+    input_responses:
+      date: Date
+      no_answer: (Pas de réponse)
+      prepared_by: Préparé par
+      report_label: Rapport de réponses
+      respondent: Répondant %{number}
+      response_count:
+        one: '%{count} réponse'
+        other: '%{count} réponses'
     survey_responses:
       date: Date
       no_answer: (Pas de réponse)

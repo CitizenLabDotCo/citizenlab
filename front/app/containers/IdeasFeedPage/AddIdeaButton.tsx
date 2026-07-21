@@ -29,7 +29,13 @@ const AddIdeaButton = ({ projectSlug, phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const { data: authUser } = useAuthUser();
 
-  if (!project || !phase) return null;
+  if (
+    !project ||
+    !phase ||
+    phase.data.attributes.submission_enabled === false // Submission is disabled for this phase
+  ) {
+    return null;
+  }
 
   const { enabled, authenticationRequirements } = getIdeaPostingRules({
     project: project.data,
@@ -97,6 +103,7 @@ const AddIdeaButton = ({ projectSlug, phaseId }: Props) => {
           topic: messages.addATopic,
           post: messages.addAPost,
           story: messages.addAStory,
+          observation: messages.addAnObservation,
         })}
       />
     </Button>

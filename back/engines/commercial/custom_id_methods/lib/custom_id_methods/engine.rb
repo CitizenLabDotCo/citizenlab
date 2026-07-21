@@ -24,6 +24,7 @@ module CustomIdMethods
         CustomIdMethods::ClaveUnica::ClaveUnicaOmniauth.new,
         CustomIdMethods::Cow::CowVerification.new,
         CustomIdMethods::Criipto::CriiptoOmniauth.new,
+        CustomIdMethods::EtatLu::EtatLuOmniauth.new,
         CustomIdMethods::FakeSso::FakeSsoOmniauth.new,
         CustomIdMethods::Federa::FederaOmniauth.new,
         CustomIdMethods::Franceconnect::FranceconnectOmniauth.new,

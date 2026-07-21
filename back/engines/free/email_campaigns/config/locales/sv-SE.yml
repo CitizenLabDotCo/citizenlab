@@ -190,6 +190,7 @@ sv-SE:
       new_email_confirmation: Ny bekräftelsekod för e-postadress
       new_idea_for_admin_prescreening: Ny input som kräver godkännande i ett projekt I måttlig
       new_idea_for_admin_published: Ny publicerad input i ett projekt som jag modererar
+      new_phone_confirmation: Ny bekräftelsekod för telefon
       official_feedback_on_idea_you_follow: Uppdatering av en idé som du följer
       password_reset: Återställning av lösenord
       project_folder_moderation_rights_received: Rättigheter som mapphanterare har erhållits
@@ -202,6 +203,7 @@ sv-SE:
       project_review_state_change: Projekt godkänt
       proposal_expired_for_admin: Förslaget har löpt ut utan att nå rösttröskeln
       screening_digest: Påminnelse om screening varje vecka
+      sms_manual: Officiella SMS-meddelanden
       space_moderation_rights_received: Rättigheter som space-ansvarig mottagna
       status_change_on_idea_you_follow: Statusförändring av en idé som du följer
       survey_submitted: Undersökning inlämnad
@@ -249,6 +251,7 @@ sv-SE:
         idea: '%{authorName} kommenterat en idé som du följer'
         initiative: '%{authorName} kommenterat ett initiativ som du följer'
         issue: '%{authorName} kommenterat en fråga som du följer'
+        observation: '%{authorName} kommenterade en observation du följer'
         option: '%{authorName} kommenterade ett alternativ som du följer'
         petition: '%{authorName} kommenterat en petition som du följer'
         post: '%{authorName} kommenterat ett inlägg som du följer'
@@ -323,6 +326,7 @@ sv-SE:
         idea: Gå till denna idé
         initiative: Gå till detta initiativ
         issue: Gå till denna utgåva
+        observation: Gå till denna observation
         option: Gå till detta alternativ
         petition: Gå till denna framställan
         post: Gå till detta inlägg
@@ -343,6 +347,7 @@ sv-SE:
         idea: Gå till ditt bidrag
         initiative: Gå till ditt initiativ
         issue: Gå till din fråga
+        observation: Gå till din observation
         option: Gå till ditt alternativ
         petition: Gå till din petition
         post: Gå till din post
@@ -376,6 +381,7 @@ sv-SE:
         idea: Din idé har publicerats
         initiative: Ditt initiativ har publicerats
         issue: Din utgåva har publicerats
+        observation: Din observation har publicerats
         option: Ditt alternativ har publicerats
         petition: Din petition har publicerats
         post: Ditt inlägg har publicerats
@@ -530,6 +536,8 @@ sv-SE:
       title: Ett nytt inlägg har publicerats på din plattform
       today: I dag
       yesterday: Igår
+    new_phone_confirmation:
+      sms_body: Din bekräftelsekod är %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Gå till denna ingång
       event_description: '%{feedback_author_name} gav en uppdatering om "%{input_title}".'
@@ -764,6 +772,7 @@ sv-SE:
         idea: Ditt bidrag finns i "%{prescreening_status_title}"
         initiative: Ditt initiativ finns i "%{prescreening_status_title}"
         issue: Ditt problem är i "%{prescreening_status_title}"
+        observation: Din observation är i ”%{prescreening_status_title}”
         option: Ditt alternativ finns i "%{prescreening_status_title}"
         petition: Din framställan finns i "%{prescreening_status_title}"
         post: Ditt inlägg finns i "%{prescreening_status_title}"

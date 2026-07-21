@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
+import { getModeratedItems } from 'api/admin_publications/getModeratedItems';
 import { NodeType } from 'api/admin_publications/types';
 import useTreeView from 'api/admin_publications/useTreeView';
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
@@ -15,7 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
-import { getModeratedItems } from './utils';
 
 interface Props {
   user: IUserData;

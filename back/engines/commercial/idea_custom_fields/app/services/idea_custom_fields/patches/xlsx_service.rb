@@ -14,7 +14,7 @@ module IdeaCustomFields
           next unless project.custom_form
 
           ::IdeaCustomFieldsService.new(project.custom_form)
-            .xlsx_exportable_fields
+            .exportable_fields
             .reject(&:built_in?)
         end
 

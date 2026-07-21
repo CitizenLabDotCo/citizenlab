@@ -6,6 +6,8 @@ import { reviewStates } from 'api/admin_publications/types';
 import { ideaSortValues } from 'api/ideas/types';
 import { projectSortableParams } from 'api/projects_mini_admin/types';
 
+import useParallelParticipation from 'hooks/useParallelParticipation';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import Navigate from 'utils/cl-router/Navigate';
@@ -45,6 +47,9 @@ const AdminProjectsProjectAudience = lazy(
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
 const AdminPhaseDescription = lazy(() => import('./project/phaseDescription'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
+const AdminProjectPages = lazy(() => import('./project/pages'));
+const AdminProjectPageNew = lazy(() => import('./project/pages/New'));
+const AdminProjectPageEdit = lazy(() => import('./project/pages/Edit'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(
@@ -218,11 +223,22 @@ const projectRoute = createRoute({
   ),
 });
 
-// Project index redirect
 const ProjectIndexRedirect = () => {
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId',
   });
+  const parallelParticipation = useParallelParticipation();
+
+  if (parallelParticipation) {
+    return (
+      <Navigate
+        to="/admin/projects/$projectId/project-page"
+        params={{ projectId }}
+        replace
+      />
+    );
+  }
+
   return (
     <Navigate
       to="/admin/projects/$projectId/phases/setup"
@@ -438,6 +454,37 @@ const projectFilesRoute = createRoute({
   component: () => (
     <PageLoading>
       <AdminProjectFiles />
+    </PageLoading>
+  ),
+});
+
+// --- Pages routes ---
+const projectPagesRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPages />
+    </PageLoading>
+  ),
+});
+
+const projectPageNewRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages/new',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageNew />
+    </PageLoading>
+  ),
+});
+
+const projectPageEditRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages/$customPageId',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageEdit />
     </PageLoading>
   ),
 });
@@ -782,6 +829,9 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
       projectMessagingShowRoute,
       projectAnalysisRoute,
       projectFilesRoute,
+      projectPagesRoute,
+      projectPageNewRoute,
+      projectPageEditRoute,
       projectEventsRoute,
       projectEventsNewRoute,
       projectEventsEditRoute,

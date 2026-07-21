@@ -112,6 +112,8 @@ de-AT:
           title: Was ist deine Initiative?
         issue:
           title: Was ist dein Kommentar?
+        observation:
+          title: Was ist deine Beobachtung?
         option:
           title: Was ist deine Option?
         petition:
@@ -268,12 +270,21 @@ de-AT:
     proposals:
       title: Vorschläge
   pdf_export:
+    input_responses:
+      date: Datum
+      no_answer: (Keine Angabe)
+      prepared_by: Erstellt von
+      report_label: Antwortbericht
+      respondent: Teilnehmer:in %{number}
+      response_count:
+        one: '%{count} Antwort'
+        other: '%{count} Antworten'
     survey_responses:
       date: Datum
       no_answer: (Keine Antwort)
       prepared_by: Erstellt von
       report_label: Bericht der Umfrageantworten
-      respondent: Teilnehmer %{number}
+      respondent: Teilnehmende %{number}
       response_count:
         one: '%{count} Antwort'
         other: '%{count} Antworten'

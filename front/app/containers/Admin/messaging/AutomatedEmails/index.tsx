@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 
+import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
 import { internalCommentNotificationTypes } from 'api/campaigns/types';
-import useCampaigns from 'api/campaigns/useCampaigns';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -32,7 +32,7 @@ const AutomatedEmails = () => {
   });
   const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
 
-  const { data: campaigns } = useCampaigns({
+  const { data: campaigns } = useEmailCampaigns({
     withoutCampaignNames: [
       'manual',
       ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),

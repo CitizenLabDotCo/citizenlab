@@ -248,6 +248,8 @@ en:
           title: What is your post?
         story:
           title: What is your story?
+        observation:
+          title: What is your observation?
   custom_field_options:
     gender:
       male: Male
@@ -256,8 +258,8 @@ en:
     domicile:
       outside: Somewhere else
   pdf_export:
-    survey_responses:
-      report_label: 'Survey response report'
+    input_responses:
+      report_label: 'Response report'
       date: 'Date'
       prepared_by: 'Prepared by'
       respondent: 'Respondent %{number}'

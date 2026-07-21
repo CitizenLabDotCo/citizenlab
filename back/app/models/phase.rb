@@ -50,6 +50,7 @@
 #  manual_voters_last_updated_by_id :uuid
 #  manual_voters_last_updated_at    :datetime
 #  vote_term                        :string           default("vote")
+#  placement_type                   :string           default("on_timeline"), not null
 #
 # Indexes
 #
@@ -70,10 +71,11 @@ class Phase < ApplicationRecord
 
   PRESCREENING_MODES = %w[flagged_only all].freeze
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
+  PLACEMENT_TYPES       = %w[on_timeline standalone].freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map feed].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
-  INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition comment response suggestion topic post story].freeze
+  INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition comment response suggestion topic post story observation].freeze
   FALLBACK_INPUT_TERM   = 'idea'
   VOTE_TERMS            = %w[vote point token credit percent]
   MIN_DURATION          = 1.day
@@ -125,6 +127,7 @@ class Phase < ApplicationRecord
   validates :survey_popup_frequency, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+  validates :placement_type, inclusion: { in: PLACEMENT_TYPES }
   validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
   validate :validate_prescreening_mode, if: :prescreening_mode_changed?
 
@@ -223,6 +226,12 @@ class Phase < ApplicationRecord
     where('start_at <= ? AND (end_at IS NULL OR end_at > ?)', now, now)
   }
 
+  scope :on_timeline, -> { where(placement_type: 'on_timeline') }
+  scope :standalone, -> { where(placement_type: 'standalone') }
+
+  # Timeline phases first, then chronological; created_at/id break start_at ties.
+  scope :ordered, -> { order(:placement_type, :start_at, :created_at, :id) }
+
   def ends_before?(time)
     end_at.present? && end_at <= time
   end
@@ -275,6 +284,14 @@ class Phase < ApplicationRecord
     participation_method == 'ideation'
   end
 
+  # The inputs that belong in an export/report of this phase: submitted or
+  # published inputs, minus content-less rows for methods that keep drafts
+  # (ideation/proposals). Survey methods keep every submission.
+  def inputs_for_export
+    scope = ideas.submitted_or_published
+    pmethod.supports_survey_form? ? scope : scope.with_content
+  end
+
   def pmethod
     @pmethod = case participation_method
     when 'information'
@@ -304,6 +321,13 @@ class Phase < ApplicationRecord
     end
   end
 
+  def placement_strategy
+    @placement_strategy ||= case placement_type
+    when 'standalone' then PhasePlacementStrategy::Standalone.new
+    else PhasePlacementStrategy::OnTimeline.new
+    end
+  end
+
   def set_manual_voters(amount, user)
     return if amount == manual_voters_amount
 
@@ -314,7 +338,9 @@ class Phase < ApplicationRecord
 
   def update_manual_votes_count!
     reload
-    update!(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum)
+
+    # Denormalized counter: validating here would let an unrelated invalid attribute fail every recount.
+    update_columns(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum, updated_at: Time.current)
   end
 
   # If 'disable_disliking' is NOT enabled, then disliking will always be set to enabled on creation and cannot be changed
@@ -362,6 +388,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_end_at
+    return if !placement_strategy.sequential?
     return if end_at.present? || TimelineService.new.last_phase?(self)
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
@@ -374,6 +401,8 @@ class Phase < ApplicationRecord
   end
 
   def validate_no_other_overlapping_phases
+    return if !placement_strategy.sequential?
+
     TimelineService.new.overlapping_phases(self).each do |other_phase|
       # Skip open-ended phases that start before this phase as they have their own
       # validation. See Phase#validate_previous_phase_can_be_closed
@@ -385,6 +414,8 @@ class Phase < ApplicationRecord
   end
 
   def validate_previous_phase_can_be_closed
+    return if !placement_strategy.sequential?
+
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
 
@@ -395,6 +426,8 @@ class Phase < ApplicationRecord
   end
 
   def close_previous_open_phase
+    return if !placement_strategy.sequential?
+
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
 

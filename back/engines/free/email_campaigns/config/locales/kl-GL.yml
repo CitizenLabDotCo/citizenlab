@@ -267,6 +267,7 @@ kl-GL:
       new_idea_for_admin_prescreening: Suliniut aqutaranni nutaaq akuerineqartussaq
       new_idea_for_admin_published: Suliniut nakkutigisanni saqqummiussaq nutaaq
       new_initiative_for_admin: Innuttaasup siunnersuutaa nutaaq
+      new_phone_confirmation: Oqarasuaatikkut uppernarsaatissaq nutaaq
       official_feedback_on_commented_idea: Isumassarsiamut oqaaseqarfigisimasannut siunnersuummik nutarterineq
       official_feedback_on_commented_initiative: Innuttaasup siunnersuutaanut oqaaseqarfigisimasannut nutarterineq
       official_feedback_on_idea_you_follow: Siunnersuummi malitanni nutaarsiassaq
@@ -285,6 +286,7 @@ kl-GL:
       project_review_state_change: Suliniut akuerineqarpoq
       proposal_expired_for_admin: Siunnersuut piffissaa qaangiuppoq taasinerit amerlassusissaat angunngitsoorlugu
       screening_digest: Sapaatip-akunneranut misissugassat pillugit eqqaasitsissut
+      sms_manual: SMS-it pisortatigoortut
       space_moderation_rights_received: Immikkoortortami aqutsisutut pisinnaatitaaffiit tiguneqarput
       status_change_of_commented_idea: Isumasssarsiap oqaaseqarfigisimasama killiffiani allanngorneq
       status_change_of_commented_initiative: Innuttaasumut isumassarsiap oqaaseqarfigisimasama klliffiani allanngorneq
@@ -343,6 +345,7 @@ kl-GL:
         idea: '%{authorName} isumassarsiamut malittarissannut oqaaseqaateqarpoq'
         initiative: '%{authorName} suliniut malitannut oqaaseqaateqarpoq'
         issue: '%{authorName} suliassamut malinnaaffigisannut oqaaseqaateqarpoq'
+        observation: '%{authorName} maluginiakkami malinnaaffigisanni oqaaseqaateqarpoq'
         option: '%{authorName} periarfissamut malittarissannut oqaaseqaateqarpoq'
         petition: '%{authorName} atsiornernik katersinermut malinnaaffigisannut oqaaseqarpoq'
         post: '%{authorName} malitannut oqaaseqaateqarpoq'
@@ -453,6 +456,7 @@ kl-GL:
         idea: Isumassarsiaq uunga iserfigiuk
         initiative: Suliniut una takuuk
         issue: Suliassamut uunga iserit
+        observation: Maluginiakkamut uunngarit
         option: Periarfissaq una takuuk
         petition: Atsiornernik katersineq una takuuk
         post: Saqqummiussaq una takuuk
@@ -473,6 +477,7 @@ kl-GL:
         idea: Isumassarsiannut iserit
         initiative: Suliniutinnut iserit
         issue: Apeqqutinnut iserit
+        observation: Maluginiakkannut iserit
         option: Toqqakkannut iserit
         petition: Atsiornernik katersivinnut iserit
         post: Allatannut iserit
@@ -511,6 +516,7 @@ kl-GL:
         idea: Isumassarsiat saqqummiunneqarpoq
         initiative: Suliniutit saqqummiunneqarpoq
         issue: Suliassat saqqummerpoq
+        observation: Illit maluginiakkat saqqummiunneqarpoq
         option: Toqqagassat saqqummiunneqarpoq
         petition: Atsiornernik katersinerit saqqummiunneqarpoq
         post: Saqqummiussat saqqummiunneqarpoq
@@ -768,6 +774,8 @@ kl-GL:
       main_header: '%{firstName}, platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiisoqarpoq'
       preheader: '%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq'
       subject: Innuttaasunut siunnersuummik platformimut %{organizationName}mi tamanut saqqummiisoqarpoq
+    new_phone_confirmation:
+      sms_body: Uppernarsaatissat tassaavoq %{code}.
     official_feedback_on_commented_idea:
       by_author: uannga %{authorName}
       cta_view: Isumassarsiamukarit
@@ -1116,6 +1124,7 @@ kl-GL:
         idea: Isumassarsiat uunga inissisimavoq "%{prescreening_status_title}"
         initiative: Suliniutit "%{prescreening_status_title}"-imiippoq
         issue: 'Suliassat uaniippoq: "%{prescreening_status_title}"'
+        observation: Maluginiakkat ima inissisimavoq "%{prescreening_status_title}"
         option: Toqqagassat uunga inissisimavoq "%{prescreening_status_title}"
         petition: Akerliussutsimik ersersitsiniutit "%{prescreening_status_title}"-imiippoq
         post: Ilanngussat "%{prescreening_status_title}"-imiippoq

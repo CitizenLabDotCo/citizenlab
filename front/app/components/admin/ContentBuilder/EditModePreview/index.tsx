@@ -1,10 +1,14 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
 import { devicePreviewSizes } from './dimensions';
 import DesktopButton from './ViewButtons/DesktopButton';
 import MobileButton from './ViewButtons/MobileButton';
+
+const MAX_SCALE = 1;
+const BOTTOM_MARGIN = 12;
+const HORIZONTAL_MARGIN = 48;
 
 type Props = {
   iframeSrc: string;
@@ -15,6 +19,38 @@ const ContentBuilderEditModePreview = React.forwardRef<
   Props
 >(({ iframeSrc }, ref) => {
   const [isMobile, setIsMobile] = useState(true);
+  const [scale, setScale] = useState(1);
+  const frameAreaRef = useRef<HTMLDivElement | null>(null);
+
+  const frameWidth = isMobile
+    ? devicePreviewSizes.mobile.frameWidth
+    : devicePreviewSizes.desktop.frameWidth;
+  const { frameHeight } = devicePreviewSizes;
+
+  useEffect(() => {
+    const frameArea = frameAreaRef.current;
+    if (!frameArea) return;
+
+    const computeScale = () => {
+      const { top } = frameArea.getBoundingClientRect();
+      const availableWidth = window.innerWidth - HORIZONTAL_MARGIN;
+      const availableHeight = window.innerHeight - top - BOTTOM_MARGIN;
+      const fit = Math.min(
+        availableWidth / frameWidth,
+        availableHeight / frameHeight
+      );
+      setScale(Math.max(0, Math.min(MAX_SCALE, fit)));
+    };
+
+    computeScale();
+    const observer = new ResizeObserver(computeScale);
+    observer.observe(frameArea);
+    window.addEventListener('resize', computeScale);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', computeScale);
+    };
+  }, [frameWidth, frameHeight]);
 
   return (
     <Box
@@ -37,37 +73,47 @@ const ContentBuilderEditModePreview = React.forwardRef<
             }}
           />
         </Box>
-        {/* Platform Container */}
         <Box
-          height={devicePreviewSizes.frameHeight}
-          border="solid black"
-          borderWidth="40px 20px 20px 20px"
-          zIndex="1"
-          mb="12px"
-          width={
-            isMobile
-              ? devicePreviewSizes.mobile.frameWidth
-              : devicePreviewSizes.desktop.frameWidth
-          }
-          borderRadius="20px"
+          ref={frameAreaRef}
+          width="100%"
+          display="flex"
+          justifyContent="center"
         >
-          {/* Iframe */}
           <Box
-            as="iframe"
-            ref={ref}
-            src={iframeSrc}
-            height={devicePreviewSizes.iframeHeight}
-            width={
-              isMobile
-                ? devicePreviewSizes.mobile.iframeWidth
-                : devicePreviewSizes.desktop.iframeWidth
-            }
-            border="none"
-            borderRadius="3px"
-            data-cy={
-              isMobile ? 'mobile-preview-iframe' : 'desktop-preview-iframe'
-            }
-          />
+            width={`${frameWidth * scale}px`}
+            height={`${frameHeight * scale}px`}
+          >
+            <Box
+              height={`${frameHeight}px`}
+              border="solid black"
+              borderWidth="40px 20px 20px 20px"
+              zIndex="1"
+              mb="12px"
+              width={`${frameWidth}px`}
+              borderRadius="20px"
+              style={{
+                transform: `scale(${scale})`,
+                transformOrigin: 'top left',
+              }}
+            >
+              <Box
+                as="iframe"
+                ref={ref}
+                src={iframeSrc}
+                height={`${devicePreviewSizes.iframeHeight}px`}
+                width={`${
+                  isMobile
+                    ? devicePreviewSizes.mobile.iframeWidth
+                    : devicePreviewSizes.desktop.iframeWidth
+                }px`}
+                border="none"
+                borderRadius="3px"
+                data-cy={
+                  isMobile ? 'mobile-preview-iframe' : 'desktop-preview-iframe'
+                }
+              />
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>

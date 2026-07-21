@@ -824,6 +824,81 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.customMessage": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.defaultErrorMessage": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.done": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.modalTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.overrideItBelow": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.ErrorMessageModal.thisIsShownToPeople": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.allParticipants": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.customizeErrorMessage": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.GroupsSection.participantMustBe": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.RecencyControl.days": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.RecencyControl.reconfirmIfOlderThan": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.RecencyControl.remove": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.RecencyControl.requireRecentConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.RecencyControl.requireRecentVerification": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.AccessSections.RecencyControl.reverifyIfOlderThan": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.CustomizeErrorMessage.alternativeErrorMessage": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -894,6 +969,121 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.allDataLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityInResults": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymousLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymousWarning": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.demographicsOnlyLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.AnonymitySection.demographicsOnlyWarning": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.optional": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.removeDemographicField": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.required": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.askDemographicQuestionsBefore": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.collectDemographicsAfter": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.DemographicSection.DemographicsPlacement.whenToAsk": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:43:47.933041Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullName": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.fullNameDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.password": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordAvailableDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordOnlyForEmailSignupTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:43:47.933041Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.passwordUnavailableDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.PersonalInfoSection.personalInfo": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.whatWeCollect": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.DataSection.whatWeCollectTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.Fields.addDemographicQuestion": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.Fields.askDemographicQuestionsBeforeUserParticipates": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -919,6 +1109,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.ActionForm.Fields.demographicQuestions": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.Fields.globalRegFlow": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -934,6 +1129,16 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.ActionForm.Fields.noDemographicQuestionsAsked": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.Fields.questions": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -948,6 +1153,86 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.ActionForm.adminsManagersOnly": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.anonymous": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.anyoneCanParticipate": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.everyoneWhoSignsIn": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.fullyAnonymous": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.linkedToProfile": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.nGroups": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.nQuestions": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.name": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.none": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.nothingExtra": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.password": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.piiExcluded": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.piiExcludedFromResults": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.resetDemographicQuestionsAndGroups": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ActionForm.signInRequired": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.AddByEmail.invite": {
     "state": "verified",
@@ -2338,6 +2623,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.components.app.containers.AdminPage.ProjectEdit.observationTerm": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.278866Z",
+    "verified_by": "Jelena"
   },
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": {
     "state": "verified",
@@ -5999,6 +6289,16 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.addSmsCampaignButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.addSmsCampaignTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.Admin.messaging.automated.editModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -6009,10 +6309,140 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.messaging.cancelButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.confirmSendSmsHeader": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.deleteSmsButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.deleteSmsConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.editSmsCampaignTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.fieldSmsBody": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.fieldSmsBodyError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabelError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.fieldSmsLabelTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.Admin.messaging.helmetTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.messaging.manageButtonLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.noSmsCampaignsDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.noSmsCampaignsHeader": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.sendSmsPreviewTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsCampaignsDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_delivered": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_failed": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_pending": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_queued": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_sent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsDeliveryStatus_undelivered": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsPreviewSentConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsRecipientsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsStatsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.messaging.tabSms": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.119280Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.FollowedItems.thisWidgetShows": {
     "state": "verified",
@@ -7519,6 +7949,21 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.edit": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.editPageContent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.editProjectPageInContentBuilder": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -7813,6 +8258,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.insights.exportButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.insights.exportResponsesToPdf2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.Admin.projects.project.insights.gender": {
     "state": "verified",
@@ -8358,6 +8813,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.newPhase": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": {
     "state": "verified",
@@ -8974,6 +9434,26 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.phaseNoEndDate": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.projectPageNav": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.projectPagePreviewTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.settingsNav": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.Admin.projects.project.survey.aiAnalysis2": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -9343,6 +9823,121 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.cancelButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.consentLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.coverDisabledPreview": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.coverSectionTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.dateLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.excludeStatus": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.exportError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.fieldReviewNoFlags": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.fieldReviewSectionTitle2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.fieldReviewWithFlags": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.generateButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.includeCoverLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.includeStatus": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.notesLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.pageTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.preparedByLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.previewError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.previewLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.reportSubtitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.reportTitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.zoomIn": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.surveyPdfExport.zoomOut": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.timeline": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.Admin.projects.project.traffic.selectPeriod": {
     "state": "verified",
@@ -13799,6 +14394,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.newObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.278866Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectEdit.newOption": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -17019,6 +17619,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisPhase": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -18144,6 +18749,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.projects.project.analysis.followUpNotEmpty": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.AdminPage.projects.project.analysis.heatmap.autoInsights": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -18909,10 +19519,45 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.EditSpace.addNewProjectOrFolder": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.EditSpace.addToSpace": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.EditSpace.cancel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.EditSpace.folder": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.EditSpace.foldersPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.containers.EditSpace.noAddableProjectsOrFolders": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.EditSpace.noProjectsAndFolders": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EditSpace.project": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.EditSpace.projectsAndFolders": {
     "state": "verified",
@@ -18923,6 +19568,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.EditSpace.projectsPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.784744Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.EditSpace.settings": {
     "state": "verified",
@@ -19593,6 +20243,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.content_builder.html_block.label": {
+    "state": "verified",
+    "verified_at": "2026-06-23T08:26:39.217720Z",
+    "verified_by": "Jelena"
   },
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": {
     "state": "verified",
@@ -20573,6 +21228,136 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecide": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.firstDecideSSO": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.identityVerification": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.mustProveIdentity": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.noAccountNeeded": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSSO": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.requireSignIn": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.fieldsReturnedByMethod": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.locked": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.whenAParticipantVerifiesThroughMethod": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.046774Z",
+    "verified_by": "Jelena"
   },
   "front.app.containers.Admin.inspirationHub.ProjectDrawer.Comments.areYouSureYouWantToDeleteThis": {
     "state": "verified",

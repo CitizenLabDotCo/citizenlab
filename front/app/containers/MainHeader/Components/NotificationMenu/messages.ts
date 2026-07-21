@@ -87,6 +87,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnStoryYouFollow',
     defaultMessage: '{name} commented on a story that you follow',
   },
+  userCommentedOnObservationYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnObservationYouFollow',
+    defaultMessage: '{name} commented on an observation that you follow',
+  },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',
     defaultMessage: '{name} reacted to your comment',
@@ -182,6 +186,10 @@ export default defineMessages({
   invitationToCosponsorStory: {
     id: 'app.containers.NotificationMenu.invitationToCosponsorStory',
     defaultMessage: '{name} invited you to co-sponsor a story',
+  },
+  invitationToCosponsorObservation: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorObservation',
+    defaultMessage: '{name} invited you to co-sponsor an observation',
   },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
@@ -313,6 +321,11 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnStoryYouFollow',
     defaultMessage:
       '{officialName} gave an official update on a story you follow',
+  },
+  officialFeedbackOnObservationYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnObservationYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on an observation you follow',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',

@@ -1,19 +1,3 @@
-GIT
-  remote: https://github.com/crmne/ruby_llm.git
-  revision: 7282f9725cb3f83eee8f0f26a0812c998f82402f
-  ref: 7282f9725cb3f83eee8f0f26a0812c998f82402f
-  specs:
-    ruby_llm (1.12.1)
-      base64
-      event_stream_parser (~> 1)
-      faraday (>= 1.10.0)
-      faraday-multipart (>= 1)
-      faraday-net_http (>= 1)
-      faraday-retry (>= 1)
-      marcel (~> 1)
-      ruby_llm-schema (~> 0)
-      zeitwerk (~> 2)
-
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -80,7 +64,7 @@ PATH
       omniauth-saml (~> 2.2.0)
       omniauth_openid_connect (~> 0.8.0)
       rails (~> 7.2)
-      savon (>= 2.12, < 2.15)
+      savon (~> 2.17.2)
 
 PATH
   remote: engines/commercial/custom_maps
@@ -148,6 +132,7 @@ PATH
   specs:
     mcp_server (0.1.0)
       mcp (~> 0.16)
+      pg_query (~> 6.0)
       rails (~> 7.2)
 
 PATH
@@ -606,6 +591,18 @@ GEM
       thor (>= 0.20, < 2.a)
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
+    google-protobuf (4.35.0-aarch64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-arm64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-x86_64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-x86_64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
     googleauth (1.11.0)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.1)
@@ -622,6 +619,7 @@ GEM
     gyoku (1.4.0)
       builder (>= 2.1.2)
       rexml (~> 3.0)
+    hana (1.3.7)
     hashdiff (1.1.0)
     hashery (2.1.2)
     hashie (5.0.0)
@@ -641,11 +639,11 @@ GEM
       multi_xml (>= 0.5.2)
     httpclient (2.9.0)
       mutex_m
-    httpi (3.0.2)
+    httpi (4.0.4)
       base64
       mutex_m
       nkf
-      rack (< 3)
+      rack (>= 2.0, < 4)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     icalendar (2.12.2)
@@ -669,7 +667,7 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
-    json (2.9.1)
+    json (2.20.0)
     json-jwt (1.16.6)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -679,6 +677,11 @@ GEM
       faraday-follow_redirects
     json-schema (4.3.0)
       addressable (>= 2.8)
+    json_schemer (2.5.0)
+      bigdecimal
+      hana (~> 1.3)
+      regexp_parser (~> 2.0)
+      simpleidn (~> 0.2)
     jsonapi-renderer (0.2.2)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
@@ -722,7 +725,7 @@ GEM
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     logger (1.7.0)
-    loofah (2.24.1)
+    loofah (2.25.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -734,8 +737,8 @@ GEM
       rest-client (>= 2.0.2)
     marcel (1.0.4)
     matrix (0.4.2)
-    mcp (0.16.0)
-      json-schema (>= 4.1)
+    mcp (0.25.0)
+      json_schemer (>= 2.4)
     method_source (1.1.0)
     mime-types (3.7.0)
       logger
@@ -752,7 +755,7 @@ GEM
     mrml (1.7.0-arm64-darwin)
     mrml (1.7.0-x86_64-darwin)
     mrml (1.7.0-x86_64-linux)
-    msgpack (1.7.2)
+    msgpack (1.8.3)
     multi_json (1.21.1)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
@@ -817,7 +820,7 @@ GEM
     omniauth-rails_csrf_protection (1.0.2)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    omniauth-saml (2.2.3)
+    omniauth-saml (2.2.5)
       omniauth (~> 2.1)
       ruby-saml (~> 1.18)
     omniauth_openid_connect (0.8.0)
@@ -851,9 +854,12 @@ GEM
       ruby-rc4
       ttfunk
     pg (1.5.6)
+    pg_query (6.2.2)
+      google-protobuf (>= 3.25.3)
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
+    phonelib (0.10.22)
     positioning (0.4.6)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -942,8 +948,8 @@ GEM
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.6.2)
-      loofah (~> 2.21)
+    rails-html-sanitizer (1.7.1)
+      loofah (~> 2.25, >= 2.25.2)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
     rails-i18n (7.0.9)
       i18n (>= 0.7, < 2)
@@ -1095,19 +1101,29 @@ GEM
     rubyXL (3.4.27)
       nokogiri (>= 1.10.8)
       rubyzip (>= 1.3.0)
+    ruby_llm (1.16.0)
+      base64
+      event_stream_parser (~> 1)
+      faraday (>= 1.10.0)
+      faraday-multipart (>= 1)
+      faraday-net_http (>= 1)
+      faraday-retry (>= 1)
+      marcel (~> 1)
+      ruby_llm-schema (~> 0)
+      zeitwerk (~> 2)
     ruby_llm-schema (0.2.5)
     rubyzip (1.3.0)
     saharspec (0.0.10)
       ruby2_keywords
-    savon (2.14.0)
+    savon (2.17.3)
       akami (~> 1.2)
       builder (>= 2.1.2)
       gyoku (~> 1.2)
-      httpi (>= 2.4.5)
+      httpi (>= 4, < 5)
       mail (~> 2.5)
       nokogiri (>= 1.8.1)
-      nori (~> 2.4)
-      wasabi (~> 3.4)
+      nori (~> 2.7)
+      wasabi (>= 5.1.0, < 6)
     scenic (1.8.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
@@ -1138,6 +1154,7 @@ GEM
     simplecov-rcov (0.3.7)
       simplecov (>= 0.4.1)
     simplecov_json_formatter (0.1.4)
+    simpleidn (0.2.3)
     singleton (0.3.0)
     snaky_hash (2.0.5)
       hashie (>= 0.1.0, < 6)
@@ -1176,6 +1193,10 @@ GEM
     tsort (0.2.0)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
+    twilio-ruby (7.8.8)
+      faraday (>= 0.9, < 3.0)
+      jwt (>= 1.5, < 4.0)
+      nokogiri (>= 1.6, < 2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2025.2)
@@ -1198,10 +1219,10 @@ GEM
       public_suffix
     vcr (6.2.0)
     version_gem (1.1.11)
-    wasabi (3.8.0)
+    wasabi (5.1.0)
       addressable
-      httpi (~> 3.0)
-      nokogiri (>= 1.4.2)
+      faraday (>= 1.9, < 3)
+      nokogiri (>= 1.13.9)
     webfinger (2.1.2)
       activesupport
       faraday (~> 2.0)
@@ -1211,7 +1232,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.9.1)
-    websocket-driver (0.7.7)
+    websocket-driver (0.8.2)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -1221,6 +1242,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.3)
+    zxcvbn-ruby (2.0.0)
 
 PLATFORMS
   aarch64-linux
@@ -1228,6 +1250,7 @@ PLATFORMS
   arm64-darwin-24
   x86_64-darwin-21
   x86_64-darwin-23
+  x86_64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
@@ -1323,6 +1346,7 @@ DEPENDENCIES
   pdf-reader
   pg (~> 1.5.6)
   pg_search (~> 2.3.7)
+  phonelib (~> 0.10)
   polls!
   positioning (~> 0.4.6)
   posthog_integration!
@@ -1362,7 +1386,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   rubyXL (~> 3.4.27)
-  ruby_llm!
+  ruby_llm (~> 1.16)
   rubyzip (~> 1.3.0)
   saharspec
   scenic
@@ -1382,6 +1406,7 @@ DEPENDENCIES
   strong_migrations (~> 2.5)
   surveys!
   test-prof (~> 1.3)
+  twilio-ruby (~> 7.8.5)
   tzinfo (~> 2.0)
   tzinfo-data (~> 1.2024)
   user_custom_fields!
@@ -1389,6 +1414,7 @@ DEPENDENCIES
   volunteering!
   webhooks!
   webmock (~> 3.23)
+  zxcvbn-ruby (~> 2.0)
 
 RUBY VERSION
    ruby 3.4.7p58

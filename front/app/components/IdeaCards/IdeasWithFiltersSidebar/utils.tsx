@@ -34,6 +34,8 @@ export const getInputCountMessage = (inputTerm: InputTerm) => {
       return messages.xPosts;
     case 'story':
       return messages.xStories;
+    case 'observation':
+      return messages.xObservations;
     default:
       return messages.xIdeas;
   }

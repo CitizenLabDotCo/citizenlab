@@ -190,6 +190,7 @@ nl-NL:
       new_email_confirmation: Nieuwe e-mailbevestigingscode
       new_idea_for_admin_prescreening: Nieuwe bijdrage die goedkeuring vereist in een project dat ik modereer
       new_idea_for_admin_published: Nieuwe gepubliceerde contributie in een project dat ik modereer
+      new_phone_confirmation: Nieuwe telefoonbevestigingscode
       official_feedback_on_idea_you_follow: Update over een bijdrage dat je volgt
       password_reset: Herstel wachtwoord
       project_folder_moderation_rights_received: Mapbeheerdersrechten ontvangen
@@ -202,6 +203,7 @@ nl-NL:
       project_review_state_change: Project goedgekeurd
       proposal_expired_for_admin: Voorstel verlopen zonder de stemdrempel te bereiken
       screening_digest: Wekelijkse screeningherinnering
+      sms_manual: Officiële SMS-berichten
       space_moderation_rights_received: Ruimtebeheerdersrechten ontvangen
       status_change_on_idea_you_follow: Statuswijziging van een bijdrage dat je volgt
       survey_submitted: Vragenlijst ingediend
@@ -249,6 +251,7 @@ nl-NL:
         idea: '%{authorName} heeft gereageerd op een idee dat je volgt'
         initiative: '%{authorName} heeft gereageerd op een initiatief dat je volgt'
         issue: '%{authorName} heeft gereageerd op een reactie die je volgt'
+        observation: '%{authorName} heeft gereageerd op een observatie die je volgt'
         option: '%{authorName} heeft gereageerd op een optie die je volgt'
         petition: '%{authorName} heeft gereageerd op een petitie die je volgt'
         post: '%{authorName} heeft gereageerd op een bericht dat je volgt'
@@ -323,6 +326,7 @@ nl-NL:
         idea: Ga naar dit idee
         initiative: Ga naar dit initiatief
         issue: Ga naar deze reactie
+        observation: Ga naar deze observatie
         option: Ga naar deze optie
         petition: Ga naar deze petitie
         post: Ga naar dit bericht
@@ -343,6 +347,7 @@ nl-NL:
         idea: Ga naar je idee
         initiative: Ga naar je initiatief
         issue: Ga naar je reactie
+        observation: Ga naar je observatie
         option: Ga naar je optie
         petition: Ga naar je petitie
         post: Ga naar je bericht
@@ -376,6 +381,7 @@ nl-NL:
         idea: Je idee is gepubliceerd
         initiative: Je initiatief is gepubliceerd
         issue: Je stelling is gepubliceerd
+        observation: Je observatie is gepubliceerd
         option: Je optie is gepubliceerd
         petition: Je petitie is gepubliceerd
         post: Je bericht is gepubliceerd
@@ -530,6 +536,8 @@ nl-NL:
       title: Er is een nieuwe bijdrage gepubliceerd op je platform
       today: Vandaag
       yesterday: Gisteren
+    new_phone_confirmation:
+      sms_body: Je bevestigingscode is %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ga naar deze bijdrage
       event_description: "%{feedback_author_name} gaf een update op %{input_title}'."
@@ -766,6 +774,7 @@ nl-NL:
         idea: Je idee staat in "%{prescreening_status_title}"
         initiative: Je initiatief staat in "%{prescreening_status_title}"
         issue: Je reactie staat in "%{prescreening_status_title}"
+        observation: Je observatie bevindt zich in "%{prescreening_status_title}"
         option: Je optie staat op "%{prescreening_status_title}"
         petition: Je petitie staat in "%{prescreening_status_title}"
         post: Je bericht staat in "%{prescreening_status_title}"

@@ -112,6 +112,8 @@ fi-FI:
           title: Mikä on aloitteesi?
         issue:
           title: Mikä on kommenttisi?
+        observation:
+          title: Mikä on havaintosi?
         option:
           title: Mikä on vaihtoehtosi?
         petition:
@@ -268,6 +270,15 @@ fi-FI:
     proposals:
       title: ehdotuksia
   pdf_export:
+    input_responses:
+      date: Päivämäärä
+      no_answer: (Ei vastausta)
+      prepared_by: Laatinut
+      report_label: Vastausraportti
+      respondent: Vastaaja %{number}
+      response_count:
+        one: '%{count} vastaus'
+        other: '%{count} vastausta'
     survey_responses:
       date: Päivämäärä
       no_answer: (Ei vastausta)

@@ -190,6 +190,7 @@ el-GR:
       new_email_confirmation: Νέος κωδικός επιβεβαίωσης email
       new_idea_for_admin_prescreening: Νέες εισροές που απαιτούν έγκριση σε ένα έργο που μετριάζω
       new_idea_for_admin_published: Νέα δημοσιευμένη συνεισφορά σε ένα έργο που συντονίζω
+      new_phone_confirmation: Νέος κωδικός επιβεβαίωσης τηλεφώνου
       official_feedback_on_idea_you_follow: Ενημέρωση για μια ιδέα που ακολουθείτε
       password_reset: Επαναφορά κωδικού πρόσβασης
       project_folder_moderation_rights_received: Δικαιώματα διαχειριστή φακέλων
@@ -202,6 +203,7 @@ el-GR:
       project_review_state_change: Το έργο εγκρίθηκε
       proposal_expired_for_admin: Η πρόταση έληξε χωρίς να συμπληρώσει το όριο ψήφων
       screening_digest: Εβδομαδιαία υπενθύμιση ελέγχου
+      sms_manual: Επίσημα μηνύματα SMS
       space_moderation_rights_received: Λήφθηκαν δικαιώματα διαχειριστή χώρου
       status_change_on_idea_you_follow: Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
       survey_submitted: Υποβληθείσα έρευνα
@@ -249,6 +251,7 @@ el-GR:
         idea: '%{authorName} σχολίασε μια ιδέα που ακολουθείτε'
         initiative: '%{authorName} σχολιάσατε μια πρωτοβουλία που ακολουθείτε'
         issue: '%{authorName} σχολίασε ένα πρόβλημα που παρακολουθείτε'
+        observation: Ο/Η %{authorName} σχολίασε μια παρατήρηση που ακολουθείτε
         option: '%{authorName} σχολίασε μια επιλογή που ακολουθείτε'
         petition: '%{authorName} σχολίασε ένα αίτημα που ακολουθείτε'
         post: '%{authorName} σχολίασε μια ανάρτηση που ακολουθείς'
@@ -323,6 +326,7 @@ el-GR:
         idea: Πηγαίνετε στην ιδέα
         initiative: Μεταβείτε σε αυτή την πρωτοβουλία
         issue: Μεταβείτε σε αυτό το θέμα
+        observation: Μετάβαση σε αυτήν την παρατήρηση
         option: Μεταβείτε σε αυτή την επιλογή
         petition: Πηγαίνετε σε αυτό το αίτημα
         post: Πηγαίνετε σε αυτή τη θέση
@@ -343,6 +347,7 @@ el-GR:
         idea: Πηγαίνετε στην ιδέα σας
         initiative: Πηγαίνετε στην πρωτοβουλία σας
         issue: Πηγαίνετε στο πρόβλημά σας
+        observation: Μεταβείτε στην παρατήρησή σας
         option: Πηγαίνετε στην επιλογή σας
         petition: Πηγαίνετε στο αίτημά σας
         post: Πηγαίνετε στη θέση σας
@@ -376,6 +381,7 @@ el-GR:
         idea: Η ιδέα σας έχει δημοσιευτεί
         initiative: Η πρωτοβουλία σας έχει δημοσιευθεί
         issue: Το τεύχος σας έχει δημοσιευτεί
+        observation: Η παρατήρησή σας δημοσιεύτηκε
         option: Η επιλογή σας έχει δημοσιευτεί
         petition: Το αίτημά σας έχει δημοσιευτεί
         post: Η ανάρτησή σας έχει δημοσιευτεί
@@ -530,6 +536,8 @@ el-GR:
       title: Μια νέα είσοδος έχει δημοσιευτεί στην πλατφόρμα σας
       today: Σήμερα
       yesterday: Χθες
+    new_phone_confirmation:
+      sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Πηγαίνετε σε αυτή την είσοδο
       event_description: "%{feedback_author_name} ενημέρωσε για το '%{input_title}'."
@@ -764,6 +772,7 @@ el-GR:
         idea: Η ιδέα σας είναι στο "%{prescreening_status_title}"
         initiative: Η πρωτοβουλία σας είναι στο "%{prescreening_status_title}"
         issue: Το θέμα σας βρίσκεται στο "%{prescreening_status_title}"
+        observation: Η παρατήρησή σας είναι σε κατάσταση "%{prescreening_status_title}"
         option: Η επιλογή σας βρίσκεται στο "%{prescreening_status_title}"
         petition: Το αίτημά σας βρίσκεται στο "%{prescreening_status_title}"
         post: Η ανάρτησή σας είναι στο "%{prescreening_status_title}"

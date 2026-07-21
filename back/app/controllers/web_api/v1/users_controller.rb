@@ -342,7 +342,7 @@ class WebApi::V1::UsersController < ApplicationController
     when nil
       @users
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
 

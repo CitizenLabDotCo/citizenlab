@@ -904,6 +904,11 @@
     "verified_at": "2026-03-18T11:49:32.458214Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.new_phone_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.005651Z",
+    "verified_by": "Luuc"
+  },
   "email_campaigns.campaign_type_description.official_feedback_on_idea_you_follow": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.458214Z",
@@ -963,6 +968,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.458214Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.sms_manual": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.005651Z",
+    "verified_by": "Luuc"
   },
   "email_campaigns.campaign_type_description.space_moderation_rights_received": {
     "state": "verified",
@@ -1178,6 +1188,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.458214Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.comment_on_idea_you_follow.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T08:21:13.820063Z",
+    "verified_by": "Luuc"
   },
   "email_campaigns.comment_on_idea_you_follow.main_header.option": {
     "state": "verified",
@@ -1494,6 +1509,11 @@
     "verified_at": "2026-03-18T11:49:32.458214Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.general.cta_goto.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T08:21:13.820063Z",
+    "verified_by": "Luuc"
+  },
   "email_campaigns.general.cta_goto.option": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.458214Z",
@@ -1588,6 +1608,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.458214Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.general.cta_goto_your.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T08:21:13.820063Z",
+    "verified_by": "Luuc"
   },
   "email_campaigns.general.cta_goto_your.option": {
     "state": "verified",
@@ -1738,6 +1763,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.458214Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.idea_published.input_type_subject.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T08:21:13.820063Z",
+    "verified_by": "Luuc"
   },
   "email_campaigns.idea_published.input_type_subject.option": {
     "state": "verified",
@@ -2413,6 +2443,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.458214Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.new_phone_confirmation.sms_body": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.005651Z",
+    "verified_by": "Luuc"
   },
   "email_campaigns.official_feedback_on_idea_you_follow.cta_button": {
     "state": "verified",
@@ -3443,6 +3478,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.458214Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.your_input_in_screening.main_header.observation": {
+    "state": "verified",
+    "verified_at": "2026-07-01T08:21:13.820063Z",
+    "verified_by": "Luuc"
   },
   "email_campaigns.your_input_in_screening.main_header.option": {
     "state": "verified",

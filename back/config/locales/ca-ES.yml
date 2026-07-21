@@ -112,6 +112,8 @@ ca-ES:
           title: Quina és la teva iniciativa?
         issue:
           title: Quin és el vostre comentari?
+        observation:
+          title: Quina és la teva observació?
         option:
           title: Quina és la vostra opció ?
         petition:
@@ -268,6 +270,15 @@ ca-ES:
     proposals:
       title: Propostes
   pdf_export:
+    input_responses:
+      date: Data
+      no_answer: (Sense resposta)
+      prepared_by: Elaborat per
+      report_label: Informe de respostes
+      respondent: Enquestat %{number}
+      response_count:
+        one: '%{count} resposta'
+        other: '%{count} respostes'
     survey_responses:
       date: Data
       no_answer: (Sense resposta)

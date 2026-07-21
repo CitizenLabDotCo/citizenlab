@@ -190,6 +190,7 @@ pa-IN:
       new_email_confirmation: ਨਵਾਂ ਈਮੇਲ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ
       new_idea_for_admin_prescreening: ਮੇਰੇ ਵੱਲੋਂ ਸੰਚਾਲਿਤ ਕੀਤੇ ਗਏ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਪ੍ਰਵਾਨਗੀ ਦੀ ਲੋੜ ਵਾਲੇ ਨਵੇਂ ਇਨਪੁਟ
       new_idea_for_admin_published: ਮੇਰੇ ਵੱਲੋਂ ਸੰਚਾਲਿਤ ਕੀਤੇ ਗਏ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵਾਂ ਪ੍ਰਕਾਸ਼ਿਤ ਇਨਪੁਟ
+      new_phone_confirmation: ਨਵਾਂ ਫ਼ੋਨ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ
       official_feedback_on_idea_you_follow: ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
       password_reset: ਪਾਸਵਰਡ ਰੀਸੈੱਟ
       project_folder_moderation_rights_received: ਫੋਲਡਰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
@@ -202,6 +203,7 @@ pa-IN:
       project_review_state_change: ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ
       proposal_expired_for_admin: ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ
       screening_digest: ਹਫ਼ਤਾਵਾਰੀ ਸਕ੍ਰੀਨਿੰਗ ਰੀਮਾਈਂਡਰ
+      sms_manual: ਅਧਿਕਾਰਤ SMS ਸੁਨੇਹੇ
       space_moderation_rights_received: ਸਪੇਸ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       status_change_on_idea_you_follow: ਕਿਸੇ ਵਿਚਾਰ ਦੀ ਸਥਿਤੀ ਤਬਦੀਲੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
       survey_submitted: ਸਰਵੇਖਣ ਪੇਸ਼ ਕੀਤਾ
@@ -249,6 +251,7 @@ pa-IN:
         idea: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਚਾਰ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         initiative: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੀ ਗਈ ਇੱਕ ਪਹਿਲ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         issue: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਗਏ ਮੁੱਦੇ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
+        observation: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੇ ਜਾ ਰਹੇ ਇੱਕ ਨਿਰੀਖਣ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਹੈ"
         option: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਕਲਪ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         petition: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੀ ਪਟੀਸ਼ਨ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
         post: "%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਫਾਲੋ ਕੀਤੀ ਗਈ ਪੋਸਟ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ"
@@ -323,6 +326,7 @@ pa-IN:
         idea: ਇਸ ਵਿਚਾਰ 'ਤੇ ਜਾਓ
         initiative: ਇਸ ਪਹਿਲ 'ਤੇ ਜਾਓ
         issue: ਇਸ ਮੁੱਦੇ 'ਤੇ ਜਾਓ
+        observation: ਇਸ ਨਿਰੀਖਣ 'ਤੇ ਜਾਓ
         option: ਇਸ ਵਿਕਲਪ 'ਤੇ ਜਾਓ
         petition: ਇਸ ਪਟੀਸ਼ਨ 'ਤੇ ਜਾਓ
         post: ਇਸ ਪੋਸਟ 'ਤੇ ਜਾਓ
@@ -343,6 +347,7 @@ pa-IN:
         idea: ਆਪਣੇ ਵਿਚਾਰ 'ਤੇ ਜਾਓ
         initiative: ਆਪਣੀ ਪਹਿਲਕਦਮੀ 'ਤੇ ਜਾਓ
         issue: ਆਪਣੇ ਮੁੱਦੇ 'ਤੇ ਜਾਓ
+        observation: ਆਪਣੇ ਨਿਰੀਖਣ 'ਤੇ ਜਾਓ
         option: ਆਪਣੇ ਵਿਕਲਪ 'ਤੇ ਜਾਓ
         petition: ਆਪਣੀ ਪਟੀਸ਼ਨ 'ਤੇ ਜਾਓ
         post: ਆਪਣੀ ਪੋਸਟ 'ਤੇ ਜਾਓ
@@ -376,6 +381,7 @@ pa-IN:
         idea: ਤੁਹਾਡਾ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।
         initiative: ਤੁਹਾਡੀ ਪਹਿਲ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
         issue: ਤੁਹਾਡਾ ਅੰਕ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਿਆ ਹੈ।
+        observation: ਤੁਹਾਡਾ ਨਿਰੀਖਣ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ
         option: ਤੁਹਾਡਾ ਵਿਕਲਪ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।
         petition: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
         post: ਤੁਹਾਡੀ ਪੋਸਟ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਗਈ ਹੈ।
@@ -530,6 +536,8 @@ pa-IN:
       title: ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ 'ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁੱਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ।
       today: ਅੱਜ
       yesterday: ਕੱਲ੍ਹ
+    new_phone_confirmation:
+      sms_body: ਤੁਹਾਡਾ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ %{code} ਹੈ।
     official_feedback_on_idea_you_follow:
       cta_button: ਇਸ ਇਨਪੁੱਟ 'ਤੇ ਜਾਓ
       event_description: "%{feedback_author_name} ਨੇ '%{input_title}' ਬਾਰੇ ਇੱਕ ਅਪਡੇਟ ਦਿੱਤੀ।"
@@ -764,6 +772,7 @@ pa-IN:
         idea: ਤੁਹਾਡਾ ਵਿਚਾਰ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         initiative: ਤੁਹਾਡੀ ਪਹਿਲ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
         issue: ਤੁਹਾਡੀ ਸਮੱਸਿਆ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
+        observation: ਤੁਹਾਡਾ ਨਿਰੀਖਣ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         option: ਤੁਹਾਡਾ ਵਿਕਲਪ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।
         petition: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ
         post: ਤੁਹਾਡੀ ਪੋਸਟ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।

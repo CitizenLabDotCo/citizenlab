@@ -10,7 +10,7 @@ import ReactSelect, { SelectInstance } from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
-import selectStyles from 'components/UI/MultipleSelect/styles';
+import selectStyles from './styles';
 
 export type Props = {
   id?: string;
@@ -27,6 +27,8 @@ export type Props = {
   setRef?: (arg: SelectInstance<IOption, true> | null) => void;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
+  fontSize?: number;
+  minHeight?: number;
 };
 
 const MultipleSelect = ({
@@ -44,6 +46,8 @@ const MultipleSelect = ({
   setRef,
   ariaInvalid,
   ariaDescribedBy,
+  fontSize = fontSizes.base,
+  minHeight,
 }: Props) => {
   const theme = useTheme();
   const selectRef = useRef<SelectInstance<IOption, true>>(null);
@@ -127,7 +131,7 @@ const MultipleSelect = ({
         onChange={handleOnChange}
         isDisabled={disabled}
         styles={{
-          ...selectStyles(theme),
+          ...selectStyles(theme, { fontSize, minHeight }),
           menuPortal: (base) => ({
             ...base,
             // zIndex needed so dropdown is not overlapped by
@@ -138,7 +142,7 @@ const MultipleSelect = ({
             ...base,
             cursor: state.isDisabled ? 'not-allowed' : 'pointer',
             opacity: state.isDisabled ? 0.8 : 1,
-            fontSize: `${fontSizes.base}px`,
+            fontSize: `${fontSize}px`,
             color: state.isFocused ? colors.textPrimary : colors.textSecondary,
             backgroundColor: state.isFocused
               ? colors.grey300
