@@ -137,6 +137,8 @@ class Phase < ApplicationRecord
     validates :similarity_enabled, inclusion: { in: [true, false] }
     validates :similarity_threshold_title, :similarity_threshold_body, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
     validate :validate_available_views
+    validate :validate_presentation_modes_allowed_for_method,
+      if: -> { presentation_mode_changed? || available_views_changed? }
   end
 
   validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
@@ -486,6 +488,19 @@ class Phase < ApplicationRecord
     unless available_views.include?(presentation_mode)
       errors.add(:available_views, :invalid, message: 'must include the default presentation mode')
     end
+  end
+
+  # Narrower than validate_available_views: some methods do not allow every presentation mode.
+  # Guarded on the attributes actually changing, so a phase left holding a mode its method no
+  # longer allows can still be saved for unrelated edits until the data has been migrated.
+  def validate_presentation_modes_allowed_for_method
+    disallowed = ((available_views || []) + [presentation_mode]).compact.uniq - pmethod.allowed_presentation_modes
+    return if disallowed.empty?
+
+    errors.add(
+      :available_views, :invalid,
+      message: "#{disallowed.join(', ')} not available for the #{participation_method} method"
+    )
   end
 
   def validate_no_inputs_on_participation_method_change

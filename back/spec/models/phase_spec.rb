@@ -205,6 +205,39 @@ RSpec.describe Phase do
         expect(phase).to be_valid
       end
     end
+
+    describe 'views the participation method does not allow' do
+      it 'is invalid when a proposals phase opens on the feed view' do
+        phase = build(:proposals_phase, presentation_mode: 'feed', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      it 'is invalid when a proposals phase merely offers the feed view' do
+        phase = build(:proposals_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      it 'is valid when a proposals phase offers the card and map views' do
+        phase = build(:proposals_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      it 'is valid when an ideation phase offers the feed view' do
+        phase = build(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+        expect(phase).to be_valid
+      end
+
+      # The rule only fires when the view attributes are written, so a phase that predates it can
+      # still be edited. Without this, an unrelated write would fail on a phase nobody has migrated.
+      it 'does not block unrelated edits to a proposals phase that already offers the feed view' do
+        phase = create(:proposals_phase)
+        phase.update_column(:available_views, %w[card feed])
+
+        expect(phase.reload.update(title_multiloc: { 'en' => 'New title' })).to be true
+      end
+    end
   end
 
   describe 'input_term' do

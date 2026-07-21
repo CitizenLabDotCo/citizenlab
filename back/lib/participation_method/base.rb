@@ -38,6 +38,10 @@ module ParticipationMethod
       []
     end
 
+    def allowed_presentation_modes
+      Phase::PRESENTATION_MODES
+    end
+
     def assign_defaults(input)
       # Default is to do nothing.
     end
