@@ -44,6 +44,10 @@ describe('Sign up - email and SMS (2FA)', () => {
       });
   });
 
+  after(() => {
+    cy.apiRemoveProject(projectId);
+  });
+
   it('works when signing up with new phone number', () => {
     cy.visit(`/projects/${projectTitle}`);
 
@@ -69,5 +73,27 @@ describe('Sign up - email and SMS (2FA)', () => {
       `/en/projects/${projectTitle}/surveys/new`
     );
     cy.logout();
+  });
+
+  it('fails when the wrong code is used', () => {
+    cy.visit(`/projects/${projectTitle}`);
+
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    signUpEmailConformation(cy);
+
+    // Enter phone number
+    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-continue-button').click();
+
+    // Confirm phone number
+    cy.dataCy('phone-code-input').find('input').type('9999');
+    cy.dataCy('phone-confirm-button').click();
+
+    // TODO assert error
+    cy.get('.e2e-error-message')
+      .first()
+      .should('include.text', 'Invalid confirmation code.');
   });
 });
