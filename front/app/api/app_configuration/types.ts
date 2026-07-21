@@ -206,10 +206,6 @@ export interface IAppConfigurationSettings {
   project_static_pages?: AppConfigurationFeature;
   parallel_participation?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
-  sms?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
