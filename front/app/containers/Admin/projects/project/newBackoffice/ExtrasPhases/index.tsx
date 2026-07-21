@@ -1,19 +1,16 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
-import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
+import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
 import useLocalize from 'hooks/useLocalize';
 
-import methodMessages from 'containers/Admin/inspirationHub/messages';
-
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
@@ -27,51 +24,26 @@ import {
   phaseStatus,
 } from '../phaseRowUtils';
 
-const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
-  ideation: methodMessages.ideation,
-  proposals: methodMessages.proposals,
-  native_survey: methodMessages.survey,
-  community_monitor_survey: methodMessages.communityMonitorSurvey,
-  survey: methodMessages.externalSurvey,
-  information: methodMessages.information,
-  voting: methodMessages.voting,
-  poll: methodMessages.poll,
-  volunteering: methodMessages.volunteering,
-  common_ground: methodMessages.commonGround,
-  document_annotation: methodMessages.documentAnnotation,
-};
-
-const DOT_CENTER = 16;
-
-const Connector = styled.div<{ isFirst: boolean; isLast: boolean }>`
-  position: absolute;
-  left: 13px; /* 8px row padding + 5px (half the 10px dot) */
-  width: 2px;
-  margin-left: -1px;
-  top: ${({ isFirst }) => (isFirst ? `${DOT_CENTER}px` : '0')};
-  bottom: ${({ isLast }) => (isLast ? 'auto' : '0')};
-  height: ${({ isLast }) => (isLast ? `${DOT_CENTER}px` : 'auto')};
-  background: ${colors.coolGrey300};
-`;
+import { linkedSurveyPhaseIds } from './linkedSurveyPhaseIds';
 
 interface Props {
   projectId: string;
 }
 
-const TimelinePhases = ({ projectId }: Props) => {
+const ExtrasPhases = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false }) as { phaseId?: string };
-  const { data: phases } = usePhases(projectId);
+  const { data: phases } = usePhases(projectId, 'standalone');
+  const { data: layout } = useProjectPageLayout(projectId);
 
-  if (!phases) {
-    return null;
-  }
+  const linkedPhaseIds = linkedSurveyPhaseIds(
+    layout?.data.attributes.craftjs_json
+  );
 
-  const sortedPhases = [...phases.data].sort((a, b) =>
+  const sortedPhases = [...(phases?.data ?? [])].sort((a, b) =>
     a.attributes.start_at.localeCompare(b.attributes.start_at)
   );
-  const noEndLabel = formatMessage(messages.phaseNoEndDate);
 
   return (
     <Box p="12px" borderTop={`1px solid ${colors.grey200}`}>
@@ -82,22 +54,17 @@ const TimelinePhases = ({ projectId }: Props) => {
         fontWeight="bold"
         color="textPrimary"
       >
-        {formatMessage(messages.timeline)}
+        {formatMessage(messages.extras)}
       </Text>
 
       <Box display="flex" flexDirection="column">
-        {sortedPhases.map((phase, index) => {
+        {sortedPhases.map((phase) => {
           const status = phaseStatus(phase);
-          const isSelected = phase.id === phaseId;
-          const isLast = index === sortedPhases.length - 1;
-          const dateText = formatDateRange(
-            phase.attributes.start_at,
-            phase.attributes.end_at,
-            noEndLabel
-          );
-          const methodLabel = formatMessage(
-            METHOD_LABELS[phase.attributes.participation_method]
-          );
+          const { start_at, end_at } = phase.attributes;
+          const dateText = end_at
+            ? formatDateRange(start_at, end_at, '')
+            : formatMessage(messages.ongoing);
+          const onProjectPage = linkedPhaseIds.has(phase.id);
 
           return (
             <Link
@@ -105,10 +72,7 @@ const TimelinePhases = ({ projectId }: Props) => {
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
-              <Row selected={isSelected}>
-                {sortedPhases.length > 1 && (
-                  <Connector isFirst={index === 0} isLast={isLast} />
-                )}
+              <Row selected={phase.id === phaseId}>
                 <Box w="10px" flex="0 0 auto">
                   <Box
                     position="relative"
@@ -136,7 +100,21 @@ const TimelinePhases = ({ projectId }: Props) => {
                     {localize(phase.attributes.title_multiloc)}
                   </Text>
                   <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
-                    {dateText} · {methodLabel}
+                    {dateText}
+                    {!onProjectPage && (
+                      <>
+                        {' · '}
+                        <Text
+                          as="span"
+                          m="0"
+                          fontSize="xs"
+                          color="textSecondary"
+                          style={{ textDecoration: 'underline dotted' }}
+                        >
+                          {formatMessage(messages.notOnProjectPage)}
+                        </Text>
+                      </>
+                    )}
                   </Text>
                 </Box>
               </Row>
@@ -147,17 +125,20 @@ const TimelinePhases = ({ projectId }: Props) => {
 
       <Box display="flex" mt="4px">
         <ButtonWithLink
-          linkTo={`/admin/projects/${projectId}/phases/new`}
+          id="e2e-new-extra-survey"
+          to="/admin/projects/$projectId/phases/new"
+          params={{ projectId }}
+          search={{ placement: 'standalone' }}
           buttonStyle="text"
           size="s"
           icon="plus"
           width="auto"
         >
-          {formatMessage(messages.newPhase)}
+          {formatMessage(messages.newSurvey)}
         </ButtonWithLink>
       </Box>
     </Box>
   );
 };
 
-export default TimelinePhases;
+export default ExtrasPhases;

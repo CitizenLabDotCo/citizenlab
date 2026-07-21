@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+import ExtrasPhases from '../ExtrasPhases';
 import ProjectNavRail from '../ProjectNavRail';
 import TimelinePhases from '../TimelinePhases';
 
@@ -26,6 +27,7 @@ const ProjectSidebar = ({ projectId }: Props) => (
     <ProjectNavRail projectId={projectId} />
     <Box flex="1 1 auto" minHeight="0" overflowY="auto">
       <TimelinePhases projectId={projectId} />
+      <ExtrasPhases projectId={projectId} />
     </Box>
   </Box>
 );
