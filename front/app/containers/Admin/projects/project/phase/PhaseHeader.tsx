@@ -41,6 +41,17 @@ const Container = styled(Box)`
   ${defaultCardStyle};
 `;
 
+// On narrow screens the tab strip scrolls sideways instead of squeezing the
+// tabs, so none of them (e.g. the last one) become unreachable.
+const TabBar = styled(Box)`
+  overflow-x: auto;
+  scrollbar-width: thin;
+
+  > * {
+    flex: 0 0 auto;
+  }
+`;
+
 export const participationMethodMessage: Record<
   ParticipationMethod,
   MessageDescriptor
@@ -225,7 +236,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
             )}
           </Box>
         </Box>
-        <Box
+        <TabBar
           className="intercom-product-tour-phase-tabs"
           display="flex"
           px="44px"
@@ -255,7 +266,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
               className={className}
             />
           ))}
-        </Box>
+        </TabBar>
       </Container>
       <TypedDeleteConfirmationModal
         opened={showDeleteModal}

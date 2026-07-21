@@ -24,8 +24,8 @@ const ProjectSidebar = ({ projectId }: Props) => (
     minHeight="0"
     overflow="hidden"
   >
-    <ProjectNavRail projectId={projectId} />
     <Box flex="1 1 auto" minHeight="0" overflowY="auto">
+      <ProjectNavRail projectId={projectId} />
       <TimelinePhases projectId={projectId} />
       <ExtrasPhases projectId={projectId} />
     </Box>
