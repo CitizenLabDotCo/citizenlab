@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Gweld pa feysydd y mae hyn yn eu dychwelyd",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Mewngofnodwch drwy'r cyfrif SSO ffurfweddedig.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Ddim ar gael: mae mewngofnodi â chyfrinair wedi'i ddiffodd ar gyfer y platfform hwn.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Heb fod ar gael: Mae SMS wedi'i ddiffodd ar gyfer y platfform hwn.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Ddim ar gael: nid oes dull dilysu hunaniaeth wedi'i ffurfweddu.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Mae'r cyfranogwr yn profi ei hunaniaeth drwy gofrestr allanol.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Pwy sy'n gallu cymryd rhan",

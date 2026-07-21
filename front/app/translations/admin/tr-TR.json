@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Bunun hangi alanları döndürdüğünü görün",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Yapılandırılmış SSO hesabı üzerinden giriş yapın.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Kullanılamıyor: Bu platform için şifre ile giriş kapatıldı.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Kullanılamıyor: Bu platform için SMS kapatıldı.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Kullanılamıyor: Hiçbir kimlik doğrulama yöntemi yapılandırılmadı.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Katılımcı, kimliğini harici bir kayıt sistemi üzerinden doğrular.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Kimler katılabilir",

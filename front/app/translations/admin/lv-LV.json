@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Skatīt, kādus laukus tas atgriež",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Pierakstīties, izmantojot konfigurēto SSO kontu.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Nav pieejams: šajā platformā ir izslēgta pieteikšanās ar paroli.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Nav pieejams: šai platformai SMS sūtīšana ir izslēgta.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Nav pieejams: nav konfigurēta neviena identitātes verifikācijas metode.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Dalībnieks apliecina savu identitāti, izmantojot ārēju reģistru.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Kas var piedalīties",

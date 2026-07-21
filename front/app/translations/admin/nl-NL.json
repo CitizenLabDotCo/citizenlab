@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Bekijk welke velden dit teruggeeft",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Inloggen via het geconfigureerde SSO-account.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Niet beschikbaar: inloggen met wachtwoord is uitgeschakeld voor dit platform.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Niet beschikbaar: sms is uitgeschakeld voor dit platform.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Niet beschikbaar: er is geen identiteitsverificatiemethode geconfigureerd.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Deelnemer bewijst hun identiteit via een extern register.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Wie kan deelnemen",

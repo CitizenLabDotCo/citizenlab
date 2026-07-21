@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Zobacz, jakie pola są zwracane",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Zaloguj się za pomocą skonfigurowanego konta SSO.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Niedostępne: logowanie hasłem jest wyłączone dla tej platformy.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Niedostępne: obsługa wiadomości SMS jest wyłączona dla tej platformy.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Niedostępne: nie skonfigurowano żadnej metody weryfikacji tożsamości.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Uczestnik potwierdza swoją tożsamość za pomocą zewnętrznego rejestru.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Kto może brać udział",

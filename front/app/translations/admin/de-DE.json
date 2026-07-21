@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Ansehen, welche Felder dies zurückgibt",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Über das konfigurierte SSO-Konto anmelden.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Nicht verfügbar: Die Anmeldung per Passwort ist für diese Plattform deaktiviert.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Nicht verfügbar: SMS ist für diese Plattform deaktiviert.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Nicht verfügbar: Es ist keine Methode zur Identitätsverifizierung konfiguriert.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Teilnehmer*in weist die Identität über ein externes Register nach.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Wer kann teilnehmen",

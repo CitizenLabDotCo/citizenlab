@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Féach cé na réimsí a sheolann sé seo ar ais",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Logáil isteach tríd an gcuntas SSO cumraithe.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Níl sé ar fáil: tá logáil isteach le pasfhocal múchta don ardán seo.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Níl sé ar fáil: Tá SMS múchta don ardán seo.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Níl sé ar fáil: níl aon mhodh fíoraithe céannachta cumraithe.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Cruthaíonn an rannpháirtí a chéannacht trí chlár seachtrach.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Cé ar féidir leo páirt a ghlacadh",

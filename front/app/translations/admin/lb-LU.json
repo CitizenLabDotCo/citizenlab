@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Kucken, wéi eng Felder dëst zeréckgëtt",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Mellt Iech iwwer de konfiguréierten SSO-Kont un.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Net disponibel: D'Umeldung iwwer Passwuert ass fir dës Plattform ausgeschalt.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Net disponibel: SMS ass fir dës Plattform ausgeschalt.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Net disponibel: Et ass keng Method fir d'Identitéitsverifizéierung konfiguréiert.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "De Participant beweist seng Identitéit iwwer en externe Register.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Wien ka matmaachen",

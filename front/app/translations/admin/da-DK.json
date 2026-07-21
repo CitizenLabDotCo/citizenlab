@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Se hvilke felter dette returnerer",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Log ind via den konfigurerede SSO-konto.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Utilgængelig: login med adgangskode er slået fra for denne platform.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Ikke tilgængelig: SMS er slået fra for denne platform.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Utilgængelig: ingen metode til identitetsverifikation er konfigureret.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Deltageren beviser sin identitet via et eksternt register.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Hvem kan deltage",

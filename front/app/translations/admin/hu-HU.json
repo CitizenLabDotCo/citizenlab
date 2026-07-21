@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Nézze meg, milyen mezőket ad vissza",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Jelentkezzen be a beállított SSO-fiókkal.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Nem érhető el: a jelszavas bejelentkezés ki van kapcsolva ezen a platformon.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Nem érhető el: az SMS-küldés ki van kapcsolva ezen a platformon.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Nem érhető el: nincs beállítva személyazonosság-igazolási módszer.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "A résztvevő külső nyilvántartáson keresztül igazolja személyazonosságát.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Ki vehet részt",

@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Katso, mitkä kentät tämä palauttaa",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Kirjaudu sisään määritetyn SSO-tilin kautta.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Ei käytettävissä: salasanalla kirjautuminen on poistettu käytöstä tällä alustalla.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Ei käytettävissä: Tekstiviestit on poistettu käytöstä tällä alustalla.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Ei käytettävissä: henkilöllisyyden vahvistusmenetelmää ei ole määritetty.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Osallistuja todistaa henkilöllisyytensä ulkoisen rekisterin kautta.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Kuka voi osallistua",

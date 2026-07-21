@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Takukkit immikkoortut suut utertinnerai",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "SSO aaqqissuunneqartoq atorlugu iserit.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Atorsinnaanngilaq: isissutissaq atorlugu iserneq nittartakkami matuneqarpoq.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Atorneqarsinnaanngilaq: SMS nittartakkami uani qaminneqarsimavoq.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Atorsinnaanngilaq: Kinaassutsimik uppernarsaanermik periutsimik ikkussisoqarsimanngilaq.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Peqataasup kinaassutsiminik avataani nalunaarsuiffik aqqutigalugu uppernarsaassaaq.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Kikkut peqataasinnaappat",

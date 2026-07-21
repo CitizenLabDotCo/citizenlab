@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "See which fields this returns",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Sign in via the configured SSO account.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Unavailable: password login is turned off for this platform.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Unavailable: SMS is turned off for this platform.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Unavailable: no identity verification method is configured.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Participant proves their identity through an external register.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Who can participate",

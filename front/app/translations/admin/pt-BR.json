@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "Ver quais campos isso retorna",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Entre com a conta de SSO configurada.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Indisponível: o login por senha está desativado para esta plataforma.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "Indisponível: o SMS está desativado para esta plataforma.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Indisponível: nenhum método de verificação de identidade está configurado.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "O participante comprova sua identidade por meio de um registro externo.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Quem pode participar",

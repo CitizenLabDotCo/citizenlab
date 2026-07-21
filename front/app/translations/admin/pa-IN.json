@@ -4122,7 +4122,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": "ਦੇਖੋ ਕਿ ਇਹ ਕਿਹੜੇ ਖੇਤਰ ਵਾਪਸ ਕਰਦਾ ਹੈ",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "ਕੌਂਫਿਗਰ ਕੀਤੇ SSO ਖਾਤੇ ਰਾਹੀਂ ਸਾਈਨ ਇਨ ਕਰੋ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "ਉਪਲਬਧ ਨਹੀਂ: ਇਸ ਪਲੇਟਫਾਰਮ ਲਈ ਪਾਸਵਰਡ ਲੌਗਇਨ ਬੰਦ ਹੈ।",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": "ਅਣਉਪਲਬਧ: ਇਸ ਪਲੇਟਫਾਰਮ ਲਈ SMS ਬੰਦ ਹੈ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "ਉਪਲਬਧ ਨਹੀਂ: ਕੋਈ ਪਛਾਣ ਪੁਸ਼ਟੀਕਰਨ ਵਿਧੀ ਕੌਂਫਿਗਰ ਨਹੀਂ ਕੀਤੀ ਗਈ ਹੈ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "ਭਾਗੀਦਾਰ ਇੱਕ ਬਾਹਰੀ ਰਜਿਸਟਰ ਰਾਹੀਂ ਆਪਣੀ ਪਛਾਣ ਸਾਬਤ ਕਰਦਾ ਹੈ।",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "ਕੌਣ ਹਿੱਸਾ ਲੈ ਸਕਦਾ ਹੈ",
