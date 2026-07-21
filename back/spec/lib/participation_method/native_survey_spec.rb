@@ -205,4 +205,15 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(participation_method.send(:proposed_budget_in_form?)).to be false
     end
   end
+
+  describe '#allow_posting_again_after' do
+    # The nil (single response) case is covered by the `its` example above.
+    context 'when the phase allows multiple responses' do
+      let(:phase) { create(:native_survey_phase, allow_multiple_responses: true) }
+
+      it 'returns 0.seconds so the posting limit is lifted' do
+        expect(participation_method.allow_posting_again_after).to eq 0.seconds
+      end
+    end
+  end
 end
