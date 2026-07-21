@@ -8,7 +8,7 @@ const BODY_NAME = 'ProjectPageBody';
 
 // Widgets that render live project data rather than description content. The
 // legacy description projection is everything in the page body except these.
-const PROJECT_WIDGETS = ['PhasesWidget', 'EventsWidget'];
+const PROJECT_WIDGETS = ['PhasesWidget', 'EventsWidget', 'ExtraSurveysWidget'];
 
 const editorRootNode = (childIds: string[]): SerializedNode => ({
   type: 'div',
