@@ -18,6 +18,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.uploadFiles2',
     defaultMessage: 'Upload files to project',
   },
+  refreshFiles: {
+    id: 'app.containers.admin.ContentBuilder.refreshFiles',
+    defaultMessage: 'Refresh file list',
+  },
   fileMissing: {
     id: 'app.containers.admin.ContentBuilder.fileMissing',
     defaultMessage: 'File missing. Select another file or remove this widget.',
