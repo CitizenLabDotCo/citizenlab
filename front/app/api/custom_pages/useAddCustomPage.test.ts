@@ -36,6 +36,30 @@ describe('useAddCustomPage', () => {
     expect(result.current.data?.data).toEqual(customPagesData[0]);
   });
 
+  it('sends project_id when creating a project-scoped page', async () => {
+    let requestBody: any;
+    server.use(
+      http.post(apiPath, async ({ request }) => {
+        requestBody = await request.json();
+        return HttpResponse.json({ data: customPagesData[0] }, { status: 200 });
+      })
+    );
+
+    const { result } = renderHook(() => useAddCustomPage(), {
+      wrapper: createQueryClientWrapper(),
+    });
+
+    act(() => {
+      result.current.mutate({
+        title_multiloc: { en: 'test' },
+        project_id: 'project-1',
+      });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(requestBody.static_page.project_id).toBe('project-1');
+  });
+
   it('returns error correctly', async () => {
     server.use(
       http.post(apiPath, () => {

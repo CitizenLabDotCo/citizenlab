@@ -296,8 +296,6 @@ const changePhoneRoute = createRoute({
     </PageLoading>
   ),
 });
-
-// Ideas routes
 const ideasEditSearchSchema = yup.object({
   idea_id: yup.string().optional(),
   selected_idea_id: yup.string().optional(),
@@ -475,6 +473,16 @@ const projectPhaseRoute = createRoute({
   component: () => (
     <PageLoading>
       <ProjectsShowPage />
+    </PageLoading>
+  ),
+});
+
+const projectPageShowRoute = createRoute({
+  getParentRoute: () => projectShowRoute,
+  path: 'pages/$pageSlug',
+  component: () => (
+    <PageLoading>
+      <CustomPageShow />
     </PageLoading>
   ),
 });
@@ -697,6 +705,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
         projectShowIndexRoute,
         projectPhaseRoute,
         projectIdeasFeedRoute,
+        projectPageShowRoute,
       ]),
       foldersShowRoute,
       eventsIndexRoute,
