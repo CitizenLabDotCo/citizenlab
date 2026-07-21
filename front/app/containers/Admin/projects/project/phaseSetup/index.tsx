@@ -17,6 +17,7 @@ import { getPhaseLandingTab } from 'api/phases/utils';
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Section,
@@ -536,6 +537,9 @@ const AdminPhaseEditWrapper = () => {
     placement?: 'standalone';
   };
   const { data: phase } = usePhase(phaseId);
+  const extraSurveysEnabled = useFeatureFlag({
+    name: 'parallel_participation',
+  });
 
   if (!projectId) return null;
 
@@ -546,7 +550,7 @@ const AdminPhaseEditWrapper = () => {
     <AdminPhaseEdit
       projectId={projectId}
       phase={phaseId ? phase : undefined}
-      standaloneSurvey={placement === 'standalone'}
+      standaloneSurvey={extraSurveysEnabled && placement === 'standalone'}
     />
   );
 };
