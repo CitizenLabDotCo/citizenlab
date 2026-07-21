@@ -6,7 +6,7 @@ const useIsPageBodyChild = () => {
   const { parentId } = useNode((node) => ({ parentId: node.data.parent }));
   const { isPageBodyChild } = useEditor((state) => ({
     isPageBodyChild: parentId
-      ? state.nodes[parentId]?.data.name === 'ProjectPageBody'
+      ? state.nodes[parentId].data.name === 'ProjectPageBody'
       : false,
   }));
   return isPageBodyChild;
