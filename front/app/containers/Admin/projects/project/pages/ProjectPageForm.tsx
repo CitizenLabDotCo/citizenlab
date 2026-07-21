@@ -9,7 +9,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, Resolver, useForm } from 'react-hook-form';
 import { Multiloc, UploadFile } from 'typings';
 import { mixed, object, string } from 'yup';
 
@@ -109,7 +109,8 @@ const ProjectPageForm = ({ project, page }: Props) => {
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
-    resolver: yupResolver(schema),
+    // Cast: yup infers optional keys on the output side, which doesn't line up with the input side.
+    resolver: yupResolver(schema) as Resolver<FormValues>,
     defaultValues: {
       title_multiloc: page?.attributes.title_multiloc,
       slug: page?.attributes.slug,
