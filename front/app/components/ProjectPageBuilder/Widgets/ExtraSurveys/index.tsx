@@ -5,6 +5,8 @@ import { UserComponent, useEditor } from '@craftjs/core';
 
 import usePhase from 'api/phases/usePhase';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
@@ -23,11 +25,14 @@ const ExtraSurveysWidget: UserComponent<ExtraSurveysProps> = ({
   buttonStyle = 'primary',
   buttonText,
 }) => {
+  const enabled = useFeatureFlag({ name: 'parallel_participation' });
   const { data: phase } = usePhase(surveyPhaseId);
   const padding = useCraftComponentDefaultPadding();
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
+
+  if (!enabled) return null;
 
   const survey =
     phase && isExtraSurveyPhase(phase.data) ? phase.data : undefined;
