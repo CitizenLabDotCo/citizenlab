@@ -1782,6 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Benotzer no Geschlecht",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Kritt en Iwwerbléck iwwer d'Participanten un dësem Projet, déi e Kont hunn. Anonym Participatioun gëtt net berücksichtegt.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Keen Enddatum",
+  "app.containers.Admin.projects.project.projectHomepage": "Projet-Homepage",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Virschau vun der Projetssäit",
   "app.containers.Admin.projects.project.settingsNav": "Astellungen",
   "app.containers.Admin.projects.project.survey.allFiles": "All Dateien",

@@ -1782,6 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Gebruikers per geslacht",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Krijg een overzicht van de deelnemers aan dit project die een account hebben. Anonieme deelname wordt niet meegerekend.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Geen einddatum",
+  "app.containers.Admin.projects.project.projectHomepage": "Projectstartpagina",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Voorbeeld van projectpagina",
   "app.containers.Admin.projects.project.settingsNav": "Instellingen",
   "app.containers.Admin.projects.project.survey.allFiles": "Alle bestanden",

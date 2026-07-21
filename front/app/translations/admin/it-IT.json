@@ -1782,6 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Utenti per genere",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Ottieni una panoramica dei partecipanti a questo progetto che hanno un account. La partecipazione anonima non è considerata.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Nessuna data di fine",
+  "app.containers.Admin.projects.project.projectHomepage": "Homepage del progetto",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Anteprima della pagina del progetto",
   "app.containers.Admin.projects.project.settingsNav": "Impostazioni",
   "app.containers.Admin.projects.project.survey.allFiles": "Tutti i file",

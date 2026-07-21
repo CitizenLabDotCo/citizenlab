@@ -1777,6 +1777,7 @@
   "app.containers.Admin.projects.project.participation.usersByAge": "Users by age",
   "app.containers.Admin.projects.project.participation.usersByGender": "Users by gender",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Get an overview of the participants on this project that have an account. Anonymous participation is not accounted.",
+  "app.containers.Admin.projects.project.projectHomepage": "Project homepage",
   "app.containers.Admin.projects.project.survey.allFiles": "All files",
   "app.containers.Admin.projects.project.survey.allResponses": "All responses",
   "app.containers.Admin.projects.project.survey.analysis.accuracy": "Accuracy: {accuracy}{percentage}",

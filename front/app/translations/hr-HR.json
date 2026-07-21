@@ -2113,6 +2113,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Pročitajte više",
   "app.containers.ProjectFolderShowPage.seeLess": "Prikaži manje",
   "app.containers.ProjectFolderShowPage.share": "Podijeli",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Početna stranica projekta",
   "app.containers.ProjectPageBuilder.saveError": "Došlo je do pogreške pri spremanju stranice projekta.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Sekcije stranice trenutno su zaključane. Widgeti se mogu postaviti unutar sekcije Opis.",
   "app.containers.Projects.PollForm.document": "Dokument",

@@ -2113,6 +2113,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Mehr lesen",
   "app.containers.ProjectFolderShowPage.seeLess": "Weniger sehen",
   "app.containers.ProjectFolderShowPage.share": "Teilen",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Projekt-Startseite",
   "app.containers.ProjectPageBuilder.saveError": "Beim Speichern der Projektseite ist ein Fehler aufgetreten.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Die Seitenabschnitte sind vorerst gesperrt. Widgets können im Abschnitt „Beschreibung“ platziert werden.",
   "app.containers.Projects.PollForm.document": "Dokument",

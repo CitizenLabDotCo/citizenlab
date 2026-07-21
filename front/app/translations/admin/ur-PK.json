@@ -1782,6 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "جنس کے لحاظ سے صارفین",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "اس پروجیکٹ کے شرکاء کا ایک جائزہ حاصل کریں جن کا اکاؤنٹ ہے۔ گمنام شرکت کا حساب نہیں ہے۔",
   "app.containers.Admin.projects.project.phaseNoEndDate": "کوئی آخری تاریخ نہیں",
+  "app.containers.Admin.projects.project.projectHomepage": "منصوبے کا ہوم پیج",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "پروجیکٹ پیج کا پیش نظارہ",
   "app.containers.Admin.projects.project.settingsNav": "ترتیبات",
   "app.containers.Admin.projects.project.survey.allFiles": "تمام فائلیں۔",

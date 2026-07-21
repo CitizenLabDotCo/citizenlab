@@ -1782,6 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Korisnici prema spolu",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Dobijte pregled sudionika ovog projekta koji imaju račun. Anonimno sudjelovanje se ne uzima u obzir.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Nema datuma završetka",
+  "app.containers.Admin.projects.project.projectHomepage": "Početna stranica projekta",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Pregled stranice projekta",
   "app.containers.Admin.projects.project.settingsNav": "Postavke",
   "app.containers.Admin.projects.project.survey.allFiles": "Sve datoteke",
