@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Indiqueu un títol per a tots els idiomes",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Títol",
   "app.containers.AdminPage.ProjectPages.viewPage": "Visualitza la pàgina",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Quan està activat, un participant pot enviar aquesta enquesta més d'una vegada. Quan està desactivat, cada participant només pot respondre una vegada.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Permetre múltiples respostes",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Correus electrònics automatitzats",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Podeu configurar correus electrònics activats a nivell de fase",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",

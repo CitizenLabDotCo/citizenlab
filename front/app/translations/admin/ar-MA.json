@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "يرجى تقديم عنوان لجميع اللغات",
   "app.containers.AdminPage.ProjectPages.titleLabel": "العنوان",
   "app.containers.AdminPage.ProjectPages.viewPage": "عرض الصفحة",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "عند تفعيل هذا الخيار، يمكن للمشارك إرسال هذا الاستطلاع أكثر من مرة. وعند تعطيله، يمكن لكل مشارك الرد مرة واحدة فقط.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "السماح بعدة ردود",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "رسائل بريد إلكتروني مؤتمتة",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "يمكنك إعداد رسائل البريد الإلكتروني التي يتم تفعيلها على مستوى المرحلة",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "التواريخ",

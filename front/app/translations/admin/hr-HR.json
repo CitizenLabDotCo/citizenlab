@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Navedite naslov za sve jezike",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Naslov",
   "app.containers.AdminPage.ProjectPages.viewPage": "Prikaži stranicu",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Kada je omogućeno, sudionik može ispuniti ovu anketu više puta. Kada je onemogućeno, svaki sudionik može odgovoriti samo jednom.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Dopusti više odgovora",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatizirana e-pošta",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Možete konfigurirati e-poruke koje se aktiviraju na razini faze",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datumi",

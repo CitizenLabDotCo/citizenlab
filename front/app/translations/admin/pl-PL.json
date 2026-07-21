@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Podaj tytuł we wszystkich językach",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Tytuł",
   "app.containers.AdminPage.ProjectPages.viewPage": "Wyświetl stronę",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Gdy ta opcja jest włączona, uczestnik może przesłać tę ankietę więcej niż raz. Gdy jest wyłączona, każdy uczestnik może odpowiedzieć tylko raz.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Zezwalaj na wiele odpowiedzi",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Zautomatyzowane wiadomości e-mail",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Możesz skonfigurować wiadomości e-mail wyzwalane na poziomie fazy",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Daty",

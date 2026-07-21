@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Ange en titel för alla språk",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Titel",
   "app.containers.AdminPage.ProjectPages.viewPage": "Visa sida",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "När detta är aktiverat kan en deltagare skicka in denna enkät mer än en gång. När det är inaktiverat kan varje deltagare bara svara en gång.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Tillåt flera svar",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiserade e-postmeddelanden",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Du kan konfigurera e-postmeddelanden som skickas när en ny fas inleds",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datum",

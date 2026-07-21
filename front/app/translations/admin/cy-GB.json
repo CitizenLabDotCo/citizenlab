@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Darparwch deitl ar gyfer pob iaith",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Teitl",
   "app.containers.AdminPage.ProjectPages.viewPage": "Gweld y dudalen",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Pan fydd wedi'i alluogi, gall cyfranogwr gyflwyno'r arolwg hwn fwy nag unwaith. Pan fydd wedi'i analluogi, dim ond unwaith y gall pob cyfranogwr ymateb.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Caniatáu mwy nag un ymateb",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "E-byst awtomataidd",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Gallwch chi ffurfweddu e-byst wedi'u sbarduno ar lefel cyfnod",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dyddiadau",

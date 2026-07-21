@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Oqaatsinut tamanut qulequtsiigit",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Qulequtaq",
   "app.containers.AdminPage.ProjectPages.viewPage": "Qupperneq takuuk",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Atulerpat peqataasup misissuineq una arlaleriarluni akisinnaavaa. Atunngippat peqataasoq ataasiarluni taamaallaat akisinnaavoq.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Arlaleriarluni akissuteqarsinnaaneq akueriuk",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "E-mailit nammineq nassiunneqartartut",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Immikkoortuni e-mailit nassiunneqartussat aaqqissuunneqarsinnaapput",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Ullut",

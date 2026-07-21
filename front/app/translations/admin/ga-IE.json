@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Cuir teideal ar fáil do gach teanga",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Teideal",
   "app.containers.AdminPage.ProjectPages.viewPage": "Féach ar an leathanach",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Nuair a chumasaítear é seo, is féidir le rannpháirtí an suirbhé seo a chur isteach níos mó ná uair amháin. Nuair a dhíchumasaítear é, ní féidir le gach rannpháirtí freagra a thabhairt ach uair amháin.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Ceadaigh freagraí iolracha",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Ríomhphoist uathoibrithe",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Is féidir leat ríomhphoist a chumrú a spreagtar ar leibhéal céime",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dátaí",

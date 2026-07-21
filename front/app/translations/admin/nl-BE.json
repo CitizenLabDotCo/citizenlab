@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Geef een titel op voor alle talen",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Titel",
   "app.containers.AdminPage.ProjectPages.viewPage": "Pagina bekijken",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Indien ingeschakeld kan een deelnemer deze vragenlijst vaker dan één keer insturen. Indien uitgeschakeld kan elke deelnemer slechts één keer reageren.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Meerdere reacties toestaan",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Geautomatiseerde e-mails",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Je kunt e-mails configureren die op faseniveau worden getriggerd",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Data",

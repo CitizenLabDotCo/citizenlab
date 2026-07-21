@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Forneça um título para todos os idiomas",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Título",
   "app.containers.AdminPage.ProjectPages.viewPage": "Visualizar página",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Quando ativado, um participante pode enviar esta pesquisa mais de uma vez. Quando desativado, cada participante pode responder apenas uma vez.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Permitir múltiplas respostas",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "E-mails automáticos",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Você pode configurar e-mails disparados em um nível de fase",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datas",

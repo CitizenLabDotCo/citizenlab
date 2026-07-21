@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Gitt en Titel fir all Sproochen un",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Titel",
   "app.containers.AdminPage.ProjectPages.viewPage": "Säit uweisen",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Wann dës Optioun aktivéiert ass, kann e Participant dës Ëmfro méi wéi eemol ofschécken. Wann se deaktivéiert ass, kann all Participant nëmmen eemol äntweren.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Méi Äntwerten zouloossen",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiséiert E-Mailen",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Dir kënnt E-Mailen konfiguréieren, déi op engem Phase-Niveau ausgeléist ginn",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",

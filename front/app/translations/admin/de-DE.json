@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Geben Sie einen Titel für alle Sprachen an",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Titel",
   "app.containers.AdminPage.ProjectPages.viewPage": "Seite anzeigen",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Wenn diese Option aktiviert ist, können Teilnehmende diese Umfrage mehr als einmal einreichen. Wenn sie deaktiviert ist, kann jede teilnehmende Person nur einmal antworten.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Mehrfache Antworten zulassen",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatisierte E-Mails",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Sie können E-Mails konfigurieren, die auf Phasenebene ausgelöst werden",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Zeitraum",

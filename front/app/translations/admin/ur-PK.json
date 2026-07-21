@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "تمام زبانوں کے لیے عنوان فراہم کریں",
   "app.containers.AdminPage.ProjectPages.titleLabel": "عنوان",
   "app.containers.AdminPage.ProjectPages.viewPage": "صفحہ دیکھیں",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "فعال ہونے پر، ایک شریک اس سروے کو ایک سے زیادہ بار جمع کروا سکتا ہے۔ غیر فعال ہونے پر، ہر شریک صرف ایک بار جواب دے سکتا ہے۔",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "متعدد جوابات کی اجازت دیں",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "خودکار ای میلز",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "آپ فیز لیول پر متحرک ای میلز کو کنفیگر کر سکتے ہیں۔",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "تاریخیں",

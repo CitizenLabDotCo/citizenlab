@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Provide a title for all languages",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Title",
   "app.containers.AdminPage.ProjectPages.viewPage": "View page",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "When enabled, a participant can submit this survey more than once. When disabled, each participant can only respond once.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Allow multiple responses",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automated emails",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "You can configure emails triggered on a phase level",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",

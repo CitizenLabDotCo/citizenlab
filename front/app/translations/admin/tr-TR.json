@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Tüm diller için bir başlık girin",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Başlık",
   "app.containers.AdminPage.ProjectPages.viewPage": "Sayfayı görüntüle",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Etkinleştirildiğinde, bir katılımcı bu anketi birden fazla kez gönderebilir. Devre dışı bırakıldığında, her katılımcı yalnızca bir kez yanıt verebilir.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Birden fazla yanıta izin ver",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Otomatik e-postalar",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Aşama düzeyinde tetiklenen e-postaları yapılandırabilirsiniz",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Tarihler",

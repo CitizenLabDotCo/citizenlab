@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Norādiet nosaukumu visās valodās",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Virsraksts",
   "app.containers.AdminPage.ProjectPages.viewPage": "Skatīt lapu",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Ja šī iespēja ir iespējota, dalībnieks var aizpildīt šo aptauju vairākas reizes. Ja tā ir atspējota, katrs dalībnieks var atbildēt tikai vienu reizi.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Atļaut vairākas atbildes",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatizēti e-pasti",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Varat konfigurēt e-pasta ziņojumus, kas tiek aktivizēti fāžu līmenī.",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datumi",

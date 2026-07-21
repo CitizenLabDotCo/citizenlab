@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Adjon meg egy címet minden nyelvhez",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Cím",
   "app.containers.AdminPage.ProjectPages.viewPage": "Oldal megtekintése",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Ha engedélyezve van, a résztvevő többször is beküldheti ezt a kérdőívet. Ha ki van kapcsolva, minden résztvevő csak egyszer válaszolhat.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Többszöri válaszadás engedélyezése",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatizált e-mailek",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Beállíthat fázisszinten kiváltott e-maileket",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",

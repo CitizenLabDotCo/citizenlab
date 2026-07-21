@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Pateikite pavadinimą visomis kalbomis",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Pavadinimas",
   "app.containers.AdminPage.ProjectPages.viewPage": "Peržiūrėti puslapį",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Kai įjungta, dalyvis gali pateikti šią apklausą daugiau nei vieną kartą. Kai išjungta, kiekvienas dalyvis gali atsakyti tik vieną kartą.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Leisti kelis atsakymus",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiniai el. laiškai",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Galite sukonfigūruoti el. laiškus, paleidžiamus etapo lygmeniu",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datos",

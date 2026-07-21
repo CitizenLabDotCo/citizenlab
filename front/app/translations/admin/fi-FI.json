@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Anna otsikko kaikilla kielillä",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Otsikko",
   "app.containers.AdminPage.ProjectPages.viewPage": "Näytä sivu",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Kun tämä on käytössä, osallistuja voi vastata kyselyyn useammin kuin kerran. Kun tämä on poissa käytöstä, kukin osallistuja voi vastata vain kerran.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Salli useita vastauksia",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automaattiset sähköpostit",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Voit määrittää vaihetasolla käynnistyvät sähköpostit",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Päivämäärät",

@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Indiquez un titre pour toutes les langues",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Titre",
   "app.containers.AdminPage.ProjectPages.viewPage": "Voir la page",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Lorsqu'elle est activée, un participant peut répondre plusieurs fois à ce sondage. Lorsqu'elle est désactivée, chaque participant ne peut répondre qu'une seule fois.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Autoriser plusieurs réponses",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "E-mails automatisés",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Vous pouvez configurer les e-mails envoyés pour chaque phase individuellement",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",

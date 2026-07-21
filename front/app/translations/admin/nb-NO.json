@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Oppgi en tittel for alle språk",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Tittel",
   "app.containers.AdminPage.ProjectPages.viewPage": "Vis side",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Når dette er aktivert, kan en deltaker sende inn denne undersøkelsen mer enn én gang. Når det er deaktivert, kan hver deltaker bare svare én gang.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Tillat flere svar",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiserte e-poster",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Du kan konfigurere e-postmeldinger som utløses på fasenivå",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datoer",

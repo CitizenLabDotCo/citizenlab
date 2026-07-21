@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "Angiv en titel på alle sprog",
   "app.containers.AdminPage.ProjectPages.titleLabel": "Titel",
   "app.containers.AdminPage.ProjectPages.viewPage": "Se side",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "Når denne er aktiveret, kan en deltager indsende dette spørgeskema mere end én gang. Når den er deaktiveret, kan hver deltager kun svare én gang.",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "Tillad flere besvarelser",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "Automatiske e-mails",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "Du kan konfigurere e-mails, som udløses af et faseniveau",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Datoer",

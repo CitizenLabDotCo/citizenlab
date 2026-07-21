@@ -3016,6 +3016,8 @@
   "app.containers.AdminPage.ProjectPages.titleError": "ਸਾਰੀਆਂ ਭਾਸ਼ਾਵਾਂ ਲਈ ਇੱਕ ਸਿਰਲੇਖ ਦਿਓ",
   "app.containers.AdminPage.ProjectPages.titleLabel": "ਸਿਰਲੇਖ",
   "app.containers.AdminPage.ProjectPages.viewPage": "ਪੰਨਾ ਦੇਖੋ",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription": "ਜਦੋਂ ਚਾਲੂ ਹੁੰਦਾ ਹੈ, ਤਾਂ ਇੱਕ ਭਾਗੀਦਾਰ ਇਸ ਸਰਵੇਖਣ ਨੂੰ ਇੱਕ ਤੋਂ ਵੱਧ ਵਾਰ ਜਮ੍ਹਾਂ ਕਰ ਸਕਦਾ ਹੈ। ਜਦੋਂ ਬੰਦ ਹੁੰਦਾ ਹੈ, ਤਾਂ ਹਰੇਕ ਭਾਗੀਦਾਰ ਸਿਰਫ਼ ਇੱਕ ਵਾਰ ਜਵਾਬ ਦੇ ਸਕਦਾ ਹੈ।",
+  "app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel": "ਕਈ ਜਵਾਬਾਂ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ",
   "app.containers.AdminPage.ProjectTimeline.automatedEmails": "ਸਵੈਚਲਿਤ ਈਮੇਲਾਂ",
   "app.containers.AdminPage.ProjectTimeline.automatedEmailsDescription": "ਤੁਸੀਂ ਇੱਕ ਪੜਾਅ ਪੱਧਰ 'ਤੇ ਸ਼ੁਰੂ ਕੀਤੀਆਂ ਈਮੇਲਾਂ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰ ਸਕਦੇ ਹੋ",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "ਮਿਤੀਆਂ",
