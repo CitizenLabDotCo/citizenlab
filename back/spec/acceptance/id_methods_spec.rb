@@ -143,4 +143,31 @@ resource 'Id methods' do
       )
     end
   end
+
+  context 'when the id_config feature is not enabled' do
+    before do
+      configuration = AppConfiguration.instance
+      configuration.settings['id_config']['enabled'] = false
+      configuration.save!
+    end
+
+    get 'web_api/v1/id_methods' do
+      example_request 'Lists no id methods' do
+        expect(status).to eq(200)
+        expect(response_data).to eq []
+      end
+    end
+
+    get 'web_api/v1/id_methods/first_enabled_for_verified_actions' do
+      example_request 'Returns no id method' do
+        expect(status).to eq(204)
+      end
+    end
+
+    get 'web_api/v1/id_methods/first_enabled_verification_method' do
+      example_request 'Returns no id method' do
+        expect(status).to eq(204)
+      end
+    end
+  end
 end

@@ -32,6 +32,8 @@ class IdMethodService
   end
 
   def configured_methods(app_configuration)
+    return [] unless app_configuration.feature_activated?('id_config')
+
     configured_methods = app_configuration.settings('id_config', 'id_methods') || []
     configured_names = configured_methods.pluck('name')
     all_methods.select do |method|

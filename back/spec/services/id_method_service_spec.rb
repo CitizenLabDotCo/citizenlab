@@ -17,6 +17,28 @@ describe IdMethodService do
     AppConfiguration.instance.save!
   end
 
+  describe 'configured_methods' do
+    it 'returns the methods configured in the settings' do
+      expect(service.configured_methods(AppConfiguration.instance).map(&:name)).to eq ['cow']
+    end
+
+    it 'returns no methods if the id_config feature is not enabled' do
+      configuration = AppConfiguration.instance
+      configuration.settings['id_config']['enabled'] = false
+      configuration.save!
+
+      expect(service.configured_methods(configuration)).to be_empty
+    end
+
+    it 'returns no methods if the id_config feature is not allowed' do
+      configuration = AppConfiguration.instance
+      configuration.settings['id_config']['allowed'] = false
+      configuration.save!
+
+      expect(service.configured_methods(configuration)).to be_empty
+    end
+  end
+
   describe 'method_metadata' do
     it 'returns allowed_for_verified_actions: false if first method does not support verified actions' do
       vm = service.method_metadata(service.all_methods.first)
