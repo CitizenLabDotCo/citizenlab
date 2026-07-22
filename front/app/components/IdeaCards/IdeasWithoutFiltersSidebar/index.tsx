@@ -15,6 +15,7 @@ import { IIdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { IdeaSortMethod, PresentationMode } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
+import { getSelectedView } from 'api/phases/utils';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -34,7 +35,6 @@ import StatusFilterDropdown from '../shared/Filters/StatusFilterDropdown';
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
-import useSelectedView from '../useSelectedView';
 
 const FiltersArea = styled.div`
   width: 100%;
@@ -113,7 +113,7 @@ const IdeasWithoutFiltersSidebar = ({
 
   // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.idea_map_id;
-  const selectedView = useSelectedView({
+  const selectedView = getSelectedView({
     requestedView: searchParams.view,
     availableViews: phase?.data.attributes.available_views,
     defaultView: selectedIdeaMarkerId ? 'map' : defaultView ?? 'card',

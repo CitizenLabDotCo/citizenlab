@@ -18,6 +18,7 @@ import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
+import { getSelectedView } from 'api/phases/utils';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
@@ -29,7 +30,6 @@ import { useSearch } from 'utils/router';
 import messages from '../messages';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
-import useSelectedView from '../useSelectedView';
 
 import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 import ContentRight from './ContentRight';
@@ -104,7 +104,7 @@ const IdeasWithFiltersSidebar = ({
 
   // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.idea_map_id;
-  const selectedView = useSelectedView({
+  const selectedView = getSelectedView({
     requestedView: searchParams.view,
     availableViews: phase?.data.attributes.available_views,
     defaultView: selectedIdeaMarkerId ? 'map' : defaultView,

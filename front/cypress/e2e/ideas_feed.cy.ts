@@ -360,12 +360,11 @@ describe('Ideas Feed (Perspectives) on a phase that does not offer it', () => {
     }
   });
 
-  it('shows the cards and drops the view param when ?view=feed is requested', () => {
+  it('shows the cards when ?view=feed is requested', () => {
     cy.visit(`/projects/${projectSlug}?view=feed`);
 
     cy.get('#e2e-ideas-container').should('exist');
     cy.get('[data-cy="e2e-sticky-notes-pile"]').should('not.exist');
-    cy.url().should('not.include', 'view=feed');
   });
 
   it('redirects the ideas feed page back to the project', () => {
