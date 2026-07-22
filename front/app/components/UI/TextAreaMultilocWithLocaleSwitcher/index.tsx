@@ -47,8 +47,7 @@ export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
   onChange: (value: Multiloc, locale: SupportedLocale) => void;
   labelTextElement?: JSX.Element;
-  // Rendered inside the field. The selected locale is this component's own state, so a
-  // counter that needs to know which translation it is looking at has to be built here.
+  // Rendered inside the field; gets the selected locale (this component's own state).
   renderCounter?: (value: string, locale: SupportedLocale) => React.ReactNode;
 }
 

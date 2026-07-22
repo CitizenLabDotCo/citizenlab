@@ -1,36 +1,27 @@
 import { SegmentedMessage } from 'sms-segments-calculator';
 
-// The cap on how many segments a single SMS body may cost. Enforced client-side only
-// for now (the compose form blocks going over); a matching server-side guard will land
-// with the backend segment checks in a later PR.
+// Max segments per SMS body. Client-side cap for now; server-side guard follows.
 export const MAX_SMS_SEGMENTS = 8;
 
 const GSM_7 = 'GSM-7';
 
-// A segment carries 140 octets = 1120 bits: 160 GSM-7 characters, or 70 Unicode ones.
-// Once a message spans several segments each reserves a 48-bit header, leaving 153 and 67.
+// Per-segment capacity: 160/70 alone, 153/67 concatenated (each reserves a header).
 const SINGLE_SEGMENT_CAPACITY = { gsm7: 160, unicode: 70 };
 const CONCATENATED_SEGMENT_CAPACITY = { gsm7: 153, unicode: 67 };
 
 export interface SmsSegments {
-  // What the message occupies, in the units a segment is measured in: septets under
-  // GSM-7, UTF-16 code units under Unicode. NOT a character count -- an emoji is one
-  // character but two code units, so counting characters would show a full segment as
-  // half empty.
+  // Billable units: GSM-7 septets or UTF-16 code units (emoji = 2), not characters.
   unitsUsed: number;
-  // How much those segments can hold in total. Moves as you type: 160 for a single
-  // segment, then 153 per segment, and less than half of that under Unicode.
   capacity: number;
   perSegment: number;
   segmentCount: number;
   isUnicode: boolean;
-  // The characters that pushed the message out of GSM-7, deduplicated.
+  // Distinct characters that forced Unicode encoding.
   nonGsmCharacters: string[];
   exceedsLimit: boolean;
 }
 
-// Runs Twilio's own calculator, so the numbers an admin sees are the ones they are
-// billed for. The backend mirrors this to guard the send endpoint.
+// Uses Twilio's calculator so the counts match what the admin is billed for.
 export const measureSms = (body: string): SmsSegments => {
   const message = new SegmentedMessage(body);
 
@@ -44,7 +35,7 @@ export const measureSms = (body: string): SmsSegments => {
       : CONCATENATED_SEGMENT_CAPACITY[isUnicode ? 'unicode' : 'gsm7'];
 
   return {
-    // messageSize is the body's size in bits, excluding the segment headers.
+    // messageSize is bits excluding headers; divide to get units used.
     unitsUsed: message.messageSize / bitsPerUnit,
     capacity: segmentCount * perSegment,
     perSegment,

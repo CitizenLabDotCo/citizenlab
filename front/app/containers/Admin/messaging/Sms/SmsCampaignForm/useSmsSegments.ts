@@ -2,9 +2,8 @@ import { useMemo } from 'react';
 
 import { measureSms, SmsSegments } from '../utils/segments';
 
-// Memoized wrapper around measureSms for the compose form's live counter, which
-// re-measures on every keystroke. measureSms itself stays a plain function so the yup
-// validator — which runs outside React render — can call it too.
+// Memoizes measureSms for the keystroke-driven counter. measureSms stays a plain function
+// so the yup validator, which runs outside React, can call it too.
 const useSmsSegments = (body: string): SmsSegments =>
   useMemo(() => measureSms(body), [body]);
 

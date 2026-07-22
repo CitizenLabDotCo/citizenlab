@@ -57,8 +57,7 @@ describe('validateSmsBodyMultiloc', () => {
     ).toBe(false);
   });
 
-  // The same body costs more segments in a language that falls outside GSM-7, so the
-  // limit is hit at well under half the length. A raw character cap would miss this.
+  // A non-GSM-7 language hits the cap at far fewer characters; a char cap would miss this.
   it('should reject a much shorter body in a language that forces Unicode', async () => {
     const unicodeOverLimit = 'ж'.repeat(67 * MAX_SMS_SEGMENTS + 1);
     expect(unicodeOverLimit.length).toBeLessThan(atLimit.length);

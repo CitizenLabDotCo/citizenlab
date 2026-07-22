@@ -123,11 +123,6 @@ const SmsCampaignForm = ({
             />
           </StyledSectionField>
           <SectionField className="e2e-sms-campaign_body_multiloc">
-            {/*
-              No maxCharCount here: TextArea treats it as a hard cap and truncates what
-              the admin types. Going over is a cost decision, not a typo, so the limit is
-              enforced on submit instead and SegmentCounter shows the running cost.
-            */}
             <TextAreaMultilocWithLocaleSwitcher
               name="body_multiloc"
               label={formatMessage(messages.fieldSmsBody)}

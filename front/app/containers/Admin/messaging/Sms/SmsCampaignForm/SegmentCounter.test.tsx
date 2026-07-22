@@ -36,8 +36,7 @@ describe('SegmentCounter', () => {
       expect(readout()).toBe('8 / 70');
     });
 
-    // An emoji is one character but two code units. Counting characters would report
-    // this completely full segment as half empty.
+    // An emoji is one character but two code units, so 35 of them fill a 70-unit segment.
     it('counts code units, not characters, under Unicode', () => {
       render(<SegmentCounter body={EMOJI.repeat(35)} />);
       expect(readout()).toBe('70 / 70');
@@ -103,8 +102,7 @@ describe('SegmentCounter', () => {
       expect(encodingWarning()).toBeInTheDocument();
     });
 
-    // Accented Latin, the euro sign and braces are all in GSM-7. An em dash is not,
-    // which is why it is deliberately absent from this string.
+    // Accented Latin, €, and braces are GSM-7; an em dash (next test) is not.
     it('does not appear for the GSM-7 characters an admin is likely to type', () => {
       render(<SegmentCounter body="Café à Genève, €5 {ok}" />);
 

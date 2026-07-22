@@ -16,7 +16,6 @@ import { MAX_SMS_SEGMENTS } from '../utils/segments';
 
 import useSmsSegments from './useSmsSegments';
 
-// Sits in the corner of the field, where the subject field's counter already sits.
 const Container = styled.div`
   position: absolute;
   right: 10px;
@@ -24,12 +23,12 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  // The field's own text can run underneath, so the counter carries the field's ground.
+  // Opaque so the field's text doesn't show through.
   background: ${colors.white};
   padding-left: 6px;
 `;
 
-// Tabular figures so the digits do not shuffle sideways on every keystroke.
+// Tabular figures so digits don't shift while typing.
 const Readout = styled.span<{ overLimit: boolean }>`
   font-size: ${fontSizes.s}px;
   font-variant-numeric: tabular-nums;
@@ -38,7 +37,6 @@ const Readout = styled.span<{ overLimit: boolean }>`
   font-weight: ${({ overLimit }) => (overLimit ? 600 : 400)};
 `;
 
-// The cost of the message. Neutral until a second segment is committed to.
 const Pill = styled.span<{ segmentCount: number; overLimit: boolean }>`
   font-size: ${fontSizes.xs}px;
   font-weight: 600;
@@ -60,7 +58,6 @@ const Pill = styled.span<{ segmentCount: number; overLimit: boolean }>`
 `;
 
 interface Props {
-  // The body of the locale currently shown in the field.
   body: string;
 }
 
