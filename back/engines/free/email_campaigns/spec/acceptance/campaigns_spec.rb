@@ -658,6 +658,7 @@ resource 'Campaigns' do
           delivered: 0,
           undelivered: 0,
           failed: 0,
+          errored: 0,
           total: 4
         })
       end

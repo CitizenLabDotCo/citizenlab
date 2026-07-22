@@ -1211,6 +1211,7 @@
   "app.containers.Admin.messaging.sendSmsPreviewTooltip": "Sends a test text message to your own phone number.",
   "app.containers.Admin.messaging.smsCampaignsDescription": "Send text messages to your participants.",
   "app.containers.Admin.messaging.smsDeliveryStatus_delivered": "Delivered",
+  "app.containers.Admin.messaging.smsDeliveryStatus_errored": "Errored",
   "app.containers.Admin.messaging.smsDeliveryStatus_failed": "Failed",
   "app.containers.Admin.messaging.smsDeliveryStatus_pending": "Pending",
   "app.containers.Admin.messaging.smsDeliveryStatus_queued": "Queued",

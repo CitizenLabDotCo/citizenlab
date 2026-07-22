@@ -35,8 +35,14 @@ module EmailCampaigns
       rescue *ProviderError::RETRYABLE_ERRORS
         # Transient failure — leave the delivery pending so Sms::SendJob can retry it.
         raise
-      rescue Error => e
+      rescue ProviderError => e
+        # The provider took the message and rejected/failed it.
         delivery.update!(status: 'failed', error_message: e.message)
+        raise
+      rescue Error => e
+        # One of our own pre-flight checks (phone number, allowed country, config)
+        # stopped the message before it ever reached the provider.
+        delivery.update!(status: 'errored', error_message: e.message)
         raise
       end
 
