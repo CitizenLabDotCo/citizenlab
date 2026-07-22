@@ -125,6 +125,8 @@ describe('Project description builder display', () => {
 
     // Both the Content Builder description and the attachment are visible.
     cy.contains('Edited text.').should('be.visible');
-    cy.contains('example.pdf').should('be.visible');
+    cy.get('#e2e-project-page-description-section')
+      .contains('example.pdf')
+      .should('be.visible');
   });
 });
