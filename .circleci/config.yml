@@ -378,6 +378,10 @@ jobs:
         default: .env-production
     steps:
       - run:
+          # Only tasks the new code can't serve without. Settings cleanup qualifies:
+          # AppConfiguration validates against the JSON schema on every save, and nothing
+          # else converges existing tenants onto a changed schema. The rest is idempotent
+          # reconciliation and runs after cutover in back-run-post-deploy-tasks.
           name: Pull Docker image and run pre-deployment tasks
           command: |
             ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
@@ -387,11 +391,7 @@ jobs:
               citizenlabdotco/back-ee:$CIRCLE_BRANCH \
               bin/rake \
               db:migrate_if_pending \
-              cl2back:clean_tenant_settings \
-              email_campaigns:assure_campaign_records \
-              fix_existing_tenants:update_permissions \
-              cl2back:clear_cache_store \
-              email_campaigns:remove_deprecated
+              cl2back:clean_tenant_settings
             EOF
       - run:
           name: Deploy the stack
@@ -441,6 +441,40 @@ jobs:
             --header 'content-type: application/json' \
             --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
             --data '{"branch": "master"}'
+
+  # Idempotent reconciliation that used to block back-deploy-to-swarm's stack deploy, so a
+  # failure here left that one region on old code. Runs per-cluster after cutover instead:
+  # a failure is still loud (red workflow) but the fleet stays on one version.
+  back-run-post-deploy-tasks:
+    resource_class: small
+    docker:
+      - image: cimg/base:2025.01
+    parameters:
+      ssh_host:
+        type: string
+      ssh_user:
+        type: string
+        default: ubuntu
+      env_file:
+        type: string
+        default: .env-web
+    steps:
+      - run:
+          # clear_cache_store last: pre-cutover the old containers just repopulated it, and
+          # going after the writes above avoids immediately re-staling what it clears.
+          name: Run post-deployment tasks
+          command: |
+            ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
+            docker run \
+              --env-file cl2-deployment/<< parameters.env_file >> \
+              citizenlabdotco/back-ee:$CIRCLE_BRANCH \
+              bin/rake \
+              fix_existing_tenants:update_permissions \
+              email_campaigns:assure_campaign_records \
+              email_campaigns:remove_deprecated \
+              cl2back:clear_cache_store
+            EOF
+          no_output_timeout: 30m
 
   check-for-inconsistent-data:
     resource_class: small
@@ -1049,6 +1083,16 @@ workflows:
           stack_name: "cl2"
           env_file: ".env-web"
           cluster_name: "stg"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (staging)
+          requires:
+            - Deploy to staging
+          filters:
+            branches:
+              only:
+                - master
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STAGING
+          env_file: ".env-web"
 
   back-deploy-production:
     when: << pipeline.parameters.back >>
@@ -1186,6 +1230,87 @@ workflows:
           stack_name: cl2
           env_file: ".env-web"
           cluster_name: "aus"
+      # Each requires only its own region's deploy, so regions stay independent.
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Frankfurt)
+          requires:
+            - Deploy to Europe (Frankfurt)
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Paris)
+          requires:
+            - Deploy to Europe (Paris)
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Stockholm)
+          requires:
+            - Deploy to Europe (Stockholm)
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Canada)
+          requires:
+            - Deploy to Canada
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_CAN
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (South-America)
+          requires:
+            - Deploy to South-America
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_SAM
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (US-West)
+          requires:
+            - Deploy to US-West
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_USW
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (UK)
+          requires:
+            - Deploy to UK
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
+          env_file: ".env-web"
+      - back-run-post-deploy-tasks:
+          name: Post-deploy tasks (Australia)
+          requires:
+            - Deploy to Australia
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          env_file: ".env-web"
 
   # FRONT-END
   front:
