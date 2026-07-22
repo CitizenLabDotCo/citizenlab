@@ -38,8 +38,11 @@ module ParticipationMethod
       []
     end
 
+    # Only consulted for methods that support public visibility, since that is the condition on the
+    # validation. Card is the default of both view columns, so every phase row satisfies it, and
+    # methods that show inputs publicly widen it to the views they actually offer.
     def allowed_presentation_modes
-      Phase::PRESENTATION_MODES
+      %w[card]
     end
 
     def assign_defaults(input)

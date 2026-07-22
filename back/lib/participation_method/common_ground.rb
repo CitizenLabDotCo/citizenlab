@@ -21,6 +21,13 @@ module ParticipationMethod
       phase.input_term = 'contribution'
     end
 
+    # Common ground renders its own card interface and ignores the view columns, and the phase form
+    # offers no view selector to correct them with. Rather than narrow this and reject phases that
+    # were copied or migrated from a method with more views, it accepts whatever a phase holds.
+    def allowed_presentation_modes
+      Phase::PRESENTATION_MODES
+    end
+
     def assign_defaults(input)
       # The common ground participation method does not use the idea status, but all
       # inputs must have one. We are using the same default as for ideation.

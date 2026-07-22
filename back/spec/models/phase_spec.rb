@@ -249,6 +249,26 @@ RSpec.describe Phase do
 
         expect(phase.reload.update(title_multiloc: { 'en' => 'New title' })).to be true
       end
+
+      it 'is valid when a voting phase offers the feed view' do
+        phase = build(:single_voting_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).to be_valid
+      end
+
+      # Common ground is the other method the rule applies to. It ignores the view columns and
+      # offers no way to change them, so it accepts whatever a phase happens to hold.
+      it 'is valid when a common ground phase offers the map view' do
+        phase = build(:common_ground_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      # Methods without public visibility never reach this rule, but they do carry the card default
+      # of both view columns, so the default allowed modes have to cover it.
+      it 'is valid for a method that offers no views at all' do
+        phase = build(:information_phase)
+        expect(phase).to be_valid
+        expect(phase.pmethod.allowed_presentation_modes).to eq %w[card]
+      end
     end
   end
 
