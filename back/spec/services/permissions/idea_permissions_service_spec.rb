@@ -636,6 +636,18 @@ describe Permissions::IdeaPermissionsService do
   describe 'future_enabled_phase' do
     let(:input) { build(:idea, project: project) }
 
+    describe 'for an input in a standalone phase' do
+      let(:project) { create(:project_with_future_phases) }
+      let(:phase) do
+        create(:native_survey_phase, :standalone, project: project, start_at: 7.days.ago, end_at: 7.days.from_now)
+      end
+      let(:input) { create(:native_survey_response, project: project, creation_phase: phase, publication_status: 'draft') }
+
+      it 'returns nil, because a standalone phase has no future phases to consider' do
+        expect(service.send(:future_enabled_phase, 'commenting_idea')).to be_nil
+      end
+    end
+
     describe 'reacting_idea' do
       context do
         let(:project) do
