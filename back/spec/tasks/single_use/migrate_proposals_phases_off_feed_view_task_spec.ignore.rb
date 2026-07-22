@@ -78,10 +78,13 @@ describe 'single_use:migrate_proposals_phases_off_feed_view rake task' do
       expect(report['changes'].first.dig('context', 'phase_timing')).to eq 'future'
     end
 
-    it 'processes a tenant that is marked as deleted' do
+    # A deleted tenant is on a one-way trip to destruction: nothing un-deletes one and nothing
+    # switches into one, so no phase of its is ever saved against the rule this migration prepares.
+    it 'leaves a tenant that is marked as deleted alone' do
       Tenant.current.update_column(:deleted_at, Time.zone.now)
       run_task
-      expect(phase.reload.presentation_mode).to eq 'card'
+      expect(phase.reload.presentation_mode).to eq 'feed'
+      expect(report['processed_tenants']).to be_empty
     end
   end
 
@@ -138,23 +141,6 @@ describe 'single_use:migrate_proposals_phases_off_feed_view rake task' do
       Rake::Task['single_use:migrate_proposals_phases_off_feed_view'].reenable
 
       expect { run_task }.not_to(change { phase.reload.available_views })
-      expect(report['changes']).to be_empty
-    end
-  end
-
-  # Apartment migrates `Tenant.not_deleted` only, so a tenant deleted before the
-  # 20260223103753 migration has no `available_views` column and cannot offer the feed view.
-  context 'when the schema predates the available_views column' do
-    let!(:phase) { offer_feed!(create(:proposals_phase)) }
-
-    before do
-      allow(ActiveRecord::Base.connection).to receive(:column_exists?)
-        .with(:phases, :available_views).and_return(false)
-    end
-
-    it 'skips the tenant without reporting an error' do
-      expect { run_task }.not_to raise_error
-      expect(report['errors']).to be_empty
       expect(report['changes']).to be_empty
     end
   end

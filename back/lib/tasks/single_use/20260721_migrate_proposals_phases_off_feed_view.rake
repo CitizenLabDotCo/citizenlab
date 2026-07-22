@@ -67,9 +67,11 @@ namespace :single_use do
     end
     puts '=' * 80
 
-    # Deliberately not `Tenant.creation_finalized` or `safe_switch_each`: both skip deleted tenants,
-    # and a tenant stuck mid-deletion still holds phases that the new rule would reject.
-    tenants = host ? Tenant.where(host: host) : Tenant.all
+    # Deliberately not `safe_switch_each`: it also skips tenants whose creation never finalized, and
+    # those are on their way to being live, so their phases have to satisfy the new rule too.
+    # Deleted tenants are skipped, though: nothing un-deletes one, no request or job switches into
+    # one, and its schema is being dropped, so no phase of theirs is ever saved against the rule.
+    tenants = host ? Tenant.not_deleted.where(host: host) : Tenant.not_deleted
 
     tenants.each do |tenant|
       next unless ActiveRecord::Base.connection.schema_exists?(tenant.schema_name)
@@ -77,13 +79,6 @@ namespace :single_use do
       reporter.add_processed_tenant(tenant)
 
       tenant.switch do
-        # Apartment migrates `Tenant.not_deleted` only, so a tenant deleted before the
-        # 20260223103753 migration never received the column, and cannot offer the feed view.
-        unless ActiveRecord::Base.connection.column_exists?(:phases, :available_views)
-          totals[:skipped_no_column] += 1
-          next
-        end
-
         phases = Phase
           .where(participation_method: 'proposals')
           .where("presentation_mode = 'feed' OR 'feed' = ANY(available_views)")
@@ -133,7 +128,6 @@ namespace :single_use do
     puts(execute ? '📊 MIGRATION SUMMARY:' : '📊 DRY RUN SUMMARY:')
     by_host = affected.group_by { |row| row[:host] }
     puts "   #{execute ? 'Migrated' : 'Would migrate'}: #{totals[:migrated]} phase(s) across #{by_host.size} tenant(s)"
-    puts "   Skipped (schema predates the available_views column): #{totals[:skipped_no_column]}"
     puts "   Errors: #{reporter.errors.size}"
 
     if by_host.any?
