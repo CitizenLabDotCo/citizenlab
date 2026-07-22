@@ -58,7 +58,7 @@ const Pill = styled.span<{ segmentCount: number; overLimit: boolean }>`
 `;
 
 interface Props {
-  body: string;
+  body: string | null;
 }
 
 const SegmentCounter = ({ body }: Props) => {
@@ -72,7 +72,7 @@ const SegmentCounter = ({ body }: Props) => {
     isUnicode,
     nonGsmCharacters,
     exceedsLimit,
-  } = useSmsSegments(body);
+  } = useSmsSegments(body ?? '');
 
   const costTooltip = exceedsLimit
     ? formatMessage(messages.smsSegmentCostOverLimit, {

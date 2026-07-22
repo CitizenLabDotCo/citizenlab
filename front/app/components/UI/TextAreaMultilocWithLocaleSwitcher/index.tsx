@@ -48,7 +48,10 @@ export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {
   onChange: (value: Multiloc, locale: SupportedLocale) => void;
   labelTextElement?: JSX.Element;
   // Rendered inside the field; gets the selected locale (this component's own state).
-  renderCounter?: (value: string, locale: SupportedLocale) => React.ReactNode;
+  renderCounter?: (
+    value: string | null,
+    locale: SupportedLocale
+  ) => React.ReactNode;
 }
 
 const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -95,7 +98,7 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
 
   if (selectedLocale) {
     const id = `${props.id}-${selectedLocale}`;
-    const value = valueMultiloc?.[selectedLocale] || '';
+    const value = valueMultiloc?.[selectedLocale] || null;
 
     return (
       <Container className={className}>
