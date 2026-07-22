@@ -784,7 +784,7 @@ describe Permissions::UserRequirementsService do
     # Re-confirmation of an already-confirmed email once confirmed_email_expiry has
     # elapsed. The top-level `user` has a confirmed email (email_confirmed_at: Time.now,
     # confirmation_required? false), so the only thing that can put them back into a
-    # :confirm_email state here is the expiry window. Mirrors verification_expiry.
+    # :reconfirm_email state here is the expiry window. Mirrors verification_expiry.
     context 'when a confirmed email is required with confirmed_email_expiry set' do
       let(:permission) do
         create(:permission, permitted_by: 'users', require_confirmed_email: true)
@@ -819,7 +819,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 30.minutes + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
+            expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
           end
         end
       end
@@ -838,7 +838,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 30.days + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
+            expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
           end
         end
       end
@@ -888,7 +888,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 30.minutes + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:phone_action_required]).to eq :confirm_phone
+            expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
           end
         end
       end
@@ -907,7 +907,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 30.days + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:phone_action_required]).to eq :confirm_phone
+            expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
           end
         end
       end

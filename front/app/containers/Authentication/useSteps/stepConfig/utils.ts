@@ -1,4 +1,6 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
@@ -20,10 +22,29 @@ export const checkMissingData = (
   // The email/phone action encodes both the step and the request/confirm
   // endpoint pair the user needs (provide vs confirm, own email vs new_email).
   const emailStep = emailActionStep(requirements);
-  if (emailStep) return emailStep;
+  if (emailStep) {
+    // Re-confirmation (confirmed_email_expiry elapsed) lands the user on the
+    // confirmation step without a code having been auto-sent, so request one.
+    // The call is idempotent (if_needed) and authenticated (backend uses
+    // current_user), so no email is passed and reopening the flow won't
+    // duplicate. Fire-and-forget: failures fall back to the resend button.
+    if (
+      requirements.authentication.email_action_required === 'reconfirm_email'
+    ) {
+      void requestCodeEmail(undefined, { ifNeeded: true }).catch(() => {});
+    }
+    return emailStep;
+  }
 
   const phoneStep = phoneActionStep(requirements);
-  if (phoneStep) return phoneStep;
+  if (phoneStep) {
+    if (
+      requirements.authentication.phone_action_required === 'reconfirm_phone'
+    ) {
+      void requestCodeNewPhone(undefined, { ifNeeded: true }).catch(() => {});
+    }
+    return phoneStep;
+  }
 
   // The remaining built-in fields (name/password) plus providing an email are
   // all collected on the built-in step - see requiredBuiltInFields.
@@ -78,6 +99,7 @@ const emailActionStep = (
 ): Step | null => {
   switch (requirements.authentication.email_action_required) {
     case 'confirm_email':
+    case 'reconfirm_email':
       return 'confirmation:email';
     case 'confirm_new_email':
       return 'confirmation:new_email';
@@ -97,10 +119,14 @@ const phoneActionStep = (
     case 'provide_new_phone':
       return 'missing-data:phone';
     case 'confirm_phone':
-      // TODO: confirmed_phone_number_expiry is not implemented yet, so there is
-      // no in-place phone re-confirmation flow. Fall back to re-collecting the
-      // number.
+      // A never-confirmed existing phone: there is no in-place phone confirmation,
+      // so re-collect the number (submitting it sends the code via new_phone).
       return 'missing-data:phone';
+    case 'reconfirm_phone':
+      // Re-confirmation of the user's own phone (expiry elapsed): the code is
+      // auto-sent to the existing number (see checkMissingData), so go straight
+      // to code entry, mirroring reconfirm_email -> confirmation:email.
+      return 'confirmation:new_phone';
     case 'confirm_new_phone':
       return 'confirmation:new_phone';
     default:

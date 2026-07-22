@@ -9,15 +9,24 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   # Sends a confirmation code for the user's `email`, to be confirmed in place
   # (EmailConfirmation). Two callers:
-  #   - unauthenticated: email account creation flow and passwordless login.
+  #   - unauthenticated: email account creation flow and passwordless login. The
+  #     email is looked up from the submitted `email` param.
   #   - authenticated: re-confirmation of an already-confirmed email whose
-  #     confirmed_email_expiry window has elapsed.
+  #     confirmed_email_expiry window has elapsed. Here the caller is the account
+  #     owner, so `email` may be omitted and we use current_user.
+  #
+  # `if_needed` makes the send idempotent (used for the auto-send when the flow
+  # lands the user on the confirmation step): the code is only (re)sent when none
+  # is currently outstanding, so reopening the modal or recomputing requirements
+  # neither spams the user nor invalidates a code they already hold.
   def request_code_email
     email = request_code_email_params[:email]
-    user = User.find_by_cimail(email)
+    user = email.present? ? User.find_by_cimail(email) : current_user
     authorize user, policy_class: RequestCodePolicy
 
-    RequestEmailConfirmationCodeJob.perform_now user
+    unless send_if_needed? && user.email_confirmation.code_outstanding?
+      RequestEmailConfirmationCodeJob.perform_now user
+    end
 
     head :ok
   end
@@ -54,10 +63,16 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # This endpoint is used when a logged in user wants to add or change their
   # (verified) phone number. The submitted number is held as a pending
   # new_phone and an SMS confirmation code is sent to it.
+  #
+  # For re-confirmation of an existing phone (confirmed_phone_number_expiry has
+  # elapsed) the number is the user's own, so `new_phone` may be omitted and we
+  # fall back to current_user.phone. `if_needed` makes the send idempotent, as
+  # for request_code_email.
   def request_code_new_phone
     authorize current_user, policy_class: RequestCodePolicy
 
-    new_phone = request_code_new_phone_params[:new_phone]
+    new_phone = request_code_new_phone_params[:new_phone].presence
+    new_phone ||= current_user.phone if send_if_needed?
     if new_phone.blank?
       render json: { errors: { new_phone: [{ error: 'blank' }] } }, status: :unprocessable_entity
       return
@@ -75,15 +90,24 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
-    RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
+    unless send_if_needed? && current_user.new_phone_confirmation.code_outstanding?
+      RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
+    end
 
     head :ok
   end
 
   private
 
+  # Whether the caller asked for the idempotent "send only if no code is
+  # outstanding" behaviour. Present on both request_code_email and
+  # request_code_new_phone.
+  def send_if_needed?
+    ActiveModel::Type::Boolean.new.cast(params.fetch(:request_code, {})[:if_needed])
+  end
+
   def request_code_email_params
-    params.require(:request_code).permit(:email)
+    params.require(:request_code).permit(:email, :if_needed)
   end
 
   def request_code_new_email_params
@@ -91,6 +115,6 @@ class WebApi::V1::RequestCodesController < ApplicationController
   end
 
   def request_code_new_phone_params
-    params.fetch(:request_code, {}).permit(:new_phone)
+    params.fetch(:request_code, {}).permit(:new_phone, :if_needed)
   end
 end

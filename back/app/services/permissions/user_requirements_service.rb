@@ -279,10 +279,15 @@ class Permissions::UserRequirementsService
   #
   # - :provide_email      no account yet — provide an email (stored in `email`)
   #                       and confirm it in place (EmailConfirmation).
-  # - :confirm_email      an account with an unconfirmed `email` — confirm it in
-  #                       place (EmailConfirmation). Also the re-confirmation
-  #                       action when confirmed_email_expiry has elapsed since the
-  #                       email was last confirmed (see #requires_email_confirmation?).
+  # - :confirm_email      an account with a never-confirmed `email` — confirm it
+  #                       in place (EmailConfirmation).
+  # - :reconfirm_email    an account whose `email` was confirmed before but has
+  #                       aged past confirmed_email_expiry — confirm it again. This
+  #                       resolves to exactly the same step and endpoints as
+  #                       :confirm_email server-side; the distinct value only tells
+  #                       the frontend that no code was auto-sent (unlike first-time
+  #                       confirmation, which sends from SideFxUserService#after_create),
+  #                       so it must request one. See #requires_email_confirmation?.
   # - :provide_new_email  an account with no email at all (e.g. an SSO sign-up
   #                       that returned no email) — provide one via `new_email`.
   # - :confirm_new_email  an account with a pending `new_email` (e.g. an SSO
@@ -297,10 +302,10 @@ class Permissions::UserRequirementsService
     return :provide_email if user.nil?
 
     if user.email.present?
-      # A never-confirmed email (confirmation_required?) or a confirmation that
-      # has aged past confirmed_email_expiry both require confirming in place.
-      if user.confirmation_required? || requires_email_confirmation?(permission, user)
+      if user.confirmation_required?
         :confirm_email
+      elsif requires_email_confirmation?(permission, user)
+        :reconfirm_email
       end
     elsif user.new_email.present?
       :confirm_new_email
@@ -314,23 +319,25 @@ class Permissions::UserRequirementsService
   #
   # Unlike email, a phone can never be provided before an account exists and is
   # only ever confirmed via the new_phone -> phone promotion (there is no
-  # in-place phone confirmation). So in practice only the :*_new_phone actions
-  # are emitted today; :provide_phone / :confirm_phone are reserved for the
-  # future confirmed_phone_number_expiry re-confirmation flow.
+  # in-place phone confirmation).
   #
   # - :provide_new_phone  no phone yet — provide one via `new_phone`.
   # - :confirm_new_phone  a pending `new_phone` — confirm it (NewPhoneConfirmation),
   #                       which promotes it to `phone`.
-  # - :confirm_phone      an existing `phone` still awaiting (re)confirmation.
+  # - :confirm_phone      an existing `phone` that was never confirmed.
+  # - :reconfirm_phone    an existing `phone` that was confirmed before but has
+  #                       aged past confirmed_phone_number_expiry. Mirrors
+  #                       :reconfirm_email: the distinct value signals the frontend
+  #                       to (re)send a code. See #requires_phone_confirmation?.
   def phone_action_required(permission, user)
     return nil unless permission.require_confirmed_phone_number
     return :provide_new_phone if user.nil?
 
     if user.phone.present?
-      # A never-confirmed phone (phone_confirmed_at nil) or a confirmation that has
-      # aged past confirmed_phone_number_expiry both require re-confirmation.
-      if user.phone_confirmed_at.nil? || requires_phone_confirmation?(permission, user)
+      if user.phone_confirmed_at.nil?
         :confirm_phone
+      elsif requires_phone_confirmation?(permission, user)
+        :reconfirm_phone
       end
     elsif user.new_phone.present?
       :confirm_new_phone

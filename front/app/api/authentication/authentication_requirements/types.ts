@@ -42,15 +42,19 @@ type UserAttribute = 'first_name' | 'last_name' | 'password';
 export type EmailAction =
   | 'provide_email'
   | 'confirm_email'
+  // `email` was confirmed before but has aged past confirmed_email_expiry. Same
+  // step as confirm_email, but no code was auto-sent, so the frontend requests one.
+  | 'reconfirm_email'
   | 'provide_new_email'
   | 'confirm_new_email';
 
 // The phone step the user must still complete (or null). Mirrors the backend
-// #phone_action_required. `provide_phone` / `confirm_phone` are reserved for the
-// (not-yet-built) confirmed_phone_number_expiry re-confirmation flow.
+// #phone_action_required. `provide_phone` is reserved for a not-yet-built flow.
 export type PhoneAction =
   | 'provide_phone'
   | 'confirm_phone'
+  // `phone` was confirmed before but has aged past confirmed_phone_number_expiry.
+  | 'reconfirm_phone'
   | 'provide_new_phone'
   | 'confirm_new_phone';
 

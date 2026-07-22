@@ -38,6 +38,16 @@ class Confirmation < ApplicationRecord
     code_sent_at + CODE_DURATION
   end
 
+  # Whether a code has been sent and not yet consumed. Used by the idempotent
+  # "send a code only if needed" path (request_code_email / request_code_new_phone
+  # with if_needed): a successful confirmation runs clear_code! (code -> nil), so
+  # an outstanding code means one was already sent for the current cycle and
+  # re-sending would both spam the user and invalidate the code they hold. Mirrors
+  # the code_sent_at.nil? guard in SideFxUserService#should_send_confirmation_email?.
+  def code_outstanding?
+    code.present?
+  end
+
   def reset_code!
     update!(
       code: self.class.generate_code,
