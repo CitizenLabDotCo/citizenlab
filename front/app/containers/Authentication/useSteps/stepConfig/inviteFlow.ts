@@ -33,8 +33,7 @@ export const inviteFlow = (
           const missingDataStep = checkMissingData(
             requirements,
             authenticationData,
-            'signup',
-            true
+            'signup'
           );
 
           if (missingDataStep) {

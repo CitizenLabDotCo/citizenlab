@@ -15,19 +15,18 @@ import { Step } from './typings';
 export const checkMissingData = (
   requirements: AuthenticationRequirements['requirements'],
   { context }: AuthenticationData,
-  flow: 'signup' | 'signin',
-  userIsAuthenticated: boolean
+  flow: 'signup' | 'signin'
 ) => {
-  if (emailConfirmationRequired(requirements)) {
-    return userIsAuthenticated
-      ? 'missing-data:email-confirmation'
-      : 'email:confirmation';
-  }
+  // The email/phone action encodes both the step and the request/confirm
+  // endpoint pair the user needs (provide vs confirm, own email vs new_email).
+  const emailStep = emailActionStep(requirements);
+  if (emailStep) return emailStep;
 
-  if (phoneConfirmationRequired(requirements)) {
-    return 'missing-data:phone';
-  }
+  const phoneStep = phoneActionStep(requirements);
+  if (phoneStep) return phoneStep;
 
+  // The remaining built-in fields (name/password) plus providing an email are
+  // all collected on the built-in step - see requiredBuiltInFields.
   if (requiredBuiltInFields(requirements)) {
     return 'missing-data:built-in';
   }
@@ -70,21 +69,41 @@ export const doesNotMeetGroupCriteria = (
   return requirements.group_membership;
 };
 
-const emailConfirmationRequired = (
+// Maps email_action_required to the step that resolves it. The provide actions
+// return null here because the email input lives on the built-in step (see
+// requiredBuiltInFields); confirm_email uses the unauthenticated in-place
+// confirmation, confirm_new_email the authenticated new_email confirmation.
+const emailActionStep = (
   requirements: AuthenticationRequirements['requirements']
-) => {
-  return requirements.authentication.missing_user_attributes.includes(
-    'confirmation'
-  );
+): Step | null => {
+  switch (requirements.authentication.email_action_required) {
+    case 'confirm_email':
+      return 'email:confirmation';
+    case 'confirm_new_email':
+      return 'missing-data:email-confirmation';
+    default:
+      return null;
+  }
 };
 
-const phoneConfirmationRequired = (
+// Maps phone_action_required to its step. Both provide actions collect the
+// number on the phone step; confirm_new_phone jumps straight to confirmation.
+const phoneActionStep = (
   requirements: AuthenticationRequirements['requirements']
-) => {
-  return requirements.authentication.missing_user_attributes.includes(
-    'phone_confirmation'
-  );
-}
+): Step | null => {
+  switch (requirements.authentication.phone_action_required) {
+    case 'provide_phone':
+    case 'provide_new_phone':
+    // TODO: confirmed_phone_number_expiry is not implemented yet, so there is no
+    // in-place phone re-confirmation flow. Fall back to re-collecting the number.
+    case 'confirm_phone':
+      return 'missing-data:phone';
+    case 'confirm_new_phone':
+      return 'missing-data:phone-confirmation';
+    default:
+      return null;
+  }
+};
 
 export const showOnboarding = (
   requirements: AuthenticationRequirements['requirements']
@@ -113,6 +132,19 @@ const requiredCustomFields = (
   return false;
 };
 
+// Whether the user should provide an email as part of the built-in step. This
+// is a "provide" action (the value gets stored in email/new_email and confirmed
+// afterwards) - the confirm actions are handled by emailActionStep instead.
+export const askEmailOnBuiltInStep = (
+  requirements: AuthenticationRequirements['requirements']
+) => {
+  const { email_action_required } = requirements.authentication;
+  return (
+    email_action_required === 'provide_email' ||
+    email_action_required === 'provide_new_email'
+  );
+};
+
 const requiredBuiltInFields = (
   requirements: AuthenticationRequirements['requirements']
 ) => {
@@ -122,10 +154,14 @@ const requiredBuiltInFields = (
 
   const askFirstName = missingAttributes.has('first_name');
   const askLastName = missingAttributes.has('last_name');
-  const askEmail = missingAttributes.has('email');
   const askPassword = missingAttributes.has('password');
 
-  return askFirstName || askLastName || askEmail || askPassword;
+  return (
+    askFirstName ||
+    askLastName ||
+    askPassword ||
+    askEmailOnBuiltInStep(requirements)
+  );
 };
 
 export const handleSubmitEmail = async (

@@ -1,7 +1,6 @@
 import { parse } from 'qs';
 
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-import { fetchMe } from 'api/me/useAuthUser';
 
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
@@ -62,39 +61,10 @@ export const sharedSteps = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        // If the user came back from SSO with 'email' as a requirement,
-        // they are in one of these situations:
-        // 1. The SSO did not return an email, and the user needs to provide it
-        // 2. The SSO returned an unconfirmed email, which was put in
-        // new_email, and the user needs to confirm it, but until that moment
-        // it's seen as a requirement.
-        // In situation 1, we need to ask for the email and then confirm it.
-        // In situation 2, we can go straight to the confirmation of the email.
-        // First we need to check if we are in either of these situations:
-        if (
-          requirements.authentication.missing_user_attributes.includes('email')
-        ) {
-          // Now we check if it's situation 1 or 2 by seeing if the user has a
-          // new_email attribute
-          const authUser = await fetchMe();
-          const newEmail = authUser?.data.attributes.new_email;
-
-          if (newEmail) {
-            // Situation 2: The SSO returned an unconfirmed email, which was put in new_email
-            setCurrentStep('missing-data:email-confirmation');
-          } else {
-            // Situation 1: The SSO did not return an email, and the user needs to provide it
-            setCurrentStep('missing-data:built-in');
-          }
-
-          return;
-        }
-
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          flow,
-          true
+          flow
         );
 
         if (missingDataStep) {
@@ -141,49 +111,11 @@ export const sharedSteps = (
           disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
         if (signedIn) {
-          // If at this point, the user still has 'email' as a requirement,
-          // the user is in one of these situations:
-          // 1. The previous SSO signup did not return an email, and the user needs to provide it
-          // 2. The previous SSO signup returned an unconfirmed email, which was put in
-          // new_email, and the user needs to confirm it, but until that moment
-          // it's seen as a requirement.
-          // In situation 1, we need to ask for the email and then confirm it.
-          // In situation 2, we can go straight to the confirmation of the email.
-          // First we need to check if we are in either of these situations:
-          if (
-            requirements.authentication.missing_user_attributes.includes(
-              'email'
-            )
-          ) {
-            // Now we check if it's situation 1 or 2 by seeing if the user has a
-            // new_email attribute
-            if (newEmail) {
-              // Situation 2: The SSO returned an unconfirmed email, which was put in new_email
-              setCurrentStep('missing-data:email-confirmation');
-            } else {
-              // Situation 1: The SSO did not return an email, and the user needs to provide it
-              setCurrentStep('missing-data:built-in');
-            }
-
-            return;
-          }
-
           const missingDataStep = checkMissingData(
             requirements,
             authenticationData,
-            flow,
-            true
+            flow
           );
-
-          // Kind of hacky, since this should actually be handled by the checkMissingData function.
-          // But because of the way the requirements api works, we need to handle this case separately.
-          // For a similar reason as the huge comment above (below if (signedIn)).
-          // We will need to rework the requirements api at some point,
-          // but out of scope for now.
-          if (missingDataStep === 'missing-data:phone' && newPhone) {
-            setCurrentStep('missing-data:phone-confirmation');
-            return;
-          }
 
           if (missingDataStep) {
             setCurrentStep(missingDataStep);
