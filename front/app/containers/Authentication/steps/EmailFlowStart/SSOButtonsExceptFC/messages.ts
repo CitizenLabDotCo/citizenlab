@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithHoplr',
     defaultMessage: 'Continue with Hoplr',
   },
-  continueWithNemlogIn: {
-    id: 'app.components.AuthProviders.continueWithNemlogIn',
-    defaultMessage: 'Continue with MitID',
-  },
   continueWithIdAustria: {
     id: 'app.components.AuthProviders.continueWithIdAustria',
     defaultMessage: 'Continue with ID Austria',
@@ -36,5 +32,9 @@ export default defineMessages({
   continueWithFedera: {
     id: 'app.components.AuthProviders.continueWithFedera',
     defaultMessage: 'Login with SPID, CIE or CNS',
+  },
+  continueWithLuxembourgIAM: {
+    id: 'app.components.AuthProviders.continueWithLuxembourgIAM',
+    defaultMessage: 'Continue with your IAM identifier',
   },
 });

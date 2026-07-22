@@ -148,7 +148,7 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
-  def create # rubocop:disable Metrics/MethodLength
+  def create
     send_error and return unless phase_for_input
 
     form = phase_for_input.pmethod.custom_form
@@ -192,14 +192,9 @@ class WebApi::V1::IdeasController < ApplicationController
     sidefx.before_create(input, current_user)
 
     authorize input
-    if anonymous_not_allowed?(phase_for_input)
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
-      return
-    end
-    if idea_status_not_allowed?(input)
-      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
-      return
-    end
+    raise ApiError, :anonymous_participation_not_allowed if anonymous_not_allowed?(phase_for_input)
+    raise ApiError.new(:idea_status_not_allowed, field: :idea_status_id, value: input.idea_status_id) if idea_status_not_allowed?(input)
+
     verify_profanity input
 
     save_options = {}
@@ -222,40 +217,34 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     ActiveRecord::Base.transaction do
-      if input.save(**save_options)
-        update_file_upload_fields input, form, params_for_create
-        sidefx.after_create(input, current_user, phase_for_input)
-        write_everyone_tracking_cookie input
+      save_or_raise!(input, **save_options)
+      update_file_upload_fields input, form, params_for_create
+      sidefx.after_create(input, current_user, phase_for_input)
+      write_everyone_tracking_cookie input
 
-        permission = phase_for_input.permissions.find_by(action: 'posting_idea')
-        generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
+      permission = phase_for_input.permissions.find_by(action: 'posting_idea')
+      generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
 
-        if generate_claim_token
-          ClaimTokenService.generate(input)
-        end
-
-        serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
-
-        render json: WebApi::V1::IdeaSerializer.new(
-          input.reload,
-          params: serializer_params,
-          include: %i[author input_topics phases user_reaction idea_images]
-        ).serializable_hash, status: :created
-      else
-        render json: { errors: input.errors.details }, status: :unprocessable_entity
+      if generate_claim_token
+        ClaimTokenService.generate(input)
       end
+
+      serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
+
+      render json: WebApi::V1::IdeaSerializer.new(
+        input.reload,
+        params: serializer_params,
+        include: %i[author input_topics phases user_reaction idea_images]
+      ).serializable_hash, status: :created
     end
   end
 
-  def update # rubocop:disable Metrics/MethodLength
+  def update
     input = Idea.find params[:id]
 
     authorize input
 
-    if invalid_blank_author_for_update? input, params
-      render json: { errors: { author: [{ error: :blank }] } }, status: :unprocessable_entity
-      return
-    end
+    raise ApiError.new(:blank, field: :author) if invalid_blank_author_for_update?(input, params)
 
     extract_custom_field_values_from_params!(input.custom_form)
     # Map topic_ids to input_topic_ids for the new InputTopics system
@@ -276,7 +265,9 @@ class WebApi::V1::IdeasController < ApplicationController
       end
     end
 
-    phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
+    # phase_ids/cosponsor_ids are assigned after before_update (below), not via
+    # assign_attributes, so the side-fx can snapshot the previous associations first.
+    phase_ids, cosponsor_ids = extract_deferred_relationship_ids(update_params)
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
@@ -310,46 +301,34 @@ class WebApi::V1::IdeasController < ApplicationController
       false
     end
 
-    update_errors = nil
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes(update_params)
       sidefx.before_update(input, current_user)
-      input.phase_ids = phase_ids if phase_ids
+      assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
 
       authorize(input)
-
-      update_errors = not_allowed_update_errors(input)
-      raise ActiveRecord::Rollback if update_errors
-
+      validate_update!(input)
       verify_profanity input
-    end
-
-    if update_errors
-      render json: update_errors, status: :unprocessable_entity
-      return
     end
 
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
 
     ActiveRecord::Base.transaction do
-      if input.save(**save_options)
-        sidefx.after_update(input, current_user)
-        update_file_upload_fields input, input.custom_form, update_params
+      save_or_raise!(input, **save_options)
+      sidefx.after_update(input, current_user)
+      update_file_upload_fields input, input.custom_form, update_params
 
-        if anonymize_user_at_the_end
-          input.author_id = nil
-          input.save!
-        end
-
-        render json: WebApi::V1::IdeaSerializer.new(
-          input.reload,
-          params: jsonapi_serializer_params,
-          include: %i[author input_topics user_reaction idea_images cosponsors]
-        ).serializable_hash, status: :ok
-      else
-        render json: { errors: input.errors.details }, status: :unprocessable_entity
+      if anonymize_user_at_the_end
+        input.author_id = nil
+        input.save!
       end
+
+      render json: WebApi::V1::IdeaSerializer.new(
+        input.reload,
+        params: jsonapi_serializer_params,
+        include: %i[author input_topics user_reaction idea_images cosponsors]
+      ).serializable_hash, status: :ok
     end
   end
 
@@ -495,7 +474,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def build_idea_file_attachment(idea, file_params)
-    files_file = Files::RestrictedFile.new( # temporary-fix-for-vienna-svg-security-issue (use Files::File.new to undo)
+    files_file = Files::File.new(
       content_by_content: {
         content: file_params['content'],
         name: file_params['name']
@@ -510,6 +489,21 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def sidefx
     @sidefx ||= SideFxIdeaService.new
+  end
+
+  # phase_ids/cosponsor_ids must be assigned *after* SideFxIdeaService#before_update so it
+  # can snapshot the prior associations. Assigning them via assign_attributes (which mutates
+  # the persisted record immediately) would make the before/after diff empty — e.g. no
+  # newly-added cosponsors would be detected, so their invite notifications wouldn't be sent.
+  def extract_deferred_relationship_ids(update_params)
+    phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
+    cosponsor_ids = update_params.delete(:cosponsor_ids) if update_params.key?(:cosponsor_ids)
+    [phase_ids, cosponsor_ids]
+  end
+
+  def assign_deferred_relationship_ids(input, phase_ids, cosponsor_ids)
+    input.phase_ids = phase_ids if phase_ids
+    input.cosponsor_ids = cosponsor_ids if cosponsor_ids
   end
 
   def params_service
@@ -534,7 +528,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_simple_attributes(submittable_field_keys)
     simple_attributes = %i[location_description proposed_budget] & submittable_field_keys
-    simple_attributes.push(:publication_status, :project_id, :anonymous, { weglot_data: %i[locale body] })
+    # location_point_geojson is also permitted as a nested hash via
+    # idea_complex_attributes for setting a Point. Permitting it here as a
+    # scalar additionally allows the client to send `null` to clear it —
+    # strong-params silently drops a `null` value against a nested-hash
+    # permit, so without this an explicit clear from the FE has no effect.
+    simple_attributes.push(:publication_status, :project_id, :anonymous, :location_point_geojson, { weglot_data: %i[locale body] })
     if submittable_field_keys.include?(:idea_images_attributes)
       simple_attributes << [idea_images_attributes: [:image]]
     end
@@ -660,23 +659,23 @@ class WebApi::V1::IdeasController < ApplicationController
     !input.participation_method_on_creation.supports_inputs_without_author?
   end
 
-  def not_allowed_update_errors(input)
+  def validate_update!(input)
     can_moderate = UserRoleService.new.can_moderate?(input.project, current_user)
 
     if !can_moderate && anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
-      return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
+      raise ApiError, :anonymous_participation_not_allowed
     end
 
     if idea_status_not_allowed?(input)
-      return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to this status', value: input.idea_status_id }] } }
+      raise ApiError.new(:idea_status_not_allowed, field: :idea_status_id, value: input.idea_status_id)
     end
 
     if !input.participation_method_on_creation.transitive? && input.project_id_changed?
-      return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
+      raise ApiError.new(:cannot_change_project, field: :project_id, value: input.project_id)
     end
 
     if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
-      { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
+      raise ApiError.new(:cannot_change_phases, field: :phase_ids, value: input.phase_ids)
     end
   end
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import { IAreaData } from 'api/areas/types';
@@ -15,6 +14,7 @@ import tracks from 'components/FollowUnfollow/tracks';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 
@@ -99,6 +99,7 @@ const BaseUpdateFollowArea = ({
         iconPos="right"
         padding="0px"
         my="0px"
+        whiteSpace="normal"
         processing={isLoading}
         textColor={areaButtonContentColor}
         ariaPressed={!isLoading ? isFollowing : undefined}

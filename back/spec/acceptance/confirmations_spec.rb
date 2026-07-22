@@ -8,17 +8,16 @@ resource 'Confirmations' do
 
   before do
     set_api_content_type
-    SettingsService.new.activate_feature! 'user_confirmation'
   end
 
   shared_examples 'confirmation code validation' do
     example 'returns an ok status passing the right code' do
-      do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+      do_request(confirmation: { email: user.email, code: user.email_confirmation.code })
       assert_status 200
     end
 
     example "logs 'completed_registration' activity job when passed the right code" do
-      do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+      do_request(confirmation: { email: user.email, code: user.email_confirmation.code })
       expect(LogActivityJob).to have_been_enqueued.with(
         user,
         'completed_registration',
@@ -28,7 +27,7 @@ resource 'Confirmations' do
     end
 
     example 'returns an auth token when passing the right code' do
-      do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+      do_request(confirmation: { email: user.email, code: user.email_confirmation.code })
       assert_status 200
       json_response = json_parse response_body
       expect(json_response[:data][:attributes]).to have_key(:auth_token)
@@ -36,12 +35,11 @@ resource 'Confirmations' do
       expect(token[0..2]).to eq 'eyJ' # JWTs start with 'eyJ'
     end
 
-    example 'sets email_confirmation_code_reset_count to 0 upon successful confirmation' do
-      user.update(email_confirmation_code_reset_count: 3)
-      do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+    example 'sets code_reset_count to 0 upon successful confirmation' do
+      user.email_confirmation.update!(code_reset_count: 3)
+      do_request(confirmation: { email: user.email, code: user.email_confirmation.code })
       assert_status 200
-      user.reload
-      expect(user.email_confirmation_code_reset_count).to eq 0
+      expect(user.email_confirmation.reload.code_reset_count).to eq 0
     end
 
     example 'returns an code.blank error code when no code is passed' do
@@ -73,12 +71,24 @@ resource 'Confirmations' do
       )
     end
 
-    example 'does not allow confirming a user already confirmed' do
-      code = user.email_confirmation_code
+    example 'does not allow confirming a user without code' do
+      code = user.email_confirmation.code
       do_request(confirmation: { email: user.email, code: code })
       assert_status 200
+
       do_request(confirmation: { email: user.email, code: code })
       assert_status 422
+    end
+
+    example 'allows confirming a user already confirmed' do
+      code = user.email_confirmation.code
+      do_request(confirmation: { email: user.email, code: code })
+      assert_status 200
+
+      RequestEmailConfirmationCodeJob.perform_now user
+      code = user.reload.email_confirmation.code
+      do_request(confirmation: { email: user.email, code: code })
+      assert_status 200
     end
   end
 
@@ -89,11 +99,11 @@ resource 'Confirmations' do
     end
 
     context 'when email does not exist' do
-      let(:user) { create(:user_with_confirmation) }
+      let(:user) { create(:unconfirmed_user) }
       let(:email) { 'nonexistent@example.com' }
 
       before do
-        RequestConfirmationCodeJob.perform_now user
+        RequestEmailConfirmationCodeJob.perform_now user
       end
 
       example 'returns a unprocessable entity status when the email does not exist' do
@@ -103,10 +113,10 @@ resource 'Confirmations' do
     end
 
     context 'when email exists' do
-      let(:user) { create(:user_with_confirmation, password: nil) }
+      let(:user) { create(:unconfirmed_user, password: nil) }
 
       before do
-        RequestConfirmationCodeJob.perform_now user
+        RequestEmailConfirmationCodeJob.perform_now user
       end
 
       include_examples 'confirmation code validation'
@@ -118,7 +128,7 @@ resource 'Confirmations' do
 
         header 'X-Forwarded-For', '192.168.1.1'
         header 'User-Agent', 'Test Browser'
-        do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+        do_request(confirmation: { email: user.email, code: user.email_confirmation.code })
 
         assert_status 200
         anonymous_exposure.reload
@@ -126,22 +136,26 @@ resource 'Confirmations' do
         expect(anonymous_exposure.visitor_hash).to be_nil
       end
 
-      example 'does not allow confirming a user with password that is already confirmed' do
-        user_with_password = create(:user_with_confirmation, password: 'password123')
-        user_with_password.confirm
-        expect(user_with_password).not_to be_confirmation_required
-
-        code = user_with_password.email_confirmation_code
+      example 'allows confirming a user with password that is already confirmed' do
+        user_with_password = create(:unconfirmed_user, password: 'password123')
+        RequestEmailConfirmationCodeJob.perform_now user_with_password
+        code = user_with_password.reload.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
-        assert_status 422
+        expect(user_with_password.reload).not_to be_confirmation_required
+
+        RequestEmailConfirmationCodeJob.perform_now user_with_password
+        expect(user_with_password.reload).not_to be_confirmation_required
+        code = user_with_password.reload.email_confirmation.code
+        do_request(confirmation: { email: user_with_password.email, code: })
+        assert_status 200
       end
 
       example 'allows confirming a user with password that requires confirmation' do
-        user_with_password = create(:user_with_confirmation, password: 'password123')
-        RequestConfirmationCodeJob.perform_now user_with_password
+        user_with_password = create(:unconfirmed_user, password: 'password123')
+        RequestEmailConfirmationCodeJob.perform_now user_with_password
         expect(user_with_password).to be_confirmation_required
 
-        code = user_with_password.email_confirmation_code
+        code = user_with_password.email_confirmation.code
         do_request(confirmation: { email: user_with_password.email, code: })
         assert_status 200
       end
@@ -166,27 +180,26 @@ resource 'Confirmations' do
 
       before do
         header_token_for user
-        RequestConfirmationCodeJob.perform_now user, new_email: user.new_email
+        RequestNewEmailConfirmationCodeJob.perform_now user, new_email: user.new_email
       end
 
       example 'updates the user email upon successful confirmation' do
-        do_request(confirmation: { code: user.email_confirmation_code })
+        do_request(confirmation: { code: user.new_email_confirmation.code })
         assert_status 200
         user.reload
         expect(user.email).to eq 'new_email@example.com'
         expect(user.new_email).to be_nil
       end
 
-      example 'sets email_confirmation_code_reset_count to 0 upon successful confirmation' do
-        user.update(email_confirmation_code_reset_count: 3)
-        do_request(confirmation: { code: user.email_confirmation_code })
+      example 'sets code_reset_count to 0 upon successful confirmation' do
+        user.new_email_confirmation.update!(code_reset_count: 3)
+        do_request(confirmation: { code: user.new_email_confirmation.code })
         assert_status 200
-        user.reload
-        expect(user.email_confirmation_code_reset_count).to eq 0
+        expect(user.new_email_confirmation.reload.code_reset_count).to eq 0
       end
 
       example 'resets the user JWT upon successful confirmation' do
-        do_request(confirmation: { code: user.email_confirmation_code })
+        do_request(confirmation: { code: user.new_email_confirmation.code })
         assert_status 200
 
         expect(CGI.unescape(response_headers['Set-Cookie'])).to include('cl2_jwt=')
@@ -210,8 +223,73 @@ resource 'Confirmations' do
       end
 
       example 'does not work if user has no new_email set' do
+        code = user.new_email_confirmation.code
         user.update!(new_email: nil)
-        do_request(confirmation: { code: user.email_confirmation_code })
+        do_request(confirmation: { code: code })
+        assert_status 422
+      end
+    end
+  end
+
+  post 'web_api/v1/user/confirm_code_phone_change' do
+    with_options scope: :confirmation do
+      parameter :code, 'The 4-digit confirmation code received by SMS.'
+    end
+
+    context 'when user is not authenticated' do
+      let(:code) { '1234' }
+
+      example_request 'returns an unauthorized status when the user is not authenticated' do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when user is authenticated' do
+      let(:user) { create(:user) }
+      let(:new_phone) { '+14155552671' }
+
+      # The code request sends the OTP synchronously, so the provider is invoked.
+      include_context 'with stubbed SMS provider'
+
+      before do
+        header_token_for user
+        RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
+      end
+
+      example 'promotes new_phone to phone upon successful confirmation' do
+        do_request(confirmation: { code: user.new_phone_confirmation.code })
+        assert_status 200
+        user.reload
+        expect(user.phone).to eq new_phone
+        expect(user.new_phone).to be_nil
+        expect(user.phone_confirmed_at).to be_present
+      end
+
+      example 'sets code_reset_count to 0 upon successful confirmation' do
+        user.new_phone_confirmation.update!(code_reset_count: 3)
+        do_request(confirmation: { code: user.new_phone_confirmation.code })
+        assert_status 200
+        expect(user.new_phone_confirmation.reload.code_reset_count).to eq 0
+      end
+
+      example 'returns a code.blank error code when no code is passed' do
+        do_request(confirmation: { code: nil })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:code, 'blank')
+      end
+
+      example 'returns a code.invalid error code when the code is invalid' do
+        do_request(confirmation: { code: 'badcode' })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:code, 'invalid')
+      end
+
+      example 'does not work if the user has no pending phone number' do
+        code = user.new_phone_confirmation.code
+        user.update!(new_phone: nil)
+        do_request(confirmation: { code: code })
         assert_status 422
       end
     end

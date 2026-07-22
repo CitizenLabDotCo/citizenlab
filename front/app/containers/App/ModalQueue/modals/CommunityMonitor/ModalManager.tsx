@@ -1,15 +1,16 @@
 import { useCallback, useEffect } from 'react';
 
-import { get } from 'js-cookie';
-import { useLocation } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { isAdmin, isModerator } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import { useModalQueue } from '../..';
 
@@ -35,7 +36,7 @@ const CommunityMonitorModalManager = () => {
   });
 
   // Check if we have already stored a cookie, indicating the user has seen the modal
-  const hasSeenModal = get('community_monitor_modal_seen');
+  const hasSeenModal = Cookies.get('community_monitor_modal_seen');
 
   // Get the community monitor project/phase & check if the survey is currently open
   const { data: project } = useCommunityMonitorProject({
@@ -46,10 +47,12 @@ const CommunityMonitorModalManager = () => {
   const isSurveyLive = phase?.data.attributes.submission_enabled;
 
   // Check if the user is allowed to take the survey (based on action_descriptors)
+  const postingDescriptor = phase
+    ? getPhaseActionDescriptor(phase.data, 'posting_idea')
+    : undefined;
   const userPermittedToTakeSurvey =
     !hasSeenModal &&
-    project?.data.attributes.action_descriptors.posting_idea.disabled_reason !==
-      'posting_limited_max_reached';
+    postingDescriptor?.disabled_reason !== 'posting_limited_max_reached';
 
   // Get the survey popup frequency, so we can show the modal at a certain rate
   const surveyPopupFrequency =

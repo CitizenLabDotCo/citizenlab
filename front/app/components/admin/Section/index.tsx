@@ -7,7 +7,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 export const Section = styled.div`
   margin-bottom: 0;
@@ -99,6 +99,6 @@ export const SectionDescription = styled.p`
   `}
 `;
 
-export const StyledLink = styled(Link)`
+export const StyledLink = typedStyled(Link)`
   text-decoration: underline;
 `;

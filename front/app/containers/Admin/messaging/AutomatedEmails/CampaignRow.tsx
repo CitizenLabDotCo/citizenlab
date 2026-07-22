@@ -6,12 +6,10 @@ import {
   ListItem,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
-import { RouteType } from 'routes';
 
+import useAddEmailCampaign from 'api/campaigns/email/useAddEmailCampaign';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { CampaignContext } from 'api/campaigns/types';
-import useAddCampaign from 'api/campaigns/useAddCampaign';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -20,6 +18,7 @@ import UpsellTooltip from 'components/UpsellTooltip';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useLocation } from 'utils/router';
 
 import messages from '../messages';
 
@@ -35,8 +34,8 @@ type Props = {
 const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { mutate: addCampaign } = useAddCampaign();
-  const { mutate: updateCampaign } = useUpdateCampaign();
+  const { mutate: addCampaign } = useAddEmailCampaign();
+  const { mutate: updateCampaign } = useUpdateEmailCampaign();
   const unpersistedContextCampaign =
     context && !campaign.relationships.context?.data?.id;
 
@@ -80,14 +79,12 @@ const CampaignRow = ({ campaign, context, onClickViewExample }: Props) => {
         },
         {
           onSuccess: (addedCampaign) => {
-            clHistory.push(
-              `${pathname}/${addedCampaign.data.id}/edit` as RouteType
-            );
+            clHistory.push(`${pathname}/${addedCampaign.data.id}/edit`);
           },
         }
       );
     } else {
-      clHistory.push(`${pathname}/${campaign.id}/edit` as RouteType);
+      clHistory.push(`${pathname}/${campaign.id}/edit`);
     }
   };
   const renderTooltip = (children) => {

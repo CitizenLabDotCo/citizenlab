@@ -17,6 +17,7 @@ import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import { IUserData } from 'api/users/types';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
 import useLocalize from 'hooks/useLocalize';
 import useObserveEvent from 'hooks/useObserveEvent';
 
@@ -24,6 +25,7 @@ import { triggerPostActionEvents } from 'containers/App/events';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import {
   getPermissionsDisabledMessage,
   isFixableByAuthentication,
@@ -44,6 +46,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const localize = useLocalize();
   const [confirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
+  const [screenReaderAnnouncement, setScreenReaderAnnouncement] = useState('');
 
   // Attendance API
   const { data: eventsAttending } = useEventsByUserId(user?.data.id);
@@ -85,6 +88,14 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   useObserveEvent('eventAttendance', handleEventAttendanceEvent);
 
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: currentPhase?.id ?? lastCompletedPhase?.id,
+    action: 'attending_event',
+    disabledReason:
+      project?.data.attributes.action_descriptors.attending_event
+        .disabled_reason,
+  });
+
   if (!project) return null;
 
   const { enabled, disabled_reason } =
@@ -97,7 +108,17 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     }
 
     if (userIsAttending && attendanceId) {
-      deleteEventAttendance({ attendanceId });
+      deleteEventAttendance(
+        { attendanceId },
+        {
+          onSuccess: () =>
+            setScreenReaderAnnouncement(
+              formatMessage(messages.unregisteredAnnouncement, {
+                eventTitle: localize(event.attributes.title_multiloc),
+              })
+            ),
+        }
+      );
       return;
     }
 
@@ -137,6 +158,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const registerAttendance = (userData: IUserData) => {
+    // Clear so a re-register -> unregister round-trip announces again.
+    setScreenReaderAnnouncement('');
     addEventAttendance({ eventId: event.id, attendeeId: userData.id });
     addFollower({
       followableId: event.relationships.project.data.id,
@@ -177,33 +200,30 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   return (
     <>
-      {userIsAttending ? (
+      <Tooltip
+        disabled={userIsAttending || !buttonDisabled}
+        placement="bottom"
+        content={customAccessDeniedMessage ?? disabledMessage}
+        useContentWrapper={false}
+      >
         <Button
           {...buttonProps}
-          icon={event.attributes.using_url ? undefined : 'check'}
+          icon={
+            event.attributes.using_url
+              ? undefined
+              : userIsAttending
+              ? 'check'
+              : 'plus-circle'
+          }
+          disabled={!userIsAttending && buttonDisabled}
         >
           {customButtonText && event.attributes.using_url
             ? customButtonText
-            : formatMessage(messages.registered)}
+            : formatMessage(
+                userIsAttending ? messages.registered : messages.register
+              )}
         </Button>
-      ) : (
-        <Tooltip
-          disabled={!buttonDisabled}
-          placement="bottom"
-          content={disabledMessage}
-          useContentWrapper={false}
-        >
-          <Button
-            {...buttonProps}
-            icon={event.attributes.using_url ? undefined : 'plus-circle'}
-            disabled={buttonDisabled}
-          >
-            {customButtonText && event.attributes.using_url
-              ? customButtonText
-              : formatMessage(messages.register)}
-          </Button>
-        </Tooltip>
-      )}
+      </Tooltip>
       <ConfirmationModal
         opened={confirmationModalVisible}
         event={event}
@@ -212,6 +232,9 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
           triggerPostActionEvents({});
         }}
       />
+      <ScreenReaderOnly aria-live="polite">
+        {screenReaderAnnouncement}
+      </ScreenReaderOnly>
     </>
   );
 };

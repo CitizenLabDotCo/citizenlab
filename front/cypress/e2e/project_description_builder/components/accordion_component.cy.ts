@@ -9,7 +9,7 @@ describe('Project description builder Accordion component', () => {
     if (projectId) {
       cy.apiRemoveProject(projectId);
     }
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
       const projectDescription = 'Original project description.';
@@ -40,7 +40,7 @@ describe('Project description builder Accordion component', () => {
   });
 
   it('displays Accordion component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-accordion').dragAndDrop(
@@ -73,7 +73,7 @@ describe('Project description builder Accordion component', () => {
   });
 
   it('handles Accordion open by default correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);
@@ -107,7 +107,7 @@ describe('Project description builder Accordion component', () => {
   });
 
   it('deletes Accordion component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);

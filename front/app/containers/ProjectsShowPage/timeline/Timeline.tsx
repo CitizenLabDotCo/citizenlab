@@ -1,10 +1,9 @@
 import React, {
-  useCallback,
-  FormEvent,
   KeyboardEvent,
   useRef,
   useState,
   useEffect,
+  useLayoutEffect,
 } from 'react';
 
 import {
@@ -21,7 +20,7 @@ import styled, { css, keyframes } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentPhase, getPhaseLandingTab } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -32,14 +31,16 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { LinkAs } from 'utils/cl-router/Link';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import PhaseDescription from './PhaseDescription';
-import setPhaseURL from './setPhaseURL';
 import tracks from './tracks';
 
 const MIN_PHASE_WIDTH_PX = 44;
 const CONTAINER_PADDING_PX = 20;
+
+let pendingFocusPhaseIndex: number | null = null;
 
 const grey = colors.textSecondary;
 const greenTransparent = '#CAE0CD';
@@ -103,8 +104,8 @@ const BlinkingDot = styled.span<{ isSelected: boolean }>`
 `;
 
 const PhaseBar = styled.button<{
-  showArrow: boolean;
-  isCurrentPhase?: boolean;
+  $showArrow: boolean;
+  $isCurrentPhase?: boolean;
 }>`
   width: 100%;
   height: calc(${phaseBarHeight} - 1px);
@@ -122,6 +123,7 @@ const PhaseBar = styled.button<{
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  text-decoration: none;
 
   &::before {
     content: '';
@@ -130,16 +132,20 @@ const PhaseBar = styled.button<{
     left: 0;
     right: 0;
     height: 1px;
-    background-color: ${({ isCurrentPhase }) =>
-      isCurrentPhase ? darkGreen : colors.coolGrey700};
+    background-color: ${({ $isCurrentPhase }) =>
+      $isCurrentPhase ? darkGreen : colors.coolGrey700};
     ${(props) =>
-      props.showArrow
+      props.$showArrow
         ? 'clip-path: polygon(0 0, calc(100% - 10px) 0, calc(100% - 10px) 100%, 0 100%);'
         : ''};
   }
 
   &:hover ${BlinkingDot} {
     background-color: ${colors.white};
+  }
+
+  &:focus-visible {
+    z-index: 3;
   }
 `;
 
@@ -296,8 +302,17 @@ const Timeline = ({
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
-  const tabsRef = useRef<HTMLButtonElement[]>([]);
+  const tabsRef = useRef<HTMLAnchorElement[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  // keep focus on the newly selected tab after the phase change re-renders
+  // (and remounts) the timeline, for a11y
+  useLayoutEffect(() => {
+    if (pendingFocusPhaseIndex === null) return;
+    const index = pendingFocusPhaseIndex;
+    pendingFocusPhaseIndex = null;
+    tabsRef.current[index]?.focus();
+  }, [selectedPhase?.id]);
 
   useEffect(() => {
     // TODO: Fix this the next time the file is edited.
@@ -312,17 +327,7 @@ const Timeline = ({
     return () => clearTimeout(timeout);
   }, [phases]);
 
-  const handleOnPhaseSelection = useCallback(
-    (phase: IPhaseData | undefined) => (event: FormEvent) => {
-      trackEventByName(tracks.clickOnPhase);
-      event.preventDefault();
-
-      if (phase && phases && project) {
-        setPhaseURL(phase, phases.data, project.data, isBackoffice);
-      }
-    },
-    [isBackoffice, phases, project]
-  );
+  const trackPhaseClick = () => trackEventByName(tracks.clickOnPhase);
 
   const handleTabListOnKeyDown = (e: KeyboardEvent) => {
     const arrowLeftPressed = e.key === 'ArrowLeft';
@@ -340,8 +345,8 @@ const Timeline = ({
           currentPhaseIndex === phases.data.length - 1
             ? 0
             : currentPhaseIndex + 1;
+        pendingFocusPhaseIndex = selectedPhaseIndex;
         setSelectedPhase(phases.data[selectedPhaseIndex]);
-        tabsRef.current[selectedPhaseIndex].focus();
 
         // Move left
       } else if (arrowLeftPressed) {
@@ -351,8 +356,8 @@ const Timeline = ({
           currentPhaseIndex === 0
             ? phases.data.length - 1
             : currentPhaseIndex - 1;
+        pendingFocusPhaseIndex = selectedPhaseIndex;
         setSelectedPhase(phases.data[selectedPhaseIndex]);
-        tabsRef.current[selectedPhaseIndex].focus();
       }
     }
   };
@@ -393,6 +398,13 @@ const Timeline = ({
                   .filter((className) => className)
                   .join(' ');
                 const showArrow = !(phaseIndex === phases.data.length - 1);
+                const phaseUrl: string | null = project
+                  ? isBackoffice
+                    ? `/admin/projects/${project.data.id}/phases/${
+                        phase.id
+                      }/${getPhaseLandingTab(phase)}`
+                    : `/projects/${project.data.attributes.slug}/${phaseNumber}`
+                  : null;
 
                 return (
                   <PhaseContainer
@@ -402,37 +414,44 @@ const Timeline = ({
                     breakpoint={phasesBreakpoint}
                     last={isLast}
                   >
-                    <PhaseBar
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onKeyDown={handleTabListOnKeyDown}
-                      onClick={handleOnPhaseSelection(phase)}
-                      aria-current={isCurrentPhase}
-                      // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
-                      aria-selected={isSelectedPhase}
-                      aria-controls={`phase-description-panel-${phaseNumber}`}
-                      role="tab"
-                      ref={(el) => el && (tabsRef.current[phaseIndex] = el)}
-                      tabIndex={isSelectedPhase ? 0 : -1}
-                      id={`phase-tab-${phaseNumber}`}
-                      showArrow={showArrow}
-                      isCurrentPhase={isCurrentPhase}
-                      className={`intercom-project-timeline-phase-${phaseNumber}`}
-                    >
-                      {isCurrentPhase && (
-                        <BlinkingDot isSelected={isSelectedPhase} />
-                      )}
-                      <span aria-hidden>{phaseNumber}</span>
-                      <ScreenReaderOnly>
-                        <FormattedMessage
-                          {...messages.a11y_phase}
-                          values={{
-                            phaseNumber,
-                            phaseTitle,
-                          }}
-                        />
-                      </ScreenReaderOnly>
-                      {showArrow && <PhaseArrow />}
-                    </PhaseBar>
+                    {phaseUrl && (
+                      <PhaseBar
+                        as={LinkAs}
+                        to={phaseUrl}
+                        scrollToTop={false}
+                        ref={(el: HTMLAnchorElement | null) =>
+                          el && (tabsRef.current[phaseIndex] = el)
+                        }
+                        onMouseDown={removeFocusAfterMouseClick}
+                        onKeyDown={handleTabListOnKeyDown}
+                        onClick={trackPhaseClick}
+                        aria-current={isCurrentPhase}
+                        // Implementation details: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
+                        aria-selected={isSelectedPhase}
+                        aria-controls={`phase-description-panel-${phaseNumber}`}
+                        role="tab"
+                        tabIndex={isSelectedPhase ? 0 : -1}
+                        id={`phase-tab-${phaseNumber}`}
+                        $showArrow={showArrow}
+                        $isCurrentPhase={isCurrentPhase}
+                        className={`intercom-project-timeline-phase-${phaseNumber}`}
+                      >
+                        {isCurrentPhase && (
+                          <BlinkingDot isSelected={isSelectedPhase} />
+                        )}
+                        <span aria-hidden>{phaseNumber}</span>
+                        <ScreenReaderOnly>
+                          <FormattedMessage
+                            {...messages.a11y_phase}
+                            values={{
+                              phaseNumber,
+                              phaseTitle,
+                            }}
+                          />
+                        </ScreenReaderOnly>
+                        {showArrow && <PhaseArrow />}
+                      </PhaseBar>
+                    )}
                     <PhaseText
                       current={isCurrentPhase}
                       selected={isSelectedPhase}
@@ -472,7 +491,7 @@ const Timeline = ({
                         }}
                         role="tab"
                         id="new-phase"
-                        showArrow={false}
+                        $showArrow={false}
                         className="intercom-timeline-add-new-phase-button"
                       >
                         <span

@@ -309,6 +309,11 @@
     "verified_at": "2026-04-20T15:38:06.365179Z",
     "verified_by": "Roger"
   },
+  "custom_forms.categories.main_content.observation.title": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:36:53.071825Z",
+    "verified_by": "Roger"
+  },
   "custom_forms.categories.main_content.option.title": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.365179Z",
@@ -342,6 +347,11 @@
   "custom_forms.categories.main_content.response.title": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.365179Z",
+    "verified_by": "Roger"
+  },
+  "custom_forms.categories.main_content.story.title": {
+    "state": "verified",
+    "verified_at": "2026-05-15T07:47:16.154399Z",
     "verified_by": "Roger"
   },
   "custom_forms.categories.main_content.suggestion.title": {
@@ -484,9 +494,19 @@
     "verified_at": "2026-04-20T15:38:06.365179Z",
     "verified_by": "Roger"
   },
+  "form_builder.pdf_export.logic_if_answered_end": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:30.083085Z",
+    "verified_by": "Roger"
+  },
   "form_builder.pdf_export.logic_if_answered_go_to": {
     "state": "verified",
     "verified_at": "2026-04-20T15:38:06.365179Z",
+    "verified_by": "Roger"
+  },
+  "form_builder.pdf_export.logic_no_further_questions": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:30.083085Z",
     "verified_by": "Roger"
   },
   "form_builder.pdf_export.logic_section": {
@@ -909,6 +929,26 @@
     "verified_at": "2026-04-20T14:46:23.365900Z",
     "verified_by": "Roger"
   },
+  "pdf_export.survey_responses.date": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.no_answer": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.prepared_by": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
+  "pdf_export.survey_responses.report_label": {
+    "state": "verified",
+    "verified_at": "2026-07-01T13:49:11.931872Z",
+    "verified_by": "Roger"
+  },
   "phases.community_monitor_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:46:23.365900Z",
@@ -979,14 +1019,29 @@
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "static_pages.infopage_body": {
+    "state": "verified",
+    "verified_at": "2026-07-07T15:45:04.424780Z",
+    "verified_by": "Roger"
+  },
   "static_pages.infopage_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
     "verified_by": "Roger"
   },
+  "static_pages.privacy_policy_body": {
+    "state": "verified",
+    "verified_at": "2026-06-01T13:52:20.237337Z",
+    "verified_by": "Roger"
+  },
   "static_pages.privacy_policy_title": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
+    "verified_by": "Roger"
+  },
+  "static_pages.terms_and_conditions_body": {
+    "state": "verified",
+    "verified_at": "2026-06-01T13:13:35.524396Z",
     "verified_by": "Roger"
   },
   "static_pages.terms_and_conditions_title": {
@@ -1002,6 +1057,11 @@
   "time.am": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
+    "verified_by": "Roger"
+  },
+  "time.formats.hour_of_day": {
+    "state": "verified",
+    "verified_at": "2026-06-01T13:18:29.923075Z",
     "verified_by": "Roger"
   },
   "time.pm": {
@@ -1187,6 +1247,11 @@
   "user.anon_first_name": {
     "state": "verified",
     "verified_at": "2026-04-20T14:31:32.872123Z",
+    "verified_by": "Roger"
+  },
+  "user.anon_scheme.animals": {
+    "state": "verified",
+    "verified_at": "2026-06-02T06:49:57.325155Z",
     "verified_by": "Roger"
   },
   "user_blocked_mailer.send_user_blocked_email.for_more_information": {

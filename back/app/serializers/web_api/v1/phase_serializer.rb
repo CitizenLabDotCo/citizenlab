@@ -5,8 +5,8 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include Surveys::WebApi::V1::SurveyPhaseSerializer
   include DocumentAnnotation::WebApi::V1::DocumentAnnotationPhaseSerializer
 
-  attributes :title_multiloc, :created_at, :updated_at, :ideas_count,
-    :participation_method, :submission_enabled, :commenting_enabled,
+  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :ideas_count,
+    :participation_method, :placement_type, :submission_enabled, :commenting_enabled,
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
     :presentation_mode, :available_views, :ideas_order, :input_term, :vote_term,
@@ -17,16 +17,13 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   %i[
     voting_method voting_max_total voting_min_total
     voting_max_votes_per_idea baskets_count voting_min_selected_options
-    native_survey_title_multiloc native_survey_button_multiloc
+    native_survey_title_multiloc native_survey_button_multiloc allow_multiple_responses
     expire_days_limit reacting_threshold autoshare_results_enabled voting_filtering_enabled
   ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
       phase.pmethod.supports_serializing?(attribute_name)
     }
   end
-
-  attribute :start_at, &:start_date
-  attribute :end_at, &:end_date
 
   attribute :votes_count, if: proc { |phase, params|
     phase.pmethod.supports_serializing?(:votes_count) && view_votes?(phase, current_user(params))
@@ -85,6 +82,11 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation
   end
 
+  attribute :action_descriptors do |phase, params|
+    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+    Permissions::PhasePermissionsService.new(phase, current_user(params), user_requirements_service:, request: params[:request]).action_descriptors
+  end
+
   belongs_to :project
 
   has_one :user_basket, if: proc { |object, params|
@@ -111,6 +113,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   def self.view_votes?(phase, user)
     return true if user && UserRoleService.new.can_moderate?(phase, user)
 
-    TimelineService.new.phase_is_complete?(phase)
+    phase.complete?
   end
 end

@@ -1,11 +1,12 @@
 import React from 'react';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import { IEventData } from 'api/events/types';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+import { userTimezone } from 'utils/dateUtils';
 
 import messages from './messages';
 
@@ -22,8 +23,9 @@ interface Props {
  */
 const ScreenReadableEventDate = ({ event }: Props) => {
   const { formatMessage } = useIntl();
-  const startAtMoment = moment(event.attributes.start_at);
-  const endAtMoment = moment(event.attributes.end_at);
+  const startAtMoment = moment.tz(event.attributes.start_at, userTimezone);
+  const endAtMoment = moment.tz(event.attributes.end_at, userTimezone);
+  const tzLabel = startAtMoment.format('z');
   const isEventMultipleDays =
     startAtMoment.dayOfYear() !== endAtMoment.dayOfYear();
 
@@ -36,6 +38,7 @@ const ScreenReadableEventDate = ({ event }: Props) => {
             startTime: startAtMoment.format('LT'),
             endDate: endAtMoment.format('MMMM Do, YYYY'),
             endTime: endAtMoment.format('LT'),
+            timezone: tzLabel,
           })}
         </p>
       ) : (
@@ -44,6 +47,7 @@ const ScreenReadableEventDate = ({ event }: Props) => {
             eventDate: startAtMoment.format('MMMM Do, YYYY'),
             startTime: startAtMoment.format('LT'),
             endTime: endAtMoment.format('LT'),
+            timezone: tzLabel,
           })}
         </p>
       )}

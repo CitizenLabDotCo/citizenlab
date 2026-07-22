@@ -126,27 +126,51 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
 
     attr_reader :highest_role_after_initialize
 
+    # Never change `roles` via update_column(s)/update_all/insert_all: those skip
+    # this callback, leaving a stale highest_role claim valid in outstanding JWTs.
+    before_update :rotate_token_expiry_key_on_highest_role_change
+
     validates :roles, json: { schema: -> { UserRoles.roles_json_schema } }
   end
 
   def highest_role
-    if super_admin?
-      :super_admin
-    elsif admin?
-      :admin
-    elsif space_moderator?
+    highest_role_for roles
+  end
+
+  # Highest role implied by an arbitrary roles array, so that the persisted and the
+  # pending roles of one user can be compared — see
+  # #rotate_token_expiry_key_on_highest_role_change. #highest_role passes the user's
+  # current roles.
+  def highest_role_for(role_list)
+    roles_array = role_list.to_a
+    if roles_array.any? { |role| role['type'] == 'admin' }
+      govocal_or_citizenlab_email? ? :super_admin : :admin
+    elsif moderator_role_present?(roles_array, 'space_moderator', 'space_id')
       :space_moderator
-    elsif project_folder_moderator?
+    elsif moderator_role_present?(roles_array, 'project_folder_moderator', 'project_folder_id')
       :project_folder_moderator
-    elsif project_moderator?
+    elsif moderator_role_present?(roles_array, 'project_moderator', 'project_id')
       :project_moderator
     else
       :user
     end
   end
 
+  # The scope id is required so that a type-only role hash, built in memory before
+  # validation, isn't classified as a moderator. Mirrors the moderated_*_ids
+  # helpers, which compact out nil ids.
+  def moderator_role_present?(roles_array, type, id_key)
+    roles_array.any? { |role| role['type'] == type && !role[id_key].nil? }
+  end
+
   def super_admin?
-    admin? && !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i') || email =~ Regexp.new(GOVOCAL_MEMBER_REGEX_CONTENT, 'i'))
+    admin? && govocal_or_citizenlab_email?
+  end
+
+  def govocal_or_citizenlab_email?
+    return false if email.blank?
+
+    !!(email =~ Regexp.new(CITIZENLAB_MEMBER_REGEX_CONTENT, 'i') || email =~ Regexp.new(GOVOCAL_MEMBER_REGEX_CONTENT, 'i'))
   end
 
   def admin?
@@ -158,7 +182,7 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   end
 
   def project_moderator?(project_id = nil)
-    project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
+    project_id ? moderated_project_ids.include?(project_id) : moderated_project_ids.present?
   end
 
   def moderator?
@@ -229,5 +253,16 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
   def delete_role(type, options = {})
     roles.delete({ 'type' => type.to_s }.merge(options.stringify_keys))
     self
+  end
+
+  # Rotating token_expiry_key invalidates every outstanding JWT, so the next login
+  # mints one with the correct highest_role claim. Only a change of highest_role
+  # rotates it: a moderator gaining a further project moderator role is not logged out.
+  def rotate_token_expiry_key_on_highest_role_change
+    return unless has_attribute?('roles')
+    return unless will_save_change_to_roles?
+    return if highest_role_for(roles_in_database) == highest_role_for(roles)
+
+    self.token_expiry_key = SecureRandom.hex(10)
   end
 end

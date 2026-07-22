@@ -11,6 +11,59 @@ RSpec.describe Basket do
     end
   end
 
+  context 'uniqueness' do
+    it 'does not allow duplicate baskets for the same user and phase' do
+      user = create(:user)
+      phase = create(:budgeting_phase)
+
+      create(:basket, user: user, phase: phase)
+
+      # Attempting to create a second basket for the same user and phase should fail
+      duplicate_basket = build(:basket, user: user, phase: phase)
+      expect(duplicate_basket.save).to be false
+      expect(duplicate_basket.errors.details).to eq(user_id: [{ error: :taken, value: user.id }])
+      expect(duplicate_basket.errors.messages).to eq(user_id: ['has already been taken'])
+    end
+
+    it 'allows multiple baskets for the same user in different phases' do
+      user = create(:user)
+      phase1 = create(:budgeting_phase)
+      phase2 = create(:budgeting_phase)
+
+      basket1 = create(:basket, user: user, phase: phase1)
+      basket2 = create(:basket, user: user, phase: phase2)
+
+      expect(basket1).to be_valid
+      expect(basket2).to be_valid
+    end
+
+    it 'allows multiple baskets for different users in the same phase' do
+      user1 = create(:user)
+      user2 = create(:user)
+      phase = create(:budgeting_phase)
+
+      basket1 = create(:basket, user: user1, phase: phase)
+      basket2 = create(:basket, user: user2, phase: phase)
+
+      expect(basket1).to be_valid
+      expect(basket2).to be_valid
+    end
+
+    it 'allows multiple baskets with NULL user_id for the same phase' do
+      phase = create(:budgeting_phase)
+
+      # Create first basket without user (simulating deleted user)
+      basket1 = described_class.new(user_id: nil, phase: phase)
+      expect(basket1.save).to be true
+
+      # Create second basket without user (simulating another deleted user)
+      basket2 = described_class.new(user_id: nil, phase: phase)
+      expect(basket2.save).to be true
+
+      expect(described_class.where(user_id: nil, phase: phase).count).to eq 2
+    end
+  end
+
   context 'baskets_ideas' do
     it 'preserve created_at upon update' do
       basket = create(:basket)
@@ -215,6 +268,32 @@ RSpec.describe Basket do
           expect(current_phase.reload.votes_count).to eq 0
           expect(project.reload.baskets_count).to eq 0
           expect(project.reload.votes_count).to eq 0
+        end
+      end
+
+      # Counter maintenance must not depend on the phase being valid on unrelated attributes.
+      # A phase can be persisted in an invalid state by an unvalidated bulk write, as the
+      # 20260223103753 backfill did when it omitted 'map' from the `available_views` it created.
+      context 'when the phase is invalid on an unrelated attribute' do
+        before do
+          basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+          basket.baskets_ideas.update_all(votes: 10)
+
+          current_phase.update_column(:presentation_mode, 'map')
+          current_phase.update_column(:available_views, ['card'])
+        end
+
+        it 'is invalid, to confirm the setup' do
+          expect(current_phase.reload).not_to be_valid
+        end
+
+        it 'still updates the counts of the phase and the project' do
+          expect { basket.update_counts! }.not_to raise_error
+
+          expect(current_phase.reload.baskets_count).to eq 1
+          expect(current_phase.reload.votes_count).to eq 20
+          expect(project.reload.baskets_count).to eq 1
+          expect(project.reload.votes_count).to eq 20
         end
       end
     end

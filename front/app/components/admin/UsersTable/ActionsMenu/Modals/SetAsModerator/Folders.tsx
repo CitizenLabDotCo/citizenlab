@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-import useAddProjectFolderModerator from 'api/project_folder_moderators/useAddProjectFolderModerator';
 import { IProjectFolderData } from 'api/project_folders/types';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
-import { IUser, IUserData } from 'api/users/types';
+import { IUserData } from 'api/users/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
 
@@ -12,14 +11,10 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import { useIntl } from 'utils/cl-intl';
 import { IProjectFolderModeratorRole } from 'utils/permissions/roles';
 
+import { Resources } from '../../useAssignModerator';
 import messages from '../messages';
 
 import AssignButton from './AssignButton';
-
-interface Props {
-  user: IUserData;
-  onClose: () => void;
-}
 
 const getOptions = (
   localize: Localize,
@@ -55,11 +50,16 @@ const getOptions = (
   return options;
 };
 
-const Folders = ({ user, onClose }: Props) => {
+interface Props {
+  user: IUserData;
+  onClose: () => void;
+  onAssign: (resources: Resources) => Promise<void>;
+}
+
+const Folders = ({ user, onAssign }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: folders } = useProjectFolders({});
-  const { mutateAsync: addFolderModerator } = useAddProjectFolderModerator();
 
   const [selectedFolders, setSelectedFolders] = useState<string[]>([]);
 
@@ -70,21 +70,6 @@ const Folders = ({ user, onClose }: Props) => {
       folders?.data,
       user.attributes.roles
     ) || [];
-
-  const assignFMs = async () => {
-    const promises: Promise<IUser>[] = [];
-
-    for (const folderId of selectedFolders) {
-      promises.push(
-        addFolderModerator({
-          projectFolderId: folderId,
-          user_id: user.id,
-        })
-      );
-    }
-
-    await Promise.all(promises);
-  };
 
   return (
     <>
@@ -99,9 +84,7 @@ const Folders = ({ user, onClose }: Props) => {
       />
       <AssignButton
         disabled={selectedFolders.length === 0}
-        user={user}
-        onClose={onClose}
-        onAssign={assignFMs}
+        onAssign={() => onAssign({ type: 'folder', ids: selectedFolders })}
       />
     </>
   );

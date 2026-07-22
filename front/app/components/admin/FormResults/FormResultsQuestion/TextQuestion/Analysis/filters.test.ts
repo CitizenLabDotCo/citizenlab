@@ -1,88 +1,103 @@
 import {
-  getQuarterFilter,
-  getYearFilter,
-} from 'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils';
+  getPublishedAtFromFilter,
+  getPublishedAtToFilter,
+  isFollowUpFiltered,
+  isOtherFiltered,
+} from './utils';
 
-import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
+const FIELD_ID = 'abc-123';
+const KEY = `input_custom_${FIELD_ID}` as const;
 
-jest.mock(
-  'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils',
-  () => {
-    const actual = jest.requireActual(
-      'containers/Admin/communityMonitor/components/LiveMonitor/components/HealthScoreWidget/utils'
-    );
-    return {
-      ...actual,
-      getYearFilter: jest.fn(),
-      getQuarterFilter: jest.fn(),
-    };
-  }
-);
+describe('isFollowUpFiltered', () => {
+  it('is true when scoped to non-empty follow-up text', () => {
+    expect(isFollowUpFiltered({ input_follow_up_not_empty: true })).toBe(true);
+  });
+
+  it('is false when the flag is absent (whole-question insight)', () => {
+    expect(
+      isFollowUpFiltered({ input_custom_field_no_empty_values: true })
+    ).toBe(false);
+  });
+
+  it('is false when filters are undefined', () => {
+    expect(isFollowUpFiltered(undefined)).toBe(false);
+  });
+});
+
+describe('isOtherFiltered', () => {
+  it('is true when the question filter is an array containing "other"', () => {
+    expect(isOtherFiltered({ [KEY]: ['other'] }, FIELD_ID)).toBe(true);
+  });
+
+  it('is true when "other" is one of several selected values', () => {
+    expect(isOtherFiltered({ [KEY]: ['red', 'other'] }, FIELD_ID)).toBe(true);
+  });
+
+  it('is true when the question filter is the string "other"', () => {
+    expect(isOtherFiltered({ [KEY]: 'other' }, FIELD_ID)).toBe(true);
+  });
+
+  it('is false when the question is filtered to a non-other option', () => {
+    expect(isOtherFiltered({ [KEY]: ['red'] }, FIELD_ID)).toBe(false);
+  });
+
+  it('is false when there is no filter for this question (whole-question insight)', () => {
+    expect(
+      isOtherFiltered({ input_custom_field_no_empty_values: true }, FIELD_ID)
+    ).toBe(false);
+  });
+
+  it('is false when the "other" filter is for a different question', () => {
+    expect(
+      isOtherFiltered({ input_custom_other_id: ['other'] }, FIELD_ID)
+    ).toBe(false);
+  });
+
+  it('is false when filters are undefined', () => {
+    expect(isOtherFiltered(undefined, FIELD_ID)).toBe(false);
+  });
+});
 
 describe('getPublishedAtFromFilter', () => {
   it('returns correct start date for Q1', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2025');
-    (getQuarterFilter as jest.Mock).mockReturnValue('1');
-
-    const result = getPublishedAtFromFilter(new URLSearchParams());
-    expect(result).toBe('2025-01-01');
+    expect(getPublishedAtFromFilter('2025', '1')).toBe('2025-01-01');
   });
 
   it('returns correct start date for Q3', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2024');
-    (getQuarterFilter as jest.Mock).mockReturnValue('3');
-
-    const result = getPublishedAtFromFilter(new URLSearchParams());
-    expect(result).toBe('2024-07-01');
+    expect(getPublishedAtFromFilter('2024', '3')).toBe('2024-07-01');
   });
 
-  it('returns undefined when year is missing', () => {
-    (getYearFilter as jest.Mock).mockReturnValue(null);
-    (getQuarterFilter as jest.Mock).mockReturnValue('2');
-
-    const result = getPublishedAtFromFilter(new URLSearchParams());
-    expect(result).toBeUndefined();
+  it('returns undefined when year is missing (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtFromFilter(undefined, '1')).toBeUndefined();
   });
 
-  it('returns undefined when quarter is missing', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2024');
-    (getQuarterFilter as jest.Mock).mockReturnValue(null);
+  it('returns undefined when quarter is missing (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtFromFilter('2025', undefined)).toBeUndefined();
+  });
 
-    const result = getPublishedAtFromFilter(new URLSearchParams());
-    expect(result).toBeUndefined();
+  it('returns undefined when both year and quarter are missing (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtFromFilter(undefined, undefined)).toBeUndefined();
   });
 });
 
 describe('getPublishedAtToFilter', () => {
   it('returns correct end date for Q1', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2025');
-    (getQuarterFilter as jest.Mock).mockReturnValue('1');
-
-    const result = getPublishedAtToFilter(new URLSearchParams());
-    expect(result).toBe('2025-03-31');
+    expect(getPublishedAtToFilter('2025', '1')).toBe('2025-03-31');
   });
 
   it('returns correct end date for Q4', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2023');
-    (getQuarterFilter as jest.Mock).mockReturnValue('4');
-
-    const result = getPublishedAtToFilter(new URLSearchParams());
-    expect(result).toBe('2023-12-31');
+    expect(getPublishedAtToFilter('2023', '4')).toBe('2023-12-31');
   });
 
-  it('returns undefined when year is missing', () => {
-    (getYearFilter as jest.Mock).mockReturnValue(null);
-    (getQuarterFilter as jest.Mock).mockReturnValue('2');
-
-    const result = getPublishedAtToFilter(new URLSearchParams());
-    expect(result).toBeUndefined();
+  it('returns undefined when year is missing (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtToFilter(undefined, '1')).toBeUndefined();
   });
 
-  it('returns undefined when quarter is missing', () => {
-    (getYearFilter as jest.Mock).mockReturnValue('2024');
-    (getQuarterFilter as jest.Mock).mockReturnValue(null);
+  it('returns undefined when quarter is missing (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtToFilter('2025', undefined)).toBeUndefined();
+  });
 
-    const result = getPublishedAtToFilter(new URLSearchParams());
-    expect(result).toBeUndefined();
+  it('returns undefined when both year and quarter are missing (non-Community-Monitor flow)', () => {
+    expect(getPublishedAtToFilter(undefined, undefined)).toBeUndefined();
   });
 });

@@ -8,7 +8,6 @@ import {
   Icon,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
@@ -22,6 +21,7 @@ import ReactionControl from 'components/ReactionControl';
 import Emoji from 'components/UI/Emoji';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 import { stripHtml } from 'utils/textUtils';
 
 export const NOTE_ASPECT_RATIO = 4 / 5;
@@ -99,8 +99,8 @@ const StickyNote: React.FC<Props> = ({
   centeredIdeaId,
   showReactions = true,
 }) => {
-  const [searchParams] = useSearchParams();
-  const phaseId = searchParams.get('phase_id') || undefined;
+  const searchParams = useSearch({ strict: false });
+  const phaseId = searchParams.phase_id || undefined;
   const { data: phase } = usePhase(phaseId);
 
   const isCentered = centeredIdeaId === ideaId;
@@ -113,12 +113,13 @@ const StickyNote: React.FC<Props> = ({
   const localize = useLocalize();
   const { mutate: addIdeaExposure } = useAddIdeaExposure();
 
-  // Track idea exposure when sticky note becomes centered
+  // Track idea exposure when sticky note becomes centered. Record it against
+  // the phase being browsed so it matches what the feed endpoint filters on.
   useEffect(() => {
-    if (isCentered) {
-      addIdeaExposure({ ideaId });
+    if (isCentered && phaseId) {
+      addIdeaExposure({ ideaId, phaseId });
     }
-  }, [isCentered, ideaId, addIdeaExposure]);
+  }, [isCentered, ideaId, phaseId, addIdeaExposure]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {

@@ -11,10 +11,12 @@ import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import { CLError } from 'typings';
+import { CLError, Multiloc } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useIdMethods from 'api/id_methods/useIdMethods';
+import { getAzureConfig } from 'api/id_methods/utils';
 import { IInviteError } from 'api/invites/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -140,6 +142,7 @@ export interface ErrorProps {
   apiErrors?: (CLError | IInviteError)[] | null;
   id?: string;
   scrollIntoView?: boolean;
+  liveRegion?: boolean;
 }
 
 export interface TFieldNameMap {
@@ -221,18 +224,18 @@ export const getApiErrorValues = (
   return payload ? { ...payload, ...values } : values;
 };
 
-// Allow custom error messages from app configuration for specific API errors
-const findErrorFromAppConfig = (
+// Allow custom error messages (configured on a verification method) for specific
+// API errors. The Azure AD SSO method can define a custom message for users who
+// must sign in via SSO because of their email domain.
+const findCustomErrorMessage = (
   error: string,
-  appConfiguration: IAppConfiguration,
+  ssoEnforcedForDomainMultiloc: Multiloc | undefined,
   localize: Localize
 ) => {
   if (error === 'sso_enforced_for_domain') {
-    const customMultiloc =
-      appConfiguration.data.attributes.settings.azure_ad_login
-        ?.enforced_email_domain_error_multiloc;
-
-    return customMultiloc ? localize(customMultiloc) : undefined;
+    return ssoEnforcedForDomainMultiloc
+      ? localize(ssoEnforcedForDomainMultiloc)
+      : undefined;
   }
   return;
 };
@@ -240,8 +243,12 @@ const findErrorFromAppConfig = (
 const Error = (props: ErrorProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: idMethods } = useIdMethods();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+
+  const ssoEnforcedForDomainMultiloc =
+    getAzureConfig(idMethods)?.attributes.enforced_email_domain_error_multiloc;
 
   const {
     text,
@@ -255,7 +262,10 @@ const Error = (props: ErrorProps) => {
     animate = true,
     id,
     scrollIntoView = true,
+    liveRegion,
   } = props;
+
+  const isLiveRegion = liveRegion ?? true;
 
   useEffect(() => {
     if (scrollIntoView) {
@@ -289,7 +299,7 @@ const Error = (props: ErrorProps) => {
         id={id}
         marginTop={marginTop}
         marginBottom={marginBottom}
-        role="alert"
+        role={isLiveRegion ? 'alert' : undefined}
         data-testid="error-message"
       >
         <ContainerInner
@@ -322,9 +332,9 @@ const Error = (props: ErrorProps) => {
                       );
                       const values = getApiErrorValues(error, appConfiguration);
 
-                      const customErrorMessage = findErrorFromAppConfig(
+                      const customErrorMessage = findCustomErrorMessage(
                         error.error,
-                        appConfiguration,
+                        ssoEnforcedForDomainMultiloc,
                         localize
                       );
 

@@ -7,10 +7,9 @@ import {
   Text,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import { IAnalysisData } from 'api/analyses/types';
-import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
+import { IInputsFilterParams } from 'api/analysis_inputs/types';
 import { IInsights } from 'api/analysis_insights/types';
 import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
@@ -18,8 +17,10 @@ import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAdd
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import messages from '../../../messages';
+import { TextResponseSource } from '../utils';
 
 import Question from './Question';
 import Summary from './Summary';
@@ -27,22 +28,20 @@ import { getPublishedAtFromFilter, getPublishedAtToFilter } from './utils';
 
 const AnalysisInsights = ({
   analysis,
-  hasOtherResponses,
+  textResponseSource,
+  textResponsesCount,
   insights,
 }: {
   analysis: IAnalysisData;
-  hasOtherResponses?: boolean;
+  textResponseSource?: TextResponseSource;
+  textResponsesCount: number;
   insights?: IInsights;
 }) => {
-  const [search] = useSearchParams();
+  const search = useSearch({ strict: false });
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [selectedInsightIndex, setSelectedInsightIndex] = useState(0);
 
   const { formatMessage } = useIntl();
-
-  const { data: inputs } = useInfiniteAnalysisInputs({
-    analysisId: analysis.id,
-  });
 
   const { mutate: addAnalysisSummary, isLoading: addSummaryIsLoading } =
     useAddAnalysisSummary();
@@ -54,47 +53,54 @@ const AnalysisInsights = ({
     onlyCheckAllowed: true,
   });
 
-  const inputCount = inputs?.pages[0].meta.filtered_count || 0;
   const selectedInsight = insights?.data[selectedInsightIndex];
 
-  // Create a summary if there are no insights yet
+  // Auto-generate only when this question has more than 10 responses — counting
+  // the responses shown in this box (the 'other'/follow-up free text, or the
+  // plain text answers), not all responders to the survey.
+  const enoughResponses = textResponsesCount > 10;
+
+  // Create a summary if there are no (qualifying) insights yet
   useEffect(() => {
     if (
       analysis.id &&
       insights?.data.length === 0 &&
       !automaticSummaryCreated &&
-      inputCount > 10
+      enoughResponses
     ) {
       setAutomaticSummaryCreated(true);
+
+      // Only inputs that answered the question, within the selected quarter (if any).
+      const baseFilters: IInputsFilterParams = {
+        input_custom_field_no_empty_values: true,
+        published_at_from: getPublishedAtFromFilter(
+          search.year,
+          search.quarter
+        ),
+        published_at_to: getPublishedAtToFilter(search.year, search.quarter),
+      };
+
       preCheck(
-        {
-          analysisId: analysis.id,
-          filters: {
-            input_custom_field_no_empty_values: true,
-            published_at_from: getPublishedAtFromFilter(search),
-            published_at_to: getPublishedAtToFilter(search),
-          },
-        },
+        { analysisId: analysis.id, filters: baseFilters },
         {
           onSuccess: (data) => {
+            if (data.data.attributes.impossible_reason) return;
+
+            // Scope the summary to this box's own responses.
             const customFieldId =
               analysis.relationships.main_custom_field?.data?.id;
-
-            if (!data.data.attributes.impossible_reason) {
-              const filters = {
-                input_custom_field_no_empty_values: true,
-                published_at_from: getPublishedAtFromFilter(search),
-                published_at_to: getPublishedAtToFilter(search),
-                limit: !largeSummariesAllowed ? 30 : undefined,
-              };
-              if (hasOtherResponses && customFieldId) {
-                filters[`input_custom_${customFieldId}`] = ['other'];
-              }
-              addAnalysisSummary({
-                analysisId: analysis.id,
-                filters,
-              });
+            const filters: IInputsFilterParams = {
+              ...baseFilters,
+              limit: largeSummariesAllowed ? undefined : 30,
+            };
+            if (textResponseSource === 'other_option' && customFieldId) {
+              filters[`input_custom_${customFieldId}`] = ['other'];
             }
+            if (textResponseSource === 'follow_up') {
+              filters.input_follow_up_not_empty = true;
+            }
+
+            addAnalysisSummary({ analysisId: analysis.id, filters });
           },
         }
       );
@@ -104,10 +110,10 @@ const AnalysisInsights = ({
     addAnalysisSummary,
     insights,
     automaticSummaryCreated,
-    inputCount,
+    enoughResponses,
     largeSummariesAllowed,
     preCheck,
-    hasOtherResponses,
+    textResponseSource,
     analysis.relationships.main_custom_field?.data?.id,
     search,
   ]);

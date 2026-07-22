@@ -15,8 +15,10 @@ services:
     volumes:
       - "postgres:/var/lib/postgresql/data"
 
+  # NOTE: WORKTREE_PREFIX is an env var that can be set when running in a git worktree
+  # to allow independent containers per worktree (though they cannot run simultaneously due to port conflicts)
   web:
-    container_name: cl-back-web
+    container_name: ${WORKTREE_PREFIX:-cl}-back-web
     depends_on:
       - "postgres"
       - "mailcatcher"
@@ -47,7 +49,7 @@ services:
     stdin_open: true
 
   que:
-    container_name: cl-que
+    container_name: ${WORKTREE_PREFIX:-cl}-que
     depends_on:
       - "postgres"
       - "mailcatcher"
@@ -68,13 +70,14 @@ services:
       - "env_files/back-secret.env"
     environment:
       - BUNDLE_PATH=/bundle
+      - BASE_DEV_URI
       - USER_UID=${USER_UID:-1000}
       - USER_GID=${USER_GID:-1000}
     tty: true
     stdin_open: true
 
   rabbitmq:
-    container_name: cl-back-rabbit
+    container_name: ${WORKTREE_PREFIX:-cl}-back-rabbit
     image: "rabbitmq:3.8-management"
     ports:
       - "8088:15672"
@@ -95,7 +98,7 @@ services:
 
   # Open API documentation - Only starts if you run docker compose --profile openapi up
   openapi:
-    container_name: cl-open-api
+    container_name: ${WORKTREE_PREFIX:-cl}-open-api
     image: swaggerapi/swagger-ui
     ports:
       - 8080:8080
@@ -108,14 +111,73 @@ services:
 
   # For generating PDFs
   gotenberg:
-    container_name: cl-gotenberg
+    container_name: ${WORKTREE_PREFIX:-cl}-gotenberg
     image: gotenberg/gotenberg:8.21
     restart: always
+
+  # Fake OIDC provider used by the `fake_sso` verification/auth method.
+  # Only starts if you run `docker compose --profile fake_sso up`
+  # (or via `make up-fake-sso` / `make e2e-setup-and-up-fake-sso`).
+  #
+  # Local setup (one-time):
+  #   1) Clone the fake_sso repo next to the citizenlab repo (defaults to ../fake_sso)
+  #      or set FAKE_SSO_PATH to wherever you have it checked out.
+  #   2) Add `127.0.0.1 host.docker.internal` to /etc/hosts so the browser can
+  #      resolve the OIDC issuer (the back-end already reaches it via the docker
+  #      host-gateway).
+  fake_sso:
+    # Distinct from the standalone fake_sso/docker-compose.yml (which uses
+    # `cl-fake-sso`) so the two stacks can coexist without conflicting.
+    container_name: ${WORKTREE_PREFIX:-cl}-fake-sso-app
+    image: node:22-alpine
+    working_dir: /app
+    ports:
+      - "8081:8081"
+    volumes:
+      - "${FAKE_SSO_PATH:-../fake_sso}:/app"
+      # Anonymous volume so the in-container install doesn't trash the host's
+      # node_modules (the host may have darwin-built native modules).
+      - "/app/node_modules"
+    command: sh -c "npm install --no-audit --no-fund --prefer-offline && npm start"
+    env_file:
+      # Pulls FAKE_SSO_JWT_SECRET from the main back env so the id_token can be
+      # verified by the Rails back-end.
+      - "env_files/back-secret.env"
+    environment:
+      PORT: 8081
+    profiles:
+      - fake_sso
+
+  # Front-end dev server - Only starts if you run docker compose --profile frontend up
+  front:
+    container_name: ${WORKTREE_PREFIX:-cl}-front
+    image: node:24.15.0
+    working_dir: /citizenlab/front
+    command: sh -c "npm install && npm start"
+    depends_on:
+      - "web"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./front:/citizenlab/front"
+      - front_node_modules:/citizenlab/front/node_modules
+    env_file:
+      - "env_files/front-safe.env"
+      - "env_files/front-secret.env"
+    environment:
+      - API_HOST=web
+      - API_PORT=4000
+      - NODE_OPTIONS=--max-old-space-size=4096
+    tty: true
+    stdin_open: true
+    profiles:
+      - frontend
 
 volumes:
   postgres:
   bundle:
+  front_node_modules:
 
 networks:
   default:
-    name: citizenlab
+    name: ${WORKTREE_PREFIX:-citizenlab}

@@ -12,6 +12,7 @@ resource 'SEO' do
     let(:base_count) { 24 }
     let(:url_count_per_project) { 4 }
     let(:url_count_per_idea) { 1 }
+    let(:url_count_per_phase) { 1 }
 
     before do
       header 'Content-Type', 'application/xml'
@@ -75,12 +76,37 @@ resource 'SEO' do
         expected_count = base_count +
                          (idea_count * url_count_per_idea * locales_count) +
                          ((project_count + 2) * url_count_per_project * locales_count) +
+                         (2 * url_count_per_phase * locales_count) + # phases of proposal & native-survey projects
                          (1 * locales_count) + # project folders
                          (1 * locales_count) + # proposals
                          (1 * locales_count) + # static pages
                          0 # native survery response
         expect(sitemap.search('url').count).to eq expected_count
         expect(sitemap.search('url').map { |url| url.at('loc').text }).not_to include a_string_including(@native_survey_response.slug)
+      end
+    end
+
+    context 'when a project has multiple phases' do
+      let(:phases_count) { 3 }
+
+      before do
+        %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
+        create(:project_with_phases, phases_count: phases_count)
+        do_request
+      end
+
+      example 'the sitemap includes one entry per phase, indexed from 1' do
+        expected_count = base_count +
+                         (1 * url_count_per_project * locales_count) +
+                         (phases_count * url_count_per_phase * locales_count)
+        expect(sitemap.search('url').count).to eq expected_count
+
+        locs = sitemap.search('url').map { |url| url.at('loc').text }
+        (1..phases_count).each do |n|
+          expect(locs).to include a_string_matching(%r{/projects/[^/]+/#{n}\z})
+        end
+        expect(locs).not_to include a_string_matching(%r{/projects/[^/]+/0\z})
+        expect(locs).not_to include a_string_matching(%r{/projects/[^/]+/#{phases_count + 1}\z})
       end
     end
   end

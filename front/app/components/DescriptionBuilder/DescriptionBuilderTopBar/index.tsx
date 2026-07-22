@@ -2,11 +2,9 @@ import React from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
-import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -19,6 +17,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 
 import messages from './messages';
 
@@ -32,11 +31,13 @@ type DescriptionBuilderTopBarProps = {
     locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => void;
-  contentBuildableId: string;
   contentBuildableType: ContentBuildableType;
-  backPath: RouteType;
-  previewPath: RouteType;
+  backPath: string;
+  previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
+  onSave: (nodes: SerializedNodes) => void;
+  isSaving: boolean;
+  saveHasError: boolean;
 };
 
 const DescriptionBuilderTopBar = ({
@@ -46,19 +47,16 @@ const DescriptionBuilderTopBar = ({
   onSelectLocale,
   hasError,
   hasPendingState,
-  contentBuildableId,
   contentBuildableType,
   backPath,
-  previewPath,
+  previewLink,
   titleMultiloc,
+  onSave,
+  isSaving,
+  saveHasError,
 }: DescriptionBuilderTopBarProps) => {
   const { query } = useEditor();
   const localize = useLocalize();
-  const {
-    mutate: addContentBuilderLayout,
-    isLoading,
-    isError,
-  } = useAddContentBuilderLayout();
 
   const disableSave = !!hasError || !!hasPendingState;
 
@@ -66,12 +64,8 @@ const DescriptionBuilderTopBar = ({
     clHistory.push(backPath);
   };
 
-  const handleSave = async () => {
-    addContentBuilderLayout({
-      contentBuildableId,
-      contentBuildableType,
-      craftjs_json: query.getSerializedNodes(),
-    });
+  const handleSave = () => {
+    onSave(query.getSerializedNodes());
   };
 
   const handleSelectLocale = (locale: SupportedLocale) => {
@@ -116,14 +110,14 @@ const DescriptionBuilderTopBar = ({
           ml="32px"
           disabled={!titleMultiloc}
           openLinkInNewTab
-          linkTo={previewPath}
+          {...previewLink}
         />
         <SaveButton
           isDisabled={disableSave}
-          isLoading={isLoading}
+          isLoading={isSaving}
           onSave={handleSave}
         />
-        {isError && (
+        {saveHasError && (
           <Text
             color="error"
             ml="20px"

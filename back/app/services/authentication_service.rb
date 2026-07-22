@@ -1,62 +1,56 @@
 # frozen_string_literal: true
 
 class AuthenticationService
-  @all_methods = {
-    'facebook' => OmniauthMethods::Facebook.new,
-    'google' => OmniauthMethods::Google.new,
-    'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new,
-    'azureactivedirectory_b2c' => OmniauthMethods::AzureActiveDirectoryB2c.new
-  }
+  def initialize
+    @id_method_service = IdMethodService.new
+  end
 
-  class << self
-    attr_reader :all_methods
+  def active_methods(app_configuration)
+    @id_method_service.configured_methods(app_configuration).select(&:authentication?)
+  end
 
-    def add_method(name, authentication_method)
-      @all_methods[name.to_s] = authentication_method
-    end
+  # Returns true if SSO is enforced for this email's domain, false otherwise.
+  def sso_enforced_for_email?(email)
+    return false if email.blank?
 
-    # Returns true if SSO is enforced for this email's domain, false otherwise.
-    def sso_enforced_for_email?(email)
-      return false if email.blank?
+    domain = email.split('@').last&.strip&.downcase
+    return false if domain.blank?
 
-      domain = email.split('@').last&.strip&.downcase
-      return false if domain.blank?
-
-      all_methods.any? { |_, method| method.enforced_email_domains.include?(domain) }
+    active_methods(AppConfiguration.instance).any? do |method|
+      method.enforced_email_domains.include?(domain)
     end
   end
 
-  def all_methods
-    self.class.all_methods
-  end
-
-  def method_by_provider(provider)
-    all_methods[provider]
+  def first_method_enabled
+    # Temporary hack: we never want to return vienna_employee,
+    # because in the places in the UI where this endpoint is used,
+    # we always want to show the `vienna_citizen` method instead.
+    active_methods(AppConfiguration.instance).reject { |method| method.name == 'vienna_employee' }.first
   end
 
   def logout_url(provider, user)
-    auth_method = method_by_provider(provider)
+    auth_method = @id_method_service.method_by_name(provider)
     return unless supports_logout?(provider)
 
     auth_method.logout_url(user)
   end
 
   def supports_logout?(provider)
-    method_by_provider(provider).respond_to? :logout_url
+    @id_method_service.method_by_name(provider).respond_to? :logout_url
   end
 
   def prevent_user_account_hijacking(user)
     # When a user created an account with someone else's email, chose a password, but could not
     # verify the email, we don't want that user to hijack the real email owner after they create
     # an account (with SSO).
+    # (this should not be possible anymore anyway, since you now always confirm your email
+    # before setting a password. But just in case)
     return nil if !user
 
     if user.confirmation_required? && !user.email_confirmed_at && user.password_digest
       DeleteUserJob.perform_now(user)
       return nil
     end
-
-    return user.tap { |tapped_user| tapped_user.update!(password: nil) } unless AppConfiguration.instance.feature_activated? 'user_confirmation'
 
     user
   end

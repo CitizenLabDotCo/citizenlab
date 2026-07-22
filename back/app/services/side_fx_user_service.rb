@@ -18,7 +18,15 @@ class SideFxUserService
     end
 
     user.create_email_campaigns_unsubscription_token
-    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
+    if should_send_confirmation_email?(user)
+      if user.email.present?
+        RequestEmailConfirmationCodeJob.perform_now(user)
+      else
+        # Some SSO methods only set new_email (e.g. when the SSO email is unconfirmed),
+        # so we use the new_email confirmation flow to promote it to email after confirmation.
+        RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
+      end
+    end
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
     ClaimTokenService.claim(user, claim_tokens)
   end
@@ -53,6 +61,8 @@ class SideFxUserService
 
   def after_block(user, current_user)
     TrackUserJob.perform_later(user)
+    # Logging the 'blocked' activity triggers the EmailCampaigns::Campaigns::UserBlocked
+    # campaign, which notifies the user that their account was blocked.
     LogActivityJob.perform_later(
       user,
       'blocked',
@@ -64,7 +74,6 @@ class SideFxUserService
         block_end_at: user.block_end_at
       }
     )
-    UserBlockedMailer.with(user: user).send_user_blocked_email.deliver_later
     user.expire_token! # Stop any active sessions of the blocked user
   end
 
@@ -93,7 +102,6 @@ class SideFxUserService
     gained_roles(user).each { |role| role_created_side_fx(role, user, current_user) }
     lost_roles(user).each { |role| role_destroyed_side_fx(role, user, current_user) }
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user)
-    expire_token_on_role_change!(user)
   end
 
   def role_created_side_fx(role, user, current_user)
@@ -142,21 +150,13 @@ class SideFxUserService
     new_roles.to_a - old_roles.to_a
   end
 
-  # Expire the user's token when they first get roles or all roles are removed.
-  # NOTE: Must be called after all other side effects that depend on previous_changes,
-  # since expire_token! calls update! which resets previous_changes.
-  def expire_token_on_role_change!(user)
-    old_roles, new_roles = user.roles_previous_change
-    user.expire_token! if old_roles.blank? || new_roles.blank?
-  end
-
   def create_followers(user)
     area = Area.where(id: user.domicile).first
     Follower.find_or_create_by(followable: area, user: user) if area
   end
 
   def should_send_confirmation_email?(user)
-    !user.invite_pending? && user.confirmation_required? && user.email_confirmation_code_sent_at.nil? &&
+    !user.invite_pending? && user.confirmation_required? && user.email_confirmation.code_sent_at.nil? &&
       (user.email.present? || user.new_email.present?) # some SSO methods don't provide email
   end
 

@@ -333,6 +333,10 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.viewYourStory',
     defaultMessage: 'View your story',
   },
+  viewYourObservation: {
+    id: 'app.utils.IdeasNewPage.viewYourObservation',
+    defaultMessage: 'View your observation',
+  },
   valueOutOfTotalWithLabel: {
     id: 'app.components.form.controls.valueOutOfTotalWithLabel',
     defaultMessage: '{value} out of {total}, {label}',

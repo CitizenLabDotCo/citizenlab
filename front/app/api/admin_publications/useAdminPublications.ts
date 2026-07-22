@@ -21,8 +21,9 @@ export const fetchAdminPublications = (filters: IQueryParameters) => {
     removeNotAllowedParents,
     publicationStatusFilter,
     childrenOfId,
-    globalTopicIds: topicIds,
+    globalTopics,
     areaIds,
+    spaceIds,
     onlyProjects,
     ...queryParameters
   } = filters;
@@ -36,8 +37,9 @@ export const fetchAdminPublications = (filters: IQueryParameters) => {
       remove_not_allowed_parents: removeNotAllowedParents,
       publication_statuses: publicationStatusFilter,
       folder: childrenOfId,
-      global_topics: topicIds,
+      global_topics: globalTopics,
       areas: areaIds,
+      spaces: spaceIds,
       only_projects: onlyProjects,
       ...queryParameters,
     },

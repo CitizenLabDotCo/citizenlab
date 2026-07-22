@@ -73,18 +73,51 @@ resource 'User', admin_api: true do
     end
   end
 
-  delete 'admin_api/users/bulk_delete_by_emails', active_job_inline_adapter: true do
+  delete 'admin_api/users/bulk_delete_by_emails_or_ids', active_job_inline_adapter: true do
     parameter :emails, 'Array of user emails'
+    parameter :ids, 'Array of user ids'
 
-    let(:emails) { [user.email, 'not-existing-email@example.com'] }
+    let!(:user_by_id) { create(:user) }
 
-    before do
-      expect(DeleteUserJob).to receive(:perform_later).with(user).once
-      expect(Sentry).to receive(:capture_message).once
+    context 'when all emails and ids match a user' do
+      let(:emails) { [user.email] }
+      let(:ids) { [user_by_id.id] }
+
+      before do
+        expect(DeleteUserJob).to receive(:perform_later).with(user).once
+        expect(DeleteUserJob).to receive(:perform_later).with(user_by_id).once
+        expect(Sentry).not_to receive(:capture_message)
+      end
+
+      example_request 'Delete users by emails and ids' do
+        expect(status).to eq 200
+      end
     end
 
-    example_request 'Delete users by emails' do
-      expect(status).to eq 200
+    context 'when some emails or ids do not match a user' do
+      let(:emails) { [user.email, 'not-existing-email@example.com'] }
+      let(:ids) { [user_by_id.id, SecureRandom.uuid] }
+
+      before do
+        expect(DeleteUserJob).to receive(:perform_later).with(user).once
+        expect(DeleteUserJob).to receive(:perform_later).with(user_by_id).once
+        expect(Sentry).to receive(:capture_message).once
+      end
+
+      example_request 'Delete the matching users and report the rest' do
+        expect(status).to eq 200
+      end
+    end
+
+    context 'when neither emails nor ids are given' do
+      before do
+        expect(DeleteUserJob).not_to receive(:perform_later)
+        expect(Sentry).to receive(:capture_message).once
+      end
+
+      example_request 'Reports an error and deletes nothing' do
+        expect(status).to eq 200
+      end
     end
   end
 
@@ -129,10 +162,6 @@ resource 'User', admin_api: true do
     describe do
       before do
         configuration = AppConfiguration.instance
-        configuration.settings['user_confirmation'] = {
-          allowed: true,
-          enabled: true
-        }
         configuration.save!
       end
 
@@ -178,10 +207,6 @@ resource 'User', admin_api: true do
     end
 
     describe do
-      before do
-        SettingsService.new.activate_feature!('user_confirmation')
-      end
-
       let(:confirm_email) { true }
       let(:password) { 'new-password' }
       let(:roles) { [{ type: 'admin' }] }

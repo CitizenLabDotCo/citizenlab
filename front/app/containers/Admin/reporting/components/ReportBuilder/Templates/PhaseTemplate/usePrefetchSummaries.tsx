@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 import { UseQueryResult } from '@tanstack/react-query';
-import { useLocation } from 'react-router-dom';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -11,6 +10,8 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import { removeRefs } from 'containers/Admin/projects/project/analysis/Insights/util';
+
+import { useLocation } from 'utils/router';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
 
@@ -50,8 +51,13 @@ const usePrefetchSummaries = ({
     enabled: shouldFetchSummaries,
   });
 
+  // Questions whose analysis has no summary yet produce a *disabled* query
+  // (see useAnalysisSummaries — enabled is gated on summaryId). In react-query
+  // v4 a disabled query reports isLoading === true, so checking isLoading here
+  // would leave summariesReady false forever and blank the whole report. Use
+  // isInitialLoading, which is false for disabled queries.
   const allSummariesLoaded = summariesResults.every(
-    (result) => !result.isLoading
+    (result) => !result.isInitialLoading
   );
 
   const hasNoSummaries = relevantAnalyses.length === 0;

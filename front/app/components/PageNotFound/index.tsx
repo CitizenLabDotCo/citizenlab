@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Title, Text, media, Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import HelmetIntl from 'components/HelmetIntl';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Centerer from 'components/UI/Centerer';
 
@@ -48,13 +49,14 @@ const PageNotFound = () => {
 
   return (
     <main>
+      <HelmetIntl title={messages.notFoundTitle} />
       <PageNotFoundWrapper>
         <Title mb="0">{formatMessage(messages.notFoundTitle)}</Title>
         <Text fontSize="l" color={'textSecondary'} mb="36px">
           {formatMessage(messages.pageNotFoundDescription)}
         </Text>
         <ButtonWithLink
-          linkTo="/"
+          to="/"
           text={formatMessage(messages.goBackToHomePage)}
           icon="arrow-left"
         />

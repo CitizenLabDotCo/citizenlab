@@ -6,13 +6,14 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import IdeaNoteRow from './components/IdeaNoteRow';
 import LoaderRow from './components/LoaderRow';
@@ -22,6 +23,7 @@ import useVirtualScroll from './hooks/useVirtualScroll';
 import messages from './messages';
 import ScrollHintOverlay from './ScrollHintOverlay';
 import { NOTE_WIDTH, NOTE_ASPECT_RATIO } from './StickyNotes/StickyNote';
+import tracks from './tracks';
 
 const PEEK_HEIGHT = 200;
 
@@ -98,9 +100,11 @@ interface Props {
 }
 
 const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
-  const [searchParams] = useSearchParams();
-  const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
+  const searchParams = useSearch({
+    from: '/$locale/projects/$slug/ideas-feed',
+  });
+  const phaseId = searchParams.phase_id!;
+  const initialIdeaId = searchParams.initial_idea_id || undefined;
 
   const isMobile = useBreakpoint('phone');
 
@@ -151,6 +155,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
   const handleIdeaSelect = useCallback((ideaId: string) => {
+    trackEventByName(tracks.ideaOpened);
     updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
   }, []);
 
@@ -159,6 +164,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
       handleScroll(e, {
         onNearEnd: () => {
           if (hasNextPage && !isFetchingNextPage) {
+            trackEventByName(tracks.moreIdeasLoaded);
             fetchNextPage();
           }
         },

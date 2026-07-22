@@ -26,6 +26,9 @@ export default defineMessages({
     id: 'app.containers.app.navbar.ariaLabel',
     defaultMessage: 'Primary',
   },
+  // This has to use the same terminology as showMobileNavMenu
+  // Both need to be called 'mobile navigation menu'
+  // (flagged during a11y audit)
   closeMobileNavMenu: {
     id: 'app.containers.app.navbar.closeMobileNavMenu',
     defaultMessage: 'Close mobile navigation menu',
@@ -34,9 +37,12 @@ export default defineMessages({
     id: 'app.containers.app.navbar.fullMobileNavigation',
     defaultMessage: 'Full mobile',
   },
-  showFullMenu: {
-    id: 'app.containers.app.navbar.showFullMenu',
-    defaultMessage: 'Show full menu',
+  // This has to use the same terminology as closeMobileNavMenu
+  // Both need to be called 'mobile navigation menu'
+  // (flagged during a11y audit)
+  showMobileNavMenu: {
+    id: 'app.containers.app.navbar.showMobileNavMenu',
+    defaultMessage: 'Show mobile navigation menu',
   },
   more: {
     id: 'app.containers.app.navbar.more',

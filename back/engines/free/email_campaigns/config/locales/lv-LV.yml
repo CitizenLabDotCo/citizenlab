@@ -48,7 +48,11 @@ lv-LV:
         new_attendee: Jaunreģistrēts lietotājs
         project_review_requester: Lietotājs, kurš pieprasīja projekta pārskatīšanu
         project_reviewers: Projektu recenzenti un mapju pārvaldnieki
+        user_changing_email: Lietotājs, kurš maina savu e-pasta adresi
+        user_confirming_email: Lietotājs, kurš apstiprina savu e-pasta adresi
+        user_requesting_password_reset: Lietotājs, kurš pieprasīja paroles atiestatīšanu
         user_who_commented: Lietotājs, kas komentēja
+        user_who_is_blocked: Lietotājs, kura konts ir bloķēts
         user_who_is_invited_to_cosponsor_a_proposal: Lietotājs, kurš ir uzaicināts līdzfinansēt priekšlikumu
         user_who_is_mentioned: Lietotājs, kurš ir minēts
         user_who_is_receiving_admin_rights: Lietotājs, kurš saņem administratora tiesības
@@ -67,6 +71,7 @@ lv-LV:
         user_with_unsubmitted_votes: Lietotājs, kurš nav iesniedzis savu balsojumu
         users_who_engaged_but_not_voted: Lietotāji, kas iesaistījās projektā, bet nav balsojuši
         users_who_engaged_with_the_project: Lietotāji, kas iesaistījās projektā
+        users_who_follow_or_participated: Lietotāji, kuri seko projektam vai ir piedalījušies
         users_who_follow_the_input: Lietotāji, kas seko ievades
         users_who_follow_the_project: Lietotāji, kas seko projektam
         users_who_follow_the_proposal: Lietotāji, kas seko priekšlikumam
@@ -94,6 +99,7 @@ lv-LV:
         project_published: Publicēts projekts
         project_review_request: Moderators pieprasīja projekta pārskatīšanu
         project_review_state_change: Recenzents apstiprināja projektu
+        proposal_expired: Priekšlikuma termiņš beidzas, nesasniedzot slieksni
         proposal_gets_reported_as_spam: Par priekšlikumu tiek ziņots kā par surogātpastu
         proposal_is_assigned_to_admin: Priekšlikums ir piešķirts admin
         proposal_is_published: Priekšlikums ir publicēts
@@ -103,9 +109,12 @@ lv-LV:
         registration_to_event: Reģistrācija pasākumam
         survey_1_day_after_draft_saved: 1 diena pēc tam, kad lietotājs pēdējo reizi saglabājis aptaujas melnrakstu.
         user_accepts_invitation_to_cosponsor_a_proposal: Lietotājs piekrīt uzaicinājumam līdzfinansēt priekšlikumu
+        user_changes_email: Lietotājs maina savu e-pasta adresi
         user_comments: Lietotāju komentāri
         user_comments_on_input: Lietotāju komentāri par ievades datiem
         user_comments_on_proposal: Lietotāju komentāri par priekšlikumu
+        user_confirms_email: Lietotājs apstiprina savu e-pasta adresi
+        user_is_blocked: Lietotāja konts ir bloķēts
         user_is_given_admin_rights: Lietotājam tiek piešķirtas administratora tiesības
         user_is_given_folder_manager_rights: Lietotājam tiek piešķirtas mapes pārvaldnieka tiesības
         user_is_given_folder_moderator_rights: Lietotājam tiek piešķirtas mapes moderatora tiesības
@@ -119,6 +128,7 @@ lv-LV:
         user_registers_for_the_first_time: Lietotājs reģistrējas pirmo reizi
         user_replies_to_comment: Lietotājs atbild uz komentāru
         user_replies_to_internal_comment: Lietotājs atbild uz iekšēju komentāru
+        user_requests_password_reset: Lietotājs pieprasa paroles atiestatīšanu
         voting_1_day_after_last_votes: 1 diena pēc tam, kad lietotājs pēdējo reizi balsojis
         voting_2_days_before_phase_closes: 2 dienas pirms balsošanas posma beigām
         voting_basket_submitted: Tiek iesniegtas balsis
@@ -158,6 +168,7 @@ lv-LV:
       comment_on_your_comment: Atbilde uz manu komentāru
       community_monitor_report: Kopienas uzraudzības ziņojums
       cosponsor_of_your_idea: Lietotājs pieņem manu uzaicinājumu atbalstīt manu priekšlikumu.
+      email_confirmation: E-pasta apstiprinājuma kods
       event_registration_confirmation: Pasākuma reģistrācijas apstiprinājums
       idea_marked_as_spam: Ziņot par ideju kā surogātpastu
       idea_published: Manas idejas publicēšana
@@ -176,8 +187,10 @@ lv-LV:
       moderator_digest: Nedēļas pārskats projektu vadītājiem
       native_survey_not_submitted: Aptauja nav iesniegta
       new_comment_for_admin: Jauns komentārs projektā, kuru es moderēju
+      new_email_confirmation: Jaunās e-pasta adreses apstiprinājuma kods
       new_idea_for_admin_prescreening: Jauns ieguldījums, kam nepieciešams apstiprinājums projektā, kuru es moderēju
       new_idea_for_admin_published: Jaunie publicētie ieguldījumi projektā, kuru es vadu
+      new_phone_confirmation: Jauns tālruņa apstiprinājuma kods
       official_feedback_on_idea_you_follow: Atjaunināt ideju, kurai sekojat
       password_reset: Paroles atiestatīšana
       project_folder_moderation_rights_received: Saņemtās mapju pārvaldnieka tiesības
@@ -188,11 +201,14 @@ lv-LV:
       project_published: Publicēts projekts
       project_review_request: Projekta pārskatīšanas pieprasījums
       project_review_state_change: Projekts apstiprināts
+      proposal_expired_for_admin: Priekšlikuma termiņš ir beidzies, nesasniedzot balsošanas slieksni
       screening_digest: Iknedēļas skrīninga atgādinājums
+      sms_manual: Oficiālas SMS ziņas
       space_moderation_rights_received: Saņemtas telpas pārvaldnieka tiesības
       status_change_on_idea_you_follow: Idejas statusa maiņa, kurai jūs sekojat
       survey_submitted: Iesniegtais apsekojums
       threshold_reached_for_admin: Priekšlikums sasniedzis balsošanas slieksni
+      user_blocked: Konts bloķēts
       user_digest: Nedēļas pārskats
       voting_basket_not_submitted: Neiesniegtās balsis
       voting_basket_submitted: Balsošanas apstiprināšana
@@ -235,6 +251,7 @@ lv-LV:
         idea: '%{authorName} komentēja ideju, kurai tu seko'
         initiative: '%{authorName} komentēja kādu iniciatīvu, kurai jūs sekojat.'
         issue: '%{authorName} komentēja jautājumu, kuram jūs sekojat'
+        observation: '%{authorName} komentēja novērojumu, kuram tu seko'
         option: '%{authorName} komentēja iespēju, kuru jūs sekojat'
         petition: '%{authorName} komentēja lūgumrakstu, kam tu seko'
         post: '%{authorName} komentēja ziņu, kurai tu seko'
@@ -268,6 +285,15 @@ lv-LV:
       preheader: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
       subject: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
       title: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
+    email_confirmation:
+      best_regards: Ar cieņu,
+      event_description: 'Paldies par jūsu līdzdalību. Lūdzu, ievadiet šo apstiprinājuma kodu %{organizationName} līdzdalības platformas logā:'
+      expire_code: Šī koda derīguma termiņš beigsies pēc
+      hours_24: 24 stundām.
+      ignore_email: Ja jūs nepieprasījāt kodu, varat droši ignorēt šo e-pastu.
+      preheader: Apstipriniet savu e-pasta adresi organizācijā %{organizationName}
+      subject: Apstipriniet savu e-pasta adresi %{organizationName} līdzdalības platformā
+      title: Apstipriniet savu e-pasta adresi
     event_registration_confirmation:
       cta_add_to_calendar: Pievienot kalendāram
       cta_button: Apskatīt notikumu
@@ -300,6 +326,7 @@ lv-LV:
         idea: Pārejiet uz šo ideju
         initiative: Dodieties uz šo iniciatīvu
         issue: Pārejiet uz šo jautājumu
+        observation: Doties uz šo novērojumu
         option: Pārejiet uz šo opciju
         petition: Dodieties uz šo lūgumrakstu
         post: Iet uz šo ziņu
@@ -320,6 +347,7 @@ lv-LV:
         idea: Pārejiet uz savu ideju
         initiative: Dodieties uz savu iniciatīvu
         issue: Pārejiet uz savu jautājumu
+        observation: Doties uz savu novērojumu
         option: Dodieties uz savu opciju
         petition: Dodieties uz savu lūgumrakstu
         post: Dodieties uz savu ziņu
@@ -353,6 +381,7 @@ lv-LV:
         idea: Jūsu ideja ir publicēta
         initiative: Jūsu iniciatīva ir publicēta
         issue: Jūsu izdevums ir publicēts
+        observation: Jūsu novērojums ir publicēts
         option: Jūsu opcija ir publicēta
         petition: Jūsu lūgumraksts ir publicēts
         post: Jūsu ziņa ir publicēta
@@ -479,6 +508,15 @@ lv-LV:
       title: '%{firstName}, jūsu platformā ir publicēts jauns komentārs'
       today: Šodien
       yesterday: Vakar
+    new_email_confirmation:
+      best_regards: Ar cieņu,
+      event_description: 'Lūdzu, ievadiet šo apstiprinājuma kodu %{organizationName} līdzdalības platformas logā, lai apstiprinātu savu jauno e-pasta adresi:'
+      expire_code: Šī koda derīguma termiņš beigsies pēc
+      hours_24: 24 stundām.
+      ignore_email: Ja jūs nepieprasījāt kodu, varat droši ignorēt šo e-pastu.
+      preheader: Apstipriniet savu jauno %{organizationName} e-pasta adresi
+      subject: Apstipriniet savu jauno e-pasta adresi %{organizationName} līdzdalības platformā
+      title: Apstipriniet savu jauno e-pasta adresi
     new_idea_for_admin_prescreening:
       cta_button: Pārbaudiet ievades datus
       days_ago: '%{numberOfDays} pirms vairākām dienām'
@@ -498,12 +536,20 @@ lv-LV:
       title: Jūsu platformā ir publicēts jauns ieguldījums
       today: Šodien
       yesterday: Vakar
+    new_phone_confirmation:
+      sms_body: Jūsu apstiprinājuma kods ir %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Dodieties uz šo ievades
       event_description: '%{feedback_author_name} sniedza atjauninātu informāciju par "%{input_title}".'
       preheader: There's an update on an input you follow
       subject: Official feedback was posted on "%{input_title}"
       title: Ir atjauninājums par "%{input_title}"
+    password_reset:
+      cta_button: Atiestatīt paroli
+      event_description: Jūs pieprasījāt paroles atiestatīšanu %{organizationName} līdzdalības platformā. Noklikšķiniet uz tālāk esošās pogas, lai izvēlētos jaunu, drošu paroli. Saite būs derīga 1 stundu.
+      preheader: Atiestatiet savu %{organizationName} paroli
+      subject: '%{organizationName}: Atiestatiet savu paroli'
+      title: Izvēlieties jaunu paroli
     preview_data:
       author_display_name: Džeina Doe
       author_first_name: Jane
@@ -591,6 +637,11 @@ lv-LV:
       preheader: '%{reviewerName} apstiprināja projektu "%{projectTitle}"'
       subject: '"%{projectTitle}" ir apstiprināts'
       title: '%{reviewerName} apstiprināja projektu "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Pārskatīt iesniegumu, kura termiņš ir beidzies
+      preheader: Iesnieguma termiņš ir beidzies, nesasniedzot slieksni
+      subject: '"%{input_title}" termiņš ir beidzies, nesasniedzot slieksni'
+      title: Iesnieguma termiņš ir beidzies, nesasniedzot balsošanas slieksni
     schedules:
       quarterly: Ceturkšņa ceturksnis, ceturkšņa pirmajā dienā
       weekly:
@@ -644,6 +695,14 @@ lv-LV:
       preheader: Pārliecinieties, ka veicat nākamos soļus
       subject: Iniciatīva ir sasniegusi balsošanas slieksni jūsu platformā
       title: Priekšlikums sasniedza balsošanas slieksni!
+    user_blocked:
+      for_more_information: Lai iegūtu vairāk informācijas par šo, varat skatīt %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Jūsu konts %{organizationName} līdzdalības platformā ir īslaicīgi atspējots šāda iemesla dēļ:'
+      paragraph_1_without_reason: Jūsu konts %{organizationName} līdzdalības platformā ir īslaicīgi atspējots kopienas vadlīniju pārkāpuma dēļ.
+      preheader: Jūsu konts %{organizationName} līdzdalības platformā ir īslaicīgi atspējots
+      subject: Jūsu konts ir uz laiku bloķēts
+      title: Jūsu konts ir uz laiku bloķēts
+      you_can_sign_in_again_from: Jūs varēsiet atkal pierakstīties no %{date}
     user_digest:
       commented: '%{authorFirstName} komentēja:'
       cta_button: Dodieties uz platformu
@@ -713,6 +772,7 @@ lv-LV:
         idea: Jūsu ideja ir "%{prescreening_status_title}"
         initiative: Jūsu iniciatīva ir "%{prescreening_status_title}"
         issue: Jūsu jautājums ir sadaļā "%{prescreening_status_title}"
+        observation: Tavs novērojums ir statusā "%{prescreening_status_title}"
         option: Jūsu iespēja ir "%{prescreening_status_title}"
         petition: Jūsu lūgumraksts ir "%{prescreening_status_title}"
         post: Jūsu amats ir "%{prescreening_status_title}"

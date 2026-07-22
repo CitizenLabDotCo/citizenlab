@@ -1,26 +1,32 @@
 import React from 'react';
 
-import { useLocation } from 'react-router-dom';
-import { RouteType } from 'routes';
-
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { getInputTermMessage } from 'utils/i18n';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';
 
-interface Props {
-  linkTo: RouteType;
+interface Props extends TypedLinkProps {
+  linkTo?: string;
   inputTerm: InputTerm;
   participationMethod: ParticipationMethod;
 }
 
-const NewIdeaButton = ({ linkTo, inputTerm, participationMethod }: Props) => {
+const NewIdeaButton = ({
+  to,
+  params,
+  search,
+  linkTo,
+  inputTerm,
+  participationMethod,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const buttonText =
@@ -43,6 +49,7 @@ const NewIdeaButton = ({ linkTo, inputTerm, participationMethod }: Props) => {
             topic: messages.newTopic,
             post: messages.newPost,
             story: messages.newStory,
+            observation: messages.newObservation,
           })
         );
 
@@ -51,6 +58,9 @@ const NewIdeaButton = ({ linkTo, inputTerm, participationMethod }: Props) => {
       id="e2e-new-idea"
       buttonStyle="admin-dark"
       icon="plus"
+      to={to}
+      params={params}
+      search={search}
       linkTo={linkTo}
       onClick={() => {
         trackEventByName(tracks.clickNewIdea.name, {

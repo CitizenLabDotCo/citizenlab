@@ -6,11 +6,14 @@ import isSameDay from 'date-fns/isSameDay';
 import moment from 'moment-timezone';
 import styled from 'styled-components';
 
-import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import {
+  IEmailCampaign,
+  EmailCampaignFormValues,
+} from 'api/campaigns/email/types';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 
-import TimeInput from 'components/admin//DateTimeSelection/TimeInput';
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
+import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import { Form } from 'components/smallForm';
 import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
@@ -27,7 +30,7 @@ const StyledForm = styled(Form)`
 `;
 
 interface Props {
-  campaign: ICampaign;
+  campaign: IEmailCampaign;
   timeZone: string | undefined;
   opened: boolean;
   onClose: () => void;
@@ -36,7 +39,7 @@ interface Props {
 const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
-    useUpdateCampaign();
+    useUpdateEmailCampaign();
 
   const now = timeZone ? moment().tz(timeZone) : moment();
   const tenantTimeNow = timeZone
@@ -47,6 +50,13 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
 
   const gmtOffset = getGmtOffset(timeZone, tenantTimeNow, selectedDate);
+  const browserTimezone = moment.tz.guess();
+  const browserOffset = getGmtOffset(
+    browserTimezone,
+    tenantTimeNow,
+    selectedDate
+  );
+  const showGmtOffset = !!timeZone && gmtOffset !== browserOffset;
 
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
@@ -110,7 +120,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     updateCampaign(
       {
         id: campaign.data.id,
-        campaign: { scheduled_at: scheduledAt } as CampaignFormValues,
+        campaign: { scheduled_at: scheduledAt } as EmailCampaignFormValues,
       },
       {
         onSuccess: handleClose,
@@ -151,7 +161,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
                 selectedDate={selectedDate}
                 currentTimeInTz={tenantTimeNow}
               />
-              <Text fontSize="l">GMT{gmtOffset}</Text>
+              {showGmtOffset && <Text fontSize="l">GMT{gmtOffset}</Text>}
             </Box>
             <Warning mb="12px">
               <Text fontSize="m" m="0px">

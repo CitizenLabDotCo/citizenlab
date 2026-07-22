@@ -58,6 +58,7 @@ module MultiTenancy
       tenant.switch do
         EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
         Permissions::PermissionsUpdateService.new.update_all_permissions # fix permissions
+        McpServer::AnalyticsReaderProvisioner.provision_safely # reporting read grants (the clone strips them)
         TrackTenantJob.perform_later tenant
       end
 
@@ -145,7 +146,7 @@ module MultiTenancy
       required_locales = ::MultiTenancy::Templates::Utils.new.required_locales(template_name)
 
       if required_locales.to_set > config_locales.to_set
-        raise ClErrors::TransactionError.new(error_key: :missing_locales)
+        raise ApiError, :missing_locales
       end
     end
 

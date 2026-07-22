@@ -63,8 +63,13 @@ RSpec.describe Files::DescriptionGenerator do
     end
 
     # UnsupportedAttachmentError is raised when a file is detected as an unsupported type
-    # before the request is sent to the LLM.
+    # before the request is sent to the LLM. We bypass the upload allowlist for this
+    # test so an .exe can be persisted; the point is to exercise RubyLLM's own
+    # type-rejection, not the uploader's.
     it 'raises RubyLLM::UnsupportedAttachmentError for unsupported file' do
+      allow_any_instance_of(Files::FileUploader).to receive(:extension_allowlist).and_return(nil)
+      allow_any_instance_of(Files::FileUploader).to receive(:content_type_allowlist).and_return(nil)
+
       file = create_ai_file(name: 'keylogger.exe')
 
       expect { service.generate_descriptions!(file) }
@@ -106,8 +111,17 @@ RSpec.describe Files::DescriptionGenerator do
           expect(file.description_multiloc).to be_present
         end
 
+        # When the preview failed and the file is not a docx, we fall back to sending the
+        # raw file to the LLM. Most previewable office formats (xls, xlsx, pptx, ods, ...)
+        # are now sent as documents and accepted by the LLM, so to exercise the rejection
+        # path we use a genuinely unsupported (but still previewable) type: a Visio file.
+        # As in the .exe test above, we bypass the upload allowlist so it can be persisted;
+        # the point is to exercise RubyLLM's type-rejection, not the uploader's.
         it 'raises RubyLLM::UnsupportedAttachmentError for non-docx file' do
-          file = create_ai_file(name: 'david.xlsx')
+          allow_any_instance_of(Files::FileUploader).to receive(:extension_allowlist).and_return(nil)
+          allow_any_instance_of(Files::FileUploader).to receive(:content_type_allowlist).and_return(nil)
+
+          file = create_ai_file(name: 'david.vsd')
           file.create_preview!(status: 'failed', content: nil)
 
           expect { service.generate_descriptions!(file) }

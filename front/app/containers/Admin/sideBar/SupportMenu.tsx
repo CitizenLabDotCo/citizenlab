@@ -4,11 +4,9 @@ import {
   Icon,
   Box,
   Text,
-  useBreakpoint,
   colors,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -18,7 +16,9 @@ import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
+import RailTooltip from './RailTooltip';
 import { ItemMenu, StyledBox, StyledText } from './styles';
+import useSidebarCollapsed from './useSidebarCollapsed';
 
 const StyledIcon = styled(Icon)`
   flex-shrink: 0;
@@ -29,7 +29,7 @@ const StyledIcon = styled(Icon)`
 export const SupportMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { formatMessage } = useIntl();
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const collapsed = useSidebarCollapsed();
   const { data: authUser } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
 
@@ -37,112 +37,112 @@ export const SupportMenu = () => {
     tenant?.data.attributes.settings.core.customer_portal_url;
 
   return (
-    <StyledBox
-      as="button"
-      width={isSmallerThanTablet ? '56px' : '100%'}
-      display="flex"
-      justifyContent="flex-start"
-      p="0px"
-      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-      position="relative"
-    >
-      <Box
+    <RailTooltip label={formatMessage(messages.support)} disabled={!collapsed}>
+      <StyledBox
+        as="button"
+        width={collapsed ? '56px' : '100%'}
         display="flex"
-        alignItems="center"
-        w="100%"
-        p={isSmallerThanTablet ? '10px 0' : '10px 8px 10px 16px'}
-        justifyContent={isSmallerThanTablet ? 'center' : undefined}
+        justifyContent="flex-start"
+        p="0px"
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        position="relative"
       >
         <Box
           display="flex"
-          flex="0 0 auto"
           alignItems="center"
-          justifyContent="center"
+          w="100%"
+          p={collapsed ? '10px 0' : '10px 8px 10px 16px'}
+          justifyContent={collapsed ? 'center' : undefined}
         >
-          <Icon name="help" fill={colors.green400} height="20px" />
-        </Box>
-        {!isSmallerThanTablet && (
-          <StyledText
-            color="white"
-            ml="15px"
-            fontSize="base"
-            textAlign="left"
-            my="0px"
-            w="100%"
+          <Box
+            display="flex"
+            flex="0 0 auto"
+            alignItems="center"
+            justifyContent="center"
           >
-            {formatMessage({ ...messages.support })}
-          </StyledText>
-        )}
-        <Box>
-          {!isSmallerThanTablet && (
-            <Icon name="chevron-right" fill={colors.white} />
+            <Icon name="help" fill={colors.green400} height="20px" />
+          </Box>
+          {!collapsed && (
+            <StyledText
+              color="white"
+              ml="15px"
+              fontSize="base"
+              textAlign="left"
+              my="0px"
+              w="100%"
+            >
+              {formatMessage({ ...messages.support })}
+            </StyledText>
           )}
-        </Box>
-      </Box>
-      <Dropdown
-        opened={isDropdownOpen}
-        onClickOutside={() => setIsDropdownOpen(false)}
-        left={isSmallerThanTablet ? '60px' : '200px'}
-        mobileLeft="60px"
-        top="-140px"
-        content={
           <Box>
-            <ItemMenu
-              linkTo={formatMessage(messages.linkToSupport) as RouteType}
-              buttonStyle="text"
-              openLinkInNewTab
-            >
-              <Box display="flex" justifyContent="space-between" width="100%">
-                <Text my="0px" color="coolGrey600">
-                  {formatMessage({ ...messages.knowledgeBase })}
-                </Text>
-                <StyledIcon name="book" fill={colors.grey600} />
-              </Box>
-            </ItemMenu>
-            <ItemMenu
-              linkTo={formatMessage(messages.linkToChangelog2) as RouteType}
-              buttonStyle="text"
-              openLinkInNewTab
-            >
-              <Box display="flex" justifyContent="space-between" width="100%">
-                <Text my="0px" color="coolGrey600">
-                  {formatMessage({ ...messages.productChangelog })}
-                </Text>
-                <StyledIcon name="survey-long-answer" fill={colors.grey600} />
-              </Box>
-            </ItemMenu>
-            <ItemMenu
-              linkTo={
-                formatMessage(messages.linkToCommunityPlatform) as RouteType
-              }
-              buttonStyle="text"
-              openLinkInNewTab
-            >
-              <Box display="flex" justifyContent="space-between" w="100%">
-                <Text my="0px" color="coolGrey600">
-                  {formatMessage({ ...messages.communityPlatform })}
-                </Text>
-                <StyledIcon name="community" fill={colors.grey600} />
-              </Box>
-            </ItemMenu>
-
-            {customerPortalUrl && isAdmin(authUser) && (
+            {!collapsed && <Icon name="chevron-right" fill={colors.white} />}
+          </Box>
+        </Box>
+        <Dropdown
+          opened={isDropdownOpen}
+          onClickOutside={() => setIsDropdownOpen(false)}
+          left={collapsed ? '60px' : '200px'}
+          mobileLeft="60px"
+          top="-140px"
+          content={
+            <Box>
               <ItemMenu
-                linkTo={customerPortalUrl}
+                linkTo={formatMessage(messages.linkToSupport)}
+                buttonStyle="text"
+                openLinkInNewTab
+              >
+                <Box display="flex" justifyContent="space-between" width="100%">
+                  <Text my="0px" color="coolGrey600">
+                    {formatMessage({ ...messages.knowledgeBase })}
+                  </Text>
+                  <StyledIcon name="book" fill={colors.grey600} />
+                </Box>
+              </ItemMenu>
+              <ItemMenu
+                linkTo={formatMessage(messages.linkToChangelog2)}
+                buttonStyle="text"
+                openLinkInNewTab
+              >
+                <Box display="flex" justifyContent="space-between" width="100%">
+                  <Text my="0px" color="coolGrey600">
+                    {formatMessage({ ...messages.productChangelog })}
+                  </Text>
+                  <StyledIcon name="survey-long-answer" fill={colors.grey600} />
+                </Box>
+              </ItemMenu>
+              <ItemMenu
+                linkTo={
+                  formatMessage(messages.linkToCommunityPlatform) as string
+                }
                 buttonStyle="text"
                 openLinkInNewTab
               >
                 <Box display="flex" justifyContent="space-between" w="100%">
                   <Text my="0px" color="coolGrey600">
-                    {formatMessage({ ...messages.customerPortal })}
+                    {formatMessage({ ...messages.communityPlatform })}
                   </Text>
-                  <Icon name="users" fill={colors.grey600} />
+                  <StyledIcon name="community" fill={colors.grey600} />
                 </Box>
               </ItemMenu>
-            )}
-          </Box>
-        }
-      />
-    </StyledBox>
+
+              {customerPortalUrl && isAdmin(authUser) && (
+                <ItemMenu
+                  linkTo={customerPortalUrl}
+                  buttonStyle="text"
+                  openLinkInNewTab
+                >
+                  <Box display="flex" justifyContent="space-between" w="100%">
+                    <Text my="0px" color="coolGrey600">
+                      {formatMessage({ ...messages.customerPortal })}
+                    </Text>
+                    <Icon name="users" fill={colors.grey600} />
+                  </Box>
+                </ItemMenu>
+              )}
+            </Box>
+          }
+        />
+      </StyledBox>
+    </RailTooltip>
   );
 };

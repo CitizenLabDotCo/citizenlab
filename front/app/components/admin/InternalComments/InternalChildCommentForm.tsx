@@ -23,7 +23,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { commentReplyButtonClicked$, commentAdded } from './events';
 import tracks from './tracks';
-import { getMentionRoles } from './utils';
 
 const Container = styled.div`
   display: flex;
@@ -114,9 +113,9 @@ const InternalChildCommentForm = ({
           })
         )
         .subscribe(({ eventValue }) => {
-          const { authorFirstName, authorLastName, authorSlug } = eventValue;
-          if (authorFirstName && authorLastName && authorSlug) {
-            const tag = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+          const { authorFirstName, authorLastName, authorId } = eventValue;
+          if (authorFirstName && authorLastName && authorId) {
+            const tag = `@[${authorFirstName} ${authorLastName}](${authorId}) `;
             setTagValue(tag);
             setInputValue(tag);
           }
@@ -282,7 +281,7 @@ const InternalChildCommentForm = ({
                 border="none"
                 boxShadow="none"
                 getTextareaRef={setRef}
-                roles={getMentionRoles(true)}
+                adminsAndModerators
               />
               <ButtonWrapper>
                 <CancelButton

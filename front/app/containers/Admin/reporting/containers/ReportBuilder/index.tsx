@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
 import { ReportLayout } from 'api/report_layout/types';
@@ -14,14 +13,15 @@ import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
 import useLocale from 'hooks/useLocale';
 
+import ContentBuilderCanvas from 'components/admin/ContentBuilder/Canvas';
 import Frame from 'components/admin/ContentBuilder/Frame';
-import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useLocation, useParams, useSearch } from 'utils/router';
 
 import Editor from '../../components/ReportBuilder/Editor';
 import Settings from '../../components/ReportBuilder/Settings';
@@ -124,7 +124,7 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                 contentBuilderLocale={selectedLocale}
                 platformLocale={platformLocale}
               >
-                <StyledRightColumn>
+                <ContentBuilderCanvas toolboxWidth="220px">
                   {!!phaseId && (
                     <Box maxWidth={A4_WIDTH} mb="20px">
                       <Warning>
@@ -161,7 +161,7 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
                       ) : null}
                     </Frame>
                   </ViewContainer>
-                </StyledRightColumn>
+                </ContentBuilderCanvas>
               </LanguageProvider>
               <Settings />
             </Box>
@@ -175,24 +175,28 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
 const ReportBuilderWrapper = () => {
   const reportBuilderEnabled = useReportBuilderEnabled();
   const { pathname } = useLocation();
-  const { reportId } = useParams();
+  const { reportId } = useParams({ strict: false });
   const { data: report } = useReport(reportId);
   const { data: reportLayout } = useReportLayout(reportId);
 
-  const [search] = useSearchParams();
-  const [templateProjectId] = useState(search.get('templateProjectId'));
-  const [templatePhaseId] = useState(search.get('templatePhaseId'));
+  const search = useSearch({
+    from: '/$locale/admin/reporting/report-builder/$reportId/editor',
+  });
+  const [templateProjectId] = useState(search.templateProjectId ?? null);
+  const [templatePhaseId] = useState(search.templatePhaseId ?? null);
   const [startDatePlatformReport] = useState(
-    search.get('startDatePlatformReport')
+    search.startDatePlatformReport ?? null
   );
 
-  const [endDatePlatformReport] = useState(search.get('endDatePlatformReport'));
+  const [endDatePlatformReport] = useState(
+    search.endDatePlatformReport ?? null
+  );
 
   const [templateYear] = useState(
-    report?.data.attributes.year?.toString() || search.get('year')
+    report?.data.attributes.year?.toString() || search.year || null
   );
   const [templateQuarter] = useState(
-    report?.data.attributes.quarter?.toString() || search.get('quarter')
+    report?.data.attributes.quarter?.toString() || search.quarter || null
   );
 
   useEffect(() => {

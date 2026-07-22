@@ -14,19 +14,19 @@ module Volunteering
     end
 
     def index_xlsx?
-      user&.active? && (user&.admin? || user&.project_moderator?)
+      user&.active? && (user&.admin? || user&.moderator?)
     end
 
     def create?
       return false unless user&.active?
       return false unless record.user_id == user.id
 
-      project = record.cause.phase.project
-      service = Permissions::ProjectPermissionsService.new(project, user)
+      phase = record.cause.phase
+      service = Permissions::PhasePermissionsService.new(phase, user)
       reason = service.denied_reason_for_action('volunteering')
       return false if reason
 
-      policy_for(record.cause.phase.project).show?
+      policy_for(phase.project).show?
     end
 
     def destroy?

@@ -8,7 +8,7 @@ import {
 import { FormattedNumber } from 'react-intl';
 import styled from 'styled-components';
 
-import useCampaignStats from 'api/campaign_stats/useCampaignStats';
+import useEmailCampaignStats from 'api/campaigns/email/stats/useEmailCampaignStats';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -64,7 +64,7 @@ type Props = {
 type IRelevantStats = 'sent' | 'delivered' | 'opened' | 'clicked';
 
 const CampaignStats = ({ campaignId, className }: Props) => {
-  const { data: stats } = useCampaignStats(campaignId);
+  const { data: stats } = useEmailCampaignStats(campaignId);
   const isCustomSmtp = useFeatureFlag({ name: 'custom_smtp' });
   const relevantsStats = [
     'sent',

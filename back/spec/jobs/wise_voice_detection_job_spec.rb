@@ -13,7 +13,7 @@ RSpec.describe WiseVoiceDetectionJob do
         body_multiloc: { 'en' => 'As a school director, I witness daily how the shortage of qualified educating staff  impacts the quality of education in our community. We need to invest in education.' }
       )
 
-      expect_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return({
+      expect_any_instance_of(Analysis::LLM::GPT54).to receive(:chat).and_return({
         'has_wise_voice' => true,
         'role_multiloc' => { 'en' => 'School Director', 'fr-FR' => "Directeur d'école", 'nl-NL' => 'Schooldirecteur' },
         'quotes' => ['As a school director, I witness daily how the shortage of qualified educating staff  impacts the quality of education in our community.']
@@ -35,7 +35,7 @@ RSpec.describe WiseVoiceDetectionJob do
         body_multiloc: { 'en' => 'Public transportation is essential for our city. We should invest in more buses and trains to reduce traffic and pollution.' }
       )
 
-      expect_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return({
+      expect_any_instance_of(Analysis::LLM::GPT54).to receive(:chat).and_return({
         'has_wise_voice' => false,
         'role_multiloc' => nil,
         'quotes' => []
@@ -50,7 +50,7 @@ RSpec.describe WiseVoiceDetectionJob do
         body_multiloc: { 'en' => 'As a nutritionist, I can confirm that a balanced diet is crucial for maintaining good health. We should promote healthy eating habits in our community.' }
       )
 
-      expect_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return({
+      expect_any_instance_of(Analysis::LLM::GPT54).to receive(:chat).and_return({
         'has_wise_voice' => true,
         'role_multiloc' => { 'en' => 'Nutritionist', 'fr-FR' => 'Nutritionniste', 'nl-NL' => 'Voedingsdeskundige' },
         'quotes' => ['As a nutritionist, I can confirm that a balanced diet is crucial for maintaining good health.']
@@ -72,7 +72,7 @@ RSpec.describe WiseVoiceDetectionJob do
         body_multiloc: { 'en' => 'Green spaces improve mental health and community well-being. We need more parks and gardens in our neighborhoods.' }
       )
 
-      expect_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return('invalid json')
+      expect_any_instance_of(Analysis::LLM::GPT54).to receive(:chat).and_return('invalid json')
 
       expect(Rails.logger).to receive(:error).with(/WiseVoiceDetectionJob: JSON parsing error/)
 
@@ -97,7 +97,7 @@ RSpec.describe WiseVoiceDetectionJob do
       end
 
       it 'deletes the existing flag and creates a new one if wise voice is detected again' do
-        expect_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return({
+        expect_any_instance_of(Analysis::LLM::GPT54).to receive(:chat).and_return({
           'has_wise_voice' => true,
           'role_multiloc' => { 'en' => 'small business owner' },
           'quotes' => ['As a small business owner, I know how important it is to support local enterprises.']
@@ -111,7 +111,7 @@ RSpec.describe WiseVoiceDetectionJob do
       end
 
       it 'deletes the existing flag if wise voice is no longer detected' do
-        expect_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return({
+        expect_any_instance_of(Analysis::LLM::GPT54).to receive(:chat).and_return({
           'has_wise_voice' => false,
           'role' => nil,
           'quotes' => []

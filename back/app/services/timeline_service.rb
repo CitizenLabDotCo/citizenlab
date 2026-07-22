@@ -3,19 +3,21 @@
 class TimelineService
   def future_phases(project, time = Time.now)
     time = time.in_time_zone
-    project.phases.select { |phase| phase.start_at > time }
+    timeline_phases(project).select { |phase| phase.start_at > time }
   end
 
   def past_phases(project, time = Time.now)
     time = time.in_time_zone
-    project.phases.select { |phase| phase.end_at && phase.end_at <= time }
+    timeline_phases(project).select { |phase| phase.end_at && phase.end_at <= time }
   end
 
   def current_phase(project, time = Time.now)
+    timeline_phases(project).find { |phase| phase_current?(phase, time) }
+  end
+
+  def phase_current?(phase, time = Time.now)
     time = time.in_time_zone
-    project.phases.find do |phase|
-      phase.start_at <= time && (phase.end_at.nil? || time < phase.end_at)
-    end
+    phase.start_at <= time && (phase.end_at.nil? || time < phase.end_at)
   end
 
   def current_phase_not_archived(project, time = Time.now)
@@ -33,40 +35,24 @@ class TimelineService
     past_phases(project, time).max_by(&:end_at)
   end
 
-  def phase_is_complete?(phase, time = Time.now)
-    phase.end_at.present? && phase.end_at <= time.in_time_zone
-  end
-
   def current_or_backup_transitive_phase(project, time = Time.now)
     # This method is used to determine which project phase is the most relevant with
     # respect to the input form. For example, to select the input term from the right
     # phase.
-    return if project.phases.blank?
+    phases = timeline_phases(project)
+    return if phases.blank?
 
     current = current_phase(project, time)
     current_method = current&.pmethod
     return current if current_method&.transitive? || current_method&.supports_public_visibility?
 
-    project.phases.select { |phase| phase.pmethod.transitive? }&.last
+    phases.select { |phase| phase.pmethod.transitive? }&.last
   end
 
-  def current_and_future_phases(project, time = Time.now)
-    time = time.in_time_zone
-    project.phases.select { |phase| phase.end_at.nil? || phase.end_at > time }
-  end
-
-  def in_active_phase?(idea)
-    idea.phases.include?(current_phase(idea.project))
-  end
-
-  def overlaps?(phase1, phase2)
-    period1 = phase1.start_at...phase1.end_at
-    period2 = phase2.start_at...phase2.end_at
-    period1.overlap?(period2)
-  end
-
-  def other_project_phases(phase)
-    Phase.where(project_id: phase.project_id).all.reject { |p| p.id == phase.id }
+  def overlapping_phases(phase)
+    Phase.where(project_id: phase.project_id).on_timeline.where.not(id: phase.id).select do |other_phase|
+      overlaps?(phase, other_phase)
+    end
   end
 
   def timeline_active(project)
@@ -76,8 +62,9 @@ class TimelineService
   def timeline_active_on_collection(projects)
     now = Time.now
 
-    starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
-    ends = Phase.where(project: projects)
+    timeline_phases = Phase.where(project: projects).on_timeline
+    starts = timeline_phases.group(:project_id).minimum(:start_at)
+    ends = timeline_phases
       .group(:project_id)
       .maximum(Arel.sql("coalesce(end_at, 'infinity'::timestamp)"))
 
@@ -97,24 +84,34 @@ class TimelineService
   end
 
   def phase_number(phase)
-    phase_ids = phase.project.phase_ids
-    phase_ids.find_index(phase.id) + 1
+    timeline_phases(phase.project).map(&:id).find_index(phase.id) + 1
   end
 
   def previous_phase(phase)
     Phase
       .where.not(id: phase.id)
       .where(project_id: phase.project_id)
+      .on_timeline
       .where('start_at < ?', phase.start_at)
       .order(start_at: :desc)
       .first
   end
 
   def last_phase?(phase)
-    other_project_phases = Phase.where(project_id: phase.project_id).where.not(id: phase.id)
+    other_project_phases = Phase.where(project_id: phase.project_id).on_timeline.where.not(id: phase.id)
     return true if other_project_phases.blank?
     return false if !phase.start_at
 
     other_project_phases.maximum(:start_at) < phase.start_at
+  end
+
+  private
+
+  def timeline_phases(project)
+    project.phases.select { |phase| phase.placement_strategy.sequential? }
+  end
+
+  def overlaps?(phase1, phase2)
+    (phase1.start_at...phase1.end_at).overlap?(phase2.start_at...phase2.end_at)
   end
 end

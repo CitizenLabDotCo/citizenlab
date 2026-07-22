@@ -12,20 +12,32 @@ import {
   isModeratorRoute,
 } from 'utils/permissions/rules/routePermissions';
 
+// Fails closed when the folder id is missing — this is always a question about
+// a specific folder. `folderSpaceId` lets moderators of the folder's space
+// moderate it too.
 export function userModeratesFolder(
-  user: IUser | undefined,
-  projectFolderId: string
+  user: IUser | undefined | null,
+  projectFolderId?: string | null,
+  folderSpaceId?: string | null
 ) {
   if (!user) return false;
+  if (typeof projectFolderId !== 'string') return false;
 
-  return isAdmin(user) || isProjectFolderModerator(user, projectFolderId);
+  return (
+    isAdmin(user) ||
+    isProjectFolderModerator(user, projectFolderId) ||
+    (typeof folderSpaceId === 'string' && isSpaceModerator(user, folderSpaceId))
+  );
 }
 
+// Fails closed when the space id is missing — this is always a question about
+// a specific space.
 export const userModeratesSpace = (
-  user: IUser | undefined,
-  spaceId: string
+  user: IUser | undefined | null,
+  spaceId?: string | null
 ) => {
   if (!user) return false;
+  if (typeof spaceId !== 'string') return false;
 
   return isAdmin(user) || isSpaceModerator(user, spaceId);
 };
@@ -35,7 +47,7 @@ export const userModeratesSpace = (
  * it checks if the user is a moderator of that folder specifically.
  */
 export function isProjectFolderModerator(
-  user?: IUser,
+  user?: IUser | null,
   folderId?: string | null
 ): boolean {
   const roles = user?.data.attributes.roles;
@@ -57,7 +69,7 @@ export function isProjectFolderModerator(
 // rules
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
-  user: IUser | undefined,
+  user: IUser | undefined | null,
   tenant: IAppConfigurationData
 ) => {
   const hasAdminFolderRouteAccess = user
@@ -97,12 +109,13 @@ definePermissionRule(
   }
 );
 
+// Pass the folder id via `context` (e.g. `{ folderId, folderSpaceId }`) so the
+// rule can check moderation of that specific folder.
 definePermissionRule(
   'project_folder',
   'moderate',
-  (folder: IProjectFolderData, user) => {
-    return userModeratesFolder(user, folder.id);
-  }
+  (_folder, user, _tenant, context) =>
+    userModeratesFolder(user, context?.folderId, context?.folderSpaceId)
 );
 
 // Permission to add or remove projects from folders

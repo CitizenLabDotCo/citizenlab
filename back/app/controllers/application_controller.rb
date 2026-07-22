@@ -5,21 +5,14 @@ class ApplicationController < ActionController::API
   include Pundit::Authorization
   include ActionController::Cookies
 
-  class FeatureRequiredError < StandardError
-    attr_reader :feature
-
-    def initialize(feature)
-      super()
-      @feature = feature
-    end
-  end
-
   before_action :authenticate_user
   before_action :set_policy_context
   before_action :set_current_location_headers
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
+
+  rescue_from ApiError, with: :render_api_error
 
   rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
 
@@ -28,11 +21,7 @@ class ApplicationController < ActionController::API
       status: :bad_request
   end
 
-  rescue_from ClErrors::TransactionError, with: :transaction_error
-
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-
-  rescue_from FeatureRequiredError, with: :feature_required_error
 
   # +pundit_user+ is overridden to be able to embed additional context in the +user+
   # object passed to policies. It is meant to be used with policies that inherit from
@@ -62,6 +51,14 @@ class ApplicationController < ActionController::API
     @policy_context ||= {}
   end
 
+  def render_api_error(exception)
+    render json: exception.payload, status: exception.status
+  end
+
+  def save_or_raise!(record, **save_options)
+    raise ApiError.from_record(record) if !record.save(**save_options)
+  end
+
   def send_error(error = nil, status = 400)
     render json: error, status: status
   end
@@ -78,10 +75,6 @@ class ApplicationController < ActionController::API
     render json: { errors: record.errors.details }, status: :unprocessable_entity
   end
 
-  def transaction_error(exception)
-    render json: { errors: { base: [{ error: exception.error_key, message: exception.message }] } }, status: exception.code
-  end
-
   # @param [Pundit::NotAuthorized] exception
   def user_not_authorized(exception)
     if current_user&.blocked?
@@ -91,11 +84,6 @@ class ApplicationController < ActionController::API
       reason = exception.try(:reason) || 'Unauthorized!'
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
     end
-  end
-
-  def feature_required_error(exception)
-    skip_authorization
-    render json: { errors: { base: [{ error: "#{exception.feature}_disabled" }] } }, status: :unauthorized
   end
 
   # Used by semantic logger to include in every log line
@@ -168,7 +156,10 @@ class ApplicationController < ActionController::API
   end
 
   def require_feature!(feature)
-    raise FeatureRequiredError, feature if !AppConfiguration.instance.feature_activated?(feature)
+    if !AppConfiguration.instance.feature_activated?(feature)
+      skip_authorization
+      raise ApiError.new(:"#{feature}_disabled", status: 401)
+    end
   end
 
   private
@@ -177,15 +168,28 @@ class ApplicationController < ActionController::API
     # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
     url = request.url.sub(/\?.*$/, '')
     pageparams = Rack::Utils.parse_nested_query(request.query_string)
-    pageparams['page'] ||= {}
+    # `page` may arrive as a scalar (`?page=foo`); reset it before assigning below.
+    pageparams['page'] = {} unless pageparams['page'].is_a?(Hash)
     pageparams['page']['number'] = number
     "#{url}?#{pageparams.to_param}"
   end
 
   def paginate(collection)
     collection
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+      .page(pagination_param(:number))
+      .per(pagination_param(:size))
+  end
+
+  # Reads `page[number]`/`page[size]` defensively: malformed input yields nil so Kaminari
+  # uses its defaults instead of raising (`String does not have #dig`, `to_i` on Parameters).
+  def pagination_param(key)
+    page = params[:page]
+    return nil unless page.is_a?(ActionController::Parameters)
+
+    value = page[key]
+    return nil unless value.is_a?(String) || value.is_a?(Integer)
+
+    Integer(value, exception: false)
   end
 
   def remove_image_if_requested!(resource, resource_params, image_field_name)

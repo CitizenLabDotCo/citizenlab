@@ -11,6 +11,10 @@ import { Multiloc } from '../../app/typings';
 
 import { jwtDecode } from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
+import {
+  IPermissionUpdate,
+  IPhasePermissionAction,
+} from '../../app/api/phase_permissions/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -41,8 +45,9 @@ declare global {
       getProjectBySlug: typeof getProjectBySlug;
       getProjectById: typeof getProjectById;
       getTopics: typeof getTopics;
-      getUserBySlug: typeof getUserBySlug;
+      getUserById: typeof getUserById;
       getAuthUser: typeof getAuthUser;
+      getAdminAuthUser: typeof getAdminAuthUser;
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
@@ -52,6 +57,7 @@ declare global {
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
+      apiAddAboutBox: typeof apiAddAboutBox;
       apiEditProject: typeof apiEditProject;
       apiEditPhase: typeof apiEditPhase;
       apiCreateFolder: typeof apiCreateFolder;
@@ -66,6 +72,7 @@ declare global {
       apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
+      apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
@@ -103,6 +110,8 @@ declare global {
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
+      deleteEventAttendances: typeof deleteEventAttendances;
+      apiRemoveIdeas: typeof apiRemoveIdeas;
     }
   }
 }
@@ -570,6 +579,21 @@ function getTopics({ excludeCode }: { excludeCode?: string }) {
 }
 
 function getAuthUser() {
+  return cy.getCookie('cl2_jwt').then((cookie) => {
+    const jwt = cookie?.value;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwt}`,
+      },
+      method: 'GET',
+      url: 'web_api/v1/users/me',
+    });
+  });
+}
+
+function getAdminAuthUser() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -594,7 +618,7 @@ function getArea(areaId: string) {
   });
 }
 
-function getUserBySlug(userSlug: string) {
+function getUserById(userId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -604,7 +628,7 @@ function getUserBySlug(userSlug: string) {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
-      url: `web_api/v1/users/by_slug/${userSlug}`,
+      url: `web_api/v1/users/${userId}`,
     });
   });
 }
@@ -862,6 +886,73 @@ function apiRemoveComment(commentId: string) {
   });
 }
 
+// The participation AboutBox widget node, serialised as the Content Builder editor
+// produces it. It renders the project sidebar (action buttons / "see ideas" etc).
+function aboutBoxNode(parent: string) {
+  return {
+    type: { resolvedName: 'AboutBox' },
+    isCanvas: false,
+    props: { hideParticipationAvatars: false },
+    displayName: 'AboutBox',
+    custom: {
+      title: {
+        id: 'app.containers.admin.ContentBuilder.participationBox',
+        defaultMessage: 'Participation Box',
+      },
+      noPointerEvents: true,
+    },
+    parent,
+    hidden: false,
+    nodes: [],
+    linkedNodes: {},
+  };
+}
+
+// Appends the participation AboutBox to the description section of a project's
+// project_page layout, so its page renders the sidebar/CTAs. Idempotent — a no-op if
+// the AboutBox is already there.
+function apiAddAboutBox(projectId: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const authHeaders = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${response.body.jwt}`,
+    };
+    const layoutPath = `web_api/v1/projects/${projectId}/content_builder_layouts/project_page`;
+
+    return cy
+      .request({ headers: authHeaders, method: 'GET', url: layoutPath })
+      .then((layout) => {
+        const craftjs = layout.body.data.attributes.craftjs_json;
+        const hasAboutBox = Object.values(craftjs).some(
+          (node: any) => node?.type?.resolvedName === 'AboutBox'
+        );
+        if (hasAboutBox) return;
+
+        const sectionId = Object.keys(craftjs).find(
+          (id) =>
+            craftjs[id]?.type?.resolvedName === 'ProjectDescriptionSection'
+        );
+        if (!sectionId) {
+          throw new Error(
+            `project_page layout of project ${projectId} has no description section`
+          );
+        }
+
+        craftjs.aboutBox = aboutBoxNode(sectionId);
+        craftjs[sectionId].nodes = [...craftjs[sectionId].nodes, 'aboutBox'];
+
+        return cy.request({
+          headers: authHeaders,
+          method: 'POST',
+          url: `${layoutPath}/upsert`,
+          body: {
+            content_builder_layout: { enabled: true, craftjs_json: craftjs },
+          },
+        });
+      });
+  });
+}
+
 function apiCreateProject({
   title,
   descriptionPreview,
@@ -869,6 +960,8 @@ function apiCreateProject({
   publicationStatus = 'published',
   assigneeId,
   visibleTo,
+  folderId,
+  withAboutBox = false,
 }: {
   title: string;
   descriptionPreview?: string;
@@ -876,41 +969,55 @@ function apiCreateProject({
   publicationStatus?: IProjectAttributes['publication_status'];
   assigneeId?: string;
   visibleTo?: IProjectAttributes['visible_to'];
+  folderId?: string;
+  // When true, adds the participation AboutBox (sidebar/CTAs) to the project's Content
+  // Builder description layout, for tests that assert sidebar elements.
+  withAboutBox?: boolean;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/projects',
-      body: {
-        project: {
-          admin_publication_attributes: {
-            publication_status: publicationStatus,
-          },
-          title_multiloc: {
-            en: title,
-            'nl-BE': title,
-            'nl-NL': title,
-            'fr-BE': title,
-          },
-          description_preview_multiloc: {
-            en: descriptionPreview,
-            'nl-BE': descriptionPreview,
-          },
-          description_multiloc: {
-            en: description,
-            'nl-BE': description,
-          },
-          default_assignee_id: assigneeId,
-          visible_to: visibleTo,
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
         },
-      },
-    });
+        method: 'POST',
+        url: 'web_api/v1/projects',
+        body: {
+          project: {
+            admin_publication_attributes: {
+              publication_status: publicationStatus,
+            },
+            title_multiloc: {
+              en: title,
+              'nl-BE': title,
+              'nl-NL': title,
+              'fr-BE': title,
+            },
+            description_preview_multiloc: {
+              en: descriptionPreview,
+              'nl-BE': descriptionPreview,
+            },
+            description_multiloc: {
+              en: description,
+              'nl-BE': description,
+            },
+            default_assignee_id: assigneeId,
+            visible_to: visibleTo,
+            folder_id: folderId,
+          },
+        },
+      })
+      .then((project) => {
+        // cy.wrap keeps both branches yielding `Chainable<Response>` so callers can
+        // read `project.body.data`.
+        if (!withAboutBox) {
+          return cy.wrap(project, { log: false });
+        }
+        return cy.apiAddAboutBox(project.body.data.id).then(() => project);
+      });
   });
 }
 
@@ -1015,11 +1122,13 @@ function apiCreateFolder({
   descriptionPreview,
   description,
   publicationStatus = 'published',
+  spaceId,
 }: {
   title: string;
   descriptionPreview?: string;
   description: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
+  spaceId?: string;
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1039,15 +1148,22 @@ function apiCreateFolder({
           title_multiloc: {
             en: title,
             'nl-BE': title,
+            'nl-NL': title,
+            'fr-BE': title,
           },
           description_preview_multiloc: {
-            en: descriptionPreview,
-            'nl-BE': descriptionPreview,
+            en: descriptionPreview ?? description,
+            'nl-BE': descriptionPreview ?? description,
+            'nl-NL': descriptionPreview ?? description,
+            'fr-BE': descriptionPreview ?? description,
           },
           description_multiloc: {
             en: description,
             'nl-BE': description,
+            'nl-NL': description,
+            'fr-BE': description,
           },
+          space_id: spaceId,
         },
       },
     });
@@ -1198,6 +1314,28 @@ function apiAddPoll(
   });
 }
 
+function apiCreateCause(phaseId: string, title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/causes',
+      body: {
+        cause: {
+          phase_id: phaseId,
+          title_multiloc: { en: title },
+          description_multiloc: { en: title },
+        },
+      },
+    });
+  });
+}
+
 function apiCreatePhase({
   projectId,
   title,
@@ -1212,6 +1350,7 @@ function apiCreatePhase({
   surveyService,
   votingMaxTotal,
   allow_anonymous_participation,
+  allow_multiple_responses,
   votingMethod,
   votingMaxVotesPerIdea,
   votingMinTotal,
@@ -1236,6 +1375,7 @@ function apiCreatePhase({
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
+  allow_multiple_responses?: boolean;
   votingMethod?: VotingMethod;
   votingMaxVotesPerIdea?: number;
   votingMinTotal?: number;
@@ -1273,6 +1413,7 @@ function apiCreatePhase({
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
+          allow_multiple_responses: allow_multiple_responses,
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
@@ -1360,7 +1501,7 @@ function apiVerifyBogus(jwt: string, error?: string) {
       Authorization: `Bearer ${jwt}`,
     },
     method: 'POST',
-    url: 'web_api/v1/verification_methods/bogus/verification',
+    url: 'web_api/v1/id_methods/bogus/verification',
     body: {
       verification: {
         desired_error: error || '',
@@ -1517,19 +1658,9 @@ function apiRemoveAllReports() {
   });
 }
 
-type IPhasePermissionAction =
-  | 'posting_idea'
-  | 'reacting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'voting'
-  | 'annotating_document'
-  | 'attending_event';
-
 type ApiSetPermissionTypeProps = {
   phaseId: string;
-  permissionBody?: any;
+  permissionBody?: Partial<IPermissionUpdate>;
   action: IPhasePermissionAction;
 };
 function apiSetPhasePermission({
@@ -2063,6 +2194,10 @@ function createProjectWithNativeSurveyPhase({
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
       publicationStatus,
+      // The project page renders via the Content Builder; add the AboutBox so the
+      // participation sidebar (survey / idea action button) is present for tests
+      // that visit the project page and click it.
+      withAboutBox: true,
     })
     .then((project) => {
       const projectId = project.body.data.id;
@@ -2163,6 +2298,69 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`[data-cy="${dataCyValue}"]`);
 }
 
+function deleteEventAttendances(
+  email: string,
+  password: string,
+  eventIdNoCoordinates: string
+) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: `web_api/v1/events/${eventIdNoCoordinates}/attendances`,
+      })
+      .then((response) => {
+        const attendances = response.body.data;
+        if (attendances.length !== 0) {
+          attendances.forEach((attendance: any) => {
+            cy.request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'DELETE',
+              url: `web_api/v1/event_attendances/${attendance.id}`,
+            });
+          });
+        }
+      });
+  });
+}
+
+function apiRemoveIdeas(projectId?: string) {
+  // When a projectId is passed, only ideas (incl. survey responses) belonging to
+  // that project are removed. Without it, ALL ideas in the tenant are deleted,
+  // which wipes seeded fixtures (e.g. the "Verified Idea") that other specs rely on.
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        method: 'GET',
+        url: `/web_api/v1/ideas`,
+        qs: projectId ? { 'projects[]': projectId } : undefined,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+      })
+      .then((response) => {
+        const ideas = response.body.data;
+        if (ideas.length !== 0) {
+          ideas.forEach((idea: any) => {
+            cy.apiRemoveIdea(idea.id);
+          });
+        }
+      });
+  });
+}
+
 Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
@@ -2188,8 +2386,9 @@ Cypress.Commands.add('getIdeaById', getIdeaById);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getProjectById', getProjectById);
 Cypress.Commands.add('getTopics', getTopics);
-Cypress.Commands.add('getUserBySlug', getUserBySlug);
+Cypress.Commands.add('getUserById', getUserById);
 Cypress.Commands.add('getAuthUser', getAuthUser);
+Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
@@ -2202,6 +2401,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
+Cypress.Commands.add('apiAddAboutBox', apiAddAboutBox);
 Cypress.Commands.add('apiEditProject', apiEditProject);
 Cypress.Commands.add('apiEditPhase', apiEditPhase);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
@@ -2214,6 +2414,7 @@ Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
+Cypress.Commands.add('apiCreateCause', apiCreateCause);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setModeratorLoginCookie', setModeratorLoginCookie);
 Cypress.Commands.add(
@@ -2279,6 +2480,8 @@ Cypress.Commands.add(
 );
 Cypress.Commands.add('apiCreateManualGroup', apiCreateManualGroup);
 Cypress.Commands.add('apiAddMembership', apiAddMembership);
+Cypress.Commands.add('deleteEventAttendances', deleteEventAttendances);
+Cypress.Commands.add('apiRemoveIdeas', apiRemoveIdeas);
 
 // ReactSelect helper function
 const selectReactSelectOption = (selector: string, label: string) => {

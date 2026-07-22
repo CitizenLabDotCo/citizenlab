@@ -2,6 +2,9 @@ back-secret.env
 front-secret.env
 .envrc
 
+# Per-worktree compose override (WORKTREE_PREFIX), written by `make configure-worktree`
+/.env
+
 # Legacy .env filenames
 .env-back
 .env-front
@@ -11,6 +14,7 @@ back/config/tenant_templates/private/*.yml
 node_modules
 
 *.DS_Store
+.tmp/
 
 # JetBrains settings files
 .idea/
@@ -21,7 +25,10 @@ node_modules
 
 # Claude Code local files
 CLAUDE.local.md
-.claude/settings.local.json
+.claude/*
+# CLAUDE.md files are gitignored at any path: the citizenlab-claude private
+# overlay materializes them as file symlinks via bin/setup-claude.
+**/CLAUDE.md
 
 # MCP local files
 .serena/

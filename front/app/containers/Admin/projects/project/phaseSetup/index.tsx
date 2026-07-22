@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -36,6 +35,7 @@ import {
 } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { generateTemporaryFileAttachment } from 'utils/fileUtils';
+import { useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
@@ -304,7 +304,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
           const redirectTab = getPhaseLandingTab(phaseResponse);
           window.scrollTo(0, 0);
           clHistory.push(
-            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
+            `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}${window.location.search}`
           );
         } else {
           setFormData(response.data.attributes);
@@ -473,7 +473,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 };
 
 const AdminPhaseEditWrapper = () => {
-  const { projectId, phaseId } = useParams();
+  const { projectId, phaseId } = useParams({ strict: false });
   const { data: phase } = usePhase(phaseId);
 
   if (!projectId) return null;

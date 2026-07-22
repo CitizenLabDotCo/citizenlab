@@ -6,8 +6,7 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
-import { RouteType } from 'routes';
+import { focusRingInset } from 'global-styles';
 import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -18,9 +17,10 @@ import usePhase from 'api/phases/usePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useSearch } from 'utils/router';
 
 import Body from './Body';
 import CardImage from './CardImage';
@@ -34,6 +34,15 @@ const TitleClamp = styled.div`
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+`;
+
+const StyledLink = typedStyled(Link)`
+  display: block;
+
+  &.focus-visible,
+  &:focus-visible {
+    ${focusRingInset}
+  }
 `;
 
 export interface Props {
@@ -89,8 +98,8 @@ const IdeaCard = ({
       setIsTitleClamped(titleElement.scrollHeight > titleElement.clientHeight);
     }
   }, [ideaTitle]);
-  const [searchParams] = useSearchParams();
-  const scrollToCardParam = searchParams.get('scroll_to_card');
+  const searchParams = useSearch({ strict: false });
+  const scrollToCardParam = searchParams.scroll_to_card;
 
   // Scroll to this card if it matches the scroll_to_card search param
   const shouldScrollToCard =
@@ -110,7 +119,7 @@ const IdeaCard = ({
     if (phaseId) {
       ideaUrl += `&phase_context=${phaseId}`;
     }
-    clHistory.push(ideaUrl as RouteType, {
+    clHistory.push(ideaUrl, {
       scrollToTop: true,
     });
   };
@@ -135,7 +144,6 @@ const IdeaCard = ({
         // Height of 100% needed to extent the card to the bottom of the row when there
         // is a card with an image and a card without an image in the same row.
         h="100%"
-        overflowX="hidden"
       >
         <Box
           mb={
@@ -146,7 +154,12 @@ const IdeaCard = ({
               : '8px'
           }
         >
-          <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
+          <StyledLink
+            to="/ideas/$slug"
+            params={{ slug }}
+            search={{ go_back: 'true' }}
+            onClick={handleClick}
+          >
             <Tooltip
               content={ideaTitle}
               disabled={!isTitleClamped}
@@ -164,7 +177,7 @@ const IdeaCard = ({
               </TitleClamp>
             </Tooltip>
             {!hideBody && <Body idea={idea} />}
-          </Link>
+          </StyledLink>
         </Box>
         {/* marginTop used to push the interactions/footer to bottom of the card */}
         <Box marginTop="auto">

@@ -7,7 +7,6 @@ import {
   Tooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
@@ -20,6 +19,7 @@ import { SuccessAction } from 'containers/Authentication/SuccessActions/actions'
 import { BUDGET_EXCEEDED_ERROR_EVENT } from 'components/ErrorToast/events';
 import ScreenReaderCurrencyValue from 'components/ScreenReaderCurrencyValue';
 
+import { ScreenReaderOnly, joinAriaIds } from 'utils/a11y';
 import {
   isFixableByAuthentication,
   getPermissionsDisabledMessage,
@@ -30,6 +30,7 @@ import useFormatCurrency from 'utils/currency/useFormatCurrency';
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
 import { isPhaseActive } from 'utils/projectUtils';
+import { useSearch } from 'utils/router';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -61,8 +62,8 @@ const AddToBasketButton = ({
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  const [searchParams] = useSearchParams();
-  const isProcessing = searchParams.get('processing_vote') === ideaId;
+  const searchParams = useSearch({ strict: false });
+  const isProcessing = searchParams.processing_vote === ideaId;
 
   if (!idea || !ideaBudget) {
     return null;
@@ -178,7 +179,10 @@ const AddToBasketButton = ({
             className={`e2e-assign-budget-button ${
               ideaInBasket ? 'in-basket' : 'not-in-basket'
             }`}
-            ariaDescribedby={`idea-budget-description-${ideaId}`}
+            ariaDescribedby={joinAriaIds(
+              `idea-budget-description-${ideaId}`,
+              !!disabledExplanation && `already-submitted-${ideaId}`
+            )}
           >
             {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
             <FormattedMessage {...buttonMessage} />
@@ -189,7 +193,10 @@ const AddToBasketButton = ({
       <ScreenReaderCurrencyValue
         amount={ideaBudget}
         id={`idea-budget-description-${ideaId}`}
-      />
+      />{' '}
+      <ScreenReaderOnly id={`already-submitted-${ideaId}`}>
+        {disabledExplanation}
+      </ScreenReaderOnly>
     </Box>
   );
 };

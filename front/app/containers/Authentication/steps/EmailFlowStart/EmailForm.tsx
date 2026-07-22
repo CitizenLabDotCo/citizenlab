@@ -54,6 +54,7 @@ const EmailForm = ({ loading, topText, setError, onSubmit }: Props) => {
     mode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
+    shouldFocusError: true,
   });
 
   const handleSubmit = async ({ email }: FormValues) => {

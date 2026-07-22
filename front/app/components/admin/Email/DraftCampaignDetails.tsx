@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 
 import { Box, Text, Button } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { ICampaignData } from 'api/campaigns/types';
-import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
+import { IEmailCampaignData } from 'api/campaigns/email/types';
+import useDeleteEmailCampaign from 'api/campaigns/email/useDeleteEmailCampaign';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
@@ -22,13 +22,13 @@ const ButtonWrapper = styled.div`
 `;
 
 interface Props {
-  campaign: ICampaignData;
+  campaign: IEmailCampaignData;
 }
 
 const DraftCampaignDetails = ({ campaign }: Props) => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
-  const { mutate: deleteCampaign, isLoading } = useDeleteCampaign();
+  const { mutate: deleteCampaign, isLoading } = useDeleteEmailCampaign();
 
   const handleDelete = () => {
     deleteCampaign(campaign.id, {

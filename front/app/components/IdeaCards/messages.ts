@@ -103,6 +103,11 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {{ideasCount} stories} one {{ideasCount} story} other {{ideasCount} stories}}',
   },
+  xObservations: {
+    id: 'app.containers.IdeaCards.xObservations',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} observations} one {{ideasCount} observation} other {{ideasCount} observations}}',
+  },
   topics: {
     id: 'app.containers.IdeaCards.topics',
     defaultMessage: 'Topics',
@@ -244,5 +249,13 @@ export default defineMessages({
   stories: {
     id: 'app.containers.IdeaCards.storyTerm',
     defaultMessage: 'Stories',
+  },
+  searchContributions: {
+    id: 'app.containers.IdeaCards.searchContributions',
+    defaultMessage: 'Search contributions',
+  },
+  searchPosts: {
+    id: 'app.containers.IdeaCards.searchPosts',
+    defaultMessage: 'Search posts',
   },
 });

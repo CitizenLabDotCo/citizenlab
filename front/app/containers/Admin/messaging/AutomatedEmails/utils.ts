@@ -1,4 +1,4 @@
-import { ICampaignData } from 'api/campaigns/types';
+import { IEmailCampaignData } from 'api/campaigns/email/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -42,8 +42,13 @@ export const sortBy =
     return numA - numB;
   };
 
+// Orders campaigns within a content-type group by the backend-supplied
+// `campaign_ordering` attribute (see GroupOrderingHelper::CAMPAIGN_ORDER).
+export const sortByCampaignOrdering = (a: CampaignData, b: CampaignData) =>
+  a.attributes.campaign_ordering - b.attributes.campaign_ordering;
+
 export const stringifyCampaignFields = (
-  campaign: ICampaignData,
+  campaign: IEmailCampaignData,
   localize: Localize
 ) => {
   const attrs = campaign.attributes;

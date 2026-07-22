@@ -43,17 +43,15 @@ class WebApi::V1::SpamReportsController < ApplicationController
   def update
     ActiveRecord::Base.transaction do
       @spam_report.other_reason = nil if spam_report_params['reason_code'] != 'other'
-      if @spam_report.update(spam_report_params)
-        authorize @spam_report
-        SideFxSpamReportService.new.after_update(@spam_report, current_user)
-        render json: WebApi::V1::SpamReportSerializer.new(
-          @spam_report.reload,
-          params: jsonapi_serializer_params,
-          include: [:user]
-        ).serializable_hash, status: :ok
-      else
-        render json: { errors: @spam_report.errors.details }, status: :unprocessable_entity
-      end
+      @spam_report.assign_attributes(spam_report_params)
+      save_or_raise!(@spam_report)
+      authorize @spam_report
+      SideFxSpamReportService.new.after_update(@spam_report, current_user)
+      render json: WebApi::V1::SpamReportSerializer.new(
+        @spam_report.reload,
+        params: jsonapi_serializer_params,
+        include: [:user]
+      ).serializable_hash, status: :ok
     end
   end
 

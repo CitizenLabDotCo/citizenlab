@@ -1,4 +1,10 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from 'react';
 
 import {
   Button,
@@ -7,7 +13,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { findIndex } from 'lodash-es';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -19,11 +24,14 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import { isValidPhase } from '../phaseParam';
 
 import setPhaseURL from './setPhaseURL';
 import tracks from './tracks';
+
+let pendingFocusAction: 'previous' | 'current' | 'next' | null = null;
 
 const Container = styled.div`
   display: flex;
@@ -66,8 +74,14 @@ interface Props {
 const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
-  const { phaseNumber } = useParams();
+  const { phaseNumber } = useParams({ strict: false }) as {
+    phaseNumber?: string;
+  };
   const { data: project } = useProjectById(projectId);
+
+  const previousButtonRef = useRef<HTMLButtonElement>(null);
+  const currentButtonRef = useRef<HTMLButtonElement>(null);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
 
   const selectedPhase = useMemo(() => {
     if (!phases) return;
@@ -92,6 +106,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
 
   const goToNextPhase = useCallback(() => {
     trackEventByName(tracks.clickNextPhaseButton);
+    pendingFocusAction = 'next';
 
     if (phases) {
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
@@ -110,6 +125,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
 
   const goToPreviousPhase = useCallback(() => {
     trackEventByName(tracks.clickPreviousPhaseButton);
+    pendingFocusAction = 'previous';
 
     if (phases) {
       const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
@@ -129,6 +145,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const goToCurrentPhase = useCallback(() => {
     if (phases) {
       trackEventByName(tracks.clickCurrentPhaseButton);
+      pendingFocusAction = 'current';
       const currentPhase = getCurrentPhase(phases.data);
 
       if (currentPhase) {
@@ -136,6 +153,34 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
       }
     }
   }, [phases, selectPhase]);
+
+  // keep focus on the same button for a11y
+  useLayoutEffect(() => {
+    const action = pendingFocusAction;
+    if (!action) return;
+    pendingFocusAction = null;
+
+    const refsByAction = {
+      previous: previousButtonRef,
+      current: currentButtonRef,
+      next: nextButtonRef,
+    };
+
+    // keep the focus on the same nav tab after phase change
+    // to avoid the focus being lost
+    const actionButton = refsByAction[action].current;
+    if (actionButton) {
+      actionButton.focus();
+      return;
+    }
+
+    const isEnabled = (el: HTMLButtonElement | null) =>
+      !!el && el.getAttribute('aria-disabled') !== 'true';
+
+    [previousButtonRef.current, currentButtonRef.current, nextButtonRef.current]
+      .find(isEnabled)
+      ?.focus();
+  }, [selectedPhase?.id]);
 
   if (phases && phases.data.length > 1) {
     const navButtonSize = '34px';
@@ -156,6 +201,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
         >
           <div>
             <PreviousPhaseButton
+              ref={previousButtonRef}
               onClick={goToPreviousPhase}
               icon="chevron-left"
               iconColor={colors.textSecondary}
@@ -181,6 +227,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
           >
             <div>
               <Button
+                ref={currentButtonRef}
                 onClick={goToCurrentPhase}
                 icon="dot"
                 iconSize="16px"
@@ -207,6 +254,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
         >
           <div>
             <NextPhaseButton
+              ref={nextButtonRef}
               onClick={goToNextPhase}
               icon="chevron-right"
               iconColor={colors.textSecondary}

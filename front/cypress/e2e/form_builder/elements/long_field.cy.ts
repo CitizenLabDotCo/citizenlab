@@ -63,9 +63,11 @@ describe('Form builder long text field', () => {
     );
 
     // Enter text
-    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).type(testText, {
-      force: true,
-    });
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`)
+      .first()
+      .type(testText, {
+        force: true,
+      });
     cy.get('.e2e-error-message').should('have.length', 0);
 
     // Save survey response

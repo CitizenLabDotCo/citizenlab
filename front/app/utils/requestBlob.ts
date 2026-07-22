@@ -10,19 +10,24 @@ export function requestBlob(
     | 'text/calendar'
     | 'application/geo+json'
     | 'application/pdf',
-  queryParametersObject?
+  queryParametersObject?,
+  // Pass a body to send it as a JSON POST instead of the default GET.
+  options?: { method?: 'GET' | 'POST'; body?: Record<string, unknown> }
 ): Promise<Blob> {
   const urlParams = stringify(queryParametersObject, {
     arrayFormat: 'brackets',
     addQueryPrefix: true,
   });
   const urlWithParams = `${url}${urlParams}`;
+  const body = options?.body;
+  const hasBody = body !== undefined;
+  const method = options?.method ?? (hasBody ? 'POST' : 'GET');
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', urlWithParams, true);
+    xhr.open(method, urlWithParams, true);
     xhr.responseType = 'blob';
-    xhr.setRequestHeader('Content-Type', type);
+    xhr.setRequestHeader('Content-Type', hasBody ? 'application/json' : type);
     xhr.setRequestHeader('Authorization', `Bearer ${getJwt()}`);
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 300) {
@@ -33,6 +38,6 @@ export function requestBlob(
         reject(error);
       }
     };
-    xhr.send(undefined);
+    xhr.send(hasBody ? JSON.stringify(body) : undefined);
   });
 }

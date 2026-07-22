@@ -6,43 +6,43 @@ require Rails.root.join('lib/email_domain_blacklist')
 #
 # Table name: users
 #
-#  id                                  :uuid             not null, primary key
-#  email                               :string
-#  password_digest                     :string
-#  slug                                :string
-#  roles                               :jsonb
-#  reset_password_token                :string
-#  created_at                          :datetime         not null
-#  updated_at                          :datetime         not null
-#  avatar                              :string
-#  first_name                          :string
-#  last_name                           :string
-#  locale                              :string
-#  bio_multiloc                        :jsonb
-#  invite_status                       :string
-#  custom_field_values                 :jsonb
-#  registration_completed_at           :datetime
-#  verified                            :boolean          default(FALSE), not null
-#  email_confirmed_at                  :datetime
-#  email_confirmation_code             :string
-#  email_confirmation_retry_count      :integer          default(0), not null
-#  email_confirmation_code_reset_count :integer          default(0), not null
-#  email_confirmation_code_sent_at     :datetime
-#  confirmation_required               :boolean          default(TRUE), not null
-#  block_start_at                      :datetime
-#  block_reason                        :string
-#  block_end_at                        :datetime
-#  new_email                           :string
-#  followings_count                    :integer          default(0), not null
-#  onboarding                          :jsonb            not null
-#  unique_code                         :string
-#  last_active_at                      :datetime
-#  imported                            :boolean          default(FALSE), not null
-#  token_expiry_key                    :string
+#  id                        :uuid             not null, primary key
+#  email                     :string
+#  password_digest           :string
+#  slug                      :string
+#  roles                     :jsonb
+#  reset_password_token      :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  avatar                    :string
+#  first_name                :string
+#  last_name                 :string
+#  locale                    :string
+#  bio_multiloc              :jsonb
+#  invite_status             :string
+#  custom_field_values       :jsonb
+#  registration_completed_at :datetime
+#  verified                  :boolean          default(FALSE), not null
+#  email_confirmed_at        :datetime
+#  confirmation_required     :boolean          default(TRUE), not null
+#  block_start_at            :datetime
+#  block_reason              :string
+#  block_end_at              :datetime
+#  new_email                 :string
+#  followings_count          :integer          default(0), not null
+#  onboarding                :jsonb            not null
+#  unique_code               :string
+#  last_active_at            :datetime
+#  imported                  :boolean          default(FALSE), not null
+#  token_expiry_key          :string
+#  phone                     :string
+#  new_phone                 :string
+#  phone_confirmed_at        :datetime
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
+#  index_users_on_phone                      (phone) UNIQUE WHERE (phone IS NOT NULL)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
 #  index_users_on_token_expiry_key           (token_expiry_key)
@@ -56,28 +56,69 @@ class User < ApplicationRecord
   include Volunteering::UserDecorator
   include UserRoles
   include UserGroups
-  include UserConfirmation
   include UserVerification
   include UserPasswordValidations
   include PgSearch::Model
+  include UserDoorkeeper
 
   GENDERS = %w[male female unspecified].freeze
   INVITE_STATUSES = %w[pending accepted].freeze
   EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   EMAIL_DOMAIN_BLACKLIST = EmailDomainBlacklist.load
 
+  # NOTE: Apr 2026 - Slug is still generated but no longer used in the codebase.
+  # It will be removed in the near future when we are sure there is no further use for it.
   slug from: proc { |user| UserSlugService.new.generate_slug(user, user.full_name) }, if: proc { |user| !user.invite_pending? }
 
   class << self
     # Asynchronously deletes all users in a specified scope with associated side effects.
     # By default, this method deletes all users on the platform.
+    #
+    # Users that already have a pending +DeleteUserJob+ are skipped. Because the jobs are
+    # spread out over time, a sweep is still in flight long after it was started, and a
+    # second sweep would otherwise enqueue a duplicate job for every remaining user.
     def destroy_all_async(scope = User)
-      scope.pluck(:id).each.with_index do |id, idx|
+      pending = user_ids_with_pending_deletion_job
+      ids, skipped = scope.pluck(:id).partition { |id| pending.exclude?(id) }
+
+      if skipped.any?
+        Rails.logger.warn(
+          "User.destroy_all_async: skipping #{skipped.size} user(s) that already have a pending DeleteUserJob."
+        )
+      end
+
+      ids.each.with_index do |id, idx|
         # Spread out the deletion of users to avoid throttling.
         # Note: No need to update member counts if we're deleting all users, as the count will never be seen.
         DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id, update_member_counts: false)
       end
     end
+
+    # @return [Set<String>] ids of the users of the current tenant that have a
+    #   +DeleteUserJob+ enqueued which has not run to completion yet.
+    def user_ids_with_pending_deletion_job
+      QueJob
+        .by_job_class(DeleteUserJob)
+        .all_by_tenant_schema_name(Apartment::Tenant.current)
+        .not_finished
+        .not_expired
+        .pluck(:args)
+        .filter_map { |args| deletion_job_user_id(args.first) }
+        .to_set
+    end
+    private :user_ids_with_pending_deletion_job
+
+    # +DeleteUserJob+ accepts either a user id or a user, the latter being serialized by
+    # ActiveJob as a global id.
+    def deletion_job_user_id(job_data)
+      argument = job_data&.dig('arguments', 0)
+
+      case argument
+      when String then argument
+      when Hash then argument['_aj_globalid']&.split('/')&.last
+      end
+    end
+    private :deletion_job_user_id
 
     def onboarding_json_schema
       {
@@ -160,6 +201,13 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?
   before_validation :sanitize_last_name, if: :last_name_changed?
+  before_validation :normalize_phone, if: :phone_changed?
+  before_validation :normalize_new_phone, if: :new_phone_changed?
+
+  # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false,
+  # which is a condition for complete_registration to set registration_completed_at
+  # By putting it on the line before complete_registration, and using prepend: true, we ensure it runs before complete_registration.
+  before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }, prepend: true
   before_validation :complete_registration
 
   has_many :identities, dependent: :destroy
@@ -167,9 +215,15 @@ class User < ApplicationRecord
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
+  has_many :confirmations, dependent: :destroy
+  has_one :email_confirmation, dependent: :destroy
+  has_one :new_email_confirmation, dependent: :destroy
+  has_one :new_phone_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
+  after_create :create_confirmations
   before_destroy :destroy_baskets
 
+  has_many :scheduled_admin_publications, class_name: 'AdminPublication', foreign_key: :scheduled_by_id, dependent: :nullify
   has_many :requested_project_reviews, class_name: 'ProjectReview', foreign_key: :requester_id, dependent: :nullify
   has_many :assigned_project_reviews, class_name: 'ProjectReview', foreign_key: :reviewer_id, dependent: :nullify
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify
@@ -178,11 +232,14 @@ class User < ApplicationRecord
   store_accessor :custom_field_values, :gender, :birthyear, :domicile
   store_accessor :onboarding, :topics_and_areas
 
-  validates :email, presence: true, unless: :allows_empty_email?
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :phone, uniqueness: true, allow_nil: true
+  validate :validate_phone_format
+  validate :validate_new_phone_format
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
@@ -300,7 +357,7 @@ class User < ApplicationRecord
   end
 
   def active?
-    registered? && !blocked? && !confirmation_required?
+    registered? && !blocked? && authenticated_at_least_once?
   end
 
   def blank_and_can_be_deleted?
@@ -308,30 +365,17 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
-  # Sometimes for privacy reasons we do not want to expose the personal data in the slug
-  def self.enhanced_user_profile_privacy?
-    AppConfiguration.instance.feature_activated?('enhanced_user_profile_privacy')
-  end
-
-  # Find a user by slug or by id when the id is used as slug
-  def self.by_slug!(slug)
-    enhanced_user_profile_privacy? ? find(slug) : find_by!(slug:)
-  end
-
-  def slug
-    self.class.enhanced_user_profile_privacy? && id ? id : super
-  end
-
   def show_public_profile?
-    return true unless self.class.enhanced_user_profile_privacy?
-
     # Only show the public profile if the user has contributed publicly to the platform,
-    # either by posting ideas or comments in phases with public participation methods.
+    # either by posting ideas or comments in phases with public participation methods,
+    # or by accepting an invitation to co-sponsor a proposal.
     # This is to avoid exposing personal data of users who have not actively used the platform.
     ideas
       .joins(:ideas_phases)
       .joins(:phases)
-      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) || comments.exists?
+      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) ||
+      comments.exists? ||
+      cosponsorships.exists?(status: 'accepted')
   end
 
   private
@@ -339,33 +383,81 @@ class User < ApplicationRecord
   def validate_not_duplicate_new_email
     return unless new_email
 
-    if User.find_by_cimail(new_email)
-      errors.add(:email, :taken, value: new_email)
-    elsif errors[:new_email].present?
+    # If there is a validation error:
+    # Rename the error from new_email to email (for some reason this is important)
+    if errors.of_kind?(:new_email, :invalid)
       ErrorsService.new.remove errors, :new_email, :invalid, value: new_email
       errors.add(:email, :invalid, value: new_email)
     end
+
+    duplicate_user = User.find_by_cimail(new_email)
+
+    # If nobody is using this email, return
+    return unless duplicate_user
+
+    # Return if duplicate user is same as current user.
+    return if duplicate_user.id == id
+
+    errors.add(:email, :taken, value: new_email)
+  end
+
+  def normalize_phone
+    normalize_phone_field(:phone)
+  end
+
+  def normalize_new_phone
+    normalize_phone_field(:new_phone)
+  end
+
+  def validate_phone_format
+    validate_phone_field_format(:phone)
+  end
+
+  def validate_new_phone_format
+    validate_phone_field_format(:new_phone)
+  end
+
+  # Store phone numbers in canonical E.164 form so the uniqueness constraint and
+  # SMS delivery operate on a single normalized representation.
+  def normalize_phone_field(attribute)
+    if self[attribute].blank?
+      self[attribute] = nil
+      return
+    end
+
+    normalized = Phonelib.parse(self[attribute]).e164.presence
+    self[attribute] = normalized if normalized
+  end
+
+  def validate_phone_field_format(attribute)
+    value = self[attribute]
+    return if value.nil? || Phonelib.valid?(value)
+
+    errors.add(attribute, :invalid, value: value)
   end
 
   def validate_not_duplicate_email
-    return unless email && (duplicate_user = User.find_by_cimail(email)).present? && duplicate_user.id != id
+    return unless email
 
-    if duplicate_user.invite_pending?
-      ErrorsService.new.remove errors, :email, :taken, value: email
-      errors.add(:email, :taken_by_invite, value: email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
-    elsif duplicate_user.email != email
-      # We're only checking this case, as the other case is covered
-      # by the uniqueness constraint which can "cleverly" distinguish
-      # true duplicates from the record itself.
-      errors.add(:email, :taken, value: email)
-    end
+    duplicate_user = User.find_by_cimail(email)
+
+    # If nobody is using this email, return
+    return unless duplicate_user
+
+    # Return if duplicate user is same as current user.
+    return if duplicate_user.id == id
+
+    errors.add(:email, :taken, value: email)
   end
 
   def validate_can_update_email
     return unless persisted? &&
                   (new_email_changed? || email_changed?) &&
-                  email_was.present? && # see #allows_empty_email?
-                  user_confirmation_enabled?
+                  email_was.present?
+
+    # Ignore changes that only differ in letter-case (e.g. accepting an invite with
+    # `small@big.com` for an address stored as `SMALL@BIG.COM`)
+    return if email_changed_only_in_case? && !new_email_changed?
 
     if no_password? && confirmation_required # only for light registration
       # Avoid security hole where passwordless user can change when they are authenticated without confirmation
@@ -376,15 +468,9 @@ class User < ApplicationRecord
     end
   end
 
-  def allows_empty_email?
-    invite_pending? ||
-      unique_code.present? || # user created in input importer
-      (email_was.blank? && sso? && identities.none?(&:email_always_present?))
-  end
-
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
-    return if confirmation_required? || invite_pending? || registration_completed_at_changed?
+    return if !authenticated_at_least_once? || invite_pending? || registration_completed_at_changed?
 
     self.registration_completed_at ||= Time.now
   end
@@ -393,7 +479,7 @@ class User < ApplicationRecord
     service = SanitizationService.new
     self.bio_multiloc = service.sanitize_multiloc(
       bio_multiloc,
-      %i[title alignment list decoration link video]
+      %i[decoration link]
     )
     self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
@@ -409,6 +495,10 @@ class User < ApplicationRecord
 
   def email_or_new_email_changed?
     new_record? || email_changed? || new_email_changed?
+  end
+
+  def email_changed_only_in_case?
+    email_changed? && email.present? && email_was.present? && email.casecmp?(email_was)
   end
 
   def validate_email_domains_blacklist
@@ -447,6 +537,18 @@ class User < ApplicationRecord
     Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
+  def auto_confirm_on_invite_accept
+    self.email_confirmed_at = Time.zone.now
+    self.confirmation_required = false
+    email_confirmation&.clear_code!
+  end
+
+  def create_confirmations
+    EmailConfirmation.create!(user: self)
+    NewEmailConfirmation.create!(user: self)
+    NewPhoneConfirmation.create!(user: self)
+  end
+
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
       unless notification.update initiating_user: nil
@@ -455,16 +557,15 @@ class User < ApplicationRecord
     end
   end
 
-  def confirmation_required
-    self[:confirmation_required]
-  end
-
-  def confirmation_required=(val)
-    write_attribute :confirmation_required, val
-  end
-
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
+  end
+
+  def authenticated_at_least_once?
+    # True if user authenticated at least once,
+    # either by confirming their email or by signing in with SSO
+    # and being verified.
+    !confirmation_required? || (sso? && verified)
   end
 end
 

@@ -14,6 +14,7 @@ interface Props {
 const ProgressBar = ({ formCompletionPercentage = 0 }: Props) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
+  const roundedPercentage = Math.round(formCompletionPercentage);
 
   return (
     <Box
@@ -21,7 +22,7 @@ const ProgressBar = ({ formCompletionPercentage = 0 }: Props) => {
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={100}
-      aria-valuenow={formCompletionPercentage}
+      aria-valuenow={roundedPercentage}
       aria-label={formatMessage(messages.progressBarLabel)}
     >
       <Box background={colors.background}>

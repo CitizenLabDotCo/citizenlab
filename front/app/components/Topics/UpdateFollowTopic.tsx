@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
@@ -16,6 +15,7 @@ import T from 'components/T';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 
@@ -94,6 +94,7 @@ const UpdateFollowTopic = ({ topic }: Props) => {
         iconPos="right"
         padding="0px"
         my="0px"
+        whiteSpace="normal"
         processing={isLoading}
         textColor={topicButtonContentColor}
         ariaPressed={!isLoading ? isFollowing : undefined}

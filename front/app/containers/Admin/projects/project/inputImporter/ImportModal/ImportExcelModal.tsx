@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 import { object, mixed } from 'yup';
 
@@ -25,8 +24,10 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { useParams } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
+import { IDEA_IMPORT_FILE_MAX_SIZE_MB } from './constants';
 import LocalePicker from './LocalePicker';
 import messages from './messages';
 
@@ -44,16 +45,21 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
-  const { phaseId } = useParams();
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
   const { data: phase } = usePhase(phaseId);
-  const { projectId } = useParams() as {
-    projectId: string;
-  };
 
-  const downloadFormPath =
+  const downloadFormLink =
     phase?.data.attributes.participation_method === 'native_survey'
-      ? `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
-      : `/admin/projects/${projectId}/phases/${phaseId}/form`;
+      ? ({
+          to: '/admin/projects/$projectId/phases/$phaseId/survey-form',
+          params: { projectId, phaseId },
+        } as const)
+      : ({
+          to: '/admin/projects/$projectId/phases/$phaseId/form',
+          params: { projectId, phaseId },
+        } as const);
 
   const defaultValues = {
     locale,
@@ -115,7 +121,7 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
                       <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                     ),
                     hereLink: (
-                      <Link to={{ pathname: downloadFormPath }}>
+                      <Link {...downloadFormLink}>
                         <FormattedMessage
                           {...messages.templateCanBeDownloadedHere}
                         />
@@ -129,7 +135,12 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
             <LocalePicker />
 
             <Box>
-              <SingleFileUploader name="file" accept=".xlsx" shouldUnregister />
+              <SingleFileUploader
+                name="file"
+                accept=".xlsx"
+                maxSizeMb={IDEA_IMPORT_FILE_MAX_SIZE_MB}
+                shouldUnregister
+              />
             </Box>
 
             <Box w="100%" display="flex" mt="32px">

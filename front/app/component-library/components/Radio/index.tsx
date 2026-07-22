@@ -5,12 +5,7 @@ import { get } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import {
-  fontSizes,
-  colors,
-  defaultOutline,
-  isRtl,
-} from '../../utils/styleUtils';
+import { fontSizes, colors, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxPaddingProps, BoxMarginProps } from '../Box';
 
@@ -43,7 +38,7 @@ const CustomRadio = styled.div<{ borderColor: string | undefined }>`
   `}
 
   ${HiddenRadio}.focus-visible + & {
-    ${defaultOutline};
+    ${focusRing}
   }
 
   &.enabled:hover {
@@ -110,6 +105,8 @@ export type Props = {
   isRequired?: boolean;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   onClick?: () => void;
+  dataCy?: string;
+  autoFocus?: boolean;
 } & BoxPaddingProps &
   BoxMarginProps;
 
@@ -128,6 +125,8 @@ const Radio = ({
   onKeyDown,
   onChange: _onChange,
   onClick,
+  dataCy,
+  autoFocus,
   ...rest
 }: Props) => {
   const theme = useTheme();
@@ -170,6 +169,7 @@ const Radio = ({
       display="flex"
       alignItems="flex-start"
       data-testid="radio-container"
+      data-cy={dataCy}
       {...rest}
     >
       <HiddenRadio
@@ -184,6 +184,7 @@ const Radio = ({
         required={isRequired}
         readOnly
         onKeyDown={onKeyDown}
+        autoFocus={autoFocus}
       />
       <CustomRadio
         className={`${inputFocused ? 'focused' : ''}

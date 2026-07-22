@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { IOption, isIOption } from 'typings';
 
 import { IAreaData } from 'api/areas/types';
@@ -16,10 +14,11 @@ import { SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isString } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { TOnProjectAttributesDiffChangeFunction } from '../../../project/general';
 import messages from '../../../project/general/messages';
-import { LabelHeaderDescription } from '../../../project/phaseSetup/components/PhaseParticipationConfig/components/shared/labels';
+import { LabelHeaderDescription } from '../labels';
 
 import { StyledSectionField, StyledMultipleSelect } from './styling';
 
@@ -28,17 +27,15 @@ interface Props {
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
 }
 
-const AreaRadio = styled(Radio)`
-  margin-bottom: 25px;
-`;
-
 type TProjectAreaType = 'none' | 'all' | 'selection';
 
 const GeographicAreaInputs = ({
   areaIds,
   onProjectAttributesDiffChange,
 }: Props) => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({
+    strict: false,
+  });
   const { data: areas } = useAreas({});
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
@@ -137,7 +134,7 @@ const GeographicAreaInputs = ({
             }
           />
         </SubSectionTitle>
-        <AreaRadio
+        <Radio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="none"
@@ -151,8 +148,9 @@ const GeographicAreaInputs = ({
               }
             />
           }
+          mb="12px"
         />
-        <AreaRadio
+        <Radio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="all"
@@ -166,8 +164,9 @@ const GeographicAreaInputs = ({
               }
             />
           }
+          mb="12px"
         />
-        <AreaRadio
+        <Radio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="selection"

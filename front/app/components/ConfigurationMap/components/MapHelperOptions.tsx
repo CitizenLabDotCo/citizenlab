@@ -7,7 +7,6 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import { IMapConfig } from 'api/map_config/types';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
@@ -18,6 +17,7 @@ import { goToMapLocation } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMapZoom, projectPointToWebMercator } from 'utils/mapUtils/map';
+import { useParams } from 'utils/router';
 
 type Props = {
   mapView: MapView | null;
@@ -25,7 +25,7 @@ type Props = {
 };
 
 const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

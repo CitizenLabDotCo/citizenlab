@@ -112,6 +112,8 @@ fr-BE:
           title: Quelle est votre initiative ?
         issue:
           title: Quel est votre problème ?
+        observation:
+          title: Quelle est votre observation ?
         option:
           title: Quelle est votre option ?
         petition:
@@ -168,10 +170,10 @@ fr-BE:
       last_name: Nom
       line_print_description: Veuillez dessiner un tracé sur la carte ci-dessous.
       linear_scale_print_description: Veuillez écrire un nombre entre %{min_label} et %{max_label} uniquement
-      logic_go_to_section: Passez ensuite à la <strong>%{section}</strong>.
-      logic_if_answered_end: "Si vous avez répondu <strong>%{option}</strong> à la Question %{question}, vous <strong>n'avez pas</strong> besoin de répondre à d'autres questions."
-      logic_if_answered_go_to: Si vous avez répondu <strong>%{option}</strong> à la Question %{question}, passez ensuite à la <strong>%{section}</strong>.
-      logic_no_further_questions: "En fonction de vos réponses, vous <strong>n'avez pas</strong> besoin de répondre à d'autres questions."
+      logic_go_to_section: Passez directement à la <strong>%{section}</strong>.
+      logic_if_answered_end: Si vous avez répondu <strong>%{option}</strong> à la Question %{question}, vous avez terminé. Merci de ne pas remplir le reste du formulaire.
+      logic_if_answered_go_to: Si vous avez répondu <strong>%{option}</strong> à la Question %{question}, passez directement à la <strong>%{section}</strong>.
+      logic_no_further_questions: D'après vos réponses précédentes, vous avez terminé. Merci de ne pas remplir le reste du formulaire.
       logic_section: Section %{letter}
       matrix_print_description: Pour chaque ligne, cochez un cercle avec une croix pour indiquer votre préférence.
       optional: optionnel
@@ -267,6 +269,25 @@ fr-BE:
       title: Tous les projets
     proposals:
       title: Propositions
+  pdf_export:
+    input_responses:
+      date: Date
+      no_answer: (Pas de réponse)
+      prepared_by: Préparé par
+      report_label: Rapport de réponses
+      respondent: Répondant %{number}
+      response_count:
+        one: '%{count} réponse'
+        other: '%{count} réponses'
+    survey_responses:
+      date: Date
+      no_answer: (Pas de réponse)
+      prepared_by: Préparé par
+      report_label: Rapport de réponses au sondage
+      respondent: Répondant %{number}
+      response_count:
+        one: '%{count} réponse'
+        other: '%{count} réponses'
   phases:
     community_monitor_title: Observatoire de communauté
     native_survey_button: Répondre à l'enquête
@@ -323,8 +344,8 @@ fr-BE:
   time:
     am: du matin
     formats:
-      hour_of_day: "%Hh"
-      long: "%A %d %B %Y à %Hh%M"
+      hour_of_day: '%Hh'
+      long: '%A %d %B %Y à %Hh%M'
     pm: de l'après-midi
   topics:
     community: Développement communautaire

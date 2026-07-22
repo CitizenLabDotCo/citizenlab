@@ -6,6 +6,32 @@ describe TrackIntercomService do
   let(:intercom) { double(INTERCOM_CLIENT).as_null_object }
   let(:service) { described_class.new(intercom) }
 
+  describe 'track_user?' do
+    it 'returns true for admins' do
+      expect(service.track_user?(create(:admin))).to be true
+    end
+
+    it 'returns true for project moderators' do
+      expect(service.track_user?(create(:project_moderator))).to be true
+    end
+
+    it 'returns true for project folder moderators' do
+      expect(service.track_user?(create(:project_folder_moderator))).to be true
+    end
+
+    it 'returns true for space moderators' do
+      expect(service.track_user?(create(:space_moderator))).to be true
+    end
+
+    it 'returns false for regular users' do
+      expect(service.track_user?(create(:user))).to be false
+    end
+
+    it 'returns false for super admins, even though they are admins' do
+      expect(service.track_user?(create(:super_admin))).to be false
+    end
+  end
+
   describe 'identify_user' do
     it "doesn't interact with Intercom when the given user is not an admin or moderator" do
       user = create(:user)
@@ -37,6 +63,8 @@ describe TrackIntercomService do
           isAdmin: true,
           isSuperAdmin: false,
           isProjectModerator: false,
+          isProjectFolderModerator: false,
+          isSpaceModerator: false,
           highestRole: 'admin',
           firstName: user.first_name,
           lastName: user.last_name,
@@ -67,6 +95,8 @@ describe TrackIntercomService do
           isAdmin: true,
           isSuperAdmin: false,
           isProjectModerator: false,
+          isProjectFolderModerator: false,
+          isSpaceModerator: false,
           highestRole: 'admin',
           firstName: user.first_name,
           lastName: user.last_name,
@@ -75,6 +105,50 @@ describe TrackIntercomService do
       )
 
       expect(contacts_api).to receive(:save).with(contact).and_return(contact)
+
+      service.identify_user(user)
+    end
+
+    it 'creates an Intercom contact for a project folder moderator with the correct role flags' do
+      user = create(:project_folder_moderator)
+
+      contacts_api = double
+      expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
+      expect(contacts_api).to receive(:search).and_return(OpenStruct.new({ count: 0 }))
+
+      expect(contacts_api).to receive(:create).with(
+        hash_including(
+          custom_attributes: hash_including(
+            isAdmin: false,
+            isProjectModerator: false,
+            isProjectFolderModerator: true,
+            isSpaceModerator: false,
+            highestRole: 'project_folder_moderator'
+          )
+        )
+      ).and_return(double.as_null_object)
+
+      service.identify_user(user)
+    end
+
+    it 'creates an Intercom contact for a space moderator with the correct role flags' do
+      user = create(:space_moderator)
+
+      contacts_api = double
+      expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
+      expect(contacts_api).to receive(:search).and_return(OpenStruct.new({ count: 0 }))
+
+      expect(contacts_api).to receive(:create).with(
+        hash_including(
+          custom_attributes: hash_including(
+            isAdmin: false,
+            isProjectModerator: false,
+            isProjectFolderModerator: false,
+            isSpaceModerator: true,
+            highestRole: 'space_moderator'
+          )
+        )
+      ).and_return(double.as_null_object)
 
       service.identify_user(user)
     end
@@ -107,6 +181,28 @@ describe TrackIntercomService do
           action: 'published'
         )
       })
+
+      service.track_activity(activity)
+    end
+
+    it 'sends the activity to Intercom for a project folder moderator' do
+      user = create(:project_folder_moderator)
+      activity = build(:activity, user: user)
+
+      events_api = double
+      expect(intercom).to receive(:events).and_return(events_api)
+      expect(events_api).to receive(:create)
+
+      service.track_activity(activity)
+    end
+
+    it 'sends the activity to Intercom for a space moderator' do
+      user = create(:space_moderator)
+      activity = build(:activity, user: user)
+
+      events_api = double
+      expect(intercom).to receive(:events).and_return(events_api)
+      expect(events_api).to receive(:create)
 
       service.track_activity(activity)
     end

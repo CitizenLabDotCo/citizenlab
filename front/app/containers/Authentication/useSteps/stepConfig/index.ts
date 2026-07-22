@@ -11,7 +11,6 @@ import { emailFlow } from './emailFlow';
 import { inviteFlow } from './inviteFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
-import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
 import { handleSubmitEmail, handleSSOClick } from './utils';
 
@@ -21,8 +20,7 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  state: State,
-  userConfirmationEnabled: boolean
+  state: State
 ) => {
   return {
     ...emailFlow(
@@ -30,8 +28,7 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      state,
-      userConfirmationEnabled
+      state
     ),
 
     ...inviteFlow(
@@ -46,8 +43,7 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      state,
-      userConfirmationEnabled
+      state
     ),
 
     ...sharedSteps(
@@ -55,13 +51,6 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       setError,
-      updateState
-    ),
-
-    ...ssoVerificationFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
       updateState
     ),
 
@@ -79,13 +68,7 @@ export const getStepConfig = (
 
       SUBMIT_EMAIL: async (email: string) => {
         updateState({ email });
-        await handleSubmitEmail(
-          email,
-          getAuthenticationData,
-          getRequirements,
-          setCurrentStep,
-          updateState
-        );
+        await handleSubmitEmail(email, setCurrentStep, updateState);
       },
 
       CONTINUE_WITH_SSO: async (ssoProvider: SSOProviderWithoutVienna) => {

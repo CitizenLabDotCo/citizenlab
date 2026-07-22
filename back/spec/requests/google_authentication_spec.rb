@@ -63,11 +63,16 @@ describe 'google authentication' do
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
-    settings['google_login'] = {
+    settings['id_config'] = {
       allowed: true,
       enabled: true,
-      client_id: 'fakeclientid',
-      client_secret: 'fakeclientsecret'
+      id_methods: [
+        {
+          name: 'google',
+          client_id: 'fakeclientid',
+          client_secret: 'fakeclientsecret'
+        }
+      ]
     }
     configuration.save!
     host! 'example.org'
@@ -109,8 +114,7 @@ describe 'google authentication' do
     expect(user.reload.avatar.file.file).to be_present
   end
 
-  it 'deletes the previous user if unverified with password and verification is enabled' do
-    SettingsService.new.activate_feature! 'user_confirmation'
+  it 'deletes the previous user if user has never confirmed their email address and they have a password (not possible anymore)' do
     user = create(:user, email: 'boris.brompton@orange.uk', password: 'supersecret')
     user.update_columns(confirmation_required: true, email_confirmed_at: nil)
     user_id = user.id
@@ -119,16 +123,6 @@ describe 'google authentication' do
     follow_redirect!
 
     expect(User.exists?(user_id)).to be false
-  end
-
-  it 'clears the password if verification is disabled' do
-    SettingsService.new.deactivate_feature! 'user_confirmation'
-    user = create(:user, email: 'boris.brompton@orange.uk', password: 'supersecret')
-
-    get '/auth/google?random-passthrough-param=somevalue'
-    follow_redirect!
-
-    expect(user.reload.authenticate('supersecret')).to be false
   end
 
   it 'updates the avatar when re-authenticating an existing user without an avatar' do
@@ -207,37 +201,33 @@ describe 'google authentication' do
       })
     end
 
-    context 'when user confirmation is enabled' do
-      before { SettingsService.new.activate_feature!('user_confirmation') }
+    it 'creates confirmed user' do
+      get '/auth/google'
+      follow_redirect!
+      user = User.find_by(email: 'boris.brompton@orange.uk')
+      expect(user.confirmation_required?).to be(false)
+    end
 
-      it 'creates confirmed user' do
+    context 'when email is not confirmed' do
+      let(:email_verified) { false }
+
+      it 'creates unconfirmed user' do
         get '/auth/google'
         follow_redirect!
-        user = User.find_by(email: 'boris.brompton@orange.uk')
-        expect(user.confirmation_required?).to be(false)
+        user = User.find_by(new_email: 'boris.brompton@orange.uk')
+        expect(user.confirmation_required?).to be(true)
       end
 
-      context 'when email is not verified' do
-        let(:email_verified) { false }
+      it "does not log 'registration_completed' activity job" do
+        get '/auth/google'
+        follow_redirect!
 
-        it 'creates unconfirmed user' do
-          get '/auth/google'
-          follow_redirect!
-          user = User.find_by(email: 'boris.brompton@orange.uk')
-          expect(user.confirmation_required?).to be(true)
-        end
-
-        it "does not log 'registration_completed' activity job" do
-          get '/auth/google'
-          follow_redirect!
-
-          expect(LogActivityJob).not_to have_been_enqueued.with(
-            anything,
-            'completed_registration',
-            anything,
-            anything
-          )
-        end
+        expect(LogActivityJob).not_to have_been_enqueued.with(
+          anything,
+          'completed_registration',
+          anything,
+          anything
+        )
       end
     end
   end

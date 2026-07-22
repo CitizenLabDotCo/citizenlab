@@ -29,7 +29,8 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       expect(BulkImportIdeas::IdeaImportFile.where(parent: nil).pluck(:num_pages)).to eq [12]
     end
 
-    it 'raises an error if a PDF file has too many pages (more than 100)' do
+    it 'raises an error if a PDF file has more pages than MAX_TOTAL_PAGES' do
+      stub_const('BulkImportIdeas::Parsers::Pdf::PdfFileSplitter::MAX_TOTAL_PAGES', 100)
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_128.pdf').read
       expect { service.create_files("data:application/pdf;base64,#{base_64_content}") }.to raise_error(
         an_instance_of(BulkImportIdeas::Error).and(having_attributes(key: 'bulk_import_maximum_pdf_pages_exceeded'))

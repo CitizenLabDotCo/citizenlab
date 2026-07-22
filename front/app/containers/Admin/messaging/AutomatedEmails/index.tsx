@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 
+import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
 import { internalCommentNotificationTypes } from 'api/campaigns/types';
-import useCampaigns from 'api/campaigns/useCampaigns';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -19,7 +19,12 @@ import {
   GroupedCampaignsEntry,
   SubGroupedCampaignsEntry,
 } from './types';
-import { groupBy, sortBy, stringifyCampaignFields } from './utils';
+import {
+  groupBy,
+  sortBy,
+  sortByCampaignOrdering,
+  stringifyCampaignFields,
+} from './utils';
 
 const AutomatedEmails = () => {
   const isInternalCommentingEnabled = useFeatureFlag({
@@ -27,7 +32,7 @@ const AutomatedEmails = () => {
   });
   const isSpacesEnabled = useFeatureFlag({ name: 'spaces' });
 
-  const { data: campaigns } = useCampaigns({
+  const { data: campaigns } = useEmailCampaigns({
     withoutCampaignNames: [
       'manual',
       ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),
@@ -55,7 +60,11 @@ const AutomatedEmails = () => {
           recipient_role,
           group
             .reduce(groupBy('content_type'), [])
-            .sort(sortBy('content_type')),
+            .sort(sortBy('content_type'))
+            .map(([content_type, contentTypeGroup]: GroupedCampaignsEntry) => [
+              content_type,
+              [...contentTypeGroup].sort(sortByCampaignOrdering),
+            ]),
         ]),
     [campaigns, localize]
   );

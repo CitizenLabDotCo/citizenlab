@@ -464,6 +464,40 @@ describe Invites::Service do
       end
     end
 
+    context 'with @ in first_name' do
+      let(:hash_array) do
+        [
+          { email: 'a@example.com', first_name: 'bad@name', last_name: 'Smith' }
+        ]
+      end
+
+      it 'fails with invalid_first_name error including the bad value' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+
+        error = service_errors.sole
+        expect(error.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:invalid_first_name]
+        expect(error.row).to eq 2
+        expect(error.value).to eq 'bad@name'
+      end
+    end
+
+    context 'with @ in last_name' do
+      let(:hash_array) do
+        [
+          { email: 'b@example.com', first_name: 'Alice', last_name: 'also@bad' }
+        ]
+      end
+
+      it 'fails with invalid_last_name error including the bad value' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+
+        error = service_errors.sole
+        expect(error.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:invalid_last_name]
+        expect(error.row).to eq 2
+        expect(error.value).to eq 'also@bad'
+      end
+    end
+
     context 'with a banned email' do
       before { EmailBan.ban!('banned.user@gmail.com') }
 
@@ -571,6 +605,27 @@ describe Invites::Service do
         expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:emails_duplicate]
         expect(service_errors.first.rows).to eq [2, 3, 5]
         expect(service_errors.first.value).to eq 'someuser@somedomain.com'
+      end
+    end
+
+    context 'with duplicate emails that differ only in case' do
+      let(:hash_array) do
+        [
+          { email: 'someuser@somedomain.com' },
+          { email: 'SomeUser@somedomain.com' }
+        ]
+      end
+
+      # check_duplicate_emails compares the raw email strings, so case variants
+      # slip past the up-front duplicate check. The collision is then only caught
+      # by the case-insensitive DB lookup at save! time, which raises
+      # :taken_by_invite (an error key with no translation) and crashes
+      # Invites::CountNewSeatsJob. They should be flagged as duplicates instead.
+      it 'detects them as duplicates instead of crashing at save time' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+        expect(service_errors.size).to eq 1
+        expect(service_errors.first.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:emails_duplicate]
+        expect(service_errors.first.rows).to eq [2, 3]
       end
     end
 

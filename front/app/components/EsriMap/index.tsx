@@ -19,6 +19,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { configureMapView } from './config';
 import { InitialData, DefaultBasemapType } from './types';
 import {
@@ -26,7 +28,6 @@ import {
   getDefaultBasemap,
   handleWebMapReferenceLayers,
   createUserLocationGraphic,
-  useLabelExpandButtons,
 } from './utils';
 
 // Custom Esri styles
@@ -50,6 +51,12 @@ const MapContainer = styled(Box)<{
 
   .esri-ui-corner .esri-component {
     box-shadow: none !important;
+  }
+
+  .esri-attribution__sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
   }
 
   ${media.phone`
@@ -90,6 +97,7 @@ const EsriMap = ({
   showUserLocation = false,
 }: EsriMapProps) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: appConfig } = useAppConfiguration();
 
@@ -103,9 +111,19 @@ const EsriMap = ({
 
   const mapRefAvailable = !!mapRef.current;
 
-  // for Accessibility: add labels to the expand buttons in the map's legend and layer list
+  // ESRI's MapView preventDefault()s Tab globally, trapping focus. Run before it
+  // (capture, pre-MapView) and drop Tab so the browser's native Tab still works.
+  useEffect(() => {
+    const releaseTabFromEsriTrap = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        e.stopImmediatePropagation();
+      }
+    };
 
-  useLabelExpandButtons({ mapView });
+    document.addEventListener('keydown', releaseTabFromEsriTrap, true);
+    return () =>
+      document.removeEventListener('keydown', releaseTabFromEsriTrap, true);
+  }, []);
 
   useEffect(() => {
     if (!mapRefAvailable) return;
@@ -163,7 +181,8 @@ const EsriMap = ({
       mapView,
       initialData,
       globalMapSettings,
-      isMobileOrSmaller
+      isMobileOrSmaller,
+      formatMessage
     );
 
     setUpdateMapViewConfig(false);
@@ -173,6 +192,7 @@ const EsriMap = ({
     globalMapSettings,
     initialData,
     isMobileOrSmaller,
+    formatMessage,
   ]);
 
   // Run onInit function once on init if it was provided

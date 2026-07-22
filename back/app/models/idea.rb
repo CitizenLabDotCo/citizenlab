@@ -212,10 +212,9 @@ class Idea < ApplicationRecord
       .where(ideas_phases: { phase_id: phase_id })
   end)
 
-  scope :with_project_publication_status, (proc do |publication_status|
-    joins(project: [:admin_publication])
-      .where(projects: { admin_publications: { publication_status: publication_status } })
-  end)
+  scope :with_project_publication_status, lambda { |status|
+    where(project: Project.where(admin_publication: AdminPublication.with_status(status)))
+  }
 
   scope :order_new, ->(direction = :desc) { order(published_at: direction) }
   scope :order_random, lambda { |user|

@@ -13,8 +13,9 @@ export const fetchStatusCounts = ({
   removeNotAllowedParents,
   publicationStatusFilter,
   childrenOfId,
-  globalTopicIds: topicIds,
+  globalTopics,
   areaIds,
+  spaceIds,
   onlyProjects,
   ...queryParameters
 }: IQueryParameters) =>
@@ -29,8 +30,9 @@ export const fetchStatusCounts = ({
       remove_not_allowed_parents: removeNotAllowedParents,
       publication_statuses: publicationStatusFilter,
       folder: childrenOfId,
-      topics: topicIds,
+      global_topics: globalTopics,
       areas: areaIds,
+      spaces: spaceIds,
       only_projects: onlyProjects,
     },
   });

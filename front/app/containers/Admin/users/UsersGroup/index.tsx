@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
 
 import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
 import { MembershipType } from 'api/groups/types';
@@ -9,8 +8,6 @@ import useDeleteGroup from 'api/groups/useDeleteGroup';
 import useGroup from 'api/groups/useGroup';
 import useUpdateGroup from 'api/groups/useUpdateGroup';
 import usersKeys from 'api/users/keys';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
@@ -21,6 +18,7 @@ import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import NormalGroupForm, { NormalFormValues } from '../_shared/NormalGroupForm';
 import UserManager from '../_shared/UserManager';
@@ -32,9 +30,8 @@ import UsersGroupHeader from './UsersGroupHeader';
 
 const UsersGroup = () => {
   const queryClient = useQueryClient();
-  const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
   const { formatMessage } = useIntl();
-  const { groupId } = useParams() as { groupId: string };
+  const { groupId } = useParams({ strict: false }) as { groupId: string };
   const { data: group } = useGroup(groupId);
   const { mutateAsync: deleteMembershipByUserId } = useDeleteMembership();
   const { mutateAsync: updateGroup } = useUpdateGroup();
@@ -163,7 +160,6 @@ const UsersGroup = () => {
               initialValues={group.data.attributes}
               type={groupEditionModal}
               onSubmit={handleSubmitForm(group.data.id)}
-              isVerificationEnabled={isVerificationEnabled}
             />
           </>
         </Modal>

@@ -112,6 +112,8 @@ pa-IN:
           title: ਤੁਹਾਡੀ ਪਹਿਲ ਕੀ ਹੈ?
         issue:
           title: ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਕੀ ਹੈ?
+        observation:
+          title: ਤੁਹਾਡਾ ਨਿਰੀਖਣ ਕੀ ਹੈ?
         option:
           title: ਤੁਹਾਡਾ ਵਿਕਲਪ ਕੀ ਹੈ?
         petition:
@@ -267,6 +269,25 @@ pa-IN:
       title: ਸਾਰੇ ਪ੍ਰੋਜੈਕਟ
     proposals:
       title: ਪ੍ਰਸਤਾਵ
+  pdf_export:
+    input_responses:
+      date: ਮਿਤੀ
+      no_answer: (ਕੋਈ ਉੱਤਰ ਨਹੀਂ)
+      prepared_by: ਦੁਆਰਾ ਤਿਆਰ ਕੀਤਾ ਗਿਆ
+      report_label: ਉੱਤਰ ਰਿਪੋਰਟ
+      respondent: ਉੱਤਰਦਾਤਾ %{number}
+      response_count:
+        one: '%{count} ਉੱਤਰ'
+        other: '%{count} ਉੱਤਰ'
+    survey_responses:
+      date: ਮਿਤੀ
+      no_answer: (ਕੋਈ ਜਵਾਬ ਨਹੀਂ)
+      prepared_by: ਦੁਆਰਾ ਤਿਆਰ ਕੀਤਾ ਗਿਆ
+      report_label: ਸਰਵੇਖਣ ਜਵਾਬ ਰਿਪੋਰਟ
+      respondent: ਉੱਤਰਦਾਤਾ %{number}
+      response_count:
+        one: '%{count} ਜਵਾਬ'
+        other: '%{count} ਜਵਾਬ'
   phases:
     community_monitor_title: ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ
     native_survey_button: ਸਰਵੇਖਣ ਲਵੋ

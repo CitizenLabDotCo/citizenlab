@@ -46,7 +46,7 @@ const Row = ({ moderator, onDeleteModerator }: Props) => {
   const showDeleteButton = authUserIsNotModerator || authUserIsAdmin;
 
   return (
-    <Tr>
+    <Tr dataCy="moderators-table-row">
       <Td>
         <NameAvatarEmail user={moderator} />
       </Td>
@@ -70,6 +70,7 @@ const Row = ({ moderator, onDeleteModerator }: Props) => {
               icon="delete"
               iconSize={`${fontSizes.base}px`}
               p="4px 8px"
+              dataCy="remove-manager-button"
             >
               <FormattedMessage {...messages.removeManager} />
             </Button>

@@ -18,16 +18,15 @@ describe('Project description builder preview', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
+        description: '',
         publicationStatus: 'published',
         assigneeId: userId,
       })
@@ -45,10 +44,6 @@ describe('Project description builder preview', () => {
         })
         .then((phase) => {
           phaseId = phase.body.data.id;
-          cy.visit(`/admin/projects/${projectId}/general`);
-          cy.get('#e2e-toggle-enable-project-description-builder').click({
-            force: true,
-          });
         });
     });
   });
@@ -58,7 +53,9 @@ describe('Project description builder preview', () => {
   });
 
   after(() => {
-    cy.apiRemoveProject(projectId);
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
   });
 
   it('shows saved description if there is no draft content', () => {
@@ -90,7 +87,7 @@ describe('Project description builder preview', () => {
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);
     cy.get('div#ROOT');
     cy.get('div.e2e-text-box').should('exist');
-    cy.get('div.e2e-text-box').click();
+    cy.get('div.e2e-text-box').first().click();
     cy.wait(5000);
 
     cy.get('.ql-editor').click();

@@ -6,19 +6,22 @@ import { IEventData } from 'api/events/types';
 
 import useLocale from 'hooks/useLocale';
 
+import messages from 'components/EventCards/messages';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-const LocationMap = lazy(() => import('./LocationMap'));
-
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
+
+const LocationMap = lazy(() => import('./LocationMap'));
 
 export interface Props {
   event: IEventData | null;
 }
 
 const Location = ({ event }: Props) => {
+  const { formatMessage } = useIntl();
   const isPhoneOrSmaller = useBreakpoint('phone');
   const currentLocale = useLocale();
   const position = event?.attributes.location_point_geojson;
@@ -33,11 +36,16 @@ const Location = ({ event }: Props) => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const address2 = event?.attributes?.address_2_multiloc[currentLocale];
+  const locationName = address1.slice(0, address1.indexOf(','));
 
   if (address1) {
     return (
       <Container>
-        <StyledIcon name="position" ariaHidden />
+        <StyledIcon
+          name="position"
+          title={formatMessage(messages.locationIconAltText)}
+          ariaHidden={false}
+        />
         <Content>
           {position ? (
             <Box display="flex">
@@ -48,6 +56,9 @@ const Location = ({ event }: Props) => {
                 buttonStyle="text"
                 linkTo={`https://www.google.com/maps/search/?api=1&query=${position.coordinates[1]},${position.coordinates[0]}`}
                 openLinkInNewTab={isPhoneOrSmaller ? false : true} // On mobile, this will open the app instead
+                ariaLabel={formatMessage(messages.viewLocationOnGoogleMaps, {
+                  location: locationName,
+                })}
                 pl="0px"
                 style={{
                   textDecoration: 'underline',
@@ -57,7 +68,7 @@ const Location = ({ event }: Props) => {
                 id="e2e-location-with-coordinates-button"
               >
                 <Text mt="4px" color="coolGrey600" m="0px" p="0px" fontSize="s">
-                  {address1.slice(0, address1.indexOf(','))}
+                  {locationName}
                 </Text>
               </ButtonWithLink>
             </Box>
@@ -81,11 +92,13 @@ const Location = ({ event }: Props) => {
               {address2}
             </Text>
           )}
-          {position && ( // Using a negative margin here so we can extend the map outside of the container
-            <Box ml="-30px" width="300" mt="8px" id="e2e-location-map">
-              <LocationMap eventLocation={position} />
-            </Box>
-          )}
+
+          {position &&
+            !isPhoneOrSmaller && ( // Negative margin extends the map outside the container
+              <Box ml="-30px" width="300" mt="8px" id="e2e-location-map">
+                <LocationMap eventLocation={position} />
+              </Box>
+            )}
         </Content>
       </Container>
     );

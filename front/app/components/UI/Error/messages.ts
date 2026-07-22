@@ -39,6 +39,11 @@ export default defineMessages({
     defaultMessage:
       'This password can be easily guessed. Please choose a stronger password.',
   },
+  too_weak: {
+    id: 'app.errors.too_weak',
+    defaultMessage:
+      'This password can be easily guessed. Please choose a stronger password, for example by making it longer or using several unrelated words.',
+  },
   confirmation_code_invalid: {
     id: 'app.errors.confirmation_code_invalid',
     defaultMessage:
@@ -130,6 +135,14 @@ export default defineMessages({
     id: 'app.errors.email_banned',
     defaultMessage:
       'The email address {value} found in row {row} has been banned and cannot be invited',
+  },
+  invalid_first_name: {
+    id: 'app.errors.invalid_first_name',
+    defaultMessage: 'First name {value} in row {row} is not valid',
+  },
+  invalid_last_name: {
+    id: 'app.errors.invalid_last_name',
+    defaultMessage: 'Last name {value} in row {row} is not valid',
   },
   is_not_timeline_project: {
     id: 'app.errors.is_not_timeline_project',
@@ -311,6 +324,11 @@ export default defineMessages({
     defaultMessage:
       'The total number of pages in the PDF must be evenly divisible by the specified number of pages per form.',
   },
+  bulk_import_user_not_valid: {
+    id: 'app.errors.bulk_import_user_not_valid',
+    defaultMessage:
+      'A user could not be created from the import data: {value}. This issue occurs in the row with ID {row}.',
+  },
   uncaught_error: {
     id: 'app.errors.uncaught_error',
     defaultMessage: 'An unknown error occurred.',
@@ -401,5 +419,9 @@ export default defineMessages({
     id: 'app.errors.something_went_wrong',
     defaultMessage:
       'Something went wrong. Please contact us if the problem persists.',
+  },
+  duration_too_short: {
+    id: 'app.errors.phase_too_short',
+    defaultMessage: 'The phase is too short. It must be at least 24 hours.',
   },
 });

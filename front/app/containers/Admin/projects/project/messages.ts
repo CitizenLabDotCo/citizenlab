@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.filesTab2',
     defaultMessage: '360 Input',
   },
+  pagesTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.pagesTab',
+    defaultMessage: 'Pages',
+  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',
@@ -588,6 +592,10 @@ export default defineMessages({
   storyTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.storyTerm',
     defaultMessage: 'Story',
+  },
+  observationTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.observationTerm',
+    defaultMessage: 'Observation',
   },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',

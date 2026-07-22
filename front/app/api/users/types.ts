@@ -16,8 +16,7 @@ export interface UserCheckResponse {
   };
 }
 
-// token only used if user_confirmation feature is disabled
-type Action = 'password' | 'confirm' | 'terms' | 'token';
+type Action = 'password' | 'confirm' | 'terms';
 
 type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
 
@@ -36,7 +35,6 @@ export type HighestRole =
 export interface IUserAttributes {
   first_name?: string | null;
   last_name?: string | null;
-  slug: string;
   locale: SupportedLocale;
   highest_role?: HighestRole;
   bio_multiloc: Multiloc;
@@ -64,6 +62,10 @@ export interface IUserAttributes {
   no_password?: boolean;
   followings_count: number;
   last_active_at?: string | null;
+  new_email?: string | null;
+  phone?: string | null;
+  phone_confirmed_at?: string | null;
+  new_phone?: string | null;
 }
 
 export interface IUserData {

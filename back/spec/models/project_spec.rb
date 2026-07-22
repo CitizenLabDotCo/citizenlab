@@ -149,6 +149,20 @@ RSpec.describe Project do
 
       expect { project.destroy }.not_to raise_error
     end
+
+    it "invalidates a sole-role moderator's token when destroyed" do
+      # after_destroy -> remove_moderators strips the project_moderator role,
+      # dropping the user's highest_role to :user, which must invalidate their
+      # JWT. Guards against this destroy path bypassing the model
+      # callback (e.g. if it were switched to update_columns).
+      project = create(:project)
+      moderator = create(:project_moderator, projects: [project])
+      moderator.update_column(:token_expiry_key, 'initial-key') # bypasses the callback
+
+      project.destroy!
+
+      expect(moderator.reload.token_expiry_key).not_to eq('initial-key')
+    end
   end
 
   describe 'generate_slug' do
@@ -217,6 +231,73 @@ RSpec.describe Project do
 
     it 'returns projects not in a draft folder' do
       expect(described_class.not_in_draft_folder).to contain_exactly(project2, project3)
+    end
+  end
+
+  describe 'with_active_phase scope' do
+    let!(:active_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 7.days, end_at: Time.zone.today + 7.days)
+      end
+    end
+
+    let!(:past_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 1.day)
+      end
+    end
+
+    let!(:future_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today + 1.day, end_at: Time.zone.today + 30.days)
+      end
+    end
+
+    let!(:open_ended_project) do
+      create(:project).tap do |p|
+        create(:phase, project: p, start_at: Time.zone.today - 7.days, end_at: nil)
+      end
+    end
+
+    let!(:no_phase_project) { create(:project) }
+
+    it 'returns only projects with a currently active phase' do
+      expect(described_class.with_active_phase).to contain_exactly(active_project, open_ended_project)
+    end
+  end
+
+  describe 'ending_soon scope' do
+    it 'orders by current phase end_at ascending, open-ended last' do
+      open_ended = create(:project)
+      create(:phase, project: open_ended, start_at: 1.week.ago, end_at: nil)
+
+      later = create(:project)
+      create(:phase, project: later, start_at: 1.week.ago, end_at: 10.days.from_now)
+
+      soon = create(:project)
+      create(:phase, project: soon, start_at: 1.week.ago, end_at: 2.days.from_now)
+
+      ids = described_class.ending_soon.pluck(:id)
+      expect(ids).to eq([soon.id, later.id, open_ended.id])
+    end
+  end
+
+  describe 'by_participation_count scope' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    it 'orders by participation count in the given direction' do
+      project_many = create(:project)
+      project_few = create(:project)
+      create_list(:idea, 3, project: project_many)
+      create_list(:idea, 1, project: project_few)
+
+      ids_desc = described_class.by_participation_count(:desc).where(id: [project_many.id, project_few.id]).pluck(:id)
+      expect(ids_desc).to eq([project_many.id, project_few.id])
+
+      ids_asc = described_class.by_participation_count(:asc).where(id: [project_many.id, project_few.id]).pluck(:id)
+      expect(ids_asc).to eq([project_few.id, project_many.id])
     end
   end
 

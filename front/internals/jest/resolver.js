@@ -11,13 +11,14 @@ module.exports = (path, options) => {
       // support ESM modules natively, so this causes a Jest error related to trying to parse
       // "export" syntax.
       //
-      // This workaround prevents Jest from considering uuid's module-based exports at all;
-      // it falls back to uuid's CommonJS+node "main" property.
+      // This workaround prevents Jest from considering nanoid's module-based exports at all;
+      // it falls back to nanoid's CommonJS "main" property.
       //
-      // Once we're able to migrate our Jest config to ESM and a browser crypto
-      // implementation is available for the browser+ESM version of uuid to use (eg, via
-      // https://github.com/jsdom/jsdom/pull/3352 or a similar polyfill), this can go away.
-      if (pkg.name === 'uuid' || pkg.name === 'nanoid') {
+      // uuid used to be handled here too, but as of v14 it is ESM-only and no longer ships a
+      // CommonJS "main", so deleting its exports leaves nothing to resolve. Instead we let its
+      // ESM resolve normally and have babel-jest transform it (see transformIgnorePatterns in
+      // jest.config.js).
+      if (pkg.name === 'nanoid') {
         delete pkg['exports'];
         delete pkg['module'];
       }

@@ -1,6 +1,26 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Doorkeeper serves only JSON here. Its HTML controllers are dropped:
+  # - authorizations: replaced by the SPA consent screen (McpServer::WebApi::V1::OauthAuthorizationsController)
+  # - applications / authorized_applications: client creation is handled by RFC 7591
+  #   Dynamic Client Registration (oauth/registrations), so the admin HTML UI is unused.
+  # This leaves the token/introspect/revoke endpoints, which are JSON.
+  use_doorkeeper do
+    skip_controllers :authorizations, :applications, :authorized_applications
+  end
+
+  # RFC 7591 Dynamic Client Registration + RFC 8414 Authorization Server Metadata
+  # + RFC 9728 Protected Resource Metadata (with /mcp-suffixed variants that MCP
+  # clients try when the resource lives at a non-root path).
+  namespace :oauth do
+    resources :registrations, only: :create, format: :json
+  end
+  get '.well-known/oauth-authorization-server', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-authorization-server/mcp', to: 'oauth/metadata#authorization_server'
+  get '.well-known/oauth-protected-resource', to: 'oauth/metadata#protected_resource'
+  get '.well-known/oauth-protected-resource/mcp', to: 'oauth/metadata#protected_resource'
+
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'
   mount Frontend::Engine => '', as: 'frontend'
   mount Onboarding::Engine => '', as: 'onboarding'
@@ -12,6 +32,10 @@ Rails.application.routes.draw do
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
+      # The OAuth consent screen and MCP authorization management endpoints live in
+      # the MCP engine. See McpServer::Engine routes and
+      # McpServer::WebApi::V1::{OauthAuthorizations,McpAuthorizations}Controller.
+
       concern :reactable do
         resources :reactions, except: [:update], shallow: true do
           post :up, on: :collection
@@ -106,11 +130,11 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
-      post 'user_token/unconfirmed' => 'user_token#user_token_unconfirmed'
 
       resources :users, only: %i[index create update destroy] do
         collection do
           get :me
+          get 'me/ping', action: 'ping'
           get :seats
           get :billed_admins
           get :billed_moderators
@@ -120,9 +144,7 @@ Rails.application.routes.draw do
           post 'reset_password' => 'reset_password#reset_password'
           post 'update_password'
           post 'check'
-          patch 'update_email_unconfirmed'
 
-          get 'by_slug/:slug', to: 'users#by_slug'
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
           get :check_if_exceeds_seats
@@ -147,12 +169,12 @@ Rails.application.routes.draw do
 
       scope path: 'user' do
         post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
-        post 'request_code_authenticated', to: 'request_codes#request_code_authenticated'
         post 'request_code_email_change', to: 'request_codes#request_code_email_change'
+        post 'request_code_phone_change', to: 'request_codes#request_code_phone_change'
 
         post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
-        post 'confirm_code_authenticated', to: 'confirmations#confirm_code_authenticated'
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
+        post 'confirm_code_phone_change', to: 'confirmations#confirm_code_phone_change'
       end
 
       resources :global_topics do
@@ -214,6 +236,9 @@ Rails.application.routes.draw do
 
         member do
           get 'survey_results'
+          get 'input_response_fields'
+          post 'input_responses_pdf'
+          post 'input_responses_xlsx'
           get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'
@@ -372,7 +397,7 @@ Rails.application.routes.draw do
         get 'users'
       end
 
-      resources :baskets, except: [:index] do
+      resources :baskets, except: %i[index create] do
         resources :baskets_ideas, shallow: true
       end
       put 'baskets/ideas/:idea_id', to: 'baskets_ideas#upsert'
@@ -381,14 +406,14 @@ Rails.application.routes.draw do
 
       resources :ideas_phases, only: %i[show]
 
-      resources :verification_methods, module: 'verification', only: [:index] do
-        get :first_enabled, on: :collection
-        get :first_enabled_for_verified_actions, on: :collection
-        Verification::VerificationService.new
+      resources :id_methods, only: [:index] do
+        get :first_enabled_verification_method, on: :collection
+        get :first_enabled_authentication_method, on: :collection
+        IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
-          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, defaults: { method_name: vm.name }
+          post "#{vm.name}/verification", to: 'verification/verifications#create', on: :collection, defaults: { method_name: vm.name }
         end
       end
 

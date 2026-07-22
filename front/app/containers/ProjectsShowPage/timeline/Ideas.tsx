@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useMemo } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -19,6 +18,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useParams, useSearch } from 'utils/router';
 
 interface InnerProps {
   projectId: string;
@@ -40,12 +40,19 @@ interface QueryParameters {
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const { slug } = useParams() as { slug: string };
-  const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
-  const searchParam = searchParams.get('search');
-  const topicsParam = searchParams.get('topics');
-  const ideaStatusParam = searchParams.get('idea_status');
+  // `strict: false` so this also renders off the project route (e.g. inside the
+  // project page builder), where slug + filters are absent and fall back to
+  // defaults. On the public project route the values resolve as before; the cast
+  // restores the per-route search shape that the loose read widens.
+  const { slug } = useParams({ strict: false });
+  const { sort, search, topics, idea_status } = useSearch({
+    strict: false,
+  }) as {
+    sort?: IdeaSortMethod;
+    search?: string;
+    topics?: string[];
+    idea_status?: string;
+  };
   const config = getMethodConfig(phase.attributes.participation_method, {
     showIdeaFilters: phase.attributes.voting_filtering_enabled,
   });
@@ -56,20 +63,12 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       'page[size]': config.inputsPageSize || 24,
       projects: [projectId],
       phase: phase.id,
-      sort: sortParam ?? phase.attributes.ideas_order ?? IdeaSortMethodFallback,
-      search: searchParam ?? undefined,
-      input_topics: topicsParam ? JSON.parse(topicsParam) : undefined,
-      idea_status: ideaStatusParam ?? undefined,
+      sort: sort ?? phase.attributes.ideas_order ?? IdeaSortMethodFallback,
+      search: search ?? undefined,
+      input_topics: topics,
+      idea_status: idea_status ?? undefined,
     }),
-    [
-      config,
-      projectId,
-      sortParam,
-      searchParam,
-      phase,
-      topicsParam,
-      ideaStatusParam,
-    ]
+    [config, projectId, sort, search, phase, topics, idea_status]
   );
 
   const participationMethod = phase.attributes.participation_method;

@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useId } from 'react';
 
 import {
   media,
@@ -12,7 +12,6 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
@@ -31,15 +30,15 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
-import { ScreenReaderOnly } from 'utils/a11y';
+import { joinAriaIds, ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import messages from './messages';
 import tracks from './tracks';
 
-const Container = styled(Link)`
+const Container = styled.div`
   width: calc(33% - 12px);
   display: flex;
   flex-direction: column;
@@ -252,8 +251,20 @@ const FolderTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
+`;
 
-  &:hover {
+const FolderTitleLink = typedStyled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  &:hover ${FolderTitle} {
     text-decoration: underline;
   }
 `;
@@ -322,6 +333,8 @@ const ProjectFolderCard = memo<Props>(
     const { data: projectFolder } = useProjectFolderById(folderId);
     const localize = useLocalize();
     const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
+    const descriptionPreviewId = `${useId()}-description-preview`;
+    const participantsId = `${useId()}-participants`;
 
     // We use this hook instead of useProjectFolderImages
     // because that one doesn't work well with our caching system
@@ -385,7 +398,12 @@ const ProjectFolderCard = memo<Props>(
       ? getCardImageUrl(imageVersions, isSmallerThanPhone, size)
       : null;
 
-    const folderUrl: RouteType = `/folders/${publication.data.attributes.publication_slug}`;
+    const folderUrl = `/folders/${publication.data.attributes.publication_slug}`;
+    const hasDescriptionPreview = !isEmpty(
+      localize(
+        publication.data.attributes.publication_description_preview_multiloc
+      )
+    );
     const numberOfProjectsInFolder =
       publication.data.attributes.visible_children_count;
 
@@ -416,37 +434,15 @@ const ProjectFolderCard = memo<Props>(
       </ContentHeader>
     );
 
-    const screenReaderContent = (
-      <ScreenReaderOnly>
-        <FolderTitle variant="h3">
-          <FormattedMessage {...messages.a11y_folderTitle} />
-          <T value={publication.data.attributes.publication_title_multiloc} />
-        </FolderTitle>
-
-        <FolderDescription>
-          <FormattedMessage {...messages.a11y_folderDescription} />
-          <T
-            value={
-              publication.data.attributes
-                .publication_description_preview_multiloc
-            }
-          />
-        </FolderDescription>
-      </ScreenReaderOnly>
-    );
-
     return (
       <Container
         className={`${className} ${layout} ${size} e2e-folder-card e2e-admin-publication-card`}
-        to={folderUrl}
-        scrollToTop
         onClick={() => {
           handleProjectCardOnClick(
             publication.data.relationships.publication.data.id
           );
         }}
       >
-        {screenReaderContent}
         {size !== 'large' && contentHeader}
 
         <FolderImageContainer className={size}>
@@ -462,18 +458,28 @@ const ProjectFolderCard = memo<Props>(
         <FolderContent className={size}>
           {size === 'large' && contentHeader}
 
-          <ContentBody className={size} aria-hidden>
-            <FolderTitle
-              variant="h3"
+          <ContentBody className={size}>
+            <FolderTitleLink
+              to={folderUrl}
+              scrollToTop
+              className="e2e-card-title-link"
               onClick={handleProjectTitleOnClick(
                 publication.data.relationships.publication.data.id
               )}
-              className="e2e-folder-card-folder-title"
+              aria-describedby={joinAriaIds(
+                hasDescriptionPreview && descriptionPreviewId,
+                showAvatarBubbles && participantsId
+              )}
             >
-              <T
-                value={publication.data.attributes.publication_title_multiloc}
-              />
-            </FolderTitle>
+              <FolderTitle
+                variant="h3"
+                className="e2e-folder-card-folder-title"
+              >
+                <T
+                  value={publication.data.attributes.publication_title_multiloc}
+                />
+              </FolderTitle>
+            </FolderTitleLink>
 
             <T
               value={
@@ -484,7 +490,10 @@ const ProjectFolderCard = memo<Props>(
               {(description) => {
                 if (!isEmpty(description)) {
                   return (
-                    <FolderDescription className="e2e-folder-card-folder-description-preview">
+                    <FolderDescription
+                      className="e2e-folder-card-folder-description-preview"
+                      id={descriptionPreviewId}
+                    >
                       {description}
                     </FolderDescription>
                   );
@@ -495,7 +504,12 @@ const ProjectFolderCard = memo<Props>(
             </T>
           </ContentBody>
           {showAvatarBubbles && (
-            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+            <Box
+              id={participantsId}
+              borderTop={`1px solid ${colors.divider}`}
+              pt="16px"
+              mt="30px"
+            >
               <ContentFooter className={size}>
                 <Box h="100%" display="flex" alignItems="center">
                   <AvatarBubbles

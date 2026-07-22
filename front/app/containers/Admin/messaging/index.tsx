@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet, useLocation } from 'react-router-dom';
 import { ITab } from 'typings';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NavigationTabs, {
   Tab,
@@ -12,12 +13,14 @@ import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
 import messages from './messages';
 
 const MessagingDashboard = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  const smsEnabled = useFeatureFlag({ name: 'sms' });
 
   const tabs: ITab[] = [
     {
@@ -32,6 +35,16 @@ const MessagingDashboard = () => {
       url: '/admin/messaging/emails/automated',
       className: 'intercom-messaging-automated-emails',
     },
+    ...(smsEnabled
+      ? [
+          {
+            name: 'sms',
+            label: formatMessage(messages.tabSms),
+            url: '/admin/messaging/sms',
+            className: 'intercom-messaging-sms',
+          },
+        ]
+      : []),
   ];
 
   return (

@@ -1,4 +1,3 @@
-import { RouteType } from 'routes';
 import { ImageSizes, IRelationship, Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -29,6 +28,9 @@ export interface ICustomPageData {
     areas: {
       data: IRelationship[];
     };
+    spaces: {
+      data: IRelationship[];
+    };
   };
 }
 
@@ -51,7 +53,11 @@ export interface ICustomPageEnabledSettings {
   projects_enabled: boolean;
 }
 
-export type ProjectsFilterTypes = 'no_filter' | 'areas' | 'topics';
+export type ProjectsFilterTypes =
+  | 'no_filter'
+  | 'areas'
+  | 'global_topics'
+  | 'spaces';
 
 export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   title_multiloc: Multiloc;
@@ -63,7 +69,7 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   banner_cta_button_multiloc: Multiloc;
   // check if this can be null
   banner_cta_button_type: 'customized_button' | 'no_button';
-  banner_cta_button_url: RouteType | null;
+  banner_cta_button_url: string | null;
   banner_header_multiloc: Multiloc;
   banner_subheader_multiloc: Multiloc;
   bottom_info_section_multiloc?: Multiloc;
@@ -74,6 +80,8 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
 
   projects_filter_type: ProjectsFilterTypes;
   nav_bar_item_title_multiloc: Multiloc;
+
+  project_id?: string | null; // Set for project-scoped pages; null for global pages.
 
   created_at: string;
   updated_at: string;

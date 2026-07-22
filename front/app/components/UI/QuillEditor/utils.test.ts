@@ -116,6 +116,25 @@ describe('Quill Character Count Consistency', () => {
       const html = getHTML(editor);
       expect(html).toContain('New Content');
     });
+
+    it('should treat an empty heading as empty content', () => {
+      // An empty line formatted as a heading renders as `<h2><br></h2>`,
+      // which is visually empty and must not count as filled content.
+      const editor = createEditor('<h2><br></h2>');
+      expect(getHTML(editor)).toBe('');
+    });
+
+    it('should treat an empty subtitle as empty content', () => {
+      const editor = createEditor('<h3><br></h3>');
+      expect(getHTML(editor)).toBe('');
+    });
+
+    it('should not treat image-only content as empty', () => {
+      const editor = createEditor(
+        '<p><img src="https://example.com/a.png"></p>'
+      );
+      expect(getHTML(editor)).not.toBe('');
+    });
   });
 
   describe('Performance and Memory', () => {
@@ -130,5 +149,54 @@ describe('Quill Character Count Consistency', () => {
       // If we get here without errors, memory management is working
       expect(true).toBe(true);
     });
+  });
+});
+
+describe('getHTML ordered-list numbering across bullet interruptions', () => {
+  // Quill stores an ordered list interrupted by bullets as one flat <ol> with a
+  // single running counter. getHTML splits it into separate <ul>/<ol> siblings,
+  // so the resumed <ol> needs `start` to keep numbering continuous like the editor.
+  const li = (type: string, text: string): string =>
+    `<li data-list="${type}">${text}</li>`;
+
+  const normalize = (flatHtml: string): string => {
+    const editor = createEditor('');
+    editor.root.innerHTML = flatHtml;
+    return getHTML(editor);
+  };
+
+  it('adds start= so a resumed ordered list continues the count', () => {
+    const flat = `<ol>${li('ordered', 'assa')}${li('bullet', 'dsdsdsd')}${li(
+      'bullet',
+      'sdsd'
+    )}${li('ordered', 'asas')}${li('ordered', 'asas')}</ol>`;
+
+    expect(normalize(flat)).toBe(
+      '<ol><li>assa</li></ol>' +
+        '<ul><li>dsdsdsd</li><li>sdsd</li></ul>' +
+        '<ol start="2"><li>asas</li><li>asas</li></ol>'
+    );
+  });
+
+  it('does not add start= to the first ordered segment', () => {
+    const flat = `<ol>${li('bullet', 'a')}${li('ordered', 'b')}</ol>`;
+
+    // The ordered run is the first ordered content, so it starts at 1 (no attr).
+    expect(normalize(flat)).toBe('<ul><li>a</li></ul><ol><li>b</li></ol>');
+  });
+
+  it('carries the count across multiple ordered/bullet alternations', () => {
+    const flat = `<ol>${li('ordered', '1')}${li('bullet', 'x')}${li(
+      'ordered',
+      '2'
+    )}${li('bullet', 'y')}${li('ordered', '3')}</ol>`;
+
+    expect(normalize(flat)).toBe(
+      '<ol><li>1</li></ol>' +
+        '<ul><li>x</li></ul>' +
+        '<ol start="2"><li>2</li></ol>' +
+        '<ul><li>y</li></ul>' +
+        '<ol start="3"><li>3</li></ol>'
+    );
   });
 });

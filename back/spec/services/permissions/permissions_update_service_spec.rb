@@ -5,10 +5,6 @@ require 'rails_helper'
 describe Permissions::PermissionsUpdateService do
   let(:service) { described_class.new }
 
-  before do
-    SettingsService.new.activate_feature! 'user_confirmation'
-  end
-
   describe '#update_all_permissions' do
     let(:project) { create(:project) }
     let!(:invalid_permission) do
@@ -50,7 +46,7 @@ describe Permissions::PermissionsUpdateService do
 
     it 'does not change permitted_by to "users" for external surveys permitted_by "everyone"' do
       phase = create(:typeform_survey_phase, with_permissions: true)
-      permission = phase.permissions.first
+      permission = phase.permissions.find_by!(action: 'taking_survey')
       permission.update!(permitted_by: 'everyone')
       service.update_permissions_for_scope(phase)
 

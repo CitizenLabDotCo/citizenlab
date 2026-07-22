@@ -48,7 +48,11 @@ ga-IE:
         new_attendee: Úsáideoir nua-chláraithe
         project_review_requester: Úsáideoir a d'iarr athbhreithniú an tionscadail
         project_reviewers: Athbhreithneoirí tionscadail agus bainisteoirí fillteán
+        user_changing_email: Úsáideoir atá ag athrú a sheoladh ríomhphoist
+        user_confirming_email: Úsáideoir atá ag deimhniú a sheoladh ríomhphoist
+        user_requesting_password_reset: Úsáideoir a d'iarr athshocrú pasfhocail
         user_who_commented: Úsáideoir a rinne trácht
+        user_who_is_blocked: Úsáideoir a bhfuil a chuntas blocáilte
         user_who_is_invited_to_cosponsor_a_proposal: Úsáideoir a bhfuil cuireadh tugtha dó togra a chomhurrú
         user_who_is_mentioned: Úsáideoir a luaitear
         user_who_is_receiving_admin_rights: Úsáideoir atá ag fáil cearta riarthóra
@@ -67,6 +71,7 @@ ga-IE:
         user_with_unsubmitted_votes: Úsáideoir nár chuir a vótaí isteach
         users_who_engaged_but_not_voted: Úsáideoirí a bhí páirteach sa tionscadal ach nár vótáil
         users_who_engaged_with_the_project: Úsáideoirí a bhí páirteach sa tionscadal
+        users_who_follow_or_participated: Úsáideoirí a leanann an tionscadal nó a ghlac páirt ann
         users_who_follow_the_input: Úsáideoirí a leanann an t-ionchur
         users_who_follow_the_project: Úsáideoirí a leanann an tionscadal
         users_who_follow_the_proposal: Úsáideoirí a leanann an togra
@@ -94,6 +99,7 @@ ga-IE:
         project_published: Tionscadal foilsithe
         project_review_request: D'iarr an modhnóir athbhreithniú tionscadail
         project_review_state_change: D'fhormheas an t-athbhreithneoir an tionscadal
+        proposal_expired: Téann moladh in éag gan an tairseach a bhaint amach
         proposal_gets_reported_as_spam: Tuairiscítear an togra mar thurscar
         proposal_is_assigned_to_admin: Tá an togra sannta don riarthóir
         proposal_is_published: Tá an togra foilsithe
@@ -103,9 +109,12 @@ ga-IE:
         registration_to_event: Clárú chuig imeacht
         survey_1_day_after_draft_saved: 1 lá tar éis don úsáideoir an suirbhé a shábháil i ndréacht go deireanach
         user_accepts_invitation_to_cosponsor_a_proposal: Glacann an t-úsáideoir le cuireadh chun comhurraíocht a dhéanamh ar thogra
+        user_changes_email: Athraíonn úsáideoir a sheoladh ríomhphoist
         user_comments: Tuairimí úsáideoirí
         user_comments_on_input: Tuairimí úsáideoirí ar ionchur
         user_comments_on_proposal: Tuairimí úsáideoirí ar an togra
+        user_confirms_email: Deimhníonn úsáideoir a sheoladh ríomhphoist
+        user_is_blocked: Tá cuntas an úsáideora blocáilte
         user_is_given_admin_rights: Tugtar cearta riarthóra don úsáideoir
         user_is_given_folder_manager_rights: Tugtar cearta bainisteora fillteáin don úsáideoir
         user_is_given_folder_moderator_rights: Tugtar cearta modhnóra fillteáin don úsáideoir
@@ -119,6 +128,7 @@ ga-IE:
         user_registers_for_the_first_time: Cláraíonn úsáideoir den chéad uair
         user_replies_to_comment: Freagraíonn úsáideoirí ar thrácht
         user_replies_to_internal_comment: Freagraí úsáideora ar thrácht inmheánach
+        user_requests_password_reset: Iarrann úsáideoir athshocrú pasfhocail
         voting_1_day_after_last_votes: 1 lá tar éis don úsáideoir vótáil go deireanach
         voting_2_days_before_phase_closes: 2 lá roimh dheireadh na céime vótála
         voting_basket_submitted: Tá vótaí curtha isteach
@@ -158,6 +168,7 @@ ga-IE:
       comment_on_your_comment: Freagra ar mo thrácht
       community_monitor_report: Tuarascáil monatóireachta pobail
       cosponsor_of_your_idea: Glacann úsáideoir le mo chuireadh chun mo thogra a chomhurrú
+      email_confirmation: Cód deimhnithe ríomhphoist
       event_registration_confirmation: Deimhniú clárúcháin imeachta
       idea_marked_as_spam: Tuairisc ar thurscar smaointe
       idea_published: Foilsiú mo chuid ionchuir
@@ -176,8 +187,10 @@ ga-IE:
       moderator_digest: Forbhreathnú seachtainiúil do bhainisteoirí tionscadal
       native_survey_not_submitted: Níor cuireadh isteach an suirbhé
       new_comment_for_admin: Trácht nua i dtionscadal a dhéanaim modhnóireacht air
+      new_email_confirmation: Cód deimhnithe ríomhphoist nua
       new_idea_for_admin_prescreening: Ionchur nua a bhfuil gá le ceadú i dtionscadal a dhéanaim modhnóireacht air
       new_idea_for_admin_published: Ionchur nuafhoilsithe i dtionscadal a ndéanaim modhnóireacht air
+      new_phone_confirmation: Cód deimhnithe gutháin nua
       official_feedback_on_idea_you_follow: Nuashonrú ar ionchur a leanann tú
       password_reset: Athshocrú pasfhocail
       project_folder_moderation_rights_received: Fuarthas cearta bainisteoir fillteán
@@ -188,11 +201,14 @@ ga-IE:
       project_published: Tionscadal foilsithe
       project_review_request: Iarratas ar athbhreithniú tionscadail
       project_review_state_change: Tionscadal ceadaithe
+      proposal_expired_for_admin: Chuaigh moladh in éag gan an tairseach vótála a bhaint amach
       screening_digest: Meabhrúchán scagthástála seachtainiúil
+      sms_manual: Teachtaireachtaí SMS oifigiúla
       space_moderation_rights_received: Cearta bainisteora spáis faighte
       status_change_on_idea_you_follow: Athrú stádais ionchuir a leanann tú
       survey_submitted: Suirbhé curtha isteach
       threshold_reached_for_admin: Shroich an togra an tairseach vótála
+      user_blocked: Cuntas blocáilte
       user_digest: Forbhreathnú seachtainiúil
       voting_basket_not_submitted: Vótaí nár cuireadh isteach
       voting_basket_submitted: Deimhniú vótála
@@ -235,6 +251,7 @@ ga-IE:
         idea: Rinne %{authorName} trácht ar smaoineamh a leanann tú
         initiative: Rinne %{authorName} trácht ar thionscnamh a leanann tú
         issue: Rinne %{authorName} trácht ar cheist a leanann tú
+        observation: Rinne %{authorName} trácht ar bhreathnóireacht a leanann tú
         option: Rinne %{authorName} trácht ar rogha a leanann tú
         petition: Rinne %{authorName} trácht ar achainí a leanann tú
         post: Rinne %{authorName} trácht ar phost a leanann tú
@@ -268,6 +285,15 @@ ga-IE:
       preheader: Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra
       subject: Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra
       title: Tá %{cosponsorName} tar éis glacadh le do chuireadh chun comhurraíocht a dhéanamh ar do thogra
+    email_confirmation:
+      best_regards: Le gach dea-ghuí,
+      event_description: 'Go raibh maith agat as do rannpháirtíocht. Cuir an cód deimhnithe seo isteach sa bhfuinneog ar ardán rannpháirtíochta %{organizationName}:'
+      expire_code: Rachaidh an cód seo as feidhm i gceann
+      hours_24: 24 uair an chloig.
+      ignore_email: Mura n-iarr tú cód, is féidir neamhaird a dhéanamh den ríomhphost seo.
+      preheader: Deimhnigh do sheoladh ríomhphoist do %{organizationName}
+      subject: Deimhnigh do sheoladh ríomhphoist d'ardán rannpháirtíochta %{organizationName}
+      title: Deimhnigh do sheoladh ríomhphoist
     event_registration_confirmation:
       cta_add_to_calendar: Cuir le do fhéilire
       cta_button: Féach ar an imeacht
@@ -300,6 +326,7 @@ ga-IE:
         idea: Téigh chuig an smaoineamh seo
         initiative: Téigh chuig an tionscnamh seo
         issue: Téigh chuig an tsaincheist seo
+        observation: Téigh chuig an mbreathnóireacht seo
         option: Téigh go dtí an rogha seo
         petition: Téigh chuig an achainí seo
         post: Téigh go dtí an post seo
@@ -320,6 +347,7 @@ ga-IE:
         idea: Téigh chuig do smaoineamh
         initiative: Téigh chuig do thionscnamh
         issue: Téigh chuig do cheist
+        observation: Téigh chuig do bhreathnóireacht
         option: Téigh chuig do rogha
         petition: Téigh chuig d’achainí
         post: Téigh chuig do phost
@@ -353,6 +381,7 @@ ga-IE:
         idea: Tá do smaoineamh foilsithe
         initiative: Tá do thionscnamh foilsithe
         issue: Tá do cheist foilsithe
+        observation: Tá do bhreathnóireacht foilsithe
         option: Tá do rogha foilsithe
         petition: Tá d’achainí foilsithe
         post: Tá do phost foilsithe
@@ -479,6 +508,15 @@ ga-IE:
       title: '%{firstName}, tá trácht nua curtha suas ar d’ardán'
       today: Inniu
       yesterday: Inné
+    new_email_confirmation:
+      best_regards: Le gach dea-ghuí,
+      event_description: 'Cuir an cód deimhnithe seo isteach san fhuinneog ar ardán rannpháirtíochta %{organizationName} chun do sheoladh ríomhphoist nua a dhearbhú:'
+      expire_code: Rachaidh an cód seo as feidhm i gceann
+      hours_24: 24 uair an chloig.
+      ignore_email: Mura n-iarr tú cód, is féidir neamhaird a dhéanamh den ríomhphost seo.
+      preheader: Deimhnigh do sheoladh ríomhphoist nua do %{organizationName}
+      subject: Deimhnigh do sheoladh ríomhphoist nua d'ardán rannpháirtíochta %{organizationName}
+      title: Deimhnigh do sheoladh ríomhphoist nua
     new_idea_for_admin_prescreening:
       cta_button: Athbhreithnigh an t-ionchur
       days_ago: '%{numberOfDays} lá ó shin'
@@ -498,12 +536,20 @@ ga-IE:
       title: Tá ionchur nua foilsithe ar d'ardán
       today: Inniu
       yesterday: Inné
+    new_phone_confirmation:
+      sms_body: Is é %{code} do chód deimhnithe.
     official_feedback_on_idea_you_follow:
       cta_button: Téigh chuig an ionchur seo
       event_description: "Thug %{feedback_author_name} nuashonrú ar '%{input_title}'."
       preheader: Tá nuashonrú ann maidir le hionchur a leanann tú
       subject: Postáladh aiseolas oifigiúil ar "%{input_title}"
       title: Tá nuashonrú ar "%{input_title}"
+    password_reset:
+      cta_button: Athshocraigh do phasfhocal
+      event_description: "D'iarr tú athshocrú pasfhocail d'ardán rannpháirtíochta %{organizationName}. Cliceáil an cnaipe thíos chun pasfhocal nua, sábháilte a roghnú. Rachaidh an nasc in éag i gceann uair an chloig."
+      preheader: Athshocraigh do phasfhocal do %{organizationName}
+      subject: '%{organizationName}: Athshocraigh do phasfhocal'
+      title: Roghnaigh pasfhocal nua
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -591,6 +637,11 @@ ga-IE:
       preheader: '%{reviewerName} a cheadaigh an tionscadal "%{projectTitle}"'
       subject: Tá "%{projectTitle}" ceadaithe
       title: '%{reviewerName} a cheadaigh an tionscadal "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Déan athbhreithniú ar an ionchur atá in éag
+      preheader: Chuaigh ionchur in éag gan an tairseach a bhaint amach
+      subject: Chuaigh "%{input_title}" in éag gan an tairseach a bhaint amach
+      title: Chuaigh ionchur in éag gan an tairseach vótála a bhaint amach
     schedules:
       quarterly: Ráithiúil, ar an gcéad lá den ráithe
       weekly:
@@ -644,6 +695,14 @@ ga-IE:
       preheader: Bí cinnte na chéad chéimeanna eile a ghlacadh
       subject: Shroich "%{input_title}" an tairseach vótála
       title: Shroich togra an tairseach vótála!
+    user_blocked:
+      for_more_information: Chun tuilleadh faisnéise a fháil faoi seo, is féidir leat dul i gcomhairle leis an %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach ar an gcúis seo a leanas:'
+      paragraph_1_without_reason: Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach mar gheall ar shárú ar threoirlínte an phobail.
+      preheader: Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach
+      subject: Díchumasaíodh do chuntas go sealadach
+      title: Díchumasaíodh do chuntas go sealadach
+      you_can_sign_in_again_from: Is féidir leat síniú isteach arís ó %{date}
     user_digest:
       commented: '%{authorFirstName} a dúirt:'
       cta_button: Téigh go dtí an t-ardán
@@ -713,6 +772,7 @@ ga-IE:
         idea: Tá do smaoineamh i "%{prescreening_status_title}"
         initiative: Tá do thionscnamh i "%{prescreening_status_title}"
         issue: Tá do cheist i "%{prescreening_status_title}"
+        observation: Tá do bhreathnóireacht i "%{prescreening_status_title}"
         option: Tá do rogha i "%{prescreening_status_title}"
         petition: Tá d’achainí i "%{prescreening_status_title}"
         post: Tá do phost i "%{prescreening_status_title}"

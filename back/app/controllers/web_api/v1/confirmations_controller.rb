@@ -22,6 +22,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
       payload = user.to_token_payload
+      payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
       auth_token = AuthToken::AuthToken.new payload: payload
 
       render json: raw_json({ auth_token: })
@@ -41,6 +42,23 @@ class WebApi::V1::ConfirmationsController < ApplicationController
       SideFxUserService.new.after_update(current_user, current_user)
 
       reset_jwt_cookie
+      head :ok
+    else
+      render json: { errors: result.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  # This endpoint is used when a logged in user confirms a pending phone-number
+  # change. On success, new_phone is promoted to phone. The phone
+  # number isn't part of the auth token, so there's no JWT cookie to refresh.
+  def confirm_code_phone_change
+    result = user_confirmation_service.validate_and_confirm_phone_change!(
+      current_user,
+      confirm_code_params[:code]
+    )
+
+    if result.success?
+      SideFxUserService.new.after_update(current_user, current_user)
       head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity

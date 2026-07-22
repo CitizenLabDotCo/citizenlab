@@ -64,12 +64,10 @@ describe SideFxUserService do
     end
 
     context 'when user is an invitee' do
-      before { SettingsService.new.activate_feature!('user_confirmation') }
-
-      let(:invitee) { create(:user_with_confirmation, invite_status: 'pending') }
+      let(:invitee) { create(:invited_user) }
 
       it 'does not send a confirmation code email' do
-        expect(RequestConfirmationCodeJob).not_to receive(:perform_now)
+        expect(RequestEmailConfirmationCodeJob).not_to receive(:perform_now)
         service.after_create(invitee, current_user)
       end
     end
@@ -88,9 +86,7 @@ describe SideFxUserService do
       end
 
       context 'when confirmation is required' do
-        before { SettingsService.new.activate_feature!('user_confirmation') }
-
-        let(:user) { create(:user_with_confirmation) }
+        let(:user) { create(:unconfirmed_user) }
 
         it 'marks tokens as pending' do
           service.after_create(user, current_user, claim_tokens: [claim_token.token])
@@ -225,34 +221,6 @@ describe SideFxUserService do
     end
   end
 
-  describe 'after_update - expire_token! on role change' do
-    it 'expires the token when a regular user gains roles' do
-      user.update!(roles: [{ 'type' => 'admin' }])
-      expect(user).to receive(:expire_token!)
-      service.after_update(user, current_user)
-    end
-
-    it 'does not expire the token when roles change but user already had roles' do
-      user.update!(roles: [{ 'type' => 'admin' }])
-      user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => 'some-id' }])
-      expect(user).not_to receive(:expire_token!)
-      service.after_update(user, current_user)
-    end
-
-    it 'expires the token when all roles are removed' do
-      user.update!(roles: [{ 'type' => 'admin' }])
-      user.update!(roles: [])
-      expect(user).to receive(:expire_token!)
-      service.after_update(user, current_user)
-    end
-
-    it 'does not expire the token when roles are unchanged' do
-      user.update!(first_name: 'Updated')
-      expect(user).not_to receive(:expire_token!)
-      service.after_update(user, current_user)
-    end
-  end
-
   describe 'after_destroy' do
     it "logs a 'deleted' action job when the user is destroyed" do
       freeze_time do
@@ -282,6 +250,8 @@ describe SideFxUserService do
   end
 
   describe 'after_block' do
+    # Logging this activity is what triggers the EmailCampaigns::Campaigns::UserBlocked
+    # campaign that notifies the user.
     it "logs a 'blocked' action job when a user is blocked" do
       expect { service.after_block(user, current_user) }
         .to have_enqueued_job(LogActivityJob)
@@ -296,11 +266,6 @@ describe SideFxUserService do
             block_end_at: user.block_end_at
           }
         )
-    end
-
-    it 'schedules a UserBlockedMailer job' do
-      expect { service.after_block(user, current_user) }
-        .to have_enqueued_mail(UserBlockedMailer, :send_user_blocked_email)
     end
 
     it 'expires the user token' do

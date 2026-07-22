@@ -24,7 +24,6 @@ const mockUserData: IUserData = {
     first_name: 'Stewie',
     last_name: 'McKenzie',
     locale: 'en',
-    slug: 'stewie-mckenzie',
     highest_role: 'admin',
     bio_multiloc: {},
     roles: [{ type: 'admin' }],
@@ -79,7 +78,7 @@ describe('ProjectMoreActionsMenu', () => {
     const threeDotsButton = screen.getByTestId('moreOptionsButton');
     await user.click(threeDotsButton);
 
-    const copyProjectButton = await screen.findByRole('button', {
+    const copyProjectButton = await screen.findByRole('menuitem', {
       name: 'Copy project',
     });
 
@@ -101,7 +100,7 @@ describe('ProjectMoreActionsMenu', () => {
     const threeDotsButton = screen.getByTestId('moreOptionsButton');
     await user.click(threeDotsButton);
 
-    const deleteProjectButton = await screen.findByRole('button', {
+    const deleteProjectButton = await screen.findByRole('menuitem', {
       name: 'Delete project',
     });
 
@@ -132,10 +131,10 @@ describe('ProjectMoreActionsMenu', () => {
       const threeDotsButton = screen.getByTestId('moreOptionsButton');
       await user.click(threeDotsButton);
 
-      const copyProjectButton = await screen.findByRole('button', {
+      const copyProjectButton = await screen.findByRole('menuitem', {
         name: 'Copy project',
       });
-      const deleteProjectButton = await screen.findByRole('button', {
+      const deleteProjectButton = await screen.findByRole('menuitem', {
         name: 'Delete project',
       });
 
@@ -164,10 +163,10 @@ describe('ProjectMoreActionsMenu', () => {
         const threeDotsButton = screen.getByTestId('moreOptionsButton');
         await user.click(threeDotsButton);
 
-        const copyProjectButton = await screen.findByRole('button', {
+        const copyProjectButton = await screen.findByRole('menuitem', {
           name: 'Copy project',
         });
-        const deleteProjectButton = screen.queryByRole('button', {
+        const deleteProjectButton = screen.queryByRole('menuitem', {
           name: 'Delete project',
         });
 

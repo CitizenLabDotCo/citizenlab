@@ -14,6 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import { adminCustomPageSettingsPath } from '../../routes';
 
+import Folder from './Folder';
 import messages from './messages';
 import Project from './Project';
 
@@ -22,21 +23,31 @@ interface Props {
 }
 
 const ProjectsListContent = ({ customPage }: Props) => {
-  // There will be either topic or area ids if this component renders.
-  // To enable it, the page needs either a topic or area associated with it.
-  const topicIds = customPage.relationships.global_topics.data.map(
+  // There will be either topic, area or space ids if this component renders.
+  // To enable it, the page needs either a topic, area or space associated with it.
+  const globalTopics = customPage.relationships.global_topics.data.map(
     (topic) => topic.id
   );
   const areaIds = customPage.relationships.areas.data.map((area) => area.id);
+  const spaceIdList = customPage.relationships.spaces.data.map(
+    (space) => space.id
+  );
+  const spaceIds = spaceIdList.length > 0 ? spaceIdList : undefined;
+  // When filtering by space we also want folder rows for folders that belong
+  // to the space, so we drop `onlyProjects` and restrict to top-level
+  // publications to avoid duplicating folder children as standalone rows.
+  const isSpaceFiltered = !!spaceIds;
   // Needs to be in sync with the projects list shown in
   // the projects list config of the custom page in the admin.
   // Comment reference to find it easily: 881dd218.
 
   const { data } = useAdminPublications({
-    globalTopicIds: topicIds,
+    globalTopics,
     areaIds,
+    spaceIds,
     publicationStatusFilter: ['published', 'archived'],
-    onlyProjects: true,
+    rootLevelOnly: isSpaceFiltered,
+    onlyProjects: !isSpaceFiltered,
     remove_all_unlisted: true,
   });
 
@@ -79,13 +90,27 @@ const ProjectsListContent = ({ customPage }: Props) => {
       </Box>
       <List>
         <>
-          {adminPublicationsList.map((adminPublication, index: number) => (
-            <Project
-              adminPublication={adminPublication}
-              isLastItem={index === adminPublicationsList.length - 1}
-              key={adminPublication.id}
-            />
-          ))}
+          {adminPublicationsList.map((adminPublication, index: number) => {
+            const isLastItem = index === adminPublicationsList.length - 1;
+            if (
+              adminPublication.relationships.publication.data.type === 'folder'
+            ) {
+              return (
+                <Folder
+                  adminPublication={adminPublication}
+                  isLastItem={isLastItem}
+                  key={adminPublication.id}
+                />
+              );
+            }
+            return (
+              <Project
+                adminPublication={adminPublication}
+                isLastItem={isLastItem}
+                key={adminPublication.id}
+              />
+            );
+          })}
         </>
       </List>
     </Box>

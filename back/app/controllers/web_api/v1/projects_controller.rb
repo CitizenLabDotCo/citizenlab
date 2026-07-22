@@ -2,6 +2,7 @@
 
 class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
+  before_action :authorize_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data publication_recipient_count]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -61,7 +62,6 @@ class WebApi::V1::ProjectsController < ApplicationController
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
       publication_email_enabled_per_project: publication_email_enabled_per_project,
       # Cannot use `find_sole_by` here: the global ProjectPublished campaign is normally seeded by
       # AssureCampaignsService on tenant finalization, but isn't guaranteed in every environment
@@ -72,7 +72,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectSerializer,
-      params: jsonapi_serializer_params(instance_options),
+      params: project_serializer_params(instance_options),
       include: %i[admin_publication project_images current_phase]
     )
   end
@@ -119,20 +119,14 @@ class WebApi::V1::ProjectsController < ApplicationController
   def index_with_active_participatory_phase
     projects = policy_scope(Project)
     projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
-    projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
-    projects = projects_and_descriptors[:projects]
+    projects = ProjectsFinderService.new(projects, current_user, params).participation_possible
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_with_active_participatory_phase?
 
-    render json: linked_json(
-      @projects,
-      WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
-      include: %i[project_images current_phase]
-    )
+    base_render_mini_index
   end
 
   # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
@@ -180,7 +174,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
-    projects = projects.includes(phases: %i[report custom_form permissions], admin_publication: [:parent], project_images: [], groups: [])
+    projects = projects.includes(:space, phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }], admin_publication: [:parent], project_images: [], groups: [])
 
     moderators_per_project = UserRoleService.new.moderators_per_project(
       projects.pluck(:id)
@@ -213,7 +207,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new permitted_attributes(Project)
+    project = Project.new(create_params)
     sidefx.before_create(project, current_user)
 
     created = Project.transaction do
@@ -282,13 +276,15 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def update
-    params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
-    params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
+    process_due_status_transition(@project)
+    policy_context[:prior_record] = Project.find(@project.id)
+    @project.assign_attributes(update_params)
+    remove_image_if_requested!(@project, update_params, :header_bg)
 
-    project_params = permitted_attributes(@project)
-
-    @project.assign_attributes project_params
-    remove_image_if_requested!(@project, project_params, :header_bg)
+    # Authorize again here (in addition to the :authorize_project before_action)
+    # so ProjectPolicy#update? can inspect pending changes via dirty tracking —
+    # notably the rules around moving the project between folders / to root.
+    authorize @project
 
     sidefx.before_update(@project, current_user)
 
@@ -307,6 +303,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def destroy
+    process_due_status_transition(@project)
     sidefx.before_destroy(@project, current_user)
     if @project.destroy
       sidefx.after_destroy(@project, current_user)
@@ -419,11 +416,6 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def save_project(project)
-    # Update folder_id only if it is provided in the request (even if it's nil)
-    if params[:project].key?(:folder_id)
-      project.folder_id = params.dig(:project, :folder_id)
-    end
-
     ActiveRecord::Base.transaction do
       project.save.tap do |saved|
         if saved
@@ -439,16 +431,61 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def set_project
     @project = Project.find(params[:id])
+  end
+
+  def authorize_project
     authorize @project
+  end
+
+  def process_due_status_transition(publication)
+    admin_pub = publication.admin_publication
+    return unless admin_pub.scheduled_at&.<(Time.current)
+
+    ProcessScheduledPublicationTransitionsJob.perform_now(admin_pub)
+  end
+
+  def create_params
+    @create_params ||= permitted_attributes(Project).tap do |project_params|
+      admin_pub_attrs = project_params[:admin_publication_attributes]
+      assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
+    end
+  end
+
+  def update_params
+    @update_params ||= begin
+      # When area_ids or global_topic_ids is sent as nil, they are dropped entirely by
+      # strong parameters since it expects an array. Converting nil to [] ensures the
+      # association is cleared as intended.
+      params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
+      params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
+
+      permitted_attributes(@project).tap do |project_params|
+        admin_pub_attrs = project_params[:admin_publication_attributes]
+        assign_scheduled_by(admin_pub_attrs) if admin_pub_attrs
+      end
+    end
+  end
+
+  def assign_scheduled_by(admin_publication_attrs)
+    attrs = admin_publication_attrs.slice(:scheduled_status, :scheduled_at)
+    return if attrs.keys.blank?
+
+    scheduling = attrs.values.any?
+    admin_publication_attrs[:scheduled_by_id] = scheduling ? current_user.id : nil
+  end
+
+  def project_serializer_params(extra_params = {})
+    jsonapi_serializer_params(
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false),
+      **extra_params
+    )
   end
 
   def base_render_mini_index
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params({
-        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      }),
+      params: project_serializer_params,
       include: %i[project_images current_phase]
     )
   end

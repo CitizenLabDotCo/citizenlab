@@ -1,9 +1,13 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
+import { InfiniteQueryObserverResult } from '@tanstack/react-query';
+import { CLErrors, Multiloc } from 'typings';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
+import {
+  IAdminPublicationData,
+  IAdminPublications,
+} from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
@@ -34,7 +38,9 @@ interface Props extends BaseProps {
   onChangeAreas?: (areas: string[]) => void;
   onChangeSearch?: (search: string | null) => void;
   onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
-  onLoadMore?: () => void;
+  onLoadMore?: () => Promise<
+    InfiniteQueryObserverResult<IAdminPublications, CLErrors>
+  >;
   onChangeCurrentTab: (tab: PublicationTab) => void;
   searchTerm?: string | null;
 }
@@ -77,7 +83,37 @@ const ProjectAndFolderCardsInner = ({
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    onLoadMore && onLoadMore();
+    const list = document.querySelector<HTMLElement>(
+      '.e2e-projects-list.active-tab'
+    );
+
+    if (list) {
+      const previousCount = list.querySelectorAll(
+        '.e2e-admin-publication-card'
+      ).length;
+      // Each new card mounts only after its own useProjectById query resolves,
+      // so adminPublications.length growing doesn't mean the cards are in the
+      // DOM yet. Watch the list and focus the first new card's title link the
+      // moment it appears — the card root is a non-focusable div under the
+      // accessible-card pattern. Attach before triggering the fetch so we
+      // can't miss any mutations that race in between.
+      const observer = new MutationObserver(() => {
+        const cards = list.querySelectorAll<HTMLElement>(
+          '.e2e-admin-publication-card'
+        );
+        if (cards.length > previousCount) {
+          const titleLink = cards[previousCount].querySelector<HTMLElement>(
+            '.e2e-card-title-link'
+          );
+          titleLink?.focus();
+          observer.disconnect();
+        }
+      });
+      observer.observe(list, { childList: true, subtree: true });
+      setTimeout(() => observer.disconnect(), 10000);
+    }
+
+    onLoadMore?.();
   };
 
   const handleChangeTopics = (topics: string[]) => {

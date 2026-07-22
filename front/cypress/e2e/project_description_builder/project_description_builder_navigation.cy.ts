@@ -5,7 +5,7 @@ describe('Project description builder navigation', () => {
   const projectTitle = randomString();
 
   before(() => {
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectDescriptionPreview = randomString();
       const projectDescription = 'Original project description.';
       const userId = user.body.data.id;
@@ -24,7 +24,6 @@ describe('Project description builder navigation', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.apiToggleProjectDescriptionBuilder({ projectId, enabled: false });
     cy.visit(`/admin/projects/${projectId}/general`);
   });
 
@@ -33,11 +32,9 @@ describe('Project description builder navigation', () => {
   });
 
   it('navigates to project description builder when edit project description link clicked', () => {
-    cy.dataCy('e2e-toggle-enable-project-description-builder').click();
-    // When the toggle is clicked, the project description builder is enabled and the link should appear.
-
-    cy.get('#e2e-project-description-builder-link').as('link').wait(1000);
-    cy.get('@link').should('be.visible').click();
+    cy.get('#e2e-project-description-builder-link')
+      .should('be.visible')
+      .click();
     cy.url().should(
       'eq',
       `${
@@ -47,8 +44,6 @@ describe('Project description builder navigation', () => {
   });
 
   it('navigates to project settings when content builder goBack clicked', () => {
-    cy.dataCy('e2e-toggle-enable-project-description-builder').click();
-    // When the toggle is clicked, the project description builder is enabled and the link should appear.
     cy.get('#e2e-project-description-builder-link')
       .should('be.visible')
       .click();

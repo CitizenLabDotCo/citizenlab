@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IGroupData, MembershipType } from 'api/groups/types';
 import useAddGroup from 'api/groups/useAddGroup';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import HelmetIntl from 'components/HelmetIntl';
 import Outlet from 'components/Outlet';
 import Modal from 'components/UI/Modal';
 
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 import GroupCreationStep1 from './_shared/GroupCreationStep1';
 import NormalGroupForm, { NormalFormValues } from './_shared/NormalGroupForm';
@@ -57,7 +55,6 @@ const UsersPage = () => {
   const { mutateAsync: addGroup } = useAddGroup();
   const [groupCreationModal, setGroupCreationModal] =
     useState<GroupCreationModal>(false);
-  const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
 
   const openGroupCreationModal = () => {
     setGroupCreationModal('step1');
@@ -134,7 +131,6 @@ const UsersPage = () => {
             id="app.containers.Admin.users.form"
             type={groupCreationModal}
             onSubmit={handleSubmitForm}
-            isVerificationEnabled={isVerificationEnabled}
           />
         </>
       </Modal>

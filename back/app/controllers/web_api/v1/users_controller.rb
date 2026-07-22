@@ -7,7 +7,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   before_action :sso_enforced?, only: %i[check create]
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
-  skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create show check by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -104,6 +104,18 @@ class WebApi::V1::UsersController < ApplicationController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users.xlsx'
   end
 
+  def ping
+    skip_authorization
+
+    # Allows us to return a different response when a user hits an admin route in the front-end
+    if params[:admin].present? && current_user&.normal_user?
+      head :forbidden
+      return
+    end
+
+    head :ok
+  end
+
   def me
     @user = current_user
     skip_authorization
@@ -120,12 +132,6 @@ class WebApi::V1::UsersController < ApplicationController
     render json: WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
   end
 
-  def by_slug
-    @user = User.by_slug!(params[:slug])
-    authorize @user
-    show
-  end
-
   def by_invite
     @user = Invite.find_by!(token: params[:token])&.invitee
     authorize @user
@@ -137,45 +143,45 @@ class WebApi::V1::UsersController < ApplicationController
     authorize :user, :check?
     email = params[:user][:email]
 
-    if User::EMAIL_REGEX.match?(email)
-      @user = User.find_by_cimail(email)
-      if @user.nil?
-        render json: raw_json({ action: 'terms' })
-      elsif @user.invite_pending?
-        render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
-      elsif !@user.no_password? || @user.sso?
-        if @user.confirmation_required?
-          # If a user has a password set but still needs to confirm their email,
-          # we send them to the confirm action first.
-          # This situation only exists for legacy users that were created before
-          # we made email confirmation required before being able to set a password
-          RequestConfirmationCodeJob.perform_now(@user)
-          render json: raw_json({ action: 'confirm' })
-        else
-          render json: raw_json({ action: 'password' })
-        end
-      elsif !app_configuration.feature_activated?('user_confirmation')
-        # Only triggered for new users - at this point they have no password
-        render json: raw_json({ action: 'token' })
-      else
-        if @user.email_confirmation_code_reset_count == 0
-          # If the reset count is zero, we are in the following situation:
-          # The user signed up previously and logged in successfully
-          # by confirming their email, but never set a password.
-          # They are now back to log in again. In this case, we want
-          # to automatically send the confirmation code.
-          # If they would already have a email_confirmation_code_reset_count > 0,
-          # they tried to log in previously and failed. In this case, we don't
-          # automatically resend the code, because otherwise we
-          # might too easily reach the retry limit. So they will
-          # have to request it themselves
-          RequestConfirmationCodeJob.perform_now(@user)
-        end
-        render json: raw_json({ action: 'confirm' })
-      end
-    else
+    unless User::EMAIL_REGEX.match?(email)
       render json: { errors: { email: [{ error: 'invalid', value: email }] } }, status: :unprocessable_entity
+      return
     end
+
+    @user = User.find_by_cimail(email)
+
+    # If password_login is disabled, we only allow super admins to use this endpoint
+    if !app_configuration.feature_activated?('password_login') && !@user&.super_admin?
+      render json: { errors: { email: [{ error: 'password_login_disabled', value: email }] } }, status: :forbidden
+      return
+    end
+
+    if @user.nil?
+      render json: raw_json({ action: 'terms' })
+      return
+    end
+
+    if @user.invite_pending?
+      render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
+      return
+    end
+
+    if @user.confirmation_required?
+      request_code_if_first_time(@user)
+      render json: raw_json({ action: 'confirm' })
+      return
+    end
+
+    user_has_password = !@user.no_password?
+
+    if user_has_password
+      render json: raw_json({ action: 'password' })
+      return
+    end
+
+    # Any other case, we send a code
+    request_code_if_first_time(@user)
+    render json: raw_json({ action: 'confirm' })
   end
 
   def create
@@ -296,19 +302,6 @@ class WebApi::V1::UsersController < ApplicationController
     end
   end
 
-  # This endpoint is only used when user_confirmation is disabled.
-  def update_email_unconfirmed
-    authorize(current_user)
-    if current_user.update(email: params[:user][:email])
-      render json: WebApi::V1::UserSerializer.new(
-        current_user,
-        params: jsonapi_serializer_params
-      ).serializable_hash
-    else
-      render json: { errors: current_user.errors.details }, status: :unprocessable_entity
-    end
-  end
-
   def check_if_exceeds_seats
     authorize :user, :check_if_exceeds_seats?
     result = UserExceedsSeatsService.new(user_exceeds_seats_params).execute
@@ -349,7 +342,7 @@ class WebApi::V1::UsersController < ApplicationController
     when nil
       @users
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
 
@@ -388,5 +381,16 @@ class WebApi::V1::UsersController < ApplicationController
 
   def user_exceeds_seats_params
     params.permit(:seat_type, :user_id, :user_email)
+  end
+
+  def request_code_if_first_time(user)
+    # If users already have a code_reset_count > 0,
+    # they tried to log in previously and failed. In this case, we don't
+    # automatically resend the code, because otherwise we
+    # might too easily reach the retry limit. So they will
+    # have to request it themselves
+    if user.email_confirmation.code_reset_count == 0
+      RequestEmailConfirmationCodeJob.perform_now(user)
+    end
   end
 end

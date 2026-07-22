@@ -36,12 +36,14 @@ export const AvatarImageBubble = styled.img<{
   object-position: center;
 `;
 
+type AvatarBubblesContext = {
+  type: 'project' | 'group';
+  id: string;
+};
+
 interface Props {
   limit?: number;
-  context?: {
-    type: 'project' | 'group';
-    id: string;
-  };
+  context?: AvatarBubblesContext;
   size?: number;
   overlap?: number;
   avatarIds?: string[];
@@ -72,12 +74,13 @@ export const AvatarBubbles = ({
     enabled: !avatarIds,
   });
 
-  const currentUserCount = userCount || randomAvatars?.meta.total;
+  const currentUserCount = userCount ?? randomAvatars?.meta.total;
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
 
   const avatarsWithIds = avatarsWithIdsQueries
     .filter((query) => query.data !== undefined)
     .map((query) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       return query.data?.data;
     }) as IAvatarData[];
 
@@ -110,23 +113,22 @@ export const AvatarBubbles = ({
     }
 
     const avatarImagesCount = avatarsToShow.length;
-    const remainingUsers = currentUserCount - avatarImagesCount;
 
     let letterAbbreviation = '';
-    let truncatedUserCount = remainingUsers;
+    let truncatedUserCount = currentUserCount;
 
     switch (true) {
-      case remainingUsers >= 1000000:
+      case currentUserCount >= 1000000:
         letterAbbreviation = 'M';
-        truncatedUserCount = Math.round((remainingUsers / 1000000) * 10) / 10;
+        truncatedUserCount = Math.round((currentUserCount / 1000000) * 10) / 10;
         break;
-      case remainingUsers >= 100000:
+      case currentUserCount >= 100000:
         letterAbbreviation = 'k';
-        truncatedUserCount = Math.floor(remainingUsers / 1000);
+        truncatedUserCount = Math.floor(currentUserCount / 1000);
         break;
-      case remainingUsers >= 10000:
+      case currentUserCount >= 10000:
         letterAbbreviation = 'k';
-        truncatedUserCount = Math.round((remainingUsers / 1000) * 10) / 10;
+        truncatedUserCount = Math.round((currentUserCount / 1000) * 10) / 10;
         break;
     }
 
@@ -152,7 +154,7 @@ export const AvatarBubbles = ({
               />
             ))}
           </BubbleContainer>
-          {remainingUsers > 0 &&
+          {currentUserCount > 0 &&
             (showParticipantText ? (
               <Box
                 data-testid="userCountBubbleInner"
@@ -167,7 +169,7 @@ export const AvatarBubbles = ({
                   aria-hidden="true"
                   color="coolGrey600"
                 >
-                  +{truncatedUserCount}
+                  {truncatedUserCount}
                   {letterAbbreviation}&nbsp;
                   {formatMessage(
                     truncatedUserCount > 1 || letterAbbreviation
@@ -204,11 +206,11 @@ export const AvatarBubbles = ({
                         userCountBubbleFontSize ??
                         getFontSize(
                           bubbleSize,
-                          remainingUsers.toString().length
+                          currentUserCount.toString().length
                         ),
                     }}
                   >
-                    +{truncatedUserCount}
+                    {truncatedUserCount}
                     {letterAbbreviation}
                   </Text>
                 </Box>

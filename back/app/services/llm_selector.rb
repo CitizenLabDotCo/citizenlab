@@ -29,7 +29,7 @@ class LLMSelector
   MODELS = [
     ::Analysis::LLM::GPT4oMini,
     ::Analysis::LLM::GPT4o,
-    ::Analysis::LLM::GPT41,
+    ::Analysis::LLM::GPT54,
     ::Analysis::LLM::ClaudeHaiku45,
     ::Analysis::LLM::ClaudeSonnet46,
     ::Analysis::LLM::ClaudeOpus46,
@@ -47,13 +47,20 @@ class LLMSelector
     LLMUseCase.new(
       key: 'sensemaking_summarization',
       description: 'Summarization of content in sensemaking',
-      supported_models: [::Analysis::LLM::GPT41, ::Analysis::LLM::Gemini3Pro, ::Analysis::LLM::ClaudeOpus46],
-      default_model: ::Analysis::LLM::GPT41
+      supported_models: [::Analysis::LLM::GPT54, ::Analysis::LLM::Gemini3Pro, ::Analysis::LLM::ClaudeOpus46],
+      default_model: ::Analysis::LLM::GPT54
     ),
     LLMUseCase.new(
       key: 'toxicity_detection',
       description: 'Detection of toxic content',
       supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::GPT4oMini, ::Analysis::LLM::Gemini3Flash],
+      default_model: ::Analysis::LLM::ClaudeHaiku45
+    ),
+    LLMUseCase.new(
+      key: 'field_pii_detection',
+      description: 'Detect which form fields collect personal data (PII)',
+      # Only models whose chat honours response_schema (see Analysis::LLM::RubyLLM).
+      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini3Flash],
       default_model: ::Analysis::LLM::ClaudeHaiku45
     ),
     LLMUseCase.new(

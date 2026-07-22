@@ -6,10 +6,10 @@ describe('Project description builder Iframe component', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
+      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
@@ -39,7 +39,7 @@ describe('Project description builder Iframe component', () => {
   });
 
   it('handles Iframe component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     // Add iframe with valid url
@@ -59,7 +59,7 @@ describe('Project description builder Iframe component', () => {
   });
 
   it('handles Iframe errors correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);
@@ -94,7 +94,7 @@ describe('Project description builder Iframe component', () => {
   });
 
   it('deletes Iframe component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.get('.e2e-content-builder-iframe-component').should('exist');

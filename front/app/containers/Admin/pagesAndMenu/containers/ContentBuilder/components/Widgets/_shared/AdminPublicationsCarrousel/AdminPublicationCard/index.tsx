@@ -18,16 +18,16 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
+import projectCardMessages from 'components/ProjectCard/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
-import { CardContainer, CardImage } from '../../BaseCard';
+import { CardContainer, CardImage, CardLink } from '../../BaseCard';
 import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from '../constants';
 
 import messages from './messages';
-import { getPublicationURL } from './utils';
+import { getPublicationLinkProps } from './utils';
 
 interface Props {
   adminPublication: IAdminPublicationData;
@@ -35,6 +35,7 @@ interface Props {
   mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
     React.KeyboardEventHandler<HTMLElement>;
+  onFocus?: React.FocusEventHandler<HTMLElement>;
 }
 
 interface InnerProps extends Props {
@@ -53,6 +54,7 @@ export const AdminPublicationCard = ({
   ml,
   mr,
   onKeyDown,
+  onFocus,
 }: InnerProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -65,58 +67,68 @@ export const AdminPublicationCard = ({
     visible_children_count,
     publication_title_multiloc,
     publication_description_preview_multiloc,
+    publication_status,
   } = adminPublication.attributes;
 
   const { type } = adminPublication.relationships.publication.data;
 
   return (
-    <CardContainer
-      as={Link}
+    <CardLink
       scrollToTop
-      tabIndex={0}
-      w={`${cardWidth}px`}
-      ml={ml}
-      mr={mr}
-      to={getPublicationURL(adminPublication)}
-      display="block"
+      {...getPublicationLinkProps(adminPublication)}
       onKeyDown={onKeyDown}
+      onFocus={onFocus}
     >
-      <CardImage imageUrl={imageUrl} alt={imageAltText} />
-      <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
-        {localize(publication_title_multiloc)}
-      </Title>
-      <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
-        {type === 'folder' && (
-          <>
-            <Icon
-              name="folder-solid"
-              height="20px"
-              ml="-2px"
-              mr="4px"
-              mt="0px"
-              fill={theme.colors.tenantPrimary}
-            />
-            <Text m="0px" mr="12px">
-              {formatMessage(messages.xProjects, {
-                numberOfProjects: visible_children_count,
-              })}
-            </Text>
-          </>
+      <CardContainer w={`${cardWidth}px`} ml={ml} mr={mr} display="block">
+        <CardImage imageUrl={imageUrl} alt={imageAltText} />
+        {publication_status === 'archived' && (
+          <Text
+            mt="8px"
+            mb="0px"
+            color="textSecondary"
+            fontSize="s"
+            fontWeight="semi-bold"
+            style={{ textTransform: 'uppercase' }}
+          >
+            {formatMessage(projectCardMessages.archived)}
+          </Text>
         )}
-        <AvatarBubbles
-          avatarIds={avatarIds}
-          size={16}
-          limit={3}
-          userCount={userCount}
-          participantsTextFontSize="m"
-          showParticipantText={!isSmallerThanPhone}
-          userCountBubbleFontSize={10}
-        />
-      </Box>
-      <Text mt="8px" mb="0">
-        {truncate(localize(publication_description_preview_multiloc), 280)}
-      </Text>
-    </CardContainer>
+        <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
+          {localize(publication_title_multiloc)}
+        </Title>
+        <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
+          {type === 'folder' && (
+            <>
+              <Icon
+                name="folder-solid"
+                height="20px"
+                ml="-2px"
+                mr="4px"
+                mt="0px"
+                fill={theme.colors.tenantPrimary}
+              />
+              <Text m="0px" mr="12px">
+                {formatMessage(messages.xProjects, {
+                  numberOfProjects: visible_children_count,
+                })}
+              </Text>
+            </>
+          )}
+          <AvatarBubbles
+            avatarIds={avatarIds}
+            size={16}
+            limit={3}
+            userCount={userCount}
+            participantsTextFontSize="m"
+            showParticipantText={!isSmallerThanPhone}
+            userCountBubbleFontSize={10}
+          />
+        </Box>
+        <Text mt="8px" mb="0">
+          {truncate(localize(publication_description_preview_multiloc), 280)}
+        </Text>
+      </CardContainer>
+    </CardLink>
   );
 };
 

@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
-import useAddCampaign from 'api/campaigns/useAddCampaign';
+import useAddEmailCampaign from 'api/campaigns/email/useAddEmailCampaign';
 import useAuthUser from 'api/me/useAuthUser';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -11,14 +10,15 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import messages from '../messages';
 
 const New = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: authUser } = useAuthUser();
-  const { isLoading, mutateAsync: createCampaign } = useAddCampaign();
+  const { isLoading, mutateAsync: createCampaign } = useAddEmailCampaign();
   const handleSubmit = async (values: FormValues) => {
     const response = await createCampaign({
       context: { projectId },

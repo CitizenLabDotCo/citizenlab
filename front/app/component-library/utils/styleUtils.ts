@@ -194,6 +194,12 @@ export const defaultOutline = css`
   border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
 `;
 
+export const focusRing = css`
+  outline: 2px solid ${colors.black};
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px ${colors.white};
+`;
+
 export const stylingConsts = {
   menuHeight: 78,
   mobileMenuHeight: 72,
@@ -492,6 +498,11 @@ export function quillEditedContent(
         color: #fff;
         text-decoration: none;
         background-color: ${darken(0.15, buttonColor)};
+      }
+
+      &:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: -4px;
       }
     }
   `;

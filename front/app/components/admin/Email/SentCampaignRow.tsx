@@ -8,10 +8,9 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { RouteType } from 'routes';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { ICampaignData } from 'api/campaigns/types';
+import { IEmailCampaignData } from 'api/campaigns/email/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -26,7 +25,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  campaign: ICampaignData;
+  campaign: IEmailCampaignData;
   context?: 'global' | 'project';
 }
 
@@ -38,10 +37,25 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
   const { formatMessage } = useIntl();
   const isCustomSmtp = useFeatureFlag({ name: 'custom_smtp' });
 
-  const statsLink: RouteType =
-    context === 'global'
-      ? `/admin/messaging/emails/custom/${campaign.id}`
-      : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
+  const projectContextId = campaign.relationships.context?.data?.id;
+  const statsLink: {
+    to:
+      | '/admin/messaging/emails/custom/$campaignId'
+      | '/admin/projects/$projectId/messaging/$campaignId';
+    params: Record<string, string>;
+  } =
+    context === 'project' && projectContextId
+      ? {
+          to: '/admin/projects/$projectId/messaging/$campaignId',
+          params: {
+            projectId: projectContextId,
+            campaignId: campaign.id,
+          },
+        }
+      : {
+          to: '/admin/messaging/emails/custom/$campaignId',
+          params: { campaignId: campaign.id },
+        };
   const { data: tenant } = useAppConfiguration();
   const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
 
@@ -119,7 +133,7 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
             <FormattedMessage {...messages.clicked} />
           </Text>
         </Box>
-        <ButtonWithLink linkTo={statsLink} icon="chart-bar" buttonStyle="text">
+        <ButtonWithLink {...statsLink} icon="chart-bar" buttonStyle="text">
           <FormattedMessage {...messages.statsButton} />
         </ButtonWithLink>
       </Box>

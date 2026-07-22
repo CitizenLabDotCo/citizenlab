@@ -12,10 +12,9 @@ import {
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
-// moment-timezone extends the regular moment library,
+// moment-timezone extends regular moment library,
 // so there's no need to import both moment and moment-timezone
 import moment from 'moment-timezone';
-import { useLocation } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { IAppConfigurationStyle } from 'api/app_configuration/types';
@@ -25,6 +24,7 @@ import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import {
   appLocalesMomentPairs,
@@ -44,8 +44,10 @@ import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
 import { initiativeShowPageSlug, isPage } from 'utils/helperUtils';
+import patchMomentDeAtJanuary from 'utils/patchMomentDeAtJanuary';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
+import { useLocation } from 'utils/router';
 
 import messages from './messages';
 import Meta from './Meta';
@@ -54,6 +56,7 @@ import CommunityMonitorModalManager from './ModalQueue/modals/CommunityMonitor/M
 import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
 
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
+const SessionExpiryModal = lazy(() => import('./SessionExpiryModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
 const SkipLinkStyled = styled.a`
@@ -82,6 +85,13 @@ const importedLocales = new Set();
 async function importMomentLocaleFilePromise(momentLocale: string) {
   try {
     await localeGetter(momentLocale);
+    if (momentLocale === 'de-at') {
+      // date-fns' and moment's de-at locales render January as "Jänner" (wide)
+      // and "Jän." (short); we display "Januar"/"Jan." instead. This overrides
+      // moment's copy once its locale file is loaded (the date-fns counterpart
+      // lives in i18n/de-AT.ts).
+      patchMomentDeAtJanuary();
+    }
     importedLocales.add(momentLocale);
   } catch (error) {
     console.error(`Error processing locale: ${momentLocale}`, error);
@@ -90,7 +100,7 @@ async function importMomentLocaleFilePromise(momentLocale: string) {
 
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const location = useLocation();
+  const { pathname, searchStr } = useLocation();
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const momentLocale = appLocalesMomentPairs[locale] || 'en';
@@ -101,6 +111,14 @@ const App = ({ children }: Props) => {
   const { data: authUser } = useAuthUser();
   const appContainerClassName =
     isAdmin(authUser) || isModerator(authUser) ? 'admin-user-view' : '';
+
+  const parallelParticipation = useParallelParticipation();
+  const projectSlug = pathname.match(/\/admin\/projects\/([^/]+)/)?.[1];
+  const lockViewport =
+    parallelParticipation &&
+    !!projectSlug &&
+    projectSlug !== 'new' &&
+    projectSlug !== 'folders';
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
@@ -231,7 +249,6 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     const handleCustomRedirect = () => {
-      const { pathname } = location;
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
       const localeInUrl = urlSegments[0];
       const pathnameWithoutLocale = removeLocale(pathname).pathname?.replace(
@@ -247,10 +264,9 @@ const App = ({ children }: Props) => {
             locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
-            const queryString = location.search;
             const separator = rule.target.includes('?') ? '&' : '?';
-            const targetUrl = queryString
-              ? `${rule.target}${separator}${queryString.slice(1)}`
+            const targetUrl = searchStr
+              ? `${rule.target}${separator}${searchStr.slice(1)}`
               : rule.target;
             window.location.href = targetUrl;
           }
@@ -261,7 +277,7 @@ const App = ({ children }: Props) => {
     if (redirectsEnabled) {
       handleCustomRedirect();
     }
-  }, [redirectsEnabled, appConfiguration, location]);
+  }, [redirectsEnabled, appConfiguration, searchStr, pathname]);
 
   useEffect(() => {
     const subscriptions = [
@@ -295,10 +311,10 @@ const App = ({ children }: Props) => {
   }, [authUser]);
 
   useEffect(() => {
-    trackPage(location.pathname);
-  }, [location.pathname]);
+    trackPage(pathname);
+  }, [pathname]);
 
-  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
   // Redirect from /initiatives/:slug to /ideas/:slug to make sure old initiative links still work
   useEffect(() => {
@@ -312,15 +328,15 @@ const App = ({ children }: Props) => {
     setUserDeletedSuccessfullyModalOpened(false);
   };
 
-  const isAdminPage = isPage('admin', location.pathname);
-  const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
-  const isHomePageBuilderRoute = location.pathname.match(
+  const isAdminPage = isPage('admin', pathname);
+  const isPagesAndMenuPage = isPage('pages_menu', pathname);
+  const isHomePageBuilderRoute = pathname.match(
     /\/admin\/pages-menu\/homepage-builder/
   );
-  const isIdeaFormPage = isPage('idea_form', location.pathname);
-  const isIdeaEditPage = isPage('idea_edit', location.pathname);
-  const isNativeSurveyPage = isPage('native_survey', location.pathname);
-  const isIdeasFeedPage = isPage('ideas_feed', location.pathname);
+  const isIdeaFormPage = isPage('idea_form', pathname);
+  const isIdeaEditPage = isPage('idea_edit', pathname);
+  const isNativeSurveyPage = isPage('native_survey', pathname);
+  const isIdeasFeedPage = isPage('ideas_feed', pathname);
   const theme = getTheme(appConfiguration);
   const showFooter =
     !isAdminPage &&
@@ -328,12 +344,12 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isNativeSurveyPage &&
     !isIdeasFeedPage;
-  const { pathname } = removeLocale(location.pathname);
+  const { pathname: pathnameWithoutLocale } = removeLocale(pathname);
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
     item: {
       type: 'route',
-      path: pathname,
+      path: pathnameWithoutLocale,
     },
     action: 'access',
   });
@@ -385,6 +401,8 @@ const App = ({ children }: Props) => {
             position="relative"
             background={colors.white}
             minHeight="100vh"
+            height={lockViewport ? '100vh' : undefined}
+            overflow={lockViewport ? 'hidden' : undefined}
           >
             <Meta />
             <ErrorBoundary>
@@ -396,6 +414,9 @@ const App = ({ children }: Props) => {
                 closeUserDeletedModal={closeUserDeletedModal}
                 userSuccessfullyDeleted={userSuccessfullyDeleted}
               />
+              <Suspense fallback={null}>
+                <SessionExpiryModal />
+              </Suspense>
             </ErrorBoundary>
             <ErrorBoundary>
               <Authentication />

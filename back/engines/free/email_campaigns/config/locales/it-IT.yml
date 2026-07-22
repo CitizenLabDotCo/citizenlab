@@ -48,7 +48,11 @@ it-IT:
         new_attendee: Utente appena registrato
         project_review_requester: Utente che ha richiesto la revisione del progetto
         project_reviewers: Revisori del progetto e manager di cartelle
+        user_changing_email: Utente che sta modificando il proprio indirizzo email
+        user_confirming_email: Utente che sta confermando il proprio indirizzo e-mail
+        user_requesting_password_reset: Utente che ha richiesto il ripristino della password
         user_who_commented: Utente che ha commentato
+        user_who_is_blocked: Utente il cui account è bloccato
         user_who_is_invited_to_cosponsor_a_proposal: Utente che viene invitato a co-sponsorizzare una proposta
         user_who_is_mentioned: Utente che viene menzionato
         user_who_is_receiving_admin_rights: Utente che riceve i diritti di amministratore
@@ -56,7 +60,7 @@ it-IT:
         user_who_is_receiving_folder_moderator_rights: Utente che riceve i diritti di moderatore della cartella
         user_who_is_receiving_project_manager_rights: Utente che riceve i permessi di project manager
         user_who_is_receiving_project_moderator_rights: Utente che riceve i diritti di moderatore del progetto
-        user_who_is_receiving_space_manager_rights: Utente che riceve i permessi di manager d'area
+        user_who_is_receiving_space_manager_rights: Utente che riceve i permessi di manager dello spazio
         user_who_published_the_input: Utente che ha pubblicato il contributo
         user_who_published_the_proposal: Utente che ha pubblicato la proposta
         user_who_registers: Utente che si registra
@@ -67,6 +71,7 @@ it-IT:
         user_with_unsubmitted_votes: Utente che non ha inviato i propri voti
         users_who_engaged_but_not_voted: Utenti che hanno partecipato al progetto ma non hanno votato
         users_who_engaged_with_the_project: Utenti che hanno partecipato al progetto
+        users_who_follow_or_participated: Utenti che seguono il progetto o hanno partecipato
         users_who_follow_the_input: Gli utenti che seguono il contributo
         users_who_follow_the_project: Utenti che seguono il progetto
         users_who_follow_the_proposal: Gli utenti che seguono la proposta
@@ -94,6 +99,7 @@ it-IT:
         project_published: Progetto pubblicato
         project_review_request: Il moderatore ha richiesto una revisione del progetto
         project_review_state_change: Il revisore ha approvato il progetto
+        proposal_expired: Una proposta scade senza raggiungere la soglia
         proposal_gets_reported_as_spam: La proposta viene segnalata come spam
         proposal_is_assigned_to_admin: La proposta è assegnata all'amministratore
         proposal_is_published: La proposta viene pubblicata
@@ -103,15 +109,18 @@ it-IT:
         registration_to_event: Registrazione ad un evento
         survey_1_day_after_draft_saved: "1 giorno dopo l'ultima volta che l'utente ha salvato il sondaggio in bozza"
         user_accepts_invitation_to_cosponsor_a_proposal: "L'utente accetta l'invito a co-sponsorizzare una proposta"
+        user_changes_email: L'utente modifica il proprio indirizzo email
         user_comments: Commenti degli utenti
         user_comments_on_input: Commenti degli utenti sull'input
         user_comments_on_proposal: Commenti degli utenti sulla proposta
+        user_confirms_email: L'utente conferma il proprio indirizzo email
+        user_is_blocked: "L'account dell'utente è bloccato"
         user_is_given_admin_rights: All'utente vengono concessi i diritti di amministratore
         user_is_given_folder_manager_rights: All'utente vengono assegnati i permessi di manager della cartella
         user_is_given_folder_moderator_rights: All'utente vengono concessi i diritti di moderatore della cartella
         user_is_given_project_manager_rights: All'utente vengono assegnati i permessi di project manager
         user_is_given_project_moderator_rights: All'utente vengono concessi i diritti di moderatore del progetto
-        user_is_given_space_manager_rights: "All'utente vengono assegnati i permessi di manager d'area"
+        user_is_given_space_manager_rights: All'utente vengono assegnati i permessi di manager dello spazio
         user_is_invited_to_cosponsor_a_proposal: L'utente è invitato a co-sponsorizzare una proposta
         user_is_invited_to_platform: L'utente è invitato alla piattaforma
         user_is_mentioned: L'utente è menzionato
@@ -119,6 +128,7 @@ it-IT:
         user_registers_for_the_first_time: L'utente si registra per la prima volta
         user_replies_to_comment: L'utente risponde al commento
         user_replies_to_internal_comment: L'utente risponde al commento interno
+        user_requests_password_reset: L'utente richiede il ripristino della password
         voting_1_day_after_last_votes: "1 giorno dopo l'ultimo voto dell'utente"
         voting_2_days_before_phase_closes: 2 giorni prima della chiusura della fase di voto
         voting_basket_submitted: I voti vengono inviati
@@ -158,6 +168,7 @@ it-IT:
       comment_on_your_comment: Una risposta al mio commento
       community_monitor_report: Report del barometro civico
       cosponsor_of_your_idea: Un utente ha accettato il mio invito a co-sponsorizzare la mia proposta
+      email_confirmation: Codice di conferma dell'email
       event_registration_confirmation: Conferma della registrazione all'evento
       idea_marked_as_spam: Segnalazione di spam di un'idea
       idea_published: Pubblicazione del mio contributo
@@ -176,8 +187,10 @@ it-IT:
       moderator_digest: Panoramica settimanale per i project manager
       native_survey_not_submitted: Sondaggio non inviato
       new_comment_for_admin: Nuovo commento in un progetto che modero
+      new_email_confirmation: Nuovo codice di conferma dell'email
       new_idea_for_admin_prescreening: Nuovo contributo da approvare in un progetto che modero
       new_idea_for_admin_published: Nuovo contributo pubblicato in un progetto che modero
+      new_phone_confirmation: Nuovo codice di conferma del telefono
       official_feedback_on_idea_you_follow: Aggiornamento su un contributo che seguo
       password_reset: Ripristino della password
       project_folder_moderation_rights_received: Diritti di gestione delle cartelle ricevuti
@@ -188,11 +201,14 @@ it-IT:
       project_published: Progetto pubblicato
       project_review_request: Richiesta di revisione del progetto
       project_review_state_change: Progetto approvato
+      proposal_expired_for_admin: Proposta scaduta senza raggiungere la soglia di voto
       screening_digest: Promemoria settimanale per lo screening
-      space_moderation_rights_received: Permessi di manager d'area ricevuti
+      sms_manual: Messaggi SMS ufficiali
+      space_moderation_rights_received: Permessi di manager dello spazio ricevuti
       status_change_on_idea_you_follow: Cambiamento di status di un contributo che seguo
       survey_submitted: Sondaggio inviato
       threshold_reached_for_admin: La proposta ha raggiunto la soglia di voto
+      user_blocked: Account bloccato
       user_digest: Panoramica settimanale
       voting_basket_not_submitted: Voti non inviati
       voting_basket_submitted: Conferma del voto
@@ -235,6 +251,7 @@ it-IT:
         idea: "%{authorName} ha commentato un'idea che segui"
         initiative: "%{authorName} ha commentato un'iniziativa che segui"
         issue: '%{authorName} ha commentato un parere che segui'
+        observation: "%{authorName} ha commentato un'osservazione che segui"
         option: "%{authorName} ha commentato un'opzione che segui"
         petition: '%{authorName} ha commentato una petizione che segui'
         post: '%{authorName} ha commentato un post che segui'
@@ -268,6 +285,15 @@ it-IT:
       preheader: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       subject: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       title: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
+    email_confirmation:
+      best_regards: Cordiali saluti,
+      event_description: 'Grazie per la partecipazione. Inserisci questo codice di conferma nella finestra sulla piattaforma partecipativa di %{organizationName}:'
+      expire_code: Questo codice scadrà tra
+      hours_24: 24 ore.
+      ignore_email: Se non hai richiesto un codice, puoi ignorare questa email.
+      preheader: Conferma il tuo indirizzo e-mail per %{organizationName}
+      subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
+      title: Conferma il tuo indirizzo email
     event_registration_confirmation:
       cta_add_to_calendar: Aggiungi al tuo calendario
       cta_button: Guarda l'evento
@@ -284,7 +310,7 @@ it-IT:
     follow:
       unfollow_here: Hai ricevuto questa notifica a causa di un elemento che segui. <a href="%{unfollow_url}">Puoi smettere di seguirlo qui.</a>
     footer:
-      link_privacy_policy: Politica sulla privacy
+      link_privacy_policy: Informativa sulla privacy
       link_terms_conditions: Termini e condizioni
       link_unsubscribe: Annulla l'iscrizione
       powered_by: Alimentato da
@@ -300,6 +326,7 @@ it-IT:
         idea: Vai a questa idea
         initiative: Vai a questa iniziativa
         issue: Vai a questo parere
+        observation: Vai a questa osservazione
         option: Vai a questa opzione
         petition: Vai a questa petizione
         post: Vai a questo post
@@ -320,6 +347,7 @@ it-IT:
         idea: Vai alla tua idea
         initiative: Vai alla tua iniziativa
         issue: Vai al tuo parere
+        observation: Vai alla tua osservazione
         option: Vai alla tua opzione
         petition: Vai alla tua petizione
         post: Vai al tuo post
@@ -353,6 +381,7 @@ it-IT:
         idea: La tua idea è stata pubblicata
         initiative: La tua iniziativa è stata pubblicata
         issue: Il tuo parere è stato pubblicato
+        observation: La tua osservazione è stata pubblicata
         option: La tua opzione è stata pubblicata
         petition: La tua petizione è stata pubblicata
         post: Il tuo post è stato pubblicato
@@ -465,8 +494,8 @@ it-IT:
       preheader: Non hai completato le risposte al sondaggio sulla piattaforma partecipativa di %{organizationName}
       subject: '%{organizationName}: Ci siamo quasi! Invia le tue risposte'
       submissions_close: Il sondaggio si concluderà il %{phaseEndDate}.
-      submissions_close_at_time: Le proposte chiuderanno il %{datetime}.
-      submissions_close_on_date: Le proposte chiudono alla fine del %{date}.
+      submissions_close_at_time: Le risposte al sondaggio chiuderanno il %{datetime}.
+      submissions_close_on_date: Le risposte al sondaggio chiudono alla fine del %{date}.
       title: Ci siamo quasi! Invia le tue risposte
     new_comment_for_admin:
       anonymous_user: Utente anonimo
@@ -479,6 +508,15 @@ it-IT:
       title: '%{firstName}, è stato pubblicato un nuovo commento sulla tua piattaforma'
       today: Oggi
       yesterday: Ieri
+    new_email_confirmation:
+      best_regards: Cordiali saluti,
+      event_description: 'Inserisci questo codice di conferma nella finestra sulla piattaforma partecipativa di %{organizationName} per confermare il tuo nuovo indirizzo e-mail:'
+      expire_code: Questo codice scadrà tra
+      hours_24: 24 ore.
+      ignore_email: Se non hai richiesto un codice, puoi ignorare questa email.
+      preheader: Conferma il tuo nuovo indirizzo email per %{organizationName}
+      subject: Conferma il tuo nuovo indirizzo email per la piattaforma partecipativa di %{organizationName}
+      title: Conferma il tuo nuovo indirizzo e-mail
     new_idea_for_admin_prescreening:
       cta_button: Esamina il contributo
       days_ago: '%{numberOfDays} giorni fa'
@@ -498,12 +536,20 @@ it-IT:
       title: È stato pubblicato un nuovo contributo sulla tua piattaforma
       today: Oggi
       yesterday: Ieri
+    new_phone_confirmation:
+      sms_body: Il tuo codice di conferma è %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Guarda il contributo
       event_description: "%{feedback_author_name} ha pubblicato un aggiornamento su '%{input_title}'."
       preheader: C'è un aggiornamento su un contributo che segui
       subject: Un aggiornamento ufficiale su "%{input_title}" è stato pubblicato
       title: C'è un aggiornamento su "%{input_title}"
+    password_reset:
+      cta_button: Reimposta la tua password
+      event_description: Hai richiesto il ripristino della password per la piattaforma partecipativa di %{organizationName}. Clicca sul pulsante qui sotto per scegliere una nuova password sicura. Il link scadrà tra 1 ora.
+      preheader: Reimposta la tua password per %{organizationName}
+      subject: '%{organizationName}: Reimposta la tua password'
+      title: Scegli una nuova password
     preview_data:
       author_display_name: Laura Bianchi
       author_first_name: Laura
@@ -526,7 +572,7 @@ it-IT:
       project_description_preview: Questo è un esempio di contenuto di una fase utilizzato per l'anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.
       project_title: Esempio di progetto
       proposal_title: Esempio di proposta
-      space_title: Esempio di area
+      space_title: Esempio di spazio
     project_folder_moderation_rights_received:
       cta_button: Visualizza cartella
       event_description: 'Ti sono stati concessi i diritti di manager di cartelle sulla piattaforma partecipativa di %{organizationName} per la seguente cartella:'
@@ -591,6 +637,11 @@ it-IT:
       preheader: '%{reviewerName} ha approvato il progetto "%{projectTitle}"'
       subject: '"%{projectTitle}" è stato approvato'
       title: '%{reviewerName} ha approvato il progetto "%{projectTitle}"'
+    proposal_expired_for_admin:
+      cta_button: Esamina il contributo scaduto
+      preheader: Un contributo è scaduto senza raggiungere la soglia
+      subject: '"%{input_title}" è scaduto senza raggiungere la soglia'
+      title: Un contributo è scaduto senza raggiungere la soglia di voto
     schedules:
       quarterly: Trimestralmente, il primo giorno del trimestre
       weekly:
@@ -609,19 +660,19 @@ it-IT:
       subject: '%{count} input in attesa di revisione'
       title: '%{firstName}, i contributi sono in attesa di essere esaminati'
     space_moderation_rights_received:
-      cta_button: Gestisci quest'area
-      event_description: "Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager d'area per la seguente area:"
+      cta_button: Gestisci questo spazio
+      event_description: 'Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager dello spazio per il seguente spazio:'
       no_projects: Ancora nessun progetto
-      preheader: Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager d'area per la seguente area
-      subject: Sei diventato un manager d'area sulla piattaforma di %{organizationName}
-      text_manage_space_settings: "Puoi modificare il titolo e la descrizione dell'area, in modo che i partecipanti e gli altri manager comprendano immediatamente di cosa tratta l'area e come si relaziona con la tua organizzazione."
-      text_organize_projects_and_folders: "In qualità di manager d'area, puoi gestire i progetti e le cartelle all'interno della tua area, inclusa l'assegnazione e la rimozione dei ruoli di gestione."
-      text_oversee_participation: "In qualità di manager d'area, hai i permessi di project manager per ogni progetto all'interno della tua area; in questo modo puoi monitorare i contributi in arrivo e assistere i project manager quando necessario."
-      title: Sei diventato un manager d'area
-      title_manage_space_settings: Gestisci le impostazioni dell'area
+      preheader: Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato manager dello spazio per il seguente spazio
+      subject: Sei diventato un manager dello spazio sulla piattaforma di %{organizationName}
+      text_manage_space_settings: Puoi modificare il titolo e la descrizione dello spazio, in modo che i partecipanti e gli altri manager comprendano immediatamente di cosa tratta lo spazio e come si relaziona con la tua organizzazione.
+      text_organize_projects_and_folders: "In qualità di manager dello spazio, puoi gestire i progetti e le cartelle all'interno del to spazio, inclusa l'assegnazione e la rimozione dei ruoli di gestione."
+      text_oversee_participation: In qualità di manager dello spazio, hai i permessi di project manager per ogni progetto all'interno del tuo spazio; in questo modo puoi monitorare i contributi in arrivo e assistere i project manager quando necessario.
+      title: Sei diventato un manager dello spazio
+      title_manage_space_settings: Gestisci le impostazioni dello spazio
       title_organize_projects_and_folders: Organizza progetti e cartelle
       title_oversee_participation: Supervisiona la partecipazione
-      title_what_can_you_do_space_manager: Cosa puoi fare come manager d'area?
+      title_what_can_you_do_space_manager: Cosa puoi fare come manager dello spazio?
       x_projects: '%{numberOfProjects} progetti'
     status_change_on_idea_you_follow:
       cta_button: Guarda il contributo
@@ -644,6 +695,14 @@ it-IT:
       preheader: Assicurati di fare i prossimi passi
       subject: '"%{input_title}" ha raggiunto la soglia di voto'
       title: Una proposta ha raggiunto la soglia di voto!
+    user_blocked:
+      for_more_information: Per ulteriori informazioni a riguardo, puoi consultare la pagina %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:'
+      paragraph_1_without_reason: Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della community.
+      preheader: Il tuo account sulla piattaforma partecipativa di %{organizationName} è stato temporaneamente disabilitato
+      subject: Il tuo account è stato temporaneamente disabilitato
+      title: Il tuo account è stato temporaneamente disabilitato
+      you_can_sign_in_again_from: Potrai effettuare nuovamente l'accesso a partire dal %{date}
     user_digest:
       commented: '%{authorFirstName} ha commentato:'
       cta_button: Vai alla piattaforma
@@ -713,6 +772,7 @@ it-IT:
         idea: La tua idea è in "%{prescreening_status_title}"
         initiative: La tua iniziativa è in "%{prescreening_status_title}"
         issue: Il tuo parere è in "%{prescreening_status_title}"
+        observation: La tua osservazione è in "%{prescreening_status_title}"
         option: La tua opzione è in "%{prescreening_status_title}"
         petition: La tua petizione è in "%{prescreening_status_title}"
         post: Il tuo post è in "%{prescreening_status_title}"

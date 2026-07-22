@@ -19,7 +19,10 @@ import {
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
+import {
+  DEFAULT_MINIMUM_PASSWORD_LENGTH,
+  passwordUserInputs,
+} from 'components/UI/PasswordInput';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -37,7 +40,7 @@ import messages from './messages';
 interface BaseProps {
   loading: boolean;
   setError: SetError;
-  onSubmit: (userId: string, update: BuiltInFieldsUpdate) => void;
+  onSubmit: (userId: string, update: BuiltInFieldsUpdate) => Promise<void>;
 }
 
 interface Props extends BaseProps {
@@ -59,11 +62,21 @@ const BuiltInFields = ({
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??
     DEFAULT_MINIMUM_PASSWORD_LENGTH;
+  const minimumStrength = appConfigSettings?.password_login?.minimum_strength;
+
+  // Stored attributes (those not asked here) so the strength check penalises them too.
+  const storedUserInputs = passwordUserInputs({
+    email: authUser?.data.attributes.email,
+    first_name: authUser?.data.attributes.first_name,
+    last_name: authUser?.data.attributes.last_name,
+  });
 
   const schema = getSchema(
     minimumPasswordLength,
     formatMessage,
-    authenticationRequirements
+    authenticationRequirements,
+    minimumStrength,
+    storedUserInputs
   );
 
   const methods = useForm({
@@ -72,7 +85,21 @@ const BuiltInFields = ({
     resolver: yupResolver(schema),
   });
 
+  // Live values for the meter; fall back to stored attributes for fields not asked here.
+  const [firstName, lastName, email] = methods.watch([
+    'first_name',
+    'last_name',
+    'email',
+  ]);
+
   if (isNilOrError(locale) || isNilOrError(authUser)) return null;
+
+  const userAttributes = authUser.data.attributes;
+  const passwordInputs = passwordUserInputs({
+    email: email ?? userAttributes.email,
+    first_name: firstName ?? userAttributes.first_name,
+    last_name: lastName ?? userAttributes.last_name,
+  });
 
   const handleSubmit = async ({
     first_name,
@@ -87,7 +114,12 @@ const BuiltInFields = ({
         email,
         password,
       });
-    } catch (e) {
+    } catch (e: any) {
+      if (e?.errors?.new_email?.[0]?.error === 'is already taken') {
+        setError('email_taken_and_user_can_be_verified');
+        return;
+      }
+
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
         return;
@@ -157,6 +189,7 @@ const BuiltInFields = ({
                 label={formatMessage(sharedMessages.password)}
                 autocomplete="new-password"
                 required
+                userInputs={passwordInputs}
               />
             </Box>
           )}

@@ -163,13 +163,16 @@ resource 'Invites' do
         ).exactly(1).times
       end
 
-      describe do
-        let(:email) { 'Super.Boulette@hotmail.com' }
+      example 'Accept an invite with a different-case email', document: false do
+        # Changing only the letter-case of the invited email must make no
+        # difference and still be valid (emails are matched case-insensitively).
+        invite.invitee.update!(email: 'Super.Boulette@Hotmail.com')
 
-        example 'Accept an invite using different capitalization for the email', document: false do
-          do_request
-          assert_status 200
-        end
+        do_request(invite: { email: 'super.boulette@hotmail.com' })
+
+        assert_status(200)
+        expect(invite.reload.accepted_at).to be_present
+        expect(invite.invitee.invite_status).to eq('accepted')
       end
 
       example '[error] Accept an invite with an invalid token', document: false do

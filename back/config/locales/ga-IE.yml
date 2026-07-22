@@ -112,6 +112,8 @@ ga-IE:
           title: Cad é do thionscnamh?
         issue:
           title: Cad é do thuairim?
+        observation:
+          title: Cad é do bhreathnóireacht?
         option:
           title: Cad é do rogha?
         petition:
@@ -270,6 +272,25 @@ ga-IE:
       title: Gach tionscadal
     proposals:
       title: Tograí
+  pdf_export:
+    input_responses:
+      date: Dáta
+      no_answer: (Gan freagra)
+      prepared_by: Ullmhaithe ag
+      report_label: Tuarascáil ar fhreagraí
+      respondent: Freagróir %{number}
+      response_count:
+        one: '%{count} fhreagra'
+        other: '%{count} freagraí'
+    survey_responses:
+      date: Dáta
+      no_answer: (Gan freagra)
+      prepared_by: Ullmhaithe ag
+      report_label: Tuairisc ar fhreagraí an tsuirbhé
+      respondent: Freagróir %{number}
+      response_count:
+        one: '%{count} freagra'
+        other: '%{count} freagra'
   phases:
     community_monitor_title: Monatóir pobail
     native_survey_button: Glac an suirbhé

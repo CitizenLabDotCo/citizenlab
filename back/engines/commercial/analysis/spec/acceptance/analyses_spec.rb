@@ -63,7 +63,8 @@ resource 'Analyses' do
         participation_method: 'ideation',
         updated_at: kind_of(String),
         created_at: kind_of(String),
-        show_insights: true
+        show_insights: true,
+        auto_insights_too_many_fields: false
       })
       expect(response_data.dig(:relationships, :main_custom_field, :data, :id)).to eq main_field.id
       expect(response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)).to eq [additional_field.id]
@@ -141,6 +142,24 @@ resource 'Analyses' do
 
       example_request '[Error] Cannot create a project analysis on project with a single native survey phase' do
         expect(response_status).to eq 422
+      end
+    end
+
+    describe do
+      let(:project) { create(:project) }
+      let(:phase) { create(:common_ground_phase, :ongoing, project: project) }
+      let(:phase_id) { phase.id }
+
+      example_request 'Create a phase analysis (common ground phase) when no custom_form exists' do
+        expect(response_status).to eq 201
+        additional_custom_field_ids = response_data.dig(:relationships, :additional_custom_fields, :data).pluck(:id)
+        expect(additional_custom_field_ids).not_to be_empty
+        included_additional_fields = json_response_body[:included].select { |d| additional_custom_field_ids.include? d[:id] }
+        expect(included_additional_fields.map { |d| d[:attributes][:code] }).to match_array(%w[title_multiloc])
+
+        tags = Analysis::Analysis.find(response_data[:id]).tags
+        expect(tags.count).to be > 0
+        expect(tags.pluck(:tag_type).uniq).to eq ['onboarding_example']
       end
     end
   end

@@ -29,7 +29,21 @@ resource 'Projects' do
     end
 
     with_options scope: %i[project admin_publication_attributes] do
-      parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
+      parameter :publication_status, <<~DESC.squish
+        The publication status of the project. 
+        Either #{AdminPublication::PUBLICATION_STATUSES.join(', ')}. Defaults to published.
+      DESC
+
+      parameter :scheduled_status, <<~DESC.squish
+        The publication status that the project is scheduled to transition to.
+        Either #{AdminPublication::PUBLICATION_STATUSES.join(', ')}. Must be set together with `scheduled_at`.
+        Set to null to cancel the schedule.
+      DESC
+
+      parameter :scheduled_at, <<~DESC.squish
+        The time at which the project is scheduled to transition to `scheduled_status`.
+        Must be set together with `scheduled_status`. Set to null to cancel the schedule.
+      DESC
     end
 
     ValidationErrorHelper.new.error_fields(self, Project)
@@ -189,27 +203,7 @@ resource 'Projects' do
           slug: @projects.first.slug,
           timeline_active: nil,
           action_descriptors: {
-            posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled_at: nil },
-            commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            reacting_idea: {
-              enabled: false,
-              disabled_reason: 'project_inactive',
-              up: {
-                enabled: false,
-                disabled_reason: 'project_inactive'
-              },
-              down: {
-                enabled: false,
-                disabled_reason: 'project_inactive'
-              }
-            },
-            comment_reacting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-            annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
-            taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
-            taking_poll: { enabled: false, disabled_reason: 'project_inactive' },
-            voting: { enabled: false, disabled_reason: 'project_inactive' },
-            attending_event: { enabled: true, disabled_reason: nil },
-            volunteering: { enabled: false, disabled_reason: 'project_inactive' }
+            attending_event: { enabled: true, disabled_reason: nil }
           },
           preview_token: an_instance_of(String)
         )
@@ -679,6 +673,117 @@ resource 'Projects' do
           expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
             .to have_enqueued_job(LogActivityJob)
             .with(@project, 'published', anything, anything, anything)
+        end
+      end
+
+      context 'scheduled transitions', document: false do
+        let(:project) { create(:project) }
+        let(:admin_publication) { project.admin_publication }
+        let(:id) { project.id }
+
+        example 'Schedule a status transition' do
+          scheduled_at = 1.day.from_now.iso8601(3)
+          admin_publication_attributes = { scheduled_status: 'draft', scheduled_at: }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to  change { admin_publication.reload.scheduled_status }.from(nil).to('draft')
+            .and change { admin_publication.reload.scheduled_at }.from(nil).to(scheduled_at.in_time_zone)
+            .and change { admin_publication.reload.scheduled_by }.from(nil).to(@user)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: 'draft',
+            scheduled_at: scheduled_at
+          )
+        end
+
+        example 'Cancel a scheduled transition' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: create(:admin)
+          )
+
+          admin_publication_attributes = { scheduled_status: nil, scheduled_at: nil }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to  change { admin_publication.reload.scheduled_status }.from('archived').to(nil)
+            .and change { admin_publication.reload.scheduled_at }.to(nil)
+            .and change { admin_publication.reload.scheduled_by }.to(nil)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            scheduled_status: nil,
+            scheduled_at: nil
+          )
+        end
+
+        example 'Reschedule a transition' do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: create(:admin)
+          )
+
+          scheduled_at = 3.days.from_now.iso8601(3)
+          admin_publication_attributes = { scheduled_at: }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to change { admin_publication.reload.scheduled_at }.to(scheduled_at.in_time_zone)
+            .and change { admin_publication.reload.scheduled_by }.to(@user)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(scheduled_at: scheduled_at)
+        end
+
+        example 'Immediate status change cancels schedule', document: false do
+          project.admin_publication.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: @user
+          )
+
+          expect { do_request(project: { admin_publication_attributes: { publication_status: 'draft' } }) }
+            .to change { admin_publication.reload.publication_status }.from('published').to('draft')
+            .and change { admin_publication.reload.scheduled_status }.from('archived').to(nil)
+            .and change { admin_publication.reload.scheduled_at }.to(nil)
+            .and change { admin_publication.reload.scheduled_by }.to(nil)
+
+          assert_status 200
+
+          expect(response_data[:attributes]).to include(
+            publication_status: 'draft',
+            scheduled_status: nil,
+            scheduled_at: nil
+          )
+        end
+
+        example 'Updates materializes due status transition first' do
+          project.admin_publication.update_columns(
+            publication_status: 'draft',
+            scheduled_status: 'published',
+            scheduled_at: 1.hour.ago,
+            scheduled_by_id: @user.id
+          )
+
+          admin_publication_attributes = { publication_status: 'archived' }
+
+          expect { do_request(project: { admin_publication_attributes: }) }
+            .to enqueue_job(LogActivityJob).with(project, 'published', anything, anything, anything)
+            .and enqueue_job(LogActivityJob).with(project, 'changed', anything, anything, anything).twice
+
+          assert_status 200
+
+          admin_publication.reload
+          expect(admin_publication.first_published_at).to be_present
+
+          expect(admin_publication.publication_status).to eq('archived')
+          expect(admin_publication.scheduled_status).to be_nil
+          expect(admin_publication.scheduled_at).to be_nil
+          expect(admin_publication.scheduled_by).to be_nil
         end
       end
     end
@@ -1607,7 +1712,7 @@ resource 'Projects' do
           allow(Export::Xlsx::InputSheetGenerator).to receive(:new)
             .and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
           do_request
-          expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
+          expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params, redacted_field_keys: [])
           assert_status 200
 
           expect(xlsx_contents(response_body)).to match([
@@ -1727,11 +1832,39 @@ resource 'Projects' do
 
     patch 'web_api/v1/projects/:id' do
       describe do
-        let(:project) { create(:project) }
         let(:id) { project.id }
 
-        example_request 'It does not authorize the folder moderator' do
-          assert_status 401
+        context 'when project is outside their folder' do
+          let(:project) { create(:project) }
+
+          example_request 'It does not authorize a folder moderator to update project outside their folder' do
+            assert_status 401
+          end
+        end
+
+        context 'when project is in a folder they moderate' do
+          let(:project) { create(:project, folder: project_folder) }
+
+          example 'It allows FM to move a project to another folder they moderate' do
+            project_folder2 = create(:project_folder)
+            moderator.add_role('project_folder_moderator', project_folder_id: project_folder2.id)
+            moderator.save!
+
+            do_request(project: { folder_id: project_folder2.id })
+            assert_status 200
+            expect(project.reload.folder_id).to eq project_folder2.id
+          end
+
+          example 'It allows FM to move a project to another folder they moderate, even if that project is in a space they cannot moderate' do
+            other_space = create(:space)
+            project_folder2 = create(:project_folder, space: other_space)
+            moderator.add_role('project_folder_moderator', project_folder_id: project_folder2.id)
+            moderator.save!
+
+            do_request(project: { folder_id: project_folder2.id })
+            assert_status 200
+            expect(project.reload.folder_id).to eq project_folder2.id
+          end
         end
       end
     end
@@ -1802,6 +1935,18 @@ resource 'Projects' do
 
       example '[Unauthorized] Delete a project that has been published', document: false do
         project.admin_publication.update!(first_published_at: Time.zone.now)
+
+        do_request
+
+        assert_status 401
+        expect(Project.where(id: id)).to exist
+      end
+
+      example '[Unauthorized] Delete a project with a due scheduled publish', document: false do
+        project.admin_publication.update_columns(
+          scheduled_status: 'published', scheduled_at: 1.hour.ago,
+          scheduled_by_id: moderator.id
+        )
 
         do_request
 
@@ -2009,9 +2154,15 @@ resource 'Projects' do
       end
 
       context 'when neither space_id nor folder_id is provided' do
-        example '[Unauthorized] Cannot create project without space_id or folder_id', document: false do
+        example 'Can create project without space_id or folder_id', document: false do
           do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
-          assert_status 401
+          assert_status 201
+        end
+
+        example 'Can create project without space_id or folder_id, also if there is an unrelated project in a space the user moderates', document: false do
+          create(:project, space: space)
+          do_request(project: { admin_publication_attributes: { publication_status: publication_status } })
+          assert_status 201
         end
       end
     end
@@ -2145,42 +2296,6 @@ resource 'Projects' do
         example 'Get community monitor project' do
           do_request
           assert_status 200
-        end
-
-        context 'Survey has already been submitted' do
-          let!(:response) { create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil, author_hash: author_hash) }
-
-          context 'when no consent given' do
-            let(:author_hash) do
-              # No consent hash based on ip and user agent
-              user_agent = 'User-Agent: Mozilla/5.0'
-              ip = '1.2.3.4'
-              "n_#{Idea.create_author_hash(ip + user_agent, phase.project_id, true)}"
-            end
-
-            example 'Get community monitor project when survey already submitted without consent' do
-              header 'User-Agent', 'User-Agent: Mozilla/5.0'
-              header 'X-Forwarded-For', '1.2.3.4'
-              do_request
-              assert_status 200
-
-              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
-              expect(disabled_reason).to eq 'posting_limited_max_reached'
-            end
-          end
-
-          context 'when consent given - using hash from cookie' do
-            let(:author_hash) { 'COOKIE_AUTHOR_HASH' }
-
-            example 'Get community monitor project when survey already submitted with consent' do
-              header('Cookie', "#{phase.id}={\"lo\": \"#{author_hash}\"};cl2_consent={\"analytics\": true}")
-              do_request
-              assert_status 200
-
-              disabled_reason = response_data.dig(:attributes, :action_descriptors, :posting_idea, :disabled_reason)
-              expect(disabled_reason).to eq 'posting_limited_max_reached'
-            end
-          end
         end
       end
     end

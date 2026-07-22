@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -14,12 +13,13 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { getInputTermMessage } from 'utils/i18n';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
 const IdeasNewMeta = () => {
   const { formatMessage } = useIntl();
-  const { slug } = useParams();
+  const { slug } = useParams({ from: '/$locale/projects/$slug/ideas/new' });
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectBySlug(slug);
   const { data: phases } = usePhases(project ? project.data.id : undefined);
@@ -44,6 +44,7 @@ const IdeasNewMeta = () => {
       topic: messages.topicMetaTitle1,
       post: messages.postMetaTitle1,
       story: messages.storyMetaTitle1,
+      observation: messages.observationMetaTitle1,
     })
   );
   const ideasIndexDescription = formatMessage(messages.ideaNewMetaDescription);

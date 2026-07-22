@@ -112,6 +112,8 @@ nb-NO:
           title: Hva er initiativet ditt?
         issue:
           title: Hva er din kommentar?
+        observation:
+          title: Hva er din observasjon?
         option:
           title: Hva er ditt innspill?
         petition:
@@ -267,6 +269,25 @@ nb-NO:
       title: Alle prosjekter
     proposals:
       title: Forslag
+  pdf_export:
+    input_responses:
+      date: Dato
+      no_answer: (Ikke besvart)
+      prepared_by: Utarbeidet av
+      report_label: Svarrapport
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} svar'
+        other: '%{count} svar'
+    survey_responses:
+      date: Dato
+      no_answer: (Ikke besvart)
+      prepared_by: Utarbeidet av
+      report_label: Rapport for undersøkelsessvar
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} svar'
+        other: '%{count} svar'
   phases:
     community_monitor_title: Fellesskapets overvåker
     native_survey_button: Ta del i undersøkelsen

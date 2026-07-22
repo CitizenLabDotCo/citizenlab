@@ -33,6 +33,7 @@ const usePageForm = ({
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues,
+    shouldFocusError: true,
   });
 
   return {

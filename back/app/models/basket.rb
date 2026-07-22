@@ -13,9 +13,10 @@
 #
 # Indexes
 #
-#  index_baskets_on_phase_id      (phase_id)
-#  index_baskets_on_submitted_at  (submitted_at)
-#  index_baskets_on_user_id       (user_id)
+#  index_baskets_on_phase_id                     (phase_id)
+#  index_baskets_on_submitted_at                 (submitted_at)
+#  index_baskets_on_user_id                      (user_id)
+#  index_baskets_on_user_id_and_phase_id_unique  (user_id,phase_id) UNIQUE WHERE (user_id IS NOT NULL)
 #
 # Foreign Keys
 #
@@ -32,6 +33,7 @@ class Basket < ApplicationRecord
   has_many :notifications, dependent: :destroy
 
   validates :phase, presence: true
+  validates :user_id, uniqueness: { scope: :phase_id }, allow_nil: true
   validate :basket_submission, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
@@ -48,7 +50,7 @@ class Basket < ApplicationRecord
   end
 
   def destroy_or_keep!
-    if submitted? && TimelineService.new.phase_is_complete?(phase)
+    if submitted? && phase.complete?
       update!(user: nil)
     else
       destroy!
@@ -111,7 +113,9 @@ class Basket < ApplicationRecord
       baskets = Basket.where(phase: count_phases).submitted
       baskets_count = baskets.count
       votes_count = BasketsIdea.where(basket: baskets).sum(:votes)
-      update_context.update!(baskets_count: baskets_count, votes_count: votes_count)
+
+      # Denormalized counters: validating here would let an unrelated invalid attribute fail every recount.
+      update_context.update_columns(baskets_count: baskets_count, votes_count: votes_count, updated_at: Time.current)
     end
   end
 

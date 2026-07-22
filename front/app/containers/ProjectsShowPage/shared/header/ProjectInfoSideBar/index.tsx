@@ -6,6 +6,7 @@ import {
   IconTooltip,
   media,
   Tooltip,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -48,6 +49,7 @@ const ProjectInfoSideBar = memo<Props>(
     const { data: phases } = usePhases(projectId);
     const { formatMessage } = useIntl();
     const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
+    const isSmallerThanPhone = useBreakpoint('phone');
 
     if (project) {
       const projectParticipantsCount =
@@ -80,7 +82,8 @@ const ProjectInfoSideBar = memo<Props>(
                 disabled={!isAdmin(authUser)}
                 // Needs to be "left" at the time of writing
                 // to ensure the tooltip doesn't slip under the project CTA bar.
-                placement="left"
+                placement={isSmallerThanPhone ? 'top' : 'left'}
+                maxWidth={isSmallerThanPhone ? '90vw' : '300px'}
                 content={formatMessage(messages.liveDataMessage)}
                 aria-hidden={true}
               >
@@ -125,7 +128,8 @@ const ProjectInfoSideBar = memo<Props>(
                             values={{
                               accessRightsLink: (
                                 <Link
-                                  to={`/admin/projects/${projectId}/general/access-rights`}
+                                  to="/admin/projects/$projectId/general/access-rights"
+                                  params={{ projectId }}
                                 >
                                   <FormattedMessage
                                     {...messages.accessRights}

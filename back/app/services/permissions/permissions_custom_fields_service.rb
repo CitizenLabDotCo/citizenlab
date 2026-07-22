@@ -106,10 +106,6 @@ module Permissions
       @platform_custom_fields ||= CustomField.where(resource_type: 'User', enabled: true, hidden: false).order(:ordering)
     end
 
-    def user_confirmation_enabled?
-      @user_confirmation_enabled ||= AppConfiguration.instance.feature_activated?('user_confirmation')
-    end
-
     # Add any fields that are locked to verification method
     def add_verification_fields(permission, fields)
       method = Verification::VerificationService.new.first_method_enabled

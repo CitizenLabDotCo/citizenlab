@@ -17,8 +17,7 @@ describe('Existing Timeline project', () => {
 
     // shows the project header
     cy.get('#e2e-project-header-image');
-    cy.get('#e2e-project-description');
-    cy.get('#e2e-project-sidebar');
+    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
     cy.get('#e2e-project-see-ideas-button');
     cy.get('#project-ideabutton');
     cy.get('.e2e-project-info')
@@ -58,17 +57,25 @@ describe('New timeline project', () => {
   let projectId: string;
   let projectSlug: string;
 
-  const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
-  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
-  const today = moment().format('DD/MM/YYYY');
-  const inTwoDays = moment().add(2, 'days').format('DD/MM/YYYY');
-  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
+  const twoMonthsAgo = moment()
+    .subtract(2, 'month')
+    .format('YYYY-MM-DDT00:00:00.000Z');
+  const twoDaysAgo = moment()
+    .subtract(2, 'days')
+    .format('YYYY-MM-DDT00:00:00.000Z');
+  const today = moment().format('YYYY-MM-DDT00:00:00.000Z');
+  const tomorrow = moment().add(1, 'day').format('YYYY-MM-DDT00:00:00.000Z');
+  const inTwoDays = moment().add(2, 'days').format('YYYY-MM-DDT00:00:00.000Z');
+  const inTwoMonths = moment()
+    .add(2, 'month')
+    .format('YYYY-MM-DDT00:00:00.000Z');
 
   before(() => {
     cy.setConsentAndAdminLoginCookies();
 
     // create new project
     cy.apiCreateProject({
+      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
@@ -92,7 +99,7 @@ describe('New timeline project', () => {
         projectId,
         title: phaseCurrentTitle,
         startAt: today,
-        endAt: inTwoDays,
+        endAt: tomorrow,
         participationMethod: 'ideation',
         canComment: true,
         canPost: true,

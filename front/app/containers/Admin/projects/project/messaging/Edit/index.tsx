@@ -7,34 +7,34 @@ import {
   colors,
   Success,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
+import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import messages from '../messages';
 
 const Edit = () => {
-  const { projectId, campaignId } = useParams() as {
+  const { projectId, campaignId } = useParams({ strict: false }) as {
     projectId: string;
     campaignId: string;
   };
 
   const { formatMessage } = useIntl();
 
-  const { data: campaign } = useCampaign(campaignId);
+  const { data: campaign } = useEmailCampaign(campaignId);
 
-  const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
+  const { mutateAsync: updateCampaign, isLoading } = useUpdateEmailCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
-    useSendCampaignPreview();
+    useSendEmailCampaignPreview();
   const [previewSent, setPreviewSent] = useState(false);
   const goBack = () => {
     clHistory.push(

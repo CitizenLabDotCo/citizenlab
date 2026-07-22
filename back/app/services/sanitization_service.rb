@@ -119,7 +119,7 @@ class SanitizationService
       },
       list: {
         tags: %w[ol ul li],
-        attributes: %w[type]
+        attributes: %w[type start]
       },
       decoration: {
         tags: %w[b u i em strong],
@@ -139,7 +139,7 @@ class SanitizationService
       },
       mention: {
         tags: %w[span],
-        attributes: %w[class data-user-id data-user-slug]
+        attributes: %w[class data-user-id data-link-profile]
       },
       table: {
         tags: %w[table thead tbody tr th td tfoot],

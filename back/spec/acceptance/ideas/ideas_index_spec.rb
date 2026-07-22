@@ -53,14 +53,14 @@ resource 'Ideas' do
           expect(input1_response.dig(:attributes, :manual_votes_amount)).to eq 5
           expect(input1_response.dig(:attributes, :total_votes)).to eq 5
           expect(input1_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
-          expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
+          expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :first_name)).to eq admin.first_name
           expect(input1_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
 
           input2_response = json_response_body[:data].find { |i| i[:id] == input2.id }
           expect(input2_response.dig(:attributes, :manual_votes_amount)).to eq 8
           expect(input2_response.dig(:attributes, :total_votes)).to eq 8
           expect(input2_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq moderator.id
-          expect(json_response_body[:included].find { |i| i[:id] == moderator.id }&.dig(:attributes, :slug)).to eq moderator.slug
+          expect(json_response_body[:included].find { |i| i[:id] == moderator.id }&.dig(:attributes, :first_name)).to eq moderator.first_name
           expect(input2_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
         end
       end
@@ -76,7 +76,7 @@ resource 'Ideas' do
         end
         @proposal = create(:proposal)
         survey_project = create(:single_phase_native_survey_project)
-        create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
+        @survey_response = create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
       end
 
       example_request 'List all published inputs (default behaviour)' do
@@ -85,6 +85,19 @@ resource 'Ideas' do
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
         expect(json_response[:data].pluck(:id)).to include(@proposal.id)
+      end
+
+      example_request 'Offers ideas and proposals as inputs, but not native survey responses' do
+        # Inputs are scoped to publicly visible records, which keeps ideation
+        # inputs and proposals but drops native survey responses (their
+        # creation_phase is a survey phase). This is what lets the smart-group
+        # "Follow → one of the inputs" selector offer proposals while never
+        # offering survey responses.
+        assert_status 200
+        ids = json_parse(response_body)[:data].pluck(:id)
+        expect(ids).to include(@ideas.first.id)
+        expect(ids).to include(@proposal.id)
+        expect(ids).not_to include(@survey_response.id)
       end
 
       example 'List all transitive inputs' do

@@ -56,6 +56,7 @@ const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
       {image?.imageUrl && (
         <ImageComponent
           width={stretch ? '100%' : undefined}
+          maxWidth="100%"
           // TODO: Fix this the next time the file is edited.
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           src={image?.imageUrl}

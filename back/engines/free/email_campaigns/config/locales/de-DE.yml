@@ -18,7 +18,7 @@ de-DE:
     admin_labels:
       content_type:
         comments: Kommentare
-        content_moderation: Inhaltsmoderation
+        content_moderation: Spam-Moderation
         events: Veranstaltungen
         general: Allgemein
         inputs: Beiträge
@@ -48,7 +48,11 @@ de-DE:
         new_attendee: Neu registrierte*r Benutzer*in
         project_review_requester: Projektmanager*in, der oder die die Freigabe beantragt hat
         project_reviewers: Projektüberprüfer*innen und Ordnermanager*innen
+        user_changing_email: Nutzer*in, die ihre E-Mail-Adresse ändert
+        user_confirming_email: Nutzer*in, die die E-Mail-Adresse bestätigt
+        user_requesting_password_reset: Nutzer*in, die das Zurücksetzen des Passworts angefordert hat
         user_who_commented: Nutzer*in kommentiert
+        user_who_is_blocked: Nutzer*in, dessen Konto gesperrt ist
         user_who_is_invited_to_cosponsor_a_proposal: Nutzer*in wird zur Unterstützung eines Vorschlags eingeladen
         user_who_is_mentioned: Erwähnte Admins & Manager*innen
         user_who_is_receiving_admin_rights: Nutzer*in erhält Admin-Rechte
@@ -67,6 +71,7 @@ de-DE:
         user_with_unsubmitted_votes: Nutzer*innen, die Ihre Stimme(n) nicht abgeschickt haben
         users_who_engaged_but_not_voted: Nutzer*innen, die sich mit dem Projekt beschäftigt, aber nicht abgestimmt haben
         users_who_engaged_with_the_project: Nutzer*in interagiert mit Beitrag
+        users_who_follow_or_participated: Nutzende, die dem Projekt folgen oder daran teilgenommen haben
         users_who_follow_the_input: Nutzer*innen, die dem Beitrag folgen
         users_who_follow_the_project: Nutzer*innen, die dem Projekt folgen
         users_who_follow_the_proposal: Nutzer*innen, die dem Vorschlag folgen
@@ -94,6 +99,7 @@ de-DE:
         project_published: Projekt veröffentlicht
         project_review_request: Projektmanager*in hat eine Projektfreigabe beantragt
         project_review_state_change: Prüfer*in genehmigt das Projekt
+        proposal_expired: Ein Vorschlag läuft ab, ohne die Schwelle zu erreichen
         proposal_gets_reported_as_spam: Vorschlag wird als Spam markiert
         proposal_is_assigned_to_admin: Vorschlag wird Admin zugewiesen
         proposal_is_published: Vorschlag wird veröffentlicht
@@ -103,9 +109,12 @@ de-DE:
         registration_to_event: Anmeldung zu einer Veranstaltung
         survey_1_day_after_draft_saved: 1 Tag, nachdem der Nutzer / die Nutzer*in die Umfrage zuletzt als Entwurf gespeichert hat
         user_accepts_invitation_to_cosponsor_a_proposal: Nutzer*in nimmt Einladung zur Unterstützung eines Vorschlags an
+        user_changes_email: Nutzer*in ändert ihre E-Mail-Adresse
         user_comments: Kommentar wird veröffentlicht
         user_comments_on_input: Kommentar wird veröffentlicht
         user_comments_on_proposal: Nutzer*in kommentiert Vorschlag
+        user_confirms_email: Nutzer*in bestätigt ihre E-Mail-Adresse
+        user_is_blocked: Das Konto der Nutzerin ist gesperrt
         user_is_given_admin_rights: Nutzer*in erhält Admin-Rechte
         user_is_given_folder_manager_rights: Nutzer*in erhält Ordner-Manager*innen-Rechte
         user_is_given_folder_moderator_rights: Nutzer*in erhält Ordner-Moderationsrechte
@@ -119,6 +128,7 @@ de-DE:
         user_registers_for_the_first_time: Direkt nach der 1. Registrierung
         user_replies_to_comment: Antwort wird veröffentlicht
         user_replies_to_internal_comment: Nutzer*in antwortet auf internen Kommentar
+        user_requests_password_reset: Nutzer*in fordert das Zurücksetzen des Passworts an
         voting_1_day_after_last_votes: 1 Tag nach der letzten Stimmabgabe der Nutzer*innen
         voting_2_days_before_phase_closes: 2 Tage vor Ende der Abstimmung
         voting_basket_submitted: Stimmen eingereicht
@@ -156,8 +166,9 @@ de-DE:
       comment_marked_as_spam: Kommentar wird als Spam markiert
       comment_on_idea_you_follow: Ein Kommentar zu einer Idee, der Sie folgen
       comment_on_your_comment: Antwort auf einen Kommentar
-      community_monitor_report: Gemeinschaftspuls-Bericht
+      community_monitor_report: Stimmungsbarometer-Bericht
       cosponsor_of_your_idea: Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
+      email_confirmation: E-Mail-Bestätigungscode
       event_registration_confirmation: Anmeldebestätigung für Veranstaltungen
       idea_marked_as_spam: Beitrag wird als Spam gekennzeichnet
       idea_published: Veröffentlichung des Beitrags
@@ -176,8 +187,10 @@ de-DE:
       moderator_digest: Wöchentliche Übersicht für Ordner- und Projektmanager*innen
       native_survey_not_submitted: Umfrage nicht eingereicht
       new_comment_for_admin: Neuer Kommentar zu einem Projekt, das ich moderiere
+      new_email_confirmation: Neuer E-Mail-Bestätigungscode
       new_idea_for_admin_prescreening: Neuer Beitrag, der in einem von mir moderierten Projekt genehmigt werden muss
       new_idea_for_admin_published: Neuer Beitrag in einem Projekt, das ich moderiere
+      new_phone_confirmation: Neuer Bestätigungscode für die Telefonnummer
       official_feedback_on_idea_you_follow: Offizielles Update zu einer Idee, der Sie folgen
       password_reset: Zurücksetzen des Passworts
       project_folder_moderation_rights_received: Ordnermanagementrechte erhalten
@@ -188,11 +201,14 @@ de-DE:
       project_published: Projekt veröffentlicht
       project_review_request: Antrag auf Projektfreigabe
       project_review_state_change: Projekt freigegeben
+      proposal_expired_for_admin: Vorschlag abgelaufen, ohne die Abstimmungsschwelle zu erreichen
       screening_digest: Wöchentliche Überprüfungs-Erinnerung
+      sms_manual: Offizielle SMS-Nachrichten
       space_moderation_rights_received: Space-Manager*innen-Rechte erhalten
       status_change_on_idea_you_follow: Statusänderung einer Idee, der Sie folgen
       survey_submitted: Umfrage eingereicht
       threshold_reached_for_admin: Vorschlag hat die Abstimmungsschwelle erreicht
+      user_blocked: Konto gesperrt
       user_digest: Wöchentliche Übersicht
       voting_basket_not_submitted: Nicht abgegebene Stimmen
       voting_basket_submitted: Bestätigung der Abstimmung
@@ -235,6 +251,7 @@ de-DE:
         idea: '%{authorName} hat eine Idee kommentiert, der Sie folgen'
         initiative: '%{authorName} hat eine Initiative kommentiert, der Sie folgen'
         issue: '%{authorName} hat ein Problem kommentiert, dem Sie folgen'
+        observation: '%{authorName} hat eine Beobachtung kommentiert, der Sie folgen'
         option: '%{authorName} hat eine Option kommentiert, der Sie folgen'
         petition: '%{authorName} hat eine Petition kommentiert, der Sie folgen'
         post: '%{authorName} hat einen Beitrag kommentiert, dem Sie folgen'
@@ -257,17 +274,26 @@ de-DE:
       title: '%{authorName} hat auf Ihren Kommentar geantwortet'
     community_monitor_report:
       cta_button: Bericht ansehen
-      event_description: Ein Gemeinschaftspuls-Bericht wurde für das letzte Quartal erstellt. Sie können darauf zugreifen, indem Sie auf den Button unten klicken und sich anmelden.
-      preheader: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
-      report_name: Gemeinschaftspuls-Bericht
-      subject: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
-      title: Ein neuer Gemeinschaftspuls-Bericht ist verfügbar
+      event_description: Ein Stimmungsbarometer-Bericht wurde für das letzte Quartal erstellt. Sie können darauf zugreifen, indem Sie auf den Button unten klicken und sich anmelden.
+      preheader: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
+      report_name: Stimmungsbarometer-Bericht
+      subject: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
+      title: Ein neuer Stimmungsbarometer-Bericht ist verfügbar
     cosponsor_of_your_idea:
       cta_button: Vorschlag ansehen
       event_description: Herzlichen Glückwunsch! %{cosponsorName} hat deine Einladung zum Unterstützen deines Vorschlags angenommen.
       preheader: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
       subject: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
       title: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
+    email_confirmation:
+      best_regards: Mit freundlichen Grüßen
+      event_description: 'Vielen Dank für Ihre Teilnahme. Bitte geben Sie diesen Bestätigungscode im Fenster auf der Beteiligungsplattform von %{organizationName} ein:'
+      expire_code: Dieser Code läuft ab in
+      hours_24: 24 Stunden.
+      ignore_email: Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren.
+      preheader: Bestätigen Sie Ihre E-Mail-Adresse für %{organizationName}
+      subject: Bestätigen Sie Ihre E-Mail-Adresse für die Beteiligungsplattform von %{organizationName}
+      title: Bestätigen Sie Ihre E-Mail-Adresse
     event_registration_confirmation:
       cta_add_to_calendar: Zum Kalender hinzufügen
       cta_button: Veranstaltung ansehen
@@ -299,7 +325,8 @@ de-DE:
         contribution: Zum Beitrag
         idea: Zur Idee
         initiative: Zur Initiative
-        issue: Zum Problem
+        issue: Zum Mangel
+        observation: Zu dieser Beobachtung
         option: Zur Option
         petition: Zur Petition
         post: Zum Beitrag
@@ -319,7 +346,8 @@ de-DE:
         contribution: Zum Beitrag
         idea: Zur Idee
         initiative: Zur Initiative
-        issue: Zum Problem
+        issue: Zum Mangel
+        observation: Zu Ihrer Beobachtung
         option: Zur Option
         petition: Zur Petition
         post: Zu Ihrem Beitrag
@@ -352,7 +380,8 @@ de-DE:
         contribution: Ihr Beitrag wurde veröffentlicht
         idea: Ihre Idee wurde veröffentlicht
         initiative: Initiative wurde veröffentlicht
-        issue: Ihr Problem wurde veröffentlicht
+        issue: Ihr Mangel wurde veröffentlicht
+        observation: Ihre Beobachtung wurde veröffentlicht
         option: Ihre Option wurde veröffentlicht
         petition: Ihre Petition wurde veröffentlicht
         post: Beitrag wurde veröffentlicht
@@ -479,6 +508,15 @@ de-DE:
       title: '%{firstName}, ein neuer Kommentar wurde auf Ihrer Plattform veröffentlicht'
       today: Heute
       yesterday: Gestern
+    new_email_confirmation:
+      best_regards: Mit freundlichen Grüßen
+      event_description: 'Bitte geben Sie diesen Bestätigungscode im Fenster auf der Beteiligungsplattform von %{organizationName} ein, um Ihre neue E-Mail-Adresse zu bestätigen:'
+      expire_code: Dieser Code läuft ab in
+      hours_24: 24 Stunden.
+      ignore_email: Wenn Sie keinen Code angefordert haben, können Sie diese E-Mail einfach ignorieren.
+      preheader: Bestätigen Sie Ihre neue E-Mail-Adresse für %{organizationName}
+      subject: Bestätigen Sie Ihre neue E-Mail-Adresse für die Beteiligungsplattform von %{organizationName}
+      title: Bestätigen Sie Ihre neue E-Mail-Adresse
     new_idea_for_admin_prescreening:
       cta_button: Beitrag prüfen
       days_ago: vor %{numberOfDays} Tagen
@@ -498,12 +536,20 @@ de-DE:
       title: Ein neuer Beitrag wurde auf Ihrer Plattform veröffentlicht
       today: Heute
       yesterday: Gestern
+    new_phone_confirmation:
+      sms_body: Dein Bestätigungscode lautet %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Zum Beitrag
       event_description: "%{feedback_author_name} hat ein offizielles Update zu %{input_title} gegeben'."
       preheader: Es gibt ein Update für einen Beitrag, dem Sie folgen
       subject: Ein offizielles Update wurde zu "%{input_title}" veröffentlicht
       title: Es gibt ein Update zu "%{input_title}"
+    password_reset:
+      cta_button: Passwort zurücksetzen
+      event_description: Sie haben eine Zurücksetzung Ihres Passworts für die Beteiligungsplattform von %{organizationName} angefordert. Klicken Sie auf die Schaltfläche unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in 1 Stunde ab.
+      preheader: Setzen Sie Ihr Passwort für %{organizationName} zurück
+      subject: '%{organizationName}: Passwort zurücksetzen'
+      title: Neues Passwort wählen
     preview_data:
       author_display_name: Erika Mustermann
       author_first_name: Erika
@@ -591,6 +637,11 @@ de-DE:
       preheader: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
       subject: '"%{projectTitle}" wurde freigegeben'
       title: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
+    proposal_expired_for_admin:
+      cta_button: Den abgelaufenen Beitrag überprüfen
+      preheader: Ein Beitrag ist abgelaufen, ohne die Schwelle zu erreichen
+      subject: '"%{input_title}" ist abgelaufen, ohne die Schwelle zu erreichen'
+      title: Ein Beitrag ist abgelaufen, ohne die Abstimmungsschwelle zu erreichen
     schedules:
       quarterly: Vierteljährlich, am ersten Tag des Quartals
       weekly:
@@ -604,7 +655,7 @@ de-DE:
     screening_digest:
       cta_button: Beiträge überprüfen
       event_description: Diese Beiträge müssen freigegeben werden, bevor sie für die Öffentlichkeit sichtbar sind. Sie können sie im plattformweiten Beitragsmanager oder im Beitragsmanager der einzelnen Phasen überprüfen.
-      inputs_awaiting_screening: zu überprüfende Beiträge
+      inputs_awaiting_screening: zu überprüfender Beitrag / überprüfende Beiträge
       preheader: Beiträge überprüfen für %{organizationName}
       subject: '%{count} Beiträge, die zur Überprüfung anstehen'
       title: '%{firstName}, Beiträge warten darauf, überprüft zu werden'
@@ -644,6 +695,14 @@ de-DE:
       preheader: Stelle sicher, dass du die nächsten Schritte ausführst
       subject: Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht
       title: Ein Vorschlag hat die Abstimmungsschwelle erreicht!
+    user_blocked:
+      for_more_information: Weitere Informationen hierzu finden Sie unter %{termsAndConditionsPage}
+      paragraph_1_with_reason: 'Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde aus folgendem Grund vorübergehend deaktiviert:'
+      paragraph_1_without_reason: Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde aufgrund eines Verstoßes gegen die Community-Richtlinien vorübergehend deaktiviert.
+      preheader: Ihr Konto auf der Beteiligungsplattform von %{organizationName} wurde vorübergehend deaktiviert
+      subject: Ihr Konto wurde vorübergehend deaktiviert
+      title: Ihr Konto wurde vorübergehend deaktiviert
+      you_can_sign_in_again_from: Sie können sich ab dem %{date} wieder anmelden
     user_digest:
       commented: '%{authorFirstName} kommentierte:'
       cta_button: Zur Plattform
@@ -712,7 +771,8 @@ de-DE:
         contribution: Ihr Beitrag ist in "%{prescreening_status_title}"
         idea: Ihr Beitrag ist in "%{prescreening_status_title}"
         initiative: Ihre Initiative ist in "%{prescreening_status_title}"
-        issue: Ihr Problem ist in "%{prescreening_status_title}"
+        issue: Ihr Mangel ist in "%{prescreening_status_title}"
+        observation: Ihre Beobachtung befindet sich im Status "%{prescreening_status_title}"
         option: Ihre Option ist in "%{prescreening_status_title}"
         petition: Ihre Petition ist in "%{prescreening_status_title}"
         post: Ihr Beitrag ist in "%{prescreening_status_title}"
@@ -720,7 +780,7 @@ de-DE:
         proposal: Dein Vorschlag ist in "%{prescreening_status_title}"
         question: Ihre Frage ist in "%{prescreening_status_title}"
         response: Ihre Antwort ist in "%{prescreening_status_title}"
-        story: Ihre Story ist in "%{prescreening_status_title}"
+        story: Deine Story ist in "%{prescreening_status_title}"
         suggestion: Ihr Vorschlag ist in "%{prescreening_status_title}"
         topic: Ihr Thema ist in "%{prescreening_status_title}"
       preheader: Es befindet sich derzeit in %{prescreening_status_title}

@@ -77,81 +77,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     enable_signup: boolean;
     minimum_length?: number;
-  };
-  facebook_login?: {
-    allowed: boolean;
-    app_id: string;
-    app_secret?: string;
-    enabled: boolean;
-  };
-  google_login?: {
-    allowed: boolean;
-    client_id: string;
-    enabled: boolean;
-  };
-  azure_ad_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    tenant: string;
-    client_id: string;
-    logo_url: string;
-    login_mechanism_name: string;
-    visibility?: 'show' | 'link' | 'hide';
-    enforced_email_domain_error_multiloc?: Multiloc;
-  };
-  azure_ad_b2c_login?: {
-    allowed: boolean;
-    enabled: boolean;
-    tenant_name: string;
-    tenant_id: string;
-    policy_name: string;
-    client_id: string;
-    logo_url: string;
-    login_mechanism_name: string;
-  };
-  franceconnect_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  clave_unica_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  hoplr_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  id_austria_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  criipto_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  keycloak_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  twoday_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  acm_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  federa_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  nemlog_in_login?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
-  vienna_citizen_login?: {
-    allowed: boolean;
-    enabled: boolean;
+    minimum_strength?: number;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -165,8 +91,6 @@ export interface IAppConfigurationSettings {
     enabled_fragments: string[];
   };
   verification?: {
-    allowed: boolean;
-    enabled: boolean;
     verification_methods: string[];
   };
   smart_groups?: AppConfigurationFeature;
@@ -222,9 +146,7 @@ export interface IAppConfigurationSettings {
     api_key: string;
   };
   disable_user_bios?: AppConfigurationFeature;
-  project_description_builder?: AppConfigurationFeature;
   remove_vendor_branding?: AppConfigurationFeature;
-  user_confirmation?: AppConfigurationFeature;
   permissions_custom_fields?: AppConfigurationFeature;
   report_builder?: AppConfigurationFeature;
   report_data_grouping?: AppConfigurationFeature;
@@ -278,13 +200,23 @@ export interface IAppConfigurationSettings {
   spaces?: AppConfigurationFeature;
   project_scheduling?: AppConfigurationFeature;
   draft_phase_description?: AppConfigurationFeature;
-  email_scheduling?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
+  hide_submission_removal_text?: AppConfigurationFeature;
+  project_static_pages?: AppConfigurationFeature;
+  parallel_participation?: AppConfigurationFeature;
+  html_block_in_content_builder?: AppConfigurationFeature;
+  sms?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
 
-export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
+export type TAppConfigurationSetting = Exclude<
+  keyof IAppConfigurationSettings,
+  'verification'
+>;
 
 export interface AppConfigurationMapSettings extends AppConfigurationFeature {
   map_center: {

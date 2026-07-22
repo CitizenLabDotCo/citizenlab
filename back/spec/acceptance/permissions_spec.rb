@@ -11,7 +11,8 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
-    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+    AppConfiguration.instance.save!
   end
 
   let(:project_id) { @project.id }
@@ -141,6 +142,11 @@ resource 'Permissions' do
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
+        parameter :require_confirmed_email, 'Whether a confirmed email is required to take this action', required: false
+        parameter :confirmed_email_expiry, 'number of days before email reconfirmation required - nil means never reconfirm', required: false
+        parameter :require_name, 'Whether a first and last name are required to take this action', required: false
+        parameter :require_password, 'Whether a password is required to take this action', required: false
+        parameter :require_verification, 'Whether identity verification is required to take this action', required: false
         parameter :access_denied_explanation_multiloc, 'Multiloc string for explaining why access is denied', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
@@ -149,13 +155,15 @@ resource 'Permissions' do
       let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
       let(:access_denied_explanation_multiloc) { { en: 'You do not have access because you are not in the right group' } }
 
-      context 'permitted_by: verified' do
-        let(:permitted_by) { 'verified' }
+      context 'require_verification' do
+        let(:permitted_by) { 'users' }
+        let(:require_verification) { true }
         let(:verification_expiry) { 30 }
 
-        example_request 'Update a permission with verified permitted_by' do
+        example_request 'Update a permission to require verification' do
           assert_status 200
-          expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+          expect(response_data.dig(:attributes, :require_verification)).to be true
           expect(response_data.dig(:attributes, :verification_expiry)).to eq verification_expiry
           expect(response_data.dig(:attributes, :verification_enabled)).to be true
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
@@ -163,14 +171,30 @@ resource 'Permissions' do
         end
       end
 
-      context 'permitted_by: everyone_confirmed_email' do
-        let(:permitted_by) { 'everyone_confirmed_email' }
+      context 'require_confirmed_email only' do
+        let(:permitted_by) { 'users' }
+        let(:require_confirmed_email) { true }
+        let(:require_name) { false }
+        let(:require_password) { false }
 
-        example_request 'Update group IDs when permitted_by "everyone_confirmed_email"' do
+        example_request 'Update group IDs for a users permission that only requires a confirmed email' do
           assert_status 200
-          expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+          expect(response_data.dig(:attributes, :require_confirmed_email)).to be true
+          expect(response_data.dig(:attributes, :require_name)).to be false
+          expect(response_data.dig(:attributes, :require_password)).to be false
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'activity logging', document: false do
+        let(:permitted_by) { 'admins_moderators' }
+
+        example 'logs a "changed" and a "changed_permitted_by" activity' do
+          expect { do_request }
+            .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed', anything, anything, anything)
+            .and enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed_permitted_by', anything, anything, anything)
         end
       end
     end
@@ -196,6 +220,13 @@ resource 'Permissions' do
         expect(response_data.dig(:attributes, :global_custom_fields)).to be true
         expect(permission.permissions_custom_fields.count).to eq 0
         expect(permission.permissions_custom_fields.count).to eq 0
+      end
+
+      example 'logs a "changed" activity', document: false do
+        permission.groups << create_list(:group, 2, projects: [@phase.project])
+
+        expect { do_request }
+          .to enqueue_job(LogActivityJob).with(an_instance_of(Permission), 'changed', anything, anything, anything)
       end
     end
 
@@ -229,7 +260,7 @@ resource 'Permissions' do
     get 'web_api/v1/phases/:phase_id/permissions/:action/requirements' do
       context "'everyone' permissions" do
         before do
-          @permission = @phase.permissions.first
+          @permission = @phase.permissions.find_by!(action: 'posting_idea')
           @permission.update!(permitted_by: 'everyone')
         end
 
@@ -254,16 +285,18 @@ resource 'Permissions' do
         end
       end
 
-      context "'everyone_confirmed_email' permissions" do
+      # Formerly the 'everyone_confirmed_email' permitted_by, now a 'users' permission
+      # that only requires a confirmed email (no name, no password).
+      context "'users' permission requiring only a confirmed email" do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
+          @user = create(:unconfirmed_user)
+          header_token_for @user
           @permission = @phase.permissions.first
-          @permission.update!(permitted_by: 'everyone_confirmed_email')
+          @permission.update!(permitted_by: 'users', require_confirmed_email: true, require_name: false, require_password: false)
           create(:custom_field_birthyear, required: true)
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
 
-          @user.reset_confirmation_and_counts
           @user.update!(
             first_name: 'Jack',
             last_name: nil,
@@ -274,7 +307,9 @@ resource 'Permissions' do
 
         let(:action) { @permission.action }
 
-        # NOTE: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
+        # NOTE: Unlike the old everyone_confirmed_email behaviour, a 'users' permission DOES
+        # collect the global registration custom fields (allow_global_custom_fields? is true),
+        # so the unsatisfied required fields are returned here.
         example_request 'Get the participation requirements of a passwordless user requiring confirmation in a phase' do
           assert_status 200
           expect(response_data[:attributes]).to eq({
@@ -282,40 +317,11 @@ resource 'Permissions' do
             disabled_reason: 'user_missing_requirements',
             requirements: {
               authentication: {
-                permitted_by: 'everyone_confirmed_email',
+                permitted_by: 'users',
                 missing_user_attributes: ['confirmation']
               },
               verification: false,
-              custom_fields: {},
-              onboarding: false,
-              group_membership: false
-            }
-          })
-        end
-      end
-    end
-
-    get 'web_api/v1/permissions/:action/requirements' do
-      context 'with everyone permission' do
-        before do
-          @permission = Permission.where(permission_scope_type: nil).first
-          @permission.update!(permitted_by: 'everyone')
-        end
-
-        let(:action) { @permission.action }
-
-        example_request 'Get the participation requirements of a user in the global scope' do
-          assert_status 200
-          expect(response_data[:attributes]).to eq({
-            permitted: true,
-            disabled_reason: nil,
-            requirements: {
-              authentication: {
-                permitted_by: 'everyone',
-                missing_user_attributes: []
-              },
-              verification: false,
-              custom_fields: {},
+              custom_fields: { birthyear: 'required', extra_field: 'required' },
               onboarding: false,
               group_membership: false
             }

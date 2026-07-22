@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
-import useCampaigns from 'api/campaigns/useCampaigns';
-import useSupportedCampaignNames from 'api/campaigns/useSupportedCampaignNames';
+import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
+import useSupportedEmailCampaignNames from 'api/campaigns/email/useSupportedEmailCampaignNames';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -12,19 +11,24 @@ import CampaignRow from 'containers/Admin/messaging/AutomatedEmails/CampaignRow'
 import { stringifyCampaignFields } from 'containers/Admin/messaging/AutomatedEmails/utils';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
 const AdminPhaseEmailWrapper = () => {
   const localize = useLocalize();
-  const { phaseId } = useParams();
-  const { data: supportedCampaigns } = useSupportedCampaignNames({ phaseId });
+  const { phaseId } = useParams({ strict: false });
+  const { data: supportedCampaigns } = useSupportedEmailCampaignNames({
+    phaseId,
+  });
   const supportedCampaignNames = supportedCampaigns?.data.attributes || [];
-  const contextCampaigns = useCampaigns({
+  const contextCampaigns = useEmailCampaigns({
     ...(phaseId ? { context: { phaseId } } : {}),
     pageSize: 250,
   }).data?.pages.flatMap((page) => page.data);
-  const { data: supportedCampaignsPages } = useCampaigns({ pageSize: 250 });
+  const { data: supportedCampaignsPages } = useEmailCampaigns({
+    pageSize: 250,
+  });
   const globalCampaigns = supportedCampaignsPages?.pages.flatMap(
     (page) => page.data
   );

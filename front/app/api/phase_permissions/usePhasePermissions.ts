@@ -26,6 +26,7 @@ const usePhasePermissions = ({ phaseId }: PhasePermissionsProps) => {
   >({
     queryKey: phasePermissionKeys.list({ phaseId }),
     queryFn: () => fetchPhasePermissions({ phaseId }),
+    enabled: !!phaseId,
   });
 };
 

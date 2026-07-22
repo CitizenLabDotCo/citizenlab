@@ -6,10 +6,10 @@ describe('Project description builder Two Column component', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
+      const projectDescription = '';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
@@ -38,7 +38,7 @@ describe('Project description builder Two Column component', () => {
   });
 
   it('handles Two Column component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-two-column').dragAndDrop(
@@ -69,7 +69,7 @@ describe('Project description builder Two Column component', () => {
   });
 
   it('deletes Two Column component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);

@@ -1,6 +1,7 @@
 import React, { useRef, KeyboardEvent } from 'react';
 
 import { fontSizes, colors, media } from '@citizenlab/cl2-component-library';
+import { focusRingInset } from 'global-styles';
 import { rgba } from 'polished';
 import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
@@ -38,6 +39,11 @@ const Tab = styled.button<{ active: boolean; fullWidth: boolean }>`
       }
       cursor: pointer;
     `}
+
+  &.focus-visible,
+  &:focus-visible {
+    ${focusRingInset}
+  }
 
   ${media.phone`
     font-size: ${fontSizes.base}px;

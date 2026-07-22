@@ -22,4 +22,29 @@ export default defineMessages({
     defaultMessage:
       'This score is the average of all sentiment-scale questions answered by participants for the period selected.',
   },
+  healthScoreTableCaption: {
+    id: 'app.containers.Admin.communityMonitor.healthScoreTableCaption',
+    defaultMessage:
+      'Health Score Table showing the health score for each category per selected period',
+  },
+  categoryColumn: {
+    id: 'app.containers.Admin.communityMonitor.categoryColumn',
+    defaultMessage: 'Category',
+  },
+  overallHealthScore: {
+    id: 'app.containers.Admin.communityMonitor.overallHealthScore',
+    defaultMessage: 'Overall Health Score',
+  },
+  quarter: {
+    id: 'app.containers.Admin.communityMonitor.quarter',
+    defaultMessage: 'Quarter',
+  },
+  scoreOutOfFive: {
+    id: 'app.containers.Admin.communityMonitor.scoreOutOfFive',
+    defaultMessage: '{score} out of 5. ',
+  },
+  scoreNotAvailable: {
+    id: 'app.containers.Admin.communityMonitor.scoreNotAvailable',
+    defaultMessage: 'Data not found. ',
+  },
 });

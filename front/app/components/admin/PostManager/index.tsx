@@ -39,6 +39,7 @@ export const LeftColumn = styled.div`
 
 export const MiddleColumn = styled.div`
   flex: 1;
+  min-width: 0;
   transition: 200ms;
 `;
 

@@ -264,6 +264,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.components.AuthProviders.continueWithLuxembourgIAM": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.941232Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.components.AuthProviders.continueWithNemlogIn": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -614,6 +620,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.ConsentManager.Banner.cookieModalInitialScreenDescriptionWithoutLink": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ConsentManager.Banner.cookieModalTitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -929,6 +940,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.CustomFieldsForm.progressPercentage": {
+    "state": "verified",
+    "verified_at": "2026-05-27T09:53:40.427541Z",
+    "verified_by": "Jelena"
+  },
   "app.components.CustomFieldsForm.removeAnswer": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -1124,6 +1140,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.EsriMap.mapAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-04-29T10:11:13.163981Z",
+    "verified_by": "Jelena"
+  },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -1163,6 +1184,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.EventAttendanceButton.unregisteredAnnouncement": {
+    "state": "verified",
+    "verified_at": "2026-05-18T14:40:25.266640Z",
+    "verified_by": "Jelena"
   },
   "app.components.EventCard.a11y_lessContentVisible": {
     "state": "verified",
@@ -1338,6 +1364,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.FilterSelector.closeMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-18T15:53:55.723374Z",
+    "verified_by": "Jelena"
   },
   "app.components.FiltersModal.filters": {
     "state": "verified",
@@ -1924,6 +1955,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.components.ParticipationCTABars.seeObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ParticipationCTABars.seeOptions": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2063,6 +2100,16 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.PasswordInput.passwordRequiredError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T14:22:33.063616Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.PasswordInput.passwordStrengthError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T14:22:33.063616Z",
+    "verified_by": "Jelena"
   },
   "app.components.PasswordInput.passwordStrengthTooltip1": {
     "state": "verified",
@@ -2299,6 +2346,24 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.components.PostComponents.SharingModalContent.observationEmailSharingBody": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.PostComponents.SharingModalContent.observationEmailSharingSubject": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.PostComponents.SharingModalContent.observationWhatsAppMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PostComponents.SharingModalContent.optionEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2484,6 +2549,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.ProjectCard.a11y_ctaForProject": {
+    "state": "verified",
+    "verified_at": "2026-05-07T09:37:02.958346Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.ProjectCard.a11y_ctaForProject1": {
+    "state": "verified",
+    "verified_at": "2026-05-08T07:08:24.141901Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectCard.a11y_projectDescription": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2569,6 +2644,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.components.ProjectCard.submitYourObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectCard.submitYourPetition": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2643,6 +2724,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.components.ProjectCard.viewTheObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.components.ProjectCard.viewTheOptions": {
     "state": "verified",
@@ -2819,6 +2906,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.ProjectFolderCards.components.Topbar.searchProjectsAndFolders": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.815255Z",
+    "verified_by": "Jelena"
+  },
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2848,6 +2940,162 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": {
+    "state": "verified",
+    "verified_at": "2026-07-09T13:46:09.989744Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.eventsEmptyNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.eventsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": {
+    "state": "verified",
+    "verified_at": "2026-07-09T13:46:09.989744Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.onlyAdminsSeeThis": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.phasesHeading": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.projectTitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.sectionHeightCappedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.timelineEmptyTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.timelineHiddenNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.timelineHiddenTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.timelineManagedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.titleWidgetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.components.ProjectPageBuilder.Widgets.untitledProject": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
   },
   "app.components.ProjectTemplatePreview.alsoUsedIn": {
     "state": "verified",
@@ -2908,6 +3156,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.QuillEditor.embeddedVideo": {
+    "state": "verified",
+    "verified_at": "2026-05-05T11:41:00.809248Z",
+    "verified_by": "Jelena"
   },
   "app.components.QuillEditor.image": {
     "state": "verified",
@@ -3164,10 +3417,25 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-05-12T13:10:36.086469Z",
+    "verified_by": "Jelena"
+  },
   "app.components.UI.FullscreenImage.expandImage": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.963674Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.MoreActionsMenu.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.963674Z",
+    "verified_by": "Jelena"
   },
   "app.components.UI.MoreActionsMenu.moreOptions": {
     "state": "verified",
@@ -3318,6 +3586,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.components.VerificationModal.verifyEtatLu2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:55:32.941232Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.components.VerificationModal.verifyFakeSSO": {
     "state": "verified",
@@ -3493,6 +3767,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.components.admin.UserFilterConditions.field_participated_in_input": {
+    "state": "verified",
+    "verified_at": "2026-07-01T07:58:46.314688Z",
+    "verified_by": "Jelena"
   },
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": {
     "state": "verified",
@@ -5989,10 +6269,30 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.trendIndicator.comparedToLastQuarter": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.830148Z",
+    "verified_by": "Jelena"
+  },
   "app.components.trendIndicator.lastQuarter2": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.trendIndicator.trendDecreased": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.830148Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.trendIndicator.trendIncreased": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.830148Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.trendIndicator.trendNoChange": {
+    "state": "verified",
+    "verified_at": "2026-06-15T09:13:10.830148Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AccessibilityStatement.applicability": {
     "state": "verified",
@@ -6134,6 +6434,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.AccessibilityStatement.publicationDate2026": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:12:59.176036Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AccessibilityStatement.responsiveness": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6143,6 +6449,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.AccessibilityStatement.statusPageUrl": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:12:59.176036Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AccessibilityStatement.technologiesIntro": {
     "state": "verified",
@@ -6254,6 +6566,56 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.App.SessionExpiryModal.sessionExpiredDescription1": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiredTitle1": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionMinutes": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonDescriptionSeconds": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.sessionExpiringSoonTitle": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.signInAgain": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.signOut": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.staySignedOut": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleExpiringSoon": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.App.SessionExpiryModal.tabTitleSignedOut": {
+    "state": "verified",
+    "verified_at": "2026-04-30T15:21:06.844591Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.App.appMetaDescription": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6309,10 +6671,40 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.188304Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.188304Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.Authentication.steps.EmailFlowStart.alreadyHaveAnAccount": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.188304Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.Authentication.steps.EmailFlowStart.federaTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-08T07:51:00.188304Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:03:15.906621Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
@@ -6354,15 +6746,45 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.CampaignsConsentForm.ally_categoryLabel2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.CampaignsConsentForm.emailNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.CampaignsConsentForm.messageError": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.CampaignsConsentForm.messageError2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.CampaignsConsentForm.messageSuccess": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.CampaignsConsentForm.messageSuccess2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.CampaignsConsentForm.notificationsSubTitle": {
     "state": "verified",
@@ -6373,6 +6795,18 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.CampaignsConsentForm.smsNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.CampaignsConsentForm.smsNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.CampaignsConsentForm.submit": {
     "state": "verified",
@@ -6393,6 +6827,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.ChangeEmail.currentEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:53:49.732594Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ChangeEmail.emailEmptyError": {
     "state": "verified",
@@ -6438,6 +6877,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.ChangeEmail.noEmail": {
+    "state": "verified",
+    "verified_at": "2026-05-20T13:53:49.732594Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ChangeEmail.submitButton": {
     "state": "verified",
@@ -7009,6 +7453,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.EventsShow.viewLocationOnGoogleMaps": {
+    "state": "verified",
+    "verified_at": "2026-06-18T11:53:51.177677Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.EventsShow.xParticipants": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -7099,6 +7548,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.IdeaButton.addAnObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeaButton.addAnOption": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -7163,6 +7618,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeaCard.comments": {
+    "state": "verified",
+    "verified_at": "2026-05-06T12:48:50.513291Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeaCard.readMore": {
     "state": "verified",
@@ -7314,6 +7774,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.IdeaCards.searchContributions": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.815255Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.IdeaCards.searchPosts": {
+    "state": "verified",
+    "verified_at": "2026-05-13T12:06:32.815255Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeaCards.showXResults": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -7398,6 +7868,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.IdeaCards.xObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeaCards.xOptions2": {
     "state": "verified",
@@ -7498,6 +7974,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.IdeasEditPage.observationFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasEditPage.optionFormTitle": {
     "state": "verified",
@@ -7629,6 +8111,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.IdeasFeedPage.addAnObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasFeedPage.addAnOption": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -7698,6 +8186,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.IdeasFeedPage.seeAllObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasFeedPage.seeAllOptions": {
     "state": "verified",
@@ -7773,6 +8267,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.IdeasFeedPage.showAllObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasFeedPage.showAllOptions": {
     "state": "verified",
@@ -8619,6 +9119,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.IdeasNewPage.observationMetaTitle1": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasNewPage.optionMetaTitle1": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -8739,6 +9245,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.IdeasShow.actionsMenuTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-20T08:50:23.963674Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasShow.commentCTA": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -8834,6 +9345,102 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.IdeasShow.importedTooltipComment": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipContribution": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipIdea": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipInitiative": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipIssue": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipObservation": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipOption": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipPetition": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipPost": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipProject": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipProposal": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipQuestion": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipResponse": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipStory": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipSuggestion": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.importedTooltipTopic": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:03:31.917077Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.IdeasShow.initiativeEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -8888,6 +9495,36 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.IdeasShow.observationEmailSharingBody": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.observationEmailSharingSubject": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.observationSharingModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.observationTwitterMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.IdeasShow.observationWhatsAppMessage": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeasShow.optionEmailSharingBody": {
     "state": "verified",
@@ -9499,6 +10136,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.NotificationMenu.invitationToCosponsorObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.NotificationMenu.invitationToCosponsorOption": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -9613,6 +10256,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.NotificationMenu.officialFeedbackOnObservationYouFollow": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.officialFeedbackOnOptionYouFollow": {
     "state": "verified",
@@ -9743,6 +10392,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.NotificationMenu.userCommentedOnObservationYouFollow": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.userCommentedOnOptionYouFollow": {
     "state": "verified",
@@ -9944,6 +10599,156 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.PhoneChange.backToProfile": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.confirmationModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.currentPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.helmetDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.helmetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.newPhoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.phoneEmptyError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.phoneInvalid2": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.phoneTaken": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.phoneUnknownError": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.phoneUpdateCancelled": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.phoneUpdateCancelledDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.submitButton": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.titleAddPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.titleChangePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneChange.updateSuccessful": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.changeYourNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.codeInput": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.codeMustHaveFourDigits": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.confirmationCodeSent": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.didntGetAnSMS": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.sendNewCode": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.verifyAndContinue": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
+
+  "app.containers.PhoneConfirmation.wrongNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.ProjectFolderCards.allProjects": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -9993,6 +10798,24 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.ProjectPageBuilder.projectPageHeading": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.ProjectPageBuilder.saveError": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
+  },
+
+  "app.containers.ProjectPageBuilder.toolboxLockedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-08T12:11:44.680180Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Projects.PollForm.document": {
     "state": "verified",
@@ -10388,6 +11211,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.Projects.seeTheObservations": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Projects.seeTheOptions": {
     "state": "verified",
@@ -11054,6 +11883,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.UsersEditPage.addPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -11098,6 +11933,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.containers.UsersEditPage.changePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.292538Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.containers.UsersEditPage.clickHereToUpdateVerification": {
     "state": "verified",
@@ -11444,6 +12285,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.UsersShowPage.metaTitle2": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:10:39.984033Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.UsersShowPage.noCommentsForUser": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -11554,6 +12400,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.containers.admin.ContentBuilder.richTextMultiloc": {
+    "state": "verified",
+    "verified_at": "2026-06-17T09:27:03.034167Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.admin.ContentBuilder.selectedProjects": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -11618,6 +12470,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.app.navbar.showMobileNavMenu": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
   },
   "app.containers.app.navbar.signOut": {
     "state": "verified",
@@ -11693,6 +12550,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.footer.goVocalLogoTitle": {
+    "state": "verified",
+    "verified_at": "2026-05-05T11:35:08.767977Z",
+    "verified_by": "Jelena"
   },
   "app.containers.footer.poweredBy": {
     "state": "verified",
@@ -11979,6 +12841,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.errors.bulk_import_user_not_valid": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.cannot_contain_ideas": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12119,6 +12986,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.errors.invalid_first_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
+  },
+  "app.errors.invalid_last_name": {
+    "state": "verified",
+    "verified_at": "2026-05-18T07:11:25.613458Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.invalid_row": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12204,6 +13081,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.errors.phase_too_short": {
+    "state": "verified",
+    "verified_at": "2026-04-22T09:13:36.501380Z",
+    "verified_by": "Jelena"
+  },
   "app.errors.resending_code_failed": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12253,6 +13135,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.too_weak": {
+    "state": "verified",
+    "verified_at": "2026-06-25T14:22:33.063616Z",
+    "verified_by": "Jelena"
   },
   "app.errors.uncaught_error": {
     "state": "verified",
@@ -12734,6 +13621,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.utils.IdeasNewPage.observationFormTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
+  },
   "app.utils.IdeasNewPage.optionFormTitle": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -12818,6 +13711,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.utils.IdeasNewPage.viewYourObservation": {
+    "state": "verified",
+    "verified_at": "2026-06-30T10:24:50.449546Z",
+    "verified_by": "Jelena"
   },
   "app.utils.IdeasNewPage.viewYourOption": {
     "state": "verified",
@@ -13079,6 +13978,12 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+
+  "app.utils.inactivePhase": {
+    "state": "verified",
+    "verified_at": "2026-07-09T13:53:06.660872Z",
+    "verified_by": "Jelena"
+  },
   "app.utils.notInGroup": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -13113,6 +14018,12 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+
+  "app.utils.projectInactive": {
+    "state": "verified",
+    "verified_at": "2026-07-09T13:53:06.660872Z",
+    "verified_by": "Jelena"
   },
   "app.utils.votingMethodUtils.budgetParticipationEnded1": {
     "state": "verified",
@@ -13176,8 +14087,8 @@
   },
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": {
     "state": "verified",
-    "verified_at": "2026-03-30T12:57:38.368694Z",
-    "verified_by": "Edwin Kato"
+    "verified_at": "2026-05-18T07:12:08.658146Z",
+    "verified_by": "Jelena"
   },
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": {
     "state": "verified",
@@ -13418,6 +14329,81 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "containers.OAuthAuthorize.authorizeButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.authorizeExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.authorizeHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.denyButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.inControlDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.inControlTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.invalidRequestExplanation": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.invalidRequestHeading": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.pageTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.scopeFallbackDetail2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.scopeFallbackTitle2": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessDetail": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.scopeMcpAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.signInButton": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
+  },
+  "containers.OAuthAuthorize.signInPrompt": {
+    "state": "verified",
+    "verified_at": "2026-06-09T14:26:27.625482Z",
+    "verified_by": "Jelena"
   },
   "containers.SiteMap.allProjects": {
     "state": "verified",

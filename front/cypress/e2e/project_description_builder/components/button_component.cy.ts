@@ -6,7 +6,7 @@ describe('Project description builder Button component', () => {
 
   before(() => {
     cy.setAdminLoginCookie();
-    cy.getAuthUser().then((user) => {
+    cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
       const projectDescription = 'Original project description.';
@@ -38,7 +38,7 @@ describe('Project description builder Button component', () => {
   });
 
   it('handles Button component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
@@ -83,7 +83,7 @@ describe('Project description builder Button component', () => {
   });
 
   it('deletes Button component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);

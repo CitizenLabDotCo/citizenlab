@@ -7,22 +7,23 @@ import { Keys } from 'utils/cl-react-query/types';
 import projectFoldersKeys from './keys';
 
 export type ProjectFoldersKeys = Keys<typeof projectFoldersKeys>;
-export interface IQueryParameters {
-  pageNumber?: number;
-  pageSize?: number;
-}
+
 export interface IProjectFolders {
   data: IProjectFolderData[];
 }
 export interface INewProjectFolderDiff {
   title_multiloc: Multiloc;
   slug: string | null;
-  description_multiloc: Multiloc;
+  // Optional: a folder can be created without a description, which is then
+  // authored in the Content Builder after creation.
+  description_multiloc?: Multiloc;
   description_preview_multiloc: Multiloc;
   header_bg?: string | null;
   header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes: {
     publication_status: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
   space_id?: string | null;
 }
@@ -77,6 +78,8 @@ export interface IUpdatedProjectFolder {
   header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
   space_id?: string | null;
 }

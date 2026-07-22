@@ -15,12 +15,14 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getInputTermMessage } from 'utils/i18n';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
+import tracks from '../tracks';
 
 import StickyNote, { TopicInfo } from './StickyNote';
 
@@ -123,12 +125,14 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
   const handleNoteClick = (ideaId: string) => {
+    trackEventByName(tracks.pileNoteClicked);
     clHistory.push(
       `/projects/${slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${ideaId}`
     );
   };
 
   const handleSeeAllClick = () => {
+    trackEventByName(tracks.seeAllIdeasClicked);
     clHistory.push(`/projects/${slug}/ideas-feed?phase_id=${phaseId}`);
   };
 
@@ -237,6 +241,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
               topic: messages.seeAllTopicsTerm,
               post: messages.seeAllPosts,
               story: messages.seeAllStories,
+              observation: messages.seeAllObservations,
             })}
             values={{ ideasCount }}
           />

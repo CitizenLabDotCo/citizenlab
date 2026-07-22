@@ -2,16 +2,15 @@ import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import {
   ActionDescriptor,
-  ActionDescriptorFutureEnabled,
-  ProjectDisabledReason,
-  ProjectCommentingDisabledReason,
-  ProjectDocumentAnnotationDisabledReason,
-  ProjectPollDisabledReason,
-  ProjectPostingDisabledReason,
-  ProjectReactingDisabledReason,
-  ProjectSurveyDisabledReason,
-  ProjectVotingDisabledReason,
-  ProjectVolunteeringDisabledReason,
+  AttendingEventDisabledReason,
+  PhaseCommentingDisabledReason,
+  PhaseDocumentAnnotationDisabledReason,
+  PhasePollDisabledReason,
+  PhasePostingDisabledReason,
+  PhaseReactingDisabledReason,
+  PhaseSurveyDisabledReason,
+  PhaseVotingDisabledReason,
+  PhaseVolunteeringDisabledReason,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -28,7 +27,8 @@ export type ProjectsKeys = Keys<typeof projectsKeys>;
 
 // Misc
 type Sort = 'new' | '-new' | 'trending' | '-trending' | 'popular' | '-popular';
-export type PublicationStatus = 'draft' | 'published' | 'archived';
+export const publicationStatuses = ['draft', 'published', 'archived'] as const;
+export type PublicationStatus = (typeof publicationStatuses)[number];
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
@@ -91,9 +91,11 @@ export interface IProjectAttributes {
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
+  scheduled_status?: PublicationStatus | null;
+  scheduled_at?: string | null;
   include_all_areas: boolean;
   folder_id?: string | null;
-  action_descriptors: ActionDescriptors;
+  action_descriptors: ProjectActionDescriptors;
   uses_content_builder: boolean;
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
@@ -102,21 +104,24 @@ export interface IProjectAttributes {
   space_id?: string | null;
 }
 
-export type ActionDescriptors = {
-  posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
-  commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+export type PhaseActionDescriptors = {
+  posting_idea: ActionDescriptor<PhasePostingDisabledReason>;
+  commenting_idea: ActionDescriptor<PhaseCommentingDisabledReason>;
   // Same disabled reasons as commenting_idea at time of writing
-  comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
-  reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
-    up: ActionDescriptor<ProjectReactingDisabledReason>;
-    down: ActionDescriptor<ProjectReactingDisabledReason>;
+  comment_reacting_idea: ActionDescriptor<PhaseCommentingDisabledReason>;
+  reacting_idea: ActionDescriptor<PhaseReactingDisabledReason> & {
+    up: ActionDescriptor<PhaseReactingDisabledReason>;
+    down: ActionDescriptor<PhaseReactingDisabledReason>;
   };
-  taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
-  taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
-  annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
-  voting: ActionDescriptor<ProjectVotingDisabledReason>;
-  attending_event: ActionDescriptor<ProjectDisabledReason>;
-  volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
+  taking_survey: ActionDescriptor<PhaseSurveyDisabledReason>;
+  taking_poll: ActionDescriptor<PhasePollDisabledReason>;
+  annotating_document: ActionDescriptor<PhaseDocumentAnnotationDisabledReason>;
+  voting: ActionDescriptor<PhaseVotingDisabledReason>;
+  volunteering: ActionDescriptor<PhaseVolunteeringDisabledReason>;
+};
+
+export type ProjectActionDescriptors = {
+  attending_event: ActionDescriptor<AttendingEventDisabledReason>;
 };
 
 export interface IProjectData {
@@ -157,7 +162,8 @@ export interface IProjectData {
   };
 }
 
-export type Visibility = 'public' | 'groups' | 'admins';
+export const visibilities = ['public', 'groups', 'admins'] as const;
+export type Visibility = (typeof visibilities)[number];
 type PresentationMode = 'map' | 'card' | 'feed';
 
 interface ProjectHeaderBgImageSizes {
@@ -194,6 +200,8 @@ export interface IUpdatedProjectProperties {
   presentation_mode?: PresentationMode | null;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
+    scheduled_status?: PublicationStatus | null;
+    scheduled_at?: string | null;
   };
   publication_status?: PublicationStatus;
   voting_min_total?: number | null;

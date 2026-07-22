@@ -22,7 +22,6 @@ import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
 import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
@@ -36,15 +35,14 @@ import {
 import SlugInput from 'components/admin/SlugInput';
 import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
@@ -76,7 +74,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
-  const { formatMessage } = useIntl();
   const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
   const syncProjectFolderFiles = useSyncFolderFiles();
 
@@ -103,18 +100,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { mutateAsync: addProjectFolder } = useAddProjectFolder();
   const { mutateAsync: updateProjectFolder } = useUpdateProjectFolder();
 
-  const showDescriptionBuilder =
-    useFeatureFlag({
-      name: 'project_description_builder',
-    }) && projectFolder; // description builder cannot be used when creating a folder
-
-  const { data: authUser } = useAuthUser();
+  // A folder must exist before its description can be authored in the Content
+  // Builder, so the builder link only shows once the folder is created (edit
+  // mode). At creation the description is left empty and added afterwards.
+  const showDescriptionBuilder = projectFolder;
 
   /*
     ==============
     State
     ==============
-  */ const [errors, setErrors] = useState<CLErrors>({});
+  */
+  const [errors, setErrors] = useState<CLErrors>({});
+  const { data: authUser } = useAuthUser();
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
@@ -148,6 +145,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   >([]);
   const [submitState, setSubmitState] =
     useState<IProjectFolderSubmitState>('disabled');
+  const [spaceIdError, setSpaceIdError] = useState(false);
 
   /*
     ==============
@@ -243,6 +241,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const handleSpaceIdChange = (spaceId: string | null) => {
     setSubmitState('enabled');
+    setSpaceIdError(false);
     setSpaceId(spaceId);
   };
 
@@ -313,17 +312,19 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     let valid = false;
 
     if (!isNilOrError(tenantLocales)) {
-      // check that all fields have content for all tenant locales
+      // The main description is optional and authored in the Content Builder
+      // after the folder is created, so only title and short description are
+      // required for all tenant locales here.
       valid = tenantLocales.every(
         (locale) =>
           !isEmpty(titleMultiloc?.[locale]) &&
-          !isEmpty(descriptionMultiloc?.[locale]) &&
           !isEmpty(shortDescriptionMultiloc?.[locale])
       );
     }
 
     if (isSpaceModerator(authUser) && !spaceId) {
       valid = false;
+      setSpaceIdError(true);
     }
 
     if (!valid) {
@@ -334,7 +335,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, [
     tenantLocales,
     titleMultiloc,
-    descriptionMultiloc,
     shortDescriptionMultiloc,
     authUser,
     spaceId,
@@ -345,15 +345,13 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       setSubmitState('loading');
       if (mode === 'new') {
         try {
-          if (
-            titleMultiloc &&
-            descriptionMultiloc &&
-            shortDescriptionMultiloc
-          ) {
+          if (titleMultiloc && shortDescriptionMultiloc) {
             const projectFolder = await addProjectFolder({
               title_multiloc: titleMultiloc,
               slug,
-              description_multiloc: descriptionMultiloc,
+              ...(descriptionMultiloc && {
+                description_multiloc: descriptionMultiloc,
+              }),
               description_preview_multiloc: shortDescriptionMultiloc,
               header_bg: headerBgBase64,
               header_bg_alt_text_multiloc: headerImageAltText,
@@ -395,7 +393,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         try {
           if (
             titleMultiloc &&
-            descriptionMultiloc &&
             shortDescriptionMultiloc &&
             !isNilOrError(projectFolder)
           ) {
@@ -489,9 +486,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   ? titleMultiloc
                   : undefined,
                 slug: changedSlug ? slug : undefined,
-                description_multiloc: changedDescriptionMultiloc
-                  ? descriptionMultiloc
-                  : undefined,
+                description_multiloc:
+                  changedDescriptionMultiloc && descriptionMultiloc
+                    ? descriptionMultiloc
+                    : undefined,
                 description_preview_multiloc: changedShortDescriptionMultiloc
                   ? shortDescriptionMultiloc
                   : undefined,
@@ -523,6 +521,22 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const folderCardImageShouldBeSaved = folderCardImage
     ? !folderCardImage.remote
     : false;
+
+  const getErrorMessage = () => {
+    if (submitState === 'apiError') {
+      return messages.saveErrorMessage;
+    }
+
+    if (spaceIdError) {
+      return messages.spaceRequiredError;
+    }
+
+    if (tenantLocales && tenantLocales.length > 1) {
+      return messages.multilocError;
+    }
+
+    return messages.textFieldsError;
+  };
 
   return (
     <form onSubmit={saveForm}>
@@ -576,37 +590,23 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-        <SectionField data-cy="e2e-project-folder-short-description">
-          <SubSectionTitle>
-            <FormattedMessage {...messages.folderDescription} />
-          </SubSectionTitle>
-          {showDescriptionBuilder ? (
-            <Highlighter fragmentId="description-multiloc">
-              <DescriptionBuilderToggle
-                valueMultiloc={descriptionMultiloc}
-                onChange={getHandler(setDescriptionMultiloc)}
-                label={formatMessage(messages.descriptionInputLabel)}
-                contentBuildableType="folder"
+        <SectionField>
+          {showDescriptionBuilder && (
+            <>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.folderDescription} />
+              </SubSectionTitle>
+              <Highlighter fragmentId="description-multiloc">
+                <DescriptionBuilderLink contentBuildableType="folder" />
+              </Highlighter>
+              <Error
+                fieldName="description_multiloc"
+                apiErrors={errors.description_multiloc}
               />
-            </Highlighter>
-          ) : (
-            <Box data-cy="e2e-project-folder-description">
-              <QuillMutilocWithLocaleSwitcher
-                id="description"
-                valueMultiloc={descriptionMultiloc}
-                onChange={getHandler(setDescriptionMultiloc)}
-                label={<FormattedMessage {...messages.descriptionInputLabel} />}
-                withCTAButton
-              />
-            </Box>
+            </>
           )}
-          <Error
-            fieldName="description_multiloc"
-            apiErrors={errors.description_multiloc}
-          />
-          <Box mt="35px">
+          <Box mt="35px" data-cy="e2e-project-folder-short-description">
             <TextAreaMultilocWithLocaleSwitcher
-              data-cy="e2e-project-folder-short-description"
               valueMultiloc={shortDescriptionMultiloc}
               name="textAreaMultiloc"
               onChange={getHandler(setShortDescriptionMultiloc)}
@@ -642,7 +642,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           </SectionField>
         )}
 
-        <SpaceSelectSection spaceId={spaceId} onChange={handleSpaceIdChange} />
+        <SpaceSelectSection
+          spaceId={spaceId}
+          error={spaceIdError}
+          onChange={handleSpaceIdChange}
+        />
 
         <SectionField>
           <SubSectionTitle>
@@ -737,12 +741,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
-            messageError:
-              submitState === 'apiError'
-                ? messages.saveErrorMessage
-                : tenantLocales && tenantLocales.length > 1
-                ? messages.multilocError
-                : messages.textFieldsError,
+            messageError: getErrorMessage(),
             messageSuccess: messages.saveSuccessMessage,
           }}
         />

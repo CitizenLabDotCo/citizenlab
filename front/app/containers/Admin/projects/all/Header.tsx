@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Title, Tooltip } from '@citizenlab/cl2-component-library';
+import { useSearch } from '@tanstack/react-router';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -14,6 +15,10 @@ import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import messages from './messages';
 
 const Header = () => {
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/',
+  });
+  const tab = searchParams.tab;
   const { data: authUser } = useAuthUser();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
@@ -36,7 +41,44 @@ const Header = () => {
         alignItems="center"
         className="intercom-admin-projects-new-project-folder-buttons"
       >
-        {spacesEnabled && (
+        {tab === undefined && (
+          <Box>
+            <Button
+              data-cy="e2e-new-project-button"
+              className="intercom-admin-projects-new-project-button"
+              to="/admin/projects/new"
+              icon="plus-circle"
+              buttonStyle="admin-dark"
+            >
+              <FormattedMessage {...messages.newProject} />
+            </Button>
+          </Box>
+        )}
+        {tab === 'folders' && (
+          <Tooltip
+            content={
+              <FormattedMessage
+                {...(spacesEnabled
+                  ? messages.onlyAdminsAndSpaceManagersCanCreateFolders
+                  : messages.onlyAdminsCanCreateFolders)}
+              />
+            }
+            disabled={userCanAddFolders}
+          >
+            <Box>
+              <Button
+                data-cy="e2e-new-project-folder-button"
+                to="/admin/projects/folders/new"
+                buttonStyle="admin-dark"
+                icon="folder-add"
+                disabled={!userCanAddFolders}
+              >
+                <FormattedMessage {...messages.createProjectFolder} />
+              </Button>
+            </Box>
+          </Tooltip>
+        )}
+        {tab === 'spaces' && spacesEnabled && (
           <Tooltip
             content={
               <FormattedMessage {...messages.onlyAdminsCanCreateSpaces} />
@@ -47,8 +89,8 @@ const Header = () => {
               <Button
                 data-cy="e2e-new-space-button"
                 className="intercom-admin-projects-new-space-button"
-                linkTo={'/admin/projects/spaces/new'}
-                buttonStyle="secondary-outlined"
+                to="/admin/projects/spaces/new"
+                buttonStyle="admin-dark"
                 icon="spaces"
                 iconSize="20px"
                 disabled={!userIsAdmin}
@@ -58,39 +100,6 @@ const Header = () => {
             </Box>
           </Tooltip>
         )}
-        <Tooltip
-          content={
-            <FormattedMessage
-              {...(spacesEnabled
-                ? messages.onlyAdminsAndSpaceManagersCanCreateFolders
-                : messages.onlyAdminsCanCreateFolders)}
-            />
-          }
-          disabled={userCanAddFolders}
-        >
-          <Box>
-            <Button
-              data-cy="e2e-new-project-folder-button"
-              linkTo={'/admin/projects/folders/new'}
-              buttonStyle="secondary-outlined"
-              icon="folder-add"
-              disabled={!userCanAddFolders}
-            >
-              <FormattedMessage {...messages.createProjectFolder} />
-            </Button>
-          </Box>
-        </Tooltip>
-        <Box>
-          <Button
-            data-cy="e2e-new-project-button"
-            className="intercom-admin-projects-new-project-button"
-            linkTo={'/admin/projects/new'}
-            icon="plus-circle"
-            buttonStyle="admin-dark"
-          >
-            <FormattedMessage {...messages.newProject} />
-          </Button>
-        </Box>
       </Box>
     </Box>
   );

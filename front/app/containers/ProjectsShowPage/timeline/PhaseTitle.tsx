@@ -9,6 +9,7 @@ import {
   isRtl,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { FormattedTime } from 'react-intl';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
@@ -143,7 +144,25 @@ const PhaseTitle = ({
             {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
           </Title>
           <PhaseDate className={phaseStatus}>
-            {isOneDayPhase ? startDate : `${startDate} - ${endDate}`}
+            {isOneDayPhase ? (
+              startDate
+            ) : (
+              <>
+                {startDate}
+                <>
+                  {' '}
+                  <FormattedTime value={phase.data.attributes.start_at} />
+                </>
+                {' - '}
+                {endDate}
+                {phase.data.attributes.end_at && (
+                  <>
+                    {' '}
+                    <FormattedTime value={phase.data.attributes.end_at} />
+                  </>
+                )}
+              </>
+            )}
           </PhaseDate>
         </HeaderTitleWrapper>
       </Container>

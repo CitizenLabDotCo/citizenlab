@@ -1,8 +1,6 @@
 import React from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { stringify } from 'qs';
-import { useParams } from 'react-router-dom';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAnalysisQuestion from 'api/analysis_questions/useAnalysisQuestion';
@@ -17,10 +15,9 @@ import QuestionHeader from 'containers/Admin/projects/project/analysis/Insights/
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../../../messages';
-
-import { convertFilterValuesToString } from './utils';
 
 const Question = ({
   questionId,
@@ -37,7 +34,7 @@ const Question = ({
   });
 
   const { data } = useAnalysisQuestion({ analysisId, id: questionId });
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -59,9 +56,10 @@ const Question = ({
 
   const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
 
-  const refreshDisabled =
-    missingInputsCount === 0 ||
-    (!largeSummariesAllowed && filteredInputCount > 30);
+  // The refresh button stays active even with 0 new responses, so admins can
+  // choose to re-trigger; only the hard capacity limit (too many inputs without
+  // large summaries) disables it.
+  const refreshDisabled = !largeSummariesAllowed && filteredInputCount > 30;
 
   if (!question || !answer) {
     return <Spinner />;
@@ -121,9 +119,12 @@ const Question = ({
           <ButtonWithLink
             buttonStyle="secondary-outlined"
             icon="eye"
-            linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
-              { ...convertFilterValuesToString(filters), phase_id: phaseId }
-            )}`}
+            to="/admin/projects/$projectId/analysis/$analysisId"
+            params={{ projectId, analysisId }}
+            search={{
+              ...filters,
+              phase_id: phaseId,
+            }}
           >
             {formatMessage(messages.explore)}
           </ButtonWithLink>

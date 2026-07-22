@@ -6,7 +6,7 @@ import { addPrefix } from '../util';
 
 export const getInitialData = (
   draftIdea: IIdea | undefined,
-  authUser: IUser | undefined,
+  authUser: IUser | undefined | null,
   phase: IPhase
 ) => {
   const initialFormData = draftIdea?.data.attributes ?? {};

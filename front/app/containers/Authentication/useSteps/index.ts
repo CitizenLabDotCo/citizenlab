@@ -1,17 +1,11 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
-import { parse } from 'qs';
-import { useLocation } from 'react-router-dom';
-import { RouteType } from 'routes';
-
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
 import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import { SSOParams } from 'api/authentication/singleSignOn';
 import useAuthUser from 'api/me/useAuthUser';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useModalQueue } from 'containers/App/ModalQueue';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
@@ -20,6 +14,7 @@ import { trackEventByName, trackVirtualPageView } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 import {
   triggerAuthenticationFlow$,
@@ -28,12 +23,15 @@ import {
 } from '../events';
 import {
   ErrorCode,
+  SignUpInError,
   State,
   StepConfig,
   Step,
   AuthenticationData,
+  VerificationError,
 } from '../typings';
 
+import { restoreLocationAfterAuthReturn } from './restoreLocationAfterAuthReturn';
 import { getStepConfig } from './stepConfig';
 
 let initialized = false;
@@ -42,7 +40,6 @@ export default function useSteps() {
   const { pathname, search } = useLocation();
   const { data: authUser } = useAuthUser();
   const { queueModal, removeModal } = useModalQueue();
-  const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
   // The authentication data will be initialized with the global sign up flow.
   // In practice, this will be overwritten before firing the flow (see event
@@ -129,8 +126,7 @@ export default function useSteps() {
       setCurrentStep,
       setError,
       updateState,
-      state,
-      userConfirmationEnabled
+      state
     );
   }, [
     getAuthenticationData,
@@ -139,7 +135,6 @@ export default function useSteps() {
     setError,
     updateState,
     state,
-    userConfirmationEnabled,
   ]);
 
   /** given the current step and a transition supported by that step, performs the transition */
@@ -150,7 +145,7 @@ export default function useSteps() {
     ) => {
       const action = stepConfig[currentStep][transition];
 
-      const wrappedAction = (async (...args) => {
+      const wrappedAction = (async (...args: any[]) => {
         setError(null);
         setLoading(true);
 
@@ -178,13 +173,18 @@ export default function useSteps() {
       const { authenticationData, flow } = event.eventValue;
 
       authenticationDataRef.current = authenticationData;
-      updateState({ flow });
 
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(flow);
+      const emailInCaseUserNeedsToConfirm =
+        authUser?.data.attributes.new_email ?? null;
+
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(
+        flow,
+        emailInCaseUserNeedsToConfirm
+      );
     });
 
     return () => subscription.unsubscribe();
-  }, [currentStep, transition, updateState]);
+  }, [currentStep, transition, updateState, authUser]);
 
   // Listen for any action that triggers the VERIFICATION flow, and initialize
   // the flow in no flow is ongoing
@@ -224,7 +224,10 @@ export default function useSteps() {
   // Logic to launch other flows
   useEffect(() => {
     if (initialized) return;
+
+    // authUser === undefined means the request is still loading
     if (authUser === undefined) return;
+
     initialized = true;
     if (currentStep !== 'closed') return;
 
@@ -237,11 +240,11 @@ export default function useSteps() {
 
         updateState({ flow: 'signup' });
 
-        transition(currentStep, 'START_INVITE_FLOW')(search);
+        transition(currentStep, 'START_INVITE_FLOW')(window.location.search);
       }
 
-      // Remove all parameters from URL as they've already been captured
-      window.history.replaceState(null, '', '/');
+      // Remove all parameters from URL as they've already been captured.
+      clHistory.replace('/');
       return;
     }
 
@@ -270,29 +273,28 @@ export default function useSteps() {
 
         transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')('signup');
       }
-      // Remove all parameters from URL as they've already been captured
-      window.history.replaceState(null, '', '/');
+      // Remove all parameters from URL as they've already been captured.
+      clHistory.replace('/');
       return;
     }
 
-    const urlSearchParams = parse(search, {
-      ignoreQueryPrefix: true,
-    }) as any;
-
     // Verification from profile & group based (non-SSO) verification flow
-    if (urlSearchParams.verification_error === 'true') {
+    if (search.verification_error === 'true') {
       transition(
         currentStep,
         'TRIGGER_VERIFICATION_ERROR'
-      )(urlSearchParams.error_code);
+      )(search.error_code as VerificationError | undefined);
 
       // Remove query string from URL as params already been captured
       window.history.replaceState(null, '', pathname);
       return;
     }
 
-    if (urlSearchParams.authentication_error === 'true') {
-      transition(currentStep, 'TRIGGER_AUTH_ERROR')(urlSearchParams.error_code);
+    if (search.authentication_error === 'true') {
+      transition(
+        currentStep,
+        'TRIGGER_AUTH_ERROR'
+      )(search.error_code as SignUpInError | undefined);
 
       // Remove query string from URL as params already been captured
       window.history.replaceState(null, '', pathname);
@@ -303,15 +305,15 @@ export default function useSteps() {
     // authentication method through an URL param, and launch the corresponding
     // flow
     if (
-      urlSearchParams.sso_success === 'true' ||
-      urlSearchParams.verification_success === 'true'
+      search.sso_success === 'true' ||
+      search.verification_success === 'true'
     ) {
       const {
         sso_flow,
         sso_verification_action,
         sso_verification_id,
         sso_verification_type,
-      } = urlSearchParams as SSOParams;
+      } = search as SSOParams;
 
       // Check if there is a success action in local storage (from SSO or verification)
       const actionFromLocalStorage = localStorage.getItem(
@@ -322,12 +324,6 @@ export default function useSteps() {
       // Check if there is a context in local storage (from verification)
       const contextFromLocalStorage = localStorage.getItem('auth_context');
       localStorage.removeItem('auth_context');
-
-      // Check if there is a path in local storage
-      const pathFromLocalStorage = localStorage.getItem(
-        'auth_path'
-      ) as RouteType;
-      localStorage.removeItem('auth_path');
 
       const context = contextFromLocalStorage
         ? JSON.parse(contextFromLocalStorage)
@@ -344,16 +340,14 @@ export default function useSteps() {
       };
 
       const flow = sso_flow ?? 'signin';
-      updateState({ flow, email: authUser.data.attributes.email ?? null });
+
+      const emailInCaseUserNeedsToConfirm =
+        authUser?.data.attributes.new_email ?? null;
+
+      updateState({ flow, email: emailInCaseUserNeedsToConfirm });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
-      // Check that the path is the same as the one stored in local storage
-      if (pathFromLocalStorage && pathname !== pathFromLocalStorage) {
-        clHistory.push(pathFromLocalStorage);
-      } else {
-        // Remove query string from URL as params already been captured
-        window.history.replaceState(null, '', pathname);
-      }
+      restoreLocationAfterAuthReturn(pathname);
     }
   }, [
     pathname,

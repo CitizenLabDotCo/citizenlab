@@ -10,15 +10,18 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/useCommunityMonitorSentimentScores';
 
 import useLocale from 'hooks/useLocale';
 
+import A11yTable from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/_shared/A11yTable';
+
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import CategoryScores from './components/CategoryScores';
 import HealthScoreChart from './components/HealthScoreChart';
@@ -26,6 +29,7 @@ import PreviousQuarterComparison from './components/PreviousQuarterComparison';
 import TotalCountsSentimentBar from './components/TotalCountsSentimentBar';
 import messages from './messages';
 import {
+  buildHealthScoreA11yTable,
   categoryColors,
   filterDataBySelectedQuarter,
   getQuarterFilter,
@@ -38,6 +42,7 @@ type Props = {
   quarter?: string;
   year?: string;
 };
+
 const HealthScoreWidget = ({
   phaseId,
   ariaDescribedBy,
@@ -45,7 +50,7 @@ const HealthScoreWidget = ({
   ...props
 }: Props & AccessibilityProps) => {
   const locale = useLocale();
-  const [search] = useSearchParams();
+  const search = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
@@ -53,8 +58,8 @@ const HealthScoreWidget = ({
     useCommunityMonitorSentimentScores(phaseId);
 
   // Get current year/quarter filter
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
 
   // Transform the sentiment score data into a more usable format
   const sentimentScores = filterDataBySelectedQuarter(
@@ -73,6 +78,11 @@ const HealthScoreWidget = ({
   // Get the current overall health score
   const currentOverallHealthScore = sentimentScores?.overallHealthScores.find(
     (score) => score.period === `${year}-${quarter}`
+  );
+
+  const { columns, data: A11yTableData } = buildHealthScoreA11yTable(
+    sentimentScores,
+    formatMessage
   );
 
   return (
@@ -104,11 +114,21 @@ const HealthScoreWidget = ({
               ml="4px"
               iconSize="16px"
               icon="info-outline"
+              placement={isMobileOrSmaller ? 'bottom' : 'right-end'}
+              maxTooltipWidth={isMobileOrSmaller ? 250 : undefined}
               content={formatMessage(messages.healthScoreDescription)}
             />
           </Box>
           <Box display="flex" mt="12px" ml="8px">
+            <ScreenReaderOnly>
+              {currentOverallHealthScore?.score
+                ? formatMessage(messages.scoreOutOfFive, {
+                    score: currentOverallHealthScore.score,
+                  })
+                : formatMessage(messages.scoreNotAvailable)}
+            </ScreenReaderOnly>
             <Text
+              aria-hidden
               m="0px"
               fontSize="xxxxl"
               mt="auto"
@@ -120,6 +140,7 @@ const HealthScoreWidget = ({
               {currentOverallHealthScore?.score || '-'}
             </Text>
             <Text
+              aria-hidden
               fontWeight="semi-bold"
               m="0px"
               mt="auto"
@@ -154,6 +175,12 @@ const HealthScoreWidget = ({
           quarter={quarter}
         />
       </Box>
+
+      <A11yTable
+        columns={columns}
+        data={A11yTableData}
+        caption={formatMessage(messages.healthScoreTableCaption)}
+      />
     </Box>
   );
 };

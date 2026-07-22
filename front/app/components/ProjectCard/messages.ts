@@ -175,6 +175,10 @@ export default defineMessages({
     id: 'app.components.ProjectCard.submitYourStory',
     defaultMessage: 'Submit your story',
   },
+  submitYourObservation: {
+    id: 'app.components.ProjectCard.submitYourObservation',
+    defaultMessage: 'Submit your observation',
+  },
   reaction: {
     id: 'app.components.ProjectCard.reaction',
     defaultMessage: 'Reaction',
@@ -244,6 +248,10 @@ export default defineMessages({
     id: 'app.components.ProjectCard.viewTheStories',
     defaultMessage: 'View the stories',
   },
+  viewTheObservations: {
+    id: 'app.components.ProjectCard.viewTheObservations',
+    defaultMessage: 'View the observations',
+  },
   a11y_projectTitle: {
     id: 'app.components.ProjectCard.a11y_projectTitle',
     defaultMessage: 'Project title: ',
@@ -251,6 +259,10 @@ export default defineMessages({
   a11y_projectDescription: {
     id: 'app.components.ProjectCard.a11y_projectDescription',
     defaultMessage: 'Project description: ',
+  },
+  a11y_ctaForProject: {
+    id: 'app.components.ProjectCard.a11y_ctaForProject1',
+    defaultMessage: '{cta}. Project {projectTitle}',
   },
   readTheReport: {
     id: 'app.components.ProjectCard.readTheReport',

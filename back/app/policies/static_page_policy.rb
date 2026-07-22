@@ -3,12 +3,20 @@
 class StaticPagePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.all
+      return scope.all if user&.active? && user.admin?
+
+      # Global pages (no project) are public. A project-scoped page is only
+      # visible when its project is visible to this user - i.e. published and
+      # accessible, or moderated by them - so a draft/hidden project doesn't
+      # leak its pages.
+      visible_projects = ProjectPolicy::Scope.new(user_context, Project).resolve
+      scope.where(project_id: nil).or(scope.where(project: visible_projects))
     end
   end
 
   def show?
-    true
+    # Global pages stay public; project pages follow their project's visibility.
+    record.project_id.nil? || scope.exists?(id: record.id)
   end
 
   def by_slug?
@@ -16,11 +24,23 @@ class StaticPagePolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user.admin?
+    return false unless user&.active?
+    return true if user.admin?
+
+    # Moderators may only create pages for a project they moderate. They can
+    # never create a global (projectless) page.
+    record.project_id.present? && moderates_page_project?
   end
 
   def update?
-    user&.active? && user.admin?
+    return false unless user&.active?
+    return true if user.admin?
+
+    # Moderators may edit pages of projects they moderate, but never reassign a
+    # page to a different project.
+    record.project_id.present? &&
+      !record.project_id_changed? &&
+      moderates_page_project?
   end
 
   def destroy?
@@ -49,9 +69,17 @@ class StaticPagePolicy < ApplicationPolicy
       :bottom_info_section_enabled,
       { bottom_info_section_multiloc: CL2_SUPPORTED_LOCALES },
       :header_bg,
+      :project_id,
       { area_ids: [] },
       { global_topic_ids: [] },
+      { space_ids: [] },
       { nav_bar_item_title_multiloc: CL2_SUPPORTED_LOCALES }
     ]
+  end
+
+  private
+
+  def moderates_page_project?
+    UserRoleService.new.can_moderate_project?(record.project, user)
   end
 end

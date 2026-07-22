@@ -112,6 +112,8 @@ hu-HU:
           title: Mi a kezdeményezésed?
         issue:
           title: Mi a megjegyzésed?
+        observation:
+          title: Mi az észrevételed?
         option:
           title: Mi a lehetőséged?
         petition:
@@ -267,6 +269,25 @@ hu-HU:
       title: Minden projekt
     proposals:
       title: Javaslatok
+  pdf_export:
+    input_responses:
+      date: Dátum
+      no_answer: (Nincs válasz)
+      prepared_by: Készítette
+      report_label: Válaszjelentés
+      respondent: Válaszadó %{number}
+      response_count:
+        one: '%{count} válasz'
+        other: '%{count} válasz'
+    survey_responses:
+      date: Dátum
+      no_answer: (Nincs válasz)
+      prepared_by: Készítette
+      report_label: Kérdőív válaszjelentés
+      respondent: Válaszadó %{number}
+      response_count:
+        one: '%{count} válasz'
+        other: '%{count} válasz'
   phases:
     community_monitor_title: Közösségi monitor
     native_survey_button: Vegye ki a felmérést

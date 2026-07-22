@@ -18,7 +18,10 @@ import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { StyledPasswordIconTooltip } from 'components/smallForm';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
-import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
+import {
+  DEFAULT_MINIMUM_PASSWORD_LENGTH,
+  passwordUserInputs,
+} from 'components/UI/PasswordInput';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
@@ -49,8 +52,13 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
   const minimumPasswordLength =
     appConfigSettings?.password_login?.minimum_length ??
     DEFAULT_MINIMUM_PASSWORD_LENGTH;
+  const minimumStrength = appConfigSettings?.password_login?.minimum_strength;
 
-  const schema = getSchema(minimumPasswordLength, formatMessage);
+  const schema = getSchema(
+    minimumPasswordLength,
+    formatMessage,
+    minimumStrength
+  );
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
@@ -59,6 +67,18 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
       ...state.prefilledBuiltInFields,
     },
     resolver: yupResolver(schema),
+  });
+
+  // Watched so the live strength meter penalises email/name-derived passwords as typed.
+  const [firstName, lastName, email] = methods.watch([
+    'first_name',
+    'last_name',
+    'email',
+  ]);
+  const passwordInputs = passwordUserInputs({
+    email,
+    first_name: firstName,
+    last_name: lastName,
   });
 
   const token = state.token;
@@ -112,7 +132,11 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
                     {...commentsMessages.profanityError}
                     values={{
                       guidelinesLink: (
-                        <Link to="/pages/faq" target="_blank">
+                        <Link
+                          to="/pages/$slug"
+                          params={{ slug: 'faq' }}
+                          target="_blank"
+                        >
                           {formatMessage(commentsMessages.guidelinesLinkText)}
                         </Link>
                       ),
@@ -168,6 +192,7 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
               id="password"
               autocomplete="new-password"
               required
+              userInputs={passwordInputs}
             />
           </Box>
           <Box mt="24px">

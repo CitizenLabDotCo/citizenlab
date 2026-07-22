@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.EsriMap.mapLegendAriaLabel',
     defaultMessage: 'Toggle legend',
   },
+  mapAriaLabel: {
+    id: 'app.components.EsriMap.mapAriaLabel',
+    defaultMessage: 'Interactive map',
+  },
 });

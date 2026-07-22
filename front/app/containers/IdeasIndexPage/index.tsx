@@ -6,11 +6,9 @@ import {
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IdeaQueryParameters } from 'api/ideas/types';
-import { IdeaSortMethod } from 'api/phases/types';
 
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
@@ -19,6 +17,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import IdeasIndexMeta from './IdeaIndexMeta';
 import messages from './messages';
@@ -77,11 +76,9 @@ const PageTitle = styled.h1`
 `;
 
 const IdeasIndexPage = () => {
-  const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
-  const searchParam = searchParams.get('search');
-  const ideaStatusParam = searchParams.get('idea_status');
-  const topicsParam = searchParams.get('topics');
+  const { sort, search, idea_status, topics } = useSearch({
+    from: '/$locale/ideas',
+  });
 
   const ideasQueryParameters = useMemo<IdeaQueryParameters>(
     () => ({
@@ -89,13 +86,13 @@ const IdeasIndexPage = () => {
       'page[size]': 12,
       project_publication_status: 'published',
       publication_status: 'published',
-      sort: sortParam ?? 'trending',
-      search: searchParam ?? undefined,
-      idea_status: ideaStatusParam ?? undefined,
-      input_topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+      sort,
+      search,
+      idea_status,
+      input_topics: topics,
       transitive: true,
     }),
-    [sortParam, searchParam, ideaStatusParam, topicsParam]
+    [sort, search, idea_status, topics]
   );
 
   return (

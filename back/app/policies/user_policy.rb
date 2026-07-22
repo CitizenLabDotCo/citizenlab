@@ -49,10 +49,6 @@ class UserPolicy < ApplicationPolicy
     record.id == user&.id || active_admin_or_moderator? || record.show_public_profile?
   end
 
-  def by_slug?
-    show?
-  end
-
   def by_invite?
     record&.invite_pending?
   end
@@ -96,13 +92,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update_password?
-    user&.active? && (record.id == user.id)
-  end
-
-  def update_email_unconfirmed?
-    app_configuration = AppConfiguration.instance
-    return false if app_configuration.feature_activated?('user_confirmation')
-
     user&.active? && (record.id == user.id)
   end
 

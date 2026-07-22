@@ -45,6 +45,7 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :exclude_projects_in_included_folders, 'Exclude projects in included folders (boolean)', required: false
       parameter :review_state, 'Filter by project review status (pending, approved)', required: false
+      parameter :spaces, 'Filter by spaces (i.e. given an array of space ids). Filters both projects and folders by their space (AND)', required: false
       parameter :sort, 'Either title_multiloc or -title_multiloc to sort by title ascending or descending respectively. Defaults to ordering by order attribute if not specified.', required: false
 
       example_request 'List all admin publications' do
@@ -54,6 +55,13 @@ resource 'AdminPublication' do
         expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 8
         expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
         expect(response_data.pluck(:id)).not_to include(hidden_project.admin_publication.id)
+      end
+
+      example 'returns 400 when a filter param is a nested hash instead of a scalar', document: false do
+        # `?publication_statuses[x]=y` reaches `where(...)` as ActionController::Parameters,
+        # which raises "can't cast ActionController::Parameters" (previously a 500).
+        do_request(publication_statuses: { injected: 'x' })
+        expect(status).to eq(400)
       end
 
       example 'List all top-level admin publications' do
@@ -156,7 +164,10 @@ resource 'AdminPublication' do
         end
       end
 
-      ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS.each do |filter_param|
+      # `spaces` is excluded here because, unlike global_topics/areas (has_many), a project
+      # belongs_to a single :space, so it has no plural `spaces=` setter for this generic loop.
+      # It gets its own dedicated `spaces parameter` describe block below.
+      (ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS - [:spaces]).each do |filter_param|
         model_name_plural = filter_param.to_s
         model_name = model_name_plural.singularize
 
@@ -190,9 +201,44 @@ resource 'AdminPublication' do
         end
       end
 
+      describe '`spaces` parameter' do
+        example 'List all admin publications with the specified spaces' do
+          space_a = create(:space)
+          space_b = create(:space)
+
+          project_a = create(:project, space: space_a)
+          project_b = create(:project, space: space_b)
+
+          do_request(spaces: [space_a.id])
+
+          assert_status 200
+          # Only the top-level project in space_a is returned.
+          expect(publication_ids).to contain_exactly(project_a.id)
+          expect(publication_ids).not_to include(project_b.id)
+        end
+
+        example 'List admin publications representing folders that contain project(s) with the specified spaces' do
+          space_a = create(:space)
+          space_b = create(:space)
+
+          # A folder in space_a containing a project in the same space (a project's space must match
+          # its folder's space), and a folder in another space that must not be returned.
+          nested_project = create(:project, space: space_a)
+          folder_a = create(:project_folder, space: space_a, projects: [nested_project])
+          folder_b = create(:project_folder, space: space_b)
+
+          do_request(spaces: [space_a.id])
+
+          assert_status 200
+          # Both the folder in space_a and its nested project are returned.
+          expect(publication_ids).to contain_exactly(folder_a.id, nested_project.id)
+          expect(publication_ids).not_to include(folder_b.id)
+        end
+      end
+
       example 'List all admin publications with all specified model filters' do
         # add more model filters in this spec and change the next expect if it fails (it means the constant was changed)
-        expect(ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS).to eq(%i[global_topics areas])
+        expect(ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS).to eq(%i[global_topics areas spaces])
 
         topic = create(:global_topic)
         area = create(:area)
@@ -345,6 +391,13 @@ resource 'AdminPublication' do
         expect(status).to eq(200)
         expect(response_data).to be_empty
       end
+
+      example 'Returns empty data when the ids param is missing', document: false do
+        do_request
+
+        expect(status).to eq(200)
+        expect(response_data).to be_empty
+      end
     end
 
     patch 'web_api/v1/admin_publications/:id/reorder' do
@@ -378,14 +431,34 @@ resource 'AdminPublication' do
     end
 
     get 'web_api/v1/admin_publications/:id' do
-      let(:id) { projects.first.admin_publication.id }
+      let(:scheduled_at) { 1.day.from_now }
+      let(:admin_publication) do
+        projects.first.admin_publication.tap do
+          it.update!(
+            scheduled_status: 'archived',
+            scheduled_at: scheduled_at,
+            scheduled_by: create(:admin)
+          )
+        end
+      end
+      let(:id) { admin_publication.id }
 
       example_request 'Get one admin publication by id' do
-        expect(status).to eq 200
-        expect(response_data[:id]).to eq projects.first.admin_publication.id
-        expect(response_data.dig(:relationships, :publication, :data, :type)).to eq 'project'
-        expect(response_data.dig(:relationships, :publication, :data, :id)).to eq projects.first.id
-        expect(response_data.dig(:attributes, :publication_slug)).to eq projects.first.slug
+        expect(status).to eq(200)
+
+        expect(response_data).to include(
+          id:,
+          attributes: hash_including(
+            publication_slug: projects.first.slug,
+            publication_status: 'published',
+            scheduled_status: 'archived',
+            scheduled_at: scheduled_at.iso8601(3)
+          )
+        )
+
+        expect(response_data[:relationships]).to include(
+          publication: { data: { id: projects.first.id, type: 'project' } }
+        )
       end
     end
 
@@ -636,6 +709,26 @@ resource 'AdminPublication' do
 
         expect(status).to eq(200)
         expect(response_data).to be_empty
+      end
+    end
+
+    get 'web_api/v1/admin_publications/:id' do
+      let(:admin_publication) do
+        projects.first.admin_publication.tap do |ap|
+          ap.update!(
+            scheduled_status: 'archived',
+            scheduled_at: 1.day.from_now,
+            scheduled_by: create(:admin)
+          )
+        end
+      end
+      let(:id) { admin_publication.id }
+
+      example 'Does not include scheduling attributes for a resident', document: false do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).not_to have_key(:scheduled_status)
+        expect(response_data[:attributes]).not_to have_key(:scheduled_at)
       end
     end
   end
@@ -923,7 +1016,7 @@ resource 'AdminPublication' do
               publication_statuses: %w[published archived],
               include_publications: 'true'
             )
-          end.not_to exceed_query_limit(127)
+          end.not_to exceed_query_limit(128)
 
           assert_status 200
         end

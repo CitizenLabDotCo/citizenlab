@@ -161,9 +161,8 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-after-submission').should('exist');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
-    cy.dataCy('e2e-more-survey-actions-button').click();
 
-    // Click the delete button
+    // Click the delete button (now a standalone button, not in the dropdown)
     cy.dataCy('e2e-delete-survey-results').click();
 
     // Confirm deleting the results
@@ -205,7 +204,9 @@ describe('Survey Builder - Results and Data Management', () => {
     cy.dataCy('e2e-after-submission').should('be.visible');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
-    cy.dataCy('e2e-more-survey-actions-button').click();
+
+    // Open the export dropdown
+    cy.dataCy('e2e-survey-export-button').click();
 
     // Click button to export survey results
     cy.dataCy('e2e-download-survey-results').click();
@@ -219,5 +220,74 @@ describe('Survey Builder - Results and Data Management', () => {
 
     // Delete the downloads folder and its contents
     cy.task('deleteFolder', downloadsFolder);
+  });
+
+  it('allows export of survey responses through the PII review modal', () => {
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`);
+    waitForCustomFormFields();
+    cy.addItemToFormBuilder('#toolbox_multiline_text');
+    cy.get('#e2e-title-multiloc').type(questionTitle, { force: true });
+
+    // Save the survey
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Submit one response
+    cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
+    cy.contains(questionTitle).should('exist');
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).type(answer, {
+      force: true,
+    });
+    cy.dataCy('e2e-submit-form').should('be.visible');
+    cy.wait(1000);
+    cy.dataCy('e2e-submit-form').click();
+    cy.dataCy('e2e-after-submission').should('be.visible');
+
+    cy.intercept('**/phases/**/input_response_fields').as('responseFields');
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/insights`);
+
+    // Open the modal-based Excel export
+    cy.dataCy('e2e-survey-export-button').click();
+    cy.dataCy('e2e-export-responses-xlsx').click();
+
+    // The field review lists the export fields once the PII flags load (the
+    // LLM is unavailable in CI, so the structural fallback flags the author
+    // columns deterministically)
+    cy.wait('@responseFields', { timeout: 20000 });
+    cy.dataCy('e2e-field-redaction-list').should('exist');
+    cy.dataCy('e2e-field-redaction-list')
+      .contains(questionTitle)
+      .should('exist');
+    cy.dataCy('e2e-field-redaction-row-author_email')
+      .contains('Excluded')
+      .should('exist');
+
+    // Generate is disabled until consent is given
+    cy.dataCy('e2e-generate-export-button')
+      .find('button')
+      .should('have.class', 'disabled');
+    cy.dataCy('e2e-export-consent-checkbox')
+      .find('input[type="checkbox"]')
+      .check({ force: true });
+    cy.dataCy('e2e-generate-export-button')
+      .find('button')
+      .should('not.have.class', 'disabled')
+      .click();
+
+    // Check that the file is downloaded
+    const downloadsFolder = Cypress.config('downloadsFolder');
+    const fileName = `${snakeCase(`input responses ${phaseTitle}`)}.xlsx`;
+    cy.readFile(`${downloadsFolder}/${fileName}`, { timeout: 20000 }).should(
+      'exist'
+    );
+    cy.task('deleteFolder', downloadsFolder);
+
+    // The PDF flavour opens the same review with the cover settings and
+    // preview (generation itself needs Gotenberg, which the e2e stack lacks)
+    cy.dataCy('e2e-survey-export-button').click();
+    cy.dataCy('e2e-export-responses-pdf').click();
+    cy.contains('Cover settings').should('be.visible');
+    cy.contains('Cover preview').should('be.visible');
+    cy.dataCy('e2e-field-redaction-list').should('exist');
   });
 });

@@ -113,11 +113,8 @@ class ProjectsFinderAdminService
   end
 
   def self.sort_by_participation(scope, params)
-    direction = params[:sort] == 'participation_desc' ? 'DESC' : 'ASC'
-
-    scope
-      .with_participation_count
-      .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{direction}, projects.id ASC"))
+    direction = params[:sort] == 'participation_desc' ? :desc : :asc
+    scope.by_participation_count(direction)
   end
 
   # FILTERING METHODS
@@ -150,12 +147,10 @@ class ProjectsFinderAdminService
   end
 
   def self.filter_status(scope, params = {})
-    status = params[:status] || []
-    return scope if status.blank?
+    statuses = params[:status] || []
+    return scope if statuses.blank?
 
-    scope
-      .joins("INNER JOIN admin_publications ON admin_publications.publication_id = projects.id AND admin_publications.publication_type = 'Project'")
-      .where(admin_publications: { publication_status: status })
+    scope.where(admin_publication: AdminPublication.with_status(statuses))
   end
 
   def self.filter_review_state(scope, params = {})
@@ -237,9 +232,7 @@ class ProjectsFinderAdminService
       .where(publication_type: 'ProjectFolders::Folder', publication_id: excluded_folder_ids)
       .select(:id)
 
-    scope.where(
-      admin_publication: { parent_id: [nil] }
-    ).or(
+    scope.where(admin_publication: { parent_id: [nil] }).or(
       scope.where.not(admin_publication: { parent_id: excluded_folder_admin_pub_ids })
     )
   end

@@ -32,6 +32,7 @@ const ScrollableCarrousel = ({
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showPreviousGradient, setShowPreviousGradient] = useState(false);
   const [mouseOverPreviousButton, setMouseOverPreviousButton] = useState(false);
+  const [previousButtonFocused, setPreviousButtonFocused] = useState(false);
   const [
     previousButtonShouldDisappearAfterMouseMove,
     setPreviousButtonShouldDisappearAfterMouseMove,
@@ -41,6 +42,7 @@ const ScrollableCarrousel = ({
   const [showNextButton, setShowNextButton] = useState(false);
   const [showNextGradient, setShowNextGradient] = useState(false);
   const [mouseOverNextButton, setMouseOverNextButton] = useState(false);
+  const [nextButtonFocused, setNextButtonFocused] = useState(false);
   const [
     nextButtonShouldDisappearAfterMouseMove,
     setNextButtonShouldDisappearAfterMouseMove,
@@ -111,9 +113,10 @@ const ScrollableCarrousel = ({
       </HorizontalScroll>
       {!isTouchDevice && (
         <>
-          {showPreviousButton && (
+          {(showPreviousButton || previousButtonFocused) && (
             <ScrollButton
               variant="left"
+              disabled={!showPreviousButton}
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
@@ -126,6 +129,8 @@ const ScrollableCarrousel = ({
                   setPreviousButtonShouldDisappearAfterMouseMove(false);
                 }
               }}
+              onFocus={() => setPreviousButtonFocused(true)}
+              onBlur={() => setPreviousButtonFocused(false)}
             />
           )}
           {showPreviousGradient && <Gradient variant="left" />}
@@ -133,9 +138,10 @@ const ScrollableCarrousel = ({
       )}
       {!isTouchDevice && (
         <>
-          {showNextButton && (
+          {(showNextButton || nextButtonFocused) && (
             <ScrollButton
               variant="right"
+              disabled={!showNextButton}
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
@@ -148,6 +154,8 @@ const ScrollableCarrousel = ({
                   setNextButtonShouldDisappearAfterMouseMove(false);
                 }
               }}
+              onFocus={() => setNextButtonFocused(true)}
+              onBlur={() => setNextButtonFocused(false)}
             />
           )}
           {showNextGradient && <Gradient variant="right" />}

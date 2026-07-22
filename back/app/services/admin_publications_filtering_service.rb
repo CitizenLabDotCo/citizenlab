@@ -55,13 +55,16 @@ class AdminPublicationsFilteringService
   end
 
   add_filter('filter_folders') do |scope, options|
-    next scope if options[:search].blank?
+    next scope if options[:search].blank? && options[:spaces].blank?
 
-    matching_folders = ProjectFolders::Folder.search_by_all(options[:search])
-    folder_publications_in_scope = scope.where(publication: matching_folders)
-    projects_still_in_scope = scope.where.not(publication_type: ProjectFolders::Folder.name)
+    folders = ProjectFolders::Folder.all
+    folders = folders.search_by_all(options[:search]) if options[:search].present?
+    folders = folders.where(space_id: options[:spaces]) if options[:spaces].present?
 
-    folder_publications_in_scope.or(projects_still_in_scope)
+    folder_publications_in_scope = scope.where(publication: folders)
+    non_folder_publications = scope.where.not(publication_type: ProjectFolders::Folder.name)
+
+    folder_publications_in_scope.or(non_folder_publications)
   end
 
   add_filter('compute_visible_children_counts') do |scope, _|

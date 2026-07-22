@@ -12,20 +12,18 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { CampaignFormValues } from 'api/campaigns/types';
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaign from 'api/campaigns/useSendCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
-import { isDraft } from 'api/campaigns/util';
+import { EmailCampaignFormValues } from 'api/campaigns/email/types';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
+import useSendEmailCampaign from 'api/campaigns/email/useSendEmailCampaign';
+import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
@@ -40,6 +38,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useParams, useSearch } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -69,24 +68,24 @@ const Buttons = styled.div`
 `;
 type FeedbackType = 'sent' | 'updated' | 'created' | null;
 const Show = () => {
-  const { projectId, campaignId } = useParams() as {
+  const { projectId, campaignId } = useParams({ strict: false }) as {
     projectId: string;
     campaignId: string;
   };
 
   const { data: tenant } = useAppConfiguration();
-  const { data: campaign } = useCampaign(campaignId);
+  const { data: campaign } = useEmailCampaign(campaignId);
   const { data: project } = useProjectById(projectId);
 
   const {
     mutate: sendCampaign,
     isLoading: isSendingCampaign,
     error: apiSendErrors,
-  } = useSendCampaign();
+  } = useSendEmailCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
-    useSendCampaignPreview();
+    useSendEmailCampaignPreview();
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
-    useUpdateCampaign();
+    useUpdateEmailCampaign();
 
   const { data: sender } = useUserById(
     campaign?.data.relationships.author.data.id
@@ -94,9 +93,11 @@ const Show = () => {
   const isLoading =
     isSendingCampaign || isSendingCampaignPreview || isUpdatingCampaign;
 
-  const [searchParams] = useSearchParams();
-  const created = searchParams.get('created');
-  const updated = searchParams.get('updated');
+  const searchParams = useSearch({
+    from: '/$locale/admin/projects/$projectId/messaging/$campaignId',
+  });
+  const created = searchParams.created;
+  const updated = searchParams.updated;
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : updated ? 'updated' : null
   );
@@ -117,7 +118,7 @@ const Show = () => {
     if (campaign?.data.attributes.scheduled_at) {
       updateCampaign({
         id: campaign.data.id,
-        campaign: { scheduled_at: null } as CampaignFormValues,
+        campaign: { scheduled_at: null } as EmailCampaignFormValues,
       });
     }
     sendCampaign(campaignId);
@@ -146,9 +147,7 @@ const Show = () => {
 
     return senderName;
   };
-  const isEmailSchedulingAllowed = useFeatureFlag({
-    name: 'email_scheduling',
-  });
+
   const timeZone = tenant?.data.attributes.settings.core.timezone;
 
   const hasNoParticipants =
@@ -161,19 +160,22 @@ const Show = () => {
     return (
       <Box p="44px">
         <Box background={colors.white} p="40px" id="e2e-custom-email-container">
-          <GoBackButton linkTo={`/admin/projects/${projectId}/messaging`} />
+          <GoBackButton
+            to="/admin/projects/$projectId/messaging"
+            params={{ projectId }}
+          />
           <Box display="flex" mb="20px">
             <Box display="flex" alignItems="center" mr="auto" gap="12px">
               <Title mr="12px">
                 <T value={campaign.data.attributes.subject_multiloc} />
               </Title>
-              {isDraft(campaign.data) && (
+              {isEmailCampaignDraft(campaign.data) && (
                 <StatusLabel
                   backgroundColor={colors.brown}
                   text={<FormattedMessage {...messages.draft} />}
                 />
               )}
-              {!isDraft(campaign.data) &&
+              {!isEmailCampaignDraft(campaign.data) &&
                 !campaign.data.attributes.scheduled_at && (
                   <StatusLabel
                     backgroundColor={colors.success}
@@ -194,11 +196,12 @@ const Show = () => {
                 </>
               )}
             </Box>
-            {(isDraft(campaign.data) ||
+            {(isEmailCampaignDraft(campaign.data) ||
               campaign.data.attributes.scheduled_at) && (
               <Buttons>
                 <ButtonWithLink
-                  linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
+                  to="/admin/projects/$projectId/messaging/$campaignId/edit"
+                  params={{ projectId, campaignId: campaign.data.id }}
                   buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
@@ -218,15 +221,11 @@ const Show = () => {
                     onClick={handleSend}
                     disabled={isLoading}
                     processing={isSendingCampaign}
-                    borderRadius={
-                      isEmailSchedulingAllowed ? '3px 0px 0px 3px' : '3px'
-                    }
+                    borderRadius={'3px 0px 0px 3px'}
                   >
                     <FormattedMessage {...messages.send} />
                   </Button>
-                  {isEmailSchedulingAllowed && (
-                    <EmailScheduling campaign={campaign} timeZone={timeZone} />
-                  )}
+                  <EmailScheduling campaign={campaign} timeZone={timeZone} />
                 </Box>
               </Buttons>
             )}
@@ -276,7 +275,7 @@ const Show = () => {
                 </span>
               </div>
             </FromTo>
-            {(isDraft(campaign.data) ||
+            {(isEmailCampaignDraft(campaign.data) ||
               campaign.data.attributes.scheduled_at) && (
               <Box>
                 <Button
@@ -299,7 +298,8 @@ const Show = () => {
             )}
           </Box>
 
-          {isDraft(campaign.data) || campaign.data.attributes.scheduled_at ? (
+          {isEmailCampaignDraft(campaign.data) ||
+          campaign.data.attributes.scheduled_at ? (
             <DraftCampaignDetails campaign={campaign.data} />
           ) : (
             <SentCampaignDetails campaignId={campaign.data.id} />

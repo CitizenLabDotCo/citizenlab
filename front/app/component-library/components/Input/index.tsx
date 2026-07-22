@@ -76,13 +76,13 @@ export interface InputProps {
   labelTooltipPlacement?: Placement;
   value?: string | null;
   locale?: Locale;
-  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'search';
+  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'search' | 'hidden';
   placeholder?: string | null;
   error?: string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
   onFocus?: (arg: FormEvent<HTMLInputElement>) => void;
   onBlur?: (arg: FormEvent<HTMLInputElement>) => void;
-  setRef?: (arg: HTMLInputElement) => void | undefined;
+  setRef?: (arg: HTMLInputElement | null) => void;
   onKeyDown?: (event: KeyboardEvent) => void;
   onMultilinePaste?: (lines: string[]) => void;
   autoFocus?: boolean;
@@ -130,10 +130,6 @@ class Input extends PureComponent<InputProps> {
     if (onBlur) {
       onBlur(event);
     }
-  };
-
-  handleRef = (element: HTMLInputElement) => {
-    this.props.setRef && this.props.setRef(element);
   };
 
   render() {
@@ -214,11 +210,10 @@ class Input extends PureComponent<InputProps> {
           onChange={this.handleOnChange}
           onFocus={onFocus}
           onBlur={this.handleOnBlur}
-          ref={this.handleRef}
+          ref={this.props.setRef}
           min={min}
           max={max}
           step={step}
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           disabled={disabled}
           readOnly={readOnly}

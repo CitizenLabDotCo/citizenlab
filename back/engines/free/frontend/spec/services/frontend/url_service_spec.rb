@@ -28,6 +28,14 @@ describe Frontend::UrlService do
       expect(service.model_to_url(current_phase.reload, locale: locale)).to eq "#{base_uri}/en/projects/my-project/2"
     end
 
+    it 'returns the project url for a standalone phase' do
+      project = create(:project, slug: 'my-project')
+      _timeline_phase = create(:phase, project: project, start_at: 2.days.ago, end_at: 4.days.from_now)
+      standalone_phase = create(:phase, :standalone, project: project, start_at: 2.days.ago, end_at: 4.days.from_now)
+
+      expect(service.model_to_url(standalone_phase, locale: locale)).to eq "#{base_uri}/en/projects/my-project"
+    end
+
     it 'returns the correct url for an event' do
       event = create(:event)
 
@@ -52,18 +60,18 @@ describe Frontend::UrlService do
 
     context 'when the followable has no visitable page' do
       let(:followable) { create(:topic) }
-      let(:user) { create(:user, locale: 'fr-FR', slug: 'user-slug') }
+      let(:user) { create(:user, locale: 'fr-FR') }
 
       it 'returns the profile following URL' do
-        expect(url).to eq 'http://example.org/fr-FR/profile/user-slug/following'
+        expect(url).to eq "http://example.org/fr-FR/profile/#{user.id}/following"
       end
     end
 
     context 'when there is no followable' do
-      let(:user) { create(:user, locale: 'en', slug: 'user-slug') }
+      let(:user) { create(:user, locale: 'en') }
 
       it 'returns the profile following URL' do
-        expect(url).to eq 'http://example.org/en/profile/user-slug/following'
+        expect(url).to eq "http://example.org/en/profile/#{user.id}/following"
       end
     end
   end
@@ -82,6 +90,43 @@ describe Frontend::UrlService do
       expect(service.sso_return_url(pathname: '/', locale: locale)).to eq 'http://example.org/nl-NL/'
       expect(service.sso_return_url(pathname: '/en/some-path', locale: locale)).to eq 'http://example.org/nl-NL/some-path'
       expect(service.sso_return_url(pathname: '/en/another/path/', locale: locale)).to eq 'http://example.org/nl-NL/another/path/'
+    end
+  end
+
+  describe '#admin_url_for' do
+    it 'returns the project admin URL for a Project' do
+      project = create(:project)
+      expect(service.admin_url_for(project))
+        .to eq "#{base_uri}/admin/projects/#{project.id}"
+    end
+
+    it 'returns the folder admin URL for a Folder' do
+      folder = create(:project_folder)
+      expect(service.admin_url_for(folder))
+        .to eq "#{base_uri}/admin/projects/folders/#{folder.id}"
+    end
+
+    it 'returns the phase setup URL for a Phase' do
+      phase = create(:phase)
+      expect(service.admin_url_for(phase))
+        .to eq "#{base_uri}/admin/projects/#{phase.project_id}/phases/#{phase.id}/setup"
+    end
+
+    it 'returns the event admin URL for an Event' do
+      event = create(:event)
+      expect(service.admin_url_for(event))
+        .to eq "#{base_uri}/admin/projects/#{event.project_id}/events/#{event.id}"
+    end
+
+    it 'returns the cause admin URL for a Volunteering::Cause' do
+      cause = create(:cause)
+      expect(service.admin_url_for(cause))
+        .to eq "#{base_uri}/admin/projects/#{cause.phase.project_id}/phases/#{cause.phase.id}/volunteering/causes/#{cause.id}"
+    end
+
+    it 'returns nil for records without a canonical admin URL' do
+      user = create(:user)
+      expect(service.admin_url_for(user)).to be_nil
     end
   end
 

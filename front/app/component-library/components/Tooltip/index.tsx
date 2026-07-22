@@ -8,7 +8,7 @@ import Box from '../Box';
 
 export type TooltipProps = Omit<
   React.ComponentProps<typeof Tippy>,
-  'interactive' | 'plugins' | 'role' | 'aria'
+  'interactive' | 'plugins' | 'aria'
 > & {
   width?: string;
   useContentWrapper?: boolean;
@@ -50,6 +50,7 @@ const Tooltip = ({
   width,
   // This prop is used to determine if the native Tippy component content should be wrapped in a Box component
   useContentWrapper = true,
+  role = 'tooltip',
   ...rest
 }: TooltipProps) => {
   const tooltipId = useRef(
@@ -144,8 +145,7 @@ const Tooltip = ({
         key={key}
         plugins={PLUGINS}
         interactive={true}
-        role="tooltip"
-        aria={{ expanded: false }}
+        role={role}
         visible={isFocused}
         // Ensures tippy works with both keyboard and mouse
         onHidden={handleOnHidden}
@@ -165,8 +165,7 @@ const Tooltip = ({
           key={key}
           plugins={PLUGINS}
           interactive={true}
-          role="tooltip"
-          aria={{ expanded: false }}
+          role={role}
           visible={isFocused}
           // Ensures tippy works with both keyboard and mouse
           onHidden={handleOnHidden}

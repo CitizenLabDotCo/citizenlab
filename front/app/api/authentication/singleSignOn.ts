@@ -1,6 +1,5 @@
 import { omitBy, isNil } from 'lodash-es';
 import { stringify } from 'qs';
-import { RouteType } from 'routes';
 
 import { AUTH_PATH } from 'containers/App/constants';
 import { isProjectContext } from 'containers/Authentication/steps/Verification/utils';
@@ -21,6 +20,7 @@ export interface SSOProviderMap {
   hoplr: 'hoplr';
   id_austria: 'id_austria';
   criipto: 'criipto';
+  etat_lu: 'etat_lu';
   fake_sso: 'fake_sso';
   federa: 'federa';
   nemlog_in: 'nemlog_in';
@@ -36,7 +36,7 @@ export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 // All are optional as there may be cases the backend does not always return these
 export interface SSOParams {
   sso_flow?: 'signup' | 'signin';
-  sso_pathname?: RouteType;
+  sso_pathname?: string;
   sso_verification?: string;
   sso_verification_action?: string;
   sso_verification_id?: string;
@@ -62,7 +62,13 @@ export const redirectToSSOProvider = (
     );
   }
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
-  localStorage.setItem('auth_path', window.location.pathname as RouteType);
+  // Store the full path *and* query (e.g. ?phase_id=...&idea_id=...) so the
+  // user's participation params survive the SSO round trip and they land back
+  // exactly where they were.
+  localStorage.setItem(
+    'auth_path',
+    `${window.location.pathname}${window.location.search}`
+  );
 
   // Track the SSO click as a pageView
   trackVirtualPageView(`${window.location.pathname}/auth/sso/${provider}`);
@@ -79,7 +85,10 @@ function setHref(
 ) {
   const { context } = authenticationData;
 
-  const pathname = window.location.pathname as RouteType;
+  // Include the query string (e.g. ?phase_id=...&idea_id=...) so that
+  // participation params survive the SSO round-trip
+  // Encoded in sso_pathname as avoids re-encoding and any potential naming clashes.
+  const pathname = `${window.location.pathname}${window.location.search}`;
   const ssoParams: SSOParams = {
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup

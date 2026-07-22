@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -17,6 +16,7 @@ import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlB
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import eventEmitter from 'utils/eventEmitter';
+import { useSearch } from 'utils/router';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
@@ -32,8 +32,10 @@ interface Props {
 const IdeasEditForm = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [searchParams] = useSearchParams();
-  const selectedIdeaId = searchParams.get('selected_idea_id');
+  const searchParams = useSearch({
+    from: '/$locale/ideas/edit/$ideaId',
+  });
+  const selectedIdeaId = searchParams.selected_idea_id;
 
   const projectId = idea?.data.relationships.project.data.id;
   const [usingMapView, setUsingMapView] = useState(false);
@@ -77,6 +79,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         topic: messages.topicFormTitle,
         post: messages.postFormTitle,
         story: messages.storyFormTitle,
+        observation: messages.observationFormTitle,
       }[phase?.data.attributes.input_term || 'idea']}
     />
   );

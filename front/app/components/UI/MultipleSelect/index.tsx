@@ -1,4 +1,4 @@
-import React, { KeyboardEvent } from 'react';
+import React, { KeyboardEvent, useRef } from 'react';
 
 import {
   Box,
@@ -6,11 +6,11 @@ import {
   fontSizes,
   colors,
 } from '@citizenlab/cl2-component-library';
-import ReactSelect from 'react-select';
+import ReactSelect, { SelectInstance } from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
-import selectStyles from 'components/UI/MultipleSelect/styles';
+import selectStyles from './styles';
 
 export type Props = {
   id?: string;
@@ -24,6 +24,11 @@ export type Props = {
   className?: string;
   label?: React.ReactNode;
   isSearchable?: boolean;
+  setRef?: (arg: SelectInstance<IOption, true> | null) => void;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
+  fontSize?: number;
+  minHeight?: number;
 };
 
 const MultipleSelect = ({
@@ -38,8 +43,14 @@ const MultipleSelect = ({
   className,
   label,
   isSearchable,
+  setRef,
+  ariaInvalid,
+  ariaDescribedBy,
+  fontSize = fontSizes.base,
+  minHeight,
 }: Props) => {
   const theme = useTheme();
+  const selectRef = useRef<SelectInstance<IOption, true>>(null);
   const handleOnChange = (newValue: IOption[]) => {
     onChange(newValue);
   };
@@ -74,15 +85,41 @@ const MultipleSelect = ({
       event.stopPropagation();
     }
   };
+
+  const handleSelectKeyDown = (event: KeyboardEvent) => {
+    preventModalCloseOnEscape(event);
+
+    if (event.key !== 'Enter') return;
+
+    const select = selectRef.current;
+    const focusedValue = select?.state.focusedValue;
+    if (!select || !focusedValue) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    select.removeValue(focusedValue);
+  };
+
   return (
     <Box onKeyDown={handleKeyDown}>
       {label && <Label htmlFor={inputId}>{label}</Label>}
       <ReactSelect
+        ref={(instance) => {
+          (
+            selectRef as React.MutableRefObject<SelectInstance<
+              IOption,
+              true
+            > | null>
+          ).current = instance;
+          setRef?.(instance);
+        }}
         id={id}
         inputId={inputId}
         className={className}
         isMulti
         isSearchable={isSearchable}
+        aria-invalid={ariaInvalid}
+        aria-describedby={ariaDescribedBy}
         blurInputOnSelect={typeof autoBlur === 'boolean' ? autoBlur : false}
         backspaceRemovesValue={true}
         menuShouldScrollIntoView={false}
@@ -94,7 +131,7 @@ const MultipleSelect = ({
         onChange={handleOnChange}
         isDisabled={disabled}
         styles={{
-          ...selectStyles(theme),
+          ...selectStyles(theme, { fontSize, minHeight }),
           menuPortal: (base) => ({
             ...base,
             // zIndex needed so dropdown is not overlapped by
@@ -105,7 +142,7 @@ const MultipleSelect = ({
             ...base,
             cursor: state.isDisabled ? 'not-allowed' : 'pointer',
             opacity: state.isDisabled ? 0.8 : 1,
-            fontSize: `${fontSizes.base}px`,
+            fontSize: `${fontSize}px`,
             color: state.isFocused ? colors.textPrimary : colors.textSecondary,
             backgroundColor: state.isFocused
               ? colors.grey300
@@ -117,7 +154,7 @@ const MultipleSelect = ({
         menuPosition="fixed"
         menuPlacement="auto"
         hideSelectedOptions
-        onKeyDown={preventModalCloseOnEscape}
+        onKeyDown={handleSelectKeyDown}
       />
     </Box>
   );

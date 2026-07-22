@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, colors, Spinner } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useParams,
-  useLocation,
-} from 'react-router-dom';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -14,11 +9,13 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { Outlet as RouterOutlet, useParams, useLocation } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
@@ -50,6 +47,8 @@ const AdminProjectPhaseIndex = ({
     }),
   };
 
+  const parallelParticipation = useParallelParticipation();
+
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
@@ -62,14 +61,16 @@ const AdminProjectPhaseIndex = ({
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      <Box mt="16px" px="24px">
-        <Timeline
-          projectId={project.id}
-          selectedPhase={selectedPhase}
-          setSelectedPhase={setSelectedPhase}
-          isBackoffice
-        />
-      </Box>
+      {!parallelParticipation && (
+        <Box mt="16px" px="24px">
+          <Timeline
+            projectId={project.id}
+            selectedPhase={selectedPhase}
+            setSelectedPhase={setSelectedPhase}
+            isBackoffice
+          />
+        </Box>
+      )}
       <Box
         p="8px 24px 24px 24px"
         display="flex"
@@ -93,7 +94,7 @@ const AdminProjectPhaseIndex = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId?: string;
   };
@@ -125,19 +126,26 @@ export default () => {
       }
     }
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
-      clHistory.replace(`/admin/projects/${projectId}/phases/new`);
+    // Without this guard, navigating to a sibling tab re-runs the effect
+    // (pathname is in deps) and yanks the user back to /phases/new before the
+    // route unmounts.
+    const stillOnPhasesPath = pathname.includes(
+      `/admin/projects/${projectId}/phases`
+    );
+
+    if (stillOnPhasesPath && phases.data.length === 0 && !isFetchingPhases) {
+      clHistory.replace(
+        `/admin/projects/${projectId}/phases/new${window.location.search}`
+      );
     } else if (phaseShown && pathname.endsWith('phases/setup')) {
       const redirectTab = getPhaseLandingTab(phaseShown);
       clHistory.replace(
-        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
+        `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}${window.location.search}`
       );
     }
 
     setSelectedPhase(phaseShown);
-  }, [phaseId, phases, projectId, pathname, isLoadingPhases, isFetchingPhases]);
+  }, [phaseId, phases, projectId, pathname, isFetchingPhases]);
 
   if (isLoadingProject || isLoadingPhases) {
     return (

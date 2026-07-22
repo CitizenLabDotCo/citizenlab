@@ -22,9 +22,11 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def update
+    old_group_ids = @permission.group_ids
     @permission.assign_attributes(permission_params)
     authorize @permission
     if @permission.save
+      sidefx.after_update(@permission, current_user, old_group_ids)
       render json: serialize(@permission), status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
@@ -33,15 +35,14 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def reset
     authorize @permission
+    old_group_ids = @permission.group_ids
     ActiveRecord::Base.transaction do
       @permission.global_custom_fields = true
-      if @permission.save
-        @permission.permissions_custom_fields.destroy_all
-        @permission.groups_permissions.destroy_all
-        render json: serialize(@permission), status: :ok
-      else
-        render json: { errors: @permission.errors.details }, status: :unprocessable_entity
-      end
+      save_or_raise!(@permission)
+      @permission.permissions_custom_fields.destroy_all
+      @permission.groups_permissions.destroy_all
+      sidefx.after_update(@permission, current_user, old_group_ids)
+      render json: serialize(@permission), status: :ok
     end
   end
 
@@ -100,6 +101,10 @@ class WebApi::V1::PermissionsController < ApplicationController
     ).serializable_hash
   end
 
+  def sidefx
+    @sidefx ||= Permissions::SideFxPermissionService.new
+  end
+
   def permissions_update_service
     @permissions_update_service ||= Permissions::PermissionsUpdateService.new
   end
@@ -128,6 +133,11 @@ class WebApi::V1::PermissionsController < ApplicationController
       :everyone_tracking_enabled,
       :user_fields_in_form,
       :user_data_collection,
+      :require_confirmed_email,
+      :confirmed_email_expiry,
+      :require_name,
+      :require_password,
+      :require_verification,
       group_ids: [],
       access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
     )

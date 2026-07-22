@@ -11,6 +11,8 @@ describe('New project with native survey', () => {
       projectId = result.projectId;
       projectSlug = result.projectSlug;
 
+      cy.apiAddAboutBox(projectId);
+
       cy.apiCreateEvent({
         projectId,
         title: eventTitle,
@@ -31,7 +33,7 @@ describe('New project with native survey', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('#e2e-project-description');
+    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
     cy.get('#e2e-project-sidebar');
   });
 
@@ -95,6 +97,7 @@ describe('Native survey CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
+          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
           description: projectDescription,
@@ -161,7 +164,16 @@ describe('Native survey CTA bar', () => {
   });
 
   after(() => {
-    if (projectId) {
+    if (phaseId) {
+      // delete this project's ideas (survey responses), otherwise the project cannot be deleted
+      // because of the foreign key constraint between ideas and phases. Scope to projectId so we
+      // don't wipe ideas from other projects (e.g. the seeded "Verified Idea") that other specs rely on.
+      cy.apiRemoveIdeas(projectId).then(() => {
+        if (projectId) {
+          cy.apiRemoveProject(projectId);
+        }
+      });
+    } else if (projectId) {
       cy.apiRemoveProject(projectId);
     }
   });

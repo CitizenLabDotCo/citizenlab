@@ -164,6 +164,11 @@ const normalizeListTags = (html: string): string => {
     const fragment = document.createDocumentFragment();
     let current: HTMLUListElement | HTMLOListElement | null = null;
     let currentType = '';
+    // Running number of ordered items emitted from this original <ol>. Quill
+    // keeps one continuous counter even when bullets interrupt an ordered list;
+    // splitting into separate <ol>s would restart each at 1, so we carry the
+    // count forward with a `start` attribute to reproduce the editor's numbering.
+    let orderedCount = 0;
 
     items.forEach((li) => {
       const type = li.getAttribute('data-list') || 'ordered';
@@ -172,9 +177,13 @@ const normalizeListTags = (html: string): string => {
       if (type !== currentType) {
         currentType = type;
         current = document.createElement(type === 'bullet' ? 'ul' : 'ol');
+        if (type !== 'bullet' && orderedCount > 0) {
+          current.setAttribute('start', String(orderedCount + 1));
+        }
         fragment.appendChild(current);
       }
       current!.appendChild(li);
+      if (type !== 'bullet') orderedCount++;
     });
 
     ol.replaceWith(fragment);
@@ -183,9 +192,17 @@ const normalizeListTags = (html: string): string => {
   return div.innerHTML;
 };
 
+const isEditorContentEmpty = (html: string): boolean => {
+  if (getPlainTextLengthFromHTML(html) > 0) return false;
+
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  return tempDiv.querySelector('img, video, iframe, audio, embed') === null;
+};
+
 export const getHTML = (editor: Quill) => {
   const html = editor.root.innerHTML;
-  if (!html || html === '<p><br></p>') return '';
+  if (!html || isEditorContentEmpty(html)) return '';
   return convertAlignmentToInlineStyles(normalizeListTags(html));
 };
 

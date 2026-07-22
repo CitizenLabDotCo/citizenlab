@@ -6,11 +6,15 @@ import {
   Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import { getPercentageDifference } from 'components/admin/FormResults/FormResultsQuestion/SentimentQuestion/utils';
 import TrendIndicator from 'components/TrendIndicator';
 
+import { ScreenReaderOnly } from 'utils/a11y';
+import { useIntl } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
+
+import messages from '../messages';
 import { QuarterlyScores } from '../types';
 import { categoryColors, getYearFilter, getQuarterFilter } from '../utils';
 
@@ -21,12 +25,13 @@ type Props = {
 };
 
 const CategoryScores = ({ sentimentScores, ...props }: Props) => {
-  const [search] = useSearchParams();
+  const search = useSearch({ strict: false });
+  const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // Extract year and quarter from search params or defaults
-  const year = props.year || getYearFilter(search);
-  const quarter = props.quarter || getQuarterFilter(search);
+  const year = props.year || getYearFilter(search.year);
+  const quarter = props.quarter || getQuarterFilter(search.quarter);
   const periodKey = `${year}-${quarter}`;
 
   // Helper function to get score data for a category
@@ -82,7 +87,15 @@ const CategoryScores = ({ sentimentScores, ...props }: Props) => {
                   </Box>
                   <Box my="8px" display="flex" alignItems="center" ml="8px">
                     {/* Score */}
+                    <ScreenReaderOnly>
+                      {currentScore
+                        ? formatMessage(messages.scoreOutOfFive, {
+                            score: currentScore,
+                          })
+                        : formatMessage(messages.scoreNotAvailable)}
+                    </ScreenReaderOnly>
                     <Text
+                      aria-hidden
                       m="0px"
                       fontSize="xl"
                       fontWeight="bold"
@@ -93,6 +106,7 @@ const CategoryScores = ({ sentimentScores, ...props }: Props) => {
                       {currentScore || '-'}
                     </Text>
                     <Text
+                      aria-hidden
                       m="0px"
                       fontWeight="semi-bold"
                       fontSize="m"

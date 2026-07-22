@@ -5,6 +5,7 @@ import {
   fontSizes,
   defaultStyles,
   isRtl,
+  Box,
   Icon,
   IconNames,
   Tooltip,
@@ -18,6 +19,7 @@ import { TReactionMode } from 'api/idea_reactions/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectById from 'api/projects/useProjectById';
 
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
 import useLocalize from 'hooks/useLocalize';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -303,6 +305,11 @@ const Button = styled.button<{
   margin-right: ${({ styleType }) =>
     styleType === 'compact' ? '4px' : '16px'};
 
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   ${isRtl`
     flex-direction: row-reverse;
   `}
@@ -346,6 +353,7 @@ interface Props {
   onClick: (event: React.FormEvent) => void;
   iconName: IconNames;
   ideaId: string;
+  phaseId: string | null;
   variant?: 'text' | 'icon';
 }
 
@@ -358,6 +366,7 @@ const ReactionButton = ({
   onClick,
   iconName,
   ideaId,
+  phaseId,
   userReactionMode,
   variant = 'icon',
 }: Props) => {
@@ -369,7 +378,17 @@ const ReactionButton = ({
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
 
-  if (!isNilOrError(idea) && !isNilOrError(project)) {
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId: phaseId ?? undefined,
+    action: 'reacting_idea',
+    disabledReason: idea
+      ? idea.data.attributes.action_descriptors.reacting_idea[
+          buttonReactionMode
+        ].disabled_reason
+      : undefined,
+  });
+
+  if (idea && project) {
     const reactingDescriptor =
       idea.data.attributes.action_descriptors.reacting_idea;
     const buttonReactionModeEnabled =
@@ -430,40 +449,70 @@ const ReactionButton = ({
       />
     );
 
-    return (
-      <Tooltip
-        placement="top"
-        theme="dark"
-        disabled={
-          disabledReason === null || isFixableByAuthentication(disabledReason)
-        }
-        content={
-          <span
-            // aria-hidden is needed because we already use ScreenReaderOnly for screen readers
-            // and we don't want to duplicate the message
-            aria-hidden
+    // "Blocked" = disabled for a reason the user can't resolve by authenticating
+    // (e.g. not in the permitted group). Then the button is genuinely disabled
+    // and a Tooltip explains why on hover. For every other state (enabled, or
+    // fixable by signing in) we skip the Tooltip: it's a needless interactive
+    // tippy on a frequently re-rendered/clicked button, and mounting it there
+    // crashes the (known-fragile) Tooltip component.
+    const isBlocked =
+      disabledReason !== null && !isFixableByAuthentication(disabledReason);
+
+    const buttonWidth = variant === 'text' ? '100%' : 'fit-content';
+
+    const reactionButton = (
+      <>
+        {variant === 'text' && (
+          <ButtonComponent
+            onClick={onClick}
+            disabled={isBlocked}
+            icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
+            bgColor={buttonReactionModeIsActive ? colors.success : undefined}
+            className="e2e-ideacard-vote-button"
+            aria-describedby={describedById}
           >
-            {disabledMessage}
-          </span>
-        }
-        trigger="mouseenter"
-        width={variant === 'text' ? '100%' : 'fit-content'}
-        useContentWrapper={false}
-      >
-        <>
-          {variant === 'text' && (
-            <ButtonComponent
-              onClick={onClick}
-              icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
-              bgColor={buttonReactionModeIsActive ? colors.success : undefined}
-              className="e2e-ideacard-vote-button"
-              aria-describedby={describedById}
+            {buttonReactionModeIsActive ? (
+              <FormattedMessage {...messages.voted} />
+            ) : (
+              <FormattedMessage {...messages.vote} />
+            )}
+          </ButtonComponent>
+        )}
+        {variant === 'icon' && (
+          <Button
+            buttonReactionMode={buttonReactionMode}
+            buttonReactionModeIsActive={buttonReactionModeIsActive}
+            reactingEnabled={buttonEnabled}
+            styleType={styleType}
+            onMouseDown={removeFocusAfterMouseClick}
+            onClick={onClick}
+            disabled={isBlocked}
+            className={[
+              className,
+              {
+                up: 'e2e-ideacard-like-button',
+                down: 'e2e-ideacard-dislike-button',
+              }[buttonReactionMode],
+              buttonReactionModeEnabled ? 'enabled' : '',
+            ].join(' ')}
+            aria-describedby={describedById}
+          >
+            <ReactionIconContainer
+              styleType={styleType}
+              size={size}
+              reactingEnabled={buttonEnabled}
+              buttonReactionModeIsActive={buttonReactionModeIsActive}
+              buttonReactionMode={buttonReactionMode}
+              disabledReason={disabledReason}
             >
-              {buttonReactionModeIsActive ? (
-                <FormattedMessage {...messages.voted} />
-              ) : (
-                <FormattedMessage {...messages.vote} />
-              )}
+              <ReactionIcon
+                name={iconName}
+                reactingEnabled={buttonEnabled}
+                buttonReactionModeIsActive={buttonReactionModeIsActive}
+                buttonReactionMode={buttonReactionMode}
+                disabledReason={disabledReason}
+                styleType={styleType}
+              />
               <ScreenReaderOnly>
                 <FormattedMessage
                   {...{ up: messages.like, down: messages.dislike }[
@@ -471,68 +520,59 @@ const ReactionButton = ({
                   ]}
                 />
               </ScreenReaderOnly>
-            </ButtonComponent>
-          )}
-          {variant === 'icon' && (
-            <Button
+            </ReactionIconContainer>
+            <ReactionCount
+              reactingEnabled={buttonEnabled}
               buttonReactionMode={buttonReactionMode}
               buttonReactionModeIsActive={buttonReactionModeIsActive}
-              reactingEnabled={buttonEnabled}
               styleType={styleType}
-              onMouseDown={removeFocusAfterMouseClick}
-              onClick={onClick}
-              className={[
-                className,
-                {
-                  up: 'e2e-ideacard-like-button',
-                  down: 'e2e-ideacard-dislike-button',
-                }[buttonReactionMode],
-                buttonReactionModeEnabled ? 'enabled' : '',
-              ].join(' ')}
-              aria-describedby={describedById}
+              aria-hidden
             >
-              <ReactionIconContainer
-                styleType={styleType}
-                size={size}
-                reactingEnabled={buttonEnabled}
-                buttonReactionModeIsActive={buttonReactionModeIsActive}
-                buttonReactionMode={buttonReactionMode}
-                disabledReason={disabledReason}
-              >
-                <ReactionIcon
-                  name={iconName}
-                  reactingEnabled={buttonEnabled}
-                  buttonReactionModeIsActive={buttonReactionModeIsActive}
-                  buttonReactionMode={buttonReactionMode}
-                  disabledReason={disabledReason}
-                  styleType={styleType}
-                />
-                <ScreenReaderOnly>
-                  <FormattedMessage
-                    {...{ up: messages.like, down: messages.dislike }[
-                      buttonReactionMode
-                    ]}
-                  />
-                </ScreenReaderOnly>
-              </ReactionIconContainer>
-              <ReactionCount
-                reactingEnabled={buttonEnabled}
-                buttonReactionMode={buttonReactionMode}
-                buttonReactionModeIsActive={buttonReactionModeIsActive}
-                styleType={styleType}
-                aria-hidden
-              >
-                {reactionsCount}
-              </ReactionCount>
-            </Button>
-          )}
-          {describedById && disabledMessage && (
-            <ScreenReaderOnly id={describedById}>
-              {`. `}
-              {disabledMessage}
-            </ScreenReaderOnly>
-          )}
-        </>
+              {reactionsCount}
+            </ReactionCount>
+          </Button>
+        )}
+        {describedById && disabledMessage && (
+          <ScreenReaderOnly id={describedById}>
+            {`. `}
+            {customAccessDeniedMessage ?? disabledMessage}
+          </ScreenReaderOnly>
+        )}
+      </>
+    );
+
+    if (!isBlocked) {
+      return (
+        <Box as="span" w={buttonWidth}>
+          {reactionButton}
+        </Box>
+      );
+    }
+
+    // The button is disabled, and a disabled <button> fires no hover or click
+    // events — so the tooltip's reference must be this enabled wrapper (for
+    // hover), and the absence of click events is what keeps the fragile
+    // Tooltip's click-toggle/remount crash from ever firing.
+    return (
+      <Tooltip
+        placement="top"
+        theme="light"
+        content={
+          <span
+            // aria-hidden because the message is already announced via the
+            // ScreenReaderOnly above; avoid duplicating it for screen readers.
+            aria-hidden
+          >
+            {customAccessDeniedMessage ?? disabledMessage}
+          </span>
+        }
+        trigger="mouseenter"
+        width={buttonWidth}
+        useContentWrapper={false}
+      >
+        <Box as="span" display="inline-flex" w={buttonWidth}>
+          {reactionButton}
+        </Box>
       </Tooltip>
     );
   }

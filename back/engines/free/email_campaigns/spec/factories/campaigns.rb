@@ -22,6 +22,21 @@ FactoryBot.define do
     end
   end
 
+  factory :sms_manual_campaign, class: 'EmailCampaigns::Campaigns::SmsManual' do
+    enabled { true }
+    author
+    subject_multiloc do
+      {
+        'en' => 'Town hall reminder'
+      }
+    end
+    body_multiloc do
+      {
+        'en' => 'A short SMS update from your city.'
+      }
+    end
+  end
+
   factory :admin_rights_received_campaign, class: 'EmailCampaigns::Campaigns::AdminRightsReceived' do
     enabled { true }
   end
@@ -162,7 +177,27 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :proposal_expired_for_admin_campaign, class: 'EmailCampaigns::Campaigns::ProposalExpiredForAdmin' do
+    enabled { true }
+  end
+
   factory :welcome_campaign, class: 'EmailCampaigns::Campaigns::Welcome' do
+    enabled { true }
+  end
+
+  factory :email_confirmation_campaign, class: 'EmailCampaigns::Campaigns::EmailConfirmation' do
+    enabled { true }
+  end
+
+  factory :password_reset_campaign, class: 'EmailCampaigns::Campaigns::PasswordReset' do
+    enabled { true }
+  end
+
+  factory :user_blocked_campaign, class: 'EmailCampaigns::Campaigns::UserBlocked' do
+    enabled { true }
+  end
+
+  factory :new_email_confirmation_campaign, class: 'EmailCampaigns::Campaigns::NewEmailConfirmation' do
     enabled { true }
   end
 
