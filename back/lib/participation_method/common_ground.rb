@@ -21,11 +21,11 @@ module ParticipationMethod
       phase.input_term = 'contribution'
     end
 
-    # Common ground renders its own card interface and ignores the view columns, and the phase form
-    # offers no view selector to correct them with. Rather than narrow this and reject phases that
-    # were copied or migrated from a method with more views, it accepts whatever a phase holds.
+    # Common ground renders its own card interface, and the phase form offers it no view selector.
+    # The feed page opens on the views alone, so leaving the feed allowed here would let it render
+    # common ground contributions as ideas.
     def allowed_presentation_modes
-      Phase::PRESENTATION_MODES
+      %w[card]
     end
 
     def assign_defaults(input)
