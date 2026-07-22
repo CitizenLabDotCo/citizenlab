@@ -62,10 +62,8 @@ describe('Project description builder display', () => {
       'saveProjectDescriptionBuilder'
     );
 
-    cy.visit(`admin/projects/${projectId}/general`);
-    cy.get('#e2e-project-description-builder-link')
-      .should('be.visible')
-      .click();
+    cy.apiToggleProjectDescriptionBuilder({ projectId });
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
 
     // Add the description as a text widget.
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
@@ -94,7 +92,7 @@ describe('Project description builder display', () => {
     // This 4s wait is necessary. I tried waiting in a number of other ways,
     // but this was the only consistent solution.
     cy.wait(4000);
-    cy.scrollTo('bottom');
+    cy.scrollTo('bottom', { ensureScrollable: false });
 
     // Open the file upload modal
     cy.get('#e2e-open-file-upload-modal-button').should('exist');
@@ -110,10 +108,9 @@ describe('Project description builder display', () => {
     cy.wait('@saveProjectFiles');
     cy.contains('Your form has been saved!').should('be.visible');
 
-    // Add the description in the Content Builder via the "Edit description" link.
-    cy.get('#e2e-project-description-builder-link')
-      .should('be.visible')
-      .click();
+    // Add the description in the Content Builder.
+    cy.apiToggleProjectDescriptionBuilder({ projectId });
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
