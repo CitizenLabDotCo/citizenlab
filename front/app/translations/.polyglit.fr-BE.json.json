@@ -3064,6 +3064,11 @@
     "verified_at": "2026-07-22T20:39:16.943574Z",
     "verified_by": "Adrien"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": {
+    "state": "verified",
+    "verified_at": "2026-07-22T22:11:44.152415Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": {
     "state": "verified",
     "verified_at": "2026-07-22T20:39:16.943574Z",

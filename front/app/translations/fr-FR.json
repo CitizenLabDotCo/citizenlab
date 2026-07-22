@@ -606,7 +606,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatButton": "Bouton",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatCard": "Carte",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatLabel": "Format du bouton",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": "Seuls les sondages sous Extras peuvent être liés. Ajoutez-les dans le {projectEditorLink}.",
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": "Seules les enquêtes de la section « Extras » dans les {projectEditorLink} peuvent être sélectionnées ici.",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": "Choisissez une enquête dans les réglages du widget pour l'afficher ici.",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle": "Aucune enquête sélectionnée",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNotEligible": "Vous ne remplissez pas les conditions pour participer",
