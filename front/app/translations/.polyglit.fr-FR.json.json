@@ -12944,6 +12944,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.errors.new_phone_blank": {
+    "state": "verified",
+    "verified_at": "2026-07-22T12:30:10.303007Z",
+    "verified_by": "Adrien"
+  },
   "app.errors.new_phone_invalid": {
     "state": "verified",
     "verified_at": "2026-07-22T11:55:53.713766Z",
