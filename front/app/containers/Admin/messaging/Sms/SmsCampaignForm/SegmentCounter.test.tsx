@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { MAX_SMS_SEGMENTS } from 'utils/sms/segments';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
+
+import { MAX_SMS_SEGMENTS } from '../utils/segments';
 
 import SegmentCounter from './SegmentCounter';
 

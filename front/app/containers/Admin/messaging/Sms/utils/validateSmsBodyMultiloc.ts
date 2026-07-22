@@ -1,7 +1,7 @@
 import { Multiloc } from 'typings';
 import { object, lazy, string } from 'yup';
 
-import { measureSms } from 'utils/sms/segments';
+import { measureSms } from './segments';
 
 // Like validateMultilocForEveryLocale, but also caps how many SMS segments each locale's
 // body costs. Recipients are sent the message in their own language, so every translation

@@ -1,7 +1,6 @@
 import { object } from 'yup';
 
-import { MAX_SMS_SEGMENTS } from 'utils/sms/segments';
-
+import { MAX_SMS_SEGMENTS } from './segments';
 import validateSmsBodyMultiloc from './validateSmsBodyMultiloc';
 
 // 153 GSM-7 characters per concatenated segment, 67 once the message is Unicode.

@@ -10,10 +10,11 @@ import {
 import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
-import { MAX_SMS_SEGMENTS } from 'utils/sms/segments';
-import useSmsSegments from 'utils/sms/useSmsSegments';
 
 import messages from '../../messages';
+import { MAX_SMS_SEGMENTS } from '../utils/segments';
+
+import useSmsSegments from './useSmsSegments';
 
 // Sits in the corner of the field, where the subject field's counter already sits.
 const Container = styled.div`

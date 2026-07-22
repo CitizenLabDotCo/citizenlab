@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { measureSms, SmsSegments } from 'utils/sms/segments';
+import { measureSms, SmsSegments } from '../utils/segments';
 
 // Memoized wrapper around measureSms for the compose form's live counter, which
 // re-measures on every keystroke. measureSms itself stays a plain function so the yup
