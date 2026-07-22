@@ -24,7 +24,6 @@ import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
-import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import {
   appLocalesMomentPairs,
@@ -112,13 +111,9 @@ const App = ({ children }: Props) => {
   const appContainerClassName =
     isAdmin(authUser) || isModerator(authUser) ? 'admin-user-view' : '';
 
-  const parallelParticipation = useParallelParticipation();
   const projectSlug = pathname.match(/\/admin\/projects\/([^/]+)/)?.[1];
   const lockViewport =
-    parallelParticipation &&
-    !!projectSlug &&
-    projectSlug !== 'new' &&
-    projectSlug !== 'folders';
+    !!projectSlug && projectSlug !== 'new' && projectSlug !== 'folders';
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,

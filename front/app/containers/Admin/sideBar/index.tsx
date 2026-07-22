@@ -18,8 +18,6 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
-import useParallelParticipation from 'hooks/useParallelParticipation';
-
 import Outlet from 'components/Outlet';
 
 import { useIntl } from 'utils/cl-intl';
@@ -111,13 +109,9 @@ const Sidebar = ({ authUser }: Props) => {
   const [navItems, setNavItems] = useState(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
-  const parallelParticipation = useParallelParticipation();
   const projectSlug = pathname.match(/\/admin\/projects\/([^/]+)/)?.[1];
   const onProjectPage =
-    parallelParticipation &&
-    !!projectSlug &&
-    projectSlug !== 'new' &&
-    projectSlug !== 'folders';
+    !!projectSlug && projectSlug !== 'new' && projectSlug !== 'folders';
 
   const forceCollapsed = onProjectPage;
   const collapsed = isSmallerThanPhone || forceCollapsed;
