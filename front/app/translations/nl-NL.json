@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Vul een geldig telefoonnummer in, inclusief de landcode.",
   "app.containers.PhoneChange.phoneTaken": "Dit telefoonnummer is al in gebruik.",
   "app.containers.PhoneChange.phoneUnknownError": "Er is iets misgegaan. Probeer het opnieuw.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "SMS-berichten kunnen niet naar dit land worden verzonden.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "De update van het telefoonnummer is geannuleerd.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Start het proces opnieuw om je telefoonnummer bij te werken.",
   "app.containers.PhoneChange.submitButton": "Insturen",

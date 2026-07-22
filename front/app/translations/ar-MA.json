@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "المرجو إدخال رقم هاتف صالح، بما في ذلك رمز البلد.",
   "app.containers.PhoneChange.phoneTaken": "هاد نمرة التيليفون مستعملة ديجا.",
   "app.containers.PhoneChange.phoneUnknownError": "وقع مشكل. عفاك عاود حاول مرة أخرى.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "لا يمكن إرسال رسائل SMS إلى هذا البلد.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "تم إلغاء تحديث نمرة التيليفون.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "باش تحدّث نمرة التيليفون ديالك، عفاك عاود العملية من اللول.",
   "app.containers.PhoneChange.submitButton": "إرسال",

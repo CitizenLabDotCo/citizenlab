@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Ülke kodu dahil, geçerli bir telefon numarası girin.",
   "app.containers.PhoneChange.phoneTaken": "Bu telefon numarası zaten kullanımda.",
   "app.containers.PhoneChange.phoneUnknownError": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "Bu ülkeye SMS mesajları gönderilemez.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Telefon numarası güncelleme işlemi iptal edildi.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Telefon numaranızı güncellemek için lütfen işlemi yeniden başlatın.",
   "app.containers.PhoneChange.submitButton": "Gönder",

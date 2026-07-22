@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Adjon meg egy érvényes telefonszámot az országkóddal együtt.",
   "app.containers.PhoneChange.phoneTaken": "Ez a telefonszám már használatban van.",
   "app.containers.PhoneChange.phoneUnknownError": "Valami hiba történt. Kérjük, próbáld újra.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "Ebbe az országba nem küldhetők SMS-üzenetek.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "A telefonszám frissítése megszakítva.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "A telefonszám frissítéséhez indítsd újra a folyamatot.",
   "app.containers.PhoneChange.submitButton": "Beküldés",

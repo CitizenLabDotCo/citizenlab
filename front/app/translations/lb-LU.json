@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Gitt eng gëlteg Telefonsnummer un, inklusiv dem Landecode.",
   "app.containers.PhoneChange.phoneTaken": "Dës Telefonsnummer gëtt scho benotzt.",
   "app.containers.PhoneChange.phoneUnknownError": "Eppes ass schif gaangen. Probéiert et wgl. nach eng Kéier.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "SMS-Messagen kënnen net an dëst Land geschéckt ginn.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "D'Aktualiséierung vun der Telefonsnummer gouf ofgebrach.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Fir Är Telefonsnummer ze aktualiséieren, start wgl. de Prozess nei.",
   "app.containers.PhoneChange.submitButton": "Ofschécken",

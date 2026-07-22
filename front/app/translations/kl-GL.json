@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Oqarasuaatip normua atorsinnaasoq allaguk, nunap kode-a ilanngullugu.",
   "app.containers.PhoneChange.phoneTaken": "Oqarasuaatip normua una atorneqareerpoq.",
   "app.containers.PhoneChange.phoneUnknownError": "Kukkusoqarpoq. Misileqqiguk.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "SMS-it nunamut uunga nassiunneqarsinnaanngillat.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Oqarasuaatip normuata nutarternera taamaatinneqarpoq.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Oqarasuaativit normua nutarterumallugu suleriaaseq aallarteqqiguk.",
   "app.containers.PhoneChange.submitButton": "Nassiuguk",
