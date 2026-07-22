@@ -139,14 +139,6 @@ class Phase < ApplicationRecord
     validate :validate_available_views
   end
 
-  # The visibility condition is repeated rather than left to the block above, because a validation
-  # that brings its own +if+ into a +with_options+ block replaces the condition of the block instead
-  # of adding to it, and methods that show no inputs publicly hold view values nobody maintains.
-  validate :validate_presentation_modes_allowed_for_method, if: lambda { |phase|
-    phase.pmethod.supports_public_visibility? &&
-      (phase.presentation_mode_changed? || phase.available_views_changed? || phase.participation_method_changed?)
-  }
-
   validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
     phase.pmethod.supports_submission?
   }
@@ -493,15 +485,16 @@ class Phase < ApplicationRecord
 
     unless available_views.include?(presentation_mode)
       errors.add(:available_views, :invalid, message: 'must include the default presentation mode')
+      return
     end
-  end
 
-  # Narrower than validate_available_views: some methods do not allow every presentation mode.
-  # Guarded on the views or the method actually changing, so a phase left holding a mode its method
-  # no longer allows can still be saved for unrelated edits until the data has been migrated. The
-  # method is part of the guard because switching it can invalidate views that were fine before.
-  def validate_presentation_modes_allowed_for_method
-    disallowed = ((available_views || []) + [presentation_mode]).compact.uniq - pmethod.allowed_presentation_modes
+    # The rest is narrower: some methods do not offer every view. It only applies when the views or
+    # the method are written, so a phase left holding a view its method no longer offers can still
+    # be saved for unrelated edits until the data has been migrated. The method is part of that
+    # condition because switching it can invalidate views that were fine a moment before.
+    return unless presentation_mode_changed? || available_views_changed? || participation_method_changed?
+
+    disallowed = (available_views + [presentation_mode]).compact.uniq - pmethod.allowed_presentation_modes
     return if disallowed.empty?
 
     errors.add(
