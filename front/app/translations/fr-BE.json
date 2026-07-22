@@ -1327,7 +1327,7 @@
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Renvoyer l'invitation",
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": "Saisissez votre numéro de téléphone pour continuer.",
   "app.containers.Authentication.steps.Phone.phoneNumber": "Numéro de téléphone",
-  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Veuillez fournir un numéro de téléphone au format correct, par exemple +32 470 12 34 56",
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Veuillez saisir un numéro de téléphone au format correct, par exemple +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Indiquez un numéro de téléphone",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifications dans cette catégorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Quels types de notifications par e-mail souhaitez-vous recevoir ?",
