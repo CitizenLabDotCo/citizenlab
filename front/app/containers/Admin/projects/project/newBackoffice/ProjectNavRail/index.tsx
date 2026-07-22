@@ -84,6 +84,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
   return (
     <Box
       as="nav"
+      className="intercom-product-tour-project-nav-rail"
       p="12px"
       flex="0 0 auto"
       display="flex"

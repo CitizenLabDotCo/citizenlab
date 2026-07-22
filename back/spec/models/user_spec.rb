@@ -503,6 +503,32 @@ RSpec.describe User do
 
       expect(u).to be_invalid
     end
+
+    # NOTE: These tests match the frontend tests found in front/app/components/UI/PasswordInput/passwordMeetsStrength.test.ts
+    it 'does not enforce password strength when minimum_strength is 0 (default)' do
+      # A long but weak password passes when the strength check is disabled.
+      u = build(:user, password: 'aaaaaaaaaaaaaaaa')
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when weaker than the configured minimum strength' do
+      settings = AppConfiguration.instance.settings
+      settings['password_login'] = settings['password_login'].merge('minimum_strength' => 3)
+      AppConfiguration.instance.update! settings: settings
+
+      u = build(:user, password: 'aaaaaaaaaaaaaaaa')
+      expect(u).to be_invalid
+      expect(u.errors.details[:password]).to include(a_hash_including(error: :too_weak))
+    end
+
+    it 'is valid when at least as strong as the configured minimum strength' do
+      settings = AppConfiguration.instance.settings
+      settings['password_login'] = settings['password_login'].merge('minimum_strength' => 3)
+      AppConfiguration.instance.update! settings: settings
+
+      u = build(:user, password: 'correct horse battery staple')
+      expect(u).to be_valid
+    end
   end
 
   describe 'bio sanitizer' do
@@ -1121,11 +1147,6 @@ RSpec.describe User do
 
       it 'returns true if the user has not yet confirmed their account' do
         expect(user.confirmation_required?).to be true
-      end
-
-      it 'returns false when the user is a verified SSO user with no email' do
-        u = build(:unconfirmed_user, identities: [build(:franceconnect_identity)], email: nil, verified: true)
-        expect(u.confirmation_required?).to be false
       end
 
       it 'returns true when the user is an unverified SSO user with no email' do

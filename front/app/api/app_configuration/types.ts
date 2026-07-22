@@ -77,6 +77,7 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
     enable_signup: boolean;
     minimum_length?: number;
+    minimum_strength?: number;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -203,8 +204,11 @@ export interface IAppConfigurationSettings {
   hide_submission_removal_text?: AppConfigurationFeature;
   project_static_pages?: AppConfigurationFeature;
   parallel_participation?: AppConfigurationFeature;
-  pdf_export_responses?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
+  sms?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

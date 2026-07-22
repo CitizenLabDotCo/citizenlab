@@ -264,6 +264,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.components.AuthProviders.continueWithLuxembourgIAM": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
@@ -1139,9 +1140,34 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.drawOnMap": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.978764Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.EsriMap.drawOnMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.978764Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.EsriMap.exploreMap": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.978764Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.EsriMap.exploreMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.978764Z",
+    "verified_by": "Luuc"
+  },
   "app.components.EsriMap.mapAriaLabel": {
     "state": "verified",
     "verified_at": "2026-04-29T17:04:19.536127Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.EsriMap.mapInteractionToggleAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.978764Z",
     "verified_by": "Luuc"
   },
   "app.components.EsriMap.mapLayerListAriaLabel": {
@@ -1954,6 +1980,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.components.ParticipationCTABars.seeObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -2098,6 +2125,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:34:36.118563Z",
     "verified_by": "Admin"
+  },
+  "app.components.PasswordInput.passwordRequiredError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T04:19:55.463727Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.PasswordInput.passwordStrengthError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T04:19:55.463727Z",
+    "verified_by": "Pauline"
   },
   "app.components.PasswordInput.passwordStrengthTooltip1": {
     "state": "verified",
@@ -2334,16 +2371,19 @@
     "verified_at": "2026-03-18T16:34:36.118563Z",
     "verified_by": "Admin"
   },
+
   "app.components.PostComponents.SharingModalContent.observationEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
     "verified_by": "Luuc"
   },
+
   "app.components.PostComponents.SharingModalContent.observationEmailSharingSubject": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
     "verified_by": "Luuc"
   },
+
   "app.components.PostComponents.SharingModalContent.observationWhatsAppMessage": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -2624,6 +2664,7 @@
     "verified_at": "2026-03-18T16:34:36.118563Z",
     "verified_by": "Admin"
   },
+
   "app.components.ProjectCard.submitYourObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -2704,6 +2745,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.components.ProjectCard.viewTheObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -2919,121 +2961,145 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.bannerEmptyTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.bannerWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.eventsLinkText": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.eventsManagedNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.projectTitleLabel": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.sectionHeightCappedNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.timelineEmptyTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.timelineHiddenNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.timelineHiddenTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.timelineManagedNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.titleWidgetTitle": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.components.ProjectPageBuilder.Widgets.untitledProject": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
@@ -3529,6 +3595,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.components.VerificationModal.verifyEtatLu2": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
@@ -3709,6 +3776,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.components.admin.UserFilterConditions.field_participated_in_input": {
     "state": "verified",
     "verified_at": "2026-07-01T08:15:52.572600Z",
@@ -6374,6 +6442,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.AccessibilityStatement.publicationDate2026": {
     "state": "verified",
     "verified_at": "2026-07-10T12:35:19.836631Z",
@@ -6389,6 +6458,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.AccessibilityStatement.statusPageUrl": {
     "state": "verified",
     "verified_at": "2026-07-10T12:35:19.836631Z",
@@ -6609,10 +6679,34 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:55.160812Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:55.160812Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Authentication.steps.EmailFlowStart.federaTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:55.160812Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:55.160812Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
@@ -6654,15 +6748,45 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.CampaignsConsentForm.ally_categoryLabel2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.CampaignsConsentForm.emailNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.CampaignsConsentForm.messageError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.CampaignsConsentForm.messageError2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.CampaignsConsentForm.messageSuccess": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.CampaignsConsentForm.messageSuccess2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
   },
   "app.containers.CampaignsConsentForm.notificationsSubTitle": {
     "state": "verified",
@@ -6673,6 +6797,18 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.CampaignsConsentForm.smsNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.CampaignsConsentForm.smsNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
   },
   "app.containers.CampaignsConsentForm.submit": {
     "state": "verified",
@@ -7414,6 +7550,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeaButton.addAnObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -7734,6 +7871,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeaCards.xObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -7839,6 +7977,7 @@
     "verified_at": "2026-03-18T16:34:36.118563Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasEditPage.observationFormTitle": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -7974,6 +8113,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasFeedPage.addAnObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -8049,6 +8189,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasFeedPage.seeAllObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -8129,6 +8270,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasFeedPage.showAllObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -8979,6 +9121,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasNewPage.observationMetaTitle1": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -9204,81 +9347,97 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasShow.importedTooltipComment": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipContribution": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipIdea": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipInitiative": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipIssue": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipObservation": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipOption": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipPetition": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipPost": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipProject": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipProposal": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipQuestion": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipResponse": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipStory": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipSuggestion": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.importedTooltipTopic": {
     "state": "verified",
     "verified_at": "2026-07-07T14:49:31.883734Z",
@@ -9339,26 +9498,31 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.IdeasShow.observationEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.observationEmailSharingSubject": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.observationSharingModalTitle": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.observationTwitterMessage": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.IdeasShow.observationWhatsAppMessage": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -9974,6 +10138,7 @@
     "verified_at": "2026-03-18T16:34:36.118563Z",
     "verified_by": "Admin"
   },
+
   "app.containers.NotificationMenu.invitationToCosponsorObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -10094,6 +10259,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.NotificationMenu.officialFeedbackOnObservationYouFollow": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -10229,6 +10395,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.NotificationMenu.userCommentedOnObservationYouFollow": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -10434,6 +10601,156 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.PhoneChange.backToProfile": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.confirmationModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.currentPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.helmetDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.helmetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.newPhoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.phoneEmptyError": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.phoneInvalid2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.phoneTaken": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.phoneUnknownError": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.phoneUpdateCancelled": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.phoneUpdateCancelledDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.submitButton": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.titleAddPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.titleChangePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneChange.updateSuccessful": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.changeYourNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.codeInput": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.codeMustHaveFourDigits": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.confirmationCodeSent": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.didntGetAnSMS": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.sendNewCode": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.verifyAndContinue": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.PhoneConfirmation.wrongNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.ProjectFolderCards.allProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -10484,16 +10801,19 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.ProjectPageBuilder.projectPageHeading": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.ProjectPageBuilder.saveError": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.ProjectPageBuilder.toolboxLockedNote": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
@@ -10894,6 +11214,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.Projects.seeTheObservations": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -11564,6 +11885,12 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.UsersEditPage.addPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -11608,6 +11935,12 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.UsersEditPage.changePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
   },
   "app.containers.UsersEditPage.clickHereToUpdateVerification": {
     "state": "verified",
@@ -12069,6 +12402,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.containers.admin.ContentBuilder.richTextMultiloc": {
     "state": "verified",
     "verified_at": "2026-06-19T14:52:25.299334Z",
@@ -12804,6 +13138,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.errors.too_weak": {
+    "state": "verified",
+    "verified_at": "2026-06-25T04:19:55.463727Z",
+    "verified_by": "Pauline"
+  },
   "app.errors.uncaught_error": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -13284,6 +13623,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.utils.IdeasNewPage.observationFormTitle": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -13374,6 +13714,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.utils.IdeasNewPage.viewYourObservation": {
     "state": "verified",
     "verified_at": "2026-07-01T08:21:13.853936Z",
@@ -13639,6 +13980,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.utils.inactivePhase": {
     "state": "verified",
     "verified_at": "2026-07-10T12:36:04.042019Z",
@@ -13679,6 +14021,7 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
   "app.utils.projectInactive": {
     "state": "verified",
     "verified_at": "2026-07-10T12:36:04.042019Z",

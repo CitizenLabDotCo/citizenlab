@@ -190,6 +190,7 @@ lt-LT:
       new_email_confirmation: Naujas el. pašto patvirtinimo kodas
       new_idea_for_admin_prescreening: Nauji duomenys, kuriuos reikia patvirtinti projekte, kurį moderuoju
       new_idea_for_admin_published: Naujai paskelbta informacija apie projektą, kuriam vadovauju
+      new_phone_confirmation: Naujas telefono patvirtinimo kodas
       official_feedback_on_idea_you_follow: Įvesties, kurią sekate, atnaujinimas
       password_reset: Slaptažodžio atkūrimas
       project_folder_moderation_rights_received: Gautos aplankų tvarkytojo teisės
@@ -202,6 +203,7 @@ lt-LT:
       project_review_state_change: Patvirtintas projektas
       proposal_expired_for_admin: Pasiūlymo galiojimo laikas pasibaigė nepasiekus balsavimo slenksčio
       screening_digest: Savaitinis priminimas apie patikrą
+      sms_manual: Oficialios SMS žinutės
       space_moderation_rights_received: Suteiktos erdvės valdytojo teisės
       status_change_on_idea_you_follow: Įvesties, kurią sekate, būsenos pasikeitimas
       survey_submitted: Pateikta apklausa
@@ -534,6 +536,8 @@ lt-LT:
       title: Jūsų platformoje paskelbta nauja įvestis
       today: Šiandien
       yesterday: Vakar
+    new_phone_confirmation:
+      sms_body: Jūsų patvirtinimo kodas yra %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Eikite į šią įvestį
       event_description: '%{feedback_author_name} pateikė naujausią informaciją apie "%{input_title}".'

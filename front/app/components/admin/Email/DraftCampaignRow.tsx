@@ -10,8 +10,8 @@ import {
 import moment from 'moment';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { ICampaignData } from 'api/campaigns/types';
-import { isDraft } from 'api/campaigns/util';
+import { IEmailCampaignData } from 'api/campaigns/email/types';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -25,7 +25,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  campaign: ICampaignData;
+  campaign: IEmailCampaignData;
   context?: 'global' | 'project';
 }
 
@@ -78,7 +78,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
               </Text>
             </>
           )}
-          {isDraft(campaign) && (
+          {isEmailCampaignDraft(campaign) && (
             <StatusLabel
               backgroundColor={colors.orange500}
               text={<FormattedMessage {...messages.draft} />}

@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -13,7 +13,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
-import { lighten } from 'polished';
 import styled from 'styled-components';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
@@ -30,6 +29,7 @@ import { useParams } from 'utils/router';
 import { stripHtml } from 'utils/textUtils';
 
 import messages from './messages';
+import PagePlaceholder from './PagePlaceholder';
 
 type DisplayType = 'link' | 'preview';
 
@@ -45,7 +45,7 @@ const PageLinkRow = typedStyled(Link)`
   display: flex;
   align-items: center;
   color: ${colors.textSecondary};
-  border: 1px solid ${lighten(0.4, colors.textSecondary)};
+  border: 1px solid ${colors.borderLight};
   border-radius: ${(props) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
@@ -79,33 +79,6 @@ const PreviewTitleLink = typedStyled(Link)`
   }
 `;
 
-const PlaceholderContainer = styled(Box)<{ color: string }>`
-  display: flex;
-  align-items: center;
-  color: ${({ color }) => color};
-  border: 1px solid ${(props) => props.theme.colors.borderLight};
-  border-radius: ${(props) => props.theme.borderRadius};
-  font-size: ${fontSizes.base}px;
-  padding: 10px 20px;
-  margin-bottom: 10px;
-`;
-
-const PagePlaceholder = ({
-  variant,
-  children,
-}: {
-  variant?: 'error';
-  children: ReactNode;
-}) => {
-  const color = variant === 'error' ? colors.error : colors.textSecondary;
-  return (
-    <PlaceholderContainer color={color}>
-      <RowIcon name="file" fill={color} width="20px" height="20px" />
-      {children}
-    </PlaceholderContainer>
-  );
-};
-
 const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
   const localize = useLocalize();
   const { enabled } = useEditor((state) => ({
@@ -116,9 +89,8 @@ const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
   const projectId = page?.data.attributes.project_id;
   const { data: project } = useProjectById(projectId);
 
-  // Selected page resolved -> render the chosen representation. Disable pointer
-  // events while in the builder (`enabled`) so clicking selects the widget
-  // instead of navigating away; links stay clickable once published.
+  // Resolved page -> render it. Pointer events off in the builder so a click
+  // selects the widget instead of navigating; clickable once published.
   if (page && project) {
     const linkParams = {
       to: '/projects/$slug/pages/$pageSlug',
@@ -165,12 +137,12 @@ const PageLink = ({ pageId, displayType = 'link' }: PageLinkProps) => {
     );
   }
 
-  // No resolved page in view mode -> hide the widget entirely.
+  // Unresolved in view mode -> hide entirely.
   if (!enabled) return null;
 
   if (isLoading) return null;
 
-  // Edit mode placeholder: prompt to pick a page, or flag a missing one.
+  // Builder: prompt to pick a page, or flag a missing one.
   return (
     <Box maxWidth="1200px" margin="0 auto">
       <PagePlaceholder variant={pageId ? 'error' : undefined}>
@@ -213,9 +185,8 @@ const PageLinkSettings = () => {
     }));
   }, [pages, localize]);
 
-  // Only take over the whole panel on the initial load; background refetches
-  // (e.g. the refresh button below) keep the panel visible.
-  if (isFetchingPages && !pages) {
+  // Full-panel spinner on initial load only; refetches keep the panel visible.
+  if (!pages) {
     return <Spinner />;
   }
 

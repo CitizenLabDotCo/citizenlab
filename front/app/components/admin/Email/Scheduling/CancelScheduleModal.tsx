@@ -2,8 +2,11 @@ import * as React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
-import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import {
+  IEmailCampaign,
+  EmailCampaignFormValues,
+} from 'api/campaigns/email/types';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 
 import Modal from 'components/UI/Modal';
 
@@ -12,7 +15,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  campaign: ICampaign;
+  campaign: IEmailCampaign;
   opened: boolean;
   onClose: () => void;
 }
@@ -20,14 +23,14 @@ interface Props {
 const CancelScheduleModal = ({ campaign, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
-    useUpdateCampaign();
+    useUpdateEmailCampaign();
 
   // to cancel schedule campaign ( send scheduledAt as null )
   const handleCancelSchedule = () => {
     updateCampaign(
       {
         id: campaign.data.id,
-        campaign: { scheduled_at: null } as CampaignFormValues,
+        campaign: { scheduled_at: null } as EmailCampaignFormValues,
       },
       {
         onSuccess: onClose,

@@ -29,6 +29,19 @@ describe WebApi::V1::ProjectMiniAdminSerializer do
     expect(serialized_project.dig(:data, :attributes, :folder_title_multiloc)).to eq(folder.title_multiloc)
   end
 
+  it 'serializes space_title_multiloc when the project belongs to a space' do
+    space = create(:space)
+    folder.update!(space: space)
+    project.reload.update!(space: space)
+
+    serialized = described_class.new(project, params: { current_user: user }).serializable_hash
+    expect(serialized.dig(:data, :attributes, :space_title_multiloc)).to eq(space.title_multiloc)
+  end
+
+  it 'serializes a nil space_title_multiloc when the project has no space' do
+    expect(serialized_project.dig(:data, :attributes, :space_title_multiloc)).to be_nil
+  end
+
   it 'includes phases' do
     project2 = create(:project_with_active_ideation_phase)
     serialized_project2 = described_class

@@ -140,6 +140,7 @@ PATH
   specs:
     mcp_server (0.1.0)
       mcp (~> 0.16)
+      pg_query (~> 6.0)
       rails (~> 7.2)
 
 PATH
@@ -598,6 +599,18 @@ GEM
       thor (>= 0.20, < 2.a)
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
+    google-protobuf (4.35.0-aarch64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-arm64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-x86_64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.0-x86_64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
     googleauth (1.11.0)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.1)
@@ -614,6 +627,7 @@ GEM
     gyoku (1.4.0)
       builder (>= 2.1.2)
       rexml (~> 3.0)
+    hana (1.3.7)
     hashdiff (1.1.0)
     hashery (2.1.2)
     hashie (5.0.0)
@@ -671,6 +685,11 @@ GEM
       faraday-follow_redirects
     json-schema (4.3.0)
       addressable (>= 2.8)
+    json_schemer (2.5.0)
+      bigdecimal
+      hana (~> 1.3)
+      regexp_parser (~> 2.0)
+      simpleidn (~> 0.2)
     jsonapi-renderer (0.2.2)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
@@ -714,7 +733,7 @@ GEM
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     logger (1.7.0)
-    loofah (2.24.1)
+    loofah (2.25.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -726,8 +745,8 @@ GEM
       rest-client (>= 2.0.2)
     marcel (1.0.4)
     matrix (0.4.2)
-    mcp (0.16.0)
-      json-schema (>= 4.1)
+    mcp (0.25.0)
+      json_schemer (>= 2.4)
     method_source (1.1.0)
     mime-types (3.7.0)
       logger
@@ -809,7 +828,7 @@ GEM
     omniauth-rails_csrf_protection (1.0.2)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    omniauth-saml (2.2.3)
+    omniauth-saml (2.2.5)
       omniauth (~> 2.1)
       ruby-saml (~> 1.18)
     omniauth_openid_connect (0.8.0)
@@ -843,9 +862,12 @@ GEM
       ruby-rc4
       ttfunk
     pg (1.5.6)
+    pg_query (6.2.2)
+      google-protobuf (>= 3.25.3)
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
+    phonelib (0.10.22)
     positioning (0.4.6)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -934,8 +956,8 @@ GEM
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.6.2)
-      loofah (~> 2.21)
+    rails-html-sanitizer (1.7.1)
+      loofah (~> 2.25, >= 2.25.2)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
     rails-i18n (7.0.9)
       i18n (>= 0.7, < 2)
@@ -1140,6 +1162,7 @@ GEM
     simplecov-rcov (0.3.7)
       simplecov (>= 0.4.1)
     simplecov_json_formatter (0.1.4)
+    simpleidn (0.2.3)
     singleton (0.3.0)
     snaky_hash (2.0.5)
       hashie (>= 0.1.0, < 6)
@@ -1178,6 +1201,10 @@ GEM
     tsort (0.2.0)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
+    twilio-ruby (7.8.8)
+      faraday (>= 0.9, < 3.0)
+      jwt (>= 1.5, < 4.0)
+      nokogiri (>= 1.6, < 2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2025.2)
@@ -1223,6 +1250,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.3)
+    zxcvbn-ruby (2.0.0)
 
 PLATFORMS
   aarch64-linux
@@ -1327,6 +1355,7 @@ DEPENDENCIES
   pdf-reader
   pg (~> 1.5.6)
   pg_search (~> 2.3.7)
+  phonelib (~> 0.10)
   polls!
   positioning (~> 0.4.6)
   posthog_integration!
@@ -1386,6 +1415,7 @@ DEPENDENCIES
   strong_migrations (~> 2.5)
   surveys!
   test-prof (~> 1.3)
+  twilio-ruby (~> 7.8.5)
   tzinfo (~> 2.0)
   tzinfo-data (~> 1.2024)
   user_custom_fields!
@@ -1393,6 +1423,7 @@ DEPENDENCIES
   volunteering!
   webhooks!
   webmock (~> 3.23)
+  zxcvbn-ruby (~> 2.0)
 
 RUBY VERSION
    ruby 3.4.7p58

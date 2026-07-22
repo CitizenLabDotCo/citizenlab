@@ -390,6 +390,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       if phase.pmethod.supports_survey_form?
         yml_phase['native_survey_title_multiloc'] = phase.native_survey_title_multiloc
         yml_phase['native_survey_button_multiloc'] = phase.native_survey_button_multiloc
+        yml_phase['allow_multiple_responses'] = phase.allow_multiple_responses
       end
 
       store_ref yml_phase, phase.id, :phase
@@ -622,6 +623,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'access_denied_explanation_multiloc' => p.access_denied_explanation_multiloc,
         'everyone_tracking_enabled' => p.everyone_tracking_enabled,
         'verification_expiry' => p.verification_expiry,
+        'require_confirmed_email' => p.require_confirmed_email,
+        'confirmed_email_expiry' => p.confirmed_email_expiry,
+        'require_name' => p.require_name,
+        'require_password' => p.require_password,
+        'require_verification' => p.require_verification,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
         'user_fields_in_form' => p.user_fields_in_form,

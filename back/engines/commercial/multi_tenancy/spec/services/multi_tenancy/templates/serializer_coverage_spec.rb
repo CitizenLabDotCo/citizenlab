@@ -53,6 +53,10 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         parent_id
       ], # flat list; default topics carry no hierarchy
 
+      'EmailCampaigns::Campaign' => %w[
+        channel
+      ], # derived cache of `self.class.channel`; reconstructed from `type` on init
+
       'Idea' => %w[
         assigned_at
         assignee_id
@@ -80,11 +84,14 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         invite_status
         last_active_at
         new_email
+        new_phone
         onboarding
+        phone
+        phone_confirmed_at
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role state — deliberately not templated (privacy/security)
+      ] # auth/session/role/contact state — deliberately not templated (privacy/security)
     }.freeze
   end
 
@@ -197,6 +204,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         EmailCampaigns::CampaignEmailCommand
         EmailCampaigns::Delivery
         EmailCampaigns::Example
+        EmailCampaigns::Sms::Delivery
       ],
 
       # Experiment / AB-test runtime.
