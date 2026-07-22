@@ -3039,6 +3039,11 @@
     "verified_at": "2026-07-22T20:54:59.114409Z",
     "verified_by": "Adrien"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysClosedTimeAgo": {
+    "state": "verified",
+    "verified_at": "2026-07-22T21:06:37.037801Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysDefaultButtonText": {
     "state": "verified",
     "verified_at": "2026-07-22T19:49:31.238677Z",
@@ -3072,6 +3077,16 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNotEligible": {
     "state": "verified",
     "verified_at": "2026-07-22T20:45:32.405809Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysOpensOn": {
+    "state": "verified",
+    "verified_at": "2026-07-22T21:06:37.037801Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysResponseReceived": {
+    "state": "verified",
+    "verified_at": "2026-07-22T21:06:37.037801Z",
     "verified_by": "Adrien"
   },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysSelectPlaceholder": {
@@ -3123,6 +3138,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.182128Z",
     "verified_by": "Cindy EB"
+  },
+  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": {
+    "state": "verified",
+    "verified_at": "2026-07-22T21:06:37.037801Z",
+    "verified_by": "Adrien"
   },
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": {
     "state": "verified",
