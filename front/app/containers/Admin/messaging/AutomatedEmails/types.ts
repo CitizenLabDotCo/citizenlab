@@ -1,6 +1,6 @@
-import { ICampaignData } from 'api/campaigns/types';
+import { IEmailCampaignData } from 'api/campaigns/email/types';
 
-export interface CampaignData extends ICampaignData {
+export interface CampaignData extends IEmailCampaignData {
   content_type: string;
   recipient_role: string;
   recipient_segment: string;

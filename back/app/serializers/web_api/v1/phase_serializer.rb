@@ -17,7 +17,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   %i[
     voting_method voting_max_total voting_min_total
     voting_max_votes_per_idea baskets_count voting_min_selected_options
-    native_survey_title_multiloc native_survey_button_multiloc
+    native_survey_title_multiloc native_survey_button_multiloc allow_multiple_responses
     expire_days_limit reacting_threshold autoshare_results_enabled voting_filtering_enabled
   ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
@@ -80,6 +80,11 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   attribute :allow_anonymous_participation do |phase|
     posting_permission = phase.permissions.find { |p| p.action == 'posting_idea' }
     posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation
+  end
+
+  attribute :action_descriptors do |phase, params|
+    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+    Permissions::PhasePermissionsService.new(phase, current_user(params), user_requirements_service:, request: params[:request]).action_descriptors
   end
 
   belongs_to :project

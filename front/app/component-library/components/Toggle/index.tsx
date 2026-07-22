@@ -6,8 +6,16 @@ import styled, { css } from 'styled-components';
 import { colors, fontSizes, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
-const size = 21;
+type Size = 'small' | 'medium';
+
+const mediumSize = 21;
+const smallSize = 15;
 const padding = 3;
+
+const SIZES: Record<Size, number> = {
+  small: smallSize,
+  medium: mediumSize,
+};
 
 const Container = styled.div`
   display: inline-block;
@@ -26,11 +34,15 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   ${hideVisually()};
 `;
 
-const StyledToggle = styled.i<{ checked: boolean; disabled: boolean }>`
+const StyledToggle = styled.i<{
+  checked: boolean;
+  disabled: boolean;
+  sizeInPixels: number;
+}>`
   display: inline-block;
   padding: ${padding}px;
-  padding-right: ${size}px;
-  border-radius: ${size + padding}px;
+  padding-right: ${(props) => props.sizeInPixels}px;
+  border-radius: ${(props) => props.sizeInPixels + padding}px;
   background-color: #ccc;
   border: solid 1px transparent;
   transition: padding 150ms cubic-bezier(0.165, 0.84, 0.44, 1),
@@ -39,9 +51,9 @@ const StyledToggle = styled.i<{ checked: boolean; disabled: boolean }>`
   &:before {
     display: block;
     content: '';
-    width: ${size}px;
-    height: ${size}px;
-    border-radius: ${size}px;
+    width: ${(props) => props.sizeInPixels}px;
+    height: ${(props) => props.sizeInPixels}px;
+    border-radius: ${(props) => props.sizeInPixels}px;
     background: #fff;
     transition: all 80ms ease-out;
   }
@@ -55,13 +67,17 @@ const StyledToggle = styled.i<{ checked: boolean; disabled: boolean }>`
     props.checked &&
     css`
       padding-right: ${padding}px;
-      padding-left: ${size}px;
+      padding-left: ${(props: any) => props.sizeInPixels}px;
       background-color: ${colors.success};
     `};
 `;
 
-const StyledToggleWrapper = styled.div<{ checked: boolean; disabled: boolean }>`
-  height: ${size + padding * 2}px;
+const StyledToggleWrapper = styled.div<{
+  checked: boolean;
+  disabled: boolean;
+  sizeInPixels: number;
+}>`
+  height: ${(props) => props.sizeInPixels + padding * 2}px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -97,6 +113,7 @@ interface Props {
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
   labelTextColor?: string;
+  size?: Size;
   onChange: (event: FormEvent) => void;
   className?: string;
   id?: string;
@@ -118,8 +135,11 @@ class Toggle extends PureComponent<Props> {
       labelTextColor,
       className,
       id,
+      size = 'medium',
       onChange,
     } = this.props;
+
+    const sizeInPixels = SIZES[size];
 
     return (
       <Container className={`${className || ''} ${label ? 'hasLabel' : ''}`}>
@@ -136,11 +156,13 @@ class Toggle extends PureComponent<Props> {
           disabled={!!disabled}
           onClick={this.handleOnClick}
           data-testid={testEnv('toggle')}
+          sizeInPixels={sizeInPixels}
         >
           <StyledToggle
             checked={checked}
             disabled={!!disabled}
             className={disabled ? 'disabled' : 'enabled'}
+            sizeInPixels={sizeInPixels}
           />
         </StyledToggleWrapper>
 

@@ -9,7 +9,6 @@ import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import projectPermissionKeys from 'api/project_permissions/keys';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import { IUser } from 'api/users/types';
@@ -48,7 +47,6 @@ import Highlighter from 'components/Highlighter';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
@@ -236,10 +234,6 @@ const ProjectSetupForm = ({ authUser }: Props) => {
           pathname: `${adminProjectsProjectPath(projectId)}/general`,
         });
       }, 1000);
-
-      queryClient.invalidateQueries({
-        queryKey: projectPermissionKeys.list({ projectId }),
-      });
     } catch (errors) {
       setSubmitState('error');
       setApiErrors((errors as any).errors);

@@ -63,6 +63,10 @@ module EmailCampaigns
       @campaign_classes ||= begin
         classes = CAMPAIGN_CLASSES.deep_dup
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+        if AppConfiguration.instance.feature_activated?('sms')
+          classes << Campaigns::SmsManual
+          classes << Campaigns::NewPhoneConfirmation
+        end
         classes
       end
     end
@@ -73,6 +77,12 @@ module EmailCampaigns
 
     def manual_campaign_types
       campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
+    end
+
+    # Campaign types that should never surface in the admin campaigns UI
+    # (e.g. transactional/internal campaigns like the phone-confirmation OTP).
+    def hidden_from_admin_campaign_types
+      campaign_classes.select { |campaign| campaign.new.hidden_from_admin? }.map(&:name)
     end
 
     def consentable_campaign_types_for(user)
@@ -100,21 +110,18 @@ module EmailCampaigns
       apply_send_pipeline([campaign])
     end
 
-    # Sends one campaign to one recipient immediately (synchronously) with a
-    # caller-supplied event_payload. For transactional emails that must arrive
-    # right away (e.g. confirmation codes). Runs Trackable hooks so a Delivery
-    # record is saved, but bypasses the recipient-filter pipeline.
+    # Sends one campaign to one recipient immediately, bypassing the
+    # recipient-filter pipeline. For transactional messages that must go out
+    # right away (e.g. confirmation codes).
     def send_now_to_user(campaign, recipient, event_payload = {})
-      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
-      campaign.run_before_send_hooks(command)
-      campaign.mailer_class
-        .with(campaign: campaign, command: command)
-        .campaign_mail
-        .deliver_now
-      campaign.run_after_send_hooks(command)
+      if campaign.sms?
+        send_sms_now_to_user(campaign, recipient, event_payload)
+      else
+        send_email_now_to_user(campaign, recipient, event_payload)
+      end
     end
 
-    def send_preview(campaign, recipient)
+    def send_email_preview(campaign, recipient)
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
       else
@@ -127,7 +134,16 @@ module EmailCampaigns
       end
     end
 
+    def send_sms_preview(campaign, recipient)
+      command = generate_commands(campaign, recipient).first
+      return unless command
+
+      campaign.deliver_preview(command)
+    end
+
     def preview_email(campaign, recipient)
+      return {} if campaign.sms?
+
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
       else
@@ -152,6 +168,26 @@ module EmailCampaigns
     end
 
     private
+
+    # Renders and delivers the campaign's email synchronously. Runs Trackable
+    # hooks so a Delivery record is saved.
+    def send_email_now_to_user(campaign, recipient, event_payload = {})
+      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
+      campaign.run_before_send_hooks(command)
+      campaign.mailer_class
+        .with(campaign: campaign, command: command)
+        .campaign_mail
+        .deliver_now
+      campaign.run_after_send_hooks(command)
+    end
+
+    # Sends a transactional one-off SMS synchronously, in-process (e.g. the
+    # phone-confirmation OTP). The campaign owns rendering, destination and the
+    # synchronous send.
+    def send_sms_now_to_user(campaign, recipient, event_payload = {})
+      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
+      campaign.deliver_now(command)
+    end
 
     # Takes options, either
     # * time: Time object when the sending command happened
@@ -200,16 +236,26 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
+      if campaign.sms?
+        send_sms_command(campaign, command)
+      else
+        send_email_command(campaign, command)
+      end
     end
 
-    # This method is triggered when the given sending command should be sent
-    # out through the interal Rails mailing stack
-    def send_command_internal(campaign, command)
+    # Sends the command through the internal Rails mailing stack. Campaigns
+    # without a mailer (nothing to email) are a no-op.
+    def send_email_command(campaign, command)
+      return unless campaign.respond_to?(:mailer_class)
+
       campaign.mailer_class
         .with(campaign: campaign, command: command)
         .campaign_mail
         .deliver_later(wait: command[:delay] || 0)
+    end
+
+    def send_sms_command(campaign, command)
+      campaign.deliver_later(command)
     end
 
     def generate_commands(campaign, recipient, options = {})

@@ -5,19 +5,18 @@ import { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
+import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
-  hasProjectEndedOrIsArchived,
+  useScrollToCurrentPhaseElement,
 } from 'components/ParticipationCTABars/utils';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
-import { scrollToElement } from 'utils/scroll';
 
 import messages from '../messages';
 
@@ -26,14 +25,11 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const { data: authUser } = useAuthUser();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const scrollToPhaseElement = useScrollToCurrentPhaseElement(project, phases);
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
+    setCurrentPhase(getCurrentPhase(phases));
   }, [phases]);
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
-    return null;
-  }
 
   const { enabled } = getIdeaPostingRules({
     project,
@@ -44,7 +40,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const scrollToIdeas = (event: FormEvent) => {
     event.preventDefault();
 
-    scrollToElement({ id: 'project-ideas', shouldFocus: true });
+    scrollToPhaseElement('project-ideas');
   };
 
   return (

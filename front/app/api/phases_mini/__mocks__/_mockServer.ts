@@ -1,6 +1,8 @@
 import { addDays, format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
+import { mockPhaseActionDescriptors } from 'api/phases/__mocks__/_mockServer';
+
 import { PhaseMini } from '../types';
 
 export const apiPathPhaseMini = '/web_api/v1/phases/:id/mini';
@@ -12,6 +14,7 @@ const miniPhaseData: PhaseMini['data'] = {
     end_at: format(addDays(new Date(), 21), 'yyyy-MM-dd'),
     participation_method: 'ideation',
     input_term: 'idea',
+    action_descriptors: mockPhaseActionDescriptors,
   },
   relationships: {
     project: {

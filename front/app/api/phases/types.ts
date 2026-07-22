@@ -1,6 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 
 import { UserDataCollection } from 'api/phase_permissions/types';
+import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -78,6 +79,7 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  allow_multiple_responses?: boolean;
   prescreening_mode?: PrescreeningMode;
   /** The prescreening_mode reduced to what the platform's feature flags permit. A phase
    * can carry a prescreening_mode on a platform without the screening feature (tenant
@@ -91,6 +93,7 @@ export interface IPhaseAttributes {
   similarity_threshold_body?: number | null;
   user_data_collection: UserDataCollection;
   user_fields_in_form_enabled: boolean;
+  action_descriptors: PhaseActionDescriptors;
 }
 
 export interface IPhases {
@@ -137,6 +140,7 @@ export interface IUpdatedPhaseProperties {
   document_annotation_embed_url?: string | null;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  allow_multiple_responses?: boolean;
   prescreening_mode?: PrescreeningMode | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;

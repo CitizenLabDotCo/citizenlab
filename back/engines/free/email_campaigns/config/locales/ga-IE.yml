@@ -190,6 +190,7 @@ ga-IE:
       new_email_confirmation: Cód deimhnithe ríomhphoist nua
       new_idea_for_admin_prescreening: Ionchur nua a bhfuil gá le ceadú i dtionscadal a dhéanaim modhnóireacht air
       new_idea_for_admin_published: Ionchur nuafhoilsithe i dtionscadal a ndéanaim modhnóireacht air
+      new_phone_confirmation: Cód deimhnithe gutháin nua
       official_feedback_on_idea_you_follow: Nuashonrú ar ionchur a leanann tú
       password_reset: Athshocrú pasfhocail
       project_folder_moderation_rights_received: Fuarthas cearta bainisteoir fillteán
@@ -202,6 +203,7 @@ ga-IE:
       project_review_state_change: Tionscadal ceadaithe
       proposal_expired_for_admin: Chuaigh moladh in éag gan an tairseach vótála a bhaint amach
       screening_digest: Meabhrúchán scagthástála seachtainiúil
+      sms_manual: Teachtaireachtaí SMS oifigiúla
       space_moderation_rights_received: Cearta bainisteora spáis faighte
       status_change_on_idea_you_follow: Athrú stádais ionchuir a leanann tú
       survey_submitted: Suirbhé curtha isteach
@@ -534,6 +536,8 @@ ga-IE:
       title: Tá ionchur nua foilsithe ar d'ardán
       today: Inniu
       yesterday: Inné
+    new_phone_confirmation:
+      sms_body: Is é %{code} do chód deimhnithe.
     official_feedback_on_idea_you_follow:
       cta_button: Téigh chuig an ionchur seo
       event_description: "Thug %{feedback_author_name} nuashonrú ar '%{input_title}'."

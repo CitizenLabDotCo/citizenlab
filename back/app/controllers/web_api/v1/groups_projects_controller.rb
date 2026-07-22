@@ -15,7 +15,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     when nil
       @groups_projects
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
 
     @groups_projects = paginate @groups_projects

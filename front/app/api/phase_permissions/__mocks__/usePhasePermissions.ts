@@ -5,7 +5,7 @@ export const phasePermissionsData: IPhasePermissionData = {
   type: 'permission',
   attributes: {
     action: 'commenting_idea',
-    permitted_by: 'everyone_confirmed_email',
+    permitted_by: 'users',
     created_at: '2023-03-28T12:29:20.848Z',
     updated_at: '2023-03-28T13:15:59.410Z',
     global_custom_fields: false,
@@ -19,6 +19,12 @@ export const phasePermissionsData: IPhasePermissionData = {
       locked: true,
       explanation: 'user_fields_in_form_not_supported_for_action',
     },
+    require_confirmed_email: true,
+    confirmed_email_expiry: null,
+    require_name: true,
+    require_password: true,
+    require_verification: false,
+    permitted_by_everyone_allowed: false,
   },
   relationships: {
     permission_scope: {

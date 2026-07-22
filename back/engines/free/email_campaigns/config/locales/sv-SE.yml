@@ -190,6 +190,7 @@ sv-SE:
       new_email_confirmation: Ny bekräftelsekod för e-postadress
       new_idea_for_admin_prescreening: Ny input som kräver godkännande i ett projekt I måttlig
       new_idea_for_admin_published: Ny publicerad input i ett projekt som jag modererar
+      new_phone_confirmation: Ny bekräftelsekod för telefon
       official_feedback_on_idea_you_follow: Uppdatering av en idé som du följer
       password_reset: Återställning av lösenord
       project_folder_moderation_rights_received: Rättigheter som mapphanterare har erhållits
@@ -202,6 +203,7 @@ sv-SE:
       project_review_state_change: Projekt godkänt
       proposal_expired_for_admin: Förslaget har löpt ut utan att nå rösttröskeln
       screening_digest: Påminnelse om screening varje vecka
+      sms_manual: Officiella SMS-meddelanden
       space_moderation_rights_received: Rättigheter som space-ansvarig mottagna
       status_change_on_idea_you_follow: Statusförändring av en idé som du följer
       survey_submitted: Undersökning inlämnad
@@ -534,6 +536,8 @@ sv-SE:
       title: Ett nytt inlägg har publicerats på din plattform
       today: I dag
       yesterday: Igår
+    new_phone_confirmation:
+      sms_body: Din bekräftelsekod är %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Gå till denna ingång
       event_description: '%{feedback_author_name} gav en uppdatering om "%{input_title}".'

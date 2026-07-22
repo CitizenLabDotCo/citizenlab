@@ -1,25 +1,26 @@
 import React from 'react';
 
-import { IProjectData } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
-import { ProjectDocumentAnnotationDisabledReason } from 'utils/actionDescriptors/types';
+import { PhaseDocumentAnnotationDisabledReason } from 'utils/actionDescriptors/types';
 
 import ParticipationPermission from '../ParticipationPermission';
 
 import Konveio from './Konveio';
 
 interface Props {
-  project: IProjectData;
-  phaseId: string | null;
+  phase: IPhaseData;
   documentUrl: string;
 }
 
 const isEnabled = (
-  disabledReason: ProjectDocumentAnnotationDisabledReason | null
+  disabledReason: PhaseDocumentAnnotationDisabledReason | null
 ) => {
-  const reasonsToHideDocument: ProjectDocumentAnnotationDisabledReason[] = [
+  const reasonsToHideDocument: PhaseDocumentAnnotationDisabledReason[] = [
     'project_inactive',
+    'inactive_phase',
     'user_not_in_group',
     'user_not_permitted',
     'not_document_annotation',
@@ -30,9 +31,11 @@ const isEnabled = (
   );
 };
 
-const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
-  const disabledReason =
-    project.attributes.action_descriptors.annotating_document.disabled_reason;
+const DocumentAnnotation = ({ phase, documentUrl }: Props) => {
+  const disabledReason = getPhaseActionDescriptor(
+    phase,
+    'annotating_document'
+  ).disabled_reason;
 
   const disabledMessage =
     getPermissionsDisabledMessage('annotating_document', disabledReason) ||
@@ -44,7 +47,7 @@ const DocumentAnnotation = ({ project, phaseId, documentUrl }: Props) => {
         id="document-annotation"
         action="annotating_document"
         enabled={isEnabled(disabledReason)}
-        phaseId={phaseId}
+        phaseId={phase.id}
         disabledReason={disabledReason}
         disabledMessage={disabledMessage}
       >

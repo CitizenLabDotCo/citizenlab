@@ -62,6 +62,24 @@ resource 'Campaign consents' do
         expect(response_content_type_multiloc).to match_array campaigns_content_type_multiloc
       end
 
+      context 'when sms is enabled' do
+        include_context 'with sms feature enabled'
+
+        example 'Exposes the campaign channel on each consent' do
+          sms_campaign = create(:sms_manual_campaign)
+          create(:consent, user: @user, campaign_type: sms_campaign.type)
+
+          do_request
+
+          json_response = json_parse(response_body)
+          channels = json_response[:data].to_h do |consent|
+            [consent.dig(:attributes, :campaign_name), consent.dig(:attributes, :channel)]
+          end
+          expect(channels['sms_manual']).to eq 'sms'
+          expect(channels.values).to include 'email'
+        end
+      end
+
       context 'when using without_campaign_names' do
         let(:without_campaign_names) { [@campaigns.first.class.campaign_name] }
 
