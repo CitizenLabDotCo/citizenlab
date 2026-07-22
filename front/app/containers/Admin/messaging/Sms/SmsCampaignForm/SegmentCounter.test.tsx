@@ -48,7 +48,7 @@ describe('SegmentCounter', () => {
     });
   });
 
-  describe('the cost pill', () => {
+  describe('the segment pill', () => {
     it('reports one SMS for a short message', () => {
       render(<SegmentCounter body="Hello" />);
       expect(pill()).toBe('1 SMS');
