@@ -270,10 +270,12 @@ RSpec.describe Phase do
         expect(phase).to be_valid
       end
 
+      # The views come along on a method change and no longer mean anything once they arrive. The
+      # ideas order has to go in the same write, as information allows no order at all.
       it 'is valid when an ideation phase on the map view becomes an information phase' do
         phase = create(:phase, presentation_mode: 'map', available_views: %w[card map])
 
-        expect(phase.update(participation_method: 'information')).to be true
+        expect(phase.update(participation_method: 'information', ideas_order: nil)).to be true
       end
     end
   end
