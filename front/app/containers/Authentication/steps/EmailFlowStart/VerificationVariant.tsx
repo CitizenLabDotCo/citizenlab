@@ -46,24 +46,31 @@ const VerificationVariant = ({
   const { formatMessage } = useIntl();
   const { data: idMethods } = useIdMethods();
   const isSuperAdmin = useSuperAdmin();
-  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
-  const franceConnectEnabled = !!idMethods?.data.find((method) => method.attributes.name === 'franceconnect');
+  const passwordLoginEnabled =
+    useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
+  const franceConnectEnabled = !!idMethods?.data.find(
+    (method) => method.attributes.name === 'franceconnect'
+  );
 
-  const authenticationOnlyMethodsExceptFC = idMethods?.data.filter((method) => {
-    const { name, authentication_method, verification_method } = method.attributes;
-    if (name === 'franceconnect') {
-      return false;
-    }
-    return authentication_method && !verification_method;
-  }) ?? [];
+  const authenticationOnlyMethodsExceptFC =
+    idMethods?.data.filter((method) => {
+      const { name, authentication_method, verification_method } =
+        method.attributes;
+      if (name === 'franceconnect') {
+        return false;
+      }
+      return authentication_method && !verification_method;
+    }) ?? [];
 
-  const authenticationVerificationMethodsExceptFC = idMethods?.data.filter((method) => {
-    const { name, verification_method, authentication_method } = method.attributes;
-    if (name === 'franceconnect') {
-      return false;
-    }
-    return authentication_method && verification_method;
-  }) ?? [];
+  const authenticationVerificationMethodsExceptFC =
+    idMethods?.data.filter((method) => {
+      const { name, verification_method, authentication_method } =
+        method.attributes;
+      if (name === 'franceconnect') {
+        return false;
+      }
+      return authentication_method && verification_method;
+    }) ?? [];
 
   const orLoginWithSection =
     passwordLoginEnabled || authenticationOnlyMethodsExceptFC.length > 0;

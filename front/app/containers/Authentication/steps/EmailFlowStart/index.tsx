@@ -4,7 +4,10 @@ import useAuthenticationRequirements from 'api/authentication/authentication_req
 import { SSOProvider } from 'api/authentication/singleSignOn';
 import useIdMethods from 'api/id_methods/useIdMethods';
 
-import { AuthenticationData, SetError } from 'containers/Authentication/typings';
+import {
+  AuthenticationData,
+  SetError,
+} from 'containers/Authentication/typings';
 
 import DefaultVariant from './DefaultVariant';
 import VerificationVariant from './VerificationVariant';

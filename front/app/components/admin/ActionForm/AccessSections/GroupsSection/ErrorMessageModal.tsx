@@ -20,7 +20,6 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-
 import messages from './messages';
 
 interface Props {

@@ -196,6 +196,32 @@ describe Permissions::PhasePermissionsService do
         end
       end
     end
+
+    context 'native survey with allow_multiple_responses' do
+      let(:user) { create(:user) }
+      let(:service) { described_class.new(phase, user) }
+
+      before do
+        create(:idea_status_proposed)
+        create(:native_survey_response, author: user, project: phase.project, creation_phase: phase, phases: [phase])
+      end
+
+      context 'when disabled (default)' do
+        let(:phase) { create(:active_native_survey_phase, with_permissions: true, allow_multiple_responses: false) }
+
+        it 'blocks a second response' do
+          expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'
+        end
+      end
+
+      context 'when enabled' do
+        let(:phase) { create(:active_native_survey_phase, with_permissions: true, allow_multiple_responses: true) }
+
+        it 'allows a second response' do
+          expect(service.denied_reason_for_action('posting_idea')).to be_nil
+        end
+      end
+    end
   end
 
   describe '#action_descriptors' do

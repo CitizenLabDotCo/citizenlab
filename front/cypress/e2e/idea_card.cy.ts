@@ -146,7 +146,7 @@ describe('Idea card component', () => {
     before(() => {
       cy.apiCreatePhase({
         projectId,
-        title: "Second phase",
+        title: 'Second phase',
         startAt: moment().subtract(1, 'month').format('DD/MM/YYYY'),
         participationMethod: 'ideation',
         canPost: true,
@@ -154,16 +154,16 @@ describe('Idea card component', () => {
         canReact: false,
         reacting_dislike_enabled: true,
       })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-      })
-      .then((user) => {
-        return cy.apiCreateIdea({
-          projectId,
-          ideaTitle,
-          ideaContent,
+        .then((phase) => {
+          phaseId = phase.body.data.id;
+        })
+        .then((user) => {
+          return cy.apiCreateIdea({
+            projectId,
+            ideaTitle,
+            ideaContent,
+          });
         });
-      })
     });
 
     it('does not show the up and dislike buttons if canReact is false', () => {

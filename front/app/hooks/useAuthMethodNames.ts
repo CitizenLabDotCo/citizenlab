@@ -43,7 +43,8 @@ const useAuthMethodNames = () => {
     vienna_citizen: 'StandardPortal',
     keycloak: keycloakMethod?.attributes.method_metadata?.name ?? '',
     azureactivedirectory: azureConfig?.attributes.login_mechanism_name ?? '',
-    azureactivedirectory_b2c: azureB2cConfig?.attributes.login_mechanism_name ?? '',
+    azureactivedirectory_b2c:
+      azureB2cConfig?.attributes.login_mechanism_name ?? '',
     etat_lu: 'Luxembourg IAM',
   };
 };

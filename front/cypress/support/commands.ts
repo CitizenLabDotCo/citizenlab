@@ -11,7 +11,10 @@ import { Multiloc } from '../../app/typings';
 
 import { jwtDecode } from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
-import { IPermissionUpdate, IPhasePermissionAction } from '../../app/api/phase_permissions/types';
+import {
+  IPermissionUpdate,
+  IPhasePermissionAction,
+} from '../../app/api/phase_permissions/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -130,9 +133,9 @@ export function randomEmail() {
     .toString(36)
     .substr(2, 12)
     .toLowerCase()}@${Math.random()
-      .toString(36)
-      .substr(2, 12)
-      .toLowerCase()}.com`;
+    .toString(36)
+    .substr(2, 12)
+    .toLowerCase()}.com`;
 }
 
 function unregisterServiceWorkers() {
@@ -1347,6 +1350,7 @@ function apiCreatePhase({
   surveyService,
   votingMaxTotal,
   allow_anonymous_participation,
+  allow_multiple_responses,
   votingMethod,
   votingMaxVotesPerIdea,
   votingMinTotal,
@@ -1371,6 +1375,7 @@ function apiCreatePhase({
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
+  allow_multiple_responses?: boolean;
   votingMethod?: VotingMethod;
   votingMaxVotesPerIdea?: number;
   votingMinTotal?: number;
@@ -1408,6 +1413,7 @@ function apiCreatePhase({
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
+          allow_multiple_responses: allow_multiple_responses,
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
@@ -1547,9 +1553,9 @@ function apiCreateEvent({
           address_1: location,
           location_point_geojson: includeLocation
             ? {
-              type: 'Point',
-              coordinates: [4.418731568531502, 50.86899604801978],
-            }
+                type: 'Point',
+                coordinates: [4.418731568531502, 50.86899604801978],
+              }
             : undefined,
           start_at: startDate.toJSON(),
           end_at: endDate.toJSON(),
@@ -1696,7 +1702,7 @@ function apiUpdatePermissionCustomField(
   permissionId: string,
   action: IPhasePermissionAction,
   custom_field_id: string
-) { }
+) {}
 
 function apiCreateManualGroup({ title }: { title: Multiloc }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
@@ -1865,10 +1871,10 @@ const createBaseCustomField =
     ordering: i,
     ...(input_type === 'linear_scale'
       ? {
-        maximum: 5,
-        linear_scale_label_1_multiloc: { en: 'Min label' },
-        linear_scale_label_5_multiloc: { en: 'Max label' },
-      }
+          maximum: 5,
+          linear_scale_label_1_multiloc: { en: 'Min label' },
+          linear_scale_label_5_multiloc: { en: 'Max label' },
+        }
       : {}),
   });
 

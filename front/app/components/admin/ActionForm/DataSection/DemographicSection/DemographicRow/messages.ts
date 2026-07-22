@@ -12,5 +12,5 @@ export default defineMessages({
   removeDemographicField: {
     id: 'app.components.admin.ActionForm.DataSection.DemographicSection.DemographicRow.removeDemographicField',
     defaultMessage: 'Remove {fieldName}',
-  }
+  },
 });

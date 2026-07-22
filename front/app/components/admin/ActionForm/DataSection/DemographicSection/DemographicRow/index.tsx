@@ -3,7 +3,13 @@
 
 import React from 'react';
 
-import { Box, Text, IconButton, colors, Select } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  IconButton,
+  colors,
+  Select,
+} from '@citizenlab/cl2-component-library';
 
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 
@@ -52,7 +58,10 @@ const DemographicRow = ({ field, onChangeRequired, onRemove }: Props) => {
         <IconButton
           iconName="delete"
           onClick={onRemove}
-          a11y_buttonActionMessage={formatMessage(messages.removeDemographicField, { fieldName: title })}
+          a11y_buttonActionMessage={formatMessage(
+            messages.removeDemographicField,
+            { fieldName: title }
+          )}
           iconColor={colors.coolGrey500}
           iconColorOnHover={colors.red500}
           iconWidth="18px"

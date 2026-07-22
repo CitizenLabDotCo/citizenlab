@@ -62,9 +62,7 @@ const ModeCards = ({
       </Box>
 
       {permittedBy === 'admins_moderators' && (
-        <Hint>
-          {formatMessage(messages.onlyAdminsAndManagers)}
-        </Hint>
+        <Hint>{formatMessage(messages.onlyAdminsAndManagers)}</Hint>
       )}
     </>
   );

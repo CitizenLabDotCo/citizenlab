@@ -28,7 +28,9 @@ jest.mock('api/id_methods/useAuthenticationMethod', () =>
 
 jest.mock('api/phases/usePhase', () =>
   jest.fn(() => ({
-    data: { data: { attributes: { participation_method: mockParticipationMethod } } },
+    data: {
+      data: { attributes: { participation_method: mockParticipationMethod } },
+    },
   }))
 );
 

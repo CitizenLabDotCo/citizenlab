@@ -19,6 +19,7 @@ export default defineMessages({
   },
   onlyAdminsAndManagers: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.onlyAdminsAndManagers',
-    defaultMessage: 'Only admins and managers can take this action. No other requirements apply.',
-  }
+    defaultMessage:
+      'Only admins and managers can take this action. No other requirements apply.',
+  },
 });

@@ -73,7 +73,9 @@ const MethodRow = ({
               </Text>
               {locked && (
                 <IconTooltip
-                  content={formatMessage(messages.atLeastOneMethodMustStayEnabled)}
+                  content={formatMessage(
+                    messages.atLeastOneMethodMustStayEnabled
+                  )}
                   iconSize="14px"
                 />
               )}

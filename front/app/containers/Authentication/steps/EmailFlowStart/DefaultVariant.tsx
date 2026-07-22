@@ -36,15 +36,19 @@ const DefaultVariant = ({
 }: Props) => {
   const { data: idMethods } = useIdMethods();
   const isSuperAdmin = useSuperAdmin();
-  const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
-  const franceConnectEnabled = !!idMethods?.data.find((method) => method.attributes.name === 'franceconnect');
+  const passwordLoginEnabled =
+    useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
+  const franceConnectEnabled = !!idMethods?.data.find(
+    (method) => method.attributes.name === 'franceconnect'
+  );
 
-  const authMethodsEnabledBesidesFC = idMethods?.data.filter((method) => {
-    const isFC = method.attributes.name === 'franceconnect';
-    const isAuthMethod = method.attributes.authentication_method;
+  const authMethodsEnabledBesidesFC =
+    idMethods?.data.filter((method) => {
+      const isFC = method.attributes.name === 'franceconnect';
+      const isAuthMethod = method.attributes.authentication_method;
 
-    return !isFC && isAuthMethod;
-  }) ?? []
+      return !isFC && isAuthMethod;
+    }) ?? [];
 
   return (
     <Box data-cy="email-flow-start">

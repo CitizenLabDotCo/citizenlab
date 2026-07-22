@@ -6,7 +6,6 @@ import {
   PermittedBy,
 } from 'api/phase_permissions/types';
 
-
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';

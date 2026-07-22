@@ -33,7 +33,8 @@ const VerificationWarning = () => {
     })
     .map((method) => names[method.attributes.name])
     .filter(
-      (name): name is string => typeof name === 'string' && name.trim().length > 0
+      (name): name is string =>
+        typeof name === 'string' && name.trim().length > 0
     );
 
   if (authenticationVerificationMethodNames.length === 0) return null;
@@ -41,11 +42,11 @@ const VerificationWarning = () => {
   const text =
     authenticationVerificationMethodNames.length === 1
       ? formatMessage(messages.actionRequiresVerificationUsingMethod, {
-        method: authenticationVerificationMethodNames[0],
-      })
+          method: authenticationVerificationMethodNames[0],
+        })
       : formatMessage(messages.actionRequiresVerificationUsingOneOf, {
-        methods: authenticationVerificationMethodNames.join(', '),
-      });
+          methods: authenticationVerificationMethodNames.join(', '),
+        });
 
   return (
     <BlueShieldWarning icon="shield-checkered" mb="12px">

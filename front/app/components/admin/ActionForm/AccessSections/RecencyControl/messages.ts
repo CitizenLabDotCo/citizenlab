@@ -24,5 +24,5 @@ export default defineMessages({
   remove: {
     id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.remove',
     defaultMessage: 'remove',
-  }
+  },
 });
