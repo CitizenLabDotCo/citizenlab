@@ -3019,6 +3019,21 @@
     "verified_at": "2026-07-22T09:33:07.626032Z",
     "verified_by": "Adrien"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatCard": {
+    "state": "verified",
+    "verified_at": "2026-07-22T20:39:16.943574Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-22T20:39:16.943574Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": {
+    "state": "verified",
+    "verified_at": "2026-07-22T20:39:16.943574Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle": {
     "state": "verified",
     "verified_at": "2026-07-22T20:35:06.720387Z",
