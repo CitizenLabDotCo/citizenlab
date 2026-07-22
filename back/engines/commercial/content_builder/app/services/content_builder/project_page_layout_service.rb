@@ -28,11 +28,44 @@ module ContentBuilder
         code: DescriptionLayoutService::LAYOUT_CODE_BY_TYPE.fetch('Project')
       )
 
-      if description_layout
+      craftjs_json = if description_layout
         from_description_craftjs(description_layout.craftjs_json)
       else
         from_description_multiloc(project.description_multiloc)
       end
+
+      append_file_nodes(craftjs_json, project)
+    end
+
+    # Represents every file attached to the project as a FileAttachment widget,
+    # so files are authored in the page builder rather than rendered as a
+    # separate list. Nodes are added at the bottom of the description section
+    # (or before the phases widget when the section is absent) for files the
+    # layout does not reference yet. The Layout after_save callback creates the
+    # corresponding Files::FileAttachment records for the layout.
+    def append_file_nodes(craftjs_json, project)
+      return craftjs_json if craftjs_json.blank?
+
+      attachments = ::Files::FileAttachment.where(attachable: project).ordered
+      return craftjs_json if attachments.empty?
+
+      json = craftjs_json.deep_dup
+      parent_id = find_node_id(json, 'ProjectDescriptionSection') || find_node_id(json, 'ProjectPageBody')
+      return craftjs_json unless parent_id
+
+      referenced_file_ids = json.each_value.filter_map do |node|
+        node.dig('props', 'fileId') if node.is_a?(Hash) && resolved_name(node) == 'FileAttachment'
+      end
+
+      attachments.each do |attachment|
+        next if referenced_file_ids.include?(attachment.file_id)
+
+        node_id = "#{INJECTED_ID_PREFIX}file_#{attachment.file_id}"
+        json[node_id] = file_attachment_node(attachment.file_id, parent_id)
+        insert_before_phases(json, parent_id, node_id)
+      end
+
+      json
     end
 
     def from_description_craftjs(description_craftjs)
@@ -133,6 +166,33 @@ module ContentBuilder
     def resolved_name(node)
       type = node['type']
       type.is_a?(Hash) ? type['resolvedName'] : type
+    end
+
+    def find_node_id(json, name)
+      json.find { |id, node| id != ROOT_ID && node.is_a?(Hash) && resolved_name(node) == name }&.first
+    end
+
+    def insert_before_phases(json, parent_id, node_id)
+      nodes = Array(json[parent_id]['nodes'])
+      index = nodes.index { |id| json[id].is_a?(Hash) && resolved_name(json[id]) == 'PhasesWidget' } || nodes.length
+      json[parent_id]['nodes'] = nodes.dup.insert(index, node_id)
+    end
+
+    def file_attachment_node(file_id, parent_id)
+      {
+        'type' => { 'resolvedName' => 'FileAttachment' },
+        'nodes' => [],
+        'props' => { 'fileId' => file_id },
+        'custom' => {
+          'title' => message('app.containers.admin.ContentBuilder.fileAttachment', 'File Attachment'),
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => false,
+        'displayName' => 'FileAttachment',
+        'linkedNodes' => {}
+      }
     end
 
     def canonical_nodes(description_ids)
