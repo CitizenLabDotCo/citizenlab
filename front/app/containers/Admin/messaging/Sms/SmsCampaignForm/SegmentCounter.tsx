@@ -10,7 +10,8 @@ import {
 import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
-import { measureSms, MAX_SMS_SEGMENTS } from 'utils/sms/segments';
+import { MAX_SMS_SEGMENTS } from 'utils/sms/segments';
+import useSmsSegments from 'utils/sms/useSmsSegments';
 
 import messages from '../../messages';
 
@@ -73,7 +74,7 @@ const SegmentCounter = ({ body }: Props) => {
     isUnicode,
     nonGsmCharacters,
     exceedsLimit,
-  } = measureSms(body);
+  } = useSmsSegments(body);
 
   const costTooltip = exceedsLimit
     ? formatMessage(messages.smsSegmentCostOverLimit, {

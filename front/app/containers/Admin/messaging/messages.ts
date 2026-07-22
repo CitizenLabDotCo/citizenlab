@@ -371,12 +371,11 @@ export default defineMessages({
   },
   fieldSmsBodyTooManySegmentsError: {
     id: 'app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError',
-    defaultMessage:
-      'Keep each message to {maxSegments, plural, one {# SMS} other {# SMS}} or fewer',
+    defaultMessage: 'Keep each message to {maxSegments} SMS or fewer',
   },
   smsSegmentPill: {
     id: 'app.containers.Admin.messaging.smsSegmentPill',
-    defaultMessage: '{segmentCount, plural, one {# SMS} other {# SMS}}',
+    defaultMessage: '{segmentCount} SMS',
   },
   smsSegmentCost: {
     id: 'app.containers.Admin.messaging.smsSegmentCost',

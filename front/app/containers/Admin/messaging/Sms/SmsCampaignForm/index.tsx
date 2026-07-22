@@ -21,8 +21,8 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/HookForm/TextAreaMult
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { MAX_SMS_SEGMENTS } from 'utils/sms/segments';
+import validateSmsBodyMultiloc from 'utils/sms/validateSmsBodyMultiloc';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
-import validateSmsBodyMultiloc from 'utils/yup/validateSmsBodyMultiloc';
 
 import messages from '../../messages';
 

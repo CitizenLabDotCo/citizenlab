@@ -1,7 +1,7 @@
 import { Multiloc } from 'typings';
 import { object, lazy, string } from 'yup';
 
-import { measureSms, MAX_SMS_SEGMENTS } from 'utils/sms/segments';
+import { measureSms } from 'utils/sms/segments';
 
 // Like validateMultilocForEveryLocale, but also caps how many SMS segments each locale's
 // body costs. Recipients are sent the message in their own language, so every translation
@@ -34,5 +34,4 @@ const validateSmsBodyMultiloc = (
     ).required();
   });
 
-export { MAX_SMS_SEGMENTS };
 export default validateSmsBodyMultiloc;
