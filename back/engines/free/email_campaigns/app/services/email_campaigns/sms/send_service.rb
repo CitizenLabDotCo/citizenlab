@@ -24,10 +24,11 @@ module EmailCampaigns
         # status with `failed`.
         return delivery unless delivery.status == 'pending'
 
-        # Validated at send time rather than at creation: an async delivery resolves
-        # its destination from the recipient's phone when the job runs, which may have
-        # changed since the delivery was created.
-        parsed = ensure_sendable!(to)
+        parsed = parse_phone_number(to)
+        unless AllowedCountries.allowed?(parsed.country)
+          raise Error, "SMS to country #{parsed.country} is not allowed on this platform"
+        end
+
         result = provider.send(to: parsed.e164, body: delivery.body)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
         delivery
@@ -41,15 +42,12 @@ module EmailCampaigns
 
       private
 
-      # Raises unless `to` is a valid number in a country this platform allows SMS
-      # to. Returns the parsed number, so callers can use its E.164 form.
-      def ensure_sendable!(to)
+      # Phonelib::Phone — libphonenumber's reading of the string (country, line type, formats).
+      # `valid?` has to gate `e164`: with no default_country configured, a number lacking an
+      # international prefix resolves to no country yet still yields a malformed "+0470123456".
+      def parse_phone_number(to)
         parsed = Phonelib.parse(to)
         raise Error, "Invalid phone number: #{to}" unless parsed.valid?
-
-        unless AllowedCountries.allowed?(parsed.country)
-          raise Error, "SMS to country #{parsed.country} is not allowed on this platform"
-        end
 
         parsed
       end
