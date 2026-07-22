@@ -19,9 +19,11 @@
 #     presentation_mode: 'map',  available_views: ['card', 'map']   ->  untouched, no feed
 #
 # `presentation_mode` is only rewritten when it is 'feed' itself: a phase that merely offered the
-# feed alongside cards keeps opening on whichever view the admin chose. 'card' is unioned back in
-# because the model requires it independently, so a phase that had somehow lost it would otherwise
-# be written back still invalid, and reported as migrated.
+# feed alongside cards keeps opening on whichever view the admin chose. Both 'card' and the
+# retained mode are unioned back into the views, because the model requires each of them
+# independently, so a phase that had drifted out of that state would otherwise be written back
+# still invalid, and reported as migrated. The writes bypass validation, so this is the only thing
+# standing between drifted data and a silently invalid row.
 #
 # The migration is a subtraction, so re-running the task is a no-op.
 #
@@ -86,8 +88,8 @@ namespace :single_use do
         multiloc_service = MultilocService.new
 
         phases.each do |phase|
-          new_views = ((phase.available_views || []) - ['feed']) | ['card']
           new_mode = phase.presentation_mode == 'feed' ? 'card' : phase.presentation_mode
+          new_views = ((phase.available_views || []) - ['feed']) | ['card'] | [new_mode]
 
           reporter.add_change(
             { presentation_mode: phase.presentation_mode, available_views: phase.available_views },

@@ -39,6 +39,8 @@ describe 'single_use:migrate_proposals_phases_off_feed_view rake task' do
       run_task
       expect(phase.reload.presentation_mode).to eq 'card'
       expect(phase.reload.available_views).to eq ['card']
+      # The task writes with `update_columns`, so nothing else checks what it leaves behind.
+      expect(phase.reload).to be_valid
     end
 
     it 'records the change in the report' do
@@ -96,11 +98,24 @@ describe 'single_use:migrate_proposals_phases_off_feed_view rake task' do
       run_task
       expect(phase.reload.presentation_mode).to eq 'map'
       expect(phase.reload.available_views).to match_array %w[card map]
+      expect(phase.reload).to be_valid
     end
   end
 
-  # Subtracting the feed alone would write back a phase that still fails `must include card view`,
-  # and report it as migrated.
+  # The model requires the mode it opens on to be among the views it offers, and phases exist that
+  # drifted out of that state. Subtracting the feed alone would write one back still invalid.
+  context 'when a phase opens on a view it does not offer' do
+    let!(:phase) { offer_feed!(create(:proposals_phase), presentation_mode: 'map', available_views: %w[card feed]) }
+
+    it 'restores the missing view' do
+      run_task
+      expect(phase.reload.presentation_mode).to eq 'map'
+      expect(phase.reload.available_views).to match_array %w[card map]
+      expect(phase.reload).to be_valid
+    end
+  end
+
+  # Same again for the card view, which the model requires of every phase.
   context 'when a phase using the feed view also omits the card view' do
     let!(:phase) { offer_feed!(create(:proposals_phase), available_views: ['feed']) }
 
