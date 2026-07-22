@@ -3,15 +3,10 @@
 module EmailCampaigns
   module Sms
     class SendService
-      # `to` is the number the delivery is meant for. It's validated here, before
-      # the record exists: a Delivery should only be created for a message we're
-      # actually able to send.
-      def create_delivery(body:, to:, user_id: nil, campaign_id: nil)
+      def create_delivery(body:, user_id: nil, campaign_id: nil)
         unless AppConfiguration.instance.feature_activated?('sms')
           raise Error, 'SMS feature is not enabled for this tenant'
         end
-
-        ensure_sendable!(to)
 
         Delivery.create!(
           user_id: user_id,
@@ -29,9 +24,9 @@ module EmailCampaigns
         # status with `failed`.
         return delivery unless delivery.status == 'pending'
 
-        # Re-checked here, not just at creation time: an async delivery resolves its
-        # destination from the recipient's phone when the job runs, which may have
-        # changed since.
+        # Validated at send time rather than at creation: an async delivery resolves
+        # its destination from the recipient's phone when the job runs, which may have
+        # changed since the delivery was created.
         parsed = ensure_sendable!(to)
         result = provider.send(to: parsed.e164, body: delivery.body)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
