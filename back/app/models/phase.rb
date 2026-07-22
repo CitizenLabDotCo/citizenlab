@@ -137,9 +137,15 @@ class Phase < ApplicationRecord
     validates :similarity_enabled, inclusion: { in: [true, false] }
     validates :similarity_threshold_title, :similarity_threshold_body, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
     validate :validate_available_views
-    validate :validate_presentation_modes_allowed_for_method,
-      if: -> { presentation_mode_changed? || available_views_changed? || participation_method_changed? }
   end
+
+  # The visibility condition is repeated rather than left to the block above, because a validation
+  # that brings its own +if+ into a +with_options+ block replaces the condition of the block instead
+  # of adding to it, and methods that show no inputs publicly hold view values nobody maintains.
+  validate :validate_presentation_modes_allowed_for_method, if: lambda { |phase|
+    phase.pmethod.supports_public_visibility? &&
+      (phase.presentation_mode_changed? || phase.available_views_changed? || phase.participation_method_changed?)
+  }
 
   validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
     phase.pmethod.supports_submission?

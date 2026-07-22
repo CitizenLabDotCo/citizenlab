@@ -263,12 +263,17 @@ RSpec.describe Phase do
         expect(phase.errors[:available_views].first).to include('feed not available for the common_ground method')
       end
 
-      # Methods without public visibility never reach this rule, but they do carry the card default
-      # of both view columns, so the default allowed modes have to cover it.
-      it 'is valid for a method that offers no views at all' do
-        phase = build(:information_phase)
+      # Methods that show no inputs publicly never reach this rule, and they do hold stale view
+      # values: several phases in the e2e template sit on the map view without ever rendering one.
+      it 'is valid when a method that shows no inputs publicly holds a view it cannot render' do
+        phase = build(:poll_phase, presentation_mode: 'map', available_views: %w[card map])
         expect(phase).to be_valid
-        expect(phase.pmethod.allowed_presentation_modes).to eq %w[card]
+      end
+
+      it 'is valid when an ideation phase on the map view becomes an information phase' do
+        phase = create(:phase, presentation_mode: 'map', available_views: %w[card map])
+
+        expect(phase.update(participation_method: 'information')).to be true
       end
     end
   end
