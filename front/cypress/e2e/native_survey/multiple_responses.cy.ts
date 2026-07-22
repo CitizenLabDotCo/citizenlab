@@ -31,6 +31,10 @@ describe('Native survey: multiple responses per user', () => {
         const projectId = project.body.data.id;
         const projectSlug = project.body.data.attributes.slug;
 
+        // Adds the participation AboutBox so the sidebar renders the survey CTA
+        // (#project-survey-button) on the citizen project page.
+        cy.apiAddAboutBox(projectId);
+
         return cy
           .apiCreatePhase({
             projectId,
