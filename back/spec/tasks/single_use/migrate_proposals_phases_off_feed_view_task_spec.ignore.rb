@@ -48,13 +48,34 @@ describe 'single_use:migrate_proposals_phases_off_feed_view rake task' do
       expect(change['new_value']).to eq('presentation_mode' => 'card', 'available_views' => ['card'])
       expect(change['context']).to include(
         'phase_id' => phase.id,
+        'phase_title' => phase.title_multiloc,
+        'phase_timing' => 'active',
         'project_id' => phase.project_id,
+        'project_title' => phase.project.title_multiloc,
         'project_slug' => phase.project.slug
       )
     end
 
-    it 'names the tenant so that Support can notify the client' do
-      expect { run_task }.to output(/Tenants whose clients should be notified:\s+#{Regexp.escape(Tenant.current.host)}/m).to_stdout
+    it 'names the tenant in the summary' do
+      expect { run_task }.to output(/Tenants with migrated phases:\s+#{Regexp.escape(Tenant.current.host)}/m).to_stdout
+    end
+
+    it 'prints the phase and its project under the tenant' do
+      expect { run_task }.to output(
+        /phase\s+#{phase.id}\s+.+ \(active\)\n\s+project\s+#{phase.project_id}\s/
+      ).to_stdout
+    end
+
+    it 'reports a phase that has ended as finished' do
+      phase.update!(start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 7.days)
+      run_task
+      expect(report['changes'].first.dig('context', 'phase_timing')).to eq 'finished'
+    end
+
+    it 'reports a phase that has not started as future' do
+      phase.update!(start_at: Time.zone.today + 7.days, end_at: Time.zone.today + 30.days)
+      run_task
+      expect(report['changes'].first.dig('context', 'phase_timing')).to eq 'future'
     end
 
     it 'processes a tenant that is marked as deleted' do
