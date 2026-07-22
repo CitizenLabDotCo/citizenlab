@@ -206,6 +206,46 @@ resource 'Ideas' do
             assert_status 200
             expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
           end
+
+          # The screening restriction is keyed on the phase the input was created in, so it
+          # also lifts for inputs of a phase that has since ended.
+          context 'and the screened phase has ended, but the project has a current phase' do
+            let(:project) { create(:project) }
+            let!(:phase) do
+              create(
+                :phase,
+                project: project,
+                prescreening_mode: 'all',
+                start_at: Time.zone.today - 30.days,
+                end_at: Time.zone.today - 10.days
+              )
+            end
+            let!(:current_phase) do
+              create(:phase, project: project, start_at: Time.zone.today - 9.days, end_at: Time.zone.today + 10.days)
+            end
+
+            example 'Author can edit a published idea', document: false do
+              do_request
+
+              assert_status 200
+              expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
+            end
+          end
+
+          # Editing is denied for want of a current phase, before screening is ever considered,
+          # so a project that has ended gives the author nothing back.
+          context 'and the project has ended' do
+            let(:phase) do
+              create(:phase, prescreening_mode: 'all', start_at: Time.zone.today - 30.days, end_at: Time.zone.today - 10.days)
+            end
+
+            example '[error] Author cannot edit a published idea', document: false do
+              do_request
+
+              assert_status 401
+              expect(json_response_body).to include_response_error(:base, 'project_inactive')
+            end
+          end
         end
 
         context 'when prescreening_mode is flagged_only' do
