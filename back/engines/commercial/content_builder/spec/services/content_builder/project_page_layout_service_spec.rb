@@ -198,5 +198,74 @@ describe ContentBuilder::ProjectPageLayoutService do
       content = result[result['PROJECT_PAGE_DESCRIPTION']['nodes'].first]
       expect(content['props']['text']).to eq({ 'en' => '<p>Hello</p>' })
     end
+
+    it 'includes a FileAttachment node for every project-attached file' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Hello</p>' })
+      attachment = create(:file_attachment, attachable: project, file: create(:file, projects: [project]))
+
+      result = service.craftjs_json_for(project)
+
+      section_nodes = result['PROJECT_PAGE_DESCRIPTION']['nodes']
+      expect(result[section_nodes.last]['props']).to eq({ 'fileId' => attachment.file_id })
+    end
+  end
+
+  describe '#append_file_nodes' do
+    let(:project) { create(:project) }
+
+    def attach_file(project, position)
+      file = create(:file, projects: [project])
+      create(:file_attachment, file: file, attachable: project, position: position)
+    end
+
+    it 'appends a FileAttachment node per file at the bottom of the description section, ordered by position' do
+      later = attach_file(project, 2)
+      earlier = attach_file(project, 1)
+
+      json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
+      result = service.append_file_nodes(json, project)
+
+      file_node_ids = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last(2)
+      expect(result[file_node_ids[0]]['props']).to eq({ 'fileId' => earlier.file_id })
+      expect(result[file_node_ids[1]]['props']).to eq({ 'fileId' => later.file_id })
+      expect(result[file_node_ids[0]]).to include(
+        'type' => { 'resolvedName' => 'FileAttachment' },
+        'parent' => 'PROJECT_PAGE_DESCRIPTION',
+        'isCanvas' => false
+      )
+      expect(result[file_node_ids[0]]['custom']['title']).to eq(
+        'id' => 'app.containers.admin.ContentBuilder.fileAttachment',
+        'defaultMessage' => 'File Attachment'
+      )
+    end
+
+    it 'does not duplicate files the layout already references' do
+      attach_file(project, 1)
+
+      once = service.append_file_nodes(service.from_description_multiloc({}), project)
+      twice = service.append_file_nodes(once, project)
+
+      expect(twice).to eq(once)
+    end
+
+    it 'inserts before the phases widget when the description section is absent' do
+      attachment = attach_file(project, 1)
+      json = service.from_description_multiloc({})
+      json.delete('PROJECT_PAGE_DESCRIPTION')
+      json['PROJECT_PAGE_BODY']['nodes'] = %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
+
+      result = service.append_file_nodes(json, project)
+
+      body_nodes = result['PROJECT_PAGE_BODY']['nodes']
+      node_id = "d_file_#{attachment.file_id}"
+      expect(body_nodes.index(node_id)).to eq(body_nodes.index('PROJECT_PAGE_PHASES') - 1)
+      expect(result[node_id]['parent']).to eq('PROJECT_PAGE_BODY')
+    end
+
+    it 'returns the layout unchanged when the project has no files' do
+      json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
+
+      expect(service.append_file_nodes(json, project)).to eq(json)
+    end
   end
 end
