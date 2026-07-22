@@ -122,7 +122,7 @@ describe('New timeline project with active ideation phase', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('[data-testid="projectPageBuilderContent"]');
     cy.get('#e2e-project-sidebar');
   });
 

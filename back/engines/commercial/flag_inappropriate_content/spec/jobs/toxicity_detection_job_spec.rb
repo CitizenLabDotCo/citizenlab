@@ -152,6 +152,26 @@ RSpec.describe ToxicityDetectionJob do
     end
   end
 
+  # A phase can carry a prescreening_mode on a platform without the prescreening feature:
+  # tenant templates and project copies bring the value across from platforms that have it.
+  describe 'prescreening_mode: flagged_only, but the prescreening feature is disabled' do
+    before { SettingsService.new.deactivate_feature!('prescreening_ideation') }
+
+    it 'creates flag but does not move the idea to prescreening' do
+      phase = create(:phase, prescreening_mode: 'flagged_only')
+      idea = create(
+        :idea, phases: [phase], title_multiloc: { 'en' => 'offensive idea' },
+        idea_status: idea_proposed_status, publication_status: 'published'
+      )
+
+      expect { described_class.perform_now(idea, attributes: [:title_multiloc]) }
+        .to not_change(idea, :idea_status)
+        .and not_change(idea, :publication_status)
+
+      expect(idea.reload.inappropriate_content_flag).to be_present
+    end
+  end
+
   describe 'prescreening_mode: nil (disabled)' do
     it 'creates flag but does not change status' do
       phase = create(:proposals_phase, prescreening_mode: nil)
