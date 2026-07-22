@@ -353,6 +353,14 @@ resource 'Ideas' do
             assert_status 201
             expect(response_data.dig(:relationships, :phases, :data).pluck(:id)).to eq [phase_id]
           end
+
+          context 'when saving a draft' do
+            let(:publication_status) { 'draft' }
+
+            example_request 'Creating a draft in a specific (inactive) phase' do
+              assert_status 201
+            end
+          end
         end
 
         describe 'when posting an idea in an ideation phase, the form of the project is used for accepting the input' do
@@ -867,6 +875,15 @@ resource 'Ideas' do
           expect(input.phase_ids).to eq [phase.id]
         end
 
+        context 'when saving a draft' do
+          let(:publication_status) { 'draft' }
+
+          example_request 'Create a draft survey response in an active standalone phase' do
+            assert_status 201
+            expect(phase.reload.ideas.sole.publication_status).to eq 'draft'
+          end
+        end
+
         context 'when the standalone phase is over' do
           let(:phase) do
             create(:phase, :standalone, project: project, with_permissions: true, start_at: 10.days.ago, end_at: 2.days.ago)
@@ -875,6 +892,28 @@ resource 'Ideas' do
           example_request '[error] Create a survey response in a closed standalone phase' do
             assert_status 401
             expect(json_response_body).to eq({ errors: { base: [{ error: 'inactive_phase' }] } })
+          end
+
+          context 'when saving a draft' do
+            let(:publication_status) { 'draft' }
+
+            example_request '[error] Create a draft survey response in a closed standalone phase' do
+              assert_status 401
+              expect(json_response_body).to eq({ errors: { base: [{ error: 'inactive_phase' }] } })
+            end
+          end
+        end
+
+        context 'when the project is archived' do
+          before { project.admin_publication.update!(publication_status: 'archived') }
+
+          context 'when saving a draft' do
+            let(:publication_status) { 'draft' }
+
+            example_request '[error] Create a draft survey response in an archived project' do
+              assert_status 401
+              expect(json_response_body).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
+            end
           end
         end
       end
