@@ -49,15 +49,13 @@ namespace :single_use do
     totals = Hash.new(0)
     affected = []
 
-    # There is no single past/active/future helper, so this composes the two that exist. Both read
-    # `start_at` without a nil check, hence the guard: it is nullable on an unscheduled phase.
-    now = Time.zone.now
-    timeline_service = TimelineService.new
+    # TimelineService classifies a whole project, not a phase, so this composes the phase's own two
+    # predicates. `started?` reads `start_at` without a nil check, hence the guard: it is nullable.
     phase_timing = lambda do |phase|
       next 'unscheduled' if phase.start_at.nil?
-      next 'active' if timeline_service.phase_current?(phase, now)
+      next 'future' unless phase.started?
 
-      phase.started? ? 'finished' : 'future'
+      phase.complete? ? 'finished' : 'active'
     end
 
     if execute
