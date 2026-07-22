@@ -26,10 +26,8 @@ class RequestCodePolicy < ApplicationPolicy
     # Caller (2): an authenticated user requesting a (re)confirmation code for
     # their own email. Skips the "already a full account" guard below, which only
     # exists to protect the unauthenticated flow.
-    unless user && user == record
-      if record.password_digest? && !record.confirmation_required?
-        return false
-      end
+    if !user && !user == record && (record.password_digest? && !record.confirmation_required?)
+      return false
     end
 
     return false if record.email_confirmation.code_reset_count >= max_retries - 1
