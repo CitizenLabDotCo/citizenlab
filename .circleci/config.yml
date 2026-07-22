@@ -440,9 +440,8 @@ jobs:
             --header 'x-attribution-login: '"$CIRCLE_USERNAME" \
             --data '{"branch": "master"}'
 
-  # Idempotent reconciliation that used to block back-deploy-to-swarm's stack deploy, so a
-  # failure here left that one region on old code. Runs per-cluster after cutover instead:
-  # a failure is still loud (red workflow) but the fleet stays on one version.
+  # Reconciliation tasks that can be safely run post cutover.
+  # Failures are still red and should be investigated but do not block deployments for each cluster.
   back-run-post-deploy-tasks:
     resource_class: small
     docker:
