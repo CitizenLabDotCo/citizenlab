@@ -138,7 +138,7 @@ class Phase < ApplicationRecord
     validates :similarity_threshold_title, :similarity_threshold_body, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
     validate :validate_available_views
     validate :validate_presentation_modes_allowed_for_method,
-      if: -> { presentation_mode_changed? || available_views_changed? }
+      if: -> { presentation_mode_changed? || available_views_changed? || participation_method_changed? }
   end
 
   validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
@@ -491,8 +491,9 @@ class Phase < ApplicationRecord
   end
 
   # Narrower than validate_available_views: some methods do not allow every presentation mode.
-  # Guarded on the attributes actually changing, so a phase left holding a mode its method no
-  # longer allows can still be saved for unrelated edits until the data has been migrated.
+  # Guarded on the views or the method actually changing, so a phase left holding a mode its method
+  # no longer allows can still be saved for unrelated edits until the data has been migrated. The
+  # method is part of the guard because switching it can invalidate views that were fine before.
   def validate_presentation_modes_allowed_for_method
     disallowed = ((available_views || []) + [presentation_mode]).compact.uniq - pmethod.allowed_presentation_modes
     return if disallowed.empty?

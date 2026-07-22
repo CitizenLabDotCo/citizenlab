@@ -229,6 +229,18 @@ RSpec.describe Phase do
         expect(phase).to be_valid
       end
 
+      # Switching the method can invalidate views that were allowed a moment ago, and neither view
+      # attribute changes when it does, so the method has to be part of the guard. Not reachable
+      # from the phase form, which applies proposalsDefaultConfig and so sends card views along with
+      # the new method; this is for callers that change the method alone, i.e. the REST API and the
+      # MCP update_phase tool.
+      it 'is invalid when an ideation phase offering the feed view is switched to proposals' do
+        phase = create(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+
+        expect(phase.update(participation_method: 'proposals')).to be false
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
       # The rule only fires when the view attributes are written, so a phase that predates it can
       # still be edited. Without this, an unrelated write would fail on a phase nobody has migrated.
       it 'does not block unrelated edits to a proposals phase that already offers the feed view' do
