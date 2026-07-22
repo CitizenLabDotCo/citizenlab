@@ -706,24 +706,24 @@ RSpec.describe Phase do
     # ideation phases are gated on `prescreening_ideation` and proposals phases on
     # `prescreening`; `set_feature_flags` sets both together.
     describe 'effective mode' do
-      where(:factory, :mode, :prescreening, :flag_inappropriate_content, :enabled, :flagged_only, :all) do
+      where(:factory, :mode, :prescreening, :flag_inappropriate_content, :effective, :enabled, :flagged_only, :all) do
         # No mode configured: inert regardless of the flags.
-        :phase           | nil            | true  | true  | false | false | false
-        :phase           | nil            | false | false | false | false | false
+        :phase           | nil            | true  | true  | nil            | false | false | false
+        :phase           | nil            | false | false | nil            | false | false | false
 
         # Mode configured, prescreening feature off: inert.
-        :phase           | 'all'          | false | false | false | false | false
-        :phase           | 'flagged_only' | false | true  | false | false | false
-        :proposals_phase | 'all'          | false | false | false | false | false
+        :phase           | 'all'          | false | false | nil            | false | false | false
+        :phase           | 'flagged_only' | false | true  | nil            | false | false | false
+        :proposals_phase | 'all'          | false | false | nil            | false | false | false
 
         # Mode configured, prescreening feature on: in effect.
-        :phase           | 'all'          | true  | false | true  | false | true
-        :proposals_phase | 'all'          | true  | false | true  | false | true
+        :phase           | 'all'          | true  | false | 'all'          | true  | false | true
+        :proposals_phase | 'all'          | true  | false | 'all'          | true  | false | true
 
         # 'flagged_only' additionally requires flag_inappropriate_content.
-        :phase           | 'flagged_only' | true  | false | false | false | false
-        :phase           | 'flagged_only' | true  | true  | true  | true  | false
-        :proposals_phase | 'flagged_only' | true  | true  | true  | true  | false
+        :phase           | 'flagged_only' | true  | false | nil            | false | false | false
+        :phase           | 'flagged_only' | true  | true  | 'flagged_only' | true  | true  | false
+        :proposals_phase | 'flagged_only' | true  | true  | 'flagged_only' | true  | true  | false
       end
 
       with_them do
@@ -731,6 +731,9 @@ RSpec.describe Phase do
 
         before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
 
+        # `effective_prescreening_mode` is serialized to the front end, so it is part of the
+        # API contract in its own right, not only through the predicates below.
+        it { expect(phase.effective_prescreening_mode).to eq effective }
         it { expect(phase.prescreening_enabled?).to eq enabled }
         it { expect(phase.prescreening_flagged_only?).to eq flagged_only }
         it { expect(phase.prescreening_all?).to eq all }
