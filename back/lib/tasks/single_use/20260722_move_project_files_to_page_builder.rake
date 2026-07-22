@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-# Represents every project-attached file as a FileAttachment widget in the
-# project_page layout, so files are authored in the page builder (TAN-8296).
-# Widget nodes are appended at the bottom of the description section for files
-# the layout does not reference yet; projects with files but no layout get one.
-# Idempotent. Dry-run by default (DRY_RUN=false writes).
-#
-#   bin/rake single_use:move_project_files_to_page_builder                # dry-run
-#   DRY_RUN=false bin/rake single_use:move_project_files_to_page_builder  # execute
 namespace :single_use do
   desc 'Add FileAttachment widgets to project_page layouts for project-attached files'
   task move_project_files_to_page_builder: :environment do

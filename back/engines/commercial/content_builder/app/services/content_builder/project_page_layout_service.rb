@@ -37,12 +37,6 @@ module ContentBuilder
       append_file_nodes(craftjs_json, project)
     end
 
-    # Represents every file attached to the project as a FileAttachment widget,
-    # so files are authored in the page builder rather than rendered as a
-    # separate list. Nodes are added at the bottom of the description section
-    # (or before the phases widget when the section is absent) for files the
-    # layout does not reference yet. The Layout after_save callback creates the
-    # corresponding Files::FileAttachment records for the layout.
     def append_file_nodes(craftjs_json, project)
       return craftjs_json if craftjs_json.blank?
 
