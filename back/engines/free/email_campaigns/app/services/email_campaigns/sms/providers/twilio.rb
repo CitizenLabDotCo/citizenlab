@@ -72,7 +72,7 @@ module EmailCampaigns
         end
 
         def callback_url
-          "#{AppConfiguration.instance.base_backend_uri}/web_api/v1/sms/callbacks"
+          "#{AppConfiguration.instance.base_backend_uri}/hooks/sms/events"
         end
 
         # SMS is always sent through a Twilio Messaging Service, identified by its SID.

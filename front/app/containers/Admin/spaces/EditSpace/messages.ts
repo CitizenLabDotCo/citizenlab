@@ -9,6 +9,39 @@ export default defineMessages({
     id: 'app.containers.EditSpace.add',
     defaultMessage: 'Add',
   },
+  addNewProjectOrFolder: {
+    id: 'app.containers.EditSpace.addNewProjectOrFolder',
+    defaultMessage: 'Add new project or folder',
+  },
+  noAddableProjectsOrFolders: {
+    id: 'app.containers.EditSpace.noAddableProjectsOrFolders',
+    defaultMessage:
+      'There are no folders or projects that can be added to this space.',
+  },
+  addToSpace: {
+    id: 'app.containers.EditSpace.addToSpace',
+    defaultMessage: 'Add to space',
+  },
+  cancel: {
+    id: 'app.containers.EditSpace.cancel',
+    defaultMessage: 'Cancel',
+  },
+  project: {
+    id: 'app.containers.EditSpace.project',
+    defaultMessage: 'Project',
+  },
+  folder: {
+    id: 'app.containers.EditSpace.folder',
+    defaultMessage: 'Folder',
+  },
+  projectsPlaceholder: {
+    id: 'app.containers.EditSpace.projectsPlaceholder',
+    defaultMessage: 'Projects',
+  },
+  foldersPlaceholder: {
+    id: 'app.containers.EditSpace.foldersPlaceholder',
+    defaultMessage: 'Folders',
+  },
   projectsAndFolders: {
     id: 'app.containers.EditSpace.projectsAndFolders',
     defaultMessage: 'Projects and folders',

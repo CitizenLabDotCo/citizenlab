@@ -4,6 +4,15 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
   def name = 'create_project'
   def description = 'Creates a new project in draft'
 
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: true # Fetches `remote_header_bg_url` from an arbitrary public URL.
+    }
+  end
+
   def input_schema
     {
       properties: {
@@ -34,12 +43,12 @@ class McpServer::Tools::CreateProject < McpServer::BaseTool
       project.save!
       SideFxProjectService.new.after_create(project, current_user)
 
-      ok(
+      response(
         "Created project #{project.id}",
-        structured: project.as_json(only: %i[id title_multiloc slug visible_to created_at])
+        structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })
       )
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 end

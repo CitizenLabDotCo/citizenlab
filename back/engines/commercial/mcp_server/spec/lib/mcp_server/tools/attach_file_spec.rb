@@ -12,7 +12,7 @@ describe McpServer::Tools::AttachFile do
     it 'uploads and attaches the file to a project' do
       response = run_mcp_tool(
         described_class,
-        params: { resource_type: 'Project', resource_id: project.id, name: 'doc.pdf', remote_url: },
+        params: { resource_type: 'project', resource_id: project.id, name: 'doc.pdf', remote_url: },
         current_user:
       )
 
@@ -29,7 +29,7 @@ describe McpServer::Tools::AttachFile do
 
       response = run_mcp_tool(
         described_class,
-        params: { resource_type: 'Phase', resource_id: phase.id, name: 'doc.pdf', remote_url: },
+        params: { resource_type: 'phase', resource_id: phase.id, name: 'doc.pdf', remote_url: },
         current_user:
       )
 
@@ -47,7 +47,7 @@ describe McpServer::Tools::AttachFile do
     it 'reuses an existing project file' do
       response = run_mcp_tool(
         described_class,
-        params: { resource_type: 'Project', resource_id: project.id, file_id: existing_file.id },
+        params: { resource_type: 'project', resource_id: project.id, file_id: existing_file.id },
         current_user:
       )
 
@@ -56,17 +56,17 @@ describe McpServer::Tools::AttachFile do
       expect(attachment.file).to eq(existing_file)
     end
 
-    it "refuses when the file is not one of the resource's project files" do
+    it "returns a not-found error when the file is not one of the resource's project files" do
       file = create(:file)
 
       response = run_mcp_tool(
         described_class,
-        params: { resource_type: 'Project', resource_id: project.id, file_id: file.id },
+        params: { resource_type: 'project', resource_id: project.id, file_id: file.id },
         current_user:
       )
 
       expect(response).to be_error
-      expect(response.content.first[:text]).to match(/not one of the resource's project files/)
+      expect(response.content.first[:text]).to include('File not found')
     end
   end
 
@@ -75,7 +75,7 @@ describe McpServer::Tools::AttachFile do
 
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: published.id, name: 'doc.pdf', remote_url: },
+      params: { resource_type: 'project', resource_id: published.id, name: 'doc.pdf', remote_url: },
       current_user:
     )
 
@@ -86,11 +86,11 @@ describe McpServer::Tools::AttachFile do
   it 'returns a not-found error when the resource is missing' do
     response = run_mcp_tool(
       described_class,
-      params: { resource_type: 'Project', resource_id: SecureRandom.uuid, remote_url: },
+      params: { resource_type: 'project', resource_id: SecureRandom.uuid, remote_url: },
       current_user:
     )
 
     expect(response).to be_error
-    expect(response.content.first[:text]).to match(/Couldn't find Project/)
+    expect(response.content.first[:text]).to include('Resource (project) not found')
   end
 end

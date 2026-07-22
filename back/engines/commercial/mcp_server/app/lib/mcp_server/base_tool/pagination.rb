@@ -36,6 +36,6 @@ module McpServer::BaseTool::Pagination
       (showing page #{pagination[:page]}, #{pagination[:per_page]} per page)
     TEXT
 
-    ok(summary, structured: structured_content)
+    response(summary, structured: structured_content)
   end
 end

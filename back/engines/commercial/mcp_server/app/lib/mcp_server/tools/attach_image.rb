@@ -2,12 +2,21 @@
 
 class McpServer::Tools::AttachImage < McpServer::BaseTool
   CONTAINERS = {
-    'Project' => { class: Project, association: :project_images },
-    'Event' => { class: Event, association: :event_images }
+    'project' => { class: Project, association: :project_images },
+    'event' => { class: Event, association: :event_images }
   }.freeze
   private_constant :CONTAINERS
 
   def name = 'attach_image'
+
+  def annotations
+    {
+      read_only_hint: false,
+      destructive_hint: false,
+      idempotent_hint: false,
+      open_world_hint: true # Fetches the image from an arbitrary public URL.
+    }
+  end
 
   def description
     <<~DESC.squish
@@ -35,6 +44,10 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      unless container
+        return not_found_error("Resource (#{params[:resource_type]})", params[:resource_id])
+      end
+
       authorize_project!(container.project)
 
       image = container.public_send(images_association).build(
@@ -45,14 +58,12 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
       authorize(image, :create?)
       image.save!
 
-      ok(
+      response(
         "Attached image to #{params[:resource_type]} #{container.id}",
         structured: McpServer::Serializers::Image.serialize(image)
       )
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:resource_type]} not found: #{params[:resource_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     rescue CarrierWave::DownloadError, CarrierWave::IntegrityError => e
       error("Could not fetch #{params[:remote_url]}: #{e.message}")
     end
@@ -64,11 +75,11 @@ class McpServer::Tools::AttachImage < McpServer::BaseTool
     end
 
     def container
-      @container ||= config[:class].find(params[:resource_id])
+      @container ||= config.fetch(:class).find_by(id: params[:resource_id])
     end
 
     def images_association
-      @images_association ||= config[:association]
+      @images_association ||= config.fetch(:association)
     end
   end
 end

@@ -1,19 +1,5 @@
 module Permissions
   class BasePermissionsService
-    SUPPORTED_ACTIONS = %w[
-      following
-      visiting
-      posting_idea
-      commenting_idea
-      reacting_idea
-      voting
-      annotating_document
-      taking_survey
-      taking_poll
-      attending_event
-      volunteering
-    ].freeze
-
     USER_DENIED_REASONS = {
       user_not_signed_in: 'user_not_signed_in',
       user_not_active: 'user_not_active',
@@ -24,6 +10,10 @@ module Permissions
       user_blocked: 'user_blocked'
     }.freeze
 
+    PROJECT_DENIED_REASONS = {
+      project_inactive: 'project_inactive'
+    }.freeze
+
     def initialize(user, user_requirements_service: nil)
       @user = user
       @user_requirements_service = user_requirements_service
@@ -31,8 +21,6 @@ module Permissions
     end
 
     def denied_reason_for_action(action, scope: nil)
-      return unless supported_action? action
-
       permission = find_permission(action, scope: scope)
       user_denied_reason(permission)
     end
@@ -40,10 +28,6 @@ module Permissions
     private
 
     attr_reader :user, :user_requirements_service
-
-    def supported_action?(action)
-      SUPPORTED_ACTIONS.include? action
-    end
 
     def find_permission(action, scope: nil)
       permission = scope&.permissions&.find { |p| p[:action] == action }
@@ -57,27 +41,32 @@ module Permissions
         end
       end
 
+      raise "Unknown action '#{action}' for scope: #{scope}" if !permission
+
       permission
     end
 
-    # User methods
-    def user_denied_reason(permission, scope = nil)
+    def user_denied_reason(permission)
       return if permission.permitted_by == 'everyone'
       return USER_DENIED_REASONS[:user_not_signed_in] unless user
       return USER_DENIED_REASONS[:user_blocked] if user.blocked?
       return USER_DENIED_REASONS[:user_missing_requirements] if user.confirmation_required?
       return USER_DENIED_REASONS[:user_not_active] unless user.active?
-      return if UserRoleService.new.can_moderate? scope, user
+      return if UserRoleService.new.can_moderate? permission, user
       return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
       return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.permitted_for_permission?(permission, user)
       return USER_DENIED_REASONS[:user_not_verified] if user_requirements_service.requires_verification?(permission, user)
-      return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission)
+      return USER_DENIED_REASONS[:user_not_in_group] if permission.groups.any? && !user.in_any_groups?(permission.groups)
 
       nil
     end
 
-    def denied_when_permitted_by_groups?(permission)
-      permission.groups.any? && !user.in_any_groups?(permission.groups)
+    def project_denied_reason(project)
+      PROJECT_DENIED_REASONS[:project_inactive] if project.admin_publication.archived?
+    end
+
+    def descriptor(reason)
+      { enabled: !reason, disabled_reason: reason }
     end
   end
 end

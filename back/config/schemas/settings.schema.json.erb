@@ -419,6 +419,14 @@
             "minimum": 5,
             "maximum": 72,
             "default": 8
+          },
+          "minimum_strength": {
+            "type": "number",
+            "title": "Minimum password strength",
+            "description": "The minimum password strength score required for a password (0-4 - reflecting the strength bar on signup). The default value is 0 - this disables enforcement and makes password strength meter only a recommendation. A value of at least 3 is recommended for stronger security in line with NCSC guidance. Changes only apply to users that create a new account or update their existing password (existing accounts remain the same).",
+            "minimum": 0,
+            "maximum": 4,
+            "default": 0
           }
         }
       },
@@ -851,6 +859,18 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_static_pages": {
+        "type": "object",
+        "title": "Project Static Pages [DO NOT ENABLE]",
+        "description": "Allow static pages to be created and added to individual projects. Still under development, not ready for customer use.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -1465,6 +1485,18 @@
         }
       },
 
+      "html_block_in_content_builder": {
+        "type": "object",
+        "title": "HTML block in content builder",
+        "description": "Allows the use of HTML blocks in the content builder.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "custom_smtp": {
         "type": "object",
         "title": "Custom SMTP Server",
@@ -1527,11 +1559,10 @@
 
       "sms": {
         "type": "object",
-        "title": "SMS",
-        "description": "Send SMS messages to users via the tenant's own Twilio account.",
+        "title": "SMS (DO NOT USE YET)",
+        "description": "(DO NOT USE YET) Send SMS messages to users via the tenant's own Twilio account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["twilio_account_sid", "twilio_auth_token", "twilio_messaging_service_sid"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false },

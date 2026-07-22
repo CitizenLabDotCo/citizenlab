@@ -39,6 +39,9 @@ module EmailCampaigns
       private
 
       def parse_phone_number(to)
+        # Phonelib::Phone — libphonenumber's reading of the string (country, line type, formats).
+        # `valid?` has to gate `e164`: with no default_country configured, a number lacking an
+        # international prefix resolves to no country yet still yields a malformed "+0470123456".
         parsed = Phonelib.parse(to)
         raise Error, "Invalid phone number: #{to}" unless parsed.valid?
 
@@ -46,7 +49,15 @@ module EmailCampaigns
       end
 
       def provider
-        Providers::Twilio.new
+        fake_sms_sends? ? Providers::Fake.new : Providers::Twilio.new
+      end
+
+      # In development, skip the real Twilio API unless the tenant has credentials filled in.
+      def fake_sms_sends?
+        return false unless Rails.env.development?
+
+        config = AppConfiguration.instance.settings('sms') || {}
+        config.values_at('twilio_account_sid', 'twilio_auth_token', 'twilio_messaging_service_sid').any?(&:blank?)
       end
     end
   end

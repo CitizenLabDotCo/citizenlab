@@ -222,7 +222,7 @@ describe IdeaPolicy do
 
     context "when the disabled reason is not excluded for update: 'posting_not_supported'" do
       before do
-        allow_any_instance_of(Permissions::ProjectPermissionsService)
+        allow_any_instance_of(Permissions::PhasePermissionsService)
           .to receive(:denied_reason_for_action).and_return('posting_not_supported')
       end
 
@@ -401,6 +401,12 @@ describe IdeaPolicy do
     let!(:folder) { create(:project_folder, projects: [project], space: space) }
     let!(:idea) { create(:idea, project: project) }
 
+    context "for the idea's author who can no longer see the project" do
+      let(:user) { idea.author }
+
+      it { is_expected.not_to permit(:update) }
+    end
+
     context 'for a visitor' do
       let(:user) { nil }
 
@@ -423,7 +429,7 @@ describe IdeaPolicy do
       it do
         is_expected.not_to permit(:show)
         is_expected.not_to permit(:by_slug)
-        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+        is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -465,7 +471,7 @@ describe IdeaPolicy do
     shared_examples 'moderator on private admins idea outside their scope' do
       it do
         is_expected.not_to permit(:show)
-        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+        is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -538,7 +544,7 @@ describe IdeaPolicy do
     it do
       is_expected.not_to permit(:show)
       is_expected.not_to permit(:by_slug)
-      expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+      is_expected.not_to permit(:create)
       is_expected.not_to permit(:update)
       expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)

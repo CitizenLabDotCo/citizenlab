@@ -1,95 +1,44 @@
 import React from 'react';
 
-import { Box, fontSizes } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-
+import useAuthenticationRequirements from 'api/authentication/authentication_requirements/useAuthenticationRequirements';
 import { SSOProvider } from 'api/authentication/singleSignOn';
+import useIdMethods from 'api/id_methods/useIdMethods';
 
-import oldMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
-import { SetError } from 'containers/Authentication/typings';
-import useAuthConfig from 'containers/Authentication/useAuthConfig';
+import {
+  AuthenticationData,
+  SetError,
+} from 'containers/Authentication/typings';
 
-import FranceConnectButton from 'components/UI/FranceConnectButton';
-import Or from 'components/UI/Or';
-
-import { useIntl } from 'utils/cl-intl';
-import { keys } from 'utils/helperUtils';
-
-import sharedMessages from '../messages';
-
-import EmailForm from './EmailForm';
-import messages from './messages';
-import SSOButtonsExceptFC from './SSOButtonsExceptFC';
-
-const StyledA = styled.a`
-  font-size: ${fontSizes.base}px;
-`;
+import DefaultVariant from './DefaultVariant';
+import VerificationVariant from './VerificationVariant';
 
 interface Props {
   loading: boolean;
   setError: SetError;
+  authenticationData: AuthenticationData;
   onSubmit: (email: string) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 
-const EmailFlowStart = ({
-  loading,
-  setError,
-  onSubmit,
-  onSwitchToSSO,
-}: Props) => {
-  const { passwordLoginEnabled, ssoProviders, azureAdSettings } =
-    useAuthConfig();
+const EmailFlowStart = ({ authenticationData, ...props }: Props) => {
+  const { data: requirements } = useAuthenticationRequirements(
+    authenticationData.context
+  );
+  const { data: idMethods } = useIdMethods();
 
-  const { formatMessage } = useIntl();
+  const hasVerificationMethod = !!idMethods?.data.some(
+    (method) => method.attributes.verification_method
+  );
 
-  const anySSOProviderEnabledBesidesFC = keys(ssoProviders)
-    .filter((key) => key !== 'franceconnect')
-    .some((key) => ssoProviders[key]);
+  const verificationRequired =
+    requirements?.data.attributes.requirements.verification ?? false;
 
-  return (
-    <Box data-cy="email-flow-start">
-      {ssoProviders.franceconnect && (
-        <>
-          <FranceConnectButton
-            logoAlt={formatMessage(oldMessages.signUpButtonAltText, {
-              loginMechanismName: 'FranceConnect',
-            })}
-            onClick={() => onSwitchToSSO('franceconnect')}
-          />
-          {(passwordLoginEnabled || anySSOProviderEnabledBesidesFC) && (
-            <Box mt="24px">
-              <Or />
-            </Box>
-          )}
-        </>
-      )}
-      {passwordLoginEnabled && (
-        <>
-          <EmailForm
-            loading={loading}
-            topText={sharedMessages.enterYourEmailAddress}
-            setError={setError}
-            onSubmit={onSubmit}
-          />
-          {anySSOProviderEnabledBesidesFC && (
-            <Box mt="24px">
-              <Or />
-            </Box>
-          )}
-        </>
-      )}
-      {anySSOProviderEnabledBesidesFC && (
-        <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
-      )}
-      {azureAdSettings?.visibility === 'link' && (
-        <Box mt="24px">
-          <StyledA href="/sign-in/admin">
-            {formatMessage(messages.clickHereToLoginAsAdminOrPM)}
-          </StyledA>
-        </Box>
-      )}
-    </Box>
+  // Only show the verification interface when verification is required AND there
+  // is at least one method that can actually verify.
+  return verificationRequired && hasVerificationMethod ? (
+    <VerificationVariant {...props} />
+  ) : (
+    <DefaultVariant {...props} />
   );
 };
 

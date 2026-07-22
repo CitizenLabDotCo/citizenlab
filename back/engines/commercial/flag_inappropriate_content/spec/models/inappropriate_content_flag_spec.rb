@@ -9,6 +9,12 @@ RSpec.describe FlagInappropriateContent::InappropriateContentFlag do
     end
   end
 
+  describe 'toxicity_label' do
+    it 'rejects unknown labels' do
+      expect(build(:inappropriate_content_flag, toxicity_label: 'nonsense')).to be_invalid
+    end
+  end
+
   describe '#generate_commands' do
     let(:author) { create(:user, first_name: 'Biggus', last_name: 'Dickus') }
     let(:idea) { create(:idea, title_multiloc: { 'en' => 'Flagged idea' }, body_multiloc: { 'en' => 'This is a flagged idea.' }, author:, slug: 'flagged-idea') }

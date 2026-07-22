@@ -35,7 +35,7 @@ class WebApi::V1::FoldersController < ApplicationController
 
     project_folders = FoldersFinderAdminService.execute(project_folders, params)
     project_folders = paginate project_folders
-    project_folders = project_folders.includes(:admin_publication, :images)
+    project_folders = project_folders.includes(:admin_publication, :images, :space)
 
     moderators_per_folder = UserRoleService.new.moderators_per_folder(
       project_folders.pluck(:id)

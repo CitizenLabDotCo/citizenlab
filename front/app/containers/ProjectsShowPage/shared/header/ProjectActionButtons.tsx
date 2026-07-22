@@ -6,7 +6,12 @@ import { isNumber } from 'lodash-es';
 import useEvents from 'api/events/useEvents';
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
+import {
+  getCurrentPhase,
+  getInputTerm,
+  getLastPhase,
+  getPhaseActionDescriptor,
+} from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
@@ -70,24 +75,27 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     scrollTo(scrollParams)();
   };
 
-  const { disabled_reason } =
-    project.data.attributes.action_descriptors.taking_survey;
+  const presentPhase = getCurrentPhase(phases?.data);
+  const takingSurveyEnabled = presentPhase
+    ? getPhaseActionDescriptor(presentPhase, 'taking_survey').enabled
+    : false;
 
   const handleTakeSurveyClick = () => {
-    const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptors.taking_survey;
+    if (!presentPhase) return;
 
-    if (enabled) {
+    const descriptor = getPhaseActionDescriptor(presentPhase, 'taking_survey');
+
+    if (descriptor.enabled) {
       scrollToElementWithId('project-survey');
       return;
     }
 
-    if (isFixableByAuthentication(disabled_reason)) {
+    if (isFixableByAuthentication(descriptor.disabled_reason)) {
       const scrollParams = {
         elementId: 'project-survey',
         pathname,
         projectSlug: project.data.attributes.slug,
-        currentPhase,
+        currentPhase: presentPhase,
       };
       const successAction: SuccessAction = {
         name: 'scrollTo',
@@ -97,7 +105,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         context: {
           type: 'phase',
-          id: currentPhase.id,
+          id: presentPhase.id,
           action: 'taking_survey',
         },
         successAction,
@@ -106,20 +114,24 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   };
 
   const handleReviewDocumentClick = () => {
-    const { enabled, disabled_reason } =
-      project.data.attributes.action_descriptors.annotating_document;
+    if (!presentPhase) return;
 
-    if (enabled) {
+    const descriptor = getPhaseActionDescriptor(
+      presentPhase,
+      'annotating_document'
+    );
+
+    if (descriptor.enabled) {
       scrollToElementWithId('document-annotation');
       return;
     }
 
-    if (isFixableByAuthentication(disabled_reason)) {
+    if (isFixableByAuthentication(descriptor.disabled_reason)) {
       const scrollParams = {
         elementId: 'document-annotation',
         pathname,
         projectSlug: project.data.attributes.slug,
-        currentPhase,
+        currentPhase: presentPhase,
       };
       const successAction: SuccessAction = {
         name: 'scrollTo',
@@ -129,7 +141,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       triggerAuthenticationFlow({
         context: {
           type: 'phase',
-          id: currentPhase.id,
+          id: presentPhase.id,
           action: 'annotating_document',
         },
         successAction,
@@ -139,21 +151,14 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const { publication_status } = project.data.attributes;
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const participationMethod = currentPhase?.attributes.participation_method;
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const ideas_count = currentPhase?.attributes.ideas_count;
+  const participationMethod = currentPhase.attributes.participation_method;
+  const ideas_count = currentPhase.attributes.ideas_count;
   // For a continuous project, hasCurrentPhaseEnded will always return false.
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const hasCurrentPhaseEnded = currentPhase
-    ? pastPresentOrFuture([
-        currentPhase.attributes.start_at,
-        currentPhase.attributes.end_at,
-      ]) === 'past'
-    : false;
+  const hasCurrentPhaseEnded =
+    pastPresentOrFuture([
+      currentPhase.attributes.start_at,
+      currentPhase.attributes.end_at,
+    ]) === 'past';
   const inputTerm = getInputTerm(phases?.data);
 
   // Show button conditions
@@ -169,7 +174,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const showTakeNativeSurveyButton =
     generalShowCTAButtonCondition && participationMethod === 'native_survey';
   const showTakeSurveyButton =
-    !disabled_reason &&
+    takingSurveyEnabled &&
     !generalShowCTAButtonCondition &&
     participationMethod === 'survey' &&
     !hasCurrentPhaseEnded;

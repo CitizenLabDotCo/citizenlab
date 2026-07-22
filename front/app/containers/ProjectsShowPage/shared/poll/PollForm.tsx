@@ -6,21 +6,20 @@ import {
   defaultCardStyle,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
-import useAccessDeniedExplanation from 'api/access_denied_explanation/useAccessDeniedExplanation';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPollQuestionData } from 'api/poll_questions/types';
 import useAddPollResponse from 'api/poll_responses/useAddPollResponse';
 
-import useLocalize from 'hooks/useLocalize';
+import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
+import { PhasePollDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
@@ -72,6 +71,7 @@ interface Props {
   projectId: string;
   phaseId: string;
   disabled: boolean;
+  disabledReason: PhasePollDisabledReason | null;
   disabledMessage?: MessageDescriptor | null;
   actionDisabledAndNotFixable: boolean;
 }
@@ -85,6 +85,7 @@ const PollForm = ({
   phaseId,
   disabled,
   projectId,
+  disabledReason,
   disabledMessage,
   actionDisabledAndNotFixable,
 }: Props) => {
@@ -92,20 +93,13 @@ const PollForm = ({
   const { mutate: addPollResponse } = useAddPollResponse();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
-  const theme = useTheme();
 
-  // Is there a custom access denied explanation for the phase?
-  const { data: accessDenied } = useAccessDeniedExplanation({
-    type: 'phase',
+  // Custom access denied explanation configured for the phase, if any.
+  const customAccessDeniedMessage = useCustomAccessDeniedMessage({
+    phaseId,
     action: 'taking_poll',
-    id: phaseId,
+    disabledReason,
   });
-  const accessDeniedExplanation: string | undefined = localize(
-    accessDenied?.data.attributes.access_denied_explanation_multiloc
-  );
-  const outputCustomDeniedMessage =
-    accessDeniedExplanation && accessDeniedExplanation.length >= 0;
 
   const changeAnswerSingle = (questionId: string, optionId: string) => () => {
     setAnswers({ ...answers, [questionId]: [optionId] });
@@ -182,17 +176,7 @@ const PollForm = ({
           actionDisabledAndNotFixable && (
             <Box mb="16px">
               <Warning>
-                {outputCustomDeniedMessage ? (
-                  <QuillEditedContent textColor={theme.colors.tenantText}>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: accessDeniedExplanation,
-                      }}
-                    />
-                  </QuillEditedContent>
-                ) : (
-                  formatMessage(disabledMessage)
-                )}
+                {customAccessDeniedMessage ?? formatMessage(disabledMessage)}
               </Warning>
             </Box>
           )}

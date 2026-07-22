@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 module Export
+  # A report column backed by a custom field: the header is the localized field
+  # title and the value comes from visiting the field with the value visitor
+  # (the visitor formats each input type for its export format). `scope` reads
+  # the answer off an association of the input instead — e.g. :author for
+  # registration fields answered on the respondent's profile. Counterpart of
+  # ComputedFieldForReport; both share the #key/#column_header/#value_from/
+  # #hyperlink? contract the exports iterate over.
   class CustomFieldForExport
     delegate :key, :input_type, :accept, to: :custom_field
 
