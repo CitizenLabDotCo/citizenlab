@@ -106,13 +106,13 @@ const IdeasWithoutFiltersSidebar = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const searchParams = useSearch({ strict: false });
-  const selectedIdeaMarkerId = searchParams.idea_map_id;
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
   const { data: project } = useProjectById(projectId);
-
   const { data: phase } = usePhase(phaseId);
 
+  // Get data from searchParams
+  const selectedIdeaMarkerId = searchParams.idea_map_id;
   const selectedView = useSelectedView({
     requestedView: searchParams.view,
     availableViews: phase?.data.attributes.available_views,
