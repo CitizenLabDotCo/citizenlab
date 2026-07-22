@@ -3074,6 +3074,11 @@
     "verified_at": "2026-07-22T20:45:32.575513Z",
     "verified_by": "Adrien"
   },
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysSelectPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-07-22T20:58:10.842944Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ProjectPageBuilder.Widgets.extraSurveysStyleLabel": {
     "state": "verified",
     "verified_at": "2026-07-22T19:49:31.386604Z",
