@@ -72,13 +72,6 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
-  sms?: {
-    allowed: boolean;
-    enabled: boolean;
-    // ISO 3166-1 alpha-2 country codes whose phone numbers may receive SMS.
-    // Empty / absent means all countries are allowed.
-    allowed_country_codes?: string[];
-  };
   password_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -184,7 +177,6 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
-  parallel_participation?: AppConfigurationFeature;
   input_iq?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
@@ -210,7 +202,14 @@ export interface IAppConfigurationSettings {
   draft_phase_description?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
+  project_static_pages?: AppConfigurationFeature;
+  parallel_participation?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
+  sms?: {
+    allowed: boolean;
+    enabled: boolean;
+    allowed_country_codes?: string[];
+  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

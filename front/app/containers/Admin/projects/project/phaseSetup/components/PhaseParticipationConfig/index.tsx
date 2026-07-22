@@ -413,6 +413,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleAllowMultipleResponsesChange = (value: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      allow_multiple_responses: value,
+    }));
+  };
+
   const handleSimilarityEnabledChange = (value: boolean) => {
     updateFormData((state) => ({
       ...state,
@@ -719,6 +726,9 @@ const PhaseParticipationConfig = ({
             formData={formData}
             handleSurveyTitleChange={handleSurveyTitleChange}
             handleSurveyCTAChange={handleSurveyCTAChange}
+            handleAllowMultipleResponsesChange={
+              handleAllowMultipleResponsesChange
+            }
           />
         )}
         {participation_method === 'survey' && (

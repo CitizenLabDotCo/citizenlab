@@ -138,6 +138,8 @@ describe('Idea show page actions', () => {
       it('has working up and dislike buttons', () => {
         cy.visit(`/ideas/${ideaSlug}`);
         cy.intercept(`**/ideas/by_slug/${ideaSlug}`).as('ideaRequest');
+        cy.intercept('POST', '**/ideas/*/reactions').as('postReaction');
+        cy.intercept('DELETE', '**/reactions/*').as('deleteReaction');
 
         cy.wait('@ideaRequest');
         cy.get('#e2e-idea-show').should('exist');
@@ -158,23 +160,37 @@ describe('Idea show page actions', () => {
         cy.get('@dislikeBtn').contains('0');
 
         // add like
-        cy.get('@likeBtn').click().wait(1000).contains('2');
+        cy.get('@likeBtn').click();
+        cy.wait('@postReaction');
+        cy.get('@likeBtn').should('contain', '2');
 
         // remove like
-        cy.get('@likeBtn').click().wait(1000).contains('1');
+        cy.get('@likeBtn').click();
+        cy.wait('@deleteReaction');
+        cy.get('@likeBtn').should('contain', '1');
 
         // add dislike
-        cy.get('@dislikeBtn').click().wait(1000).contains('1');
+        cy.get('@dislikeBtn').click();
+        cy.wait('@postReaction');
+        cy.get('@dislikeBtn').should('contain', '1');
 
         // remove dislike
-        cy.get('@dislikeBtn').click().wait(1000).contains('0');
+        cy.get('@dislikeBtn').click();
+        cy.wait('@deleteReaction');
+        cy.get('@dislikeBtn').should('contain', '0');
 
         // add dislike, then like
-        cy.get('@dislikeBtn').click().wait(1000);
-        cy.get('@likeBtn').click().wait(1000);
-        cy.get('@dislikeBtn').contains('0');
-        cy.get('@likeBtn').contains('2');
-        cy.get('@likeBtn').click().wait(1000);
+        cy.get('@dislikeBtn').click();
+        cy.wait('@postReaction');
+        cy.get('@dislikeBtn').should('contain', '1');
+        cy.get('@likeBtn').click();
+        cy.wait('@deleteReaction');
+        cy.wait('@postReaction');
+        cy.get('@dislikeBtn').should('contain', '0');
+        cy.get('@likeBtn').should('contain', '2');
+        cy.get('@likeBtn').click();
+        cy.wait('@deleteReaction');
+        cy.get('@likeBtn').should('contain', '1');
       });
     });
 
