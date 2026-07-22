@@ -15,8 +15,7 @@ import { IIdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { IdeaSortMethod, PresentationMode } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import { getSelectedView } from 'api/phases/utils';
-import { IdeaSortMethodFallback } from 'api/phases/utils';
+import { getSelectedView, IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
