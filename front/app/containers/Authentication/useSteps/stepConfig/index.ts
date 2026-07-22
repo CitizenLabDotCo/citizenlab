@@ -7,6 +7,7 @@ import {
   SSOProviderWithoutVienna,
 } from '../../typings';
 
+import { confirmationSteps } from './confirmationSteps';
 import { emailFlow } from './emailFlow';
 import { inviteFlow } from './inviteFlow';
 import { missingDataFlow } from './missingDataFlow';
@@ -28,6 +29,13 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
+      state
+    ),
+
+    ...confirmationSteps(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
       state
     ),
 

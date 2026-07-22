@@ -15,7 +15,7 @@ resource 'Request codes' do
     allow(EmailCampaigns::DeliveryService).to receive(:new).and_return(delivery_service)
   end
 
-  post 'web_api/v1/user/request_code_unauthenticated' do
+  post 'web_api/v1/user/request_code_email' do
     with_options scope: :request_code do
       parameter :email, 'The email of the user requesting a confirmation code.', required: true
     end
@@ -51,6 +51,35 @@ resource 'Request codes' do
       expect(user.confirmation_required?).to be false
 
       do_request(request_code: { email: user.email })
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # Re-confirmation: an authenticated user whose confirmed email has aged past
+    # confirmed_email_expiry requests a fresh code for their own email. This is
+    # the same "full account" (password set + confirmed) that is rejected for
+    # unauthenticated callers above, but allowed here because they are the owner.
+    example 'works for an authenticated user requesting a code for their own email' do
+      user = create(:user, email: 'test@test.com')
+      expect(user.password_digest).not_to be_nil
+      expect(user.confirmation_required?).to be false
+      header_token_for(user)
+
+      do_request(request_code: { email: user.email })
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
+    end
+
+    # An authenticated user must not be able to request an in-place confirmation
+    # code for a *different* existing account's email; the owner check is on the
+    # record, not merely on being logged in.
+    example 'does not work for an authenticated user requesting a code for a different confirmed account' do
+      other_user = create(:user, email: 'other@test.com')
+      requester = create(:user, email: 'requester@test.com')
+      header_token_for(requester)
+
+      do_request(request_code: { email: other_user.email })
       expect(response_status).to eq 401
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
@@ -93,7 +122,7 @@ resource 'Request codes' do
     end
   end
 
-  post 'web_api/v1/user/request_code_email_change' do
+  post 'web_api/v1/user/request_code_new_email' do
     with_options scope: :request_code do
       parameter :new_email, 'The email of the user requesting a confirmation code.', required: false
     end
@@ -157,7 +186,7 @@ resource 'Request codes' do
     end
   end
 
-  post 'web_api/v1/user/request_code_phone_change' do
+  post 'web_api/v1/user/request_code_new_phone' do
     with_options scope: :request_code do
       parameter :new_phone, 'The phone number the user wants to verify.', required: true
     end

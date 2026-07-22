@@ -96,7 +96,7 @@ describe('Sign up - email and SMS (2FA)', () => {
                   Authorization: `Bearer ${jwt}`,
                 },
                 method: 'POST',
-                url: `web_api/v1/user/request_code_phone_change`,
+                url: `web_api/v1/user/request_code_new_phone`,
                 body: {
                   request_code: { new_phone: phoneNumber },
                 },
@@ -108,7 +108,7 @@ describe('Sign up - email and SMS (2FA)', () => {
                     Authorization: `Bearer ${jwt}`,
                   },
                   method: 'POST',
-                  url: `web_api/v1/user/confirm_code_phone_change`,
+                  url: `web_api/v1/user/confirm_code_new_phone`,
                   body: {
                     confirmation: { code: '1234' },
                   },

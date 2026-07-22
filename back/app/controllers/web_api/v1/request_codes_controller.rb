@@ -1,13 +1,19 @@
 # frozen_string_literal: true
 
 class WebApi::V1::RequestCodesController < ApplicationController
-  skip_before_action :authenticate_user, only: %i[request_code_unauthenticated]
+  # Authentication is optional (not skipped-and-forbidden) for request_code_email:
+  # it serves both unauthenticated callers (email signup / passwordless login) and
+  # authenticated callers re-confirming their own email once confirmed_email_expiry
+  # has elapsed. The RequestCodePolicy distinguishes the two.
+  skip_before_action :authenticate_user, only: %i[request_code_email]
 
-  # This endpoint allows unauthenticated users to request a confirmation code
-  # This is used in the email account creation flow and when
-  # logging in passwordless users
-  def request_code_unauthenticated
-    email = request_code_unauthenticated_params[:email]
+  # Sends a confirmation code for the user's `email`, to be confirmed in place
+  # (EmailConfirmation). Two callers:
+  #   - unauthenticated: email account creation flow and passwordless login.
+  #   - authenticated: re-confirmation of an already-confirmed email whose
+  #     confirmed_email_expiry window has elapsed.
+  def request_code_email
+    email = request_code_email_params[:email]
     user = User.find_by_cimail(email)
     authorize user, policy_class: RequestCodePolicy
 
@@ -19,9 +25,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # This endpoint is used when a logged in user wants to change their email
   # It is also used for people who return from SSO and the SSO does not
   # provide a confirmed email.
-  def request_code_email_change
+  def request_code_new_email
     authorize current_user, policy_class: RequestCodePolicy
-    new_email = request_code_email_change_params[:new_email]
+    new_email = request_code_new_email_params[:new_email]
 
     if current_user.new_email.blank? && new_email.blank?
       render json: { errors: { new_email: [{ error: 'cannot be blank' }] } }, status: :unprocessable_entity
@@ -48,10 +54,10 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # This endpoint is used when a logged in user wants to add or change their
   # (verified) phone number. The submitted number is held as a pending
   # new_phone and an SMS confirmation code is sent to it.
-  def request_code_phone_change
+  def request_code_new_phone
     authorize current_user, policy_class: RequestCodePolicy
 
-    new_phone = request_code_phone_change_params[:new_phone]
+    new_phone = request_code_new_phone_params[:new_phone]
     if new_phone.blank?
       render json: { errors: { new_phone: [{ error: 'blank' }] } }, status: :unprocessable_entity
       return
@@ -76,15 +82,15 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   private
 
-  def request_code_unauthenticated_params
+  def request_code_email_params
     params.require(:request_code).permit(:email)
   end
 
-  def request_code_email_change_params
+  def request_code_new_email_params
     params.fetch(:request_code, {}).permit(:new_email)
   end
 
-  def request_code_phone_change_params
+  def request_code_new_phone_params
     params.fetch(:request_code, {}).permit(:new_phone)
   end
 end

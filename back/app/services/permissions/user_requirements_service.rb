@@ -2,6 +2,11 @@
 
 class Permissions::UserRequirementsService
   MIN_VERIFICATION_EXPIRY = 30.minutes
+  # Email/phone confirmation expiry mirrors verification expiry: an expiry of 0
+  # is a testing shortcut that maps to this minimum instead of "0 days ago" (which
+  # would demand re-confirmation on every single request).
+  MIN_CONFIRMED_EMAIL_EXPIRY = 30.minutes
+  MIN_CONFIRMED_PHONE_NUMBER_EXPIRY = 30.minutes
 
   def initialize(check_groups_and_verification: true)
     # This allows us to ignore groups when calling from within PermissionsService where groups are separately checked
@@ -63,6 +68,32 @@ class Permissions::UserRequirementsService
     end
 
     !user.verified?
+  end
+
+  # Whether an already-confirmed email must be confirmed again because the
+  # permission sets a confirmed_email_expiry and that window has elapsed since the
+  # email was last confirmed. Returns false when no expiry is configured, or when
+  # the user has never confirmed an email (email_confirmed_at nil) — that case is
+  # handled by confirmation_required? in #email_action_required, not here.
+  def requires_email_confirmation?(permission, user)
+    return false if permission.confirmed_email_expiry.nil?
+    return false if user.email_confirmed_at.nil?
+
+    expiry_offset = permission.confirmed_email_expiry == 0 ? MIN_CONFIRMED_EMAIL_EXPIRY : permission.confirmed_email_expiry.days
+    (user.email_confirmed_at + expiry_offset) < Time.now
+  end
+
+  # Whether an already-confirmed phone number must be confirmed again because the
+  # permission sets a confirmed_phone_number_expiry and that window has elapsed
+  # since the phone was last confirmed. Returns false when no expiry is configured,
+  # or when the phone has never been confirmed (phone_confirmed_at nil) — that case
+  # is handled directly in #phone_action_required.
+  def requires_phone_confirmation?(permission, user)
+    return false if permission.confirmed_phone_number_expiry.nil?
+    return false if user.phone_confirmed_at.nil?
+
+    expiry_offset = permission.confirmed_phone_number_expiry == 0 ? MIN_CONFIRMED_PHONE_NUMBER_EXPIRY : permission.confirmed_phone_number_expiry.days
+    (user.phone_confirmed_at + expiry_offset) < Time.now
   end
 
   private
@@ -249,8 +280,9 @@ class Permissions::UserRequirementsService
   # - :provide_email      no account yet — provide an email (stored in `email`)
   #                       and confirm it in place (EmailConfirmation).
   # - :confirm_email      an account with an unconfirmed `email` — confirm it in
-  #                       place (EmailConfirmation). (Also the re-confirmation
-  #                       action once confirmed_email_expiry lands.)
+  #                       place (EmailConfirmation). Also the re-confirmation
+  #                       action when confirmed_email_expiry has elapsed since the
+  #                       email was last confirmed (see #requires_email_confirmation?).
   # - :provide_new_email  an account with no email at all (e.g. an SSO sign-up
   #                       that returned no email) — provide one via `new_email`.
   # - :confirm_new_email  an account with a pending `new_email` (e.g. an SSO
@@ -265,9 +297,11 @@ class Permissions::UserRequirementsService
     return :provide_email if user.nil?
 
     if user.email.present?
-      # TODO: once confirmed_email_expiry is implemented, also return
-      # :confirm_email when the confirmation has expired.
-      user.confirmation_required? ? :confirm_email : nil
+      # A never-confirmed email (confirmation_required?) or a confirmation that
+      # has aged past confirmed_email_expiry both require confirming in place.
+      if user.confirmation_required? || requires_email_confirmation?(permission, user)
+        :confirm_email
+      end
     elsif user.new_email.present?
       :confirm_new_email
     else
@@ -293,9 +327,11 @@ class Permissions::UserRequirementsService
     return :provide_new_phone if user.nil?
 
     if user.phone.present?
-      # TODO: once confirmed_phone_number_expiry is implemented, also return
-      # :confirm_phone when the confirmation has expired.
-      user.phone_confirmed_at.present? ? nil : :confirm_phone
+      # A never-confirmed phone (phone_confirmed_at nil) or a confirmation that has
+      # aged past confirmed_phone_number_expiry both require re-confirmation.
+      if user.phone_confirmed_at.nil? || requires_phone_confirmation?(permission, user)
+        :confirm_phone
+      end
     elsif user.new_phone.present?
       :confirm_new_phone
     else

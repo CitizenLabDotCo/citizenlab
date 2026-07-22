@@ -1,8 +1,8 @@
 import fetcher from 'utils/cl-react-query/fetcher';
 
-export const requestCodePhoneChange = async (new_phone: string) => {
+export const requestCodeNewPhone = async (new_phone: string) => {
   await fetcher({
-    path: `/user/request_code_phone_change`,
+    path: `/user/request_code_new_phone`,
     action: 'post',
     body: {
       request_code: { new_phone },

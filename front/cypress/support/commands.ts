@@ -252,7 +252,7 @@ function emailConfirmation(email: string) {
       'Content-Type': 'application/json',
     },
     method: 'POST',
-    url: 'web_api/v1/user/confirm_code_unauthenticated',
+    url: 'web_api/v1/user/confirm_code_email',
     body: {
       confirmation: { email, code: '1234' },
     },

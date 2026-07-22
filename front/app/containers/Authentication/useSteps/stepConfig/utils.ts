@@ -78,9 +78,9 @@ const emailActionStep = (
 ): Step | null => {
   switch (requirements.authentication.email_action_required) {
     case 'confirm_email':
-      return 'email:confirmation';
+      return 'confirmation:email';
     case 'confirm_new_email':
-      return 'missing-data:email-confirmation';
+      return 'confirmation:new_email';
     default:
       return null;
   }
@@ -102,7 +102,7 @@ const phoneActionStep = (
       // number.
       return 'missing-data:phone';
     case 'confirm_new_phone':
-      return 'missing-data:phone-confirmation';
+      return 'confirmation:new_phone';
     default:
       return null;
   }
@@ -188,7 +188,7 @@ export const handleSubmitEmail = async (
 
     if (action === 'confirm') {
       updateState({ flow: 'signin' });
-      setCurrentStep('email:confirmation');
+      setCurrentStep('confirmation:email');
     }
   } catch (e) {
     if (e.errors?.email?.[0]?.error === 'taken_by_invite') {

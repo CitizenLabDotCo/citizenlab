@@ -1,10 +1,8 @@
 import fetcher from 'utils/cl-react-query/fetcher';
 
-export const requestEmailConfirmationCodeUnauthenticated = async (
-  email: string
-) => {
+export const requestCodeEmail = async (email: string) => {
   await fetcher({
-    path: `/user/request_code_unauthenticated`,
+    path: `/user/request_code_email`,
     action: 'post',
     body: {
       request_code: { email },
@@ -14,11 +12,9 @@ export const requestEmailConfirmationCodeUnauthenticated = async (
   return true;
 };
 
-export const requestEmailConfirmationCodeChangeEmail = async (
-  new_email?: string
-) => {
+export const requestCodeNewEmail = async (new_email?: string) => {
   await fetcher({
-    path: `/user/request_code_email_change`,
+    path: `/user/request_code_new_email`,
     action: 'post',
     body: {
       request_code: { new_email },

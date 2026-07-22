@@ -781,6 +781,138 @@ describe Permissions::UserRequirementsService do
       end
     end
 
+    # Re-confirmation of an already-confirmed email once confirmed_email_expiry has
+    # elapsed. The top-level `user` has a confirmed email (email_confirmed_at: Time.now,
+    # confirmation_required? false), so the only thing that can put them back into a
+    # :confirm_email state here is the expiry window. Mirrors verification_expiry.
+    context 'when a confirmed email is required with confirmed_email_expiry set' do
+      let(:permission) do
+        create(:permission, permitted_by: 'users', require_confirmed_email: true)
+      end
+
+      it 'is satisfied and email_confirmed_at is set on the user' do
+        expect(user.confirmation_required?).to be false
+        expect(user.email_confirmed_at).to be_present
+      end
+
+      context 'when confirmed_email_expiry is nil' do
+        it 'never requires re-confirmation' do
+          travel_to Time.now + 10.years do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:email_action_required]).to be_nil
+          end
+        end
+      end
+
+      context 'when confirmed_email_expiry is 0' do
+        before { permission.update!(confirmed_email_expiry: 0) }
+
+        it 'does not require re-confirmation before 30 minutes' do
+          travel_to Time.now + 15.minutes do
+            requirements = service.requirements(permission, user)
+            expect(requirements[:authentication][:email_action_required]).to be_nil
+          end
+        end
+
+        it 'requires re-confirmation after 30 minutes' do
+          travel_to Time.now + 30.minutes + 1.second do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
+          end
+        end
+      end
+
+      context 'when confirmed_email_expiry is greater than 0' do
+        before { permission.update!(confirmed_email_expiry: 30) }
+
+        it 'does not require re-confirmation before the expiry window' do
+          travel_to Time.now + 29.days do
+            requirements = service.requirements(permission, user)
+            expect(requirements[:authentication][:email_action_required]).to be_nil
+          end
+        end
+
+        it 'requires re-confirmation after the expiry window' do
+          travel_to Time.now + 30.days + 1.second do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
+          end
+        end
+      end
+    end
+
+    # Re-confirmation of an already-confirmed phone number once
+    # confirmed_phone_number_expiry has elapsed. Mirrors the email variant above.
+    context 'when a confirmed phone number is required with confirmed_phone_number_expiry set' do
+      before do
+        SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' })
+        user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
+      end
+
+      let(:permission) do
+        create(
+          :permission,
+          permitted_by: 'users',
+          global_custom_fields: false,
+          require_confirmed_email: false,
+          require_name: false,
+          require_password: false,
+          require_confirmed_phone_number: true
+        )
+      end
+
+      context 'when confirmed_phone_number_expiry is nil' do
+        it 'never requires re-confirmation' do
+          travel_to Time.now + 10.years do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:phone_action_required]).to be_nil
+          end
+        end
+      end
+
+      context 'when confirmed_phone_number_expiry is 0' do
+        before { permission.update!(confirmed_phone_number_expiry: 0) }
+
+        it 'does not require re-confirmation before 30 minutes' do
+          travel_to Time.now + 15.minutes do
+            requirements = service.requirements(permission, user)
+            expect(requirements[:authentication][:phone_action_required]).to be_nil
+          end
+        end
+
+        it 'requires re-confirmation after 30 minutes' do
+          travel_to Time.now + 30.minutes + 1.second do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:phone_action_required]).to eq :confirm_phone
+          end
+        end
+      end
+
+      context 'when confirmed_phone_number_expiry is greater than 0' do
+        before { permission.update!(confirmed_phone_number_expiry: 30) }
+
+        it 'does not require re-confirmation before the expiry window' do
+          travel_to Time.now + 29.days do
+            requirements = service.requirements(permission, user)
+            expect(requirements[:authentication][:phone_action_required]).to be_nil
+          end
+        end
+
+        it 'requires re-confirmation after the expiry window' do
+          travel_to Time.now + 30.days + 1.second do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:phone_action_required]).to eq :confirm_phone
+          end
+        end
+      end
+    end
+
     # These specs document a deliberate quirk: for a user who signed up via SSO
     # (i.e. has a linked identity), the service NEVER asks for a password, even
     # when the permission has require_password enabled. In other words, the

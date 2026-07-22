@@ -96,7 +96,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'email:confirmation':
+    case 'confirmation:email':
       return (
         <EmailConfirmation
           state={state}
@@ -132,7 +132,7 @@ const CurrentStep = ({
       return <InviteTaken state={state} />;
 
     // missing data flow / shared
-    case 'missing-data:email-confirmation':
+    case 'confirmation:new_email':
       return (
         <EmailConfirmation
           state={state}
@@ -154,7 +154,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'missing-data:phone-confirmation':
+    case 'confirmation:new_phone':
       return (
         <PhoneConfirmation
           state={state}
