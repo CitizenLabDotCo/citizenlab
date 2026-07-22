@@ -1948,6 +1948,7 @@
   "app.containers.Navbar.verified": "Verified",
   "app.containers.NewAuthModal.beforeYouFollow": "Before you follow",
   "app.containers.NewAuthModal.beforeYouParticipate": "Before you participate",
+  "app.containers.NewAuthModal.changeYourEmail": "Change your email",
   "app.containers.NewAuthModal.completeYourProfile": "Complete your profile",
   "app.containers.NewAuthModal.confirmYourEmail": "Confirm your email",
   "app.containers.NewAuthModal.logIn": "Log in",
