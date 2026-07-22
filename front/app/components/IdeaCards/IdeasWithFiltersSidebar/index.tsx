@@ -29,6 +29,7 @@ import { useSearch } from 'utils/router';
 import messages from '../messages';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
+import useSelectedView from '../useSelectedView';
 
 import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 import ContentRight from './ContentRight';
@@ -101,8 +102,6 @@ const IdeasWithFiltersSidebar = ({
 
   // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.idea_map_id;
-  const selectedView =
-    searchParams.view ?? (selectedIdeaMarkerId ? 'map' : defaultView);
 
   // Fetch ideas list & filter counts
   const {
@@ -115,6 +114,12 @@ const IdeasWithFiltersSidebar = ({
   } = useInfiniteIdeas(ideaQueryParameters);
 
   const { data: phase } = usePhase(phaseId);
+
+  const selectedView = useSelectedView({
+    requestedView: searchParams.view,
+    availableViews: phase?.data.attributes.available_views,
+    defaultView: selectedIdeaMarkerId ? 'map' : defaultView,
+  });
 
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);

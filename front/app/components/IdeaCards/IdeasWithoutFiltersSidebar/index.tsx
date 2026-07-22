@@ -34,6 +34,7 @@ import StatusFilterDropdown from '../shared/Filters/StatusFilterDropdown';
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
+import useSelectedView from '../useSelectedView';
 
 const FiltersArea = styled.div`
   width: 100%;
@@ -110,8 +111,13 @@ const IdeasWithoutFiltersSidebar = ({
   const smallerThanPhone = useBreakpoint('phone');
   const { data: project } = useProjectById(projectId);
 
-  const selectedView =
-    searchParams.view ?? (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
+  const { data: phase } = usePhase(phaseId);
+
+  const selectedView = useSelectedView({
+    requestedView: searchParams.view,
+    availableViews: phase?.data.attributes.available_views,
+    defaultView: selectedIdeaMarkerId ? 'map' : defaultView ?? 'card',
+  });
 
   const setSelectedView = useCallback((view: PresentationMode) => {
     updateSearchParams({ view });
@@ -132,7 +138,6 @@ const IdeasWithoutFiltersSidebar = ({
   const list = useMemo(() => {
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
-  const { data: phase } = usePhase(phaseId);
 
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
