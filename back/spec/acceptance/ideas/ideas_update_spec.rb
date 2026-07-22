@@ -760,6 +760,24 @@ resource 'Ideas' do
               assert_status 200
               expect(response_data[:attributes][:publication_status]).to eq 'published'
             end
+
+            context 'with the anonymous parameter' do
+              let(:anonymous) { true }
+
+              example_request '[error] Publish an anonymous survey response when the standalone phase does not allow it' do
+                assert_status 422
+                expect(json_response_body).to include_response_error(:base, 'anonymous_participation_not_allowed')
+              end
+
+              context 'when the standalone phase allows anonymous participation' do
+                before { input.creation_phase.update!(allow_anonymous_participation: true) }
+
+                example_request 'Publish an anonymous survey response in a standalone phase' do
+                  assert_status 200
+                  expect(response_data.dig(:attributes, :anonymous)).to be true
+                end
+              end
+            end
           end
         end
       end

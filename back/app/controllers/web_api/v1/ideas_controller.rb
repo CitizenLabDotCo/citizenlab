@@ -636,8 +636,8 @@ class WebApi::V1::IdeasController < ApplicationController
   def validate_update!(input)
     can_moderate = UserRoleService.new.can_moderate?(input.project, current_user)
 
-    current_phase = TimelineService.new.current_phase_not_archived(input.project)
-    if !can_moderate && current_phase && anonymous_not_allowed?(current_phase)
+    phase = Permissions::IdeaPermissionsService.new(input, current_user).editing_phase
+    if !can_moderate && phase && anonymous_not_allowed?(phase)
       raise ApiError, :anonymous_participation_not_allowed
     end
 

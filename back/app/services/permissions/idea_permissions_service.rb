@@ -87,6 +87,10 @@ module Permissions
       }
     end
 
+    def editing_phase
+      phase || (current_phase if !standalone_input?)
+    end
+
     private
 
     attr_reader :idea
@@ -112,7 +116,6 @@ module Permissions
     end
 
     def editing_phase_denied_reason
-      editing_phase = phase || (current_phase if !standalone_input?)
       return no_active_phase_reason if !editing_phase
 
       PhasePermissionsService.new(editing_phase, user, user_requirements_service:).denied_reason_for_action('editing_idea')
