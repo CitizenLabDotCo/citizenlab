@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
@@ -22,6 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
+import usePhoneInputCountries from './usePhoneInputCountries';
 
 import { FormValues } from '.';
 
@@ -48,24 +48,9 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
-  const { data: appConfig } = useAppConfiguration();
+  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
-
-  const allowedCountryCodes =
-    appConfig?.data.attributes.settings.sms?.allowed_country_codes;
-  // Restrict the country dropdown when an allow-list is configured; otherwise show all countries.
-  const allowedCountries =
-    allowedCountryCodes && allowedCountryCodes.length > 0
-      ? allowedCountryCodes
-      : undefined;
-  // Default the selected country (and thus the pre-filled calling code) to the
-  // first allowed country, falling back to the platform's own country. This keeps
-  // the "+…" prefix relevant instead of defaulting to an unrelated country.
-  const tenantCountryCode =
-    appConfig?.data.attributes.settings.core.country_code;
-  const defaultCountry =
-    allowedCountries?.[0] ?? tenantCountryCode ?? undefined;
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
