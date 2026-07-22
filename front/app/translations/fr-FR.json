@@ -602,7 +602,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysButtonTextLabel": "Texte du bouton",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysClosed": "Sondage clôturé",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysClosedTimeAgo": "Clôturé {timeAgo}",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysDefaultButtonText": "Répondre au sondage",
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysDefaultButtonText": "Répondre à l'enquête",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatButton": "Bouton",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatCard": "Vue en carte",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatLabel": "Format du bouton du sondage",
