@@ -20,7 +20,14 @@ module McpServer
       transport = MCP::Server::Transports::StreamableHTTPTransport.new(
         server,
         stateless: true,
-        enable_json_response: true
+        enable_json_response: true,
+        # mcp >= 0.23 validates the request Host header for DNS-rebinding protection,
+        # defaulting to loopback hosts only. Allow this tenant's canonical host so
+        # requests to the hosted endpoint aren't rejected. In production the endpoint
+        # is served at https://#{host} (see AppConfiguration#base_uri), so this matches
+        # the incoming Host. NOTE: does not cover proxy/LB rewrites, custom-domain
+        # aliases, or browser clients (Origin).
+        allowed_hosts: [AppConfiguration.instance.host]
       )
 
       status, headers, body = transport.handle_request(request)
@@ -88,7 +95,10 @@ module McpServer
       McpServer::Tools::AttachFile,
       McpServer::Tools::ListAttachedImages,
       McpServer::Tools::ListFileAttachments,
-      McpServer::Tools::ListProjectFiles
+      McpServer::Tools::ListProjectFiles,
+
+      McpServer::Tools::GetReportingSqlSchema,
+      McpServer::Tools::RunReportingSqlQuery
     ].freeze
 
     def tools

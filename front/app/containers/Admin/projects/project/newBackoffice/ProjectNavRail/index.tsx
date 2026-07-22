@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import NewLabel from 'components/UI/NewLabel';
+
 import { useLocation } from 'utils/router';
 
 import projectMessages from '../../messages';
@@ -14,6 +18,10 @@ interface Props {
 }
 
 const ProjectNavRail = ({ projectId }: Props) => {
+  const projectStaticPagesEnabled = useFeatureFlag({
+    name: 'project_static_pages',
+  });
+
   const projectPageItem: NavItem = {
     name: 'project-page',
     label: messages.projectPageNav,
@@ -36,6 +44,16 @@ const ProjectNavRail = ({ projectId }: Props) => {
       label: projectMessages.eventsTab,
       to: '/admin/projects/$projectId/events',
     },
+    ...(projectStaticPagesEnabled
+      ? [
+          {
+            name: 'pages',
+            label: projectMessages.pagesTab,
+            to: '/admin/projects/$projectId/pages' as const,
+            badge: <NewLabel />,
+          },
+        ]
+      : []),
     {
       name: 'input-360',
       label: projectMessages.filesTab,
@@ -66,6 +84,7 @@ const ProjectNavRail = ({ projectId }: Props) => {
   return (
     <Box
       as="nav"
+      className="intercom-product-tour-project-nav-rail"
       p="12px"
       flex="0 0 auto"
       display="flex"

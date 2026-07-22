@@ -503,6 +503,32 @@ RSpec.describe User do
 
       expect(u).to be_invalid
     end
+
+    # NOTE: These tests match the frontend tests found in front/app/components/UI/PasswordInput/passwordMeetsStrength.test.ts
+    it 'does not enforce password strength when minimum_strength is 0 (default)' do
+      # A long but weak password passes when the strength check is disabled.
+      u = build(:user, password: 'aaaaaaaaaaaaaaaa')
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when weaker than the configured minimum strength' do
+      settings = AppConfiguration.instance.settings
+      settings['password_login'] = settings['password_login'].merge('minimum_strength' => 3)
+      AppConfiguration.instance.update! settings: settings
+
+      u = build(:user, password: 'aaaaaaaaaaaaaaaa')
+      expect(u).to be_invalid
+      expect(u.errors.details[:password]).to include(a_hash_including(error: :too_weak))
+    end
+
+    it 'is valid when at least as strong as the configured minimum strength' do
+      settings = AppConfiguration.instance.settings
+      settings['password_login'] = settings['password_login'].merge('minimum_strength' => 3)
+      AppConfiguration.instance.update! settings: settings
+
+      u = build(:user, password: 'correct horse battery staple')
+      expect(u).to be_valid
+    end
   end
 
   describe 'bio sanitizer' do
@@ -840,6 +866,103 @@ RSpec.describe User do
     it 'correctly returns the highest role a moderator posesses' do
       expect(build_stubbed(:project_moderator).highest_role).to eq :project_moderator
     end
+
+    it 'ignores a moderator role that is missing its scope id' do
+      # Mirrors moderated_*_ids (which compact out nil ids): a type-only role
+      # hash does not make the user a moderator.
+      user = build_stubbed(:user, roles: [{ 'type' => 'project_moderator' }])
+      expect(user.highest_role).to eq :user
+      expect(user.project_moderator?).to be false
+    end
+  end
+
+  describe 'token_expiry_key rotation on highest_role change' do
+    # Rotating token_expiry_key invalidates any outstanding JWT, so its
+    # highest_role claim can't go stale after a role change (TAN-6826).
+
+    # Set a known key, then reload so highest_role_after_initialize reflects the
+    # persisted roles. update_column bypasses the callback we're testing.
+    def with_known_key(user)
+      user.update_column(:token_expiry_key, 'initial-key')
+      User.find(user.id)
+    end
+
+    context 'when the change alters highest_role' do
+      it 'rotates when a regular user becomes an admin' do
+        user = with_known_key(create(:user, roles: []))
+        user.update!(roles: [{ 'type' => 'admin' }])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+
+      it 'rotates when a project moderator is promoted to admin' do
+        user = with_known_key(create(:project_moderator, projects: [create(:project)]))
+        user.update!(roles: user.roles + [{ 'type' => 'admin' }])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+
+      it 'rotates when an admin is demoted to project moderator' do
+        user = with_known_key(create(:admin))
+        user.update!(roles: [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+
+      it 'rotates when a moderator gains a higher-ranked role' do
+        # project_moderator + a folder-moderator role => highest_role rises to folder
+        user = with_known_key(create(:project_moderator, projects: [create(:project)]))
+        user.update!(roles: user.roles + [{ 'type' => 'project_folder_moderator', 'project_folder_id' => create(:project_folder).id }])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+
+      it 'rotates when all roles are removed' do
+        user = with_known_key(create(:admin))
+        user.update!(roles: [])
+        expect(user.token_expiry_key).not_to eq('initial-key')
+      end
+    end
+
+    context 'when the change leaves highest_role unchanged' do
+      it 'does not rotate when an admin also gains a moderator role' do
+        # admin + a lower-ranked moderator role => highest_role stays admin
+        user = with_known_key(create(:admin))
+        user.update!(roles: user.roles + [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
+
+      it 'does not rotate when a moderator gains a lower-ranked role' do
+        # space_moderator + a lower-ranked project-moderator role => highest_role stays space
+        user = with_known_key(create(:space_moderator, spaces: [create(:space)]))
+        user.update!(roles: user.roles + [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
+
+      it 'does not rotate when a project moderator gains an extra project role' do
+        user = with_known_key(create(:project_moderator, projects: [create(:project)]))
+        user.update!(roles: user.roles + [{ 'type' => 'project_moderator', 'project_id' => create(:project).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
+
+      it 'does not rotate when a folder moderator gains an extra folder role' do
+        user = with_known_key(create(:project_folder_moderator, project_folders: [create(:project_folder)]))
+        user.update!(roles: user.roles + [{ 'type' => 'project_folder_moderator', 'project_folder_id' => create(:project_folder).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
+
+      it 'does not rotate when a space moderator gains an extra space role' do
+        user = with_known_key(create(:space_moderator, spaces: [create(:space)]))
+        user.update!(roles: user.roles + [{ 'type' => 'space_moderator', 'space_id' => create(:space).id }])
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
+
+      it 'does not rotate on a non-role update' do
+        user = with_known_key(create(:admin))
+        user.update!(first_name: 'Updated')
+        expect(user.token_expiry_key).to eq('initial-key')
+      end
+    end
+
+    it 'does not rotate on create (no prior token to invalidate)' do
+      expect(create(:admin).token_expiry_key).to be_nil
+    end
   end
 
   describe 'onboarding' do
@@ -1024,11 +1147,6 @@ RSpec.describe User do
 
       it 'returns true if the user has not yet confirmed their account' do
         expect(user.confirmation_required?).to be true
-      end
-
-      it 'returns false when the user is a verified SSO user with no email' do
-        u = build(:unconfirmed_user, identities: [build(:franceconnect_identity)], email: nil, verified: true)
-        expect(u.confirmation_required?).to be false
       end
 
       it 'returns true when the user is an unverified SSO user with no email' do

@@ -8,15 +8,15 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import { ICampaign } from 'api/campaigns/types';
-import { isDraft } from 'api/campaigns/util';
+import { IEmailCampaign } from 'api/campaigns/email/types';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
 interface Props {
-  campaign: ICampaign;
+  campaign: IEmailCampaign;
   onOpenScheduleModal: () => void;
   onOpenCancelScheduleModal: () => void;
 }
@@ -50,7 +50,7 @@ const EmailSchedulingButton = ({
         right="0px"
         content={
           <Box background={colors.white}>
-            {isDraft(campaign.data) && (
+            {isEmailCampaignDraft(campaign.data) && (
               <Button
                 onClick={onOpenScheduleModal}
                 buttonStyle="text"

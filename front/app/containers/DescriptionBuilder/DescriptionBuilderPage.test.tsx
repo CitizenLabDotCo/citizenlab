@@ -74,7 +74,6 @@ jest.mock('components/admin/ContentBuilder/FullscreenContentBuilder', () => ({
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
 

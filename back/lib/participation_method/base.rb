@@ -195,6 +195,14 @@ module ParticipationMethod
       false
     end
 
+    # Returns whether this method's input form responses can be exported as a PDF
+    # (branded cover page + one card per response). True for the survey and
+    # ideation families; excludes methods without a real input form (e.g.
+    # common_ground, voting).
+    def supports_input_pdf_export?
+      false
+    end
+
     def supports_toxicity_detection?
       true
     end

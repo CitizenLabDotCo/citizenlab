@@ -11,6 +11,10 @@ import { Multiloc } from '../../app/typings';
 
 import { jwtDecode } from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
+import {
+  IPermissionUpdate,
+  IPhasePermissionAction,
+} from '../../app/api/phase_permissions/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -1342,6 +1346,7 @@ function apiCreatePhase({
   surveyService,
   votingMaxTotal,
   allow_anonymous_participation,
+  allow_multiple_responses,
   votingMethod,
   votingMaxVotesPerIdea,
   votingMinTotal,
@@ -1366,6 +1371,7 @@ function apiCreatePhase({
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
+  allow_multiple_responses?: boolean;
   votingMethod?: VotingMethod;
   votingMaxVotesPerIdea?: number;
   votingMinTotal?: number;
@@ -1403,6 +1409,7 @@ function apiCreatePhase({
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
+          allow_multiple_responses: allow_multiple_responses,
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
@@ -1647,19 +1654,9 @@ function apiRemoveAllReports() {
   });
 }
 
-type IPhasePermissionAction =
-  | 'posting_idea'
-  | 'reacting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'voting'
-  | 'annotating_document'
-  | 'attending_event';
-
 type ApiSetPermissionTypeProps = {
   phaseId: string;
-  permissionBody?: any;
+  permissionBody?: Partial<IPermissionUpdate>;
   action: IPhasePermissionAction;
 };
 function apiSetPhasePermission({

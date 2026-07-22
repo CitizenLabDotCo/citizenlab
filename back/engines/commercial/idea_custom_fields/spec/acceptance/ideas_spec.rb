@@ -251,6 +251,7 @@ resource 'Ideas' do
       example 'Moving an idea to a project with required custom custom field', document: false do
         user.add_role 'admin'
         user.save!
+        header_token_for user # role change invalidates the earlier token; re-authenticate
         form = create(:custom_form, participation_context: project)
         create(:custom_field, :for_custom_form, resource: form, required: true, input_type: 'number')
         do_request

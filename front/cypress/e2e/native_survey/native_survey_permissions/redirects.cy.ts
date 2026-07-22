@@ -83,8 +83,8 @@ describe('Native survey project page actions', () => {
       // Select that unregistered users may submit surveys
       cy.get('.e2e-action-accordion-posting_idea').click();
       cy.get('.e2e-action-form-posting_idea').within(() => {
-        cy.contains('Anyone').should('be.visible');
-        cy.contains('Anyone').click({ force: true });
+        cy.get('.e2e-permission-anyone').should('exist');
+        cy.get('.e2e-permission-anyone').first().click();
       });
       // Logout
       cy.clearCookies();

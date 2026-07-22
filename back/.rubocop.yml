@@ -180,7 +180,7 @@ RSpec/ExampleLength:
 
 RSpec/SpecFilePathSuffix:
   Exclude:
-    - 'spec/migrations/20241127093339_add_first_published_at_to_admin_publications_spec.ignore.rb'
+    - 'spec/migrations/*.ignore.rb'
     - 'spec/tasks/single_use/*.ignore.rb'
 
 Metrics/MethodLength:

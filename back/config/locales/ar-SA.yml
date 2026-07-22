@@ -274,6 +274,15 @@ ar-SA:
     proposals:
       title: المُقترحات
   pdf_export:
+    input_responses:
+      date: التاريخ
+      no_answer: (لا توجد إجابة)
+      prepared_by: أعده
+      report_label: تقرير الردود
+      respondent: المجيب %{number}
+      response_count:
+        one: '%{count} رد'
+        other: '%{count} ردود'
     survey_responses:
       date: التاريخ
       no_answer: (لا توجد إجابة)

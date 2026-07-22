@@ -5,7 +5,6 @@ import { screen, render, userEvent, waitFor } from 'utils/testUtils/rtl';
 import ProjectFolderForm from '.';
 
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
-jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 const mockUpdateProjectFolder = jest.fn();
 

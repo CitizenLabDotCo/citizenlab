@@ -6,8 +6,6 @@ import { isEmpty } from 'lodash-es';
 import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 import useProjectById from 'api/projects/useProjectById';
 
-import useParallelParticipation from 'hooks/useParallelParticipation';
-
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
@@ -27,24 +25,19 @@ const handleLoadImages = () => {
 
 const ProjectPageContentViewer = ({ projectId }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const parallelParticipation = useParallelParticipation();
   const { data: project } = useProjectById(projectId);
   const canModerate = usePermission({
     item: project?.data ?? null,
     action: 'moderate',
   });
 
-  const { data: layout, isInitialLoading } = useProjectPageLayout(
-    projectId,
-    parallelParticipation
-  );
+  const { data: layout, isInitialLoading } = useProjectPageLayout(projectId);
 
   const editorData = useMemo(
     () => normalizeProjectPageLayout(layout?.data.attributes.craftjs_json),
     [layout]
   );
 
-  if (!parallelParticipation) return null;
   if (isInitialLoading) return <Spinner />;
 
   const hasContent =

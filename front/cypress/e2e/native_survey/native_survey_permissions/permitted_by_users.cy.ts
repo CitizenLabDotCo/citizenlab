@@ -27,8 +27,7 @@ describe('Native survey permitted by: users', () => {
       phaseId = data.phaseId;
       fieldName = data.fieldName;
 
-      // Temporarily set permission to everyone_confirmed_email
-      // to make sure we clear out the global settings
+      // Set single custom field
       return cy
         .apiLogin('admin@govocal.com', 'democracy2.0')
         .then((response) => {
@@ -37,7 +36,7 @@ describe('Native survey permitted by: users', () => {
           return updatePermission({
             adminJwt,
             phaseId,
-            permitted_by: 'everyone_confirmed_email',
+            global_custom_fields: false,
           }).then(() => {
             // Add one permissions custom field
             return addPermissionsCustomField({
@@ -45,20 +44,13 @@ describe('Native survey permitted by: users', () => {
               phaseId,
               customFieldId,
             }).then(() => {
-              // Set permission back to users
-              return updatePermission({
-                adminJwt,
-                phaseId,
-                permitted_by: 'users',
-              }).then(() => {
-                // Finally: go into the survey and save it
-                cy.setAdminLoginCookie();
-                cy.visit(
-                  `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
-                );
-                cy.get('form').submit();
-                cy.get('[data-testid="feedbackSuccessMessage"]');
-              });
+              // Finally: go into the survey and save it
+              cy.setAdminLoginCookie();
+              cy.visit(
+                `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+              );
+              cy.get('form').submit();
+              cy.get('[data-testid="feedbackSuccessMessage"]');
             });
           });
         });

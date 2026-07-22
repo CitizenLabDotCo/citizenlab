@@ -270,6 +270,15 @@ fr-FR:
     proposals:
       title: Propositions
   pdf_export:
+    input_responses:
+      date: Date
+      no_answer: (Pas de réponse)
+      prepared_by: Préparé par
+      report_label: Rapport de réponses
+      respondent: Répondant %{number}
+      response_count:
+        one: '%{count} réponse'
+        other: '%{count} réponses'
     survey_responses:
       date: Date
       no_answer: (Pas de réponse)

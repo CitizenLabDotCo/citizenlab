@@ -209,6 +209,7 @@ class Phase < ApplicationRecord
   with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+    validates :allow_multiple_responses, inclusion: { in: [true, false] }
   end
 
   validate :validate_no_inputs_on_participation_method_change, on: :update
@@ -289,6 +290,14 @@ class Phase < ApplicationRecord
     participation_method == 'ideation'
   end
 
+  # The inputs that belong in an export/report of this phase: submitted or
+  # published inputs, minus content-less rows for methods that keep drafts
+  # (ideation/proposals). Survey methods keep every submission.
+  def inputs_for_export
+    scope = ideas.submitted_or_published
+    pmethod.supports_survey_form? ? scope : scope.with_content
+  end
+
   def pmethod
     @pmethod = case participation_method
     when 'information'
@@ -335,7 +344,9 @@ class Phase < ApplicationRecord
 
   def update_manual_votes_count!
     reload
-    update!(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum)
+
+    # Denormalized counter: validating here would let an unrelated invalid attribute fail every recount.
+    update_columns(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum, updated_at: Time.current)
   end
 
   # If 'disable_disliking' is NOT enabled, then disliking will always be set to enabled on creation and cannot be changed
