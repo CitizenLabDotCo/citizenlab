@@ -69,6 +69,9 @@ namespace :decidim_importer do
     importer.skipped_surveys.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_survey_responses.each { |s| Rails.logger.warn "  skipped response #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_pages.each { |s| Rails.logger.warn "  skipped page #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_blog_posts.each { |s| Rails.logger.warn "  skipped blog post #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_meetings.each { |s| Rails.logger.warn "  skipped meeting #{s[:uid]}: #{s[:reason]}" }
+    importer.skipped_meeting_attachments.each { |s| Rails.logger.warn "  skipped meeting attachment #{s[:uid]}: #{s[:reason]}" }
     importer.skipped_files.each { |s| Rails.logger.warn "  skipped file #{s[:uid]}: #{s[:reason]}" }
     write_app_config_json(importer, path)
     write_url_mapping_csv(importer, path)

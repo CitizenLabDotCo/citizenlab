@@ -362,6 +362,7 @@ en:
     documents_to_consult: Documents to consult
     accountability_progress: Progress
     accountability_status: Status
+    blog: Blog
   user:
     anon_first_name: "User"
     anon_scheme:

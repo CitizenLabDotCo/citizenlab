@@ -125,4 +125,38 @@ RSpec.describe DecidimImporter::ExportReader do
       expect(rows[:followers].first).to include('uid' => 'f-1', 'followable' => 'proj-1', **stamp)
     end
   end
+
+  describe 'meetings' do
+    it 'reads a meetings component’s nested meeting + attachments, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/05---decidim--component--18---meetings'
+      meeting = "#{comp}/04---decidim--meetings--meeting--12"
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-18', %({"fr":"Réunions"})])
+      write_csv("#{meeting}/01---meeting.csv", %w[uid title start_time], ['meeting-12', %({"fr":"M"}), '2024-04-25 18:30'])
+      write_csv("#{meeting}/06---attachments.csv", %w[uid file attached_to], %w[att-1 http://x/f.pdf meeting-12])
+      # A comments sidecar is present but not consumed — events have no comments.
+      write_csv("#{meeting}/07---comments.csv", %w[uid body], %w[c-1 hi])
+
+      rows = described_class.read(root)
+      stamp = { 'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-18' }
+
+      expect(rows[:meetings].first).to include('uid' => 'meeting-12', **stamp)
+      expect(rows[:meeting_attachments].first).to include('uid' => 'att-1', 'attached_to' => 'meeting-12', **stamp)
+      expect(rows).not_to have_key(:comments) # the meeting's comments sidecar is deliberately unread
+    end
+  end
+
+  describe 'blogs' do
+    it 'reads a blogs component’s posts sidecar, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/02---decidim--component--14---blogs'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-14', %({"fr":"Actualités"})])
+      write_csv("#{comp}/04---posts.csv", %w[uid title body], ['post-1', %({"fr":"P"}), %({"fr":"<p>B</p>"})])
+
+      posts = described_class.read(root)[:blog_posts]
+
+      expect(posts.first).to include('uid' => 'post-1', 'decidim_participatory_process' => 'decidim--process--1',
+        'decidim_component' => 'comp-14')
+    end
+  end
 end

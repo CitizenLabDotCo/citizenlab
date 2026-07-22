@@ -50,11 +50,18 @@ module DecidimImporter
     PAGES_COMPONENT = 'pages'
     ACCOUNTABILITY_COMPONENT = 'accountability'
     BUDGETS_COMPONENT = 'budgets'
+    MEETINGS_COMPONENT = 'meetings'
+    BLOGS_COMPONENT = 'blogs'
 
     # A budgets component nests one directory per budget (`NN---decidim--budgets--budget--N/`) holding
     # the budget CSV plus its projects/orders/followers — unlike the flat sidecars of other components.
     BUDGET_DIR_GLOB = '*budgets--budget--*'
     BUDGET_FILE_GLOB = '*--budget.csv'
+
+    # A meetings component likewise nests one directory per meeting (`NN---decidim--meetings--meeting--N/`)
+    # holding the meeting CSV plus its own attachments (and comments/followers we don't consume).
+    MEETING_DIR_GLOB = '*meetings--meeting--*'
+    MEETING_FILE_GLOB = '*--meeting.csv'
 
     # The two container kinds read into the `:projects` stream. `project_stamp` is merged onto each
     # container's project rows: assemblies get the synthetic Assemblies group (routing them into that
@@ -65,16 +72,18 @@ module DecidimImporter
         project_stamp: { 'participatory_process_group' => ASSEMBLIES_FOLDER_UID } }
     ].freeze
 
-    # The sibling CSVs read for each consumed component type, as `type => [[glob, acc-key], ...]`. Other
-    # component types (blogs, meetings, …) carry no consumed sidecar — only their manifest is recorded.
-    # A proposals component's `*--attachments.csv` holds per-proposal attachments, distinct from the
-    # container-level `*--attachments.csv` read by {#read_container}.
+    # The sibling CSVs read for each consumed component type, as `type => [[glob, acc-key], ...]`. Budgets
+    # and meetings instead nest per-record subdirectories (see {#read_budgets}/{#read_meetings}); the
+    # remaining component types (awesome_iframe, debates, …) carry no consumed sidecar — only their
+    # manifest is recorded. A proposals component's `*--attachments.csv` holds per-proposal attachments,
+    # distinct from the container-level `*--attachments.csv` read by {#read_container}.
     COMPONENT_SIDECARS = {
       PROPOSALS_COMPONENT => [['*--proposals.csv', :proposals], ['*--comments.csv', :comments],
         ['*--comments-votes.csv', :comment_votes], ['*--followers.csv', :followers],
         ['*--endorsements.csv', :endorsements], ['*--attachments.csv', :proposal_attachments]],
       SURVEYS_COMPONENT => [['*--answers.csv', :survey_answers]],
-      ACCOUNTABILITY_COMPONENT => [['*--statuses.csv', :accountability_statuses], ['*--results.csv', :results]]
+      ACCOUNTABILITY_COMPONENT => [['*--statuses.csv', :accountability_statuses], ['*--results.csv', :results]],
+      BLOGS_COMPONENT => [['*--posts.csv', :blog_posts]]
     }.freeze
 
     module_function
@@ -94,13 +103,15 @@ module DecidimImporter
 
     # Reads every participatory-process and assembly directory, aggregating rows by model: container rows
     # into `:projects`, attachments/collections/categories, and — from each container's components —
-    # proposals, comments, followers, endorsements, results, and every component manifest into
-    # `:components` (which drives phase generation and skip-logging). Decidim steps are deliberately not read.
+    # proposals, comments, followers, endorsements, results, budgets, blog posts, meetings (+ their
+    # attachments), and every component manifest into `:components` (which drives phase generation and
+    # skip-logging). Decidim steps are deliberately not read.
     def read_containers(root)
       acc = { projects: [], attachments: [], attachment_collections: [], categories: [], proposals: [],
               comments: [], comment_votes: [], followers: [], endorsements: [], proposal_attachments: [],
               results: [], accountability_statuses: [], components: [], survey_answers: [],
-              budgets: [], budget_projects: [], orders: [] }
+              budgets: [], budget_projects: [], orders: [], blog_posts: [],
+              meetings: [], meeting_attachments: [] }
       CONTAINERS.each do |container|
         container_dirs(root, container).each { |dir| read_container(dir, container, acc) }
       end
@@ -140,8 +151,9 @@ module DecidimImporter
       rows_by_model[:folders] = (rows_by_model[:folders] || []) + [folder]
     end
 
-    # Walks a process's component directories, recording each manifest under `:components` and, for
-    # proposals/accountability components, their sibling CSVs (stamped with process + component uid).
+    # Walks a process's component directories, recording each manifest under `:components` and reading
+    # each consumed type's data: flat sibling CSVs (proposals/accountability/blogs) plus the nested
+    # per-record subtrees of budgets and meetings (all stamped with process + component uid).
     def read_components(process_dir, process_uid, acc)
       component_dirs(process_dir).each do |comp_dir|
         comp_file = Dir.glob(File.join(comp_dir, COMPONENT_FILE_GLOB)).first
@@ -153,6 +165,7 @@ module DecidimImporter
         columns = { 'decidim_participatory_process' => process_uid, 'decidim_component' => comp_row['uid'] }
         (COMPONENT_SIDECARS[type] || []).each { |glob, key| read_into(comp_dir, glob, columns, acc, key) }
         read_budgets(comp_dir, columns, acc) if type == BUDGETS_COMPONENT
+        read_meetings(comp_dir, columns, acc) if type == MEETINGS_COMPONENT
       end
     end
 
@@ -170,6 +183,21 @@ module DecidimImporter
         read_into(budget_dir, '*--projects.csv', columns, acc, :budget_projects)
         read_into(budget_dir, '*--orders.csv', columns, acc, :orders)
         read_into(budget_dir, '*--followers.csv', columns, acc, :followers)
+      end
+    end
+
+    # A meetings component nests one directory per meeting. Each meeting's CSV goes to `:meetings`
+    # (→ events) and its attachments to `:meeting_attachments` (→ event files, reusing the proposal-
+    # attachment path). Its comments/followers/registration/poll sidecars have no Go Vocal event
+    # equivalent, so they're left unread. All are stamped with the process + component uid.
+    def read_meetings(comp_dir, columns, acc)
+      Dir.glob(File.join(comp_dir, MEETING_DIR_GLOB)).select { |path| File.directory?(path) }.each do |meeting_dir|
+        meeting_file = Dir.glob(File.join(meeting_dir, MEETING_FILE_GLOB)).first
+        meeting_row = meeting_file && CsvReader.read(meeting_file).first
+        next unless meeting_row
+
+        acc[:meetings] << meeting_row.merge(columns)
+        read_into(meeting_dir, '*--attachments.csv', columns, acc, :meeting_attachments)
       end
     end
 

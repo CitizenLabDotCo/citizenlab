@@ -27,6 +27,17 @@ RSpec.describe DecidimImporter::TemplateBuilder do
     expect(described_class.new(ref_map).model_counts).to eq('user' => 2, 'project' => 1)
   end
 
+  it 'emits event after project and before files/file_attachment, so their refs resolve' do
+    ref_map.register('att-1', record('files/file_attachment', {}))
+    ref_map.register('meeting-1', record('event', { 'title_multiloc' => { 'en' => 'E' } }))
+    ref_map.register('proc-1', record('project', { 'title_multiloc' => { 'en' => 'X' } }))
+
+    keys = described_class.new(ref_map).models['models'].keys
+
+    expect(keys.index('event')).to be > keys.index('project')
+    expect(keys.index('event')).to be < keys.index('files/file_attachment')
+  end
+
   it 'shares the referenced attributes object so a YAML round-trip resolves into a ref' do
     project = record('project', { 'title_multiloc' => { 'en' => 'X' } })
     phase = record('phase', { 'title_multiloc' => { 'en' => 'P' } })

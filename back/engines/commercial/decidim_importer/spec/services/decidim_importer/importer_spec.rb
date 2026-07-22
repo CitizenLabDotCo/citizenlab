@@ -459,6 +459,50 @@ RSpec.describe DecidimImporter::Importer do
         expect(fontaine.votes_count).to eq(20_000)
       end
     end
+
+    context 'with processes that have meetings and blogs components' do
+      before { described_class.from_directory(export_root, import_images: false).import }
+
+      it 'imports a meeting as a project event with its window, address and map pin' do
+        event = Event.find_by(title_multiloc: { 'fr-FR' => 'Atelier de quartier' })
+
+        expect(event.project.title_multiloc['fr-FR']).to eq('Espaces verts')
+        expect(event.description_multiloc['fr-FR']).to eq('<p>Venez discuter des espaces verts</p>')
+        expect(event.location_multiloc['fr-FR']).to eq('Salle du Conseil')
+        expect(event.address_1).to eq('10 av Paul Doumer, 94110 Arcueil')
+        expect(event.start_at).to eq(Time.zone.parse('2024-04-25 18:30:00 +0200'))
+        expect(event.end_at).to eq(Time.zone.parse('2024-04-25 20:00:00 +0200'))
+        # The map pin is set from the meeting's lat/lng (GeoJSON is longitude-first).
+        expect(event.location_point.x).to be_within(0.00001).of(2.33714)  # longitude
+        expect(event.location_point.y).to be_within(0.00001).of(48.80633) # latitude
+      end
+
+      it 'imports a blog post as a project static page linked in the description’s Blog section' do
+        page = StaticPage.find_by("title_multiloc->>'fr-FR' = 'Végétalisation du toit de la mairie'")
+        expect(page.code).to eq('custom')
+        expect(page.top_info_section_multiloc['fr-FR']).to include('îlot de fraicheur')
+
+        project = Project.find_by("title_multiloc->>'fr-FR' = 'Budget participatif'")
+        layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_description')
+        page_links = layout.craftjs_json.values
+          .select { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'PageLink' }
+          .map { |n| n['props']['pageId'] }
+        expect(page_links).to include(page.id)
+        headings = layout.craftjs_json.values.filter_map { |n| n.dig('props', 'text', 'fr-FR') }
+        expect(headings).to include(a_string_including("<h2>#{I18n.t('decidim_importer.blog', locale: 'fr-FR')}</h2>"))
+      end
+
+      it 'imports a meeting attachment as an event file attachment, owned by the event’s project' do
+        template = described_class.from_directory(export_root).build_template.models['models']
+
+        file = template['files/file'].find { |f| f['name'] == 'flyer-atelier.pdf' }
+        expect(file).to be_present
+        event = template['event'].find { |e| e['title_multiloc']['fr-FR'] == 'Atelier de quartier' }
+        attachment = template['files/file_attachment'].find { |fa| fa['file_ref'].equal?(file) }
+        expect(attachment['attachable_ref']).to be(event)
+        expect(template['files/files_project'].find { |fp| fp['file_ref'].equal?(file) }).to be_present
+      end
+    end
   end
 
   describe '.apply_template_file' do

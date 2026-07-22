@@ -18,6 +18,7 @@ module DecidimImporter
       project
       project_image
       static_page
+      event
       input_topic
       files/file
       files/files_project

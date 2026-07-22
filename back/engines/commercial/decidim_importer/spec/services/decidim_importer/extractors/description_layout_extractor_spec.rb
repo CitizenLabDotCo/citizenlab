@@ -162,6 +162,40 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
     expect(nodes_named(craftjs, 'PageLink').map { |n| n['props']['pageId'] }).to eq(['page-uuid-1'])
   end
 
+  describe 'blog pages' do
+    it 'links blog pages in their own root-level Blog section, keeping regular pages in the right column' do
+      register_participation_phase
+      register_page('decidim-page-1', 'page-uuid-1')  # a regular `pages` component page
+      register_page('decidim-post-1', 'blog-uuid-1')  # a page imported from a blog post
+
+      craftjs = extract([row], blog_page_ids: ['blog-uuid-1']).first.attributes['craftjs_json']
+
+      # The regular page link stays in the main two-column right column; the blog page is not there.
+      two_col = nodes_named(craftjs, 'TwoColumn').first
+      right_page_ids = craftjs[two_col['linkedNodes']['right']]['nodes'].map { |id| craftjs[id] }
+        .select { |n| n['type']['resolvedName'] == 'PageLink' }.map { |n| n['props']['pageId'] }
+      expect(right_page_ids).to eq(['page-uuid-1'])
+
+      # The blog page is linked at root, under an <h2> "Blog" heading preceded by a WhiteSpace.
+      root = craftjs['ROOT']['nodes'].map { |id| craftjs[id] }
+      heading_index = root.index { |n| n.dig('props', 'text', 'fr-FR').to_s.start_with?('<h2>') }
+      expect(root[heading_index]['props']['text']['fr-FR'])
+        .to eq("<h2>#{I18n.t('decidim_importer.blog', locale: 'fr-FR')}</h2>")
+      expect(root[heading_index - 1]['type']['resolvedName']).to eq('WhiteSpace')
+
+      blog_link = nodes_named(craftjs, 'PageLink').find { |n| n['props']['pageId'] == 'blog-uuid-1' }
+      expect(blog_link['parent']).to eq('ROOT')
+    end
+
+    it 'adds no Blog section when the project has no blog pages' do
+      register_page('decidim-page-1', 'page-uuid-1')
+      craftjs = extract([row]).first.attributes['craftjs_json']
+
+      headings = nodes_named(craftjs, 'TextMultiloc').map { |n| n['props']['text']['fr-FR'].to_s }
+      expect(headings).to all(satisfy { |t| t.exclude?('<h2>') })
+    end
+  end
+
   context 'when include_source_url is on' do
     let(:source_row) { row('url' => 'https://decidim.example/processes/p1') }
 

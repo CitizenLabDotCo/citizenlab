@@ -9,8 +9,10 @@ module DecidimImporter
     # subtitle (an `H2`), short description and full description — each its own `TextMultiloc` — on the
     # left and, on the right, an optional
     # import-source link (only with `include_source_url`), the participation widget (`AboutBox`, only
-    # when the project has a participation phase), then a `PageLink` per project static page (the left
-    # content spans full width instead when that right column would be empty); then the project's
+    # when the project has a participation phase), then a `PageLink` per regular project static page (the
+    # left content spans full width instead when that right column would be empty); then — when the
+    # project has any pages imported from `blogs` posts — a separate "Blog" section (`WhiteSpace` + an
+    # H2 heading + a `PageLink` per blog page); then the project's
     # files. Files that
     # belong to a Decidim *attachment collection* are nested inside an `AccordionMultiloc` (titled with
     # the collection name, opening with a `TextMultiloc` of the collection description when it has one),
@@ -38,11 +40,15 @@ module DecidimImporter
       # @param attachments [Array<Hash>] the attachment rows, read to map each file to its collection.
       # @param attachment_collections [Array<Hash>] the collection rows (per project), each becoming an
       #   accordion grouping its files.
-      def initialize(*, include_source_url: false, attachments: [], attachment_collections: [], **)
+      # @param blog_page_ids [Array<String>] ids of the static pages that came from `blogs` posts; these
+      #   are linked in their own "Blog" section instead of beside the regular page links.
+      def initialize(*, include_source_url: false, attachments: [], attachment_collections: [],
+        blog_page_ids: [], **)
         super(*, **)
         @include_source_url = include_source_url
         @attachments = attachments
         @attachment_collections = attachment_collections
+        @blog_page_ids = blog_page_ids.to_set
       end
 
       def run
@@ -82,11 +88,34 @@ module DecidimImporter
         subtitle = subtitle_multiloc(row)
         source = source_multiloc(row, description)
 
+        blog_ids, regular_page_ids = static_page_ids_for(project).partition { |id| @blog_page_ids.include?(id) }
+
         blocks = []
         append_main_section(blocks, subtitle, short_description, description, source,
-          static_page_ids_for(project), participation_phase?(project))
+          regular_page_ids, participation_phase?(project))
+        append_blog_section(blocks, blog_ids, description)
         append_file_blocks(blocks, project, process_uid)
         blocks
+      end
+
+      # A "Blog" section for the pages that came from `blogs` posts: a blank `WhiteSpace`, an `<h2>`
+      # heading, then a `PageLink` per blog page. Kept separate from the main section's page links so
+      # imported blog posts read as their own strand of the project. Omitted when there are none.
+      def append_blog_section(blocks, page_ids, description)
+        return if page_ids.empty?
+
+        blocks << leaf('blog-space', 'WhiteSpace', { 'size' => 'medium' })
+        blocks << leaf('blog-heading', 'TextMultiloc', { 'text' => blog_heading(description) })
+        page_ids.each_with_index { |id, i| blocks << leaf("blog-page#{i}", 'PageLink', { 'pageId' => id }) }
+      end
+
+      # An H2 "Blog" heading, translated for the description's locales (falling back to the primary
+      # locale). The copy lives in the back-end locales (`decidim_importer.blog`), wrapped in `<h2>`.
+      def blog_heading(description)
+        locales = description.keys.presence || [primary_locale]
+        MultilocService.new
+          .i18n_to_multiloc('decidim_importer.blog', locales: locales, raise_on_missing: false)
+          .transform_values { |text| "<h2>#{text}</h2>" }
       end
 
       # The main section. Left column: the process subtitle (an `H2`), the short description and the full

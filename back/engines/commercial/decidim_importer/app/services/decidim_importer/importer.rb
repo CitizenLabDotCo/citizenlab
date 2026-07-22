@@ -461,6 +461,9 @@ module DecidimImporter
       run_surveys
       run_survey_responses
       run_static_pages
+      run_blog_posts
+      run_meetings
+      run_meeting_attachments
       run_files
       run_description_layouts
       absolutize_embedded_images!
@@ -609,6 +612,21 @@ module DecidimImporter
       @static_pages_extractor&.skipped || []
     end
 
+    # Blog posts that couldn't be imported as static pages (e.g. unpublished drafts, no owning project).
+    def skipped_blog_posts
+      @blog_posts_extractor&.skipped || []
+    end
+
+    # Meetings that couldn't be imported as events (no owning project / unpublished / withdrawn / no title).
+    def skipped_meetings
+      @meetings_extractor&.skipped || []
+    end
+
+    # Meeting attachments that couldn't be imported as event files (meeting not imported / no URL).
+    def skipped_meeting_attachments
+      @meeting_attachments_extractor&.skipped || []
+    end
+
     # Attachments that couldn't be imported as project files (e.g. no file URL, no owning project).
     def skipped_files
       @files_extractor&.skipped || []
@@ -704,6 +722,31 @@ module DecidimImporter
       (@proposal_attachments_extractor = build_extractor(Extractors::ProposalAttachmentsExtractor, :proposal_attachments)).run
     end
 
+    # Decidim meetings → project-level `Event`s (project resolved). Runs after the projects extractor.
+    def run_meetings
+      return unless @rows_by_model.key?(:meetings)
+
+      (@meetings_extractor = build_extractor(Extractors::MeetingsExtractor, :meetings)).run
+    end
+
+    # Decidim meeting attachments → `Files::File` attachments on the imported events (event + project
+    # resolved). Runs after the meetings extractor.
+    def run_meeting_attachments
+      return unless @rows_by_model.key?(:meeting_attachments)
+
+      (@meeting_attachments_extractor = build_extractor(Extractors::MeetingAttachmentsExtractor, :meeting_attachments)).run
+    end
+
+    # Decidim blog posts → project-level `StaticPage`s (project resolved). Runs before the description
+    # layouts so the pages (and their ids) exist; the ids are handed to the layout extractor, which
+    # links them in their own "Blog" section.
+    def run_blog_posts
+      return unless @rows_by_model.key?(:blog_posts)
+
+      @blog_posts_extractor = build_extractor(Extractors::BlogPostsExtractor, :blog_posts)
+      @blog_page_ids = @blog_posts_extractor.run.map { |page| page.attributes['id'] }
+    end
+
     # Decidim categories → project `InputTopic`s (after the projects extractor so the project resolves).
     def run_categories
       return unless @rows_by_model.key?(:categories)
@@ -735,14 +778,15 @@ module DecidimImporter
     end
 
     # Builds a Content Builder project-description layout per project from the Decidim description, the
-    # project's static pages and its files. Runs last so those records (and their ids) are registered.
+    # project's static pages (regular + blog) and its files. Runs last so those records (and their ids)
+    # are registered; the blog page ids route those pages into their own "Blog" section of the layout.
     def run_description_layouts
       return unless @rows_by_model.key?(:projects)
 
       Extractors::DescriptionLayoutExtractor.new(
         rows_for(:projects), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale,
         include_source_url: @include_source_url, attachments: rows_for(:attachments),
-        attachment_collections: rows_for(:attachment_collections)
+        attachment_collections: rows_for(:attachment_collections), blog_page_ids: @blog_page_ids || []
       ).run
     end
 
