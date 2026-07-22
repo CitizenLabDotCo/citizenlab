@@ -121,28 +121,28 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
 
-    # if_needed: idempotent auto-send used when the flow lands an authenticated
+    # only_if_first_time: idempotent auto-send used when the flow lands an authenticated
     # user on the confirmation step (re-confirmation after confirmed_email_expiry).
-    example 'with if_needed, sends when no code is outstanding' do
+    example 'with only_if_first_time, sends when no code is outstanding' do
       user = create(:user, email: 'test@test.com')
       user.email_confirmation.clear_code!
       header_token_for(user)
 
-      do_request(request_code: { email: user.email, if_needed: true })
+      do_request(request_code: { email: user.email, only_if_first_time: true })
       expect(response_status).to eq 200
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
 
-    example 'with if_needed, does not resend when a code is already outstanding' do
+    example 'with only_if_first_time, does not resend when a code is already outstanding' do
       user = create(:user, email: 'test@test.com')
       header_token_for(user)
       RequestEmailConfirmationCodeJob.perform_now(user) # one code sent in setup
       expect(user.email_confirmation.reload.code).to be_present
 
-      do_request(request_code: { email: user.email, if_needed: true })
+      do_request(request_code: { email: user.email, only_if_first_time: true })
       expect(response_status).to eq 200
-      # Only the setup send happened; the if_needed request was a no-op.
+      # Only the setup send happened; the only_if_first_time request was a no-op.
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
@@ -152,7 +152,7 @@ resource 'Request codes' do
       user.email_confirmation.clear_code!
       header_token_for(user)
 
-      do_request(request_code: { if_needed: true })
+      do_request(request_code: { only_if_first_time: true })
       expect(response_status).to eq 200
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
@@ -281,26 +281,26 @@ resource 'Request codes' do
       expect(response_status).to eq 401
     end
 
-    # if_needed: for re-confirmation the number is omitted and the endpoint falls
+    # only_if_first_time: for re-confirmation the number is omitted and the endpoint falls
     # back to the user's own phone, sending only when no code is outstanding.
-    example 'with if_needed and no new_phone, sends to the existing phone' do
+    example 'with only_if_first_time and no new_phone, sends to the existing phone' do
       user = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
       header_token_for(user)
 
-      do_request(request_code: { if_needed: true })
+      do_request(request_code: { only_if_first_time: true })
       expect(response_status).to eq 200
       expect(user.reload.new_phone).to eq '+14155552671'
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
     end
 
-    example 'with if_needed, does not resend when a code is already outstanding' do
+    example 'with only_if_first_time, does not resend when a code is already outstanding' do
       user = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
       header_token_for(user)
       RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: '+14155552671') # one code sent in setup
       expect(user.new_phone_confirmation.reload.code).to be_present
 
-      do_request(request_code: { if_needed: true })
+      do_request(request_code: { only_if_first_time: true })
       expect(response_status).to eq 200
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once

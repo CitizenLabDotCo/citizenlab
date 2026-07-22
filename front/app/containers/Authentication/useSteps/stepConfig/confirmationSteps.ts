@@ -74,7 +74,7 @@ export const confirmationSteps = (
         setCurrentStep('success');
       },
       RESEND_CODE: async (email: string) => {
-        await requestCodeEmail(email);
+        await requestCodeEmail({ email });
       },
     },
 
@@ -139,7 +139,7 @@ export const confirmationSteps = (
         setCurrentStep('success');
       },
       RESEND_CODE: async (phone: string) => {
-        await requestCodeNewPhone(phone);
+        await requestCodeNewPhone({ newPhone: phone });
       },
     },
   };

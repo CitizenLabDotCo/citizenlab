@@ -25,13 +25,13 @@ export const checkMissingData = (
   if (emailStep) {
     // Re-confirmation (confirmed_email_expiry elapsed) lands the user on the
     // confirmation step without a code having been auto-sent, so request one.
-    // The call is idempotent (if_needed) and authenticated (backend uses
+    // The call is idempotent (onlyIfFirstTime) and authenticated (backend uses
     // current_user), so no email is passed and reopening the flow won't
     // duplicate. Fire-and-forget: failures fall back to the resend button.
     if (
       requirements.authentication.email_action_required === 'reconfirm_email'
     ) {
-      void requestCodeEmail(undefined, { ifNeeded: true }).catch(() => {});
+      requestCodeEmail({ onlyIfFirstTime: true });
     }
     return emailStep;
   }
@@ -41,7 +41,7 @@ export const checkMissingData = (
     if (
       requirements.authentication.phone_action_required === 'reconfirm_phone'
     ) {
-      void requestCodeNewPhone(undefined, { ifNeeded: true }).catch(() => {});
+      requestCodeNewPhone({ onlyIfFirstTime: true });
     }
     return phoneStep;
   }

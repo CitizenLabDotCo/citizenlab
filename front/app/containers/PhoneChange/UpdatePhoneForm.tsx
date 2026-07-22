@@ -54,7 +54,7 @@ const UpdatePhoneForm = ({
   // and prevents a second click from firing a duplicate code request.
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      return requestCodeNewPhone(formValues.phone)
+      return requestCodeNewPhone({ newPhone: formValues.phone })
         .then(() => {
           setOpenConfirmationModal(true);
           setError(undefined);
