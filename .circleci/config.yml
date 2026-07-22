@@ -460,6 +460,7 @@ jobs:
           name: Run post-deployment tasks
           command: |
             ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
+            docker pull citizenlabdotco/back-ee:$CIRCLE_BRANCH && \
             docker run \
               --env-file cl2-deployment/<< parameters.env_file >> \
               citizenlabdotco/back-ee:$CIRCLE_BRANCH \
