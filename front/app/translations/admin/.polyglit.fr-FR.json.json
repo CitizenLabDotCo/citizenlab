@@ -21269,6 +21269,11 @@
     "verified_at": "2026-07-08T07:34:36.030187Z",
     "verified_by": "Cindy EB"
   },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-22T11:55:53.779169Z",
+    "verified_by": "Adrien"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": {
     "state": "verified",
     "verified_at": "2026-07-08T07:34:36.030187Z",
