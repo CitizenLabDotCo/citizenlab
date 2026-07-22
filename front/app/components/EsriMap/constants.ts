@@ -6,3 +6,7 @@ export const BASEMAP_AT_ATTRIBUTION =
 
 export const DEFAULT_TILE_PROVIDER =
   'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=R0U21P01bsRLx7I7ZRqp';
+
+// The id of the Expand widget wrapping the map legend, shared so popups can
+// find (and collapse) an open legend when they dock into the same corner.
+export const MAP_LEGEND_EXPAND_ID = 'mapLegendExpand';
