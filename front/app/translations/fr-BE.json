@@ -616,7 +616,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysStyleLabel": "Style du bouton",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysStylePrimary": "Primaire",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysStyleSecondary": "Secondaire",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysSurveyLabel": "Sondage",
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysSurveyLabel": "Enquête",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle": "Sondages supplémentaires",
   "app.components.ProjectPageBuilder.Widgets.inputFeedEmptyTitle": "Il n'y a pas encore de possibilité de participer",
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Ceci affiche le contenu de participation pour la phase active. Son contenu est défini par la méthode de la phase dans l'{projectEditorLink} — ici, vous choisissez seulement son emplacement sur la page.",
