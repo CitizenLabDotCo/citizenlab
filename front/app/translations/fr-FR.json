@@ -2084,7 +2084,7 @@
   "app.containers.PasswordReset.title": "Réinitialisez votre mot de passe",
   "app.containers.PasswordReset.updatePassword": "Confirmer le nouveau mot de passe",
   "app.containers.PhoneChange.backToProfile": "Retour aux réglages",
-  "app.containers.PhoneChange.confirmationModalTitle": "Code de confirmation",
+  "app.containers.PhoneChange.confirmationModalTitle": "Confirmez votre numéro de téléphone",
   "app.containers.PhoneChange.currentPhone": "Votre numéro de téléphone actuel est :",
   "app.containers.PhoneChange.helmetDescription": "Page de modification du numéro de téléphone",
   "app.containers.PhoneChange.helmetTitle": "Modifier votre numéro de téléphone",

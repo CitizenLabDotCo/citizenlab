@@ -2349,6 +2349,16 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.ProjectEdit.survey.exportResponsesToPdf": {
+    "state": "verified",
+    "verified_at": "2026-07-22T14:43:48.751282Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.admin.ProjectEdit.survey.exportResponsesToXlsx": {
+    "state": "verified",
+    "verified_at": "2026-07-22T14:43:48.751282Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.ReportExportMenu.FileName.fromFilter": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -8118,6 +8128,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.inputResponseExport.cancelButton": {
+    "state": "verified",
+    "verified_at": "2026-07-22T14:43:48.751282Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.insights": {
     "state": "verified",
