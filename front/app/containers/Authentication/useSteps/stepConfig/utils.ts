@@ -92,10 +92,10 @@ const phoneActionStep = (
   requirements: AuthenticationRequirements['requirements']
 ): Step | null => {
   switch (requirements.authentication.phone_action_required) {
-    case 'provide_phone':
-    case 'provide_new_phone':
     // TODO: confirmed_phone_number_expiry is not implemented yet, so there is no
     // in-place phone re-confirmation flow. Fall back to re-collecting the number.
+    case 'provide_phone':
+    case 'provide_new_phone':
     case 'confirm_phone':
       return 'missing-data:phone';
     case 'confirm_new_phone':
