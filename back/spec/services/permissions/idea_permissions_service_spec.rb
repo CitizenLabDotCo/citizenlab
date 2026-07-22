@@ -45,6 +45,14 @@ describe Permissions::IdeaPermissionsService do
       it "returns 'project_inactive'" do
         expect(reason).to eq 'project_inactive'
       end
+
+      context 'for a moderator' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it "returns 'project_inactive', because moderators cannot participate in projects that ended" do
+          expect(reason).to eq 'project_inactive'
+        end
+      end
     end
 
     context 'when the project is archived' do
@@ -52,6 +60,15 @@ describe Permissions::IdeaPermissionsService do
 
       it "returns 'project_inactive'" do
         expect(reason).to eq 'project_inactive'
+      end
+
+      context 'for a moderator with an input outside the current phase' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+        let(:input) { create(:idea, project: project, phases: [project.phases[1]]) }
+
+        it "returns 'project_inactive', because moderators cannot participate in archived projects" do
+          expect(reason).to eq 'project_inactive'
+        end
       end
     end
 

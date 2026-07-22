@@ -27,9 +27,12 @@ module Permissions
       end
 
       if !phase
-        return if moderator?
+        reason = no_active_phase_reason
+        # Moderators can act on inputs outside the current phase, but the
+        # project state still binds them.
+        return if moderator? && reason == IDEA_DENIED_REASONS[:idea_not_in_current_phase]
 
-        return no_active_phase_reason
+        return reason
       end
 
       super
