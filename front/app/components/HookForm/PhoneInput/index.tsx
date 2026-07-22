@@ -1,19 +1,26 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import IntlTelInput from '@intl-tel-input/react';
+import { Iso2 } from 'intl-tel-input';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
-import PhoneInputComponent, { Country, Value } from 'react-phone-number-input';
 import styled from 'styled-components';
 import { CLError, RHFErrors } from 'typings';
 
 import Error, { TFieldName } from 'components/UI/Error';
-
-import 'react-phone-number-input/style.css';
+import 'intl-tel-input/styles';
 
 const StyledPhoneInput = styled(Box)`
-  .PhoneInputInput {
-    padding: 10px;
+  .iti {
+    width: 100%;
+  }
+
+  /* The horizontal padding is set inline by intl-tel-input to make room for the
+     country selector, so only the vertical padding is ours to set. */
+  .iti__tel-input {
+    padding-top: 10px;
+    padding-bottom: 10px;
     border: 1px solid ${colors.borderDark};
     border-radius: 3px;
     font-size: 16px;
@@ -22,10 +29,6 @@ const StyledPhoneInput = styled(Box)`
       border-color: ${colors.black};
       outline: none;
     }
-  }
-
-  .PhoneInputCountry {
-    margin-right: 8px;
   }
 `;
 
@@ -39,6 +42,10 @@ export interface Props {
   scrollErrorIntoView?: boolean;
   onBlur?: () => void;
 }
+
+// We pass country codes around uppercase (that's how the app configuration stores
+// them), but intl-tel-input only recognises them lowercase.
+const toIso2 = (countryCode: string) => countryCode.toLowerCase() as Iso2;
 
 const PhoneInput = ({
   name,
@@ -69,23 +76,25 @@ const PhoneInput = ({
         name={name}
         control={control}
         render={({ field }) => (
-          <PhoneInputComponent
-            id={name}
-            // Show the country calling code (e.g. "+32") as a fixed prefix so the
-            // user knows to enter only their local number. The prefix is tied to
-            // the selected country, so typed digits stay in that country.
-            international
-            withCountryCallingCode
-            value={(field.value as Value) || undefined}
-            onChange={(value) => field.onChange(value ?? '')}
-            onBlur={() => {
-              field.onBlur();
-              onBlur?.();
+          <IntlTelInput
+            separateDialCode
+            // The utils library is heavy, so we code-split it out of the main bundle.
+            // The validator imports the same 'intl-tel-input/utils' module,
+            // so it ends up bundled only once.
+            loadUtils={() => import('intl-tel-input/utils')}
+            onlyCountries={countries?.map(toIso2)}
+            initialCountry={defaultCountry && toIso2(defaultCountry)}
+            value={field.value}
+            onChangeNumber={(number) => field.onChange(number)}
+            inputProps={{
+              id: name,
+              placeholder,
+              'aria-describedby': ariaDescribedBy,
+              onBlur: () => {
+                field.onBlur();
+                onBlur?.();
+              },
             }}
-            countries={countries as Country[] | undefined}
-            defaultCountry={defaultCountry as Country | undefined}
-            placeholder={placeholder}
-            aria-describedby={ariaDescribedBy}
           />
         )}
       />

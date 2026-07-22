@@ -1,16 +1,11 @@
 import React from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import userEvent from '@testing-library/user-event';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  within,
-} from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
 import PhoneInput from './';
 
@@ -47,6 +42,14 @@ const Form = ({
   );
 };
 
+// The country dropdown is a button + listbox, and only renders its options once
+// opened. Its label reads "Select"/"Change country..." depending on whether a
+// country is already selected.
+const openCountryDropdown = () =>
+  fireEvent.click(
+    screen.getByRole('button', { name: /country for phone number/i })
+  );
+
 describe('PhoneInput (HookForm)', () => {
   beforeEach(() => onSubmit.mockClear());
 
@@ -57,34 +60,42 @@ describe('PhoneInput (HookForm)', () => {
 
   it('limits the country dropdown to the allowed countries', () => {
     render(<Form countries={['BE', 'FR']} />);
+    openCountryDropdown();
 
-    const countrySelect = screen.getByRole('combobox');
-    const values = within(countrySelect)
+    const countries = screen
       .getAllByRole('option')
-      .map((option) => (option as HTMLOptionElement).value);
+      .map((option) => option.getAttribute('data-iso2'));
 
-    expect(values).toEqual(expect.arrayContaining(['BE', 'FR']));
-    expect(values).not.toContain('US');
+    // The allow-list is uppercase, but intl-tel-input only recognises lowercase
+    // codes, so this also covers the conversion.
+    expect(countries).toEqual(expect.arrayContaining(['be', 'fr']));
+    expect(countries).not.toContain('us');
   });
 
   it('shows the country calling code as a prefix for the selected country', () => {
-    render(<Form countries={['BE']} defaultCountry="BE" />);
-
-    // With a default country the input is pre-filled with its calling code,
-    // signalling that the user only needs to type their local number.
-    expect((screen.getByRole('textbox') as HTMLInputElement).value).toContain(
-      '+32'
+    const { container } = render(
+      <Form countries={['BE']} defaultCountry="BE" />
     );
+
+    // The calling code sits next to the flag rather than inside the input, so the
+    // user only has to type their local number.
+    expect(
+      container.querySelector('.iti__selected-dial-code')
+    ).toHaveTextContent('+32');
   });
 
   it('submits the composed E.164 number', async () => {
     render(<Form countries={['BE']} defaultCountry="BE" />);
 
-    // The calling-code prefix stays fixed; the user types their local number
-    // after it, producing the full international value.
-    fireEvent.change(screen.getByRole('textbox'), {
-      target: { value: '+32 470 12 34 56' },
-    });
+    // Only the local number is typed; the calling code of the selected country is
+    // prepended to produce the full international value.
+    const input = screen.getByPlaceholderText('phone');
+    await userEvent.type(input, '470123456');
+
+    // The number is only composed once the phone number metadata has loaded
+    // asynchronously, which the as-you-type formatting tells us has happened.
+    await waitFor(() => expect(input).toHaveValue('470 12 34 56'));
+
     fireEvent.click(screen.getByText('Submit'));
 
     await waitFor(() =>
