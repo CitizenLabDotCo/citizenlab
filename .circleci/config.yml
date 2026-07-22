@@ -378,10 +378,8 @@ jobs:
         default: .env-production
     steps:
       - run:
-          # Only tasks the new code can't serve without. Settings cleanup qualifies:
-          # AppConfiguration validates against the JSON schema on every save, and nothing
-          # else converges existing tenants onto a changed schema. The rest is idempotent
-          # reconciliation and runs after cutover in back-run-post-deploy-tasks.
+          # Only tasks that must be run before the new code can serve.
+          # Anything else runs after cutover in back-run-post-deploy-tasks.
           name: Pull Docker image and run pre-deployment tasks
           command: |
             ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
@@ -460,8 +458,6 @@ jobs:
         default: .env-web
     steps:
       - run:
-          # clear_cache_store last: pre-cutover the old containers just repopulated it, and
-          # going after the writes above avoids immediately re-staling what it clears.
           name: Run post-deployment tasks
           command: |
             ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no \<<EOF
@@ -469,10 +465,10 @@ jobs:
               --env-file cl2-deployment/<< parameters.env_file >> \
               citizenlabdotco/back-ee:$CIRCLE_BRANCH \
               bin/rake \
+              cl2back:clear_cache_store \
               fix_existing_tenants:update_permissions \
               email_campaigns:assure_campaign_records \
-              email_campaigns:remove_deprecated \
-              cl2back:clear_cache_store
+              email_campaigns:remove_deprecated
             EOF
           no_output_timeout: 30m
 
