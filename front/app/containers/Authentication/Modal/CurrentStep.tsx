@@ -4,6 +4,7 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 
 import AccessDenied from '../steps/AccessDenied';
 import BuiltInFields from '../steps/BuiltInFields';
+import ChangeEmail from '../steps/ChangeEmail';
 import EmailConfirmation from '../steps/EmailConfirmation';
 import EmailFlowStart from '../steps/EmailFlowStart';
 import Invitation from '../steps/Invitation';
@@ -170,6 +171,15 @@ const CurrentStep = ({
         <BuiltInFields
           loading={loading}
           authenticationData={authenticationData}
+          setError={setError}
+          onSubmit={transition(currentStep, 'SUBMIT')}
+        />
+      );
+
+    case 'missing-data:change-email':
+      return (
+        <ChangeEmail
+          loading={loading}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
         />

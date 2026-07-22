@@ -51,7 +51,7 @@ export const missingDataFlow = (
     'missing-data:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        setCurrentStep('missing-data:built-in');
+        setCurrentStep('missing-data:change-email');
       },
       SUBMIT_CODE: async (_: string, code: string) => {
         await confirmEmailConfirmationCodeChangeEmail(code);
@@ -80,6 +80,19 @@ export const missingDataFlow = (
       },
       RESEND_CODE: async () => {
         await requestEmailConfirmationCodeChangeEmail();
+      },
+    },
+
+    // The user has a pending new_email (email_action_required is confirm_new_email)
+    // but wants to enter a different one. Requirements can't express "re-provide",
+    // so this is a dedicated step with its own email-only form (ChangeEmail).
+    'missing-data:change-email': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: async (email: string) => {
+        await requestEmailConfirmationCodeChangeEmail(email);
+        updateState({ email });
+        invalidateCacheAfterUpdateUser(queryClient);
+        setCurrentStep('missing-data:email-confirmation');
       },
     },
 

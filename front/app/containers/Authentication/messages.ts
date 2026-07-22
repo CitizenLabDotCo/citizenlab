@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.confirmYourEmail',
     defaultMessage: 'Confirm your email',
   },
+  changeYourEmail: {
+    id: 'app.containers.NewAuthModal.changeYourEmail',
+    defaultMessage: 'Change your email',
+  },
   signUp: {
     id: 'app.containers.SignUp.signUp2',
     defaultMessage: 'Sign up',
@@ -122,5 +126,5 @@ export default defineMessages({
   confirmYourPhoneNumber: {
     id: 'app.containers.Authentication.confirmYourPhoneNumber',
     defaultMessage: 'Confirm your phone number',
-  }
+  },
 });
