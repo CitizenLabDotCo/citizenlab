@@ -1719,7 +1719,7 @@
   "app.containers.Admin.projects.project.insights.word.voters": "Votants",
   "app.containers.Admin.projects.project.insights.word.votes": "Votes",
   "app.containers.Admin.projects.project.newPhase": "Nouvelle phase",
-  "app.containers.Admin.projects.project.newSurvey": "Nouveau sondage",
+  "app.containers.Admin.projects.project.newSurvey": "Nouvelle enquête",
   "app.containers.Admin.projects.project.notOnProjectPage": "Pas sur la page du projet",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Ajouter à la phase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Le formulaire peut être téléchargé ici.",
