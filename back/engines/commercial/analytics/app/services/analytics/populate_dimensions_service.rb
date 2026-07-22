@@ -41,9 +41,10 @@ module Analytics
         tenant_creation = AppConfiguration.instance.created_at
         first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)[0]
         first_activity_date = [tenant_creation, first_idea].compact.min.to_date
-
-        date_range = Analytics::DimensionDate.pick(Arel.sql('MIN(date), MAX(date)'))
-        first_dimension_date, last_dimension_date = date_range if date_range
+        first_dimension_date, last_dimension_date = Analytics::DimensionDate.pick(
+          Arel.sql('MIN(date)'),
+          Arel.sql('MAX(date)')
+        )
 
         if first_dimension_date.nil?
           from = first_activity_date
