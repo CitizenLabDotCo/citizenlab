@@ -608,7 +608,7 @@
   "app.components.ProjectPageBuilder.Widgets.extraSurveysFormatLabel": "Format du bouton du sondage",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysManagedNote": "Seuls les sondages sous Extras peuvent être liés. Ajoutez-les dans le {projectEditorLink}.",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyNote": "Choisissez un sondage dans le panneau de configuration pour l'afficher sur la page.",
-  "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle": "Aucun sondage n'est encore lié",
+  "app.components.ProjectPageBuilder.Widgets.extraSurveysNoSurveyTitle": "Aucune enquête liée",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysNotEligible": "Vous n'êtes pas éligible pour répondre à ce sondage",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysOpensOn": "Ouvre le {date}",
   "app.components.ProjectPageBuilder.Widgets.extraSurveysResponseReceived": "Merci — votre réponse a bien été reçue",
