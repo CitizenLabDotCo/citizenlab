@@ -12949,6 +12949,11 @@
     "verified_at": "2026-07-22T11:55:53.957306Z",
     "verified_by": "Adrien"
   },
+  "app.errors.new_phone_taken": {
+    "state": "verified",
+    "verified_at": "2026-07-22T12:05:08.757260Z",
+    "verified_by": "Adrien"
+  },
   "app.errors.no_invites_specified": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
