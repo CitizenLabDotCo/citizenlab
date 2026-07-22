@@ -147,6 +147,10 @@ post-import finishing in the same tenant switch (steps 4–6 need the applied te
       template carries (counter-cache `update_all`s bypass `no_touching`).
    9. `reconcile_permissions!` — backfills the `Permission` records the deserializer bypassed (e.g. a
       native-survey phase's `posting_permission`), which the admin endpoints require.
+   10. `provision_project_pages!` — backfills each project's `project_page` Content Builder layout
+      (generated from its imported `project_description` layout). The project page renders from
+      `project_page`; the SideFx that normally creates it is bypassed by the deserializer, so without
+      this the page 404s.
 4. **Correct embedded links** (`DecidimImporter::LinkCorrection`) — when a `<base>.url_mapping.csv`
    was dumped, walks every `ContentBuilder::Layout` and `StaticPage`, rewriting mapped Decidim links
    (file links resolve to the imported file's real content URL). Unresolved links that *should* have

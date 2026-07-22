@@ -56,6 +56,7 @@ module DecidimImporter
       recompute_voting_counts!(created)
       restore_update_timestamps(template, created)
       reconcile_permissions!
+      provision_project_pages!
       created
     end
 
@@ -102,6 +103,16 @@ module DecidimImporter
     # all permissions (idempotent) backfills the missing ones.
     def self.reconcile_permissions!
       Permissions::PermissionsUpdateService.new.update_all_permissions
+    end
+
+    # The project page now renders from a `project_page` Content Builder layout, generated from the
+    # project's `project_description` layout. That generation normally runs in the SideFx fired on
+    # project/description creation — which the deserializer bypasses — so imported projects have their
+    # `project_description` layout but no `project_page`, and the page 404s. This backfills it via the
+    # platform service, which leaves the imported (enabled) description layout untouched and only adds
+    # the missing `project_page`. Idempotent: a project that already has one is skipped.
+    def self.provision_project_pages!
+      Project.find_each { |project| ContentBuilder::DescriptionLayoutService.new.provision_for(project) }
     end
 
     # Recomputes each imported voting phase's basket/vote counters (and those of its project and ideas).
@@ -554,6 +565,7 @@ module DecidimImporter
       self.class.restore_update_timestamps(template, created_object_ids)
       RoleAssigner.new(ref_map).assign(created_object_ids, role_assignments)
       self.class.reconcile_permissions!
+      self.class.provision_project_pages!
       created_object_ids
     end
 

@@ -155,6 +155,23 @@ RSpec.describe DecidimImporter::Importer do
       expect(Area.find_by("title_multiloc->>'en' = 'Schambergerton'")).to be_present
     end
 
+    it 'provisions a project_page layout wrapping the imported description, so the project page renders' do
+      described_class.from_directory(export_root, import_images: false).import
+      project = Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'")
+
+      # The page now renders from a `project_page` layout (generated from the `project_description`
+      # layout the importer built); without it the project page endpoint 404s.
+      page = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
+      expect(page).to be_present
+      expect(page.enabled).to be(true)
+      expect(page.craftjs_json.dig('ROOT', 'type', 'resolvedName')).to eq('ProjectPageRoot')
+
+      # The imported description was injected into the page's description section.
+      section = page.craftjs_json.values
+        .find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'ProjectDescriptionSection' }
+      expect(section['nodes']).not_to be_empty
+    end
+
     it 'imports an accountability component as an ideation phase, with its results as ideas carrying a progress line' do
       described_class.from_directory(export_root, import_images: false).import
       project = Project.find_by("title_multiloc->>'fr-FR' = 'Rue de demain'")
