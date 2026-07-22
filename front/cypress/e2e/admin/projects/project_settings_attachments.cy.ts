@@ -32,7 +32,7 @@ describe('Project attachments settings', () => {
       // This 4s wait is necesssary. I tried waiting in a number of other ways,
       // but this was the only consistent solution.
       cy.wait(4000);
-      cy.scrollTo('bottom');
+      cy.scrollTo('bottom', { ensureScrollable: false });
 
       // Open the file upload modal
       cy.get('#e2e-open-file-upload-modal-button').click();
@@ -61,7 +61,7 @@ describe('Project attachments settings', () => {
       // Reload page to ensure files are persisted
       cy.reload();
       cy.wait(4000);
-      cy.scrollTo('bottom');
+      cy.scrollTo('bottom', { ensureScrollable: false });
 
       // Verify both files still exist after reload
       cy.dataCy('e2e-file-uploader-container')
@@ -108,7 +108,7 @@ describe('Project attachments settings', () => {
 
       cy.reload();
       cy.wait(4000);
-      cy.scrollTo('bottom');
+      cy.scrollTo('bottom', { ensureScrollable: false });
 
       cy.dataCy('e2e-file-uploader-container')
         .find('.files-list')
