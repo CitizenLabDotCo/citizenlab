@@ -42,10 +42,10 @@ module EmailCampaigns
 
       private
 
-      # Phonelib::Phone — libphonenumber's reading of the string (country, line type, formats).
-      # `valid?` has to gate `e164`: with no default_country configured, a number lacking an
-      # international prefix resolves to no country yet still yields a malformed "+0470123456".
       def parse_phone_number(to)
+        # Phonelib::Phone — libphonenumber's reading of the string (country, line type, formats).
+        # `valid?` has to gate `e164`: with no default_country configured, a number lacking an
+        # international prefix resolves to no country yet still yields a malformed "+0470123456".
         parsed = Phonelib.parse(to)
         raise Error, "Invalid phone number: #{to}" unless parsed.valid?
 
