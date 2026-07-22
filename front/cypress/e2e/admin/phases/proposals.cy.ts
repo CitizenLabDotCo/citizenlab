@@ -28,8 +28,6 @@ describe('Admin: proposal phase', () => {
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();
 
-    // The legacy timeline tab that hosted the inline phase form was removed
-    // with the new project back office, so go straight to the phase setup route.
     cy.wait('@createProject').then((interception) => {
       const projectId = interception.response?.body.data.id;
       cy.visit(`/admin/projects/${projectId}/phases/new`);
