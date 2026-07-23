@@ -6314,6 +6314,11 @@
     "verified_at": "2026-07-14T17:01:41.878637Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError": {
+    "state": "verified",
+    "verified_at": "2026-07-23T19:51:50.767635Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.messaging.fieldSmsLabel": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:41.878637Z",
@@ -6402,6 +6407,26 @@
   "app.containers.Admin.messaging.smsRecipientsTitle": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:41.878637Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsSegmentCost": {
+    "state": "verified",
+    "verified_at": "2026-07-23T19:51:50.767635Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsSegmentCostOverLimit": {
+    "state": "verified",
+    "verified_at": "2026-07-23T19:51:50.767635Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsSegmentEncodingWarning": {
+    "state": "verified",
+    "verified_at": "2026-07-23T19:51:50.767635Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.messaging.smsSegmentPill": {
+    "state": "verified",
+    "verified_at": "2026-07-23T19:51:50.767635Z",
     "verified_by": "Luuc"
   },
   "app.containers.Admin.messaging.smsStatsTitle": {
