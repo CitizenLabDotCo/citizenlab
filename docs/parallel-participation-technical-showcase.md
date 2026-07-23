@@ -10,30 +10,7 @@ The rebuild that lets a project run **multiple phases at once** · foundations, 
 
 ---
 
-## 1 · The problem
-
-A project's phases ran **strictly one at a time** — a sequential timeline where only one phase could be open. You couldn't keep an ideation phase running while a survey collected input alongside it; every participation opportunity had to wait its turn.
-
-```mermaid
-graph LR
-  subgraph Before["Before — one active phase at a time"]
-    P1[Phase 1] --> P2[Phase 2] --> P3[Phase 3]
-  end
-  subgraph After["After — phases running in parallel"]
-    A[Phase A]
-    B[Phase B]
-    C[Phase C]
-  end
-  style A fill:#238636,color:#fff
-  style B fill:#238636,color:#fff
-  style C fill:#238636,color:#fff
-```
-
-> Parallel participation = **a project running several phases at once**, not a single-file timeline. Getting there was **90% a page-architecture problem**, 10% new features.
-
----
-
-## 2 · The insight — make the page composable
+## 1 · The insight — make the page composable
 
 Turn the project page into **content-builder content**: one table, `content_builder_layouts`, backs it. Additive — a new `code`, **no schema change**.
 
@@ -52,7 +29,7 @@ The page was hard-coded to the single active phase. Making it composable is what
 
 ---
 
-## 3 · ⭐ One document, two editing surfaces, zero drift
+## 2 · ⭐ One document, two editing surfaces, zero drift
 
 The description and the full page are **the same stored craftjs document** (`project_page`). The description editor is just a **window** into a subtree of it.
 
@@ -73,7 +50,7 @@ The three pieces that make it work:
 
 ---
 
-## 4 · Shipped safely — lossless, reversible migrations
+## 3 · Shipped safely — lossless, reversible migrations
 
 Every existing project moved onto the builder **without losing anything and without a big-bang** — dry-runnable, idempotent rake tasks, old data retained.
 
@@ -93,7 +70,7 @@ flowchart LR
 
 ---
 
-## 5 · Where we are — and what's in flight
+## 4 · Where we are — and what's in flight
 
 **✅ Live for all clients** — the redesigned back office + public page are the default ([#14339](https://github.com/CitizenLabDotCo/citizenlab/pull/14339)).
 
