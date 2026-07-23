@@ -1,13 +1,21 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  howRecentlyVerified: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.howRecentlyVerified',
-    defaultMessage: 'How recently should users be verified?',
+  requireRecentVerification: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.requireRecentVerification',
+    defaultMessage: '+ Require recent verification',
   },
-  howRecentlyConfirmed: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.howRecentlyConfirmed',
-    defaultMessage: 'How recently should users be confirmed?',
+  requireRecentConfirmation: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.requireRecentConfirmation',
+    defaultMessage: '+ Require recent confirmation',
+  },
+  reverifyLabel: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.reverifyLabel',
+    defaultMessage: 'Re-verify:',
+  },
+  reconfirmLabel: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.reconfirmLabel',
+    defaultMessage: 'Re-confirm:',
   },
   inTheLast30Minutes: {
     id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.inTheLast30Minutes',
@@ -17,8 +25,8 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.inTheLastNDays',
     defaultMessage: 'In the last {days, plural, one {# day} other {# days}}',
   },
-  onceIsEnough: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.onceIsEnough',
-    defaultMessage: 'Once is enough',
+  remove: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.remove',
+    defaultMessage: 'remove',
   },
 });

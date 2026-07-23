@@ -3,20 +3,23 @@
 //   0    -> re-verify every 30 minutes (backend MIN_VERIFICATION_EXPIRY)
 //   N    -> re-verify if older than N days
 //   null -> confirm once, ever
+//
+// Collapsed by default (a text link); clicking it reveals a compact dropdown.
 import React from 'react';
 
 import { Box, Text, Select } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { linkStyle } from '../shared';
+
 import messages from './messages';
 
-// Fixed day options offered in the dropdown (besides "30 minutes" and "once").
-const PRESET_DAYS = [7, 30];
+// Default recency to require when an admin first switches it on, in days.
+const DEFAULT_EXPIRY_DAYS = 30;
 
-// Sentinel used for the `null` ("once is enough") option, since a Select value
-// must be a string.
-const ONCE = 'once';
+// Fixed day options offered in the dropdown (besides "30 minutes").
+const PRESET_DAYS = [7, 30];
 
 interface Props {
   expiry: number | null; // days; `0` = every 30 min, `null` = confirm once, ever
@@ -24,14 +27,30 @@ interface Props {
   onChange: (expiry: number | null) => void;
 }
 
-const expiryToValue = (expiry: number | null): string =>
-  expiry === null ? ONCE : String(expiry);
-
-const valueToExpiry = (value: string): number | null =>
-  value === ONCE ? null : Number(value);
-
 const RecencyControl = ({ expiry, verb, onChange }: Props) => {
   const { formatMessage } = useIntl();
+  const isVerify = verb === 'Re-verify';
+
+  // Collapsed: no recency required yet — offer a compact opt-in link.
+  if (expiry === null) {
+    return (
+      <Text
+        as="span"
+        m="0"
+        fontSize="xs"
+        style={linkStyle}
+        role="button"
+        tabIndex={0}
+        onClick={() => onChange(DEFAULT_EXPIRY_DAYS)}
+      >
+        {formatMessage(
+          isVerify
+            ? messages.requireRecentVerification
+            : messages.requireRecentConfirmation
+        )}
+      </Text>
+    );
+  }
 
   const options = [
     { value: '0', label: formatMessage(messages.inTheLast30Minutes) },
@@ -39,35 +58,43 @@ const RecencyControl = ({ expiry, verb, onChange }: Props) => {
       value: String(days),
       label: formatMessage(messages.inTheLastNDays, { days }),
     })),
-    { value: ONCE, label: formatMessage(messages.onceIsEnough) },
   ];
 
   // Preserve a pre-existing custom day value (from the previous free-number
   // input) so opening the form doesn't silently reset it to a preset.
-  if (expiry !== null && expiry !== 0 && !PRESET_DAYS.includes(expiry)) {
-    options.splice(options.length - 1, 0, {
+  if (expiry !== 0 && !PRESET_DAYS.includes(expiry)) {
+    options.push({
       value: String(expiry),
       label: formatMessage(messages.inTheLastNDays, { days: expiry }),
     });
   }
 
   return (
-    <Box display="flex" alignItems="center" gap="8px" flexWrap="wrap">
+    <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap">
       <Text as="span" m="0" fontSize="xs" color="coolGrey700">
         {formatMessage(
-          verb === 'Re-verify'
-            ? messages.howRecentlyVerified
-            : messages.howRecentlyConfirmed
+          isVerify ? messages.reverifyLabel : messages.reconfirmLabel
         )}
       </Text>
-      <Box width="200px">
+      <Box width="170px">
         <Select
           size="small"
-          value={expiryToValue(expiry)}
+          value={String(expiry)}
           options={options}
-          onChange={(option) => onChange(valueToExpiry(option.value))}
+          onChange={(option) => onChange(Number(option.value))}
         />
       </Box>
+      <Text
+        as="span"
+        m="0"
+        fontSize="xs"
+        style={linkStyle}
+        role="button"
+        tabIndex={0}
+        onClick={() => onChange(null)}
+      >
+        {formatMessage(messages.remove)}
+      </Text>
     </Box>
   );
 };
