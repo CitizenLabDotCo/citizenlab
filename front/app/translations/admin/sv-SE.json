@@ -1782,7 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Användare efter kön",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Få en översikt över de deltagare i detta projekt som har ett konto. Anonymt deltagande räknas inte.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Inget slutdatum",
-  "app.containers.Admin.projects.project.projectPageNav": "Projektsida",
+  "app.containers.Admin.projects.project.projectHomepage": "Projektets startsida",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Förhandsgranskning av projektsida",
   "app.containers.Admin.projects.project.settingsNav": "Inställningar",
   "app.containers.Admin.projects.project.survey.allFiles": "Alla filer",

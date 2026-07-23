@@ -2118,7 +2118,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Voir plus",
   "app.containers.ProjectFolderShowPage.seeLess": "Voir moins",
   "app.containers.ProjectFolderShowPage.share": "Partager",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Page du projet",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Page d'accueil du projet",
   "app.containers.ProjectPageBuilder.saveError": "Une erreur est survenue lors de l'enregistrement de la page du projet.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Les sections de la page sont verrouillées pour le moment. Les widgets peuvent être placés dans la section Description.",
   "app.containers.Projects.PollForm.document": "Document",

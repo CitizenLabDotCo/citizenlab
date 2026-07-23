@@ -1782,7 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Brugere efter køn",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Få et overblik over de deltagere i dette projekt, der har en konto. Der tages ikke højde for anonym deltagelse.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Ingen slutdato",
-  "app.containers.Admin.projects.project.projectPageNav": "Projektside",
+  "app.containers.Admin.projects.project.projectHomepage": "Projektforside",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Forhåndsvisning af projektside",
   "app.containers.Admin.projects.project.settingsNav": "Indstillinger",
   "app.containers.Admin.projects.project.survey.allFiles": "Alle filer",

@@ -9454,6 +9454,11 @@
     "verified_at": "2026-07-16T09:55:32.784744Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-22T16:16:57.299161Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.projectPageNav": {
     "state": "verified",
     "verified_at": "2026-07-16T09:55:32.784744Z",

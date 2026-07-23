@@ -1782,7 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Χρήστες ανά φύλο",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Δείτε μια επισκόπηση των συμμετεχόντων σε αυτό το έργο που διαθέτουν λογαριασμό. Η ανώνυμη συμμετοχή δεν προσμετράται.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Χωρίς ημερομηνία λήξης",
-  "app.containers.Admin.projects.project.projectPageNav": "Σελίδα έργου",
+  "app.containers.Admin.projects.project.projectHomepage": "Αρχική σελίδα έργου",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Προεπισκόπηση σελίδας έργου",
   "app.containers.Admin.projects.project.settingsNav": "Ρυθμίσεις",
   "app.containers.Admin.projects.project.survey.allFiles": "Όλα τα αρχεία",
