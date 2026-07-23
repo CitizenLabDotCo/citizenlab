@@ -2144,7 +2144,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Pročitajte više",
   "app.containers.ProjectFolderShowPage.seeLess": "Prikaži manje",
   "app.containers.ProjectFolderShowPage.share": "Podijeli",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Stranica projekta",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Početna stranica projekta",
   "app.containers.ProjectPageBuilder.saveError": "Došlo je do pogreške pri spremanju stranice projekta.",
   "app.containers.Projects.PollForm.document": "Dokument",
   "app.containers.Projects.PollForm.formCompleted": "Hvala vam. Primili smo vaš odgovor.",

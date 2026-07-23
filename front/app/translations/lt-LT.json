@@ -2144,7 +2144,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Skaityti daugiau",
   "app.containers.ProjectFolderShowPage.seeLess": "Žiūrėti daugiau",
   "app.containers.ProjectFolderShowPage.share": "Dalintis",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Projekto puslapis",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Projekto pagrindinis puslapis",
   "app.containers.ProjectPageBuilder.saveError": "Išsaugant projekto puslapį įvyko klaida.",
   "app.containers.Projects.PollForm.document": "Dokumentas",
   "app.containers.Projects.PollForm.formCompleted": "Ačiū! Jūsų atsakymas gautas.",

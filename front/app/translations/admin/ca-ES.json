@@ -1786,7 +1786,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Usuaris per gènere",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Obtingueu una visió general dels participants en aquest projecte que tenen un compte. La participació anònima no es té en compte.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Sense data de finalització",
-  "app.containers.Admin.projects.project.projectPageNav": "Pàgina del projecte",
+  "app.containers.Admin.projects.project.projectHomepage": "Pàgina d'inici del projecte",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Previsualització de la pàgina del projecte",
   "app.containers.Admin.projects.project.settingsNav": "Configuració",
   "app.containers.Admin.projects.project.survey.allFiles": "Tots els fitxers",

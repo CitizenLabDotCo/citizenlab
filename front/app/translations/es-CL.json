@@ -2144,7 +2144,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Leer más",
   "app.containers.ProjectFolderShowPage.seeLess": "Ver menos",
   "app.containers.ProjectFolderShowPage.share": "Compártelo",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Página del proyecto",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Página de inicio del proyecto",
   "app.containers.ProjectPageBuilder.saveError": "Se ha producido un error al guardar la página del proyecto.",
   "app.containers.Projects.PollForm.document": "Documento",
   "app.containers.Projects.PollForm.formCompleted": "Gracias! Su respuesta ha sido recibida.",

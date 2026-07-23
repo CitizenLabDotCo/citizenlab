@@ -9549,6 +9549,12 @@
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
   },
+
+  "app.containers.Admin.projects.project.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-22T09:18:14.104367Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.projectPageNav": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",

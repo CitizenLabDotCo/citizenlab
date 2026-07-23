@@ -2144,7 +2144,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Διαβάστε περισσότερα",
   "app.containers.ProjectFolderShowPage.seeLess": "Δείτε λιγότερα",
   "app.containers.ProjectFolderShowPage.share": "Κοινοποίηση",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Σελίδα έργου",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Αρχική σελίδα έργου",
   "app.containers.ProjectPageBuilder.saveError": "Παρουσιάστηκε σφάλμα κατά την αποθήκευση της σελίδας του έργου.",
   "app.containers.Projects.PollForm.document": "Έγγραφο",
   "app.containers.Projects.PollForm.formCompleted": "Σας ευχαριστούμε! Η απάντησή σας ελήφθη.",

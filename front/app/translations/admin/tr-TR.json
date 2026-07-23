@@ -1786,7 +1786,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Cinsiyete göre kullanıcılar",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Bu projede hesabı olan katılımcılara genel bir bakış elde edin. Anonim katılım hesaba katılmaz.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Bitiş tarihi yok",
-  "app.containers.Admin.projects.project.projectPageNav": "Proje sayfası",
+  "app.containers.Admin.projects.project.projectHomepage": "Proje ana sayfası",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Proje sayfası önizlemesi",
   "app.containers.Admin.projects.project.settingsNav": "Ayarlar",
   "app.containers.Admin.projects.project.survey.allFiles": "Tüm dosyalar",

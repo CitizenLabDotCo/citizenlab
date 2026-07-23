@@ -1786,7 +1786,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Felhasználók nemek szerint",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Áttekintést kaphat a projekt azon résztvevőiről, akik rendelkeznek fiókkal. A névtelen részvételt a rendszer nem veszi figyelembe.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Nincs befejezési dátum",
-  "app.containers.Admin.projects.project.projectPageNav": "Projektoldal",
+  "app.containers.Admin.projects.project.projectHomepage": "Projekt kezdőlapja",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Projektoldal előnézete",
   "app.containers.Admin.projects.project.settingsNav": "Beállítások",
   "app.containers.Admin.projects.project.survey.allFiles": "Összes fájl",

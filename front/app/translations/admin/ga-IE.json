@@ -1786,7 +1786,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Úsáideoirí de réir inscne",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Faigh forbhreathnú ar na rannpháirtithe ar an tionscadal seo a bhfuil cuntas acu. Ní chuirtear rannpháirtíocht gan ainm san áireamh.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Gan dáta deiridh",
-  "app.containers.Admin.projects.project.projectPageNav": "Leathanach an tionscadail",
+  "app.containers.Admin.projects.project.projectHomepage": "Leathanach baile an tionscadail",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Réamhamharc ar leathanach an tionscadail",
   "app.containers.Admin.projects.project.settingsNav": "Socruithe",
   "app.containers.Admin.projects.project.survey.allFiles": "Gach comhad",

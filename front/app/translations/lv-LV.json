@@ -2144,7 +2144,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Lasīt vairāk",
   "app.containers.ProjectFolderShowPage.seeLess": "Skatīt mazāk",
   "app.containers.ProjectFolderShowPage.share": "Koplietot",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Projekta lapa",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Projekta sākumlapa",
   "app.containers.ProjectPageBuilder.saveError": "Saglabājot projekta lapu, radās kļūda.",
   "app.containers.Projects.PollForm.document": "Dokuments",
   "app.containers.Projects.PollForm.formCompleted": "Paldies! Jūsu atbilde ir saņemta.",

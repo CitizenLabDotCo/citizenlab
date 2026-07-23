@@ -2144,7 +2144,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Léigh tuilleadh",
   "app.containers.ProjectFolderShowPage.seeLess": "Féach níos lú",
   "app.containers.ProjectFolderShowPage.share": "Comhroinn",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Leathanach tionscadail",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Leathanach baile an tionscadail",
   "app.containers.ProjectPageBuilder.saveError": "Tharla earráid agus leathanach an tionscadail á shábháil.",
   "app.containers.Projects.PollForm.document": "Doiciméad",
   "app.containers.Projects.PollForm.formCompleted": "Go raibh maith agat! Tá do fhreagra faighte againn.",

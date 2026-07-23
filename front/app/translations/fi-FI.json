@@ -2144,7 +2144,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Lue lisää",
   "app.containers.ProjectFolderShowPage.seeLess": "Katso vähemmän",
   "app.containers.ProjectFolderShowPage.share": "Jaa",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Hankkeen sivu",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Hankkeen etusivu",
   "app.containers.ProjectPageBuilder.saveError": "Hankkeen sivun tallentamisessa tapahtui virhe.",
   "app.containers.Projects.PollForm.document": "Asiakirja",
   "app.containers.Projects.PollForm.formCompleted": "Kiitos! Vastauksesi on vastaanotettu.",

@@ -1786,7 +1786,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Käyttäjät sukupuolen mukaan",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Saat yleiskatsauksen projektin osallistujista, joilla on tili. Anonyymiä osallistumista ei lasketa.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Ei päättymispäivää",
-  "app.containers.Admin.projects.project.projectPageNav": "Projektisivu",
+  "app.containers.Admin.projects.project.projectHomepage": "Hankkeen etusivu",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Projektisivun esikatselu",
   "app.containers.Admin.projects.project.settingsNav": "Asetukset",
   "app.containers.Admin.projects.project.survey.allFiles": "Kaikki tiedostot",

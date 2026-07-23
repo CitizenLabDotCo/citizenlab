@@ -10849,6 +10849,12 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.ProjectPageBuilder.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-22T09:18:13.821207Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.ProjectPageBuilder.projectPageHeading": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.182128Z",

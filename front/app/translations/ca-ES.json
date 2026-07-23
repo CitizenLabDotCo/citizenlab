@@ -2144,7 +2144,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Llegir més",
   "app.containers.ProjectFolderShowPage.seeLess": "Veure menys",
   "app.containers.ProjectFolderShowPage.share": "Compartir",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Pàgina del projecte",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Pàgina d'inici del projecte",
   "app.containers.ProjectPageBuilder.saveError": "S'ha produït un error en desar la pàgina del projecte.",
   "app.containers.Projects.PollForm.document": "Document",
   "app.containers.Projects.PollForm.formCompleted": "Gràcies! S'ha rebut la vostra resposta.",
