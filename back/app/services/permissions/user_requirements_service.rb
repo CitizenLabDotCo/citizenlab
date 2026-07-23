@@ -70,33 +70,22 @@ class Permissions::UserRequirementsService
     !user.verified?
   end
 
-  # Whether an already-confirmed email must be confirmed again because the
-  # permission sets a confirmed_email_expiry and that window has elapsed since the
-  # email was last confirmed. Returns false when no expiry is configured, or when
-  # the user has never confirmed an email (email_confirmed_at nil) — that case is
-  # handled by confirmation_required? in #email_action_required, not here.
-  def requires_email_confirmation?(permission, user)
-    return false if permission.confirmed_email_expiry.nil?
-    return false if user.email_confirmed_at.nil?
-
-    expiry_offset = permission.confirmed_email_expiry == 0 ? MIN_CONFIRMED_EMAIL_EXPIRY : permission.confirmed_email_expiry.days
-    (user.email_confirmed_at + expiry_offset) < Time.now
-  end
-
-  # Whether an already-confirmed phone number must be confirmed again because the
-  # permission sets a confirmed_phone_number_expiry and that window has elapsed
-  # since the phone was last confirmed. Returns false when no expiry is configured,
-  # or when the phone has never been confirmed (phone_confirmed_at nil) — that case
-  # is handled directly in #phone_action_required.
-  def requires_phone_confirmation?(permission, user)
-    return false if permission.confirmed_phone_number_expiry.nil?
-    return false if user.phone_confirmed_at.nil?
-
-    expiry_offset = permission.confirmed_phone_number_expiry == 0 ? MIN_CONFIRMED_PHONE_NUMBER_EXPIRY : permission.confirmed_phone_number_expiry.days
-    (user.phone_confirmed_at + expiry_offset) < Time.now
-  end
-
   private
+
+  # Whether an already-confirmed email/phone must be confirmed *again* because the
+  # permission sets an expiry and that window has elapsed since it was last
+  # confirmed. Returns false when no expiry is configured, or when it was never
+  # confirmed (confirmed_at nil) — first-time confirmation is handled by the
+  # callers (#email_action_required / #phone_action_required). An expiry of 0 is a
+  # testing shortcut that maps to the minimum window instead of "0 days ago"
+  # (which would demand re-confirmation on every single request).
+  def reconfirmation_required?(expiry_days, confirmed_at, min_expiry)
+    return false if expiry_days.nil?
+    return false if confirmed_at.nil?
+
+    offset = expiry_days.zero? ? min_expiry : expiry_days.days
+    (confirmed_at + offset) < Time.current
+  end
 
   # A confirmed, active moderator of the phase (or an admin) bypasses every
   # participation gate, so all their requirements are satisfied. This mirrors
@@ -181,9 +170,9 @@ class Permissions::UserRequirementsService
   # action depends on where the value lives (email vs new_email) and how it must
   # be confirmed. See #email_action_required / #phone_action_required.
   def base_missing_user_attributes(permission)
-    attributes = %i[first_name last_name password]
-    attributes -= %i[first_name last_name] unless permission.require_name
-    attributes.delete(:password) unless permission.require_password
+    attributes = []
+    attributes.push(:first_name, :last_name) if permission.require_name
+    attributes.push(:password) if permission.require_password
 
     attributes
   end
@@ -287,7 +276,7 @@ class Permissions::UserRequirementsService
   #                       :confirm_email server-side; the distinct value only tells
   #                       the frontend that no code was auto-sent (unlike first-time
   #                       confirmation, which sends from SideFxUserService#after_create),
-  #                       so it must request one. See #requires_email_confirmation?.
+  #                       so it must request one. See #reconfirmation_required?.
   # - :provide_new_email  an account with no email at all (e.g. an SSO sign-up
   #                       that returned no email) — provide one via `new_email`.
   # - :confirm_new_email  an account with a pending `new_email` (e.g. an SSO
@@ -304,7 +293,7 @@ class Permissions::UserRequirementsService
     if user.email.present?
       if user.confirmation_required?
         :confirm_email
-      elsif requires_email_confirmation?(permission, user)
+      elsif reconfirmation_required?(permission.confirmed_email_expiry, user.email_confirmed_at, MIN_CONFIRMED_EMAIL_EXPIRY)
         :reconfirm_email
       end
     elsif user.new_email.present?
@@ -328,7 +317,7 @@ class Permissions::UserRequirementsService
   # - :reconfirm_phone    an existing `phone` that was confirmed before but has
   #                       aged past confirmed_phone_number_expiry. Mirrors
   #                       :reconfirm_email: the distinct value signals the frontend
-  #                       to (re)send a code. See #requires_phone_confirmation?.
+  #                       to (re)send a code. See #reconfirmation_required?.
   def phone_action_required(permission, user)
     return nil unless permission.require_confirmed_phone_number
     return :provide_new_phone if user.nil?
@@ -336,7 +325,7 @@ class Permissions::UserRequirementsService
     if user.phone.present?
       if user.phone_confirmed_at.nil?
         :confirm_phone
-      elsif requires_phone_confirmation?(permission, user)
+      elsif reconfirmation_required?(permission.confirmed_phone_number_expiry, user.phone_confirmed_at, MIN_CONFIRMED_PHONE_NUMBER_EXPIRY)
         :reconfirm_phone
       end
     elsif user.new_phone.present?
