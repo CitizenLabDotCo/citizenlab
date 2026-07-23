@@ -21044,6 +21044,11 @@
     "verified_at": "2026-07-08T07:51:00.235120Z",
     "verified_by": "Jelena"
   },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.498984Z",
+    "verified_by": "Jelena"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
@@ -21082,6 +21087,11 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": {
     "state": "verified",
     "verified_at": "2026-07-08T07:51:00.235120Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.498984Z",
     "verified_by": "Jelena"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": {
