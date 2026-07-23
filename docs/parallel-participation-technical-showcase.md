@@ -6,31 +6,30 @@ Code stays off-screen — the links point to master for click-through.
 # Parallel Participation — Technical Showcase
 ### Supporting parallel participation in the user interface
 
-The rebuild that lets one phase run many methods · foundations, where we are, where we're going
+The rebuild that lets a project run **multiple phases at once** · foundations, where we are, where we're going
 
 ---
 
 ## 1 · The problem
 
-A phase could run **exactly one** participation method — because the project page was **hard-coded markup**, not composable content. There was nowhere to put a second method.
+A project's phases ran **strictly one at a time** — a sequential timeline where only one phase could be open. You couldn't keep an ideation phase running while a survey collected input alongside it; every participation opportunity had to wait its turn.
 
 ```mermaid
 graph LR
-  subgraph Before
-    A[Phase] --> A1[one method]
+  subgraph Before["Before — one active phase at a time"]
+    P1[Phase 1] --> P2[Phase 2] --> P3[Phase 3]
   end
-  subgraph After
-    B[Phase] --> B1[survey]
-    B --> B2[ideation]
-    B --> B3["…"]
+  subgraph After["After — phases running in parallel"]
+    A[Phase A]
+    B[Phase B]
+    C[Phase C]
   end
-  style A1 fill:#6e7681,color:#fff
-  style B1 fill:#238636,color:#fff
-  style B2 fill:#238636,color:#fff
-  style B3 fill:#238636,color:#fff
+  style A fill:#238636,color:#fff
+  style B fill:#238636,color:#fff
+  style C fill:#238636,color:#fff
 ```
 
-> Parallel participation was **90% a page-architecture problem**, 10% new features.
+> Parallel participation = **a project running several phases at once**, not a single-file timeline. Getting there was **90% a page-architecture problem**, 10% new features.
 
 ---
 
@@ -49,7 +48,7 @@ graph TD
   style DM fill:#6e7681,color:#fff
 ```
 
-Once the page is composable, "parallel" becomes *"let one phase widget hold more than one method."*
+The page was hard-coded to the single active phase. Making it composable is what lets it surface **several phases running at the same time.**
 
 ---
 
@@ -103,10 +102,3 @@ flowchart LR
 - [#14343](https://github.com/CitizenLabDotCo/citizenlab/pull/14343) — participation box reworked to render multiple methods
 - [#14352](https://github.com/CitizenLabDotCo/citizenlab/pull/14352) — file authoring moved into the page builder
 
----
-
-## The one idea to remember
-
-> We made the project page a **single composable document** — one source of truth, edited from two surfaces without drift — so a phase can finally hold **more than one way to participate.**
-
-Thanks 🙏 — questions?
