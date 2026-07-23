@@ -80,7 +80,14 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  allow_multiple_responses?: boolean;
   prescreening_mode?: PrescreeningMode;
+  /** The prescreening_mode reduced to what the platform's feature flags permit. A phase
+   * can carry a prescreening_mode on a platform without the screening feature (tenant
+   * templates and project copies bring the value across), in which case the back end
+   * ignores it and this is null. Use this, not prescreening_mode, to decide whether
+   * screening is in effect. */
+  effective_prescreening_mode?: PrescreeningMode | null;
   manual_voters_amount?: number;
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
@@ -135,6 +142,7 @@ export interface IUpdatedPhaseProperties {
   document_annotation_embed_url?: string | null;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  allow_multiple_responses?: boolean;
   prescreening_mode?: PrescreeningMode | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;

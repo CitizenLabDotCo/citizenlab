@@ -200,6 +200,7 @@ const ProposalsInputs = ({
         apiErrors={apiErrors}
         handleIdeasDisplayChange={handleIdeasDisplayChange}
         handleAvailableViewsChange={handleAvailableViewsChange}
+        hideFeed
       />
 
       <SortingPicker

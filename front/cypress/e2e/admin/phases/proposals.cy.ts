@@ -27,10 +27,11 @@ describe('Admin: proposal phase', () => {
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button button').click();
-    cy.wait('@createProject');
-    cy.wait(2000);
 
-    cy.get('[data-cy=e2e-admin-project-timeline-tab]').click();
+    cy.wait('@createProject').then((interception) => {
+      const projectId = interception.response?.body.data.id;
+      cy.visit(`/admin/projects/${projectId}/phases/new`);
+    });
 
     // Create a proposals phase
     const phaseNameEN = randomString();

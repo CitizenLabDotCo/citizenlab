@@ -9,9 +9,6 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useParallelParticipation from 'hooks/useParallelParticipation';
-
-import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -25,14 +22,9 @@ import { PhaseHeader } from './PhaseHeader';
 interface DataProps {
   project: IProjectData;
   selectedPhase?: IPhaseData;
-  setSelectedPhase: (phase: IPhaseData) => void;
 }
 
-const AdminProjectPhaseIndex = ({
-  project,
-  selectedPhase,
-  setSelectedPhase,
-}: DataProps) => {
+const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const featureFlags: FeatureFlags = {
@@ -47,8 +39,6 @@ const AdminProjectPhaseIndex = ({
     }),
   };
 
-  const parallelParticipation = useParallelParticipation();
-
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
@@ -61,16 +51,6 @@ const AdminProjectPhaseIndex = ({
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1}>
-      {!parallelParticipation && (
-        <Box mt="16px" px="24px">
-          <Timeline
-            projectId={project.id}
-            selectedPhase={selectedPhase}
-            setSelectedPhase={setSelectedPhase}
-            isBackoffice
-          />
-        </Box>
-      )}
       <Box
         p="8px 24px 24px 24px"
         display="flex"
@@ -188,7 +168,6 @@ export default () => {
     <AdminProjectPhaseIndex
       project={project.data}
       selectedPhase={selectedPhase}
-      setSelectedPhase={setSelectedPhase}
     />
   );
 };

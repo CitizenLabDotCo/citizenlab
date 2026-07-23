@@ -1140,9 +1140,34 @@
     "verified_at": "2026-03-18T16:40:24.277483Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.drawOnMap": {
+    "state": "verified",
+    "verified_at": "2026-07-15T14:51:53.822174Z",
+    "verified_by": "Roger"
+  },
+  "app.components.EsriMap.drawOnMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-15T14:51:53.822174Z",
+    "verified_by": "Roger"
+  },
+  "app.components.EsriMap.exploreMap": {
+    "state": "verified",
+    "verified_at": "2026-07-15T14:51:53.822174Z",
+    "verified_by": "Roger"
+  },
+  "app.components.EsriMap.exploreMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-15T14:51:53.822174Z",
+    "verified_by": "Roger"
+  },
   "app.components.EsriMap.mapAriaLabel": {
     "state": "verified",
     "verified_at": "2026-05-05T08:17:25.765619Z",
+    "verified_by": "Roger"
+  },
+  "app.components.EsriMap.mapInteractionToggleAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-15T14:51:53.822174Z",
     "verified_by": "Roger"
   },
   "app.components.EsriMap.mapLayerListAriaLabel": {
