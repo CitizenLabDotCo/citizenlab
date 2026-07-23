@@ -16,18 +16,6 @@ import { MAX_SMS_SEGMENTS } from '../utils/segments';
 
 import useSmsSegments from './useSmsSegments';
 
-const Container = styled.div`
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  // Opaque so the field's text doesn't show through.
-  background: ${colors.white};
-  padding-left: 6px;
-`;
-
 // Tabular figures so digits don't shift while typing.
 const Readout = styled.span<{ overLimit: boolean }>`
   font-size: ${fontSizes.s}px;
@@ -82,7 +70,16 @@ const SegmentCounter = ({ body }: Props) => {
     : formatMessage(messages.smsSegmentCost, { segmentCount });
 
   return (
-    <Container data-testid="sms-segment-counter">
+    <Box
+      position="absolute"
+      right="10px"
+      bottom="10px"
+      display="flex"
+      alignItems="center"
+      gap="8px"
+      background={colors.white}
+      paddingLeft="6px"
+    >
       <Readout overLimit={exceedsLimit} data-testid="sms-segment-readout">
         {unitsUsed} / {capacity}
       </Readout>
@@ -112,7 +109,7 @@ const SegmentCounter = ({ body }: Props) => {
           />
         </Box>
       )}
-    </Container>
+    </Box>
   );
 };
 
