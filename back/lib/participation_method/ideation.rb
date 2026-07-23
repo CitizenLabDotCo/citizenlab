@@ -28,6 +28,13 @@ module ParticipationMethod
       %w[trending random popular -new new comments_count]
     end
 
+    # Ideation is the only method the feed view was designed for. Voting inherits it here, even
+    # though the phase form has hidden the feed toggle for voting from the start, because existing
+    # voting phases may hold the view and could not drop it through the form.
+    def allowed_presentation_modes
+      %w[card map feed]
+    end
+
     def assign_defaults(input)
       # Only the `all` prescreening mode starts inputs in prescreening. The `flagged_only`
       # mode starts inputs as published, and oxicity detection will asynchronously move

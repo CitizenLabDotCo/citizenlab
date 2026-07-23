@@ -15,7 +15,7 @@ import { IIdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { IdeaSortMethod, PresentationMode } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import { IdeaSortMethodFallback } from 'api/phases/utils';
+import { getSelectedView, IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
@@ -105,13 +105,18 @@ const IdeasWithoutFiltersSidebar = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const searchParams = useSearch({ strict: false });
-  const selectedIdeaMarkerId = searchParams.idea_map_id;
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
   const { data: project } = useProjectById(projectId);
+  const { data: phase } = usePhase(phaseId);
 
-  const selectedView =
-    searchParams.view ?? (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
+  // Get data from searchParams
+  const selectedIdeaMarkerId = searchParams.idea_map_id;
+  const selectedView = getSelectedView({
+    requestedView: searchParams.view,
+    availableViews: phase?.data.attributes.available_views,
+    defaultView: selectedIdeaMarkerId ? 'map' : defaultView ?? 'card',
+  });
 
   const setSelectedView = useCallback((view: PresentationMode) => {
     updateSearchParams({ view });
@@ -132,7 +137,6 @@ const IdeasWithoutFiltersSidebar = ({
   const list = useMemo(() => {
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
-  const { data: phase } = usePhase(phaseId);
 
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(

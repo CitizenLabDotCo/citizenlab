@@ -9,7 +9,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { hasTextInSpecifiedLocale } from 'utils/locale';
 
-import { IPhaseData, VoteTerm } from './types';
+import { IPhaseData, PresentationMode, VoteTerm } from './types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
@@ -213,3 +213,24 @@ export const INPUT_TERMS = [
 ];
 
 export const IdeaSortMethodFallback = 'trending';
+
+// The requested view is a URL search param, so a bookmarked ?view= link outlives the configuration
+// it was made under. Undefined availableViews means loading, or no phase: leave the request alone.
+export function getSelectedView({
+  requestedView,
+  availableViews,
+  defaultView,
+}: {
+  requestedView?: PresentationMode;
+  availableViews?: PresentationMode[];
+  defaultView: PresentationMode;
+}): PresentationMode {
+  if (!requestedView) return defaultView;
+  if (!availableViews || availableViews.includes(requestedView)) {
+    return requestedView;
+  }
+
+  // The backend keeps presentation_mode within available_views, so 'card' is only for a defaultView
+  // that came from elsewhere.
+  return availableViews.includes(defaultView) ? defaultView : 'card';
+}
