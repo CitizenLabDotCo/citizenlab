@@ -7799,6 +7799,11 @@
     "verified_at": "2026-07-16T09:55:33.006212Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.extras": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:54:03.180773Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -8654,6 +8659,16 @@
     "verified_at": "2026-07-16T09:55:33.006212Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.newSurvey": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:54:03.180773Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.notOnProjectPage": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:54:03.180773Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
@@ -8963,6 +8978,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Admin.projects.project.ongoing": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:54:03.180773Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.participation.comments": {
     "state": "verified",
@@ -15678,6 +15698,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.AdminPage.ProjectTimeline.newSurveyTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:54:03.180773Z",
+    "verified_by": "Jelena"
   },
   "app.containers.AdminPage.ProjectTimeline.noEndDateDescription": {
     "state": "verified",
