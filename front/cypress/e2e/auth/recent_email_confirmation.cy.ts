@@ -57,6 +57,7 @@ describe('Sign up - email only', () => {
 
       logIn(cy, 'email_confirmed_10_days_ago@govocal.com', 'democracy2.0');
       confirmEmail(cy);
+      cy.get('#e2e-success-continue-button').click();
 
       cy.location('pathname').should(
         'eq',
