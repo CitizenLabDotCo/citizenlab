@@ -816,6 +816,7 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'requires re-confirmation after 30 minutes' do
+          user # confirm the email at the real current time, before traveling past the expiry window
           travel_to Time.now + 30.minutes + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
@@ -835,6 +836,7 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'requires re-confirmation after the expiry window' do
+          user # confirm the email at the real current time, before traveling past the expiry window
           travel_to Time.now + 30.days + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
