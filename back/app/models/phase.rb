@@ -486,7 +486,22 @@ class Phase < ApplicationRecord
 
     unless available_views.include?(presentation_mode)
       errors.add(:available_views, :invalid, message: 'must include the default presentation mode')
+      return
     end
+
+    # The rest is narrower: some methods do not offer every view. It only applies when the views or
+    # the method are written, so a phase left holding a view its method no longer offers can still
+    # be saved for unrelated edits until the data has been migrated. The method is part of that
+    # condition because switching it can invalidate views that were fine a moment before.
+    return unless presentation_mode_changed? || available_views_changed? || participation_method_changed?
+
+    disallowed = (available_views + [presentation_mode]).compact.uniq - pmethod.allowed_presentation_modes
+    return if disallowed.empty?
+
+    errors.add(
+      :available_views, :invalid,
+      message: "#{disallowed.join(', ')} not available for the #{participation_method} method"
+    )
   end
 
   def validate_no_inputs_on_participation_method_change

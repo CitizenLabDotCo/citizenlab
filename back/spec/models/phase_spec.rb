@@ -205,6 +205,79 @@ RSpec.describe Phase do
         expect(phase).to be_valid
       end
     end
+
+    describe 'views the participation method does not allow' do
+      it 'is invalid when a proposals phase opens on the feed view' do
+        phase = build(:proposals_phase, presentation_mode: 'feed', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      it 'is invalid when a proposals phase merely offers the feed view' do
+        phase = build(:proposals_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      it 'is valid when a proposals phase offers the card and map views' do
+        phase = build(:proposals_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      it 'is valid when an ideation phase offers the feed view' do
+        phase = build(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+        expect(phase).to be_valid
+      end
+
+      # Switching the method can invalidate views that were allowed a moment ago, and neither view
+      # attribute changes when it does, so the method has to be part of the guard. Not reachable
+      # from the phase form, which applies proposalsDefaultConfig and so sends card views along with
+      # the new method; this is for callers that change the method alone, i.e. the REST API and the
+      # MCP update_phase tool.
+      it 'is invalid when an ideation phase offering the feed view is switched to proposals' do
+        phase = create(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+
+        expect(phase.update(participation_method: 'proposals')).to be false
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      # The rule only fires when the view attributes are written, so a phase that predates it can
+      # still be edited. Without this, an unrelated write would fail on a phase nobody has migrated.
+      it 'does not block unrelated edits to a proposals phase that already offers the feed view' do
+        phase = create(:proposals_phase)
+        phase.update_column(:available_views, %w[card feed])
+
+        expect(phase.reload.update(title_multiloc: { 'en' => 'New title' })).to be true
+      end
+
+      it 'is valid when a voting phase offers the feed view' do
+        phase = build(:single_voting_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).to be_valid
+      end
+
+      # Common ground is the other method the rule applies to. It has its own interface and no view
+      # selector, and nothing but the views themselves gates the feed page.
+      it 'is invalid when a common ground phase offers the feed view' do
+        phase = build(:common_ground_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the common_ground method')
+      end
+
+      # Methods that show no inputs publicly never reach this rule, and they do hold stale view
+      # values: several phases in the e2e template sit on the map view without ever rendering one.
+      it 'is valid when a method that shows no inputs publicly holds a view it cannot render' do
+        phase = build(:poll_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      # The views come along on a method change and no longer mean anything once they arrive. The
+      # ideas order has to go in the same write, as information allows no order at all.
+      it 'is valid when an ideation phase on the map view becomes an information phase' do
+        phase = create(:phase, presentation_mode: 'map', available_views: %w[card map])
+
+        expect(phase.update(participation_method: 'information', ideas_order: nil)).to be true
+      end
+    end
   end
 
   describe 'input_term' do

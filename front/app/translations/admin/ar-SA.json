@@ -1782,7 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "المستخدمون حسب الجنس",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "احصل على لمحة عامة عن المشاركين في هذا المشروع ممن لديهم حسابات. المشاركة المجهولة غير محسوبة.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "لا يوجد تاريخ انتهاء",
-  "app.containers.Admin.projects.project.projectPageNav": "صفحة المشروع",
+  "app.containers.Admin.projects.project.projectHomepage": "الصفحة الرئيسية للمشروع",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "معاينة صفحة المشروع",
   "app.containers.Admin.projects.project.settingsNav": "الإعدادات",
   "app.containers.Admin.projects.project.survey.allFiles": "كل الملفات",

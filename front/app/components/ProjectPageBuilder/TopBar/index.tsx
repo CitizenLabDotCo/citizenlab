@@ -88,7 +88,7 @@ const ProjectPageBuilderTopBar = ({
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <Title variant="h3" as="h1" mb="0px" mt="0px">
-            <FormattedMessage {...messages.projectPageHeading} />
+            <FormattedMessage {...messages.projectHomepage} />
           </Title>
           <Text m="0" color="textSecondary">
             {localize(titleMultiloc)}
