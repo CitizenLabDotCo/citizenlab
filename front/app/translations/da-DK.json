@@ -2118,7 +2118,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Læs mere",
   "app.containers.ProjectFolderShowPage.seeLess": "Se mindre",
   "app.containers.ProjectFolderShowPage.share": "Del",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Projektside",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Projektforside",
   "app.containers.ProjectPageBuilder.saveError": "Der opstod en fejl under gemning af projektsiden.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Sidens sektioner er låst indtil videre. Widgets kan placeres inde i sektionen Beskrivelse.",
   "app.containers.Projects.PollForm.document": "Dokument",

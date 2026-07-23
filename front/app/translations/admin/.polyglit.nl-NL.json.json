@@ -9549,6 +9549,11 @@
     "verified_at": "2026-06-29T09:12:16.498966Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:53.154419Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.projectPageNav": {
     "state": "verified",
     "verified_at": "2026-06-29T09:12:16.498966Z",

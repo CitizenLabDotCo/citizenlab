@@ -1782,7 +1782,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Naudotojai pagal lytį",
   "app.containers.Admin.projects.project.participation.usersSubtitle": "Gaukite šio projekto dalyvių, turinčių paskyrą, apžvalgą. Anoniminis dalyvavimas nėra apskaitomas.",
   "app.containers.Admin.projects.project.phaseNoEndDate": "Nėra pabaigos datos",
-  "app.containers.Admin.projects.project.projectPageNav": "Projekto puslapis",
+  "app.containers.Admin.projects.project.projectHomepage": "Projekto pagrindinis puslapis",
   "app.containers.Admin.projects.project.projectPagePreviewTitle": "Projekto puslapio peržiūra",
   "app.containers.Admin.projects.project.settingsNav": "Nustatymai",
   "app.containers.Admin.projects.project.survey.allFiles": "Visi failai",
