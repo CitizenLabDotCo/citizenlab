@@ -129,7 +129,6 @@ class Phase < ApplicationRecord
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
   validates :placement_type, inclusion: { in: PLACEMENT_TYPES }
   validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
-  validate :validate_prescreening_mode, if: :prescreening_mode_changed?
 
   with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
@@ -353,29 +352,25 @@ class Phase < ApplicationRecord
     available_views&.include?('feed')
   end
 
-  def prescreening_enabled? = prescreening_mode.present?
-  def prescreening_flagged_only? = prescreening_mode == 'flagged_only'
-  def prescreening_all? = prescreening_mode == 'all'
+  def prescreening_enabled? = effective_prescreening_mode.present?
+  def prescreening_flagged_only? = effective_prescreening_mode == 'flagged_only'
+  def prescreening_all? = effective_prescreening_mode == 'all'
 
-  private
-
-  def validate_prescreening_mode
+  # The configured `prescreening_mode`, reduced to what this platform's features permit.
+  # The column is configuration data and is stored verbatim: tenant templates and project
+  # copies carry it between platforms whose features differ, so it can be set on a
+  # platform where prescreening is not available. It only takes effect where it is.
+  def effective_prescreening_mode
     return if prescreening_mode.nil?
 
     prescreening_flag = participation_method == 'proposals' ? 'prescreening' : 'prescreening_ideation'
+    return unless AppConfiguration.instance.feature_activated?(prescreening_flag)
+    return if prescreening_mode == 'flagged_only' && !AppConfiguration.instance.feature_activated?('flag_inappropriate_content')
 
-    # Any prescreening mode requires the prescreening feature to be enabled.
-    unless AppConfiguration.instance.feature_activated?(prescreening_flag)
-      errors.add(:prescreening_mode, "requires the #{prescreening_flag} feature to be enabled")
-      return
-    end
-
-    # 'flagged_only' mode requires the flag_inappropriate_content feature to be enabled.
-    return unless prescreening_mode == 'flagged_only'
-    return if AppConfiguration.instance.feature_activated?('flag_inappropriate_content')
-
-    errors.add(:prescreening_mode, 'requires the flag_inappropriate_content feature to be enabled')
+    prescreening_mode
   end
+
+  private
 
   def sanitize_description_multiloc
     self.description_multiloc = sanitize_html_multiloc(description_multiloc)
@@ -485,7 +480,22 @@ class Phase < ApplicationRecord
 
     unless available_views.include?(presentation_mode)
       errors.add(:available_views, :invalid, message: 'must include the default presentation mode')
+      return
     end
+
+    # The rest is narrower: some methods do not offer every view. It only applies when the views or
+    # the method are written, so a phase left holding a view its method no longer offers can still
+    # be saved for unrelated edits until the data has been migrated. The method is part of that
+    # condition because switching it can invalidate views that were fine a moment before.
+    return unless presentation_mode_changed? || available_views_changed? || participation_method_changed?
+
+    disallowed = (available_views + [presentation_mode]).compact.uniq - pmethod.allowed_presentation_modes
+    return if disallowed.empty?
+
+    errors.add(
+      :available_views, :invalid,
+      message: "#{disallowed.join(', ')} not available for the #{participation_method} method"
+    )
   end
 
   def validate_no_inputs_on_participation_method_change

@@ -1139,9 +1139,34 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.drawOnMap": {
+    "state": "verified",
+    "verified_at": "2026-07-16T18:28:56.613283Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.EsriMap.drawOnMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T18:28:56.613283Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.EsriMap.exploreMap": {
+    "state": "verified",
+    "verified_at": "2026-07-16T18:28:56.613283Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.EsriMap.exploreMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T18:28:56.613283Z",
+    "verified_by": "Adrien"
+  },
   "app.components.EsriMap.mapAriaLabel": {
     "state": "verified",
     "verified_at": "2026-04-29T14:23:57.861055Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.EsriMap.mapInteractionToggleAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T18:28:56.613283Z",
     "verified_by": "Adrien"
   },
   "app.components.EsriMap.mapLayerListAriaLabel": {
@@ -10713,6 +10738,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ProjectPageBuilder.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-22T09:18:14.030129Z",
+    "verified_by": "Adrien"
   },
   "app.containers.ProjectPageBuilder.projectPageHeading": {
     "state": "verified",

@@ -35,8 +35,8 @@ jest.mock(
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/VerificationFieldsModal',
-  () => () => null
+  'components/admin/ActionForm/AccessSections/IdMethodsModal/Trigger',
+  () => () => <div data-testid="id-method-fields-trigger" />
 );
 
 const buildPermission = (
@@ -180,6 +180,13 @@ describe('<AccessSection />', () => {
       expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
       expect(
         screen.queryByText('Identity verification')
+      ).not.toBeInTheDocument();
+    });
+
+    it('does not offer the identification-methods trigger', () => {
+      renderSection({ permitted_by: 'everyone' });
+      expect(
+        screen.queryByTestId('id-method-fields-trigger')
       ).not.toBeInTheDocument();
     });
   });

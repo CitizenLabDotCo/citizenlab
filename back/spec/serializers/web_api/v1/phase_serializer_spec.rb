@@ -84,6 +84,22 @@ describe WebApi::V1::PhaseSerializer do
     end
   end
 
+  # The raw `prescreening_mode` is configuration data, serialized verbatim;
+  # `effective_prescreening_mode` is what the platform's features actually permit, so the
+  # front end can rely on it without duplicating the flag logic. Which modes are effective
+  # under which flags is specced in phase_spec.rb.
+  # A proposals phase, since its `prescreening` feature is enabled by default and the
+  # mode is therefore effective without any flag setup.
+  context 'for a phase with a prescreening mode' do
+    let(:user) { create(:user) }
+    let(:phase) { create(:proposals_phase, prescreening_mode: 'all') }
+
+    it 'includes both the configured and the effective mode' do
+      expect(result.dig(:data, :attributes, :prescreening_mode)).to eq 'all'
+      expect(result.dig(:data, :attributes, :effective_prescreening_mode)).to eq 'all'
+    end
+  end
+
   context 'for a community monitor phase' do
     let(:user) { create(:user) }
     let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }

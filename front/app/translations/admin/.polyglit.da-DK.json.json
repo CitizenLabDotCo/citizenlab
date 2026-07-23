@@ -9544,6 +9544,11 @@
     "verified_at": "2026-06-30T13:46:50.775933Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.project.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:34:23.527791Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.projectPageNav": {
     "state": "verified",
     "verified_at": "2026-06-30T13:46:50.775933Z",
@@ -21574,6 +21579,11 @@
     "verified_at": "2026-07-08T14:02:45.484916Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": {
     "state": "verified",
     "verified_at": "2026-07-08T14:02:45.484916Z",
@@ -21607,6 +21617,76 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": {
     "state": "verified",
     "verified_at": "2026-07-08T14:02:45.484916Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.authentication": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.authenticationExplanation": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.canSignUpOrVerifyWith": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.canSignUpWith": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.canVerifyWith": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.identificationExplanation": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.identificationMethods": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.introDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.noActiveMethods": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.noFieldsReturned": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.seeWhichIdMethodsAreEnabled": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.viewMethodSettings": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:32:40.293104Z",
     "verified_by": "kielgast@govocal.com"
   },
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": {

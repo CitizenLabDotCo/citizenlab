@@ -1139,10 +1139,35 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.drawOnMap": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:50:32.414458Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.EsriMap.drawOnMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:50:32.414458Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.EsriMap.exploreMap": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:50:32.414458Z",
+    "verified_by": "eva@govocal.com"
+  },
+  "app.components.EsriMap.exploreMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:50:32.414458Z",
+    "verified_by": "eva@govocal.com"
+  },
   "app.components.EsriMap.mapAriaLabel": {
     "state": "verified",
     "verified_at": "2026-04-29T10:11:13.003344Z",
     "verified_by": "Jelena"
+  },
+  "app.components.EsriMap.mapInteractionToggleAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:50:32.414458Z",
+    "verified_by": "eva@govocal.com"
   },
   "app.components.EsriMap.mapLayerListAriaLabel": {
     "state": "verified",
@@ -10723,6 +10748,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ProjectPageBuilder.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-22T16:16:57.248224Z",
+    "verified_by": "Jelena"
   },
   "app.containers.ProjectPageBuilder.projectPageHeading": {
     "state": "verified",
