@@ -50,14 +50,27 @@ module ContentBuilder
       referenced_file_ids = json.each_value.filter_map do |node|
         node.dig('props', 'fileId') if node.is_a?(Hash) && resolved_name(node) == 'FileAttachment'
       end
+      missing = attachments.reject { |attachment| referenced_file_ids.include?(attachment.file_id) }
+      return craftjs_json if missing.empty?
 
-      attachments.each do |attachment|
-        next if referenced_file_ids.include?(attachment.file_id)
+      space_id = "#{INJECTED_ID_PREFIX}files_space"
+      columns_id = "#{INJECTED_ID_PREFIX}files_columns"
+      left_id = "#{INJECTED_ID_PREFIX}files_left"
+      right_id = "#{INJECTED_ID_PREFIX}files_right"
 
+      json[space_id] = white_space_node(parent_id)
+      json[columns_id] = two_column_node(parent_id, [left_id, right_id])
+      json[right_id] = container_node('right', columns_id, [])
+
+      file_node_ids = missing.map do |attachment|
         node_id = "#{INJECTED_ID_PREFIX}file_#{attachment.file_id}"
-        json[node_id] = file_attachment_node(attachment.file_id, parent_id)
-        insert_before_phases(json, parent_id, node_id)
+        json[node_id] = file_attachment_node(attachment.file_id, left_id)
+        node_id
       end
+      json[left_id] = container_node('left', columns_id, file_node_ids)
+
+      insert_before_phases(json, parent_id, space_id)
+      insert_before_phases(json, parent_id, columns_id)
 
       json
     end
@@ -185,6 +198,53 @@ module ContentBuilder
         'parent' => parent_id,
         'isCanvas' => false,
         'displayName' => 'FileAttachment',
+        'linkedNodes' => {}
+      }
+    end
+
+    def white_space_node(parent_id)
+      {
+        'type' => { 'resolvedName' => 'WhiteSpace' },
+        'nodes' => [],
+        'props' => { 'size' => 'small' },
+        'custom' => {
+          'title' => message('app.containers.AdminPage.ProjectDescription.whiteSpace', 'White space')
+        },
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => false,
+        'displayName' => 'WhiteSpace',
+        'linkedNodes' => {}
+      }
+    end
+
+    def two_column_node(parent_id, child_ids)
+      {
+        'type' => { 'resolvedName' => 'TwoColumn' },
+        'nodes' => child_ids,
+        'props' => { 'columnLayout' => '2-1' },
+        'custom' => {
+          'title' => message('app.containers.admin.ContentBuilder.twoColumnLayout', '2 column'),
+          'hasChildren' => true
+        },
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => false,
+        'displayName' => 'TwoColumn',
+        'linkedNodes' => {}
+      }
+    end
+
+    def container_node(side, parent_id, child_ids)
+      {
+        'type' => { 'resolvedName' => 'Container' },
+        'nodes' => child_ids,
+        'props' => { 'id' => side },
+        'custom' => {},
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => true,
+        'displayName' => 'Container',
         'linkedNodes' => {}
       }
     end
