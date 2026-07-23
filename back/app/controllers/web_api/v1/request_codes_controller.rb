@@ -22,6 +22,14 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # invalidates a code they already hold.
   def request_code_email
     email = request_code_email_params[:email]
+
+    # Resolve the account the code will be sent to. Only three situations are
+    # legitimate, and RequestCodePolicy enforces them:
+    #   1. email param + no authenticated user -> look the account up by email.
+    #   2. no email param + authenticated user -> use current_user.
+    #   3. email param + authenticated user    -> the email must resolve to the
+    #      authenticated user's own account; requesting a code for someone else's
+    #      email is rejected (401).
     user = email.present? ? User.find_by_cimail(email) : current_user
     authorize user, policy_class: RequestCodePolicy
 

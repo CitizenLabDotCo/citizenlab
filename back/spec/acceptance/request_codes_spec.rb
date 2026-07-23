@@ -45,14 +45,16 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
 
-    example 'does not work if user has password and has email confirmed' do
+    example 'works if user has password and has email confirmed (can be necessary for re-confirmation)' do
       user = create(:user, email: 'test@test.com')
       expect(user.password_digest).not_to be_nil
       expect(user.confirmation_required?).to be false
 
       do_request(request_code: { email: user.email })
-      expect(response_status).to eq 401
-      expect(delivery_service).not_to have_received(:send_now_to_user)
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
 
     # Re-confirmation: an authenticated user whose confirmed email has aged past
@@ -76,6 +78,19 @@ resource 'Request codes' do
     # record, not merely on being logged in.
     example 'does not work for an authenticated user requesting a code for a different confirmed account' do
       other_user = create(:user, email: 'other@test.com')
+      requester = create(:user, email: 'requester@test.com')
+      header_token_for(requester)
+
+      do_request(request_code: { email: other_user.email })
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # The ownership check does not depend on the target account being a "full"
+    # account: an authenticated user may not request a code for any email other
+    # than their own, even an unconfirmed one.
+    example 'does not work for an authenticated user requesting a code for a different unconfirmed account' do
+      other_user = create(:unconfirmed_user, email: 'other@test.com')
       requester = create(:user, email: 'requester@test.com')
       header_token_for(requester)
 

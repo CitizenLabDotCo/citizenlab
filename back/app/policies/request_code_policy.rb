@@ -2,33 +2,36 @@
 
 class RequestCodePolicy < ApplicationPolicy
   # Guards a request for an in-place email confirmation code (the
-  # request_code_email action). `record` is the User found by the submitted email
-  # (may be nil); `user` is current_user (nil for unauthenticated callers, since
-  # the action skips authenticate_user). There are two legitimate callers:
+  # request_code_email action). `record` is the User the code would be sent to —
+  # looked up from the submitted `email` param, or current_user when no email is
+  # given (see the controller). `user` is current_user (nil for unauthenticated
+  # callers, since the action skips authenticate_user).
   #
-  #   1. Unauthenticated: someone signing up with email or logging in as a
-  #      passwordless user. They must NOT already be a fully-fledged account
-  #      (password set AND email confirmed) — such an account has no reason to
-  #      request an in-place confirmation code from the public flow, so we reject
-  #      it to avoid handing out codes for arbitrary existing accounts.
+  # There are exactly three legitimate situations:
   #
-  #   2. Authenticated re-confirmation: a logged-in user whose confirmed email has
-  #      aged past the permission's confirmed_email_expiry and must confirm it
-  #      again. This user DOES have a password and IS already confirmed
-  #      (confirmation_required? == false), so guard (1) would wrongly reject them.
-  #      We allow it precisely when the requester is the authenticated owner of the
-  #      email (user == record), before that guard runs.
+  #   1. email param + no authenticated user: the public flow (email signup /
+  #      passwordless login). `record` is the account that owns the submitted
+  #      email; there is no current_user to check it against.
+  #
+  #   2. no email param + authenticated user: re-confirmation of one's own email
+  #      (its confirmed_email_expiry window has elapsed). The controller falls
+  #      back to current_user, so `record == user`.
+  #
+  #   3. email param + authenticated user: same as (2) but the email is passed
+  #      explicitly. It MUST resolve to the authenticated user's own account
+  #      (`record == user`); an authenticated caller may never request a code for
+  #      someone else's email.
+  #
+  # In short: whenever there is an authenticated user, the code may only be sent
+  # to that same user. That single rule covers cases (2) and (3) and rejects the
+  # "logged in, but asking for another account's email" case.
   def request_code_email?
     return false unless app_configuration.feature_activated?('password_login')
     return false if record.nil?
     return false if record.email.blank?
 
-    # Caller (2): an authenticated user requesting a (re)confirmation code for
-    # their own email. Skips the "already a full account" guard below, which only
-    # exists to protect the unauthenticated flow.
-    if !user && !user == record && (record.password_digest? && !record.confirmation_required?)
-      return false
-    end
+    # An authenticated caller may only request a code for their own email.
+    return false if user && user != record
 
     return false if record.email_confirmation.code_reset_count >= max_retries - 1
 
