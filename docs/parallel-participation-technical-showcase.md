@@ -1,23 +1,12 @@
 <!--
-Parallel Participation — Technical Showcase (~6 min)
-Present as slides with "Marp for VS Code", or just view on GitHub
-(renders the mermaid diagrams; each `---` is a slide break).
+View on GitHub to see the diagrams rendered (mermaid); each `---` is a section break.
 Code stays off-screen — the links point to master for click-through.
 -->
----
-marp: true
-paginate: true
-title: Parallel Participation — Technical Showcase
----
 
-<!-- _paginate: false -->
+# Parallel Participation — Technical Showcase
+### Supporting parallel participation in the user interface
 
-# Parallel Participation
-### The rebuild that lets one phase run many methods
-
-Foundations · where we are · where we're going
-
-Edwin Kato — Tan squad · ~6 min
+The rebuild that lets one phase run many methods · foundations, where we are, where we're going
 
 ---
 
@@ -109,25 +98,12 @@ flowchart LR
 
 **✅ Live for all clients** — the redesigned back office + public page are the default ([#14339](https://github.com/CitizenLabDotCo/citizenlab/pull/14339)).
 
-**✅ First parallel method built** — run extra surveys in parallel ([#14303](https://github.com/CitizenLabDotCo/citizenlab/pull/14303)); merged, stacked, lands with its parent PR.
-
 **🟢 In flight**
-- [#14295](https://github.com/CitizenLabDotCo/citizenlab/pull/14295) — surveys alongside other methods (drag any element on the page)
+- [#14295](https://github.com/CitizenLabDotCo/citizenlab/pull/14295) — surveys alongside other methods (drag any element on the page). Includes the first parallel method — running **extra surveys in parallel** ([#14303](https://github.com/CitizenLabDotCo/citizenlab/pull/14303), merged into this branch) — which reaches master when #14295 lands.
 - [#14343](https://github.com/CitizenLabDotCo/citizenlab/pull/14343) — participation box reworked to render multiple methods
 - [#14352](https://github.com/CitizenLabDotCo/citizenlab/pull/14352) — file authoring moved into the page builder
 
 ---
-
-## 6 · Where we're going
-
-1. Generalize *extra surveys* → **any combination of methods in one phase**.
-2. Finish folding the remaining authoring surfaces into the page builder.
-3. **Sunset `description_multiloc`** once the safety-net window closes.
-4. Remove the `parallel_participation` flag — the transition is over.
-
----
-
-<!-- _paginate: false -->
 
 ## The one idea to remember
 
