@@ -126,10 +126,11 @@ describe('Project description builder display', () => {
 
     cy.visit(`/projects/${projectSlug}`);
 
-    // Both the Content Builder description and the attachment are visible.
+    // The description and the attachment (in the two-column's wide column)
+    // are both visible.
     cy.contains('Edited text.').should('be.visible');
     cy.get('#e2e-project-page-description-section')
-      .find('#e2e-file-attachment')
+      .find('.e2e-two-column #e2e-file-attachment')
       .contains('example.pdf')
       .should('be.visible');
   });
@@ -178,7 +179,7 @@ const projectPageLayoutWithFile = (fileId: string) => ({
   }),
   PROJECT_PAGE_DESCRIPTION: node({
     type: { resolvedName: 'ProjectDescriptionSection' },
-    nodes: ['TEXT', 'FILE'],
+    nodes: ['TEXT', 'SPACE', 'COLUMNS'],
     parent: 'PROJECT_PAGE_BODY',
     isCanvas: true,
     displayName: 'ProjectDescriptionSection',
@@ -189,10 +190,38 @@ const projectPageLayoutWithFile = (fileId: string) => ({
     parent: 'PROJECT_PAGE_DESCRIPTION',
     displayName: 'TextMultiloc',
   }),
+  SPACE: node({
+    type: { resolvedName: 'WhiteSpace' },
+    props: { size: 'small' },
+    parent: 'PROJECT_PAGE_DESCRIPTION',
+    displayName: 'WhiteSpace',
+  }),
+  COLUMNS: node({
+    type: { resolvedName: 'TwoColumn' },
+    nodes: ['LEFT', 'RIGHT'],
+    props: { columnLayout: '2-1' },
+    parent: 'PROJECT_PAGE_DESCRIPTION',
+    displayName: 'TwoColumn',
+  }),
+  LEFT: node({
+    type: { resolvedName: 'Container' },
+    nodes: ['FILE'],
+    props: { id: 'left' },
+    parent: 'COLUMNS',
+    isCanvas: true,
+    displayName: 'Container',
+  }),
+  RIGHT: node({
+    type: { resolvedName: 'Container' },
+    props: { id: 'right' },
+    parent: 'COLUMNS',
+    isCanvas: true,
+    displayName: 'Container',
+  }),
   FILE: node({
     type: { resolvedName: 'FileAttachment' },
     props: { fileId },
-    parent: 'PROJECT_PAGE_DESCRIPTION',
+    parent: 'LEFT',
     displayName: 'FileAttachment',
   }),
   PROJECT_PAGE_PHASES: node({
