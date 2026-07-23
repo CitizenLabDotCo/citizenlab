@@ -39,6 +39,7 @@ const IdeasNewSurveyPage = () => {
   // (via browser back/forward). The idea_id is added via history.replace
   // after submission, so it persists in the browser history entry.
   const [hadIdeaIdOnMount] = useState(() => !!searchParams.idea_id);
+  const [hasEntered, setHasEntered] = useState(false);
 
   // If we reach this component by hitting surveys/new directly, without a phase_id,
   // we fall back to the project's current phase.
@@ -74,44 +75,51 @@ const IdeasNewSurveyPage = () => {
       authUser: authUser?.data,
     });
 
-  if (disabledReason === 'posting_limited_max_reached' || hadIdeaIdOnMount) {
-    return <SurveySubmittedNotice project={project.data} />;
-  } else if (
-    disabledReason === 'inactive_phase' ||
-    disabledReason === 'project_inactive'
-  ) {
-    return <SurveyNotActiveNotice project={project.data} />;
-  }
-
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
-    const triggerAuthFlow = () => {
-      triggerAuthenticationFlow({
-        context: {
-          type: 'phase',
-          action: 'posting_idea',
-          id: phaseId || '',
-        },
-      });
-    };
-
-    const fixableByAuthentication =
-      !isNilOrError(authenticationRequirements) ||
-      (disabledReason && isFixableByAuthentication(disabledReason)) ||
-      false;
-
-    // By default, trigger the modal right away if relevant for better UX.
-    if (fixableByAuthentication) {
-      triggerAuthFlow();
+  if (!hasEntered) {
+    if (disabledReason === 'posting_limited_max_reached' || hadIdeaIdOnMount) {
+      return <SurveySubmittedNotice project={project.data} />;
     }
 
-    return (
-      <Unauthorized
-        fixableByAuthentication={fixableByAuthentication}
-        triggerAuthFlow={triggerAuthFlow}
-      />
-    );
+    if (
+      disabledReason === 'inactive_phase' ||
+      disabledReason === 'project_inactive'
+    ) {
+      return <SurveyNotActiveNotice project={project.data} />;
+    }
+
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
+      const triggerAuthFlow = () => {
+        triggerAuthenticationFlow({
+          context: {
+            type: 'phase',
+            action: 'posting_idea',
+            id: phaseId || '',
+          },
+        });
+      };
+
+      const fixableByAuthentication =
+        !isNilOrError(authenticationRequirements) ||
+        (disabledReason && isFixableByAuthentication(disabledReason)) ||
+        false;
+
+      // By default, trigger the modal right away if relevant for better UX.
+      if (fixableByAuthentication) {
+        triggerAuthFlow();
+      }
+
+      return (
+        <Unauthorized
+          fixableByAuthentication={fixableByAuthentication}
+          triggerAuthFlow={triggerAuthFlow}
+        />
+      );
+    }
+
+    // The gate only decides on entry. From here on, the form owns the session.
+    setHasEntered(true);
   }
 
   return <IdeasNewSurveyForm project={project} phaseId={phaseId} />;
