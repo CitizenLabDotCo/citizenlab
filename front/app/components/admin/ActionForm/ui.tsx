@@ -150,6 +150,10 @@ export const ModeCard = ({
  * muted one-line summary of its current value; expanded it reveals its
  * controls. This is the main tool against "the interface is too full" — every
  * optional setting hides behind one of these until the admin opens it.
+ *
+ * When `locked` is set the row is disabled: it can't be expanded, its children
+ * are never rendered, and a lock icon with a tooltip (`lockedTooltip`) explains
+ * why. Used to gate a section behind the tenant's pricing plan.
  */
 export const Expander = ({
   icon,
@@ -157,14 +161,57 @@ export const Expander = ({
   summary,
   children,
   defaultOpen = false,
+  locked = false,
+  lockedTooltip,
 }: {
   icon: IconNames;
   title: string;
   summary: ReactNode;
   children: ReactNode;
   defaultOpen?: boolean;
+  locked?: boolean;
+  lockedTooltip?: string;
 }) => {
   const [open, setOpen] = useState(defaultOpen);
+
+  if (locked) {
+    return (
+      <Box>
+        <Box w="100%" display="flex" alignItems="center" gap="10px" py="12px">
+          <Icon
+            name="chevron-right"
+            width="16px"
+            height="16px"
+            fill={colors.coolGrey300}
+          />
+          <Icon
+            name={icon}
+            width="16px"
+            height="16px"
+            fill={colors.coolGrey300}
+          />
+          <Text
+            as="span"
+            m="0"
+            fontSize="s"
+            fontWeight="semi-bold"
+            color="coolGrey500"
+          >
+            {title}
+          </Text>
+          {lockedTooltip && (
+            <IconTooltip
+              icon="lock"
+              iconSize="16px"
+              iconColor={colors.coolGrey500}
+              content={lockedTooltip}
+            />
+          )}
+          <Box flex="1 1 auto" />
+        </Box>
+      </Box>
+    );
+  }
 
   return (
     <Box>
