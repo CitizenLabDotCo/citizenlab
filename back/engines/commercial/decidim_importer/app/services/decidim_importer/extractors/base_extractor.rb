@@ -66,6 +66,25 @@ module DecidimImporter
         present_value(fallback)
       end
 
+      # An imported file's name: the first locale of the Decidim title, with the URL's file extension
+      # appended unless the title already carries it (e.g. "Compte-rendu" + ".pdf" → "Compte-rendu.pdf";
+      # "schema.pdf" stays "schema.pdf"). Falls back to the URL's own basename when there is no title.
+      # Nil when neither yields a name.
+      def attachment_name(url, title_multiloc)
+        title = present_value(title_multiloc.values.first)
+        return filename_from_url(url, nil) if title.nil?
+
+        ext = url_extension(url)
+        ext.empty? || title.downcase.end_with?(ext.downcase) ? title : "#{title}#{ext}"
+      end
+
+      # The file extension (with the leading dot) of the URL's path, or '' when it has none.
+      def url_extension(url)
+        File.extname(URI.parse(url.to_s).path.to_s)
+      rescue URI::InvalidURIError
+        ''
+      end
+
       def present_value(value)
         str = value.to_s.strip
         str.empty? ? nil : str

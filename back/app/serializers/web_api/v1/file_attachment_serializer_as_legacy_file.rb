@@ -8,7 +8,6 @@ class WebApi::V1::FileAttachmentSerializerAsLegacyFile < WebApi::V1::BaseSeriali
   attribute(:file) { |attachment| { url: attachment.file.content.url } }
   attribute(:name) { |attachment| attachment.file.name }
   attribute(:size) { |attachment| attachment.file.size }
-  attribute(:title_multiloc) { |attachment| attachment.file.title_multiloc }
   attribute(:created_at) { |attachment| attachment.file.created_at }
   attribute(:updated_at) { |attachment| attachment.file.updated_at }
 end

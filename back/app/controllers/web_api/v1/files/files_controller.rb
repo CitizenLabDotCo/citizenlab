@@ -80,7 +80,6 @@ class WebApi::V1::Files::FilesController < ApplicationController
     params.require(:file).permit(
       :category,
       :ai_processing_allowed,
-      title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     ).tap do |create_params|
       create_params[:content_by_content] = params.require(:file).permit(:content, :name)
@@ -93,7 +92,6 @@ class WebApi::V1::Files::FilesController < ApplicationController
       :name,
       :category,
       :ai_processing_allowed,
-      title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )
   end

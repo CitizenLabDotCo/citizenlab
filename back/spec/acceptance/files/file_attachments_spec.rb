@@ -69,7 +69,6 @@ resource 'FileAttachments' do
             file_url: file_attachment.file.content.url,
             file_name: file_attachment.file.name,
             file_size: file_attachment.file.size,
-            file_title_multiloc: file_attachment.file.title_multiloc,
             created_at: anything,
             updated_at: anything
           },
@@ -134,7 +133,6 @@ resource 'FileAttachments' do
             file_url: file.content.url,
             file_name: file.name,
             file_size: file.size,
-            file_title_multiloc: file.title_multiloc,
             created_at: anything,
             updated_at: anything
           },

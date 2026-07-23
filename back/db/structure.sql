@@ -2670,8 +2670,7 @@ CREATE TABLE public.files (
     category character varying DEFAULT 'other'::character varying NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb,
     tsvector tsvector GENERATED ALWAYS AS ((setweight(to_tsvector('simple'::regconfig, (COALESCE(name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('simple'::regconfig, COALESCE((description_multiloc)::text, ''::text)), 'B'::"char"))) STORED,
-    ai_processing_allowed boolean DEFAULT false NOT NULL,
-    title_multiloc jsonb DEFAULT '{}'::jsonb
+    ai_processing_allowed boolean DEFAULT false NOT NULL
 );
 
 
@@ -9454,7 +9453,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260701113056'),
 ('20260630140754'),
 ('20260625093937'),
-('20260622121000'),
 ('20260622120000'),
 ('20260618120100'),
 ('20260618120000'),

@@ -22,15 +22,20 @@ RSpec.describe DecidimImporter::Extractors::FilesExtractor do
     }.merge(overrides)
   end
 
-  it 'builds a Files::File with the decoded URL basename as name and the Decidim title/description' do
+  it 'names the Files::File from the title + the URL extension, sets the description, and no title_multiloc' do
     file = extract([row]).first
 
     expect(file.model_name).to eq('files/file')
     attrs = file.attributes
-    expect(attrs['name']).to eq("Plan d'actions.pdf") # percent-decoded basename, extension preserved
-    expect(attrs['title_multiloc']).to eq('fr-FR' => 'Compte-rendu')
+    expect(attrs['name']).to eq('Compte-rendu.pdf') # title + the URL's file extension
+    expect(attrs).not_to have_key('title_multiloc')
     expect(attrs['description_multiloc']).to eq('fr-FR' => 'Notes de réunion')
     expect(attrs['remote_content_url']).to eq("http://example.org/files/redirect/abc/Plan%20d'actions.pdf")
+  end
+
+  it 'uses the title alone when the URL carries no extension' do
+    attrs = extract([row('file' => 'http://example.org/files/redirect/abc')]).first.attributes
+    expect(attrs['name']).to eq('Compte-rendu')
   end
 
   it 'registers a files_project ownership join linking the file to its project' do
@@ -50,9 +55,9 @@ RSpec.describe DecidimImporter::Extractors::FilesExtractor do
     expect(file_attachments).to be_empty
   end
 
-  it 'falls back to the attachment title when the URL has no usable filename' do
-    attrs = extract([row('file' => 'http://example.org/')]).first.attributes
-    expect(attrs['name']).to eq('Compte-rendu')
+  it 'falls back to the decoded URL basename when the attachment has no title' do
+    attrs = extract([row('title' => '')]).first.attributes
+    expect(attrs['name']).to eq("Plan d'actions.pdf")
   end
 
   it 'skips an attachment with no file URL' do

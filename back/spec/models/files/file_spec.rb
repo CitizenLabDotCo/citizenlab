@@ -42,29 +42,6 @@ RSpec.describe Files::File do
         expect(file.errors[:description_multiloc]).to be_present
       end
     end
-
-    describe 'title_multiloc' do
-      it 'accepts valid multiloc hash' do
-        file.title_multiloc = { 'en' => 'English title', 'fr-FR' => 'Titre français' }
-        expect(file).to be_valid
-      end
-
-      it 'accepts empty multiloc hash' do
-        file.title_multiloc = {}
-        expect(file).to be_valid
-      end
-
-      it 'accepts nil' do
-        file.title_multiloc = nil
-        expect(file).to be_valid
-      end
-
-      it 'rejects invalid locale keys' do
-        file.title_multiloc = { 'invalid-locale' => 'Some title' }
-        expect(file).not_to be_valid
-        expect(file.errors[:title_multiloc]).to be_present
-      end
-    end
   end
 
   describe 'associations' do

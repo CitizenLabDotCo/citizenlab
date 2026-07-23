@@ -48,9 +48,9 @@ RSpec.describe DecidimImporter::Importer do
     it 'imports a process\'s attachments as Files engine files owned by (but not attached to) the project' do
       template = described_class.from_directory(export_root).build_template.models['models']
 
-      # The file name is the URL's decoded basename, with its extension preserved.
+      # The file name is the attachment title with the URL's extension appended.
       process_files = template['files/file']
-        .select { |f| f['name'].in?(['Compte-rendu réunion.pdf', "Plan d'actions.pdf"]) }
+        .select { |f| f['name'].in?(['Compte-rendu de la réunion.pdf', "Plan d'actions.pdf"]) }
       expect(process_files.size).to eq(2)
       expect(process_files.map { |f| f['remote_content_url'] })
         .to all(start_with('http://example.org/files/redirect/'))
@@ -59,7 +59,7 @@ RSpec.describe DecidimImporter::Importer do
       # description — but the *process* files are not surfaced as attachments (no file_attachment).
       expect(template['files/files_project'].map { |fp| fp['project_ref'] }).to all(be_present)
       attached_names = (template['files/file_attachment'] || []).map { |fa| fa['file_ref']['name'] }
-      expect(attached_names).not_to include('Compte-rendu réunion.pdf', "Plan d'actions.pdf")
+      expect(attached_names).not_to include('Compte-rendu de la réunion.pdf', "Plan d'actions.pdf")
     end
 
     it 'imports proposal attachments as file attachments on the idea, owned by its project' do
@@ -512,7 +512,7 @@ RSpec.describe DecidimImporter::Importer do
       it 'imports a meeting attachment as an event file attachment, owned by the event’s project' do
         template = described_class.from_directory(export_root).build_template.models['models']
 
-        file = template['files/file'].find { |f| f['name'] == 'flyer-atelier.pdf' }
+        file = template['files/file'].find { |f| f['name'] == 'Flyer atelier.pdf' }
         expect(file).to be_present
         event = template['event'].find { |e| e['title_multiloc']['fr-FR'] == 'Atelier de quartier' }
         attachment = template['files/file_attachment'].find { |fa| fa['file_ref'].equal?(file) }

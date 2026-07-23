@@ -1,5 +1,3 @@
-import { Multiloc } from 'typings';
-
 import { Keys } from 'utils/cl-react-query/types';
 
 import projectFilesKeys from './keys';
@@ -16,7 +14,6 @@ export interface IProjectFileData {
     ordering: number | null;
     name: string;
     size: number;
-    title_multiloc?: Multiloc;
     created_at: string;
     updated_at: string;
   };

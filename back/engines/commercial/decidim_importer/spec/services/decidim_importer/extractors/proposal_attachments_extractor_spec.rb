@@ -27,13 +27,14 @@ RSpec.describe DecidimImporter::Extractors::ProposalAttachmentsExtractor do
     }.merge(overrides)
   end
 
-  it 'builds a Files::File with the decoded URL basename as name and the Decidim title/description' do
+  it 'names the Files::File from the title (extension not doubled), sets the description, and no title_multiloc' do
     file = extract([row]).first
 
     expect(file.model_name).to eq('files/file')
     attrs = file.attributes
-    expect(attrs['name']).to eq('images 1.jpg') # percent-decoded basename
-    expect(attrs['title_multiloc']).to eq('fr-FR' => 'images-1.jpg')
+    # The title already ends in `.jpg` (as does the URL), so the extension isn't appended twice.
+    expect(attrs['name']).to eq('images-1.jpg')
+    expect(attrs).not_to have_key('title_multiloc')
     expect(attrs['description_multiloc']).to eq('fr-FR' => 'une image')
     expect(attrs['remote_content_url']).to eq(row['file'])
   end

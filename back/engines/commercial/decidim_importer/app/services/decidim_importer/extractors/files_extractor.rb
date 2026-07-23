@@ -6,7 +6,8 @@ module DecidimImporter
     #
     # Each Decidim attachment becomes two records:
     #   * `Files::File` — the file itself (content fetched from `remote_content_url` at apply time),
-    #     carrying the Decidim title/description multilocs and a filename derived from the URL.
+    #     carrying the Decidim description multiloc and a name built from the attachment title (with the
+    #     URL's file extension). No `title_multiloc` is set — the human-readable title *is* the name.
     #   * `Files::FilesProject` — the ownership join placing the file in the project's file repository,
     #     so it's available in the project's files and can be linked from the project description.
     #
@@ -52,7 +53,7 @@ module DecidimImporter
         url = present_value(row[COLUMNS[:file]])
         return skip(uid, 'attachment has no file url') if url.nil?
 
-        name = filename_for(url, row)
+        name = attachment_name(url, multiloc(row[COLUMNS[:title]]))
         return skip(uid, 'attachment has no derivable name') if name.nil?
 
         # An explicit id so the project-description layout's FileAttachment block can reference this
@@ -60,7 +61,6 @@ module DecidimImporter
         file = Record.new('files/file', {
           'id' => SecureRandom.uuid,
           'name' => name,
-          'title_multiloc' => multiloc(row[COLUMNS[:title]]),
           'description_multiloc' => multiloc(row[COLUMNS[:description]]),
           'remote_content_url' => url
         })
@@ -77,10 +77,6 @@ module DecidimImporter
         files_project.reference('file', file)
         files_project.reference('project', project)
         ref_map.register("#{uid}-files-project", files_project)
-      end
-
-      def filename_for(url, row)
-        filename_from_url(url, multiloc(row[COLUMNS[:title]]).values.first)
       end
 
       def skip(uid, reason)

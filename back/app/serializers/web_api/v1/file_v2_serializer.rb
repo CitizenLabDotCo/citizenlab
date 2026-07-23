@@ -6,7 +6,6 @@ class WebApi::V1::FileV2Serializer < WebApi::V1::BaseSerializer
   attributes(
     :name,
     :content,
-    :title_multiloc,
     :description_multiloc,
     :category,
     :mime_type,

@@ -29,7 +29,8 @@ RSpec.describe DecidimImporter::Extractors::MeetingAttachmentsExtractor do
     file = extract([row]).run.first
 
     expect(file.model_name).to eq('files/file')
-    expect(file.attributes['name']).to eq('flyer.pdf')
+    expect(file.attributes['name']).to eq('Flyer.pdf') # title + the URL's extension
+    expect(file.attributes).not_to have_key('title_multiloc')
     expect(file.attributes['remote_content_url']).to eq('http://example.org/files/redirect/flyer.pdf')
 
     files_project = ref_map.fetch('decidim--attachment--500-files-project')

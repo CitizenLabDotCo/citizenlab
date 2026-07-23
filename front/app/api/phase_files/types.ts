@@ -1,5 +1,3 @@
-import { Multiloc } from 'typings';
-
 export interface IPhaseFileData {
   id: string;
   type: string;
@@ -10,7 +8,6 @@ export interface IPhaseFileData {
     ordering: number | null;
     name: string;
     size: number;
-    title_multiloc?: Multiloc;
     created_at: string;
     updated_at: string;
   };

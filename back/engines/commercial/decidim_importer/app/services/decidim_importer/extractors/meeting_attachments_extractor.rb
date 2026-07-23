@@ -53,14 +53,12 @@ module DecidimImporter
         url = present_value(row[COLUMNS[:file]])
         return skip(uid, 'attachment has no file url') if url.nil?
 
-        title = multiloc(row[COLUMNS[:title]])
-        name = filename_from_url(url, title.values.first)
+        name = attachment_name(url, multiloc(row[COLUMNS[:title]]))
         return skip(uid, 'attachment has no derivable name') if name.nil?
 
         file = Record.new('files/file', {
           'id' => SecureRandom.uuid,
           'name' => name,
-          'title_multiloc' => title,
           'description_multiloc' => multiloc(row[COLUMNS[:description]]),
           'remote_content_url' => url
         })

@@ -44,14 +44,6 @@ FactoryBot.define do
       category { 'other' }
     end
 
-    trait :with_title do
-      title_multiloc do
-        AppConfiguration.instance.settings('core', 'locales').index_with do |locale|
-          "Title in #{locale}"
-        end
-      end
-    end
-
     trait :with_description do
       description_multiloc do
         AppConfiguration.instance.settings('core', 'locales').index_with do |locale|

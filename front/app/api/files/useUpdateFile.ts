@@ -4,7 +4,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import filesKeys from './keys';
+import eventsKeys from './keys';
 import { IFile, IUpdateFileProperties } from './types';
 
 const updateFile = async (requestBody: IUpdateFileProperties) => {
@@ -20,7 +20,7 @@ const useUpdateFile = () => {
   return useMutation<IFile, CLErrors, IUpdateFileProperties>({
     mutationFn: updateFile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: filesKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: eventsKeys.lists() });
     },
   });
 };

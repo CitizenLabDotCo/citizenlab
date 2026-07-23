@@ -31,7 +31,6 @@ export interface IUpdateFileProperties {
   file: {
     name: string;
     category?: FileCategory;
-    title_multiloc?: Multiloc;
     description_multiloc?: Multiloc;
     ai_processing_allowed?: boolean;
   };
@@ -94,7 +93,7 @@ export interface IFileData {
 }
 
 export interface IFileAttributes {
-  title_multiloc: Multiloc;
+  title: string;
   name: string;
   mime_type: string;
   size: number; // in bytes,

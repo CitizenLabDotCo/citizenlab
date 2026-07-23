@@ -13,11 +13,9 @@ import styled from 'styled-components';
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileById from 'api/files/useFileById';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getFileDisplayName, returnFileSize } from 'utils/fileUtils';
+import { returnFileSize } from 'utils/fileUtils';
 
 import messages from '../FileUploader/messages';
 
@@ -86,7 +84,6 @@ interface Props {
 
 const FileAttachmentDisplay = ({ fileAttachment, onDeleteClick }: Props) => {
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
 
   const { data: file, error } = useFileById(
     fileAttachment.relationships.file.data.id
@@ -97,9 +94,7 @@ const FileAttachmentDisplay = ({ fileAttachment, onDeleteClick }: Props) => {
   }
 
   const url = file.data.attributes.content.url;
-  const { size, name, title_multiloc } = file.data.attributes;
-
-  const filename = getFileDisplayName(name, localize(title_multiloc));
+  const { size, name: filename } = file.data.attributes;
 
   return (
     <Container error={!!error}>
@@ -108,7 +103,7 @@ const FileAttachmentDisplay = ({ fileAttachment, onDeleteClick }: Props) => {
         <FileDownloadLink
           error={!!error}
           href={url}
-          download={name}
+          download={filename}
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -8,7 +8,6 @@ class WebApi::V1::Files::FileAttachmentSerializer < WebApi::V1::BaseSerializer
   attribute(:file_url) { |attachment| attachment.file.content.url }
   attribute(:file_name) { |attachment| attachment.file.name }
   attribute(:file_size) { |attachment| attachment.file.size }
-  attribute(:file_title_multiloc) { |attachment| attachment.file.title_multiloc }
 
   belongs_to :file, serializer: WebApi::V1::FileV2Serializer
 
