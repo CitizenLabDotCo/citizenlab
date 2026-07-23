@@ -90,7 +90,7 @@ export const missingDataFlow = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
           state.flow
@@ -120,7 +120,7 @@ export const missingDataFlow = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
           state.flow

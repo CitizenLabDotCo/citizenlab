@@ -98,7 +98,7 @@ export const emailFlow = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
           state.flow

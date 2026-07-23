@@ -14,7 +14,7 @@ import {
 
 import { Step } from './typings';
 
-export const checkMissingData = (
+export const checkMissingData = async (
   requirements: AuthenticationRequirements['requirements'],
   { context }: AuthenticationData,
   flow: 'signup' | 'signin'
@@ -27,11 +27,14 @@ export const checkMissingData = (
     // confirmation step without a code having been auto-sent, so request one.
     // The call is idempotent (onlyIfFirstTime) and authenticated (backend uses
     // current_user), so no email is passed and reopening the flow won't
-    // duplicate. Fire-and-forget: failures fall back to the resend button.
+    // duplicate. Awaited on purpose: the code only exists once this resolves, so
+    // returning earlier would show the code input for a code that hasn't been
+    // generated yet, and a code submitted in that window is rejected as invalid.
+    // Failures are swallowed - the user falls back to the resend button.
     if (
       requirements.authentication.email_action_required === 'reconfirm_email'
     ) {
-      requestCodeEmail({ onlyIfFirstTime: true });
+      await requestCodeEmail({ onlyIfFirstTime: true }).catch(() => {});
     }
     return emailStep;
   }
@@ -41,7 +44,7 @@ export const checkMissingData = (
     if (
       requirements.authentication.phone_action_required === 'reconfirm_phone'
     ) {
-      requestCodeNewPhone({ onlyIfFirstTime: true });
+      await requestCodeNewPhone({ onlyIfFirstTime: true }).catch(() => {});
     }
     return phoneStep;
   }

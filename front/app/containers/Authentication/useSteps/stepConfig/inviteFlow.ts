@@ -30,7 +30,7 @@ export const inviteFlow = (
           const { requirements } = await getRequirements();
           const authenticationData = getAuthenticationData();
 
-          const missingDataStep = checkMissingData(
+          const missingDataStep = await checkMissingData(
             requirements,
             authenticationData,
             'signup'

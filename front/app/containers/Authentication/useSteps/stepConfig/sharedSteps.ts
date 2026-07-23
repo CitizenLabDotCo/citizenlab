@@ -61,7 +61,7 @@ export const sharedSteps = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
           flow
@@ -111,7 +111,7 @@ export const sharedSteps = (
           disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
         if (signedIn) {
-          const missingDataStep = checkMissingData(
+          const missingDataStep = await checkMissingData(
             requirements,
             authenticationData,
             flow
