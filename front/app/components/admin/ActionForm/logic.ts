@@ -5,7 +5,6 @@
 // writes are expressed as `Changes` for `onChange`.
 import { FormatMessage } from 'typings';
 
-import { IdMethod } from 'api/id_methods/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import {
   IPhasePermissionData,
@@ -170,7 +169,7 @@ export const buildSummary = (
   return chips;
 };
 
-// Summary for the SSO variant: the sign-in method is fixed, so the per-method
+// Summary for the SSO variant: the identification method is fixed, so the per-method
 // chips are replaced by a single SSO chip.
 export const buildSummarySSO = (
   permission: IPhasePermissionData,
@@ -242,10 +241,6 @@ export const buildSummarySSO = (
   }
   return chips;
 };
-
-/** Readable name of the fixed SSO sign-in method */
-export const ssoMethodName = (authenticationMethod?: IdMethod): string =>
-  authenticationMethod?.data.attributes.method_metadata?.name ?? '';
 
 // ---- One-line summaries shown on the collapsed setting rows ----
 export const groupsSummary = (

@@ -310,6 +310,9 @@
   "comment (input term)": {
     "nl-NL": "opmerking"
   },
+  "button": {
+    "de-DE": "Button"
+  },
   "input form": {
     "de-DE": "Eingabeformular"
   },

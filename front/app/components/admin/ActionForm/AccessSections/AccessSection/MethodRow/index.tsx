@@ -13,9 +13,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import { AuthMethodKey } from '../../../types';
 import { METHOD_META, AUTH_METHOD_LABELS } from '../../constants';
-import sharedMessages from '../../messages';
 import RecencyControl from '../../RecencyControl';
-import { linkStyle } from '../../shared';
 
 import messages from './messages';
 
@@ -29,7 +27,6 @@ interface Props {
   // always keep at least one. The toggle is disabled and explains why.
   locked?: boolean;
   onChange: (next: { enabled: boolean; expiry: number | null }) => void;
-  onShowReturnedFields?: () => void;
 }
 
 const MethodRow = ({
@@ -40,7 +37,6 @@ const MethodRow = ({
   unavailableReason,
   locked = false,
   onChange,
-  onShowReturnedFields,
 }: Props) => {
   const { formatMessage } = useIntl();
   const meta = METHOD_META[methodKey];
@@ -86,21 +82,6 @@ const MethodRow = ({
           </Box>
         }
       />
-      {available && methodKey === 'verification' && onShowReturnedFields && (
-        <Box ml="42px" mt="6px">
-          <Text
-            as="span"
-            m="0"
-            fontSize="xs"
-            style={linkStyle}
-            role="button"
-            tabIndex={0}
-            onClick={onShowReturnedFields}
-          >
-            {formatMessage(sharedMessages.seeWhichFieldsThisReturns)}
-          </Text>
-        </Box>
-      )}
       {enabled && (
         <Box ml="42px" mt="6px">
           <RecencyControl

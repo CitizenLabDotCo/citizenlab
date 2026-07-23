@@ -31,6 +31,8 @@ describe('Native survey: multiple responses per user', () => {
         const projectId = project.body.data.id;
         const projectSlug = project.body.data.attributes.slug;
 
+        cy.apiAddAboutBox(projectId);
+
         return cy
           .apiCreatePhase({
             projectId,
