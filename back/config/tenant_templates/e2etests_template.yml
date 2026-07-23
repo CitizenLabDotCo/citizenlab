@@ -711,6 +711,43 @@ models:
     roles: []
     created_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
+  # Confirmation expiry test users. The `_timediff` suffix is resolved by the
+  # deserializer as an offset in hours from the start of the day the template is
+  # applied, so these stay exactly 10 days stale on every `make e2e-setup`.
+  - &email_confirmed_10_days_ago
+    email: email_confirmed_10_days_ago@govocal.com
+    first_name: Emily
+    last_name: Expired
+    locale: en
+    bio_multiloc: {}
+    gender:
+    birthyear:
+    domicile:
+    password: democracy2.0
+    remote_avatar_url:
+    roles: []
+    confirmation_required: false
+    email_confirmed_at_timediff: -240
+    created_at: '2018-03-28 13:35:02'
+    updated_at: '2018-03-28 13:35:02'
+  - &phone_confirmed_10_days_ago
+    email: phone_confirmed_10_days_ago@govocal.com
+    first_name: Phoebe
+    last_name: Expired
+    locale: en
+    bio_multiloc: {}
+    gender:
+    birthyear:
+    domicile:
+    password: democracy2.0
+    remote_avatar_url:
+    roles: []
+    confirmation_required: false
+    email_confirmed_at: '2018-03-28 13:35:02'
+    phone: '+14155552671'
+    phone_confirmed_at_timediff: -240
+    created_at: '2018-03-28 13:35:02'
+    updated_at: '2018-03-28 13:35:02'
   email_campaigns/unsubscription_token:
     - token: ABzaQSlYBNRWlF8kHDl5NoK7oJwVduoDgy4B4Tm2zeqCYdqx5blnB8OliZ6JtBoX
       user_ref: *admin
