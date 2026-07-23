@@ -2564,7 +2564,7 @@
   "app.errors.max_invites_limit_exceeded1": "Die Anzahl der Einladungen übersteigt die Grenze von 1000.",
   "app.errors.maximum_attendees_greater_than1": "Die maximale Anzahl der angemeldeten Personen muss größer als 0 sein.",
   "app.errors.maximum_attendees_greater_than_attendees_count1": "Die maximale Anzahl der angemeldeten Personen muss größer oder gleich der aktuellen Anzahl der angemeldeten Personen sein.",
-  "app.errors.new_phone_blank": "Bitte Telefonnummer eingebn.",
+  "app.errors.new_phone_blank": "Bitte Telefonnummer eingeben.",
   "app.errors.new_phone_invalid": "Bitte geben Sie eine gültige Telefonnummer ein.",
   "app.errors.new_phone_taken": "Diese Telefonnummer wird bereits verwendet. Bitte versuchen Sie es mit einer anderen.",
   "app.errors.no_invites_specified": "Es konnten keine E-Mail-Adressen gefunden werden.",
