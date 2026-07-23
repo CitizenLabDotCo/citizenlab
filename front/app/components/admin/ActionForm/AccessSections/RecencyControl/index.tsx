@@ -53,10 +53,10 @@ const RecencyControl = ({ expiry, verb, onChange }: Props) => {
   }
 
   const options = [
-    { value: '0', label: formatMessage(messages.inTheLast30Minutes) },
+    { value: '0', label: formatMessage(messages.thirtyMinutes) },
     ...PRESET_DAYS.map((days) => ({
       value: String(days),
-      label: formatMessage(messages.inTheLastNDays, { days }),
+      label: formatMessage(messages.nDays, { days }),
     })),
   ];
 
@@ -65,7 +65,7 @@ const RecencyControl = ({ expiry, verb, onChange }: Props) => {
   if (expiry !== 0 && !PRESET_DAYS.includes(expiry)) {
     options.push({
       value: String(expiry),
-      label: formatMessage(messages.inTheLastNDays, { days: expiry }),
+      label: formatMessage(messages.nDays, { days: expiry }),
     });
   }
 

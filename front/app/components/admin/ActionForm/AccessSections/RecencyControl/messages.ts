@@ -10,20 +10,20 @@ export default defineMessages({
     defaultMessage: '+ Require recent confirmation',
   },
   reverifyLabel: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.reverifyLabel',
-    defaultMessage: 'Re-verify:',
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.reverifyLabel2',
+    defaultMessage: 'Re-verify if last verification is older than:',
   },
   reconfirmLabel: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.reconfirmLabel',
-    defaultMessage: 'Re-confirm:',
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.reconfirmLabel2',
+    defaultMessage: 'Re-confirm if last confirmation is older than:',
   },
-  inTheLast30Minutes: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.inTheLast30Minutes',
-    defaultMessage: 'In the last 30 minutes',
+  thirtyMinutes: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.thirtyMinutes',
+    defaultMessage: '30 minutes',
   },
-  inTheLastNDays: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.inTheLastNDays',
-    defaultMessage: 'In the last {days, plural, one {# day} other {# days}}',
+  nDays: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.nDays',
+    defaultMessage: '{days, plural, one {# day} other {# days}}',
   },
   remove: {
     id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.remove',
