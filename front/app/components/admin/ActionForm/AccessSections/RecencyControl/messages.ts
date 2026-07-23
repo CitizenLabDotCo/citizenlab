@@ -1,28 +1,24 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  requireRecentVerification: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.requireRecentVerification',
-    defaultMessage: '+ Require recent verification',
+  howRecentlyVerified: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.howRecentlyVerified',
+    defaultMessage: 'How recently should users be verified?',
   },
-  requireRecentConfirmation: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.requireRecentConfirmation',
-    defaultMessage: '+ Require recent confirmation',
+  howRecentlyConfirmed: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.howRecentlyConfirmed',
+    defaultMessage: 'How recently should users be confirmed?',
   },
-  reverifyIfOlderThan: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.reverifyIfOlderThan',
-    defaultMessage: 'Re-verify if older than',
+  inTheLast30Minutes: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.inTheLast30Minutes',
+    defaultMessage: 'In the last 30 minutes',
   },
-  reconfirmIfOlderThan: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.reconfirmIfOlderThan',
-    defaultMessage: 'Re-confirm if older than',
+  inTheLastNDays: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.inTheLastNDays',
+    defaultMessage: 'In the last {days, plural, one {# day} other {# days}}',
   },
-  days: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.days',
-    defaultMessage: 'days',
-  },
-  remove: {
-    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.remove',
-    defaultMessage: 'remove',
+  onceIsEnough: {
+    id: 'app.components.admin.ActionForm.AccessSections.RecencyControl.onceIsEnough',
+    defaultMessage: 'Once is enough',
   },
 });
