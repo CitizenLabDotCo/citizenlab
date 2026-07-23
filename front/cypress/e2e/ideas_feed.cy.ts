@@ -345,10 +345,9 @@ describe('Ideas Feed (Perspectives) on a phase that does not offer it', () => {
         phaseId = phase.body.data.id;
 
         return cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: randomString(),
           ideaContent: randomString(),
-          phaseIds: [phaseId],
         });
       });
   });
