@@ -205,8 +205,10 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      section_nodes = result['PROJECT_PAGE_DESCRIPTION']['nodes']
-      expect(result[section_nodes.last]['props']).to eq({ 'fileId' => attachment.file_id })
+      columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last
+      left_id = result[columns_id]['nodes'].first
+      file_node_id = result[left_id]['nodes'].first
+      expect(result[file_node_id]['props']).to eq({ 'fileId' => attachment.file_id })
     end
   end
 
@@ -218,19 +220,36 @@ describe ContentBuilder::ProjectPageLayoutService do
       create(:file_attachment, file: file, attachable: project, position: position)
     end
 
-    it 'appends a FileAttachment node per file at the bottom of the description section, ordered by position' do
+    it 'appends a white space and a 2-1 two-column with the files in the wide column, ordered by position' do
       later = attach_file(project, 2)
       earlier = attach_file(project, 1)
 
       json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
       result = service.append_file_nodes(json, project)
 
-      file_node_ids = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last(2)
+      space_id, columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last(2)
+      expect(result[space_id]).to include(
+        'type' => { 'resolvedName' => 'WhiteSpace' },
+        'props' => { 'size' => 'small' },
+        'parent' => 'PROJECT_PAGE_DESCRIPTION'
+      )
+      expect(result[columns_id]).to include(
+        'type' => { 'resolvedName' => 'TwoColumn' },
+        'props' => { 'columnLayout' => '2-1' },
+        'parent' => 'PROJECT_PAGE_DESCRIPTION'
+      )
+
+      left_id, right_id = result[columns_id]['nodes']
+      expect(result[left_id]).to include('type' => { 'resolvedName' => 'Container' }, 'isCanvas' => true)
+      expect(result[right_id]['nodes']).to eq([])
+
+      file_node_ids = result[left_id]['nodes']
+      expect(file_node_ids.length).to eq(2)
       expect(result[file_node_ids[0]]['props']).to eq({ 'fileId' => earlier.file_id })
       expect(result[file_node_ids[1]]['props']).to eq({ 'fileId' => later.file_id })
       expect(result[file_node_ids[0]]).to include(
         'type' => { 'resolvedName' => 'FileAttachment' },
-        'parent' => 'PROJECT_PAGE_DESCRIPTION',
+        'parent' => left_id,
         'isCanvas' => false
       )
       expect(result[file_node_ids[0]]['custom']['title']).to eq(
@@ -239,7 +258,34 @@ describe ContentBuilder::ProjectPageLayoutService do
       )
     end
 
-    it 'does not duplicate files the layout already references' do
+    it 'still appends the block for unreferenced files when the layout already references one of them' do
+      placed = attach_file(project, 1)
+      to_migrate = attach_file(project, 2)
+
+      json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
+      json['manual'] = {
+        'type' => { 'resolvedName' => 'FileAttachment' },
+        'nodes' => [],
+        'props' => { 'fileId' => placed.file_id },
+        'custom' => {},
+        'hidden' => false,
+        'parent' => 'PROJECT_PAGE_DESCRIPTION',
+        'isCanvas' => false,
+        'displayName' => 'FileAttachment',
+        'linkedNodes' => {}
+      }
+      json['PROJECT_PAGE_DESCRIPTION']['nodes'] << 'manual'
+
+      result = service.append_file_nodes(json, project)
+
+      expect(result['manual']).to eq(json['manual'])
+      columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last
+      left_id = result[columns_id]['nodes'].first
+      migrated_file_ids = result[left_id]['nodes'].map { |id| result[id]['props']['fileId'] }
+      expect(migrated_file_ids).to eq([to_migrate.file_id])
+    end
+
+    it 'returns the layout unchanged when every file is already referenced' do
       attach_file(project, 1)
 
       once = service.append_file_nodes(service.from_description_multiloc({}), project)
@@ -249,7 +295,7 @@ describe ContentBuilder::ProjectPageLayoutService do
     end
 
     it 'inserts before the phases widget when the description section is absent' do
-      attachment = attach_file(project, 1)
+      attach_file(project, 1)
       json = service.from_description_multiloc({})
       json.delete('PROJECT_PAGE_DESCRIPTION')
       json['PROJECT_PAGE_BODY']['nodes'] = %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
@@ -257,9 +303,9 @@ describe ContentBuilder::ProjectPageLayoutService do
       result = service.append_file_nodes(json, project)
 
       body_nodes = result['PROJECT_PAGE_BODY']['nodes']
-      node_id = "d_file_#{attachment.file_id}"
-      expect(body_nodes.index(node_id)).to eq(body_nodes.index('PROJECT_PAGE_PHASES') - 1)
-      expect(result[node_id]['parent']).to eq('PROJECT_PAGE_BODY')
+      expect(body_nodes.index('d_files_space')).to eq(body_nodes.index('PROJECT_PAGE_PHASES') - 2)
+      expect(body_nodes.index('d_files_columns')).to eq(body_nodes.index('PROJECT_PAGE_PHASES') - 1)
+      expect(result['d_files_columns']['parent']).to eq('PROJECT_PAGE_BODY')
     end
 
     it 'returns the layout unchanged when the project has no files' do
