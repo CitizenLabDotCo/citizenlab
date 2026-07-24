@@ -4,7 +4,7 @@
 #
 # Table name: analytics_fact_project_statuses
 #
-#  dimension_project_id :uuid
+#  dimension_project_id :uuid             primary key
 #  status               :string
 #  finished             :boolean
 #  timestamp            :datetime

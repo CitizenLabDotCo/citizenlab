@@ -362,7 +362,7 @@ describe('Survey Builder - Logic and Advanced Features', () => {
   });
 
   it('creates survey with page logic and user fills in the survey based on that logic', () => {
-    cy.intercept('POST', '**/ideas').as('saveSurvey');
+    cy.intercept('POST', '**/phases/*/inputs').as('saveSurvey');
 
     const chooseOneOption1 = randomString();
     const chooseOneOption2 = randomString();
@@ -487,7 +487,7 @@ describe('Survey Builder - Logic and Advanced Features', () => {
   });
 
   it('creates survey with page logic and question logic where question logic takes precedence over page logic', () => {
-    cy.intercept('POST', '**/ideas').as('saveSurvey');
+    cy.intercept('POST', '**/phases/*/inputs').as('saveSurvey');
 
     const chooseOneOption1 = randomString();
     const chooseOneOption2 = randomString();

@@ -112,6 +112,7 @@ RSpec.describe ParticipationMethod::Information do
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be false }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:transitive?) { is_expected.to be false }

@@ -74,6 +74,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_standalone_placement?
+      false
+    end
+
     def supports_custom_field_categories?
       true
     end
