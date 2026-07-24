@@ -16,12 +16,12 @@ describe IdeaPolicy do
     end
 
     let!(:project) do
-      create(:project, visible_to: 'groups', groups: [group])
+      create(:project_with_active_ideation_phase, visible_to: 'groups', groups: [group])
     end
     let!(:idea) { create(:idea, project: project) }
 
     it { is_expected.not_to permit(:show) }
-    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
 
@@ -37,11 +37,11 @@ describe IdeaPolicy do
         { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
       ])
     end
-    let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
+    let!(:project) { create(:project_with_active_ideation_phase, visible_to: 'groups', groups: [group]) }
     let!(:idea) { create(:idea, project: project) }
 
     it { is_expected.to permit(:show)    }
-    it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
+    it { is_expected.not_to permit(:create) }
     it { is_expected.not_to permit(:update)  }
     it { is_expected.not_to permit(:destroy) }
 

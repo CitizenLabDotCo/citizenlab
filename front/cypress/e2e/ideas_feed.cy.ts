@@ -133,11 +133,10 @@ describe('Ideas Feed (Perspectives)', () => {
           chain = chain.then(() => {
             return cy
               .apiCreateIdea({
-                projectId,
+                phaseId,
                 ideaTitle: title,
                 ideaContent: `Content for ${title}. This is a test idea for the ideas feed e2e test.`,
                 topicIds: topicAssignments[index],
-                phaseIds: [phaseId],
               })
               .then((idea) => {
                 ideaIds.push(idea.body.data.id);
@@ -305,5 +304,71 @@ describe('Ideas Feed (Perspectives)', () => {
       // The feed should still be visible
       cy.get('[data-cy="e2e-ideas-feed"]').should('exist');
     });
+  });
+});
+
+// A ?view=feed link, or an /ideas-feed link, outlives the phase configuration it was made under:
+// the feed view can be withdrawn from a phase after someone has bookmarked or shared the URL.
+describe('Ideas Feed (Perspectives) on a phase that does not offer it', () => {
+  const projectTitle = randomString();
+  const phaseTitle = randomString();
+
+  let projectId: string;
+  let projectSlug: string;
+  let phaseId: string;
+
+  before(() => {
+    cy.apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: randomString(),
+      description: randomString(),
+      publicationStatus: 'published',
+    })
+      .then((project) => {
+        projectId = project.body.data.id;
+        projectSlug = project.body.data.attributes.slug;
+
+        return cy.apiCreatePhase({
+          projectId,
+          title: phaseTitle,
+          startAt: '2018-03-01',
+          endAt: '2030-01-01',
+          participationMethod: 'ideation',
+          canComment: true,
+          canPost: true,
+          canReact: true,
+          presentation_mode: 'card',
+          available_views: ['card', 'map'],
+        });
+      })
+      .then((phase) => {
+        phaseId = phase.body.data.id;
+
+        return cy.apiCreateIdea({
+          phaseId,
+          ideaTitle: randomString(),
+          ideaContent: randomString(),
+        });
+      });
+  });
+
+  after(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+    }
+  });
+
+  it('shows the cards when ?view=feed is requested', () => {
+    cy.visit(`/projects/${projectSlug}?view=feed`);
+
+    cy.get('#e2e-ideas-container').should('exist');
+    cy.get('[data-cy="e2e-sticky-notes-pile"]').should('not.exist');
+  });
+
+  it('redirects the ideas feed page back to the project', () => {
+    cy.visit(`/projects/${projectSlug}/ideas-feed?phase_id=${phaseId}`);
+
+    cy.url().should('not.include', '/ideas-feed');
+    cy.get('[data-cy="e2e-ideas-feed"]').should('not.exist');
   });
 });

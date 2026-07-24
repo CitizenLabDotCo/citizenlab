@@ -10724,6 +10724,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.ProjectPageBuilder.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-22T16:16:57.442043Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.ProjectPageBuilder.projectPageHeading": {
     "state": "verified",
     "verified_at": "2026-07-08T12:11:44.680180Z",

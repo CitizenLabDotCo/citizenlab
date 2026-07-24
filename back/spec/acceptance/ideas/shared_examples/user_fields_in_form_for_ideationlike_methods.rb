@@ -13,7 +13,6 @@ RSpec.shared_examples 'user fields in form for input methods' do
       it 'stores values in idea' do
         do_request({
           idea: {
-            project_id: @project.id,
             title_multiloc: { 'en' => 'My Title' },
             body_multiloc: { 'en' => 'My Body' },
             u_select_field: 'option1',
@@ -41,7 +40,6 @@ RSpec.shared_examples 'user fields in form for input methods' do
       it 'stores values in idea and profile, adds author_id' do
         do_request({
           idea: {
-            project_id: @project.id,
             title_multiloc: { 'en' => 'My Title' },
             body_multiloc: { 'en' => 'My Body' },
             u_select_field: 'option1',
@@ -79,7 +77,6 @@ RSpec.shared_examples 'user fields in form for input methods' do
       it 'stores values in idea but not profile, does not add author_id' do
         do_request({
           idea: {
-            project_id: @project.id,
             title_multiloc: { 'en' => 'My Title' },
             body_multiloc: { 'en' => 'My Body' },
             u_select_field: 'option1',
@@ -126,7 +123,6 @@ RSpec.shared_examples 'user fields in form for input methods' do
         it 'copies values from profile into idea' do
           do_request({
             idea: {
-              project_id: @project.id,
               title_multiloc: { 'en' => 'My Title' },
               body_multiloc: { 'en' => 'My Body' }
             }
@@ -156,7 +152,6 @@ RSpec.shared_examples 'user fields in form for input methods' do
         it 'does not copy values from profile into idea' do
           do_request({
             idea: {
-              project_id: @project.id,
               title_multiloc: { 'en' => 'My Title' },
               body_multiloc: { 'en' => 'My Body' },
               anonymous: true
@@ -190,7 +185,6 @@ RSpec.shared_examples 'user fields in form for input methods' do
         it 'stores values in idea and profile, adds author_id' do
           do_request({
             idea: {
-              project_id: @project.id,
               title_multiloc: { 'en' => 'My Title' },
               body_multiloc: { 'en' => 'My Body' },
               u_select_field: 'option1',
@@ -229,7 +223,6 @@ RSpec.shared_examples 'user fields in form for input methods' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               title_multiloc: { 'en' => 'My Title' },
               body_multiloc: { 'en' => 'My Body' },
               u_select_field: 'option1',

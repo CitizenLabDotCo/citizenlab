@@ -2119,7 +2119,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Leggi altro",
   "app.containers.ProjectFolderShowPage.seeLess": "Vedere meno",
   "app.containers.ProjectFolderShowPage.share": "Condividi",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Pagina del progetto",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Homepage del progetto",
   "app.containers.ProjectPageBuilder.saveError": "Si è verificato un errore durante il salvataggio della pagina del progetto.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Le sezioni della pagina sono bloccate per il momento. I widget possono essere inseriti all'interno della sezione Descrizione.",
   "app.containers.Projects.PollForm.document": "Documento",

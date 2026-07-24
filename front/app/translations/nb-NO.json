@@ -2119,7 +2119,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Les mer om dette",
   "app.containers.ProjectFolderShowPage.seeLess": "Se mindre",
   "app.containers.ProjectFolderShowPage.share": "Del",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Prosjektside",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Prosjektforside",
   "app.containers.ProjectPageBuilder.saveError": "Det oppsto en feil under lagring av prosjektsiden.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Sidens seksjoner er låst for øyeblikket. Moduler kan plasseres i beskrivelsesseksjonen.",
   "app.containers.Projects.PollForm.document": "Dokument",

@@ -205,6 +205,79 @@ RSpec.describe Phase do
         expect(phase).to be_valid
       end
     end
+
+    describe 'views the participation method does not allow' do
+      it 'is invalid when a proposals phase opens on the feed view' do
+        phase = build(:proposals_phase, presentation_mode: 'feed', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      it 'is invalid when a proposals phase merely offers the feed view' do
+        phase = build(:proposals_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      it 'is valid when a proposals phase offers the card and map views' do
+        phase = build(:proposals_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      it 'is valid when an ideation phase offers the feed view' do
+        phase = build(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+        expect(phase).to be_valid
+      end
+
+      # Switching the method can invalidate views that were allowed a moment ago, and neither view
+      # attribute changes when it does, so the method has to be part of the guard. Not reachable
+      # from the phase form, which applies proposalsDefaultConfig and so sends card views along with
+      # the new method; this is for callers that change the method alone, i.e. the REST API and the
+      # MCP update_phase tool.
+      it 'is invalid when an ideation phase offering the feed view is switched to proposals' do
+        phase = create(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+
+        expect(phase.update(participation_method: 'proposals')).to be false
+        expect(phase.errors[:available_views].first).to include('feed not available for the proposals method')
+      end
+
+      # The rule only fires when the view attributes are written, so a phase that predates it can
+      # still be edited. Without this, an unrelated write would fail on a phase nobody has migrated.
+      it 'does not block unrelated edits to a proposals phase that already offers the feed view' do
+        phase = create(:proposals_phase)
+        phase.update_column(:available_views, %w[card feed])
+
+        expect(phase.reload.update(title_multiloc: { 'en' => 'New title' })).to be true
+      end
+
+      it 'is valid when a voting phase offers the feed view' do
+        phase = build(:single_voting_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).to be_valid
+      end
+
+      # Common ground is the other method the rule applies to. It has its own interface and no view
+      # selector, and nothing but the views themselves gates the feed page.
+      it 'is invalid when a common ground phase offers the feed view' do
+        phase = build(:common_ground_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the common_ground method')
+      end
+
+      # Methods that show no inputs publicly never reach this rule, and they do hold stale view
+      # values: several phases in the e2e template sit on the map view without ever rendering one.
+      it 'is valid when a method that shows no inputs publicly holds a view it cannot render' do
+        phase = build(:poll_phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      # The views come along on a method change and no longer mean anything once they arrive. The
+      # ideas order has to go in the same write, as information allows no order at all.
+      it 'is valid when an ideation phase on the map view becomes an information phase' do
+        phase = create(:phase, presentation_mode: 'map', available_views: %w[card map])
+
+        expect(phase.update(participation_method: 'information', ideas_order: nil)).to be true
+      end
+    end
   end
 
   describe 'input_term' do
@@ -320,6 +393,22 @@ RSpec.describe Phase do
     end
   end
 
+  describe '#validate_standalone_participation_method' do
+    it 'accepts a standalone native survey phase' do
+      expect(build(:phase, :standalone)).to be_valid
+    end
+
+    it 'rejects a standalone phase whose method does not support standalone placement' do
+      phase = build(:phase, :standalone, participation_method: 'ideation')
+      expect(phase).not_to be_valid
+      expect(phase.errors.details[:participation_method]).to include(error: :not_supported_in_standalone_phase)
+    end
+
+    it 'accepts any participation method on timeline phases' do
+      expect(build(:phase)).to be_valid
+    end
+  end
+
   describe '#ends_before?' do
     let(:phase) { create(:phase) }
 
@@ -355,6 +444,38 @@ RSpec.describe Phase do
     it 'returns false when the phase has no end date' do
       phase = create(:phase, start_at: 2.days.ago, end_at: nil)
       expect(phase.complete?).to be false
+    end
+  end
+
+  describe '#active?' do
+    it 'returns true when the phase is ongoing' do
+      phase = build(:phase, start_at: 2.days.ago, end_at: 3.days.from_now)
+      expect(phase.active?).to be true
+    end
+
+    it 'returns false before the phase starts' do
+      phase = build(:phase, start_at: 2.days.from_now, end_at: 5.days.from_now)
+      expect(phase.active?).to be false
+    end
+
+    it 'returns false after the phase ends' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?).to be false
+    end
+
+    it 'returns false at the exact end time (exclusive end)' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?(phase.end_at)).to be false
+    end
+
+    it 'returns true for an open-ended phase that has started' do
+      phase = build(:phase, start_at: 2.days.ago, end_at: nil)
+      expect(phase.active?).to be true
+    end
+
+    it 'evaluates against the given time' do
+      phase = build(:phase, start_at: 10.days.ago, end_at: 5.days.ago)
+      expect(phase.active?(7.days.ago)).to be true
     end
   end
 
@@ -667,76 +788,129 @@ RSpec.describe Phase do
   describe 'prescreening_mode' do
     using RSpec::Parameterized::TableSyntax
 
-    describe 'validation' do
-      def set_feature_flags(prescreening:, flag_inappropriate_content:)
-        AppConfiguration.instance.settings.tap do |settings|
-          settings['prescreening'] = { 'allowed' => true, 'enabled' => prescreening }
-          settings['prescreening_ideation'] = { 'allowed' => true, 'enabled' => prescreening }
-          settings['flag_inappropriate_content'] = { 'allowed' => true, 'enabled' => flag_inappropriate_content }
-        end
-
-        AppConfiguration.instance.save!
+    def set_feature_flags(prescreening:, flag_inappropriate_content:)
+      AppConfiguration.instance.settings.tap do |settings|
+        settings['prescreening'] = { 'allowed' => true, 'enabled' => prescreening }
+        settings['prescreening_ideation'] = { 'allowed' => true, 'enabled' => prescreening }
+        settings['flag_inappropriate_content'] = { 'allowed' => true, 'enabled' => flag_inappropriate_content }
       end
 
-      describe 'on create' do
-        where(:factory, :prescreening_mode, :prescreening, :flag_inappropriate_content, :valid) do
-          :phase | nil | false | false | true
-          :phase | 'all' | false | false | false
-          :phase | 'all' | true | false | true
-          :phase | 'flagged_only' | true | false | false
-          :phase | 'flagged_only' | true | true | true
-          :phase | 'invalid' | true | true | false
-          :proposals_phase | nil | false | false | true
-          :proposals_phase | 'all' | false | false | false
-          :proposals_phase | 'all' | true | false | true
-          :proposals_phase | 'flagged_only' | true | false | false
-          :proposals_phase | 'flagged_only' | true | true | true
-          :proposals_phase | 'invalid' | true | true | false
-        end
-
-        with_them do
-          before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
-
-          it { expect(build(factory, prescreening_mode: prescreening_mode).valid?).to eq valid }
-        end
-      end
-
-      describe 'on update' do
-        it 'remains valid when feature is disabled but prescreening_mode unchanged' do
-          set_feature_flags(prescreening: true, flag_inappropriate_content: false)
-          phase = create(:phase, prescreening_mode: 'all')
-          set_feature_flags(prescreening: false, flag_inappropriate_content: false)
-
-          expect(phase).to be_valid
-          phase.title_multiloc = { 'en' => 'Updated title' }
-          expect(phase).to be_valid
-        end
-
-        it 'becomes invalid when changing prescreening_mode to non-nil with feature disabled' do
-          set_feature_flags(prescreening: true, flag_inappropriate_content: true)
-          phase = create(:phase, prescreening_mode: 'flagged_only')
-          set_feature_flags(prescreening: false, flag_inappropriate_content: false)
-
-          expect(phase).to be_valid
-          phase.prescreening_mode = 'all'
-          expect(phase).not_to be_valid
-        end
-      end
+      AppConfiguration.instance.save!
     end
 
-    describe 'helper methods' do
-      where(:mode, :enabled, :flagged_only, :all) do
-        nil | false | false | false
-        'flagged_only' | true | true | false
-        'all' | true | false | true
+    # `prescreening_mode` is configuration data, not a feature-gated invariant: tenant
+    # templates and project copies carry it onto platforms whose features differ, so any
+    # valid mode is storable regardless of the flags. It is the *effect* that is gated -
+    # see 'effective mode' below.
+    describe 'validation' do
+      where(:factory, :prescreening_mode, :prescreening, :flag_inappropriate_content, :valid) do
+        :phase           | nil            | false | false | true
+        :phase           | 'all'          | false | false | true
+        :phase           | 'all'          | true  | false | true
+        :phase           | 'flagged_only' | false | false | true
+        :phase           | 'flagged_only' | true  | true  | true
+        :phase           | 'invalid'      | true  | true  | false
+        :proposals_phase | nil            | false | false | true
+        :proposals_phase | 'all'          | false | false | true
+        :proposals_phase | 'flagged_only' | false | false | true
+        :proposals_phase | 'invalid'      | true  | true  | false
       end
 
       with_them do
-        subject(:phase) { build(:phase, prescreening_mode: mode) }
+        before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
 
+        it { expect(build(factory, prescreening_mode: prescreening_mode).valid?).to eq valid }
+      end
+    end
+
+    # The mode only takes effect where the platform has the corresponding feature. Note
+    # ideation phases are gated on `prescreening_ideation` and proposals phases on
+    # `prescreening`; `set_feature_flags` sets both together.
+    describe 'effective mode' do
+      where(:factory, :mode, :prescreening, :flag_inappropriate_content, :effective, :enabled, :flagged_only, :all) do
+        # No mode configured: inert regardless of the flags.
+        :phase           | nil            | true  | true  | nil            | false | false | false
+        :phase           | nil            | false | false | nil            | false | false | false
+
+        # Mode configured, prescreening feature off: inert.
+        :phase           | 'all'          | false | false | nil            | false | false | false
+        :phase           | 'flagged_only' | false | true  | nil            | false | false | false
+        :proposals_phase | 'all'          | false | false | nil            | false | false | false
+
+        # Mode configured, prescreening feature on: in effect.
+        :phase           | 'all'          | true  | false | 'all'          | true  | false | true
+        :proposals_phase | 'all'          | true  | false | 'all'          | true  | false | true
+
+        # 'flagged_only' additionally requires flag_inappropriate_content.
+        :phase           | 'flagged_only' | true  | false | nil            | false | false | false
+        :phase           | 'flagged_only' | true  | true  | 'flagged_only' | true  | true  | false
+        :proposals_phase | 'flagged_only' | true  | true  | 'flagged_only' | true  | true  | false
+      end
+
+      with_them do
+        subject(:phase) { build(factory, prescreening_mode: mode) }
+
+        before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
+
+        # `effective_prescreening_mode` is serialized to the front end, so it is part of the
+        # API contract in its own right, not only through the predicates below.
+        it { expect(phase.effective_prescreening_mode).to eq effective }
         it { expect(phase.prescreening_enabled?).to eq enabled }
         it { expect(phase.prescreening_flagged_only?).to eq flagged_only }
         it { expect(phase.prescreening_all?).to eq all }
+      end
+
+      it 'preserves the configured mode even where the feature is off' do
+        set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+        phase = create(:phase, prescreening_mode: 'all')
+
+        expect(phase.reload.prescreening_mode).to eq 'all'
+        expect(phase.prescreening_all?).to be false
+      end
+
+      it 'takes effect once the feature is enabled, without rewriting the phase' do
+        set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+        phase = create(:phase, prescreening_mode: 'all')
+        expect(phase.prescreening_all?).to be false
+
+        set_feature_flags(prescreening: true, flag_inappropriate_content: false)
+
+        expect(phase.prescreening_all?).to be true
+      end
+
+      # The two participation methods are gated on different features, so converting a
+      # phase moves it from one gate to the other. This matters on a default-configured
+      # platform, where `prescreening` (proposals) is enabled and `prescreening_ideation`
+      # is not.
+      describe 'when the participation_method is converted' do
+        before do
+          AppConfiguration.instance.settings.tap do |settings|
+            settings['prescreening'] = { 'allowed' => true, 'enabled' => true }
+            settings['prescreening_ideation'] = { 'allowed' => false, 'enabled' => false }
+          end
+
+          AppConfiguration.instance.save!
+        end
+
+        it 'stops taking effect when proposals (feature on) becomes ideation (feature off)' do
+          phase = create(:proposals_phase, prescreening_mode: 'all')
+          expect(phase.prescreening_all?).to be true
+
+          phase.update!(participation_method: 'ideation')
+
+          expect(phase.reload.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be false
+        end
+
+        it 'starts taking effect when ideation (feature off) becomes proposals (feature on)' do
+          phase = create(:phase, prescreening_mode: 'all')
+          expect(phase.prescreening_all?).to be false
+
+          phase.update!(participation_method: 'proposals')
+
+          expect(phase.reload.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be true
+        end
       end
     end
   end

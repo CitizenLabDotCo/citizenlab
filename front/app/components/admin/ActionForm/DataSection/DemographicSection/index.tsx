@@ -18,6 +18,10 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 import useUpdatePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useUpdatePermissionsPhaseCustomField';
 import { IPhasePermissionData } from 'api/phase_permissions/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import upsellMessages from 'components/UpsellTooltip/messages';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { demographicsSummary } from '../../logic';
@@ -47,6 +51,12 @@ const DemographicSection = ({
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const { formatMessage } = useIntl();
 
+  // Demographic questions rely on permission custom fields, which are a paid
+  // feature. Gate the whole section behind the tenant's pricing plan.
+  const permissionsCustomFieldsAllowed = useFeatureFlag({
+    name: 'permissions_custom_fields',
+  });
+
   const { data: permissionFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action,
@@ -61,6 +71,22 @@ const DemographicSection = ({
     phaseId,
     action,
   });
+
+  // Without the feature the section is shown but locked: no controls, just a
+  // lock icon and a tooltip explaining it isn't part of the pricing plan.
+  if (!permissionsCustomFieldsAllowed) {
+    return (
+      <Expander
+        icon="user-data"
+        title={formatMessage(messages.demographicQuestions)}
+        summary={null}
+        locked
+        lockedTooltip={formatMessage(upsellMessages.tooltipContent)}
+      >
+        {null}
+      </Expander>
+    );
+  }
 
   if (!permissionFields) return null;
 

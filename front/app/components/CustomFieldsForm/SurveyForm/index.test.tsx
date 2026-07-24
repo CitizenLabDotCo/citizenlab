@@ -228,8 +228,11 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
     // page-1 form state was destroyed by the page-transition remount.
     expect(mockAddIdea).toHaveBeenCalledWith(
       expect.objectContaining({
-        question_one: 'page-1-answer',
-        question_two: 'page-2-answer',
+        phaseId: 'phase-1',
+        requestBody: expect.objectContaining({
+          question_one: 'page-1-answer',
+          question_two: 'page-2-answer',
+        }),
       })
     );
   });

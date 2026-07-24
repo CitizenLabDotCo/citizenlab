@@ -2119,7 +2119,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Przeczytaj więcej",
   "app.containers.ProjectFolderShowPage.seeLess": "Zobacz mniej",
   "app.containers.ProjectFolderShowPage.share": "Podziel się",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Strona projektu",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Strona główna projektu",
   "app.containers.ProjectPageBuilder.saveError": "Wystąpił błąd podczas zapisywania strony projektu.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Sekcje strony są obecnie zablokowane. Widżety można umieszczać w sekcji Opis.",
   "app.containers.Projects.PollForm.document": "Dokument",

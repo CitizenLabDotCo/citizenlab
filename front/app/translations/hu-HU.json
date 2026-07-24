@@ -2119,7 +2119,7 @@
   "app.containers.ProjectFolderShowPage.readMore": "Olvass tovább",
   "app.containers.ProjectFolderShowPage.seeLess": "Lásd kevesebbet",
   "app.containers.ProjectFolderShowPage.share": "Részesedés",
-  "app.containers.ProjectPageBuilder.projectPageHeading": "Projektoldal",
+  "app.containers.ProjectPageBuilder.projectHomepage": "Projekt kezdőlapja",
   "app.containers.ProjectPageBuilder.saveError": "Hiba történt a projektoldal mentése során.",
   "app.containers.ProjectPageBuilder.toolboxLockedNote": "Az oldalszakaszok jelenleg zárolva vannak. A widgetek a Leírás szakaszba helyezhetők.",
   "app.containers.Projects.PollForm.document": "Dokumentum",
