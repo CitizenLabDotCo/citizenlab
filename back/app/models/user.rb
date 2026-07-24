@@ -220,7 +220,6 @@ class User < ApplicationRecord
   has_one :new_email_confirmation, dependent: :destroy
   has_one :new_phone_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
-  after_create :create_confirmations
   before_destroy :destroy_baskets
 
   has_many :scheduled_admin_publications, class_name: 'AdminPublication', foreign_key: :scheduled_by_id, dependent: :nullify
@@ -277,6 +276,23 @@ class User < ApplicationRecord
       **attributes,
       custom_field_values: custom_field_values.merge(attributes['custom_field_values'] || {})
     )
+  end
+
+  # Confirmations are created lazily on first access rather than eagerly on user
+  # creation, to avoid storing rows for the many users that never need one (SSO,
+  # invited, admin-created, ...). These readers return the existing confirmation
+  # or create it on demand. When you only want to peek at a confirmation without
+  # creating it (pure reads), use `association(:email_confirmation).reader`.
+  def email_confirmation
+    super || find_or_create_confirmation(:email_confirmation)
+  end
+
+  def new_email_confirmation
+    super || find_or_create_confirmation(:new_email_confirmation)
+  end
+
+  def new_phone_confirmation
+    super || find_or_create_confirmation(:new_phone_confirmation)
   end
 
   def to_token_payload
@@ -540,13 +556,22 @@ class User < ApplicationRecord
   def auto_confirm_on_invite_accept
     self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
-    email_confirmation&.clear_code!
+    # Only clear an already-existing confirmation's code; don't create one just
+    # to clear it (a user being auto-confirmed on invite doesn't need one).
+    association(:email_confirmation).reader&.clear_code!
   end
 
-  def create_confirmations
-    EmailConfirmation.create!(user: self)
-    NewEmailConfirmation.create!(user: self)
-    NewPhoneConfirmation.create!(user: self)
+  # Returns the persisted confirmation, creating it on demand. Only creates once
+  # the user itself is persisted (the child row needs a user_id); before that we
+  # return nil, matching the previous behaviour where confirmations only existed
+  # after the user was created.
+  def find_or_create_confirmation(association_name)
+    return unless persisted?
+
+    public_send("create_#{association_name}!")
+  rescue ActiveRecord::RecordNotUnique
+    # Created concurrently (unique index on user_id + type); reload and return it.
+    association(association_name).reload
   end
 
   def remove_initiated_notifications

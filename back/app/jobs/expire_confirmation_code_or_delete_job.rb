@@ -22,10 +22,12 @@ class ExpireConfirmationCodeOrDeleteJob < ApplicationJob
   private
 
   def lookup_confirmation(user, type)
+    # Non-creating reads: if the confirmation row is gone, there's nothing to
+    # expire, so we avoid the lazy find-or-create on `user.*_confirmation`.
     case type
-    when 'EmailConfirmation' then user.email_confirmation
-    when 'NewEmailConfirmation' then user.new_email_confirmation
-    when 'NewPhoneConfirmation' then user.new_phone_confirmation
+    when 'EmailConfirmation' then user.association(:email_confirmation).reader
+    when 'NewEmailConfirmation' then user.association(:new_email_confirmation).reader
+    when 'NewPhoneConfirmation' then user.association(:new_phone_confirmation).reader
     end
   end
 end
