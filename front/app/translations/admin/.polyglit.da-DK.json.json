@@ -6309,6 +6309,11 @@
     "verified_at": "2026-07-14T16:35:52.450315Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError": {
+    "state": "verified",
+    "verified_at": "2026-07-24T07:32:17.651382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.messaging.fieldSmsLabel": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.450315Z",
@@ -6397,6 +6402,26 @@
   "app.containers.Admin.messaging.smsRecipientsTitle": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.450315Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsSegmentCost": {
+    "state": "verified",
+    "verified_at": "2026-07-24T07:32:17.651382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsSegmentCostOverLimit": {
+    "state": "verified",
+    "verified_at": "2026-07-24T07:32:17.651382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsSegmentEncodingWarning": {
+    "state": "verified",
+    "verified_at": "2026-07-24T07:32:17.651382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.messaging.smsSegmentPill": {
+    "state": "verified",
+    "verified_at": "2026-07-24T07:32:17.651382Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.messaging.smsStatsTitle": {
