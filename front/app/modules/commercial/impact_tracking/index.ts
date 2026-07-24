@@ -6,6 +6,7 @@ import { pageChanges$, virtualPageViews$ } from 'utils/analytics';
 import { getJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { getRoutePattern } from 'utils/getRoutePattern';
+import { isInContentBuilderPreview } from 'utils/isInContentBuilderPreview';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 let sessionId: string | undefined;
@@ -100,6 +101,8 @@ let userWasAuthenticated = !!getJwt();
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    if (isInContentBuilderPreview()) return;
+
     pageChanges$.subscribe((e) => {
       // We remove the trailing slash from the path,
       // so that we don't track e.g. /en and /en/ as two different paths.
