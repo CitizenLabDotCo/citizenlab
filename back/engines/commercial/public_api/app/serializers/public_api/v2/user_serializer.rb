@@ -29,8 +29,11 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
   # active confirmation row (new_email_confirmation if a change is in flight,
   # otherwise email_confirmation).
   def email_confirmation_code_sent_at
-    active = object.new_email.present? ? object.new_email_confirmation : object.email_confirmation
-    active&.code_sent_at
+    # Non-creating read: confirmations are created lazily, so peek at the row via
+    # the association reader instead of `object.*_confirmation` (which would
+    # create an empty row on every serialization of a user without one).
+    name = object.new_email.present? ? :new_email_confirmation : :email_confirmation
+    object.association(name).reader&.code_sent_at
   end
 
   def bio

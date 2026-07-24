@@ -8,7 +8,7 @@ class RequestNewPhoneConfirmationCodeJob < ApplicationJob
 
     ActiveRecord::Base.transaction do
       user.update!(new_phone: new_phone)
-      confirmation = user.new_phone_confirmation || user.create_new_phone_confirmation!
+      confirmation = user.new_phone_confirmation
       confirmation.reset_code!
       campaign = EmailCampaigns::Campaigns::NewPhoneConfirmation.first_or_create!
       EmailCampaigns::DeliveryService.new.send_now_to_user(campaign, user, { code: confirmation.code })

@@ -101,16 +101,9 @@ namespace :demos do
           reporter.add_error(user.errors.full_messages, context: { email: user.email })
         end
 
-        # The after_create :create_confirmations callback is skipped by bulk import.
-        # Without these records, some confirmation/login code paths (e.g. the
-        # passwordless `users#check` flow) dereference a nil confirmation and 500,
-        # so create them here as the callback would. A bare record is valid (code
-        # is nullable, counters default to 0).
-        confirmations = result.ids.flat_map do |user_id|
-          [EmailConfirmation.new(user_id: user_id), NewEmailConfirmation.new(user_id: user_id)]
-        end
-        Confirmation.import(confirmations, validate: false)
-
+        # Confirmations no longer need to be created here: they are created lazily
+        # on first access (User#email_confirmation etc.), so the confirmation/login
+        # code paths no longer dereference a nil confirmation.
         batch_created = users.size - result.failed_instances.size
         created += batch_created
       end
