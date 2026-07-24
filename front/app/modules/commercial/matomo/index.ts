@@ -15,6 +15,7 @@ import {
   pageChanges$,
   shutdownFor,
 } from 'utils/analytics';
+import { isInContentBuilderPreview } from 'utils/isInContentBuilderPreview';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import { trackEvent, trackPageChange } from './actions';
@@ -35,6 +36,8 @@ const destinationConfig: IDestinationConfig = {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    if (isInContentBuilderPreview()) return;
+
     // Subscribe to changes in app configuration, users
     // and matomo enabled state
     combineLatest([
