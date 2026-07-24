@@ -61,6 +61,6 @@ class NewPhoneConfirmation < Confirmation
   def generate_code
     return '1234' if AppConfiguration.instance.settings('sms', 'use_test_mode')
 
-    Rails.env.development? ? '1234' : rand.to_s[2..5]
+    Rails.env.development? ? '1234' : format('%04d', rand(10_000))
   end
 end
