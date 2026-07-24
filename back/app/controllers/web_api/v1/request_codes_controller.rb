@@ -70,11 +70,23 @@ class WebApi::V1::RequestCodesController < ApplicationController
     end
 
     RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
+    log_sms_confirmation_consent(normalized)
 
     head :ok
   end
 
   private
+
+  # Only the last digits: activities outlive the user record they belong to.
+  def log_sms_confirmation_consent(phone)
+    LogActivityJob.perform_later(
+      current_user,
+      'consented_to_sms_confirmation',
+      current_user,
+      Time.now.to_i,
+      payload: { phone_last_digits: phone.last(4) }
+    )
+  end
 
   def request_code_unauthenticated_params
     params.require(:request_code).permit(:email)

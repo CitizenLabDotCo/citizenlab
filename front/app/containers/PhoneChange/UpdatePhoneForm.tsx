@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 
-import { Box, Success } from '@citizenlab/cl2-component-library';
+import { Box, Success, fontSizes } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
+import styled from 'styled-components';
 
 import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
+
+import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Input from 'components/HookForm/Input';
@@ -18,12 +21,25 @@ import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
 
 import { FormValues } from '.';
+
+const DisclosureText = styled.div`
+  margin-top: 16px;
+  color: ${({ theme }) => theme.colors.tenantText};
+  font-size: ${fontSizes.s}px;
+  line-height: 21px;
+
+  a {
+    color: ${({ theme }) => theme.colors.tenantText};
+    text-decoration: underline;
+  }
+`;
 
 type UpdatePhoneFormProps = {
   updateSuccessful: boolean;
@@ -110,20 +126,32 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
-        <Box mt="20px">
-          <CheckboxWithLabel
-            name="smsConfirmationConsent"
-            label={formatMessage(messages.smsConfirmationConsentLabel)}
-            dataTestId="sms-confirmation-consent"
-          />
-        </Box>
-        <Box mt="16px" mb="8px">
+        <Box mt="20px" mb="8px">
           <CheckboxWithLabel
             name="smsManualCampaignConsent"
             label={formatMessage(messages.smsManualCampaignConsentLabel)}
             dataTestId="sms-manual-campaign-consent"
           />
         </Box>
+        {/* Submitting the form is the consent event, hence no checkbox. */}
+        <DisclosureText data-testid="sms-confirmation-disclosure">
+          <FormattedMessage
+            {...messages.smsConfirmationDisclosure}
+            values={{
+              link: (
+                <Link
+                  target="_blank"
+                  to="/pages/$slug"
+                  params={{ slug: 'privacy-policy' }}
+                >
+                  <FormattedMessage
+                    {...authProvidersMessages.thePrivacyPolicy}
+                  />
+                </Link>
+              ),
+            }}
+          />
+        </DisclosureText>
         <StyledButton
           type="submit"
           size="m"
