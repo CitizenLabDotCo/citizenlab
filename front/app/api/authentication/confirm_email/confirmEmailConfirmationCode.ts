@@ -25,13 +25,10 @@ type Response = {
   };
 };
 
-export const confirmEmailConfirmationCodeUnauthenticated = async (
-  email: string,
-  code: string
-) => {
+export const confirmCodeEmail = async (email: string, code: string) => {
   try {
     const res = await fetcher<Response>({
-      path: `/user/confirm_code_unauthenticated`,
+      path: `/user/confirm_code_email`,
       action: 'post',
       body: {
         confirmation: { email, code },
@@ -47,10 +44,10 @@ export const confirmEmailConfirmationCodeUnauthenticated = async (
   }
 };
 
-export const confirmEmailConfirmationCodeChangeEmail = async (code: string) => {
+export const confirmCodeNewEmail = async (code: string) => {
   try {
     await fetcher({
-      path: `/user/confirm_code_email_change`,
+      path: `/user/confirm_code_new_email`,
       action: 'post',
       body: {
         confirmation: { code },

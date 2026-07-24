@@ -32,6 +32,7 @@ import {
 import { isNilOrError } from 'utils/helperUtils';
 
 import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
+import { askEmailOnBuiltInStep } from '../../useSteps/stepConfig/utils';
 import sharedMessages from '../messages';
 
 import { DEFAULT_VALUES, getSchema } from './form';
@@ -135,7 +136,9 @@ const BuiltInFields = ({
 
   const askFirstName = missingAttributes.has('first_name');
   const askLastName = missingAttributes.has('last_name');
-  const askEmail = missingAttributes.has('email');
+  const askEmail = askEmailOnBuiltInStep(
+    authenticationRequirements.requirements
+  );
   const askPassword = missingAttributes.has('password');
 
   return (

@@ -36,7 +36,8 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           description: <<~DESC
             - everyone: anyone, no sign-in or email needed.
             - users: must have an account (default). Combine with require_name, require_password,
-              require_confirmed_email and require_verification to fine-tune what an account needs.
+              require_confirmed_email, require_verification and require_confirmed_phone_number to
+              fine-tune what an account needs.
             - admins_moderators: project admins/moderators only. When set, group_ids,
               demographic_questions, and the require_* flags have no effect.
           DESC
@@ -99,6 +100,14 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
             - 30: within last 30 days
           DESC
         },
+        require_confirmed_phone_number: {
+          type: 'boolean',
+          description: 'Whether the participant must confirm a phone number by SMS. Only applies when permitted_by is "users". Requires the sms feature to be enabled. Defaults to false.'
+        },
+        confirmed_phone_number_expiry: {
+          type: %w[integer null],
+          description: 'Number of days before phone-number reconfirmation is required; null means never reconfirm. Only used when require_confirmed_phone_number is true.'
+        },
         access_denied_explanation_multiloc: {
           **multiloc_schema,
           description: 'Custom message shown to denied users (e.g. "You must be 18 or older to vote").'
@@ -129,6 +138,8 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
         confirmed_email_expiry: params[:confirmed_email_expiry],
         require_verification: params[:require_verification],
         verification_expiry: params[:verification_expiry],
+        require_confirmed_phone_number: params[:require_confirmed_phone_number],
+        confirmed_phone_number_expiry: params[:confirmed_phone_number_expiry],
         access_denied_explanation_multiloc: params[:access_denied_explanation_multiloc]
       }.compact
 

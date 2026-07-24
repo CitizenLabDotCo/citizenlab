@@ -168,13 +168,13 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do
-        post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
-        post 'request_code_email_change', to: 'request_codes#request_code_email_change'
-        post 'request_code_phone_change', to: 'request_codes#request_code_phone_change'
+        post 'request_code_email', to: 'request_codes#request_code_email'
+        post 'request_code_new_email', to: 'request_codes#request_code_new_email'
+        post 'request_code_new_phone', to: 'request_codes#request_code_new_phone'
 
-        post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
-        post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
-        post 'confirm_code_phone_change', to: 'confirmations#confirm_code_phone_change'
+        post 'confirm_code_email', to: 'confirmations#confirm_code_email'
+        post 'confirm_code_new_email', to: 'confirmations#confirm_code_new_email'
+        post 'confirm_code_new_phone', to: 'confirmations#confirm_code_new_phone'
       end
 
       resources :global_topics do

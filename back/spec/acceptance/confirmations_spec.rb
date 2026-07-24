@@ -92,7 +92,7 @@ resource 'Confirmations' do
     end
   end
 
-  post 'web_api/v1/user/confirm_code_unauthenticated' do
+  post 'web_api/v1/user/confirm_code_email' do
     with_options scope: :confirmation do
       parameter :email, 'The email address of the user to confirm.'
       parameter :code, 'The 4-digit confirmation code received by email.'
@@ -159,10 +159,26 @@ resource 'Confirmations' do
         do_request(confirmation: { email: user_with_password.email, code: })
         assert_status 200
       end
+
+      # Re-confirmation resets the expiry window by refreshing email_confirmed_at.
+      # This is what an authenticated user hitting confirm_code_email after their
+      # confirmed_email_expiry elapsed relies on.
+      example 'refreshes email_confirmed_at on re-confirmation' do
+        confirmed_user = create(:user, password: 'password123')
+        confirmed_user.update!(email_confirmed_at: 1.year.ago)
+        old_confirmed_at = confirmed_user.email_confirmed_at
+        RequestEmailConfirmationCodeJob.perform_now confirmed_user
+        code = confirmed_user.reload.email_confirmation.code
+
+        do_request(confirmation: { email: confirmed_user.email, code: })
+
+        assert_status 200
+        expect(confirmed_user.reload.email_confirmed_at).to be > old_confirmed_at
+      end
     end
   end
 
-  post 'web_api/v1/user/confirm_code_email_change' do
+  post 'web_api/v1/user/confirm_code_new_email' do
     with_options scope: :confirmation do
       parameter :code, 'The 4-digit confirmation code received by email.'
     end
@@ -231,7 +247,7 @@ resource 'Confirmations' do
     end
   end
 
-  post 'web_api/v1/user/confirm_code_phone_change' do
+  post 'web_api/v1/user/confirm_code_new_phone' do
     with_options scope: :confirmation do
       parameter :code, 'The 4-digit confirmation code received by SMS.'
     end

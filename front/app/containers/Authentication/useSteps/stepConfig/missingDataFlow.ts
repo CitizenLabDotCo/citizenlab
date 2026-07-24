@@ -1,8 +1,5 @@
-import requirementKeys from 'api/authentication/authentication_requirements/keys';
-import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
-import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
-import { confirmCodePhoneChange } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
-import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -48,39 +45,16 @@ export const missingDataFlow = (
   state: State
 ) => {
   return {
-    'missing-data:email-confirmation': {
+    // The user has a pending new_email (email_action_required is confirm_new_email)
+    // but wants to enter a different one. Requirements can't express "re-provide",
+    // so this is a dedicated step with its own email-only form (ChangeEmail).
+    'missing-data:change-email': {
       CLOSE: () => setCurrentStep('closed'),
-      CHANGE_EMAIL: async () => {
-        setCurrentStep('missing-data:built-in');
-      },
-      SUBMIT_CODE: async (_: string, code: string) => {
-        await confirmEmailConfirmationCodeChangeEmail(code);
-        await queryClient.invalidateQueries(requirementKeys.all());
-
-        const { requirements } = await getRequirements();
-        const authenticationData = getAuthenticationData();
-
-        const missingDataStep = checkMissingData(
-          requirements,
-          authenticationData,
-          state.flow,
-          true
-        );
-
-        if (missingDataStep) {
-          setCurrentStep(missingDataStep);
-          return;
-        }
-
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('access-denied');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-      RESEND_CODE: async () => {
-        await requestEmailConfirmationCodeChangeEmail();
+      SUBMIT: async (email: string) => {
+        await requestCodeNewEmail(email);
+        updateState({ email });
+        invalidateCacheAfterUpdateUser(queryClient);
+        setCurrentStep('confirmation:new_email');
       },
     },
 
@@ -88,40 +62,9 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (phone: string) => {
         updateState({ phone });
-        await requestCodePhoneChange(phone);
+        await requestCodeNewPhone({ newPhone: phone });
         invalidateCacheAfterUpdateUser(queryClient);
-        setCurrentStep('missing-data:phone-confirmation');
-      },
-    },
-
-    'missing-data:phone-confirmation': {
-      CLOSE: () => setCurrentStep('closed'),
-      CHANGE_PHONE: async () => {
-        setCurrentStep('missing-data:phone');
-      },
-      SUBMIT_CODE: async (code: string) => {
-        await confirmCodePhoneChange(code);
-        invalidateCacheAfterUpdateUser(queryClient);
-
-        const { requirements } = await getRequirements();
-        const authenticationData = getAuthenticationData();
-
-        const missingDataStep = checkMissingData(
-          requirements,
-          authenticationData,
-          state.flow,
-          true
-        );
-
-        if (missingDataStep) {
-          setCurrentStep(missingDataStep);
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-      RESEND_CODE: async (phone: string) => {
-        await requestCodePhoneChange(phone);
+        setCurrentStep('confirmation:new_phone');
       },
     },
 
@@ -132,7 +75,7 @@ export const missingDataFlow = (
         { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
         if (email) {
-          await requestEmailConfirmationCodeChangeEmail(email);
+          await requestCodeNewEmail(email);
         }
 
         if (!isEmpty(restBuiltInFieldUpdate)) {
@@ -147,15 +90,14 @@ export const missingDataFlow = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
-          state.flow,
-          true
+          state.flow
         );
 
         if (missingDataStep) {
-          if (missingDataStep === 'missing-data:email-confirmation' && email) {
+          if (missingDataStep === 'confirmation:new_email' && email) {
             updateState({ email });
           }
 
@@ -178,11 +120,10 @@ export const missingDataFlow = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
-          state.flow,
-          true
+          state.flow
         );
 
         if (missingDataStep) {

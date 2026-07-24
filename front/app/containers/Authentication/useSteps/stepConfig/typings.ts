@@ -9,7 +9,11 @@ export type Step =
   | 'email:policies'
   | 'email:password'
   | 'email:sso-policies'
-  | 'email:confirmation'
+
+  // confirmation steps (code entry for email / new_email / new_phone)
+  | 'confirmation:email'
+  | 'confirmation:new_email'
+  | 'confirmation:new_phone'
 
   // invite flow
   | 'invite:email-password'
@@ -17,9 +21,8 @@ export type Step =
   | 'invite:taken'
 
   // missing data (if signed in already)
-  | 'missing-data:email-confirmation'
+  | 'missing-data:change-email'
   | 'missing-data:phone'
-  | 'missing-data:phone-confirmation'
   | 'missing-data:built-in'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'

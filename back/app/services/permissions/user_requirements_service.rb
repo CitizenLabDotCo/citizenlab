@@ -2,6 +2,11 @@
 
 class Permissions::UserRequirementsService
   MIN_VERIFICATION_EXPIRY = 30.minutes
+  # Email/phone confirmation expiry mirrors verification expiry: an expiry of 0
+  # is a testing shortcut that maps to this minimum instead of "0 days ago" (which
+  # would demand re-confirmation on every single request).
+  MIN_CONFIRMED_EMAIL_EXPIRY = 30.minutes
+  MIN_CONFIRMED_PHONE_NUMBER_EXPIRY = 30.minutes
 
   def initialize(check_groups_and_verification: true)
     # This allows us to ignore groups when calling from within PermissionsService where groups are separately checked
@@ -15,7 +20,10 @@ class Permissions::UserRequirementsService
   end
 
   def permitted?(requirements)
-    return false if requirements[:authentication][:missing_user_attributes].any?
+    authentication = requirements[:authentication]
+    return false if authentication[:missing_user_attributes].any?
+    return false if authentication[:email_action_required]
+    return false if authentication[:phone_action_required]
     return false if requirements[:verification]
     return false if requirements[:custom_fields].values.any?('required')
     return false if requirements[:group_membership]
@@ -64,6 +72,21 @@ class Permissions::UserRequirementsService
 
   private
 
+  # Whether an already-confirmed email/phone must be confirmed *again* because the
+  # permission sets an expiry and that window has elapsed since it was last
+  # confirmed. Returns false when no expiry is configured, or when it was never
+  # confirmed (confirmed_at nil) — first-time confirmation is handled by the
+  # callers (#email_action_required / #phone_action_required). An expiry of 0 is a
+  # testing shortcut that maps to the minimum window instead of "0 days ago"
+  # (which would demand re-confirmation on every single request).
+  def reconfirmation_required?(expiry_days, confirmed_at, min_expiry)
+    return false if expiry_days.nil?
+    return false if confirmed_at.nil?
+
+    offset = expiry_days.zero? ? min_expiry : expiry_days.days
+    (confirmed_at + offset) < Time.current
+  end
+
   # A confirmed, active moderator of the phase (or an admin) bypasses every
   # participation gate, so all their requirements are satisfied. This mirrors
   # denied_reason_for_action, which short-circuits on can_moderate? — but only
@@ -82,6 +105,7 @@ class Permissions::UserRequirementsService
     requirements = base_requirements(permission)
     mark_satisfied_requirements! requirements, permission, user if user
     ignore_password_for_sso! requirements, user if user
+    add_email_and_phone_actions! requirements, permission, user
     requirements
   end
 
@@ -91,7 +115,9 @@ class Permissions::UserRequirementsService
     {
       authentication: {
         permitted_by: permission.permitted_by,
-        missing_user_attributes: []
+        missing_user_attributes: [],
+        email_action_required: nil,
+        phone_action_required: nil
       },
       verification: false,
       custom_fields: {},
@@ -104,7 +130,9 @@ class Permissions::UserRequirementsService
     users_requirements = {
       authentication: {
         permitted_by: permission.permitted_by,
-        missing_user_attributes: base_missing_user_attributes(permission)
+        missing_user_attributes: base_missing_user_attributes(permission),
+        email_action_required: nil,
+        phone_action_required: nil
       },
       verification: false,
       custom_fields: {},
@@ -134,16 +162,17 @@ class Permissions::UserRequirementsService
     requirements
   end
 
-  # The attributes a user needs to provide, derived from the permission's
-  # require_* flags. An email (and thus an account) is always required for a
-  # non-"everyone" permission; the name, confirmation, password and phone number
-  # (with its confirmation) are only required when their respective flag is set.
+  # The built-in profile attributes a user needs to provide, derived from the
+  # permission's require_* flags. Only the name and password live here now; the
+  # email and phone number (and their confirmation state) are expressed
+  # separately through :email_action_required / :phone_action_required, because
+  # they are not a simple "is this field filled in?" checkoff — the required
+  # action depends on where the value lives (email vs new_email) and how it must
+  # be confirmed. See #email_action_required / #phone_action_required.
   def base_missing_user_attributes(permission)
-    attributes = %i[first_name last_name email confirmation password]
-    attributes -= %i[first_name last_name] unless permission.require_name
-    attributes.delete(:confirmation) unless permission.require_confirmed_email
-    attributes.delete(:password) unless permission.require_password
-    attributes += %i[phone phone_confirmation] if permission.require_confirmed_phone_number
+    attributes = []
+    attributes.push(:first_name, :last_name) if permission.require_name
+    attributes.push(:password) if permission.require_password
 
     attributes
   end
@@ -151,12 +180,10 @@ class Permissions::UserRequirementsService
   def mark_satisfied_requirements!(requirements, permission, user)
     return requirements unless user
 
-    requirements[:authentication][:missing_user_attributes].excluding(%i[confirmation password phone_confirmation])&.each do |attribute|
+    requirements[:authentication][:missing_user_attributes].excluding(:password).each do |attribute|
       requirements[:authentication][:missing_user_attributes].delete(attribute) unless user.send(attribute).nil?
     end
     requirements[:authentication][:missing_user_attributes].delete(:password) unless user.password_digest.nil?
-    requirements[:authentication][:missing_user_attributes].delete(:confirmation) unless permission.require_confirmed_email && user.confirmation_required?
-    requirements[:authentication][:missing_user_attributes].delete(:phone_confirmation) unless user.phone_confirmed_at.nil?
 
     requirements[:custom_fields]&.each_key do |key|
       requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key)
@@ -218,6 +245,94 @@ class Permissions::UserRequirementsService
     return requirements unless user
 
     requirements[:authentication][:missing_user_attributes].delete(:password) if user.sso?
+  end
+
+  # Sets the email/phone action a user still has to complete. These are a
+  # derived state over the whole (permission, user) tuple rather than a
+  # base-list-minus-satisfied checkoff, so they are computed directly here after
+  # the list-based requirements have been resolved. 'everyone' permissions never
+  # require an account, so no action is ever asked of them.
+  def add_email_and_phone_actions!(requirements, permission, user)
+    authentication = requirements[:authentication]
+    if permission.permitted_by == 'everyone'
+      authentication[:email_action_required] = nil
+      authentication[:phone_action_required] = nil
+    else
+      authentication[:email_action_required] = email_action_required(permission, user)
+      authentication[:phone_action_required] = phone_action_required(permission, user)
+    end
+  end
+
+  # The email step a user must still complete for this permission, or nil when
+  # their email requirement is already satisfied (or not required at all).
+  #
+  # - :provide_email      no account yet — provide an email (stored in `email`)
+  #                       and confirm it in place (EmailConfirmation).
+  # - :confirm_email      an account with a never-confirmed `email` — confirm it
+  #                       in place (EmailConfirmation).
+  # - :reconfirm_email    an account whose `email` was confirmed before but has
+  #                       aged past confirmed_email_expiry — confirm it again. This
+  #                       resolves to exactly the same step and endpoints as
+  #                       :confirm_email server-side; the distinct value only tells
+  #                       the frontend that no code was auto-sent (unlike first-time
+  #                       confirmation, which sends from SideFxUserService#after_create),
+  #                       so it must request one. See #reconfirmation_required?.
+  # - :provide_new_email  an account with no email at all (e.g. an SSO sign-up
+  #                       that returned no email) — provide one via `new_email`.
+  # - :confirm_new_email  an account with a pending `new_email` (e.g. an SSO
+  #                       sign-up with an unconfirmed email) — confirm it
+  #                       (NewEmailConfirmation), which promotes it to `email`.
+  #
+  # A user who already has a confirmed `email` and separately started an email
+  # *change* (so `email` is present AND `new_email` is pending) is not forced
+  # through that change here: the `email` branch is checked first and returns nil.
+  def email_action_required(permission, user)
+    return nil unless permission.require_confirmed_email
+    return :provide_email if user.nil?
+
+    if user.email.present?
+      if user.confirmation_required?
+        :confirm_email
+      elsif reconfirmation_required?(permission.confirmed_email_expiry, user.email_confirmed_at, MIN_CONFIRMED_EMAIL_EXPIRY)
+        :reconfirm_email
+      end
+    elsif user.new_email.present?
+      :confirm_new_email
+    else
+      :provide_new_email
+    end
+  end
+
+  # The phone step a user must still complete for this permission, or nil when
+  # their phone requirement is already satisfied (or not required at all).
+  #
+  # Unlike email, a phone can never be provided before an account exists and is
+  # only ever confirmed via the new_phone -> phone promotion (there is no
+  # in-place phone confirmation).
+  #
+  # - :provide_new_phone  no phone yet — provide one via `new_phone`.
+  # - :confirm_new_phone  a pending `new_phone` — confirm it (NewPhoneConfirmation),
+  #                       which promotes it to `phone`.
+  # - :confirm_phone      an existing `phone` that was never confirmed.
+  # - :reconfirm_phone    an existing `phone` that was confirmed before but has
+  #                       aged past confirmed_phone_number_expiry. Mirrors
+  #                       :reconfirm_email: the distinct value signals the frontend
+  #                       to (re)send a code. See #reconfirmation_required?.
+  def phone_action_required(permission, user)
+    return nil unless permission.require_confirmed_phone_number
+    return :provide_new_phone if user.nil?
+
+    if user.phone.present?
+      if user.phone_confirmed_at.nil?
+        :confirm_phone
+      elsif reconfirmation_required?(permission.confirmed_phone_number_expiry, user.phone_confirmed_at, MIN_CONFIRMED_PHONE_NUMBER_EXPIRY)
+        :reconfirm_phone
+      end
+    elsif user.new_phone.present?
+      :confirm_new_phone
+    else
+      :provide_new_phone
+    end
   end
 
   def app_configuration

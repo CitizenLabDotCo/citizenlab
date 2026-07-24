@@ -4,6 +4,7 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 
 import AccessDenied from '../steps/AccessDenied';
 import BuiltInFields from '../steps/BuiltInFields';
+import ChangeEmail from '../steps/ChangeEmail';
 import EmailConfirmation from '../steps/EmailConfirmation';
 import EmailFlowStart from '../steps/EmailFlowStart';
 import Invitation from '../steps/Invitation';
@@ -95,7 +96,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'email:confirmation':
+    case 'confirmation:email':
       return (
         <EmailConfirmation
           state={state}
@@ -131,7 +132,7 @@ const CurrentStep = ({
       return <InviteTaken state={state} />;
 
     // missing data flow / shared
-    case 'missing-data:email-confirmation':
+    case 'confirmation:new_email':
       return (
         <EmailConfirmation
           state={state}
@@ -153,7 +154,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'missing-data:phone-confirmation':
+    case 'confirmation:new_phone':
       return (
         <PhoneConfirmation
           state={state}
@@ -170,6 +171,15 @@ const CurrentStep = ({
         <BuiltInFields
           loading={loading}
           authenticationData={authenticationData}
+          setError={setError}
+          onSubmit={transition(currentStep, 'SUBMIT')}
+        />
+      );
+
+    case 'missing-data:change-email':
+      return (
+        <ChangeEmail
+          loading={loading}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
         />

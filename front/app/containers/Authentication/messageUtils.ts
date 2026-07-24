@@ -22,7 +22,11 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'email:policies': messages.beforeYouParticipate,
   'email:password': messages.logIn,
   'email:sso-policies': messages.signUp,
-  'email:confirmation': messages.confirmYourEmail,
+
+  // confirmation steps (code entry for email / new_email / new_phone)
+  'confirmation:email': messages.confirmYourEmail,
+  'confirmation:new_email': messages.confirmYourEmail,
+  'confirmation:new_phone': messages.confirmYourPhoneNumber,
 
   // invite flow
   'invite:email-password': messages.signUp,
@@ -30,9 +34,8 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'invite:taken': messages.signUp,
 
   // missing data flow
-  'missing-data:email-confirmation': messages.confirmYourEmail,
+  'missing-data:change-email': messages.changeYourEmail,
   'missing-data:phone': messages.enterYourPhoneNumber,
-  'missing-data:phone-confirmation': messages.confirmYourPhoneNumber,
   'missing-data:built-in': messages.completeYourProfile,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
