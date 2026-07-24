@@ -28,5 +28,3 @@ const isFramed = (): boolean => {
 
 export const isInContentBuilderPreview = (): boolean =>
   isContentBuilderPreviewPath(window.location.pathname) && isFramed();
-
-export default isInContentBuilderPreview;
