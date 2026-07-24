@@ -1,5 +1,6 @@
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
+import * as reactiveUtils from '@arcgis/core/core/reactiveUtils';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
 import { substitute } from '@arcgis/core/intl';
@@ -652,6 +653,9 @@ const createFullTitleNode = (title: string) => {
 // entries go away with the graphics themselves.
 const originalPopupTemplates = new WeakMap<Graphic, PopupTemplate>();
 
+// One popup open at a time; replaced on each open (see showEsriFeaturePopup).
+let ctaFeatureWatchHandle: IHandle | null = null;
+
 // buildFeaturePopupTemplate
 // Description: Returns a copy of a feature's ArcGIS popup template with:
 //  - a DOM node (e.g. the "Submit an idea" button) prepended above the
@@ -726,7 +730,12 @@ export const showEsriFeaturePopup = async ({
     return false;
   }
 
-  features.forEach((feature, index) => {
+  // The CTA is a single DOM node, so it can't sit on every page of a stacked
+  // popup at once. Each feature gets its own placeholder; the watcher below
+  // moves the CTA into whichever feature is currently paged to.
+  const ctaPlaceholders = new Map<Graphic, HTMLDivElement>();
+
+  features.forEach((feature) => {
     // Always enrich the template the feature started with. Esri hands back the
     // same Graphic instance across hitTests for some layer types, so reading
     // back the template we assigned on a previous click would stack a second
@@ -737,17 +746,35 @@ export const showEsriFeaturePopup = async ({
     if (!template) return;
     originalPopupTemplates.set(feature, template);
 
+    let placeholder: HTMLDivElement | undefined;
+    if (prependContentNode) {
+      placeholder = document.createElement('div');
+      ctaPlaceholders.set(feature, placeholder);
+    }
+
     feature.popupTemplate = buildFeaturePopupTemplate(
       template,
       feature,
-      // The CTA is one DOM node owned by the caller, and a DOM node can only be
-      // mounted in one place. A click on overlapping features opens a popup that
-      // pages over all of them, so give the CTA to the first page only —
-      // attaching it to every feature would tear it out of whichever page the
-      // user is looking at.
-      index === 0 ? prependContentNode : undefined
+      placeholder
     );
   });
+
+  // Re-parent the CTA into the paged-to feature. `initial: true` covers the
+  // first feature once the popup opens.
+  if (prependContentNode && ctaPlaceholders.size > 0) {
+    ctaFeatureWatchHandle?.remove();
+    ctaFeatureWatchHandle = reactiveUtils.watch(
+      () => mapView.popup?.selectedFeature,
+      (selectedFeature) => {
+        const placeholder =
+          selectedFeature && ctaPlaceholders.get(selectedFeature);
+        if (placeholder && prependContentNode.parentNode !== placeholder) {
+          placeholder.appendChild(prependContentNode);
+        }
+      },
+      { initial: true }
+    );
+  }
 
   // Project the point to Web Mercator to guarantee the correct coordinate system
   const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
