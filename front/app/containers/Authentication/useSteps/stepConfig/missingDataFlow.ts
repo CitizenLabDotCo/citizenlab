@@ -1,5 +1,4 @@
 import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
-import { confirmCodeNewPhone } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { OnboardingType } from 'api/users/types';
 import {
@@ -66,36 +65,6 @@ export const missingDataFlow = (
         await requestCodeNewPhone({ newPhone: phone });
         invalidateCacheAfterUpdateUser(queryClient);
         setCurrentStep('confirmation:new_phone');
-      },
-    },
-
-    'missing-data:phone-confirmation': {
-      CLOSE: () => setCurrentStep('closed'),
-      CHANGE_PHONE: async () => {
-        setCurrentStep('missing-data:phone');
-      },
-      SUBMIT_CODE: async (code: string) => {
-        await confirmCodeNewPhone(code);
-        invalidateCacheAfterUpdateUser(queryClient);
-
-        const { requirements } = await getRequirements();
-        const authenticationData = getAuthenticationData();
-
-        const missingDataStep = await checkMissingData(
-          requirements,
-          authenticationData,
-          state.flow
-        );
-
-        if (missingDataStep) {
-          setCurrentStep(missingDataStep);
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-      RESEND_CODE: async (phone: string) => {
-        await requestCodeNewPhone({ newPhone: phone });
       },
     },
 
