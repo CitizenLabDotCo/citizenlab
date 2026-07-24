@@ -25,7 +25,7 @@ interface Props {
   state: State;
   loading: boolean;
   setError: SetError;
-  onSubmit: (phone: string) => void;
+  onSubmit: (phone: string) => Promise<void>;
 }
 
 const Phone = ({ state, loading, setError, onSubmit }: Props) => {
