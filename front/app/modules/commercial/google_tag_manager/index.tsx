@@ -12,6 +12,7 @@ import {
 import { initializeFor } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { isInContentBuilderPreview } from 'utils/isInContentBuilderPreview';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import messages from './messages';
@@ -39,6 +40,8 @@ const destinationConfig: IDestinationConfig = {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    if (isInContentBuilderPreview()) return;
+
     combineLatest([
       appConfigurationStream,
       initializeFor('google_tag_manager'),
