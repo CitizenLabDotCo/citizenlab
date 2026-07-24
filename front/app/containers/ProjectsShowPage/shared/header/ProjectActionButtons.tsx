@@ -38,6 +38,7 @@ import { useLocation } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
 import { excludeHidden, groupExtraSurveys } from './participationOptions';
+import WaysToParticipateModal from './WaysToParticipateModal';
 
 interface Props {
   projectId: string;
@@ -53,7 +54,7 @@ const ProjectActionButtons = memo<Props>(
     const { data: authUser } = useAuthUser();
     const isSmallerThanTablet = useBreakpoint('tablet');
     const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
-    const [showAllOptions, setShowAllOptions] = useState(false);
+    const [modalOpened, setModalOpened] = useState(false);
     const { formatMessage } = useIntl();
     const localize = useLocalize();
     const isParallelParticipationEnabled = useFeatureFlag({
@@ -87,11 +88,13 @@ const ProjectActionButtons = memo<Props>(
       return null;
     }
 
+    const { open: openSurveyPhases, upcoming: upcomingSurveyPhases } =
+      groupExtraSurveys(standalonePhases?.data);
     const visibleOpenSurveys = isParallelParticipationEnabled
-      ? excludeHidden(
-          groupExtraSurveys(standalonePhases?.data).open,
-          hiddenOptionIds
-        )
+      ? excludeHidden(openSurveyPhases, hiddenOptionIds)
+      : [];
+    const visibleUpcomingSurveys = isParallelParticipationEnabled
+      ? excludeHidden(upcomingSurveyPhases, hiddenOptionIds)
       : [];
 
     const canSeeEmptyState =
@@ -212,18 +215,26 @@ const ProjectActionButtons = memo<Props>(
     // Show button conditions
     const generalShowCTAButtonCondition =
       !isSmallerThanTablet && publication_status !== 'archived';
+    // With parallel participation the box keeps its CTAs on phones too — the
+    // collapsed trigger is the mobile entry point to every way to take part.
+    // Flag off, CTAs stay desktop-only and the bottom CTA bar owns mobile.
+    const showBoxCTAs = isParallelParticipationEnabled
+      ? publication_status !== 'archived'
+      : generalShowCTAButtonCondition;
     const showSeeIdeasButton =
       participationMethod === 'ideation' &&
       isNumber(ideas_count) &&
       ideas_count > 0;
     const showPostIdeaButton =
-      generalShowCTAButtonCondition &&
+      showBoxCTAs &&
       !currentPhaseHidden &&
+      !hasCurrentPhaseEnded &&
       (participationMethod === 'ideation' ||
         participationMethod === 'proposals');
     const showTakeNativeSurveyButton =
-      generalShowCTAButtonCondition &&
+      showBoxCTAs &&
       !currentPhaseHidden &&
+      !hasCurrentPhaseEnded &&
       participationMethod === 'native_survey';
     const showTakeSurveyButton =
       takingSurveyEnabled &&
@@ -232,12 +243,12 @@ const ProjectActionButtons = memo<Props>(
       participationMethod === 'survey' &&
       !hasCurrentPhaseEnded;
     const showTakePollButton =
-      generalShowCTAButtonCondition &&
+      showBoxCTAs &&
       !currentPhaseHidden &&
       participationMethod === 'poll' &&
       !hasCurrentPhaseEnded;
     const showDocumentAnnotationCTAButton =
-      generalShowCTAButtonCondition &&
+      showBoxCTAs &&
       !currentPhaseHidden &&
       participationMethod === 'document_annotation' &&
       !hasCurrentPhaseEnded;
@@ -246,24 +257,70 @@ const ProjectActionButtons = memo<Props>(
     const showEventsCTAButton = !!events?.data?.length;
 
     const showMethodCTA =
-      (showPostIdeaButton && !hasCurrentPhaseEnded) ||
-      (showTakeNativeSurveyButton && !hasCurrentPhaseEnded) ||
+      showPostIdeaButton ||
+      showTakeNativeSurveyButton ||
       showTakeSurveyButton ||
       showTakePollButton ||
       showDocumentAnnotationCTAButton;
-    const surveyCTAs = generalShowCTAButtonCondition ? visibleOpenSurveys : [];
+    const surveyCTAs = showBoxCTAs ? visibleOpenSurveys : [];
     const participationWaysCount = (showMethodCTA ? 1 : 0) + surveyCTAs.length;
     const collapseOptions =
-      isParallelParticipationEnabled &&
-      participationWaysCount > 2 &&
-      !showAllOptions;
+      isParallelParticipationEnabled && participationWaysCount > 2;
     const showAdminEmptyState =
       canSeeEmptyState &&
-      generalShowCTAButtonCondition &&
+      showBoxCTAs &&
       !!standalonePhases &&
       participationWaysCount === 0 &&
       !showSeeIdeasButton &&
       !showEventsCTAButton;
+
+    const methodCTAButton = showMethodCTA ? (
+      <>
+        {currentPhase && showPostIdeaButton && (
+          <IdeaButton
+            id="project-ideabutton"
+            projectId={project.data.id}
+            fontWeight="500"
+            phase={currentPhase}
+            participationMethod="ideation"
+          />
+        )}
+        {currentPhase && showTakeNativeSurveyButton && (
+          <IdeaButton
+            id="project-survey-button"
+            data-testid="e2e-project-survey-button"
+            projectId={project.data.id}
+            fontWeight="500"
+            phase={currentPhase}
+            participationMethod="native_survey"
+          />
+        )}
+        {showTakeSurveyButton && (
+          <ButtonWithLink
+            onClick={handleTakeSurveyClick}
+            fontWeight="500"
+            data-testid="take-survey-button"
+          >
+            <FormattedMessage {...messages.takeTheSurvey} />
+          </ButtonWithLink>
+        )}
+        {showTakePollButton && (
+          <ButtonWithLink
+            onClick={() => {
+              scrollToElementWithId('project-poll');
+            }}
+            fontWeight="500"
+          >
+            <FormattedMessage {...messages.takeThePoll} />
+          </ButtonWithLink>
+        )}
+        {showDocumentAnnotationCTAButton && (
+          <ButtonWithLink onClick={handleReviewDocumentClick} fontWeight="500">
+            <FormattedMessage {...messages.reviewDocument} />
+          </ButtonWithLink>
+        )}
+      </>
+    ) : null;
 
     return (
       <Box
@@ -273,66 +330,28 @@ const ProjectActionButtons = memo<Props>(
         className={className || ''}
       >
         {collapseOptions ? (
-          <ButtonWithLink
-            id="e2e-participation-box-collapsed-button"
-            onClick={() => setShowAllOptions(true)}
-            fontWeight="500"
-          >
-            {localize(collapsedButtonTitleMultiloc) ||
-              formatMessage(messages.participateNWays, {
-                count: participationWaysCount,
-              })}
-          </ButtonWithLink>
+          <>
+            <ButtonWithLink
+              id="e2e-participation-box-collapsed-button"
+              onClick={() => setModalOpened(true)}
+              fontWeight="500"
+              icon="chevron-up"
+              iconPos="right"
+            >
+              {localize(collapsedButtonTitleMultiloc) ||
+                formatMessage(messages.participate)}
+            </ButtonWithLink>
+            <WaysToParticipateModal
+              opened={modalOpened}
+              onClose={() => setModalOpened(false)}
+              methodCTA={methodCTAButton}
+              openSurveys={surveyCTAs}
+              upcomingSurveys={visibleUpcomingSurveys}
+            />
+          </>
         ) : (
           <>
-            {currentPhase && showPostIdeaButton && !hasCurrentPhaseEnded && (
-              <IdeaButton
-                id="project-ideabutton"
-                projectId={project.data.id}
-                fontWeight="500"
-                phase={currentPhase}
-                participationMethod="ideation"
-              />
-            )}
-            {currentPhase &&
-              showTakeNativeSurveyButton &&
-              !hasCurrentPhaseEnded && (
-                <IdeaButton
-                  id="project-survey-button"
-                  data-testid="e2e-project-survey-button"
-                  projectId={project.data.id}
-                  fontWeight="500"
-                  phase={currentPhase}
-                  participationMethod="native_survey"
-                />
-              )}
-            {showTakeSurveyButton && (
-              <ButtonWithLink
-                onClick={handleTakeSurveyClick}
-                fontWeight="500"
-                data-testid="take-survey-button"
-              >
-                <FormattedMessage {...messages.takeTheSurvey} />
-              </ButtonWithLink>
-            )}
-            {showTakePollButton && (
-              <ButtonWithLink
-                onClick={() => {
-                  scrollToElementWithId('project-poll');
-                }}
-                fontWeight="500"
-              >
-                <FormattedMessage {...messages.takeThePoll} />
-              </ButtonWithLink>
-            )}
-            {showDocumentAnnotationCTAButton && (
-              <ButtonWithLink
-                onClick={handleReviewDocumentClick}
-                fontWeight="500"
-              >
-                <FormattedMessage {...messages.reviewDocument} />
-              </ButtonWithLink>
-            )}
+            {methodCTAButton}
             {surveyCTAs.map((surveyPhase, index) => (
               <ExtraSurveyActionButton
                 key={surveyPhase.id}
