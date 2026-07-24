@@ -211,9 +211,7 @@ const AboutBoxSettings = () => {
             <InputMultilocWithLocaleSwitcher
               id="e2e-participation-box-collapsed-title"
               label={formatMessage(messages.collapsedButtonTitleLabel)}
-              placeholder={formatMessage(projectMessages.participateNWays, {
-                count: visibleActiveCount,
-              })}
+              placeholder={formatMessage(projectMessages.participate)}
               type="text"
               valueMultiloc={collapsedButtonTitleMultiloc}
               onChange={(value) => {
