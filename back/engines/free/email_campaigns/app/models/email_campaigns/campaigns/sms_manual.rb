@@ -56,8 +56,7 @@ module EmailCampaigns
       'email_campaigns.admin_labels.content_type.general'
     end
 
-    # Marketing SMS is opt-in: users only receive it after explicitly consenting,
-    # so a missing consent row means "not consented" (see Consentable).
+    # SMS Campaigns should be opt-in.
     def self.consented_by_default?
       false
     end
