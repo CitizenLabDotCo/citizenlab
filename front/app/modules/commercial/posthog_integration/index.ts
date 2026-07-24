@@ -23,6 +23,7 @@ import { IUser } from 'api/users/types';
 import { events$, pageChanges$ } from 'utils/analytics';
 import eventEmitter, { IEventEmitterEvent } from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
+import { isInContentBuilderPreview } from 'utils/isInContentBuilderPreview';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
@@ -114,6 +115,7 @@ eventEmitter
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    if (isInContentBuilderPreview()) return;
     if (!POSTHOG_API_KEY) return;
 
     combineLatest([
