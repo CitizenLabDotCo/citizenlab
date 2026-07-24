@@ -1,0 +1,2 @@
+uid,title,description,total_budget,scope,category_budget_rules,weight,created_at,updated_at,component,url
+decidim--budgets--budget--1,"{""fr"":""Budget 2024""}","{""fr"":""<p>desc</p>""}",100000,,,0,2024-05-01,2024-05-01,decidim--component--90,https://example.decidim.org/processes/budget/f/90/budgets/1

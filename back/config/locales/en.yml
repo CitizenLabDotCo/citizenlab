@@ -358,6 +358,11 @@ en:
       logic_if_answered_end: 'If you answered <strong>%{option}</strong> for Question %{question}, you <strong>do not</strong> need to answer any further questions.'
   project_copy:
     title_suffix: 'Copy'
+  decidim_importer:
+    documents_to_consult: Documents to consult
+    accountability_progress: Progress
+    accountability_status: Status
+    blog: Blog
   user:
     anon_first_name: "User"
     anon_scheme:
