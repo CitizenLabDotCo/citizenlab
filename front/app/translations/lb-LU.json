@@ -1317,7 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Authentifikatioun",
   "app.containers.Authentication.confirmYourPhoneNumber": "Bestätegt Är Telefonsnummer",
   "app.containers.Authentication.enterYourPhoneNumber": "Gitt Är Telefonsnummer an",
-  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Ongëltege Bestätegungscode. Iwwerpréift wgl. Ären Telefon fir de richtege Code oder probéiert 'Neie Code schécken'.",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Ongëltege Bestätegungscode. Iwwerpréift wgl. Ären Telefon fir de korrekte Code oder probéiert 'Neie Code schécken'.",
   "app.containers.Authentication.signUpOrLogIn": "Mellt Iech un oder loggt Iech an",
   "app.containers.Authentication.steps.AccessDenied.close": "Zoumaachen",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Dir erfëllt net den Ufuerderunge fir un dësem Prozess deelzehuelen.",

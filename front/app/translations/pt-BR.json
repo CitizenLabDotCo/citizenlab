@@ -1317,7 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Autenticação",
   "app.containers.Authentication.confirmYourPhoneNumber": "Confirme seu número de telefone",
   "app.containers.Authentication.enterYourPhoneNumber": "Insira seu número de telefone",
-  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Código de confirmação inválido. Verifique seu telefone para ver o código correto ou tente 'Enviar novo código'.",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Código de confirmação inválido. Verifique seu celular para obter o código correto ou tente 'Enviar novo código'.",
   "app.containers.Authentication.signUpOrLogIn": "Inscreva-se ou faça login",
   "app.containers.Authentication.steps.AccessDenied.close": "Fechar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Você não atende aos requisitos para participar desse processo.",
