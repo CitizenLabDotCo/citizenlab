@@ -50,9 +50,8 @@ describe('isInContentBuilderPreview', () => {
   const originalSelf = window.self;
   const originalPathname = window.location.pathname;
 
-  // jsdom has no real frames, so we fake the check the util performs.
-  // `window.top` is unforgeable and cannot be redefined; `self` can, so
-  // pointing it elsewhere is what makes `window.self !== window.top`.
+  // `window.top` is unforgeable; `self` can be redefined, so pointing it
+  // elsewhere is what makes `window.self !== window.top`.
   const setFramed = (framed: boolean) => {
     Object.defineProperty(window, 'self', {
       value: framed ? ({} as Window) : originalSelf,
@@ -90,9 +89,6 @@ describe('isInContentBuilderPreview', () => {
     expect(isInContentBuilderPreview()).toBe(false);
   });
 
-  // The new project edit page (newBackoffice/ProjectPage) frames the real
-  // front-office project page, which has no preview-specific path — it is
-  // recognised by PREVIEW_FRAME_PARAM instead. See TAN-8309.
   it('returns true inside the project page front-office preview iframe', () => {
     setPathname(`/en/projects/my-project?${PREVIEW_FRAME_PARAM}=true`);
     setFramed(true);

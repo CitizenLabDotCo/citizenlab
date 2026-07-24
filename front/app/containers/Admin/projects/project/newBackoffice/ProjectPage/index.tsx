@@ -124,10 +124,8 @@ const ProjectPage = () => {
 
   const slug = project.data.attributes.slug;
 
-  // This frames the real front-office page, so it has no preview-specific path to
-  // recognise. The marker tells the app inside the frame not to boot tenant
-  // analytics — those would re-run third-party tags that can clear the shared auth
-  // cookie and sign the admin out. See isInContentBuilderPreview / TAN-8309.
+  // Frames the real front-office page, so it needs the marker rather than a
+  // preview path to stop trackers booting inside it. See TAN-8309.
   const previewParams = new URLSearchParams(window.location.search);
   previewParams.set(PREVIEW_FRAME_PARAM, 'true');
   const previewSrc = `/${locale}/projects/${slug}?${previewParams.toString()}`;
