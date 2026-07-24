@@ -9,6 +9,7 @@ import {
 } from 'components/ConsentManager/destinations';
 
 import { initializeFor } from 'utils/analytics';
+import { isInContentBuilderPreview } from 'utils/isInContentBuilderPreview';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 import { initializePosthog } from '../posthog_integration';
@@ -30,6 +31,7 @@ const POSTHOG_API_KEY = process.env.POSTHOG_API_KEY;
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    if (isInContentBuilderPreview()) return;
     if (!POSTHOG_API_KEY) return;
     // Subscribe to changes in app configuration, users
     // and Posthog enabled state
