@@ -14,6 +14,7 @@ resource 'Phases' do
 
   route '/api/v1/projects/:project_id/phases', 'Phases: Listing the phases of a project' do
     let!(:project) { create(:project_with_phases) }
+    let!(:other_project) { create(:project_with_phases) }
     let(:project_id) { project.id }
 
     get 'Retrieve a list of project phases' do
@@ -24,7 +25,7 @@ resource 'Phases' do
         explanation 'Endpoint to retrieve project phases. The phases are returned in chronological order. The endpoint supports pagination.'
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:phases].size).to eq project.phases.count
+        expect(json_response[:phases].pluck(:id)).to match_array project.phases.pluck(:id)
         expect(json_response[:meta]).to eq({ total_pages: 1, current_page: 1 })
       end
 

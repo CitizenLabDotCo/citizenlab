@@ -72,10 +72,11 @@ resource 'Phases' do
 
     context 'Phases per project' do
       let(:project_id) { project.id }
+      let!(:other_project) { create(:project_with_phases) }
 
       example_request 'Successful response' do
         expect(status).to eq(200)
-        expect(json_response_body[:phases].size).to eq 5
+        expect(json_response_body[:phases].pluck(:id)).to match_array project.phases.pluck(:id)
         expect(json_response_body[:meta]).to eq({ total_pages: 1, current_page: 1 })
       end
     end
