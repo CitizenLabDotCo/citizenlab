@@ -4,6 +4,9 @@ require 'nanoid'
 
 module ContentBuilder
   module Craftjs
+    # Mutates a craftjs graph (add, replace, delete nodes), assuming it is
+    # consistent — raises KeyError otherwise. The write counterpart of Query,
+    # which it uses for read-only node facts.
     class State
       attr_reader :json
 
@@ -80,10 +83,7 @@ module ContentBuilder
       end
 
       def nodes_by_resolved_name(resolved_name)
-        json.select do |_id, node|
-          type = node['type']
-          type.is_a?(Hash) && type['resolvedName'] == resolved_name
-        end
+        json.select { |_id, node| Query.resolved_name(node) == resolved_name }
       end
 
       def delete_node(node_id)
@@ -93,14 +93,16 @@ module ContentBuilder
         node = _node(node_id)
         parent = _node(node['parent'])
         parent['nodes'].delete(node_id)
+        # The node may be wired as a linkedNodes slot child (column or accordion
+        # content Container) rather than an ordinary child.
+        parent['linkedNodes']&.delete_if { |_slot, child_id| child_id == node_id }
 
         until ids_to_delete.empty?
           id = ids_to_delete.shift
           deleted_node = json.delete(id) { raise KeyError, "Node with id #{id} not found" }
           deleted_nodes[id] = deleted_node
 
-          ids_to_delete.concat(deleted_node['linkedNodes'].values)
-          ids_to_delete.concat(deleted_node['nodes'])
+          ids_to_delete.concat(Query.child_references(deleted_node).map(&:last))
         end
 
         deleted_nodes

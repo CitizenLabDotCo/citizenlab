@@ -171,8 +171,7 @@ module ContentBuilder
     end
 
     def resolved_name(node)
-      type = node['type']
-      type.is_a?(Hash) ? type['resolvedName'] : type
+      Craftjs::Query.resolved_name(node)
     end
 
     def find_node_id(json, name)

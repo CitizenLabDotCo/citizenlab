@@ -73,6 +73,8 @@ module McpServer
       McpServer::Tools::UpdatePhase,
       McpServer::Tools::GetResource,
       McpServer::Tools::GetFormFields,
+      McpServer::Tools::GetProjectLayout,
+      McpServer::Tools::UpdateProjectLayout,
       McpServer::Tools::ReplaceFormFields,
       McpServer::Tools::ListProjects,
       McpServer::Tools::ListPhases,
