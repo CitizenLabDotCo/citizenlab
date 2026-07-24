@@ -20,10 +20,7 @@ import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLink,
-} from '../../breadcrumbs';
+import { pagesBreadcrumb, pagesBreadcrumbLink } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
@@ -101,8 +98,8 @@ const GenericTopInfoSection = ({
             }
             breadcrumbs={[
               {
-                label: formatMessage(pagesAndMenuBreadcrumb.label),
-                link: pagesAndMenuBreadcrumbLink,
+                label: formatMessage(pagesBreadcrumb.label),
+                link: pagesBreadcrumbLink,
               },
               ...breadcrumbs,
               { label: formatMessage(messages.topInfoPageTitle) },
