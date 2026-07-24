@@ -81,12 +81,12 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       described_class.new.deliver(delivery, to: '1 (415) 555-2671')
     end
 
-    it 'marks the delivery errored and re-raises for an invalid destination without calling the provider' do
+    it 'marks the delivery not_sent and re-raises for an invalid destination without calling the provider' do
       expect(provider).not_to receive(:send)
 
       expect { described_class.new.deliver(delivery, to: 'not-a-phone') }
         .to raise_error(EmailCampaigns::Sms::Error, /Invalid phone number/)
-      expect(delivery.reload.status).to eq('errored')
+      expect(delivery.reload.status).to eq('not_sent')
     end
 
     it 'marks the delivery failed and re-raises when the provider fails' do
@@ -131,13 +131,13 @@ RSpec.describe EmailCampaigns::Sms::SendService do
         expect(delivery.reload.status).to eq('queued')
       end
 
-      it 'marks the delivery errored and re-raises when the destination country is not allowed' do
+      it 'marks the delivery not_sent and re-raises when the destination country is not allowed' do
         SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
         expect(provider).not_to receive(:send)
 
         expect { described_class.new.deliver(delivery, to: phone) }
           .to raise_error(EmailCampaigns::Sms::Error, /not allowed/)
-        expect(delivery.reload.status).to eq('errored')
+        expect(delivery.reload.status).to eq('not_sent')
       end
 
       it 'sends to any country when the allow-list is empty' do

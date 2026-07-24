@@ -438,8 +438,8 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.smsDeliveryStatus_failed',
     defaultMessage: 'Failed',
   },
-  smsDeliveryStatus_errored: {
-    id: 'app.containers.Admin.messaging.smsDeliveryStatus_errored',
-    defaultMessage: 'Errored',
+  smsDeliveryStatus_notSent: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_notSent',
+    defaultMessage: 'Not sent',
   },
 });

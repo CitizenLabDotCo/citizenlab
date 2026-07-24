@@ -23,7 +23,7 @@ export interface ISmsDeliveryData {
       | 'delivered'
       | 'undelivered'
       | 'failed'
-      | 'errored';
+      | 'not_sent';
     message_sid: string | null;
     created_at: string;
     updated_at: string;

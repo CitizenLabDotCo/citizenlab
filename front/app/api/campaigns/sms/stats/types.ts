@@ -13,7 +13,7 @@ export interface ISmsDeliveryStats {
   delivered: number;
   undelivered: number;
   failed: number;
-  errored: number;
+  not_sent: number;
   total: number;
 }
 
