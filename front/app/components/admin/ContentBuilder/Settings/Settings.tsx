@@ -24,7 +24,7 @@ const StyledBox = styled(Box)`
 
 const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
-  right: 8px;
+  right: 28px;
 `;
 
 interface Props {
@@ -56,7 +56,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
       />
       <Box h="100%" pr="8px" overflowY="auto">
         {selectedNode.title && (
-          <Title variant="h2" mt="-4px" mb="32px">
+          <Title variant="h2" mt="-4px" mb="32px" pr="48px">
             <FormattedMessage {...selectedNode.title} />
           </Title>
         )}

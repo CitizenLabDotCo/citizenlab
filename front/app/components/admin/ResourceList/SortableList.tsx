@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -8,6 +8,7 @@ import usePrevious from 'hooks/usePrevious';
 import { List } from 'components/admin/ResourceList';
 
 import { itemOrderWasUpdated } from './utils';
+export const ScopedDndContext = createContext(false);
 
 export interface Item {
   id: string;
@@ -108,8 +109,33 @@ const SortableList = ({
   );
 };
 
-export default (props: InputProps) => (
-  <DndProvider backend={HTML5Backend}>
-    <SortableList {...props} />
-  </DndProvider>
-);
+// Scopes react-dnd's HTML5Backend to a container element (instead of `window`)
+// so it does not intercept native drags happening elsewhere on the page.
+const ScopedDndSortableList = (props: InputProps) => {
+  const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
+
+  return (
+    <div ref={setRootElement}>
+      {rootElement && (
+        <DndProvider backend={HTML5Backend} options={{ rootElement }}>
+          <SortableList {...props} />
+        </DndProvider>
+      )}
+    </div>
+  );
+};
+
+export default (props: InputProps) => {
+  // Scope react-dnd to this list's container when rendered inside another
+  // drag-and-drop context (e.g. the content builder) that provides
+  // ScopedDndContext; otherwise let it listen on `window`.
+  const scopeDndToContainer = useContext(ScopedDndContext);
+
+  return scopeDndToContainer ? (
+    <ScopedDndSortableList {...props} />
+  ) : (
+    <DndProvider backend={HTML5Backend}>
+      <SortableList {...props} />
+    </DndProvider>
+  );
+};

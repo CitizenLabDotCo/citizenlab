@@ -20,10 +20,14 @@ const StyledBox = styled(Box)`
 interface ToolboxItemProps {
   label: string;
   icon: IconNames;
+  labelSuffix?: React.ReactNode;
 }
 
 const ToolboxItem = forwardRef(
-  ({ icon, label }: ToolboxItemProps, ref: React.RefObject<HTMLDivElement>) => {
+  (
+    { icon, label, labelSuffix }: ToolboxItemProps,
+    ref: React.RefObject<HTMLDivElement>
+  ) => {
     return (
       <StyledBox
         width="100%"
@@ -45,6 +49,12 @@ const ToolboxItem = forwardRef(
         <Text color="textPrimary" lineHeight="1">
           {label}
         </Text>
+
+        {labelSuffix && (
+          <Box ml="8px" display="flex" alignItems="center">
+            {labelSuffix}
+          </Box>
+        )}
       </StyledBox>
     );
   }
@@ -60,7 +70,13 @@ interface Props extends ToolboxItemProps {
   component: React.ReactElement;
 }
 
-const DraggableElement = ({ id, component, icon, label }: Props) => {
+const DraggableElement = ({
+  id,
+  component,
+  icon,
+  label,
+  labelSuffix,
+}: Props) => {
   const {
     connectors,
     actions: { selectNode },
@@ -78,7 +94,7 @@ const DraggableElement = ({ id, component, icon, label }: Props) => {
         })
       }
     >
-      <ToolboxItem icon={icon} label={label} />
+      <ToolboxItem icon={icon} label={label} labelSuffix={labelSuffix} />
     </DraggableContainer>
   );
 };

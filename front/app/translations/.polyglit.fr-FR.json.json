@@ -3399,6 +3399,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.UI.EmojiPicker.clear": {
+    "state": "verified",
+    "verified_at": "2026-07-16T16:14:31.535806Z",
+    "verified_by": "Adrien"
+  },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
     "verified_at": "2026-05-13T07:39:06.225219Z",
