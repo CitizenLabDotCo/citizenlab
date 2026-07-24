@@ -24,6 +24,29 @@ describe McpServer::Tools::CreatePollOption do
       end.to change { question.reload.options.count }.by(1)
 
       expect(response).not_to be_error
+      expect(response.structured_content[:id]).to eq(question.options.sole.id)
+    end
+
+    it 'returns structured validation errors for invalid params' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(title_multiloc: {}),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.structured_content[:errors].pluck(:attribute)).to include('title_multiloc')
+      expect(question.reload.options.count).to eq(0)
+    end
+
+    it 'returns a not-found error when the question is missing' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(question_id: SecureRandom.uuid),
+        current_user:
+      )
+
+      expect(response).to be_not_found('Poll question')
     end
   end
 

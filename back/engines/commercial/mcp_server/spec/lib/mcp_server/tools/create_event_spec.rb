@@ -24,6 +24,20 @@ describe McpServer::Tools::CreateEvent do
       end.to change { project.reload.events.count }.by(1)
 
       expect(response).not_to be_error
+      expect(response.structured_content[:id]).to eq(project.events.sole.id)
+      expect(response.structured_content[:title_multiloc]).to eq('en' => 'Event 1')
+    end
+
+    it 'returns structured validation errors for invalid params' do
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(maximum_attendees: 0),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.structured_content[:errors].pluck(:attribute)).to include('maximum_attendees')
+      expect(project.reload.events.count).to eq(0)
     end
   end
 
@@ -48,8 +62,7 @@ describe McpServer::Tools::CreateEvent do
         current_user:
       )
 
-      expect(response).to be_error
-      expect(response.content.first[:text]).to include('Project not found')
+      expect(response).to be_not_found('Project')
     end
   end
 end

@@ -70,6 +70,20 @@ describe McpServer::Tools::AttachFile do
     end
   end
 
+  it 'returns an error when the download fails' do
+    failing_url = 'https://example.com/missing.pdf'
+    stub_failing_remote_download(failing_url)
+
+    response = run_mcp_tool(
+      described_class,
+      params: { resource_type: 'project', resource_id: project.id, name: 'doc.pdf', remote_url: failing_url },
+      current_user:
+    )
+
+    expect(response).to be_error
+    expect(Files::FileAttachment.where(attachable: project).count).to eq(0)
+  end
+
   it 'refuses when the project is published' do
     published = create(:project, admin_publication_attributes: { publication_status: 'published' })
 

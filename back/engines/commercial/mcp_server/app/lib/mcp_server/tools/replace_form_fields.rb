@@ -71,6 +71,9 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         return not_found_error("Container (#{params[:container_type]})", params[:container_id])
       end
 
+      authorize_project!(container.is_a?(Phase) ? container.project : container)
+      authorize(container, :update?)
+
       pmethod = container.pmethod
       return unsupported_error(pmethod) unless SUPPORTED_METHODS.include?(pmethod.class.method_str)
 

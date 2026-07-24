@@ -24,6 +24,16 @@ describe McpServer::Tools::CreateProject do
     expect(response.structured_content[:public_url]).to end_with("/projects/#{project.slug}")
   end
 
+  it 'returns structured validation errors for invalid params' do
+    response = nil
+    expect do
+      response = run_mcp_tool(described_class, params: params.merge(visible_to: 'everybody'), current_user:)
+    end.not_to change(Project, :count)
+
+    expect(response).to be_error
+    expect(response.structured_content[:errors].pluck(:attribute)).to include('visible_to')
+  end
+
   it 'attaches a remote header_bg by URL' do
     remote_url = 'https://example.com/header.jpg'
     fixture_path = stub_remote_image_download(remote_url)

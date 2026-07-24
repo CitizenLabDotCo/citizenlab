@@ -38,6 +38,9 @@ class McpServer::Tools::UpdatePhase < McpServer::BaseTool
       phase = Phase.find_by(id: params[:phase_id])
       return not_found_error('Phase', params[:phase_id]) unless phase
 
+      authorize_project!(phase.project)
+      authorize(phase, :update?)
+
       attributes = params.except(:phase_id)
 
       # manual_voters_amount goes through a dedicated setter that records who/when, before other assigns.

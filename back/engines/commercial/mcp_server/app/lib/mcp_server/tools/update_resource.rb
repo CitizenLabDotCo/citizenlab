@@ -85,6 +85,9 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     def run
       return not_found_error("Resource (#{params[:type]})", params[:id]) unless record
 
+      authorize_project!(record.project)
+      authorize(record, :update?)
+
       attributes = params[:attributes].symbolize_keys
       rejected = attributes.keys - config[:attrs]
 
