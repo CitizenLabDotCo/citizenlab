@@ -103,7 +103,21 @@ resource 'Phases' do
 
     example_request 'Returns the phase in the default locale' do
       assert_status 200
-      expect(json_response_body[:phase]).to include({ id: id })
+      expect(json_response_body[:phase]).to include({
+        id: id,
+        placement_type: 'on_timeline',
+        start_at: phase.start_date.to_s,
+        end_at: phase.end_date.to_s
+      })
+    end
+
+    context 'when the phase is a standalone phase' do
+      let(:phase) { create(:phase, :standalone, project: project) }
+
+      example_request 'Returns the placement type', document: false do
+        assert_status 200
+        expect(json_response_body[:phase]).to include({ id: id, placement_type: 'standalone' })
+      end
     end
 
     context 'when requesting the phase in a specific locale' do
