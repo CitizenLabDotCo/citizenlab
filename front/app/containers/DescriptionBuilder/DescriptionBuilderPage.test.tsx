@@ -5,8 +5,10 @@ import { SerializedNodes } from '@craftjs/core';
 import {
   defaultProjectPageLayout,
   normalizeProjectPageLayout,
-  DESCRIPTION_NODE_ID,
   BANNER_NODE_ID,
+  BODY_NODE_ID,
+  PHASES_NODE_ID,
+  EVENTS_NODE_ID,
 } from 'components/ProjectPageBuilder/defaultLayout';
 import { spliceDescriptionEditorData } from 'components/ProjectPageBuilder/descriptionSection';
 
@@ -165,7 +167,11 @@ describe('DescriptionBuilderPage save contract', () => {
       craftjs_json: expectedJson,
       enabled: true,
     });
-    expect(expectedJson[DESCRIPTION_NODE_ID].nodes).toEqual(['txt']);
+    expect(expectedJson[BODY_NODE_ID].nodes).toEqual([
+      'txt',
+      PHASES_NODE_ID,
+      EVENTS_NODE_ID,
+    ]);
     expect(expectedJson[BANNER_NODE_ID].props.alt).toEqual({
       en: 'Fresh banner alt',
     });

@@ -14,14 +14,20 @@ import { useParams } from 'utils/router';
 
 import EditModeHeightCap from '../EditModeHeightCap';
 import SectionBackground from '../SectionBackground';
+import useIsPageBodyChild from '../useIsPageBodyChild';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyInputFeed from './EmptyInputFeed';
 
 const PublicInputContent = React.lazy(() => import('./PublicInputContent'));
 
-const InputFeedSection = () => {
+type Props = {
+  colored: boolean;
+};
+
+const InputFeedSection = ({ colored }: Props) => {
   const projectId = useWidgetProjectId();
+  const isPageBodyChild = useIsPageBodyChild();
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const onPublicRoute = !!slug;
   const { enabled: inEditor } = useEditor((state) => ({
@@ -48,7 +54,8 @@ const InputFeedSection = () => {
         (hasParticipation ? (
           <EditModeHeightCap>
             <SectionBackground
-              fullBleed={onPublicRoute}
+              colored={colored}
+              fullBleed={onPublicRoute && isPageBodyChild}
               pb="40px"
               pt={startsGreyBand ? '40px' : undefined}
             >

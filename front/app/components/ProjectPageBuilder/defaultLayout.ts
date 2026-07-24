@@ -5,11 +5,15 @@ import widgetMessages from './Widgets/messages';
 export const BANNER_NODE_ID = 'PROJECT_PAGE_BANNER';
 export const TITLE_NODE_ID = 'PROJECT_PAGE_TITLE';
 export const BODY_NODE_ID = 'PROJECT_PAGE_BODY';
-export const DESCRIPTION_NODE_ID = 'PROJECT_PAGE_DESCRIPTION';
 export const PHASES_NODE_ID = 'PROJECT_PAGE_PHASES';
 export const EVENTS_NODE_ID = 'PROJECT_PAGE_EVENTS';
 
 const ROOT_ID = 'ROOT';
+
+// The transitional locked container that used to hold the description content.
+// Stored layouts that predate the unlocked builder still have one; it is
+// unwrapped on every load until the layout's next save persists the flat shape.
+const DESCRIPTION_SECTION_NAME = 'ProjectDescriptionSection';
 
 const bannerNode = (): SerializedNode => ({
   type: { resolvedName: 'ProjectBanner' },
@@ -55,28 +59,12 @@ const bodyNode = (childIds: string[]): SerializedNode => ({
   linkedNodes: {},
 });
 
-const descriptionSectionNode = (childIds: string[]): SerializedNode => ({
-  type: { resolvedName: 'ProjectDescriptionSection' },
-  nodes: childIds,
-  props: {},
-  custom: {
-    title: widgetMessages.descriptionSectionTitle,
-    locked: true,
-  },
-  hidden: false,
-  parent: BODY_NODE_ID,
-  isCanvas: true,
-  displayName: 'ProjectDescriptionSection',
-  linkedNodes: {},
-});
-
 const phasesNode = (parentId: string): SerializedNode => ({
   type: { resolvedName: 'PhasesWidget' },
   nodes: [],
   props: {},
   custom: {
     title: widgetMessages.phasesWidgetTitle,
-    locked: true,
     noPointerEvents: true,
   },
   hidden: false,
@@ -92,7 +80,6 @@ const eventsNode = (parentId: string): SerializedNode => ({
   props: {},
   custom: {
     title: widgetMessages.eventsWidgetTitle,
-    locked: true,
     noPointerEvents: true,
   },
   hidden: false,
@@ -118,22 +105,19 @@ export const defaultProjectPageLayout = (): SerializedNodes => ({
   [ROOT_ID]: rootNode([BANNER_NODE_ID, TITLE_NODE_ID, BODY_NODE_ID]),
   [BANNER_NODE_ID]: bannerNode(),
   [TITLE_NODE_ID]: titleNode(),
-  [BODY_NODE_ID]: bodyNode([
-    DESCRIPTION_NODE_ID,
-    PHASES_NODE_ID,
-    EVENTS_NODE_ID,
-  ]),
-  [DESCRIPTION_NODE_ID]: descriptionSectionNode([]),
+  [BODY_NODE_ID]: bodyNode([PHASES_NODE_ID, EVENTS_NODE_ID]),
   [PHASES_NODE_ID]: phasesNode(BODY_NODE_ID),
   [EVENTS_NODE_ID]: eventsNode(BODY_NODE_ID),
 });
 
-const resolvedNameOf = (node: SerializedNode) =>
+export const resolvedNameOf = (node: SerializedNode) =>
   typeof node.type === 'object' ? node.type.resolvedName : undefined;
 
 export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
+// Re-stamped on every load, replacing whatever the stored layout carries, so
+// changing a widget's chrome (title, locks) is a code-only change.
 const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   ProjectBanner: {
     title: widgetMessages.bannerWidgetTitle,
@@ -145,18 +129,12 @@ const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
     locked: true,
     noPointerEvents: true,
   },
-  ProjectDescriptionSection: {
-    title: widgetMessages.descriptionSectionTitle,
-    locked: true,
-  },
   PhasesWidget: {
     title: widgetMessages.phasesWidgetTitle,
-    locked: true,
     noPointerEvents: true,
   },
   EventsWidget: {
     title: widgetMessages.eventsWidgetTitle,
-    locked: true,
     noPointerEvents: true,
   },
 };
@@ -213,9 +191,7 @@ export const normalizeProjectPageLayout = (
             ),
           }
         : node;
-    next[id] = canonical
-      ? { ...cleaned, custom: { ...cleaned.custom, ...canonical } }
-      : cleaned;
+    next[id] = canonical ? { ...cleaned, custom: { ...canonical } } : cleaned;
   });
 
   const ensureNode = (
@@ -234,28 +210,36 @@ export const normalizeProjectPageLayout = (
   const bodyId = ensureNode('ProjectPageBody', BODY_NODE_ID, () =>
     bodyNode([])
   );
-  const descriptionId = ensureNode(
-    'ProjectDescriptionSection',
-    DESCRIPTION_NODE_ID,
-    () => descriptionSectionNode([])
-  );
-  const phasesId = ensureNode('PhasesWidget', PHASES_NODE_ID, () =>
-    phasesNode(bodyId)
-  );
-  const eventsId = ensureNode('EventsWidget', EVENTS_NODE_ID, () =>
-    eventsNode(bodyId)
-  );
+
+  const sectionId = findNodeIdByName(next, DESCRIPTION_SECTION_NAME);
+  if (sectionId) {
+    const sectionChildren = next[sectionId].nodes;
+    const bodyChildren = next[bodyId].nodes;
+    const sectionIndex = bodyChildren.indexOf(sectionId);
+    const unwrapped =
+      sectionIndex === -1
+        ? [...sectionChildren, ...bodyChildren]
+        : [
+            ...bodyChildren.slice(0, sectionIndex),
+            ...sectionChildren,
+            ...bodyChildren.slice(sectionIndex + 1),
+          ];
+    sectionChildren.forEach((childId) => {
+      next[childId] = { ...next[childId], parent: bodyId };
+    });
+    delete next[sectionId];
+    next[bodyId] = { ...next[bodyId], nodes: unwrapped };
+  }
 
   next[bannerId] = { ...next[bannerId], parent: ROOT_ID };
   next[titleId] = { ...next[titleId], parent: ROOT_ID };
-  next[bodyId] = {
-    ...next[bodyId],
-    parent: ROOT_ID,
-    nodes: [descriptionId, phasesId, eventsId],
-  };
-  next[descriptionId] = { ...next[descriptionId], parent: bodyId };
-  next[phasesId] = { ...next[phasesId], parent: bodyId };
-  next[eventsId] = { ...next[eventsId], parent: bodyId };
+  next[bodyId] = { ...next[bodyId], parent: ROOT_ID };
+  next[bodyId].nodes.forEach((childId) => {
+    const child = next[childId] as SerializedNode | undefined;
+    if (child && child.parent !== bodyId) {
+      next[childId] = { ...child, parent: bodyId };
+    }
+  });
 
   const root = next[ROOT_ID];
   next[ROOT_ID] = {

@@ -7934,6 +7934,11 @@
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.extras": {
+    "state": "verified",
+    "verified_at": "2026-07-22T19:53:51.413054Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -8924,6 +8929,16 @@
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.newSurvey": {
+    "state": "verified",
+    "verified_at": "2026-07-22T19:53:51.413054Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.notOnProjectPage": {
+    "state": "verified",
+    "verified_at": "2026-07-22T22:11:44.196422Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -9234,6 +9249,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.ongoing": {
+    "state": "verified",
+    "verified_at": "2026-07-22T21:06:37.274481Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.participation.comments": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -9529,6 +9549,7 @@
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
   },
+
   "app.containers.Admin.projects.project.projectHomepage": {
     "state": "verified",
     "verified_at": "2026-07-22T09:18:14.104367Z",
@@ -15853,6 +15874,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectTimeline.newSurveyTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-22T19:58:28.612480Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectTimeline.noEndDateDescription": {
     "state": "verified",

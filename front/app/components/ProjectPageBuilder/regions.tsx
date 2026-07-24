@@ -1,18 +1,41 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import { Box, media } from '@citizenlab/cl2-component-library';
-import { UserComponent } from '@craftjs/core';
-import styled from 'styled-components';
-
-import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Node, UserComponent, useEditor } from '@craftjs/core';
+import styled, { css } from 'styled-components';
 
 import { useParams } from 'utils/router';
 
+import CTABar from './CTABar';
 import useWidgetProjectId from './Widgets/useWidgetProjectId';
 
 type RegionProps = {
   children?: React.ReactNode;
 };
+
+// The body paints a neutral white so the page look doesn't depend on the
+// legacy page container's background; sections tint themselves through their
+// background setting. On the public page the white spans the full viewport
+// width via a backdrop, so the body itself keeps constraining its children.
+const BodyBackground = styled(Box)<{ $fullBleed: boolean }>`
+  background: ${colors.white};
+  ${({ $fullBleed }) =>
+    $fullBleed &&
+    css`
+      background: none;
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(-50vw + 50%);
+        width: 100vw;
+        background: ${colors.white};
+        z-index: -1;
+      }
+    `}
+`;
 
 export const ProjectPageRoot: UserComponent<RegionProps> = ({ children }) => (
   <Box id="e2e-content-builder-frame" w="100%">
@@ -30,52 +53,36 @@ ProjectPageRoot.craft = {
   },
 };
 
-const CTA_BAR_CLASS = 'projectPageCtaBar';
-
-const BodyWithStickyCTABar = styled(Box)`
-  display: flex;
-  flex-direction: column;
-
-  & > .${CTA_BAR_CLASS} {
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-  }
-
-  /* The description section, which directly follows the bar in the DOM. */
-  & > .${CTA_BAR_CLASS} + * {
-    order: -1;
-    /* The legacy page's breathing room above the bar, which the flushed header
-       and description section no longer provide. */
-    margin-bottom: 89px;
-    ${media.phone`
-      margin-bottom: 59px;
-    `}
-  }
-`;
-
 export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => {
-  const { slug } = useParams({ strict: false }) as { slug?: string };
   const projectId = useWidgetProjectId();
-
-  if (!slug || !projectId) {
-    return (
-      <Box id="e2e-project-page-body" w="100%" minHeight="60px">
-        {children}
-      </Box>
-    );
-  }
+  const { slug } = useParams({ strict: false }) as { slug?: string };
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const { enabled: inEditor } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
 
   return (
-    <BodyWithStickyCTABar id="e2e-project-page-body" w="100%">
-      <ProjectCTABar projectId={projectId} className={CTA_BAR_CLASS} />
+    <BodyBackground
+      id="e2e-project-page-body"
+      w="100%"
+      minHeight={inEditor ? '60px' : undefined}
+      ref={containerRef}
+      $fullBleed={!!slug}
+    >
       {children}
-    </BodyWithStickyCTABar>
+      {!inEditor && projectId && (
+        <CTABar projectId={projectId} containerRef={containerRef} />
+      )}
+    </BodyBackground>
   );
 };
 
+const HEADER_WIDGETS = ['ProjectBanner', 'ProjectTitle'];
+
 ProjectPageBody.craft = {
   rules: {
-    canMoveIn: () => false,
+    canMoveIn: (incoming: Node[]) =>
+      incoming.every((node) => !HEADER_WIDGETS.includes(node.data.name)),
   },
   custom: {
     region: true,

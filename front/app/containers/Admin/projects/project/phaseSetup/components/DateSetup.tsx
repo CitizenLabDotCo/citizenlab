@@ -28,6 +28,9 @@ interface Props {
   formData: IUpdatedPhaseProperties;
   errors: CLErrors | null;
   validationErrors: ValidationErrors;
+  // Standalone (detached) phases run in parallel with the timeline, so
+  // other phases don't block any dates.
+  standalone?: boolean;
   setSubmitState: React.Dispatch<React.SetStateAction<SubmitStateType>>;
   setFormData: React.Dispatch<React.SetStateAction<IUpdatedPhaseProperties>>;
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
@@ -37,6 +40,7 @@ const DateSetup = ({
   formData,
   errors,
   validationErrors,
+  standalone,
   setFormData,
   setSubmitState,
   setValidationErrors,
@@ -57,7 +61,7 @@ const DateSetup = ({
   }, [start_at, end_at, timeZone]);
 
   const disabledRanges = useMemo(() => {
-    if (!phases || !timeZone) return [];
+    if (standalone || !phases || !timeZone) return [];
 
     const otherPhases = phases.data.filter((phase) => phase.id !== phaseId);
     const disabledRanges = otherPhases
@@ -76,7 +80,7 @@ const DateSetup = ({
       );
 
     return patchDisabledRanges(selectedRange, disabledRanges);
-  }, [phases, phaseId, selectedRange, timeZone]);
+  }, [phases, phaseId, selectedRange, timeZone, standalone]);
 
   if (!phases) return null;
 

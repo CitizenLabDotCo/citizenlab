@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
@@ -17,6 +17,7 @@ import { getPhaseLandingTab } from 'api/phases/utils';
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Section,
@@ -30,17 +31,21 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import {
   FormattedMessage,
+  MessageDescriptor,
   useFormatMessageWithLocale,
   useIntl,
 } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { generateTemporaryFileAttachment } from 'utils/fileUtils';
-import { useParams } from 'utils/router';
+import { useParams, useSearch } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
-import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
+import {
+  ideationDefaultConfig,
+  nativeSurveyDefaultConfig,
+} from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
 import validate from './validate';
@@ -48,9 +53,13 @@ import validate from './validate';
 interface Props {
   projectId: string;
   phase: IPhase | undefined;
+  // Creates the phase as a standalone (detached) survey instead of a
+  // timeline phase: method is fixed to native survey and the timeline
+  // date rules don't apply.
+  standaloneSurvey?: boolean;
 }
 
-const AdminPhaseEdit = ({ projectId, phase }: Props) => {
+const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
   const phaseId = phase?.data.id;
   const { data: phaseFileAttachments } = useFileAttachments({
     attachable_id: phaseId,
@@ -78,12 +87,55 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
 
+  // Detached phases skip the timeline rules (dates may overlap and stay
+  // open-ended) and keep their fixed participation method.
+  const standalone =
+    (standaloneSurvey && !phase) ||
+    phase?.data.attributes.placement_type === 'standalone';
+
+  const standaloneSeededRef = useRef(false);
+
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
     // If no phase is selected, we initialize the form data with default values.
-    setFormData(phase ? phase.data.attributes : ideationDefaultConfig);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase]);
+    if (phase) {
+      setFormData(phase.data.attributes);
+      return;
+    }
+
+    if (standaloneSurvey) {
+      // Seed once: this effect re-runs while the locales load, and re-seeding
+      // afterwards would clobber what the admin already typed.
+      if (
+        standaloneSeededRef.current ||
+        !tenantLocales ||
+        !formatMessageWithLocale
+      ) {
+        return;
+      }
+
+      const localizedDefaults = (message: MessageDescriptor) =>
+        tenantLocales.reduce((acc, locale) => {
+          acc[locale] = formatMessageWithLocale(locale, message);
+          return acc;
+        }, {});
+
+      setFormData({
+        ...nativeSurveyDefaultConfig,
+        placement_type: 'standalone',
+        native_survey_title_multiloc: localizedDefaults(
+          messages.defaultSurveyTitleLabel
+        ),
+        native_survey_button_multiloc: localizedDefaults(
+          messages.defaultSurveyCTALabel
+        ),
+      });
+      standaloneSeededRef.current = true;
+      return;
+    }
+
+    setFormData(ideationDefaultConfig);
+  }, [phase, standaloneSurvey, tenantLocales, formatMessageWithLocale]);
 
   useEffect(() => {
     if (phaseFileAttachments) {
@@ -252,7 +304,8 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
       formData,
       phases,
       formatMessage,
-      phase?.data.id
+      phase?.data.id,
+      standalone
     );
 
     setValidationErrors(errors);
@@ -368,7 +421,11 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
     <Box ref={containerRef}>
       <Title variant="h3" color="primary">
         {phase && <FormattedMessage {...messages.editPhaseTitle} />}
-        {!phase && <FormattedMessage {...messages.newPhaseTitle} />}
+        {!phase && (
+          <FormattedMessage
+            {...(standalone ? messages.newSurveyTitle : messages.newPhaseTitle)}
+          />
+        )}
       </Title>
       <form onSubmit={handleOnSubmit}>
         <Section>
@@ -394,6 +451,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             formData={formData}
             errors={errors}
             validationErrors={validationErrors}
+            standalone={standalone}
             setSubmitState={setSubmitState}
             setFormData={setFormData}
             setValidationErrors={setValidationErrors}
@@ -405,6 +463,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             apiErrors={errors}
             onChange={handlePhaseParticipationConfigChange}
             setValidationErrors={setValidationErrors}
+            hideMethodPicker={standalone}
           />
           <SectionField>
             <SubSectionTitle>
@@ -474,7 +533,13 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
 
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams({ strict: false });
+  const { placement } = useSearch({ strict: false }) as {
+    placement?: 'standalone';
+  };
   const { data: phase } = usePhase(phaseId);
+  const extraSurveysEnabled = useFeatureFlag({
+    name: 'parallel_participation',
+  });
 
   if (!projectId) return null;
 
@@ -482,7 +547,11 @@ const AdminPhaseEditWrapper = () => {
   if (phaseLoading) return null;
 
   return (
-    <AdminPhaseEdit projectId={projectId} phase={phaseId ? phase : undefined} />
+    <AdminPhaseEdit
+      projectId={projectId}
+      phase={phaseId ? phase : undefined}
+      standaloneSurvey={extraSurveysEnabled && placement === 'standalone'}
+    />
   );
 };
 

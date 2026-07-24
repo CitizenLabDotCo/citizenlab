@@ -36,6 +36,7 @@ export interface IPhaseData {
 
 export interface IPhaseAttributes {
   voting_filtering_enabled: boolean;
+  placement_type?: PhasePlacementType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   draft_description_multiloc: Multiloc;
@@ -106,6 +107,7 @@ export interface IPhase {
 
 export interface IUpdatedPhaseProperties {
   project_id?: string;
+  placement_type?: PhasePlacementType; // Only settable on creation.
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   draft_description_multiloc?: Multiloc;
@@ -181,6 +183,8 @@ export type ParticipationMethod =
   | 'volunteering'
   | 'document_annotation'
   | 'proposals';
+
+export type PhasePlacementType = 'on_timeline' | 'standalone';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 

@@ -9,7 +9,10 @@ const validate = (
   state: IUpdatedPhaseProperties,
   phases: IPhases | undefined,
   formatMessage: FormatMessage,
-  phaseId?: string
+  phaseId?: string,
+  // Standalone (detached) phases run in parallel with the timeline, so the
+  // end-date rules relative to other phases don't apply.
+  standalone?: boolean
 ) => {
   const {
     start_at,
@@ -39,7 +42,7 @@ const validate = (
   let reactingThresholdError: string | undefined;
   let minSelectedOptionsError: string | undefined;
 
-  if (!phases || phases.data.length === 0) {
+  if (standalone || !phases || phases.data.length === 0) {
     if (!start_at) {
       phaseDateError = formatMessage(messages.missingStartDateError);
       isValidated = false;
