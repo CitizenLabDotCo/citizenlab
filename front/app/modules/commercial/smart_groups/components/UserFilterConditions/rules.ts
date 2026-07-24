@@ -42,6 +42,8 @@ export type TStaticRuleType =
   | 'follow'
   | 'lives_in'
   | 'registration_completed_at'
+  | 'last_active_at'
+  | 'imported'
   | 'role'
   | 'participated_in_project'
   | 'participated_in_topic'
@@ -65,6 +67,8 @@ type TStaticPredicate =
   | TEventAttendancePredicate
   | TResidencePredicate
   | TRegistrationCompletedPredicate
+  | TLastActivePredicate
+  | TImportedPredicate
   | TParticipatedInProjectPredicate
   | TParticipatedInTopicPredicate
   | TParticipatedInStatusPredicate
@@ -130,6 +134,15 @@ type TRegistrationCompletedPredicate =
   | 'is_before'
   | 'is_exactly'
   | 'is_after';
+
+type TLastActivePredicate =
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_before'
+  | 'is_exactly'
+  | 'is_after';
+
+type TImportedPredicate = 'is_imported' | 'not_is_imported';
 
 type TParticipatedInProjectPredicate =
   | 'commented_in'
@@ -411,6 +424,23 @@ export type TRule =
       value?: undefined;
     }
   | {
+      ruleType?: 'last_active_at';
+      predicate?: 'is_before' | 'is_exactly' | 'is_after';
+      /**
+       * The date formatted as yyyy-mm-dd
+       */
+      value?: string;
+    }
+  | {
+      ruleType?: 'last_active_at';
+      predicate?: 'is_empty' | 'not_is_empty';
+      value?: undefined;
+    }
+  | {
+      ruleType?: 'imported';
+      predicate?: 'is_imported' | 'not_is_imported';
+    }
+  | {
       ruleType?: 'participated_in_project';
       predicate?:
         | 'not_commented_in'
@@ -632,6 +662,17 @@ export const ruleTypeConstraints = {
     is_after: DateValueSelector,
     is_empty: null,
     not_is_empty: null,
+  },
+  last_active_at: {
+    is_before: DateValueSelector,
+    is_exactly: DateValueSelector,
+    is_after: DateValueSelector,
+    is_empty: null,
+    not_is_empty: null,
+  },
+  imported: {
+    is_imported: null,
+    not_is_imported: null,
   },
   role: {
     is_admin: null,
