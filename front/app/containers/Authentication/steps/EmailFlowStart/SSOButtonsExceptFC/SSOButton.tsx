@@ -6,7 +6,7 @@ import { IDKeycloakMethod, IdMethodName } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
 
-import useAuthMethodNames from 'hooks/useAuthMethodNames';
+import useIdMethodNames from 'hooks/useIdMethodNames';
 
 import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 
@@ -39,7 +39,7 @@ interface Props {
  */
 const SSOButton = ({ provider, onClickSSO }: Props) => {
   const { data: idMethods } = useIdMethods();
-  const names = useAuthMethodNames();
+  const idMethodNames = useIdMethodNames();
 
   switch (provider) {
     case 'clave_unica':
@@ -91,7 +91,7 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
         >
           <FormattedMessage
             {...sharedMessages.continueWithLoginMechanism}
-            values={{ loginMechanismName: names.criipto }}
+            values={{ loginMechanismName: idMethodNames.criipto }}
           />
         </WrappedAuthProviderButton>
       );
@@ -100,7 +100,7 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
         (item) => item.attributes.name === 'keycloak'
       ) as IDKeycloakMethod | undefined;
       const keycloakIcon = keycloakMethod?.attributes.provider;
-      const keycloakName = names.keycloak;
+      const keycloakName = idMethodNames.keycloak;
 
       if (!keycloakIcon || !keycloakName) return null;
 
@@ -126,7 +126,7 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
         >
           <FormattedMessage
             {...sharedMessages.continueWithLoginMechanism}
-            values={{ loginMechanismName: names.twoday }}
+            values={{ loginMechanismName: idMethodNames.twoday }}
           />
         </WrappedAuthProviderButton>
       );
@@ -139,7 +139,7 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
         >
           <FormattedMessage
             {...sharedMessages.continueWithLoginMechanism}
-            values={{ loginMechanismName: names.acm }}
+            values={{ loginMechanismName: idMethodNames.acm }}
           />
         </WrappedAuthProviderButton>
       );

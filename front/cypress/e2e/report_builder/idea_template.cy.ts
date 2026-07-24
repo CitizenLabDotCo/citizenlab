@@ -42,18 +42,16 @@ describe('Idea template', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
         cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle,
           ideaContent,
-          phaseIds: [phaseId],
         });
       })
       .then(() => {
         cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: higherLikedIdeaTitle,
           ideaContent,
-          phaseIds: [phaseId],
         }).then((idea) => {
           const email = randomEmail();
           const password = randomString();

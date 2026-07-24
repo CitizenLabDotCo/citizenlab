@@ -67,9 +67,8 @@ module Permissions
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       raise "Unsupported action: #{action}" if SUPPORTED_ACTIONS.exclude?(action)
 
-      project_reason = project_denied_reason(phase.project)
-      return project_reason if project_reason
-      return PHASE_DENIED_REASONS[:inactive_phase] if time && !timeline_service.phase_current?(phase, time)
+      context_reason = context_denied_reason
+      return context_reason if context_reason
 
       phase_denied_reason = case action
       when 'posting_idea'
@@ -96,6 +95,13 @@ module Permissions
       return if action == 'editing_idea'
 
       super(action, scope: phase)
+    end
+
+    def context_denied_reason
+      project_reason = project_denied_reason(phase.project)
+      return project_reason if project_reason
+
+      PHASE_DENIED_REASONS[:inactive_phase] if time && !phase.active?(time)
     end
 
     def action_descriptors
@@ -129,10 +135,6 @@ module Permissions
     private
 
     attr_reader :phase, :request, :time
-
-    def timeline_service
-      @timeline_service ||= TimelineService.new
-    end
 
     # Phase methods
     def posting_idea_denied_reason_for_action

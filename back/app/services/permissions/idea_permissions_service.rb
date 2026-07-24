@@ -11,50 +11,31 @@ module Permissions
     REACTING_NOT_ALLOWED_CODES = %w[prescreening expired ineligible].freeze
 
     def initialize(idea, user, user_requirements_service: nil)
-      phase = timeline_service.current_phase_not_archived(idea.project)
-      phase.project = idea.project if phase # Performance optimization (keep preloaded relationships)
-      super(phase, user, user_requirements_service: user_requirements_service)
       @idea = idea
+      super(permission_phase, user, user_requirements_service:)
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       case action
+      when 'reacting_idea'
+        # Checked before anything signing in could resolve, so the frontend
+        # never sends a user through an authentication flow for an impossible
+        # action.
+        return IDEA_DENIED_REASONS[:reacting_not_allowed] if reacting_not_allowed?
       when 'editing_idea'
-        # We have different order of rules for editing_idea, in order to:
-        # 1) Support editing of ideas by admins/moderators, even if the project
-        #    is no longer active
-        # 2) Performance optimization for the active descriptor, first checking
-        #    whether user is the author before doing more heavier checks
-        #    involving permissions and votes
-        return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
-        return IDEA_DENIED_REASONS[:not_author] if (idea.author_id != user&.id) || idea.author_id.nil? || !user&.active?
-        return PROJECT_DENIED_REASONS[:project_inactive] if !phase
-
-        reason = super
-        return reason if reason
-
-        return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user&.id).exists?
-
-        IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase_with_fallback&.prescreening_all? && idea.published?
-      else
-        # Check for idea status reason first, to avoid situations where FE presents user
-        # with what looks like a possible action, (i.e. reacting), redirects user to signin flow,
-        # and then once signed in, the user finds the action is not possible.
-        if action == 'reacting_idea' && reacting_not_allowed?
-          return IDEA_DENIED_REASONS[:reacting_not_allowed]
-        end
-
-        return PROJECT_DENIED_REASONS[:project_inactive] if !phase
-
-        reason = super
-        return reason if reason
-        return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
-
-        # The input does not need to be in the current phase for editing.
-        # We preserved the behaviour that was already there, but we're not
-        # sure if this is the desired behaviour.
-        IDEA_DENIED_REASONS[:idea_not_in_current_phase] if !idea_in_current_phase?(phase)
+        return editing_idea_denied_reason
       end
+
+      if !phase
+        reason = no_active_phase_reason
+        # Moderators can act on inputs outside the current phase, but the
+        # project state still binds them.
+        return if moderator? && reason == IDEA_DENIED_REASONS[:idea_not_in_current_phase]
+
+        return reason
+      end
+
+      super
     end
 
     def denied_reason_for_reaction_mode(reaction_mode, delete_action: false)
@@ -109,11 +90,72 @@ module Permissions
       }
     end
 
+    def editing_phase
+      phase || (current_phase if !standalone_input?)
+    end
+
     private
 
     attr_reader :idea
 
+    def permission_phase
+      phase = idea.active_phase
+      phase.project = idea.project if phase # Performance optimization (keep preloaded relationships)
+      phase
+    end
+
+    # Editing deviates from the shared order: only the author edits their own
+    # input, moderators edit any input, and a timeline input stays editable
+    # after its phase ended, governed by the project's current phase.
+    def editing_idea_denied_reason
+      return if moderator?
+      return IDEA_DENIED_REASONS[:not_author] if !author?
+
+      reason = editing_phase_denied_reason
+      return reason if reason
+      return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user&.id).exists?
+
+      IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase_with_fallback&.prescreening_all? && idea.published?
+    end
+
+    def editing_phase_denied_reason
+      return no_active_phase_reason if !editing_phase
+
+      PhasePermissionsService.new(editing_phase, user, user_requirements_service:).denied_reason_for_action('editing_idea')
+    end
+
+    def no_active_phase_reason
+      project_reason = project_denied_reason(idea.project)
+      return project_reason if project_reason
+      return PHASE_DENIED_REASONS[:inactive_phase] if standalone_input?
+      return IDEA_DENIED_REASONS[:idea_not_in_current_phase] if current_phase
+
+      PROJECT_DENIED_REASONS[:project_inactive]
+    end
+
+    def standalone_input?
+      idea.creation_phase && !idea.creation_phase.placement_strategy.sequential?
+    end
+
+    def moderator?
+      user && UserRoleService.new.can_moderate_project?(idea.project, user)
+    end
+
+    def author?
+      !!user&.active? && idea.author_id == user.id
+    end
+
+    def current_phase
+      return @current_phase if defined?(@current_phase)
+
+      @current_phase = timeline_service.current_phase_not_archived(idea.project)
+      @current_phase.project = idea.project if @current_phase
+      @current_phase
+    end
+
     def future_enabled_phase(action, reaction_mode: nil)
+      return if standalone_input?
+
       time = Time.zone.now
       timeline_service.future_phases(idea.project, time).find do |phase|
         !PhasePermissionsService.new(phase, user, user_requirements_service: user_requirements_service, time: nil).denied_reason_for_action(action, reaction_mode: reaction_mode)
@@ -124,8 +166,8 @@ module Permissions
       idea.voting_expired? || REACTING_NOT_ALLOWED_CODES.include?(idea&.idea_status&.code)
     end
 
-    def idea_in_current_phase?(current_phase)
-      idea.ideas_phases.find { |ip| ip.phase_id == current_phase.id }
+    def timeline_service
+      @timeline_service ||= TimelineService.new
     end
   end
 end

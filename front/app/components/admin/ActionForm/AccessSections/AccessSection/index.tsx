@@ -1,6 +1,6 @@
 // "Who can participate": authentication methods + groups.
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -19,9 +19,9 @@ import {
 import { AuthMethodKey } from '../../types';
 import { SectionHeader, Hint } from '../../ui';
 import GroupsSection from '../GroupsSection';
+import IdMethodsModalTrigger from '../IdMethodsModal/Trigger';
 import ModeCards from '../ModeCards';
 import { AccessSectionProps } from '../shared';
-import VerificationFieldsModal from '../VerificationFieldsModal';
 
 import messages from './messages';
 import MethodRow from './MethodRow';
@@ -42,7 +42,6 @@ const AccessSection = ({
 }: AccessSectionProps) => {
   const { formatMessage } = useIntl();
   const hasAccount = requiresAccount(permission);
-  const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
   // Which authentication methods the platform offers comes from live config:
   // confirmed email needs password login; identity verification needs a
@@ -96,7 +95,6 @@ const AccessSection = ({
                   unavailableReason={formatMessage(unavailableReason(key))}
                   locked={locked}
                   onChange={(next) => onChange(methodChange(key, next))}
-                  onShowReturnedFields={() => setReturnedFieldsOpen(true)}
                 />
               );
             })}
@@ -106,16 +104,16 @@ const AccessSection = ({
                 <Hint>{formatMessage(messages.pickAtLeastOne)}</Hint>
               </Box>
             )}
+
+            {/* Belongs to the methods above as a group, not to any one of
+                them — identification covers authentication and verification
+                alike. */}
+            <IdMethodsModalTrigger />
           </Box>
 
           <GroupsSection permission={permission} onChange={onChange} />
         </>
       )}
-
-      <VerificationFieldsModal
-        opened={returnedFieldsOpen}
-        onClose={() => setReturnedFieldsOpen(false)}
-      />
     </Box>
   );
 };
