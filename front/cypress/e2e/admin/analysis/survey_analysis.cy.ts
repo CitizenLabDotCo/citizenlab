@@ -61,7 +61,7 @@ describe('Admin: survey analysis', () => {
 
               surveyQuestionResponses.forEach((response) => {
                 cy.apiCreateSurveyResponse({
-                  project_id: projectId,
+                  phase_id: phaseId,
                   fields: {
                     [surveyFields[1].attributes.key]: response,
                   },

@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Autentifikācija",
   "app.containers.Authentication.confirmYourPhoneNumber": "Apstipriniet savu tālruņa numuru",
   "app.containers.Authentication.enterYourPhoneNumber": "Ievadiet savu tālruņa numuru",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Nederīgs apstiprinājuma kods. Lūdzu, pārbaudiet savu tālruni, lai atrastu pareizo kodu, vai mēģiniet 'Sūtīt jaunu kodu'.",
   "app.containers.Authentication.signUpOrLogIn": "Pierakstīties vai pieteikties",
   "app.containers.Authentication.steps.AccessDenied.close": "Aizvērt",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Jūs neatbilstat prasībām, lai piedalītos šajā procesā.",

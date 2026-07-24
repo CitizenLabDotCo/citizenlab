@@ -92,9 +92,8 @@ resource 'Ideas' do
       example 'List idea counts per filter option by assignee', :pending
     end
 
-    post 'web_api/v1/ideas' do
+    post 'web_api/v1/phases/:phase_id/inputs' do
       with_options scope: :idea do
-        parameter :project_id, 'The identifier of the project that hosts the idea'
         parameter :publication_status, 'Publication status', required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(',')}"
         parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
         parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
@@ -107,7 +106,7 @@ resource 'Ideas' do
       let(:idea) { build(:idea) }
       let(:default_assignee) { create(:admin) }
       let(:project) { create(:single_phase_ideation_project, default_assignee: default_assignee) }
-      let(:project_id) { project.id }
+      let(:phase_id) { project.phases.first.id }
       let(:title_multiloc) { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
 

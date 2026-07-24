@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "ਪ੍ਰਮਾਣਿਕਤਾ",
   "app.containers.Authentication.confirmYourPhoneNumber": "ਆਪਣੇ ਫ਼ੋਨ ਨੰਬਰ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.containers.Authentication.enterYourPhoneNumber": "ਆਪਣਾ ਫ਼ੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "ਗਲਤ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ। ਕਿਰਪਾ ਕਰਕੇ ਸਹੀ ਕੋਡ ਲਈ ਆਪਣੇ ਫ਼ੋਨ ਦੀ ਜਾਂਚ ਕਰੋ ਜਾਂ 'ਨਵਾਂ ਕੋਡ ਭੇਜੋ' ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.Authentication.signUpOrLogIn": "ਸਾਈਨ ਅੱਪ ਕਰੋ ਜਾਂ ਲੌਗ ਇਨ ਕਰੋ",
   "app.containers.Authentication.steps.AccessDenied.close": "ਬੰਦ ਕਰੋ",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "ਤੁਸੀਂ ਇਸ ਪ੍ਰਕਿਰਿਆ ਵਿੱਚ ਹਿੱਸਾ ਲੈਣ ਲਈ ਲੋੜਾਂ ਨੂੰ ਪੂਰਾ ਨਹੀਂ ਕਰਦੇ ਹੋ।",

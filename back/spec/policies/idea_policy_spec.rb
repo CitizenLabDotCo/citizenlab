@@ -591,7 +591,7 @@ describe IdeaPolicy do
   end
 
   context 'on idea in a draft project' do
-    let(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+    let(:project) { create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'draft' }) }
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
@@ -617,7 +617,7 @@ describe IdeaPolicy do
       it do
         is_expected.not_to permit(:show)
         is_expected.not_to permit(:by_slug)
-        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+        is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)

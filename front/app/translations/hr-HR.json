@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Autentifikacija",
   "app.containers.Authentication.confirmYourPhoneNumber": "Potvrdite svoj telefonski broj",
   "app.containers.Authentication.enterYourPhoneNumber": "Unesite svoj telefonski broj",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Neispravan kôd za potvrdu. Provjerite svoj telefon za ispravan kôd ili pokušajte s 'Pošalji novi kôd'.",
   "app.containers.Authentication.signUpOrLogIn": "Registriraj se ili prijavi se",
   "app.containers.Authentication.steps.AccessDenied.close": "Zatvoriti",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Ne ispunjavate uvjete za sudjelovanje u ovom procesu.",

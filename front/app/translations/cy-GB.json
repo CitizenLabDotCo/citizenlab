@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Dilysu",
   "app.containers.Authentication.confirmYourPhoneNumber": "Cadarnhewch eich rhif ffôn",
   "app.containers.Authentication.enterYourPhoneNumber": "Rhowch eich rhif ffôn",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Cod cadarnhau annilys. Gwiriwch eich ffôn am y cod cywir neu rhowch gynnig ar 'Anfon Cod Newydd'.",
   "app.containers.Authentication.signUpOrLogIn": "Cofrestru neu fewngofnodi",
   "app.containers.Authentication.steps.AccessDenied.close": "Cau",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nid ydych yn bodloni'r gofynion i gymryd rhan yn y broses hon.",

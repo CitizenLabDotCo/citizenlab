@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Authentication",
   "app.containers.Authentication.confirmYourPhoneNumber": "Oqarasuaativit normua uppernarsaruk",
   "app.containers.Authentication.enterYourPhoneNumber": "Oqarasuaativit normua allaguk",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Uppernarsaanermut kode kukkusuuvoq. Oqarasuaatit kode eqqortoq pillugu misissoruk imaluunniit 'Kode nutaaq nassiuguk' toqqaruk.",
   "app.containers.Authentication.signUpOrLogIn": "Sign up or log in",
   "app.containers.Authentication.steps.AccessDenied.close": "Close",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "You do not meet the requirements to participate in this process.",

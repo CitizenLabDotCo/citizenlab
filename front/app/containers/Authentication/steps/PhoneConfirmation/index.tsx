@@ -85,7 +85,7 @@ const PhoneConfirmation = ({
       }
 
       if (isWrongConfirmationCodeError(e)) {
-        setError('wrong_confirmation_code');
+        setError('wrong_phone_confirmation_code');
         return;
       }
 

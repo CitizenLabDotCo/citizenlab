@@ -66,7 +66,7 @@ class Confirmation < ApplicationRecord
   end
 
   def self.generate_code
-    Rails.env.development? ? '1234' : rand.to_s[2..5]
+    Rails.env.development? ? '1234' : format('%04d', rand(10_000))
   end
 
   protected

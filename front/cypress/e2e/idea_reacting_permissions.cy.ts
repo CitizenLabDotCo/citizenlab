@@ -189,7 +189,7 @@ describe('idea reacting permissions for non-active users', () => {
                   userId = response.body.data.id;
 
                   return cy.apiCreateIdea({
-                    projectId,
+                    phaseId,
                     ideaTitle: randomString(),
                     ideaContent: randomString(),
                   });

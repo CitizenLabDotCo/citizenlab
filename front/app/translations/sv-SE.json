@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Autentisering",
   "app.containers.Authentication.confirmYourPhoneNumber": "Bekräfta ditt telefonnummer",
   "app.containers.Authentication.enterYourPhoneNumber": "Ange ditt telefonnummer",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Ogiltig bekräftelsekod. Kontrollera din telefon för rätt kod eller prova 'Skicka ny kod'.",
   "app.containers.Authentication.signUpOrLogIn": "Registrera dig eller logga in",
   "app.containers.Authentication.steps.AccessDenied.close": "Nära",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Du uppfyller inte kraven för att delta i denna process.",

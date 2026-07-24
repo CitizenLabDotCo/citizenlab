@@ -127,4 +127,9 @@ export default defineMessages({
     id: 'app.containers.Authentication.confirmYourPhoneNumber',
     defaultMessage: 'Confirm your phone number',
   },
+  phoneConfirmationCodeInvalid: {
+    id: 'app.containers.Authentication.phoneConfirmationCodeInvalid',
+    defaultMessage:
+      "Invalid confirmation code. Please check your phone for the correct code or try 'Send New Code'.",
+  },
 });
