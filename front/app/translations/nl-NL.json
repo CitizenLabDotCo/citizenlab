@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Authenticatie",
   "app.containers.Authentication.confirmYourPhoneNumber": "Bevestig je telefoonnummer",
   "app.containers.Authentication.enterYourPhoneNumber": "Voer je telefoonnummer in",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Ongeldige bevestigingscode. Controleer je telefoon voor de juiste code of probeer 'Nieuwe code verzenden'.",
   "app.containers.Authentication.signUpOrLogIn": "Registreer of log in",
   "app.containers.Authentication.steps.AccessDenied.close": "Sluiten",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Je voldoet niet aan de voorwaarden om deel te nemen aan dit proces.",

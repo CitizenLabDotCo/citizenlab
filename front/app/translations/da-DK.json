@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Godkendelse",
   "app.containers.Authentication.confirmYourPhoneNumber": "Bekræft dit telefonnummer",
   "app.containers.Authentication.enterYourPhoneNumber": "Indtast dit telefonnummer",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Ugyldig bekræftelseskode. Tjek venligst din telefon for den korrekte kode, eller prøv 'Send ny kode'.",
   "app.containers.Authentication.signUpOrLogIn": "Registrér dig eller log ind",
   "app.containers.Authentication.steps.AccessDenied.close": "Luk",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Du opfylder ikke kravene til at deltage i denne proces.",

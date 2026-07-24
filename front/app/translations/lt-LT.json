@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Autentiškumo nustatymas",
   "app.containers.Authentication.confirmYourPhoneNumber": "Patvirtinkite savo telefono numerį",
   "app.containers.Authentication.enterYourPhoneNumber": "Įveskite savo telefono numerį",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Neteisingas patvirtinimo kodas. Patikrinkite savo telefoną, ar gavote teisingą kodą, arba bandykite „Siųsti naują kodą“.",
   "app.containers.Authentication.signUpOrLogIn": "Užsiregistruokite arba prisijunkite",
   "app.containers.Authentication.steps.AccessDenied.close": "Uždaryti",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Neatitinkate reikalavimų, kad galėtumėte dalyvauti šiame procese.",

@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Autenticació",
   "app.containers.Authentication.confirmYourPhoneNumber": "Confirmeu el vostre número de telèfon",
   "app.containers.Authentication.enterYourPhoneNumber": "Introduïu el vostre número de telèfon",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Codi de confirmació no vàlid. Comprova el telèfon per veure el codi correcte o prova «Envia un codi nou».",
   "app.containers.Authentication.signUpOrLogIn": "Registra't o inicia la sessió",
   "app.containers.Authentication.steps.AccessDenied.close": "Tancar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No compleixes els requisits per participar en aquest procés.",

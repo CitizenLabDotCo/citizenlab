@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "تصدیق",
   "app.containers.Authentication.confirmYourPhoneNumber": "اپنے فون نمبر کی تصدیق کریں",
   "app.containers.Authentication.enterYourPhoneNumber": "اپنا فون نمبر درج کریں",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "تصدیقی کوڈ غلط ہے۔ براہ کرم درست کوڈ کے لیے اپنا فون چیک کریں یا 'نیا کوڈ بھیجیں' آزمائیں۔",
   "app.containers.Authentication.signUpOrLogIn": "سائن اپ کریں یا لاگ ان کریں۔",
   "app.containers.Authentication.steps.AccessDenied.close": "بند",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "آپ اس عمل میں حصہ لینے کی ضروریات کو پورا نہیں کرتے ہیں۔",

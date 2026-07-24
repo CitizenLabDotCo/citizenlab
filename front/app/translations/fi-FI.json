@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Todennus",
   "app.containers.Authentication.confirmYourPhoneNumber": "Vahvista puhelinnumerosi",
   "app.containers.Authentication.enterYourPhoneNumber": "Syötä puhelinnumerosi",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Virheellinen vahvistuskoodi. Tarkista oikea koodi puhelimestasi tai kokeile kohtaa ”Lähetä uusi koodi”.",
   "app.containers.Authentication.signUpOrLogIn": "Rekisteröidy tai kirjaudu sisään",
   "app.containers.Authentication.steps.AccessDenied.close": "Lähellä",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Et täytä tähän prosessiin osallistumisen edellytyksiä.",

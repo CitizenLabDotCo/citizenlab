@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Fíordheimhniú",
   "app.containers.Authentication.confirmYourPhoneNumber": "Deimhnigh d'uimhir theileafóin",
   "app.containers.Authentication.enterYourPhoneNumber": "Cuir isteach d'uimhir theileafóin",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Cód deimhnithe neamhbhailí. Seiceáil do ghuthán le haghaidh an chóid chirt, le do thoil, nó bain triail as 'Seol Cód Nua'.",
   "app.containers.Authentication.signUpOrLogIn": "Cláraigh nó logáil isteach",
   "app.containers.Authentication.steps.AccessDenied.close": "Dún",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Ní chomhlíonann tú na ceanglais chun páirt a ghlacadh sa phróiseas seo.",

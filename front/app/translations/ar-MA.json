@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "المصادقة",
   "app.containers.Authentication.confirmYourPhoneNumber": "أكد رقم هاتفك",
   "app.containers.Authentication.enterYourPhoneNumber": "أدخل رقم هاتفك",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "رمز التأكيد غير صالح. يرجى التحقق من هاتفك للحصول على الرمز الصحيح أو حاول \"إرسال رمز جديد\".",
   "app.containers.Authentication.signUpOrLogIn": "سجل أو سجل الدخول",
   "app.containers.Authentication.steps.AccessDenied.close": "يغلق",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "لا تتوفر لديك المتطلبات للمشاركة في هذه العملية.",

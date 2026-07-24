@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Kimlik Doğrulama",
   "app.containers.Authentication.confirmYourPhoneNumber": "Telefon numaranızı doğrulayın",
   "app.containers.Authentication.enterYourPhoneNumber": "Telefon numaranızı girin",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Geçersiz onay kodu. Lütfen doğru kod için telefonunuzu kontrol edin veya 'Yeni Kod Gönder' seçeneğini deneyin.",
   "app.containers.Authentication.signUpOrLogIn": "Kaydolun veya giriş yapın",
   "app.containers.Authentication.steps.AccessDenied.close": "Kapat",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Bu sürece katılmak için gereken şartları karşılamıyorsunuz.",
