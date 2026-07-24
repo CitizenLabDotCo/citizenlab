@@ -14,6 +14,7 @@ import {
   initializeFor,
 } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
+import { isInContentBuilderPreview } from 'utils/isInContentBuilderPreview';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isAdmin, isRegularUser, isSuperAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
@@ -37,6 +38,8 @@ const destinationConfig: IDestinationConfig = {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    if (isInContentBuilderPreview()) return;
+
     combineLatest([
       appConfigurationStream,
       authUserStream,
