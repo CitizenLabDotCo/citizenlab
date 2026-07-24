@@ -174,6 +174,23 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
     end
 
+    example 'It logs the consent to receive a confirmation code by SMS' do
+      user = create(:user)
+      header_token_for(user)
+      expect { do_request(request_code: { new_phone: '+1 415 555 2671' }) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(user, 'consented_to_sms_confirmation', user, kind_of(Integer), payload: { phone_last_digits: '2671' })
+      expect(response_status).to eq 200
+    end
+
+    example 'It does not log a consent when the phone number is rejected' do
+      user = create(:user)
+      header_token_for(user)
+      expect { do_request(request_code: { new_phone: 'not-a-number' }) }
+        .not_to have_enqueued_job(LogActivityJob).with(user, 'consented_to_sms_confirmation', any_args)
+      expect(response_status).to eq 422
+    end
+
     example 'It does not work if new_phone is blank' do
       user = create(:user)
       header_token_for(user)

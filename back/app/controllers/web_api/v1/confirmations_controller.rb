@@ -54,11 +54,12 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   def confirm_code_phone_change
     result = user_confirmation_service.validate_and_confirm_phone_change!(
       current_user,
-      confirm_code_params[:code]
+      confirm_code_phone_change_params[:code]
     )
 
     if result.success?
       SideFxUserService.new.after_update(current_user, current_user)
+      record_sms_manual_campaign_consent
       head :ok
     else
       render json: { errors: result.errors.details }, status: :unprocessable_entity
@@ -73,6 +74,19 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
   def confirm_code_params
     params.require(:confirmation).permit(:code)
+  end
+
+  def confirm_code_phone_change_params
+    params.require(:confirmation).permit(:code, :sms_manual_campaign_consent)
+  end
+
+  def record_sms_manual_campaign_consent
+    manual_campaign_consent = parse_bool(confirm_code_phone_change_params[:sms_manual_campaign_consent])
+    return if manual_campaign_consent.nil?
+
+    EmailCampaigns::Consent
+      .find_or_initialize_by(user_id: current_user.id, campaign_type: EmailCampaigns::Campaigns::SmsManual.name)
+      .update!(consented: manual_campaign_consent)
   end
 
   def user_confirmation_service
