@@ -29,9 +29,19 @@
 require 'que/active_record/model'
 
 class QueJob < Que::ActiveRecord::Model
+  # Jobs that can still be executed: pending, scheduled, or errored-and-awaiting-retry.
+  # Finished and expired jobs are invisible to Que's poll query and never run again.
+  scope :runnable, -> { where(finished_at: nil, expired_at: nil) }
+
   class << self
     def by_job_id!(job_id)
       by_args({ job_id: }).sole
+    end
+
+    # Jobs whose serialized arguments reference the given GlobalID (uses the `related_gids`
+    # array stamped by ActiveJobRelatedGidsExtension; indexed via que_jobs_args_gin_idx).
+    def all_related_to_gid(gid)
+      by_args({ related_gids: [gid] })
     end
 
     def all_by_job_ids(job_ids)
