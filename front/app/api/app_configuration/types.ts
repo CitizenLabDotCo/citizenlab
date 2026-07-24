@@ -208,6 +208,7 @@ export interface IAppConfigurationSettings {
   sms?: {
     allowed: boolean;
     enabled: boolean;
+    allowed_country_codes?: string[];
   };
 }
 

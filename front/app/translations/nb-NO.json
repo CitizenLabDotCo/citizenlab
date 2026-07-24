@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Oppgi et gyldig telefonnummer, inkludert landskode.",
   "app.containers.PhoneChange.phoneTaken": "Dette telefonnummeret er allerede i bruk.",
   "app.containers.PhoneChange.phoneUnknownError": "Noe gikk galt. Vennligst prøv igjen.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "SMS-meldinger kan ikke sendes til dette landet.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Oppdatering av telefonnummer har blitt avbrutt.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "For å oppdatere telefonnummeret ditt, vennligst start prosessen på nytt.",
   "app.containers.PhoneChange.submitButton": "Send inn",

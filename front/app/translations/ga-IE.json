@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Tabhair uimhir theileafóin bhailí, an cód tíre san áireamh.",
   "app.containers.PhoneChange.phoneTaken": "Tá an uimhir theileafóin seo in úsáid cheana féin.",
   "app.containers.PhoneChange.phoneUnknownError": "Tharla earráid. Bain triail as arís le do thoil.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "Ní féidir teachtaireachtaí SMS a sheoladh chuig an tír seo.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Cealaíodh nuashonrú na huimhreach teileafóin.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Chun d'uimhir theileafóin a nuashonrú, atosaigh an próiseas le do thoil.",
   "app.containers.PhoneChange.submitButton": "Cuir isteach",

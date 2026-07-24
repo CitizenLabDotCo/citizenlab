@@ -24,8 +24,12 @@ module EmailCampaigns
         # status with `failed`.
         return delivery unless delivery.status == 'pending'
 
-        parsed_to = parse_phone_number(to)
-        result = provider.send(to: parsed_to, body: delivery.body)
+        parsed = parse_phone_number(to)
+        unless AllowedCountries.allowed?(parsed.country)
+          raise Error, "SMS to country #{parsed.country} is not allowed on this platform"
+        end
+
+        result = provider.send(to: parsed.e164, body: delivery.body)
         delivery.update!(message_sid: result[:message_sid], status: result[:status])
         delivery
       rescue *ProviderError::RETRYABLE_ERRORS
@@ -45,7 +49,7 @@ module EmailCampaigns
         parsed = Phonelib.parse(to)
         raise Error, "Invalid phone number: #{to}" unless parsed.valid?
 
-        parsed.e164
+        parsed
       end
 
       def provider

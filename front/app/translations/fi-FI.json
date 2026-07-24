@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Anna voimassa oleva puhelinnumero maakoodi mukaan lukien.",
   "app.containers.PhoneChange.phoneTaken": "Tämä puhelinnumero on jo käytössä.",
   "app.containers.PhoneChange.phoneUnknownError": "Jotain meni vikaan. Yritä uudelleen.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "Tekstiviestejä ei voida lähettää tähän maahan.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Puhelinnumeron päivitys on peruttu.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Päivittääksesi puhelinnumerosi, aloita prosessi alusta.",
   "app.containers.PhoneChange.submitButton": "Lähetä",

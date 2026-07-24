@@ -10594,6 +10594,11 @@
     "verified_at": "2026-07-16T09:49:20.055315Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.PhoneChange.phoneUnsupportedCountry": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:49:54.006108Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.PhoneChange.phoneUpdateCancelled": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.055315Z",

@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Rhowch rif ffôn dilys, gan gynnwys y cod gwlad.",
   "app.containers.PhoneChange.phoneTaken": "Mae'r rhif ffôn hwn eisoes yn cael ei ddefnyddio.",
   "app.containers.PhoneChange.phoneUnknownError": "Aeth rhywbeth o'i le. Rhowch gynnig arall arni os gwelwch yn dda.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "Nid oes modd anfon negeseuon SMS i'r wlad hon.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Mae'r diweddariad i'r rhif ffôn wedi'i ganslo.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "I ddiweddaru eich rhif ffôn, ailgychwynwch y broses os gwelwch yn dda.",
   "app.containers.PhoneChange.submitButton": "Cyflwyno",

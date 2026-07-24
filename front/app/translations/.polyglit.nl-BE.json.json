@@ -10574,6 +10574,11 @@
     "verified_at": "2026-07-14T17:01:42.057992Z",
     "verified_by": "Luuc"
   },
+  "app.containers.PhoneChange.phoneUnsupportedCountry": {
+    "state": "verified",
+    "verified_at": "2026-07-23T19:52:14.304523Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.PhoneChange.phoneUpdateCancelled": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:42.057992Z",

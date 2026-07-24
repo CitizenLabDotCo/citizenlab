@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Proporciona un número de teléfono válido, incluido el código de país.",
   "app.containers.PhoneChange.phoneTaken": "Este número de teléfono ya está en uso.",
   "app.containers.PhoneChange.phoneUnknownError": "Algo ha salido mal. Inténtalo de nuevo.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "No se pueden enviar mensajes SMS a este país.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Se ha cancelado la actualización del número de teléfono.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Para actualizar tu número de teléfono, reinicia el proceso.",
   "app.containers.PhoneChange.submitButton": "Enviar",

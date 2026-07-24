@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Navedite valjan telefonski broj, uključujući pozivni broj zemlje.",
   "app.containers.PhoneChange.phoneTaken": "Ovaj broj telefona već se koristi.",
   "app.containers.PhoneChange.phoneUnknownError": "Nešto je pošlo po zlu. Molimo pokušajte ponovno.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "SMS poruke ne mogu se poslati u ovu državu.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Ažuriranje broja telefona je otkazano.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Da biste ažurirali svoj broj telefona, ponovno pokrenite postupak.",
   "app.containers.PhoneChange.submitButton": "Pošalji",

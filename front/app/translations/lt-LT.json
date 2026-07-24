@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Nurodykite galiojantį telefono numerį, įskaitant šalies kodą.",
   "app.containers.PhoneChange.phoneTaken": "Šis telefono numeris jau naudojamas.",
   "app.containers.PhoneChange.phoneUnknownError": "Kažkas nepavyko. Bandykite dar kartą.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "SMS žinutės negali būti siunčiamos į šią šalį.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Telefono numerio atnaujinimas atšauktas.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Norėdami atnaujinti telefono numerį, pradėkite procesą iš naujo.",
   "app.containers.PhoneChange.submitButton": "Pateikti",

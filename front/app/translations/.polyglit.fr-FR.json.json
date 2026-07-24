@@ -10584,6 +10584,11 @@
     "verified_at": "2026-07-17T07:44:21.420851Z",
     "verified_by": "Adrien"
   },
+  "app.containers.PhoneChange.phoneUnsupportedCountry": {
+    "state": "verified",
+    "verified_at": "2026-07-22T19:18:12.791055Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.PhoneChange.phoneUpdateCancelled": {
     "state": "verified",
     "verified_at": "2026-07-16T21:48:43.456670Z",

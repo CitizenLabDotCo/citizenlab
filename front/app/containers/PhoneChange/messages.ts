@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.PhoneChange.phoneTaken',
     defaultMessage: 'This phone number is already in use.',
   },
+  phoneUnsupportedCountry: {
+    id: 'app.containers.PhoneChange.phoneUnsupportedCountry',
+    defaultMessage: 'SMS messages cannot be sent to this country.',
+  },
   phoneUnknownError: {
     id: 'app.containers.PhoneChange.phoneUnknownError',
     defaultMessage: 'Something went wrong. Please try again.',

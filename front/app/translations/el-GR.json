@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Καταχωρίστε έναν έγκυρο αριθμό τηλεφώνου, συμπεριλαμβανομένου του κωδικού χώρας.",
   "app.containers.PhoneChange.phoneTaken": "Αυτός ο αριθμός τηλεφώνου χρησιμοποιείται ήδη.",
   "app.containers.PhoneChange.phoneUnknownError": "Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε ξανά.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "Δεν είναι δυνατή η αποστολή μηνυμάτων SMS σε αυτή τη χώρα.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Η ενημέρωση του αριθμού τηλεφώνου ακυρώθηκε.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Για να ενημερώσετε τον αριθμό τηλεφώνου σας, επανεκκινήστε τη διαδικασία.",
   "app.containers.PhoneChange.submitButton": "Υποβολή",

@@ -1581,6 +1581,19 @@
             "title": "Twilio Messaging Service SID",
             "description": "The Twilio Messaging Service SID used to send SMS messages.",
             "private": true
+          },
+          <% sms_country_codes = CountryCodesService.new %>
+          "allowed_country_codes": {
+            "title": "Allowed SMS country codes",
+            "description": "ISO 3166-1 alpha-2 country codes whose phone numbers may receive SMS. Empty means all countries are allowed.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": <%= sms_country_codes.codes_in_name_order.to_json %>,
+              "enumNames": <%= sms_country_codes.names_in_name_order.to_json %>
+            },
+            "uniqueItems": true,
+            "default": []
           }
         }
       },

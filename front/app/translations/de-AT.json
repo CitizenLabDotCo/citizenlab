@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "Geben Sie eine gültige Telefonnummer inklusive Ländervorwahl an.",
   "app.containers.PhoneChange.phoneTaken": "Diese Telefonnummer wird bereits verwendet.",
   "app.containers.PhoneChange.phoneUnknownError": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "SMS-Nachrichten können nicht in dieses Land gesendet werden.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "Die Aktualisierung der Telefonnummer wurde abgebrochen.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Um deine Telefonnummer zu aktualisieren, starte den Vorgang bitte erneut.",
   "app.containers.PhoneChange.submitButton": "Absenden",

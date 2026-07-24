@@ -2093,6 +2093,7 @@
   "app.containers.PhoneChange.phoneInvalid2": "يرجى تقديم رقم هاتف صالح، بما في ذلك رمز الدولة.",
   "app.containers.PhoneChange.phoneTaken": "رقم الهاتف هذا مستخدم بالفعل.",
   "app.containers.PhoneChange.phoneUnknownError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+  "app.containers.PhoneChange.phoneUnsupportedCountry": "لا يمكن إرسال رسائل نصية قصيرة إلى هذا البلد.",
   "app.containers.PhoneChange.phoneUpdateCancelled": "تم إلغاء تحديث رقم الهاتف.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "لتحديث رقم هاتفك، يرجى إعادة بدء العملية.",
   "app.containers.PhoneChange.submitButton": "إرسال",
