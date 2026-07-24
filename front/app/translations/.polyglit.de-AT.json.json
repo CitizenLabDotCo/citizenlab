@@ -6644,6 +6644,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Authentication.confirmYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -6713,6 +6723,26 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
@@ -12968,6 +12998,21 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.new_phone_blank": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
+  },
+  "app.errors.new_phone_invalid": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
+  },
+  "app.errors.new_phone_taken": {
+    "state": "verified",
+    "verified_at": "2026-07-23T09:51:33.450048Z",
+    "verified_by": "Jelena"
   },
   "app.errors.no_invites_specified": {
     "state": "verified",

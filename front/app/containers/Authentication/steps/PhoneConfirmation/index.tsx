@@ -1,12 +1,11 @@
 import React, { useMemo, useState, FormEvent } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
 import Input from 'components/HookForm/Input';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import {
@@ -14,19 +13,19 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import { SetError } from '../../typings';
+import { SetError, State } from '../../typings';
 
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  phoneNumber: string;
+  state: Partial<State>;
   loading: boolean;
   setError: SetError;
   onConfirm: (code: string) => void | Promise<void>;
   onChangePhone?: () => void;
-  onResendCode: () => Promise<void>;
+  onResendCode: (phone: string) => Promise<void>;
 }
 
 interface FormValues {
@@ -42,7 +41,7 @@ const isWrongConfirmationCodeError = (e: any) => {
 };
 
 const PhoneConfirmation = ({
-  phoneNumber,
+  state: { phone },
   loading,
   setError,
   onConfirm,
@@ -71,6 +70,8 @@ const PhoneConfirmation = ({
     resolver: yupResolver(schema),
   });
 
+  if (!phone) return null;
+
   const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
     setCodeResent(false);
@@ -84,7 +85,7 @@ const PhoneConfirmation = ({
       }
 
       if (isWrongConfirmationCodeError(e)) {
-        setError('wrong_confirmation_code');
+        setError('wrong_phone_confirmation_code');
         return;
       }
 
@@ -96,7 +97,7 @@ const PhoneConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    onResendCode()
+    onResendCode(phone)
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);
@@ -118,9 +119,9 @@ const PhoneConfirmation = ({
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage phoneNumber={phoneNumber} codeResent={codeResent} />
+          <CodeSentMessage phoneNumber={phone} codeResent={codeResent} />
         </Box>
-        <Box>
+        <Box data-cy="phone-code-input">
           <Input
             name="code"
             type="text"
@@ -129,15 +130,15 @@ const PhoneConfirmation = ({
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
-          <ButtonWithLink
-            id="e2e-verify-phone-button"
+          <Button
+            dataCy="phone-confirm-button"
             type="submit"
             width="auto"
             disabled={busy}
             processing={busy}
           >
             {formatMessage(messages.verifyAndContinue)}
-          </ButtonWithLink>
+          </Button>
         </Box>
         <Box mt="24px">
           <FooterNotes

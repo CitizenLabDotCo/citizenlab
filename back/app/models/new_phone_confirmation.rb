@@ -45,4 +45,22 @@ class NewPhoneConfirmation < Confirmation
   def pending?
     user.new_phone.present?
   end
+
+  def reset_code!
+    update!(
+      code: generate_code,
+      code_reset_count: code_reset_count + 1,
+      code_retry_count: 0
+    )
+  end
+
+  def expire_code!
+    update!(code: generate_code)
+  end
+
+  def generate_code
+    return '1234' if AppConfiguration.instance.settings('sms', 'use_test_mode')
+
+    Rails.env.development? ? '1234' : format('%04d', rand(10_000))
+  end
 end

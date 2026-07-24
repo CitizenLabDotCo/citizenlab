@@ -424,4 +424,17 @@ export default defineMessages({
     id: 'app.errors.phase_too_short',
     defaultMessage: 'The phase is too short. It must be at least 24 hours.',
   },
+  new_phone_blank: {
+    id: 'app.errors.new_phone_blank',
+    defaultMessage: 'Please enter your phone number.',
+  },
+  new_phone_invalid: {
+    id: 'app.errors.new_phone_invalid',
+    defaultMessage: 'Please enter a valid phone number.',
+  },
+  new_phone_taken: {
+    id: 'app.errors.new_phone_taken',
+    defaultMessage:
+      'This phone number is already taken. Please try another one.',
+  },
 });

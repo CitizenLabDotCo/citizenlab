@@ -3400,7 +3400,9 @@ CREATE TABLE public.permissions (
     confirmed_email_expiry integer,
     require_name boolean DEFAULT true NOT NULL,
     require_password boolean DEFAULT true NOT NULL,
-    require_verification boolean DEFAULT false NOT NULL
+    require_verification boolean DEFAULT false NOT NULL,
+    require_confirmed_phone_number boolean DEFAULT false NOT NULL,
+    confirmed_phone_number_expiry integer
 );
 
 
@@ -9443,6 +9445,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260713000000'),
 ('20260707190000'),
 ('20260707185000'),
 ('20260707171133'),

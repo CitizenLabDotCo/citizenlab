@@ -1566,6 +1566,12 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false },
+          "use_test_mode": {
+            "type": "boolean",
+            "title": "Use test mode (NEVER USE IN PRODUCTION)",
+            "default": false,
+            "private": true
+          },
           "twilio_account_sid": {
             "type": "string",
             "title": "Twilio Account SID",

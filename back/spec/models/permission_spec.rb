@@ -72,6 +72,8 @@ RSpec.describe Permission do
       expect(permission.require_password).to be true
       expect(permission.require_verification).to be false
       expect(permission.confirmed_email_expiry).to be_nil
+      expect(permission.require_confirmed_phone_number).to be false
+      expect(permission.confirmed_phone_number_expiry).to be_nil
     end
   end
 
@@ -184,9 +186,56 @@ RSpec.describe Permission do
       end
     end
 
+    context 'when the sms feature is enabled' do
+      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+      it 'is valid when only a confirmed phone number is required' do
+        permission = build(:permission, :by_users, require_confirmed_email: false, require_verification: false, require_confirmed_phone_number: true)
+        expect(permission).to be_valid
+      end
+    end
+
     it 'does not apply when participation does not require an account' do
       expect(build(:permission, :by_everyone, require_confirmed_email: false, require_verification: false)).to be_valid
       expect(build(:permission, :by_admins_moderators, require_confirmed_email: false, require_verification: false)).to be_valid
+    end
+  end
+
+  describe 'require_confirmed_phone_number' do
+    context 'when the sms feature is enabled' do
+      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+      it 'can be required' do
+        permission = create(:permission, :by_users, require_confirmed_phone_number: true)
+        expect(permission.require_confirmed_phone_number).to be true
+      end
+    end
+
+    context 'when the sms feature is not enabled' do
+      it 'cannot be required' do
+        expect { create(:permission, :by_users, require_confirmed_phone_number: true) }.to raise_error(ActiveRecord::RecordInvalid)
+      end
+    end
+  end
+
+  describe 'confirmed_phone_number_expiry' do
+    context 'when the sms feature is enabled' do
+      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+      it 'can be set when a confirmed phone number is required' do
+        permission = create(:permission, :by_users, require_confirmed_phone_number: true, confirmed_phone_number_expiry: 1)
+        expect(permission.confirmed_phone_number_expiry).to eq(1)
+      end
+
+      it 'does not cause a problem if set and require_confirmed_phone_number is later disabled' do
+        permission = create(:permission, :by_users, require_confirmed_phone_number: true, confirmed_phone_number_expiry: 1)
+        permission.update!(require_confirmed_phone_number: false)
+        expect(permission.confirmed_phone_number_expiry).to eq(1)
+      end
+    end
+
+    it 'cannot be set when a confirmed phone number is not required' do
+      expect { create(:permission, :by_users, confirmed_phone_number_expiry: 1) }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 

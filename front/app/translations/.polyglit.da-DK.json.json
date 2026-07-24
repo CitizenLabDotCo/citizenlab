@@ -6644,6 +6644,16 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.confirmYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.038873Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Authentication.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.038873Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -6708,6 +6718,26 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.038873Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.038873Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.038873Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.038873Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
@@ -12958,6 +12988,21 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.errors.new_phone_blank": {
+    "state": "verified",
+    "verified_at": "2026-07-22T06:20:47.814852Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.errors.new_phone_invalid": {
+    "state": "verified",
+    "verified_at": "2026-07-22T06:20:47.814852Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.errors.new_phone_taken": {
+    "state": "verified",
+    "verified_at": "2026-07-22T06:20:47.814852Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.errors.no_invites_specified": {
     "state": "verified",
