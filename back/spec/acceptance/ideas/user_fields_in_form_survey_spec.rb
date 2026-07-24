@@ -45,7 +45,9 @@ resource 'Ideas' do
   #   after filling out the first page.
   #
   # In this POST block, we are going to focus on 1 and 3. Below, we will tackle 2
-  post 'web_api/v1/ideas' do
+  post 'web_api/v1/phases/:phase_id/inputs' do
+    let(:phase_id) { @phase.id }
+
     context 'when visitor and permitted_by is everyone' do
       before do
         @permission.update!(
@@ -58,7 +60,6 @@ resource 'Ideas' do
         do_request({
           idea: {
             publication_status: 'published',
-            project_id: @project.id,
             @custom_field.key => 'option2',
             u_user_select_field: 'option1',
             u_nonexistent_field: 'whatever', # key has no custom field so should be filtered out
@@ -78,7 +79,6 @@ resource 'Ideas' do
         do_request({
           idea: {
             publication_status: 'published',
-            project_id: @project.id,
             @custom_field.key => 'option2',
             u_user_select_field: 'option1'
           }
@@ -100,7 +100,6 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               @custom_field.key => 'option2',
               u_user_select_field: 'option1'
             }
@@ -134,7 +133,6 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               @custom_field.key => 'option2'
             }
           })
@@ -161,7 +159,6 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               @custom_field.key => 'option2'
             }
           })
@@ -188,7 +185,6 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               @custom_field.key => 'option2'
             }
           })

@@ -99,7 +99,7 @@ describe('Survey template', () => {
             cy.apiCreateSurveyResponse({
               email,
               password,
-              project_id: projectId,
+              phase_id: phaseId,
               fields: {
                 [selectField.attributes.key]: selectAnswerKeys[0],
                 [multiSelectField.attributes.key]: [

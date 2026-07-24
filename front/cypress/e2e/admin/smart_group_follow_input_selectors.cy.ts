@@ -56,10 +56,9 @@ describe('Smart group "Follow" input value selectors', () => {
         const phaseId = phase.body.data.id;
         [ideaTitleA, ideaTitleB].forEach((ideaTitle) => {
           cy.apiCreateIdea({
-            projectId: ideationProjectId,
+            phaseId,
             ideaTitle,
             ideaContent: randomString(60),
-            phaseIds: [phaseId],
           });
         });
       });
@@ -80,10 +79,9 @@ describe('Smart group "Follow" input value selectors', () => {
         canReact: true,
       }).then((phase) => {
         cy.apiCreateIdea({
-          projectId: proposalsProjectId,
+          phaseId: phase.body.data.id,
           ideaTitle: proposalTitle,
           ideaContent: randomString(60),
-          phaseIds: [phase.body.data.id],
         });
       });
     });
@@ -105,10 +103,9 @@ describe('Smart group "Follow" input value selectors', () => {
         canReact: true,
       }).then((phase) => {
         cy.apiCreateIdea({
-          projectId: surveyProjectId,
+          phaseId: phase.body.data.id,
           ideaTitle: surveyResponseTitle,
           ideaContent: randomString(60),
-          phaseIds: [phase.body.data.id],
         }).then((idea) => {
           surveyResponseId = idea.body.data.id;
         });

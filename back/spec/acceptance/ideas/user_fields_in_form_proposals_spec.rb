@@ -10,7 +10,9 @@ resource 'Ideas' do
     create(:proposals_status, code: 'proposed')
   end
 
-  post 'web_api/v1/ideas' do
+  post 'web_api/v1/phases/:phase_id/inputs' do
+    let(:phase_id) { @phase.id }
+
     before do
       # Create project with form
       @project = create(:single_phase_proposals_project, phase_attrs: { with_permissions: true })
