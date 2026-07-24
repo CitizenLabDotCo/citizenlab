@@ -10,18 +10,18 @@ import {
 
 import useAuthenticationMethod from 'api/id_methods/useAuthenticationMethod';
 
-import useAuthMethodNames from 'hooks/useAuthMethodNames';
+import useIdMethodNames, { getMethodName } from 'hooks/useIdMethodNames';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { requiresAccount, ssoMethodName } from '../../logic';
+import { requiresAccount } from '../../logic';
 import { SectionHeader } from '../../ui';
 import accessSectionMessages from '../AccessSection/messages';
 import GroupsSection from '../GroupsSection';
+import IdMethodFieldsModal from '../IdMethodsModal';
 import sharedMessages from '../messages';
 import ModeCards from '../ModeCards';
 import { AccessSectionProps, linkStyle } from '../shared';
-import VerificationFieldsModal from '../VerificationFieldsModal';
 
 import messages from './messages';
 
@@ -35,9 +35,10 @@ const AccessSectionSSO = ({
   const [returnedFieldsOpen, setReturnedFieldsOpen] = useState(false);
 
   const { data: authenticationMethod } = useAuthenticationMethod();
-  const authMethodNames = useAuthMethodNames();
-  const nameInConfig = ssoMethodName(authenticationMethod);
-  const methodName = authMethodNames[nameInConfig as any] || nameInConfig;
+  const idMethodNames = useIdMethodNames();
+  const methodName = authenticationMethod
+    ? getMethodName(authenticationMethod.data, idMethodNames)
+    : '';
 
   return (
     <Box>
@@ -57,7 +58,9 @@ const AccessSectionSSO = ({
 
       {hasAccount && (
         <>
-          {/* Fixed sign-in method — no options to configure. */}
+          {/* Fixed identification method — no options to configure. This
+              variant assumes exactly one method is enabled, so the link can
+              speak about "this" method. */}
           <Box
             p="14px"
             borderRadius={stylingConsts.borderRadius}
@@ -92,7 +95,7 @@ const AccessSectionSSO = ({
                 tabIndex={0}
                 onClick={() => setReturnedFieldsOpen(true)}
               >
-                {formatMessage(sharedMessages.seeWhichFieldsThisReturns)}
+                {formatMessage(sharedMessages.seeMethodProperties)}
               </Text>
             </Box>
           </Box>
@@ -101,7 +104,7 @@ const AccessSectionSSO = ({
         </>
       )}
 
-      <VerificationFieldsModal
+      <IdMethodFieldsModal
         opened={returnedFieldsOpen}
         onClose={() => setReturnedFieldsOpen(false)}
       />

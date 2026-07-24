@@ -10,13 +10,11 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
 import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { weglotTranslateIdeaSubmission } from 'utils/weglot';
 
 import { FormValues } from '../Page/types';
@@ -44,7 +42,6 @@ const IdeationForm = ({
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const locale = useLocale();
 
@@ -98,19 +95,14 @@ const IdeationForm = ({
       };
 
       if (!idea) {
-        // If the user is an admin or project moderator, we allow them to post to a specific phase
-        const phase_ids =
-          project && phaseId && canModerateProject(project.data, authUser)
-            ? [phaseId]
-            : null;
-
         const idea = await addIdea({
-          ...translatedFormValues,
-          project_id: projectId,
-          phase_ids,
-          publication_status:
-            participationMethod === 'common_ground' ? 'published' : undefined,
-          weglot_data: weglotData,
+          phaseId: phase.data.id,
+          requestBody: {
+            ...translatedFormValues,
+            publication_status:
+              participationMethod === 'common_ground' ? 'published' : undefined,
+            weglot_data: weglotData,
+          },
         });
         updateSearchParams({ idea_id: idea.data.id });
         trackEventByName(tracks.ideaFormSubmitted);

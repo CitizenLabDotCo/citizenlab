@@ -21590,6 +21590,12 @@
     "verified_at": "2026-07-10T12:33:55.226747Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
@@ -21618,6 +21624,90 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.226747Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.authentication": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.authenticationExplanation": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.canSignUpOrVerifyWith": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.canSignUpWith": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.canVerifyWith": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.identificationExplanation": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.identificationMethods": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.introDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.noActiveMethods": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.noFieldsReturned": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.seeWhichIdMethodsAreEnabled": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verification": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.verificationExplanation": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.IdMethodFieldsModal.viewMethodSettings": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:13:52.460295Z",
     "verified_by": "Luuc"
   },
   "front.app.components.admin.ActionForm.AccessSections.VerificationFieldsModal.editable": {

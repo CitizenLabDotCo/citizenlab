@@ -18,7 +18,7 @@ resource 'Ideas' do
 
   patch 'web_api/v1/ideas/:id' do
     with_options scope: :idea do
-      parameter :project_id, 'The idea of the project that hosts the idea'
+      parameter :project_id, 'The id of the project that hosts the idea'
       parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}"
@@ -38,8 +38,7 @@ resource 'Ideas' do
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
       end
 
-      let(:with_permissions) { false }
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: with_permissions }) }
+      let(:project) { create(:single_phase_ideation_project) }
       let(:input) { create(:idea, project: project, phases: project.phases) }
 
       context 'when author' do
@@ -103,7 +102,7 @@ resource 'Ideas' do
 
         example '[error] Update an idea when there is a posting disabled reason' do
           expect_any_instance_of(Permissions::PhasePermissionsService)
-            .to receive(:denied_reason_for_action).with('editing_idea', anything).and_return('i_dont_like_you')
+            .to receive(:denied_reason_for_action).with('editing_idea').and_return('i_dont_like_you')
 
           do_request
 
@@ -173,20 +172,37 @@ resource 'Ideas' do
           end
         end
 
-        context 'when prescreening_mode is all' do
+        describe 'prescreening' do
           before_all { SettingsService.new.activate_feature!('prescreening_ideation') }
 
           let!(:proposed_status) { create(:idea_status_proposed) }
 
-          let(:phase) { create(:phase, :ongoing, prescreening_mode: 'all') }
+          let(:phase) { create(:phase, :ongoing, prescreening_mode: prescreening_mode) }
           let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
           let(:title_multiloc) { { 'en' => 'Changed title' } }
 
-          example '[error] Author cannot edit a published idea after screening', document: false do
-            do_request
+          context 'when prescreening_mode is all' do
+            let(:prescreening_mode) { 'all' }
 
-            assert_status 401
-            expect(json_response_body).to include_response_error(:base, 'published_after_screening')
+            example '[error] Author cannot edit a published idea after screening', document: false do
+              do_request
+
+              assert_status 401
+              expect(json_response_body).to include_response_error(:base, 'published_after_screening')
+            end
+          end
+
+          context 'when prescreening_mode is flagged_only' do
+            before_all { SettingsService.new.activate_feature!('flag_inappropriate_content') }
+
+            let(:prescreening_mode) { 'flagged_only' }
+
+            example 'Author can edit a published idea in flagged_only mode', document: false do
+              do_request
+
+              assert_status 200
+              expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
+            end
           end
         end
 
@@ -245,26 +261,6 @@ resource 'Ideas' do
               assert_status 401
               expect(json_response_body).to include_response_error(:base, 'project_inactive')
             end
-          end
-        end
-
-        context 'when prescreening_mode is flagged_only' do
-          before_all do
-            SettingsService.new.activate_feature!('prescreening_ideation')
-            SettingsService.new.activate_feature!('flag_inappropriate_content')
-          end
-
-          let!(:proposed_status) { create(:idea_status_proposed) }
-
-          let(:phase) { create(:phase, :ongoing, prescreening_mode: 'flagged_only') }
-          let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
-          let(:title_multiloc) { { 'en' => 'Changed title' } }
-
-          example 'Author can edit a published idea in flagged_only mode', document: false do
-            do_request
-
-            assert_status 200
-            expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
           end
         end
       end
@@ -814,6 +810,33 @@ resource 'Ideas' do
             idea = Idea.find(response_data[:id])
             expect(idea.custom_field_values['u_age']).to eq 30
           end
+
+          context 'when the phase is standalone' do
+            before { input.creation_phase.update!(placement_type: 'standalone') }
+
+            example_request 'Can change a survey response from draft to published in a standalone phase' do
+              assert_status 200
+              expect(response_data[:attributes][:publication_status]).to eq 'published'
+            end
+
+            context 'with the anonymous parameter' do
+              let(:anonymous) { true }
+
+              example_request '[error] Publish an anonymous survey response when the standalone phase does not allow it' do
+                assert_status 422
+                expect(json_response_body).to include_response_error(:base, 'anonymous_participation_not_allowed')
+              end
+
+              context 'when the standalone phase allows anonymous participation' do
+                before { input.creation_phase.update!(allow_anonymous_participation: true) }
+
+                example_request 'Publish an anonymous survey response in a standalone phase' do
+                  assert_status 200
+                  expect(response_data.dig(:attributes, :anonymous)).to be true
+                end
+              end
+            end
+          end
         end
       end
 
@@ -825,7 +848,7 @@ resource 'Ideas' do
 
           let(:publication_status) { 'published' }
 
-          example_request 'Can change an an imported native survey response from draft to published' do
+          example_request 'Can change an imported native survey response from draft to published' do
             assert_status 200
             expect(response_data[:attributes][:publication_status]).to eq 'published'
           end
@@ -834,12 +857,8 @@ resource 'Ideas' do
     end
 
     context 'in a voting phase' do
+      public_input_params(self)
       with_options scope: :idea do
-        parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
-        parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
-        parameter :location_description, 'A human readable description of the location the idea applies to'
         parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
         parameter :budget, 'The budget needed to realize the idea, as determined by the city'
       end

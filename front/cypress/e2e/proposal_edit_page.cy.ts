@@ -50,7 +50,7 @@ describe('Proposal edit page', () => {
           // Create a proposal with location
           return cy
             .apiCreateIdea({
-              projectId,
+              phaseId,
               ideaTitle: oldTitle,
               ideaContent: ideaContent,
               locationGeoJSON,

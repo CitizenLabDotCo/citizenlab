@@ -32,8 +32,8 @@ jest.mock(
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/VerificationFieldsModal',
-  () => () => null
+  'components/admin/ActionForm/AccessSections/IdMethodsModal/Trigger',
+  () => () => <div data-testid="id-method-fields-trigger" />
 );
 
 const buildPermission = (
@@ -141,6 +141,17 @@ describe('<AccessSection />', () => {
       expect(screen.getByText(/Pick at least one method/i)).toBeInTheDocument();
     });
 
+    it('offers the identification-methods trigger alongside the method rows, not inside one', () => {
+      renderSection();
+
+      // It belongs to the whole method block, so it is not nested in the
+      // verification row the way it used to be.
+      const trigger = screen.getByTestId('id-method-fields-trigger');
+      const verificationRow = screen.getByText('Identity verification')
+        .parentElement!.parentElement!;
+      expect(verificationRow).not.toContainElement(trigger);
+    });
+
     it('locks the last remaining enabled method and explains why in a tooltip', async () => {
       // Only confirmed email enabled -> it is the last one, so it is locked.
       renderSection({
@@ -167,6 +178,13 @@ describe('<AccessSection />', () => {
       expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
       expect(
         screen.queryByText('Identity verification')
+      ).not.toBeInTheDocument();
+    });
+
+    it('does not offer the identification-methods trigger', () => {
+      renderSection({ permitted_by: 'everyone' });
+      expect(
+        screen.queryByTestId('id-method-fields-trigger')
       ).not.toBeInTheDocument();
     });
   });

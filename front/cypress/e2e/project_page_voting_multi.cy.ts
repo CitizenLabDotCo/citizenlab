@@ -37,10 +37,9 @@ describe('Multiple voting project', () => {
         projectSlug = project.body.data.attributes.slug;
         return cy
           .apiCreateIdea({
-            projectId,
+            phaseId: phase.body.data.id,
             ideaTitle,
             ideaContent,
-            phaseIds: [phase.body.data.id],
           })
           .then((idea) => {
             ideaId = idea.body.data.id;

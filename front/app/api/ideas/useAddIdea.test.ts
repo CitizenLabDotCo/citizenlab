@@ -7,7 +7,7 @@ import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 import { ideaData } from './__mocks__/_mockServer';
 import useAddIdea from './useAddIdea';
 
-const apiPath = '*ideas';
+const apiPath = '*phases/:phaseId/inputs';
 
 const server = setupServer(
   http.post(apiPath, () => {
@@ -26,12 +26,14 @@ describe('useAddIdea', () => {
 
     act(() => {
       result.current.mutate({
-        project_id: 'id',
-        title_multiloc: {
-          en: 'test',
-        },
-        body_multiloc: {
-          en: 'test',
+        phaseId: 'phase-id',
+        requestBody: {
+          title_multiloc: {
+            en: 'test',
+          },
+          body_multiloc: {
+            en: 'test',
+          },
         },
       });
     });
@@ -53,12 +55,14 @@ describe('useAddIdea', () => {
 
     act(() => {
       result.current.mutate({
-        project_id: 'id',
-        title_multiloc: {
-          en: 'test',
-        },
-        body_multiloc: {
-          en: 'test',
+        phaseId: 'phase-id',
+        requestBody: {
+          title_multiloc: {
+            en: 'test',
+          },
+          body_multiloc: {
+            en: 'test',
+          },
         },
       });
     });

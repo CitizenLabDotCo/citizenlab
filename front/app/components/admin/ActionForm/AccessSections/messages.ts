@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.identityVerification',
     defaultMessage: 'Identity verification',
   },
-  seeWhichFieldsThisReturns: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.seeWhichFieldsThisReturns',
-    defaultMessage: 'See which fields this returns',
+  seeMethodProperties: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties',
+    defaultMessage: 'See method properties',
   },
   emailMethodDescription: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription',
