@@ -14,8 +14,8 @@ import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
-import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import projectMessages from 'containers/ProjectsShowPage/messages';
 import {
@@ -48,6 +48,7 @@ const AboutBox = ({
 }: AboutBoxProps) => {
   const projectID = useWidgetProjectId();
   const componentDefaultPadding = useCraftComponentDefaultPadding();
+
   return (
     <Box
       id="e2e-about-box"
@@ -122,6 +123,9 @@ const OptionGroup = ({
 
 const AboutBoxSettings = () => {
   const { formatMessage } = useIntl();
+  const isParallelParticipationEnabled = useFeatureFlag({
+    name: 'parallel_participation',
+  });
   const {
     actions: { setProp },
     hideParticipationAvatars,
@@ -135,13 +139,12 @@ const AboutBoxSettings = () => {
     id: node.id,
   }));
 
-  const parallelParticipation = useParallelParticipation();
   const projectId = useWidgetProjectId();
   const { data: phases } = usePhases(
-    parallelParticipation ? projectId : undefined
+    isParallelParticipationEnabled ? projectId : undefined
   );
   const { data: standalonePhases } = usePhases(
-    parallelParticipation ? projectId : undefined,
+    isParallelParticipationEnabled ? projectId : undefined,
     'standalone'
   );
 
@@ -181,7 +184,7 @@ const AboutBoxSettings = () => {
         }}
         label={formatMessage(messages.hideParticipationAvatarsText)}
       />
-      {parallelParticipation && (
+      {isParallelParticipationEnabled && (
         <>
           <OptionGroup
             title={messages.participationOptionsTimeline}

@@ -16,8 +16,8 @@ import {
 } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
-import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
@@ -56,9 +56,11 @@ const ProjectActionButtons = memo<Props>(
     const [showAllOptions, setShowAllOptions] = useState(false);
     const { formatMessage } = useIntl();
     const localize = useLocalize();
-    const parallelParticipation = useParallelParticipation();
+    const isParallelParticipationEnabled = useFeatureFlag({
+      name: 'parallel_participation',
+    });
     const { data: standalonePhases } = usePhases(
-      parallelParticipation ? projectId : undefined,
+      isParallelParticipationEnabled ? projectId : undefined,
       'standalone'
     );
     const { pathname, hash: divId } = useLocation();
@@ -85,14 +87,15 @@ const ProjectActionButtons = memo<Props>(
       return null;
     }
 
-    const visibleOpenSurveys = parallelParticipation
+    const visibleOpenSurveys = isParallelParticipationEnabled
       ? excludeHidden(
           groupExtraSurveys(standalonePhases?.data).open,
           hiddenOptionIds
         )
       : [];
 
-    const canSeeEmptyState = parallelParticipation && isAdmin(authUser);
+    const canSeeEmptyState =
+      isParallelParticipationEnabled && isAdmin(authUser);
 
     if (!currentPhase && visibleOpenSurveys.length === 0 && !canSeeEmptyState) {
       return null;
@@ -202,7 +205,7 @@ const ProjectActionButtons = memo<Props>(
     // With parallel participation, the timeline option can be unchecked in the
     // participation box settings — that hides its primary CTA only.
     const currentPhaseHidden =
-      parallelParticipation &&
+      isParallelParticipationEnabled &&
       !!currentPhase &&
       !!hiddenOptionIds?.includes(currentPhase.id);
 
@@ -251,7 +254,9 @@ const ProjectActionButtons = memo<Props>(
     const surveyCTAs = generalShowCTAButtonCondition ? visibleOpenSurveys : [];
     const participationWaysCount = (showMethodCTA ? 1 : 0) + surveyCTAs.length;
     const collapseOptions =
-      parallelParticipation && participationWaysCount > 2 && !showAllOptions;
+      isParallelParticipationEnabled &&
+      participationWaysCount > 2 &&
+      !showAllOptions;
     const showAdminEmptyState =
       canSeeEmptyState &&
       generalShowCTAButtonCondition &&
