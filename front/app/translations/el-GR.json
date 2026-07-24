@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Αυθεντικοποίηση",
   "app.containers.Authentication.confirmYourPhoneNumber": "Επιβεβαιώστε τον αριθμό τηλεφώνου σας",
   "app.containers.Authentication.enterYourPhoneNumber": "Εισαγάγετε τον αριθμό τηλεφώνου σας",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Μη έγκυρος κωδικός επιβεβαίωσης. Παρακαλούμε ελέγξτε το τηλέφωνό σας για τον σωστό κωδικό ή δοκιμάστε την επιλογή «Αποστολή νέου κωδικού».",
   "app.containers.Authentication.signUpOrLogIn": "Εγγραφείτε ή συνδεθείτε",
   "app.containers.Authentication.steps.AccessDenied.close": "Κλείστε το",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Δεν πληροίτε τις προϋποθέσεις για να συμμετάσχετε σε αυτή τη διαδικασία.",

@@ -1317,6 +1317,7 @@
   "app.containers.Authentication.authenticationDialog": "Hitelesítés",
   "app.containers.Authentication.confirmYourPhoneNumber": "Erősítse meg a telefonszámát",
   "app.containers.Authentication.enterYourPhoneNumber": "Adja meg a telefonszámát",
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": "Érvénytelen megerősítő kód. Kérjük, ellenőrizze a telefonját a helyes kódért, vagy próbálkozzon az „Új kód küldése” lehetőséggel.",
   "app.containers.Authentication.signUpOrLogIn": "Regisztráljon vagy jelentkezzen be",
   "app.containers.Authentication.steps.AccessDenied.close": "Közeli",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nem felel meg a folyamatban való részvétel feltételeinek.",
