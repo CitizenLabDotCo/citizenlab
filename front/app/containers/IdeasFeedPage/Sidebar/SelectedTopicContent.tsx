@@ -17,7 +17,7 @@ import T from 'components/T';
 import Emoji from 'components/UI/Emoji';
 import GoBackButton from 'components/UI/GoBackButton';
 
-import { trackEventByName } from 'utils/analytics';
+import { trackEventByName, trackVirtualPageView } from 'utils/analytics';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
@@ -66,6 +66,9 @@ const SelectedTopicContent = ({
       removeSearchParams(['subtopic', 'sheet_open']);
     } else {
       trackEventByName(tracks.subtopicSelected);
+      trackVirtualPageView(
+        `${window.location.pathname}/topic/${topicId}/subtopic/${subtopicId}`
+      );
       removeSearchParams(['sheet_open']);
       updateSearchParams({ subtopic: subtopicId });
     }
