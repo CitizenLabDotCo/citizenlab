@@ -48,7 +48,8 @@ const StatCardCount = styled.div`
 
 type Status = keyof Omit<ISmsDeliveryStats, 'total'>;
 
-// The six delivery statuses, in funnel order. Displayed as one card each.
+// The delivery statuses, in funnel order, with `errored` (stopped before the
+// provider) last. Displayed as one card each.
 const STATUSES: Status[] = [
   'pending',
   'queued',
@@ -56,6 +57,7 @@ const STATUSES: Status[] = [
   'delivered',
   'undelivered',
   'failed',
+  'errored',
 ];
 
 const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
@@ -65,6 +67,7 @@ const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
   delivered: messages.smsDeliveryStatus_delivered,
   undelivered: messages.smsDeliveryStatus_undelivered,
   failed: messages.smsDeliveryStatus_failed,
+  errored: messages.smsDeliveryStatus_errored,
 };
 
 interface Props {

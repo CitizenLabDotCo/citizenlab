@@ -25,6 +25,9 @@ const statusColorMapping: {
   delivered: colors.success,
   undelivered: colors.orange500,
   failed: colors.red600,
+  // `errored` (stopped before the provider) gets its own colour so it reads as a
+  // distinct outcome from a provider-side `failed`.
+  errored: colors.brown,
 };
 
 const TableRow = ({ delivery }: { delivery: ISmsDeliveryData }) => {
