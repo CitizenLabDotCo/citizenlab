@@ -39,7 +39,9 @@ type UserAttribute =
   | 'last_name'
   | 'email'
   | 'password'
-  | 'confirmation';
+  | 'confirmation'
+  | 'phone'
+  | 'phone_confirmation';
 
 export interface AuthenticationRequirementsResponse {
   data: {

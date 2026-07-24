@@ -54,10 +54,13 @@ const PasswordInput = ({ name, label, id, ...rest }: Props) => {
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field, fieldState }) => (
+        // `ref` is pulled out of `field` so it isn't spread onto the function
+        // component as a real React ref (which React can't attach and warns
+        // about). The ref is forwarded via the `setRef` prop instead.
+        render={({ field: { ref, ...field }, fieldState }) => (
           <PasswordInputComponent
             setRef={(el) => {
-              field.ref(el);
+              ref(el);
             }}
             {...field}
             {...rest}

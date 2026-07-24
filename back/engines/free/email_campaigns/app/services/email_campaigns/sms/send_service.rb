@@ -52,11 +52,19 @@ module EmailCampaigns
         fake_sms_sends? ? Providers::Fake.new : Providers::Twilio.new
       end
 
-      # In development, skip the real Twilio API unless the tenant has credentials filled in.
+      # Whether to route sends through the fake provider instead of the real Twilio API.
+      # Returns true when:
+      #   - the tenant has `use_test_mode` enabled (in any environment, incl. production/staging), or
+      #   - we're in development and the tenant is missing any Twilio credential.
+      # Returns false when:
+      #   - `use_test_mode` is off and we're not in development, or
+      #   - we're in development but all three Twilio credentials are filled in.
       def fake_sms_sends?
+        config = AppConfiguration.instance.settings('sms') || {}
+        return true if config['use_test_mode']
+
         return false unless Rails.env.development?
 
-        config = AppConfiguration.instance.settings('sms') || {}
         config.values_at('twilio_account_sid', 'twilio_auth_token', 'twilio_messaging_service_sid').any?(&:blank?)
       end
     end

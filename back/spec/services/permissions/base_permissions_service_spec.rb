@@ -281,6 +281,37 @@ describe Permissions::BasePermissionsService do
         end
       end
 
+      context 'when a confirmed phone number is required' do
+        let(:permission) { create(:permission, permitted_by: 'users', require_confirmed_phone_number: true) }
+        let(:denied_reason) { service.send(:user_denied_reason, permission) }
+
+        before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+        context 'when the user has no phone number' do
+          before { user.update!(phone: nil, phone_confirmed_at: nil) }
+
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
+
+        context 'when the user has an unconfirmed phone number' do
+          before { user.update!(phone: '+3212345678', phone_confirmed_at: nil) }
+
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
+
+        context 'when the user has a confirmed phone number' do
+          before { user.update!(phone: '+3212345678', phone_confirmed_at: Time.now) }
+
+          it { expect(denied_reason).to be_nil }
+        end
+
+        context 'when the user is admin' do
+          before { user.update!(roles: [{ type: 'admin' }]) }
+
+          it { expect(denied_reason).to be_nil }
+        end
+      end
+
       context 'when verification is required' do
         let(:permission) { create(:permission, permitted_by: 'users', require_verification: true) }
 

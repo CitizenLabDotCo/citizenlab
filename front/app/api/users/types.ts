@@ -104,6 +104,7 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  phone?: string;
 }
 
 export interface IChangePassword {
