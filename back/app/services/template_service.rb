@@ -16,7 +16,9 @@ class TemplateService
       end
       nil
     else
-      @template_refs[model_name][id]
+      # `dig` so an optional ref to a model that wasn't exported (e.g. a file uploader
+      # when users aren't part of the export) yields nil instead of raising.
+      @template_refs.dig(model_name, id)
     end
   end
 
