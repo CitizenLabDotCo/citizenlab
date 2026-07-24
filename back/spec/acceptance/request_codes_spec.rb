@@ -174,6 +174,20 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
     end
 
+    example 'It works for a user without an existing new_phone_confirmation' do
+      user = create(:user)
+      expect(user.new_phone_confirmation).to be_nil
+      header_token_for(user)
+
+      do_request(request_code: { new_phone: '+1 415 555 2671' })
+
+      expect(response_status).to eq 200
+      expect(user.reload.new_phone).to eq '+14155552671'
+      expect(user.new_phone_confirmation).to be_present
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
+    end
+
     example 'It does not work if new_phone is blank' do
       user = create(:user)
       header_token_for(user)
@@ -201,7 +215,7 @@ resource 'Request codes' do
 
     example 'It does not work if the user reached code_reset_count' do
       user = create(:user)
-      user.new_phone_confirmation.update!(code_reset_count: 4)
+      user.create_new_phone_confirmation!(code_reset_count: 4)
       header_token_for(user)
       do_request(request_code: { new_phone: '+14155552671' })
       expect(response_status).to eq 401

@@ -12,6 +12,10 @@ RSpec.describe RequestNewPhoneConfirmationCodeJob do
   # is actually invoked.
   include_context 'with stubbed SMS provider'
 
+  # In the real flow the confirmation is created by the controller's
+  # ensure_new_phone_confirmation before_action; the job assumes it exists.
+  before { user.create_new_phone_confirmation! }
+
   it 'stores the number as the pending new_phone, leaving phone unset' do
     job.perform(user, new_phone: new_phone)
     expect(user.reload.new_phone).to eq new_phone

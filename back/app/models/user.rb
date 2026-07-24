@@ -546,7 +546,6 @@ class User < ApplicationRecord
   def create_confirmations
     EmailConfirmation.create!(user: self)
     NewEmailConfirmation.create!(user: self)
-    NewPhoneConfirmation.create!(user: self)
   end
 
   def remove_initiated_notifications

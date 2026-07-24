@@ -7,7 +7,7 @@ RSpec.describe NewPhoneConfirmation do
     it 'promotes new_phone to phone, stamps confirmed_at and clears the code' do
       user = create(:user)
       user.update!(new_phone: '+14155552671')
-      user.new_phone_confirmation.update!(code: '1234', code_sent_at: Time.zone.now)
+      user.create_new_phone_confirmation!(code: '1234', code_sent_at: Time.zone.now)
 
       expect(user.new_phone_confirmation.confirm!).to be true
 
@@ -20,7 +20,7 @@ RSpec.describe NewPhoneConfirmation do
 
     it 'returns false when there is no pending phone number' do
       user = create(:user)
-      expect(user.new_phone_confirmation.confirm!).to be false
+      expect(user.create_new_phone_confirmation!.confirm!).to be false
       expect(user.reload.phone).to be_nil
     end
 
@@ -28,7 +28,7 @@ RSpec.describe NewPhoneConfirmation do
       other = create(:user, new_phone: '+14155552671')
       user = create(:user, new_phone: '+14155552671')
 
-      user.new_phone_confirmation.confirm!
+      user.create_new_phone_confirmation!.confirm!
 
       expect(other.reload.new_phone).to be_nil
     end
@@ -37,7 +37,7 @@ RSpec.describe NewPhoneConfirmation do
   describe '#pending?' do
     it 'is true only when a new_phone is set' do
       user = create(:user)
-      expect(user.new_phone_confirmation.pending?).to be false
+      expect(user.create_new_phone_confirmation!.pending?).to be false
 
       user.update!(new_phone: '+14155552671')
       expect(user.new_phone_confirmation.pending?).to be true

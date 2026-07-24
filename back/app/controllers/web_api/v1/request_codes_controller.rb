@@ -2,6 +2,7 @@
 
 class WebApi::V1::RequestCodesController < ApplicationController
   skip_before_action :authenticate_user, only: %i[request_code_unauthenticated]
+  before_action :ensure_new_phone_confirmation, only: %i[request_code_phone_change]
 
   # This endpoint allows unauthenticated users to request a confirmation code
   # This is used in the email account creation flow and when
@@ -75,6 +76,15 @@ class WebApi::V1::RequestCodesController < ApplicationController
   end
 
   private
+
+  # SMS is opt-in per tenant, so the phone confirmation is created on demand
+  # rather than for every user (see User#create_confirmations). It has to exist
+  # before RequestCodePolicy reads its code_reset_count.
+  def ensure_new_phone_confirmation
+    return unless AppConfiguration.instance.feature_activated?('sms')
+
+    current_user.new_phone_confirmation || current_user.create_new_phone_confirmation!
+  end
 
   def request_code_unauthenticated_params
     params.require(:request_code).permit(:email)
