@@ -86,7 +86,7 @@ describe('Ideation permitted by: everyone', () => {
       cy.get('form').find('input').first().type(answer);
 
       // Intercept submit request
-      cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+      cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
 
       // Submit survey
       cy.dataCy('e2e-submit-form').click();
@@ -149,7 +149,7 @@ describe('Ideation permitted by: everyone', () => {
         cy.get('form').find('input').first().type(answer);
 
         // Intercept submit request
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitIdea');
 
         // Submit survey
         cy.dataCy('e2e-submit-form').click();
@@ -178,7 +178,7 @@ describe('Ideation permitted by: everyone', () => {
         cy.get('#e2e-continue-anonymous-participation-btn').click();
 
         // Intercept submit request
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitIdea');
 
         // Submit survey
         cy.dataCy('e2e-submit-form').click();

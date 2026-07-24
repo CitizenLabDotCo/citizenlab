@@ -34,10 +34,9 @@ describe('Idea show page actions', () => {
         phaseId = phase.body.data.id;
         return cy
           .apiCreateIdea({
-            projectId,
+            phaseId,
             ideaTitle: randomString(20),
             ideaContent: randomString(),
-            phaseIds: [phase.body.data.id],
           })
           .then((idea) => {
             ideaId = idea.body.data.id;
@@ -221,10 +220,9 @@ describe('Idea show page actions', () => {
           })
           .then((user) => {
             return cy.apiCreateIdea({
-              projectId,
+              phaseId,
               ideaTitle: randomString(20),
               ideaContent: randomString(),
-              phaseIds: [phaseId],
             });
           })
           .then((idea) => {
@@ -263,7 +261,7 @@ describe('Idea show page actions', () => {
         cy.apiSignup(firstName, lastName, email, password);
 
         cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: randomString(20),
           ideaContent: randomString(),
         }).then((idea) => {
