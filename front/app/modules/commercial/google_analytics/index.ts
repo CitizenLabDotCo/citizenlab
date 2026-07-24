@@ -9,6 +9,7 @@ import {
 
 import { initializeFor, shutdownFor } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
+import { isInContentBuilderPreview } from 'utils/isInContentBuilderPreview';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 declare module 'components/ConsentManager/destinations' {
@@ -26,6 +27,8 @@ const destinationConfig: IDestinationConfig = {
 
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    if (isInContentBuilderPreview()) return;
+
     // Initialize
     combineLatest([
       appConfigurationStream,
