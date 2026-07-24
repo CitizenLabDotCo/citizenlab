@@ -2,7 +2,7 @@ import requirementKeys from 'api/authentication/authentication_requirements/keys
 import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { confirmCodePhoneChange } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
-import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode'
+import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -91,7 +91,7 @@ export const missingDataFlow = (
         await requestCodePhoneChange(phone);
         invalidateCacheAfterUpdateUser(queryClient);
         setCurrentStep('missing-data:phone-confirmation');
-      }
+      },
     },
 
     'missing-data:phone-confirmation': {
@@ -122,7 +122,7 @@ export const missingDataFlow = (
       },
       RESEND_CODE: async (phone: string) => {
         await requestCodePhoneChange(phone);
-      }
+      },
     },
 
     'missing-data:built-in': {

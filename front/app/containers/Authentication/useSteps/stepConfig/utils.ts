@@ -84,7 +84,7 @@ const phoneConfirmationRequired = (
   return requirements.authentication.missing_user_attributes.includes(
     'phone_confirmation'
   );
-}
+};
 
 export const showOnboarding = (
   requirements: AuthenticationRequirements['requirements']
