@@ -38,6 +38,9 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       project = Project.find_by(id: params[:project_id])
       return not_found_error('Project', params[:project_id]) unless project
 
+      authorize_project!(project)
+      authorize(project, :update?)
+
       attributes = params.except(:project_id)
       project.assign_attributes(merge_multilocs(project, attributes))
 
