@@ -25,6 +25,16 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPhaseStarted do
         expect(command.dig(:event_payload, :phase_title_multiloc))
           .to eq project.phases.last.title_multiloc
       end
+
+      it 'includes the phase gid as context_gid, so queued deliveries can be purged and guarded when the phase is deleted' do
+        command = campaign.generate_commands(
+          recipient: notification_activity.item.recipient,
+          activity: notification_activity
+        ).first
+
+        expect(command.dig(:event_payload, :context_gid))
+          .to eq project.phases.last.to_global_id.to_s
+      end
     end
 
     context 'phase is a voting phase' do

@@ -99,6 +99,10 @@ module EmailCampaigns
       else
         [{
           event_payload: {
+            # Plain string, deliberately not the record itself: it must survive the
+            # phase's deletion so the delivery-time guard can detect it (see
+            # ApplicationMailer#context_deleted?).
+            context_gid: notification.phase.to_global_id.to_s,
             phase_title_multiloc: notification.phase.title_multiloc,
             phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: Locale.new(recipient.locale)),
             project_title_multiloc: notification.project.title_multiloc,

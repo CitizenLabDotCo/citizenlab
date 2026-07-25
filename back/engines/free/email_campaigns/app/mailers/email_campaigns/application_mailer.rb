@@ -10,6 +10,11 @@ module EmailCampaigns
     end
 
     def campaign_mail
+      if context_deleted?
+        Rails.logger.info("#{self.class.name}: skipping delivery, context #{command.dig(:event_payload, :context_gid)} no longer exists")
+        return
+      end
+
       I18n.with_locale(locale.locale_sym) do
         mail(default_config, &:mjml).tap do |message|
           message.mailgun_headers = mailgun_headers if self.class.delivery_method == :mailgun
@@ -52,6 +57,21 @@ module EmailCampaigns
 
     def event
       @event ||= to_deep_struct(command&.dig(:event_payload))
+    end
+
+    # The delivery job can sit in the queue (campaign delay, transient send failures +
+    # retries) while the record the email is about — its context, e.g. a phase — is
+    # destroyed. Queued jobs are purged on destroy (see PurgesRelatedQueJobs), but a job
+    # already picked up by a worker, or enqueued concurrently with the deletion, escapes
+    # the purge; this guard covers that race. Returning early from `campaign_mail` yields
+    # a NullMail, so nothing is delivered.
+    def context_deleted?
+      gid = command&.dig(:event_payload, :context_gid)
+      return false if gid.blank?
+
+      GlobalID::Locator.locate(gid).nil?
+    rescue ActiveRecord::RecordNotFound
+      true
     end
   end
 end

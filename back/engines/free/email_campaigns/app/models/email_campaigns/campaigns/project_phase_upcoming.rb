@@ -82,6 +82,7 @@ module EmailCampaigns
       notification = activity.item
       [{
         event_payload: {
+          context_gid: notification.phase.to_global_id.to_s,
           phase_title_multiloc: notification.phase.title_multiloc,
           phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: Locale.new(recipient.locale)),
           project_title_multiloc: notification.project.title_multiloc,

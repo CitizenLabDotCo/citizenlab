@@ -61,6 +61,8 @@
 #  fk_rails_...  (scheduled_by_id => users.id)
 #
 class AdminPublication < ApplicationRecord
+  include PurgesRelatedQueJobs
+
   PUBLICATION_STATUSES = %w[draft published archived]
 
   belongs_to :publication, polymorphic: true, touch: true

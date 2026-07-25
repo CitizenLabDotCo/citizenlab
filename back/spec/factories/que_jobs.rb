@@ -9,6 +9,7 @@ FactoryBot.define do
       # holds the ActiveJob wrapper for any job enqueued through ActiveJob.
       active_job_class { 'TestJob' }
       job_arguments { [] }
+      related_gids { [] }
     end
 
     priority { 100 }
@@ -21,7 +22,7 @@ FactoryBot.define do
     kwargs { {} }
 
     args do
-      [{
+      active_job_data = {
         job_id: SecureRandom.uuid,
         locale: 'en',
         priority: nil,
@@ -34,7 +35,9 @@ FactoryBot.define do
         provider_job_id: nil,
         tenant_schema_name: tenant_schema_name,
         exception_executions: {}
-      }]
+      }
+      active_job_data[:related_gids] = related_gids if related_gids.present?
+      [active_job_data]
     end
   end
 end
