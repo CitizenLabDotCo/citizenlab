@@ -11,8 +11,10 @@ export type Step =
   | 'email:sso-policies'
   | 'email:unauthenticated-confirmation'
 
-  // confirmation steps (code entry for email / new_email / new_phone)
+  // confirmation steps (code entry for email / phone)
+  | 'confirmation:reconfirm-email'
   | 'confirmation:new_email'
+  | 'confirmation:reconfirm-phone'
   | 'confirmation:new_phone'
 
   // invite flow

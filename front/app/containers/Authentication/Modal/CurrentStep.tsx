@@ -144,6 +144,28 @@ const CurrentStep = ({
         />
       );
 
+    case 'confirmation:reconfirm-email':
+      return (
+        <EmailConfirmation
+          state={state}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'confirmation:reconfirm-phone':
+      return (
+        <PhoneConfirmation
+          state={state}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
     case 'missing-data:new_phone':
       return (
         <Phone
