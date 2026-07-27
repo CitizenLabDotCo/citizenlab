@@ -37,7 +37,6 @@ describe('phaseHasPrimaryCTA', () => {
     'ideation',
     'proposals',
     'native_survey',
-    'survey',
     'poll',
     'document_annotation',
   ];
@@ -48,7 +47,9 @@ describe('phaseHasPrimaryCTA', () => {
     );
   });
 
-  it.each(['information', 'volunteering', 'common_ground'] as const)(
+  // External surveys only ever render a mobile-only scroll link, so they never
+  // count as a box CTA.
+  it.each(['survey', 'information', 'volunteering', 'common_ground'] as const)(
     'returns false for %s',
     (method) => {
       expect(phaseHasPrimaryCTA(phase({ participation_method: method }))).toBe(
