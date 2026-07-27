@@ -1353,7 +1353,7 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Projektkontext",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Space",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceOrFolderError": "Wählen Sie einen Space oder einen Ordner für dieses Projekt aus.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Ein Ordner bleibt immer in seinem eigenen Space, daher wird durch die Auswahl eines Ordners auch der Space festgelegt. Das Ändern des Space löscht den ausgewählten Ordner.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Ein Ordner bleibt immer in seinem eigenen Space, daher wird durch die Auswahl eines Ordners auch der Space festgelegt. Das Ändern des Spaces löscht den ausgewählten Ordner.",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Space löschen",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Keine Spaces gefunden",
   "app.containers.Admin.projects.all.Spaces.Table.space": "Space",
