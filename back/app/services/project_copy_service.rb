@@ -94,10 +94,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     # Files (the legacy per-resource *File models have been migrated into these). Emitted
     # last so every possible attachable (project/phase/event/idea/layout) and uploader is
     # already registered. file records first, then the join + attachments that reference them.
-    project_file_ids = Files::FilesProject.where(project: @project).pluck(:file_id)
-    @template['models']['files/file']            = yml_files project_file_ids, shift_timestamps: shift_timestamps
+    @template['models']['files/file']            = yml_files shift_timestamps: shift_timestamps
     @template['models']['files/files_project']   = yml_files_projects shift_timestamps: shift_timestamps
-    @template['models']['files/file_attachment'] = yml_file_attachments project_file_ids, shift_timestamps: shift_timestamps
+    @template['models']['files/file_attachment'] = yml_file_attachments shift_timestamps: shift_timestamps
 
     @template
   end
@@ -511,7 +510,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id) unless limit_num_ideas
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
-    @project.files.pluck(:uploader_id)
+    user_ids += @project.files.pluck(:uploader_id)
 
     @user_ids = user_ids.uniq # set globally so we can restrict follower export later
     User.where(id: @user_ids).map do |user|
