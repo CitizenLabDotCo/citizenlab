@@ -36,7 +36,7 @@ class UserConfirmationService
 
   def validate_and_confirm_email!(user, code)
     # Ensure that password login (i.e. 'normal', non-SSO login)
-    # feature is enabled for unauthenticated confirmation
+    # feature is enabled for email confirmation
     validate_password_login_enabled!
     validate_user!(user)
     validate_email!(user.email)
@@ -53,6 +53,19 @@ class UserConfirmationService
     validate_email!(user.new_email)
     validate_and_confirm!(user.new_email_confirmation, code)
     ClaimTokenService.complete(user)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
+  def validate_and_confirm_phone!(user, code)
+    # Ensure that password login (i.e. 'normal', non-SSO login)
+    # feature is enabled for phone confirmation
+    validate_password_login_enabled!
+    validate_user!(user)
+    validate_phone!(user.phone)
+    validate_and_confirm!(user.phone_confirmation, code)
 
     success_result(user)
   rescue ValidationError => e
