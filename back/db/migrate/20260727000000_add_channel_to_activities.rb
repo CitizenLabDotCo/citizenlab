@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+class AddChannelToActivities < ActiveRecord::Migration[7.1]
+  def change
+    # Activity origin: 'mcp' for the MCP server, nil for the web/API path.
+    add_column :activities, :channel, :string
+    add_index :activities, :channel
+  end
+end

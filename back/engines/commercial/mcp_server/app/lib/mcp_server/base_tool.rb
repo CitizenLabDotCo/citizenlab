@@ -55,14 +55,39 @@ class McpServer::BaseTool
         token_scopes: token_scopes
       )
 
+      # Tag activities from this tool run as MCP-originated (LogActivityJob reads this).
+      # Set here, not in McpController, so the run_mcp_tool spec helper hits the same path.
+      Current.activity_channel = 'mcp'
+
       runner.run
     rescue Pundit::NotAuthorizedError => e
       runner.error(McpServer::BaseTool.unauthorized_message(e))
+    rescue StandardError => e
+      # Report genuine failures to Sentry, then re-raise (transport response unchanged).
+      # Expected user errors are skipped — see report_tool_error.
+      McpServer::BaseTool.report_tool_error(e, tool: definition.name, current_user: current_user)
+      raise
+    ensure
+      Current.activity_channel = nil
     end
   end
 
   def self.unauthorized_message(error)
     reason = error.try(:reason)
     "Not allowed: #{reason || 'authorization failed'}."
+  end
+
+  # Expected user-facing outcomes (bad input, missing records), not bugs — never reported.
+  # Pundit is handled above, before it reaches the Sentry rescue.
+  EXPECTED_ERRORS = [ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound].freeze
+
+  def self.report_tool_error(error, tool:, current_user:)
+    return if EXPECTED_ERRORS.any? { |klass| error.is_a?(klass) }
+
+    ErrorReporter.report(error, extra: {
+      mcp_tool: tool,
+      tenant_host: Tenant.safe_current&.host,
+      user_id: current_user&.id
+    })
   end
 end

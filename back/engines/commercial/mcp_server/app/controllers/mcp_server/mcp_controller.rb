@@ -10,6 +10,15 @@ module McpServer
     def create
       authorize(%i[mcp_server mcp])
 
+      # Capture method/tool for the log line; reading params also rewinds the body for the
+      # transport. Best-effort — swallow parse errors so a malformed body still reaches it.
+      begin
+        @mcp_method = params[:method]
+        @mcp_tool = @mcp_method == 'tools/call' ? params.dig(:params, :name) : nil
+      rescue StandardError
+        @mcp_method = @mcp_tool = nil
+      end
+
       server = MCP::Server.new(
         name: 'go_vocal',
         title: "Go Vocal (#{AppConfiguration.instance.host})",
@@ -37,6 +46,18 @@ module McpServer
     end
 
     private
+
+    # McpController skips ApplicationController, so it adds tenant/user tagging itself (why
+    # MCP logs lacked the tenant). mcp_method/mcp_tool feed the CloudWatch dashboard.
+    def append_info_to_payload(payload)
+      super
+      payload[:tenant_id]   = Tenant.safe_current&.id
+      payload[:tenant_host] = Tenant.safe_current&.host
+      # resource_owner_id avoids a User.find and is nil-safe when unauthenticated.
+      payload[:user_id]     = doorkeeper_token&.resource_owner_id
+      payload[:mcp_method]  = @mcp_method
+      payload[:mcp_tool]    = @mcp_tool
+    end
 
     # Authorize via Doorkeeper, and append the RFC 9728 resource_metadata parameter to the
     # WWW-Authenticate header on 401s so MCP clients can discover the OAuth authorization

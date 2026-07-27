@@ -23,16 +23,14 @@ class LogActivityJob < ApplicationJob
   end
 
   def initialize(*args)
-    # The `project_id` is automatically derived from the `item` and added to the
-    # `options` hash (see `LogActivityJob#run`). This is done in the constructor because
-    # it needs to happen before the job serialization. Otherwise, it would not be
-    # feasible to determine the `project_id` for deleted items.
+    # Derive project_id/channel here, at enqueue time in the request thread where Current
+    # is still set — the job itself runs later on a worker with no request context.
     item, action, user, acted_at, options = args
+    new_options = derive_options(item, options)
 
-    if options.to_h.key?(:project_id) || (project_id = item.try(:project_id)).nil?
+    if new_options.equal?(options)
       super
     else
-      new_options = options.to_h.merge(project_id: project_id)
       super(item, action, user, acted_at, new_options)
     end
   end
@@ -48,13 +46,34 @@ class LogActivityJob < ApplicationJob
 
   private
 
+  # Returns options unchanged when nothing is added, else a copy with project_id/channel merged.
+  def derive_options(item, options)
+    base = options.to_h
+    additions = {}
+
+    unless base.key?(:project_id)
+      project_id = item.try(:project_id)
+      additions[:project_id] = project_id unless project_id.nil?
+    end
+
+    unless base.key?(:channel)
+      channel = Current.activity_channel
+      additions[:channel] = channel unless channel.nil?
+    end
+
+    return options if additions.empty?
+
+    base.merge(additions)
+  end
+
   def create_activity(item, action, user, acted_at, options = {})
     attrs = {
       action: action,
       user: user,
       acted_at: Time.zone.at(acted_at || Time.zone.now),
       payload: options[:payload] || {},
-      project_id: options[:project_id]
+      project_id: options[:project_id],
+      channel: options[:channel]
     }
     if item.is_a?(String)
       # when e.g. the item has been destroyed, the class and id must be

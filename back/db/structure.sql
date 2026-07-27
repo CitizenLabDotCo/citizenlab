@@ -507,6 +507,7 @@ DROP INDEX IF EXISTS public.index_admin_publications_on_lft;
 DROP INDEX IF EXISTS public.index_admin_publications_on_depth;
 DROP INDEX IF EXISTS public.index_activities_on_user_id;
 DROP INDEX IF EXISTS public.index_activities_on_project_id;
+DROP INDEX IF EXISTS public.index_activities_on_channel;
 DROP INDEX IF EXISTS public.index_activities_on_item_type_and_item_id;
 DROP INDEX IF EXISTS public.index_activities_on_action;
 DROP INDEX IF EXISTS public.index_activities_on_acted_at;
@@ -1167,7 +1168,8 @@ CREATE TABLE public.activities (
     user_id uuid,
     acted_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    project_id uuid
+    project_id uuid,
+    channel character varying
 );
 
 
@@ -5779,6 +5781,13 @@ CREATE INDEX index_activities_on_action ON public.activities USING btree (action
 
 
 --
+-- Name: index_activities_on_channel; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_activities_on_channel ON public.activities USING btree (channel);
+
+
+--
 -- Name: index_activities_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9445,6 +9454,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260727000000'),
 ('20260713000000'),
 ('20260707190000'),
 ('20260707185000'),
