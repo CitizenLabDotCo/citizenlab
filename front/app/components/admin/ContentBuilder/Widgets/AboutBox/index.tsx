@@ -13,6 +13,7 @@ import { Multiloc } from 'typings';
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -140,6 +141,9 @@ const AboutBoxSettings = () => {
   }));
 
   const projectId = useWidgetProjectId();
+  const { data: project } = useProjectById(
+    isParallelParticipationEnabled ? projectId : undefined
+  );
   const { data: phases } = usePhases(
     isParallelParticipationEnabled ? projectId : undefined
   );
@@ -162,9 +166,11 @@ const AboutBoxSettings = () => {
 
   const timelinePhases =
     currentPhase && phaseHasPrimaryCTA(currentPhase) ? [currentPhase] : [];
-  const visibleActiveCount =
-    excludeHidden(timelinePhases, hiddenOptionIds).length +
-    excludeHidden(open, hiddenOptionIds).length;
+  const isArchived = project?.data.attributes.publication_status === 'archived';
+  const visibleActiveCount = isArchived
+    ? 0
+    : excludeHidden(timelinePhases, hiddenOptionIds).length +
+      excludeHidden(open, hiddenOptionIds).length;
 
   return (
     <Box
