@@ -53,4 +53,71 @@ describe McpServer::Tools::CreatePhase do
       expect(response.content.first[:text]).to include('Project not found')
     end
   end
+
+  # The input schema advertises the union of participation methods and prescreening
+  # modes on every tenant (tenant-agnostic definitions); the feature gates are
+  # enforced at call time instead.
+  describe 'feature gates' do
+    let(:status) { 'draft' }
+
+    context 'when the participation method is gated by a disabled feature' do
+      before { SettingsService.new.deactivate_feature!('polls') }
+
+      it 'returns an error naming the missing feature and creates nothing' do
+        response = nil
+        expect do
+          response = run_mcp_tool(
+            described_class,
+            params: params.merge(participation_method: 'poll'),
+            current_user:
+          )
+        end.not_to change(Phase, :count)
+
+        expect(response).to be_error
+        expect(response.content.first[:text]).to include("'polls' feature")
+      end
+    end
+
+    context 'when the participation method is gated by an enabled feature' do
+      before { SettingsService.new.activate_feature!('polls') }
+
+      it 'creates the phase' do
+        response = run_mcp_tool(
+          described_class,
+          params: params.merge(participation_method: 'poll'),
+          current_user:
+        )
+
+        expect(response).not_to be_error
+        expect(project.reload.phases.sole.participation_method).to eq('poll')
+      end
+    end
+
+    it 'rejects prescreening_mode when no prescreening feature is enabled' do
+      SettingsService.new.deactivate_feature!('prescreening')
+      SettingsService.new.deactivate_feature!('prescreening_ideation')
+
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(prescreening_mode: 'all'),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.content.first[:text]).to include('prescreening')
+    end
+
+    it 'rejects reacting_dislike_* fields when the disable_disliking feature is off' do
+      SettingsService.new.deactivate_feature!('disable_disliking')
+
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(reacting_dislike_enabled: true),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.content.first[:text]).to include("'disable_disliking' feature")
+    end
+  end
 end

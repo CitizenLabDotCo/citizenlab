@@ -7,11 +7,10 @@
 class McpServer::Tools::FormFieldsSchemaBuilder
   MODES = %i[input output].freeze
 
-  def initialize(mode:, tenant_locales:)
+  def initialize(mode:)
     raise ArgumentError, "invalid mode #{mode.inspect}, expected one of #{MODES.inspect}" unless mode.in?(MODES)
 
     @mode = mode
-    @tenant_locales = tenant_locales
   end
 
   def field_schema
@@ -66,17 +65,13 @@ class McpServer::Tools::FormFieldsSchemaBuilder
 
   private
 
-  attr_reader :tenant_locales
-
   def input? = @mode == :input
 
   def multiloc_schema
     @multiloc_schema ||= {
       type: 'object',
-      description: <<~DESC.squish,
-        Localized text. An object mapping locale codes to their translations. The tenant's
-        active locales are #{tenant_locales.join(', ')}.
-      DESC
+      description: 'Localized text. An object mapping locale codes to their translations. ' \
+                   'Keys must be locales that are active on the platform.',
       additionalProperties: { type: 'string' }
     }
   end
