@@ -3889,13 +3889,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.field_imported": {
     "state": "verified",
     "verified_at": "2026-07-22T14:59:39.778114Z",
     "verified_by": "Jelena"
   },
-
   "app.components.admin.UserFilterConditions.field_last_active_at": {
     "state": "verified",
     "verified_at": "2026-07-22T14:59:39.778114Z",
@@ -4046,7 +4044,6 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_is_imported": {
     "state": "verified",
     "verified_at": "2026-07-22T14:59:39.778114Z",
@@ -4212,7 +4209,6 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_not_is_imported": {
     "state": "verified",
     "verified_at": "2026-07-22T14:59:39.778114Z",
@@ -6808,13 +6804,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Authentication.confirmYourPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.Authentication.enterYourPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
@@ -6890,25 +6884,21 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.Authentication.steps.Phone.phoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
     "verified_by": "Jelena"
   },
-
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
@@ -10919,7 +10909,6 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
-
   "app.containers.ProjectPageBuilder.projectHomepage": {
     "state": "verified",
     "verified_at": "2026-07-22T16:16:57.248224Z",
@@ -11195,6 +11184,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.noOpenParticipationAdminMessage": {
+    "state": "verified",
+    "verified_at": "2026-07-27T15:35:25.435510Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Projects.noPastEvents": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -11215,6 +11209,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.openNowInTotal": {
+    "state": "verified",
+    "verified_at": "2026-07-27T15:35:25.435510Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Projects.options": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -11229,6 +11228,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.participate": {
+    "state": "verified",
+    "verified_at": "2026-07-27T15:35:25.435510Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Projects.pastEvents": {
     "state": "verified",
@@ -11454,6 +11458,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.waysToParticipate": {
+    "state": "verified",
+    "verified_at": "2026-07-27T15:35:25.435510Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Projects.whatsAppMessage": {
     "state": "verified",
@@ -13170,19 +13179,16 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
-
   "app.errors.new_phone_blank": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
     "verified_by": "Jelena"
   },
-
   "app.errors.new_phone_invalid": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
     "verified_by": "Jelena"
   },
-
   "app.errors.new_phone_taken": {
     "state": "verified",
     "verified_at": "2026-07-23T09:51:33.245170Z",
