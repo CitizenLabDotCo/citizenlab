@@ -22,10 +22,17 @@ const fetchSpaces = ({ search }: Params) => {
   });
 };
 
-const useSpaces = (params: Params = {}) => {
+type Options = {
+  // Only admins and space managers are allowed to list spaces, so callers that
+  // render for other managers as well need to be able to skip the request.
+  enabled?: boolean;
+};
+
+const useSpaces = (params: Params = {}, { enabled = true }: Options = {}) => {
   return useQuery<Spaces, CLErrors, Spaces, SpacesKeys>({
     queryKey: spacesKeys.list(params),
     queryFn: () => fetchSpaces(params),
+    enabled,
   });
 };
 

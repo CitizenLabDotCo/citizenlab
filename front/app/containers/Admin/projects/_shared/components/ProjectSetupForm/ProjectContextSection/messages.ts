@@ -5,50 +5,47 @@ export default defineMessages({
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext',
     defaultMessage: 'Project context',
   },
-  space: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.space',
+  spaceLabel: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel',
     defaultMessage: 'Space',
   },
-  folder: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folder',
+  folderLabel: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel',
     defaultMessage: 'Folder',
   },
-  root: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.root2',
-    defaultMessage: 'None',
-  },
-  spaceDescription: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceDescription2',
-    defaultMessage: 'The project will be inside of a space.',
-  },
-  folderDescription: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderDescription',
-    defaultMessage: 'The project will be inside of a folder.',
-  },
-  rootDescriptionWithSpaces: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionWithSpaces',
-    defaultMessage: 'The project will not be in a folder or space.',
-  },
-  rootDescriptionWithoutSpaces: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionWithoutSpaces',
-    defaultMessage: 'The project will not be in a folder.',
-  },
-  rootDescriptionCreateWithSpaces: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionCreateWithSpaces',
+  spaceTooltip: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip',
     defaultMessage:
-      'The project will not be in a folder or space. If you choose this option, you will need approval from an admin to publish this project.',
+      'A folder always stays in its own space, so picking a folder also sets the space. Changing the space clears the selected folder.',
   },
-  rootDescriptionCreateWithoutSpaces: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.rootDescriptionCreateWithoutSpaces',
-    defaultMessage:
-      'The project will not be in a folder. If you choose this option, you will need approval from an admin to publish this project.',
+  noSpace: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noSpace',
+    defaultMessage: '— No space —',
   },
-  spaceError: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceError',
-    defaultMessage: 'Please select a space.',
+  noFolder: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder',
+    defaultMessage: '— No folder —',
+  },
+  folderInSpaceOption: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption',
+    defaultMessage: '{folderTitle} ({spaceTitle})',
+  },
+  spaceOrFolderError: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceOrFolderError',
+    defaultMessage: 'Select a space or a folder for this project.',
   },
   folderError: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError',
-    defaultMessage: 'Please select a folder.',
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2',
+    defaultMessage: 'Select a folder for this project.',
+  },
+  approvalNeededWithSpaces: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces',
+    defaultMessage:
+      'This project will not be in a space or a folder. You will need approval from an admin to publish it.',
+  },
+  approvalNeededWithoutSpaces: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces',
+    defaultMessage:
+      'This project will not be in a folder. You will need approval from an admin to publish it.',
   },
 });

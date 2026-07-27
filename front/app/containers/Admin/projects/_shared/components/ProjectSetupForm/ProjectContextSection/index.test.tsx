@@ -35,13 +35,10 @@ const buildUser = (highest_role: HighestRole, roles: TRole[]): IUser => ({
 });
 
 const props: Props & { formSituation: 'creating' } = {
-  projectContext: 'root',
   folder_id: null,
   space_id: null,
   error: false,
-  onSetContext: jest.fn(),
-  onChangeSpace: jest.fn(),
-  onChangeFolder: jest.fn(),
+  onChange: jest.fn(),
   formSituation: 'creating',
 };
 
