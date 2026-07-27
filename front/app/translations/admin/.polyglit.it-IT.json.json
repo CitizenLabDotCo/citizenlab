@@ -2369,6 +2369,16 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.ProjectEdit.survey.exportResponsesToPdf": {
+    "state": "verified",
+    "verified_at": "2026-07-27T08:12:40.497113Z",
+    "verified_by": "Roger"
+  },
+  "app.components.admin.ProjectEdit.survey.exportResponsesToXlsx": {
+    "state": "verified",
+    "verified_at": "2026-07-27T08:12:40.497113Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.ReportExportMenu.FileName.fromFilter": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",
