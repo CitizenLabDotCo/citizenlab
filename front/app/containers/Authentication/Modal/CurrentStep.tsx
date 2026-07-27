@@ -44,6 +44,10 @@ const CurrentStep = ({
   setError,
 }: Props) => {
   switch (currentStep) {
+    // shared
+    case 'closed':
+      return null;
+
     case 'success':
       return (
         <Success
@@ -52,7 +56,16 @@ const CurrentStep = ({
         />
       );
 
+    case 'access-denied':
+      return (
+        <AccessDenied
+          authenticationData={authenticationData}
+          onClose={transition(currentStep, 'CLOSE')}
+        />
+      );
+
     // email flow
+    // ('post-participation:email' is grouped here because it shares this body)
     case 'email:start':
     case 'post-participation:email':
       return (
@@ -108,6 +121,53 @@ const CurrentStep = ({
         />
       );
 
+    // confirmation steps (code entry for email / phone)
+    case 'confirmation:reconfirm-email':
+      return (
+        <EmailConfirmation
+          state={state}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'confirmation:new_email':
+      return (
+        <EmailConfirmation
+          state={state}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'confirmation:reconfirm-phone':
+      return (
+        <PhoneConfirmation
+          state={state}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'confirmation:new_phone':
+      return (
+        <PhoneConfirmation
+          state={state}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangePhone={transition(currentStep, 'CHANGE_PHONE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
     // invite flow
     case 'invite:email-password':
       return (
@@ -131,38 +191,13 @@ const CurrentStep = ({
     case 'invite:taken':
       return <InviteTaken state={state} />;
 
-    // missing data flow / shared
-    case 'confirmation:new_email':
+    // missing data (if signed in already)
+    case 'missing-data:change-new-email':
       return (
-        <EmailConfirmation
-          state={state}
+        <ChangeEmail
           loading={loading}
           setError={setError}
-          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-          onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          onResendCode={transition(currentStep, 'RESEND_CODE')}
-        />
-      );
-
-    case 'confirmation:reconfirm-email':
-      return (
-        <EmailConfirmation
-          state={state}
-          loading={loading}
-          setError={setError}
-          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-          onResendCode={transition(currentStep, 'RESEND_CODE')}
-        />
-      );
-
-    case 'confirmation:reconfirm-phone':
-      return (
-        <PhoneConfirmation
-          state={state}
-          loading={loading}
-          setError={setError}
-          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-          onResendCode={transition(currentStep, 'RESEND_CODE')}
+          onSubmit={transition(currentStep, 'SUBMIT')}
         />
       );
 
@@ -176,18 +211,6 @@ const CurrentStep = ({
         />
       );
 
-    case 'confirmation:new_phone':
-      return (
-        <PhoneConfirmation
-          state={state}
-          loading={loading}
-          setError={setError}
-          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-          onChangePhone={transition(currentStep, 'CHANGE_PHONE')}
-          onResendCode={transition(currentStep, 'RESEND_CODE')}
-        />
-      );
-
     case 'missing-data:built-in':
       return (
         <BuiltInFields
@@ -198,15 +221,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'missing-data:change-new-email':
-      return (
-        <ChangeEmail
-          loading={loading}
-          setError={setError}
-          onSubmit={transition(currentStep, 'SUBMIT')}
-        />
-      );
-
+    // ('verification-only' is grouped here because it shares this body)
     case 'missing-data:verification':
     case 'verification-only':
       return (
@@ -230,6 +245,7 @@ const CurrentStep = ({
         </Suspense>
       );
 
+    // missing data (if signed in already) for onboarding
     case 'missing-data:onboarding':
       return (
         <Onboarding
@@ -239,20 +255,9 @@ const CurrentStep = ({
         />
       );
 
+    // verification only (for onboarding and re-verification)
     case 'verification-success':
       return <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />;
-
-    // other
-    case 'access-denied':
-      return (
-        <AccessDenied
-          authenticationData={authenticationData}
-          onClose={transition(currentStep, 'CLOSE')}
-        />
-      );
-
-    case 'closed':
-      return null;
 
     default: {
       const exhaustiveCheck: never = currentStep;
