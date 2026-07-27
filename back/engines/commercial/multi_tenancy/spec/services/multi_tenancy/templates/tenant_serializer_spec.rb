@@ -185,13 +185,13 @@ describe MultiTenancy::Templates::TenantSerializer do
       tenant.switch do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
 
-        new_project = Project.first
+        new_project = Project.sole
         expect(new_project.files.pluck(:name)).to match_array(%w[project.pdf phase.pdf idea.pdf])
-        expect(new_project.attached_files.first.content.file).to be_present
+        expect(new_project.attached_files.sole.content.file).to be_present
 
         expect(new_project.file_attachments.count).to eq 1
-        expect(new_project.phases.first.file_attachments.count).to eq 1
-        expect(Idea.first.file_attachments.count).to eq 1
+        expect(new_project.phases.sole.file_attachments.count).to eq 1
+        expect(Idea.sole.file_attachments.count).to eq 1
       end
     end
 

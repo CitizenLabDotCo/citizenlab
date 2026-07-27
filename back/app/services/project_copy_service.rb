@@ -511,7 +511,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids += Follower.where(followable_id: ([@project.id] + idea_ids)).pluck(:user_id) unless limit_num_ideas
     user_ids += Volunteering::Volunteer.where(cause: Volunteering::Cause.where(phase: Phase.where(project: @project))).pluck :user_id
     user_ids += Events::Attendance.where(event: @project.events).pluck :attendee_id
-    user_ids += Files::File.where(id: Files::FilesProject.where(project: @project).select(:file_id)).pluck(:uploader_id)
+    @project.files.pluck(:uploader_id)
 
     @user_ids = user_ids.uniq # set globally so we can restrict follower export later
     User.where(id: @user_ids).map do |user|
@@ -818,8 +818,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   # The Files engine records reachable from the project. A file belongs to at most one
   # project (Files::FilesProject), and any file attached to a project resource must belong
   # to that project, so the project's files are exactly those joined via files_projects.
-  def yml_files(file_ids, shift_timestamps: 0)
-    Files::File.where(id: file_ids).map do |file|
+  def yml_files(shift_timestamps: 0)
+    @project.files.map do |file|
       yml_file = {
         'uploader_ref' => lookup_ref(file.uploader_id, :user),
         'name' => file.name,
@@ -838,7 +838,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_files_projects(shift_timestamps: 0)
-    Files::FilesProject.where(project: @project).map do |fp|
+    @project.files_projects.map do |fp|
       {
         'file_ref' => lookup_ref(fp.file_id, :file),
         'project_ref' => lookup_ref(fp.project_id, :project),
@@ -848,8 +848,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
   end
 
-  def yml_file_attachments(file_ids, shift_timestamps: 0)
-    Files::FileAttachment.where(file_id: file_ids).filter_map do |attachment|
+  def yml_file_attachments(shift_timestamps: 0)
+    Files::FileAttachment.where(file: @project.files).filter_map do |attachment|
       # Skip attachments whose attachable isn't in the exported set (e.g. an Analysis, or
       # an event/idea excluded from this copy) — its ref wouldn't resolve.
       attachable_ref = lookup_ref(attachment.attachable_id, %i[project phase event idea content_builder_layout])

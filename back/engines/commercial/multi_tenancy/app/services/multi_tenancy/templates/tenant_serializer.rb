@@ -273,10 +273,8 @@ module MultiTenancy
       # aren't templated, and Idea attachables are restricted to the serialized ideas scope, so
       # those attachments are skipped to avoid unresolvable references.
       def serialize_file_attachments(ideas)
-        templated_types = Files::FileAttachment::ATTACHABLE_TYPES - %w[Analysis::Analysis Analysis::Question]
-        attachments = Files::FileAttachment
-          .where(attachable_type: templated_types)
-          .where.not(attachable_type: 'Idea')
+        excluded_types = %w[Idea Analysis::Analysis Analysis::Question]
+        attachments = Files::FileAttachment.where.not(attachable_type: excluded_types)
           .or(Files::FileAttachment.where(attachable: ideas))
         serialize_records(attachments)
       end

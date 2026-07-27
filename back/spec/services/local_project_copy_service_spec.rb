@@ -251,7 +251,7 @@ describe LocalProjectCopyService do
       before do
         files = create_list(:file, 2, projects: [open_ended_project])
         files.each { |file| create(:file_attachment, file: file, attachable: open_ended_project) }
-      end
+      before { create_list(:file_attachment, 2, attachable: open_ended_project) }
 
       it 'creates associated copies of the files and their attachments' do
         copied_project = service.copy(open_ended_project)
