@@ -111,7 +111,10 @@ export default class Success extends PureComponent<Props, State> {
         exit={animate}
         classNames="success"
       >
-        <Container ref={this.nodeRef} className={`e2e-success-message ${className}`}>
+        <Container
+          ref={this.nodeRef}
+          className={`e2e-success-message ${className}`}
+        >
           <StyledSuccessMessageInner showBackground={showBackground}>
             {showIcon && <CheckmarkIcon name="check" />}
             <SuccessMessageText>{text}</SuccessMessageText>

@@ -11,7 +11,7 @@ module McpServer::BaseTool::Pagination
     per_page: { type: 'integer', description: "Results per page (default: #{DEFAULT_PER_PAGE}, max: #{MAX_PER_PAGE})" }
   }.freeze
 
-  def paginated_response(label, scope, page: nil, per_page: nil, serializer: nil, params: {}, **json_options)
+  def paginated_response(label, scope, serializer:, page: nil, per_page: nil, params: {})
     page ||= 1
     per_page = (per_page || DEFAULT_PER_PAGE).to_i.clamp(1, MAX_PER_PAGE)
 
@@ -24,12 +24,8 @@ module McpServer::BaseTool::Pagination
       total_pages: records.total_pages
     }
 
-    data = serializer ? serializer.serialize(records, params:) : records.as_json(**json_options)
-
-    structured_content = {
-      data: data,
-      pagination: pagination
-    }
+    data = serializer.serialize(records, params:)
+    structured_content = { data:, pagination: }
 
     summary = <<~TEXT.squish
       Found #{pagination[:total_count]} #{label}

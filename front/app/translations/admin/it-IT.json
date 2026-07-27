@@ -155,7 +155,7 @@
   "app.components.admin.ActionForm.AccessSections.RecencyControl.remove": "rimuovi",
   "app.components.admin.ActionForm.AccessSections.RecencyControl.requireRecentConfirmation": "+ Richiedi conferma recente",
   "app.components.admin.ActionForm.AccessSections.RecencyControl.requireRecentVerification": "+ Richiedi verifica recente",
-  "app.components.admin.ActionForm.AccessSections.RecencyControl.reverifyLabel2": "Riesegui la verifica se l'ultima risale a più di:",
+  "app.components.admin.ActionForm.AccessSections.RecencyControl.reverifyLabel2": "Verifica nuovamente se l'ultima verifica risale a più di:",
   "app.components.admin.ActionForm.AccessSections.RecencyControl.thirtyMinutes": "30 minuti",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.allDataLabel": "Collega i contributi al profilo del partecipante (consigliato)",
   "app.components.admin.ActionForm.DataSection.AnonymitySection.anonymityExplanation": "Indipendentemente da quanto richiesto sopra: puoi raccogliere un nome mantenendo comunque il contributo scollegato dal profilo del partecipante.",
