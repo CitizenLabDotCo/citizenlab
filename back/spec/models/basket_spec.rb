@@ -270,6 +270,32 @@ RSpec.describe Basket do
           expect(project.reload.votes_count).to eq 0
         end
       end
+
+      # Counter maintenance must not depend on the phase being valid on unrelated attributes.
+      # A phase can be persisted in an invalid state by an unvalidated bulk write, as the
+      # 20260223103753 backfill did when it omitted 'map' from the `available_views` it created.
+      context 'when the phase is invalid on an unrelated attribute' do
+        before do
+          basket.update!(ideas: ideas, submitted_at: Time.zone.now)
+          basket.baskets_ideas.update_all(votes: 10)
+
+          current_phase.update_column(:presentation_mode, 'map')
+          current_phase.update_column(:available_views, ['card'])
+        end
+
+        it 'is invalid, to confirm the setup' do
+          expect(current_phase.reload).not_to be_valid
+        end
+
+        it 'still updates the counts of the phase and the project' do
+          expect { basket.update_counts! }.not_to raise_error
+
+          expect(current_phase.reload.baskets_count).to eq 1
+          expect(current_phase.reload.votes_count).to eq 20
+          expect(project.reload.baskets_count).to eq 1
+          expect(project.reload.votes_count).to eq 20
+        end
+      end
     end
 
     context 'new basket on open ended project' do

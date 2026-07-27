@@ -11,10 +11,17 @@ module ContentBuilder
     def sanitize_html_in_text_elements(craftjson, features)
       LayoutService.new.select_craftjs_elements_for_types(craftjson, Layout::TEXT_CRAFTJS_NODE_TYPES).each do |elt|
         text_multiloc = elt.dig 'props', 'text'
-        next unless text_multiloc.is_a?(Hash)
+        html_multiloc = elt.dig 'props', 'html'
+        if text_multiloc.is_a?(Hash)
+          text_multiloc.transform_values! do |text|
+            html_sanitizer.sanitize text, features if text
+          end
+        end
 
-        text_multiloc.transform_values! do |text|
-          html_sanitizer.sanitize text, features if text
+        if html_multiloc.is_a?(Hash)
+          html_multiloc.transform_values! do |html|
+            html_block_sanitizer.sanitize(html) if html
+          end
         end
       end
       craftjson
@@ -22,6 +29,10 @@ module ContentBuilder
 
     def html_sanitizer
       @html_sanitizer ||= ::SanitizationService.new
+    end
+
+    def html_block_sanitizer
+      @html_block_sanitizer ||= HtmlBlockSanitizerService.new
     end
   end
 end

@@ -94,6 +94,7 @@ const UpdateFollowTopic = ({ topic }: Props) => {
         iconPos="right"
         padding="0px"
         my="0px"
+        whiteSpace="normal"
         processing={isLoading}
         textColor={topicButtonContentColor}
         ariaPressed={!isLoading ? isFollowing : undefined}

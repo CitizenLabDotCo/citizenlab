@@ -97,7 +97,7 @@ const AccessibilityStatement = () => {
                       values={{
                         statusPageLink: (
                           <a
-                            href="https://www.anysurfer.be/en/labels/anysurfer-label-for-websites/status/689"
+                            href={formatMessage(messages.statusPageUrl)}
                             target="_blank"
                             rel="noreferrer"
                           >
@@ -117,7 +117,7 @@ const AccessibilityStatement = () => {
                     />
                   </p>
                   <h2>{formatMessage(messages.publicationDate)}</h2>
-                  <p>{formatMessage(messages.publicationDate2024)}</p>
+                  <p>{formatMessage(messages.publicationDate2026)}</p>
                   <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
                   <p>{formatMessage(messages.feedbackProcessIntro)}</p>
                   <ul>

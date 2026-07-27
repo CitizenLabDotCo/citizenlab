@@ -23,7 +23,7 @@ module ContentBuilder
     # RichTextMultiloc is the migration-only "bridge" widget holding legacy WYSIWYG
     # (Quill) HTML. Listing it here gives it the same HTML sanitization and text
     # extraction as the native text widgets.
-    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc RichTextMultiloc].freeze
+    TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc RichTextMultiloc HtmlBlockMultiloc].freeze
 
     belongs_to :content_buildable, polymorphic: true, optional: true
 

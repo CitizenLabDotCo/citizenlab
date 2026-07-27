@@ -939,6 +939,36 @@
     "verified_at": "2026-03-18T11:49:32.583408Z",
     "verified_by": "Admin"
   },
+  "pdf_export.input_responses.date": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:19:29.276708Z",
+    "verified_by": "Luuc"
+  },
+  "pdf_export.input_responses.no_answer": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:19:29.276708Z",
+    "verified_by": "Luuc"
+  },
+  "pdf_export.input_responses.prepared_by": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:19:29.276708Z",
+    "verified_by": "Luuc"
+  },
+  "pdf_export.input_responses.respondent": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:19:29.276708Z",
+    "verified_by": "Luuc"
+  },
+  "pdf_export.input_responses.response_count.one": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:19:29.276708Z",
+    "verified_by": "Luuc"
+  },
+  "pdf_export.input_responses.response_count.other": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:19:29.276708Z",
+    "verified_by": "Luuc"
+  },
   "pdf_export.survey_responses.date": {
     "state": "verified",
     "verified_at": "2026-06-29T09:12:16.812949Z",

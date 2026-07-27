@@ -47,7 +47,10 @@ const FullWidthBannerLayout = ({ className, pageData }: Props) => {
           pageAttributes={pageData.attributes}
         />
       </Header>
-      <AdminCustomPageEditButton pageId={pageData.id} />
+      <AdminCustomPageEditButton
+        pageId={pageData.id}
+        projectId={pageData.attributes.project_id}
+      />
     </Container>
   );
 };

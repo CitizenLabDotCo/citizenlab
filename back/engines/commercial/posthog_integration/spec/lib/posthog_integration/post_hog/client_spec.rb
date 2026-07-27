@@ -87,6 +87,19 @@ describe PosthogIntegration::PostHog::Client do
       expect { posthog.delete_person_by_distinct_id(user.id, retries: 3) }.to raise_error(PosthogIntegration::PostHog::Client::ApiError)
       expect(posthog).to have_received(:retry_request).twice
     end
+
+    # Regression: retry_request used to drop its block on recursion, so a real 429 retry
+    # raised LocalJumpError. Runs unstubbed here so a dropped block would resurface.
+    it 'retries the real block on 429 and then succeeds' do
+      stub_request(:get, "https://example.com/api/projects/#{project_id}/persons?distinct_id=#{user.id}")
+        .with(headers: { 'Authorization' => "Bearer #{api_key}" })
+        .to_return(
+          { status: 429 },
+          { status: 200, body: persons_response(person_id), headers: { 'Content-Type' => 'application/json' } }
+        )
+
+      expect { posthog.delete_person_by_distinct_id(user.id, retries: 3) }.not_to raise_error
+    end
   end
 
   def stub_response

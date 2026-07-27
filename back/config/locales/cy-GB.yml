@@ -274,6 +274,15 @@ cy-GB:
     proposals:
       title: Cynigion
   pdf_export:
+    input_responses:
+      date: Dyddiad
+      no_answer: (Dim ateb)
+      prepared_by: Paratowyd gan
+      report_label: Adroddiad ymateb
+      respondent: Ymatebydd %{number}
+      response_count:
+        one: '%{count} ymateb'
+        other: '%{count} ymateb'
     survey_responses:
       date: Dyddiad
       no_answer: (Dim ateb)

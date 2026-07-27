@@ -38,7 +38,7 @@ describe('Project description builder Button component', () => {
   });
 
   it('handles Button component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
@@ -83,7 +83,7 @@ describe('Project description builder Button component', () => {
   });
 
   it('deletes Button component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/description-builder/projects/${projectId}/description`);

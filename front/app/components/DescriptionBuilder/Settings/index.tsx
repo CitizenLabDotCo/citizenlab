@@ -26,7 +26,9 @@ const ContentBuilderSettings = () => {
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         settings: state.nodes[currentNodeId].related?.settings,
-        isDeletable: query.node(currentNodeId).isDeletable(),
+        isDeletable:
+          query.node(currentNodeId).isDeletable() &&
+          !state.nodes[currentNodeId].data.custom?.locked,
         custom: state.nodes[currentNodeId].data.custom,
       };
     }
@@ -44,7 +46,8 @@ const ContentBuilderSettings = () => {
   return selectedNode &&
     isEnabled &&
     selectedNode.id !== ROOT_NODE &&
-    selectedNode.name !== 'Box' ? (
+    selectedNode.name !== 'Box' &&
+    !selectedNode.custom?.region ? (
     <Settings
       selectedNode={selectedNode}
       onClose={closeSettings}

@@ -38,19 +38,31 @@ module EmailCampaigns
       can_access_and_modify?
     end
 
-    def send_preview?
+    def send_email_preview?
       update?
     end
 
-    def preview?
+    def send_sms_preview?
+      update?
+    end
+
+    def email_preview?
       show?
     end
 
-    def deliveries?
+    def email_deliveries?
       show?
     end
 
-    def stats?
+    def sms_deliveries?
+      show?
+    end
+
+    def email_stats?
+      show?
+    end
+
+    def sms_stats?
       show?
     end
 

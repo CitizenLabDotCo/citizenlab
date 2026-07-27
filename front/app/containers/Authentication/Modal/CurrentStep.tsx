@@ -11,10 +11,10 @@ import InviteSignUp from '../steps/InviteSignUp';
 import InviteTaken from '../steps/InviteTaken';
 import Onboarding from '../steps/Onboarding';
 import Password from '../steps/Password';
+import Phone from '../steps/Phone';
+import PhoneConfirmation from '../steps/PhoneConfirmation';
 import EmailPolicies from '../steps/Policies/EmailPolicies';
 import SSOPolicies from '../steps/Policies/SSOPolicies';
-import SSOVerification from '../steps/SSOVerification';
-import SSOVerificationPolicies from '../steps/SSOVerificationPolicies';
 import Success from '../steps/Success';
 import Verification from '../steps/Verification';
 import VerificationSuccess from '../steps/VerificationSuccess';
@@ -58,6 +58,7 @@ const CurrentStep = ({
         <EmailFlowStart
           loading={loading}
           setError={setError}
+          authenticationData={authenticationData}
           onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
           onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
         />
@@ -130,16 +131,6 @@ const CurrentStep = ({
       return <InviteTaken state={state} />;
 
     // missing data flow / shared
-    case 'missing-data:built-in':
-      return (
-        <BuiltInFields
-          loading={loading}
-          authenticationData={authenticationData}
-          setError={setError}
-          onSubmit={transition(currentStep, 'SUBMIT')}
-        />
-      );
-
     case 'missing-data:email-confirmation':
       return (
         <EmailConfirmation
@@ -149,6 +140,38 @@ const CurrentStep = ({
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
           onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'missing-data:phone':
+      return (
+        <Phone
+          state={state}
+          loading={loading}
+          setError={setError}
+          onSubmit={transition(currentStep, 'SUBMIT')}
+        />
+      );
+
+    case 'missing-data:phone-confirmation':
+      return (
+        <PhoneConfirmation
+          state={state}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangePhone={transition(currentStep, 'CHANGE_PHONE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'missing-data:built-in':
+      return (
+        <BuiltInFields
+          loading={loading}
+          authenticationData={authenticationData}
+          setError={setError}
+          onSubmit={transition(currentStep, 'SUBMIT')}
         />
       );
 
@@ -186,24 +209,6 @@ const CurrentStep = ({
 
     case 'verification-success':
       return <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />;
-
-    // sso verification flow
-    case 'sso-verification:sso-providers':
-      return (
-        <SSOVerification
-          onClickSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
-          onClickLogin={transition(currentStep, 'GO_TO_LOGIN')}
-        />
-      );
-
-    case 'sso-verification:sso-providers-policies':
-      return (
-        <SSOVerificationPolicies
-          state={state}
-          loading={loading}
-          onAccept={transition(currentStep, 'ACCEPT')}
-        />
-      );
 
     // other
     case 'access-denied':

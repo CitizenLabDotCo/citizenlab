@@ -4,8 +4,6 @@ import { Box, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { ContentBuildableType } from 'api/content_builder/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import messages from 'containers/DescriptionBuilder/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,18 +27,11 @@ const DescriptionBuilderLink = ({
 }: DescriptionBuilderLinkProps) => {
   const { formatMessage } = useIntl();
   const params = useParams({ strict: false }) as Record<string, string>;
-  const featureEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
 
   const contentBuildableId =
     contentBuildableType === 'folder'
       ? params.projectFolderId
       : params.projectId;
-
-  if (!featureEnabled) {
-    return null;
-  }
 
   const linkProps =
     contentBuildableType === 'project'

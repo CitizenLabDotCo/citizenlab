@@ -163,5 +163,12 @@ FactoryBot.define do
       start_at { Time.zone.today - 7.days }
       end_at { Time.zone.today + 7.days }
     end
+
+    trait :standalone do
+      placement_type { 'standalone' }
+      participation_method { 'native_survey' }
+      native_survey_title_multiloc { { 'en' => 'Survey' } }
+      native_survey_button_multiloc { { 'en' => 'Take the survey' } }
+    end
   end
 end

@@ -202,7 +202,9 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be true }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be false }
+  its(:supports_input_pdf_export?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be false }

@@ -40,10 +40,19 @@ interface QueryParameters {
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const { slug } = useParams({ from: '/$locale/projects/$slug' });
+  // `strict: false` so this also renders off the project route (e.g. inside the
+  // project page builder), where slug + filters are absent and fall back to
+  // defaults. On the public project route the values resolve as before; the cast
+  // restores the per-route search shape that the loose read widens.
+  const { slug } = useParams({ strict: false });
   const { sort, search, topics, idea_status } = useSearch({
-    from: '/$locale/projects/$slug',
-  });
+    strict: false,
+  }) as {
+    sort?: IdeaSortMethod;
+    search?: string;
+    topics?: string[];
+    idea_status?: string;
+  };
   const config = getMethodConfig(phase.attributes.participation_method, {
     showIdeaFilters: phase.attributes.voting_filtering_enabled,
   });

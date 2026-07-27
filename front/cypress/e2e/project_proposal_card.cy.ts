@@ -53,7 +53,7 @@ describe('Proposal card component', () => {
       .then((project) => {
         projectId = project.body.data.id;
         return cy.apiCreateIdea({
-          projectId: project?.body.data.id,
+          phaseId: project.body.data.relationships.current_phase.data.id,
           ideaTitle,
           ideaContent,
         });

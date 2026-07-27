@@ -75,10 +75,6 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.progressBarLabel',
     defaultMessage: 'Progress',
   },
-  progressPercentage: {
-    id: 'app.components.CustomFieldsForm.progressPercentage',
-    defaultMessage: '{percentage}% complete',
-  },
   selectMany: {
     id: 'app.components.CustomFieldsForm.selectMany',
     defaultMessage: '*Choose as many as you like',

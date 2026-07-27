@@ -25,6 +25,8 @@ const globalDisabledMessages: {
   [reason in DisabledReason]?: MessageDescriptor;
 } = {
   user_not_in_group: messages.defaultNotInGroup,
+  inactive_phase: messages.defaultInactivePhase,
+  project_inactive: messages.defaultProjectInactive,
 };
 
 // Messages specific to each action
@@ -38,7 +40,6 @@ const actionDisabledMessages: {
     posting_disabled: messages.postingDisabled,
     posting_limited_max_reached: messages.postingLimitedMaxReached,
     project_inactive: messages.postingInactive,
-    future_enabled: messages.postingNotYetPossible,
     inactive_phase: messages.postingInNonActivePhases,
   },
   commenting_idea: {
@@ -86,7 +87,7 @@ const actionDisabledMessages: {
   },
   annotating_document: {
     project_inactive: messages.documentAnnotationDisabledProjectInactive,
-    project_not_visible: messages.documentAnnotationDisabledNotPermitted,
+    inactive_phase: messages.documentAnnotationDisabledNotActivePhase,
     not_document_annotation: messages.documentAnnotationDisabledNotActivePhase,
     user_not_active: messages.documentAnnotationDisabledNotActiveUser,
     user_not_verified: messages.documentAnnotationDisabledNotVerified,
@@ -97,7 +98,7 @@ const actionDisabledMessages: {
   },
   taking_survey: {
     project_inactive: messages.surveyDisabledProjectInactive,
-    project_not_visible: messages.surveyDisabledNotPermitted,
+    inactive_phase: messages.surveyDisabledNotActivePhase,
     not_survey: messages.surveyDisabledNotActivePhase,
     user_not_active: messages.surveyDisabledNotActiveUser,
     user_not_verified: messages.surveyDisabledNotVerified,
@@ -108,7 +109,7 @@ const actionDisabledMessages: {
   },
   taking_poll: {
     project_inactive: messages.pollDisabledProjectInactive,
-    project_not_visible: messages.pollDisabledNotPermitted,
+    inactive_phase: messages.pollDisabledNotActivePhase,
     not_poll: messages.pollDisabledNotActivePhase,
     already_responded: messages.pollDisabledAlreadyResponded,
     user_not_permitted: messages.pollDisabledNotPermitted,

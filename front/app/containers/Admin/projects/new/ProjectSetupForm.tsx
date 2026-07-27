@@ -4,17 +4,14 @@ import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import { IFileAttachmentData } from 'api/file_attachments/types';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import projectPermissionKeys from 'api/project_permissions/keys';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import { IUser } from 'api/users/types';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -48,12 +45,10 @@ import Highlighter from 'components/Highlighter';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
-import FileUploader from '../_shared/components/ProjectSetupForm/FileUploader';
 import ProjectContextSection from '../_shared/components/ProjectSetupForm/ProjectContextSection';
 import { ProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { validateProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/utils';
@@ -73,15 +68,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
 
   const { mutateAsync: addProject } = useAddProject();
 
-  const syncProjectFiles = useSyncFiles();
   const syncProjectImages = useSyncProjectImages();
-
-  // File Attachments
-  const [projectFileAttachments, setProjectFileAttachments] = useState<
-    IFileAttachmentData[] | undefined
-  >();
-  const [projectFileAttachmentsToRemove, setProjectFileAttachmentsToRemove] =
-    useState<IFileAttachmentData[]>([]);
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
@@ -203,7 +190,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
       const response = await addProject(nextProjectAttributesDiff);
       const projectId = response.data.id;
 
-      const projectImagesPromise = syncProjectImages({
+      await syncProjectImages({
         croppedProjectCardBase64,
         projectCardImageAltText,
         projectCardImageToUpdate: projectCardImage,
@@ -211,24 +198,8 @@ const ProjectSetupForm = ({ authUser }: Props) => {
         projectId,
       });
 
-      const projectFilesPromise = projectFileAttachments
-        ? syncProjectFiles({
-            attachableId: projectId,
-            attachableType: 'Project',
-            fileAttachments: projectFileAttachments,
-            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-            fileAttachmentOrdering: {},
-          })
-        : undefined;
-
-      await Promise.all([
-        projectImagesPromise,
-        projectFilesPromise,
-      ] as Promise<any>[]);
-
       setSubmitState('success');
       setProjectCardImageToRemove(null);
-      setProjectFileAttachmentsToRemove([]);
       setProcessing(false);
 
       setTimeout(() => {
@@ -236,10 +207,6 @@ const ProjectSetupForm = ({ authUser }: Props) => {
           pathname: `${adminProjectsProjectPath(projectId)}/general`,
         });
       }, 1000);
-
-      queryClient.invalidateQueries({
-        queryKey: projectPermissionKeys.list({ projectId }),
-      });
     } catch (errors) {
       setSubmitState('error');
       setApiErrors((errors as any).errors);
@@ -411,28 +378,6 @@ const ProjectSetupForm = ({ authUser }: Props) => {
               />
             </StyledSectionField>
           )}
-          <StyledSectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.fileUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                }
-              />
-            </SubSectionTitle>
-            <FileUploader
-              projectFileAttachments={projectFileAttachments}
-              setProjectFileAttachments={(...args) => {
-                setSubmitState('enabled');
-                setProjectFileAttachments(...args);
-              }}
-              setProjectFileAttachmentsToRemove={(...args) => {
-                setSubmitState('enabled');
-                setProjectFileAttachmentsToRemove(...args);
-              }}
-              apiErrors={apiErrors}
-            />
-          </StyledSectionField>
         </Section>
         <Box py="8px">
           <SubmitWrapper

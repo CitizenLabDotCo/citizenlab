@@ -6,6 +6,8 @@
 -- projects that are finished.
 
 WITH finished_statuses_for_timeline_projects AS
+         -- With exclusive end boundaries, end_at already points to the moment the phase
+         -- ends, so no +1 adjustment is needed.
          (SELECT phases.project_id, MAX(phases.end_at) as timestamp
           FROM phases
           GROUP BY phases.project_id

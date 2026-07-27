@@ -73,7 +73,7 @@ class Project < ApplicationRecord
   has_many :groups_projects, dependent: :destroy
   has_many :groups, through: :groups_projects
 
-  has_many :phases, -> { order(:start_at) }, dependent: :destroy
+  has_many :phases, -> { ordered }, dependent: :destroy
   has_many :events, -> { order(:start_at) }, dependent: :destroy
   # project_images should always store one record, but in practice it's different (maybe because of a bug)
   # https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
@@ -93,6 +93,7 @@ class Project < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   has_one :nav_bar_item, dependent: :destroy
+  has_many :static_pages, dependent: :destroy
   has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
   has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy

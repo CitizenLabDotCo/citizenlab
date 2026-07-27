@@ -56,7 +56,10 @@ const FixedRatioLayout = ({ pageData }: Props) => {
           pageAttributes={pageData.attributes}
         />
       </CustomPageLayoutHeader>
-      <AdminCustomPageEditButton pageId={pageData.id} />
+      <AdminCustomPageEditButton
+        pageId={pageData.id}
+        projectId={pageData.attributes.project_id}
+      />
     </CustomPageLayoutContainer>
   );
 };

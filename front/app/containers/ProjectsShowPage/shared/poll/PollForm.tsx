@@ -19,7 +19,7 @@ import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
-import { ProjectPollDisabledReason } from 'utils/actionDescriptors/types';
+import { PhasePollDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
@@ -71,7 +71,7 @@ interface Props {
   projectId: string;
   phaseId: string;
   disabled: boolean;
-  disabledReason: ProjectPollDisabledReason | null;
+  disabledReason: PhasePollDisabledReason | null;
   disabledMessage?: MessageDescriptor | null;
   actionDisabledAndNotFixable: boolean;
 }

@@ -74,7 +74,9 @@ FactoryBot.define do
           project.phases << create(
             :phase,
             start_at: start_at,
-            end_at: start_at += rand(1..120).days,
+            # At least 2 days: a 1-day phase spanning a DST spring-forward is only
+            # 23h, which is < MIN_DURATION (24h) and fails validation.
+            end_at: start_at += rand(2..120).days,
             project: project
           )
         end
@@ -329,7 +331,9 @@ FactoryBot.define do
         active_phase = create(
           :phase,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-          end_at: Faker::Date.between(from: 1.day.from_now, to: 6.months.from_now),
+          # `from: 2.days.from_now` (not 1) guarantees the phase is at least 2 days
+          # long: a 1-day span over a DST spring-forward is 23h < MIN_DURATION.
+          end_at: Faker::Date.between(from: 2.days.from_now, to: 6.months.from_now),
           project: project,
           **phase_config
         )
@@ -340,7 +344,8 @@ FactoryBot.define do
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(phase_config[:factory] || :phase,
             end_at: end_at,
-            start_at: end_at -= rand(1..120).days,
+            # At least 2 days: guards against a DST-shortened 23h day (< MIN_DURATION).
+            start_at: end_at -= rand(2..120).days,
             project: project,
             **phase_config.except(:factory))
         end
@@ -350,7 +355,8 @@ FactoryBot.define do
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(phase_config[:factory] || :phase,
             start_at: start_at,
-            end_at: start_at += rand(1..120).days,
+            # At least 2 days: guards against a DST-shortened 23h day (< MIN_DURATION).
+            end_at: start_at += rand(2..120).days,
             project: project,
             **phase_config.except(:factory))
         end
@@ -360,13 +366,17 @@ FactoryBot.define do
     factory :project_with_future_phases do
       transient do
         phases_count { 5 }
-        first_start_at { Faker::Date.between(from: 1.hour.from_now, to: 1.year.from_now) }
+        # `from: 1.day.from_now` (not 1.hour): Faker::Date.between returns a Date, so
+        # a sub-day `from` collapses to *today* (midnight = already past), making the
+        # "future" phase actually current and breaking timeline-not-started specs.
+        first_start_at { Faker::Date.between(from: 1.day.from_now, to: 1.year.from_now) }
       end
 
       after(:create) do |project, evaluator|
         start_at = evaluator.first_start_at
         evaluator.phases_count.times do
-          phase = create(:phase, project:, start_at:, end_at: start_at + rand(1..120).days)
+          # At least 2 days: guards against a DST-shortened 23h day (< MIN_DURATION).
+          phase = create(:phase, project:, start_at:, end_at: start_at + rand(2..120).days)
           start_at = phase.end_at
         end
       end

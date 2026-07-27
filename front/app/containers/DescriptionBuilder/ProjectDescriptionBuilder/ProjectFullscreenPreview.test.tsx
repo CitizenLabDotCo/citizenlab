@@ -36,6 +36,11 @@ jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
   };
 });
 
+jest.mock('api/project_page_layout/useProjectPageLayout', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({ data: undefined, isInitialLoading: false })),
+}));
+
 jest.mock('@tanstack/react-router', () => {
   const originalModule = jest.requireActual('@tanstack/react-router');
   return {

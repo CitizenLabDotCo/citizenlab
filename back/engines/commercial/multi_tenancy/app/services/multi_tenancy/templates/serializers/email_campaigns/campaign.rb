@@ -8,11 +8,16 @@ module MultiTenancy
           ref_attributes %i[author context]
 
           attributes %i[
-            type
+            body_multiloc
+            button_text_multiloc
             enabled
+            intro_multiloc
+            reply_to
+            schedule
             sender
             subject_multiloc
-            body_multiloc
+            title_multiloc
+            type
           ]
         end
       end

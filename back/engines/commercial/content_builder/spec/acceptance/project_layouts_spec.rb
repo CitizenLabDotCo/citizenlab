@@ -173,6 +173,33 @@ resource 'ContentBuilderLayouts' do
         end
       end
 
+      context 'when a project_page layout does not exist and no craftjs_json is given' do
+        let(:project) { create(:project) }
+        let(:project_id) { project.id }
+        let(:code) { 'project_page' }
+        let(:enabled) { true }
+
+        post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
+          example_request 'Create a project page layout seeded from the project description' do
+            assert_status 201
+
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :enabled)).to be true
+
+            craftjs_json = json_response.dig(:data, :attributes, :craftjs_json)
+            expect(craftjs_json.keys).to include(
+              :ROOT, :PROJECT_PAGE_BODY, :PROJECT_PAGE_DESCRIPTION
+            )
+
+            description_ids = craftjs_json.dig(:PROJECT_PAGE_DESCRIPTION, :nodes)
+            expect(description_ids).not_to be_empty
+            expect(craftjs_json.dig(description_ids.first.to_sym, :props, :text)).to match(
+              hash_including(en: project.description_multiloc['en'])
+            )
+          end
+        end
+      end
+
       context 'when the layout exists' do
         let(:project_id) { layout.content_buildable_id }
         let(:code) { layout.code }

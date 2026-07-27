@@ -19,11 +19,6 @@ const BASE_PROJECT = {
       en: 'My cool project',
     },
     slug: 'my-cool-project',
-    action_descriptors: {
-      posting_idea: { enabled: true },
-      reacting_idea: { enabled: false },
-      commenting_idea: { enabled: true },
-    },
     starts_days_from_now: null,
     ended_days_ago: null,
   },

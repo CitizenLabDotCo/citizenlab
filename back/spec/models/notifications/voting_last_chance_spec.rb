@@ -7,7 +7,7 @@ RSpec.describe Notifications::VotingLastChance do
     let(:participant) { create(:user) }
 
     context 'when the phase is a voting phase' do
-      let(:phase) { create(:budgeting_phase) }
+      let(:phase) { create(:budgeting_phase, start_at: 1.month.ago, end_at: 2.days.from_now) }
       let!(:idea) { create(:idea, project_id: phase.project.id, author_id: participant.id) }
       let(:activity) { create(:activity, item: phase, action: 'ending_soon') }
 

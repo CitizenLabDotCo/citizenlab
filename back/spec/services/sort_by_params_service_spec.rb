@@ -478,6 +478,16 @@ describe SortByParamsService do
         expect(result_record_ids).to eq expected_record_ids
       end
     end
+
+    describe 'an unsupported sort parameter' do
+      let(:sort) { "start_at; WAITFOR DELAY '00:00:07'" }
+
+      it 'raises a 400 ApiError instead of a bare RuntimeError' do
+        expect { result_record_ids }.to raise_error(ApiError) do |error|
+          expect(error.status).to eq 400
+        end
+      end
+    end
   end
 
   describe 'sort_activities' do
@@ -512,6 +522,16 @@ describe SortByParamsService do
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe 'an unsupported sort parameter' do
+      let(:sort) { 'nonsense' }
+
+      it 'raises a 400 ApiError instead of a bare RuntimeError' do
+        expect { result_record_ids }.to raise_error(ApiError) do |error|
+          expect(error.status).to eq 400
+        end
       end
     end
   end

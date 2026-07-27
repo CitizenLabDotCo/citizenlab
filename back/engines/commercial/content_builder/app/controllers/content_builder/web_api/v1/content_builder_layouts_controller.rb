@@ -69,7 +69,7 @@ module ContentBuilder
           @layout = Layout.new params_for_create
 
           if @layout.craftjs_json == {}
-            @layout.craftjs_json = ContentBuilder::Craftjs::DefaultLayoutService.new.default_layout(content_buildable)
+            @layout.craftjs_json = ContentBuilder::Craftjs::DefaultLayoutService.new.default_layout(content_buildable, @layout.code)
           end
 
           layout.content_buildable = content_buildable

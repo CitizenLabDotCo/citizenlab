@@ -75,7 +75,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown, onFocus }: Props) => {
             <Text mt="2px" mb="0px" color="textSecondary">
               {getCTAMessage({
                 phase: phase.data,
-                actionDescriptors: project.attributes.action_descriptors,
+                actionDescriptors: phase.data.attributes.action_descriptors,
                 localize,
                 formatMessage,
                 hasPublicReport,

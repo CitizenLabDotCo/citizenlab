@@ -186,8 +186,12 @@ export default defineMessages({
     defaultMessage: 'Export',
   },
   exportResponsesToPdf: {
-    id: 'app.containers.Admin.projects.project.insights.exportResponsesToPdf2',
-    defaultMessage: 'Download responses as PDF',
+    id: 'app.containers.Admin.projects.project.insights.exportResponsesToPdf3',
+    defaultMessage: 'Export responses to PDF',
+  },
+  exportResponsesToXlsx: {
+    id: 'app.containers.Admin.projects.project.insights.exportResponsesToXlsx',
+    defaultMessage: 'Export responses to Excel',
   },
   noAnswer: {
     id: 'app.containers.Admin.projects.project.insights.noAnswer',

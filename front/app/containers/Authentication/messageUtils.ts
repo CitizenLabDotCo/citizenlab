@@ -30,8 +30,10 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'invite:taken': messages.signUp,
 
   // missing data flow
-  'missing-data:built-in': messages.completeYourProfile,
   'missing-data:email-confirmation': messages.confirmYourEmail,
+  'missing-data:phone': messages.enterYourPhoneNumber,
+  'missing-data:phone-confirmation': messages.confirmYourPhoneNumber,
+  'missing-data:built-in': messages.completeYourProfile,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
   'missing-data:onboarding': messages.whatAreYouInterestedIn,
@@ -39,10 +41,6 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // verification only
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
-
-  // sso verification flow
-  'sso-verification:sso-providers': messages.verificationRequired,
-  'sso-verification:sso-providers-policies': messages.verificationRequired,
 
   // post-participation flow
   'post-participation:email': messages.signUpOrLogIn,
@@ -64,6 +62,7 @@ export const getHeaderMessage = (
 export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   account_creation_failed: messages.unknownError,
   wrong_confirmation_code: errorMessages.confirmation_code_invalid,
+  wrong_phone_confirmation_code: messages.phoneConfirmationCodeInvalid,
   sign_in_failed: messages.signInError,
   requirements_fetching_failed: messages.unknownError,
   unknown: messages.unknownError,

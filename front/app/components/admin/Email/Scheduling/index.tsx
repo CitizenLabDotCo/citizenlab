@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { ICampaign } from 'api/campaigns/types';
+import { IEmailCampaign } from 'api/campaigns/email/types';
 
 import CancelScheduleModal from './CancelScheduleModal';
 import EmailSchedulingButton from './EmailSchedulingButton';
 import ScheduleModal from './ScheduleModal';
 
 interface Props {
-  campaign: ICampaign;
+  campaign: IEmailCampaign;
   timeZone: string | undefined;
 }
 

@@ -24,7 +24,8 @@ export function scrollToElement({
   if (shouldFocus) {
     // make sure the element has a tabindex so it can be focused
     element.setAttribute('tabindex', '-1');
-    element.focus();
+    // preventScroll keeps the focus from jumping, cancelling the smooth scroll
+    element.focus({ preventScroll: true });
   }
 }
 

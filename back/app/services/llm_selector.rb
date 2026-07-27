@@ -57,6 +57,13 @@ class LLMSelector
       default_model: ::Analysis::LLM::ClaudeHaiku45
     ),
     LLMUseCase.new(
+      key: 'field_pii_detection',
+      description: 'Detect which form fields collect personal data (PII)',
+      # Only models whose chat honours response_schema (see Analysis::LLM::RubyLLM).
+      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini3Flash],
+      default_model: ::Analysis::LLM::ClaudeHaiku45
+    ),
+    LLMUseCase.new(
       key: '360_input_file_description',
       description: 'Generating descriptions for 360 input files',
       supported_models: [::Analysis::LLM::GPT4o, ::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Pro],

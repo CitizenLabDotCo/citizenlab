@@ -22,7 +22,11 @@ describe ProjectCopyService do
         slugs.each do |new_slug|
           template = Apartment::Tenant.switch('localhost') do
             project = Project.all.sample
-            service.export project, include_ideas: include_ideas, new_slug: new_slug
+            # A fresh service per export: refs are only meaningful within one template,
+            # and a reused instance can resolve a ref against a record of the previous
+            # export (e.g. a basket whose user is not exported this time), producing a
+            # template whose ref points to a record it does not contain.
+            described_class.new.export project, include_ideas: include_ideas, new_slug: new_slug
           end
 
           service.import template
@@ -335,6 +339,30 @@ describe ProjectCopyService do
       })
     end
 
+    it 'includes cosponsorships and their cosponsors' do
+      idea = create(:idea)
+      cosponsor = create(:user)
+      create(:cosponsorship, idea: idea, user: cosponsor, status: 'accepted')
+
+      template = service.export idea.project, anonymize_users: false, include_ideas: true
+
+      expect(template['models']['cosponsorship'].size).to eq 1
+      expect(template['models']['cosponsorship'].first).to match({
+        'status' => 'accepted',
+        'created_at' => an_instance_of(String),
+        'updated_at' => an_instance_of(String),
+        'idea_ref' => hash_including('title_multiloc' => idea.title_multiloc),
+        'user_ref' => hash_including(
+          'first_name' => cosponsor.first_name,
+          'last_name' => cosponsor.last_name,
+          'email' => cosponsor.email
+        )
+      })
+      # The cosponsor is neither author nor commenter, so it's only carried over
+      # because cosponsorships pull their users into the export.
+      expect(template['models']['user'].map { |u| u['email'] }).to include(cosponsor.email)
+    end
+
     it 'includes phases with no end date' do
       project = create(:project_with_active_ideation_phase)
       project.phases.last.update!(end_at: nil)
@@ -487,6 +515,39 @@ describe ProjectCopyService do
         copied_project = service.import template, local_copy: false
 
         expect(copied_project.space_id).to be_nil
+      end
+    end
+
+    # A project can be copied onto a platform whose features differ from the source's.
+    # The prescreening_mode travels with the phase, but only takes effect where the
+    # target platform has the corresponding feature.
+    describe 'a phase with a prescreening_mode' do
+      let(:project) do
+        SettingsService.new.activate_feature!('prescreening_ideation')
+        create(:project).tap do |project|
+          create(:phase, project: project, prescreening_mode: 'all')
+        end
+      end
+
+      it 'copies the mode, without it taking effect where the target lacks the feature' do
+        template = service.export project, local_copy: false
+        SettingsService.new.deactivate_feature!('prescreening_ideation')
+
+        copied_project = service.import template, local_copy: false
+
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.prescreening_mode).to eq 'all'
+        expect(copied_phase.prescreening_all?).to be false
+      end
+
+      it 'copies the mode, and it takes effect where the target has the feature' do
+        template = service.export project, local_copy: false
+
+        copied_project = service.import template, local_copy: false
+
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.prescreening_mode).to eq 'all'
+        expect(copied_phase.prescreening_all?).to be true
       end
     end
   end

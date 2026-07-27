@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import useProjectById from 'api/projects/useProjectById';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
-import { ProjectPostingDisabledReason } from 'utils/actionDescriptors/types';
+import { PhasePostingDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const TooltipContent = styled.div<{ inMap?: boolean }>`
@@ -56,7 +56,7 @@ const TooltipContentText = styled.div`
 interface Props {
   projectId: string;
   inMap: boolean;
-  disabledReason: ProjectPostingDisabledReason;
+  disabledReason: PhasePostingDisabledReason;
 }
 
 const TippyContent = ({ projectId, inMap, disabledReason }: Props) => {

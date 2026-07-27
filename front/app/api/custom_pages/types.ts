@@ -81,6 +81,8 @@ export interface ICustomPageAttributes extends ICustomPageEnabledSettings {
   projects_filter_type: ProjectsFilterTypes;
   nav_bar_item_title_multiloc: Multiloc;
 
+  project_id?: string | null; // Set for project-scoped pages; null for global pages.
+
   created_at: string;
   updated_at: string;
 }

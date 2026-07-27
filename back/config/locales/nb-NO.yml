@@ -270,6 +270,15 @@ nb-NO:
     proposals:
       title: Forslag
   pdf_export:
+    input_responses:
+      date: Dato
+      no_answer: (Ikke besvart)
+      prepared_by: Utarbeidet av
+      report_label: Svarrapport
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} svar'
+        other: '%{count} svar'
     survey_responses:
       date: Dato
       no_answer: (Ikke besvart)

@@ -159,6 +159,18 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#user_field_in_form?' do
+    it 'returns true for fields with the user-field-in-form key prefix' do
+      field = build(:custom_field, key: UserFieldsInFormService.prefix_key('gender'))
+      expect(field.user_field_in_form?).to be true
+    end
+
+    it 'returns false for fields without the prefix' do
+      expect(build(:custom_field, key: 'gender').user_field_in_form?).to be false
+      expect(build(:custom_field, key: nil).user_field_in_form?).to be false
+    end
+  end
+
   describe '#clear_logic_unless_supported' do
     it 'saves logic when the field supports logic' do
       field = create(:custom_field, resource: create(:custom_form), input_type: 'select')

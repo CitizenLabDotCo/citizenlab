@@ -9,6 +9,10 @@ module EmailCampaigns
       object.campaign_type.safe_constantize&.campaign_name
     end
 
+    attribute :channel do |object|
+      object.campaign_type.safe_constantize&.channel
+    end
+
     attribute :campaign_type_description_multiloc do |object|
       object.campaign_type.safe_constantize&.campaign_description_multiloc
     end

@@ -45,6 +45,9 @@ const AdminProjectsProjectAudience = lazy(
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
 const AdminPhaseDescription = lazy(() => import('./project/phaseDescription'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
+const AdminProjectPages = lazy(() => import('./project/pages'));
+const AdminProjectPageNew = lazy(() => import('./project/pages/New'));
+const AdminProjectPageEdit = lazy(() => import('./project/pages/Edit'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(
@@ -218,14 +221,14 @@ const projectRoute = createRoute({
   ),
 });
 
-// Project index redirect
 const ProjectIndexRedirect = () => {
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId',
   });
+
   return (
     <Navigate
-      to="/admin/projects/$projectId/phases/setup"
+      to="/admin/projects/$projectId/project-page"
       params={{ projectId }}
       replace
     />
@@ -438,6 +441,37 @@ const projectFilesRoute = createRoute({
   component: () => (
     <PageLoading>
       <AdminProjectFiles />
+    </PageLoading>
+  ),
+});
+
+// --- Pages routes ---
+const projectPagesRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPages />
+    </PageLoading>
+  ),
+});
+
+const projectPageNewRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages/new',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageNew />
+    </PageLoading>
+  ),
+});
+
+const projectPageEditRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages/$customPageId',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageEdit />
     </PageLoading>
   ),
 });
@@ -782,6 +816,9 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
       projectMessagingShowRoute,
       projectAnalysisRoute,
       projectFilesRoute,
+      projectPagesRoute,
+      projectPageNewRoute,
+      projectPageEditRoute,
       projectEventsRoute,
       projectEventsNewRoute,
       projectEventsEditRoute,

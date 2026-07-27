@@ -2,7 +2,7 @@ import { FormatMessage } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
 import { PhaseMiniData } from 'api/phases_mini/types';
-import { ActionDescriptors } from 'api/projects/types';
+import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -12,7 +12,7 @@ import messages from './messages';
 
 interface Params {
   phase: IPhaseData | PhaseMiniData;
-  actionDescriptors: ActionDescriptors;
+  actionDescriptors: PhaseActionDescriptors;
   formatMessage: FormatMessage;
   localize: Localize;
   hasPublicReport: boolean;

@@ -159,6 +159,7 @@ resource 'Reactions' do
         Permissions::PermissionsUpdateService.new.update_all_permissions
         @project.phases.first.permissions.find_by(action: 'reacting_idea').update!(permitted_by: 'admins_moderators')
         @user.update!(roles: [])
+        header_token_for @user # role change invalidates the earlier token; re-authenticate
       end
 
       example_request '[error] Like an idea in a phase where reacting is not permitted' do
