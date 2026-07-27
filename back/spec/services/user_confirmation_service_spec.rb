@@ -5,14 +5,14 @@ require 'rails_helper'
 RSpec.describe UserConfirmationService do
   subject(:service) { described_class.new }
 
-  shared_examples 'validation and confirmation' do |method_name, confirmation_assoc|
+  shared_examples 'validation and confirmation' do |method_name, confirmation_assoc, confirmed_at_attr|
     let(:confirmation) { user.send(confirmation_assoc) }
 
     context 'when the code is correct' do
       it 'returns success' do
         result = service.public_send(method_name, user, confirmation.code)
         expect(result.success?).to be true
-        expect(user.reload.confirmation_required?).to be false
+        expect(user.reload.public_send(confirmed_at_attr)).to be_present
       end
     end
 
@@ -90,7 +90,7 @@ RSpec.describe UserConfirmationService do
       expect(user.confirmation_required?).to be false
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_email!, :email_confirmation
+    include_examples 'validation and confirmation', :validate_and_confirm_email!, :email_confirmation, :email_confirmed_at
 
     context 'when password_login is disabled' do
       before do
@@ -140,7 +140,7 @@ RSpec.describe UserConfirmationService do
       RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_new_email!, :new_email_confirmation
+    include_examples 'validation and confirmation', :validate_and_confirm_new_email!, :new_email_confirmation, :email_confirmed_at
 
     context 'when the new email is blank' do
       before do
@@ -158,7 +158,6 @@ RSpec.describe UserConfirmationService do
 
   describe '#validate_and_confirm_new_phone!' do
     let(:user) { create(:user) }
-    let(:confirmation) { user.new_phone_confirmation }
     let(:new_phone) { '+14155552671' }
 
     # The code request sends the OTP synchronously, so the provider is invoked.
@@ -167,6 +166,8 @@ RSpec.describe UserConfirmationService do
     before do
       RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
     end
+
+    include_examples 'validation and confirmation', :validate_and_confirm_new_phone!, :new_phone_confirmation, :phone_confirmed_at
 
     context 'when the code is correct' do
       it 'promotes new_phone to phone and stamps it confirmed' do
@@ -182,44 +183,6 @@ RSpec.describe UserConfirmationService do
       it 'does not complete pending claim tokens (an email/signup concern)' do
         expect(ClaimTokenService).not_to receive(:complete)
         service.validate_and_confirm_new_phone!(user, confirmation.code)
-      end
-    end
-
-    context 'when the user is nil' do
-      it 'returns a user blank error' do
-        result = service.validate_and_confirm_new_phone!(nil, '1234')
-
-        expect(result.success?).to be false
-        expect(result.errors.details).to eq({ user: [{ error: :blank }] })
-      end
-    end
-
-    context 'when the code is nil' do
-      it 'returns a code blank error' do
-        result = service.validate_and_confirm_new_phone!(user, nil)
-
-        expect(result.success?).to be false
-        expect(result.errors.details).to eq({ code: [{ error: :blank }] })
-      end
-    end
-
-    context 'when the code is incorrect' do
-      it 'returns a code invalid error' do
-        result = service.validate_and_confirm_new_phone!(user, 'failcode')
-
-        expect(result.success?).to be false
-        expect(result.errors.details).to eq(code: [{ error: :invalid }])
-      end
-    end
-
-    context 'when the code has expired' do
-      before { confirmation.update!(code_sent_at: 1.week.ago) }
-
-      it 'returns a code expired error' do
-        result = service.validate_and_confirm_new_phone!(user, confirmation.code)
-
-        expect(result.success?).to be false
-        expect(result.errors.details).to eq(code: [{ error: :expired }])
       end
     end
 
