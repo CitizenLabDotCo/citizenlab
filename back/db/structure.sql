@@ -507,7 +507,6 @@ DROP INDEX IF EXISTS public.index_admin_publications_on_lft;
 DROP INDEX IF EXISTS public.index_admin_publications_on_depth;
 DROP INDEX IF EXISTS public.index_activities_on_user_id;
 DROP INDEX IF EXISTS public.index_activities_on_project_id;
-DROP INDEX IF EXISTS public.index_activities_on_channel;
 DROP INDEX IF EXISTS public.index_activities_on_item_type_and_item_id;
 DROP INDEX IF EXISTS public.index_activities_on_action;
 DROP INDEX IF EXISTS public.index_activities_on_acted_at;
@@ -5778,13 +5777,6 @@ CREATE INDEX index_activities_on_acted_at ON public.activities USING btree (acte
 --
 
 CREATE INDEX index_activities_on_action ON public.activities USING btree (action);
-
-
---
--- Name: index_activities_on_channel; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_activities_on_channel ON public.activities USING btree (channel);
 
 
 --
