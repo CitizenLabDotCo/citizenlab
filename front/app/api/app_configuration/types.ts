@@ -93,6 +93,9 @@ export interface IAppConfigurationSettings {
   verification?: {
     verification_methods: string[];
   };
+  sms?: AppConfigurationFeature & {
+    allowed_country_codes?: string[];
+  };
   smart_groups?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -205,11 +208,6 @@ export interface IAppConfigurationSettings {
   project_static_pages?: AppConfigurationFeature;
   parallel_participation?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
-  sms?: {
-    allowed: boolean;
-    enabled: boolean;
-    allowed_country_codes?: string[];
-  };
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
