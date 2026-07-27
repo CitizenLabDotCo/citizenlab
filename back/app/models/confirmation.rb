@@ -16,7 +16,8 @@
 #
 # Indexes
 #
-#  index_confirmations_on_user_id           (user_id)
+#  index_confirmations_on_user_id           (user_idgs
+)
 #  index_confirmations_on_user_id_and_type  (user_id,type) UNIQUE
 #
 # Foreign Keys

@@ -69,14 +69,22 @@ class WebApi::V1::RequestCodesController < ApplicationController
     head :ok
   end
 
+  # This endpoint is only used for people reconfirming their
+  # phone number.
+  def request_code_phone
+    authorize current_user, policy_class: RequestCodePolicy
+
+    unless only_if_first_time? && current_user.phone_confirmation.code_outstanding?
+      RequestPhoneConfirmationCodeJob.perform_now(current_user)
+    end
+
+    head :ok
+  end
+
+
   # This endpoint is used when a logged in user wants to add or change their
   # (verified) phone number. The submitted number is held as a pending
   # new_phone and an SMS confirmation code is sent to it.
-  #
-  # For re-confirmation of an existing phone (confirmed_phone_number_expiry has
-  # elapsed) the number is the user's own, so `new_phone` may be omitted and we
-  # fall back to current_user.phone. `only_if_first_time` makes the send idempotent,
-  # as for request_code_email.
   def request_code_new_phone
     authorize current_user, policy_class: RequestCodePolicy
 
@@ -99,9 +107,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
-    unless only_if_first_time? && current_user.new_phone_confirmation.code_outstanding?
-      RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
-    end
+    RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
 
     head :ok
   end
