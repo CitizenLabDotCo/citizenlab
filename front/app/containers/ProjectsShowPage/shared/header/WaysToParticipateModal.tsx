@@ -102,7 +102,7 @@ const WaysToParticipateModal = ({
 
   return (
     <Modal opened={opened} close={onClose} width={468} header={header}>
-      {buttonStack}
+      <Box p="28px">{buttonStack}</Box>
     </Modal>
   );
 };
