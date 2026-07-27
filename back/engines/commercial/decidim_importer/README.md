@@ -15,7 +15,7 @@ reuses the template pipeline's model coverage, `*_ref` anchor resolution, `*_mul
 export (zip/dir) ──▶ ExportReader ──▶ Extractors ──▶ RefMap ──▶ TemplateBuilder ──▶ template.yml
                                                                                         │
                                                     app_config.json ◀── AppConfigMapper │
-                                                    url_mapping.csv ◀── LinkMap          │
+                                                    url_mapping.csv ◀── Links::Map       │
                                                                                         ▼
                                                                             TenantDeserializer
 ```
@@ -159,7 +159,7 @@ post-import finishing in the same tenant switch (steps 4–6 need the applied te
       (generated from its imported `project_description` layout). The project page renders from
       `project_page`; the SideFx that normally creates it is bypassed by the deserializer, so without
       this the page 404s.
-4. **Correct embedded links** (`DecidimImporter::LinkCorrection`) — when a `<base>.url_mapping.csv`
+4. **Correct embedded links** (`DecidimImporter::Links::Rewriter`) — when a `<base>.url_mapping.csv`
    was dumped, walks every `ContentBuilder::Layout` and `StaticPage`, rewriting mapped Decidim links
    (file links resolve to the imported file's real content URL). Unresolved links that *should* have
    been rewritten are collected. Skipped when there's no mapping file.

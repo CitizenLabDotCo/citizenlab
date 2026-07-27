@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # A per-tenant safety gate for the `decidim_importer:import` rake task. It is **off on every tenant
-  # by default** and the import refuses to run unless it has been switched on for the target host — so
-  # a large Decidim import can't be applied to the wrong tenant by accident. Enable it deliberately for
-  # the target host in admin HQ once you've confirmed it is the right tenant.
+  # Per-tenant safety gate for the `decidim_importer:import` rake task. Off on every tenant by default;
+  # the import refuses to run unless it's switched on for the target host, so an import can't hit the
+  # wrong tenant by accident. Enable it deliberately in admin HQ once the target host is confirmed.
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 

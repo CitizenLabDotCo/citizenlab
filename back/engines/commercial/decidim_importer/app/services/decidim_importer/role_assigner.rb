@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Applies project/folder-scoped moderator roles *after* the template has been deserialized.
+  # Applies project/folder-scoped moderator roles *after* the template is deserialized.
   #
-  # These roles can't travel inside the template: they live in the user's JSONB `roles` array as a
-  # `project_id`/`project_folder_id`, and the template's ref mechanism only resolves association
-  # columns and nested-attribute refs — not ids embedded in a JSON value. So we wait until the
-  # records exist, then correlate each record back to its new id.
-  #
-  # The correlation relies on the fact that the deserializer creates records in the same per-model
-  # order they appear in the template (which is the {RefMap} registration order), and returns their
-  # ids per class in that order.
+  # These roles can't travel in the template: they live in the user's JSONB `roles` array as a
+  # `project_id`/`project_folder_id`, and the ref mechanism only resolves association and
+  # nested-attribute refs, not ids inside a JSON value. So we wait until records exist, then correlate
+  # each back to its new id. This relies on the deserializer creating records in {RefMap} registration
+  # order and returning their ids per class in that order.
   class RoleAssigner
     def initialize(ref_map)
       @ref_map = ref_map
@@ -42,12 +39,11 @@ module DecidimImporter
 
     private
 
-    # Maps each *needed* record key (a Decidim uid) to the new database id it was assigned. Only the
-    # models owning a needed key are correlated — so legitimately-pruned models (files, images) are
-    # ignored rather than tripping the count check below. For a correlated model, the positional zip is
-    # valid only when the deserializer created exactly the records we emitted, in order: a count
-    # mismatch means that broke and every subsequent id would map to the wrong record, so we fail
-    # loudly rather than silently assign a moderator role to the wrong project.
+    # Maps each *needed* record key (a Decidim uid) to its new database id. Only models owning a needed
+    # key are correlated, so legitimately-pruned models (files, images) don't trip the count check. The
+    # positional zip is valid only when the deserializer created exactly the records we emitted, in
+    # order — a count mismatch means every subsequent id would map to the wrong record, so we fail
+    # loudly rather than assign a moderator role to the wrong project.
     def build_id_index(created_object_ids, needed_keys)
       index = {}
       @ref_map.records.group_by(&:model_name).each do |model_name, records|

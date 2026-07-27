@@ -2,9 +2,8 @@
 
 module DecidimImporter
   module Extractors
-    # Shared idea-join helpers for the extractors that turn Decidim items into ideas (proposals,
-    # accountability results): the `ideas_phase` link that surfaces the idea in its ideation phase, and
-    # the `ideas_input_topic` tag linking it to its category's `InputTopic`.
+    # Shared idea-join helpers for extractors turning Decidim items into ideas: the `ideas_phase` link
+    # surfacing the idea in its phase, and the `ideas_input_topic` tag to its category's `InputTopic`.
     module IdeaAssociations
       private
 

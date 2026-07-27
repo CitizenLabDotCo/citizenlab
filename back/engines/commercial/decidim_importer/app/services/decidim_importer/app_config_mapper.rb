@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Maps a Decidim `01--organization.csv` row onto a Go Vocal **AppConfiguration patch** — a
-  # JSON-able hash holding only the fields for which a Go Vocal equivalent exists.
+  # Maps a Decidim `01--organization.csv` row onto a Go Vocal **AppConfiguration patch** — a JSON-able
+  # hash of only the fields with a Go Vocal equivalent.
   #
-  # The tenant-template deserializer deliberately ignores app configuration, so this is emitted as a
-  # *separate* artifact (`<export>.app_config.json`) that an operator merges into the target
-  # tenant's AppConfiguration on import (e.g.
-  # `app_config.settings.deep_merge!(patch['settings'])` + `app_config.update(patch.except('settings'))`).
-  #
-  # Only mapped, non-empty keys are included. Decidim fields with no Go Vocal counterpart
-  # (social handles, CSP, file-upload limits, available authorizations, …) are intentionally
-  # omitted rather than guessed at.
+  # The tenant-template deserializer ignores app configuration, so this is emitted as a separate
+  # artifact (`<export>.app_config.json`) that an operator merges into the target tenant's
+  # AppConfiguration on import. Only mapped, non-empty keys are included; Decidim fields with no Go
+  # Vocal counterpart (social handles, CSP, file-upload limits, …) are omitted rather than guessed at.
   class AppConfigMapper
     include Parsing
 
@@ -33,9 +29,8 @@ module DecidimImporter
 
       logo = present_value(@row['logo'])
       favicon = present_value(@row['favicon'])
-      # Image uploaders fetch from `remote_<field>_url` on assignment, same as the template
-      # deserializer. The Decidim dev export points these at `http://localhost/…`, which is
-      # unreachable from Go Vocal infra — the operator decides whether to keep or drop them.
+      # Image uploaders fetch from `remote_<field>_url` on assignment. The Decidim dev export points
+      # these at `http://localhost/…`, unreachable from Go Vocal infra — the operator keeps or drops.
       result['remote_logo_url'] = logo if logo
       result['remote_favicon_url'] = favicon if favicon
 
@@ -44,9 +39,8 @@ module DecidimImporter
 
     private
 
-    # Feature flags the import always turns on, independent of the organization row. The importer
-    # creates project-level static pages from Decidim `pages` components, so `project_static_pages`
-    # must be allowed *and* enabled on the target tenant for those pages to be usable.
+    # Feature flags the import always turns on. The importer creates project-level static pages from
+    # Decidim `pages` components, so `project_static_pages` must be allowed *and* enabled to use them.
     def feature_settings
       {
         'project_static_pages' => { 'allowed' => true, 'enabled' => true }
@@ -64,10 +58,9 @@ module DecidimImporter
       core
     end
 
-    # Decidim stores friendly time-zone names (e.g. "Paris", "UTC"); Go Vocal's settings schema
-    # expects an IANA identifier ("Europe/Paris"). Map via ActiveSupport, fall back to the raw value,
-    # and only emit it if it's one Go Vocal actually supports (else omit — a bad timezone would fail
-    # the AppConfiguration validation on merge).
+    # Decidim stores friendly time-zone names ("Paris", "UTC"); Go Vocal wants an IANA id
+    # ("Europe/Paris"). Map via ActiveSupport, fall back to the raw value, and emit only if supported —
+    # a bad timezone would fail AppConfiguration validation on merge.
     def mapped_timezone
       raw = present_value(@row['time_zone'])
       return nil if raw.nil?
@@ -76,9 +69,9 @@ module DecidimImporter
       candidates.find { |tz| TimezoneService::SUPPORTED_TIMEZONES.include?(tz) }
     end
 
-    # Decidim `default_locale` first, then `available_locales`, each mapped onto a Go Vocal code and
-    # filtered to the ones Go Vocal actually supports — an unsupported locale would fail the
-    # AppConfiguration validation on merge (the same guard {#mapped_timezone} applies to time zones).
+    # Decidim `default_locale` first, then `available_locales`, each mapped to a Go Vocal code and
+    # filtered to supported ones — an unsupported locale would fail AppConfiguration validation on
+    # merge (same guard as {#mapped_timezone}).
     def mapped_locales
       available = parse_json(@row['available_locales'])
       list = available.is_a?(Array) ? available : []
@@ -93,7 +86,7 @@ module DecidimImporter
     end
 
     # Decidim multilocs are a `{"fr":"…","en":"…"}` JSON object, or plain text on single-locale
-    # platforms; locale codes are mapped onto Go Vocal codes.
+    # platforms; locale codes are mapped to Go Vocal codes.
     def multiloc(value)
       parsed = parse_json(value)
       if parsed.is_a?(Hash)

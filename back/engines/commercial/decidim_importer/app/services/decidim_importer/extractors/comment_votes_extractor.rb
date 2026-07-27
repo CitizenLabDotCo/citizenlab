@@ -2,18 +2,13 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim comment votes (a proposals component's `08---comments-votes.csv`) ──▶ Go Vocal `Reaction`
-    # on the corresponding `Comment` (mode `up` for a like, `down` for a dislike).
+    # Decidim comment votes (`08---comments-votes.csv`) ──▶ Go Vocal `Reaction` on the `Comment`
+    # (mode `up` for a like, `down` for a dislike). Runs after the comments and users extractors.
     #
-    # Each row links an `author` to a `comment` (the voted comment's uid) with a `value` of `up`/`down`.
-    # We resolve the comment and register a reaction of the matching mode; the comment's likes/dislikes
-    # counters are then maintained by the `Reaction` counter cache. Runs after the comments and users
-    # extractors so both resolve.
-    #
-    # A `Reaction`'s user is optional, so — like a comment — a vote whose author wasn't imported (filtered
-    # spam/unconfirmed) is kept author-less rather than dropped, preserving the count. A vote is skipped
-    # when its `comment` isn't an imported comment, its `value` isn't a known mode, or it duplicates an
-    # earlier (user, comment, mode) vote (`Reaction` is unique per user + reactable + mode).
+    # A `Reaction`'s user is optional, so a vote whose author wasn't imported (filtered spam/unconfirmed)
+    # is kept author-less rather than dropped, preserving the count. Skipped when its `comment` isn't an
+    # imported comment, its `value` isn't a known mode, or it duplicates an earlier (user, comment, mode)
+    # vote (`Reaction` is unique per user + reactable + mode).
     class CommentVotesExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

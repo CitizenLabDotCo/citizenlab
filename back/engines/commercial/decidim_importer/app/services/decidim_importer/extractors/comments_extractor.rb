@@ -5,14 +5,10 @@ module DecidimImporter
     # Decidim proposal comments ──▶ Go Vocal `Comment` (always on an idea — Go Vocal comments aren't
     # polymorphic).
     #
-    # The export links a comment to what it hangs off via two columns: `root_commentable` (always the
-    # proposal) and `commentable` (the proposal for a top-level comment, or the parent comment for a
-    # reply). We resolve the idea from `root_commentable` and the parent only when `commentable`
-    # differs. Rows are processed shallow-first (`depth` ascending) so a parent comment is registered
-    # before its replies.
-    #
-    # Authors that were filtered out of the user import (spam/unconfirmed) leave the comment
-    # author-less, which Go Vocal allows.
+    # Two columns say what a comment hangs off: `root_commentable` (the proposal → idea) and
+    # `commentable` (the proposal, or the parent comment for a reply). Rows are processed shallow-first
+    # (`depth` ascending) so a parent is registered before its replies. Authors filtered from the user
+    # import (spam/unconfirmed) leave the comment author-less, which Go Vocal allows.
     class CommentsExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',
@@ -60,8 +56,8 @@ module DecidimImporter
         comment.reference('author', author) if author&.model_name == 'user'
       end
 
-      # A reply points `commentable` at its parent comment (≠ the root proposal). Resolve the parent
-      # only when it was itself imported.
+      # A reply points `commentable` at its parent comment (≠ the root proposal); resolve it only when
+      # the parent was itself imported.
       def reference_parent(comment, row)
         commentable = present_value(row[COLUMNS[:commentable]])
         root = present_value(row[COLUMNS[:root_commentable]])

@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Translates a Decidim organization's `extra_user_fields` config (the JSON column on
-  # `01--organization.csv` that drives which profile fields participants fill in) into Go Vocal
-  # user {CustomField} records for the tenant template, plus the list of `extended_data` keys the
-  # {Extractors::UsersExtractor} should copy onto each user's `custom_field_values`.
+  # Translates a Decidim organization's `extra_user_fields` config (JSON column on
+  # `01--organization.csv`) into Go Vocal user {CustomField} records for the tenant template, plus the
+  # `extended_data` keys {Extractors::UsersExtractor} should copy onto each user's `custom_field_values`.
   #
-  # Decidim fields that Go Vocal already seeds as built-ins (`gender`, `date_of_birth` → `birthyear`)
-  # are *not* recreated here — the users extractor already maps their values onto the built-in
-  # fields. Everything else that's enabled becomes a new free-text registration field.
+  # Fields Go Vocal already seeds as built-ins (`gender`, `date_of_birth` → `birthyear`) are *not*
+  # recreated — the users extractor maps their values onto the built-ins. Everything else enabled
+  # becomes a new free-text registration field.
   class UserCustomFields
-    # Decidim extra-field key => Go Vocal custom field spec. All currently map to free-text fields
-    # (no options to manage). `title` carries the locales we have canned copy for; the primary
-    # locale is backfilled in {#title_for} so the field is always valid.
+    # Decidim extra-field key => Go Vocal custom field spec. All are free-text (no options). `title`
+    # carries the locales we have canned copy for; the primary locale is backfilled in {#title_for}.
     EXTRA_FIELDS = {
       'phone_number' => { key: 'phone_number', input_type: 'text',
                           title: { 'en' => 'Phone number', 'fr-FR' => 'Numéro de téléphone' } },
@@ -38,14 +36,14 @@ module DecidimImporter
       end
     end
 
-    # The `extended_data` keys whose values the users extractor should fold into
-    # `custom_field_values` (built-ins gender/birthyear are handled separately there).
+    # The `extended_data` keys the users extractor folds into `custom_field_values` (built-ins
+    # gender/birthyear are handled separately there).
     def text_field_keys
       definitions.pluck(:key)
     end
 
-    # Registers a `custom_field` {Record} per definition into the ref map so the template builder
-    # emits it. Keyed by a synthetic uid since Decidim has no row id for these.
+    # Registers a `custom_field` {Record} per definition into the ref map so it's emitted. Keyed by a
+    # synthetic uid since Decidim has no row id for these.
     def register!(ref_map)
       definitions.each do |definition|
         ref_map.register("decidim-userfield-#{definition[:key]}", Record.new('custom_field', attributes_for(definition)))
@@ -72,13 +70,11 @@ module DecidimImporter
         'input_type' => definition[:input_type],
         'required' => false,
         'enabled' => true
-        # No `code` (these aren't Go Vocal built-ins) and no `ordering` (acts_as_list appends the
-        # field below the tenant's existing registration fields).
+        # No `code` (not built-ins) and no `ordering` (acts_as_list appends below existing fields).
       }
     end
 
-    # Ensures the field has a title in the import's primary locale so it always validates, even when
-    # we have no canned copy for that locale.
+    # Backfills a title in the primary locale so the field always validates, even without canned copy.
     def title_for(spec)
       title = spec[:title].dup
       title[@primary_locale] ||= spec[:title]['en'] || spec[:key].tr('_', ' ').capitalize

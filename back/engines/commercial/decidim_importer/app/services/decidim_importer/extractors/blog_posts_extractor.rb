@@ -2,17 +2,13 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim `blogs` components (their posts in a `04---posts.csv` sidecar) ──▶ Go Vocal project-level
-    # `StaticPage`.
+    # Decidim `blogs` posts (`04---posts.csv`) ──▶ Go Vocal project-level `StaticPage`.
     #
-    # A Decidim blog post is a titled block of rich text scoped to a participatory process. Go Vocal has
-    # no blog concept, so — like the `pages` component ({Extractors::StaticPagesExtractor}) — each post
-    # becomes a custom, project-scoped static page: the post title becomes the page title and the post
-    # body its top info section. The difference from a plain page is downstream: the importer feeds the
-    # blog pages' ids to {Extractors::DescriptionLayoutExtractor}, which links them in their own "Blog"
-    # section of the project description rather than beside the regular page links.
+    # Go Vocal has no blog concept, so — like the `pages` component ({Extractors::StaticPagesExtractor}) —
+    # each post becomes a custom, project-scoped static page (title → page title, body → top info section).
+    # Difference from a plain page is downstream: the importer feeds these page ids to
+    # {Extractors::DescriptionLayoutExtractor}, which links them in their own "Blog" section.
     #
-    # The post row is stamped by {ExportReader} with its owning process (`decidim_participatory_process`).
     # Unpublished (Decidim draft) posts are skipped — static pages are always live.
     class BlogPostsExtractor < BaseExtractor
       COLUMNS = {

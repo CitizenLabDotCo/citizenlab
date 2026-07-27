@@ -1,23 +1,18 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Projects a Decidim process's *participation components* onto Go Vocal *phases*.
+  # Projects a Decidim process's participation components onto Go Vocal phases.
   #
-  # Phase-generating components: **proposals** and **accountability** (→ ideation) and **surveys**
-  # (→ native_survey). Decidim steps are *not* imported as phases — the step narrative carries no
-  # participation and Go Vocal has no equivalent "information backbone", so it's dropped.
+  # Phase-generating components: proposals/accountability (→ ideation), surveys (→ native_survey).
+  # Decidim steps are not imported — they carry no participation and have no Go Vocal equivalent.
   #
-  # Each phase is dated from the component itself, not the steps:
-  #   * **start** = the component's `published_at` (when it went live). If it has no `published_at`
-  #     but was published at some point (`previously_published`), the earliest item date stands in.
-  #   * **end** = the latest activity: a proposals component ends at its last proposal's `published_at`,
-  #     a survey at its last answer's `created_at`.
-  #   * a component that was **never published** gets no phase at all.
+  # Each phase is dated from the component, not the steps: start = `published_at`, falling back to the
+  # earliest item date when only `previously_published`; end = latest activity (last proposal's
+  # `published_at`, last answer's `created_at`). A never-published component gets no phase.
   #
-  # Go Vocal phases must be sequential and non-overlapping. Phases run in ascending component **weight**
-  # — the order the admin arranged the components in Decidim — and their dates are made to fit that
-  # order: each phase keeps its length but is pushed forward so it starts on/after the previous phase's
-  # end (a phase whose real window already fits keeps its real dates).
+  # Go Vocal phases must be sequential and non-overlapping, so phases run in ascending component
+  # `weight` (the admin's Decidim ordering) and each keeps its length but is pushed forward to start
+  # on/after the previous phase's end (one whose real window already fits keeps its real dates).
   class PhaseProjector
     MIN_DURATION = 1 # day; Go Vocal rejects zero-length phases (Phase::MIN_DURATION)
 
@@ -36,8 +31,7 @@ module DecidimImporter
     #   `{ process_uid:, component_uid:, name:, weight:, method: 'ideation'|'native_survey',
     #      published_at:, previously_published:, end_dates: [<date str>, ...] }`
     #   (surveys also carry `description_heading:`/`description_body:`). `published_at`/
-    #   `previously_published` date the start; `end_dates` (proposals' published_at, a survey's answer
-    #   created_at) date the end; `weight` orders the phases.
+    #   `previously_published` date the start; `end_dates` date the end; `weight` orders the phases.
     def run(participation_components:)
       participation_components.group_by { |component| component[:process_uid] }.each do |process_uid, components|
         project = ref_map.fetch(process_uid)
@@ -76,7 +70,7 @@ module DecidimImporter
     end
 
     # One intent per component: `{ method:, component:, start: Date, end: Date|nil, weight: Integer }`.
-    # A component that was never published, or that carries no datable window at all, is skipped (logged).
+    # A never-published component, or one with no datable window, is skipped (logged).
     def build_intent(component)
       published_at = present(component[:published_at])
       unless published_at || truthy?(component[:previously_published])
@@ -120,8 +114,7 @@ module DecidimImporter
       description = participation_description(component)
       attributes['description_multiloc'] = description if description.present?
       # Native-survey phases require these two multilocs (Phase validates their presence). The button
-      # gets the same default the admin UI applies to a new native-survey phase, rather than a
-      # hardcoded string (see {#native_survey_button_multiloc}).
+      # uses the admin UI's default for a new native-survey phase (see {#native_survey_button_multiloc}).
       if method == 'native_survey'
         attributes['native_survey_title_multiloc'] = title
         attributes['native_survey_button_multiloc'] = native_survey_button_multiloc(title.keys)
@@ -143,10 +136,9 @@ module DecidimImporter
       title.empty? ? { primary_locale => DEFAULT_TITLES.fetch(method, 'Participation') } : title
     end
 
-    # The phase's rich description, per locale: an optional `<h2>` heading above a body. Surveys carry
-    # their questionnaire title (→ heading) and description (→ body); components without either get an
-    # empty multiloc (no description set). Locales are the union of the two, so a heading-only or
-    # body-only locale still renders.
+    # The phase's rich description per locale: an optional `<h2>` heading above a body. Surveys map
+    # their questionnaire title → heading and description → body; without either, an empty multiloc.
+    # Locales are the union of the two, so a heading-only or body-only locale still renders.
     def participation_description(component)
       heading = multiloc(component[:description_heading])
       body = multiloc(component[:description_body])
@@ -158,10 +150,9 @@ module DecidimImporter
       end
     end
 
-    # The native-survey CTA in each of the phase's locales — the same "Take the survey" default the
-    # admin UI fills in for a new native-survey phase (FE `defaultSurveyCTALabel` resolves to the BE
-    # `phases.native_survey_button` key), translated per locale instead of a hardcoded English string.
-    # `raise_on_missing: false` so an unexpected locale degrades gracefully rather than aborting.
+    # The native-survey CTA per locale — the admin UI's default for a new native-survey phase (FE
+    # `defaultSurveyCTALabel` → BE `phases.native_survey_button`), translated instead of hardcoded
+    # English. `raise_on_missing: false` so an unexpected locale degrades gracefully.
     def native_survey_button_multiloc(locales)
       MultilocService.new.i18n_to_multiloc(
         'phases.native_survey_button', locales: locales, raise_on_missing: false

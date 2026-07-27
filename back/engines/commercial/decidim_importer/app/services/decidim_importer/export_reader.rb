@@ -2,20 +2,20 @@
 
 module DecidimImporter
   # Reads a directory of already-unzipped Decidim CSVs into an in-memory `rows_by_model` hash — the
-  # sole input to {Importer}. It only traverses the export's directory layout and parses CSVs; turning
-  # those rows into a tenant template is {Importer}'s job.
+  # sole input to {Importer}. It only traverses the directory layout and parses CSVs; turning those
+  # rows into a tenant template is {Importer}'s job.
   #
-  # Globs are written with `--` separators but `*` absorbs the extra dash in newer exports' `NN---name`
-  # triple-dash naming, and `*` matches the empty string so the numeric `NN---` prefix is optional too.
-  # Several CSVs carry no foreign-key column — the directory *is* the association — so their rows are
-  # stamped with their owning process (`decidim_participatory_process`) and, inside a component, that
-  # component (`decidim_component`).
+  # Globs use `--` separators, but `*` absorbs the extra dash of newer exports' `NN---name` triple-dash
+  # naming and matches the empty string, so the numeric `NN---` prefix is optional too. Several CSVs
+  # carry no foreign-key column — the directory *is* the association — so their rows are stamped with
+  # their owning process (`decidim_participatory_process`) and, inside a component, that component
+  # (`decidim_component`).
   #
-  # Both participatory processes and assemblies become Go Vocal projects and are read through the same
-  # code (see {CONTAINERS}): they share the container layout (a container CSV plus attachment/collection/
-  # category sidecars and a `NN---components/` subtree). Assemblies carry no Decidim process group, so
-  # their project rows are stamped with the synthetic {ASSEMBLIES_FOLDER_UID} and a single "Assemblies"
-  # folder is injected for them to nest under.
+  # Both participatory processes and assemblies become Go Vocal projects, read through the same code
+  # (see {CONTAINERS}) since they share the container layout (container CSV + attachment/collection/
+  # category sidecars + a `NN---components/` subtree). Assemblies have no Decidim process group, so their
+  # project rows are stamped with the synthetic {ASSEMBLIES_FOLDER_UID} and one "Assemblies" folder is
+  # injected for them to nest under.
   #
   # rubocop:disable Metrics/ModuleLength -- one cohesive traversal unit (the whole export's directory
   # layout); the CSV globs, component-type tables and per-container/-budget readers belong together.
@@ -40,9 +40,9 @@ module DecidimImporter
     ASSEMBLIES_FOLDER_UID = 'decidim_importer-assemblies-folder'
     ASSEMBLIES_FOLDER_TITLE = 'Assemblies'
 
-    # Each process's `NN---components/` folder holds one subdirectory per component, named
-    # `NN---decidim--component--N---<type>`; the type is the trailing path segment. Proposals, surveys,
-    # pages and accountability are consumed; other types are recorded only for skip-logging.
+    # Each process's `NN---components/` folder holds one subdir per component, named
+    # `NN---decidim--component--N---<type>` (type = trailing path segment). Proposals, surveys, pages and
+    # accountability are consumed; other types are recorded only for skip-logging.
     COMPONENT_DIR_GLOB = '*components/*'
     COMPONENT_FILE_GLOB = '*--component.csv'
     PROPOSALS_COMPONENT = 'proposals'
@@ -54,18 +54,18 @@ module DecidimImporter
     BLOGS_COMPONENT = 'blogs'
 
     # A budgets component nests one directory per budget (`NN---decidim--budgets--budget--N/`) holding
-    # the budget CSV plus its projects/orders/followers — unlike the flat sidecars of other components.
+    # the budget CSV plus its projects/orders/followers — unlike other components' flat sidecars.
     BUDGET_DIR_GLOB = '*budgets--budget--*'
     BUDGET_FILE_GLOB = '*--budget.csv'
 
     # A meetings component likewise nests one directory per meeting (`NN---decidim--meetings--meeting--N/`)
-    # holding the meeting CSV plus its own attachments (and comments/followers we don't consume).
+    # holding the meeting CSV plus its attachments (and comments/followers we don't consume).
     MEETING_DIR_GLOB = '*meetings--meeting--*'
     MEETING_FILE_GLOB = '*--meeting.csv'
 
     # The two container kinds read into the `:projects` stream. `project_stamp` is merged onto each
     # container's project rows: assemblies get the synthetic Assemblies group (routing them into that
-    # folder), processes keep whatever `participatory_process_group` their CSV already carries.
+    # folder), processes keep whatever `participatory_process_group` their CSV carries.
     CONTAINERS = [
       { dir_glob: PROCESS_DIR_GLOB, file_glob: PROCESS_FILE_GLOB, project_stamp: {} },
       { dir_glob: ASSEMBLY_DIR_GLOB, file_glob: ASSEMBLY_FILE_GLOB,
@@ -73,10 +73,10 @@ module DecidimImporter
     ].freeze
 
     # The sibling CSVs read for each consumed component type, as `type => [[glob, acc-key], ...]`. Budgets
-    # and meetings instead nest per-record subdirectories (see {#read_budgets}/{#read_meetings}); the
-    # remaining component types (awesome_iframe, debates, …) carry no consumed sidecar — only their
-    # manifest is recorded. A proposals component's `*--attachments.csv` holds per-proposal attachments,
-    # distinct from the container-level `*--attachments.csv` read by {#read_container}.
+    # and meetings instead nest per-record subdirectories (see {#read_budgets}/{#read_meetings}); other
+    # types (awesome_iframe, debates, …) have no consumed sidecar — only their manifest is recorded. A
+    # proposals component's `*--attachments.csv` (per-proposal) differs from the container-level one read
+    # by {#read_container}.
     COMPONENT_SIDECARS = {
       PROPOSALS_COMPONENT => [['*--proposals.csv', :proposals], ['*--comments.csv', :comments],
         ['*--comments-votes.csv', :comment_votes], ['*--followers.csv', :followers],
@@ -89,8 +89,8 @@ module DecidimImporter
     module_function
 
     # Parses the export at `path` (the directory directly containing the CSVs) into a `rows_by_model`
-    # hash — the root single-file CSVs plus every process/assembly directory's rows. Empty models are
-    # omitted. When assemblies were read, a synthetic "Assemblies" folder is added for them to nest under.
+    # hash — root single-file CSVs plus every process/assembly directory's rows. Empty models are omitted.
+    # When assemblies were read, a synthetic "Assemblies" folder is added for them to nest under.
     def read(path)
       rows_by_model = FILE_PATTERNS.each_with_object({}) do |(model, pattern), acc|
         file = Dir.glob(File.join(path, pattern)).first
@@ -101,11 +101,11 @@ module DecidimImporter
       rows_by_model
     end
 
-    # Reads every participatory-process and assembly directory, aggregating rows by model: container rows
-    # into `:projects`, attachments/collections/categories, and — from each container's components —
-    # proposals, comments, followers, endorsements, results, budgets, blog posts, meetings (+ their
-    # attachments), and every component manifest into `:components` (which drives phase generation and
-    # skip-logging). Decidim steps are deliberately not read.
+    # Reads every process and assembly directory, aggregating rows by model: container rows into
+    # `:projects`, their attachments/collections/categories, and — from each container's components —
+    # proposals, comments, followers, endorsements, results, budgets, blog posts, meetings (+ attachments),
+    # and every component manifest into `:components` (which drives phase generation and skip-logging).
+    # Decidim steps are deliberately not read.
     def read_containers(root)
       acc = { projects: [], attachments: [], attachment_collections: [], categories: [], proposals: [],
               comments: [], comment_votes: [], followers: [], endorsements: [], proposal_attachments: [],
@@ -118,10 +118,10 @@ module DecidimImporter
       acc
     end
 
-    # Reads one process/assembly directory: its rows into `:projects` (stamped with the container's
-    # `project_stamp`), then its attachment/collection/category sidecars and component subtree (all
-    # stamped with the container uid as `decidim_participatory_process`, so downstream extractors resolve
-    # the project the same way for both kinds).
+    # Reads one process/assembly directory: its rows into `:projects` (stamped with `project_stamp`),
+    # then its attachment/collection/category sidecars and component subtree (all stamped with the
+    # container uid as `decidim_participatory_process`, so downstream extractors resolve the project the
+    # same way for both kinds).
     def read_container(dir, container, acc)
       file = Dir.glob(File.join(dir, container[:file_glob])).first
       return unless file
@@ -137,9 +137,9 @@ module DecidimImporter
       read_components(dir, uid, acc)
     end
 
-    # Injects the single "Assemblies" folder into `:folders` when any assembly project was read (its rows
-    # carry the synthetic {ASSEMBLIES_FOLDER_UID} group). The {Extractors::FoldersExtractor} builds it and
-    # the {Extractors::ProjectsExtractor} nests the assembly projects under it via the same group mechanism
+    # Injects the "Assemblies" folder into `:folders` when any assembly project was read (its rows carry
+    # the synthetic {ASSEMBLIES_FOLDER_UID} group). {Extractors::FoldersExtractor} builds it and
+    # {Extractors::ProjectsExtractor} nests the assembly projects under it via the same group mechanism
     # used for participatory-process groups.
     def add_assemblies_folder!(rows_by_model)
       grouped = (rows_by_model[:projects] || []).any? do |row|
@@ -169,10 +169,10 @@ module DecidimImporter
       end
     end
 
-    # A budgets component nests one directory per budget. Each budget's CSV goes to `:budgets` (it carries
-    # `total_budget`, which sizes the voting phase), its projects to `:budget_projects` (→ ideas), its
-    # orders to `:orders` (→ baskets) and its followers to `:followers` (reusing the proposal-follow path,
-    # since a budget project also becomes an idea). All are stamped with the process + component uid.
+    # A budgets component nests one directory per budget. Each budget's CSV goes to `:budgets` (its
+    # `total_budget` sizes the voting phase), its projects to `:budget_projects` (→ ideas), its orders to
+    # `:orders` (→ baskets), its followers to `:followers` (reusing the proposal-follow path, since a
+    # budget project also becomes an idea). All stamped with the process + component uid.
     def read_budgets(comp_dir, columns, acc)
       Dir.glob(File.join(comp_dir, BUDGET_DIR_GLOB)).select { |path| File.directory?(path) }.each do |budget_dir|
         budget_file = Dir.glob(File.join(budget_dir, BUDGET_FILE_GLOB)).first
@@ -188,8 +188,8 @@ module DecidimImporter
 
     # A meetings component nests one directory per meeting. Each meeting's CSV goes to `:meetings`
     # (→ events) and its attachments to `:meeting_attachments` (→ event files, reusing the proposal-
-    # attachment path). Its comments/followers/registration/poll sidecars have no Go Vocal event
-    # equivalent, so they're left unread. All are stamped with the process + component uid.
+    # attachment path). Its comments/followers/registration/poll sidecars have no event equivalent, so
+    # they're left unread. All stamped with the process + component uid.
     def read_meetings(comp_dir, columns, acc)
       Dir.glob(File.join(comp_dir, MEETING_DIR_GLOB)).select { |path| File.directory?(path) }.each do |meeting_dir|
         meeting_file = Dir.glob(File.join(meeting_dir, MEETING_FILE_GLOB)).first
@@ -211,9 +211,8 @@ module DecidimImporter
       rows.map { |row| row.merge(columns) }
     end
 
-    # A container directory is any subdirectory matching the container's `dir_glob` that holds its
-    # container CSV (robust to the `NN---decidim--participatory-process--N` / `NN---decidim--assembly--N`
-    # naming).
+    # A container directory: any subdir matching the container's `dir_glob` that holds its container CSV
+    # (robust to `NN---decidim--participatory-process--N` / `NN---decidim--assembly--N` naming).
     def container_dirs(root, container)
       Dir.glob(File.join(root, container[:dir_glob])).select do |path|
         File.directory?(path) && Dir.glob(File.join(path, container[:file_glob])).any?

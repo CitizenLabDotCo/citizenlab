@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe DecidimImporter::LinkCorrector do
+RSpec.describe DecidimImporter::Links::Corrector do
   # A stand-in resolver: content/file lookups return whatever the test wires for a given URL.
   def resolver(content: {}, files: {})
-    instance_double(DecidimImporter::ImportLinkResolver).tap do |double|
+    instance_double(DecidimImporter::Links::Resolver).tap do |double|
       allow(double).to receive(:content_href) { |url| content[url] }
       allow(double).to receive(:file_id) { |url| files[url] }
     end

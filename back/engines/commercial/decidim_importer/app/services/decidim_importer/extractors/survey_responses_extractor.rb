@@ -2,24 +2,19 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim survey answers (`02---answers.csv` in a surveys component) ──▶ Go Vocal native-survey
-    # responses: one `Idea` per answer row, bound to the survey phase via both `creation_phase` (the
-    # non-transitive method's "created here" pointer) *and* an `ideas_phase` join — the latter is what
-    # `Phase#ideas` (a `has_many through: :ideas_phases`) reads, so without it the survey results show
-    # nothing. Answers go in `custom_field_values`. Dates (`created_at`/`published_at`/`submitted_at`)
-    # come from the answer row so the response isn't stamped with the import date.
+    # Decidim survey answers (`02---answers.csv`) ──▶ Go Vocal native-survey responses: one `Idea` per
+    # answer row, bound to the survey phase via both `creation_phase` *and* an `ideas_phase` join — the
+    # latter is what `Phase#ideas` reads, so without it the survey results show nothing. Answers go in
+    # `custom_field_values`; dates come from the answer row (not the import date).
     #
-    # The answers CSV has `author` (a Decidim user uid), `author_status`, `created_at`, then one column
-    # per question headed by the question uid. Each cell is encoded by question type:
+    # The CSV has `author`, `created_at`, then one column per question headed by the question uid. Each
+    # cell is encoded by question type:
     #   * short/long answer → the plain string;
     #   * single/multiple option, sorting → a JSON array of `{ answer_option, position, custom_body }`;
     #   * matrix → a JSON array of `{ <row uid> => [{ answer_option, … }] }`;
     #   * files → a JSON array of file URLs.
-    # Field/option/matrix-statement keys are reproduced from the same {SurveyKeys} the form was built
-    # with, so values address the fields {Extractors::SurveysExtractor} created. The survey component
-    # rows are parsed here too (for the question structure: option order drives the matrix scale point).
-    #
-    # Runs after the surveys and users extractors so the phase, project and author records resolve.
+    # Keys are reproduced from the same {SurveyKeys} the form was built with, so values address the fields
+    # {Extractors::SurveysExtractor} created. Runs after the surveys and users extractors.
     class SurveyResponsesExtractor < BaseExtractor
       COLUMNS = { author: 'author', created_at: 'created_at',
                   process: 'decidim_participatory_process', component: 'decidim_component' }.freeze
@@ -85,8 +80,7 @@ module DecidimImporter
       end
 
       # Each question's cell encoded into `{ field_key => value }` pairs, merged across questions. The
-      # answers CSV is headed by the question id as a string, so the lookup stringifies it (older
-      # exports carry numeric question ids that parse as integers).
+      # question id is stringified for the lookup (older exports carry numeric ids that parse as integers).
       def answer_values(questions, row, idea, response_uid)
         questions.each_with_index.with_object({}) do |(question, q_index), values|
           encode_answer(question, row[question['id'].to_s], idea, "#{response_uid}-q#{q_index}")
@@ -132,9 +126,8 @@ module DecidimImporter
         ordered.empty? ? {} : { key => ordered }
       end
 
-      # Matrix: `{ statement_key => scale_point }`, where the scale point is the 1-based position of the
-      # chosen answer option among the question's answer options (mirroring how the matrix field maps
-      # answer options onto its linear-scale labels).
+      # Matrix: `{ statement_key => scale_point }`, the scale point being the 1-based position of the
+      # chosen answer option among the question's options (as the matrix field maps them to scale labels).
       def encode_matrix(key, question, raw)
         scale = scale_points(question)
         value = {}
@@ -154,9 +147,9 @@ module DecidimImporter
         Array(question['answer_options']).each_with_index.to_h { |option, index| [option['id'], index + 1] }
       end
 
-      # File answers become Go Vocal `file_upload` records (the `idea_files` model) attached to the
-      # response, fetched from their URL at apply time, referenced from the field value by `{ id, name }`.
-      # Go Vocal `file_upload` holds a single file, so only the first URL is kept (the rest are logged).
+      # File answers become Go Vocal `file_upload` records attached to the response, fetched at apply
+      # time, referenced from the field value by `{ id, name }`. `file_upload` holds a single file, so
+      # only the first URL is kept (the rest are logged).
       def encode_files(key, raw, idea, file_uid)
         urls = Array(Parsing.parse_json(raw)).filter_map { |url| present_value(url) }
         return {} if urls.empty?

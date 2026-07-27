@@ -5,13 +5,10 @@ module DecidimImporter
     # Decidim proposals ──▶ Go Vocal `Idea` (in an ideation phase), plus the `ideas_phase` join that
     # surfaces the idea in its phase and, when the proposal was answered, an `OfficialFeedback`.
     #
-    # Each proposal row is stamped by the importer with its owning process (`decidim_participatory_process`)
-    # and proposals component (`decidim_component`) — the directories are the association. The component
-    # already became an ideation phase via {PhaseProjector} (registered under the component uid), so the
-    # idea's `creation_phase` and the join's `phase` both resolve through the ref map.
-    #
-    # The imported idea carries a `idea_status_code` rather than an `idea_status_ref`: the tenant's
-    # statuses already exist and are resolved to a real id at apply time by {IdeaStatuses.resolve!}.
+    # The component already became an ideation phase via {PhaseProjector} (registered under the component
+    # uid), so the join's `phase` resolves through the ref map. The idea carries an `idea_status_code`
+    # (not a ref): the tenant's statuses already exist and resolve to a real id at apply time by
+    # {IdeaStatuses.resolve!}.
     class ProposalsExtractor < BaseExtractor
       include IdeaAssociations
 
@@ -47,9 +44,8 @@ module DecidimImporter
 
         idea = Record.new('idea', idea_attributes(row))
         idea.reference('project', project)
-        # Ideation is a *transitive* participation method, so the idea links to its phase only through
-        # the ideas_phase join below — setting `creation_phase` is rejected (that's for non-transitive
-        # methods like proposals/native_survey).
+        # Ideation is *transitive*, so the idea links to its phase only through the ideas_phase join
+        # below — setting `creation_phase` is rejected (that's for non-transitive methods).
         author = author_record(row)
         idea.reference('author', author) if author
         ref_map.register(uid, idea)
@@ -75,9 +71,8 @@ module DecidimImporter
         }
       end
 
-      # Decidim `authors` is a JSON array of uids; we keep the first that resolves to an imported user.
-      # Non-user authors (meetings, organizations) and filtered users (spam/unconfirmed) leave the idea
-      # author-less, which Go Vocal allows (`Idea#author` is optional).
+      # Decidim `authors` is a JSON array of uids; keep the first resolving to an imported user. Non-user
+      # authors and filtered users leave the idea author-less, which Go Vocal allows (`Idea#author` optional).
       def author_record(row)
         author_uids(row).filter_map { |uid| ref_map.fetch(uid) }.find do |record|
           record.model_name == 'user'

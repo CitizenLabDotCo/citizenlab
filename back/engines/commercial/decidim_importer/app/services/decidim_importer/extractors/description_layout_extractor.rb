@@ -3,30 +3,19 @@
 module DecidimImporter
   module Extractors
     # Builds a Content Builder project-description layout (`ContentBuilder::Layout`, code
-    # `project_description`) for each project, taking the place of the plain `description_multiloc`.
+    # `project_description`) per project, replacing the plain `description_multiloc`.
     #
-    # The layout's `craftjs_json` holds, in order: a `TwoColumn` (`2-1`) main section with the process
-    # subtitle (an `H2`), short description and full description — each its own `TextMultiloc` — on the
-    # left and, on the right, an optional
-    # import-source link (only with `include_source_url`), the participation widget (`AboutBox`, only
-    # when the project has a participation phase), then a `PageLink` per regular project static page (the
-    # left content spans full width instead when that right column would be empty); then — when the
-    # project has any pages imported from `blogs` posts — a separate "Blog" section (`WhiteSpace` + an
-    # H2 heading + a `PageLink` per blog page); then the project's
-    # files. Files that
-    # belong to a Decidim *attachment collection* are nested inside an `AccordionMultiloc` (titled with
-    # the collection name, opening with a `TextMultiloc` of the collection description when it has one),
-    # under a "Documents to consult" H2 heading (preceded by a blank `WhiteSpace`); files with no
-    # collection stay at the layout root. The
-    # blocks reference
-    # pages/files by the explicit UUIDs the static-page and file records were assigned, so the ids
-    # resolve once those records are created. The layout's own `after_save` (`sync_file_attachments`)
-    # creates the layout's `Files::FileAttachment`s from the `FileAttachment` nodes (including the nested
-    # ones — it scans every node), so we don't emit those here.
+    # The `craftjs_json` holds, in order: a `2-1` `TwoColumn` main section (subtitle/short/full
+    # description on the left; optional source link, participation `AboutBox`, and regular page links on
+    # the right — left spans full width when the right column is empty); a separate "Blog" section for
+    # pages imported from `blogs` posts; then the project's files (collection-less at root, otherwise
+    # nested in an `AccordionMultiloc` per Decidim attachment collection under a "Documents to consult"
+    # heading). Blocks reference pages/files by the explicit UUIDs those records were assigned, so ids
+    # resolve once the records exist. The layout's `after_save` (`sync_file_attachments`) creates the
+    # `Files::FileAttachment`s from the `FileAttachment` nodes (it scans every node), so we don't emit those.
     #
-    # An `AccordionMultiloc` nests its children in a *linked* `Container` canvas (craft.js `<Element
-    # id="accordion-content" is={Container} canvas />`), referenced from the accordion node's
-    # `linkedNodes['accordion-content']` — not its `nodes` array.
+    # An `AccordionMultiloc` nests its children in a *linked* `Container` canvas, referenced from the
+    # accordion node's `linkedNodes['accordion-content']` — not its `nodes` array.
     #
     # Runs after the projects/static-pages/files extractors so their records (and ids) are registered.
     class DescriptionLayoutExtractor < BaseExtractor
@@ -37,11 +26,11 @@ module DecidimImporter
                      collection_for: 'collection_for' }.freeze
       FRAME_PROPS = { 'id' => 'e2e-content-builder-frame' }.freeze
 
-      # @param attachments [Array<Hash>] the attachment rows, read to map each file to its collection.
-      # @param attachment_collections [Array<Hash>] the collection rows (per project), each becoming an
+      # @param attachments [Array<Hash>] attachment rows, read to map each file to its collection.
+      # @param attachment_collections [Array<Hash>] collection rows (per project), each becoming an
       #   accordion grouping its files.
-      # @param blog_page_ids [Array<String>] ids of the static pages that came from `blogs` posts; these
-      #   are linked in their own "Blog" section instead of beside the regular page links.
+      # @param blog_page_ids [Array<String>] ids of static pages from `blogs` posts, linked in their own
+      #   "Blog" section instead of beside the regular page links.
       def initialize(*, include_source_url: false, attachments: [], attachment_collections: [],
         blog_page_ids: [], **)
         super(*, **)
@@ -76,10 +65,8 @@ module DecidimImporter
         ref_map.register("#{uid}-description-layout", layout)
       end
 
-      # The ordered content blocks for the layout: the optional import-source link, a two-column main
-      # section (the description on the left; the participation widget + page links on the right), then
-      # the files (collection-less ones at root, collected ones in accordions). An empty list means
-      # there's nothing to show, so no layout is built. A block is a leaf (`{ id:, component:, props: }`),
+      # The ordered content blocks: main two-column section, optional blog section, then the files. Empty
+      # means nothing to show, so no layout is built. A block is a leaf (`{ id:, component:, props: }`),
       # an accordion (`{ id:, title:, children: [leaf, …] }`), or a two-column
       # (`{ id:, columnLayout:, left: [leaf, …], right: [leaf, …] }`).
       def content_blocks(row, project, process_uid)
@@ -98,9 +85,8 @@ module DecidimImporter
         blocks
       end
 
-      # A "Blog" section for the pages that came from `blogs` posts: a blank `WhiteSpace`, an `<h2>`
-      # heading, then a `PageLink` per blog page. Kept separate from the main section's page links so
-      # imported blog posts read as their own strand of the project. Omitted when there are none.
+      # A "Blog" section for pages from `blogs` posts: a `WhiteSpace`, an `<h2>` heading, then a
+      # `PageLink` per page. Kept separate from the main section's page links. Omitted when there are none.
       def append_blog_section(blocks, page_ids, description)
         return if page_ids.empty?
 
@@ -109,19 +95,17 @@ module DecidimImporter
         page_ids.each_with_index { |id, i| blocks << leaf("blog-page#{i}", 'PageLink', { 'pageId' => id }) }
       end
 
-      # An H2 "Blog" heading, translated for the description's locales (falling back to the primary
-      # locale). The copy lives in the back-end locales (`decidim_importer.blog`), wrapped in `<h2>`.
+      # An H2 "Blog" heading (`decidim_importer.blog`), translated for the description's locales
+      # (falling back to the primary locale), wrapped in `<h2>`.
       def blog_heading(description)
         i18n_multiloc('blog', locales: description.keys.presence || [primary_locale])
           .transform_values { |text| "<h2>#{text}</h2>" }
       end
 
-      # The main section. Left column: the process subtitle (an `H2`), the short description and the full
-      # description — each its own `TextMultiloc`, in that order. Right column: the participation widget
-      # (`AboutBox`, only when the project has a participation phase), a `PageLink` per page, then — when
-      # `include_source_url` — a `WhiteSpace` and the import-source link at the bottom. With content on
-      # the right these sit in a `2-1` `TwoColumn` (wider left); with nothing on the right the left
-      # content spans the full width instead of a lopsided two-column.
+      # The main section. Left: subtitle (`H2`), short and full description, each a `TextMultiloc`. Right:
+      # participation `AboutBox` (only with a participation phase), a `PageLink` per page, then — with
+      # `include_source_url` — the import-source link. With content on the right these sit in a `2-1`
+      # `TwoColumn`; with nothing on the right the left content spans full width.
       def append_main_section(blocks, subtitle, short_description, description, source, page_ids, participation)
         left = []
         left << leaf('subtitle', 'TextMultiloc', { 'text' => subtitle }) if subtitle.present?
@@ -148,18 +132,17 @@ module DecidimImporter
         multiloc(row[COLUMNS[:subtitle]]).transform_values { |text| "<h2>#{text}</h2>" }
       end
 
-      # Whether the project has any phase — only proposals/surveys become phases, so a phase always
-      # means real participation, and only then is the `AboutBox` participation widget meaningful.
+      # Whether the project has any phase — only proposals/surveys become phases, so a phase means real
+      # participation, and only then is the `AboutBox` widget meaningful.
       def participation_phase?(project)
         ref_map.records.any? do |r|
           r.model_name == 'phase' && r.attributes['project_ref'].equal?(project.attributes)
         end
       end
 
-      # Root-level `FileAttachment`s for collection-less files (as before), then one `AccordionMultiloc`
-      # per non-empty collection (ordered by collection weight) nesting its files — preceded, when the
-      # collection has one, by a `TextMultiloc` block with the collection's description. A file whose
-      # collection isn't found among the project's collections falls back to the root.
+      # Root-level `FileAttachment`s for collection-less files, then one `AccordionMultiloc` per non-empty
+      # collection (ordered by weight) nesting its files. A file whose collection isn't among the
+      # project's collections falls back to the root.
       def append_file_blocks(blocks, project, process_uid)
         file_ids = file_ids_for(project)
         collections = collections_for(process_uid)
@@ -186,16 +169,14 @@ module DecidimImporter
         blocks.concat(accordions)
       end
 
-      # An H2 heading introducing the document accordions, translated for the collections' locales
-      # (falling back to the primary locale). The copy lives in the back-end locales
-      # (`decidim_importer.documents_to_consult`); it's wrapped in an `<h2>` so the rich-text block
-      # renders it as a heading.
+      # An H2 heading (`decidim_importer.documents_to_consult`) introducing the document accordions,
+      # translated for the collections' locales (falling back to the primary locale), wrapped in `<h2>`.
       def documents_heading(collections)
         locales = collections.flat_map { |collection| collection[:title].keys }.uniq.presence || [primary_locale]
         i18n_multiloc('documents_to_consult', locales: locales).transform_values { |text| "<h2>#{text}</h2>" }
       end
 
-      # An accordion's content: the collection description (a `TextMultiloc`, when present) followed by a
+      # An accordion's content: the collection description (`TextMultiloc`, when present) then a
       # `FileAttachment` per file.
       def accordion_children(collection, file_ids, index)
         children = []
@@ -274,9 +255,8 @@ module DecidimImporter
         }
       end
 
-      # A TextMultiloc text linking to the original Decidim project, in each locale the description
-      # uses (falling back to the primary locale). Nil unless `include_source_url` is on and the row
-      # carries a `url`.
+      # A TextMultiloc linking to the original Decidim project, in each locale the description uses
+      # (falling back to the primary locale). Nil unless `include_source_url` is on and the row has a `url`.
       def source_multiloc(row, description)
         return nil unless @include_source_url
 
@@ -320,12 +300,10 @@ module DecidimImporter
           .filter_map { |r| r.attributes['id'] }
       end
 
-      # The explicit ids of the files owned by this project, via the files_project ownership join —
-      # excluding files that are already attached to a specific resource (an idea, via a proposal
-      # attachment). Those belong to that resource, not the project description; surfacing them here
-      # would make the layout re-attach the file and trip `FileAttachment`'s idea-uniqueness validation.
-      # The file records are keyed by their attributes-hash *identity*, matching how `reference` links
-      # a files_project to its file (the same hash object).
+      # The explicit ids of the files owned by this project (via the files_project join), excluding files
+      # already attached to a specific resource (an idea, via a proposal attachment) — surfacing those
+      # here would re-attach the file and trip `FileAttachment`'s idea-uniqueness validation. Files are
+      # keyed by attributes-hash *identity*, matching how `reference` links a files_project to its file.
       def file_ids_for(project)
         attached = attached_file_object_ids
         files_by_attrs = {}.compare_by_identity

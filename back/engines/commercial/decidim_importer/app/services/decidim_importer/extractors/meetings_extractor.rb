@@ -2,18 +2,14 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim `meetings` components (each meeting in its own `NN---decidim--meetings--meeting--N/`
-    # subdirectory) ──▶ Go Vocal project-level `Event`.
+    # Decidim `meetings` components (one meeting per subdirectory) ──▶ Go Vocal project-level `Event`.
     #
-    # A Decidim meeting carries a title, description, a time window and a location (a free-text address
-    # plus lat/lng); Go Vocal models the equivalent as an `Event` scoped to the process's project. The
-    # map pin travels through the tenant-template pipeline as `location_point_geojson` (a GeoJSON Hash),
-    # exactly as `Idea` does — the deserializer mass-assigns it, routing through `GeoJsonHelpers`.
+    # A meeting's title, description, time window and location (address + lat/lng) map onto an `Event`
+    # scoped to the process's project. The map pin travels as `location_point_geojson` (a GeoJSON Hash),
+    # mass-assigned by the deserializer through `GeoJsonHelpers`, exactly as `Idea` does.
     #
-    # The meeting row is stamped by {ExportReader} with its owning process
-    # (`decidim_participatory_process`), so the project is looked up in the ref map. Unpublished
-    # (Decidim draft) and withdrawn meetings are skipped — events are always live. A meeting's
-    # comments/followers/registration/poll data has no Go Vocal event equivalent and is not imported;
+    # Unpublished (Decidim draft) and withdrawn meetings are skipped — events are always live. A
+    # meeting's comments/followers/registration/poll data has no event equivalent and isn't imported;
     # its attachments are handled by {Extractors::MeetingAttachmentsExtractor}.
     class MeetingsExtractor < BaseExtractor
       COLUMNS = {
@@ -83,9 +79,8 @@ module DecidimImporter
         url if url&.match?(%r{\Ahttps?://}i)
       end
 
-      # A GeoJSON point Hash `{ 'type' => 'Point', 'coordinates' => [lng, lat] }` (GeoJSON is x/y, i.e.
-      # longitude first), when both coordinates parse as numbers. Nil otherwise — most in-person meetings
-      # still carry an address even without a pin.
+      # A GeoJSON point Hash `{ 'type' => 'Point', 'coordinates' => [lng, lat] }` (GeoJSON is lng-first),
+      # when both coordinates parse as numbers. Nil otherwise.
       def location_point_geojson(row)
         lat = Float(present_value(row[COLUMNS[:latitude]]), exception: false)
         lng = Float(present_value(row[COLUMNS[:longitude]]), exception: false)

@@ -4,14 +4,10 @@ module DecidimImporter
   module Extractors
     # Decidim categories (`03---categories.csv`) ──▶ Go Vocal `InputTopic` on the process's project.
     #
-    # Each category becomes a project-scoped input topic (`title_multiloc`/`description_multiloc`),
-    # preserving the Decidim hierarchy: a category with a `parent` references the parent's input topic.
-    # Because `InputTopic` is a nested set (max depth 2) whose children resolve to an already-registered
-    # parent, rows are processed roots-first (a child's parent is always a root), so the parent exists
-    # when the child references it. Runs after the projects extractor so the project resolves.
-    #
-    # The categories CSV has no process column — the directory is the association — so the importer
-    # stamps each row with its owning process (`decidim_participatory_process`).
+    # Each becomes a project-scoped input topic, preserving the Decidim hierarchy: a category with a
+    # `parent` references the parent's input topic. `InputTopic` is a nested set (max depth 2), so rows
+    # are processed roots-first — the parent exists when a child references it. Runs after the projects
+    # extractor. The process is stamped by {ExportReader} (the CSV has no process column).
     class CategoriesExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

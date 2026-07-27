@@ -4,22 +4,15 @@ module DecidimImporter
   module Extractors
     # Decidim process attachments (`05---attachments.csv`) ──▶ Go Vocal files (the `Files::` engine).
     #
-    # Each Decidim attachment becomes two records:
-    #   * `Files::File` — the file itself (content fetched from `remote_content_url` at apply time),
-    #     carrying the Decidim description multiloc and a name built from the attachment title (with the
-    #     URL's file extension). No `title_multiloc` is set — the human-readable title *is* the name.
-    #   * `Files::FilesProject` — the ownership join placing the file in the project's file repository,
-    #     so it's available in the project's files and can be linked from the project description.
+    # Each becomes two records:
+    #   * `Files::File` — the file (content fetched from `remote_content_url` at apply time), with a name
+    #     built from the attachment title. No `title_multiloc` — the human-readable title *is* the name.
+    #   * `Files::FilesProject` — ownership join placing the file in the project's file repository.
     #
-    # The file is deliberately *not* surfaced as a project attachment (no `Files::FileAttachment` with
-    # the project as `attachable`): the Decidim attachments instead appear as links in the project's
-    # Content Builder description ({Extractors::DescriptionLayoutExtractor}, which finds a project's
-    # files through the `files_project` join).
-    #
-    # The attachments CSV has no process column — the directory is the association — so the importer
-    # stamps each row with its owning process (`decidim_participatory_process`) and the project is
-    # looked up in the ref map. If a file's URL turns out to be unreachable (or images are disabled),
-    # the importer prunes the file *and* its ownership join before deserialize
+    # Deliberately *not* surfaced as a project attachment (no `Files::FileAttachment`): the Decidim
+    # attachments instead appear as links in the Content Builder description
+    # ({Extractors::DescriptionLayoutExtractor}, which finds files through the `files_project` join).
+    # An unreachable file (or images off) is pruned with its ownership join before deserialize
     # ({Importer.prune_fileless_attachments!}).
     class FilesExtractor < BaseExtractor
       COLUMNS = {

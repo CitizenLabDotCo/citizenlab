@@ -5,12 +5,11 @@ module DecidimImporter
     # Decidim accountability results (`03---results.csv`) ──▶ Go Vocal `Idea`s in the accountability
     # component's ideation phase (the component becomes that phase via {PhaseProjector}).
     #
-    # Each result becomes an idea (author-less — results have no author) tagged with its category, in
-    # the phase registered under the component uid. A bulleted `Progress` (the percentage) + `Status`
-    # (`<name> - <description>`) block is prepended to the description. The status comes from the
-    # component's statuses (`02---statuses.csv`): the progress % is mapped to them — because a result's
-    # stored `status` and its actual `progress` can disagree — preferring the result's own status when
-    # it sits at that %. The `Progress`/`Status` labels are translatable back-end strings.
+    # Each result becomes an author-less idea tagged with its category, in the phase registered under the
+    # component uid. A bulleted `Progress` + `Status` block is prepended to the description. The status
+    # comes from the component's statuses (`02---statuses.csv`): the progress % is mapped to them —
+    # because a result's stored `status` and actual `progress` can disagree — preferring the result's own
+    # status when it sits at that %.
     class ResultsExtractor < BaseExtractor
       include IdeaAssociations
 
@@ -73,8 +72,8 @@ module DecidimImporter
       end
 
       # The description with a bulleted `Progress` + `Status` block prepended, per locale. Unchanged when
-      # the result has no progress. The trailing space after the `%` keeps the two lines from running
-      # together when the body is flattened to plain text.
+      # the result has no progress. The trailing space after `%` keeps the lines from running together
+      # when the body is flattened to plain text.
       def progress_description(row)
         description = multiloc(row[COLUMNS[:description]])
         pct = percent(row[COLUMNS[:progress]])
@@ -121,7 +120,7 @@ module DecidimImporter
       end
 
       # The translatable label per locale, always populated: a locale without its own translation falls
-      # back to the English string (rather than being dropped) so the label never renders empty.
+      # back to English so the label never renders empty.
       def label_multiloc(key, locales)
         i18n_multiloc(key, locales: locales)
       end

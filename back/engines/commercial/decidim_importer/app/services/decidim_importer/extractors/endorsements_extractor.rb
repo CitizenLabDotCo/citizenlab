@@ -2,17 +2,13 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim proposal endorsements (`10---endorsements.csv`) ──▶ Go Vocal `Reaction` (mode `up`, i.e. a
-    # "like") on the corresponding Idea.
+    # Decidim proposal endorsements (`10---endorsements.csv`) ──▶ Go Vocal `Reaction` (mode `up`, a
+    # "like") on the corresponding Idea. Runs after the proposals and users extractors.
     #
-    # Each row links an `author` to `endorsement_for` (the proposal uid). We resolve the idea from the
-    # followable and register an up-reaction; the idea's `likes_count` is then maintained by the
-    # `Reaction` counter cache. Runs after the proposals and users extractors so both resolve.
-    #
-    # A `Reaction`'s user is optional, so — like a comment — an endorsement whose author wasn't imported
-    # (filtered spam/unconfirmed) is kept author-less rather than dropped, preserving the like count. An
-    # endorsement is skipped only when its `endorsement_for` isn't an imported idea, or when it
-    # duplicates an earlier (user, idea) like (`Reaction` is unique per user + reactable + mode).
+    # A `Reaction`'s user is optional, so an endorsement whose author wasn't imported (filtered
+    # spam/unconfirmed) is kept author-less rather than dropped, preserving the like count. Skipped when
+    # its `endorsement_for` isn't an imported idea, or it duplicates an earlier (user, idea) like
+    # (`Reaction` is unique per user + reactable + mode).
     class EndorsementsExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

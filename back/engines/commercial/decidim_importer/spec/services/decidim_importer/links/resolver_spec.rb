@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DecidimImporter::ImportLinkResolver do
+RSpec.describe DecidimImporter::Links::Resolver do
   subject(:resolver) { described_class.new(ref_map) }
 
   let(:ref_map) { DecidimImporter::RefMap.new }

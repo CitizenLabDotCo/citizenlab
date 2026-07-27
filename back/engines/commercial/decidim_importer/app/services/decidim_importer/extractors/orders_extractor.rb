@@ -2,19 +2,16 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim budget orders (a budgets component's `NN---orders.csv`) ──▶ Go Vocal `Basket` (one per
-    # order) plus a `BasketsIdea` per picked project.
+    # Decidim budget orders (`NN---orders.csv`) ──▶ Go Vocal `Basket` (one per order) plus a `BasketsIdea`
+    # per picked project.
     #
-    # An order is a user's set of picks in a budget; it maps onto a basket in the component's voting
-    # phase (registered under the component uid by {PhaseProjector}). `checked_out_at` — when the user
-    # confirmed their vote — becomes the basket's `submitted_at` (blank for a still-pending order, i.e.
-    # an unsubmitted basket, which the phase's basket/vote counts then ignore). Each project uid in the
-    # order's `projects` JSON array becomes a `BasketsIdea` whose `votes` is that idea's `budget` (the
-    # cost the budgeting method charges), so the basket's total is the sum of its picks' budgets.
+    # An order maps onto a basket in the component's voting phase (registered under the component uid by
+    # {PhaseProjector}). `checked_out_at` becomes the basket's `submitted_at` (blank for a pending order,
+    # which the phase's basket/vote counts then ignore). Each project uid in the `projects` JSON array
+    # becomes a `BasketsIdea` whose `votes` is that idea's `budget`.
     #
-    # A basket needs no user (`Basket#user` is optional), so an order by a non-imported user is kept
-    # user-less. Skipped when the order's phase wasn't imported, or when it duplicates an earlier
-    # (user, phase) basket (`Basket` is unique per user + phase).
+    # `Basket#user` is optional, so an order by a non-imported user is kept user-less. Skipped when the
+    # phase wasn't imported, or it duplicates an earlier (user, phase) basket (unique per user + phase).
     class OrdersExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

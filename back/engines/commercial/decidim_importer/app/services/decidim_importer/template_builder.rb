@@ -2,15 +2,14 @@
 
 module DecidimImporter
   # Assembles the records held in a {RefMap} into a tenant-template hash
-  # (`{ 'models' => { model_name => [attributes, …] } }`) consumable by
-  # `MultiTenancy::Templates::TenantDeserializer`, and can render it as the YAML artifact.
+  # (`{ 'models' => { model_name => [attributes, …] } }`) for `MultiTenancy::Templates::TenantDeserializer`,
+  # and can render it as the YAML artifact.
   #
-  # Models are emitted in dependency order so that every `*_ref` target is created before the
-  # record that points at it (the deserializer iterates models, then records, in order and resolves
-  # refs against already-created objects).
+  # Models are emitted in dependency order so every `*_ref` target is created before its referrer (the
+  # deserializer iterates models then records in order, resolving refs against already-created objects).
   class TemplateBuilder
-    # Records that may be referenced must be listed before their referrers. Anything not listed is
-    # appended afterwards in registration order.
+    # A referenced record must be listed before its referrers. Anything unlisted is appended after, in
+    # registration order.
     MODEL_ORDER = %w[
       user
       area
@@ -46,7 +45,7 @@ module DecidimImporter
     end
 
     # @return [Hash] the template hash. NOTE: cross-record refs are shared hash *objects*, so this
-    #   structure must be deserialized (or YAML-dumped) without being deep-duplicated first.
+    #   structure must not be deep-duplicated before being deserialized (or YAML-dumped).
     def models
       grouped = @ref_map.records.group_by(&:model_name)
       ordered_names = MODEL_ORDER + (grouped.keys - MODEL_ORDER)
@@ -61,7 +60,7 @@ module DecidimImporter
       { 'models' => by_name }
     end
 
-    # The YAML artifact. Shared attribute-hash objects are emitted as YAML anchors/aliases, so
+    # The YAML artifact. Shared attribute-hash objects emit as YAML anchors/aliases, so
     # `YAML.load(yaml, aliases: true)` round-trips back to a ref-resolvable structure.
     delegate :to_yaml, to: :models
 
@@ -71,12 +70,10 @@ module DecidimImporter
       models['models'].transform_values(&:size)
     end
 
-    # Record counts grouped by the project each record belongs to, for a per-project breakdown of the
-    # dump summary. Each record is attributed to its owning project by following its `*_ref` links to a
-    # `project` record (a phase via `project_ref`, a comment via its idea, a survey field via its form's
-    # phase, …). Records with no path to a project (users, areas, scopes, folders) are grouped under
-    # `nil`. Projects keep their registration order; each project's counts follow the model dependency
-    # order, like {#model_counts}.
+    # Record counts grouped by owning project, for the dump summary's per-project breakdown. Each record
+    # is attributed to a `project` by following its `*_ref` links (a phase via `project_ref`, a comment
+    # via its idea, …). Records with no path to a project (users, areas, scopes, folders) group under
+    # `nil`. Projects keep registration order; counts follow model dependency order, like {#model_counts}.
     #
     # @return [Hash{DecidimImporter::Record, nil => Hash{String=>Integer}}]
     def counts_by_project
@@ -93,17 +90,17 @@ module DecidimImporter
 
     private
 
-    # Maps each record's attributes-hash back to the record by *object identity*, so a `*_ref` — which
-    # holds the exact same attributes-hash object as its target — can be followed to that record. The
-    # `compare_by_identity` matters: distinct records can have equal-by-value attributes.
+    # Indexes each record by its attributes-hash *object identity*, so a `*_ref` — which holds the exact
+    # same attributes-hash object as its target — can be followed to that record. `compare_by_identity`
+    # matters: distinct records can have equal-by-value attributes.
     def attributes_to_record
       index = {}.compare_by_identity
       @ref_map.records.each { |record| index[record.attributes] = record }
       index
     end
 
-    # A `Files::File` has no outgoing project ref of its own — it's tied to a project through the
-    # `files_project` join — so resolve each file's owning project up front from those joins.
+    # A `Files::File` has no project ref of its own — it's tied to a project via the `files_project`
+    # join — so resolve each file's owning project up front from those joins.
     def file_to_project_index(index)
       file_projects = {}.compare_by_identity
       @ref_map.records.each do |record|
@@ -116,8 +113,8 @@ module DecidimImporter
       file_projects
     end
 
-    # The project a record belongs to, or nil. Memoised and cycle-guarded (the memo holds nil while a
-    # record is being resolved, so a ref cycle returns nil rather than recursing forever).
+    # The project a record belongs to, or nil. Memoised and cycle-guarded: the memo holds nil while a
+    # record resolves, so a ref cycle returns nil rather than recursing forever.
     def project_for(record, index, file_projects, memo)
       return record if record.model_name == 'project'
 

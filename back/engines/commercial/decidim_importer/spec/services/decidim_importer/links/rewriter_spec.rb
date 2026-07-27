@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DecidimImporter::LinkCorrection do
+RSpec.describe DecidimImporter::Links::Rewriter do
   def text_node(html)
     { 'type' => { 'resolvedName' => 'TextMultiloc' }, 'nodes' => [],
       'props' => { 'text' => { 'en' => html } }, 'custom' => {}, 'hidden' => false,
@@ -25,7 +25,7 @@ RSpec.describe DecidimImporter::LinkCorrection do
 
   it 'rewrites a mapped content link in a layout and returns the broken one' do
     layout = layout_with('<p><a href="/processes/a">A</a> and <a href="/processes/gone">G</a></p>')
-    map = DecidimImporter::LinkMap.new({ '/processes/a' => '/projects/a' }, {}, ['/processes/gone'])
+    map = DecidimImporter::Links::Map.new({ '/processes/a' => '/projects/a' }, {}, ['/processes/gone'])
 
     broken = described_class.new(map).run
 
@@ -40,7 +40,7 @@ RSpec.describe DecidimImporter::LinkCorrection do
   it 'resolves a file link to the imported file’s real content URL' do
     file = create(:global_file)
     layout = layout_with('<a href="/blob/report.pdf">R</a>')
-    map = DecidimImporter::LinkMap.new({}, { '/blob/report.pdf' => file.id }, [])
+    map = DecidimImporter::Links::Map.new({}, { '/blob/report.pdf' => file.id }, [])
 
     described_class.new(map).run
 
@@ -51,7 +51,7 @@ RSpec.describe DecidimImporter::LinkCorrection do
   it 'rewrites mapped links in static pages too' do
     page = create(:static_page, top_info_section_enabled: true,
       top_info_section_multiloc: { 'en' => '<a href="/processes/a">A</a>' })
-    map = DecidimImporter::LinkMap.new({ '/processes/a' => '/projects/a' }, {}, [])
+    map = DecidimImporter::Links::Map.new({ '/processes/a' => '/projects/a' }, {}, [])
 
     described_class.new(map).run
 
@@ -61,17 +61,17 @@ RSpec.describe DecidimImporter::LinkCorrection do
   it 'counts the records it rewrote and leaves untouched ones out of the count' do
     layout_with('<a href="/processes/a">A</a>')  # rewritten
     layout_with('<p>no links here</p>')          # untouched
-    map = DecidimImporter::LinkMap.new({ '/processes/a' => '/projects/a' }, {}, [])
+    map = DecidimImporter::Links::Map.new({ '/processes/a' => '/projects/a' }, {}, [])
 
-    correction = described_class.new(map)
-    correction.run
+    rewriter = described_class.new(map)
+    rewriter.run
 
-    expect(correction.updated_count).to eq(1)
+    expect(rewriter.updated_count).to eq(1)
   end
 
   it 'reports no broken links when every should-be-corrected link resolves' do
     layout_with('<a href="/processes/a">A</a>')
-    map = DecidimImporter::LinkMap.new({ '/processes/a' => '/projects/a' }, {}, [])
+    map = DecidimImporter::Links::Map.new({ '/processes/a' => '/projects/a' }, {}, [])
 
     expect(described_class.new(map).run).to be_empty
   end
@@ -79,7 +79,7 @@ RSpec.describe DecidimImporter::LinkCorrection do
   it 'reads its mapping from the dumped CSV' do
     tmpdir = Dir.mktmpdir
     mapping_path = File.join(tmpdir, 'export.url_mapping.csv')
-    DecidimImporter::LinkMap.new({ '/processes/a' => '/projects/a' }, {}, []).write_csv(mapping_path)
+    DecidimImporter::Links::Map.new({ '/processes/a' => '/projects/a' }, {}, []).write_csv(mapping_path)
     layout = layout_with('<a href="/processes/a">A</a>')
 
     described_class.from_csv(mapping_path).run

@@ -3,8 +3,7 @@
 module DecidimImporter
   module Extractors
     # Shared helpers for the per-model XLSX extractors. Each subclass reads parsed rows
-    # (arrays of `{ column_header => value }` hashes, as produced by `XlsxService#xlsx_to_hash_array`)
-    # and registers {Record}s into the shared {RefMap}.
+    # (`{ column_header => value }` hashes) and registers {Record}s into the shared {RefMap}.
     class BaseExtractor
       def initialize(rows, ref_map, locale_mapper:, primary_locale: 'fr-FR')
         @rows = rows || []
@@ -18,8 +17,7 @@ module DecidimImporter
         raise NotImplementedError
       end
 
-      # Rows the extractor couldn't import, as `{ uid:, reason: }` hashes — surfaced in the dump's
-      # skip log. Lazily initialised so subclasses need no `initialize` just to seed it.
+      # Rows the extractor couldn't import, as `{ uid:, reason: }` hashes for the dump's skip log.
       def skipped
         @skipped ||= []
       end
@@ -34,9 +32,8 @@ module DecidimImporter
         nil
       end
 
-      # The ownership join placing an imported file in a project's file repository — what makes the
-      # file available to the project and linkable/attachable from it. Shared by the file and
-      # attachment extractors.
+      # The ownership join placing an imported file in a project's file repository, so it's
+      # linkable/attachable from the project. Shared by the file and attachment extractors.
       def register_files_project(uid, file, project)
         files_project = Record.new('files/files_project', {})
         files_project.reference('file', file)
@@ -44,9 +41,8 @@ module DecidimImporter
         ref_map.register("#{uid}-files-project", files_project)
       end
 
-      # Registers a custom, project-scoped `StaticPage` from title + body multilocs, with an explicit id
-      # so a Content Builder `PageLink` can reference it (refs can't reach into the JSONB blob). Shared
-      # by the pages and blogs extractors.
+      # Registers a custom, project-scoped `StaticPage` with an explicit id so a Content Builder
+      # `PageLink` can reference it (refs can't reach into the JSONB blob). Shared by pages and blogs.
       def register_static_page(uid, project, title:, body:, created_at: nil, updated_at: nil)
         attributes = {
           'id' => SecureRandom.uuid,
@@ -62,15 +58,14 @@ module DecidimImporter
         ref_map.register(uid, page)
       end
 
-      # A multiloc translation of a `decidim_importer.<key>` back-end string across `locales`, with the
-      # framework's English fallback for locales that have no translation yet.
+      # A multiloc translation of a `decidim_importer.<key>` back-end string, with English fallback
+      # for locales with no translation yet.
       def i18n_multiloc(key, locales:)
         MultilocService.new.i18n_to_multiloc("decidim_importer.#{key}", locales: locales, raise_on_missing: false)
       end
 
-      # Builds a multiloc from a cell. Decidim stores multilocs either as a JSON object
-      # (`{"fr":"…","en":"…"}`) in a single cell or as plain text in the platform's primary locale.
-      # Locale codes are mapped onto Go Vocal codes.
+      # Builds a multiloc from a cell. Decidim stores multilocs as a JSON object (`{"fr":"…"}`) or as
+      # plain text in the primary locale. Locale codes are mapped onto Go Vocal codes.
       def multiloc(value)
         return {} if value.nil? || value.to_s.strip.empty?
 
@@ -90,8 +85,7 @@ module DecidimImporter
         Parsing.truthy?(value)
       end
 
-      # The download filename for an attachment: the URL's percent-decoded basename (extension kept),
-      # or the given `fallback` (usually the attachment title) when the URL has no usable basename.
+      # The download filename: the URL's percent-decoded basename, or `fallback` when the URL has none.
       def filename_from_url(url, fallback)
         basename = File.basename(URI.parse(url.to_s).path.to_s)
         decoded = CGI.unescape(basename)
@@ -101,10 +95,8 @@ module DecidimImporter
         present_value(fallback)
       end
 
-      # An imported file's name: the first locale of the Decidim title, with the URL's file extension
-      # appended unless the title already carries it (e.g. "Compte-rendu" + ".pdf" → "Compte-rendu.pdf";
-      # "schema.pdf" stays "schema.pdf"). Falls back to the URL's own basename when there is no title.
-      # Nil when neither yields a name.
+      # An imported file's name: the first locale of the Decidim title with the URL's extension appended
+      # unless already present. Falls back to the URL's basename when there's no title; nil if neither.
       def attachment_name(url, title_multiloc)
         title = present_value(title_multiloc.values.first)
         return filename_from_url(url, nil) if title.nil?
@@ -124,8 +116,8 @@ module DecidimImporter
         Parsing.present_value(value)
       end
 
-      # Decidim timestamps come through as strings or Time-like values; normalise to a string the
-      # deserializer assigns verbatim. Returns nil for blanks.
+      # Normalise a Decidim timestamp (string or Time-like) to a string the deserializer assigns
+      # verbatim. Nil for blanks.
       def timestamp(value)
         return nil if value.nil?
         return value.to_s if value.respond_to?(:strftime)

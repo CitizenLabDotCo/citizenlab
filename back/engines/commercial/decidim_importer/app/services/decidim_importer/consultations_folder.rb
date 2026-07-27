@@ -1,26 +1,24 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Post-import step (runs in the target tenant, after the template has been applied): gathers every
-  # top-level project — i.e. one not already in a folder/group — into a new "Consultations" folder,
-  # gives every folder (Consultations, Assemblies and the imported group folders) the standard folder
-  # description layout plus a homepage preview description, adds a widget to the Consultations folder
-  # linking out to the other folders (except Assemblies), and rebuilds the navigation bar down to Home
+  # Post-import step (runs in the target tenant, after the template is applied): gathers every
+  # top-level project (not already in a folder/group) into a new "Consultations" folder, gives every
+  # folder the standard description layout plus a homepage preview, adds a widget to the Consultations
+  # folder linking out to the other folders (except Assemblies), and rebuilds the nav bar down to Home
   # plus the Consultations and Assemblies folders.
   #
-  # It runs after the import rather than in the template because folder layouts and the nav bar
-  # reference ids that only exist once the template is applied. Idempotent: re-running reuses the
-  # existing folder, moves any remaining top-level projects, and leaves already-built layouts,
-  # previews and nav items in place.
+  # Runs post-import because folder layouts and nav bar reference ids that only exist once the template
+  # is applied. Idempotent: re-running reuses the existing folder, moves any remaining top-level
+  # projects, and leaves already-built layouts, previews and nav items in place.
   class ConsultationsFolder
     FOLDER_TITLE = 'Consultations'
     FOLDER_SLUG = 'consultations'
-    # The Assemblies folder is created during the import (its title comes from
-    # {ExportReader::ASSEMBLIES_FOLDER_TITLE}), so we locate it by the slug that title slugifies to.
+    # Assemblies folder is created during import (title from {ExportReader::ASSEMBLIES_FOLDER_TITLE});
+    # located here by the slug that title slugifies to.
     ASSEMBLIES_FOLDER_SLUG = 'assemblies'
     FOLDER_LAYOUT_CODE = 'project_folder_description'
-    # Stable craftjs node id for the Consultations folder's "other folders" Selection widget, so
-    # re-running replaces it in place rather than appending a duplicate.
+    # Stable craftjs node id for the "other folders" Selection widget, so re-running replaces it in
+    # place rather than appending a duplicate.
     OTHER_FOLDERS_NODE_ID = 'other-folders-selection'
     # Homepage card previews are short; keep them to a sentence-ish length, broken on a word boundary.
     PREVIEW_LENGTH = 280
@@ -48,16 +46,16 @@ module DecidimImporter
       AppConfiguration.instance.settings('core', 'locales').index_with { FOLDER_TITLE }
     end
 
-    # Every project not already inside a folder (its admin publication has no parent) moves under the
-    # folder. Captured before moving, since reparenting sets their `parent_id`. Returns the moved projects.
+    # Every project not already in a folder (admin publication has no parent) moves under the folder.
+    # Captured before moving, since reparenting sets `parent_id`. Returns the moved projects.
     def move_top_level_projects_into(folder)
       projects = Project.joins(:admin_publication).where(admin_publications: { parent_id: nil }).to_a
       projects.each { |project| project.update!(folder_id: folder.id) }
       projects
     end
 
-    # Gives every folder the platform's standard description layout — folder title, description text
-    # and a `Published`-projects widget listing the folder's projects — and a homepage card preview.
+    # Gives every folder the standard description layout (title, description, `Published`-projects
+    # widget) plus a homepage card preview.
     def provision_folders
       ProjectFolders::Folder.find_each do |folder|
         ContentBuilder::DescriptionLayoutService.new.provision_for(folder)
@@ -65,8 +63,8 @@ module DecidimImporter
       end
     end
 
-    # Sets the folder's homepage card description (`description_preview_multiloc`) when it has none:
-    # a plain-text lead from the folder description, falling back to its title.
+    # Sets `description_preview_multiloc` when absent: a plain-text lead from the description, falling
+    # back to the title.
     def ensure_homepage_description(folder)
       return if multiloc_present?(folder.description_preview_multiloc)
 
@@ -89,10 +87,9 @@ module DecidimImporter
       multiloc.is_a?(Hash) && multiloc.values.any?(&:present?)
     end
 
-    # The Consultations folder is the catch-all landing folder, so on top of its own projects (the
-    # `Published` widget) it links out to every other folder — except Assemblies, which reaches users
-    # through its own nav bar item. We add a `Selection` widget listing those folders to its standard
-    # layout, replacing any earlier one so re-running stays idempotent.
+    # The catch-all landing folder links out to every other folder except Assemblies (which has its
+    # own nav bar item), via a `Selection` widget added to its standard layout. Replaces any earlier
+    # one so re-running stays idempotent.
     def link_other_folders_from(consultations_folder)
       layout = ContentBuilder::Layout.find_by(content_buildable: consultations_folder, code: FOLDER_LAYOUT_CODE)
       return unless layout
@@ -117,8 +114,8 @@ module DecidimImporter
         .order(:ordering).pluck(:id).map(&:to_s)
     end
 
-    # An empty `titleMultiloc` lets the widget fall back to its built-in "Selected projects and
-    # folders" heading, so no untranslated copy is introduced here.
+    # Empty `titleMultiloc` lets the widget use its built-in "Selected projects and folders" heading,
+    # avoiding untranslated copy here.
     def selection_node(admin_publication_ids)
       {
         'type' => { 'resolvedName' => 'Selection' }, 'nodes' => [],
@@ -128,9 +125,9 @@ module DecidimImporter
       }
     end
 
-    # Rebuilds the nav bar to just Home, the Consultations folder and (when it exists) the Assemblies
-    # folder — every other default item (Projects, Events, All input, …) is removed so the imported
-    # tenant navigates purely through the two folders.
+    # Rebuilds the nav bar to just Home, Consultations and (when it exists) Assemblies — every other
+    # default item (Projects, Events, All input, …) is removed so the tenant navigates through the two
+    # folders.
     def configure_nav_bar(consultations_folder)
       kept = [consultations_folder, assemblies_folder].compact.map { |folder| folder_nav_item(folder) }
       NavBarItem.top_level.where.not(code: 'home').where.not(id: kept.map(&:id)).destroy_all

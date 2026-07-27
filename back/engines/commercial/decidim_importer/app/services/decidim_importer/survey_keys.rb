@@ -2,15 +2,15 @@
 
 module DecidimImporter
   # Deterministic Go Vocal `CustomField` keys derived from Decidim question/option/matrix-row
-  # references, shared by {Extractors::SurveysExtractor} (which builds the form) and
-  # {Extractors::SurveyResponsesExtractor} (which builds `custom_field_values` for each response).
-  # Both must agree on the key for a given reference, so the response can address the field/option the
-  # form created — without threading the form records between the two passes.
+  # references, shared by {Extractors::SurveysExtractor} (builds the form) and
+  # {Extractors::SurveyResponsesExtractor} (builds `custom_field_values`). Both must agree on a
+  # reference's key so responses address the fields the form created, without threading form records
+  # between the two passes.
   #
-  # Decidim references come in two shapes across export versions: a bare numeric id (older exports) and
-  # a `decidim--forms--question--46` UID (newer exports). Both reduce to the same trailing number, so
-  # `question--46` and `46` both key to `field_46`. The result is always `/\A[a-zA-Z0-9_]+\z/`, which
-  # the `CustomField` key format requires (the raw UID's dashes would be rejected).
+  # References come in two shapes: a bare numeric id (older) and a `decidim--forms--question--46` UID
+  # (newer). Both reduce to the same trailing number, so `question--46` and `46` both key to
+  # `field_46`. The result is always `/\A[a-zA-Z0-9_]+\z/`, as the `CustomField` key format requires
+  # (the raw UID's dashes would be rejected).
   module SurveyKeys
     module_function
 

@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe DecidimImporter::LinkMap do
+RSpec.describe DecidimImporter::Links::Map do
   # A corrector stub whose decisions are wired per URL.
   def corrector(decisions)
-    instance_double(DecidimImporter::LinkCorrector).tap do |double|
+    instance_double(DecidimImporter::Links::Corrector).tap do |double|
       allow(double).to receive(:resolve) { |url| decisions[url] }
     end
   end

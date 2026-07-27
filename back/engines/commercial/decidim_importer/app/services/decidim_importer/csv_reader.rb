@@ -3,9 +3,8 @@
 require 'csv'
 
 module DecidimImporter
-  # Parses a Decidim CSV export file into an array of `{ header => value }` hashes — the same
-  # shape the extractors consume. Decidim emits standard RFC4180 CSV with JSON-encoded multiloc and
-  # nested-attribute cells, so the stdlib reader is enough.
+  # Parses a Decidim CSV export into an array of `{ header => value }` hashes (what extractors consume).
+  # Decidim emits standard RFC4180 CSV with JSON-encoded cells, so the stdlib reader suffices.
   module CsvReader
     module_function
 

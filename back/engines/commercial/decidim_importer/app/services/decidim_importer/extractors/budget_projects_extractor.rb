@@ -2,13 +2,12 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim budget projects (a budgets component's `NN---projects.csv`) ──▶ Go Vocal `Idea`s in the
-    # component's voting phase (the component becomes that phase via {PhaseProjector}).
+    # Decidim budget projects (`NN---projects.csv`) ──▶ Go Vocal `Idea`s in the component's voting phase
+    # (the component becomes that phase via {PhaseProjector}).
     #
-    # Each budget project becomes an author-less idea (budget projects carry no author) tagged with its
-    # category, in the phase registered under the component uid. Its `budget_amount` becomes the idea's
-    # `budget` — the per-idea cost the budgeting voting method charges a basket that picks it. Rows are
-    # stamped by {ExportReader} with their owning process + budgets component uid.
+    # Each becomes an author-less idea (budget projects carry no author) tagged with its category, in the
+    # phase registered under the component uid. `budget_amount` becomes the idea's `budget` — the cost
+    # the budgeting voting method charges a basket that picks it.
     class BudgetProjectsExtractor < BaseExtractor
       include IdeaAssociations
 

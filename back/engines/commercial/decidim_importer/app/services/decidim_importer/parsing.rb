@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 module DecidimImporter
-  # Small parsing helpers shared by the non-extractor mappers (organization → app config,
-  # extra-user-fields → custom fields). The extractors keep their own copies on {BaseExtractor};
-  # these mirror that behaviour for code that doesn't subclass it. Mixed in as private instance
-  # methods or called on the module directly.
+  # Parsing helpers for the non-extractor mappers (app config, custom fields), mirroring
+  # {BaseExtractor}'s own copies for code that doesn't subclass it. Mixed in or called on the module.
   module Parsing
     module_function
 
-    # Cell values treated as boolean true — includes the checkbox-style `x`/`checked` some Decidim
-    # exports use, so extractors and the non-extractor mappers agree on truthiness.
+    # Cell values treated as boolean true, including the checkbox-style `x`/`checked` some Decidim
+    # exports use.
     TRUE_VALUES = %w[1 true t yes y x checked].freeze
 
     # Parses a JSON object/array cell, returning the Ruby value or nil for blanks / non-JSON.

@@ -2,19 +2,17 @@
 
 module DecidimImporter
   module Extractors
-    # Shared base for the extractors that turn Decidim attachments into Go Vocal file attachments on an
-    # imported resource. Each attachment (identical CSV shape across sources) becomes three records:
-    #   * `Files::File` — the file itself (content fetched from `remote_content_url` at apply time).
-    #   * `Files::FilesProject` — the ownership join placing the file in the resource's project, which
-    #     the attachment validation (`validate_file_belongs_to_project`) requires.
-    #   * `Files::FileAttachment` — the polymorphic attachment surfacing the file on the resource, with
-    #     `position` from the Decidim weight.
+    # Shared base for extractors turning Decidim attachments into Go Vocal file attachments on an
+    # imported resource. Each attachment becomes three records:
+    #   * `Files::File` — the file (content fetched from `remote_content_url` at apply time).
+    #   * `Files::FilesProject` — ownership join in the resource's project, required by the attachment
+    #     validation (`validate_file_belongs_to_project`).
+    #   * `Files::FileAttachment` — the polymorphic attachment surfacing the file, `position` from weight.
     #
-    # A subclass declares, via `attaches_to`, which imported resource the row's `attached_to` uid must
-    # resolve to. The process stamp gives the project. Runs after the resource's own extractor so both
-    # resolve. Skipped when the resource wasn't imported, the file has no URL, or no filename can be
-    # derived. An unreachable file (or images off) is pruned with its join/attachment before deserialize
-    # ({Importer.prune_fileless_attachments!}).
+    # A subclass declares via `attaches_to` which resource the row's `attached_to` uid resolves to. Runs
+    # after that resource's extractor. Skipped when the resource wasn't imported, the file has no URL, or
+    # no filename can be derived. An unreachable file (or images off) is pruned with its join/attachment
+    # before deserialize ({Importer.prune_fileless_attachments!}).
     class AttachmentExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

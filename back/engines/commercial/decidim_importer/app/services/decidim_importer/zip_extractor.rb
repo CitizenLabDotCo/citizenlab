@@ -4,9 +4,9 @@ require 'zip'
 require 'fileutils'
 
 module DecidimImporter
-  # Unzips a Decidim CSV export. Decidim wraps everything in a single `<host>--<timestamp>/`
-  # directory containing the per-model CSV files (plus a `participatory-processes/` subfolder), so
-  # after extraction we look one level down for the directory that actually holds the CSVs.
+  # Unzips a Decidim CSV export. Decidim wraps everything in a single `<host>--<timestamp>/` directory
+  # holding the per-model CSVs, so after extraction we look one level down for the directory with the
+  # CSVs.
   module ZipExtractor
     module_function
 

@@ -4,15 +4,10 @@ module DecidimImporter
   module Extractors
     # Decidim `pages` components ──▶ Go Vocal project-level `StaticPage`.
     #
-    # A Decidim page is a single block of rich text — the `body` multiloc inside the component
-    # manifest's `specific_data` — scoped to a participatory process. Go Vocal models the equivalent
-    # as a custom, project-scoped static page: the component name becomes the page title and the page
-    # body its top info section, attached to the process's project via `project_ref`.
-    #
-    # The component CSV is stamped by the importer with its owning process
-    # (`decidim_participatory_process`) — the directory is the association — so the project is looked
-    # up in the ref map. Unpublished pages (Decidim drafts) are skipped: static pages are always live,
-    # so importing a draft would publish unreviewed content.
+    # A Decidim page is a single block of rich text (the `body` multiloc in the component's
+    # `specific_data`). It becomes a custom, project-scoped static page: the component name becomes the
+    # page title and the body its top info section. Unpublished pages (Decidim drafts) are skipped —
+    # static pages are always live, so importing a draft would publish unreviewed content.
     class StaticPagesExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

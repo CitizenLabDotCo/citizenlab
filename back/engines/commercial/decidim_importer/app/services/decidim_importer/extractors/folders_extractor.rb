@@ -2,13 +2,12 @@
 
 module DecidimImporter
   module Extractors
-    # Decidim participatory process groups (`participatory-processes/01--participatory-process-groups.csv`)
-    # ──▶ Go Vocal `ProjectFolders::Folder`.
+    # Decidim participatory process groups (`01--participatory-process-groups.csv`) ──▶ Go Vocal
+    # `ProjectFolders::Folder`.
     #
-    # Each folder carries a nested `admin_publication_attributes` hash that projects placed inside
-    # it reference via `parent_attributes_ref`. Decidim process groups are a single-level list, so
-    # no hierarchy flattening is needed; the `metadata` JSON column (hashtag, group_url, scope
-    # descriptors) is not yet mapped — folder semantics on GV don't carry the same fields.
+    # Each folder's nested `admin_publication_attributes` hash is referenced by projects placed inside it
+    # via `parent_attributes_ref`. Process groups are single-level, so no hierarchy flattening; the
+    # `metadata` JSON column (hashtag, group_url, scopes) is not mapped — no GV folder equivalent.
     class FoldersExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',

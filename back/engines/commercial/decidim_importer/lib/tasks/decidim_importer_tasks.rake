@@ -2,53 +2,29 @@
 
 require 'csv'
 
-# Two-step workflow — dump, then import the dumped file:
+# Two-step workflow: `dump_yaml` reads a Decidim export (zip or dir) and writes the artifacts
+# (`.template.yml` + `.app_config.json` + `.url_mapping.csv`) — it never touches a tenant; `import`
+# applies them to the tenant matching `host`. `verify` dry-runs a dumped template on a throwaway tenant.
+#
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR]
-#     → writes tmp/import_files/example.com.template.yml + .app_config.json + .url_mapping.csv
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
+#   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]
 #
-# `import` refuses to run unless the `decidim_importer` feature is enabled for the target host — a
-# per-tenant safety gate so a large import can't be applied to the wrong tenant by accident. The
-# feature is off on every tenant by default; enable it for the target host in admin HQ first.
-#
-# `import` deserializes the template into the tenant, then runs the post-import finishing that needs
-# the applied tenant (real ids):
-#   1. reads the `.url_mapping.csv` dumped alongside the template (old Decidim URL → new target) and
-#      rewrites the links embedded in the tenant's Content Builder layouts and static pages — file
-#      links resolve to the imported file's real content URL (see {DecidimImporter::LinkCorrection}).
-#      Links that should be repointed but couldn't be resolved are written to `<base>.broken_links.csv`
-#      for manual review.
-#   2. gathers every top-level (ungrouped) project into a new "Consultations" folder, gives every folder
-#      (Consultations, Assemblies and the imported group folders) the standard folder description layout
-#      (title + description + a published-projects widget) and a homepage preview description, adds a
-#      widget to the Consultations folder linking out to the other folders (except Assemblies), and
-#      rebuilds the nav bar down to Home plus the Consultations and Assemblies folders (dropping the
-#      default items). See {DecidimImporter::ConsultationsFolder}.
-#
-# Dry-run a dumped template on a throwaway tenant that's created then destroyed:
-#   rake decidim_importer:verify[tmp/import_files/example.com.template.yml]
-#   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]  # tenant locales
-#
-# `dump_yaml` takes a Decidim export (zip or unzipped dir) and only writes files — it never touches
-# a tenant. `import` and `verify` both consume the dumped tenant-template YAML: `import` deserializes
-# it into the tenant matching `host` (its 3rd argument disables image fetching, for templates whose
-# `remote_*_url` values point at an unreachable host, e.g. the source Decidim's `http://localhost/...`
-# redirects) and then runs the finishing steps above; `verify` deserializes it into a fresh throwaway
-# tenant and destroys it afterwards, so a template can be smoke-tested without touching a real tenant.
-#
-# `dump_yaml` also writes `<base>.app_config.json` — the subset of `01--organization.csv` that maps
-# onto Go Vocal AppConfiguration settings. `import` looks for that sibling file (same base name,
-# `.template.yml` → `.app_config.json`) and merges it into the tenant's AppConfiguration *before*
-# applying the template, so the tenant's locales/branding are in place for the imported records.
+# `import` refuses to run unless the `decidim_importer` feature is enabled for the target host (a
+# per-tenant safety gate, off by default — enable it in admin HQ). It applies the `.app_config.json`
+# (locales/branding) first, deserializes the template, then finishes by rewriting embedded Decidim
+# links via the `.url_mapping.csv` (unresolved ones → `<base>.broken_links.csv`) and building the
+# Consultations/Assemblies folder structure. The 3rd arg disables image fetching (for templates whose
+# `remote_*_url`s point at an unreachable host).
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
   task :dump_yaml, %i[path primary_locale production include_source_url] => [:environment] do |_t, args|
     path = args.fetch(:path)
-    # Default to anonymising user names + emails; pass `production=true` to keep the real values.
+    # `production=true` keeps real user names/emails; otherwise they're anonymised.
     production = args[:production].to_s.strip.downcase == 'true'
-    # Pass `include_source_url=true` to prepend a link back to each project's original Decidim URL.
+    # `include_source_url=true` prepends a link back to each project's original Decidim URL.
     include_source_url = args[:include_source_url].to_s.strip.downcase == 'true'
     importer = build_importer(
       path, primary_locale: args[:primary_locale] || 'fr-FR', anonymize_users: !production,
@@ -88,16 +64,13 @@ namespace :decidim_importer do
     file = args.fetch(:file)
     import_images = args[:import_images].to_s.downcase != 'false'
 
-    # Safety gate: the import only runs against a host that has explicitly opted in via the
-    # `decidim_importer` feature, so a large import can't be applied to the wrong tenant by accident.
     ensure_import_enabled!(tenant)
-
     json = app_config_sibling(file)
 
     Rails.logger.info "Decidim import → tenant=#{tenant.host} file=#{file} import_images=#{import_images}"
     broken = []
     tenant.switch do
-      # App config first: it sets the tenant's locales, which the template's records rely on.
+      # App config first — it sets the tenant's locales, which the template's records rely on.
       if DecidimImporter::Importer.apply_app_config_file(json, import_images: import_images)
         Rails.logger.info "  applied app config from #{json}"
       else
@@ -112,43 +85,11 @@ namespace :decidim_importer do
     Rails.logger.info 'COMPLETE'
   end
 
-  # Aborts the import unless the target tenant has opted in via the `decidim_importer` feature (toggled
-  # through admin HQ). A per-tenant safety gate so a large import can't be applied to the wrong tenant.
-  def ensure_import_enabled!(tenant)
-    return if tenant.switch { AppConfiguration.instance.feature_activated?('decidim_importer') }
-
-    abort "Refusing to import: the 'decidim_importer' feature is not enabled for #{tenant.host}. " \
-          'Enable it for this host in admin HQ first, after confirming it is the right tenant.'
-  end
-
-  # Post-import finishing, run inside the target tenant after the template is applied: correct the
-  # embedded Decidim links (when a mapping was dumped), then build the Consultations/Assemblies folder
-  # structure. Returns the broken links for the report CSV.
-  def finalize_import!(file)
-    mapping_path = url_mapping_path(file)
-    broken =
-      if File.exist?(mapping_path)
-        correction = DecidimImporter::LinkCorrection.from_csv(mapping_path)
-        result = correction.run
-        Rails.logger.info "  rewrote links in #{correction.updated_count} record(s)"
-        result
-      else
-        Rails.logger.info "  no URL mapping at #{mapping_path} → skipping link correction"
-        []
-      end
-
-    consultations = DecidimImporter::ConsultationsFolder.new.run
-    Rails.logger.info "  Consultations folder #{consultations[:folder].slug}: " \
-                      "moved #{consultations[:moved_projects].size} project(s) in"
-    broken
-  end
-
   desc 'Applies a dumped template YAML to a throwaway tenant to confirm it deserializes, then destroys it.'
   task :verify, %i[file locales import_images] => [:environment] do |_t, args|
     file = args.fetch(:file)
     locales = (args[:locales] || 'fr-FR,en').split(/[,\s]+/).compact_blank.uniq
-    # Images are skipped by default (verification is about structure); pass import_images=true to also
-    # exercise the image-fetching path (reachable images are downloaded, unreachable ones pruned).
+    # Images are skipped by default (verification is about structure); `import_images=true` fetches them.
     import_images = args[:import_images].to_s.strip.downcase == 'true'
 
     name = "decidim-verify-#{SecureRandom.hex(4)}"
@@ -158,10 +99,8 @@ namespace :decidim_importer do
     ) }.with_indifferent_access
 
     puts "Decidim verify → throwaway tenant=#{host} locales=#{locales.join(',')} file=#{file}"
-    # Build the throwaway tenant from the `base` template (applied synchronously), so it carries the
-    # standard idea statuses (and other defaults) a real tenant has — the imported proposals resolve
-    # against those, exactly as they would on a real host. The locales must include the base template's
-    # (`en`), which the default `fr-FR,en` covers.
+    # Build from the `base` template (applied sync) so the tenant carries the standard idea statuses etc.
+    # a real tenant has. Locales must include the base template's `en`, which the `fr-FR,en` default covers.
     success, tenant, = MultiTenancy::TenantService.new
       .initialize_with_template({ name: name, host: host }, config_attrs, 'base', apply_template_sync: true)
     raise "failed to create throwaway tenant #{host}" unless success
@@ -177,9 +116,38 @@ namespace :decidim_importer do
     end
   end
 
-  # Logs how many of each model the built template will create — the overall total, then the same
-  # broken down per project (the project's title as a header), then a final shared bucket for records
-  # not tied to a project (users, areas, scopes, folders).
+  # Aborts the import unless the target tenant has the `decidim_importer` feature on (safety gate,
+  # toggled in admin HQ).
+  def ensure_import_enabled!(tenant)
+    return if tenant.switch { AppConfiguration.instance.feature_activated?('decidim_importer') }
+
+    abort "Refusing to import: the 'decidim_importer' feature is not enabled for #{tenant.host}. " \
+          'Enable it for this host in admin HQ first, after confirming it is the right tenant.'
+  end
+
+  # Post-import finishing (in the tenant): rewrite embedded Decidim links (when a mapping exists), then
+  # build the Consultations/Assemblies folder structure. Returns the broken links for the report.
+  def finalize_import!(file)
+    mapping_path = url_mapping_path(file)
+    broken =
+      if File.exist?(mapping_path)
+        rewriter = DecidimImporter::Links::Rewriter.from_csv(mapping_path)
+        result = rewriter.run
+        Rails.logger.info "  rewrote links in #{rewriter.updated_count} record(s)"
+        result
+      else
+        Rails.logger.info "  no URL mapping at #{mapping_path} → skipping link correction"
+        []
+      end
+
+    consultations = DecidimImporter::ConsultationsFolder.new.run
+    Rails.logger.info "  Consultations folder #{consultations[:folder].slug}: " \
+                      "moved #{consultations[:moved_projects].size} project(s) in"
+    broken
+  end
+
+  # Logs the record counts the built template will create: overall, then per project, then a shared
+  # bucket for records not tied to a project.
   def log_model_summary(builder)
     counts = builder.model_counts
     Rails.logger.info "Template will create #{counts.values.sum} records:"
@@ -208,15 +176,14 @@ namespace :decidim_importer do
     (title.is_a?(Hash) && title.values.find(&:present?)) || '(untitled project)'
   end
 
-  # The app-config JSON `dump_yaml` writes beside the template: same base name, with the
-  # `.template.yml` suffix swapped for `.app_config.json` (falls back to swapping a plain `.yml`).
+  # `<base>.app_config.json` beside the template (its `.template.yml`/`.yml` suffix swapped).
   def app_config_sibling(yaml_file)
     candidate = yaml_file.sub(/\.template\.yml\z/i, '.app_config.json')
     candidate = yaml_file.sub(/\.ya?ml\z/i, '.app_config.json') if candidate == yaml_file
     candidate
   end
 
-  # Picks the appropriate Importer factory based on whether `path` is a zip file or a directory.
+  # Picks the Importer factory by whether `path` is a zip file or a directory.
   def build_importer(path, **opts)
     if File.directory?(path)
       DecidimImporter::Importer.from_directory(path, **opts)
@@ -227,8 +194,7 @@ namespace :decidim_importer do
     end
   end
 
-  # Writes the importer's app-config patch next to the input as `<base>.app_config.json`, unless the
-  # export has no organization file (patch empty).
+  # Writes the app-config patch as `<base>.app_config.json` (skipped when the export has no org file).
   def write_app_config_json(importer, input_path)
     patch = importer.app_config_patch
     if patch.empty?
@@ -241,8 +207,8 @@ namespace :decidim_importer do
     Rails.logger.info "Wrote #{json_path}"
   end
 
-  # Writes the old→new link mapping next to the input as `<base>.url_mapping.csv` (unless there are no
-  # correctable links). Applied to the tenant during the `import` task's post-import finishing.
+  # Writes the old→new link mapping as `<base>.url_mapping.csv` (skipped when there are none), applied
+  # to the tenant during `import`'s finishing.
   def write_url_mapping_csv(importer, input_path)
     map = importer.link_map
     if map.empty?
@@ -255,8 +221,8 @@ namespace :decidim_importer do
     Rails.logger.info "Wrote #{csv_path} (#{map.resolved_count} mapped, #{map.broken.size} broken)"
   end
 
-  # The URL-mapping CSV beside a template path: the path itself when a `.csv` is given, else the
-  # template path with its `.template.yml` (or plain `.yml`) suffix swapped for `.url_mapping.csv`.
+  # The URL-mapping CSV for a path: the path itself if a `.csv`, else the template path with its
+  # `.template.yml`/`.yml` suffix swapped for `.url_mapping.csv`.
   def url_mapping_path(arg)
     return arg if arg.downcase.end_with?('.csv')
 
@@ -264,8 +230,7 @@ namespace :decidim_importer do
     candidate == arg ? arg.sub(/\.ya?ml\z/i, '.url_mapping.csv') : candidate
   end
 
-  # Writes the unresolved ("broken") links beside the mapping as `<base>.broken_links.csv`; no-op when
-  # there are none.
+  # Writes the unresolved links as `<base>.broken_links.csv` (no-op when there are none).
   def write_broken_links_csv(mapping_path, broken)
     if broken.empty?
       Rails.logger.info '  no broken links'
@@ -282,9 +247,8 @@ namespace :decidim_importer do
     Rails.logger.warn "Wrote #{path} (#{broken.size} broken link occurrence(s))"
   end
 
-  # Drops the input's extension and appends `.<suffix>`, keeping the same parent directory.
-  # `/tmp/example.zip`, 'template.yml' => `/tmp/example.template.yml`; a directory `/tmp/example`
-  # keeps its name.
+  # Swaps the input's extension for `.<suffix>`, keeping the parent dir. `/tmp/x.zip`,'template.yml'
+  # → `/tmp/x.template.yml`; a directory keeps its name.
   def output_path(input_path, suffix)
     normalized = input_path.chomp('/')
     parent = File.dirname(normalized)

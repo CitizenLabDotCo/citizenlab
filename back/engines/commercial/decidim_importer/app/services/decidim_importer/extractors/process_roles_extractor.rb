@@ -4,14 +4,11 @@ module DecidimImporter
   module Extractors
     # Decidim `participatory_process_user_roles` ──▶ deferred moderator-role assignments.
     #
-    # Project-scoped roles live in Go Vocal's JSONB `roles` array, which can't carry a template ref
-    # to a not-yet-created project. So this extractor doesn't register template records; it returns
-    # plain assignment tuples that {RoleAssigner} applies *after* deserialization, once project ids
-    # exist.
+    # Project-scoped roles live in Go Vocal's JSONB `roles` array, which can't carry a template ref to a
+    # not-yet-created project. So this returns plain assignment tuples that {RoleAssigner} applies *after*
+    # deserialization, once project ids exist.
     #
-    # NOTE: columns are still assumed — the user-roles CSV isn't part of the first sample export.
-    # The user/process columns are expected to be Decidim uids (`decidim-user-…`,
-    # `decidim-participatoryprocess-…`).
+    # NOTE: columns are still assumed — the user-roles CSV isn't in the first sample export.
     class ProcessRolesExtractor < BaseExtractor
       COLUMNS = {
         user: 'decidim_user',

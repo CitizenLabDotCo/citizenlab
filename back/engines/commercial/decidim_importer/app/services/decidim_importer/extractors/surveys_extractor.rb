@@ -5,15 +5,13 @@ module DecidimImporter
     # Decidim surveys component ──▶ Go Vocal native-survey form: a `CustomForm` bound to the survey
     # phase, plus a `CustomField` per question (and `CustomFieldOption`s for choice/ranking questions).
     #
-    # The export carries no survey *responses*, so only the form is rebuilt. The native-survey phase
-    # itself is created by {PhaseProjector} (registered under the component uid); this extractor hangs
-    # the form off it. A Go Vocal survey form opens with a start `page` and closes with an end `page`
-    # (mirroring `ParticipationMethod::NativeSurvey#default_fields`), with the questions in between.
+    # The native-survey phase is created by {PhaseProjector} (registered under the component uid); this
+    # extractor hangs the form off it. The form opens with a start `page` and closes with an end `page`
+    # (mirroring `ParticipationMethod::NativeSurvey#default_fields`), questions in between.
     #
-    # `matrix_single` questions become `matrix_linear_scale` fields (answer options → scale points,
-    # rows → matrix statements); because the export omits the row *text*, the rows are imported as
-    # placeholders to relabel. Question types with no faithful native-survey equivalent (e.g.
-    # `matrix_multiple`) are skipped and logged rather than dropped silently.
+    # `matrix_single` questions become `matrix_linear_scale` fields; because the export omits the row
+    # *text*, rows are imported as placeholders to relabel. Question types with no native-survey
+    # equivalent (e.g. `matrix_multiple`) are skipped and logged rather than dropped silently.
     class SurveysExtractor < BaseExtractor
       QUESTION_TYPE_TO_INPUT_TYPE = {
         'short_answer' => 'text',
@@ -80,10 +78,9 @@ module DecidimImporter
         true
       end
 
-      # Decidim `matrix_single` → Go Vocal `matrix_linear_scale`: the answer options become the scale
-      # points (labels + `maximum`), and the rows become matrix statements. The export omits the row
-      # *text* (only a `matrix_rows_count`), so the rows are created as placeholders for an admin to
-      # relabel once the real row content is available.
+      # Decidim `matrix_single` → `matrix_linear_scale`: answer options become the scale points (labels +
+      # `maximum`), rows become matrix statements. The export omits the row *text* (only a
+      # `matrix_rows_count`), so rows are created as placeholders for an admin to relabel.
       def register_matrix_question(form, component_uid, question, ordering)
         columns = Array(question['answer_options'])
         unless LINEAR_SCALE_RANGE.cover?(columns.size)
@@ -117,9 +114,9 @@ module DecidimImporter
         end
       end
 
-      # One statement per matrix row. Newer exports carry the rows (id + label), keyed by the row
-      # reference so {Extractors::SurveyResponsesExtractor} can address them; older exports carried only
-      # a count, so the rows are placeholders (bracketed index) for an admin to relabel.
+      # One statement per matrix row. Newer exports carry the rows (id + label), keyed by row reference so
+      # {Extractors::SurveyResponsesExtractor} can address them; older exports carried only a count, so
+      # rows are placeholders (bracketed index) for an admin to relabel.
       def matrix_statements(question)
         rows = Array(question['matrix_rows']).sort_by { |row| row['position'].to_i }
         return rows.map { |row| { 'key' => SurveyKeys.statement_key(row['id']), 'title_multiloc' => multiloc(row['body']) } } if rows.any?
