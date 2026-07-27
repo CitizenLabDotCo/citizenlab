@@ -203,7 +203,8 @@ describe ContentBuilder::ProjectPageLayoutService do
 
       result = service.craftjs_json_for(project)
 
-      columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last
+      body_nodes = result['PROJECT_PAGE_BODY']['nodes']
+      columns_id = body_nodes[body_nodes.index('PROJECT_PAGE_PHASES') - 1]
       left_id = result[columns_id]['nodes'].first
       file_node_id = result[left_id]['nodes'].first
       expect(result[file_node_id]['props']).to eq({ 'fileId' => attachment.file_id })
@@ -225,16 +226,17 @@ describe ContentBuilder::ProjectPageLayoutService do
       json = service.from_description_multiloc({ 'en' => '<p>Hello</p>' })
       result = service.append_file_nodes(json, project)
 
-      space_id, columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last(2)
+      body_nodes = result['PROJECT_PAGE_BODY']['nodes']
+      space_id, columns_id = body_nodes[body_nodes.index('PROJECT_PAGE_PHASES') - 2, 2]
       expect(result[space_id]).to include(
         'type' => { 'resolvedName' => 'WhiteSpace' },
         'props' => { 'size' => 'small' },
-        'parent' => 'PROJECT_PAGE_DESCRIPTION'
+        'parent' => 'PROJECT_PAGE_BODY'
       )
       expect(result[columns_id]).to include(
         'type' => { 'resolvedName' => 'TwoColumn' },
         'props' => { 'columnLayout' => '2-1' },
-        'parent' => 'PROJECT_PAGE_DESCRIPTION'
+        'parent' => 'PROJECT_PAGE_BODY'
       )
 
       left_id, right_id = result[columns_id]['nodes']
@@ -267,17 +269,18 @@ describe ContentBuilder::ProjectPageLayoutService do
         'props' => { 'fileId' => placed.file_id },
         'custom' => {},
         'hidden' => false,
-        'parent' => 'PROJECT_PAGE_DESCRIPTION',
+        'parent' => 'PROJECT_PAGE_BODY',
         'isCanvas' => false,
         'displayName' => 'FileAttachment',
         'linkedNodes' => {}
       }
-      json['PROJECT_PAGE_DESCRIPTION']['nodes'] << 'manual'
+      json['PROJECT_PAGE_BODY']['nodes'].unshift('manual')
 
       result = service.append_file_nodes(json, project)
 
       expect(result['manual']).to eq(json['manual'])
-      columns_id = result['PROJECT_PAGE_DESCRIPTION']['nodes'].last
+      body_nodes = result['PROJECT_PAGE_BODY']['nodes']
+      columns_id = body_nodes[body_nodes.index('PROJECT_PAGE_PHASES') - 1]
       left_id = result[columns_id]['nodes'].first
       migrated_file_ids = result[left_id]['nodes'].map { |id| result[id]['props']['fileId'] }
       expect(migrated_file_ids).to eq([to_migrate.file_id])
@@ -292,11 +295,9 @@ describe ContentBuilder::ProjectPageLayoutService do
       expect(twice).to eq(once)
     end
 
-    it 'inserts before the phases widget when the description section is absent' do
+    it 'inserts before the phases widget' do
       attach_file(project, 1)
       json = service.from_description_multiloc({})
-      json.delete('PROJECT_PAGE_DESCRIPTION')
-      json['PROJECT_PAGE_BODY']['nodes'] = %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
 
       result = service.append_file_nodes(json, project)
 
