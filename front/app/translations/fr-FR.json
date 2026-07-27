@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Vérifiez votre identité",
   "app.containers.Comments.visibleToUsersPlaceholder": "Ce commentaire est visible par les simples utilisateurs",
   "app.containers.Comments.visibleToUsersWarning": "Les commentaires postés ici seront visibles par les simples utilisateurs.",
-  "app.containers.ContentBuilder.PageTitle": "Description du projet",
   "app.containers.ContentBuilder.PageTitleFolder": "Description du dossier",
   "app.containers.CookiePolicy.advertisingContent": "Les cookies publicitaires peuvent être utilisés pour personnaliser et mesurer l'efficacité que les campagnes de marketing externes ont sur la participation à cette plateforme. Nous ne montrerons aucune publicité sur cette plateforme, mais vous pouvez recevoir des annonces personnalisées en fonction des pages que vous visitez.",
   "app.containers.CookiePolicy.advertisingTitle": "Cookies publicitaires",

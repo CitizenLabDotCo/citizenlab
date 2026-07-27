@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Fíoraigh d’aitheantas",
   "app.containers.Comments.visibleToUsersPlaceholder": "Tá an trácht seo le feiceáil ag úsáideoirí rialta",
   "app.containers.Comments.visibleToUsersWarning": "Beidh tuairimí a phostáiltear anseo le feiceáil ag úsáideoirí rialta.",
-  "app.containers.ContentBuilder.PageTitle": "Cur síos ar an tionscadal",
   "app.containers.ContentBuilder.PageTitleFolder": "Cur síos ar an bhfillteán",
   "app.containers.CookiePolicy.advertisingContent": "Féadfar fianáin fógraíochta a úsáid chun pearsantú agus éifeachtacht feachtas margaíochta seachtrach ar rannpháirtíocht leis an ardán seo a thomhas. Ní thaispeánfaimid aon fhógraíocht ar an ardán seo, ach féadfaidh tú fógraí pearsantaithe a fháil bunaithe ar na leathanaigh a dtugann tú cuairt orthu.",
   "app.containers.CookiePolicy.advertisingTitle": "Fógraíocht",

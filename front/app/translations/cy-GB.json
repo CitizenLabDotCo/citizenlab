@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Gwiriwch eich hunaniaeth",
   "app.containers.Comments.visibleToUsersPlaceholder": "Mae'r sylw hwn yn weladwy i ddefnyddwyr rheolaidd",
   "app.containers.Comments.visibleToUsersWarning": "Bydd sylwadau a bostir yma yn weladwy i ddefnyddwyr rheolaidd.",
-  "app.containers.ContentBuilder.PageTitle": "Disgrifiad o'r prosiect",
   "app.containers.ContentBuilder.PageTitleFolder": "Disgrifiad o'r ffolder",
   "app.containers.CookiePolicy.advertisingContent": "Gellir defnyddio cwcis hysbysebu i bersonoli a mesur effeithiolrwydd ymgyrchoedd marchnata allanol ar ymgysylltu â’r platfform hwn. Ni fyddwn yn dangos unrhyw hysbysebion ar y platfform hwn, ond efallai y byddwch yn derbyn hysbysebion personol yn seiliedig ar y tudalennau rydych yn ymweld â nhw.",
   "app.containers.CookiePolicy.advertisingTitle": "Hysbysebu",

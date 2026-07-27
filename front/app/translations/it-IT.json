@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Verifica la tua identità",
   "app.containers.Comments.visibleToUsersPlaceholder": "Questo commento è visibile agli utenti abituali",
   "app.containers.Comments.visibleToUsersWarning": "I commenti pubblicati qui saranno visibili agli utenti abituali.",
-  "app.containers.ContentBuilder.PageTitle": "Descrizione del progetto",
   "app.containers.ContentBuilder.PageTitleFolder": "Descrizione cartella",
   "app.containers.CookiePolicy.advertisingContent": "Come {orgName}, non utilizziamo strumenti pubblicitari sulla nostra piattaforma di partecipazione.",
   "app.containers.CookiePolicy.advertisingTitle": "Pubblicità",

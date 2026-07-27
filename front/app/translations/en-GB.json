@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Verify your identity",
   "app.containers.Comments.visibleToUsersPlaceholder": "This comment is visible to regular users",
   "app.containers.Comments.visibleToUsersWarning": "Comments posted here will be visible to regular users.",
-  "app.containers.ContentBuilder.PageTitle": "Project description",
   "app.containers.ContentBuilder.PageTitleFolder": "Folder description",
   "app.containers.CookiePolicy.advertisingContent": "Advertising cookies may be used to personalize and measure the effectiveness that external marketing campaigns have on engagement with this platform. We will not show any advertising on this platform, but you may receive personalised ads based on the pages you visit.",
   "app.containers.CookiePolicy.advertisingTitle": "Advertising",

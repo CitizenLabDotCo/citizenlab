@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Kimliğinizi doğrulayın",
   "app.containers.Comments.visibleToUsersPlaceholder": "Bu yorum normal kullanıcılar tarafından görülebilir",
   "app.containers.Comments.visibleToUsersWarning": "Burada yayınlanan yorumlar normal kullanıcılar tarafından görülebilecektir.",
-  "app.containers.ContentBuilder.PageTitle": "Proje Açıklaması",
   "app.containers.ContentBuilder.PageTitleFolder": "Klasör açıklaması",
   "app.containers.CookiePolicy.advertisingContent": "Reklam çerezleri, bu platformla etkileşimi kişiselleştirmek ve harici pazarlama kampanyalarının etkileşim üzerindeki etkinliğini ölçmek için kullanılabilir. Bu platformda herhangi bir reklam göstermeyiz ancak size, ziyaret ettiğiniz sayfalara göre kişiselleştirilmiş reklamlar sunulabilir.",
   "app.containers.CookiePolicy.advertisingTitle": "Reklam",

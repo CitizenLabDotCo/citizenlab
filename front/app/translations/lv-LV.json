@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Pārbaudiet savu identitāti",
   "app.containers.Comments.visibleToUsersPlaceholder": "Šis komentārs ir redzams regulārajiem lietotājiem",
   "app.containers.Comments.visibleToUsersWarning": "Šeit publicētie komentāri būs redzami regulārajiem lietotājiem.",
-  "app.containers.ContentBuilder.PageTitle": "Projekta apraksts",
   "app.containers.ContentBuilder.PageTitleFolder": "Mapes apraksts",
   "app.containers.CookiePolicy.advertisingContent": "Reklāmas sīkdatnes var izmantot, lai personalizētu un novērtētu ārējo mārketinga kampaņu efektivitāti attiecībā uz iesaistīšanos šajā platformā. Mēs šajā platformā nerādīsim nekādu reklāmu, taču jūs varat saņemt personalizētas reklāmas, pamatojoties uz jūsu apmeklētajām lapām.",
   "app.containers.CookiePolicy.advertisingTitle": "Reklāma",

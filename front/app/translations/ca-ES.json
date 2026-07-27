@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Verificar la vostra identitat",
   "app.containers.Comments.visibleToUsersPlaceholder": "Aquest comentari és visible per als usuaris habituals",
   "app.containers.Comments.visibleToUsersWarning": "Els comentaris publicats aquí seran visibles per als usuaris habituals.",
-  "app.containers.ContentBuilder.PageTitle": "Descripció del projecte",
   "app.containers.ContentBuilder.PageTitleFolder": "Descripció de la carpeta",
   "app.containers.CookiePolicy.advertisingContent": "Les galetes publicitàries es poden utilitzar per personalitzar i mesurar l'eficàcia que tenen les campanyes de màrqueting externes en la interacció amb aquesta plataforma. No mostrarem cap publicitat en aquesta plataforma, però és possible que rebeu anuncis personalitzats en funció de les pàgines que visiteu.",
   "app.containers.CookiePolicy.advertisingTitle": "Publicitat",

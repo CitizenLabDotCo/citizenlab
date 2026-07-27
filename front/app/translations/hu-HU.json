@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Igazolja személyazonosságát",
   "app.containers.Comments.visibleToUsersPlaceholder": "Ez a megjegyzés a normál felhasználók számára látható",
   "app.containers.Comments.visibleToUsersWarning": "Az itt közzétett megjegyzéseket a rendszeres felhasználók láthatják.",
-  "app.containers.ContentBuilder.PageTitle": "Projekt leírása",
   "app.containers.ContentBuilder.PageTitleFolder": "Mappa leírása",
   "app.containers.CookiePolicy.advertisingContent": "A hirdetési cookie-k segítségével személyre szabható és mérhető a külső marketingkampányok ezen platformmal való kapcsolattartása eredményessége. Ezen a platformon nem jelenítünk meg hirdetéseket, de a meglátogatott oldalak alapján személyre szabott hirdetéseket kaphat.",
   "app.containers.CookiePolicy.advertisingTitle": "Hirdető",

@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "تحقق من هويتك",
   "app.containers.Comments.visibleToUsersPlaceholder": "هذا التعليق مرئي للمستخدمين العاديين",
   "app.containers.Comments.visibleToUsersWarning": "التعليقات المنشورة هنا ستكون مرئية للمستخدمين العاديين.",
-  "app.containers.ContentBuilder.PageTitle": "وصف المشروع",
   "app.containers.ContentBuilder.PageTitleFolder": "وصف المجلد",
   "app.containers.CookiePolicy.advertisingContent": "بصفتنا {orgName}، فنحن لا نستخدم أدوات الإعلان على منصات المشاركة.",
   "app.containers.CookiePolicy.advertisingTitle": "الإعلانات",

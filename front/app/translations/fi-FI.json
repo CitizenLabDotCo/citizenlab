@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Vahvista henkilöllisyytesi",
   "app.containers.Comments.visibleToUsersPlaceholder": "Tämä kommentti näkyy tavallisille käyttäjille",
   "app.containers.Comments.visibleToUsersWarning": "Täällä lähetetyt kommentit näkyvät tavallisille käyttäjille.",
-  "app.containers.ContentBuilder.PageTitle": "Projektin kuvaus",
   "app.containers.ContentBuilder.PageTitleFolder": "Kansion kuvaus",
   "app.containers.CookiePolicy.advertisingContent": "Mainosevästeitä voidaan käyttää personoimaan ja mittaamaan ulkopuolisten markkinointikampanjoiden tehokkuutta tämän alustan kanssa. Emme näytä mainoksia tällä alustalla, mutta saatat saada räätälöityjä mainoksia vierailemiesi sivujen perusteella.",
   "app.containers.CookiePolicy.advertisingTitle": "Mainonta",

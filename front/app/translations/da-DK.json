@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Bliv en verificeret borger",
   "app.containers.Comments.visibleToUsersPlaceholder": "Denne kommentar er synlig for almindelige brugere",
   "app.containers.Comments.visibleToUsersWarning": "Kommentarer der postes her, vil være synlige for almindelige brugere.",
-  "app.containers.ContentBuilder.PageTitle": "Projektbeskrivelse",
   "app.containers.ContentBuilder.PageTitleFolder": "Mappebeskrivelse",
   "app.containers.CookiePolicy.advertisingContent": "Reklamecookies kan bruges til at tilpasse og måle effektiviteten af eksterne markedsføringskampagner i forhold til forlovelse på denne platform. Vi viser ingen reklamer på denne platform, men du kan modtage personligt tilpassede reklamer baseret på de sider, du besøger.",
   "app.containers.CookiePolicy.advertisingTitle": "Cookies til reklame",

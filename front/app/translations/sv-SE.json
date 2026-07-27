@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Verifiera din identitet",
   "app.containers.Comments.visibleToUsersPlaceholder": "Denna kommentar är synlig för vanliga användare",
   "app.containers.Comments.visibleToUsersWarning": "Kommentarer som publiceras här kommer att vara synliga för vanliga användare.",
-  "app.containers.ContentBuilder.PageTitle": "Projektbeskrivning",
   "app.containers.ContentBuilder.PageTitleFolder": "Mappbeskrivning",
   "app.containers.CookiePolicy.advertisingContent": "Marknadsföringscookies kan användas för att anpassa och mäta effektiviteten som externa marknadsföringskampanjer har på interaktion med den här plattformen. Vi kommer inte att visa någon reklam på den här plattformen, men du kan få personliga annonser baserat på sidorna som du besöker.",
   "app.containers.CookiePolicy.advertisingTitle": "Reklam",

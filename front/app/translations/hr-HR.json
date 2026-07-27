@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Potvrdite vaš identitet",
   "app.containers.Comments.visibleToUsersPlaceholder": "Ovaj komentar vidljiv je običnim korisnicima",
   "app.containers.Comments.visibleToUsersWarning": "Ovdje postavljeni komentari bit će vidljivi običnim korisnicima.",
-  "app.containers.ContentBuilder.PageTitle": "Opis projekta",
   "app.containers.ContentBuilder.PageTitleFolder": "Opis mape",
   "app.containers.CookiePolicy.advertisingContent": "Reklamni kolačići mogu se koristiti za personalizaciju i mjerenje efikasnosti koju vanjske marketinške kampanje imaju kroz angažiranje na ovoj platformi. Na ovoj platformi nećemo prikazivati bilo kakvo oglašavanje, ali može se događati da primate personalizirane oglase na osnovu stranica koje posjećujete.",
   "app.containers.CookiePolicy.advertisingTitle": "Oglašavanje",

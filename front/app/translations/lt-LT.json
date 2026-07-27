@@ -1451,7 +1451,6 @@
   "app.containers.Comments.verifyIdentityLinkText": "Patikrinkite savo tapatybę",
   "app.containers.Comments.visibleToUsersPlaceholder": "Šis komentaras matomas nuolatiniams naudotojams",
   "app.containers.Comments.visibleToUsersWarning": "Čia paskelbti komentarai bus matomi nuolatiniams naudotojams.",
-  "app.containers.ContentBuilder.PageTitle": "Projekto aprašymas",
   "app.containers.ContentBuilder.PageTitleFolder": "Aplankų aprašymas",
   "app.containers.CookiePolicy.advertisingContent": "Reklaminiai slapukai gali būti naudojami siekiant suasmeninti ir įvertinti išorinių rinkodaros kampanijų veiksmingumą įsitraukiant į šią platformą. Šioje platformoje nerodysime jokios reklamos, tačiau galite gauti personalizuotų reklamų, atsižvelgiant į jūsų lankomus puslapius.",
   "app.containers.CookiePolicy.advertisingTitle": "Reklama",
