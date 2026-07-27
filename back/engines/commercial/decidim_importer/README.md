@@ -64,7 +64,8 @@ first (see [Safety gate](#safety-gate) below).
 # 1. (optional) clean local tenant
 docker compose run --rm web "bin/rails db:reset"
 
-# 2. Build the template artifacts from the export (writes .template.yml, .app_config.json, .url_mapping.csv).
+# 2. Build the template artifacts from the export (writes .template.yml, .app_config.json, .url_mapping.csv,
+#    and a .dump.log run report).
 #    Args: path, primary_locale=fr-FR, production=false (anonymise users), include_source_url=false
 docker compose run --rm web "bin/rails decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]"
 
@@ -126,7 +127,7 @@ Reads the export and writes the template artifacts. Touches no tenant.
 7. **Write `<base>.url_mapping.csv`** — the old-Decidim-URL → new-target map for links embedded in
    descriptions, consumed by the `import` task's post-import link correction.
 8. **Log** — a per-model and per-project record summary, plus every skipped component / record with
-   its reason.
+   its reason, teed to `<base>.dump.log` (and the Rails log).
 
 ### `import[file, host, import_images]`
 
@@ -172,7 +173,8 @@ post-import finishing in the same tenant switch (steps 4–6 need the applied te
       Assemblies** (which has its own nav-bar item).
    4. Rebuild the nav bar down to **Home + Consultations + Assemblies**, dropping the default items.
 6. **Write `<base>.broken_links.csv`** listing any unresolved links for manual review (skipped when
-   there are none), and **log** the created count per model.
+   there are none), and **log** the created count per model — teed to `<base>.import.log` (and the
+   Rails log).
 
 The post-import steps (4–5) are idempotent — re-running reuses the folder, moves any remaining
 top-level projects, and leaves already-built layouts, previews and nav items in place. Link

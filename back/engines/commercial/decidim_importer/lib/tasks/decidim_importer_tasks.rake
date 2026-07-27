@@ -5,6 +5,8 @@ require 'csv'
 # Two-step workflow: `dump_yaml` reads a Decidim export (zip or dir) and writes the artifacts
 # (`.template.yml` + `.app_config.json` + `.url_mapping.csv`) — it never touches a tenant; `import`
 # applies them to the tenant matching `host`. `verify` dry-runs a dumped template on a throwaway tenant.
+# Each of `dump_yaml`/`import` also tees its summary (counts, skips, broken links) to a run log beside
+# the artifacts: `<base>.dump.log` / `<base>.import.log`.
 #
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR]
 #   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
@@ -32,29 +34,31 @@ namespace :decidim_importer do
     )
     builder = importer.build_template
 
-    yaml_path = output_path(path, 'template.yml')
-    File.write(yaml_path, builder.to_yaml)
-    Rails.logger.info "Wrote #{yaml_path} (users #{production ? 'untouched (production)' : 'anonymised'})"
-    log_model_summary(builder)
-    importer.skipped_components.each { |s| Rails.logger.warn "  skipped component #{s[:component]}: #{s[:reason]}" }
-    importer.skipped_categories.each { |s| Rails.logger.warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_participation.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_results.each { |s| Rails.logger.warn "  skipped result #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_followers.each { |s| Rails.logger.warn "  skipped follow #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_endorsements.each { |s| Rails.logger.warn "  skipped endorsement #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_comment_votes.each { |s| Rails.logger.warn "  skipped comment vote #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_budget_projects.each { |s| Rails.logger.warn "  skipped budget project #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_orders.each { |s| Rails.logger.warn "  skipped order #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_proposal_attachments.each { |s| Rails.logger.warn "  skipped attachment #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_surveys.each { |s| Rails.logger.warn "  skipped #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_survey_responses.each { |s| Rails.logger.warn "  skipped response #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_pages.each { |s| Rails.logger.warn "  skipped page #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_blog_posts.each { |s| Rails.logger.warn "  skipped blog post #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_meetings.each { |s| Rails.logger.warn "  skipped meeting #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_meeting_attachments.each { |s| Rails.logger.warn "  skipped meeting attachment #{s[:uid]}: #{s[:reason]}" }
-    importer.skipped_files.each { |s| Rails.logger.warn "  skipped file #{s[:uid]}: #{s[:reason]}" }
-    write_app_config_json(importer, path)
-    write_url_mapping_csv(importer, path)
+    with_report_log(log_path(path, 'dump')) do
+      yaml_path = output_path(path, 'template.yml')
+      File.write(yaml_path, builder.to_yaml)
+      report_line "Wrote #{yaml_path} (users #{production ? 'untouched (production)' : 'anonymised'})"
+      log_model_summary(builder)
+      importer.skipped_components.each { |s| report_warn "  skipped component #{s[:component]}: #{s[:reason]}" }
+      importer.skipped_categories.each { |s| report_warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_participation.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_results.each { |s| report_warn "  skipped result #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_followers.each { |s| report_warn "  skipped follow #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_endorsements.each { |s| report_warn "  skipped endorsement #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_comment_votes.each { |s| report_warn "  skipped comment vote #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_budget_projects.each { |s| report_warn "  skipped budget project #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_orders.each { |s| report_warn "  skipped order #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_proposal_attachments.each { |s| report_warn "  skipped attachment #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_surveys.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_survey_responses.each { |s| report_warn "  skipped response #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_pages.each { |s| report_warn "  skipped page #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_blog_posts.each { |s| report_warn "  skipped blog post #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_meetings.each { |s| report_warn "  skipped meeting #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_meeting_attachments.each { |s| report_warn "  skipped meeting attachment #{s[:uid]}: #{s[:reason]}" }
+      importer.skipped_files.each { |s| report_warn "  skipped file #{s[:uid]}: #{s[:reason]}" }
+      write_app_config_json(importer, path)
+      write_url_mapping_csv(importer, path)
+    end
   end
 
   desc 'Imports a dumped tenant-template YAML file into the tenant matching `host`, then runs the ' \
@@ -67,22 +71,24 @@ namespace :decidim_importer do
     ensure_import_enabled!(tenant)
     json = app_config_sibling(file)
 
-    Rails.logger.info "Decidim import → tenant=#{tenant.host} file=#{file} import_images=#{import_images}"
-    broken = []
-    tenant.switch do
-      # App config first — it sets the tenant's locales, which the template's records rely on.
-      if DecidimImporter::Importer.apply_app_config_file(json, import_images: import_images)
-        Rails.logger.info "  applied app config from #{json}"
-      else
-        Rails.logger.info "  no app-config JSON at #{json} → skipping"
-      end
-      created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
-      created.each { |klass, ids| Rails.logger.info "  created #{ids.size} #{klass}" }
+    with_report_log(log_path(file, 'import')) do
+      report_line "Decidim import → tenant=#{tenant.host} file=#{file} import_images=#{import_images}"
+      broken = []
+      tenant.switch do
+        # App config first — it sets the tenant's locales, which the template's records rely on.
+        if DecidimImporter::Importer.apply_app_config_file(json, import_images: import_images)
+          report_line "  applied app config from #{json}"
+        else
+          report_line "  no app-config JSON at #{json} → skipping"
+        end
+        created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
+        created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
 
-      broken = finalize_import!(file)
+        broken = finalize_import!(file)
+      end
+      write_broken_links_csv(url_mapping_path(file), broken)
+      report_line 'COMPLETE'
     end
-    write_broken_links_csv(url_mapping_path(file), broken)
-    Rails.logger.info 'COMPLETE'
   end
 
   desc 'Applies a dumped template YAML to a throwaway tenant to confirm it deserializes, then destroys it.'
@@ -133,16 +139,16 @@ namespace :decidim_importer do
       if File.exist?(mapping_path)
         rewriter = DecidimImporter::Links::Rewriter.from_csv(mapping_path)
         result = rewriter.run
-        Rails.logger.info "  rewrote links in #{rewriter.updated_count} record(s)"
+        report_line "  rewrote links in #{rewriter.updated_count} record(s)"
         result
       else
-        Rails.logger.info "  no URL mapping at #{mapping_path} → skipping link correction"
+        report_line "  no URL mapping at #{mapping_path} → skipping link correction"
         []
       end
 
     consultations = DecidimImporter::ConsultationsFolder.new.run
-    Rails.logger.info "  Consultations folder #{consultations[:folder].slug}: " \
-                      "moved #{consultations[:moved_projects].size} project(s) in"
+    report_line "  Consultations folder #{consultations[:folder].slug}: " \
+                "moved #{consultations[:moved_projects].size} project(s) in"
     broken
   end
 
@@ -150,8 +156,8 @@ namespace :decidim_importer do
   # bucket for records not tied to a project.
   def log_model_summary(builder)
     counts = builder.model_counts
-    Rails.logger.info "Template will create #{counts.values.sum} records:"
-    counts.each { |model, count| Rails.logger.info "  #{count} #{model}" }
+    report_line "Template will create #{counts.values.sum} records:"
+    counts.each { |model, count| report_line "  #{count} #{model}" }
     log_per_project_summary(builder)
   end
 
@@ -160,15 +166,15 @@ namespace :decidim_importer do
     by_project.each do |project, counts|
       next if project.nil?
 
-      Rails.logger.info "#{project_title(project)} (#{counts.values.sum} records):"
-      counts.each { |model, count| Rails.logger.info "  #{count} #{model}" }
+      report_line "#{project_title(project)} (#{counts.values.sum} records):"
+      counts.each { |model, count| report_line "  #{count} #{model}" }
     end
 
     shared = by_project[nil]
     return if shared.blank?
 
-    Rails.logger.info "Not project-scoped (#{shared.values.sum} records):"
-    shared.each { |model, count| Rails.logger.info "  #{count} #{model}" }
+    report_line "Not project-scoped (#{shared.values.sum} records):"
+    shared.each { |model, count| report_line "  #{count} #{model}" }
   end
 
   def project_title(project)
@@ -198,13 +204,13 @@ namespace :decidim_importer do
   def write_app_config_json(importer, input_path)
     patch = importer.app_config_patch
     if patch.empty?
-      Rails.logger.info '  no organization data → skipping app-config JSON'
+      report_line '  no organization data → skipping app-config JSON'
       return
     end
 
     json_path = output_path(input_path, 'app_config.json')
     File.write(json_path, JSON.pretty_generate(patch))
-    Rails.logger.info "Wrote #{json_path}"
+    report_line "Wrote #{json_path}"
   end
 
   # Writes the old→new link mapping as `<base>.url_mapping.csv` (skipped when there are none), applied
@@ -212,13 +218,13 @@ namespace :decidim_importer do
   def write_url_mapping_csv(importer, input_path)
     map = importer.link_map
     if map.empty?
-      Rails.logger.info '  no correctable links → skipping URL mapping CSV'
+      report_line '  no correctable links → skipping URL mapping CSV'
       return
     end
 
     csv_path = output_path(input_path, 'url_mapping.csv')
     map.write_csv(csv_path)
-    Rails.logger.info "Wrote #{csv_path} (#{map.resolved_count} mapped, #{map.broken.size} broken)"
+    report_line "Wrote #{csv_path} (#{map.resolved_count} mapped, #{map.broken.size} broken)"
   end
 
   # The URL-mapping CSV for a path: the path itself if a `.csv`, else the template path with its
@@ -233,7 +239,7 @@ namespace :decidim_importer do
   # Writes the unresolved links as `<base>.broken_links.csv` (no-op when there are none).
   def write_broken_links_csv(mapping_path, broken)
     if broken.empty?
-      Rails.logger.info '  no broken links'
+      report_line '  no broken links'
       return
     end
 
@@ -244,7 +250,7 @@ namespace :decidim_importer do
       broken.uniq { |row| [row[:old_url], row[:container_id]] }
         .each { |row| csv << [row[:old_url], row[:container_type], row[:container_id]] }
     end
-    Rails.logger.warn "Wrote #{path} (#{broken.size} broken link occurrence(s))"
+    report_warn "Wrote #{path} (#{broken.size} broken link occurrence(s))"
   end
 
   # Swaps the input's extension for `.<suffix>`, keeping the parent dir. `/tmp/x.zip`,'template.yml'
@@ -254,5 +260,34 @@ namespace :decidim_importer do
     parent = File.dirname(normalized)
     base = File.basename(normalized, File.extname(normalized))
     File.join(parent, "#{base}.#{suffix}")
+  end
+
+  # `<base>.<kind>.log` beside the input, e.g. `participer.arcueil.fr.20260721.import.log`. Strips the
+  # export (`.zip`) or template (`.template.yml`/`.yml`) suffix so both tasks share one base name.
+  def log_path(input, kind)
+    normalized = input.chomp('/')
+    base = File.basename(normalized).sub(/\.template\.yml\z/i, '').sub(/\.ya?ml\z/i, '').sub(/\.zip\z/i, '')
+    File.join(File.dirname(normalized), "#{base}.#{kind}.log")
+  end
+
+  # Tees the task's summary lines (via `report_line`/`report_warn`) to `path` as well as the Rails log, so
+  # each run leaves a standalone report next to its artifacts. No-op outside the block.
+  def with_report_log(path)
+    @report_log = File.open(path, 'w')
+    Rails.logger.info "Writing run log to #{path}"
+    yield
+  ensure
+    @report_log&.close
+    @report_log = nil
+  end
+
+  def report_line(message)
+    Rails.logger.info(message)
+    @report_log&.puts(message)
+  end
+
+  def report_warn(message)
+    Rails.logger.warn(message)
+    @report_log&.puts(message)
   end
 end
