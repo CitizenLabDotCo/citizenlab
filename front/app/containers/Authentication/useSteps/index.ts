@@ -83,7 +83,7 @@ export default function useSteps() {
     prefilledBuiltInFields: null,
     ssoProvider: null,
     claimTokens: null,
-    phone: null
+    phone: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);
@@ -178,7 +178,8 @@ export default function useSteps() {
       const emailInCaseUserNeedsToConfirm =
         authUser?.data.attributes.new_email ?? null;
 
-      const phoneInCaseUserNEedsToConfirm = authUser?.data.attributes.new_phone ?? null;
+      const phoneInCaseUserNEedsToConfirm =
+        authUser?.data.attributes.new_phone ?? null;
 
       transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(
         flow,
@@ -332,10 +333,10 @@ export default function useSteps() {
       const context = contextFromLocalStorage
         ? JSON.parse(contextFromLocalStorage)
         : {
-          type: sso_verification_type,
-          action: sso_verification_action,
-          id: sso_verification_id,
-        };
+            type: sso_verification_type,
+            action: sso_verification_action,
+            id: sso_verification_id,
+          };
 
       authenticationDataRef.current = {
         successAction:
