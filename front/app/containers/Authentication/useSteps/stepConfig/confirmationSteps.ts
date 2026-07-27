@@ -18,6 +18,7 @@ import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
 // Here we put all the steps related to confirmation email and phone
 // EXCEPT the ones that are part of the main email flow
+// (i.e. email:unauthenticated-confirmation)
 export const confirmationSteps = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
