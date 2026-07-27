@@ -70,7 +70,7 @@ RSpec.describe UserConfirmationService do
     end
   end
 
-  describe '#validate_and_confirm_unauthenticated!' do
+  describe '#validate_and_confirm_email!' do
     let(:user) { create(:unconfirmed_user) }
 
     before do
@@ -90,7 +90,7 @@ RSpec.describe UserConfirmationService do
       expect(user.confirmation_required?).to be false
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_unauthenticated!, :email_confirmation
+    include_examples 'validation and confirmation', :validate_and_confirm_email!, :email_confirmation
 
     context 'when password_login is disabled' do
       before do
@@ -98,7 +98,7 @@ RSpec.describe UserConfirmationService do
       end
 
       it 'returns a password login feature disabled error' do
-        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation.code)
+        result = service.validate_and_confirm_email!(user, user.email_confirmation.code)
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(base: [{ error: :password_login_feature_disabled }])
@@ -111,7 +111,7 @@ RSpec.describe UserConfirmationService do
       it 'returns a user has password error' do
         expect(user.confirmation_required?).to be true
         expect(user.password_digest).not_to be_nil
-        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation.code)
+        result = service.validate_and_confirm_email!(user, user.email_confirmation.code)
         expect(result.success?).to be true
         expect(user.reload.confirmation_required?).to be false
       end
@@ -124,7 +124,7 @@ RSpec.describe UserConfirmationService do
       it 'completes pending claim tokens on successful confirmation' do
         expect(idea.author_id).to be_nil
 
-        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation.code)
+        result = service.validate_and_confirm_email!(user, user.email_confirmation.code)
 
         expect(result.success?).to be true
         expect(idea.reload.author_id).to eq(user.id)
@@ -133,14 +133,14 @@ RSpec.describe UserConfirmationService do
     end
   end
 
-  describe '#validate_and_confirm_email_change!' do
+  describe '#validate_and_confirm_new_email!' do
     let(:user) { create(:user, new_email: 'new@email.com') }
 
     before do
       RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_email_change!, :new_email_confirmation
+    include_examples 'validation and confirmation', :validate_and_confirm_new_email!, :new_email_confirmation
 
     context 'when the new email is blank' do
       before do
@@ -148,7 +148,7 @@ RSpec.describe UserConfirmationService do
       end
 
       it 'returns a no email error' do
-        result = service.validate_and_confirm_email_change!(user, user.new_email_confirmation.code)
+        result = service.validate_and_confirm_new_email!(user, user.new_email_confirmation.code)
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(user: [{ error: :no_email }])
@@ -156,7 +156,7 @@ RSpec.describe UserConfirmationService do
     end
   end
 
-  describe '#validate_and_confirm_phone_change!' do
+  describe '#validate_and_confirm_new_phone!' do
     let(:user) { create(:user) }
     let(:confirmation) { user.new_phone_confirmation }
     let(:new_phone) { '+14155552671' }
@@ -170,7 +170,7 @@ RSpec.describe UserConfirmationService do
 
     context 'when the code is correct' do
       it 'promotes new_phone to phone and stamps it confirmed' do
-        result = service.validate_and_confirm_phone_change!(user, confirmation.code)
+        result = service.validate_and_confirm_new_phone!(user, confirmation.code)
 
         expect(result.success?).to be true
         user.reload
@@ -181,13 +181,13 @@ RSpec.describe UserConfirmationService do
 
       it 'does not complete pending claim tokens (an email/signup concern)' do
         expect(ClaimTokenService).not_to receive(:complete)
-        service.validate_and_confirm_phone_change!(user, confirmation.code)
+        service.validate_and_confirm_new_phone!(user, confirmation.code)
       end
     end
 
     context 'when the user is nil' do
       it 'returns a user blank error' do
-        result = service.validate_and_confirm_phone_change!(nil, '1234')
+        result = service.validate_and_confirm_new_phone!(nil, '1234')
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq({ user: [{ error: :blank }] })
@@ -196,7 +196,7 @@ RSpec.describe UserConfirmationService do
 
     context 'when the code is nil' do
       it 'returns a code blank error' do
-        result = service.validate_and_confirm_phone_change!(user, nil)
+        result = service.validate_and_confirm_new_phone!(user, nil)
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq({ code: [{ error: :blank }] })
@@ -205,7 +205,7 @@ RSpec.describe UserConfirmationService do
 
     context 'when the code is incorrect' do
       it 'returns a code invalid error' do
-        result = service.validate_and_confirm_phone_change!(user, 'failcode')
+        result = service.validate_and_confirm_new_phone!(user, 'failcode')
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(code: [{ error: :invalid }])
@@ -216,7 +216,7 @@ RSpec.describe UserConfirmationService do
       before { confirmation.update!(code_sent_at: 1.week.ago) }
 
       it 'returns a code expired error' do
-        result = service.validate_and_confirm_phone_change!(user, confirmation.code)
+        result = service.validate_and_confirm_new_phone!(user, confirmation.code)
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(code: [{ error: :expired }])
@@ -227,7 +227,7 @@ RSpec.describe UserConfirmationService do
       before { user.update_columns(new_phone: nil) }
 
       it 'returns a no phone error' do
-        result = service.validate_and_confirm_phone_change!(user, confirmation.code)
+        result = service.validate_and_confirm_new_phone!(user, confirmation.code)
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(user: [{ error: :no_phone }])

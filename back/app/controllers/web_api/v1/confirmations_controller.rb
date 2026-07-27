@@ -17,7 +17,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   def confirm_code_email
     user = User.find_by_cimail(confirm_code_email_params[:email])
 
-    result = user_confirmation_service.validate_and_confirm_unauthenticated!(
+    result = user_confirmation_service.validate_and_confirm_email!(
       user,
       confirm_code_email_params[:code]
     )
@@ -38,7 +38,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
   # This endpoint is used when a logged in user wants to change their email
   def confirm_code_new_email
-    result = user_confirmation_service.validate_and_confirm_email_change!(
+    result = user_confirmation_service.validate_and_confirm_new_email!(
       current_user,
       confirm_code_params[:code]
     )
@@ -57,7 +57,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # change. On success, new_phone is promoted to phone. The phone
   # number isn't part of the auth token, so there's no JWT cookie to refresh.
   def confirm_code_new_phone
-    result = user_confirmation_service.validate_and_confirm_phone_change!(
+    result = user_confirmation_service.validate_and_confirm_new_phone!(
       current_user,
       confirm_code_params[:code]
     )
