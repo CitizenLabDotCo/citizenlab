@@ -17,16 +17,21 @@ import { storeClaimToken } from '../../utils/claimToken';
 import ideasKeys from './keys';
 import { IIdea, IIdeaAdd } from './types';
 
-const addIdea = async (requestBody: IIdeaAdd) =>
+interface AddIdeaParams {
+  phaseId: string;
+  requestBody: IIdeaAdd;
+}
+
+const addIdea = async ({ phaseId, requestBody }: AddIdeaParams) =>
   fetcher<IIdea>({
-    path: `/ideas`,
+    path: `/phases/${phaseId}/inputs`,
     action: 'post',
     body: { idea: requestBody },
   });
 
 const useAddIdea = () => {
   const queryClient = useQueryClient();
-  return useMutation<IIdea, CLErrors, IIdeaAdd>({
+  return useMutation<IIdea, CLErrors, AddIdeaParams>({
     mutationFn: addIdea,
     onSuccess: (idea) => {
       const { claim_token, claim_token_expires_at } = idea.data.attributes;

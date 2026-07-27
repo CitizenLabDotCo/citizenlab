@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
@@ -77,6 +77,10 @@ export default class Success extends PureComponent<Props, State> {
     animate: true,
   };
 
+  // Passed to CSSTransition as `nodeRef` and attached to the transitioning
+  // element so react-transition-group doesn't fall back to `findDOMNode`.
+  nodeRef = createRef<HTMLDivElement>();
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -98,6 +102,7 @@ export default class Success extends PureComponent<Props, State> {
 
     return (
       <CSSTransition
+        nodeRef={this.nodeRef}
         in={!!(mounted && text)}
         timeout={timeout}
         mountOnEnter={true}
@@ -106,7 +111,7 @@ export default class Success extends PureComponent<Props, State> {
         exit={animate}
         classNames="success"
       >
-        <Container className={`e2e-success-message ${className}`}>
+        <Container ref={this.nodeRef} className={`e2e-success-message ${className}`}>
           <StyledSuccessMessageInner showBackground={showBackground}>
             {showIcon && <CheckmarkIcon name="check" />}
             <SuccessMessageText>{text}</SuccessMessageText>

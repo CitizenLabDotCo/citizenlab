@@ -32,7 +32,12 @@ describe('Profile Page', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
-        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent, jwt });
+        return cy.apiCreateIdea({
+          phaseId: project.body.data.relationships.current_phase.data.id,
+          ideaTitle,
+          ideaContent,
+          jwt,
+        });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;

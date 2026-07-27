@@ -179,7 +179,7 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_phone: '' })
       expect(response_status).to eq 422
-      expect(json_response_body).to include_response_error(:new_phone, 'cannot be blank')
+      expect(json_response_body).to include_response_error(:new_phone, 'blank')
     end
 
     example 'It does not work for an invalid phone number' do
@@ -187,7 +187,7 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_phone: 'not-a-number' })
       expect(response_status).to eq 422
-      expect(json_response_body).to include_response_error(:new_phone, 'is invalid')
+      expect(json_response_body).to include_response_error(:new_phone, 'invalid')
     end
 
     example 'It does not work if the phone number is already taken by another user' do
@@ -196,7 +196,7 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_phone: '+14155552671' })
       expect(response_status).to eq 422
-      expect(json_response_body).to include_response_error(:new_phone, 'is already taken')
+      expect(json_response_body).to include_response_error(:new_phone, 'taken')
     end
 
     example 'It does not work if the user reached code_reset_count' do

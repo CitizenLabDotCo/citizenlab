@@ -49,7 +49,7 @@ describe('Admin project approval flow', () => {
 
     cy.location('pathname').should(
       'include',
-      `/admin/projects/${projectId}/phases/setup`
+      `/admin/projects/${projectId}/project-page`
     );
     cy.wait(['@getReview', '@getPhases']);
 

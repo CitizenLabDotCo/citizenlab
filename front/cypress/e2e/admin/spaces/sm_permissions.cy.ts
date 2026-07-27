@@ -74,13 +74,16 @@ describe('Space moderator: permissions', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit(`/admin/projects/${projectId}/general`);
 
-    cy.get('#e2e-project-title-setting-field').clear().type('New project name');
+    cy.get('.e2e-project-general-form textarea')
+      .first()
+      .clear()
+      .type('New project homepage description');
     cy.get('.e2e-submit-wrapper-button > button').click();
     cy.get('.e2e-submit-wrapper-button').contains('Success!');
     cy.reload();
-    cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
-      'New project name'
-    );
+    cy.get('.e2e-project-general-form textarea')
+      .first()
+      .should('have.value', 'New project homepage description');
   });
 
   it('Can create and delete folder in space', () => {

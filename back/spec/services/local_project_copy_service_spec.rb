@@ -249,8 +249,9 @@ describe LocalProjectCopyService do
 
     describe 'when source project has file attachments' do
       before do
-        files = create_list(:file, 2, projects: [open_ended_project])
-        files.each { |file| create(:file_attachment, file: file, attachable: open_ended_project) }
+        create_list(:file, 2, projects: [open_ended_project]).each do |file|
+          create(:file_attachment, file: file, attachable: open_ended_project)
+        end
       end
 
       it 'creates associated copies of the files and their attachments' do

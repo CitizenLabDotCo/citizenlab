@@ -1,4 +1,8 @@
-import { IDKeycloakMethod } from 'api/id_methods/types';
+import {
+  IDKeycloakMethod,
+  IdMethodData,
+  IdMethodName,
+} from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
 import { getAzureB2cConfig, getAzureConfig } from 'api/id_methods/utils';
 
@@ -9,7 +13,7 @@ import messages from './messages';
 const isDev = process.env.NODE_ENV === 'development';
 
 /*
- * Single source of truth for the human-readable name of each authentication
+ * Single source of truth for the human-readable name of each identification
  * method. Used both to label the SSO buttons ("Continue with {name}") and to
  * reference a method by name elsewhere (e.g. the verification warning that
  * tells the user which method(s) they can verify with). Keeping the names here
@@ -17,7 +21,7 @@ const isDev = process.env.NODE_ENV === 'development';
  *
  * Some names are dynamic (configured per tenant), hence this is a hook.
  */
-const useAuthMethodNames = () => {
+const useIdMethodNames = () => {
   const { data: idMethods } = useIdMethods();
   const { formatMessage } = useIntl();
 
@@ -49,4 +53,18 @@ const useAuthMethodNames = () => {
   };
 };
 
-export default useAuthMethodNames;
+export default useIdMethodNames;
+
+/**
+ * The name to show for a method: the shared human-readable name above where we
+ * have one (some are configured per tenant, and empty when the tenant hasn't
+ * set one), then the name the method itself reports, and the bare config name
+ * only as a last resort.
+ */
+export const getMethodName = (
+  method: IdMethodData,
+  idMethodNames: Partial<Record<IdMethodName, string>>
+): string =>
+  idMethodNames[method.attributes.name] ||
+  method.attributes.method_metadata?.name ||
+  method.attributes.name;

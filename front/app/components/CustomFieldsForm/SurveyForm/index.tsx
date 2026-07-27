@@ -11,11 +11,9 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
 import { trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { FormValues } from '../Page/types';
 import tracks from '../tracks';
@@ -48,7 +46,6 @@ const SurveyForm = ({
   const [accumulatedValues, setAccumulatedValues] = useState<FormValues>({});
 
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { data: draftIdea, isLoading } = useDraftIdeaByPhaseId(phaseId);
 
@@ -89,17 +86,12 @@ const SurveyForm = ({
 
     // The back-end initially returns a draft idea without an ID
     if (!draftIdea?.data.id) {
-      // If the user is an admin or project moderator, we allow them to post to a specific phase
-      const phase_ids =
-        project && phaseId && canModerateProject(project.data, authUser)
-          ? [phaseId]
-          : null;
-
       const idea = await addIdea({
-        ...mergedValues,
-        project_id: projectId,
-        phase_ids,
-        publication_status: isSubmitPage ? 'published' : 'draft',
+        phaseId: phase.data.id,
+        requestBody: {
+          ...mergedValues,
+          publication_status: isSubmitPage ? 'published' : 'draft',
+        },
       });
 
       updateSearchParams({ idea_id: isSubmitPage ? idea.data.id : undefined });
@@ -108,7 +100,6 @@ const SurveyForm = ({
         id: draftIdea.data.id,
         requestBody: {
           ...mergedValues,
-          project_id: projectId,
           publication_status: isSubmitPage ? 'published' : 'draft',
         },
       });

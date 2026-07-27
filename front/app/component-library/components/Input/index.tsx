@@ -76,7 +76,15 @@ export interface InputProps {
   labelTooltipPlacement?: Placement;
   value?: string | null;
   locale?: Locale;
-  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'search' | 'hidden';
+  type:
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'date'
+    | 'search'
+    | 'hidden'
+    | 'tel';
   placeholder?: string | null;
   error?: string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
@@ -97,6 +105,7 @@ export interface InputProps {
   required?: boolean;
   autocomplete?:
     | 'email'
+    | 'tel'
     | 'given-name'
     | 'family-name'
     | 'current-password'

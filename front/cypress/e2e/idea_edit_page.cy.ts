@@ -11,6 +11,7 @@ describe('Idea edit page', () => {
   const newIdeaContent = randomString(60);
   let jwt: string;
   let projectId: string;
+  let phaseId: string;
   let ideaId: string;
   let ideaSlug: string;
 
@@ -25,16 +26,15 @@ describe('Idea edit page', () => {
       })
       .then((project) => {
         projectId = project.body.data.id;
+        phaseId = project.body.data.relationships.current_phase.data.id;
       });
   });
 
   beforeEach(() => {
-    cy.apiCreateIdea({ projectId, ideaTitle, ideaContent, jwt }).then(
-      (idea) => {
-        ideaId = idea.body.data.id;
-        ideaSlug = idea.body.data.attributes.slug;
-      }
-    );
+    cy.apiCreateIdea({ phaseId, ideaTitle, ideaContent, jwt }).then((idea) => {
+      ideaId = idea.body.data.id;
+      ideaSlug = idea.body.data.attributes.slug;
+    });
   });
 
   afterEach(() => {
