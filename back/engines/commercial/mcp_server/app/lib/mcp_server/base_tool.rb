@@ -72,6 +72,7 @@ class McpServer::BaseTool
       McpServer::BaseTool.report_tool_error(e, tool: definition.name, current_user: current_user)
       raise
     ensure
+      # Clear the tag so it can't leak to later work on this thread (e.g. across specs).
       Current.activity_channel = nil
     end
   end
