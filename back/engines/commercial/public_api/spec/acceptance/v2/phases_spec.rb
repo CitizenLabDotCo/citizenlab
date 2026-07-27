@@ -46,6 +46,33 @@ resource 'Phases' do
       type: :string
     )
 
+    parameter(
+      :placement_type,
+      "List only phases with the given placement type: 'on_timeline' or 'standalone'. By default, phases of all placement types are returned.",
+      in: :query,
+      required: false,
+      type: :string
+    )
+
+    context "when filtering by a valid 'placement_type'" do
+      let!(:standalone_phase) { create(:phase, :standalone, project: project) }
+      let(:placement_type) { 'standalone' }
+
+      example_request 'List only phases with the given placement type', document: false do
+        assert_status 200
+        expect(json_response_body[:phases].pluck(:id)).to eq [standalone_phase.id]
+      end
+    end
+
+    context 'when a standalone phase exists' do
+      let!(:standalone_phase) { create(:phase, :standalone, project: project) }
+
+      example_request 'Returns phases of all placement types by default', document: false do
+        assert_status 200
+        expect(json_response_body[:phases].pluck(:id)).to match_array project.phases.pluck(:id)
+      end
+    end
+
     context 'when the page size is smaller than the total number of phases' do
       let(:page_size) { 2 }
 
