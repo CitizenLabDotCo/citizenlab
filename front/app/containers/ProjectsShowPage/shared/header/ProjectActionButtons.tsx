@@ -266,15 +266,22 @@ const ProjectActionButtons = memo<Props>(
       showTakeSurveyButton ||
       showTakePollButton ||
       showDocumentAnnotationCTAButton;
+    const showPrimaryMethodCTA =
+      showPostIdeaButton ||
+      showTakeNativeSurveyButton ||
+      showTakePollButton ||
+      showDocumentAnnotationCTAButton;
     const surveyCTAs = showBoxCTAs ? visibleOpenSurveys : [];
-    const participationWaysCount = (showMethodCTA ? 1 : 0) + surveyCTAs.length;
+    const participationWaysCount =
+      (showPrimaryMethodCTA ? 1 : 0) + surveyCTAs.length;
     const collapseOptions =
       isParallelParticipationEnabled && participationWaysCount > 2;
     const showAdminEmptyState =
       canSeeEmptyState &&
       showBoxCTAs &&
       !!standalonePhases &&
-      participationWaysCount === 0 &&
+      !showMethodCTA &&
+      surveyCTAs.length === 0 &&
       !showSeeIdeasButton &&
       !showEventsCTAButton;
 
