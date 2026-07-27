@@ -17,7 +17,6 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
-import { FormSituation } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
@@ -113,11 +112,8 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
 
   const validateProjectContext = useValidateProjectContext();
 
-  const projectIsInRoot =
+  const projectInRoot =
     !project.data.attributes.space_id && !project.data.attributes.folder_id;
-  const formSituation: FormSituation = projectIsInRoot
-    ? 'editing-project-in-root'
-    : 'editing-project-not-in-root';
 
   useEffect(() => {
     (async () => {
@@ -267,7 +263,13 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   };
 
   const validateForm = () => {
-    if (!validateProjectContext(projectAttrs, formSituation)) {
+    if (
+      !validateProjectContext({
+        spaceId: projectAttrs.space_id,
+        folderId: projectAttrs.folder_id,
+        projectInRoot,
+      })
+    ) {
       setProjectContextError(true);
       return false;
     }
@@ -369,9 +371,9 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           />
 
           <ProjectContextSection
-            space_id={projectAttrs.space_id}
-            folder_id={projectAttrs.folder_id}
-            formSituation={formSituation}
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
+            projectInRoot={projectInRoot}
             error={projectContextError}
             onChange={(spaceAndFolderId) => {
               handleProjectAttributeDiffOnChange(spaceAndFolderId);

@@ -6,7 +6,7 @@ import { TRole } from 'utils/permissions/roles';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
 import Inner from './Inner';
-import { Props, FormSituation } from './types';
+import { Props } from './types';
 
 jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
 
@@ -104,15 +104,13 @@ jest.mock(
 
 const onChange = jest.fn();
 
-const renderInner = (
-  props: Partial<Props & { formSituation: FormSituation }>
-) =>
+const renderInner = (props: Partial<Props>) =>
   render(
     <Inner
-      space_id={null}
-      folder_id={null}
+      spaceId={null}
+      folderId={null}
+      projectInRoot
       error={false}
-      formSituation="creating"
       onChange={onChange}
       {...props}
     />
@@ -153,7 +151,7 @@ describe('ProjectContextSection Inner', () => {
   });
 
   it('only offers the folders of the selected space', () => {
-    renderInner({ space_id: 'space-1' });
+    renderInner({ spaceId: 'space-1' });
 
     expect(
       screen.getByRole('option', { name: 'Bike lanes' })
@@ -163,7 +161,7 @@ describe('ProjectContextSection Inner', () => {
   });
 
   it('clears the folder when a space it is not in is selected', async () => {
-    renderInner({ space_id: 'space-1', folder_id: 'folder-in-space-1' });
+    renderInner({ spaceId: 'space-1', folderId: 'folder-in-space-1' });
 
     await userEvent.selectOptions(spaceSelect(), 'space-2');
 
@@ -174,7 +172,7 @@ describe('ProjectContextSection Inner', () => {
   });
 
   it('keeps the space when the folder is cleared', async () => {
-    renderInner({ space_id: 'space-1', folder_id: 'folder-in-space-1' });
+    renderInner({ spaceId: 'space-1', folderId: 'folder-in-space-1' });
 
     await userEvent.selectOptions(folderSelect(), '/');
 
@@ -200,7 +198,7 @@ describe('ProjectContextSection Inner', () => {
     });
 
     it('clears the space along with the folder', async () => {
-      renderInner({ space_id: 'space-1', folder_id: 'folder-in-space-1' });
+      renderInner({ spaceId: 'space-1', folderId: 'folder-in-space-1' });
 
       await userEvent.selectOptions(folderSelect(), '/');
 

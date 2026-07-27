@@ -219,7 +219,13 @@ const ProjectSetupForm = () => {
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
 
-    if (!validateProjectContext(projectAttrs, 'creating')) {
+    if (
+      !validateProjectContext({
+        spaceId: projectAttrs.space_id,
+        folderId: projectAttrs.folder_id,
+        projectInRoot: true,
+      })
+    ) {
       setProjectContextError(true);
       return false;
     }
@@ -287,9 +293,9 @@ const ProjectSetupForm = () => {
           />
 
           <ProjectContextSection
-            space_id={projectAttrs.space_id}
-            folder_id={projectAttrs.folder_id}
-            formSituation="creating"
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
+            projectInRoot
             error={projectContextError}
             onChange={(spaceAndFolderId) => {
               handleProjectAttributeDiffOnChange(spaceAndFolderId);

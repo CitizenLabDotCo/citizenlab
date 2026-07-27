@@ -19,31 +19,30 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 
 import messages from './messages';
-import { Props, FormSituation } from './types';
+import { Props } from './types';
 
 // Sentinel for the "no space" / "no folder" options. It must not be a valid id,
 // and it cannot be an empty string, because that already has a different
 // meaning inside of the Select component.
 const NONE = '/';
 
-const toId = (value: unknown): string | null =>
-  typeof value === 'string' && value !== NONE ? value : null;
+// A select has nothing to page through, so the folders are fetched as a single
+// page big enough to hold every folder the user manages.
+const FOLDERS_PAGE_SIZE = 10000;
 
-const byLabel = (a: IOption, b: IOption) =>
-  a.label.localeCompare(b.label, undefined, {
-    sensitivity: 'base',
-    numeric: true,
-  });
+// Every option value below is built here, so it is always one of our ids.
+const toId = (value: string): string | null => (value === NONE ? null : value);
+
+// The API returns folders newest-first, which is no help in a select.
+const byLabel = (a: IOption, b: IOption) => a.label.localeCompare(b.label);
 
 const Inner = ({
-  space_id,
-  folder_id,
+  spaceId,
+  folderId,
+  projectInRoot,
   error,
-  formSituation,
   onChange,
-}: Props & {
-  formSituation: FormSituation;
-}) => {
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: authUser } = useAuthUser();
@@ -55,15 +54,18 @@ const Inner = ({
   const showSpaceSelect =
     spacesEnabled && (userIsAdmin || isSpaceModerator(authUser));
 
-  const { data: spaces } = useSpaces({}, { enabled: showSpaceSelect });
   // Both endpoints only return what the current user is allowed to manage.
-  const { data: folderPages } = useInfiniteProjectFoldersAdmin({}, 10000);
+  const { data: spaces } = useSpaces();
+  const { data: folderPages } = useInfiniteProjectFoldersAdmin(
+    {},
+    FOLDERS_PAGE_SIZE
+  );
 
   if (!folderPages) return null;
   if (showSpaceSelect && !spaces) return null;
 
   const folders = folderPages.pages.flatMap((page) => page.data);
-  const selectedFolder = folders.find((folder) => folder.id === folder_id);
+  const selectedFolder = folders.find((folder) => folder.id === folderId);
 
   const spaceOptions: IOption[] = [
     { value: NONE, label: formatMessage(messages.noSpace) },
@@ -77,17 +79,17 @@ const Inner = ({
 
   // A folder the user manages directly can sit in a space they do not manage.
   // Add that space so the select shows its name instead of rendering blank.
-  if (space_id && !spaceOptions.some((option) => option.value === space_id)) {
+  if (spaceId && !spaceOptions.some((option) => option.value === spaceId)) {
     spaceOptions.push({
-      value: space_id,
+      value: spaceId,
       label: localize(selectedFolder?.attributes.space_title_multiloc),
     });
   }
 
   // Without a space, every folder stays selectable: that is how someone who
   // does not know which space a folder is in can start from the folder.
-  const selectableFolders = space_id
-    ? folders.filter((folder) => folder.attributes.space_id === space_id)
+  const selectableFolders = spaceId
+    ? folders.filter((folder) => folder.attributes.space_id === spaceId)
     : folders;
 
   const folderOptions: IOption[] = [
@@ -103,7 +105,7 @@ const Inner = ({
         return {
           value: folder.id,
           label:
-            showSpaceSelect && !space_id && spaceTitle
+            showSpaceSelect && !spaceId && spaceTitle
               ? formatMessage(messages.folderInSpaceOption, {
                   folderTitle,
                   spaceTitle: localize(spaceTitle),
@@ -133,7 +135,7 @@ const Inner = ({
       // Keep the space the user picked themselves: removing the folder should
       // not also take the project out of its space. Without a space select the
       // space only ever came from the folder, so there it clears too.
-      const remainingSpaceId = showSpaceSelect ? space_id ?? null : null;
+      const remainingSpaceId = showSpaceSelect ? spaceId ?? null : null;
       onChange({ space_id: remainingSpaceId, folder_id: null });
       return;
     }
@@ -145,8 +147,11 @@ const Inner = ({
     });
   };
 
+  // A project outside of every space and folder needs admin approval before a
+  // manager can publish it. Admins never see this, and neither does anyone
+  // editing a project that has to stay in a space or folder anyway.
   const showApprovalWarning =
-    formSituation === 'creating' && !userIsAdmin && !space_id && !folder_id;
+    !userIsAdmin && projectInRoot && !spaceId && !folderId;
 
   return (
     <Box display="flex" flexDirection="column" gap="20px">
@@ -155,7 +160,7 @@ const Inner = ({
           id="project-context-space-select"
           label={formatMessage(messages.spaceLabel)}
           labelTooltipText={formatMessage(messages.spaceTooltip)}
-          value={space_id ?? NONE}
+          value={spaceId ?? NONE}
           options={spaceOptions}
           onChange={handleSpaceChange}
           dataCy="space-select"
@@ -165,7 +170,7 @@ const Inner = ({
         <Select
           id="project-context-folder-select"
           label={formatMessage(messages.folderLabel)}
-          value={folder_id ?? NONE}
+          value={folderId ?? NONE}
           options={folderOptions}
           onChange={handleFolderChange}
           dataCy="project-folder-select"
