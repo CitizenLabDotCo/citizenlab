@@ -45,19 +45,6 @@ export const missingDataFlow = (
   state: State
 ) => {
   return {
-    // The user has a pending new_email (email_action_required is confirm_new_email)
-    // but wants to enter a different one. Requirements can't express "re-provide",
-    // so this is a dedicated step with its own email-only form (ChangeEmail).
-    'missing-data:change-email': {
-      CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (email: string) => {
-        await requestCodeNewEmail(email);
-        updateState({ email });
-        invalidateCacheAfterUpdateUser(queryClient);
-        setCurrentStep('confirmation:new_email');
-      },
-    },
-
     'missing-data:phone': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (phone: string) => {
@@ -111,6 +98,21 @@ export const missingDataFlow = (
         }
 
         setCurrentStep('success');
+      },
+    },
+
+    // The user has a pending new_email (email_action_required is confirm_new_email)
+    // but wants to enter a different one.
+    // We cannot handle this by going back to missing-data:built-in because
+    // the email is already marked by requirements API as provided,
+    // so the field would never show up in that step.
+    'missing-data:change-new-email': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: async (email: string) => {
+        await requestCodeNewEmail(email);
+        updateState({ email });
+        invalidateCacheAfterUpdateUser(queryClient);
+        setCurrentStep('confirmation:new_email');
       },
     },
 

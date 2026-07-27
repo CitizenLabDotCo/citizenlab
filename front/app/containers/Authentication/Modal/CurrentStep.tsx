@@ -176,7 +176,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'missing-data:change-email':
+    case 'missing-data:change-new-email':
       return (
         <ChangeEmail
           loading={loading}

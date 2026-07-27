@@ -29,7 +29,7 @@ export const confirmationSteps = (
     'confirmation:new_email': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        setCurrentStep('missing-data:change-email');
+        setCurrentStep('missing-data:change-new-email');
       },
       SUBMIT_CODE: async (_: string, code: string) => {
         await confirmCodeNewEmail(code);
