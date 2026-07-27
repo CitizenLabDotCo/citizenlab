@@ -46,6 +46,23 @@ RSpec.describe DecidimImporter::Extractors::CategoriesExtractor do
     expect(child.attributes['parent_ref']).to be(parent.attributes)
   end
 
+  it 'flattens a 3-level tree by re-parenting a grandchild onto its root ancestor' do
+    rows = [
+      row('uid' => 'decidim--category--3', 'parent' => 'decidim--category--2', 'name' => '{"fr":"Installations"}'),
+      row('uid' => 'decidim--category--2', 'parent' => 'decidim--category--1', 'name' => '{"fr":"Transports"}'),
+      row('uid' => 'decidim--category--1', 'parent' => '', 'name' => '{"fr":"Cadre de vie"}')
+    ]
+    extract(rows).run
+
+    root = ref_map.fetch('decidim--category--1')
+    child = ref_map.fetch('decidim--category--2')
+    grandchild = ref_map.fetch('decidim--category--3')
+    # Both the child and the grandchild hang off the root — no node is deeper than one level.
+    expect(child.attributes['parent_ref']).to be(root.attributes)
+    expect(grandchild.attributes['parent_ref']).to be(root.attributes)
+    expect(root.attributes).not_to have_key('parent_ref')
+  end
+
   it 'defaults description to an empty multiloc when the category has none' do
     topic = extract([row('description' => '')]).run.first
     expect(topic.attributes['description_multiloc']).to eq({})

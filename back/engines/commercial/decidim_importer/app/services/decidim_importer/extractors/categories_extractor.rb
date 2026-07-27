@@ -4,10 +4,11 @@ module DecidimImporter
   module Extractors
     # Decidim categories (`03---categories.csv`) ──▶ Go Vocal `InputTopic` on the process's project.
     #
-    # Each becomes a project-scoped input topic, preserving the Decidim hierarchy: a category with a
-    # `parent` references the parent's input topic. `InputTopic` is a nested set (max depth 2), so rows
-    # are processed roots-first — the parent exists when a child references it. Runs after the projects
-    # extractor. The process is stamped by {ExportReader} (the CSV has no process column).
+    # Each becomes a project-scoped input topic. `InputTopic` allows only one level of nesting (root +
+    # direct children), so the Decidim hierarchy is flattened to fit: a non-root category is re-parented
+    # onto its top-level root ancestor, collapsing any 3+-level Decidim tree to two levels. Rows are
+    # processed roots-first so the ancestor exists when a child references it. Runs after the projects
+    # extractor; the process is stamped by {ExportReader} (the CSV has no process column).
     class CategoriesExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',
@@ -49,12 +50,33 @@ module DecidimImporter
         ref_map.register(uid, topic)
       end
 
+      # Attaches the topic to its top-level root ancestor (not its direct Decidim parent), so a category
+      # nested 3+ levels deep still lands at depth 1 — the deepest `InputTopic` allows.
       def reference_parent(topic, row)
-        parent_uid = present_value(row[COLUMNS[:parent]])
-        return if parent_uid.nil?
+        uid = present_value(row[COLUMNS[:uid]])
+        root_uid = root_ancestor_uid(uid)
+        return if root_uid == uid # the category is itself a root
 
-        parent = ref_map.fetch(parent_uid)
+        parent = ref_map.fetch(root_uid)
         topic.reference('parent', parent) if parent&.model_name == 'input_topic'
+      end
+
+      # The uid of `uid`'s top-level ancestor by walking the Decidim `parent` chain (itself when it has
+      # no parent). Stops if a uid repeats, so a malformed cycle can't loop forever.
+      def root_ancestor_uid(uid)
+        seen = Set.new
+        current = uid
+        current = parent_by_uid[current] while parent_by_uid[current] && seen.add?(current)
+        current
+      end
+
+      # uid → parent uid, for every category row that has a parent.
+      def parent_by_uid
+        @parent_by_uid ||= rows.each_with_object({}) do |row, map|
+          uid = present_value(row[COLUMNS[:uid]])
+          parent = present_value(row[COLUMNS[:parent]])
+          map[uid] = parent if uid && parent
+        end
       end
     end
   end
