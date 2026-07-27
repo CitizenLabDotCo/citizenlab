@@ -19,7 +19,7 @@ import { isUUID } from 'utils/helperUtils';
 import type { Routes } from 'utils/moduleUtils';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
-import { createRoute, useLocation } from 'utils/router';
+import { createRoute, useLocation, useParams } from 'utils/router';
 
 import createAdminCommunityMonitorRoutes from './communityMonitor/routes';
 import createAdminDashboardRoutes from './dashboard/routes';
@@ -38,15 +38,6 @@ import createAdminUsersRoutes from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
-const ProjectDescriptionBuilderComponent = React.lazy(
-  () => import('containers/DescriptionBuilder/ProjectDescriptionBuilder')
-);
-const ProjectFullscreenPreview = React.lazy(
-  () =>
-    import(
-      'containers/DescriptionBuilder/ProjectDescriptionBuilder/ProjectFullScreenPreview'
-    )
-);
 const FolderDescriptionBuilderComponent = React.lazy(
   () => import('containers/DescriptionBuilder/FolderDescriptionBuilder')
 );
@@ -197,10 +188,23 @@ const faviconRoute = createRoute({
 });
 
 // Description builder routes
+// Project descriptions are edited in the project page builder; the legacy
+// description-builder URLs stay routable (bookmarks, old links) but redirect.
+const LegacyProjectDescriptionBuilderRedirect = () => {
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  return (
+    <Navigate
+      to="/admin/project-page-builder/projects/$projectId"
+      params={{ projectId }}
+      replace
+    />
+  );
+};
+
 const projectDescriptionRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: 'description-builder/projects/$projectId/description',
-  component: () => <ProjectDescriptionBuilderComponent />,
+  component: () => <LegacyProjectDescriptionBuilderRedirect />,
 });
 
 const descriptionBuilderPreviewSearchSchema = yup.object({
@@ -210,11 +214,7 @@ const descriptionBuilderPreviewSearchSchema = yup.object({
 const projectPreviewRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: 'description-builder/projects/$projectId/preview',
-  validateSearch: (search: Record<string, unknown>) =>
-    descriptionBuilderPreviewSearchSchema.validateSync(search, {
-      stripUnknown: true,
-    }),
-  component: () => <ProjectFullscreenPreview />,
+  component: () => <LegacyProjectDescriptionBuilderRedirect />,
 });
 
 const folderDescriptionRoute = createRoute({
