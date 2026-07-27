@@ -103,7 +103,7 @@ const emailActionStep = (
   switch (requirements.authentication.email_action_required) {
     case 'confirm_email':
     case 'reconfirm_email':
-      return 'confirmation:email';
+      return 'email:unauthenticated-confirmation';
     case 'confirm_new_email':
       return 'confirmation:new_email';
     default:
@@ -128,7 +128,7 @@ const phoneActionStep = (
     case 'reconfirm_phone':
       // Re-confirmation of the user's own phone (expiry elapsed): the code is
       // auto-sent to the existing number (see checkMissingData), so go straight
-      // to code entry, mirroring reconfirm_email -> confirmation:email.
+      // to code entry, mirroring reconfirm_email -> email:unauthenticated-confirmation.
       return 'confirmation:new_phone';
     case 'confirm_new_phone':
       return 'confirmation:new_phone';
@@ -217,7 +217,7 @@ export const handleSubmitEmail = async (
 
     if (action === 'confirm') {
       updateState({ flow: 'signin' });
-      setCurrentStep('confirmation:email');
+      setCurrentStep('email:unauthenticated-confirmation');
     }
   } catch (e) {
     if (e.errors?.email?.[0]?.error === 'taken_by_invite') {

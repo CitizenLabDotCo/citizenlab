@@ -96,7 +96,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'confirmation:email':
+    case 'email:unauthenticated-confirmation':
       return (
         <EmailConfirmation
           state={state}

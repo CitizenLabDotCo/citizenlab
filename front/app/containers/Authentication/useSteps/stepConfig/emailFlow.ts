@@ -1,5 +1,7 @@
 import { SupportedLocale } from 'typings';
 
+import { confirmCodeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
@@ -66,7 +68,7 @@ export const emailFlow = (
         });
 
         if (result === 'account_created_successfully') {
-          setCurrentStep('confirmation:email');
+          setCurrentStep('email:unauthenticated-confirmation');
         }
 
         if (result === 'email_taken') {
@@ -133,6 +135,39 @@ export const emailFlow = (
           state.flow,
           state.claimTokens ?? undefined
         );
+      },
+    },
+
+    'email:unauthenticated-confirmation': {
+      CLOSE: () => setCurrentStep('closed'),
+      CHANGE_EMAIL: async () => {
+        setCurrentStep('email:start');
+      },
+      SUBMIT_CODE: async (email: string, code: string) => {
+        await confirmCodeEmail(email, code);
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = await checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+      RESEND_CODE: async (email: string) => {
+        await requestCodeEmail({ email });
       },
     },
   };

@@ -24,7 +24,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'email:sso-policies': messages.signUp,
 
   // confirmation steps (code entry for email / new_email / new_phone)
-  'confirmation:email': messages.confirmYourEmail,
+  'email:unauthenticated-confirmation': messages.confirmYourEmail,
   'confirmation:new_email': messages.confirmYourEmail,
   'confirmation:new_phone': messages.confirmYourPhoneNumber,
 
