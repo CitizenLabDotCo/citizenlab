@@ -48,27 +48,24 @@ const StatCardCount = styled.div`
 
 type Status = keyof Omit<ISmsDeliveryStats, 'total'>;
 
-// The delivery statuses, in funnel order, with `not_sent` last. Displayed as
-// one card each.
-const STATUSES: Status[] = [
-  'pending',
-  'queued',
-  'sent',
-  'delivered',
-  'undelivered',
-  'failed',
-  'not_sent',
-];
+interface StatCardConfig {
+  message: MessageDescriptor;
+  statuses: Status[];
+}
 
-const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
-  pending: messages.smsDeliveryStatus_pending,
-  queued: messages.smsDeliveryStatus_queued,
-  sent: messages.smsDeliveryStatus_sent,
-  delivered: messages.smsDeliveryStatus_delivered,
-  undelivered: messages.smsDeliveryStatus_undelivered,
-  failed: messages.smsDeliveryStatus_failed,
-  not_sent: messages.smsDeliveryStatus_notSent,
-};
+// Statuses grouped into cards, in funnel order; transient and failure statuses each collapse into one card.
+const CARDS: StatCardConfig[] = [
+  {
+    message: messages.smsDeliveryStatus_pending,
+    statuses: ['pending', 'queued'],
+  },
+  { message: messages.smsDeliveryStatus_sent, statuses: ['sent'] },
+  { message: messages.smsDeliveryStatus_delivered, statuses: ['delivered'] },
+  {
+    message: messages.smsDeliveryStatus_failed,
+    statuses: ['undelivered', 'failed', 'not_sent'],
+  },
+];
 
 interface Props {
   campaignId: string;
@@ -84,18 +81,21 @@ const Stats = ({ campaignId, className }: Props) => {
 
   return (
     <Container className={className}>
-      {STATUSES.map((status) => {
-        const count = stats.data.attributes[status];
+      {CARDS.map(({ message, statuses }) => {
+        const count = statuses.reduce(
+          (sum, status) => sum + stats.data.attributes[status],
+          0
+        );
         const share = total > 0 ? count / total : 0;
 
         return (
-          <StatCard key={status}>
+          <StatCard key={message.id}>
             <StatCardPercentage>
               <FormattedNumber style="percent" value={share} />
             </StatCardPercentage>
             <StatCardCount>{count}</StatCardCount>
             <StatCardTitle>
-              <FormattedMessage {...STATUS_MESSAGES[status]} />
+              <FormattedMessage {...message} />
             </StatCardTitle>
           </StatCard>
         );
