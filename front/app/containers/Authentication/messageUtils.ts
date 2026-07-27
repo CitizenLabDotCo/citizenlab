@@ -35,7 +35,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
 
   // missing data flow
   'missing-data:change-new-email': messages.changeYourEmail,
-  'missing-data:phone': messages.enterYourPhoneNumber,
+  'missing-data:new_phone': messages.enterYourPhoneNumber,
   'missing-data:built-in': messages.completeYourProfile,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,

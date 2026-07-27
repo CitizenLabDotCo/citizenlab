@@ -22,7 +22,7 @@ export type Step =
 
   // missing data (if signed in already)
   | 'missing-data:change-new-email'
-  | 'missing-data:phone'
+  | 'missing-data:new_phone'
   | 'missing-data:built-in'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'

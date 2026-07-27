@@ -139,7 +139,7 @@ export const confirmationSteps = (
     'confirmation:new_phone': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_PHONE: async () => {
-        setCurrentStep('missing-data:phone');
+        setCurrentStep('missing-data:new_phone');
       },
       SUBMIT_CODE: async (code: string) => {
         await confirmCodeNewPhone(code);

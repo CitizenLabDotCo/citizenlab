@@ -144,7 +144,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'missing-data:phone':
+    case 'missing-data:new_phone':
       return (
         <Phone
           state={state}

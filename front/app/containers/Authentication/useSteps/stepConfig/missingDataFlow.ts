@@ -45,7 +45,7 @@ export const missingDataFlow = (
   state: State
 ) => {
   return {
-    'missing-data:phone': {
+    'missing-data:new_phone': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (phone: string) => {
         updateState({ phone });
