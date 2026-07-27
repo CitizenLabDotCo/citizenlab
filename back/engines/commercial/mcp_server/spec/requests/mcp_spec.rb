@@ -31,7 +31,15 @@ describe McpServer::McpController do
     }
   end
 
-  before { SettingsService.new.activate_feature!('mcp_server') }
+  before do
+    SettingsService.new.activate_feature!('mcp_server')
+
+    # In tests, ActionDispatch defaults the request Host to "www.example.com", which differs
+    # from the test tenant's host. Since 0.23, the mcp gem's DNS-rebinding protection checks
+    # the Host against the transport's allowed_hosts (which is just the tenant host, see the
+    # controller) and rejects anything else. This aligns the Host with the tenant.
+    host! AppConfiguration.instance.host
+  end
 
   def rpc(method, params = {})
     { jsonrpc: '2.0', id: 1, method:, params: }.to_json
@@ -135,7 +143,7 @@ describe McpServer::McpController do
 
       expect(rpc_result['isError']).to be(true)
       expect(rpc_result['content'].sole['text'])
-        .to include('Invalid arguments', "'#/participation_method'")
+        .to include('Invalid arguments', '/participation_method')
 
       expect(project.reload.phases.count).to eq(0)
     end
