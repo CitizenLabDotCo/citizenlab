@@ -874,6 +874,11 @@
     "verified_at": "2026-07-13T07:16:39.669771Z",
     "verified_by": "Roger"
   },
+  "app.components.admin.ActionForm.AccessSections.RecencyControl.nDays": {
+    "state": "verified",
+    "verified_at": "2026-07-27T07:58:41.621984Z",
+    "verified_by": "Roger"
+  },
   "app.components.admin.ActionForm.AccessSections.RecencyControl.reconfirmIfOlderThan": {
     "state": "verified",
     "verified_at": "2026-07-13T07:16:39.669771Z",
