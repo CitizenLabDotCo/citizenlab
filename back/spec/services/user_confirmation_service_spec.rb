@@ -156,6 +156,51 @@ RSpec.describe UserConfirmationService do
     end
   end
 
+  describe '#validate_and_confirm_phone!' do
+    let(:user) { create(:user, phone: '+14155552671') }
+
+    # The code request sends the OTP synchronously, so the provider is invoked.
+    include_context 'with stubbed SMS provider'
+
+    before do
+      SettingsService.new.activate_feature! 'password_login'
+      RequestPhoneConfirmationCodeJob.perform_now(user)
+    end
+
+    include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at
+
+    context 'when the code is correct' do
+      it 'does not complete pending claim tokens (an email/signup concern)' do
+        expect(ClaimTokenService).not_to receive(:complete)
+        service.validate_and_confirm_phone!(user, confirmation.code)
+      end
+    end
+
+    context 'when password_login is disabled' do
+      before do
+        SettingsService.new.deactivate_feature! 'password_login'
+      end
+
+      it 'returns a password login feature disabled error' do
+        result = service.validate_and_confirm_phone!(user, user.phone_confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(base: [{ error: :password_login_feature_disabled }])
+      end
+    end
+
+    context 'when the phone number is blank' do
+      before { user.update_columns(phone: nil) }
+
+      it 'returns a no phone error' do
+        result = service.validate_and_confirm_phone!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :no_phone }])
+      end
+    end
+  end
+
   describe '#validate_and_confirm_new_phone!' do
     let(:user) { create(:user) }
     let(:new_phone) { '+14155552671' }
