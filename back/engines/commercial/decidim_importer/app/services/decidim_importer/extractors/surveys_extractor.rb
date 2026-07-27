@@ -30,13 +30,6 @@ module DecidimImporter
       # Go Vocal linear/matrix scales support 2–11 scale points.
       LINEAR_SCALE_RANGE = (2..11)
 
-      attr_reader :skipped
-
-      def initialize(*args, **kwargs)
-        super
-        @skipped = []
-      end
-
       def run
         rows.filter_map { |row| build_survey(row) }
       end
@@ -48,10 +41,7 @@ module DecidimImporter
         return nil if component_uid.nil?
 
         phase = ref_map.fetch(component_uid)
-        if phase.nil?
-          @skipped << { uid: component_uid, reason: 'no survey phase' }
-          return nil
-        end
+        return skip(component_uid, 'no survey phase') if phase.nil?
 
         form = Record.new('custom_form', {})
         form.reference('participation_context', phase)
@@ -75,8 +65,8 @@ module DecidimImporter
       def register_question(form, component_uid, question, ordering)
         input_type = QUESTION_TYPE_TO_INPUT_TYPE[present_value(question['question_type'])]
         unless input_type
-          @skipped << { uid: "#{component_uid}-q#{question['id']}",
-                        reason: "unsupported question type: #{question['question_type']}" }
+          skip("#{component_uid}-q#{question['id']}",
+            "unsupported question type: #{question['question_type']}")
           return false
         end
 
@@ -97,8 +87,8 @@ module DecidimImporter
       def register_matrix_question(form, component_uid, question, ordering)
         columns = Array(question['answer_options'])
         unless LINEAR_SCALE_RANGE.cover?(columns.size)
-          @skipped << { uid: "#{component_uid}-q#{question['id']}",
-                        reason: "matrix scale of #{columns.size} outside #{LINEAR_SCALE_RANGE}" }
+          skip("#{component_uid}-q#{question['id']}",
+            "matrix scale of #{columns.size} outside #{LINEAR_SCALE_RANGE}")
           return false
         end
 

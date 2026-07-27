@@ -22,13 +22,6 @@ module DecidimImporter
         process: 'decidim_participatory_process'
       }.freeze
 
-      attr_reader :skipped
-
-      def initialize(*args, **kwargs)
-        super
-        @skipped = []
-      end
-
       def run
         rows.sort_by { |row| sort_key(row) }.filter_map { |row| build_topic(row) }
       end
@@ -66,11 +59,6 @@ module DecidimImporter
 
         parent = ref_map.fetch(parent_uid)
         topic.reference('parent', parent) if parent&.model_name == 'input_topic'
-      end
-
-      def skip(uid, reason)
-        @skipped << { uid: uid, reason: reason }
-        nil
       end
     end
   end

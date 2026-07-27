@@ -34,13 +34,6 @@ module DecidimImporter
         process: 'decidim_participatory_process'
       }.freeze
 
-      attr_reader :skipped
-
-      def initialize(*args, **kwargs)
-        super
-        @skipped = []
-      end
-
       def run
         rows.filter_map { |row| build_event(row) }
       end
@@ -99,11 +92,6 @@ module DecidimImporter
         return nil unless lat && lng
 
         { 'type' => 'Point', 'coordinates' => [lng, lat] }
-      end
-
-      def skip(uid, reason)
-        @skipped << { uid: uid, reason: reason }
-        nil
       end
     end
   end

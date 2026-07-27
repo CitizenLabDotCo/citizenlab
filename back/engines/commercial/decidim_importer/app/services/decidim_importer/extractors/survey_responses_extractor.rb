@@ -24,12 +24,9 @@ module DecidimImporter
       COLUMNS = { author: 'author', created_at: 'created_at',
                   process: 'decidim_participatory_process', component: 'decidim_component' }.freeze
 
-      attr_reader :skipped
-
       def initialize(*, survey_components: [], **)
         super(*, **)
         @survey_components = survey_components
-        @skipped = []
       end
 
       def run
@@ -192,11 +189,6 @@ module DecidimImporter
           uid = present_value(component_row['uid'])
           acc[uid] = SurveyParser.questions(component_row['specific_data']) if uid
         end
-      end
-
-      def skip(uid, reason)
-        @skipped << { uid: uid, reason: reason }
-        nil
       end
     end
   end

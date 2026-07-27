@@ -25,13 +25,6 @@ module DecidimImporter
         updated_at: 'updated_at'
       }.freeze
 
-      attr_reader :skipped
-
-      def initialize(*args, **kwargs)
-        super
-        @skipped = []
-      end
-
       def run
         rows.filter_map { |row| build_idea(row) }
       end
@@ -44,10 +37,7 @@ module DecidimImporter
 
         project = ref_map.fetch(present_value(row[COLUMNS[:process]]))
         phase = ref_map.fetch(present_value(row[COLUMNS[:component]]))
-        if project.nil? || phase.nil?
-          @skipped << { uid: uid, reason: 'no project/phase for budget project' }
-          return nil
-        end
+        return skip(uid, 'no project/phase for budget project') if project.nil? || phase.nil?
 
         idea = Record.new('idea', idea_attributes(row))
         idea.reference('project', project)

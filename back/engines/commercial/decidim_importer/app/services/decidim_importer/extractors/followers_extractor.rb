@@ -22,11 +22,8 @@ module DecidimImporter
         updated_at: 'updated_at'
       }.freeze
 
-      attr_reader :skipped
-
       def initialize(*args, **kwargs)
         super
-        @skipped = []
         @seen = Set.new
       end
 
@@ -55,11 +52,6 @@ module DecidimImporter
         follower.reference('followable', idea)
         follower.reference('user', user)
         ref_map.register(uid, follower)
-      end
-
-      def skip(uid, reason)
-        @skipped << { uid: uid, reason: reason }
-        nil
       end
     end
   end

@@ -25,13 +25,6 @@ module DecidimImporter
         updated_at: 'updated_at'
       }.freeze
 
-      attr_reader :skipped
-
-      def initialize(*args, **kwargs)
-        super
-        @skipped = []
-      end
-
       def run
         rows
           .sort_by { |row| present_value(row[COLUMNS[:depth]]).to_i }
@@ -45,16 +38,10 @@ module DecidimImporter
         return nil if uid.nil?
 
         body = multiloc(row[COLUMNS[:body]])
-        if body.empty?
-          @skipped << { uid: uid, reason: 'blank body' }
-          return nil
-        end
+        return skip(uid, 'blank body') if body.empty?
 
         idea = ref_map.fetch(present_value(row[COLUMNS[:root_commentable]]))
-        if idea.nil?
-          @skipped << { uid: uid, reason: 'commented-on proposal not imported' }
-          return nil
-        end
+        return skip(uid, 'commented-on proposal not imported') if idea.nil?
 
         comment = Record.new('comment', {
           'body_multiloc' => body,

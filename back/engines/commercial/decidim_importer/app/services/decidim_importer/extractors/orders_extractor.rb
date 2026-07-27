@@ -27,11 +27,8 @@ module DecidimImporter
         updated_at: 'updated_at'
       }.freeze
 
-      attr_reader :skipped
-
       def initialize(*args, **kwargs)
         super
-        @skipped = []
         @seen = Set.new
       end
 
@@ -85,24 +82,7 @@ module DecidimImporter
       end
 
       def project_uids(row)
-        parsed = parse_json_array(row[COLUMNS[:projects]])
-        Array(parsed).filter_map { |value| present_value(value) }
-      end
-
-      def parse_json_array(value)
-        return value if value.is_a?(Array)
-
-        str = value.to_s.strip
-        return [] unless str.start_with?('[')
-
-        JSON.parse(str)
-      rescue JSON::ParserError
-        []
-      end
-
-      def skip(uid, reason)
-        @skipped << { uid: uid, reason: reason }
-        nil
+        Array(Parsing.parse_json(row[COLUMNS[:projects]])).filter_map { |value| present_value(value) }
       end
     end
   end

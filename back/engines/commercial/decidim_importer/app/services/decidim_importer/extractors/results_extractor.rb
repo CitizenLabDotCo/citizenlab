@@ -32,10 +32,7 @@ module DecidimImporter
       def initialize(*, statuses: [], **)
         super(*, **)
         @statuses = statuses
-        @skipped = []
       end
-
-      attr_reader :skipped
 
       def run
         rows.filter_map { |row| build_result(row) }
@@ -49,10 +46,7 @@ module DecidimImporter
 
         project = ref_map.fetch(present_value(row[COLUMNS[:process]]))
         phase = ref_map.fetch(present_value(row[COLUMNS[:component]]))
-        if project.nil? || phase.nil?
-          @skipped << { uid: uid, reason: 'no project/phase for result' }
-          return nil
-        end
+        return skip(uid, 'no project/phase for result') if project.nil? || phase.nil?
 
         idea = Record.new('idea', idea_attributes(row))
         idea.reference('project', project)
@@ -129,9 +123,7 @@ module DecidimImporter
       # The translatable label per locale, always populated: a locale without its own translation falls
       # back to the English string (rather than being dropped) so the label never renders empty.
       def label_multiloc(key, locales)
-        full_key = "decidim_importer.#{key}"
-        default = I18n.t(full_key, locale: :en)
-        locales.index_with { |locale| I18n.t(full_key, locale: locale, default: default) }
+        i18n_multiloc(key, locales: locales)
       end
 
       def statuses_for(component_uid)

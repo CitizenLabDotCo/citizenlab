@@ -30,13 +30,6 @@ module DecidimImporter
         process: 'decidim_participatory_process'
       }.freeze
 
-      attr_reader :skipped
-
-      def initialize(*args, **kwargs)
-        super
-        @skipped = []
-      end
-
       def run
         rows.filter_map { |row| build_file(row) }
       end
@@ -68,20 +61,6 @@ module DecidimImporter
 
         register_files_project(uid, file, project)
         file
-      end
-
-      # The ownership join: the file belongs to the project's file repository, which is what makes it
-      # available to the project and lets the description layout link to it.
-      def register_files_project(uid, file, project)
-        files_project = Record.new('files/files_project', {})
-        files_project.reference('file', file)
-        files_project.reference('project', project)
-        ref_map.register("#{uid}-files-project", files_project)
-      end
-
-      def skip(uid, reason)
-        @skipped << { uid: uid, reason: reason }
-        nil
       end
     end
   end

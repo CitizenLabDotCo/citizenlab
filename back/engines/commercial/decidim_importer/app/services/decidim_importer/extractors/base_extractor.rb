@@ -18,9 +18,55 @@ module DecidimImporter
         raise NotImplementedError
       end
 
+      # Rows the extractor couldn't import, as `{ uid:, reason: }` hashes — surfaced in the dump's
+      # skip log. Lazily initialised so subclasses need no `initialize` just to seed it.
+      def skipped
+        @skipped ||= []
+      end
+
       private
 
       attr_reader :rows, :ref_map, :locale_mapper, :primary_locale
+
+      # Records a row as skipped (with its reason) and returns nil, so callers can `return skip(...)`.
+      def skip(uid, reason)
+        skipped << { uid: uid, reason: reason }
+        nil
+      end
+
+      # The ownership join placing an imported file in a project's file repository — what makes the
+      # file available to the project and linkable/attachable from it. Shared by the file and
+      # attachment extractors.
+      def register_files_project(uid, file, project)
+        files_project = Record.new('files/files_project', {})
+        files_project.reference('file', file)
+        files_project.reference('project', project)
+        ref_map.register("#{uid}-files-project", files_project)
+      end
+
+      # Registers a custom, project-scoped `StaticPage` from title + body multilocs, with an explicit id
+      # so a Content Builder `PageLink` can reference it (refs can't reach into the JSONB blob). Shared
+      # by the pages and blogs extractors.
+      def register_static_page(uid, project, title:, body:, created_at: nil, updated_at: nil)
+        attributes = {
+          'id' => SecureRandom.uuid,
+          'title_multiloc' => title,
+          'code' => 'custom',
+          'top_info_section_enabled' => true,
+          'top_info_section_multiloc' => body
+        }
+        attributes['created_at'] = created_at if created_at
+        attributes['updated_at'] = updated_at if updated_at
+        page = Record.new('static_page', attributes)
+        page.reference('project', project)
+        ref_map.register(uid, page)
+      end
+
+      # A multiloc translation of a `decidim_importer.<key>` back-end string across `locales`, with the
+      # framework's English fallback for locales that have no translation yet.
+      def i18n_multiloc(key, locales:)
+        MultilocService.new.i18n_to_multiloc("decidim_importer.#{key}", locales: locales, raise_on_missing: false)
+      end
 
       # Builds a multiloc from a cell. Decidim stores multilocs either as a JSON object
       # (`{"fr":"…","en":"…"}`) in a single cell or as plain text in the platform's primary locale.
@@ -28,7 +74,7 @@ module DecidimImporter
       def multiloc(value)
         return {} if value.nil? || value.to_s.strip.empty?
 
-        parsed = try_parse_json(value)
+        parsed = Parsing.parse_json(value)
         if parsed.is_a?(Hash)
           parsed.each_with_object({}) do |(locale, text), acc|
             next if text.nil? || text.to_s.strip.empty?
@@ -38,17 +84,6 @@ module DecidimImporter
         else
           { primary_locale => value.to_s }
         end
-      end
-
-      def try_parse_json(value)
-        return value if value.is_a?(Hash)
-
-        str = value.to_s.strip
-        return nil unless str.start_with?('{')
-
-        JSON.parse(str)
-      rescue JSON::ParserError
-        nil
       end
 
       def truthy?(value)
@@ -86,8 +121,7 @@ module DecidimImporter
       end
 
       def present_value(value)
-        str = value.to_s.strip
-        str.empty? ? nil : str
+        Parsing.present_value(value)
       end
 
       # Decidim timestamps come through as strings or Time-like values; normalise to a string the

@@ -112,9 +112,7 @@ module DecidimImporter
       # An H2 "Blog" heading, translated for the description's locales (falling back to the primary
       # locale). The copy lives in the back-end locales (`decidim_importer.blog`), wrapped in `<h2>`.
       def blog_heading(description)
-        locales = description.keys.presence || [primary_locale]
-        MultilocService.new
-          .i18n_to_multiloc('decidim_importer.blog', locales: locales, raise_on_missing: false)
+        i18n_multiloc('blog', locales: description.keys.presence || [primary_locale])
           .transform_values { |text| "<h2>#{text}</h2>" }
       end
 
@@ -194,9 +192,7 @@ module DecidimImporter
       # renders it as a heading.
       def documents_heading(collections)
         locales = collections.flat_map { |collection| collection[:title].keys }.uniq.presence || [primary_locale]
-        MultilocService.new
-          .i18n_to_multiloc('decidim_importer.documents_to_consult', locales: locales, raise_on_missing: false)
-          .transform_values { |text| "<h2>#{text}</h2>" }
+        i18n_multiloc('documents_to_consult', locales: locales).transform_values { |text| "<h2>#{text}</h2>" }
       end
 
       # An accordion's content: the collection description (a `TextMultiloc`, when present) followed by a

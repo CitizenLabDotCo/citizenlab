@@ -31,13 +31,6 @@ module DecidimImporter
 
       OFFICIAL_FEEDBACK_AUTHOR = 'Administration'
 
-      attr_reader :skipped
-
-      def initialize(*args, **kwargs)
-        super
-        @skipped = []
-      end
-
       def run
         rows.filter_map { |row| build_idea(row) }
       end
@@ -50,10 +43,7 @@ module DecidimImporter
 
         project = ref_map.fetch(present_value(row[COLUMNS[:process]]))
         phase = ref_map.fetch(present_value(row[COLUMNS[:component]]))
-        if project.nil? || phase.nil?
-          @skipped << { uid: uid, reason: 'no project/phase for proposal' }
-          return nil
-        end
+        return skip(uid, 'no project/phase for proposal') if project.nil? || phase.nil?
 
         idea = Record.new('idea', idea_attributes(row))
         idea.reference('project', project)
@@ -95,8 +85,7 @@ module DecidimImporter
       end
 
       def author_uids(row)
-        parsed = parse_json_array(row[COLUMNS[:authors]])
-        Array(parsed).filter_map { |uid| present_value(uid) }
+        Array(Parsing.parse_json(row[COLUMNS[:authors]])).filter_map { |uid| present_value(uid) }
       end
 
       def register_official_feedback(uid, idea, row)
@@ -112,17 +101,6 @@ module DecidimImporter
         })
         feedback.reference('idea', idea)
         ref_map.register("#{uid}-official-feedback", feedback)
-      end
-
-      def parse_json_array(value)
-        return value if value.is_a?(Array)
-
-        str = value.to_s.strip
-        return [] unless str.start_with?('[')
-
-        JSON.parse(str)
-      rescue JSON::ParserError
-        []
       end
     end
   end

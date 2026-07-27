@@ -25,13 +25,6 @@ module DecidimImporter
         process: 'decidim_participatory_process'
       }.freeze
 
-      attr_reader :skipped
-
-      def initialize(*args, **kwargs)
-        super
-        @skipped = []
-      end
-
       def run
         rows.filter_map { |row| build_static_page(row) }
       end
@@ -49,24 +42,8 @@ module DecidimImporter
         title = multiloc(row[COLUMNS[:title]])
         return skip(uid, 'post has no title') if title.empty?
 
-        # An explicit id so the project-description layout's PageLink block can reference this page
-        # (craftjs stores the page id verbatim; refs can't reach into the JSONB blob).
-        page = Record.new('static_page', {
-          'id' => SecureRandom.uuid,
-          'title_multiloc' => title,
-          'code' => 'custom',
-          'top_info_section_enabled' => true,
-          'top_info_section_multiloc' => multiloc(row[COLUMNS[:body]]),
-          'created_at' => timestamp(row[COLUMNS[:created_at]]),
-          'updated_at' => timestamp(row[COLUMNS[:updated_at]])
-        })
-        page.reference('project', project)
-        ref_map.register(uid, page)
-      end
-
-      def skip(uid, reason)
-        @skipped << { uid: uid, reason: reason }
-        nil
+        register_static_page(uid, project, title: title, body: multiloc(row[COLUMNS[:body]]),
+          created_at: timestamp(row[COLUMNS[:created_at]]), updated_at: timestamp(row[COLUMNS[:updated_at]]))
       end
     end
   end

@@ -165,7 +165,7 @@ module DecidimImporter
       # (gender, phone_number, date_of_birth, …). Pick the demographic ones GV has built-in slots
       # for.
       def custom_field_values(row)
-        data = try_parse_json(row[COLUMNS[:extended_data]]) || {}
+        data = Parsing.parse_json(row[COLUMNS[:extended_data]]) || {}
         values = {}
 
         gender = GENDER_MAP[present_value(data['gender'])&.downcase]

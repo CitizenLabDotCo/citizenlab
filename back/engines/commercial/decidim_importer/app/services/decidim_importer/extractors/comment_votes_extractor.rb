@@ -26,11 +26,8 @@ module DecidimImporter
 
       MODES = %w[up down].freeze
 
-      attr_reader :skipped
-
       def initialize(*args, **kwargs)
         super
-        @skipped = []
         @seen = Set.new
       end
 
@@ -63,11 +60,6 @@ module DecidimImporter
         reaction.reference('reactable', comment)
         reaction.reference('user', author) if author
         ref_map.register(uid, reaction)
-      end
-
-      def skip(uid, reason)
-        @skipped << { uid: uid, reason: reason }
-        nil
       end
     end
   end
