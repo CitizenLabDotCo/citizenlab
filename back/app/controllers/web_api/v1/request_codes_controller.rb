@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::RequestCodesController < ApplicationController
-  # Authentication is optional (not skipped-and-forbidden) for request_code_email:
-  # it serves both unauthenticated callers (email signup / passwordless login) and
-  # authenticated callers re-confirming their own email once confirmed_email_expiry
-  # has elapsed. The RequestCodePolicy distinguishes the two.
   skip_before_action :authenticate_user, only: %i[request_code_email]
 
   # Sends a confirmation code for the user's `email`, to be confirmed in place
