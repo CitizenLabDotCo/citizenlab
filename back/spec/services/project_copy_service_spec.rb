@@ -363,6 +363,31 @@ describe ProjectCopyService do
       expect(template['models']['user'].map { |u| u['email'] }).to include(cosponsor.email)
     end
 
+    it 'includes Files engine files, their project join and attachments' do
+      idea = create(:idea)
+      project = idea.project
+      project_file = create(:file, name: 'proj.pdf', projects: [project])
+      create(:file_attachment, file: project_file, attachable: project)
+      idea_file = create(:file, name: 'idea.pdf', projects: [project])
+      create(:file_attachment, file: idea_file, attachable: idea)
+
+      # Imports into the same tenant, so anonymize users to avoid email collisions.
+      template = service.export project, include_ideas: true
+
+      expect(template['models']['files/file'].size).to eq 2
+      expect(template['models']['files/files_project'].size).to eq 2
+      expect(template['models']['files/file_attachment'].size).to eq 2
+
+      create(:idea_status_proposed) # the copied idea re-derives its (uncopied) status on import
+      copied_project = service.import template
+
+      expect(copied_project.files.pluck(:name)).to match_array(%w[proj.pdf idea.pdf])
+      expect(copied_project.file_attachments.count).to eq 1
+      expect(copied_project.ideas.first.file_attachments.count).to eq 1
+      # The uploader (unrelated to the idea graph) is pulled in so its ref resolves.
+      expect(copied_project.files.filter_map(&:uploader)).to be_present
+    end
+
     it 'includes phases with no end date' do
       project = create(:project_with_active_ideation_phase)
       project.phases.last.update!(end_at: nil)

@@ -91,7 +91,13 @@ class McpServer::Serializers::Base
         .index_by { it[:id] }
     end
 
-    collection? ? records.map { attributes(it) } : attributes(records.sole)
+    # Enforce the invariant that serializers return hashes with symbols as
+    # top-level keys (multiloc values keep their string locale keys).
+    if collection?
+      records.map { attributes(it).symbolize_keys }
+    else
+      attributes(records.sole).symbolize_keys
+    end
   end
 
   def attributes(record)
