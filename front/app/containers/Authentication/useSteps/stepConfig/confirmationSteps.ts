@@ -161,8 +161,8 @@ export const confirmationSteps = (
 
         setCurrentStep('success');
       },
-      RESEND_CODE: async (phone: string) => {
-        await requestCodeNewPhone({ newPhone: phone });
+      RESEND_CODE: async (newPhone: string) => {
+        await requestCodeNewPhone(newPhone);
       },
     },
   };

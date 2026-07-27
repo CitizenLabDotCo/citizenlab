@@ -1,6 +1,6 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
-import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { requestCodePhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
@@ -34,7 +34,7 @@ export const checkMissingData = async (
     if (
       requirements.authentication.email_action_required === 'reconfirm_email'
     ) {
-      await requestCodeEmail({ onlyIfFirstTime: true }).catch(() => {});
+      await requestCodeEmail({ onlyIfFirstTime: true });
     }
     return emailStep;
   }
@@ -44,7 +44,7 @@ export const checkMissingData = async (
     if (
       requirements.authentication.phone_action_required === 'reconfirm_phone'
     ) {
-      await requestCodeNewPhone({ onlyIfFirstTime: true }).catch(() => {});
+      await requestCodePhone({ onlyIfFirstTime: true });
     }
     return phoneStep;
   }

@@ -1,6 +1,6 @@
 import fetcher from 'utils/cl-react-query/fetcher';
 
-export const requestCodePhone = async (onlyIfFirstTime = true) => {
+export const requestCodePhone = async ({ onlyIfFirstTime = false } = {}) => {
   await fetcher({
     path: `/user/request_code_phone`,
     action: 'post',

@@ -49,7 +49,7 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (phone: string) => {
         updateState({ phone });
-        await requestCodeNewPhone({ newPhone: phone });
+        await requestCodeNewPhone(phone);
         invalidateCacheAfterUpdateUser(queryClient);
         setCurrentStep('confirmation:new_phone');
       },

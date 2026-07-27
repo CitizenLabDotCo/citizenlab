@@ -136,7 +136,7 @@ const PhoneChange = () => {
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onPhoneConfirmation}
-              onResendCode={() => requestCodeNewPhone({ newPhone: phoneValue })}
+              onResendCode={() => requestCodeNewPhone(phoneValue)}
             />
           </Box>
         </Modal>
