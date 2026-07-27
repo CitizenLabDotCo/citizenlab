@@ -6,8 +6,6 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
-import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
-
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Input from 'components/HookForm/Input';
 import {
@@ -137,15 +135,22 @@ const UpdatePhoneForm = ({
           <FormattedMessage
             {...messages.smsConfirmationDisclosure}
             values={{
-              link: (
+              termsLink: (
+                <Link
+                  target="_blank"
+                  to="/pages/$slug"
+                  params={{ slug: 'terms-and-conditions' }}
+                >
+                  <FormattedMessage {...messages.termsLinkText} />
+                </Link>
+              ),
+              privacyLink: (
                 <Link
                   target="_blank"
                   to="/pages/$slug"
                   params={{ slug: 'privacy-policy' }}
                 >
-                  <FormattedMessage
-                    {...authProvidersMessages.thePrivacyPolicy}
-                  />
+                  <FormattedMessage {...messages.privacyLinkText} />
                 </Link>
               ),
             }}
