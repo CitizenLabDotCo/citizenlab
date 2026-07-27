@@ -77,15 +77,14 @@ class WebApi::V1::RequestCodesController < ApplicationController
     head :ok
   end
 
-
   # This endpoint is used when a logged in user wants to add or change their
   # (verified) phone number. The submitted number is held as a pending
-  # new_phone and an SMS confirmation code is sent to it.
+  # new_phone and an SMS confirmation code is sent to it. Re-confirming the
+  # number already on the account is request_code_phone's job, not this one.
   def request_code_new_phone
     authorize current_user, policy_class: RequestCodePolicy
 
     new_phone = request_code_new_phone_params[:new_phone].presence
-    new_phone ||= current_user.phone if only_if_first_time?
     if new_phone.blank?
       render json: { errors: { new_phone: [{ error: 'blank' }] } }, status: :unprocessable_entity
       return
@@ -112,7 +111,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   # Whether the caller asked for the idempotent "send only if no code is
   # outstanding" behaviour (the first send of the confirmation cycle). Present on
-  # both request_code_email and request_code_new_phone.
+  # both request_code_email and request_code_phone.
   def only_if_first_time?
     ActiveModel::Type::Boolean.new.cast(params.fetch(:request_code, {})[:only_if_first_time])
   end
@@ -126,6 +125,6 @@ class WebApi::V1::RequestCodesController < ApplicationController
   end
 
   def request_code_new_phone_params
-    params.fetch(:request_code, {}).permit(:new_phone, :only_if_first_time)
+    params.fetch(:request_code, {}).permit(:new_phone)
   end
 end

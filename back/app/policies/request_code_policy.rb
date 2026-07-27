@@ -46,6 +46,18 @@ class RequestCodePolicy < ApplicationPolicy
     true
   end
 
+  # For authenticated users re-confirming the phone number already on their
+  # account (its confirmation has aged out). Unlike request_code_new_phone there
+  # is no submitted number: the code goes to user.phone, so there has to be one.
+  def request_code_phone?
+    return false unless app_configuration.feature_activated?('sms')
+    return false if user.nil?
+    return false if user.phone.blank?
+    return false if user.phone_confirmation.code_reset_count >= max_retries - 1
+
+    true
+  end
+
   # For authenticated users adding/changing their phone number
   def request_code_new_phone?
     return false unless app_configuration.feature_activated?('sms')

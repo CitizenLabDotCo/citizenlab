@@ -238,6 +238,88 @@ resource 'Request codes' do
     end
   end
 
+  post 'web_api/v1/user/request_code_phone' do
+    with_options scope: :request_code do
+      parameter :only_if_first_time, 'Only send a code if none is currently outstanding.', required: false
+    end
+
+    include_context 'with sms feature enabled'
+
+    example 'It works for an authenticated user with a phone number' do
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+    end
+
+    example 'It does not work for an unauthenticated user' do
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # There is no number in the request, so the code can only go to user.phone.
+    example 'It does not work if the user has no phone number' do
+      user = create(:user)
+      expect(user.phone).to be_nil
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It does not work if the user reached code_reset_count' do
+      user = create(:user, :with_confirmed_phone)
+      user.phone_confirmation.update!(code_reset_count: 4)
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It does not work if the SMS feature is disabled' do
+      SettingsService.new.deactivate_feature!('sms')
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # only_if_first_time: idempotent auto-send used when the flow lands an authenticated
+    # user on the phone confirmation step (re-confirmation after the phone confirmation
+    # aged out).
+    example 'with only_if_first_time, sends when no code is outstanding' do
+      user = create(:user, :with_confirmed_phone)
+      expect(user.phone_confirmation.code_outstanding?).to be false
+      header_token_for(user)
+
+      do_request(request_code: { only_if_first_time: true })
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+    end
+
+    example 'with only_if_first_time, does not resend when a code is already outstanding' do
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+      RequestPhoneConfirmationCodeJob.perform_now(user) # one code sent in setup
+      expect(user.phone_confirmation.reload.code).to be_present
+
+      do_request(request_code: { only_if_first_time: true })
+      expect(response_status).to eq 200
+      # Only the setup send happened; the only_if_first_time request was a no-op.
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+    end
+  end
+
   post 'web_api/v1/user/request_code_new_phone' do
     with_options scope: :request_code do
       parameter :new_phone, 'The phone number the user wants to verify.', required: true
@@ -294,31 +376,6 @@ resource 'Request codes' do
       header_token_for(user)
       do_request(request_code: { new_phone: '+14155552671' })
       expect(response_status).to eq 401
-    end
-
-    # only_if_first_time: for re-confirmation the number is omitted and the endpoint falls
-    # back to the user's own phone, sending only when no code is outstanding.
-    example 'with only_if_first_time and no new_phone, sends to the existing phone' do
-      user = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
-      header_token_for(user)
-
-      do_request(request_code: { only_if_first_time: true })
-      expect(response_status).to eq 200
-      expect(user.reload.new_phone).to eq '+14155552671'
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
-    end
-
-    example 'with only_if_first_time, does not resend when a code is already outstanding' do
-      user = create(:user, phone: '+14155552671', phone_confirmed_at: Time.zone.now)
-      header_token_for(user)
-      RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: '+14155552671') # one code sent in setup
-      expect(user.new_phone_confirmation.reload.code).to be_present
-
-      do_request(request_code: { only_if_first_time: true })
-      expect(response_status).to eq 200
-      expect(delivery_service).to have_received(:send_now_to_user)
-        .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
     end
   end
 end
