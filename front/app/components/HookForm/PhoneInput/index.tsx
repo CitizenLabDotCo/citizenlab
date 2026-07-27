@@ -67,6 +67,8 @@ const PhoneInput = ({
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
 
+  const showSearch = countries ? countries.length > 4 : true;
+
   const ariaDescribedBy =
     validationError || apiError ? `${name}-error` : undefined;
 
@@ -82,6 +84,7 @@ const PhoneInput = ({
             // The validator imports the same 'intl-tel-input/utils' module,
             // so it ends up bundled only once.
             loadUtils={() => import('intl-tel-input/utils')}
+            countrySearch={showSearch}
             onlyCountries={countries?.map(toIso2)}
             initialCountry={defaultCountry && toIso2(defaultCountry)}
             value={field.value}

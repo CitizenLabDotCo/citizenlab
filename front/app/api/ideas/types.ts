@@ -183,9 +183,6 @@ export interface IIdeaData {
 }
 
 export interface IIdeaAdd {
-  // Required
-  project_id: string;
-  // Optional
   publication_status?: IdeaPublicationStatus;
   title_multiloc?: Multiloc;
   author_id?: string | null;
@@ -193,7 +190,6 @@ export interface IIdeaAdd {
   idea_status_id?: string | null;
   body_multiloc?: Multiloc;
   topic_ids?: string[] | null;
-  phase_ids?: string[] | null;
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
   budget?: number | null;

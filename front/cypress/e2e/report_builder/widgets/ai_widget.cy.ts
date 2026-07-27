@@ -63,7 +63,7 @@ describe('Report builder: AI widget', () => {
 
             surveyQuestionResponses.forEach((response) => {
               cy.apiCreateSurveyResponse({
-                project_id: projectId,
+                phase_id: surveyPhaseId,
                 fields: {
                   [surveyFields[1].attributes.key]: response,
                 },
@@ -88,22 +88,19 @@ describe('Report builder: AI widget', () => {
 
         const ideaContent = randomString();
         cy.apiCreateIdea({
-          projectId,
+          phaseId: ideationPhaseId,
           ideaTitle: ideaTitle1,
           ideaContent: ideaContent,
-          phaseIds: [ideationPhaseId],
         });
         cy.apiCreateIdea({
-          projectId,
+          phaseId: ideationPhaseId,
           ideaTitle: ideaTitle2,
           ideaContent: ideaContent,
-          phaseIds: [ideationPhaseId],
         });
         cy.apiCreateIdea({
-          projectId,
+          phaseId: ideationPhaseId,
           ideaTitle: ideaTitle3,
           ideaContent: ideaContent,
-          phaseIds: [ideationPhaseId],
         });
       });
     });

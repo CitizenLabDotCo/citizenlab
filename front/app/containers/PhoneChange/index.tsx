@@ -137,7 +137,7 @@ const PhoneChange = () => {
               </Box>
             )}
             <PhoneConfirmation
-              phoneNumber={phoneValue}
+              state={{ phone: phoneValue }}
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onPhoneConfirmation}

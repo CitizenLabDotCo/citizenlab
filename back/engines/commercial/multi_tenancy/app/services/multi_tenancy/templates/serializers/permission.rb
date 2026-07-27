@@ -20,6 +20,8 @@ module MultiTenancy
           user_data_collection
           user_fields_in_form
           verification_expiry
+          require_confirmed_phone_number
+          confirmed_phone_number_expiry
         ]
       end
     end

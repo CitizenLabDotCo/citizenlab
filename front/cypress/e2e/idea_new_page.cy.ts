@@ -92,7 +92,7 @@ describe('Idea submission form', () => {
   });
 
   it('saves correct location point when provided in URL', () => {
-    cy.intercept('POST', '**/ideas').as('submitIdea');
+    cy.intercept('POST', '**/phases/*/inputs').as('submitIdea');
 
     const ideaTitle = randomString(40);
     const ideaContent = randomString(60);

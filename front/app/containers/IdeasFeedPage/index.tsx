@@ -3,11 +3,13 @@ import React from 'react';
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { type TypedLinkProps } from 'utils/cl-router/Link';
+import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useParams, useSearch } from 'utils/router';
@@ -38,6 +40,7 @@ const IdeasFeedPage = () => {
   const selectedTopicId = searchParams.topic;
   const selectedSubtopicId = searchParams.subtopic;
   const phaseId = searchParams.phase_id;
+  const { data: phase } = usePhase(phaseId);
   const initialIdeaId = searchParams.initial_idea_id;
   const sheetOpen = searchParams.sheet_open;
   const isMobileOrSmaller = useBreakpoint('phone');
@@ -74,6 +77,12 @@ const IdeasFeedPage = () => {
 
   if (!phaseId || !project) {
     return null;
+  }
+
+  // Nothing links here for a phase that does not offer the feed, but a link made while it did keeps
+  // working. Wait for the phase: undefined only means it is still loading at this point.
+  if (phase && !phase.data.attributes.available_views?.includes('feed')) {
+    return <Navigate to="/projects/$slug" params={{ slug }} replace />;
   }
 
   return (
