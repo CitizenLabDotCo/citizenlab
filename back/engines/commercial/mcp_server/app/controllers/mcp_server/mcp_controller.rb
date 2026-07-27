@@ -47,8 +47,7 @@ module McpServer
 
     private
 
-    # McpController skips ApplicationController, so it adds tenant/user tagging itself (why
-    # MCP logs lacked the tenant). mcp_method/mcp_tool feed the CloudWatch dashboard.
+    # McpController skips ApplicationController, so it adds tenant/user tagging itself.
     def append_info_to_payload(payload)
       super
       payload[:tenant_id]   = Tenant.safe_current&.id
