@@ -112,7 +112,7 @@ const ProjectActionButtons = memo<Props>(
         currentPhase,
       };
 
-      scrollTo(scrollParams)();
+      setTimeout(scrollTo(scrollParams), 0);
     };
 
     const presentPhase = getCurrentPhase(phases?.data);
@@ -122,6 +122,8 @@ const ProjectActionButtons = memo<Props>(
 
     const handleTakeSurveyClick = () => {
       if (!presentPhase) return;
+
+      setModalOpened(false);
 
       const descriptor = getPhaseActionDescriptor(
         presentPhase,
@@ -158,6 +160,8 @@ const ProjectActionButtons = memo<Props>(
 
     const handleReviewDocumentClick = () => {
       if (!presentPhase) return;
+
+      setModalOpened(false);
 
       const descriptor = getPhaseActionDescriptor(
         presentPhase,
@@ -307,6 +311,7 @@ const ProjectActionButtons = memo<Props>(
         {showTakePollButton && (
           <ButtonWithLink
             onClick={() => {
+              setModalOpened(false);
               scrollToElementWithId('project-poll');
             }}
             fontWeight="500"
