@@ -134,6 +134,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
       return;
     }
 
+    standaloneSeededRef.current = false;
     setFormData(ideationDefaultConfig);
   }, [phase, standaloneSurvey, tenantLocales, formatMessageWithLocale]);
 
