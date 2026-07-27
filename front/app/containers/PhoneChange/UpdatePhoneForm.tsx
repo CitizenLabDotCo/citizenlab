@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import { Box, Success, fontSizes } from '@citizenlab/cl2-component-library';
+import { Box, Success, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
-import styled from 'styled-components';
 
 import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
@@ -28,18 +27,6 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import messages from './messages';
 
 import { FormValues } from '.';
-
-const DisclosureText = styled.div`
-  margin-top: 16px;
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.s}px;
-  line-height: 21px;
-
-  a {
-    color: ${({ theme }) => theme.colors.tenantText};
-    text-decoration: underline;
-  }
-`;
 
 type UpdatePhoneFormProps = {
   updateSuccessful: boolean;
@@ -133,8 +120,20 @@ const UpdatePhoneForm = ({
             dataTestId="sms-manual-campaign-consent"
           />
         </Box>
+        <StyledButton
+          type="submit"
+          size="m"
+          processing={methods.formState.isSubmitting}
+          onClick={methods.handleSubmit(onFormSubmit)}
+          text={formatMessage(messages.submitButton)}
+          dataCy="change-phone-submit-button"
+        />
         {/* Submitting the form is the consent event, hence no checkbox. */}
-        <DisclosureText data-testid="sms-confirmation-disclosure">
+        <Text
+          fontSize="s"
+          color="tenantText"
+          data-testid="sms-confirmation-disclosure"
+        >
           <FormattedMessage
             {...messages.smsConfirmationDisclosure}
             values={{
@@ -151,15 +150,7 @@ const UpdatePhoneForm = ({
               ),
             }}
           />
-        </DisclosureText>
-        <StyledButton
-          type="submit"
-          size="m"
-          processing={methods.formState.isSubmitting}
-          onClick={methods.handleSubmit(onFormSubmit)}
-          text={formatMessage(messages.submitButton)}
-          dataCy="change-phone-submit-button"
-        />
+        </Text>
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (
