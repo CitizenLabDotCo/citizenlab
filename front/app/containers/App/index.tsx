@@ -81,6 +81,9 @@ interface Props {
 }
 
 const importedLocales = new Set();
+
+const ADMIN_PROJECT_PAGE_REGEX =
+  /\/admin\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 async function importMomentLocaleFilePromise(momentLocale: string) {
   try {
     await localeGetter(momentLocale);
@@ -111,9 +114,11 @@ const App = ({ children }: Props) => {
   const appContainerClassName =
     isAdmin(authUser) || isModerator(authUser) ? 'admin-user-view' : '';
 
-  const projectSlug = pathname.match(/\/admin\/projects\/([^/]+)/)?.[1];
-  const lockViewport =
-    !!projectSlug && projectSlug !== 'new' && projectSlug !== 'folders';
+  // A project page scrolls its own panes, so it locks the viewport. The other
+  // sections under /admin/projects/ (new, folders, spaces) are ordinary pages
+  // that have to keep scrolling, so match the project id rather than listing
+  // the section names — a name left off that list silently stops scrolling.
+  const lockViewport = ADMIN_PROJECT_PAGE_REGEX.test(pathname);
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,

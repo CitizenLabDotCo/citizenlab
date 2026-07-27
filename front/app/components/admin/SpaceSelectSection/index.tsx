@@ -33,22 +33,12 @@ const SpaceSelectSection = ({ spaceId, error, onChange }: Props) => {
 
   if (!spaces || !spacesEnabled || !canSeeSpaceSelect) return null;
 
-  const getTooltipMessage = () => {
-    if (userIsSpaceModerator) {
-      return undefined;
-    }
-
-    return messages.tooltip;
-  };
-
-  const tooltipMessage = getTooltipMessage();
-
   return (
     <SectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.spaceSelectTitle} />
-        {tooltipMessage && (
-          <IconTooltip content={formatMessage(tooltipMessage)} />
+        {!userIsSpaceModerator && (
+          <IconTooltip content={formatMessage(messages.tooltip)} />
         )}
       </SubSectionTitle>
 
