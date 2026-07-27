@@ -11,6 +11,10 @@ class McpServer::BaseTool
     open_world_hint: false
   }.freeze
 
+  # Expected user-facing outcomes (bad input, missing records), not bugs — never reported
+  # to Sentry. Pundit is handled separately, before it reaches the Sentry rescue.
+  EXPECTED_ERRORS = [ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound].freeze
+
   attr_reader :current_user, :token_scopes
 
   def initialize(current_user: nil, token_scopes: [])
@@ -76,10 +80,6 @@ class McpServer::BaseTool
     reason = error.try(:reason)
     "Not allowed: #{reason || 'authorization failed'}."
   end
-
-  # Expected user-facing outcomes (bad input, missing records), not bugs — never reported.
-  # Pundit is handled above, before it reaches the Sentry rescue.
-  EXPECTED_ERRORS = [ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound].freeze
 
   def self.report_tool_error(error, tool:, current_user:)
     return if EXPECTED_ERRORS.any? { |klass| error.is_a?(klass) }

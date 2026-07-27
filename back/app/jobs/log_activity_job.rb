@@ -26,12 +26,12 @@ class LogActivityJob < ApplicationJob
     # Derive project_id/channel here, at enqueue time in the request thread where Current
     # is still set — the job itself runs later on a worker with no request context.
     item, action, user, acted_at, options = args
-    new_options = derive_options(item, options)
+    extra = extra_options(item, options)
 
-    if new_options.equal?(options)
+    if extra.empty?
       super
     else
-      super(item, action, user, acted_at, new_options)
+      super(item, action, user, acted_at, options.to_h.merge(extra))
     end
   end
 
@@ -46,24 +46,23 @@ class LogActivityJob < ApplicationJob
 
   private
 
-  # Returns options unchanged when nothing is added, else a copy with project_id/channel merged.
-  def derive_options(item, options)
-    base = options.to_h
-    additions = {}
+  # The project_id/channel to merge into `options`, derived from the item and the current
+  # request. Empty when both are already set or unavailable.
+  def extra_options(item, options)
+    options = options.to_h
+    extra = {}
 
-    unless base.key?(:project_id)
+    unless options.key?(:project_id)
       project_id = item.try(:project_id)
-      additions[:project_id] = project_id unless project_id.nil?
+      extra[:project_id] = project_id unless project_id.nil?
     end
 
-    unless base.key?(:channel)
+    unless options.key?(:channel)
       channel = Current.activity_channel
-      additions[:channel] = channel unless channel.nil?
+      extra[:channel] = channel unless channel.nil?
     end
 
-    return options if additions.empty?
-
-    base.merge(additions)
+    extra
   end
 
   def create_activity(item, action, user, acted_at, options = {})
