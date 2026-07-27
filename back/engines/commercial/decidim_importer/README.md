@@ -57,7 +57,8 @@ event equivalent and are not imported.
 
 Everything runs through Docker (`docker compose run --rm web …`). A full import is two rake tasks:
 **dump → import** (the `import` task does its own post-import finishing), with a `db:reset` first when
-importing into a clean local tenant.
+importing into a clean local tenant. The target host must have the `decidim_importer` feature enabled
+first (see [Safety gate](#safety-gate) below).
 
 ```bash
 # 1. (optional) clean local tenant
@@ -75,6 +76,13 @@ docker compose run --rm web "bin/rails decidim_importer:import[tmp/import_files/
 `dump_yaml` never touches a tenant — it only reads the export and writes files. `import` operates on
 the tenant named by `host` (default `localhost`) and finishes with the post-import steps in the same
 run.
+
+### Safety gate
+
+`import` **refuses to run unless the `decidim_importer` feature is enabled for the target host**, so a
+large import can't be applied to the wrong tenant by accident. The feature is off on every tenant by
+default — enable it for the target host **in admin HQ** before importing (and turn it back off when
+done).
 
 To smoke-test a dumped template without touching a real tenant, use `verify` (creates a throwaway
 tenant, applies, then destroys it):

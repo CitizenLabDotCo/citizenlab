@@ -9,6 +9,10 @@ require 'csv'
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
 #
+# `import` refuses to run unless the `decidim_importer` feature is enabled for the target host — a
+# per-tenant safety gate so a large import can't be applied to the wrong tenant by accident. The
+# feature is off on every tenant by default; enable it for the target host in admin HQ first.
+#
 # `import` deserializes the template into the tenant, then runs the post-import finishing that needs
 # the applied tenant (real ids):
 #   1. reads the `.url_mapping.csv` dumped alongside the template (old Decidim URL → new target) and
@@ -84,6 +88,10 @@ namespace :decidim_importer do
     file = args.fetch(:file)
     import_images = args[:import_images].to_s.downcase != 'false'
 
+    # Safety gate: the import only runs against a host that has explicitly opted in via the
+    # `decidim_importer` feature, so a large import can't be applied to the wrong tenant by accident.
+    ensure_import_enabled!(tenant)
+
     json = app_config_sibling(file)
 
     Rails.logger.info "Decidim import → tenant=#{tenant.host} file=#{file} import_images=#{import_images}"
@@ -102,6 +110,15 @@ namespace :decidim_importer do
     end
     write_broken_links_csv(url_mapping_path(file), broken)
     Rails.logger.info 'COMPLETE'
+  end
+
+  # Aborts the import unless the target tenant has opted in via the `decidim_importer` feature (toggled
+  # through admin HQ). A per-tenant safety gate so a large import can't be applied to the wrong tenant.
+  def ensure_import_enabled!(tenant)
+    return if tenant.switch { AppConfiguration.instance.feature_activated?('decidim_importer') }
+
+    abort "Refusing to import: the 'decidim_importer' feature is not enabled for #{tenant.host}. " \
+          'Enable it for this host in admin HQ first, after confirming it is the right tenant.'
   end
 
   # Post-import finishing, run inside the target tenant after the template is applied: correct the
@@ -141,37 +158,22 @@ namespace :decidim_importer do
     ) }.with_indifferent_access
 
     puts "Decidim verify → throwaway tenant=#{host} locales=#{locales.join(',')} file=#{file}"
-    success, tenant, = MultiTenancy::TenantService.new.initialize_tenant({ name: name, host: host }, config_attrs)
+    # Build the throwaway tenant from the `base` template (applied synchronously), so it carries the
+    # standard idea statuses (and other defaults) a real tenant has — the imported proposals resolve
+    # against those, exactly as they would on a real host. The locales must include the base template's
+    # (`en`), which the default `fr-FR,en` covers.
+    success, tenant, = MultiTenancy::TenantService.new
+      .initialize_with_template({ name: name, host: host }, config_attrs, 'base', apply_template_sync: true)
     raise "failed to create throwaway tenant #{host}" unless success
 
     begin
       tenant.switch do
-        # A throwaway tenant built from minimal settings carries no idea_statuses; imported proposals
-        # need the standard ideation ones. Real tenants seed these at creation, so this only fills the
-        # gap for the dry-run tenant.
-        seed_ideation_statuses
         created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
         created.each { |klass, ids| puts "  created #{ids.size} #{klass}" }
       end
       puts "VERIFY OK — applied cleanly, tearing down #{host}"
     ensure
       tenant.destroy!
-    end
-  end
-
-  def seed_ideation_statuses
-    # The standard ideation idea_statuses (mirrors the base tenant template); the importer maps Decidim
-    # proposal states onto a subset of these.
-    codes = %w[prescreening proposed viewed under_consideration accepted implemented rejected ineligible]
-    locale = AppConfiguration.instance.settings('core', 'locales').first
-    codes.each do |code|
-      next if IdeaStatus.exists?(code: code, participation_method: 'ideation')
-
-      label = code.tr('_', ' ')
-      IdeaStatus.create!(
-        code: code, participation_method: 'ideation', color: '#687782',
-        title_multiloc: { locale => label }, description_multiloc: { locale => label }
-      )
     end
   end
 
