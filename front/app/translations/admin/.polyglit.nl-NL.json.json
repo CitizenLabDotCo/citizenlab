@@ -21530,6 +21530,12 @@
     "verified_at": "2026-07-10T12:33:55.014112Z",
     "verified_by": "Luuc"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.788007Z",
+    "verified_by": "Luuc"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.014112Z",
@@ -21568,6 +21574,12 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.014112Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.788007Z",
     "verified_by": "Luuc"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": {
@@ -21609,6 +21621,12 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": {
     "state": "verified",
     "verified_at": "2026-07-10T12:33:55.014112Z",
+    "verified_by": "Luuc"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.788007Z",
     "verified_by": "Luuc"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": {

@@ -6774,6 +6774,18 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.Authentication.confirmYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Authentication.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -6838,6 +6850,30 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Authentication.steps.Phone.phoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
@@ -13094,6 +13130,24 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+
+  "app.errors.new_phone_blank": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.errors.new_phone_invalid": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.errors.new_phone_taken": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.940387Z",
+    "verified_by": "Luuc"
   },
   "app.errors.no_invites_specified": {
     "state": "verified",

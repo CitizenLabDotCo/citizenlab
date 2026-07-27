@@ -34,6 +34,17 @@ RSpec.describe NewPhoneConfirmation do
     end
   end
 
+  describe '#generate_code' do
+    it "returns '1234' when the sms use_test_mode setting is enabled" do
+      config = AppConfiguration.instance
+      config.settings['sms'] = { 'allowed' => true, 'enabled' => true, 'use_test_mode' => true }
+      config.save!
+
+      user = create(:user)
+      expect(user.new_phone_confirmation.generate_code).to eq('1234')
+    end
+  end
+
   describe '#pending?' do
     it 'is true only when a new_phone is set' do
       user = create(:user)

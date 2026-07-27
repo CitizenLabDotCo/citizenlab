@@ -116,15 +116,17 @@ export const sharedSteps = (
       // done by the user
       TRIGGER_AUTHENTICATION_FLOW: async (
         flow: 'signup' | 'signin',
-        email: string | null = null
+        newEmail: string | null = null,
+        newPhone: string | null = null
       ) => {
         updateState({
-          email,
+          email: newEmail,
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
           claimTokens: null,
           flow,
+          phone: newPhone,
         });
 
         const { requirements, disabled_reason } = await getRequirements();
@@ -155,9 +157,6 @@ export const sharedSteps = (
           ) {
             // Now we check if it's situation 1 or 2 by seeing if the user has a
             // new_email attribute
-            const authUser = await fetchMe();
-            const newEmail = authUser?.data.attributes.new_email;
-
             if (newEmail) {
               // Situation 2: The SSO returned an unconfirmed email, which was put in new_email
               setCurrentStep('missing-data:email-confirmation');
@@ -175,6 +174,16 @@ export const sharedSteps = (
             flow,
             true
           );
+
+          // Kind of hacky, since this should actually be handled by the checkMissingData function.
+          // But because of the way the requirements api works, we need to handle this case separately.
+          // For a similar reason as the huge comment above (below if (signedIn)).
+          // We will need to rework the requirements api at some point,
+          // but out of scope for now.
+          if (missingDataStep === 'missing-data:phone' && newPhone) {
+            setCurrentStep('missing-data:phone-confirmation');
+            return;
+          }
 
           if (missingDataStep) {
             setCurrentStep(missingDataStep);

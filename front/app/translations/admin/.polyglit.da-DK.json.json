@@ -21566,6 +21566,12 @@
     "verified_at": "2026-07-08T14:02:45.484916Z",
     "verified_by": "kielgast@govocal.com"
   },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.096084Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.emailMethodDescription": {
     "state": "verified",
     "verified_at": "2026-07-08T14:02:45.484916Z",
@@ -21604,6 +21610,12 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.participantsSignInWith": {
     "state": "verified",
     "verified_at": "2026-07-08T14:02:45.484916Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.096084Z",
     "verified_by": "kielgast@govocal.com"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne": {
@@ -21645,6 +21657,12 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": {
     "state": "verified",
     "verified_at": "2026-07-08T14:02:45.484916Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableSms": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:18:56.096084Z",
     "verified_by": "kielgast@govocal.com"
   },
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": {

@@ -138,6 +138,15 @@ export function randomEmail() {
     .toLowerCase()}.com`;
 }
 
+export function randomPhoneNumber() {
+  // NANP toll-free number: +1 800 NXX-XXXX. libphonenumber (and therefore
+  // Phonelib, used by the backend to validate) requires the exchange code
+  // (the digit right after 800) to be 2-9 — a leading 0 or 1 is invalid.
+  // So the 7-digit block must start with 2-9: range 2000000..9999999.
+  const randomDigits = Math.floor(Math.random() * 8000000) + 2000000;
+  return `+1800${randomDigits}`; // Returns the number in E.164 format
+}
+
 function unregisterServiceWorkers() {
   if (navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {

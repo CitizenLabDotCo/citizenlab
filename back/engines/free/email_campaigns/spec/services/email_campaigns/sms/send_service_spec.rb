@@ -41,6 +41,24 @@ RSpec.describe EmailCampaigns::Sms::SendService do
 
       described_class.new.send(:provider)
     end
+
+    it 'uses the fake provider when test mode is enabled, even outside development with credentials configured' do
+      allow(Rails.env).to receive(:development?).and_return(false)
+      SettingsService.new.activate_feature!('sms', settings: { 'use_test_mode' => true })
+      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
+      expect(EmailCampaigns::Sms::Providers::Twilio).not_to receive(:new)
+
+      described_class.new.send(:provider)
+    end
+
+    it 'uses the fake provider when test mode is enabled in development' do
+      allow(Rails.env).to receive(:development?).and_return(true)
+      SettingsService.new.activate_feature!('sms', settings: { 'use_test_mode' => true })
+      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
+      expect(EmailCampaigns::Sms::Providers::Twilio).not_to receive(:new)
+
+      described_class.new.send(:provider)
+    end
   end
 
   describe '#create_delivery' do
