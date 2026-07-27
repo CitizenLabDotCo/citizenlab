@@ -1,8 +1,20 @@
 import requirementKeys from 'api/authentication/authentication_requirements/keys';
-import { confirmCodeNewEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
-import { requestCodeNewEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
-import { confirmCodeNewPhone } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
-import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import {
+  confirmCodeEmail,
+  confirmCodeNewEmail,
+} from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import {
+  requestCodeEmail,
+  requestCodeNewEmail,
+} from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import {
+  confirmCodePhone,
+  confirmCodeNewPhone,
+} from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
+import {
+  requestCodePhone,
+  requestCodeNewPhone,
+} from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { invalidateCacheAfterUpdateUser } from 'api/users/useUpdateUser';
 
 import {
@@ -26,6 +38,40 @@ export const confirmationSteps = (
   state: State
 ) => {
   return {
+    // When reconfirming, we don't offer the option to change
+    // your email.
+    'confirmation:reconfirm-email': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT_CODE: async (email: string, code: string) => {
+        await confirmCodeEmail(email, code);
+        await queryClient.invalidateQueries(requirementKeys.all());
+
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = await checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
+        }
+
+        if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+      RESEND_CODE: async () => {
+        await requestCodeEmail();
+      },
+    },
+
     'confirmation:new_email': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
@@ -58,6 +104,35 @@ export const confirmationSteps = (
       },
       RESEND_CODE: async () => {
         await requestCodeNewEmail();
+      },
+    },
+
+    // When reconfirming, we don't offer the option to change
+    // your phone number.
+    'confirmation:reconfirm-phone': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT_CODE: async (code: string) => {
+        await confirmCodePhone(code);
+        invalidateCacheAfterUpdateUser(queryClient);
+
+        const { requirements } = await getRequirements();
+        const authenticationData = getAuthenticationData();
+
+        const missingDataStep = await checkMissingData(
+          requirements,
+          authenticationData,
+          state.flow
+        );
+
+        if (missingDataStep) {
+          setCurrentStep(missingDataStep);
+          return;
+        }
+
+        setCurrentStep('success');
+      },
+      RESEND_CODE: async () => {
+        await requestCodePhone();
       },
     },
 
