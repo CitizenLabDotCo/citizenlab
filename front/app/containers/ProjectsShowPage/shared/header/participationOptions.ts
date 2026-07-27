@@ -4,13 +4,10 @@ import { isExtraSurveyPhase } from 'components/ProjectPageBuilder/Widgets/ExtraS
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-// Methods whose phase produces a primary participation CTA in the
-// participation box (see ProjectActionButtons).
 const PRIMARY_CTA_METHODS: ParticipationMethod[] = [
   'ideation',
   'proposals',
   'native_survey',
-  'survey',
   'poll',
   'document_annotation',
 ];
