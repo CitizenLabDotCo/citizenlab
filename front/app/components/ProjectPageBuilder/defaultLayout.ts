@@ -110,7 +110,7 @@ export const defaultProjectPageLayout = (): SerializedNodes => ({
   [EVENTS_NODE_ID]: eventsNode(BODY_NODE_ID),
 });
 
-export const resolvedNameOf = (node: SerializedNode) =>
+const resolvedNameOf = (node: SerializedNode) =>
   typeof node.type === 'object' ? node.type.resolvedName : undefined;
 
 export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
