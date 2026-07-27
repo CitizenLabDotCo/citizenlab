@@ -247,6 +247,77 @@ resource 'Confirmations' do
     end
   end
 
+  post 'web_api/v1/user/confirm_code_phone' do
+    with_options scope: :confirmation do
+      parameter :code, 'The 4-digit confirmation code received by SMS.'
+    end
+
+    context 'when user is not authenticated' do
+      let(:code) { '1234' }
+
+      # Unlike confirm_code_email, this endpoint is reconfirmation-only, so it never
+      # serves unauthenticated callers.
+      example_request 'returns an unauthorized status when the user is not authenticated' do
+        expect(status).to eq 401
+      end
+    end
+
+    context 'when user is authenticated' do
+      let(:user) { create(:user, phone: '+14155552671') }
+
+      # The code request sends the OTP synchronously, so the provider is invoked.
+      include_context 'with stubbed SMS provider'
+
+      before do
+        header_token_for user
+        RequestPhoneConfirmationCodeJob.perform_now(user)
+      end
+
+      example 'stamps phone_confirmed_at upon successful confirmation' do
+        do_request(confirmation: { code: user.phone_confirmation.code })
+        assert_status 200
+        expect(user.reload.phone_confirmed_at).to be_present
+      end
+
+      # Re-confirmation resets the expiry window by refreshing phone_confirmed_at.
+      example 'refreshes phone_confirmed_at on re-confirmation' do
+        user.update!(phone_confirmed_at: 1.year.ago)
+        old_confirmed_at = user.phone_confirmed_at
+        do_request(confirmation: { code: user.phone_confirmation.code })
+        assert_status 200
+        expect(user.reload.phone_confirmed_at).to be > old_confirmed_at
+      end
+
+      example 'sets code_reset_count to 0 upon successful confirmation' do
+        user.phone_confirmation.update!(code_reset_count: 3)
+        do_request(confirmation: { code: user.phone_confirmation.code })
+        assert_status 200
+        expect(user.phone_confirmation.reload.code_reset_count).to eq 0
+      end
+
+      example 'returns a code.blank error code when no code is passed' do
+        do_request(confirmation: { code: nil })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:code, 'blank')
+      end
+
+      example 'returns a code.invalid error code when the code is invalid' do
+        do_request(confirmation: { code: 'badcode' })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:code, 'invalid')
+      end
+
+      example 'does not work if the user has no phone set' do
+        code = user.phone_confirmation.code
+        user.update!(phone: nil)
+        do_request(confirmation: { code: code })
+        assert_status 422
+      end
+    end
+  end
+
   post 'web_api/v1/user/confirm_code_new_phone' do
     with_options scope: :confirmation do
       parameter :code, 'The 4-digit confirmation code received by SMS.'

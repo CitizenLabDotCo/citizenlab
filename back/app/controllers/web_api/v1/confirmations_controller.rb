@@ -53,6 +53,26 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
+  # This endpoint is used when a logged in user re-confirms their existing phone
+  # (in-place PhoneConfirmation) after confirmed_phone expiry. Unlike
+  # confirm_code_email, it's never used for account creation or passwordless login,
+  # so authentication is required. On success PhoneConfirmation#confirm! refreshes
+  # phone_confirmed_at, which is exactly what resets the expiry window. The phone
+  # number isn't part of the auth token, so there's no JWT cookie to refresh.
+  def confirm_code_phone
+    result = user_confirmation_service.validate_and_confirm_phone!(
+      current_user,
+      confirm_code_params[:code]
+    )
+
+    if result.success?
+      SideFxUserService.new.after_update(current_user, current_user)
+      head :ok
+    else
+      render json: { errors: result.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   # This endpoint is used when a logged in user confirms a pending phone-number
   # change. On success, new_phone is promoted to phone. The phone
   # number isn't part of the auth token, so there's no JWT cookie to refresh.
