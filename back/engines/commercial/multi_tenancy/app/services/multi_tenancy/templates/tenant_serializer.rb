@@ -103,7 +103,7 @@ module MultiTenancy
           OfficialFeedback => serialize_records(OfficialFeedback),
           Cosponsorship => serialize_records(Cosponsorship.where(idea: ideas)),
 
-          # Files (the legacy per-resource *File models have been migrated into these).
+          # Files
           Files::File => serialize_records(Files::File),
           Files::FilesProject => serialize_records(Files::FilesProject),
           Files::FileAttachment => serialize_file_attachments(ideas),

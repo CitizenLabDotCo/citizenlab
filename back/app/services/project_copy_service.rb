@@ -91,9 +91,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       @template['models']['events/attendance']      = yml_attendances shift_timestamps: shift_timestamps
     end
 
-    # Files (the legacy per-resource *File models have been migrated into these). Emitted
-    # last so every possible attachable (project/phase/event/idea/layout) and uploader is
-    # already registered. file records first, then the join + attachments that reference them.
+    # Files Emitted last so every possible attachable (project/phase/event/idea/layout) and uploader is
+    # already registered. File records first, then the join + attachments that reference them.
     @template['models']['files/file']            = yml_files shift_timestamps: shift_timestamps
     @template['models']['files/files_project']   = yml_files_projects shift_timestamps: shift_timestamps
     @template['models']['files/file_attachment'] = yml_file_attachments shift_timestamps: shift_timestamps
