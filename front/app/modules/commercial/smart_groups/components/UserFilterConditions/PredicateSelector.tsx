@@ -45,6 +45,8 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   is_smaller_than: messages.predicate_is_smaller_than,
   is_smaller_than_or_equal: messages.predicate_is_smaller_than_or_equal,
   is_verified: messages.predicate_is_verified,
+  is_imported: messages.predicate_is_imported,
+  not_is_imported: messages.predicate_not_is_imported,
   not_begins_with: messages.predicate_not_begins_with,
   not_voted_in: messages.predicate_not_voted_in,
   not_commented_in: messages.predicate_not_commented_in,
