@@ -488,6 +488,7 @@ kl-GL:
         story: Oqaluttuannut iserit
         suggestion: Siunnersuutinnut iserit
         topic: Sammisannut iserit
+      phase_dates: '%{startDate}-miit %{endDate}-mut'
     idea_marked_as_spam:
       by_author: uannga %{authorName}
       cta_button: Misissuataarit

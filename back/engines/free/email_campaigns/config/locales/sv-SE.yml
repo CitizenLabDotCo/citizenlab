@@ -358,6 +358,7 @@ sv-SE:
         story: Gå till din berättelse
         suggestion: Gå till ditt förslag
         topic: Gå till ditt ämne
+      phase_dates: Från %{startDate} till %{endDate}
     idea_marked_as_spam:
       cta_button: Granskning
       preheader: Agera på den här skräppostrapporten

@@ -358,6 +358,7 @@ pt-BR:
         story: Vá para sua história
         suggestion: Vá para sua sugestão
         topic: Vá para seu tópico
+      phase_dates: De %{startDate} a %{endDate}
     idea_marked_as_spam:
       cta_button: Revisão
       preheader: Ação a ser realizada no relatório de spam

@@ -358,6 +358,7 @@ ar-MA:
         story: انتقل إلى قصتك
         suggestion: انتقل إلى اقتراحك
         topic: انتقل إلى موضوعك
+      phase_dates: من %{startDate} إلى %{endDate}
     idea_marked_as_spam:
       cta_button: مراجعة
       preheader: تصرف بناءً على تقرير الإزعاج هذا

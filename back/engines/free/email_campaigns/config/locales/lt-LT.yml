@@ -358,6 +358,7 @@ lt-LT:
         story: Eikite į savo istoriją
         suggestion: Eikite į savo pasiūlymą
         topic: Eikite į savo temą
+      phase_dates: Nuo %{startDate} iki %{endDate}
     idea_marked_as_spam:
       cta_button: Peržiūrėkite
       preheader: Veiksmai, susiję su šia nepageidaujamų laiškų ataskaita

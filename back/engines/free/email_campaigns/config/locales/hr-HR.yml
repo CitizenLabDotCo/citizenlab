@@ -358,6 +358,7 @@ hr-HR:
         story: Idi na svoju priču
         suggestion: Idi na svoj prijedlog
         topic: Idi na svoju temu
+      phase_dates: Od %{startDate} do %{endDate}
     idea_marked_as_spam:
       cta_button: Pregled
       preheader: Reagirajte na ovaj izvještaj o neželjenom sadržaju

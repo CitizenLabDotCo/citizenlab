@@ -358,6 +358,7 @@ da-DK:
         story: Gå til din historie
         suggestion: Gå til dit forslag
         topic: Gå til dit emne
+      phase_dates: Fra %{startDate} til %{endDate}
     idea_marked_as_spam:
       cta_button: Gennemgang
       preheader: Reagér på denne spamrapport

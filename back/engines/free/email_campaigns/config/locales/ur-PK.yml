@@ -358,6 +358,7 @@ ur-PK:
         story: اپنی کہانی پر جائیں۔
         suggestion: اپنی تجویز پر جائیں۔
         topic: اپنے موضوع پر جائیں۔
+      phase_dates: '%{startDate} سے %{endDate} تک'
     idea_marked_as_spam:
       cta_button: جائزہ لیں
       preheader: اس سپیم رپورٹ پر کارروائی کریں۔

@@ -360,6 +360,7 @@ lb-LU:
         story: Gitt op Är Geschicht
         suggestion: Gitt op Är Suggestioun
         topic: Gitt op Äert Thema
+      phase_dates: Vun %{startDate} bis %{endDate}
     idea_marked_as_spam:
       cta_button: Iwwerpréiwung
       preheader: Reagéiert op dës Spammeldung

@@ -358,6 +358,7 @@ en-IE:
         story: Go to your story
         suggestion: Go to your suggestion
         topic: Go to your topic
+      phase_dates: From %{startDate} to %{endDate}
     idea_marked_as_spam:
       cta_button: Review
       preheader: Act upon this spam report

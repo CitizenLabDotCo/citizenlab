@@ -358,6 +358,7 @@ nl-BE:
         story: Ga naar je verhaal
         suggestion: Ga naar je suggestie
         topic: Ga naar je thema
+      phase_dates: Van %{startDate} tot %{endDate}
     idea_marked_as_spam:
       cta_button: Beoordeling
       preheader: Neem actie

@@ -358,6 +358,7 @@ ga-IE:
         story: Téigh chuig do scéal
         suggestion: Téigh chuig do mholadh
         topic: Téigh chuig do thopaic
+      phase_dates: Ó %{startDate} go %{endDate}
     idea_marked_as_spam:
       cta_button: Athbhreithniú
       preheader: Gníomhaigh ar an tuairisc turscair seo

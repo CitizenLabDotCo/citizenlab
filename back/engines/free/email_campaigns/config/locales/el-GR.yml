@@ -358,6 +358,7 @@ el-GR:
         story: Πηγαίνετε στην ιστορία σας
         suggestion: Πηγαίνετε στην πρότασή σας
         topic: Πηγαίνετε στο θέμα σας
+      phase_dates: Από %{startDate} έως %{endDate}
     idea_marked_as_spam:
       cta_button: Ανασκόπηση
       preheader: Ενεργήστε βάσει αυτής της έκθεσης spam

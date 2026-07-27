@@ -361,6 +361,7 @@ fr-FR:
         story: Voir votre témoignage
         suggestion: Voir votre suggestion
         topic: Voir votre thème
+      phase_dates: Du %{startDate} au %{endDate}
     idea_marked_as_spam:
       cta_button: Vérifier
       preheader: Agir sur ce rapport de spam

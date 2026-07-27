@@ -358,6 +358,7 @@ de-AT:
         story: Zu Ihrer Story
         suggestion: Zu Ihrem Vorschlag
         topic: Zu Ihrem Thema
+      phase_dates: Von %{startDate} bis %{endDate}
     idea_marked_as_spam:
       cta_button: Überprüfung
       preheader: Handeln Sie auf Basis dieses Spam-Berichts

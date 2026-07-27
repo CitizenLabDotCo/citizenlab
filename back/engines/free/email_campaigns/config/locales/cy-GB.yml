@@ -358,6 +358,7 @@ cy-GB:
         story: Ewch i'ch stori
         suggestion: Ewch i'ch awgrym
         topic: Ewch i'ch pwnc
+      phase_dates: O %{startDate} i %{endDate}
     idea_marked_as_spam:
       cta_button: Adolygiad
       preheader: Gweithredu ar yr adroddiad sbam hwn

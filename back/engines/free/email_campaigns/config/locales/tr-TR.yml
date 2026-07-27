@@ -358,6 +358,7 @@ tr-TR:
         story: Hikayene git
         suggestion: Önerinize gidin
         topic: Konunuza gidin
+      phase_dates: '%{startDate} tarihinden %{endDate} tarihine kadar'
     idea_marked_as_spam:
       cta_button: İnceleme
       preheader: Bu spam bildirimi ile ilgili işlem yapın

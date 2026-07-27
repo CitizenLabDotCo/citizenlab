@@ -358,6 +358,7 @@ fi-FI:
         story: Siirry omaan tarinaasi
         suggestion: Siirry ehdotukseesi
         topic: Siirry aiheeseesi
+      phase_dates: Välillä %{startDate}–%{endDate}
     idea_marked_as_spam:
       cta_button: Arvostelu
       preheader: Toimi tämän roskapostiraportin mukaan

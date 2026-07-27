@@ -358,6 +358,7 @@ es-ES:
         story: Ir a tu historia
         suggestion: Ve a tu sugerencia
         topic: Ir a tu tema
+      phase_dates: Del %{startDate} al %{endDate}
     idea_marked_as_spam:
       cta_button: Revisar
       preheader: Actuar sobre este informe de spam

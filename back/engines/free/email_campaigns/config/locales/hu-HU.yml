@@ -358,6 +358,7 @@ hu-HU:
         story: Menj a történetedhez
         suggestion: Ugrás a javaslatodra
         topic: Menj a témádhoz
+      phase_dates: '%{startDate} és %{endDate} között'
     idea_marked_as_spam:
       cta_button: Véleményezés
       preheader: Cselekedjen a spamjelentés alapján

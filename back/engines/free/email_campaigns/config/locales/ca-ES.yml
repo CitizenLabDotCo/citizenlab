@@ -358,6 +358,7 @@ ca-ES:
         story: Ves a la teva història
         suggestion: Ves al teu suggeriment
         topic: Ves al teu tema
+      phase_dates: Del %{startDate} al %{endDate}
     idea_marked_as_spam:
       cta_button: Revisió
       preheader: Actueu sobre aquest informe de correu brossa

@@ -358,6 +358,7 @@ nb-NO:
         story: Gå til historien din
         suggestion: Gå til forslaget ditt
         topic: Gå til emnet ditt
+      phase_dates: Fra %{startDate} til %{endDate}
     idea_marked_as_spam:
       cta_button: Anmeldelse
       preheader: Gjør noe med denne spam-rapporten

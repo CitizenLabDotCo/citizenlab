@@ -358,6 +358,7 @@ pa-IN:
         story: ਆਪਣੀ ਕਹਾਣੀ 'ਤੇ ਜਾਓ
         suggestion: ਆਪਣੇ ਸੁਝਾਅ 'ਤੇ ਜਾਓ
         topic: ਆਪਣੇ ਵਿਸ਼ੇ ਤੇ ਜਾਓ।
+      phase_dates: '%{startDate} ਤੋਂ %{endDate} ਤੱਕ'
     idea_marked_as_spam:
       cta_button: ਸਮੀਖਿਆ
       preheader: ਇਸ ਸਪੈਮ ਰਿਪੋਰਟ 'ਤੇ ਕਾਰਵਾਈ ਕਰੋ

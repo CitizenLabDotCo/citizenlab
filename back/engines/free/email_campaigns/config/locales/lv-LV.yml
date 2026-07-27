@@ -358,6 +358,7 @@ lv-LV:
         story: Dodieties uz savu stāstu
         suggestion: Dodieties uz savu ieteikumu
         topic: Pārejiet uz savu tēmu
+      phase_dates: No %{startDate} līdz %{endDate}
     idea_marked_as_spam:
       cta_button: Pārskats
       preheader: Rīkojieties sakarā ar šo ziņojumu par surogātpastu
