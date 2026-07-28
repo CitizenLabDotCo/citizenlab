@@ -81,6 +81,14 @@ module DecidimImporter
         end
       end
 
+      # The multiloc keeping only locales whose HTML carries real content — mirroring the
+      # `multiloc: { presence: true }` validator (`SanitizationService#html_with_content?`), so a
+      # visually-empty value like `<p><br></p>` doesn't pass `multiloc`'s strip check yet fail on save.
+      def html_present_multiloc(mloc)
+        sanitizer = SanitizationService.new
+        mloc.select { |_locale, html| sanitizer.html_with_content?(html) }
+      end
+
       def truthy?(value)
         Parsing.truthy?(value)
       end

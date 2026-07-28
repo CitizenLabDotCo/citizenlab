@@ -84,7 +84,9 @@ module DecidimImporter
       end
 
       def register_official_feedback(uid, idea, row)
-        body = multiloc(row[COLUMNS[:answer]])
+        # An answered-but-empty proposal carries a visually-blank body (e.g. `<p><br></p>`); dropping the
+        # content-less locales here keeps it from failing OfficialFeedback's body-presence validation.
+        body = html_present_multiloc(multiloc(row[COLUMNS[:answer]]))
         return if body.empty?
 
         # Date the feedback by when the proposal was answered, falling back to the proposal's own date

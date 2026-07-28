@@ -92,6 +92,12 @@ RSpec.describe DecidimImporter::Extractors::ProposalsExtractor do
     expect(ref_map_without.fetch('decidim-proposal-1-official-feedback')).to be_nil
   end
 
+  it 'emits no official feedback for an answered-but-visually-empty body' do
+    # Decidim marks the proposal answered but stores a content-less body; OfficialFeedback would reject it.
+    extract([row('answer' => '{"fr":"<p><br></p>"}')])
+    expect(ref_map.fetch('decidim-proposal-1-official-feedback')).to be_nil
+  end
+
   it 'skips a proposal whose project or phase was not imported' do
     extractor = described_class.new(
       [row('decidim_component' => 'missing')], ref_map, locale_mapper: mapper, primary_locale: 'fr-FR'

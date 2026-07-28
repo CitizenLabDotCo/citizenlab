@@ -54,10 +54,13 @@ RSpec.describe DecidimImporter::Extractors::CommentsExtractor do
   it 'skips a comment whose commented-on proposal was not imported, and blank bodies' do
     extractor = described_class.new(
       [row('uid' => 'decidim-comment-9', 'root_commentable' => 'missing'),
-        row('uid' => 'decidim-comment-8', 'body' => '')],
+        row('uid' => 'decidim-comment-8', 'body' => ''),
+        # A visually-empty body (content-less HTML) is blank too, else Comment's validation aborts the import.
+        row('uid' => 'decidim-comment-7', 'body' => '{"fr":"<p><br></p>"}')],
       ref_map, locale_mapper: mapper, primary_locale: 'fr-FR'
     )
     expect(extractor.run).to be_empty
-    expect(extractor.skipped.map { |s| s[:uid] }).to contain_exactly('decidim-comment-9', 'decidim-comment-8')
+    expect(extractor.skipped.map { |s| s[:uid] })
+      .to contain_exactly('decidim-comment-9', 'decidim-comment-8', 'decidim-comment-7')
   end
 end

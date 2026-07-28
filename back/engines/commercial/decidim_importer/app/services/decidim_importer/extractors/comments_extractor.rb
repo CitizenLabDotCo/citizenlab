@@ -33,7 +33,9 @@ module DecidimImporter
         uid = present_value(row[COLUMNS[:uid]])
         return nil if uid.nil?
 
-        body = multiloc(row[COLUMNS[:body]])
+        # Drop content-less locales (e.g. `<p><br></p>`) too, so a visually-empty comment is skipped
+        # rather than aborting the import on Comment's body-presence validation.
+        body = html_present_multiloc(multiloc(row[COLUMNS[:body]]))
         return skip(uid, 'blank body') if body.empty?
 
         idea = ref_map.fetch(present_value(row[COLUMNS[:root_commentable]]))
