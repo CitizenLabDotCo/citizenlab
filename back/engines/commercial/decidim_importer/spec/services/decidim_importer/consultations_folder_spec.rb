@@ -100,8 +100,8 @@ RSpec.describe DecidimImporter::ConsultationsFolder do
 
     # imported folder: preview derived from the (tag-stripped) description
     expect(group.reload.description_preview_multiloc['en']).to eq('All the neighbourhood projects.')
-    # synthetic Consultations folder: no description, so it falls back to the title
-    expect(folder.reload.description_preview_multiloc.values).to all(eq('Consultations'))
+    # synthetic Consultations folder: no description, so it falls back to the (translated) title
+    expect(folder.reload.description_preview_multiloc).to eq(folder.title_multiloc)
   end
 
   it 'leaves an existing homepage preview description untouched' do

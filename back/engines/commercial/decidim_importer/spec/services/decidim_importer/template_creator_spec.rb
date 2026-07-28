@@ -183,15 +183,18 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(idea.phases).to include(phase)
       expect(idea.author).to be_nil # results have no author
       # A bulleted Progress + Status (name - description) block is prepended to the description. (Loose
-      # includes: the idea-body sanitiser inserts newlines between the list tags on save.)
+      # includes: the idea-body sanitiser inserts newlines between the list tags on save.) The labels are
+      # i18n (`decidim_importer.accountability_*`), rendered in the result's fr-FR locale.
+      progress_label = I18n.t('decidim_importer.accountability_progress', locale: 'fr-FR')
+      status_label = I18n.t('decidim_importer.accountability_status', locale: 'fr-FR')
       body = idea.body_multiloc['fr-FR']
-      expect(body).to include('<strong>Progress:</strong> 100% ') # the space after % survives sanitisation
-      expect(body).to include('<strong>Status:</strong> Réalisé - Projet terminé')
+      expect(body).to include("<strong>#{progress_label}:</strong> 100% ") # the space after % survives sanitisation
+      expect(body).to include("<strong>#{status_label}:</strong> Réalisé - Projet terminé")
       expect(body).to include('Une place rénovée')
 
       # A result at 40% maps to the 40% status.
       other = Idea.find_by(title_multiloc: { 'fr-FR' => 'Étude en cours' })
-      expect(other.body_multiloc['fr-FR']).to include("<strong>Status:</strong> À l'étude - En cours d'étude")
+      expect(other.body_multiloc['fr-FR']).to include("<strong>#{status_label}:</strong> À l'étude - En cours d'étude")
     end
 
     it 'creates the extra user custom field and populates its value from extended_data' do
