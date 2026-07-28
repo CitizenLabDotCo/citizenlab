@@ -102,6 +102,7 @@ describe('Project with single voting phase', () => {
     cy.intercept(`**/baskets/**`).as('basketRequest');
     cy.visit(`/en/projects/${projectSlug}`);
     cy.wait('@basketRequest');
+    cy.dockProjectCtaBar();
     cy.get('#e2e-voting-submit-button')
       .should('be.visible')
       .should('not.have.class', 'disabled');
@@ -117,6 +118,7 @@ describe('Project with single voting phase', () => {
   });
 
   it('can modify and remove the votes', () => {
+    cy.dockProjectCtaBar();
     cy.get('#e2e-modify-votes')
       .should('be.visible')
       .should('contain', 'Modify your submission')
