@@ -59,8 +59,6 @@ export const emailFlow = (
         locale: SupportedLocale,
         claimTokens?: string[]
       ) => {
-        updateState({ email });
-
         const result = await createEmailOnlyAccount({
           email,
           locale,
@@ -88,7 +86,6 @@ export const emailFlow = (
         tokenLifetime: number,
         claimTokens?: string[]
       ) => {
-        updateState({ email });
         await signIn({
           email,
           password,
