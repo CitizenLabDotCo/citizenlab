@@ -1,4 +1,10 @@
+import { reportError } from 'utils/loggingUtils';
+
 import fetcher from './fetcher';
+
+jest.mock('utils/loggingUtils', () => ({ reportError: jest.fn() }));
+
+const mockReportError = reportError as jest.Mock;
 
 const baseDataArray = {
   data: [
@@ -16,13 +22,17 @@ const baseErrorObject = { errors: [{ error: 'error' }] };
 let mockStatus = 200;
 let mockOk = true;
 let mockDataObject: any = baseDataObject;
+let mockJsonParseFails = false;
 
 global.fetch = jest.fn(() =>
   Promise.resolve({
     status: mockStatus,
     statusText: 'OK',
     ok: mockOk,
-    json: () => Promise.resolve(mockDataObject),
+    json: () =>
+      mockJsonParseFails
+        ? Promise.reject(new SyntaxError('Unexpected token < in JSON'))
+        : Promise.resolve(mockDataObject),
   } as Response)
 );
 
@@ -199,6 +209,77 @@ describe('fetcher', () => {
       }
 
       expect(thrownError).toEqual(baseErrorObject);
+    });
+  });
+
+  describe('error reporting', () => {
+    const fetchAndCatch = async () => {
+      try {
+        await fetcher({ path: '/path', action: 'get' });
+      } catch {
+        // The fetcher always throws on error; these tests are about what it reports.
+      }
+    };
+
+    beforeEach(() => {
+      mockReportError.mockClear();
+      mockJsonParseFails = false;
+      mockDataObject = baseDataObject;
+    });
+
+    it.each([401, 403, 404])(
+      'does not report a %i, which is an expected response',
+      async (status) => {
+        mockStatus = status;
+        mockOk = false;
+        mockDataObject = { message: "Couldn't find Project" };
+
+        await fetchAndCatch();
+
+        expect(mockReportError).not.toHaveBeenCalled();
+      }
+    );
+
+    it('reports an unexpected error status without a structured error body', async () => {
+      mockStatus = 500;
+      mockOk = false;
+      mockDataObject = { message: 'Internal Server Error' };
+
+      await fetchAndCatch();
+
+      expect(mockReportError).toHaveBeenCalledWith(mockDataObject);
+    });
+
+    it('does not report an error the back-end already described', async () => {
+      mockStatus = 422;
+      mockOk = false;
+      mockDataObject = { errors: { base: [{ error: 'invalid' }] } };
+
+      await fetchAndCatch();
+
+      expect(mockReportError).not.toHaveBeenCalled();
+    });
+
+    it('does not report an unparseable body on a failed response', async () => {
+      mockStatus = 502;
+      mockOk = false;
+      mockJsonParseFails = true;
+
+      await fetchAndCatch();
+
+      expect(mockReportError).not.toHaveBeenCalled();
+    });
+
+    it('reports an unparseable body on a successful response', async () => {
+      mockStatus = 200;
+      mockOk = true;
+      mockJsonParseFails = true;
+
+      await fetchAndCatch();
+
+      expect(mockReportError).toHaveBeenCalledWith(
+        'Unsupported case. No valid JSON.'
+      );
     });
   });
 });

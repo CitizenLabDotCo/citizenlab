@@ -6,10 +6,14 @@ import { API_PATH } from 'containers/App/constants';
 
 import { getJwt } from 'utils/auth/jwt';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import { handleBlockedUserError } from 'utils/errorUtils';
+import { handleBlockedUserError, isCLErrorsWrapper } from 'utils/errorUtils';
 import { reportError } from 'utils/loggingUtils';
 
 // FETCHER
+
+// Answered correctly, just not with a resource. Still thrown to the caller, but a
+// normal part of serving the web and so not worth reporting.
+const EXPECTED_ERROR_STATUSES = new Set([401, 403, 404]);
 
 type Path = `/${string}`;
 interface Get {
@@ -151,16 +155,22 @@ async function fetcher({
       return null;
     }
 
-    reportError('Unsupported case. No valid JSON.');
+    // On a failed response this adds nothing to the status code. Only an unparseable
+    // body on a successful one is a real defect.
+    if (response.ok) {
+      reportError('Unsupported case. No valid JSON.');
+    }
+
     throw new Error('Unsupported case. No valid JSON.');
   }
 
   if (!response.ok) {
     const error = data as unknown as CLErrors;
     handleBlockedUserError(response.status, error);
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!error.errors) {
+    if (
+      !isCLErrorsWrapper(data) &&
+      !EXPECTED_ERROR_STATUSES.has(response.status)
+    ) {
       reportError(data);
     }
 
