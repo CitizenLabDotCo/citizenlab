@@ -264,7 +264,10 @@ module DecidimImporter
         return nil if url.nil?
 
         href = CGI.escapeHTML(url)
-        html = %(<p>Import source: <a href="#{href}" target="_blank" rel="noreferrer noopener nofollow">#{href}</a></p>)
+        # Tag the link so the post-import {Links::Rewriter} leaves it pointing at the original Decidim URL
+        # rather than rewriting it to the imported project (see {Links::Map::KEEP_HREF_REL}).
+        rel = "noreferrer noopener nofollow #{Links::Map::KEEP_HREF_REL}"
+        html = %(<p>Import source: <a href="#{href}" target="_blank" rel="#{rel}">#{href}</a></p>)
         locales = description.keys.presence || [primary_locale]
         locales.index_with { html }
       end

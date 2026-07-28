@@ -31,6 +31,12 @@ RSpec.describe DecidimImporter::Links::Map do
       built = corrector('/p?a=1&b=2' => { new: '/projects/p' })
       expect(described_class.build([html], built).replacements).to eq('/p?a=1&b=2' => '/projects/p')
     end
+
+    it 'ignores a link tagged with the keep-href rel token' do
+      tagged = %(<a href="/processes/a" rel="nofollow #{described_class::KEEP_HREF_REL}">A</a>)
+      built = corrector('/processes/a' => { new: '/projects/a' })
+      expect(described_class.build([tagged], built).replacements).to be_empty
+    end
   end
 
   describe '#apply' do
@@ -74,6 +80,13 @@ RSpec.describe DecidimImporter::Links::Map do
       encoded = described_class.new({ '/p?a=1&b=2' => '/projects/p' }, {}, [])
       html, = encoded.apply('<p><a class="c" href="/p?a=1&amp;b=2" rel="x">y</a></p>')
       expect(html).to eq('<p><a class="c" href="/projects/p" rel="x">y</a></p>')
+    end
+
+    it 'leaves a tagged link untouched even when its URL is in the mapping' do
+      tagged = %(<a href="/processes/a" target="_blank" rel="nofollow #{described_class::KEEP_HREF_REL}">A</a>)
+      html, broken = map.apply(tagged, file_resolver: files)
+      expect(html).to eq(tagged)
+      expect(broken).to be_empty
     end
   end
 

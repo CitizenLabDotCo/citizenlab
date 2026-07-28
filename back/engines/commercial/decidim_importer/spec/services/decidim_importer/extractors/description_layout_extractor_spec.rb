@@ -209,8 +209,10 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
       expect(right.map { |n| n['type']['resolvedName'] }).to eq(%w[AboutBox WhiteSpace TextMultiloc])
       expect(right[1]['props']).to eq('size' => 'medium')
       expect(right.last['props']['text']['fr-FR'])
-        .to eq('<p>Import source: <a href="https://decidim.example/processes/p1" ' \
-               'target="_blank" rel="noreferrer noopener nofollow">https://decidim.example/processes/p1</a></p>')
+        .to eq('<p>Import source: <a href="https://decidim.example/processes/p1" target="_blank" ' \
+               'rel="noreferrer noopener nofollow cl-original-href">https://decidim.example/processes/p1</a></p>')
+      # the `cl-original-href` rel token stops the post-import rewriter repointing it (see Links::Map).
+      expect(right.last['props']['text']['fr-FR']).to include(DecidimImporter::Links::Map::KEEP_HREF_REL)
     end
 
     it 'builds a two-column with the WhiteSpace + source link in the right column when there is nothing else' do

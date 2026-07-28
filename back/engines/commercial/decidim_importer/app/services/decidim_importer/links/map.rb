@@ -15,8 +15,12 @@ module DecidimImporter
     # which is why the mapping is persisted rather than applied inline.
     class Map
       # Captures an `<a … href="…">` (or single-quoted): $1 = up to and including `href=`, $2 = quote,
-      # $3 = URL. Non-greedy, so it stops at the closing quote.
-      HREF = /(<a\b[^>]*?\bhref\s*=\s*)(["'])(.*?)\2/im
+      # $3 = URL (non-greedy, stops at the closing quote), $4 = the rest of the open tag through `>`.
+      HREF = /(<a\b[^>]*?\bhref\s*=\s*)(["'])(.*?)\2([^>]*>)/im
+
+      # A `rel` token marking an anchor whose href must be left untouched — e.g. the import-source
+      # back-link, which should keep pointing at the original Decidim URL. Honoured by {.build}/{#apply}.
+      KEEP_HREF_REL = 'cl-original-href'
 
       CSV_HEADERS = %w[old_url new_url file_id].freeze
 
@@ -40,7 +44,9 @@ module DecidimImporter
         html_strings.each do |html|
           next unless html.is_a?(String)
 
-          html.scan(HREF) do |_prefix, _quote, raw|
+          html.scan(HREF) do |prefix, _quote, raw, suffix|
+            next if "#{prefix}#{suffix}".include?(KEEP_HREF_REL) # tagged link — never map its href
+
             url = CGI.unescapeHTML(raw).strip
             next if url.empty? || replacements.key?(url) || file_refs.key?(url) || broken.include?(url)
 
@@ -70,9 +76,14 @@ module DecidimImporter
           prefix = Regexp.last_match(1)
           quote = Regexp.last_match(2)
           raw = Regexp.last_match(3)
+          suffix = Regexp.last_match(4)
+          # A tagged link keeps its original href (the suffix carries the marker `rel` token).
+          next "#{prefix}#{quote}#{raw}#{quote}#{suffix}" if "#{prefix}#{suffix}".include?(KEEP_HREF_REL)
+
           url = CGI.unescapeHTML(raw).strip
           new_url = resolve_target(url, file_resolver, found_broken)
-          new_url ? "#{prefix}#{quote}#{CGI.escapeHTML(new_url)}#{quote}" : "#{prefix}#{quote}#{raw}#{quote}"
+          replacement = new_url ? CGI.escapeHTML(new_url) : raw
+          "#{prefix}#{quote}#{replacement}#{quote}#{suffix}"
         end
         [new_html, found_broken]
       end
