@@ -32,6 +32,24 @@ describe('useCustomPages', () => {
     expect(result.current.data?.data).toEqual(customPagesData);
   });
 
+  it('passes the project_id query param when projectId is given', async () => {
+    let requestedUrl = '';
+    server.use(
+      http.get(apiPath, ({ request }) => {
+        requestedUrl = request.url;
+        return HttpResponse.json({ data: customPagesData }, { status: 200 });
+      })
+    );
+
+    const { result } = renderHook(
+      () => useCustomPages({ projectId: 'project-1' }),
+      { wrapper: createQueryClientWrapper() }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(requestedUrl).toContain('project_id=project-1');
+  });
+
   it('returns error correctly', async () => {
     server.use(
       http.get(apiPath, () => {

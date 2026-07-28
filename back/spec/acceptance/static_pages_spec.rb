@@ -18,10 +18,29 @@ resource 'StaticPages' do
       parameter :number, 'Page number'
       parameter :size, 'Number of pages (data model pages) per page'
     end
+    parameter :project_id, 'Filter by project. When omitted, only global (non-project) pages are returned'
 
-    example_request 'List all static pages' do
+    example_request 'List all global static pages' do
       expect(status).to eq 200
       expect(json_response[:data].size).to eq 2
+    end
+
+    example 'Does not include project-scoped pages in the global list' do
+      create(:static_page, :project_scoped)
+      do_request
+      expect(status).to eq 200
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].pluck(:id)).to match_array(@pages.map(&:id))
+    end
+
+    example 'Lists only the pages of the given project when project_id is set' do
+      project = create(:project)
+      project_pages = create_list(:static_page, 2, project: project)
+      create(:static_page, :project_scoped) # another project's page
+
+      do_request(project_id: project.id)
+      expect(status).to eq 200
+      expect(json_response[:data].pluck(:id)).to match_array(project_pages.map(&:id))
     end
   end
 
@@ -227,6 +246,19 @@ resource 'StaticPages' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page.title_multiloc
         expect(json_response.dig(:data, :attributes, :top_info_section_multiloc).stringify_keys).to match page.top_info_section_multiloc
         expect(json_response.dig(:data, :attributes, :code)).to eq 'custom'
+      end
+
+      example 'Create a project-scoped static page' do
+        project = create(:project)
+        do_request(
+          static_page: {
+            title_multiloc: page.title_multiloc,
+            top_info_section_multiloc: page.top_info_section_multiloc,
+            project_id: project.id
+          }
+        )
+        assert_status 201
+        expect(json_response.dig(:data, :attributes, :project_id)).to eq project.id
       end
 
       example 'Does not create a NavBarItem' do

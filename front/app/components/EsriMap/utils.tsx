@@ -2,12 +2,16 @@ import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
 import Point from '@arcgis/core/geometry/Point';
 import Graphic from '@arcgis/core/Graphic';
+import { substitute } from '@arcgis/core/intl';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import GeoJSONLayer from '@arcgis/core/layers/GeoJSONLayer';
 import Layer from '@arcgis/core/layers/Layer';
 import FeatureReductionCluster from '@arcgis/core/layers/support/FeatureReductionCluster';
 import VectorTileLayer from '@arcgis/core/layers/VectorTileLayer';
 import WebTileLayer from '@arcgis/core/layers/WebTileLayer';
+import CustomContent from '@arcgis/core/popup/content/CustomContent';
+import TextContent from '@arcgis/core/popup/content/TextContent';
+import PopupTemplate from '@arcgis/core/PopupTemplate';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import { createRenderer } from '@arcgis/core/smartMapping/renderers/heatmap.js';
 import SimpleFillSymbol from '@arcgis/core/symbols/SimpleFillSymbol';
@@ -31,6 +35,7 @@ import {
   BASEMAP_AT_ATTRIBUTION,
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
+  MAP_LEGEND_EXPAND_ID,
 } from './constants';
 import { DefaultBasemapType } from './types';
 
@@ -369,22 +374,35 @@ export const addPointGraphicToMap = (
   }
 };
 
+// resetCursor
+// Description: Restore the default cursor. Call this when a map that used one
+// of the hover helpers below goes away — they set the cursor on document.body,
+// so without this it stays a pointer for the rest of the session.
+export const resetCursor = () => {
+  document.body.style.cursor = 'auto';
+};
+
+// changeCursorOnHoverWhen
+// Description: On map hover, show a pointer cursor when the hit result matches
+// isClickable. The hitTest is async, so the view can be torn down before it
+// resolves — bail in that case rather than leaving a stale pointer behind.
+const changeCursorOnHoverWhen = (
+  event: any,
+  mapView: MapView,
+  isClickable: (result: __esri.HitTestResult) => boolean
+) => {
+  mapView.hitTest(event).then((result) => {
+    if (mapView.destroyed) return;
+    document.body.style.cursor = isClickable(result) ? 'pointer' : 'auto';
+  });
+};
+
 // changeCursorOnHover
 // Description: On map hover, change the cursor to pointer if hovering over a graphic
 export const changeCursorOnHover = (event: any, mapView: MapView) => {
-  mapView.hitTest(event).then((result) => {
-    if (result.results.length > 0) {
-      // Hovering over marker(s)
-      result.results.forEach((r) => {
-        if (r.type === 'graphic') {
-          // Change cursor to pointer
-          document.body.style.cursor = 'pointer';
-        }
-      });
-    } else {
-      document.body.style.cursor = 'auto';
-    }
-  });
+  changeCursorOnHoverWhen(event, mapView, (result) =>
+    result.results.some((r) => r.type === 'graphic')
+  );
 };
 
 // goToMapLocation
@@ -493,6 +511,11 @@ export const showAddInputPopup = ({
 
   // Close any open UI elements
   setSelectedInput(null);
+  // This popup is small, so keep it anchored to the clicked location even if
+  // a previously opened (feature) popup enabled docking on this view
+  if (mapView.popup) {
+    mapView.popup.dockEnabled = false;
+  }
   // Pan to the clicked location, then open popup.
   // Using mapView.openPopup() directly — avoid creating new Popup()
   // as the Popup widget class is deprecated and broken in ArcGIS SDK 4.34+.
@@ -513,6 +536,318 @@ export const showAddInputPopup = ({
         location: clickedPointProjected,
       });
     });
+};
+
+// getEsriFeaturePopupFeatures
+// Description: From a hitTest result, collect web map features that have popups
+// configured (and enabled) in ArcGIS. Platform graphics (idea pins, cluster
+// aggregates) and layers we create in-platform are excluded.
+const getEsriFeaturePopupFeatures = (
+  hitTestResult: __esri.HitTestResult
+): Graphic[] => {
+  const features: Graphic[] = [];
+
+  hitTestResult.results.forEach((hit) => {
+    if (hit.type !== 'graphic') return;
+    const { graphic, layer } = hit;
+
+    // Exclude platform graphics (idea pins and cluster aggregates)
+    if (
+      graphic.attributes?.ideaId ||
+      graphic.attributes?.cluster_count !== undefined
+    ) {
+      return;
+    }
+
+    // Exclude view graphics (no layer) and layers we inject into a Web Map
+    // ourselves (suffixed with '_internal' in EsriMap/index.tsx)
+    if (!layer || layer.id.includes('_internal')) return;
+
+    // Respect the popup configuration from ArcGIS: the layer must have popups
+    // enabled and the feature must resolve to a popup template. Layers created
+    // in-platform (GeoJSON / feature layers from a URL) never get a template,
+    // so they are naturally excluded.
+    if ((layer as __esri.FeatureLayer).popupEnabled === false) return;
+
+    const popupTemplate: PopupTemplate | null | undefined =
+      graphic.getEffectivePopupTemplate();
+    if (!popupTemplate) return;
+
+    features.push(graphic);
+  });
+
+  return features;
+};
+
+// Popup titles are authored in ArcGIS and can be arbitrarily long. A long title
+// dominates the popup header and pushes the content out of view, so titles over
+// this length are truncated in the header and shown in full in the popup body.
+const MAX_POPUP_TITLE_LENGTH = 45;
+
+// truncateTitle
+// Description: Shorten a title to MAX_POPUP_TITLE_LENGTH, cutting on a word
+// boundary unless that would leave less than half the allowed length.
+const truncateTitle = (title: string) => {
+  const clipped = title.slice(0, MAX_POPUP_TITLE_LENGTH).trimEnd();
+  const lastSpace = clipped.lastIndexOf(' ');
+  const cutoff =
+    lastSpace > MAX_POPUP_TITLE_LENGTH / 2 ? lastSpace : clipped.length;
+  return `${clipped.slice(0, cutoff).trimEnd()}…`;
+};
+
+// resolveFeatureTitle
+// Description: Resolve a popup template's title for a given feature, filling in
+// its {FIELD} placeholders. Returns null whenever we can't reproduce exactly
+// what Esri will render in the header — we replace the header with this string,
+// so anything less than an exact match would make the title worse, not shorter.
+const resolveFeatureTitle = (
+  template: PopupTemplate,
+  feature: Graphic
+): string | null => {
+  const { title } = template;
+  // Titles built in code, not from a string template
+  if (typeof title !== 'string') return null;
+  // A character-count cut could slice through an HTML tag
+  if (title.includes('<')) return null;
+
+  // The graphic Esri gives us from a hitTest only carries the fields the layer
+  // has client-side; Esri fetches the template's outFields when it actually
+  // opens the popup. So a field referenced by the title may be missing here.
+  const attributes: Record<string, unknown> = feature.attributes ?? {};
+  const keysByLowerName = new Map(
+    Object.keys(attributes).map((key) => [key.toLowerCase(), key])
+  );
+
+  for (const [, placeholder] of title.matchAll(/\{([^}]*)\}/g)) {
+    // Arcade expressions and relationships ({expression/expr0}), and explicit
+    // format directives ({COST:NumberFormat(...)}), only Esri can evaluate
+    if (placeholder.includes('/') || placeholder.includes(':')) return null;
+
+    const key = keysByLowerName.get(placeholder.trim().toLowerCase());
+    const value = key === undefined ? undefined : attributes[key];
+    // Absent from the hitTest attributes, or a value Esri formats when it
+    // renders (dates, numbers) in ways substitute() does not reproduce. Only
+    // plain strings come out of substitute() byte-identical to Esri's header.
+    if (typeof value !== 'string') return null;
+  }
+
+  return substitute(title, attributes) || null;
+};
+
+// createFullTitleNode
+// Description: The popup body copy of a truncated title. Kept at the same small
+// size as the popup's attribute table text, so it reads as supporting detail
+// rather than a second heading.
+const createFullTitleNode = (title: string) => {
+  const node = document.createElement('div');
+  node.textContent = title;
+  node.style.fontSize = '12px';
+  node.style.fontWeight = '600';
+  node.style.lineHeight = '1.4';
+  node.style.wordBreak = 'break-word';
+  return node;
+};
+
+// The popup template each feature had before we enriched it. Keyed weakly, so
+// entries go away with the graphics themselves.
+const originalPopupTemplates = new WeakMap<Graphic, PopupTemplate>();
+
+// buildFeaturePopupTemplate
+// Description: Returns a copy of a feature's ArcGIS popup template with:
+//  - a DOM node (e.g. the "Submit an idea" button) prepended above the
+//    template's configured content, when one is passed
+//  - a long title truncated in the header, with the full title added to the body
+//    below the prepended node (or at the very top when there is no prepended node)
+const buildFeaturePopupTemplate = (
+  template: PopupTemplate,
+  feature: Graphic,
+  prependNode?: HTMLDivElement
+): PopupTemplate => {
+  const resolvedTitle = resolveFeatureTitle(template, feature);
+  const hasLongTitle =
+    !!resolvedTitle && resolvedTitle.length > MAX_POPUP_TITLE_LENGTH;
+
+  // Nothing to add — show the template as ArcGIS configured it
+  if (!prependNode && !hasLongTitle) return template;
+
+  const enriched = template.clone();
+  const content = enriched.content;
+
+  const addedContent: __esri.Content[] = [];
+  if (prependNode) {
+    addedContent.push(new CustomContent({ creator: () => prependNode }));
+  }
+  if (resolvedTitle && hasLongTitle) {
+    enriched.title = truncateTitle(resolvedTitle);
+    const fullTitleNode = createFullTitleNode(resolvedTitle);
+    addedContent.push(new CustomContent({ creator: () => fullTitleNode }));
+  }
+
+  if (typeof content === 'string') {
+    enriched.content = [...addedContent, new TextContent({ text: content })];
+  } else if (Array.isArray(content)) {
+    enriched.content = [...addedContent, ...content];
+  } else if (!content) {
+    enriched.content = addedContent;
+  } else {
+    // Function-based content (only possible on templates authored in code)
+    // can't be extended — show the template unchanged
+    return template;
+  }
+
+  return enriched;
+};
+
+// showEsriFeaturePopup
+// Description: Opens the popup that was configured in ArcGIS for the web map
+// feature(s) at the clicked location. Returns whether a popup was opened, so
+// callers can fall back to their own click behaviour when no feature was hit.
+// Usage: Used by read-only maps and the Idea Map to let users explore web map features.
+type ShowEsriFeaturePopupProps = {
+  event;
+  mapView: MapView;
+  // Pass a hitTest result if the caller already performed one for this event
+  hitTestResult?: __esri.HitTestResult;
+  // Optional extra content (e.g. a "Submit an idea" button) shown above
+  // each feature's configured popup content
+  prependContentNode?: HTMLDivElement;
+};
+
+export const showEsriFeaturePopup = async ({
+  event,
+  mapView,
+  hitTestResult,
+  prependContentNode,
+}: ShowEsriFeaturePopupProps): Promise<boolean> => {
+  const result = hitTestResult ?? (await mapView.hitTest(event));
+  const features = getEsriFeaturePopupFeatures(result);
+
+  if (features.length === 0) {
+    return false;
+  }
+
+  features.forEach((feature, index) => {
+    // Always enrich the template the feature started with. Esri hands back the
+    // same Graphic instance across hitTests for some layer types, so reading
+    // back the template we assigned on a previous click would stack a second
+    // CTA onto it and re-truncate the already-truncated title.
+    const template =
+      originalPopupTemplates.get(feature) ??
+      feature.getEffectivePopupTemplate();
+    if (!template) return;
+    originalPopupTemplates.set(feature, template);
+
+    feature.popupTemplate = buildFeaturePopupTemplate(
+      template,
+      feature,
+      // The CTA is one DOM node owned by the caller, and a DOM node can only be
+      // mounted in one place. A click on overlapping features opens a popup that
+      // pages over all of them, so give the CTA to the first page only —
+      // attaching it to every feature would tear it out of whichever page the
+      // user is looking at.
+      index === 0 ? prependContentNode : undefined
+    );
+  });
+
+  // Project the point to Web Mercator to guarantee the correct coordinate system
+  const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
+
+  // On small views (e.g. the 420px-tall survey question maps) an anchored
+  // popup can overflow the view and clip its content. Dock it to a corner
+  // instead, so it stays fully within the view and scrolls internally.
+  const isSmallView = mapView.height < 544 || mapView.width < 544;
+  if (mapView.popup) {
+    mapView.popup.dockEnabled = isSmallView;
+    mapView.popup.dockOptions = {
+      breakpoint: false,
+      buttonEnabled: false,
+      position: 'bottom-right',
+    };
+  }
+
+  // The docked popup shares the bottom-right corner with the legend, which
+  // opens expanded by default on some maps — collapse it so it doesn't
+  // overlap the popup.
+  if (isSmallView) {
+    const legend = mapView.ui.find(MAP_LEGEND_EXPAND_ID) as
+      | __esri.Expand // Esri types ui.find as returning a plain widget
+      | undefined;
+    if (legend?.expanded) {
+      legend.collapse();
+    }
+  }
+
+  const openPopup = () => {
+    // Using mapView.openPopup() directly — avoid creating new Popup()
+    // as the Popup widget class is deprecated and broken in ArcGIS SDK 4.34+.
+    mapView.openPopup({
+      features,
+      location: clickedPointProjected,
+    });
+  };
+
+  // Pan to the clicked location, then open popup (like showAddInputPopup).
+  mapView
+    .goTo({ center: clickedPointProjected }, { duration: 500 })
+    .then(openPopup)
+    .catch(() => {
+      // goTo can be interrupted by user interaction — still open popup
+      openPopup();
+    });
+
+  return true;
+};
+
+// changeCursorOnFeaturePopupHover
+// Description: On map hover, show a pointer cursor when hovering a web map
+// feature that would open a popup on click
+export const changeCursorOnFeaturePopupHover = (
+  event: any,
+  mapView: MapView
+) => {
+  changeCursorOnHoverWhen(
+    event,
+    mapView,
+    (result) => getEsriFeaturePopupFeatures(result).length > 0
+  );
+};
+
+// pinUiElementToTop
+// Description: Adds a custom UI element to the top of the 'top-right' controls
+// stack and keeps it pinned there. Esri only honors the `index` at insert time,
+// so when other widgets (zoom, fullscreen, web map defaults) finish loading on a
+// later tick, the element can otherwise end up beneath or between them depending
+// on load timing. Re-asserting on every change to the stack keeps it on top.
+// Returns a cleanup function that removes the element and stops observing.
+export const pinUiElementToTop = (
+  mapView: MapView,
+  element: HTMLElement,
+  position: 'top-right' = 'top-right'
+) => {
+  mapView.ui.add(element, { position, index: 0 });
+  mapView.ui.move(element, { position, index: 0 });
+
+  // Esri exposes no reactive property for the components at a position
+  // (DefaultUI.components only lists the *default* widgets, and is not updated
+  // when one is added via ui.add), so observe the corner's DOM instead: any
+  // widget that loads in later and appends itself here re-triggers the pin.
+  const corner = mapView.ui.container?.querySelector(`.esri-ui-${position}`);
+  const observer = new MutationObserver(() => {
+    // Already at the top — skip, so our own move() doesn't retrigger us
+    if (corner?.firstElementChild === element) return;
+    mapView.ui.move(element, { position, index: 0 });
+  });
+  if (corner) {
+    observer.observe(corner, { childList: true });
+  }
+
+  return () => {
+    observer.disconnect();
+    // The view may already have been destroyed by the EsriMap that owns it
+    if (!mapView.destroyed) {
+      mapView.ui.remove(element);
+    }
+  };
 };
 
 // createEsriFeatureLayers

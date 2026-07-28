@@ -73,6 +73,21 @@ RSpec.describe ParticipationMethod::Proposals do
           expect(proposal.idea_status).to eq custom_status
         end
       end
+
+      # A phase can carry a prescreening_mode on a platform without the feature: tenant
+      # templates and project copies bring the value across from platforms that have it.
+      context 'when prescreening_mode is all but the prescreening feature is disabled' do
+        before { SettingsService.new.deactivate_feature!('prescreening') }
+
+        let(:phase) { create(:proposals_phase, prescreening_mode: 'all') }
+
+        it 'ignores the mode: assigns the default "proposed" status' do
+          proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq proposed_status
+          expect(proposal.publication_status).to eq 'published'
+        end
+      end
     end
 
     context 'when the proposed status is not available' do
@@ -255,6 +270,7 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be true }
   its(:supports_input_pdf_export?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }

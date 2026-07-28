@@ -58,19 +58,17 @@ describe('Idea internal comments', () => {
       })
       .then(() => {
         return cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: ideaTitle1,
           ideaContent: ideaContent1,
-          phaseIds: [phaseId],
         });
       })
       .then((idea1) => {
         ideaId1 = idea1.body.data.id;
         return cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: ideaTitle2,
           ideaContent: ideaContent2,
-          phaseIds: [phaseId],
         });
       })
       .then((idea2) => {

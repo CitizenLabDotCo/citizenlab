@@ -27,7 +27,8 @@ const useUpdateCustomPage = () => {
   >({
     mutationFn: updateCustomPage,
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: customPageKeys.lists() });
+      // `all()` so project-scoped lists are also invalidated.
+      queryClient.invalidateQueries({ queryKey: customPageKeys.all() });
       queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
     },
   });

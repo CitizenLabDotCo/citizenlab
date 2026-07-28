@@ -11,6 +11,8 @@ import InviteSignUp from '../steps/InviteSignUp';
 import InviteTaken from '../steps/InviteTaken';
 import Onboarding from '../steps/Onboarding';
 import Password from '../steps/Password';
+import Phone from '../steps/Phone';
+import PhoneConfirmation from '../steps/PhoneConfirmation';
 import EmailPolicies from '../steps/Policies/EmailPolicies';
 import SSOPolicies from '../steps/Policies/SSOPolicies';
 import Success from '../steps/Success';
@@ -129,16 +131,6 @@ const CurrentStep = ({
       return <InviteTaken state={state} />;
 
     // missing data flow / shared
-    case 'missing-data:built-in':
-      return (
-        <BuiltInFields
-          loading={loading}
-          authenticationData={authenticationData}
-          setError={setError}
-          onSubmit={transition(currentStep, 'SUBMIT')}
-        />
-      );
-
     case 'missing-data:email-confirmation':
       return (
         <EmailConfirmation
@@ -148,6 +140,38 @@ const CurrentStep = ({
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
           onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'missing-data:phone':
+      return (
+        <Phone
+          state={state}
+          loading={loading}
+          setError={setError}
+          onSubmit={transition(currentStep, 'SUBMIT')}
+        />
+      );
+
+    case 'missing-data:phone-confirmation':
+      return (
+        <PhoneConfirmation
+          state={state}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangePhone={transition(currentStep, 'CHANGE_PHONE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'missing-data:built-in':
+      return (
+        <BuiltInFields
+          loading={loading}
+          authenticationData={authenticationData}
+          setError={setError}
+          onSubmit={transition(currentStep, 'SUBMIT')}
         />
       );
 

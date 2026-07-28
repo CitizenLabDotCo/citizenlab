@@ -91,7 +91,7 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   private
 
   def field_schema
-    McpServer::Tools::FormFieldsSchemaBuilder.new(mode: :output).field_schema
+    McpServer::Tools::FormFieldsSchemaBuilder.new.field_schema
   end
 
   class Runner < McpServer::BaseTool::Runner

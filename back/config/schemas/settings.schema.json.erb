@@ -862,6 +862,18 @@
         }
       },
 
+      "project_static_pages": {
+        "type": "object",
+        "title": "Project Static Pages [DO NOT ENABLE]",
+        "description": "Allow static pages to be created and added to individual projects. Still under development, not ready for customer use.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "redirects": {
         "type": "object",
         "title": "URL redirection rules",
@@ -1554,6 +1566,12 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false },
+          "use_test_mode": {
+            "type": "boolean",
+            "title": "Use test mode (NEVER USE IN PRODUCTION)",
+            "default": false,
+            "private": true
+          },
           "twilio_account_sid": {
             "type": "string",
             "title": "Twilio Account SID",

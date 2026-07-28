@@ -12,6 +12,7 @@ export type ProjectNavTarget =
   | '/admin/projects/$projectId/audience'
   | '/admin/projects/$projectId/messaging'
   | '/admin/projects/$projectId/events'
+  | '/admin/projects/$projectId/pages'
   | '/admin/projects/$projectId/files'
   | '/admin/projects/$projectId/general';
 

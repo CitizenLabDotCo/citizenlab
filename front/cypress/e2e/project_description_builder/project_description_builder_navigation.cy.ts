@@ -24,39 +24,35 @@ describe('Project description builder navigation', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit(`/admin/projects/${projectId}/general`);
+    cy.visit(`/admin/projects/${projectId}/project-page`);
   });
 
   after(() => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('navigates to project description builder when edit project description link clicked', () => {
-    cy.get('#e2e-project-description-builder-link')
-      .should('be.visible')
-      .click();
+  it('navigates to the project page builder when the edit page content button is clicked', () => {
+    cy.get('[data-cy="e2e-edit-page-content"]').click({ force: true });
     cy.url().should(
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/admin/description-builder/projects/${projectId}/description`
+      }/en/admin/project-page-builder/projects/${projectId}`
     );
   });
 
-  it('navigates to project settings when content builder goBack clicked', () => {
-    cy.get('#e2e-project-description-builder-link')
-      .should('be.visible')
-      .click();
+  it('navigates back to the project page when content builder goBack clicked', () => {
+    cy.get('[data-cy="e2e-edit-page-content"]').click({ force: true });
     cy.url().should(
       'eq',
       `${
         Cypress.config().baseUrl
-      }/en/admin/description-builder/projects/${projectId}/description`
+      }/en/admin/project-page-builder/projects/${projectId}`
     );
     cy.get('#e2e-go-back-button').should('be.visible').click();
     cy.url().should(
       'eq',
-      `${Cypress.config().baseUrl}/en/admin/projects/${projectId}/general`
+      `${Cypress.config().baseUrl}/en/admin/projects/${projectId}/project-page`
     );
   });
 });

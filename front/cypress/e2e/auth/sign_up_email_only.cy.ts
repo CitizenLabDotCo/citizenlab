@@ -1,48 +1,22 @@
 import { logIn, signUpEmailConformation } from '../../support/auth';
 import { randomString } from '../../support/commands';
-import moment = require('moment');
+import { createNativeSurveyProjectWithPermission } from './utils';
 
 describe('Sign up - email only', () => {
   let projectId = '';
   const projectTitle = randomString();
-  const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
-  let phaseId: string;
 
   before(() => {
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        return cy.apiCreatePhase({
-          projectId,
-          title: 'firstPhaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-
-        cy.apiSetPhasePermission({
-          phaseId,
-          permissionBody: {
-            permitted_by: 'users',
-            require_name: false,
-            require_password: false,
-          },
-          action: 'posting_idea',
-        });
-      });
+    createNativeSurveyProjectWithPermission({
+      projectTitle,
+      permissionBody: {
+        permitted_by: 'users',
+        require_name: false,
+        require_password: false,
+      },
+    }).then(({ projectId: id }) => {
+      projectId = id;
+    });
   });
 
   it('works when signing up with new email', () => {

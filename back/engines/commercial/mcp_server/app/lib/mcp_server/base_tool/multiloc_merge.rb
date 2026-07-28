@@ -10,6 +10,9 @@ module McpServer::BaseTool::MultilocMerge
   def merge_multilocs(record, attributes)
     attributes.to_h do |key, value|
       next [key, value] unless multiloc?(key)
+      # An explicit `nil` clears the multiloc (only reachable where the schema allows
+      # null). Cleared means `{}` as multiloc columns can carry NOT NULL constraints.
+      next [key, {}] if value.nil?
 
       current_value = record[key]
       [key, current_value.blank? ? value : current_value.merge(value)]

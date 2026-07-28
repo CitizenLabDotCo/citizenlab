@@ -14,7 +14,11 @@ module McpServer
         name: 'go_vocal',
         title: "Go Vocal (#{AppConfiguration.instance.host})",
         version: '0.1.0',
-        tools: tools
+        tools: tools,
+        # Tool runners trust their input, so arguments must be validated against the
+        # tool's input_schema at dispatch (types, enums, required fields — including
+        # feature-gated enum values). Set explicitly rather than relying on the gem default.
+        configuration: MCP::Configuration.new(validate_tool_call_arguments: true)
       )
 
       transport = MCP::Server::Transports::StreamableHTTPTransport.new(
