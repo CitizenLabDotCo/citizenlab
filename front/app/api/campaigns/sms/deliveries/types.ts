@@ -12,18 +12,20 @@ export type ISmsDeliveriesParameters = {
   pageSize?: number;
 };
 
+export type SmsDeliveryStatus =
+  | 'pending'
+  | 'queued'
+  | 'sent'
+  | 'delivered'
+  | 'undelivered'
+  | 'failed'
+  | 'not_sent';
+
 export interface ISmsDeliveryData {
   id: string;
   type: string;
   attributes: {
-    status:
-      | 'pending'
-      | 'queued'
-      | 'sent'
-      | 'delivered'
-      | 'undelivered'
-      | 'failed'
-      | 'not_sent';
+    status: SmsDeliveryStatus;
     message_sid: string | null;
     created_at: string;
     updated_at: string;

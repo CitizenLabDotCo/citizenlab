@@ -4,12 +4,11 @@ import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import { FormattedNumber } from 'react-intl';
 import styled from 'styled-components';
 
-import { ISmsDeliveryStats } from 'api/campaigns/sms/stats/types';
 import useSmsCampaignStats from 'api/campaigns/sms/stats/useSmsCampaignStats';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import { SMS_STATUS_GROUPS } from './statusGroups';
 
 const Container = styled.div`
   display: flex;
@@ -46,27 +45,6 @@ const StatCardCount = styled.div`
   font-size: ${fontSizes.xl}px;
 `;
 
-type Status = keyof Omit<ISmsDeliveryStats, 'total'>;
-
-interface StatCardConfig {
-  message: MessageDescriptor;
-  statuses: Status[];
-}
-
-// Statuses grouped into cards, in funnel order; transient and failure statuses each collapse into one card.
-const CARDS: StatCardConfig[] = [
-  {
-    message: messages.smsDeliveryStatus_pending,
-    statuses: ['pending', 'queued'],
-  },
-  { message: messages.smsDeliveryStatus_sent, statuses: ['sent'] },
-  { message: messages.smsDeliveryStatus_delivered, statuses: ['delivered'] },
-  {
-    message: messages.smsDeliveryStatus_failed,
-    statuses: ['undelivered', 'failed', 'not_sent'],
-  },
-];
-
 interface Props {
   campaignId: string;
   className?: string;
@@ -81,7 +59,7 @@ const Stats = ({ campaignId, className }: Props) => {
 
   return (
     <Container className={className}>
-      {CARDS.map(({ message, statuses }) => {
+      {SMS_STATUS_GROUPS.map(({ message, statuses }) => {
         const count = statuses.reduce(
           (sum, status) => sum + stats.data.attributes[status],
           0
