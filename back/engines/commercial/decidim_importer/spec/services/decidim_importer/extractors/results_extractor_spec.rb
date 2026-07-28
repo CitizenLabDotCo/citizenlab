@@ -9,6 +9,9 @@ RSpec.describe DecidimImporter::Extractors::ResultsExtractor do
   let(:component_uid) { 'decidim--component--65' }
   let(:project) { DecidimImporter::Record.new('project', { 'title_multiloc' => { 'fr-FR' => 'P' } }) }
   let(:phase) { DecidimImporter::Record.new('phase', { 'participation_method' => 'ideation' }) }
+  # The Progress/Status labels are i18n (`decidim_importer.accountability_*`), rendered in the result's locale.
+  let(:progress_label) { I18n.t('decidim_importer.accountability_progress', locale: 'fr-FR') }
+  let(:status_label) { I18n.t('decidim_importer.accountability_status', locale: 'fr-FR') }
 
   # Two statuses in the component: one at 40% (À l'étude), one at 100% (Réalisé).
   let(:statuses) do
@@ -54,8 +57,8 @@ RSpec.describe DecidimImporter::Extractors::ResultsExtractor do
   it 'prepends a bulleted Progress + Status block (status name - description) to the description' do
     body = extract([row]).run.first.attributes['body_multiloc']['fr-FR']
     expect(body).to eq(
-      '<ul><li><strong>Progress:</strong> 100% </li>' \
-      '<li><strong>Status:</strong> Réalisé - Projet terminé</li></ul><p>Corps</p>'
+      "<ul><li><strong>#{progress_label}:</strong> 100% </li>" \
+      "<li><strong>#{status_label}:</strong> Réalisé - Projet terminé</li></ul><p>Corps</p>"
     )
   end
 
@@ -67,17 +70,17 @@ RSpec.describe DecidimImporter::Extractors::ResultsExtractor do
   it 'maps the status by the progress %, not the stored status, when they disagree' do
     # The result sits at 100% but its stored status is the 40% one — the % wins.
     body = extract([row('status' => 'st-40', 'progress' => '100.0')]).run.first.attributes['body_multiloc']['fr-FR']
-    expect(body).to include('<li><strong>Status:</strong> Réalisé - Projet terminé</li>')
+    expect(body).to include("<li><strong>#{status_label}:</strong> Réalisé - Projet terminé</li>")
   end
 
   it 'falls back to the result’s own status when no status sits at its progress %' do
     body = extract([row('status' => 'st-40', 'progress' => '40.0')]).run.first.attributes['body_multiloc']['fr-FR']
-    expect(body).to include("<li><strong>Status:</strong> À l'étude - En cours d'analyse</li>")
+    expect(body).to include("<li><strong>#{status_label}:</strong> À l'étude - En cours d'analyse</li>")
   end
 
   it 'shows only the Progress line when the progress matches no status and the result has none' do
     body = extract([row('status' => '', 'progress' => '55.0')]).run.first.attributes['body_multiloc']['fr-FR']
-    expect(body).to eq('<ul><li><strong>Progress:</strong> 55% </li></ul><p>Corps</p>')
+    expect(body).to eq("<ul><li><strong>#{progress_label}:</strong> 55% </li></ul><p>Corps</p>")
   end
 
   it 'leaves the description untouched when the result has no progress' do
