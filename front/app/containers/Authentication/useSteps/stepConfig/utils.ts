@@ -121,7 +121,7 @@ const phoneActionStep = (
     case 'provide_new_phone':
       return 'missing-data:new_phone';
     case 'confirm_new_phone':
-      return 'missing-data:new_phone';
+      return 'confirmation:new_phone';
     case 'reconfirm_phone':
       return 'confirmation:reconfirm-phone';
     default:
