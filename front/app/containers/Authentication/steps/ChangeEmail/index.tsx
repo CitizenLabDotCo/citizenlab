@@ -5,7 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { object } from 'yup';
 
-import { SetError } from 'containers/Authentication/typings';
+import useAuthUser from 'api/me/useAuthUser';
+
+import { SetError, State } from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -20,10 +22,11 @@ import { getEmailSchema } from '../InviteSignUp/form';
 import sharedMessages from '../messages';
 
 interface FormValues {
-  email: string;
+  new_email: string;
 }
 
 interface Props {
+  state: State;
   loading: boolean;
   setError: SetError;
   onSubmit: (email: string) => Promise<void>;
@@ -33,21 +36,25 @@ interface Props {
 // (email_action_required is confirm_new_email) but wants to enter a different
 // one. It is deliberately separate from the built-in-fields step: that step is
 // driven by the requirements, which here say "confirm", not "provide".
-const ChangeEmail = ({ loading, setError, onSubmit }: Props) => {
+const ChangeEmail = ({ state, loading, setError, onSubmit }: Props) => {
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
   const schema = object({
-    email: getEmailSchema(formatMessage),
+    new_email: getEmailSchema(formatMessage),
   });
+
+  const newEmail = state.new_email ?? authUser?.data.attributes.new_email;
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
+    defaultValues: { new_email: newEmail ?? undefined },
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = async ({ email }: FormValues) => {
+  const handleSubmit = async ({ new_email }: FormValues) => {
     try {
-      await onSubmit(email);
+      await onSubmit(new_email);
     } catch (e: any) {
       if (e?.errors?.new_email?.[0]?.error === 'is already taken') {
         setError('email_taken_and_user_can_be_verified');
@@ -69,8 +76,8 @@ const ChangeEmail = ({ loading, setError, onSubmit }: Props) => {
         <form noValidate onSubmit={methods.handleSubmit(handleSubmit)}>
           <Box id="e2e-email-container">
             <Input
-              name="email"
-              id="email"
+              name="new_email"
+              id="new_email"
               type="email"
               autocomplete="email"
               label={formatMessage(sharedMessages.email)}

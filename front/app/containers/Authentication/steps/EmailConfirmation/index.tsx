@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -49,6 +51,7 @@ const EmailConfirmation = ({
   onChangeEmail,
   onResendCode,
 }: Props) => {
+  const { data: authUser } = useAuthUser();
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
 
@@ -71,7 +74,7 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
-  const email = state.email;
+  const email = state.email ?? authUser?.data.attributes.email;
   if (!email) return null;
 
   const handleConfirm = async ({ code }: FormValues) => {

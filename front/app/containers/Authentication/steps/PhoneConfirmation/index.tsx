@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import Input from 'components/HookForm/Input';
 
 import { useIntl } from 'utils/cl-intl';
@@ -41,13 +43,14 @@ const isWrongConfirmationCodeError = (e: any) => {
 };
 
 const PhoneConfirmation = ({
-  state: { phone },
+  state,
   loading,
   setError,
   onConfirm,
   onChangePhone,
   onResendCode,
 }: Props) => {
+  const { data: authUser } = useAuthUser();
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
 
@@ -70,7 +73,9 @@ const PhoneConfirmation = ({
     resolver: yupResolver(schema),
   });
 
-  if (!phone) return null;
+  const newPhone = state.new_phone ?? authUser?.data.attributes.new_phone;
+
+  if (!newPhone) return null;
 
   const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
@@ -97,7 +102,7 @@ const PhoneConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    onResendCode(phone)
+    onResendCode(newPhone)
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);
@@ -119,7 +124,7 @@ const PhoneConfirmation = ({
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage phoneNumber={phone} codeResent={codeResent} />
+          <CodeSentMessage phoneNumber={newPhone} codeResent={codeResent} />
         </Box>
         <Box data-cy="phone-code-input">
           <Input

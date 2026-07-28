@@ -195,6 +195,7 @@ const CurrentStep = ({
     case 'missing-data:change-new-email':
       return (
         <ChangeEmail
+          state={state}
           loading={loading}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
