@@ -5,9 +5,8 @@ require 'rails_helper'
 # Tool definitions must not depend on tenant state: the cross-tenant staff gateway
 # serves one tool list (fetched from a single reference tenant) to reach every tenant
 # it proxies to. A tenant-specific constraint belongs in a call-time check with an
-# actionable error (BaseTool::LocaleGuard, Tools::PhaseFeatureGuard), never in the
-# definition. This spec fails when a tool (re)introduces definition-time tenant
-# coupling.
+# actionable error (LocaleGuard, PhaseFeatureGuard), never in the definition. This
+# spec fails when a tool (re)introduces definition-time tenant coupling.
 RSpec.describe 'MCP tool definition parity' do # rubocop:disable RSpec/DescribeClass
   let(:current_user) { create(:super_admin) }
 

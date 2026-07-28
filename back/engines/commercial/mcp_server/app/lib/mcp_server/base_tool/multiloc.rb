@@ -5,7 +5,7 @@
 # Deliberately tenant-agnostic: tool definitions must be identical on every tenant so
 # the cross-tenant staff gateway can serve a single tool list for all of them (guarded
 # by tool_definitions_parity_spec). Which locales are actually writable is enforced at
-# call time by BaseTool::LocaleGuard, with an error naming the active locales.
+# call time by LocaleGuard, with an error naming the active locales.
 module McpServer::BaseTool::Multiloc
   def multiloc_schema
     {

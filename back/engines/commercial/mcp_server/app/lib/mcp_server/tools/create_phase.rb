@@ -303,7 +303,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    include McpServer::Tools::PhaseFeatureGuard
+    include McpServer::PhaseFeatureGuard
 
     def run
       project = Project.find_by(id: params[:project_id])

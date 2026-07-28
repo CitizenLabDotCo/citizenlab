@@ -6,7 +6,7 @@
 # tenant-agnostic, see tool_definitions_parity_spec); inputs that conflict with the
 # platform's features are rejected here with an error naming the missing feature.
 # Included by the create_phase and update_phase runners.
-module McpServer::Tools::PhaseFeatureGuard
+module McpServer::PhaseFeatureGuard
   DISLIKE_PARAMS = %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max].freeze
 
   private

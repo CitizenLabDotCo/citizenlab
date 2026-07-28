@@ -34,7 +34,7 @@ class McpServer::Tools::UpdatePhase < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    include McpServer::Tools::PhaseFeatureGuard
+    include McpServer::PhaseFeatureGuard
 
     def run
       phase = Phase.find_by(id: params[:phase_id])

@@ -8,7 +8,7 @@
 # Recursion means nested multilocs are covered too (update_resource's free-form
 # `attributes` hash, replace_form_fields' field list) — places the schema enum never
 # reached.
-module McpServer::BaseTool::LocaleGuard
+module McpServer::LocaleGuard
   def self.error_message(arguments)
     active = AppConfiguration.instance.settings.dig('core', 'locales') || []
     invalid = invalid_locales(arguments, active).uniq

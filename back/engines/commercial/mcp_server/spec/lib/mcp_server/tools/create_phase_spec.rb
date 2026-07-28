@@ -120,4 +120,20 @@ describe McpServer::Tools::CreatePhase do
       expect(response.content.first[:text]).to include("'disable_disliking' feature")
     end
   end
+
+  describe 'participation method coverage' do
+    # Methods deliberately not offered by the tool. 'community_monitor_survey' belongs to
+    # the community monitor, a singleton internal project (Project::INTERNAL_ROLES) whose
+    # phase is provisioned by the platform rather than created through this tool.
+    let(:unoffered_methods) { %w[community_monitor_survey] }
+
+    # Fails when a new participation method is added without deciding, here, whether the
+    # tool offers it and behind which feature flag. GATED_METHODS/UNGATED_METHODS feed the
+    # schema enum through an intersection, which would otherwise drop it silently.
+    it 'classifies every participation method as gated, ungated or unoffered' do
+      classified = described_class::GATED_METHODS.keys + described_class::UNGATED_METHODS + unoffered_methods
+
+      expect(classified).to match_array(Phase::PARTICIPATION_METHODS)
+    end
+  end
 end
