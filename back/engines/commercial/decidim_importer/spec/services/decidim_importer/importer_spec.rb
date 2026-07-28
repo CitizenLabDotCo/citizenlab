@@ -52,6 +52,39 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe '.provision_project_pages!' do
+    let(:stale) { { 'ROOT' => { 'type' => 'div', 'isCanvas' => true, 'nodes' => [], 'props' => {} } } }
+
+    def project_page(project)
+      ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
+    end
+
+    it 'regenerates the page for imported projects and leaves non-imported ones untouched' do
+      imported = create(:project)
+      other = create(:project) # e.g. a pre-existing demo project, not part of the import
+      imported_page = ContentBuilder::Layout.create!(
+        content_buildable: imported, code: 'project_page', enabled: true, craftjs_json: stale
+      )
+      other_page = ContentBuilder::Layout.create!(
+        content_buildable: other, code: 'project_page', enabled: true, craftjs_json: stale
+      )
+
+      described_class.provision_project_pages!('Project' => [imported.id])
+
+      # the imported project's stale page is dropped and rebuilt (a fresh record, real craftjs)
+      rebuilt = project_page(imported)
+      expect(rebuilt.id).not_to eq(imported_page.id)
+      expect(rebuilt.craftjs_json).not_to eq(stale)
+      # the non-imported project is left exactly as it was
+      expect(project_page(other)).to eq(other_page)
+      expect(other_page.reload.craftjs_json).to eq(stale)
+    end
+
+    it 'is a no-op when the import created no projects' do
+      expect { described_class.provision_project_pages!({}) }.not_to raise_error
+    end
+  end
+
   describe '.apply_app_config_file' do
     it 'deep-merges the patch settings into the tenant AppConfiguration' do
       file = Tempfile.new(['decidim', '.app_config.json'])
