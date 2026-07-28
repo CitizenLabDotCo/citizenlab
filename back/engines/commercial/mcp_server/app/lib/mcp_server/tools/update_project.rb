@@ -38,7 +38,10 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       project = Project.find_by(id: params[:project_id])
       return not_found_error('Project', params[:project_id]) unless project
 
-      attributes = params.except(:project_id)
+      authorize_project!(project)
+      authorize(project, :update?)
+
+      attributes = clear_uploaders!(project, params.except(:project_id))
       project.assign_attributes(merge_multilocs(project, attributes))
 
       SideFxProjectService.new.before_update(project, current_user)
