@@ -437,7 +437,7 @@ module MultiTenancy
             decidim_importer: {
               enabled: true,
               allowed: true
-            },
+            }
           })
         )
 
