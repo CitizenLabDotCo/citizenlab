@@ -102,10 +102,11 @@ const emailActionStep = (
 ): Step | null => {
   switch (requirements.authentication.email_action_required) {
     case 'confirm_email':
-    case 'reconfirm_email':
       return 'email:unauthenticated-confirmation';
     case 'confirm_new_email':
       return 'confirmation:new_email';
+    case 'reconfirm_email':
+      return 'confirmation:reconfirm-email';
     default:
       return null;
   }
@@ -117,21 +118,12 @@ const phoneActionStep = (
   requirements: AuthenticationRequirements['requirements']
 ): Step | null => {
   switch (requirements.authentication.phone_action_required) {
-    case 'provide_phone':
-      return 'missing-data:new_phone';
     case 'provide_new_phone':
       return 'missing-data:new_phone';
-    case 'confirm_phone':
-      // A never-confirmed existing phone: there is no in-place phone confirmation,
-      // so re-collect the number (submitting it sends the code via new_phone).
+    case 'confirm_new_phone':
       return 'missing-data:new_phone';
     case 'reconfirm_phone':
-      // Re-confirmation of the user's own phone (expiry elapsed): the code is
-      // auto-sent to the existing number (see checkMissingData), so go straight
-      // to code entry, mirroring reconfirm_email -> email:unauthenticated-confirmation.
-      return 'confirmation:new_phone';
-    case 'confirm_new_phone':
-      return 'confirmation:new_phone';
+      return 'confirmation:reconfirm-phone';
     default:
       return null;
   }
