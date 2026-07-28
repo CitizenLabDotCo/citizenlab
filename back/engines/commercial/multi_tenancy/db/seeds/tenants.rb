@@ -433,7 +433,11 @@ module MultiTenancy
             sms: {
               enabled: false,
               allowed: false
-            }
+            },
+            decidim_importer: {
+              enabled: true,
+              allowed: true
+            },
           })
         )
 
