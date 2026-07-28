@@ -79,6 +79,7 @@ describe('Multiple voting project', () => {
   it('can allocate the votes to ideas and show how many votes are left', () => {
     cy.contains('Cast your vote');
     cy.contains('How to vote');
+    cy.dockProjectCtaBar();
     cy.dataCy('project-cta-bar-top').contains('5 out of 5 votes left');
 
     cy.get('#e2e-voting-submit-button')
