@@ -486,7 +486,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniSerializer,
       params: project_serializer_params,
-      include: %i[project_images current_phase]
+      include: %i[project_images highlighted_phase]
     )
   end
 end

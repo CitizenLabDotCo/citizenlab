@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe HighlightedPhaseService do
-  let(:service) { described_class.new }
+  let(:service) { described_class.new(project) }
   let(:project) { create(:project) }
 
   describe '#highlighted_phase and #participation_state' do
@@ -11,8 +11,8 @@ describe HighlightedPhaseService do
       let!(:phase) { create(:phase, project:, start_at: 1.week.ago, end_at: 1.week.from_now) }
 
       it 'highlights it as active' do
-        expect(service.highlighted_phase(project)).to eq phase
-        expect(service.participation_state(project)).to eq :active
+        expect(service.highlighted_phase).to eq phase
+        expect(service.participation_state).to eq :active
       end
     end
 
@@ -21,8 +21,8 @@ describe HighlightedPhaseService do
       let!(:standalone_phase) { create(:phase, :standalone, project:, start_at: 1.week.ago, end_at: 1.week.from_now) }
 
       it 'highlights the active standalone phase' do
-        expect(service.highlighted_phase(project)).to eq standalone_phase
-        expect(service.participation_state(project)).to eq :active
+        expect(service.highlighted_phase).to eq standalone_phase
+        expect(service.participation_state).to eq :active
       end
     end
 
@@ -31,7 +31,7 @@ describe HighlightedPhaseService do
       let!(:standalone_phase) { create(:phase, :standalone, project:, start_at: 1.week.ago, end_at: 3.days.from_now) }
 
       it 'highlights the phase that ends soonest' do
-        expect(service.highlighted_phase(project)).to eq standalone_phase
+        expect(service.highlighted_phase).to eq standalone_phase
       end
     end
 
@@ -40,7 +40,7 @@ describe HighlightedPhaseService do
       let!(:standalone_phase) { create(:phase, :standalone, project:, start_at: 1.week.ago, end_at: 2.weeks.from_now) }
 
       it 'highlights the phase that ends soonest' do
-        expect(service.highlighted_phase(project)).to eq timeline_phase
+        expect(service.highlighted_phase).to eq timeline_phase
       end
     end
 
@@ -49,7 +49,7 @@ describe HighlightedPhaseService do
       let!(:standalone_phase) { create(:phase, :standalone, project:, start_at: 1.week.ago, end_at: 1.week.from_now) }
 
       it 'highlights the dated phase' do
-        expect(service.highlighted_phase(project)).to eq standalone_phase
+        expect(service.highlighted_phase).to eq standalone_phase
       end
     end
 
@@ -58,8 +58,8 @@ describe HighlightedPhaseService do
       let!(:timeline_phase) { create(:phase, project:, start_at: 1.week.ago, end_at: nil) }
 
       it 'highlights the timeline phase first' do
-        expect(service.highlighted_phase(project)).to eq timeline_phase
-        expect(service.participation_state(project)).to eq :active
+        expect(service.highlighted_phase).to eq timeline_phase
+        expect(service.participation_state).to eq :active
       end
     end
 
@@ -68,8 +68,8 @@ describe HighlightedPhaseService do
       let!(:standalone_phase) { create(:phase, :standalone, project:, start_at: 1.week.from_now, end_at: 2.weeks.from_now) }
 
       it 'highlights the upcoming standalone phase' do
-        expect(service.highlighted_phase(project)).to eq standalone_phase
-        expect(service.participation_state(project)).to eq :upcoming
+        expect(service.highlighted_phase).to eq standalone_phase
+        expect(service.participation_state).to eq :upcoming
       end
     end
 
@@ -78,8 +78,8 @@ describe HighlightedPhaseService do
       let!(:sooner_phase) { create(:phase, project:, start_at: 1.week.from_now, end_at: 3.weeks.from_now) }
 
       it 'highlights the phase that starts soonest' do
-        expect(service.highlighted_phase(project)).to eq sooner_phase
-        expect(service.participation_state(project)).to eq :upcoming
+        expect(service.highlighted_phase).to eq sooner_phase
+        expect(service.participation_state).to eq :upcoming
       end
     end
 
@@ -88,8 +88,8 @@ describe HighlightedPhaseService do
       let!(:future_phase) { create(:phase, project:, start_at: 1.month.from_now, end_at: 2.months.from_now) }
 
       it 'highlights the upcoming phase' do
-        expect(service.highlighted_phase(project)).to eq future_phase
-        expect(service.participation_state(project)).to eq :upcoming
+        expect(service.highlighted_phase).to eq future_phase
+        expect(service.participation_state).to eq :upcoming
       end
     end
 
@@ -98,8 +98,8 @@ describe HighlightedPhaseService do
       let!(:standalone_phase) { create(:phase, :standalone, project:, start_at: 6.weeks.ago, end_at: 2.weeks.ago) }
 
       it 'highlights the phase that ended last' do
-        expect(service.highlighted_phase(project)).to eq standalone_phase
-        expect(service.participation_state(project)).to eq :ended
+        expect(service.highlighted_phase).to eq standalone_phase
+        expect(service.participation_state).to eq :ended
       end
     end
 
@@ -110,15 +110,55 @@ describe HighlightedPhaseService do
       let!(:older_phase) { create(:phase, :standalone, project:, start_at:, end_at:, created_at: 2.days.ago) }
 
       it 'resolves deterministically by creation date' do
-        expect(service.highlighted_phase(project)).to eq older_phase
+        expect(service.highlighted_phase).to eq older_phase
       end
     end
 
     context 'when the project has no phases' do
-      it 'returns no phase and no state' do
-        expect(service.highlighted_phase(project)).to be_nil
-        expect(service.participation_state(project)).to be_nil
+      it 'returns no phase, no state and no day counts' do
+        expect(service.highlighted_phase).to be_nil
+        expect(service.participation_state).to be_nil
+        expect(service.days_until_start).to be_nil
+        expect(service.days_since_end).to be_nil
       end
+    end
+  end
+
+  describe '#days_until_start' do
+    it 'counts down to the highlighted phase when it is upcoming' do
+      create(:phase, project:, start_at: 2.months.ago, end_at: 1.month.ago)
+      create(:phase, :standalone, project:, start_at: 27.hours.from_now, end_at: 1.week.from_now)
+
+      expect(service.days_until_start).to eq 1
+    end
+  end
+
+  describe '#days_since_end' do
+    it 'counts from the phase that ended last' do
+      create(:phase, :standalone, project:, start_at: 2.months.ago, end_at: 10.days.ago)
+      create(:phase, project:, start_at: 2.months.ago, end_at: 75.hours.ago)
+
+      expect(service.days_since_end).to eq 3
+    end
+  end
+
+  describe 'while a phase is active' do
+    it 'returns nil for both day counts' do
+      create(:phase, project:, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(service.days_until_start).to be_nil
+      expect(service.days_since_end).to be_nil
+    end
+  end
+
+  describe 'whole_days_between' do
+    let(:now) { Time.now }
+
+    it 'counts complete 24-hour spans' do
+      expect(service.send(:whole_days_between, now, now + 27.hours)).to eq 1
+      expect(service.send(:whole_days_between, now, now + 2.hours)).to eq 0
+      expect(service.send(:whole_days_between, now, now + 24.hours)).to eq 1
+      expect(service.send(:whole_days_between, now, now + 10.days + 3.hours)).to eq 10
     end
   end
 end

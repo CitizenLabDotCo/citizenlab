@@ -5,24 +5,27 @@
 # otherwise the upcoming phase that starts soonest, otherwise the phase that
 # ended last.
 class HighlightedPhaseService
-  def highlighted_phase(project, time = Time.now)
-    time = time.in_time_zone
-
-    active = project.active_phases(time)
-    if active.any?
-      dated, open_ended = active.partition(&:end_at)
-      return dated.min_by(&:end_at) || open_ended.first
-    end
-
-    upcoming = project.phases.select { |phase| phase.start_at > time }
-    return upcoming.min_by(&:start_at) if upcoming.any?
-
-    project.phases.max_by(&:end_at)
+  def initialize(project, time = Time.now)
+    @project = project
+    @time = time.in_time_zone
   end
 
-  def participation_state(project, time = Time.now)
-    time = time.in_time_zone
-    phase = highlighted_phase(project, time)
+  def highlighted_phase
+    return @highlighted_phase if defined?(@highlighted_phase)
+
+    @highlighted_phase =
+      if (active = project.active_phases(time)).any?
+        dated, open_ended = active.partition(&:end_at)
+        dated.min_by(&:end_at) || open_ended.first
+      elsif (upcoming = project.phases.select { |phase| phase.start_at > time }).any?
+        upcoming.min_by(&:start_at)
+      else
+        project.phases.max_by(&:end_at)
+      end
+  end
+
+  def participation_state
+    phase = highlighted_phase
     return if !phase
 
     if phase.active?(time)
@@ -32,5 +35,23 @@ class HighlightedPhaseService
     else
       :ended
     end
+  end
+
+  def days_until_start
+    phase = highlighted_phase
+    whole_days_between(time, phase.start_at) if phase && phase.start_at > time
+  end
+
+  def days_since_end
+    phase = highlighted_phase
+    whole_days_between(phase.end_at, time) if phase&.end_at && phase.end_at < time
+  end
+
+  private
+
+  attr_reader :project, :time
+
+  def whole_days_between(from, to)
+    (to - from).seconds.in_days.floor
   end
 end
