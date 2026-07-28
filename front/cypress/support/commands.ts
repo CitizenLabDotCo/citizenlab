@@ -2297,13 +2297,20 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`[data-cy="${dataCyValue}"]`);
 }
 
-/**
- * Docks the project page CTA bar by scrolling the phases section under the
- * navbar. The bar only renders once that happens, so call this before
- * interacting with any element inside it (idea button, voting counter, ...).
- */
 function dockProjectCtaBar() {
-  return cy.get('[data-project-page-phases]').scrollIntoView();
+  const scrollUntilDocked = () =>
+    cy.get('[data-project-page-phases]').should(($phases) => {
+      const el = $phases[0];
+      el.scrollIntoView();
+      expect(
+        el.ownerDocument.querySelector('[data-cy="project-cta-bar-top"]'),
+        'docked CTA bar'
+      ).to.exist;
+    });
+
+  scrollUntilDocked();
+  cy.wait(500);
+  return scrollUntilDocked();
 }
 
 function deleteEventAttendances(
