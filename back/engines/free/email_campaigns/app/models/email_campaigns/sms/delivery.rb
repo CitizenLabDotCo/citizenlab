@@ -30,8 +30,10 @@ module EmailCampaigns
     class Delivery < ApplicationRecord
       self.table_name = 'sms_deliveries'
 
-      # The statuses order matters for advance_status!. `errored` sits outside that
-      # funnel: it is only ever set directly, never through advance_status!.
+      # `pending` and `errored` are statuses we set ourselves; the rest are set by the provider.
+      # Order matters for advance_status!, which only walks the provider funnel —
+      # `errored` (a pre-provider failure, e.g. bad number or blocked country) sits outside
+      # it and is only ever set directly.
       STATUSES = %w[pending queued sent delivered undelivered failed errored].freeze
 
       # A message reaches exactly one terminal outcome. Once there, no later
