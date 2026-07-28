@@ -11,7 +11,6 @@ module DecidimImporter
   # is applied. Idempotent: re-running reuses the existing folder, moves any remaining top-level
   # projects, and leaves already-built layouts, previews and nav items in place.
   class ConsultationsFolder
-    FOLDER_TITLE = 'Consultations'
     FOLDER_SLUG = 'consultations'
     # Assemblies folder is created during import (title from {ExportReader::ASSEMBLIES_FOLDER_TITLE});
     # located here by the slug that title slugifies to.
@@ -27,6 +26,7 @@ module DecidimImporter
       folder = find_or_create_folder
       moved = move_top_level_projects_into(folder)
       provision_folders
+      localize_assemblies_title
       link_other_folders_from(folder)
       configure_nav_bar(folder)
       { folder: folder, moved_projects: moved }
@@ -37,13 +37,30 @@ module DecidimImporter
     def find_or_create_folder
       ProjectFolders::Folder.find_by(slug: FOLDER_SLUG) ||
         ProjectFolders::Folder.create!(
-          title_multiloc: title_multiloc,
+          title_multiloc: structural_title_multiloc('consultations'),
+          # Pin the slug so it stays `consultations` regardless of how the title translates per locale
+          # (find-or-create relies on it, and the model would otherwise slugify a translated title).
+          slug: FOLDER_SLUG,
           admin_publication_attributes: { publication_status: 'published' }
         )
     end
 
-    def title_multiloc
-      AppConfiguration.instance.settings('core', 'locales').index_with { FOLDER_TITLE }
+    # The Assemblies folder is created at template time from the plain-string
+    # {ExportReader::ASSEMBLIES_FOLDER_TITLE} (single locale only). Give it the same translated title as
+    # Consultations now that the tenant's locales are known. Its slug (`assemblies`) is untouched.
+    def localize_assemblies_title
+      assemblies_folder&.update!(title_multiloc: structural_title_multiloc('assemblies'))
+    end
+
+    # A structural folder title (not drawn from the export) translated into every tenant locale from
+    # `decidim_importer.<key>` — English source in en.yml, the rest filled by Polyglit. Each locale falls
+    # back to the English source so none is left blank before translations land.
+    def structural_title_multiloc(key)
+      full_key = "decidim_importer.#{key}"
+      english = I18n.t(full_key, locale: 'en')
+      AppConfiguration.instance.settings('core', 'locales').index_with do |locale|
+        I18n.t(full_key, locale: locale, default: english)
+      end
     end
 
     # Every project not already in a folder (admin publication has no parent) moves under the folder.

@@ -8,7 +8,7 @@ module DecidimImporter
   # template's `*_ref` mechanism only links records created in the *same* apply, and the build step
   # runs outside any tenant — so seeded statuses can't be refed or looked up at build time. Instead
   # each idea carries `idea_status_code`, swapped here for the tenant-local id inside `tenant.switch`
-  # (mirroring {Importer.strip_remote_image_urls!}).
+  # (mirroring {TemplateCleaner.strip_remote_upload_urls!}).
   #
   # The lookup MUST be scoped to `participation_method: 'ideation'`: the same codes (proposed, accepted,
   # …) are seeded for both ideation and proposals, so a code alone is ambiguous. Decidim proposals are

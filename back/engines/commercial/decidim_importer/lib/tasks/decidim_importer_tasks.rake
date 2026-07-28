@@ -63,25 +63,25 @@ namespace :decidim_importer do
 
   desc 'Imports a dumped tenant-template YAML file into the tenant matching `host`, then runs the ' \
        'post-import finishing (link correction + Consultations/Assemblies folder structure).'
-  task :import, %i[file host import_images] => [:environment] do |_t, args|
+  task :import, %i[file host import_uploads] => [:environment] do |_t, args|
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
     file = args.fetch(:file)
-    import_images = args[:import_images].to_s.downcase != 'false'
+    import_uploads = args[:import_uploads].to_s.downcase != 'false'
 
     ensure_import_enabled!(tenant)
     json = app_config_sibling(file)
 
     with_report_log(log_path(file, 'import')) do
-      report_line "Decidim import → tenant=#{tenant.host} file=#{file} import_images=#{import_images}"
+      report_line "Decidim import → tenant=#{tenant.host} file=#{file} import_uploads=#{import_uploads}"
       broken = []
       tenant.switch do
         # App config first — it sets the tenant's locales, which the template's records rely on.
-        if DecidimImporter::Importer.apply_app_config_file(json, import_images: import_images)
+        if DecidimImporter::Importer.apply_app_config_file(json, import_uploads: import_uploads)
           report_line "  applied app config from #{json}"
         else
           report_line "  no app-config JSON at #{json} → skipping"
         end
-        created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
+        created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
         created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
 
         broken = finalize_import!(file)
@@ -92,11 +92,11 @@ namespace :decidim_importer do
   end
 
   desc 'Applies a dumped template YAML to a throwaway tenant to confirm it deserializes, then destroys it.'
-  task :verify, %i[file locales import_images] => [:environment] do |_t, args|
+  task :verify, %i[file locales import_uploads] => [:environment] do |_t, args|
     file = args.fetch(:file)
     locales = (args[:locales] || 'fr-FR,en').split(/[,\s]+/).compact_blank.uniq
-    # Images are skipped by default (verification is about structure); `import_images=true` fetches them.
-    import_images = args[:import_images].to_s.strip.downcase == 'true'
+    # Uploads are skipped by default (verification is about structure); `import_uploads=true` fetches them.
+    import_uploads = args[:import_uploads].to_s.strip.downcase == 'true'
 
     name = "decidim-verify-#{SecureRandom.hex(4)}"
     host = "#{name}.localhost"
@@ -113,7 +113,7 @@ namespace :decidim_importer do
 
     begin
       tenant.switch do
-        created = DecidimImporter::Importer.apply_template_file(file, import_images: import_images)
+        created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
         created.each { |klass, ids| puts "  created #{ids.size} #{klass}" }
       end
       puts "VERIFY OK — applied cleanly, tearing down #{host}"

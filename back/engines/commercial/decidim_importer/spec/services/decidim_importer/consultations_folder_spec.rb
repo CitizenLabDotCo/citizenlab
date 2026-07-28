@@ -24,7 +24,10 @@ RSpec.describe DecidimImporter::ConsultationsFolder do
     folder = service.run[:folder]
 
     expect(folder.slug).to eq('consultations')
-    expect(folder.title_multiloc.values).to all(eq('Consultations'))
+    # Title is a multiloc across every tenant locale, drawn from i18n (`decidim_importer.consultations`)
+    # rather than a hardcoded string; untranslated locales fall back to the English source.
+    expect(folder.title_multiloc.keys).to match_array(AppConfiguration.instance.settings('core', 'locales'))
+    expect(folder.title_multiloc['en']).to eq(I18n.t('decidim_importer.consultations'))
     expect(folder.admin_publication.publication_status).to eq('published')
     expect(top1.reload.admin_publication.parent).to eq(folder.admin_publication)
     expect(top2.reload.admin_publication.parent).to eq(folder.admin_publication)
@@ -53,6 +56,18 @@ RSpec.describe DecidimImporter::ConsultationsFolder do
     node = layout_for(folder).craftjs_json.values
       .find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'Selection' }
     node&.dig('props', 'adminPublicationIds')
+  end
+
+  it 'localizes the single-locale Assemblies folder title across the tenant locales' do
+    # The template creates it with only the primary locale (from ExportReader::ASSEMBLIES_FOLDER_TITLE).
+    assemblies = create(:project_folder, title_multiloc: { 'en' => 'Assemblies' }, slug: 'assemblies')
+
+    service.run
+
+    locales = AppConfiguration.instance.settings('core', 'locales')
+    expect(assemblies.reload.title_multiloc.keys).to match_array(locales)
+    expect(assemblies.title_multiloc['en']).to eq(I18n.t('decidim_importer.assemblies'))
+    expect(assemblies.slug).to eq('assemblies') # slug untouched
   end
 
   it 'links the Consultations folder out to every other folder except Assemblies' do

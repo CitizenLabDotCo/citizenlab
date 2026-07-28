@@ -20,8 +20,7 @@ module DecidimImporter
         description: 'description',
         weight: 'weight',
         file: 'file',
-        attached_to: 'attached_to',
-        process: 'decidim_participatory_process'
+        attached_to: 'attached_to'
       }.freeze
 
       class << self
@@ -48,8 +47,12 @@ module DecidimImporter
         attachable = ref_map.fetch(present_value(row[COLUMNS[:attached_to]]))
         return skip(uid, "attached-to #{self.class.source_noun} not imported") unless attachable&.model_name == self.class.attachable_model
 
-        project = ref_map.fetch(present_value(row[COLUMNS[:process]]))
-        return skip(uid, 'no project for attachment') if project.nil?
+        # The file must be owned by the *attachable's* project — that's what
+        # `FileAttachment#validate_file_belongs_to_project` checks. Decidim can stamp an attachment with a
+        # different space than the resource it's attached to, so derive the project from the attachable
+        # rather than the row's process column.
+        project_ref = attachable.attributes['project_ref']
+        return skip(uid, 'no project for attachment') if project_ref.nil?
 
         url = present_value(row[COLUMNS[:file]])
         return skip(uid, 'attachment has no file url') if url.nil?
@@ -65,9 +68,18 @@ module DecidimImporter
         })
         ref_map.register(uid, file)
 
-        register_files_project(uid, file, project)
+        register_files_project_ref(uid, file, project_ref)
         register_file_attachment(uid, file, attachable, row)
         file
+      end
+
+      # Ownership join placing the file in the attachable's project, sharing the attachable's `project_ref`
+      # hash so it resolves to the exact same project on deserialize.
+      def register_files_project_ref(uid, file, project_ref)
+        files_project = Record.new('files/files_project', {})
+        files_project.reference('file', file)
+        files_project.attributes['project_ref'] = project_ref
+        ref_map.register("#{uid}-files-project", files_project)
       end
 
       # The attachment surfacing the file on the resource, preserving the Decidim weight as its position.

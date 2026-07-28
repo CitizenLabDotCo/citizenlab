@@ -19,13 +19,13 @@ module DecidimImporter
     # fetching off, drop them all so no HTTP happens. With fetching on, probe each once (shared cache) and
     # drop the ones that would abort the import: a since-deleted image that would 404, and a file whose
     # extension isn't on the upload allowlist.
-    def prepare_images!(template, import_images:)
-      if import_images
+    def prepare_uploads!(template, import_uploads:)
+      if import_uploads
         importable = {}
         prune_unreachable_remote_urls!(template, importable)
         prune_unreachable_embedded_images!(template, importable)
       else
-        strip_remote_image_urls!(template)
+        strip_remote_upload_urls!(template)
         strip_embedded_images!(template)
       end
     end
@@ -99,9 +99,9 @@ module DecidimImporter
     end
 
     # Drops every `remote_*_url` attribute so the deserializer doesn't trigger a CarrierWave fetch.
-    def strip_remote_image_urls!(template)
+    def strip_remote_upload_urls!(template)
       template['models'].each_value do |records|
-        records.each { |attrs| attrs.delete_if { |key, _| remote_image_url?(key) } }
+        records.each { |attrs| attrs.delete_if { |key, _| remote_upload_url?(key) } }
       end
     end
 
@@ -117,7 +117,7 @@ module DecidimImporter
       template['models'].each_value do |records|
         records.each do |attrs|
           attrs.reject! do |key, value|
-            next false unless remote_image_url?(key) && value.is_a?(String)
+            next false unless remote_upload_url?(key) && value.is_a?(String)
 
             reason = prune_reason(key, value, importable)
             log_pruned_upload(attrs, key, value, reason) if reason
@@ -163,7 +163,7 @@ module DecidimImporter
       Rails.logger.warn "Decidim import: dropping #{label} because #{reason} (#{url})"
     end
 
-    def remote_image_url?(key)
+    def remote_upload_url?(key)
       key.is_a?(String) && key.start_with?('remote_') && key.end_with?('_url')
     end
 

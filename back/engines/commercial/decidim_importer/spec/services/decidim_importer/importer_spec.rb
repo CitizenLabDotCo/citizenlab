@@ -26,7 +26,7 @@ RSpec.describe DecidimImporter::Importer do
       file.write(yaml)
       file.close
 
-      described_class.apply_template_file(file.path, import_images: false)
+      described_class.apply_template_file(file.path, import_uploads: false)
 
       expect(ProjectFolders::Folder.count).to eq(2)
       expect(User.where(unique_code: %w[decidim-user-1]).count).to eq(1)
@@ -58,7 +58,7 @@ RSpec.describe DecidimImporter::Importer do
       file.write({ 'settings' => { 'core' => { 'organization_name' => { 'en' => 'Imported City' } } } }.to_json)
       file.close
 
-      applied = described_class.apply_app_config_file(file.path, import_images: false)
+      applied = described_class.apply_app_config_file(file.path, import_uploads: false)
 
       expect(applied).to be(true)
       # Deep-merge: the imported locale overrides en, the tenant's other settings are preserved.

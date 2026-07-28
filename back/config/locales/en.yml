@@ -363,6 +363,8 @@ en:
     accountability_progress: Progress
     accountability_status: Status
     blog: Blog
+    consultations: Consultations
+    assemblies: Assemblies
   user:
     anon_first_name: "User"
     anon_scheme:

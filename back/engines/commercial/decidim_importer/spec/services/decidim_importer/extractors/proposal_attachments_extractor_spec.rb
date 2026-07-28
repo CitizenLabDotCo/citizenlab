@@ -7,7 +7,11 @@ RSpec.describe DecidimImporter::Extractors::ProposalAttachmentsExtractor do
   let(:mapper) { DecidimImporter::LocaleMapper.new }
   let(:process_uid) { 'decidim--participatory-process--10' }
   let(:project) { DecidimImporter::Record.new('project', { 'title_multiloc' => { 'fr-FR' => 'P' } }) }
-  let(:idea) { DecidimImporter::Record.new('idea', { 'title_multiloc' => { 'fr-FR' => 'I' } }) }
+  # A real idea references its project (ProposalsExtractor does `idea.reference('project', project)`).
+  let(:idea) do
+    DecidimImporter::Record.new('idea', { 'title_multiloc' => { 'fr-FR' => 'I' } })
+      .tap { |i| i.reference('project', project) }
+  end
 
   before do
     ref_map.register(process_uid, project)

@@ -6,7 +6,11 @@ RSpec.describe DecidimImporter::Extractors::MeetingAttachmentsExtractor do
   let(:ref_map) { DecidimImporter::RefMap.new }
   let(:mapper) { DecidimImporter::LocaleMapper.new }
   let(:project) { DecidimImporter::Record.new('project', { 'title_multiloc' => { 'fr-FR' => 'Espaces verts' } }) }
-  let(:event) { DecidimImporter::Record.new('event', { 'title_multiloc' => { 'fr-FR' => 'Atelier' } }) }
+  # A real event references its project (MeetingsExtractor does `event.reference('project', project)`).
+  let(:event) do
+    DecidimImporter::Record.new('event', { 'title_multiloc' => { 'fr-FR' => 'Atelier' } })
+      .tap { |e| e.reference('project', project) }
+  end
 
   before do
     ref_map.register('decidim--process--2', project)
@@ -42,6 +46,18 @@ RSpec.describe DecidimImporter::Extractors::MeetingAttachmentsExtractor do
     expect(attachment.attributes['attachable_ref']).to be(event.attributes)
     expect(attachment.attributes['file_ref']).to be(file.attributes)
     expect(attachment.attributes['position']).to eq(0)
+  end
+
+  it 'owns the file in the event’s project even when the row is stamped with a different space' do
+    # Decidim can stamp a meeting attachment with a different process than the meeting it's attached to;
+    # the file must still be owned by the event's project, else FileAttachment validation rejects it.
+    other = DecidimImporter::Record.new('project', { 'title_multiloc' => { 'fr-FR' => 'Autre espace' } })
+    ref_map.register('decidim--process--99', other)
+
+    extract([row('decidim_participatory_process' => 'decidim--process--99')]).run
+
+    files_project = ref_map.fetch('decidim--attachment--500-files-project')
+    expect(files_project.attributes['project_ref']).to be(project.attributes) # the event's project, not process--99
   end
 
   it 'skips an attachment whose meeting was not imported' do

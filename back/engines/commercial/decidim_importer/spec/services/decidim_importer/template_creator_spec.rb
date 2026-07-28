@@ -133,7 +133,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
       # The export's image URLs are `http://localhost/...` (Decidim dev instance), which CarrierWave
       # refuses to fetch. Skip image fetching for the test; production imports point at reachable
       # hosts.
-      described_class.from_directory(export_root, import_images: false).import
+      described_class.from_directory(export_root, import_uploads: false).import
 
       expect(ProjectFolders::Folder.count).to eq(2)
       admin = User.find_by(unique_code: 'decidim-user-1')
@@ -155,7 +155,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
     end
 
     it 'provisions a project_page layout wrapping the imported description, so the project page renders' do
-      described_class.from_directory(export_root, import_images: false).import
+      described_class.from_directory(export_root, import_uploads: false).import
       project = Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'")
 
       # The page now renders from a `project_page` layout (generated from the `project_description`
@@ -172,7 +172,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
     end
 
     it 'imports an accountability component as an ideation phase, with its results as ideas carrying a progress line' do
-      described_class.from_directory(export_root, import_images: false).import
+      described_class.from_directory(export_root, import_uploads: false).import
       project = Project.find_by("title_multiloc->>'fr-FR' = 'Rue de demain'")
 
       phase = project.phases.sole
@@ -195,7 +195,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
     end
 
     it 'creates the extra user custom field and populates its value from extended_data' do
-      described_class.from_directory(export_root, import_images: false).import
+      described_class.from_directory(export_root, import_uploads: false).import
 
       field = CustomField.registration.find_by(key: 'phone_number')
       expect(field).to be_present
@@ -205,7 +205,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
     end
 
     context 'with a process that has a proposals component' do
-      before { described_class.from_directory(export_root, import_images: false).import }
+      before { described_class.from_directory(export_root, import_uploads: false).import }
 
       let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'") }
 
@@ -427,7 +427,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
     end
 
     context 'with a process that has a budgets component' do
-      before { described_class.from_directory(export_root, import_images: false).import }
+      before { described_class.from_directory(export_root, import_uploads: false).import }
 
       let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Budget participatif'") }
       let(:phase) { project.phases.find_by(participation_method: 'voting') }
@@ -477,7 +477,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
     end
 
     context 'with processes that have meetings and blogs components' do
-      before { described_class.from_directory(export_root, import_images: false).import }
+      before { described_class.from_directory(export_root, import_uploads: false).import }
 
       it 'imports a meeting as a project event with its window, address and map pin' do
         event = Event.find_by(title_multiloc: { 'fr-FR' => 'Atelier de quartier' })
@@ -524,7 +524,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
   describe '#import (re-import safety)' do
     it 'imports areas even when the tenant already has areas (no ordering collision)' do
       create(:area) # pre-existing area occupying an ordering
-      expect { described_class.from_directory(export_root, import_images: false).import }.not_to raise_error
+      expect { described_class.from_directory(export_root, import_uploads: false).import }.not_to raise_error
       expect(Area.find_by("title_multiloc->>'en' = 'Schambergerton'")).to be_present
     end
   end

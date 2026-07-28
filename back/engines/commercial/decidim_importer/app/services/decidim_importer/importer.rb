@@ -9,23 +9,23 @@ module DecidimImporter
     # created-ids hash. Moderator roles (`RoleAssigner`) aren't applied here — that needs the in-memory
     # ref map, so it only runs in {TemplateCreator#import}.
     #
-    # @param import_images [Boolean] when false, `remote_*_url` attributes are stripped before deserialize
-    #   (no external HTTP), e.g. for exports whose image URLs are unreachable.
-    def self.apply_template_file(path, import_images: true)
+    # @param import_uploads [Boolean] when false, every `remote_*_url` (images *and* file attachments) is
+    #   stripped before deserialize — no external HTTP — e.g. for exports whose upload URLs are unreachable.
+    def self.apply_template_file(path, import_uploads: true)
       # Parsing a large, anchor-heavy template is a silent single-threaded pause before the first DB
       # query — bracket it so the log shows progress rather than an apparent hang.
       Rails.logger.info "Loading template #{path} (#{File.size(path) / 1_048_576} MB)…"
       template = YAML.load_file(path, aliases: true)
       Rails.logger.info 'Template loaded, resolving idea statuses…'
-      apply_template(template, import_images: import_images)
+      apply_template(template, import_uploads: import_uploads)
     end
 
     # Deserializes an in-memory template into the current tenant and runs the post-import passes. Shared
     # by {.apply_template_file} and {TemplateCreator#import}. Returns the deserializer's created-ids hash.
-    def self.apply_template(template, import_images: true, validate: true)
+    def self.apply_template(template, import_uploads: true, validate: true)
       IdeaStatuses.resolve!(template)
       resolve_area_orderings!(template)
-      TemplateCleaner.prepare_images!(template, import_images: import_images)
+      TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)
       TemplateCleaner.prune_fileless_attachments!(template)
       TemplateCleaner.prune_imageless_project_images!(template)
       # Suppress `touch: true` callbacks during the bulk load so imported records keep their template dates.
@@ -96,14 +96,14 @@ module DecidimImporter
     # Applies an AppConfiguration patch JSON (the companion artifact `create_template` writes) to the
     # current tenant: deep-merges `settings` and, with fetching on, sets remote logo/favicon URLs. Returns
     # false when `path` is nil/missing. Apply *before* the template so locales are in place for its records.
-    def self.apply_app_config_file(path, import_images: true)
+    def self.apply_app_config_file(path, import_uploads: true)
       return false unless path && File.file?(path)
 
-      apply_app_config(JSON.parse(File.read(path)), import_images: import_images)
+      apply_app_config(JSON.parse(File.read(path)), import_uploads: import_uploads)
       true
     end
 
-    def self.apply_app_config(patch, import_images: true)
+    def self.apply_app_config(patch, import_uploads: true)
       config = AppConfiguration.instance
       settings = patch['settings']
       if settings.is_a?(Hash)
@@ -113,7 +113,7 @@ module DecidimImporter
         config.settings = config.settings.deep_merge(settings)
       end
 
-      if import_images
+      if import_uploads
         patch.slice('remote_logo_url', 'remote_favicon_url').each do |attr, value|
           setter = :"#{attr}="
           config.public_send(setter, value) if config.respond_to?(setter)

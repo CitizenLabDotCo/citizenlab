@@ -26,18 +26,18 @@ module DecidimImporter
 
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model. Missing keys mean
     #   "model not in this export" and are silently skipped.
-    # @param import_images [Boolean] when false, `remote_*_url` attributes are dropped before deserialize
-    #   (no external HTTP) — for dry runs and exports whose image URLs are unreachable.
+    # @param import_uploads [Boolean] when false, every `remote_*_url` (images *and* file attachments) is
+    #   dropped before deserialize (no external HTTP) — for dry runs and exports whose uploads are unreachable.
     # @param anonymize_users [Boolean] when true, imported users' names and emails are faked (non-prod dumps).
     # @param original_domain [String, nil] the source Decidim host, used by {#link_map} to classify links.
     #   Defaults to the processes' host.
-    def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {}, import_images: true,
+    def initialize(rows_by_model, primary_locale: 'fr-FR', locale_mapping: {}, import_uploads: true,
       anonymize_users: false, include_source_url: false, original_domain: nil)
       @rows_by_model = rows_by_model
       @primary_locale = primary_locale
       @locale_mapper = LocaleMapper.new(locale_mapping, fallback_locale: primary_locale)
       @ref_map = RefMap.new
-      @import_images = import_images
+      @import_uploads = import_uploads
       @anonymize_users = anonymize_users
       @include_source_url = include_source_url
       @original_domain = original_domain
@@ -139,7 +139,7 @@ module DecidimImporter
     def import(validate: true)
       # Round-trip through YAML to exercise the actual artifact the deserializer consumes.
       template = YAML.load(build_template.to_yaml, aliases: true)
-      created = Importer.apply_template(template, import_images: @import_images, validate: validate)
+      created = Importer.apply_template(template, import_uploads: @import_uploads, validate: validate)
       RoleAssigner.new(ref_map).assign(created, role_assignments)
       created
     end
