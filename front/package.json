@@ -253,7 +253,6 @@
     "storybook": "10.4.5",
     "storybook-react-intl": "^10.2.1",
     "style-loader": "3.3.3",
-    "ts-jest": "29.4.12",
     "ts-loader": "9.4.4",
     "ts-prune": "0.10.1",
     "tslib": "2.6.2",
