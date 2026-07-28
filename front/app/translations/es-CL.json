@@ -1958,6 +1958,7 @@
   "app.containers.Navbar.verified": "Verificado",
   "app.containers.NewAuthModal.beforeYouFollow": "Antes de seguir",
   "app.containers.NewAuthModal.beforeYouParticipate": "Antes de participar",
+  "app.containers.NewAuthModal.changeYourEmail": "Cambiar tu correo",
   "app.containers.NewAuthModal.completeYourProfile": "Completa tu perfil",
   "app.containers.NewAuthModal.confirmYourEmail": "Confirma tu correo electrónico",
   "app.containers.NewAuthModal.logIn": "Inicia sesión",

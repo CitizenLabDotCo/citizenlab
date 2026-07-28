@@ -1958,6 +1958,7 @@
   "app.containers.Navbar.verified": "Doğrulandı",
   "app.containers.NewAuthModal.beforeYouFollow": "Takip etmeden önce",
   "app.containers.NewAuthModal.beforeYouParticipate": "Katılmadan önce",
+  "app.containers.NewAuthModal.changeYourEmail": "E-postanızı değiştirin",
   "app.containers.NewAuthModal.completeYourProfile": "Profilinizi tamamlayın",
   "app.containers.NewAuthModal.confirmYourEmail": "E-postanızı onaylayın",
   "app.containers.NewAuthModal.logIn": "Giriş yap",

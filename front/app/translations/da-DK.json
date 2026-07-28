@@ -1958,6 +1958,7 @@
   "app.containers.Navbar.verified": "Verificeret",
   "app.containers.NewAuthModal.beforeYouFollow": "Før du følger",
   "app.containers.NewAuthModal.beforeYouParticipate": "Før du deltager",
+  "app.containers.NewAuthModal.changeYourEmail": "Skift din e-mail",
   "app.containers.NewAuthModal.completeYourProfile": "Udfyld din profil",
   "app.containers.NewAuthModal.confirmYourEmail": "Bekræft din e-mailadresse",
   "app.containers.NewAuthModal.logIn": "Log ind",

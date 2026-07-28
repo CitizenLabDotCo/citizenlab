@@ -1958,6 +1958,7 @@
   "app.containers.Navbar.verified": "Patikrinta",
   "app.containers.NewAuthModal.beforeYouFollow": "Prieš pradėdami sekti",
   "app.containers.NewAuthModal.beforeYouParticipate": "Prieš dalyvaudami",
+  "app.containers.NewAuthModal.changeYourEmail": "Pakeisti el. pašto adresą",
   "app.containers.NewAuthModal.completeYourProfile": "Užpildykite savo profilį",
   "app.containers.NewAuthModal.confirmYourEmail": "Patvirtinkite savo el. pašto adresą",
   "app.containers.NewAuthModal.logIn": "Prisijungti",

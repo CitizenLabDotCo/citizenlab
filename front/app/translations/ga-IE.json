@@ -1958,6 +1958,7 @@
   "app.containers.Navbar.verified": "Fíoraithe",
   "app.containers.NewAuthModal.beforeYouFollow": "Sula leanann tú",
   "app.containers.NewAuthModal.beforeYouParticipate": "Sula nglacann tú páirt",
+  "app.containers.NewAuthModal.changeYourEmail": "Athraigh do ríomhphost",
   "app.containers.NewAuthModal.completeYourProfile": "Comhlánaigh do phróifíl",
   "app.containers.NewAuthModal.confirmYourEmail": "Deimhnigh do ríomhphost",
   "app.containers.NewAuthModal.logIn": "Logáil isteach",

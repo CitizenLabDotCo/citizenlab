@@ -1958,6 +1958,7 @@
   "app.containers.Navbar.verified": "ਪ੍ਰਮਾਣਿਤ",
   "app.containers.NewAuthModal.beforeYouFollow": "ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕਿ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰੋ",
   "app.containers.NewAuthModal.beforeYouParticipate": "ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕਿ ਤੁਸੀਂ ਹਿੱਸਾ ਲਓ",
+  "app.containers.NewAuthModal.changeYourEmail": "ਆਪਣੀ ਈਮੇਲ ਬਦਲੋ",
   "app.containers.NewAuthModal.completeYourProfile": "ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਨੂੰ ਪੂਰਾ ਕਰੋ",
   "app.containers.NewAuthModal.confirmYourEmail": "ਆਪਣੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.containers.NewAuthModal.logIn": "ਲਾਗਿਨ",

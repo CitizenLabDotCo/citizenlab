@@ -193,6 +193,7 @@ nb-NO:
       new_phone_confirmation: Ny bekreftelseskode for telefon
       official_feedback_on_idea_you_follow: Oppdatering på et innspill som du følger
       password_reset: Tilbakestilling av passord
+      phone_confirmation: Bekreftelseskode for telefon
       project_folder_moderation_rights_received: Mappeadministratorrettigheter mottatt
       project_manager_rights_received: Rettigheter som prosjektansvarlig mottatt
       project_moderation_rights_received: Mottatte rettigheter til prosjektmoderering
@@ -550,6 +551,8 @@ nb-NO:
       preheader: Tilbakestill passordet ditt for %{organizationName}
       subject: '%{organizationName}: Tilbakestill passordet ditt'
       title: Velg et nytt passord
+    phone_confirmation:
+      sms_body: Din bekreftelseskode er %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

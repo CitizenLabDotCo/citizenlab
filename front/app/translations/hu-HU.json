@@ -1958,6 +1958,7 @@
   "app.containers.Navbar.verified": "Ellenőrzött",
   "app.containers.NewAuthModal.beforeYouFollow": "Mielőtt követnéd",
   "app.containers.NewAuthModal.beforeYouParticipate": "Mielőtt részt vesz",
+  "app.containers.NewAuthModal.changeYourEmail": "E-mail-cím módosítása",
   "app.containers.NewAuthModal.completeYourProfile": "Töltse ki profilját",
   "app.containers.NewAuthModal.confirmYourEmail": "Erősítse meg e-mail címét",
   "app.containers.NewAuthModal.logIn": "Jelentkezzen be",
