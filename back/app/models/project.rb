@@ -310,6 +310,10 @@ class Project < ApplicationRecord
     )
   end
 
+  def active_phases(time = Time.now)
+    phases.select { |phase| phase.active?(time) }
+  end
+
   def refresh_preview_token
     self.preview_token = self.class.generate_preview_token
   end
