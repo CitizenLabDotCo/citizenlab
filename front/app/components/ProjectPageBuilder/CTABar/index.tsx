@@ -31,10 +31,20 @@ const CTABar = ({ projectId, containerRef }: Props) => {
       if (!phasesElement?.isConnected) {
         phasesElement = container.querySelector(PHASES_WIDGET_SELECTOR);
       }
-      setDocked(
-        !!phasesElement &&
-          phasesElement.getBoundingClientRect().top <= stylingConsts.menuHeight
-      );
+      if (!phasesElement) {
+        setDocked(false);
+        return;
+      }
+      // Docked once the phases section pins under the navbar — or once the
+      // page is scrolled as far as it goes, so short pages whose section can
+      // never reach the navbar still get the bar (immediately when the page
+      // doesn't scroll at all).
+      const { top } = phasesElement.getBoundingClientRect();
+      const remainingScroll =
+        document.documentElement.scrollHeight -
+        window.innerHeight -
+        window.scrollY;
+      setDocked(top <= stylingConsts.menuHeight || remainingScroll <= 1);
     };
 
     const requestUpdate = () => {
