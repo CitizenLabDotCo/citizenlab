@@ -20,6 +20,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       dataCy: typeof dataCy;
+      dockProjectCtaBar: typeof dockProjectCtaBar;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       signUp: typeof signUp;
@@ -2296,6 +2297,15 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`[data-cy="${dataCyValue}"]`);
 }
 
+/**
+ * Docks the project page CTA bar by scrolling the phases section under the
+ * navbar. The bar only renders once that happens, so call this before
+ * interacting with any element inside it (idea button, voting counter, ...).
+ */
+function dockProjectCtaBar() {
+  return cy.get('[data-project-page-phases]').scrollIntoView();
+}
+
 function deleteEventAttendances(
   email: string,
   password: string,
@@ -2360,6 +2370,7 @@ function apiRemoveIdeas(projectId?: string) {
 }
 
 Cypress.Commands.add('dataCy', dataCy);
+Cypress.Commands.add('dockProjectCtaBar', dockProjectCtaBar);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('signUp', signUp);
