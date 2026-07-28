@@ -50,7 +50,8 @@ class McpServer::BaseTool
       params = ReadonlyStrip.strip_readonly(kwargs, definition.input_schema)
       runner = runner_class.new(params:, server_context:, current_user:, token_scopes:)
 
-      runner.run
+      locale_error = McpServer::LocaleGuard.error_message(kwargs)
+      locale_error ? runner.error(locale_error) : runner.run
     rescue Pundit::NotAuthorizedError => e
       runner.error(McpServer::BaseTool.unauthorized_message(e))
     end

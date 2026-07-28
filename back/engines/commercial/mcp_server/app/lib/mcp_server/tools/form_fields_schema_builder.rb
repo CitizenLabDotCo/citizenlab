@@ -13,10 +13,6 @@ class McpServer::Tools::FormFieldsSchemaBuilder
     updated_at: { type: %w[string null], readOnly: true, description: 'ISO 8601 timestamp.' }
   }.freeze
 
-  def initialize(tenant_locales:)
-    @tenant_locales = tenant_locales
-  end
-
   def field_schema
     @field_schema ||= {
       type: 'object',
@@ -73,15 +69,11 @@ class McpServer::Tools::FormFieldsSchemaBuilder
 
   private
 
-  attr_reader :tenant_locales
-
   def multiloc_schema
     @multiloc_schema ||= {
       type: 'object',
-      description: <<~DESC.squish,
-        Localized text. An object mapping locale codes to their translations. The tenant's
-        active locales are #{tenant_locales.join(', ')}.
-      DESC
+      description: 'Localized text. An object mapping locale codes to their translations. ' \
+                   'Keys must be locales that are active on the platform.',
       additionalProperties: { type: 'string' }
     }
   end
