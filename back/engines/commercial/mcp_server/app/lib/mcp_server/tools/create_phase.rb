@@ -45,10 +45,11 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
         description_multiloc: { **multiloc_schema, description: 'Phase description (HTML).' },
         start_at: { type: 'string', description: 'Phase start date (ISO 8601 format)' },
         end_at: {
-          type: 'string',
+          type: %w[string null],
           description: <<~DESC.squish
-            Phase end date (ISO 8601 format). Optional on the last phase,
-            which then runs indefinitely.
+            Phase end date (ISO 8601 format). Required except on the last phase,
+            where a missing end date makes the phase run indefinitely: omit the
+            field on create, or pass null on update to clear it.
           DESC
         },
         participation_method: {
@@ -108,6 +109,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
           enum: Phase::PRESENTATION_MODES,
           description: <<~DESC.squish
             The view (or presentation mode) used by default to show inputs to visitors.
+            'feed' is not available on proposals phases.
             Default: '#{phase_default('presentation_mode')}'.
           DESC
         },
@@ -118,6 +120,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
             Views visitors can choose from.
             Must include 'card' and the current `presentation_mode`.
             If omitted, it's auto-filled with those two.
+            'feed' is not available on proposals phases.
           DESC
         },
         # On voting phases, the only valid value is 'random' and it's auto-filled by the model.
@@ -290,7 +293,8 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
 
         manual_voters_amount: { type: 'integer', description: 'Count of offline/manually-recorded voters. Only for voting phases.' }
       },
-      required: %w[project_id title_multiloc start_at]
+      required: %w[project_id title_multiloc start_at],
+      additionalProperties: false
     }
   end
 

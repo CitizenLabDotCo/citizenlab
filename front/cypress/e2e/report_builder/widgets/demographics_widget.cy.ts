@@ -63,7 +63,7 @@ describe.skip('Demographics widget', () => {
             })
             .then(() => {
               return cy.apiCreateIdea({
-                projectId,
+                phaseId: ideationPhaseId,
                 ideaTitle: randomString(),
                 ideaContent: randomString(),
                 jwt,

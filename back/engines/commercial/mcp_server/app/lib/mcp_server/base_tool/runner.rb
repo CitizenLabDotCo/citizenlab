@@ -5,9 +5,9 @@
 class McpServer::BaseTool::Runner
   NOT_DRAFT_MESSAGE = 'Project is not in draft. Only draft projects can be modified via MCP.'
 
+  include Pundit::Authorization
   include McpServer::BaseTool::ResponseHelpers
   include McpServer::BaseTool::Pagination
-  include McpServer::BaseTool::Authorization
   include McpServer::BaseTool::MultilocMerge
 
   attr_reader :params, :server_context, :current_user, :token_scopes
@@ -24,6 +24,21 @@ class McpServer::BaseTool::Runner
   end
 
   private
+
+  # CarrierWave ignores a plain nil assignment on `remote_<uploader>_url`, so an
+  # explicit null means "remove the file" (the web API's remove_image_if_requested!
+  # mechanism). Removes the matching uploads and returns the remaining attributes.
+  def clear_uploaders!(record, attributes)
+    record.class.uploaders.each_key do |uploader|
+      key = :"remote_#{uploader}_url"
+      next unless attributes.key?(key) && attributes[key].nil?
+
+      record.public_send(:"remove_#{uploader}!")
+      attributes = attributes.except(key)
+    end
+
+    attributes
+  end
 
   # MCP-channel guard. Tools that mutate or destroy a project (or anything inside one)
   # must call this with the target's project before doing the work.

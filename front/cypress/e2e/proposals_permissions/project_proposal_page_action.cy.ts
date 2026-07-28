@@ -30,10 +30,9 @@ describe('Proposal show page actions', () => {
       })
       .then((phase) => {
         cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle: randomString(20),
           ideaContent: randomString(),
-          phaseIds: [phase.body.data.id],
         }).then((proposal) => {
           proposalId = proposal.body.data.id;
           proposalSlug = proposal.body.data.attributes.slug;

@@ -674,6 +674,57 @@ describe Permissions::UserRequirementsService do
       end
     end
 
+    context 'when a confirmed phone number is required' do
+      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+      # Only a confirmed phone number is required, so the base missing attributes
+      # are just the always-required email plus the two phone attributes.
+      let(:permission) do
+        create(
+          :permission,
+          permitted_by: 'users',
+          global_custom_fields: false,
+          require_confirmed_email: false,
+          require_name: false,
+          require_password: false,
+          require_confirmed_phone_number: true
+        )
+      end
+
+      it 'requires a phone number and its confirmation when there is no user' do
+        requirements = service.requirements(permission, nil)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email phone phone_confirmation]
+      end
+
+      it 'requires a phone number and its confirmation for a user without a phone number' do
+        user.update!(phone: nil, phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:authentication][:missing_user_attributes]).to eq %i[phone phone_confirmation]
+      end
+
+      it 'still requires confirmation for a user with an unconfirmed phone number' do
+        user.update!(phone: '+3212345678', phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:authentication][:missing_user_attributes]).to eq %i[phone_confirmation]
+      end
+
+      it 'is satisfied for a user with a confirmed phone number' do
+        user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
+        requirements = service.requirements(permission, user)
+        expect(service.permitted?(requirements)).to be true
+        expect(requirements[:authentication][:missing_user_attributes]).to eq []
+      end
+
+      it 'does not require a phone number when require_confirmed_phone_number is false' do
+        permission.update!(require_confirmed_email: true, require_confirmed_phone_number: false)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:phone, :phone_confirmation)
+      end
+    end
+
     # These specs document a deliberate quirk: for a user who signed up via SSO
     # (i.e. has a linked identity), the service NEVER asks for a password, even
     # when the permission has require_password enabled. In other words, the

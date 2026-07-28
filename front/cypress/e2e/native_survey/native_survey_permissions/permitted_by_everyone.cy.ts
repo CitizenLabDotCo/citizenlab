@@ -86,7 +86,7 @@ describe('Native survey permitted by: everyone', () => {
       cy.get('form').find('input').first().type(answer);
 
       // Intercept submit request
-      cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+      cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
 
       // Submit survey
       cy.dataCy('e2e-submit-form').click();

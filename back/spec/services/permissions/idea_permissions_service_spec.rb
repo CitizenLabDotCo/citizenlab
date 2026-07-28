@@ -21,6 +21,14 @@ describe Permissions::IdeaPermissionsService do
       it 'returns `commenting_disabled`' do
         expect(reason).to eq 'commenting_disabled'
       end
+
+      context 'for a moderator' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it 'returns `commenting_disabled`, because moderators do not overrule the phase configuration' do
+          expect(reason).to eq 'commenting_disabled'
+        end
+      end
     end
 
     context "when the timeline hasn't started" do
@@ -37,6 +45,14 @@ describe Permissions::IdeaPermissionsService do
       it "returns 'project_inactive'" do
         expect(reason).to eq 'project_inactive'
       end
+
+      context 'for a moderator' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it "returns 'project_inactive', because moderators cannot participate in projects that ended" do
+          expect(reason).to eq 'project_inactive'
+        end
+      end
     end
 
     context 'when the project is archived' do
@@ -44,6 +60,15 @@ describe Permissions::IdeaPermissionsService do
 
       it "returns 'project_inactive'" do
         expect(reason).to eq 'project_inactive'
+      end
+
+      context 'for a moderator with an input outside the current phase' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+        let(:input) { create(:idea, project: project, phases: [project.phases[1]]) }
+
+        it "returns 'project_inactive', because moderators cannot participate in archived projects" do
+          expect(reason).to eq 'project_inactive'
+        end
       end
     end
 
@@ -61,6 +86,22 @@ describe Permissions::IdeaPermissionsService do
 
       it "returns 'idea_not_in_current_phase'" do
         expect(reason).to eq 'idea_not_in_current_phase'
+      end
+
+      context 'for a moderator' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it 'returns nil, because moderators can act on inputs outside the current phase' do
+          expect(reason).to be_nil
+        end
+
+        context 'when commenting is disabled in the current phase' do
+          let(:project) { create(:project_with_current_phase, current_phase_attrs: { commenting_enabled: false }) }
+
+          it 'returns nil, because the current phase does not govern an input outside it' do
+            expect(reason).to be_nil
+          end
+        end
       end
     end
 
@@ -527,6 +568,55 @@ describe Permissions::IdeaPermissionsService do
     end
   end
 
+  describe 'editing_idea denied_reason_for_action' do
+    let(:action) { 'editing_idea' }
+    let(:user) { input.author }
+
+    it 'returns nil for the author of an input in the current phase' do
+      expect(reason).to be_nil
+    end
+
+    context 'when the phase the input belongs to is over' do
+      let(:input) { create(:idea, project: project, phases: [project.phases[1]]) }
+
+      it 'returns nil, because the author can keep editing after the phase ended' do
+        expect(reason).to be_nil
+      end
+    end
+
+    context 'when the user is not the author' do
+      let(:user) { create(:user) }
+
+      it "returns 'not_author'" do
+        expect(reason).to eq 'not_author'
+      end
+    end
+
+    context 'for a moderator who is not the author' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it 'returns nil' do
+        expect(reason).to be_nil
+      end
+    end
+
+    context 'when the project is archived' do
+      let(:project) { create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' }) }
+
+      it "returns 'project_inactive'" do
+        expect(reason).to eq 'project_inactive'
+      end
+
+      context 'for a moderator' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it 'returns nil, because moderators can edit in an archived project' do
+          expect(reason).to be_nil
+        end
+      end
+    end
+  end
+
   describe 'action_descriptors' do
     it 'does not run more than 4 queries for 5 ideas in a project with default user permissions' do
       user = create(:user)
@@ -540,9 +630,10 @@ describe Permissions::IdeaPermissionsService do
       ideas = Idea.includes(
         :idea_images, :idea_trending_info, :input_topics,
         :idea_import,
-        :phases,
         :idea_status,
         {
+          phases: { permissions: [:groups] },
+          creation_phase: { permissions: [:groups] },
           project: [:admin_publication, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
           author: [:unread_notifications]
         }
@@ -561,6 +652,18 @@ describe Permissions::IdeaPermissionsService do
 
   describe 'future_enabled_phase' do
     let(:input) { build(:idea, project: project) }
+
+    describe 'for an input in a standalone phase' do
+      let(:project) { create(:project_with_future_phases) }
+      let(:phase) do
+        create(:native_survey_phase, :standalone, project: project, start_at: 7.days.ago, end_at: 7.days.from_now)
+      end
+      let(:input) { create(:native_survey_response, project: project, creation_phase: phase, publication_status: 'draft') }
+
+      it 'returns nil, because a standalone phase has no future phases to consider' do
+        expect(service.send(:future_enabled_phase, 'commenting_idea')).to be_nil
+      end
+    end
 
     describe 'reacting_idea' do
       context do
@@ -681,6 +784,54 @@ describe Permissions::IdeaPermissionsService do
 
         it 'returns nil' do
           expect(service.send(:future_enabled_phase, 'voting')).to be_nil
+        end
+      end
+    end
+  end
+
+  describe 'on an input in a standalone phase' do
+    let(:project) { create(:project) }
+    let(:phase) do
+      create(:native_survey_phase, :standalone, project: project, with_permissions: true, start_at: 7.days.ago, end_at: 7.days.from_now)
+    end
+    let(:input) { create(:native_survey_response, project: project, creation_phase: phase, publication_status: 'draft') }
+    let(:user) { input.author }
+    let(:action) { 'posting_idea' }
+
+    it 'allows posting_idea while the phase is active, even without a current timeline phase' do
+      expect(reason).to be_nil
+    end
+
+    context 'for editing_idea' do
+      let(:action) { 'editing_idea' }
+
+      it 'allows editing while the phase is active' do
+        expect(reason).to be_nil
+      end
+    end
+
+    context 'when the phase is over' do
+      let(:phase) do
+        create(:native_survey_phase, :standalone, project: project, start_at: 10.days.ago, end_at: 2.days.ago)
+      end
+
+      it "returns 'inactive_phase' for posting_idea" do
+        expect(reason).to eq 'inactive_phase'
+      end
+
+      context 'for commenting_idea' do
+        let(:action) { 'commenting_idea' }
+
+        it "returns 'inactive_phase'" do
+          expect(reason).to eq 'inactive_phase'
+        end
+      end
+
+      context 'for editing_idea' do
+        let(:action) { 'editing_idea' }
+
+        it "returns 'inactive_phase'" do
+          expect(reason).to eq 'inactive_phase'
         end
       end
     end

@@ -4,8 +4,6 @@ import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import { IFileAttachmentData } from 'api/file_attachments/types';
-import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
@@ -15,11 +13,9 @@ import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
 import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
 import { ProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { validateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
@@ -79,19 +75,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const { data: remoteProjectImages } = useProjectImages(projectId);
   const { mutateAsync: updateProject } = useUpdateProject();
 
-  const syncProjectFiles = useSyncFiles();
   const syncProjectImages = useSyncProjectImages();
-
-  // File Attachments
-  const { data: remoteProjectFileAttachments } = useFileAttachments({
-    attachable_id: projectId,
-    attachable_type: 'Project',
-  });
-  const [projectFileAttachments, setProjectFileAttachments] = useState<
-    IFileAttachmentData[] | undefined
-  >(remoteProjectFileAttachments?.data);
-  const [projectFileAttachmentsToRemove, setProjectFileAttachmentsToRemove] =
-    useState<IFileAttachmentData[]>([]);
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
@@ -136,12 +120,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
     if (project.data.attributes.space_id) return 'space';
     return 'root';
   });
-
-  useEffect(() => {
-    if (remoteProjectFileAttachments) {
-      setProjectFileAttachments(remoteProjectFileAttachments.data);
-    }
-  }, [remoteProjectFileAttachments]);
 
   useEffect(() => {
     (async () => {
@@ -242,7 +220,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
         });
       }
 
-      const projectImagesPromise = syncProjectImages({
+      await syncProjectImages({
         croppedProjectCardBase64,
         projectCardImageAltText,
         projectCardImageToUpdate: projectCardImage,
@@ -250,31 +228,8 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
         projectId,
       });
 
-      const initialFileAttachmentOrdering: Record<string, number | undefined> =
-        Object.fromEntries(
-          remoteProjectFileAttachments?.data
-            .filter((file) => file.id)
-            .map((file) => [file.id!, file.attributes.position]) ?? []
-        );
-
-      const projectFilesPromise = projectFileAttachments
-        ? syncProjectFiles({
-            attachableId: projectId,
-            attachableType: 'Project',
-            fileAttachments: projectFileAttachments,
-            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-            fileAttachmentOrdering: initialFileAttachmentOrdering,
-          })
-        : undefined;
-
-      await Promise.all([
-        projectImagesPromise,
-        projectFilesPromise,
-      ] as Promise<any>[]);
-
       setSubmitState('success');
       setProjectCardImageToRemove(null);
-      setProjectFileAttachmentsToRemove([]);
       setProcessing(false);
 
       queryClient.invalidateQueries({
@@ -489,29 +444,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
               />
             </StyledSectionField>
           )}
-          <StyledSectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.fileUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                }
-              />
-            </SubSectionTitle>
-            <FileUploader
-              projectId={projectId}
-              projectFileAttachments={projectFileAttachments}
-              setProjectFileAttachments={(...args) => {
-                setSubmitState('enabled');
-                setProjectFileAttachments(...args);
-              }}
-              setProjectFileAttachmentsToRemove={(...args) => {
-                setSubmitState('enabled');
-                setProjectFileAttachmentsToRemove(...args);
-              }}
-              apiErrors={apiErrors}
-            />
-          </StyledSectionField>
         </Section>
         <Box
           {...(showStickySaveButton && {

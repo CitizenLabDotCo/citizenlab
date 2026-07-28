@@ -92,7 +92,7 @@ const WidgetBuilder = ({
   return (
     <Container>
       <WidgetConfigWrapper>
-        <WidgetTitle>
+        <WidgetTitle className="intercom-admin-widget-settings-title">
           <FormattedMessage {...messages.settingsTitle} />
         </WidgetTitle>
         <FormProvider {...methods}>
@@ -109,6 +109,7 @@ const WidgetBuilder = ({
           height={methods.getValues('height') || 400}
         />
         <ButtonWithLink
+          className="intercom-admin-widget-export-html-button"
           onClick={handleShowCodeClick}
           buttonStyle="admin-dark"
           icon="code"

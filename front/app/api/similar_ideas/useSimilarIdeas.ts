@@ -8,11 +8,11 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import similarIdeasKeys from './keys';
 import { ISimilarityRequestPayload } from './types';
 
-const fetchSimilarIdeas = (ideaPayload: ISimilarityRequestPayload) =>
+const fetchSimilarIdeas = ({ phase_id, idea }: ISimilarityRequestPayload) =>
   fetcher<IIdeas>({
-    path: `/ideas/similar_ideas`,
+    path: `/phases/${phase_id}/inputs/similar`,
     action: 'post',
-    body: ideaPayload,
+    body: { idea },
   });
 
 const useSimilarIdeas = (

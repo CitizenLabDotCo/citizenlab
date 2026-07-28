@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import useIdMethods from 'api/id_methods/useIdMethods';
 
-import useAuthMethodNames from 'hooks/useAuthMethodNames';
+import useIdMethodNames, { getMethodName } from 'hooks/useIdMethodNames';
 
 import Warning from 'components/UI/Warning';
 
@@ -23,7 +23,7 @@ const BlueShieldWarning = styled(Warning)`
 
 const VerificationWarning = () => {
   const { formatMessage } = useIntl();
-  const names = useAuthMethodNames();
+  const idMethodNames = useIdMethodNames();
   const { data: idMethods } = useIdMethods();
 
   const authenticationVerificationMethodNames = (idMethods?.data ?? [])
@@ -31,11 +31,8 @@ const VerificationWarning = () => {
       const { authentication_method, verification_method } = method.attributes;
       return authentication_method && verification_method;
     })
-    .map((method) => names[method.attributes.name])
-    .filter(
-      (name): name is string =>
-        typeof name === 'string' && name.trim().length > 0
-    );
+    .map((method) => getMethodName(method, idMethodNames))
+    .filter((name) => name.trim().length > 0);
 
   if (authenticationVerificationMethodNames.length === 0) return null;
 
