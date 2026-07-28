@@ -35,6 +35,7 @@ describe('SSO: user with unconfirmed email', () => {
     const newEmail = randomEmail();
     cy.get('#e2e-authentication-modal')
       .get('input[type="email"]')
+      .clear()
       .type(newEmail);
     cy.get('#e2e-change-email-submit-button').click();
 
