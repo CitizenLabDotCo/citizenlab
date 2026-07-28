@@ -69,23 +69,24 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
+    record_sms_confirmation_consent
     RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
-    log_sms_confirmation_consent(normalized)
 
     head :ok
   end
 
   private
 
-  # Only the last digits: activities outlive the user record they belong to.
-  def log_sms_confirmation_consent(phone)
-    LogActivityJob.perform_later(
-      current_user,
-      'consented_to_sms_confirmation',
-      current_user,
-      Time.now.to_i,
-      payload: { phone_last_digits: phone.last(4) }
+  # Submitting a number is the user's consent to receive the confirmation SMS
+  # (Twilio guidance). Each submission is a distinct consent event we must store,
+  # so this logs every time; the OTP send itself bypasses the consent filter.
+  def record_sms_confirmation_consent
+    consent = EmailCampaigns::Consent.find_or_initialize_by(
+      user_id: current_user.id,
+      campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name
     )
+    consent.update!(consented: true)
+    EmailCampaigns::SideFxConsentService.new.log_consent_event(consent, current_user)
   end
 
   def request_code_unauthenticated_params

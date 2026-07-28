@@ -134,6 +134,21 @@ resource 'Campaign consents' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
+
+      example 'Logs an activity when the consent is revoked' do
+        expect { do_request }
+          .to have_enqueued_job(LogActivityJob)
+          .with(consent, 'consent_withdrawn', @user, kind_of(Integer), payload: { campaign_type: consent.campaign_type })
+        expect(response_status).to eq 200
+      end
+
+      example 'Logs an activity when the consent is granted' do
+        consent.update!(consented: false)
+        expect { do_request(consent: { consented: true }) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(consent, 'consent_given', @user, kind_of(Integer), payload: { campaign_type: consent.campaign_type })
+        expect(response_status).to eq 200
+      end
     end
 
     context 'when using an unsubscription token' do

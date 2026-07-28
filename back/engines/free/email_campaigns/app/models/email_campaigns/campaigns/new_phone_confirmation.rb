@@ -35,7 +35,16 @@
 #
 module EmailCampaigns
   class Campaigns::NewPhoneConfirmation < Campaigns::BaseSms
+    include Consentable
+
     filter :exclude_from_send_pipeline
+
+    # Opt-in: consent is recorded when the user submits their number. The OTP
+    # itself bypasses the consent recipient filter (sent via send_now_to_user),
+    # and hidden_from_admin? keeps this out of the user-facing consent list.
+    def self.consented_by_default?
+      false
+    end
 
     # A localized template with the verification code interpolated. Targets the
     # *pending* new_phone being verified, not the confirmed phone

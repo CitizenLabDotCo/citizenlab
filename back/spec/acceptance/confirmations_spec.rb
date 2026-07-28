@@ -295,15 +295,19 @@ resource 'Confirmations' do
         assert_status 422
       end
 
-      example 'records manual SMS campaign consent when the user opts in' do
-        do_request(confirmation: { code: user.new_phone_confirmation.code, sms_manual_campaign_consent: true })
+      example 'records manual SMS campaign consent when the user opts in and logs the activity' do
+        expect { do_request(confirmation: { code: user.new_phone_confirmation.code, sms_manual_campaign_consent: true }) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(an_instance_of(EmailCampaigns::Consent), 'consent_given', user, kind_of(Integer), payload: { campaign_type: sms_manual_type })
         assert_status 200
         consent = EmailCampaigns::Consent.find_by(user: user, campaign_type: sms_manual_type)
         expect(consent.consented).to be true
       end
 
-      example 'records the opt-out when the user does not opt in' do
-        do_request(confirmation: { code: user.new_phone_confirmation.code, sms_manual_campaign_consent: false })
+      example 'records the opt-out when the user does not opt in and logs the activity' do
+        expect { do_request(confirmation: { code: user.new_phone_confirmation.code, sms_manual_campaign_consent: false }) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(an_instance_of(EmailCampaigns::Consent), 'consent_withdrawn', user, kind_of(Integer), payload: { campaign_type: sms_manual_type })
         assert_status 200
         consent = EmailCampaigns::Consent.find_by(user: user, campaign_type: sms_manual_type)
         expect(consent.consented).to be false
