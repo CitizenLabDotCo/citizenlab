@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -9,9 +9,13 @@ import {
 import { snakeCase } from 'lodash-es';
 import { FormProvider } from 'react-hook-form';
 
-import { downloadInputResponsesPdfResult } from 'api/input_responses_pdf/generateInputResponsesPdf';
+import {
+  downloadInputResponsesPdfResult,
+  isExportInProgressError,
+} from 'api/input_responses_pdf/generateInputResponsesPdf';
 import useGenerateInputResponsesPdf from 'api/input_responses_pdf/useGenerateInputResponsesPdf';
 import useInputResponsesPdfJob from 'api/input_responses_pdf/useInputResponsesPdfJob';
+import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
@@ -47,17 +51,19 @@ const InputPdfExportModal = ({
   onClose,
 }: Props) => {
   const localize = useLocalize();
+  const { data: authUser } = useAuthUser();
   const { data: phase } = usePhase(phaseId);
   const { methods, cover } = useCoverForm({ phaseId, projectId });
   const { mutateAsync: generatePdf } = useGenerateInputResponsesPdf();
   const { data: jobs } = useInputResponsesPdfJob(phaseId);
 
-  // The id of the job whose completion should trigger the download. Always
-  // picked up from the polled jobs query (never from the generate response —
-  // fetcher does not parse 202 bodies), which also covers resuming an export
-  // found on (re)open.
+  // Job whose completion triggers the download; picked up from the polled
+  // jobs query (fetcher does not parse the generate response's 202 body).
   const [trackedJobId, setTrackedJobId] = useState<string | null>(null);
   const [jobFailed, setJobFailed] = useState(false);
+  // Newest job id at Generate-click time: the started job is adopted as the
+  // first different id, even if it is first observed already completed.
+  const awaitingJobAfterRef = useRef<{ prevJobId: string | null } | null>(null);
 
   const latestJob = jobs?.data[0];
   const jobInProgress =
@@ -70,9 +76,20 @@ const InputPdfExportModal = ({
     snakeCase(`input responses ${phaseTitle}`) || 'input_responses'
   }.pdf`;
 
-  // Resume tracking an export that is already running (e.g. the modal was
-  // closed and reopened mid-export, or another admin started one).
+  // Track the job started from this modal, or resume one found running
+  // (e.g. after reopening the modal mid-export).
   useEffect(() => {
+    if (!latestJob) return;
+
+    const awaiting = awaitingJobAfterRef.current;
+    if (awaiting) {
+      if (latestJob.id !== awaiting.prevJobId) {
+        awaitingJobAfterRef.current = null;
+        setTrackedJobId(latestJob.id);
+      }
+      return;
+    }
+
     if (jobInProgress) {
       setTrackedJobId(latestJob.id);
     }
@@ -94,10 +111,15 @@ const InputPdfExportModal = ({
       return;
     }
 
-    downloadInputResponsesPdfResult({ phaseId, fileName })
+    // Only the admin who started the export (and reviewed/consented) may
+    // download it; the backend enforces this too.
+    const ownerId = latestJob.relationships.owner.data?.id;
+    if (!authUser || ownerId !== authUser.data.id) return;
+
+    downloadInputResponsesPdfResult({ phaseId, jobId: latestJob.id, fileName })
       .then(onClose)
       .catch(() => setJobFailed(true));
-  }, [trackedJobId, latestJob, phaseId, fileName, onClose]);
+  }, [trackedJobId, latestJob, phaseId, fileName, onClose, authUser]);
 
   const handleGenerate = async ({
     redactedFieldKeys,
@@ -105,7 +127,14 @@ const InputPdfExportModal = ({
     redactedFieldKeys: string[];
   }) => {
     setJobFailed(false);
-    await generatePdf({ phaseId, cover, redactedFieldKeys });
+    awaitingJobAfterRef.current = { prevJobId: latestJob?.id ?? null };
+    try {
+      await generatePdf({ phaseId, cover, redactedFieldKeys });
+    } catch (error) {
+      awaitingJobAfterRef.current = null;
+      // An export is already running; the invalidated poll surfaces it instead.
+      if (!isExportInProgressError(error)) throw error;
+    }
   };
 
   return (

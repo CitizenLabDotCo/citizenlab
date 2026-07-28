@@ -20,7 +20,9 @@ module Export
       end
 
       def generate_pdf
-        GotenbergClient.new.render_html_to_pdf(render_html)
+        # Only the full render (background job) gets the long timeout.
+        timeout = @cover_only ? GotenbergClient::DEFAULT_TIMEOUT_SECONDS : GotenbergClient::JOB_TIMEOUT_SECONDS
+        GotenbergClient.new(timeout: timeout).render_html_to_pdf(render_html)
       end
 
       private

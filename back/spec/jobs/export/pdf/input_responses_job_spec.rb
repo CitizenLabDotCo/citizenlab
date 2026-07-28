@@ -64,6 +64,17 @@ RSpec.describe Export::Pdf::InputResponsesJob do
       expect(result.expires_at).to be > Time.current
       expect(result.content.read).to eq('%PDF-1.4 fake')
     end
+
+    it 'starts over from the first attempt\'s progress on a retry' do
+      job = enqueue_job
+      # A first attempt that collected both inputs before failing in the render.
+      job.tracker.increment_progress(2)
+
+      job.perform_now
+
+      # Without the reset this would end at 5/5 (double-counted progress).
+      expect(job.tracker.reload).to have_attributes(progress: 3, total: 3)
+    end
   end
 
   describe '#handle_error', :active_job_que_adapter do

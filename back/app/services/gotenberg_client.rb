@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class GotenbergClient
-  # Rendering big documents (e.g. the input responses PDF) can take minutes;
-  # keep in sync with Gotenberg's own --api-timeout (see docker-compose.yml).
-  TIMEOUT_SECONDS = 600
+  # Web-request callers must fail fast (not pin Puma workers); only background
+  # jobs pass JOB_TIMEOUT_SECONDS (= Gotenberg's --api-timeout, see docker-compose.yml).
+  DEFAULT_TIMEOUT_SECONDS = 60
+  JOB_TIMEOUT_SECONDS = 600
   OPEN_TIMEOUT_SECONDS = 10
 
   class Error < StandardError; end
@@ -20,8 +21,9 @@ class GotenbergClient
     end
   end
 
-  def initialize
+  def initialize(timeout: DEFAULT_TIMEOUT_SECONDS)
     @api_url = ENV.fetch('GOTENBERG_PDF_URL', 'http://gotenberg:3000')
+    @timeout = timeout
   end
 
   # Use Gotenberg web service (separate docker container) to render html to PDF
@@ -90,7 +92,7 @@ class GotenbergClient
   def connection(url)
     Faraday.new(url) do |f|
       f.request :multipart, flat_encode: true
-      f.options.timeout = TIMEOUT_SECONDS
+      f.options.timeout = @timeout
       f.options.open_timeout = OPEN_TIMEOUT_SECONDS
       f.adapter :net_http
     end

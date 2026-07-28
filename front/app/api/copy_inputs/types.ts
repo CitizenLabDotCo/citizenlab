@@ -22,7 +22,8 @@ export interface IJobData {
   };
   relationships: {
     owner: {
-      data: IRelationship;
+      // null when the job's owner was deleted
+      data: IRelationship | null;
     };
     project: {
       data: IRelationship;

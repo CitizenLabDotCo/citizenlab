@@ -120,26 +120,43 @@ class WebApi::V1::PhasesController < ApplicationController
   # its Jobs::Tracker for the frontend to poll. Field-level PII redaction is
   # driven by `redacted_field_keys`. `cover_only` renders just the cover page
   # synchronously (used by the live preview — it skips loading responses).
+  #
+  # Refuses with 409 while an export is already running: reusing that job
+  # would silently apply someone else's redaction choices.
   def input_responses_pdf
     return input_responses_pdf_cover_preview if ActiveModel::Type::Boolean.new.cast(params[:cover_only])
 
-    tracker = in_progress_input_responses_pdf_tracker || enqueue_input_responses_pdf_job.tracker
-    render json: WebApi::V1::Jobs::TrackerSerializer.new(
-      tracker,
-      params: jsonapi_serializer_params
-    ).serializable_hash, status: :accepted
+    tracker = nil
+    begin
+      # Makes the in-progress check + enqueue atomic across concurrent requests.
+      CitizenLab::LockManager.try_with_transaction_lock("input_responses_pdf/#{@phase.id}") do
+        tracker = enqueue_input_responses_pdf_job.tracker unless in_progress_input_responses_pdf_tracker
+      end
+    rescue CitizenLab::LockManager::FailedToLock
+      tracker = nil
+    end
+
+    if tracker
+      render json: WebApi::V1::Jobs::TrackerSerializer.new(
+        tracker,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :accepted
+    else
+      render json: { errors: { base: [{ error: 'export_in_progress' }] } }, status: :conflict
+    end
   end
 
-  # Streams the PDF produced by the most recent completed export job of the
-  # phase (404 while no result is ready, or after it expired).
+  # Streams the PDF of export job `tracker_id`, only to the user who started
+  # it (the file reflects their reviewed redaction choices); 404 otherwise.
   def input_responses_pdf_result
-    result = Export::ResultFile
-      .joins(:tracker)
-      .where(jobs_trackers: {
-        context_type: 'Phase',
-        context_id: @phase.id,
-        root_job_type: Export::Pdf::InputResponsesJob.name
-      })
+    tracker = Jobs::Tracker.find_by(
+      id: params[:tracker_id],
+      context: @phase,
+      root_job_type: Export::Pdf::InputResponsesJob.name,
+      owner: current_user
+    )
+    result = tracker && Export::ResultFile
+      .where(tracker: tracker)
       .where(expires_at: Time.current..)
       .order(created_at: :desc)
       .first

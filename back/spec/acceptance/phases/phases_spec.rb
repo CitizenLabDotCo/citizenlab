@@ -272,15 +272,16 @@ resource 'Phases' do
         )
       end
 
-      example 'Return the ongoing export instead of starting a second one', :active_job_que_adapter, document: false do
+      example 'Refuse to start a second export while one is running', :active_job_que_adapter, document: false do
         do_request
-        tracker_id = response_data[:id]
+        assert_status 202
 
+        # Reusing the running job would apply the first requester's redaction choices.
         expect { do_request }
           .not_to change { QueJob.by_job_class(Export::Pdf::InputResponsesJob).count }
 
-        assert_status 202
-        expect(response_data[:id]).to eq tracker_id
+        assert_status 409
+        expect(json_response.dig(:errors, :base, 0, :error)).to eq 'export_in_progress'
       end
 
       example 'Generate the cover preview synchronously', document: false do
@@ -306,10 +307,25 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id/input_responses_pdf_result' do
+    parameter :tracker_id, 'The Jobs::Tracker id of the export job (returned when starting the export)', required: true
+
     let(:phase) { create(:native_survey_phase) }
     let(:id) { phase.id }
+    let(:tracker_id) { tracker.id }
+    let(:tracker) do
+      create(
+        :jobs_tracker,
+        context: phase,
+        root_job_type: 'Export::Pdf::InputResponsesJob',
+        owner: current_user,
+        completed_at: Time.current
+      )
+    end
+    let(:current_user) { create(:admin) }
 
     context 'when visitor' do
+      let(:tracker_id) { nil }
+
       example '[error] Unauthorized (401)', document: false do
         do_request
         assert_status 401
@@ -317,20 +333,10 @@ resource 'Phases' do
     end
 
     context 'when admin' do
-      before { admin_header_token }
-
-      def create_result(**attributes)
-        tracker = create(
-          :jobs_tracker,
-          context: phase,
-          root_job_type: 'Export::Pdf::InputResponsesJob',
-          completed_at: Time.current
-        )
-        create(:export_result_file, tracker: tracker, **attributes)
-      end
+      before { header_token_for(current_user) }
 
       example 'Download the PDF produced by the export job' do
-        create_result
+        create(:export_result_file, tracker: tracker)
 
         do_request
         assert_status 200
@@ -339,14 +345,30 @@ resource 'Phases' do
       end
 
       example 'Not found while no export result is ready', document: false do
+        tracker
+
         do_request
         assert_status 404
       end
 
       example 'Not found when the export result expired', document: false do
-        create_result(expires_at: 1.hour.ago)
+        create(:export_result_file, tracker: tracker, expires_at: 1.hour.ago)
 
         do_request
+        assert_status 404
+      end
+
+      example "Not found for another user's export (the file reflects the owner's redaction choices)", document: false do
+        other_admin_tracker = create(
+          :jobs_tracker,
+          context: phase,
+          root_job_type: 'Export::Pdf::InputResponsesJob',
+          owner: create(:admin),
+          completed_at: Time.current
+        )
+        create(:export_result_file, tracker: other_admin_tracker)
+
+        do_request(tracker_id: other_admin_tracker.id)
         assert_status 404
       end
     end

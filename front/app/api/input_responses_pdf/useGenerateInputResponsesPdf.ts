@@ -14,10 +14,8 @@ type GenerateParams = {
   redactedFieldKeys: string[];
 };
 
-// Starts the background export job. If an export is already running for the
-// phase, the backend reuses it instead of starting a second one. The mutation
-// resolves to null (fetcher does not parse the 202 body) — the started job is
-// observed via useInputResponsesPdfJob, whose query onSuccess invalidates.
+// Starts the background export job (409 if one is already running). Resolves
+// to null (fetcher does not parse 202 bodies); track via useInputResponsesPdfJob.
 const generateInputResponsesPdf = ({
   phaseId,
   cover,
@@ -44,8 +42,8 @@ const useGenerateInputResponsesPdf = () => {
 
   return useMutation<IJob, CLErrors, GenerateParams>({
     mutationFn: generateInputResponsesPdf,
-    onSuccess: (_, { phaseId }) => {
-      // Kicks the poll hook into action.
+    onSettled: (_data, _error, { phaseId }) => {
+      // Kicks the poll into action — also on a 409, to show the running job.
       queryClient.invalidateQueries({
         queryKey: inputResponsesPdfJobKeys.list({ phaseId }),
       });

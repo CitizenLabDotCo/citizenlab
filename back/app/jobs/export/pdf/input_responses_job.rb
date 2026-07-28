@@ -21,6 +21,9 @@ module Export
       MAX_RETRY_COUNT = 1
 
       def perform(phase, cover:, redacted_field_keys:, locale:)
+        # A retry starts over; don't stack progress on the first attempt's.
+        tracker.update!(progress: 0, error_count: 0) if tracked?
+
         pdf = I18n.with_locale(locale) do
           Export::Pdf::InputResponsesGenerator.new(
             phase,

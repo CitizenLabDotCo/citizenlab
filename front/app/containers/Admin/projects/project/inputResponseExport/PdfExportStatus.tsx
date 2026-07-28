@@ -24,7 +24,7 @@ type Props = {
 // letting the bar sit just short of full.
 const PdfExportStatus = ({ job }: Props) => {
   const theme = useTheme();
-  const { data: owner } = useUserById(job.relationships.owner.data.id);
+  const { data: owner } = useUserById(job.relationships.owner.data?.id);
 
   const { progress, total } = job.attributes;
   // The tracker total is set when the job is enqueued (inputs + 1 reserved

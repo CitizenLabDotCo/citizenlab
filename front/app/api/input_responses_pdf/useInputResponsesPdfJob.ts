@@ -38,10 +38,11 @@ const useInputResponsesPdfJob = (phaseId: string) => {
         return false;
       }
 
-      const hasInProgressJob = data.data.some(
-        (job) => job.attributes.completed_at === null
-      );
-      return hasInProgressJob ? 5000 : false;
+      // Poll only for the newest tracker (all the UI reads): an orphaned old
+      // tracker must not keep the poll running forever.
+      const jobInProgress = data.data[0].attributes.completed_at === null;
+      // 1s so progress is actually observed — collection only takes seconds.
+      return jobInProgress ? 1000 : false;
     },
   });
 };

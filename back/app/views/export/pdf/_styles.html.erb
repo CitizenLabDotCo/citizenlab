@@ -97,9 +97,8 @@
   }
   .card-header-date { font-size: 8px; color: <%= colors[:on_primary_muted] %>; }
   .card-body { padding: 10px 12px; }
-  /* Cards flow across pages (splitting a whole card is fine — forcing it onto
-     a fresh page leaves large blank gaps); only keep each question/answer pair
-     together. */
+  /* Cards flow across pages (avoiding splits leaves big blank gaps); only
+     keep each question/answer pair together. */
   .qa { margin-bottom: 8px; page-break-inside: avoid; }
   .qa:last-child { margin-bottom: 0; }
   .qa-question {
