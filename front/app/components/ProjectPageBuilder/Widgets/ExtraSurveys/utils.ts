@@ -4,6 +4,7 @@ import { Multiloc } from 'typings';
 import { IPhaseData } from 'api/phases/types';
 import { getPhaseActionDescriptor } from 'api/phases/utils';
 
+import { PhaseDisabledReason } from 'utils/actionDescriptors/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 export type SurveyButtonFormat = 'button' | 'card';
@@ -29,15 +30,13 @@ export function isExtraSurveyPhase(phase: IPhaseData) {
   );
 }
 
-// Reasons the visitor cannot fix by signing in or completing requirements —
-// for these the button locks instead of sending them into the auth flow.
-const UNFIXABLE_REASONS = new Set([
+const UNFIXABLE_REASONS = new Set<string>([
   'user_not_permitted',
   'user_not_in_group',
   'user_blocked',
   'project_inactive',
   'inactive_phase',
-]);
+] satisfies PhaseDisabledReason[]);
 
 export function getExtraSurveyState(phase: IPhaseData): ExtraSurveyState {
   const { start_at, end_at } = phase.attributes;

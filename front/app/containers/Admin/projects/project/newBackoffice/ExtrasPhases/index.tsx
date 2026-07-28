@@ -17,9 +17,8 @@ import { useParams } from 'utils/router';
 import messages from '../messages';
 import {
   PHASE_TAB_ROUTES,
+  PhaseDot,
   Row,
-  dotBackground,
-  dotBorder,
   formatDateRange,
   phaseStatus,
 } from '../phaseRowUtils';
@@ -33,7 +32,7 @@ interface Props {
 const ExtrasPhases = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { phaseId } = useParams({ strict: false }) as { phaseId?: string };
+  const { phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId, 'standalone');
   const { data: layout } = useProjectPageLayout(projectId);
 
@@ -62,7 +61,7 @@ const ExtrasPhases = ({ projectId }: Props) => {
           const status = phaseStatus(phase);
           const { start_at, end_at } = phase.attributes;
           const dateText = end_at
-            ? formatDateRange(start_at, end_at, '')
+            ? formatDateRange(start_at, end_at)
             : formatMessage(messages.ongoing);
           const onProjectPage = linkedPhaseIds.has(phase.id);
 
@@ -73,18 +72,7 @@ const ExtrasPhases = ({ projectId }: Props) => {
               params={{ projectId, phaseId: phase.id }}
             >
               <Row selected={phase.id === phaseId}>
-                <Box w="10px" flex="0 0 auto">
-                  <Box
-                    position="relative"
-                    zIndex="1"
-                    w="10px"
-                    h="10px"
-                    borderRadius="50%"
-                    mt="3px"
-                    background={dotBackground(status)}
-                    border={dotBorder(status)}
-                  />
-                </Box>
+                <PhaseDot status={status} />
                 <Box flexGrow={1} pb="4px">
                   <Text
                     as="span"

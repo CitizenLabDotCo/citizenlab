@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
-import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { CLErrors, Multiloc, SupportedLocale, UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
@@ -50,12 +50,22 @@ import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
 import validate from './validate';
 
+const localizedDefaults = (
+  message: MessageDescriptor,
+  tenantLocales: SupportedLocale[],
+  formatMessageWithLocale: (
+    locale: SupportedLocale,
+    message: MessageDescriptor
+  ) => string
+): Multiloc =>
+  tenantLocales.reduce<Multiloc>((acc, locale) => {
+    acc[locale] = formatMessageWithLocale(locale, message);
+    return acc;
+  }, {});
+
 interface Props {
   projectId: string;
   phase: IPhase | undefined;
-  // Creates the phase as a standalone (detached) survey instead of a
-  // timeline phase: method is fixed to native survey and the timeline
-  // date rules don't apply.
   standaloneSurvey?: boolean;
 }
 
@@ -114,20 +124,18 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
         return;
       }
 
-      const localizedDefaults = (message: MessageDescriptor) =>
-        tenantLocales.reduce((acc, locale) => {
-          acc[locale] = formatMessageWithLocale(locale, message);
-          return acc;
-        }, {});
-
       setFormData({
         ...nativeSurveyDefaultConfig,
         placement_type: 'standalone',
         native_survey_title_multiloc: localizedDefaults(
-          messages.defaultSurveyTitleLabel
+          messages.defaultSurveyTitleLabel,
+          tenantLocales,
+          formatMessageWithLocale
         ),
         native_survey_button_multiloc: localizedDefaults(
-          messages.defaultSurveyCTALabel
+          messages.defaultSurveyCTALabel,
+          tenantLocales,
+          formatMessageWithLocale
         ),
       });
       standaloneSeededRef.current = true;
@@ -149,21 +157,21 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
   const handlePhaseParticipationConfigChange = (
     participationContextConfig: IUpdatedPhaseProperties
   ) => {
-    const surveyCTALabel = tenantLocales?.reduce((acc, locale) => {
-      acc[locale] = formatMessageWithLocale(
-        locale,
-        messages.defaultSurveyCTALabel
+    const surveyCTALabel =
+      tenantLocales &&
+      localizedDefaults(
+        messages.defaultSurveyCTALabel,
+        tenantLocales,
+        formatMessageWithLocale
       );
-      return acc;
-    }, {});
 
-    const surveyTitle = tenantLocales?.reduce((acc, locale) => {
-      acc[locale] = formatMessageWithLocale(
-        locale,
-        messages.defaultSurveyTitleLabel
+    const surveyTitle =
+      tenantLocales &&
+      localizedDefaults(
+        messages.defaultSurveyTitleLabel,
+        tenantLocales,
+        formatMessageWithLocale
       );
-      return acc;
-    }, {});
 
     setSubmitState('enabled');
     // Important to keep the order of the spread operators
@@ -177,7 +185,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
         }),
       ...(participationContextConfig.participation_method === 'native_survey' &&
         !formData?.native_survey_title_multiloc &&
-        !phase?.data.attributes.native_survey_button_multiloc && {
+        !phase?.data.attributes.native_survey_title_multiloc && {
           native_survey_title_multiloc: surveyTitle,
         }),
     }));
@@ -534,9 +542,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
 
 const AdminPhaseEditWrapper = () => {
   const { projectId, phaseId } = useParams({ strict: false });
-  const { placement } = useSearch({ strict: false }) as {
-    placement?: 'standalone';
-  };
+  const { placement } = useSearch({ strict: false });
   const { data: phase } = usePhase(phaseId);
   const extraSurveysEnabled = useFeatureFlag({
     name: 'parallel_participation',

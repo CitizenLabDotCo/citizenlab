@@ -1,4 +1,6 @@
-import { colors } from '@citizenlab/cl2-component-library';
+import React from 'react';
+
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { format, isSameMonth } from 'date-fns';
 import styled from 'styled-components';
 
@@ -39,12 +41,12 @@ export const phaseStatus = (phase: IPhaseData): PhaseStatus =>
 export const formatDateRange = (
   startAt: string,
   endAt: string | null,
-  noEndLabel: string
+  noEndLabel?: string
 ): string => {
   const start = new Date(startAt);
 
   if (!endAt) {
-    return `${format(start, 'd MMM')} – ${noEndLabel}`;
+    return `${format(start, 'd MMM')} – ${noEndLabel ?? ''}`;
   }
 
   const end = new Date(endAt);
@@ -54,15 +56,29 @@ export const formatDateRange = (
     : `${format(start, 'd MMM')} – ${format(end, 'd MMM')}`;
 };
 
-export const dotBackground = (status: PhaseStatus) => {
+const dotBackground = (status: PhaseStatus) => {
   if (status === 'present') return colors.green500;
   if (status === 'past') return colors.coolGrey500;
   return colors.white;
 };
 
-// Future phases show as an outline ring; present/past are filled.
-export const dotBorder = (status: PhaseStatus) =>
+const dotBorder = (status: PhaseStatus) =>
   status === 'future' ? `2px solid ${colors.coolGrey300}` : undefined;
+
+export const PhaseDot = ({ status }: { status: PhaseStatus }) => (
+  <Box w="10px" flex="0 0 auto">
+    <Box
+      position="relative"
+      zIndex="1"
+      w="10px"
+      h="10px"
+      borderRadius="50%"
+      mt="3px"
+      background={dotBackground(status)}
+      border={dotBorder(status)}
+    />
+  </Box>
+);
 
 export const Row = styled.div<{ selected: boolean }>`
   position: relative;

@@ -67,7 +67,6 @@ const BottomSheet = ({
   const [isPeeking, setIsPeeking] = useState(false);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
-  const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const hasPeeked = useRef(false);
 
@@ -133,7 +132,6 @@ const BottomSheet = ({
       scrollLock={true}
     >
       <Container
-        ref={sheetRef}
         translateY={translateY}
         isDragging={isDragging}
         role="dialog"

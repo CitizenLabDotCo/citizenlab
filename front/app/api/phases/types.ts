@@ -186,6 +186,8 @@ export type ParticipationMethod =
 
 export type PhasePlacementType = 'on_timeline' | 'standalone';
 
+export type PhasePlacementFilter = PhasePlacementType | 'all';
+
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
 export type VoteTerm = 'vote' | 'point' | 'token' | 'credit' | 'percent';

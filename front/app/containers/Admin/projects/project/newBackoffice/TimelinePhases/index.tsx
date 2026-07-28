@@ -20,9 +20,8 @@ import { useParams } from 'utils/router';
 import messages from '../messages';
 import {
   PHASE_TAB_ROUTES,
+  PhaseDot,
   Row,
-  dotBackground,
-  dotBorder,
   formatDateRange,
   phaseStatus,
 } from '../phaseRowUtils';
@@ -61,7 +60,7 @@ interface Props {
 const TimelinePhases = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { phaseId } = useParams({ strict: false }) as { phaseId?: string };
+  const { phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
 
   if (!phases) {
@@ -113,18 +112,7 @@ const TimelinePhases = ({ projectId }: Props) => {
                 {sortedPhases.length > 1 && (
                   <Connector isFirst={index === 0} isLast={isLast} />
                 )}
-                <Box w="10px" flex="0 0 auto">
-                  <Box
-                    position="relative"
-                    zIndex="1"
-                    w="10px"
-                    h="10px"
-                    borderRadius="50%"
-                    mt="3px"
-                    background={dotBackground(status)}
-                    border={dotBorder(status)}
-                  />
-                </Box>
+                <PhaseDot status={status} />
                 <Box flexGrow={1} pb="4px">
                   <Text
                     as="span"
@@ -146,7 +134,8 @@ const TimelinePhases = ({ projectId }: Props) => {
 
       <Box display="flex" mt="4px">
         <ButtonWithLink
-          linkTo={`/admin/projects/${projectId}/phases/new`}
+          to="/admin/projects/$projectId/phases/new"
+          params={{ projectId }}
           buttonStyle="text"
           size="s"
           icon="plus"

@@ -10,8 +10,6 @@ const validate = (
   phases: IPhases | undefined,
   formatMessage: FormatMessage,
   phaseId?: string,
-  // Standalone (detached) phases run in parallel with the timeline, so the
-  // end-date rules relative to other phases don't apply.
   standalone?: boolean
 ) => {
   const {

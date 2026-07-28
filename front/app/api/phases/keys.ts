@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { PhasePlacementType } from './types';
+import { PhasePlacementFilter } from './types';
 
 const baseKey = { type: 'phase' };
 
@@ -12,13 +12,11 @@ const phasesKeys = {
     placementType,
   }: {
     projectId: string | undefined;
-    placementType?: PhasePlacementType | 'all';
+    placementType?: PhasePlacementFilter;
   }) => [
     {
       ...baseKey,
       operation: 'list',
-      // Only include placementType when set, so invalidating with
-      // `list({ projectId })` partially matches every placement variant.
       parameters: placementType ? { projectId, placementType } : { projectId },
     },
   ],

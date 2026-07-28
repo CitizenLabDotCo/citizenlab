@@ -187,11 +187,9 @@ const faviconRoute = createRoute({
   ),
 });
 
-// Description builder routes
-// Project descriptions are edited in the project page builder; the legacy
-// description-builder URLs stay routable (bookmarks, old links) but redirect.
 const LegacyProjectDescriptionBuilderRedirect = () => {
-  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { projectId } = useParams({ strict: false });
+  if (!projectId) return null;
   return (
     <Navigate
       to="/admin/project-page-builder/projects/$projectId"

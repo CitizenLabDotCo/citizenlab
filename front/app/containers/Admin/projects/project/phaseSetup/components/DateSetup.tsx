@@ -28,8 +28,6 @@ interface Props {
   formData: IUpdatedPhaseProperties;
   errors: CLErrors | null;
   validationErrors: ValidationErrors;
-  // Standalone (detached) phases run in parallel with the timeline, so
-  // other phases don't block any dates.
   standalone?: boolean;
   setSubmitState: React.Dispatch<React.SetStateAction<SubmitStateType>>;
   setFormData: React.Dispatch<React.SetStateAction<IUpdatedPhaseProperties>>;

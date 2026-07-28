@@ -1,22 +1,14 @@
 import React from 'react';
 
-import {
-  Box,
-  CheckboxWithLabel,
-  colors,
-  Text,
-  Toggle,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, Toggle } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
-import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocalize from 'hooks/useLocalize';
 
 import projectMessages from 'containers/ProjectsShowPage/messages';
 import {
@@ -29,12 +21,12 @@ import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/Projec
 import useWidgetProjectId from 'components/ProjectPageBuilder/Widgets/useWidgetProjectId';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { getLocalisedDateString } from 'utils/dateUtils';
+import { useIntl } from 'utils/cl-intl';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
 
 import messages from './messages';
+import OptionGroup from './OptionGroup';
 
 type AboutBoxProps = {
   hideParticipationAvatars?: boolean;
@@ -65,59 +57,6 @@ const AboutBox = ({
           collapsedButtonTitleMultiloc={collapsedButtonTitleMultiloc}
         />
       )}
-    </Box>
-  );
-};
-
-const phaseDates = (phase: IPhaseData) => {
-  const start = getLocalisedDateString(phase.attributes.start_at);
-  const end = phase.attributes.end_at
-    ? getLocalisedDateString(phase.attributes.end_at)
-    : undefined;
-  return end ? `${start} – ${end}` : start;
-};
-
-const OptionGroup = ({
-  title,
-  description,
-  phases,
-  hiddenOptionIds,
-  onToggle,
-}: {
-  title: MessageDescriptor;
-  description: MessageDescriptor;
-  phases: IPhaseData[];
-  hiddenOptionIds: string[];
-  onToggle: (phaseId: string) => void;
-}) => {
-  const localize = useLocalize();
-
-  if (phases.length === 0) return null;
-
-  return (
-    <Box>
-      <Text m="0px" fontWeight="bold">
-        <FormattedMessage {...title} />
-      </Text>
-      <Text m="0px" mb="8px" color="textSecondary" fontSize="s">
-        <FormattedMessage {...description} />
-      </Text>
-      {phases.map((phase) => (
-        <CheckboxWithLabel
-          key={phase.id}
-          mb="8px"
-          checked={!hiddenOptionIds.includes(phase.id)}
-          onChange={() => onToggle(phase.id)}
-          label={
-            <Box ml="8px">
-              <Text m="0px">{localize(phase.attributes.title_multiloc)}</Text>
-              <Text m="0px" color="textSecondary" fontSize="s">
-                {phaseDates(phase)}
-              </Text>
-            </Box>
-          }
-        />
-      ))}
     </Box>
   );
 };

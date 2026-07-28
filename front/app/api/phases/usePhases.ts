@@ -4,16 +4,14 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import phasesKeys from './keys';
-import { IPhases, PhasePlacementType, PhasesKeys } from './types';
+import { IPhases, PhasePlacementFilter, PhasesKeys } from './types';
 
-// The endpoint returns timeline phases by default; pass a placementType to
-// also get detached phases (e.g. extra surveys).
 const fetchPhases = async ({
   projectId,
   placementType,
 }: {
   projectId: string | undefined;
-  placementType?: PhasePlacementType | 'all';
+  placementType?: PhasePlacementFilter;
 }) => {
   return fetcher<IPhases>({
     path: `/projects/${projectId}/phases`,
@@ -24,7 +22,7 @@ const fetchPhases = async ({
 
 const usePhases = (
   projectId?: string,
-  placementType?: PhasePlacementType | 'all'
+  placementType?: PhasePlacementFilter
 ) => {
   return useQuery<IPhases, CLErrors, IPhases, PhasesKeys>({
     queryKey: phasesKeys.list({ projectId, placementType }),

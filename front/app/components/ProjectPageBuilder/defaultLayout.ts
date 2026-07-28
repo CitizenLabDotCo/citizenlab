@@ -153,8 +153,7 @@ const collectRemovedIds = (nodes: SerializedNodes) => {
     REMOVED_WIDGETS.includes(resolvedNameOf(nodes[id]) ?? '')
   );
 
-  while (queue.length > 0) {
-    const id = queue.shift() as string;
+  for (const id of queue) {
     const node = nodes[id] as SerializedNode | undefined;
     if (!node || removed.has(id)) continue;
 
