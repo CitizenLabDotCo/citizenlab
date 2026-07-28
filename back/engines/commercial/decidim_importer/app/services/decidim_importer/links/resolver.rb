@@ -17,10 +17,13 @@ module DecidimImporter
         @files_by_name = files_by_name(ref_map)
       end
 
-      # A same-domain/relative link → a Go Vocal internal path, or nil when nothing matches.
+      # A same-domain/relative link → a Go Vocal internal path, or nil when nothing matches. The slug is
+      # sanitized the same way {Extractors::ProjectsExtractor} sanitizes the project's, so a link keeps
+      # resolving even when the source slug was normalised on import.
       def content_href(url)
         path = path_of(url)
-        slug = path && path[%r{\A/processes/([^/]+)}, 1]
+        raw = path && path[%r{\A/processes/([^/]+)}, 1]
+        slug = raw && Slug.sanitize(raw)
         return "/projects/#{slug}" if slug && @project_slugs.include?(slug)
 
         nil

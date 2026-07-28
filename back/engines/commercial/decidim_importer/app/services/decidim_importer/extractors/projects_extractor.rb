@@ -51,6 +51,8 @@ module DecidimImporter
         # Keep the Decidim slug as the project's slug so original URLs stay stable and imported links
         # resolve (see {Links::Resolver}). Decidim slugs are unique only *within* a space type, but
         # `Project#slug` is global, so only the first claim keeps it; the rest fall back to a title-derived slug.
+        # `decidim_slug` sanitizes to a valid Go Vocal slug (nil when unsalvageable), so `Sluggable` never
+        # rejects it — an unset slug lets the model derive one from the title instead.
         slug = claim_slug(decidim_slug(row))
         attributes['slug'] = slug if slug
 
@@ -67,11 +69,12 @@ module DecidimImporter
         ref_map.register("#{uid}-card-image", image)
       end
 
-      # The Decidim slug from the container URL (`…/processes/<slug>` or `…/assemblies/<slug>`), or nil
-      # when there's no such URL.
+      # The Decidim slug from the container URL (`…/processes/<slug>` or `…/assemblies/<slug>`),
+      # sanitized to a valid Go Vocal slug — nil when there's no such URL or nothing slug-worthy remains.
       def decidim_slug(row)
         url = present_value(row[COLUMNS[:url]])
-        url && url[%r{/(?:processes|assemblies)/([^/?#]+)}, 1]
+        raw = url && url[%r{/(?:processes|assemblies)/([^/?#]+)}, 1]
+        Slug.sanitize(raw)
       end
 
       # Returns the slug the first time it's seen (claiming it), else nil — so only one project keeps a

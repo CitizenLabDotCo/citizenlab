@@ -23,6 +23,11 @@ RSpec.describe DecidimImporter::Links::Resolver do
       expect(resolver.content_href('/processes/bp2019')).to eq('/projects/bp2019')
     end
 
+    it 'resolves a link whose source slug was normalised on import' do
+      register('project', { 'title_multiloc' => { 'fr-FR' => 'A' }, 'slug' => 'assemblee-citoyenne' })
+      expect(resolver.content_href('/processes/Assemblee--Citoyenne/f/1')).to eq('/projects/assemblee-citoyenne')
+    end
+
     it 'returns nil when no imported project has that slug' do
       expect(resolver.content_href('/processes/unknown/f/1')).to be_nil
     end

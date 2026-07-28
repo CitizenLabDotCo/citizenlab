@@ -11,7 +11,7 @@ require_relative '../../fixtures/decidim_export_fixture'
 #       01---participatory-process.csv
 #       02---steps.csv
 # Each process becomes a Project. Steps are not imported as phases — only proposals/surveys are.
-RSpec.describe DecidimImporter::Importer do
+RSpec.describe DecidimImporter::TemplateCreator do
   let(:export_root) { DecidimImporter::DecidimExportFixture.csv_root }
 
   describe '.from_directory (participatory processes)' do

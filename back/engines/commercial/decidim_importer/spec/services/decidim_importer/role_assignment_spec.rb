@@ -2,13 +2,13 @@
 
 # Real Decidim exports don't include a participatory-process user-roles CSV (and ExportReader doesn't
 # read one), so ProcessRolesExtractor + RoleAssigner — the deferred project-moderator assignment that
-# runs after deserialization in Importer#import — are exercised only against the synthetic rows here.
-# Projects, phases and folders have real `decidim_export/` fixtures covered by their own specs.
+# runs after deserialization in TemplateCreator#import — are exercised only against the synthetic rows
+# here. Projects, phases and folders have real `decidim_export/` fixtures covered by their own specs.
 
 require 'rails_helper'
 require_relative '../../fixtures/sample_data'
 
-RSpec.describe DecidimImporter::Importer do
+RSpec.describe DecidimImporter::TemplateCreator do
   it 'assigns a participatory-process admin as a Go Vocal project moderator' do
     described_class.new(DecidimImporter::SampleData.all).import
 

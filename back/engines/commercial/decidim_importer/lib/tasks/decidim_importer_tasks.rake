@@ -2,14 +2,14 @@
 
 require 'csv'
 
-# Two-step workflow: `dump_yaml` reads a Decidim export (zip or dir) and writes the artifacts
+# Two-step workflow: `create_template` reads a Decidim export (zip or dir) and writes the artifacts
 # (`.template.yml` + `.app_config.json` + `.url_mapping.csv`) — it never touches a tenant; `import`
 # applies them to the tenant matching `host`. `verify` dry-runs a dumped template on a throwaway tenant.
-# Each of `dump_yaml`/`import` also tees its summary (counts, skips, broken links) to a run log beside
-# the artifacts: `<base>.dump.log` / `<base>.import.log`.
+# Each of `create_template`/`import` also tees its summary (counts, skips, broken links) to a run log
+# beside the artifacts: `<base>.create.log` / `<base>.import.log`.
 #
-#   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR]
-#   rake decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
+#   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR]
+#   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]
@@ -22,42 +22,42 @@ require 'csv'
 # `remote_*_url`s point at an unreachable host).
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
-  task :dump_yaml, %i[path primary_locale production include_source_url] => [:environment] do |_t, args|
+  task :create_template, %i[path primary_locale production include_source_url] => [:environment] do |_t, args|
     path = args.fetch(:path)
     # `production=true` keeps real user names/emails; otherwise they're anonymised.
     production = args[:production].to_s.strip.downcase == 'true'
     # `include_source_url=true` prepends a link back to each project's original Decidim URL.
     include_source_url = args[:include_source_url].to_s.strip.downcase == 'true'
-    importer = build_importer(
+    creator = build_creator(
       path, primary_locale: args[:primary_locale] || 'fr-FR', anonymize_users: !production,
       include_source_url: include_source_url
     )
-    builder = importer.build_template
+    builder = creator.build_template
 
-    with_report_log(log_path(path, 'dump')) do
+    with_report_log(log_path(path, 'create')) do
       yaml_path = output_path(path, 'template.yml')
       File.write(yaml_path, builder.to_yaml)
       report_line "Wrote #{yaml_path} (users #{production ? 'untouched (production)' : 'anonymised'})"
       log_model_summary(builder)
-      importer.skipped_components.each { |s| report_warn "  skipped component #{s[:component]}: #{s[:reason]}" }
-      importer.skipped_categories.each { |s| report_warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_participation.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_results.each { |s| report_warn "  skipped result #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_followers.each { |s| report_warn "  skipped follow #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_endorsements.each { |s| report_warn "  skipped endorsement #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_comment_votes.each { |s| report_warn "  skipped comment vote #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_budget_projects.each { |s| report_warn "  skipped budget project #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_orders.each { |s| report_warn "  skipped order #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_proposal_attachments.each { |s| report_warn "  skipped attachment #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_surveys.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_survey_responses.each { |s| report_warn "  skipped response #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_pages.each { |s| report_warn "  skipped page #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_blog_posts.each { |s| report_warn "  skipped blog post #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_meetings.each { |s| report_warn "  skipped meeting #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_meeting_attachments.each { |s| report_warn "  skipped meeting attachment #{s[:uid]}: #{s[:reason]}" }
-      importer.skipped_files.each { |s| report_warn "  skipped file #{s[:uid]}: #{s[:reason]}" }
-      write_app_config_json(importer, path)
-      write_url_mapping_csv(importer, path)
+      creator.skipped_components.each { |s| report_warn "  skipped component #{s[:component]}: #{s[:reason]}" }
+      creator.skipped_categories.each { |s| report_warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_participation.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_results.each { |s| report_warn "  skipped result #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_followers.each { |s| report_warn "  skipped follow #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_endorsements.each { |s| report_warn "  skipped endorsement #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_comment_votes.each { |s| report_warn "  skipped comment vote #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_budget_projects.each { |s| report_warn "  skipped budget project #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_orders.each { |s| report_warn "  skipped order #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_proposal_attachments.each { |s| report_warn "  skipped attachment #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_surveys.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_survey_responses.each { |s| report_warn "  skipped response #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_pages.each { |s| report_warn "  skipped page #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_blog_posts.each { |s| report_warn "  skipped blog post #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_meetings.each { |s| report_warn "  skipped meeting #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_meeting_attachments.each { |s| report_warn "  skipped meeting attachment #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_files.each { |s| report_warn "  skipped file #{s[:uid]}: #{s[:reason]}" }
+      write_app_config_json(creator, path)
+      write_url_mapping_csv(creator, path)
     end
   end
 
@@ -189,20 +189,20 @@ namespace :decidim_importer do
     candidate
   end
 
-  # Picks the Importer factory by whether `path` is a zip file or a directory.
-  def build_importer(path, **opts)
+  # Picks the TemplateCreator factory by whether `path` is a zip file or a directory.
+  def build_creator(path, **opts)
     if File.directory?(path)
-      DecidimImporter::Importer.from_directory(path, **opts)
+      DecidimImporter::TemplateCreator.from_directory(path, **opts)
     elsif File.file?(path)
-      DecidimImporter::Importer.from_zip(path, **opts)
+      DecidimImporter::TemplateCreator.from_zip(path, **opts)
     else
       raise ArgumentError, "no such file or directory: #{path}"
     end
   end
 
   # Writes the app-config patch as `<base>.app_config.json` (skipped when the export has no org file).
-  def write_app_config_json(importer, input_path)
-    patch = importer.app_config_patch
+  def write_app_config_json(creator, input_path)
+    patch = creator.app_config_patch
     if patch.empty?
       report_line '  no organization data → skipping app-config JSON'
       return
@@ -215,8 +215,8 @@ namespace :decidim_importer do
 
   # Writes the old→new link mapping as `<base>.url_mapping.csv` (skipped when there are none), applied
   # to the tenant during `import`'s finishing.
-  def write_url_mapping_csv(importer, input_path)
-    map = importer.link_map
+  def write_url_mapping_csv(creator, input_path)
+    map = creator.link_map
     if map.empty?
       report_line '  no correctable links → skipping URL mapping CSV'
       return

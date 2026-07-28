@@ -22,6 +22,28 @@ RSpec.describe DecidimImporter::Extractors::ProjectsExtractor do
     expect(attrs['slug']).to eq('collectifsdequartiers')
   end
 
+  it 'sanitizes a Decidim slug that Go Vocal would reject (uppercase runs, double hyphens)' do
+    attrs = extract([{ 'uid' => 'a1', 'title' => '{"fr":"A"}',
+                       'url' => 'https://x.fr/assemblies/Assemblee--Citoyenne' }]).first.attributes
+    expect(attrs['slug']).to eq('assemblee-citoyenne')
+  end
+
+  it 'drops the slug when nothing slug-worthy remains, so the model derives one from the title' do
+    attrs = extract([{ 'uid' => 'a1', 'title' => '{"fr":"A"}',
+                       'url' => 'https://x.fr/assemblies/---' }]).first.attributes
+    expect(attrs).not_to have_key('slug')
+  end
+
+  it 'dedupes slugs that only differ by case/punctuation once sanitized, keeping the first claimant' do
+    first, second = extract([
+      { 'uid' => 'p1', 'title' => '{"fr":"Bac"}', 'url' => 'https://x.fr/processes/Bac-A-Sable' },
+      { 'uid' => 'a1', 'title' => '{"fr":"Bac"}', 'url' => 'https://x.fr/assemblies/bac--a--sable' }
+    ])
+
+    expect(first.attributes['slug']).to eq('bac-a-sable')
+    expect(second.attributes).not_to have_key('slug')
+  end
+
   it 'keeps a Decidim slug only for the first claimant, so a process and assembly sharing one don’t clash' do
     # Decidim lets a process and an assembly share the slug `bacasable`; Go Vocal slugs are global.
     process, assembly = extract([

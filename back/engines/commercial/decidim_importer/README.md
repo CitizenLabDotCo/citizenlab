@@ -13,12 +13,16 @@ reuses the template pipeline's model coverage, `*_ref` anchor resolution, `*_mul
 
 ```
 export (zip/dir) ──▶ ExportReader ──▶ Extractors ──▶ RefMap ──▶ TemplateBuilder ──▶ template.yml
-                                                                                        │
+                     └──────────── TemplateCreator ───────────┘                         │
                                                     app_config.json ◀── AppConfigMapper │
                                                     url_mapping.csv ◀── Links::Map       │
                                                                                         ▼
-                                                                            TenantDeserializer
+                                                          Importer (TemplateCleaner ▶ TenantDeserializer)
 ```
+
+**TemplateCreator** orchestrates the dump (export → artifacts); **Importer** applies a dumped template
+to a tenant; **TemplateCleaner** prunes the template's unfetchable images / dangling nodes just before
+deserialize. The two sides never overlap except in `TemplateCreator#import` (build-and-apply in one shot).
 
 - **ExportReader** — walks the export tree and returns parsed rows keyed by model
   (`:users`, `:projects`, `:proposals`, `:components`, …). Assemblies are folded in alongside
@@ -56,26 +60,26 @@ event equivalent and are not imported.
 ## Running it
 
 Everything runs through Docker (`docker compose run --rm web …`). A full import is two rake tasks:
-**dump → import** (the `import` task does its own post-import finishing), with a `db:reset` first when
-importing into a clean local tenant. The target host must have the `decidim_importer` feature enabled
-first (see [Safety gate](#safety-gate) below).
+**create_template → import** (the `import` task does its own post-import finishing), with a `db:reset`
+first when importing into a clean local tenant. The target host must have the `decidim_importer` feature
+enabled first (see [Safety gate](#safety-gate) below).
 
 ```bash
 # 1. (optional) clean local tenant
 docker compose run --rm web "bin/rails db:reset"
 
 # 2. Build the template artifacts from the export (writes .template.yml, .app_config.json, .url_mapping.csv,
-#    and a .dump.log run report).
+#    and a .create.log run report).
 #    Args: path, primary_locale=fr-FR, production=false (anonymise users), include_source_url=false
-docker compose run --rm web "bin/rails decidim_importer:dump_yaml[tmp/import_files/example.com.zip,fr-FR,false,true]"
+docker compose run --rm web "bin/rails decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false,true]"
 
 # 3. Deserialize the template into the tenant matching the host, then run the post-import finishing
 #    (link correction + folder/nav-bar structure).
 docker compose run --rm web "bin/rails decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]"
 ```
 
-`dump_yaml` never touches a tenant — it only reads the export and writes files. `import` operates on
-the tenant named by `host` (default `localhost`) and finishes with the post-import steps in the same
+`create_template` never touches a tenant — it only reads the export and writes files. `import` operates
+on the tenant named by `host` (default `localhost`) and finishes with the post-import steps in the same
 run.
 
 ### Safety gate
@@ -97,18 +101,18 @@ docker compose run --rm web "bin/rails decidim_importer:verify[tmp/import_files/
 - **Skip image fetching** — `import[<file>,<host>,false]`. Drops every `remote_*_url` before
   deserialize, so no external HTTP happens. Use for exports whose image URLs point at an unreachable
   host (e.g. the source Decidim's `http://localhost/rails/active_storage/…` redirects).
-- **Keep real user PII** — `dump_yaml[<path>,<locale>,true]` (`production=true`). Otherwise user
+- **Keep real user PII** — `create_template[<path>,<locale>,true]` (`production=true`). Otherwise user
   names and emails are anonymised.
-- **Link back to the source** — `dump_yaml[<path>,<locale>,false,true]` (`include_source_url=true`)
+- **Link back to the source** — `create_template[<path>,<locale>,false,true]` (`include_source_url=true`)
   prepends a link to each project's original Decidim URL.
 
 ## Rake tasks, step by step
 
 All tasks live in `lib/tasks/decidim_importer_tasks.rake`.
 
-### `dump_yaml[path, primary_locale, production, include_source_url]`
+### `create_template[path, primary_locale, production, include_source_url]`
 
-Reads the export and writes the template artifacts. Touches no tenant.
+Reads the export and writes the template artifacts (via {TemplateCreator}). Touches no tenant.
 
 1. **Pick the reader** — `from_zip` for a `.zip`, `from_directory` for an unzipped dir; `ExportReader`
    parses the CSV tree into rows-by-model.
@@ -127,7 +131,7 @@ Reads the export and writes the template artifacts. Touches no tenant.
 7. **Write `<base>.url_mapping.csv`** — the old-Decidim-URL → new-target map for links embedded in
    descriptions, consumed by the `import` task's post-import link correction.
 8. **Log** — a per-model and per-project record summary, plus every skipped component / record with
-   its reason, teed to `<base>.dump.log` (and the Rails log).
+   its reason, teed to `<base>.create.log` (and the Rails log).
 
 ### `import[file, host, import_images]`
 
