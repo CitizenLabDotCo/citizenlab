@@ -17,8 +17,8 @@ module DecidimImporter
 
     def self.feature_description
       <<~DESC
-        Allows the Decidim import task to apply an import to this tenant. Keep this off unless you
-        intend to import into this specific host.
+        Allows the Decidim import rake task to apply an import to this tenant. Keep this off unless you
+        intend to import from Decidim into this specific host.
       DESC
     end
 
