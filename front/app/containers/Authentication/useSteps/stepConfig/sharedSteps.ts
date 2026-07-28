@@ -84,19 +84,16 @@ export const sharedSteps = (
 
       // When the authentication flow is triggered by an action
       // done by the user
-      TRIGGER_AUTHENTICATION_FLOW: async (
-        flow: 'signup' | 'signin',
-        newEmail: string | null = null,
-        newPhone: string | null = null
-      ) => {
+      TRIGGER_AUTHENTICATION_FLOW: async (flow: 'signup' | 'signin') => {
         updateState({
-          email: newEmail,
+          email: null,
+          new_email: null,
+          new_phone: null,
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
           claimTokens: null,
           flow,
-          phone: newPhone,
         });
 
         const { requirements, disabled_reason } = await getRequirements();

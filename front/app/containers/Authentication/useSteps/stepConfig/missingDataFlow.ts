@@ -47,9 +47,9 @@ export const missingDataFlow = (
   return {
     'missing-data:new_phone': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (phone: string) => {
-        updateState({ phone });
-        await requestCodeNewPhone(phone);
+      SUBMIT: async (new_phone: string) => {
+        updateState({ new_phone });
+        await requestCodeNewPhone(new_phone);
         invalidateCacheAfterUpdateUser(queryClient);
         setCurrentStep('confirmation:new_phone');
       },
@@ -84,10 +84,6 @@ export const missingDataFlow = (
         );
 
         if (missingDataStep) {
-          if (missingDataStep === 'confirmation:new_email' && email) {
-            updateState({ email });
-          }
-
           setCurrentStep(missingDataStep);
           return;
         }
@@ -108,9 +104,9 @@ export const missingDataFlow = (
     // so the field would never show up in that step.
     'missing-data:change-new-email': {
       CLOSE: () => setCurrentStep('closed'),
-      SUBMIT: async (email: string) => {
-        await requestCodeNewEmail(email);
-        updateState({ email });
+      SUBMIT: async (new_email: string) => {
+        await requestCodeNewEmail(new_email);
+        updateState({ new_email });
         invalidateCacheAfterUpdateUser(queryClient);
         setCurrentStep('confirmation:new_email');
       },

@@ -78,12 +78,13 @@ export default function useSteps() {
   const [state, setState] = useState<State>({
     flow: 'signup',
     email: null,
+    new_email: null,
+    new_phone: null,
     /** the invite token, set in case the flow started with an invitation */
     token: null,
     prefilledBuiltInFields: null,
     ssoProvider: null,
     claimTokens: null,
-    phone: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);
@@ -175,25 +176,7 @@ export default function useSteps() {
 
       authenticationDataRef.current = authenticationData;
 
-      // The value being confirmed on the confirmation step: a pending change
-      // (new_email/new_phone) takes precedence, otherwise the existing
-      // email/phone — the latter covers (re)confirmation of an already-set value
-      // (e.g. after confirmed_email_expiry / confirmed_phone_number_expiry).
-      const emailInCaseUserNeedsToConfirm =
-        authUser?.data.attributes.new_email ??
-        authUser?.data.attributes.email ??
-        null;
-
-      const phoneInCaseUserNEedsToConfirm =
-        authUser?.data.attributes.new_phone ??
-        authUser?.data.attributes.phone ??
-        null;
-
-      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(
-        flow,
-        emailInCaseUserNeedsToConfirm,
-        phoneInCaseUserNEedsToConfirm
-      );
+      transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')(flow);
     });
 
     return () => subscription.unsubscribe();
@@ -354,10 +337,6 @@ export default function useSteps() {
 
       const flow = sso_flow ?? 'signin';
 
-      const emailInCaseUserNeedsToConfirm =
-        authUser?.data.attributes.new_email ?? null;
-
-      updateState({ flow, email: emailInCaseUserNeedsToConfirm });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
       restoreLocationAfterAuthReturn(pathname);
