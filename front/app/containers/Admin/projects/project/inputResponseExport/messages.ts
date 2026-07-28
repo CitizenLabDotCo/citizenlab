@@ -110,4 +110,22 @@ export default defineMessages({
     defaultMessage:
       'Something went wrong generating the file. Please try again.',
   },
+  collectingResponses: {
+    id: 'app.containers.Admin.projects.project.inputResponseExport.collectingResponses',
+    defaultMessage: 'Collecting responses… ({progress}/{total})',
+  },
+  renderingPdf: {
+    id: 'app.containers.Admin.projects.project.inputResponseExport.renderingPdf',
+    defaultMessage:
+      'Building the PDF… This can take several minutes for large surveys.',
+  },
+  exportStartedBy: {
+    id: 'app.containers.Admin.projects.project.inputResponseExport.exportStartedBy',
+    defaultMessage: 'Export started by {name}.',
+  },
+  dontCloseWarning: {
+    id: 'app.containers.Admin.projects.project.inputResponseExport.dontCloseWarning',
+    defaultMessage:
+      'Please keep this window open. Your download will start automatically when the file is ready.',
+  },
 });

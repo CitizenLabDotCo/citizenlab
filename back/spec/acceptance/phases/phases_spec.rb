@@ -236,6 +236,76 @@ resource 'Phases' do
   end
 
   post 'web_api/v1/phases/:id/input_responses_pdf' do
+    parameter :cover_only, 'Render only the cover page, synchronously (used by the live preview)', required: false
+
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    context 'when visitor' do
+      example '[error] Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { header_token_for(current_user) }
+
+      let(:current_user) { create(:admin) }
+
+      example 'Start a background job that generates the responses PDF', :active_job_que_adapter do
+        expect { do_request }
+          .to change { QueJob.by_job_class(Export::Pdf::InputResponsesJob).count }.by(1)
+
+        assert_status 202
+        expect(response_data).to include(
+          type: 'job',
+          attributes: hash_including(
+            job_type: 'Export::Pdf::InputResponsesJob',
+            progress: 0,
+            completed_at: nil
+          ),
+          relationships: hash_including(
+            owner: { data: { id: current_user.id, type: 'user' } },
+            context: { data: { id: id, type: 'phase' } }
+          )
+        )
+      end
+
+      example 'Return the ongoing export instead of starting a second one', :active_job_que_adapter, document: false do
+        do_request
+        tracker_id = response_data[:id]
+
+        expect { do_request }
+          .not_to change { QueJob.by_job_class(Export::Pdf::InputResponsesJob).count }
+
+        assert_status 202
+        expect(response_data[:id]).to eq tracker_id
+      end
+
+      example 'Generate the cover preview synchronously', document: false do
+        # Stub the Gotenberg-backed generation; the rendering itself is covered
+        # by the export service specs.
+        allow_any_instance_of(Export::Pdf::InputResponsesGenerator)
+          .to receive(:generate_pdf).and_return(StringIO.new('%PDF-1.4'))
+
+        do_request(cover_only: true)
+        assert_status 200
+        expect(response_body).to eq '%PDF-1.4'
+      end
+
+      context 'when the phase does not support the export' do
+        let(:id) { create(:information_phase).id }
+
+        example 'Unprocessable (422)', document: false do
+          do_request
+          assert_status 422
+        end
+      end
+    end
+  end
+
+  get 'web_api/v1/phases/:id/input_responses_pdf_result' do
     let(:phase) { create(:native_survey_phase) }
     let(:id) { phase.id }
 
@@ -249,24 +319,35 @@ resource 'Phases' do
     context 'when admin' do
       before { admin_header_token }
 
-      example 'Generate the responses PDF' do
-        # Stub the Gotenberg-backed generation; the rendering itself is covered
-        # by the export service specs.
-        allow_any_instance_of(Export::Pdf::InputResponsesGenerator)
-          .to receive(:generate_pdf).and_return(StringIO.new('%PDF-1.4'))
+      def create_result(**attributes)
+        tracker = create(
+          :jobs_tracker,
+          context: phase,
+          root_job_type: 'Export::Pdf::InputResponsesJob',
+          completed_at: Time.current
+        )
+        create(:export_result_file, tracker: tracker, **attributes)
+      end
+
+      example 'Download the PDF produced by the export job' do
+        create_result
 
         do_request
         assert_status 200
-        expect(response_body).to eq '%PDF-1.4'
+        expect(response_headers['Content-Type']).to eq 'application/pdf'
+        expect(response_body).to start_with '%PDF'
       end
 
-      context 'when the phase does not support the export' do
-        let(:id) { create(:information_phase).id }
+      example 'Not found while no export result is ready', document: false do
+        do_request
+        assert_status 404
+      end
 
-        example 'Unprocessable (422)', document: false do
-          do_request
-          assert_status 422
-        end
+      example 'Not found when the export result expired', document: false do
+        create_result(expires_at: 1.hour.ago)
+
+        do_request
+        assert_status 404
       end
     end
   end

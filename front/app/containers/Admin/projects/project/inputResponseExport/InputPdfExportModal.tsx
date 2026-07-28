@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
 import { FormProvider } from 'react-hook-form';
 
-import { generateInputResponsesPdf } from 'api/input_responses_pdf/generateInputResponsesPdf';
+import { downloadInputResponsesPdfResult } from 'api/input_responses_pdf/generateInputResponsesPdf';
+import useGenerateInputResponsesPdf from 'api/input_responses_pdf/useGenerateInputResponsesPdf';
+import useInputResponsesPdfJob from 'api/input_responses_pdf/useInputResponsesPdfJob';
 import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
@@ -15,6 +22,7 @@ import CoverPageSettings from './components/CoverPageSettings';
 import SectionLabel from './components/SectionLabel';
 import CoverPreview from './CoverPreview';
 import messages from './messages';
+import PdfExportStatus from './PdfExportStatus';
 import ResponseExportModal from './ResponseExportModal';
 import useCoverForm from './useCoverForm';
 
@@ -27,6 +35,11 @@ type Props = {
 
 // PDF flavour of the responses export: the shared shell plus the cover page
 // settings and live preview.
+//
+// Unlike the xlsx export, the PDF is rendered by a background job (it takes
+// minutes for large phases). Generating starts the job; this modal then drives
+// its state off the polled job tracker — so reopening the modal picks an
+// ongoing export back up — and downloads the PDF when the job completes.
 const InputPdfExportModal = ({
   projectId,
   phaseId,
@@ -36,23 +49,62 @@ const InputPdfExportModal = ({
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
   const { methods, cover } = useCoverForm({ phaseId, projectId });
+  const { mutateAsync: generatePdf } = useGenerateInputResponsesPdf();
+  const { data: jobs } = useInputResponsesPdfJob(phaseId);
+
+  // The id of the job whose completion should trigger the download: the one
+  // started from this modal, or an already-running one found on (re)open.
+  const [trackedJobId, setTrackedJobId] = useState<string | null>(null);
+  const [jobFailed, setJobFailed] = useState(false);
+
+  const latestJob = jobs?.data[0];
+  const jobInProgress =
+    !!latestJob && latestJob.attributes.completed_at === null;
+
+  const phaseTitle = phase
+    ? localize(phase.data.attributes.title_multiloc)
+    : '';
+  const fileName = `${
+    snakeCase(`input responses ${phaseTitle}`) || 'input_responses'
+  }.pdf`;
+
+  // Resume tracking an export that is already running (e.g. the modal was
+  // closed and reopened mid-export, or another admin started one).
+  useEffect(() => {
+    if (jobInProgress) {
+      setTrackedJobId(latestJob.id);
+    }
+  }, [jobInProgress, latestJob]);
+
+  // When the tracked job completes, download the result — or surface the
+  // failure (the tracker exposes the job errors).
+  useEffect(() => {
+    if (!trackedJobId || latestJob?.id !== trackedJobId) return;
+    if (latestJob.attributes.completed_at === null) return;
+
+    setTrackedJobId(null);
+
+    const failed =
+      latestJob.attributes.error_count > 0 ||
+      latestJob.attributes.errors.length > 0;
+    if (failed) {
+      setJobFailed(true);
+      return;
+    }
+
+    downloadInputResponsesPdfResult({ phaseId, fileName })
+      .then(onClose)
+      .catch(() => setJobFailed(true));
+  }, [trackedJobId, latestJob, phaseId, fileName, onClose]);
 
   const handleGenerate = async ({
     redactedFieldKeys,
   }: {
     redactedFieldKeys: string[];
   }) => {
-    const phaseTitle = phase
-      ? localize(phase.data.attributes.title_multiloc)
-      : '';
-    await generateInputResponsesPdf({
-      phaseId,
-      cover,
-      redactedFieldKeys,
-      fileName: `${
-        snakeCase(`input responses ${phaseTitle}`) || 'input_responses'
-      }.pdf`,
-    });
+    setJobFailed(false);
+    const job = await generatePdf({ phaseId, cover, redactedFieldKeys });
+    setTrackedJobId(job.data.id);
   };
 
   return (
@@ -63,6 +115,17 @@ const InputPdfExportModal = ({
         onClose={onClose}
         title={<FormattedMessage {...messages.pdfPageTitle} />}
         onGenerate={handleGenerate}
+        closeOnGenerate={false}
+        generateDisabled={jobInProgress}
+        statusSlot={
+          jobInProgress ? (
+            <PdfExportStatus job={latestJob} />
+          ) : jobFailed ? (
+            <Text color="red600" mt="0px" mb="8px" fontSize="s">
+              <FormattedMessage {...messages.exportError} />
+            </Text>
+          ) : null
+        }
         settingsSlot={<CoverPageSettings />}
         previewSlot={
           <>

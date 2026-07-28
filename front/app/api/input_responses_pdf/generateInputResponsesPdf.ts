@@ -13,20 +13,31 @@ export type InputPdfCover = {
   notes: string;
 };
 
-type RequestParams = {
+// Downloads the PDF produced by a completed export job (see
+// useGenerateInputResponsesPdf / useInputResponsesPdfJob for starting and
+// tracking the job).
+export const downloadInputResponsesPdfResult = async ({
+  phaseId,
+  fileName,
+}: {
   phaseId: string;
-  cover: InputPdfCover;
-  redactedFieldKeys?: string[];
-  coverOnly?: boolean;
+  fileName: string;
+}): Promise<void> => {
+  const blob = await requestBlob(
+    `${API_PATH}/phases/${phaseId}/input_responses_pdf_result`,
+    'application/pdf'
+  );
+  saveAs(blob, fileName);
 };
 
-// POSTs the cover/redaction options and resolves with the PDF blob.
-const requestPdfBlob = ({
+// Cover-only PDF for the live preview (rendered synchronously).
+export const fetchCoverPreviewPdf = ({
   phaseId,
   cover,
-  redactedFieldKeys = [],
-  coverOnly = false,
-}: RequestParams): Promise<Blob> =>
+}: {
+  phaseId: string;
+  cover: InputPdfCover;
+}): Promise<Blob> =>
   requestBlob(
     `${API_PATH}/phases/${phaseId}/input_responses_pdf`,
     'application/pdf',
@@ -42,30 +53,7 @@ const requestPdfBlob = ({
           prepared_by: cover.preparedBy,
           notes: cover.notes,
         },
-        redacted_field_keys: redactedFieldKeys,
-        cover_only: coverOnly,
+        cover_only: true,
       },
     }
   );
-
-// Full export — downloads the PDF.
-export const generateInputResponsesPdf = async ({
-  phaseId,
-  cover,
-  redactedFieldKeys,
-  fileName,
-}: {
-  phaseId: string;
-  cover: InputPdfCover;
-  redactedFieldKeys: string[];
-  fileName: string;
-}): Promise<void> => {
-  const blob = await requestPdfBlob({ phaseId, cover, redactedFieldKeys });
-  saveAs(blob, fileName);
-};
-
-// Cover-only PDF for the live preview.
-export const fetchCoverPreviewPdf = (params: {
-  phaseId: string;
-  cover: InputPdfCover;
-}): Promise<Blob> => requestPdfBlob({ ...params, coverOnly: true });

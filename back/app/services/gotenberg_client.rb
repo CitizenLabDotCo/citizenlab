@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class GotenbergClient
+  # Rendering big documents (e.g. the input responses PDF) can take minutes;
+  # keep in sync with Gotenberg's own --api-timeout (see docker-compose.yml).
+  TIMEOUT_SECONDS = 600
+  OPEN_TIMEOUT_SECONDS = 10
+
   class Error < StandardError; end
   class FileTypeUnsupportedError < Error; end
   class GotenbergServiceUnavailableError < Error; end
@@ -35,10 +40,7 @@ class GotenbergClient
     }
     url = "#{@api_url}/forms/chromium/convert/html"
 
-    conn = Faraday.new(url) do |f|
-      f.request :multipart, flat_encode: true
-      f.adapter :net_http
-    end
+    conn = connection(url)
     response = conn.post(url, payload)
     raise_if_error!(response)
 
@@ -59,10 +61,7 @@ class GotenbergClient
       'files' => Faraday::UploadIO.new(file, content_type, file_name)
     }
 
-    conn = Faraday.new(url) do |f|
-      f.request :multipart, flat_encode: true
-      f.adapter :net_http
-    end
+    conn = connection(url)
 
     response = conn.post(url, payload)
     raise_if_error!(response)
@@ -87,6 +86,15 @@ class GotenbergClient
   end
 
   private
+
+  def connection(url)
+    Faraday.new(url) do |f|
+      f.request :multipart, flat_encode: true
+      f.options.timeout = TIMEOUT_SECONDS
+      f.options.open_timeout = OPEN_TIMEOUT_SECONDS
+      f.adapter :net_http
+    end
+  end
 
   def raise_if_error!(response)
     return if response.success?

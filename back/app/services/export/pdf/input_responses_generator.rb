@@ -9,12 +9,14 @@ module Export
     # any participation method whose pmethod supports_input_pdf_export?.
     class InputResponsesGenerator
       # cover_only renders just the cover page (used by the live preview); it
-      # skips loading responses entirely.
-      def initialize(phase, cover:, redacted_field_keys: [], cover_only: false)
+      # skips loading responses entirely. on_progress is called once per input
+      # processed (used by the async export job to tick its tracker).
+      def initialize(phase, cover:, redacted_field_keys: [], cover_only: false, on_progress: nil)
         @phase = phase
         @cover = cover
         @redacted_field_keys = Array(redacted_field_keys).to_set
         @cover_only = cover_only
+        @on_progress = on_progress
       end
 
       def generate_pdf
@@ -50,7 +52,7 @@ module Export
             answers: fields.map do |field|
               { question: field.column_header, answer: format_answer(field.value_from(input)) }
             end
-          }
+          }.tap { @on_progress&.call }
         end
       end
 
