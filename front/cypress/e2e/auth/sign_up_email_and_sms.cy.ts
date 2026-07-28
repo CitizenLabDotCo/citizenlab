@@ -75,6 +75,39 @@ describe('Sign up - email and SMS (2FA)', () => {
       .should('include.text', 'Invalid confirmation code.');
   });
 
+  it('when exit flow after entering phone: on re-entry, correct step is shown', () => {
+    cy.visit(`/projects/${projectTitle}`);
+
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    signUpEmailConformation(cy);
+
+    // Enter phone number
+    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-continue-button').click();
+
+    // Refresh page
+    cy.reload();
+
+    // Re-enter flow
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    // Confirm phone number
+    cy.dataCy('phone-code-input').find('input').type('1234');
+    cy.dataCy('phone-confirm-button').click();
+
+    enterUserInfo(cy);
+
+    cy.get('#e2e-success-continue-button').click();
+
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectTitle}/surveys/new`
+    );
+  });
+
   describe('if confirmed phone number already exists', () => {
     const phoneNumber = randomPhoneNumber();
     let userId: string;
