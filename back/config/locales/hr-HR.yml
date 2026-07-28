@@ -271,6 +271,15 @@ hr-HR:
     proposals:
       title: Prijedlozi
   pdf_export:
+    input_responses:
+      date: Datum
+      no_answer: (Bez odgovora)
+      prepared_by: Pripremio/la
+      report_label: Izvješće o odgovorima
+      respondent: Ispitanik %{number}
+      response_count:
+        one: '%{count} odgovor'
+        other: '%{count} odgovora'
     survey_responses:
       date: Datum
       no_answer: (Nema odgovora)

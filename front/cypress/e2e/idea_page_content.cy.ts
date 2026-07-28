@@ -76,10 +76,9 @@ describe('Idea Page', () => {
         })
         .then((phase) => {
           return cy.apiCreateIdea({
-            projectId,
+            phaseId: phase.body.data.id,
             ideaTitle,
             ideaContent,
-            phaseIds: [phase.body.data.id],
           });
         })
         .then((idea) => {
@@ -132,10 +131,9 @@ describe('Idea Page', () => {
         })
         .then((phase) => {
           return cy.apiCreateIdea({
-            projectId,
+            phaseId: phase.body.data.id,
             ideaTitle,
             ideaContent,
-            phaseIds: [phase.body.data.id],
           });
         })
         .then((idea) => {
@@ -195,12 +193,11 @@ describe('Idea Page', () => {
         })
         .then((phase) => {
           return cy.apiCreateIdea({
-            projectId,
+            phaseId: phase.body.data.id,
             ideaTitle,
             ideaContent,
             locationGeoJSON,
             locationDescription,
-            phaseIds: [phase.body.data.id],
           });
         })
         .then((idea) => {
@@ -226,6 +223,7 @@ describe('Idea location', () => {
   let projectId: string = null as any;
   let ideaNoLocationPointId: string = null as any;
   let ideaWithLocationPointId: string = null as any;
+  let phaseId: string;
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
@@ -259,18 +257,18 @@ describe('Idea location', () => {
         });
       })
       .then((phase) => {
+        phaseId = phase.body.data.id;
         return cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: ideaNoLocationPointTitle,
           ideaContent,
           locationDescription,
-          phaseIds: [phase.body.data.id],
         });
       })
       .then((idea) => {
         ideaNoLocationPointId = idea.body.data.id;
         return cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle: ideaWithLocationPointTitle,
           ideaContent,
           locationGeoJSON,

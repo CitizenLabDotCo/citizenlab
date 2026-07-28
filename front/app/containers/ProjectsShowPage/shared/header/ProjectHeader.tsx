@@ -11,21 +11,12 @@ import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocalize from 'hooks/useLocalize';
-import useParallelParticipation from 'hooks/useParallelParticipation';
-
 import { adminProjectsProjectLink } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
-import ProjectContentViewer from 'components/DescriptionBuilder/ContentViewer/ProjectContentViewer';
 import FollowUnfollow from 'components/FollowUnfollow';
-import {
-  HeaderImage,
-  HeaderImageContainer,
-} from 'components/ProjectableHeader';
 import ProjectPageContentViewer from 'components/ProjectPageBuilder/ContentViewer';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -35,24 +26,17 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import ProjectArchivedIndicator from './ProjectArchivedIndicator';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
-import ProjectInfo from './ProjectInfo';
 import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
-const Container = styled.div<{ $flushBottom: boolean }>`
+const Container = styled.div`
   padding-top: 30px;
-  padding-bottom: ${({ $flushBottom }) => ($flushBottom ? '0px' : '65px')};
+  padding-bottom: 0px;
   background: #fff;
   position: relative;
   z-index: 2;
 
   ${media.phone`
     padding-top: 30px;
-  `}
-  ${({ $flushBottom }) =>
-    $flushBottom
-      ? ''
-      : media.phone`
-    padding-bottom: 35px;
   `}
 `;
 
@@ -73,28 +57,17 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isPhoneOrSmaller = useBreakpoint('phone');
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
-  const projectDescriptionBuilderEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
-  const parallelParticipation = useParallelParticipation();
   const { data: project } = useProjectById(projectId);
   const { data: authUser } = useAuthUser();
   const projectFolderId = project?.data.attributes.folder_id;
 
   if (project) {
     const projectHeaderImageLargeUrl = project.data.attributes.header_bg.large;
-    const projectHeaderImageAltText = localize(
-      project.data.attributes.header_bg_alt_text_multiloc
-    );
     const userCanEditProject =
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
 
     return (
-      <Container
-        className={className || ''}
-        $flushBottom={parallelParticipation}
-      >
+      <Container className={className || ''}>
         <ContentContainer maxWidth={maxPageWidth}>
           <Box
             display="flex"
@@ -138,19 +111,6 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               />
             </Box>
           </Box>
-          {!parallelParticipation && projectHeaderImageLargeUrl && (
-            <HeaderImageContainer>
-              <HeaderImage
-                id="e2e-project-header-image"
-                src={projectHeaderImageLargeUrl}
-                cover={true}
-                fadeIn={false}
-                isLazy={false}
-                placeholderBg="transparent"
-                alt={projectHeaderImageAltText}
-              />
-            </HeaderImageContainer>
-          )}
           {!isSmallerThanTablet && (
             <ProjectArchivedIndicator
               projectId={projectId}
@@ -165,20 +125,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               mt={projectHeaderImageLargeUrl ? '-20px' : '0px'}
             />
           )}
-          {parallelParticipation ? (
-            <ProjectPageContentViewer projectId={project.data.id} />
-          ) : (
-            <>
-              {!projectDescriptionBuilderEnabled && (
-                <ProjectInfo projectId={projectId} />
-              )}
-              <ProjectContentViewer
-                projectId={project.data.id}
-                projectTitle={project.data.attributes.title_multiloc}
-                enabled={project.data.attributes.uses_content_builder}
-              />
-            </>
-          )}
+          <ProjectPageContentViewer projectId={project.data.id} />
         </ContentContainer>
       </Container>
     );

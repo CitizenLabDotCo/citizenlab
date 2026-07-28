@@ -190,6 +190,7 @@ lv-LV:
       new_email_confirmation: Jaunās e-pasta adreses apstiprinājuma kods
       new_idea_for_admin_prescreening: Jauns ieguldījums, kam nepieciešams apstiprinājums projektā, kuru es moderēju
       new_idea_for_admin_published: Jaunie publicētie ieguldījumi projektā, kuru es vadu
+      new_phone_confirmation: Jauns tālruņa apstiprinājuma kods
       official_feedback_on_idea_you_follow: Atjaunināt ideju, kurai sekojat
       password_reset: Paroles atiestatīšana
       project_folder_moderation_rights_received: Saņemtās mapju pārvaldnieka tiesības
@@ -202,6 +203,7 @@ lv-LV:
       project_review_state_change: Projekts apstiprināts
       proposal_expired_for_admin: Priekšlikuma termiņš ir beidzies, nesasniedzot balsošanas slieksni
       screening_digest: Iknedēļas skrīninga atgādinājums
+      sms_manual: Oficiālas SMS ziņas
       space_moderation_rights_received: Saņemtas telpas pārvaldnieka tiesības
       status_change_on_idea_you_follow: Idejas statusa maiņa, kurai jūs sekojat
       survey_submitted: Iesniegtais apsekojums
@@ -534,6 +536,8 @@ lv-LV:
       title: Jūsu platformā ir publicēts jauns ieguldījums
       today: Šodien
       yesterday: Vakar
+    new_phone_confirmation:
+      sms_body: Jūsu apstiprinājuma kods ir %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Dodieties uz šo ievades
       event_description: '%{feedback_author_name} sniedza atjauninātu informāciju par "%{input_title}".'

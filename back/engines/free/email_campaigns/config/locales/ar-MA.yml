@@ -190,6 +190,7 @@ ar-MA:
       new_email_confirmation: رمز تأكيد البريد الإلكتروني الجديد
       new_idea_for_admin_prescreening: مدخلات جديدة تتطلب الموافقة في مشروع أقوم بإدارته
       new_idea_for_admin_published: مدخلات منشورة جديدة في مشروع أقوم بإدارته
+      new_phone_confirmation: رمز جديد لتأكيد رقم الهاتف
       official_feedback_on_idea_you_follow: تحديث على فكرة تتابعها
       password_reset: تمت إعادة تعيين كلمة المرور
       project_folder_moderation_rights_received: تم استلام حقوق الإشراف على مجلد المشروع
@@ -202,6 +203,7 @@ ar-MA:
       project_review_state_change: تمت الموافقة على المشروع
       proposal_expired_for_admin: انتهت صلاحية المقترح دون الوصول إلى عتبة التصويت
       screening_digest: تذكير بالفحص الأسبوعي
+      sms_manual: رسائل SMS رسمية
       space_moderation_rights_received: تم استلام صلاحيات مسير فضاء
       status_change_on_idea_you_follow: تغيير حالة الفكرة التي تتابعها
       survey_submitted: تم تقديم الاستطلاع
@@ -534,6 +536,8 @@ ar-MA:
       title: تم نشر مدخلات جديدة على منصتك
       today: اليوم
       yesterday: أمس
+    new_phone_confirmation:
+      sms_body: رمز التأكيد الخاص بك هو %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: انتقل إلى هذا الإدخال
       event_description: "%{feedback_author_name} أعطى تحديثًا حول '%{input_title}'."

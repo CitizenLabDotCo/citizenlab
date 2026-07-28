@@ -270,6 +270,15 @@ tr-TR:
     proposals:
       title: Öneriler
   pdf_export:
+    input_responses:
+      date: Tarih
+      no_answer: (Yanıt yok)
+      prepared_by: Hazırlayan
+      report_label: Yanıt raporu
+      respondent: Katılımcı %{number}
+      response_count:
+        one: '%{count} yanıt'
+        other: '%{count} yanıt'
     survey_responses:
       date: Tarih
       no_answer: (Yanıt yok)

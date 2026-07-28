@@ -132,7 +132,7 @@ describe('Survey question widget', () => {
                   {
                     email,
                     password,
-                    project_id: projectId,
+                    phase_id: surveyPhaseId,
                     fields: {
                       [selectField.attributes.key]: selectAnswerKeys[0],
                       [multiSelectField.attributes.key]: [

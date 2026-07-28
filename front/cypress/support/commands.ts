@@ -11,6 +11,10 @@ import { Multiloc } from '../../app/typings';
 
 import { jwtDecode } from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
+import {
+  IPermissionUpdate,
+  IPhasePermissionAction,
+} from '../../app/api/phase_permissions/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -68,6 +72,7 @@ declare global {
       apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
+      apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
@@ -131,6 +136,15 @@ export function randomEmail() {
     .toString(36)
     .substr(2, 12)
     .toLowerCase()}.com`;
+}
+
+export function randomPhoneNumber() {
+  // NANP toll-free number: +1 800 NXX-XXXX. libphonenumber (and therefore
+  // Phonelib, used by the backend to validate) requires the exchange code
+  // (the digit right after 800) to be 2-9 — a leading 0 or 1 is invalid.
+  // So the 7-digit block must start with 2-9: range 2000000..9999999.
+  const randomDigits = Math.floor(Math.random() * 8000000) + 2000000;
+  return `+1800${randomDigits}`; // Returns the number in E.164 format
 }
 
 function unregisterServiceWorkers() {
@@ -672,7 +686,7 @@ function apiCreateInputTopic({
 }
 
 type IdeaType = {
-  projectId: string;
+  phaseId: string;
   ideaTitle: string;
   ideaContent: string;
   locationGeoJSON?: { type: string; coordinates: number[] };
@@ -680,12 +694,11 @@ type IdeaType = {
   jwt?: string;
   budget?: number;
   anonymous?: boolean;
-  phaseIds?: string[];
   topicIds?: string[];
 };
 
 function apiCreateIdea({
-  projectId,
+  phaseId,
   ideaTitle,
   ideaContent,
   locationGeoJSON,
@@ -693,7 +706,6 @@ function apiCreateIdea({
   jwt,
   budget,
   anonymous,
-  phaseIds,
   topicIds,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
@@ -703,10 +715,9 @@ function apiCreateIdea({
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/ideas',
+      url: `web_api/v1/phases/${phaseId}/inputs`,
       body: {
         idea: {
-          project_id: projectId,
           publication_status: 'published',
           title_multiloc: {
             en: ideaTitle,
@@ -720,7 +731,6 @@ function apiCreateIdea({
           location_description: locationDescription,
           budget,
           anonymous,
-          phase_ids: phaseIds,
           topic_ids: topicIds,
         },
       },
@@ -1309,6 +1319,28 @@ function apiAddPoll(
   });
 }
 
+function apiCreateCause(phaseId: string, title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/causes',
+      body: {
+        cause: {
+          phase_id: phaseId,
+          title_multiloc: { en: title },
+          description_multiloc: { en: title },
+        },
+      },
+    });
+  });
+}
+
 function apiCreatePhase({
   projectId,
   title,
@@ -1323,6 +1355,7 @@ function apiCreatePhase({
   surveyService,
   votingMaxTotal,
   allow_anonymous_participation,
+  allow_multiple_responses,
   votingMethod,
   votingMaxVotesPerIdea,
   votingMinTotal,
@@ -1347,6 +1380,7 @@ function apiCreatePhase({
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
+  allow_multiple_responses?: boolean;
   votingMethod?: VotingMethod;
   votingMaxVotesPerIdea?: number;
   votingMinTotal?: number;
@@ -1384,6 +1418,7 @@ function apiCreatePhase({
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
+          allow_multiple_responses: allow_multiple_responses,
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
@@ -1628,19 +1663,9 @@ function apiRemoveAllReports() {
   });
 }
 
-type IPhasePermissionAction =
-  | 'posting_idea'
-  | 'reacting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'voting'
-  | 'annotating_document'
-  | 'attending_event';
-
 type ApiSetPermissionTypeProps = {
   phaseId: string;
-  permissionBody?: any;
+  permissionBody?: Partial<IPermissionUpdate>;
   action: IPhasePermissionAction;
 };
 function apiSetPhasePermission({
@@ -1921,12 +1946,12 @@ function apiCreateSurveyResponse(
   {
     email,
     password,
-    project_id,
+    phase_id,
     fields,
   }: {
     email?: string;
     password?: string;
-    project_id: string;
+    phase_id: string;
     fields: Record<string, any>;
   },
   jwt?: any
@@ -1938,21 +1963,11 @@ function apiCreateSurveyResponse(
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/ideas',
+      url: `web_api/v1/phases/${phase_id}/inputs`,
       body: {
         idea: {
           publication_status: 'published',
-          project_id,
           ...fields,
-        },
-        method: 'POST',
-        url: 'web_api/v1/ideas',
-        body: {
-          idea: {
-            publication_status: 'published',
-            project_id,
-            ...fields,
-          },
         },
       },
     });
@@ -2394,6 +2409,7 @@ Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
+Cypress.Commands.add('apiCreateCause', apiCreateCause);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setModeratorLoginCookie', setModeratorLoginCookie);
 Cypress.Commands.add(

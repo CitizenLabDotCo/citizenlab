@@ -1,4 +1,4 @@
-import { ICampaignData } from 'api/campaigns/types';
+import { IEmailCampaignData } from 'api/campaigns/email/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -48,7 +48,7 @@ export const sortByCampaignOrdering = (a: CampaignData, b: CampaignData) =>
   a.attributes.campaign_ordering - b.attributes.campaign_ordering;
 
 export const stringifyCampaignFields = (
-  campaign: ICampaignData,
+  campaign: IEmailCampaignData,
   localize: Localize
 ) => {
   const attrs = campaign.attributes;

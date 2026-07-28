@@ -31,8 +31,6 @@ module ContentBuilder
     }.freeze
 
     def provision_for(buildable)
-      return unless feature_activated?
-
       ensure_on_content_builder!(buildable)
     end
 
@@ -40,8 +38,6 @@ module ContentBuilder
     # Content Builder. A failure on one buildable is reported and skipped rather
     # than aborting tenant creation.
     def provision_all_descriptions!
-      return unless feature_activated?
-
       Project.find_each { |project| safely_ensure_on_content_builder(project) }
       ProjectFolders::Folder.find_each { |folder| safely_ensure_on_content_builder(folder) }
     end
@@ -132,10 +128,6 @@ module ContentBuilder
         enabled: true,
         craftjs_json: ProjectPageLayoutService.new.craftjs_json_for(project)
       )
-    end
-
-    def feature_activated?
-      AppConfiguration.instance.feature_activated?('project_description_builder')
     end
 
     def safely_ensure_on_content_builder(buildable)

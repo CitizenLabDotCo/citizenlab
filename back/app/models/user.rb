@@ -35,10 +35,14 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  last_active_at            :datetime
 #  imported                  :boolean          default(FALSE), not null
 #  token_expiry_key          :string
+#  phone                     :string
+#  new_phone                 :string
+#  phone_confirmed_at        :datetime
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
+#  index_users_on_phone                      (phone) UNIQUE WHERE (phone IS NOT NULL)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_slug                       (slug) UNIQUE
 #  index_users_on_token_expiry_key           (token_expiry_key)
@@ -197,6 +201,8 @@ class User < ApplicationRecord
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?
   before_validation :sanitize_last_name, if: :last_name_changed?
+  before_validation :normalize_phone, if: :phone_changed?
+  before_validation :normalize_new_phone, if: :new_phone_changed?
 
   # auto_confirm_on_invite_accept must run before complete_registration, as the former can set confirmation_required to false,
   # which is a condition for complete_registration to set registration_completed_at
@@ -212,6 +218,7 @@ class User < ApplicationRecord
   has_many :confirmations, dependent: :destroy
   has_one :email_confirmation, dependent: :destroy
   has_one :new_email_confirmation, dependent: :destroy
+  has_one :new_phone_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   after_create :create_confirmations
   before_destroy :destroy_baskets
@@ -228,6 +235,9 @@ class User < ApplicationRecord
   validates :locale, presence: true, unless: :invite_pending?
   validates :email, uniqueness: true, allow_nil: true
   validates :email, format: { with: EMAIL_REGEX }, allow_nil: true
+  validates :phone, uniqueness: true, allow_nil: true
+  validate :validate_phone_format
+  validate :validate_new_phone_format
   validates :new_email, format: { with: EMAIL_REGEX }, allow_nil: true
   validates :first_name, :last_name, format: { without: /@/ }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
@@ -347,23 +357,12 @@ class User < ApplicationRecord
   end
 
   def active?
-    registered? && !blocked? && !confirmation_required?
+    registered? && !blocked? && authenticated_at_least_once?
   end
 
   def blank_and_can_be_deleted?
     # atm it can be true only for users registered with ClaveUnica and MitID who haven't entered email
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
-  end
-
-  # True if the user has not yet confirmed their email address.
-  #
-  # Exception: if the user registered via SSO and the SSO did not return an email,
-  # we treat them as not requiring confirmation unless they have actively requested
-  # to set an email.
-  def confirmation_required?
-    return false if sso_user_without_email?
-
-    confirmation_required
   end
 
   def show_public_profile?
@@ -402,6 +401,41 @@ class User < ApplicationRecord
     errors.add(:email, :taken, value: new_email)
   end
 
+  def normalize_phone
+    normalize_phone_field(:phone)
+  end
+
+  def normalize_new_phone
+    normalize_phone_field(:new_phone)
+  end
+
+  def validate_phone_format
+    validate_phone_field_format(:phone)
+  end
+
+  def validate_new_phone_format
+    validate_phone_field_format(:new_phone)
+  end
+
+  # Store phone numbers in canonical E.164 form so the uniqueness constraint and
+  # SMS delivery operate on a single normalized representation.
+  def normalize_phone_field(attribute)
+    if self[attribute].blank?
+      self[attribute] = nil
+      return
+    end
+
+    normalized = Phonelib.parse(self[attribute]).e164.presence
+    self[attribute] = normalized if normalized
+  end
+
+  def validate_phone_field_format(attribute)
+    value = self[attribute]
+    return if value.nil? || Phonelib.valid?(value)
+
+    errors.add(attribute, :invalid, value: value)
+  end
+
   def validate_not_duplicate_email
     return unless email
 
@@ -436,7 +470,7 @@ class User < ApplicationRecord
 
   # NOTE: registration_completed_at_changed? added to allow tests to change this date manually
   def complete_registration
-    return if confirmation_required? || invite_pending? || registration_completed_at_changed?
+    return if !authenticated_at_least_once? || invite_pending? || registration_completed_at_changed?
 
     self.registration_completed_at ||= Time.now
   end
@@ -512,10 +546,7 @@ class User < ApplicationRecord
   def create_confirmations
     EmailConfirmation.create!(user: self)
     NewEmailConfirmation.create!(user: self)
-  end
-
-  def sso_user_without_email?
-    sso? && verified && email.nil? && new_email.nil?
+    NewPhoneConfirmation.create!(user: self)
   end
 
   def remove_initiated_notifications
@@ -528,6 +559,13 @@ class User < ApplicationRecord
 
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
+  end
+
+  def authenticated_at_least_once?
+    # True if user authenticated at least once,
+    # either by confirming their email or by signing in with SSO
+    # and being verified.
+    !confirmation_required? || (sso? && verified)
   end
 end
 

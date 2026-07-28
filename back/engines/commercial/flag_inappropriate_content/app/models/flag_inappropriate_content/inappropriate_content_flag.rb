@@ -19,7 +19,7 @@
 #
 module FlagInappropriateContent
   class InappropriateContentFlag < ApplicationRecord
-    TOXICITY_LABELS = %w[insult harmful sexually_explicit spam].freeze
+    TOXICITY_LABELS = %w[insult harmful sexually_explicit spam guideline_violation].freeze
 
     belongs_to :flaggable, polymorphic: true
 

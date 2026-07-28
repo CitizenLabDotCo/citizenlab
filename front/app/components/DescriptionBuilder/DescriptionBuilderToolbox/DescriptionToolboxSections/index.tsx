@@ -19,7 +19,7 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
-
+import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -27,6 +27,9 @@ const DescriptionToolboxSections = () => {
   const { formatMessage } = useIntl();
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
+  });
+  const projectStaticPagesEnabled = useFeatureFlag({
+    name: 'project_static_pages',
   });
 
   return (
@@ -72,15 +75,14 @@ const DescriptionToolboxSections = () => {
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
         />
-        { isHtmlBlockMultilocEnabled ? (
+        {isHtmlBlockMultilocEnabled ? (
           <DraggableElement
             id="e2e-draggable-html-block"
             component={<HtmlBlockMultiloc />}
             icon="code"
             label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
           />
-        ) : null
-        }
+        ) : null}
         <DraggableElement
           id="e2e-draggable-button"
           component={
@@ -97,9 +99,17 @@ const DescriptionToolboxSections = () => {
         <DraggableElement
           id="e2e-draggable-file-attachment"
           component={<FileAttachment />}
-          icon="file"
+          icon="paperclip"
           label={formatMessage(FileAttachment.craft.custom.title)}
         />
+        {projectStaticPagesEnabled && (
+          <DraggableElement
+            id="e2e-draggable-page-link"
+            component={<PageLink />}
+            icon="file"
+            label={formatMessage(PageLink.craft.custom.title)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc />}

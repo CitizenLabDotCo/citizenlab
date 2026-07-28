@@ -107,7 +107,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def show?
-    return false if Permissions::ProjectPermissionsService.new(record, user).project_visible_disabled_reason
+    return false if project_not_visible_to_user?
 
     active_moderator? || project_published_or_archived? || project_preview?
   end
@@ -247,6 +247,13 @@ class ProjectPolicy < ApplicationPolicy
 
   def project_published_or_archived?
     record.admin_publication.published? || record.admin_publication.archived?
+  end
+
+  def project_not_visible_to_user?
+    return false if user && UserRoleService.new.can_moderate?(record, user)
+
+    record.visible_to == 'admins' ||
+      (record.visible_to == 'groups' && !user&.in_any_groups?(record.groups))
   end
 end
 

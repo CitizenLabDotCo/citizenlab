@@ -11,7 +11,6 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
-import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
@@ -48,7 +47,6 @@ const ProjectPageBuilderPage = ({
   titleMultiloc,
 }: Props) => {
   const locale = useLocale();
-  const parallelParticipation = useParallelParticipation();
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const { pathname } = useLocation();
@@ -72,8 +70,7 @@ const ProjectPageBuilderPage = ({
     [layout]
   );
 
-  const builderVisible =
-    parallelParticipation && pathname.includes('admin/project-page-builder');
+  const builderVisible = pathname.includes('admin/project-page-builder');
 
   // DO NOT REMOVE THESE useCallbacks, without them the content builder
   // becomes horribly slow

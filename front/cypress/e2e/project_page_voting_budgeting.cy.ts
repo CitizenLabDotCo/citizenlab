@@ -50,11 +50,10 @@ describe('Budgeting project', () => {
         });
         return cy
           .apiCreateIdea({
-            projectId,
+            phaseId: phase.body.data.id,
             ideaTitle,
             ideaContent,
             budget: 100,
-            phaseIds: [phase.body.data.id],
           })
           .then((idea) => {
             ideaId = idea.body.data.id;

@@ -270,6 +270,15 @@ hu-HU:
     proposals:
       title: Javaslatok
   pdf_export:
+    input_responses:
+      date: Dátum
+      no_answer: (Nincs válasz)
+      prepared_by: Készítette
+      report_label: Válaszjelentés
+      respondent: Válaszadó %{number}
+      response_count:
+        one: '%{count} válasz'
+        other: '%{count} válasz'
     survey_responses:
       date: Dátum
       no_answer: (Nincs válasz)

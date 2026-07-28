@@ -1755,7 +1755,6 @@
   "app.containers.IdeaButton.postingInactive": "New submissions are not currently being accepted.",
   "app.containers.IdeaButton.postingMayNotBePermitted": "Please {signInLink} to the platform to see what actions you can take.",
   "app.containers.IdeaButton.postingNoPermission": "New submissions are not currently being accepted",
-  "app.containers.IdeaButton.postingNotYetPossible": "New submissions are not yet being accepted.",
   "app.containers.IdeaButton.signInLinkText": "log in",
   "app.containers.IdeaButton.signUpLinkText": "sign up",
   "app.containers.IdeaButton.submitAnIssue": "Submit an issue",

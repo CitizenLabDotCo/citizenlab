@@ -170,8 +170,7 @@ const FolderDescriptionBuilderToolbox = ({
             icon="code"
             label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
           />
-          )
-        }
+        )}
         <DraggableElement
           id="e2e-draggable-button"
           component={

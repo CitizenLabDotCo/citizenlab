@@ -14,85 +14,61 @@ describe ContentBuilder::DescriptionLayoutService do
   end
 
   describe '#provision_for' do
-    context 'when the project_description_builder feature is enabled' do
-      before do
-        settings = AppConfiguration.instance.settings
-        settings['project_description_builder'] = { 'enabled' => true, 'allowed' => true }
-        AppConfiguration.instance.update!(settings: settings)
-      end
+    it 'creates an enabled, empty description layout for a project with no description' do
+      project = create(:project, description_multiloc: { 'en' => '<p></p>' })
 
-      it 'creates an enabled, empty description layout for a project with no description' do
-        project = create(:project, description_multiloc: { 'en' => '<p></p>' })
+      service.provision_for(project)
 
-        service.provision_for(project)
-
-        layout = project.content_builder_layouts.find_by(code: 'project_description')
-        expect(layout).to be_present
-        expect(layout.enabled).to be(true)
-        expect(layout.content_buildable_type).to eq('Project')
-        expect(layout.craftjs_json).to have_key('ROOT')
-        expect(layout.craftjs_json['ROOT']['nodes']).to eq([])
-      end
-
-      it 'wraps an existing description so a copied/imported one is not hidden behind an empty frame' do
-        project = create(:project, description_multiloc: { 'en' => '<p>Carried over</p>' })
-
-        service.provision_for(project)
-
-        layout = project.content_builder_layouts.find_by(code: 'project_description')
-        node = layout.craftjs_json.values.find do |n|
-          n.is_a?(Hash) && n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TextMultiloc'
-        end
-        expect(node['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
-      end
-
-      it 'also creates an enabled project_page layout with the description in its section' do
-        project = create(:project, description_multiloc: { 'en' => '<p>Carried over</p>' })
-
-        service.provision_for(project)
-
-        layout = project.content_builder_layouts.find_by(code: 'project_page')
-        expect(layout).to be_present
-        expect(layout.enabled).to be(true)
-        expect(layout.content_buildable_type).to eq('Project')
-        section_children = layout.craftjs_json['PROJECT_PAGE_DESCRIPTION']['nodes']
-        expect(layout.craftjs_json[section_children.first]['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
-      end
-
-      it 'creates the default folder layout (title + published projects) for a folder' do
-        folder = create(:project_folder)
-
-        service.provision_for(folder)
-
-        layout = folder.content_builder_layouts.find_by(code: 'project_folder_description')
-        expect(layout).to be_present
-        expect(layout.enabled).to be(true)
-        expect(node_types(layout)).to include('FolderTitle', 'Published')
-      end
-
-      it 'does not create a project_page layout for a folder' do
-        folder = create(:project_folder)
-
-        service.provision_for(folder)
-
-        expect(folder.content_builder_layouts.where(code: 'project_page')).to be_empty
-      end
+      layout = project.content_builder_layouts.find_by(code: 'project_description')
+      expect(layout).to be_present
+      expect(layout.enabled).to be(true)
+      expect(layout.content_buildable_type).to eq('Project')
+      expect(layout.craftjs_json).to have_key('ROOT')
+      expect(layout.craftjs_json['ROOT']['nodes']).to eq([])
     end
 
-    context 'when the project_description_builder feature is disabled' do
-      before do
-        settings = AppConfiguration.instance.settings
-        settings['project_description_builder'] = { 'enabled' => false, 'allowed' => false }
-        AppConfiguration.instance.update!(settings: settings)
+    it 'wraps an existing description so a copied/imported one is not hidden behind an empty frame' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Carried over</p>' })
+
+      service.provision_for(project)
+
+      layout = project.content_builder_layouts.find_by(code: 'project_description')
+      node = layout.craftjs_json.values.find do |n|
+        n.is_a?(Hash) && n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TextMultiloc'
       end
+      expect(node['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
+    end
 
-      it 'does not create a layout' do
-        project = create(:project)
+    it 'also creates an enabled project_page layout with the description in its section' do
+      project = create(:project, description_multiloc: { 'en' => '<p>Carried over</p>' })
 
-        service.provision_for(project)
+      service.provision_for(project)
 
-        expect(project.content_builder_layouts.count).to eq(0)
-      end
+      layout = project.content_builder_layouts.find_by(code: 'project_page')
+      expect(layout).to be_present
+      expect(layout.enabled).to be(true)
+      expect(layout.content_buildable_type).to eq('Project')
+      section_children = layout.craftjs_json['PROJECT_PAGE_DESCRIPTION']['nodes']
+      expect(layout.craftjs_json[section_children.first]['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
+    end
+
+    it 'creates the default folder layout (title + published projects) for a folder' do
+      folder = create(:project_folder)
+
+      service.provision_for(folder)
+
+      layout = folder.content_builder_layouts.find_by(code: 'project_folder_description')
+      expect(layout).to be_present
+      expect(layout.enabled).to be(true)
+      expect(node_types(layout)).to include('FolderTitle', 'Published')
+    end
+
+    it 'does not create a project_page layout for a folder' do
+      folder = create(:project_folder)
+
+      service.provision_for(folder)
+
+      expect(folder.content_builder_layouts.where(code: 'project_page')).to be_empty
     end
   end
 
@@ -219,17 +195,6 @@ describe ContentBuilder::DescriptionLayoutService do
 
       expect(node_types(project.content_builder_layouts.find_by(code: 'project_description')))
         .not_to include('AboutBox', 'TwoColumn')
-    end
-
-    it 'does nothing when the feature is disabled' do
-      settings = AppConfiguration.instance.settings
-      settings['project_description_builder'] = { 'enabled' => false, 'allowed' => false }
-      AppConfiguration.instance.update!(settings: settings)
-      create(:project, description_multiloc: { 'en' => '<p>P</p>' })
-
-      service.provision_all_descriptions!
-
-      expect(ContentBuilder::Layout.where(code: 'project_description').count).to eq(0)
     end
   end
 end

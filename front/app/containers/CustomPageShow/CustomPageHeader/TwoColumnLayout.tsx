@@ -44,7 +44,10 @@ const TwoColumnLayout = ({ pageData }: Props) => {
           hasHeaderBannerImage={imageUrl != null}
           pageAttributes={pageAttributes}
         />
-        <AdminCustomPageEditButton pageId={pageData.id} />
+        <AdminCustomPageEditButton
+          pageId={pageData.id}
+          projectId={pageData.attributes.project_id}
+        />
       </TextWrapper>
     </Container>
   );

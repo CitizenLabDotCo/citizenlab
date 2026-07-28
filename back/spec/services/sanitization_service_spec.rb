@@ -49,6 +49,14 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
+    it 'keeps the start attribute on ordered lists when list feature is enabled' do
+      # The frontend adds `start` to an ordered list that resumes after a bullet
+      # interruption so its numbering stays continuous, matching the editor.
+      input = '<ol start="2"><li>two</li><li>three</li></ol>'
+      features = [:list]
+      expect(service.sanitize(input, features)).to include('start="2"')
+    end
+
     it 'allows decoration to pass through when decoration feature is enabled' do
       input = <<~HTML
         <p>

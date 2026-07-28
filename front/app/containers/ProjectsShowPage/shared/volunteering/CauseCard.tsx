@@ -18,7 +18,8 @@ import { AuthenticationContext } from 'api/authentication/authentication_require
 import { ICauseData } from 'api/causes/types';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
-import { IProject } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import useCustomAccessDeniedMessage from 'hooks/useCustomAccessDeniedMessage';
 
@@ -162,10 +163,10 @@ const ActionWrapper = styled.div`
 interface Props {
   cause: ICauseData;
   className?: string;
-  project: IProject;
+  phase: IPhaseData;
 }
 
-const CauseCard = ({ cause, className, project }: Props) => {
+const CauseCard = ({ cause, className, phase }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
@@ -190,8 +191,7 @@ const CauseCard = ({ cause, className, project }: Props) => {
     params: { cause },
   } as const;
 
-  const { disabled_reason } =
-    project.data.attributes.action_descriptors.volunteering;
+  const { disabled_reason } = getPhaseActionDescriptor(phase, 'volunteering');
 
   const customAccessDeniedMessage = useCustomAccessDeniedMessage({
     phaseId: cause.relationships.phase.data.id,

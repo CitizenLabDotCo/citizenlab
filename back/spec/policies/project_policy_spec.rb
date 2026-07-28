@@ -131,7 +131,7 @@ describe ProjectPolicy do
   end
 
   context 'on a private admins timeline project' do
-    let!(:project) { create(:project_with_phases, visible_to: 'admins') }
+    let!(:project) { create(:private_admins_project) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -196,101 +196,108 @@ describe ProjectPolicy do
     end
   end
 
-  context 'for a visitor on a private groups project' do
-    let!(:user) { nil }
+  context 'on a private groups project' do
     let!(:project) { create(:private_groups_project) }
 
-    it { is_expected.not_to permit(:show)                  }
-    it { is_expected.not_to permit(:create)                }
-    it { is_expected.not_to permit(:update)                }
-    it { is_expected.not_to permit(:reorder)               }
-    it { is_expected.not_to permit(:refresh_preview_token) }
-    it { is_expected.not_to permit(:destroy)               }
-    it { is_expected.not_to permit(:index_xlsx)            }
-    it { is_expected.not_to permit(:votes_by_user_xlsx)    }
-    it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+    context 'for a visitor' do
+      let!(:user) { nil }
 
-    it 'does not index the project' do
-      expect(scope.resolve.size).to eq 0
-    end
-  end
-
-  context "for a user on a private groups project where she's no member of a manual group with access" do
-    let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project) }
-
-    it { is_expected.not_to permit(:show)                  }
-    it { is_expected.not_to permit(:create)                }
-    it { is_expected.not_to permit(:update)                }
-    it { is_expected.not_to permit(:reorder)               }
-    it { is_expected.not_to permit(:refresh_preview_token) }
-    it { is_expected.not_to permit(:destroy)               }
-    it { is_expected.not_to permit(:index_xlsx)            }
-    it { is_expected.not_to permit(:votes_by_user_xlsx)    }
-    it { is_expected.not_to permit(:votes_by_input_xlsx)   }
-
-    it 'does not index the project' do
-      expect(scope.resolve.size).to eq 0
-    end
-
-    it 'does not include the user in the users that have access' do
-      expect(inverse_scope.resolve).not_to include(user)
-    end
-
-    context 'when a valid preview token is provided' do
-      let(:context) { { project_preview_token: project.preview_token } }
-
-      it { is_expected.not_to permit(:show) }
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       it 'does not index the project' do
         expect(scope.resolve.size).to eq 0
       end
     end
-  end
 
-  context "for a user on a private groups project where she's a member of a manual group with access" do
-    let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project, user: user, groups_count: 2) }
+    context "for a user who isn't a member of a group with access" do
+      let!(:user) { create(:user) }
 
-    it { is_expected.to     permit(:show)                  }
-    it { is_expected.not_to permit(:create)                }
-    it { is_expected.not_to permit(:update)                }
-    it { is_expected.not_to permit(:reorder)               }
-    it { is_expected.not_to permit(:refresh_preview_token) }
-    it { is_expected.not_to permit(:destroy)               }
-    it { is_expected.not_to permit(:index_xlsx)            }
-    it { is_expected.not_to permit(:votes_by_user_xlsx)    }
-    it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-    it 'indexes the project' do
-      expect(scope.resolve.size).to eq 1
+      it 'does not index the project' do
+        expect(scope.resolve.size).to eq 0
+      end
+
+      it 'does not include the user in the users that have access' do
+        expect(inverse_scope.resolve).not_to include(user)
+      end
+
+      context 'when a valid preview token is provided' do
+        let(:context) { { project_preview_token: project.preview_token } }
+
+        it { is_expected.not_to permit(:show) }
+
+        it 'does not index the project' do
+          expect(scope.resolve.size).to eq 0
+        end
+      end
     end
 
-    it 'includes the user in the users that have access' do
-      expect(inverse_scope.resolve).to include(user)
+    context "for a user who's a member of a group with access" do
+      let!(:user) { create(:user) }
+      let!(:project) { create(:private_groups_project, user: user, groups_count: 2) }
+
+      it { is_expected.to     permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+
+      it 'indexes the project' do
+        expect(scope.resolve.size).to eq 1
+      end
+
+      it 'includes the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
     end
-  end
 
-  context 'for an admin on a private groups project' do
-    let!(:user) { create(:admin) }
-    let!(:project) { create(:private_groups_project) }
+    context 'for a moderator' do
+      let!(:user) { create(:project_moderator, projects: [project]) }
 
-    it { is_expected.to permit(:show)                  }
-    it { is_expected.to permit(:create)                }
-    it { is_expected.to permit(:update)                }
-    it { is_expected.to permit(:reorder)               }
-    it { is_expected.to permit(:refresh_preview_token) }
-    it { is_expected.to permit(:destroy)               }
-    it { is_expected.to permit(:index_xlsx)            }
-    it { is_expected.to permit(:votes_by_user_xlsx)    }
-    it { is_expected.to permit(:votes_by_input_xlsx)   }
-
-    it 'indexes the project' do
-      expect(scope.resolve.size).to eq 1
+      it { is_expected.to permit(:show) }
     end
 
-    it 'includes the user in the users that have access' do
-      expect(inverse_scope.resolve).to include(user)
+    context 'for an admin' do
+      let!(:user) { create(:admin) }
+
+      it { is_expected.to permit(:show)                  }
+      it { is_expected.to permit(:create)                }
+      it { is_expected.to permit(:update)                }
+      it { is_expected.to permit(:reorder)               }
+      it { is_expected.to permit(:refresh_preview_token) }
+      it { is_expected.to permit(:destroy)               }
+      it { is_expected.to permit(:index_xlsx)            }
+      it { is_expected.to permit(:votes_by_user_xlsx)    }
+      it { is_expected.to permit(:votes_by_input_xlsx)   }
+
+      it 'indexes the project' do
+        expect(scope.resolve.size).to eq 1
+      end
+
+      it 'includes the user in the users that have access' do
+        expect(inverse_scope.resolve).to include(user)
+      end
     end
   end
 

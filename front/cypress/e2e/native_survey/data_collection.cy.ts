@@ -74,7 +74,7 @@ describe('Native survey data collection', () => {
         cy.get(`input#${question3key}`).type('This is an open ended answer');
 
         // Submit survey
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
         cy.dataCy('e2e-submit-form').click();
 
         // Make sure request body contains custom field value
@@ -122,7 +122,7 @@ describe('Native survey data collection', () => {
         // Answer first question and go to next page
         cy.get('fieldset').first().find('input').first().check({ force: true });
         cy.wait(1000);
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitPage1');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitPage1');
         cy.dataCy('e2e-next-page').click();
         cy.wait('@submitPage1').then((interception) => {
           const ideaPayload = interception.request.body.idea;

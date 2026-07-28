@@ -270,6 +270,15 @@ ur-PK:
     proposals:
       title: تجاویز
   pdf_export:
+    input_responses:
+      date: تاریخ
+      no_answer: (کوئی جواب نہیں)
+      prepared_by: تیار کردہ
+      report_label: جوابات کی رپورٹ
+      respondent: جواب دہندہ %{number}
+      response_count:
+        one: '%{count} جواب'
+        other: '%{count} جوابات'
     survey_responses:
       date: تاریخ
       no_answer: (کوئی جواب نہیں)

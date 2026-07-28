@@ -55,7 +55,7 @@ class Confirmation < ApplicationRecord
   end
 
   def self.generate_code
-    Rails.env.development? ? '1234' : rand.to_s[2..5]
+    Rails.env.development? ? '1234' : format('%04d', rand(10_000))
   end
 
   protected
@@ -68,5 +68,15 @@ class Confirmation < ApplicationRecord
 
     User.where(id: other_user_ids).update_all(new_email: nil, updated_at: Time.zone.now)
     NewEmailConfirmation.where(user_id: other_user_ids).update_all(code: nil, updated_at: Time.zone.now)
+  end
+
+  # Cancel pending phone-change requests on OTHER users that target `phone`,
+  # so they don't end up with an invalid (now-taken) new_phone.
+  def cancel_other_users_pending_phone_change(phone)
+    other_user_ids = User.where(new_phone: phone).where.not(id: user_id).pluck(:id)
+    return if other_user_ids.empty?
+
+    User.where(id: other_user_ids).update_all(new_phone: nil, updated_at: Time.zone.now)
+    NewPhoneConfirmation.where(user_id: other_user_ids).update_all(code: nil, updated_at: Time.zone.now)
   end
 end

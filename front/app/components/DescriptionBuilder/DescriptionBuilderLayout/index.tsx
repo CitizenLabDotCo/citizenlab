@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { useLocation } from 'utils/router';
 
 type DescriptionBuilderLayoutProps = {
@@ -14,11 +12,9 @@ const DescriptionBuilderLayout: React.FC<DescriptionBuilderLayoutProps> = ({
   onMount,
 }) => {
   const { pathname } = useLocation();
-  const featureEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
-  const projectDescriptionBuilderLayoutVisible =
-    featureEnabled && pathname.includes('admin/project-description-builder');
+  const projectDescriptionBuilderLayoutVisible = pathname.includes(
+    'admin/project-description-builder'
+  );
 
   useEffect(() => {
     onMount(projectDescriptionBuilderLayoutVisible);

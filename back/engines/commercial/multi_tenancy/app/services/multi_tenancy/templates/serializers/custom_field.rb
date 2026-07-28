@@ -10,6 +10,7 @@ module MultiTenancy
           code
           description_multiloc
           enabled
+          hidden
           input_type
           key
           maximum

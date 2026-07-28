@@ -112,4 +112,26 @@ describe Volunteering::VolunteerPolicy do
       end
     end
   end
+
+  context 'on a volunteer for a cause in a past phase' do
+    let(:project) { create(:project) }
+    let(:phase) { create(:volunteering_phase, project: project, start_at: 2.months.ago, end_at: 1.month.ago) }
+    let(:cause) { create(:cause, phase: phase) }
+    let!(:volunteer) { create(:volunteer, cause: cause) }
+    let(:user) { volunteer.user }
+
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:destroy) }
+  end
+
+  context 'on a volunteer for a cause in a future phase' do
+    let(:project) { create(:project) }
+    let(:phase) { create(:volunteering_phase, project: project, start_at: 1.month.from_now, end_at: 2.months.from_now) }
+    let(:cause) { create(:cause, phase: phase) }
+    let!(:volunteer) { create(:volunteer, cause: cause) }
+    let(:user) { volunteer.user }
+
+    it { is_expected.not_to permit(:create) }
+    it { is_expected.not_to permit(:destroy) }
+  end
 end

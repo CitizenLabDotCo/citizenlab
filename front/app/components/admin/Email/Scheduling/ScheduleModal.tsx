@@ -6,8 +6,11 @@ import isSameDay from 'date-fns/isSameDay';
 import moment from 'moment-timezone';
 import styled from 'styled-components';
 
-import { ICampaign, CampaignFormValues } from 'api/campaigns/types';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
+import {
+  IEmailCampaign,
+  EmailCampaignFormValues,
+} from 'api/campaigns/email/types';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import TimeInput from 'components/admin/TimeSelection/TimeInput';
@@ -27,7 +30,7 @@ const StyledForm = styled(Form)`
 `;
 
 interface Props {
-  campaign: ICampaign;
+  campaign: IEmailCampaign;
   timeZone: string | undefined;
   opened: boolean;
   onClose: () => void;
@@ -36,7 +39,7 @@ interface Props {
 const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
-    useUpdateCampaign();
+    useUpdateEmailCampaign();
 
   const now = timeZone ? moment().tz(timeZone) : moment();
   const tenantTimeNow = timeZone
@@ -117,7 +120,7 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     updateCampaign(
       {
         id: campaign.data.id,
-        campaign: { scheduled_at: scheduledAt } as CampaignFormValues,
+        campaign: { scheduled_at: scheduledAt } as EmailCampaignFormValues,
       },
       {
         onSuccess: handleClose,

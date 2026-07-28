@@ -8,8 +8,8 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import useCampaigns from 'api/campaigns/useCampaigns';
-import { isDraft } from 'api/campaigns/util';
+import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
@@ -28,7 +28,7 @@ import NewCampaignButton from './NewCampaignButton';
 const CustomEmails = () => {
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useCampaigns({
+  const { data: campaigns, fetchNextPage } = useEmailCampaigns({
     context: { projectId },
     pageSize: 10,
     manual: true,
@@ -95,7 +95,8 @@ const CustomEmails = () => {
         <Box background={colors.white} p="40px">
           <List key={campaignsList.data.map((c) => c.id).join()}>
             {campaignsList.data.map((campaign) =>
-              isDraft(campaign) || campaign.attributes.scheduled_at ? (
+              isEmailCampaignDraft(campaign) ||
+              campaign.attributes.scheduled_at ? (
                 <DraftCampaignRow
                   key={campaign.id}
                   campaign={campaign}

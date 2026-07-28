@@ -1139,9 +1139,34 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.EsriMap.drawOnMap": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.868209Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.EsriMap.drawOnMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.868209Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.EsriMap.exploreMap": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.868209Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.EsriMap.exploreMapTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.868209Z",
+    "verified_by": "Luuc"
+  },
   "app.components.EsriMap.mapAriaLabel": {
     "state": "verified",
     "verified_at": "2026-04-29T17:04:19.390827Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.EsriMap.mapInteractionToggleAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:05:12.868209Z",
     "verified_by": "Luuc"
   },
   "app.components.EsriMap.mapLayerListAriaLabel": {
@@ -2098,6 +2123,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.PasswordInput.passwordRequiredError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T04:19:55.226472Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.PasswordInput.passwordStrengthError": {
+    "state": "verified",
+    "verified_at": "2026-06-25T04:19:55.226472Z",
+    "verified_by": "Pauline"
   },
   "app.components.PasswordInput.passwordStrengthTooltip1": {
     "state": "verified",
@@ -3704,6 +3739,16 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.admin.UserFilterConditions.field_imported": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:05:27.321134Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.admin.UserFilterConditions.field_last_active_at": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:05:27.321134Z",
+    "verified_by": "Luuc"
+  },
   "app.components.admin.UserFilterConditions.field_lives_in": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -3848,6 +3893,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_is_imported": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:05:27.321134Z",
+    "verified_by": "Luuc"
   },
   "app.components.admin.UserFilterConditions.predicate_is_larger_than": {
     "state": "verified",
@@ -4008,6 +4058,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.admin.UserFilterConditions.predicate_not_is_imported": {
+    "state": "verified",
+    "verified_at": "2026-07-20T21:05:27.321134Z",
+    "verified_by": "Luuc"
   },
   "app.components.admin.UserFilterConditions.predicate_not_is_moderator": {
     "state": "verified",
@@ -6599,6 +6654,16 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.confirmYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -6614,10 +6679,30 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingMethod": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:54.948848Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.actionRequiresVerificationUsingOneOf2": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:54.948848Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.federaTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:54.948848Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:33:54.948848Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
@@ -6644,6 +6729,26 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumberFormatError": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -6659,15 +6764,40 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.CampaignsConsentForm.ally_categoryLabel2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.CampaignsConsentForm.emailNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.CampaignsConsentForm.messageError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.CampaignsConsentForm.messageError2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.CampaignsConsentForm.messageSuccess": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CampaignsConsentForm.messageSuccess2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
   },
   "app.containers.CampaignsConsentForm.notificationsSubTitle": {
     "state": "verified",
@@ -6678,6 +6808,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.CampaignsConsentForm.smsNotificationsSubTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.CampaignsConsentForm.smsNotificationsTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
   },
   "app.containers.CampaignsConsentForm.submit": {
     "state": "verified",
@@ -10439,6 +10579,131 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.PhoneChange.backToProfile": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.confirmationModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.currentPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.helmetDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.helmetTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.newPhoneLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneEmptyError": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneInvalid2": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneTaken": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneUnknownError": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneUpdateCancelled": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneUpdateCancelledDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.submitButton": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.titleAddPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.titleChangePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.updateSuccessful": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.anSMSCodeHasBeenSent": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.changeYourNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.codeInput": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.codeMustHaveFourDigits": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.confirmationCodeSent": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.didntGetAnSMS": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.sendNewCode": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.verifyAndContinue": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneConfirmation.wrongNumber": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.ProjectFolderCards.allProjects": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -10488,6 +10753,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.ProjectPageBuilder.projectHomepage": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:52.634135Z",
+    "verified_by": "Luuc"
   },
   "app.containers.ProjectPageBuilder.projectPageHeading": {
     "state": "verified",
@@ -11569,6 +11839,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersEditPage.addPhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.UsersEditPage.becomeVerifiedSubtitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -11613,6 +11888,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.UsersEditPage.changePhone": {
+    "state": "verified",
+    "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
   },
   "app.containers.UsersEditPage.clickHereToUpdateVerification": {
     "state": "verified",
@@ -12724,6 +13004,21 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.errors.new_phone_blank": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
+  "app.errors.new_phone_invalid": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
+  "app.errors.new_phone_taken": {
+    "state": "verified",
+    "verified_at": "2026-07-21T19:53:38.720115Z",
+    "verified_by": "Luuc"
+  },
   "app.errors.no_invites_specified": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -12808,6 +13103,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.errors.too_weak": {
+    "state": "verified",
+    "verified_at": "2026-06-25T04:19:55.226472Z",
+    "verified_by": "Pauline"
   },
   "app.errors.uncaught_error": {
     "state": "verified",
@@ -13644,6 +13944,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.utils.inactivePhase": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:36:03.928058Z",
+    "verified_by": "Luuc"
+  },
   "app.utils.notInGroup": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -13678,6 +13983,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.utils.projectInactive": {
+    "state": "verified",
+    "verified_at": "2026-07-10T12:36:03.928058Z",
+    "verified_by": "Luuc"
   },
   "app.utils.votingMethodUtils.budgetParticipationEnded1": {
     "state": "verified",

@@ -65,19 +65,19 @@ const PhaseParticipationContent = ({
             votingMethod={votingMethod}
           />
         )}
-        <PhaseSurvey project={project} phaseId={phaseId} />
+        <PhaseSurvey phaseId={phaseId} />
         {participationMethod === 'document_annotation' && (
-          <PhaseDocumentAnnotation phase={phase} project={project} />
+          <PhaseDocumentAnnotation phase={phase} />
         )}
         <PhasePoll projectId={projectId} phaseId={phaseId} />
-        <PhaseVolunteering projectId={projectId} phaseId={phaseId} />
+        <PhaseVolunteering phaseId={phaseId} />
         {showIdeas && <PhaseIdeas projectId={projectId} phaseId={phaseId} />}
         {showVotingResults && votingMethod && (
           <VotingResults phaseId={phaseId} votingMethod={votingMethod} />
         )}
         {participationMethod === 'common_ground' && (
           <CommonGroundTabs
-            phaseId={phaseId}
+            phase={phase}
             project={project}
             isPastPhase={isPastPhase}
           />

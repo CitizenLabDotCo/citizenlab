@@ -155,6 +155,39 @@ RSpec.describe StaticPage do
     end
   end
 
+  describe 'project association' do
+    it 'is valid without a project (global page)' do
+      expect(build(:static_page)).to be_valid
+    end
+
+    it 'is valid with a project (project-scoped page)' do
+      expect(build(:static_page, :project_scoped)).to be_valid
+    end
+
+    it 'is destroyed when its project is destroyed' do
+      page = create(:static_page, :project_scoped)
+      expect { page.project.destroy! }.to change(described_class, :count).by(-1)
+    end
+
+    it 'is reported as project_scoped only when it has a project' do
+      expect(build(:static_page, :project_scoped).project_scoped?).to be(true)
+      expect(build(:static_page).project_scoped?).to be(false)
+    end
+  end
+
+  describe 'nav bar item restrictions' do
+    it 'cannot have a nav bar item when project-scoped' do
+      page = build(:static_page, :project_scoped, nav_bar_item: build(:nav_bar_item, code: 'custom'))
+      expect(page).to be_invalid
+      expect(page.errors[:nav_bar_item]).to be_present
+    end
+
+    it 'can have a nav bar item when global' do
+      page = build(:static_page, nav_bar_item: build(:nav_bar_item, code: 'custom'))
+      expect(page).to be_valid
+    end
+  end
+
   describe 'image uploads' do
     subject(:static_page) { build(:static_page) }
 

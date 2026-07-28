@@ -42,7 +42,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   private
 
   def could_modify?
-    active? && owner? && record.reactable.present?
+    active? && owner? && record.reactable.present? && policy_for(record.reactable.project).show?
   end
 
   def upsert_reaction?(mode)

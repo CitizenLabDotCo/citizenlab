@@ -22,8 +22,8 @@ describe Permissions::PermissionsCustomFieldsService do
         expect(fields.pluck(:required)).to contain_exactly(true, false)
       end
 
-      it 'returns non-persisted default fields when permitted_by "verified"' do
-        permission = create(:permission, permitted_by: 'verified', global_custom_fields: true)
+      it 'returns non-persisted default fields when require_verification = true' do
+        permission = create(:permission, permitted_by: 'users', require_verification: true, global_custom_fields: true)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
         expect(fields.map(&:persisted?)).to contain_exactly(false, false)
@@ -44,11 +44,6 @@ describe Permissions::PermissionsCustomFieldsService do
           global_custom_fields: true,
           user_fields_in_form: true
         )
-        expect(service.fields_for_permission(permission)).to be_empty
-      end
-
-      it 'returns no permissions fields when permitted_by "everyone_confirmed_email"' do
-        permission = create(:permission, permitted_by: 'everyone_confirmed_email', global_custom_fields: true)
         expect(service.fields_for_permission(permission)).to be_empty
       end
 
@@ -123,7 +118,7 @@ describe Permissions::PermissionsCustomFieldsService do
       let(:permission) { create(:permission, permitted_by: 'users') }
 
       it 'returns no fields by default for all permitted_by values' do
-        %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
+        %w[everyone users admins_moderators].each do |permitted_by|
           permission.update!(permitted_by: permitted_by, global_custom_fields: false)
           expect(service.fields_for_permission(permission)).to be_empty
         end
@@ -131,7 +126,7 @@ describe Permissions::PermissionsCustomFieldsService do
 
       it 'returns persisted fields for all permitted_by values' do
         domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
-        %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
+        %w[everyone users admins_moderators].each do |permitted_by|
           permission.update!(permitted_by: permitted_by, global_custom_fields: false)
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 1
@@ -204,7 +199,7 @@ describe Permissions::PermissionsCustomFieldsService do
         @domicile_field.update!(enabled: true, required: false)
       end
 
-      context 'when permission is not permitted_by "verified" and there are no groups' do
+      context 'when permission does not have require_verification=true and there are no groups' do
         let(:permission) { create(:permission, permitted_by: 'users') }
 
         it 'returns default fields without those linked to verification' do
@@ -215,11 +210,9 @@ describe Permissions::PermissionsCustomFieldsService do
         end
       end
 
-      context 'when permission is permitted_by "verified"' do
-        let(:permission) { create(:permission, permitted_by: 'verified') }
-
+      context 'when permission has require_verification=true' do
         it 'adds additional fields linked to verification method' do
-          permission = create(:permission, permitted_by: 'verified')
+          permission = create(:permission, permitted_by: 'users', require_verification: true)
           fields = service.fields_for_permission(permission, return_hidden: true)
           expect(fields.pluck(:ordering)).to eq [0, 1]
           expect(fields.pluck(:lock)).to eq ['verification', nil]
@@ -239,7 +232,7 @@ describe Permissions::PermissionsCustomFieldsService do
           expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile gender]
 
           # check has changed after updating to verified permitted_by
-          permission.update!(permitted_by: 'verified')
+          permission.update!(require_verification: true)
           fields = service.fields_for_permission(permission, return_hidden: true)
           expect(fields.pluck(:ordering)).to eq [0, 1]
           expect(fields.pluck(:lock)).to eq ['verification', nil]
@@ -261,8 +254,8 @@ describe Permissions::PermissionsCustomFieldsService do
           expect(fields.pluck(:required)).to eq [false, true]
           expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile gender]
 
-          # check has changed after updating to verified permitted_by
-          permission.update!(permitted_by: 'verified')
+          # check has changed after updating to require_verification
+          permission.update!(require_verification: true)
           fields = service.fields_for_permission(permission, return_hidden: true)
           expect(fields.pluck(:ordering)).to eq [0, 1]
           expect(fields.pluck(:lock)).to eq ['verification', nil]

@@ -17,8 +17,16 @@ module EmailCampaigns
       }
     end
 
-    def preview_command(recipient, _context)
+    def preview_command(recipient, context)
       data = preview_service.preview_data(recipient)
+      # if context is present, check in the custom_form of the context if the idea_images field is present and enabled
+      # if no context, return true to show 'Add an image' by default
+      image_field_presence = if context.present?
+        IdeaCustomFieldsService.new(context.pmethod.custom_form).enabled_fields.any? { |f| f.code == 'idea_images_attributes' }
+      else
+        true
+      end
+
       {
         recipient: recipient,
         event_payload: {
@@ -28,7 +36,8 @@ module EmailCampaigns
           idea_url: data.idea.url,
           idea_images: [],
           input_term: 'idea',
-          project_title_multiloc: data.project.title_multiloc
+          project_title_multiloc: data.project.title_multiloc,
+          image_field_presence: image_field_presence
         }
       }
     end

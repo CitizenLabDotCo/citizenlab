@@ -91,10 +91,8 @@ class McpServer::Tools::GetFormFields < McpServer::BaseTool
   private
 
   def field_schema
-    McpServer::Tools::FormFieldsSchemaBuilder.new(
-      mode: :output,
-      tenant_locales: AppConfiguration.instance.settings.dig('core', 'locales')
-    ).field_schema
+    tenant_locales = AppConfiguration.instance.settings.dig('core', 'locales')
+    McpServer::Tools::FormFieldsSchemaBuilder.new(tenant_locales:).field_schema
   end
 
   class Runner < McpServer::BaseTool::Runner

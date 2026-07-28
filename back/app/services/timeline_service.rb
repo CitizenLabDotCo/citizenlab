@@ -12,10 +12,7 @@ class TimelineService
   end
 
   def current_phase(project, time = Time.now)
-    time = time.in_time_zone
-    timeline_phases(project).find do |phase|
-      phase.start_at <= time && (phase.end_at.nil? || time < phase.end_at)
-    end
+    timeline_phases(project).find { |phase| phase.active?(time) }
   end
 
   def current_phase_not_archived(project, time = Time.now)

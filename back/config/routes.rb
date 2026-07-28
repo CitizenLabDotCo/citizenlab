@@ -78,6 +78,7 @@ Rails.application.routes.draw do
       resources :activities, only: [:index]
 
       resources :ideas,
+        except: %i[create],
         concerns: %i[reactable spam_reportable followable permissionable],
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         concerns :file_attachable, attachable_type: 'Idea'
@@ -109,7 +110,6 @@ Rails.application.routes.draw do
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
 
-        post :similar_ideas, on: :collection
         resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
         resources :exposures, controller: 'idea_exposures', only: %i[create]
@@ -170,9 +170,11 @@ Rails.application.routes.draw do
       scope path: 'user' do
         post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
         post 'request_code_email_change', to: 'request_codes#request_code_email_change'
+        post 'request_code_phone_change', to: 'request_codes#request_code_phone_change'
 
         post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
+        post 'confirm_code_phone_change', to: 'confirmations#confirm_code_phone_change'
       end
 
       resources :global_topics do
@@ -234,8 +236,9 @@ Rails.application.routes.draw do
 
         member do
           get 'survey_results'
-          get 'survey_response_fields'
-          post 'survey_responses_pdf'
+          get 'input_response_fields'
+          post 'input_responses_pdf'
+          post 'input_responses_xlsx'
           get 'common_ground_results'
           get 'sentiment_by_quarter'
           get :as_xlsx, action: 'index_xlsx'
@@ -248,8 +251,9 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :inputs, only: [], controller: 'ideas' do
+        resources :inputs, only: [:create], controller: 'ideas' do
           post 'copy', on: :collection
+          post 'similar', on: :collection, action: 'similar_ideas'
         end
 
         resource :insights, only: [], controller: 'insights/phase_insights' do
@@ -405,7 +409,7 @@ Rails.application.routes.draw do
 
       resources :id_methods, only: [:index] do
         get :first_enabled_verification_method, on: :collection
-        get :first_enabled_for_verified_actions, on: :collection
+        get :first_enabled_authentication_method, on: :collection
         IdMethodService.new
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }

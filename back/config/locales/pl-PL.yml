@@ -272,6 +272,15 @@ pl-PL:
     proposals:
       title: Propozycje
   pdf_export:
+    input_responses:
+      date: Data
+      no_answer: (Brak odpowiedzi)
+      prepared_by: Przygotowane przez
+      report_label: Raport odpowiedzi
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} odpowiedź'
+        other: '%{count} odpowiedzi'
     survey_responses:
       date: Data
       no_answer: (Brak odpowiedzi)

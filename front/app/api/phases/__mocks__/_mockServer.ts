@@ -3,6 +3,28 @@ import { http, HttpResponse } from 'msw';
 
 import { IPhaseData } from '../types';
 
+import { PhaseActionDescriptors } from 'api/projects/types';
+
+export const mockPhaseActionDescriptors: PhaseActionDescriptors = {
+  posting_idea: { enabled: true, disabled_reason: null },
+  commenting_idea: { enabled: true, disabled_reason: null },
+  comment_reacting_idea: { enabled: true, disabled_reason: null },
+  reacting_idea: {
+    enabled: true,
+    disabled_reason: null,
+    up: { enabled: true, disabled_reason: null },
+    down: { enabled: true, disabled_reason: null },
+  },
+  taking_survey: { enabled: false, disabled_reason: 'not_survey' },
+  taking_poll: { enabled: false, disabled_reason: 'not_poll' },
+  annotating_document: {
+    enabled: false,
+    disabled_reason: 'not_document_annotation',
+  },
+  voting: { enabled: false, disabled_reason: 'not_voting' },
+  volunteering: { enabled: false, disabled_reason: 'not_volunteering' },
+};
+
 export const phasesData: IPhaseData[] = [
   {
     id: 'MockPhaseInformationId',
@@ -16,6 +38,7 @@ export const phasesData: IPhaseData[] = [
       end_at: format(addDays(new Date(), 21), 'yyyy-MM-dd'),
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
+      action_descriptors: mockPhaseActionDescriptors,
       submission_enabled: false,
       commenting_enabled: false,
       reacting_enabled: false,
@@ -64,6 +87,7 @@ export const phasesData: IPhaseData[] = [
       end_at: 'one week from now',
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
+      action_descriptors: mockPhaseActionDescriptors,
       participation_method: 'poll',
       submission_enabled: false,
       commenting_enabled: false,
@@ -110,6 +134,7 @@ export const phasesData: IPhaseData[] = [
       end_at: 'one week from now',
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
+      action_descriptors: mockPhaseActionDescriptors,
       participation_method: 'ideation',
       submission_enabled: true,
       commenting_enabled: true,
@@ -160,6 +185,7 @@ export const mockPhaseInformationData: IPhaseData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
+    action_descriptors: mockPhaseActionDescriptors,
     submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
@@ -209,6 +235,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
+    action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'ideation',
     submission_enabled: true,
     commenting_enabled: true,
@@ -258,6 +285,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
+    action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'survey',
     reacting_like_method: 'limited',
     reacting_dislike_method: 'limited',
@@ -309,6 +337,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
+    action_descriptors: mockPhaseActionDescriptors,
     participation_method: 'survey',
     reacting_like_method: 'limited',
     reacting_dislike_method: 'limited',
@@ -378,6 +407,7 @@ const votingPhase: IPhaseData = {
     end_at: '2025-11-19',
     created_at: '2023-11-12T11:05:43.934Z',
     updated_at: '2024-01-25T17:29:22.242Z',
+    action_descriptors: mockPhaseActionDescriptors,
     ideas_count: 0,
     submission_enabled: true,
     commenting_enabled: true,

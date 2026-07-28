@@ -323,4 +323,119 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.scheduled',
     defaultMessage: 'Scheduled',
   },
+  tabSms: {
+    id: 'app.containers.Admin.messaging.tabSms',
+    defaultMessage: 'SMS',
+  },
+  smsCampaignsDescription: {
+    id: 'app.containers.Admin.messaging.smsCampaignsDescription',
+    defaultMessage: 'Send text messages to your participants.',
+  },
+  noSmsCampaignsHeader: {
+    id: 'app.containers.Admin.messaging.noSmsCampaignsHeader',
+    defaultMessage: 'Send your first text message',
+  },
+  noSmsCampaignsDescription: {
+    id: 'app.containers.Admin.messaging.noSmsCampaignsDescription',
+    defaultMessage:
+      'Reach participants who shared a phone number with a short text message.',
+  },
+  addSmsCampaignButton: {
+    id: 'app.containers.Admin.messaging.addSmsCampaignButton',
+    defaultMessage: 'Create SMS',
+  },
+  addSmsCampaignTitle: {
+    id: 'app.containers.Admin.messaging.addSmsCampaignTitle',
+    defaultMessage: 'New SMS message',
+  },
+  fieldSmsLabel: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabel',
+    defaultMessage: 'Label',
+  },
+  fieldSmsLabelTooltip: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabelTooltip',
+    defaultMessage:
+      'An internal label to recognise this campaign. It is not sent to recipients.',
+  },
+  fieldSmsLabelError: {
+    id: 'app.containers.Admin.messaging.fieldSmsLabelError',
+    defaultMessage: 'Provide a label for all languages',
+  },
+  fieldSmsBody: {
+    id: 'app.containers.Admin.messaging.fieldSmsBody',
+    defaultMessage: 'Message',
+  },
+  fieldSmsBodyError: {
+    id: 'app.containers.Admin.messaging.fieldSmsBodyError',
+    defaultMessage: 'Provide a message for all languages',
+  },
+  manageButtonLabel: {
+    id: 'app.containers.Admin.messaging.manageButtonLabel',
+    defaultMessage: 'Manage',
+  },
+  confirmSendSmsHeader: {
+    id: 'app.containers.Admin.messaging.confirmSendSmsHeader',
+    defaultMessage:
+      'Send this text message to all participants with a phone number?',
+  },
+  editSmsCampaignTitle: {
+    id: 'app.containers.Admin.messaging.editSmsCampaignTitle',
+    defaultMessage: 'Edit SMS message',
+  },
+  sendSmsPreviewButton: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewButton',
+    defaultMessage: 'Send a preview',
+  },
+  sendSmsPreviewTooltip: {
+    id: 'app.containers.Admin.messaging.sendSmsPreviewTooltip',
+    defaultMessage: 'Sends a test text message to your own phone number.',
+  },
+  smsPreviewSentConfirmation: {
+    id: 'app.containers.Admin.messaging.smsPreviewSentConfirmation',
+    defaultMessage: 'A test text message was sent to your phone number.',
+  },
+  deleteSmsButton: {
+    id: 'app.containers.Admin.messaging.deleteSmsButton',
+    defaultMessage: 'Delete',
+  },
+  deleteSmsConfirmation: {
+    id: 'app.containers.Admin.messaging.deleteSmsConfirmation',
+    defaultMessage: 'Are you sure you want to delete this SMS message?',
+  },
+  cancelButton: {
+    id: 'app.containers.Admin.messaging.cancelButton',
+    defaultMessage: 'Cancel',
+  },
+  smsStatsTitle: {
+    id: 'app.containers.Admin.messaging.smsStatsTitle',
+    defaultMessage: 'Delivery statistics',
+  },
+  smsRecipientsTitle: {
+    id: 'app.containers.Admin.messaging.smsRecipientsTitle',
+    defaultMessage: 'Recipients',
+  },
+  smsDeliveryStatus_pending: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_pending',
+    defaultMessage: 'Pending',
+  },
+  smsDeliveryStatus_queued: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_queued',
+    defaultMessage: 'Queued',
+  },
+  smsDeliveryStatus_sent: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_sent',
+    defaultMessage: 'Sent',
+  },
+  smsDeliveryStatus_delivered: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_delivered',
+    defaultMessage: 'Delivered',
+  },
+  smsDeliveryStatus_undelivered: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_undelivered',
+    defaultMessage: 'Undelivered',
+  },
+  smsDeliveryStatus_failed: {
+    id: 'app.containers.Admin.messaging.smsDeliveryStatus_failed',
+    defaultMessage: 'Failed',
+  },
 });

@@ -273,6 +273,15 @@ ga-IE:
     proposals:
       title: Tograí
   pdf_export:
+    input_responses:
+      date: Dáta
+      no_answer: (Gan freagra)
+      prepared_by: Ullmhaithe ag
+      report_label: Tuarascáil ar fhreagraí
+      respondent: Freagróir %{number}
+      response_count:
+        one: '%{count} fhreagra'
+        other: '%{count} freagraí'
     survey_responses:
       date: Dáta
       no_answer: (Gan freagra)

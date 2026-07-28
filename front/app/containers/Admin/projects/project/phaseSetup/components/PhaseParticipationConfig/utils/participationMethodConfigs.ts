@@ -51,6 +51,7 @@ export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'native_survey',
   allow_anonymous_participation: false,
+  allow_multiple_responses: false,
   submission_enabled: true,
   reacting_enabled: true,
   reacting_like_method: 'unlimited',

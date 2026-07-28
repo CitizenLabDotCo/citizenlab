@@ -242,6 +242,12 @@ class CustomField < ApplicationRecord
     resource_type == 'User'
   end
 
+  # A user (registration) field embedded in an input form, identified by the
+  # key prefix added in UserFieldsInFormService#add_user_fields_to_form.
+  def user_field_in_form?
+    key&.start_with?(UserFieldsInFormService.prefix) || false
+  end
+
   def items_claz
     if custom_form_type?
       Idea

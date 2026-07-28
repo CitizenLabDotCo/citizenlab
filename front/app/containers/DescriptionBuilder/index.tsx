@@ -11,7 +11,6 @@ import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout
 import useUpsertProjectPageLayout from 'api/project_page_layout/useUpsertProjectPageLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
@@ -54,9 +53,6 @@ const DescriptionBuilderPage = ({
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const featureEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
   const locales = useAppConfigurationLocales();
 
   const isProject = contentBuildableType === 'project';
@@ -91,8 +87,9 @@ const DescriptionBuilderPage = ({
 
   const [imageUploading, setImageUploading] = useState(false);
 
-  const descriptionBuilderVisible =
-    featureEnabled && pathname.includes('admin/description-builder');
+  const descriptionBuilderVisible = pathname.includes(
+    'admin/description-builder'
+  );
 
   // DO NOT REMOVE THESE useCallbacks, without them the content builder
   // becomes horribly slow

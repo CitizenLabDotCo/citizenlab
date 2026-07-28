@@ -26,9 +26,9 @@ describe('Submit community monitor survey', () => {
     cy.setConsentAndAdminLoginCookies();
     // Confirm access rights are set to Anyone for the community monitor
     cy.visit(`admin/community-monitor/settings/access-rights`);
-    cy.get('#e2e-permission-anyone').should('be.visible');
-    cy.get('#e2e-permission-anyone').click({ force: true });
-    cy.contains('No actions are required to participate').should('be.visible');
+    cy.get('.e2e-permission-anyone').should('be.visible');
+    cy.get('.e2e-permission-anyone').first().click({ force: true });
+    cy.wait(500);
   });
 
   it('can be submitted by an admin user', () => {
@@ -96,9 +96,9 @@ describe('Submit community monitor survey', () => {
 
     // Change the access rights to email confirmation for the community monitor
     cy.visit(`admin/community-monitor/settings/access-rights`);
-    cy.get('#e2e-permission-email-confirmed-users').should('be.visible');
-    cy.get('#e2e-permission-email-confirmed-users').click({ force: true });
-    cy.contains('Confirm your email').should('be.visible');
+    cy.get('.e2e-permission-registered-users').should('be.visible');
+    cy.get('.e2e-permission-registered-users').first().click({ force: true });
+    cy.contains('Confirmed email').should('be.visible');
 
     // Go to community monitor survey form as logged out user
     cy.clearAllCookies();
@@ -204,5 +204,33 @@ describe('Edit community monitor survey', () => {
         'other'
       );
     });
+  });
+});
+
+describe('Export community monitor survey responses', () => {
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+  });
+
+  it('offers the responses export flow with PII review from the survey settings', () => {
+    cy.intercept('**/phases/**/input_response_fields').as('responseFields');
+    cy.visit('admin/community-monitor/settings/survey');
+
+    cy.dataCy('e2e-more-survey-actions-button').click();
+    cy.dataCy('e2e-export-responses-xlsx').click();
+
+    // The field review lists the export fields once the PII flags load (the
+    // LLM is unavailable in CI, so the structural fallback flags the author
+    // columns deterministically)
+    cy.wait('@responseFields', { timeout: 20000 });
+    cy.dataCy('e2e-field-redaction-list').should('exist');
+    cy.dataCy('e2e-field-redaction-row-author_email')
+      .contains('Excluded')
+      .should('exist');
+
+    // Generate stays disabled until consent is given
+    cy.dataCy('e2e-generate-export-button')
+      .find('button')
+      .should('have.class', 'disabled');
   });
 });

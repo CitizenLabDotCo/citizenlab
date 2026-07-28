@@ -270,6 +270,15 @@ lb-LU:
     proposals:
       title: Virschléi
   pdf_export:
+    input_responses:
+      date: Datum
+      no_answer: (Keng Äntwert)
+      prepared_by: Virbereet vum
+      report_label: Äntwert-Rapport
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} Äntwert'
+        other: '%{count} Äntwerten'
     survey_responses:
       date: Datum
       no_answer: (Keng Äntwert)

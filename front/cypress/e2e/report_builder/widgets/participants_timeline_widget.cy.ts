@@ -40,10 +40,9 @@ describe('Report builder Participants timeline widget', () => {
       })
       .then((phase) => {
         cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle,
           ideaContent,
-          phaseIds: [phase.body.data.id],
         });
       })
       .then(() => {

@@ -42,7 +42,7 @@ class WebApi::V1::InvitesController < ApplicationController
       when nil
         @invites
       else
-        raise 'Unsupported sort method'
+        raise ApiError.new(:unsupported_sort_parameter, status: 400)
       end
     end
 

@@ -271,6 +271,15 @@ lv-LV:
     proposals:
       title: Priekšlikumi
   pdf_export:
+    input_responses:
+      date: Datums
+      no_answer: (Nav atbildes)
+      prepared_by: Sagatavoja
+      report_label: Atbilžu pārskats
+      respondent: Respondents %{number}
+      response_count:
+        one: '%{count} atbilde'
+        other: '%{count} atbildes'
     survey_responses:
       date: Datums
       no_answer: (Nav atbildes)
