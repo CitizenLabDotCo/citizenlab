@@ -52,8 +52,10 @@ const InputPdfExportModal = ({
   const { mutateAsync: generatePdf } = useGenerateInputResponsesPdf();
   const { data: jobs } = useInputResponsesPdfJob(phaseId);
 
-  // The id of the job whose completion should trigger the download: the one
-  // started from this modal, or an already-running one found on (re)open.
+  // The id of the job whose completion should trigger the download. Always
+  // picked up from the polled jobs query (never from the generate response —
+  // fetcher does not parse 202 bodies), which also covers resuming an export
+  // found on (re)open.
   const [trackedJobId, setTrackedJobId] = useState<string | null>(null);
   const [jobFailed, setJobFailed] = useState(false);
 
@@ -103,8 +105,7 @@ const InputPdfExportModal = ({
     redactedFieldKeys: string[];
   }) => {
     setJobFailed(false);
-    const job = await generatePdf({ phaseId, cover, redactedFieldKeys });
-    setTrackedJobId(job.data.id);
+    await generatePdf({ phaseId, cover, redactedFieldKeys });
   };
 
   return (

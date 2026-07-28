@@ -14,9 +14,10 @@ type GenerateParams = {
   redactedFieldKeys: string[];
 };
 
-// Starts the background export job and returns its tracker. If an export is
-// already running for the phase, the backend returns that tracker instead of
-// starting a second one.
+// Starts the background export job. If an export is already running for the
+// phase, the backend reuses it instead of starting a second one. The mutation
+// resolves to null (fetcher does not parse the 202 body) — the started job is
+// observed via useInputResponsesPdfJob, whose query onSuccess invalidates.
 const generateInputResponsesPdf = ({
   phaseId,
   cover,
