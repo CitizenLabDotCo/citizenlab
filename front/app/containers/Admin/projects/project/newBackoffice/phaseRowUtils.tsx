@@ -9,9 +9,6 @@ import { getPhaseLandingTab } from 'api/phases/utils';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-// Each phase landing tab maps to a registered phase route literal, so Links
-// built from this record are compile-checked against the route tree instead
-// of being interpolated strings cast with `as LinkProps['to']`.
 type PhaseLandingTab = ReturnType<typeof getPhaseLandingTab>;
 
 type PhaseTabTarget =

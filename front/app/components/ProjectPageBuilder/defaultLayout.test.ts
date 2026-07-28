@@ -26,8 +26,6 @@ const textNode = (parent: string) =>
     linkedNodes: {},
   } as unknown as SerializedNodes[string]);
 
-// A layout in the unlocked (flat) shape, with description content directly in
-// the body.
 const flatLayout = (): SerializedNodes => {
   const layout = defaultProjectPageLayout();
   layout[BODY_NODE_ID] = {
@@ -38,8 +36,6 @@ const flatLayout = (): SerializedNodes => {
   return layout;
 };
 
-// A layout in the transitional locked shape: the description content wrapped
-// in the (since removed) locked description section.
 const legacyLayout = (): SerializedNodes => {
   const layout = defaultProjectPageLayout();
   layout[BODY_NODE_ID] = {

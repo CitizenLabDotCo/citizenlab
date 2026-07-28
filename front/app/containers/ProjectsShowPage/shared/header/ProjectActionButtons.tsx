@@ -294,7 +294,6 @@ const ProjectActionButtons = memo<Props>(
         {currentPhase && showTakeNativeSurveyButton && (
           <IdeaButton
             id="project-survey-button"
-            data-testid="e2e-project-survey-button"
             projectId={project.data.id}
             fontWeight="500"
             phase={currentPhase}
@@ -339,7 +338,6 @@ const ProjectActionButtons = memo<Props>(
         {collapseOptions ? (
           <>
             <ButtonWithLink
-              id="e2e-participation-box-collapsed-button"
               onClick={() => setModalOpened(true)}
               fontWeight="500"
               icon="chevron-up"

@@ -1,7 +1,5 @@
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
-// The phase ids of every survey linked on the project page through an
-// "Extra surveys" widget in the saved page layout.
 export const linkedSurveyPhaseIds = (
   craftjsJson: CraftJson | undefined
 ): Set<string> => {

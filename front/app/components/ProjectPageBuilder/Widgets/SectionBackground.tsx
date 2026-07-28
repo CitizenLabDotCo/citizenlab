@@ -4,13 +4,8 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useIsPageBodyChild from './useIsPageBodyChild';
 
-// Widgets expose this as their `sectionBackground` prop, set from the widget's
-// settings panel.
 export type SectionBackgroundChoice = 'colored' | 'white';
 
-// A colored band reads as a page section at the top level but as an arbitrary
-// grey box inside a column, so widgets without an explicit choice default by
-// placement.
 export const useDefaultSectionBackground = (): SectionBackgroundChoice =>
   useIsPageBodyChild() ? 'colored' : 'white';
 

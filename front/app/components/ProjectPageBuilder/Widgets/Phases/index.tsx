@@ -16,7 +16,6 @@ import SectionBackgroundSetting from '../SectionBackgroundSetting';
 import TimelineSection from '../Timeline';
 import useWidgetProjectId from '../useWidgetProjectId';
 
-// Lets the docked CTA bar find phases sections on the page (see CTABar).
 export const PHASES_WIDGET_SELECTOR = '[data-project-page-phases]';
 
 type Props = {

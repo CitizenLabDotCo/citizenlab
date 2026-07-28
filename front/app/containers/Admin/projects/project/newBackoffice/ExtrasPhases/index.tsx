@@ -108,7 +108,6 @@ const ExtrasPhases = ({ projectId }: Props) => {
 
       <Box display="flex" mt="4px">
         <ButtonWithLink
-          id="e2e-new-extra-survey"
           to="/admin/projects/$projectId/phases/new"
           params={{ projectId }}
           search={{ placement: 'standalone' }}

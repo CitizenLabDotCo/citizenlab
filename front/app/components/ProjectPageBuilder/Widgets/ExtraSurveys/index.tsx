@@ -48,13 +48,7 @@ const ExtraSurveysWidget: UserComponent<ExtraSurveysProps> = ({
   }
 
   return (
-    <Box
-      id="e2e-extra-surveys-widget"
-      mx="auto"
-      my="16px"
-      maxWidth={`${maxPageWidth}px`}
-      px={padding}
-    >
+    <Box mx="auto" my="16px" maxWidth={`${maxPageWidth}px`} px={padding}>
       {buttonFormat === 'card' ? (
         <SurveyCard
           phase={survey}

@@ -16,7 +16,6 @@ import { useIntl } from 'utils/cl-intl';
 interface Props {
   opened: boolean;
   onClose: () => void;
-  // The current phase's primary CTA, already rendered by ProjectActionButtons.
   methodCTA: ReactNode;
   openSurveys: IPhaseData[];
   upcomingSurveys: IPhaseData[];
@@ -32,8 +31,6 @@ const WaysToParticipateModal = ({
   const { formatMessage } = useIntl();
   const isPhone = useBreakpoint('phone');
 
-  // Open (still actionable) first, taken/not-eligible sink to the bottom of
-  // the open group; upcoming surveys follow as disabled "Opens on …" buttons.
   const sortedOpenSurveys = [...openSurveys].sort(
     (a, b) =>
       Number(getExtraSurveyState(a) !== 'open') -
@@ -61,12 +58,7 @@ const WaysToParticipateModal = ({
   );
 
   const buttonStack = (
-    <Box
-      id="e2e-ways-to-participate-modal"
-      display="flex"
-      flexDirection="column"
-      gap="8px"
-    >
+    <Box display="flex" flexDirection="column" gap="8px">
       {methodCTA}
       {sortedOpenSurveys.map((surveyPhase, index) => (
         <ExtraSurveyActionButton

@@ -63,7 +63,6 @@ interface Props {
   apiErrors: CLErrors | null;
   onChange: (arg: IUpdatedPhaseProperties) => void;
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
-  // For phases whose method is fixed (e.g. standalone surveys).
   hideMethodPicker?: boolean;
 }
 

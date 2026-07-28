@@ -116,8 +116,6 @@ const resolvedNameOf = (node: SerializedNode) =>
 export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
   Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
 
-// Re-stamped on every load, replacing whatever the stored layout carries, so
-// changing a widget's chrome (title, locks) is a code-only change.
 const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   ProjectBanner: {
     title: widgetMessages.bannerWidgetTitle,

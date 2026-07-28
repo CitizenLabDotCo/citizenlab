@@ -15,13 +15,6 @@ type Props = {
   containerRef: React.RefObject<HTMLElement>;
 };
 
-/**
- * Docks the CTA bar once the user scrolls to the first phases section — the
- * moment its top passes under the platform navbar, where the classic project
- * page's sticky bar would pin. It stays docked while the user is below that
- * point and releases when they scroll back above it. Without a phases
- * section the bar never shows.
- */
 const CTABar = ({ projectId, containerRef }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const [docked, setDocked] = useState(false);
@@ -71,7 +64,6 @@ const CTABar = ({ projectId, containerRef }: Props) => {
 
   if (!docked) return null;
 
-  // On phones the bar already positions itself as a fixed footer.
   if (isSmallerThanTablet) {
     return <ProjectCTABar projectId={projectId} />;
   }

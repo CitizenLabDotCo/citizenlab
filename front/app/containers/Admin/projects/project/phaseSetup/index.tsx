@@ -114,8 +114,6 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     }
 
     if (standaloneSurvey) {
-      // Seed once: this effect re-runs while the locales load, and re-seeding
-      // afterwards would clobber what the admin already typed.
       if (
         standaloneSeededRef.current ||
         !tenantLocales ||

@@ -13,10 +13,6 @@ type RegionProps = {
   children?: React.ReactNode;
 };
 
-// The body paints a neutral white so the page look doesn't depend on the
-// legacy page container's background; sections tint themselves through their
-// background setting. On the public page the white spans the full viewport
-// width via a backdrop, so the body itself keeps constraining its children.
 const BodyBackground = styled(Box)<{ $fullBleed: boolean }>`
   background: ${colors.white};
   ${({ $fullBleed }) =>

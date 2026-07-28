@@ -9,7 +9,7 @@ import EmptyStateContainer from '../EmptyState/EmptyStateContainer';
 import messages from '../messages';
 
 const NoSurveySelected = () => (
-  <EmptyStateContainer id="e2e-extra-surveys-empty">
+  <EmptyStateContainer>
     <Icon
       name="survey"
       width="32px"

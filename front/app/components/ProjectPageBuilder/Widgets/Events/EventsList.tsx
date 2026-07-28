@@ -11,9 +11,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-// Sized by the container, not the viewport: cards are at least ~400px wide and
-// wrap into as many columns as fit, so the widget adapts to wherever it is
-// placed on the page.
 const Grid = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
