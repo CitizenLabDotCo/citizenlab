@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
-import useAuthUser from 'api/me/useAuthUser';
-
 import Input from 'components/HookForm/Input';
 
 import { useIntl } from 'utils/cl-intl';
@@ -15,14 +13,14 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import { SetError, State } from '../../typings';
+import { SetError } from '../../typings';
 
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  state: Partial<State>;
+  phone: string | null;
   loading: boolean;
   setError: SetError;
   onConfirm: (code: string) => void | Promise<void>;
@@ -43,14 +41,13 @@ const isWrongConfirmationCodeError = (e: any) => {
 };
 
 const PhoneConfirmation = ({
-  state,
+  phone,
   loading,
   setError,
   onConfirm,
   onChangePhone,
   onResendCode,
 }: Props) => {
-  const { data: authUser } = useAuthUser();
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
 
@@ -73,9 +70,7 @@ const PhoneConfirmation = ({
     resolver: yupResolver(schema),
   });
 
-  const newPhone = state.new_phone ?? authUser?.data.attributes.new_phone;
-
-  if (!newPhone) return null;
+  if (!phone) return null;
 
   const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
@@ -102,7 +97,7 @@ const PhoneConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    onResendCode(newPhone)
+    onResendCode(phone)
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);
@@ -124,7 +119,7 @@ const PhoneConfirmation = ({
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage phoneNumber={newPhone} codeResent={codeResent} />
+          <CodeSentMessage phoneNumber={phone} codeResent={codeResent} />
         </Box>
         <Box data-cy="phone-code-input">
           <Input

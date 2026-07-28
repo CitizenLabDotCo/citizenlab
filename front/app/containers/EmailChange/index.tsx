@@ -136,15 +136,7 @@ const EmailChange = () => {
               </Box>
             )}
             <EmailConfirmation
-              state={{
-                flow: 'signup',
-                email: newEmail,
-                token: null,
-                prefilledBuiltInFields: null,
-                ssoProvider: null,
-                claimTokens: null,
-                phone: null,
-              }}
+              email={newEmail}
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onEmailConfirmation}

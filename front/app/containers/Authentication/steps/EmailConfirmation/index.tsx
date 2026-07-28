@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
-import useAuthUser from 'api/me/useAuthUser';
-
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -16,14 +14,14 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import { State, SetError } from '../../typings';
+import { SetError } from '../../typings';
 
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  state: State;
+  email: string | null;
   loading: boolean;
   setError: SetError;
   onConfirm: (email: string, code: string) => void;
@@ -44,14 +42,13 @@ const isWrongConfirmationCodeError = (e: any) => {
 };
 
 const EmailConfirmation = ({
-  state,
+  email,
   loading,
   setError,
   onConfirm,
   onChangeEmail,
   onResendCode,
 }: Props) => {
-  const { data: authUser } = useAuthUser();
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
 
@@ -74,7 +71,6 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
-  const email = state.email ?? authUser?.data.attributes.email;
   if (!email) return null;
 
   const handleConfirm = async ({ code }: FormValues) => {

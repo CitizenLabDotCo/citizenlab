@@ -2,6 +2,8 @@ import React, { lazy, Suspense } from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import AccessDenied from '../steps/AccessDenied';
 import BuiltInFields from '../steps/BuiltInFields';
 import ChangeEmail from '../steps/ChangeEmail';
@@ -43,6 +45,8 @@ const CurrentStep = ({
   transition,
   setError,
 }: Props) => {
+  const { data: authUser } = useAuthUser();
+
   switch (currentStep) {
     // shared
     case 'closed':
@@ -112,7 +116,7 @@ const CurrentStep = ({
     case 'email:unauthenticated-confirmation':
       return (
         <EmailConfirmation
-          state={state}
+          email={state.email ?? authUser?.data.attributes.email ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
@@ -125,7 +129,7 @@ const CurrentStep = ({
     case 'confirmation:reconfirm-email':
       return (
         <EmailConfirmation
-          state={state}
+          email={state.email ?? authUser?.data.attributes.email ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
@@ -136,7 +140,7 @@ const CurrentStep = ({
     case 'confirmation:new_email':
       return (
         <EmailConfirmation
-          state={state}
+          email={state.new_email ?? authUser?.data.attributes.new_email ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
@@ -148,7 +152,7 @@ const CurrentStep = ({
     case 'confirmation:reconfirm-phone':
       return (
         <PhoneConfirmation
-          state={state}
+          phone={authUser?.data.attributes.phone ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
@@ -159,7 +163,7 @@ const CurrentStep = ({
     case 'confirmation:new_phone':
       return (
         <PhoneConfirmation
-          state={state}
+          phone={state.new_phone ?? authUser?.data.attributes.new_phone ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
