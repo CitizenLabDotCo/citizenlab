@@ -12,11 +12,15 @@ module DecidimImporter
 
     # Extracts every non-metadata entry from `zip_path` into `dest`.
     def extract(zip_path, dest)
+      dest_root = File.expand_path(dest)
       Zip::File.open(zip_path) do |zip|
         zip.each do |entry|
           next if skip?(entry.name)
 
-          out = File.join(dest, entry.name)
+          out = File.expand_path(File.join(dest_root, entry.name))
+          # Zip Slip guard: a crafted `../…` or absolute entry name must not resolve outside `dest`.
+          next unless out == dest_root || out.start_with?("#{dest_root}#{File::SEPARATOR}")
+
           FileUtils.mkdir_p(entry.directory? ? out : File.dirname(out))
           next if entry.directory?
 
