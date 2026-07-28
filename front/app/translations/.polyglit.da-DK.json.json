@@ -1139,25 +1139,21 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.EsriMap.drawOnMap": {
     "state": "verified",
     "verified_at": "2026-07-14T16:36:38.117177Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.EsriMap.drawOnMapTooltip": {
     "state": "verified",
     "verified_at": "2026-07-14T16:36:38.117177Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.EsriMap.exploreMap": {
     "state": "verified",
     "verified_at": "2026-07-14T16:36:38.117177Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.EsriMap.exploreMapTooltip": {
     "state": "verified",
     "verified_at": "2026-07-14T16:36:38.117177Z",
@@ -1168,7 +1164,6 @@
     "verified_at": "2026-05-18T09:20:44.936951Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.EsriMap.mapInteractionToggleAriaLabel": {
     "state": "verified",
     "verified_at": "2026-07-14T16:36:38.117177Z",
@@ -3894,13 +3889,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.field_imported": {
     "state": "verified",
     "verified_at": "2026-07-20T17:23:13.262791Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.components.admin.UserFilterConditions.field_last_active_at": {
     "state": "verified",
     "verified_at": "2026-07-20T17:23:13.262791Z",
@@ -4051,7 +4044,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_is_imported": {
     "state": "verified",
     "verified_at": "2026-07-20T17:23:13.262791Z",
@@ -4217,7 +4209,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.components.admin.UserFilterConditions.predicate_not_is_imported": {
     "state": "verified",
     "verified_at": "2026-07-20T17:23:13.262791Z",
@@ -6813,13 +6804,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Authentication.confirmYourPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-21T07:18:56.038873Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Authentication.enterYourPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-21T07:18:56.038873Z",
@@ -6890,25 +6879,21 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Authentication.steps.Phone.enterYourPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-21T07:18:56.038873Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Authentication.steps.Phone.phoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-21T07:18:56.038873Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": {
     "state": "verified",
     "verified_at": "2026-07-21T07:18:56.038873Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": {
     "state": "verified",
     "verified_at": "2026-07-21T07:18:56.038873Z",
@@ -10919,7 +10904,6 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.containers.ProjectPageBuilder.projectHomepage": {
     "state": "verified",
     "verified_at": "2026-07-21T07:34:23.463933Z",
@@ -11195,6 +11179,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.noOpenParticipationAdminMessage": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.018621Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Projects.noPastEvents": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -11215,6 +11204,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.openNowInTotal": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.018621Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Projects.options": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -11229,6 +11223,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.participate": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.018621Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Projects.pastEvents": {
     "state": "verified",
@@ -11454,6 +11453,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.waysToParticipate": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.018621Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Projects.whatsAppMessage": {
     "state": "verified",
@@ -13165,19 +13169,16 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
-
   "app.errors.new_phone_blank": {
     "state": "verified",
     "verified_at": "2026-07-22T06:20:47.814852Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.errors.new_phone_invalid": {
     "state": "verified",
     "verified_at": "2026-07-22T06:20:47.814852Z",
     "verified_by": "kielgast@govocal.com"
   },
-
   "app.errors.new_phone_taken": {
     "state": "verified",
     "verified_at": "2026-07-22T06:20:47.814852Z",
