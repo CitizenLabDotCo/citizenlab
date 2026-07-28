@@ -19,7 +19,7 @@ export type SmsDeliveryStatus =
   | 'delivered'
   | 'undelivered'
   | 'failed'
-  | 'not_sent';
+  | 'errored';
 
 export interface ISmsDeliveryData {
   id: string;

@@ -33,7 +33,7 @@ export const SMS_STATUS_GROUPS: SmsStatusGroup[] = [
   {
     message: messages.smsDeliveryStatus_failed,
     color: colors.red600,
-    statuses: ['undelivered', 'failed', 'not_sent'],
+    statuses: ['undelivered', 'failed', 'errored'],
   },
 ];
 

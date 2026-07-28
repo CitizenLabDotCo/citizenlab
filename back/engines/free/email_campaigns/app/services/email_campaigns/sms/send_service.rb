@@ -42,7 +42,7 @@ module EmailCampaigns
       rescue Error => e
         # One of our own pre-flight checks (phone number, allowed country, config)
         # stopped the message before it ever reached the provider.
-        delivery.update!(status: 'not_sent', error_message: e.message)
+        delivery.update!(status: 'errored', error_message: e.message)
         raise
       end
 
