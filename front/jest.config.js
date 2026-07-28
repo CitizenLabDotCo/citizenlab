@@ -4,7 +4,33 @@ module.exports = {
   coverageDirectory: 'coverage',
   preset: undefined,
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+    // One transformer for app code and for the third-party ESM allowed through
+    // `transformIgnorePatterns` below. Type errors are the typecheck script's
+    // job (`npm run typecheck`); nothing here type-checks.
+    '^.+\\.(js|jsx|ts|tsx)$': [
+      '@swc/jest',
+      {
+        jsc: {
+          parser: {
+            syntax: 'typescript',
+            tsx: true,
+            decorators: false,
+          },
+          transform: {
+            react: {
+              // Matches tsconfig's `"jsx": "react"` and the previous
+              // @babel/preset-react default.
+              runtime: 'classic',
+              development: false,
+            },
+          },
+          target: 'es2022',
+        },
+        module: {
+          type: 'commonjs',
+        },
+      },
+    ],
   },
   setupFilesAfterEnv: [
     '<rootDir>/internals/jest/setup.js',
