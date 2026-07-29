@@ -6,13 +6,13 @@ describe HighlightedPhaseService do
   let(:service) { described_class.new(project) }
   let(:project) { create(:project) }
 
-  describe '#highlighted_phase and #participation_state' do
+  describe '#highlighted_phase and #participation_status' do
     context 'with a single active timeline phase' do
       let!(:phase) { create(:phase, project:, start_at: 1.week.ago, end_at: 1.week.from_now) }
 
       it 'highlights it as active' do
         expect(service.highlighted_phase).to eq phase
-        expect(service.participation_state).to eq :active
+        expect(service.participation_status).to eq :active
       end
     end
 
@@ -22,7 +22,7 @@ describe HighlightedPhaseService do
 
       it 'highlights the active standalone phase' do
         expect(service.highlighted_phase).to eq standalone_phase
-        expect(service.participation_state).to eq :active
+        expect(service.participation_status).to eq :active
       end
     end
 
@@ -59,7 +59,7 @@ describe HighlightedPhaseService do
 
       it 'highlights the timeline phase first' do
         expect(service.highlighted_phase).to eq timeline_phase
-        expect(service.participation_state).to eq :active
+        expect(service.participation_status).to eq :active
       end
     end
 
@@ -69,7 +69,7 @@ describe HighlightedPhaseService do
 
       it 'highlights the upcoming standalone phase' do
         expect(service.highlighted_phase).to eq standalone_phase
-        expect(service.participation_state).to eq :upcoming
+        expect(service.participation_status).to eq :upcoming
       end
     end
 
@@ -79,7 +79,7 @@ describe HighlightedPhaseService do
 
       it 'highlights the phase that starts soonest' do
         expect(service.highlighted_phase).to eq sooner_phase
-        expect(service.participation_state).to eq :upcoming
+        expect(service.participation_status).to eq :upcoming
       end
     end
 
@@ -89,7 +89,7 @@ describe HighlightedPhaseService do
 
       it 'highlights the upcoming phase' do
         expect(service.highlighted_phase).to eq future_phase
-        expect(service.participation_state).to eq :upcoming
+        expect(service.participation_status).to eq :upcoming
       end
     end
 
@@ -99,7 +99,7 @@ describe HighlightedPhaseService do
 
       it 'highlights the phase that ended last' do
         expect(service.highlighted_phase).to eq standalone_phase
-        expect(service.participation_state).to eq :ended
+        expect(service.participation_status).to eq :ended
       end
     end
 
@@ -115,9 +115,9 @@ describe HighlightedPhaseService do
     end
 
     context 'when the project has no phases' do
-      it 'returns no phase, no state and no day counts' do
+      it 'returns no phase, no status and no day counts' do
         expect(service.highlighted_phase).to be_nil
-        expect(service.participation_state).to be_nil
+        expect(service.participation_status).to be_nil
         expect(service.days_until_start).to be_nil
         expect(service.days_since_end).to be_nil
       end

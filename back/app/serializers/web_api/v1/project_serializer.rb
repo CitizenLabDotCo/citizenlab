@@ -87,8 +87,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :participation_state do |object|
-    HighlightedPhaseService.new(object).participation_state
+  attribute :participation_status do |object|
+    HighlightedPhaseService.new(object).participation_status
   end
 
   attribute :preview_token, if: proc { |object, params| can_moderate? object, params }

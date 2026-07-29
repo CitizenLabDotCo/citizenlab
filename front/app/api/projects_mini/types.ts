@@ -40,7 +40,7 @@ export interface MiniProjectData {
   type: 'project_mini';
   attributes: {
     slug: string;
-    participation_state: 'active' | 'upcoming' | 'ended' | null;
+    participation_status: 'active' | 'upcoming' | 'ended' | null;
     days_until_start: number | null;
     days_since_end: number | null;
     title_multiloc: Multiloc;

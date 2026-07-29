@@ -13,7 +13,7 @@ describe WebApi::V1::ProjectMiniSerializer do
     standalone_phase = create(:phase, :standalone, project: project, start_at: 27.hours.from_now, end_at: 1.week.from_now)
 
     expect(serialized.dig(:data, :relationships, :highlighted_phase, :data, :id)).to eq standalone_phase.id
-    expect(serialized.dig(:data, :attributes, :participation_state)).to eq :upcoming
+    expect(serialized.dig(:data, :attributes, :participation_status)).to eq :upcoming
     expect(serialized.dig(:data, :attributes, :days_until_start)).to eq 1
     expect(serialized.dig(:data, :attributes, :days_since_end)).to be_nil
   end
@@ -22,7 +22,7 @@ describe WebApi::V1::ProjectMiniSerializer do
     phase = create(:phase, project: project, start_at: 2.months.ago, end_at: 75.hours.ago)
 
     expect(serialized.dig(:data, :relationships, :highlighted_phase, :data, :id)).to eq phase.id
-    expect(serialized.dig(:data, :attributes, :participation_state)).to eq :ended
+    expect(serialized.dig(:data, :attributes, :participation_status)).to eq :ended
     expect(serialized.dig(:data, :attributes, :days_since_end)).to eq 3
   end
 end

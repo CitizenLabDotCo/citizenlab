@@ -201,7 +201,7 @@ resource 'Projects' do
         expect(json_response.dig(:data, :type)).to eq 'project'
         expect(json_response.dig(:data, :attributes)).to include(
           slug: @projects.first.slug,
-          participation_state: nil,
+          participation_status: nil,
           action_descriptors: {
             attending_event: { enabled: true, disabled_reason: nil }
           },

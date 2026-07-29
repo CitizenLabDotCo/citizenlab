@@ -401,11 +401,11 @@ const ProjectCard = memo<InputProps>(
       projectId,
       imageId,
     });
-    const participationState = project?.data.attributes.participation_state;
+    const participationStatus = project?.data.attributes.participation_status;
     const highlightedPhaseId =
       project?.data.relationships.highlighted_phase?.data?.id ?? null;
     const { data: phase } = usePhase(
-      participationState === 'active' ? highlightedPhaseId : null
+      participationStatus === 'active' ? highlightedPhaseId : null
     );
     const { data: report } = useReport(
       phase?.data.relationships.report?.data?.id
@@ -447,7 +447,7 @@ const ProjectCard = memo<InputProps>(
     const hasDescriptionPreview =
       !hideDescriptionPreview &&
       !isEmpty(localize(project.data.attributes.description_preview_multiloc));
-    const isFinished = project.data.attributes.participation_state === 'ended';
+    const isFinished = project.data.attributes.participation_status === 'ended';
     const isArchived =
       project.data.attributes.publication_status === 'archived';
     const showAvatarBubbles =

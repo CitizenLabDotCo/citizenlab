@@ -38,10 +38,10 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown, onFocus }: Props) => {
     imageId,
   });
 
-  const participationState = project.attributes.participation_state;
+  const participationStatus = project.attributes.participation_status;
   const phaseId = project.relationships.highlighted_phase?.data?.id;
   const { data: phase } = usePhaseMini(
-    participationState === 'active' ? phaseId : undefined
+    participationStatus === 'active' ? phaseId : undefined
   );
   const { data: report } = useReport(
     phase?.data.relationships.report?.data?.id
@@ -74,7 +74,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown, onFocus }: Props) => {
             projectStartsInDays={project.attributes.days_until_start}
             projectEndedDaysAgo={project.attributes.days_since_end}
           />
-          {participationState === 'active' && phase && (
+          {participationStatus === 'active' && phase && (
             <Text mt="2px" mb="0px" color="textSecondary">
               {getCTAMessage({
                 phase: phase.data,

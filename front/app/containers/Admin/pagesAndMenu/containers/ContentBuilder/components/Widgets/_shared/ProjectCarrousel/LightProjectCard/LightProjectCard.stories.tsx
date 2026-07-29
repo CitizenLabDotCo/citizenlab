@@ -19,7 +19,7 @@ const BASE_PROJECT = {
       en: 'My cool project',
     },
     slug: 'my-cool-project',
-    participation_state: 'active',
+    participation_status: 'active',
     days_until_start: null,
     days_since_end: null,
   },
@@ -52,7 +52,7 @@ export const UpcomingProject: Story = {
       ...BASE_PROJECT,
       attributes: {
         ...BASE_PROJECT.attributes,
-        participation_state: 'upcoming',
+        participation_status: 'upcoming',
         days_until_start: 10,
       },
     } as any,
@@ -65,7 +65,7 @@ export const FinishedProject: Story = {
       ...BASE_PROJECT,
       attributes: {
         ...BASE_PROJECT.attributes,
-        participation_state: 'ended',
+        participation_status: 'ended',
         days_since_end: 15,
       },
     } as any,
