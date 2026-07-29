@@ -20,7 +20,6 @@ describe McpServer::Tools::CreatePhase do
   end
 
   describe '#input_schema' do
-    # A method, not a let: the schema is rebuilt to observe feature-flag changes.
     def schema = described_class.new.input_schema
 
     # The Runner splats params into Phase.new, so undeclared properties must be
@@ -29,53 +28,15 @@ describe McpServer::Tools::CreatePhase do
       expect(schema[:additionalProperties]).to be(false)
     end
 
-    describe 'gated participation methods' do
-      using RSpec::Parameterized::TableSyntax
+    # The schema deliberately advertises the union of participation methods,
+    # prescreening modes and disliking fields regardless of which features the tenant
+    # has: definitions must be identical on every tenant (tool_definitions_parity_spec).
+    # The flags are enforced at call time instead — see the 'feature gates' block below.
+    it 'advertises every offered participation method regardless of feature flags' do
+      SettingsService.new.deactivate_feature!('polls')
 
-      # rubocop:disable Lint/BinaryOperatorWithIdenticalOperands
-      where(:participation_method, :flag) do
-        'common_ground' | 'common_ground'
-        'document_annotation' | 'konveio_document_annotation'
-        'poll' | 'polls'
-        'survey' | 'surveys'
-      end
-      # rubocop:enable Lint/BinaryOperatorWithIdenticalOperands
-
-      with_them do
-        it 'is only available when its feature flag is active' do
-          settings = SettingsService.new
-          # Features depending on the flag must be deactivated first (e.g. the
-          # per-provider survey features all depend on 'surveys').
-          AppConfiguration::Settings.json_schema['dependencies'].each do |depender, dependees|
-            settings.deactivate_feature!(depender) if dependees.include?(flag)
-          end
-
-          settings.deactivate_feature!(flag)
-          expect(schema.dig(:properties, :participation_method, :enum)).not_to include(participation_method)
-
-          settings.activate_feature!(flag)
-          expect(schema.dig(:properties, :participation_method, :enum)).to include(participation_method)
-        end
-      end
-    end
-
-    it 'adapts the `prescreening_mode` enum to the prescreening feature flags' do
-      settings = SettingsService.new
-      %w[prescreening prescreening_ideation flag_inappropriate_content].each { |flag| settings.deactivate_feature!(flag) }
-      expect(schema.dig(:properties, :prescreening_mode, :enum)).to eq([nil])
-
-      settings.activate_feature!('prescreening')
-      expect(schema.dig(:properties, :prescreening_mode, :enum)).to eq([nil, 'all'])
-
-      settings.activate_feature!('flag_inappropriate_content')
+      expect(schema.dig(:properties, :participation_method, :enum)).to include('poll')
       expect(schema.dig(:properties, :prescreening_mode, :enum)).to eq([nil, 'all', 'flagged_only'])
-    end
-
-    it 'only exposes the disliking fields when `disable_disliking` is active' do
-      SettingsService.new.deactivate_feature!('disable_disliking')
-      expect(schema[:properties]).not_to have_key(:reacting_dislike_enabled)
-
-      SettingsService.new.activate_feature!('disable_disliking')
       expect(schema[:properties].keys).to include(
         :reacting_dislike_enabled,
         :reacting_dislike_method,
@@ -164,6 +125,89 @@ describe McpServer::Tools::CreatePhase do
       response = run(params.merge(project_id: SecureRandom.uuid))
 
       expect(response).to be_not_found('Project')
+    end
+  end
+
+  # The input schema advertises the union of participation methods and prescreening
+  # modes on every tenant (tenant-agnostic definitions); the feature gates are
+  # enforced at call time instead.
+  describe 'feature gates' do
+    let(:status) { 'draft' }
+
+    context 'when the participation method is gated by a disabled feature' do
+      before { SettingsService.new.deactivate_feature!('polls') }
+
+      it 'returns an error naming the missing feature and creates nothing' do
+        response = nil
+        expect do
+          response = run_mcp_tool(
+            described_class,
+            params: params.merge(participation_method: 'poll'),
+            current_user:
+          )
+        end.not_to change(Phase, :count)
+
+        expect(response).to be_error
+        expect(response.content.first[:text]).to include("'polls' feature")
+      end
+    end
+
+    context 'when the participation method is gated by an enabled feature' do
+      before { SettingsService.new.activate_feature!('polls') }
+
+      it 'creates the phase' do
+        response = run_mcp_tool(
+          described_class,
+          params: params.merge(participation_method: 'poll'),
+          current_user:
+        )
+
+        expect(response).not_to be_error
+        expect(project.reload.phases.sole.participation_method).to eq('poll')
+      end
+    end
+
+    it 'rejects prescreening_mode when no prescreening feature is enabled' do
+      SettingsService.new.deactivate_feature!('prescreening')
+      SettingsService.new.deactivate_feature!('prescreening_ideation')
+
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(prescreening_mode: 'all'),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.content.first[:text]).to include('prescreening')
+    end
+
+    it 'rejects reacting_dislike_* fields when the disable_disliking feature is off' do
+      SettingsService.new.deactivate_feature!('disable_disliking')
+
+      response = run_mcp_tool(
+        described_class,
+        params: params.merge(reacting_dislike_enabled: true),
+        current_user:
+      )
+
+      expect(response).to be_error
+      expect(response.content.first[:text]).to include("'disable_disliking' feature")
+    end
+  end
+
+  describe 'participation method coverage' do
+    # Methods deliberately not offered by the tool. 'community_monitor_survey' belongs to
+    # the community monitor, a singleton internal project (Project::INTERNAL_ROLES) whose
+    # phase is provisioned by the platform rather than created through this tool.
+    let(:unoffered_methods) { %w[community_monitor_survey] }
+
+    # Fails when a new participation method is added without deciding, here, whether the
+    # tool offers it and behind which feature flag. GATED_METHODS/UNGATED_METHODS feed the
+    # schema enum through an intersection, which would otherwise drop it silently.
+    it 'classifies every participation method as gated, ungated or unoffered' do
+      classified = described_class::GATED_METHODS.keys + described_class::UNGATED_METHODS + unoffered_methods
+
+      expect(classified).to match_array(Phase::PARTICIPATION_METHODS)
     end
   end
 end

@@ -30,8 +30,16 @@ const AdminSettingsWidgets = () => {
   };
 
   const tabItems = [
-    { name: 'ideas', label: formatMessage(messages.tabIdeas) },
-    { name: 'projects', label: formatMessage(messages.tabProjects) },
+    {
+      name: 'ideas',
+      label: formatMessage(messages.tabIdeas),
+      className: 'intercom-admin-widget-tab-ideas',
+    },
+    {
+      name: 'projects',
+      label: formatMessage(messages.tabProjects),
+      className: 'intercom-admin-widget-tab-projects',
+    },
   ];
 
   return (

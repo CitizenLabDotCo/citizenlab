@@ -35,30 +35,11 @@ module.exports = function (api) {
     '@babel/plugin-transform-runtime',
   ];
 
-  const env = {
-    test: {
-      presets: [
-        '@babel/preset-env',
-        '@babel/preset-react',
-        '@babel/typescript',
-      ],
-      plugins: [
-        [
-          'babel-plugin-styled-components',
-          {
-            pure: true,
-          },
-        ],
-        '@babel/plugin-transform-modules-commonjs',
-        '@babel/plugin-transform-runtime',
-        'dynamic-import-node',
-      ],
-    },
-  };
-
+  // No `test` env: Jest transforms with @swc/jest (see jest.config.js), not
+  // babel. This config is still used by Storybook's babel-loader and by the
+  // extract-intl script.
   return {
     presets,
     plugins,
-    env,
   };
 };
