@@ -122,6 +122,18 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(highlighted_phase_ids).to match_array included_phase_ids
     end
 
+    example 'Excludes projects where the user cannot participate and cannot fix it', document: false do
+      group = create(:group)
+      %w[posting_idea commenting_idea reacting_idea].each do |action|
+        permission = create(:permission, action:, permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+        create(:groups_permission, permission_id: permission.id, group: group)
+      end
+
+      do_request
+      expect(status).to eq(200)
+      expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
+    end
+
     example 'Includes project images', document: false do
       project_image = create(:project_image, project: active_ideation_project)
 

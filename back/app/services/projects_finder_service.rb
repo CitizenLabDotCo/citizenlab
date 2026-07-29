@@ -130,11 +130,9 @@ class ProjectsFinderService
   private
 
   def participation_possible_for?(phase)
-    action_descriptors = Permissions::PhasePermissionsService.new(
+    Permissions::PhasePermissionsService.new(
       phase, @user, user_requirements_service: user_requirements_service
-    ).action_descriptors
-
-    Permissions::ActionDescriptorsService.new(action_descriptors).participation_possible?
+    ).participation_possible?
   end
 
   def active_participatory_phases

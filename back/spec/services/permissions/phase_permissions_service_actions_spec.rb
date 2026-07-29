@@ -679,4 +679,37 @@ describe Permissions::PhasePermissionsService do
       end.not_to exceed_query_limit(7) # Down from an original 490
     end
   end
+
+  describe '#participation_possible?' do
+    def descriptor(enabled:, disabled_reason: nil)
+      { enabled: enabled, disabled_reason: disabled_reason }
+    end
+
+    it 'returns true when an action is enabled' do
+      allow(service).to receive(:action_descriptors).and_return(
+        posting_idea: descriptor(enabled: false, disabled_reason: 'posting_disabled'),
+        taking_survey: descriptor(enabled: true)
+      )
+
+      expect(service.participation_possible?).to be true
+    end
+
+    it 'returns true when no action is enabled but a disabled reason is user-fixable' do
+      allow(service).to receive(:action_descriptors).and_return(
+        posting_idea: descriptor(enabled: false, disabled_reason: 'user_not_signed_in'),
+        taking_survey: descriptor(enabled: false, disabled_reason: 'not_survey')
+      )
+
+      expect(service.participation_possible?).to be true
+    end
+
+    it 'returns false when no action is enabled and no disabled reason is fixable' do
+      allow(service).to receive(:action_descriptors).and_return(
+        posting_idea: descriptor(enabled: false, disabled_reason: 'posting_disabled'),
+        taking_survey: descriptor(enabled: false, disabled_reason: 'not_survey')
+      )
+
+      expect(service.participation_possible?).to be false
+    end
+  end
 end

@@ -104,6 +104,18 @@ module Permissions
       PHASE_DENIED_REASONS[:inactive_phase] if time && !phase.active?(time)
     end
 
+    # Reasons the user can potentially 'fix' themselves, e.g. by signing in or
+    # completing their profile. Fixing one may still reveal another unfixable
+    # reason. Keep in sync with FIXABLE_REASONS in
+    # front/app/utils/actionDescriptors/index.ts.
+    FIXABLE_DENIED_REASONS = %w[user_not_signed_in user_not_active user_not_verified user_missing_requirements].freeze
+
+    def participation_possible?
+      action_descriptors.values.any? do |descriptor|
+        descriptor[:enabled] || FIXABLE_DENIED_REASONS.include?(descriptor[:disabled_reason])
+      end
+    end
+
     def action_descriptors
       posting = denied_reason_for_action 'posting_idea'
       commenting = denied_reason_for_action 'commenting_idea'
