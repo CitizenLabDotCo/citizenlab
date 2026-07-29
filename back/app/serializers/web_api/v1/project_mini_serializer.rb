@@ -3,8 +3,8 @@
 class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :slug
 
-  attribute :participation_state do |project|
-    HighlightedPhaseService.new(project).participation_state
+  attribute :participation_status do |project|
+    HighlightedPhaseService.new(project).participation_status
   end
 
   attribute :days_until_start do |project|

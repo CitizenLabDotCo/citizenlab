@@ -24,7 +24,7 @@ class HighlightedPhaseService
       end
   end
 
-  def participation_state
+  def participation_status
     phase = highlighted_phase
     return if !phase
 

@@ -87,7 +87,7 @@ export interface IProjectAttributes {
   baskets_count: number;
   votes_count: number;
   visible_to: Visibility;
-  participation_state?: 'active' | 'upcoming' | 'ended' | null;
+  participation_status?: 'active' | 'upcoming' | 'ended' | null;
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
