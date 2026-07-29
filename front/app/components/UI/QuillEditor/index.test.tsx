@@ -28,7 +28,9 @@ describe('QuillEditor image size limit', () => {
 
     uploadThroughToolbar(container, imageFileOfSize(12000000));
 
-    expect(await screen.findByText('This image is too large')).toBeInTheDocument();
+    expect(
+      await screen.findByText('This image is too large')
+    ).toBeInTheDocument();
     expect(
       screen.getByText(/exceeds the maximum allowed size of 10MB/i)
     ).toBeInTheDocument();
@@ -43,6 +45,8 @@ describe('QuillEditor image size limit', () => {
     await waitFor(() => {
       expect(container.querySelector('.ql-editor img')).toBeInTheDocument();
     });
-    expect(screen.queryByText('This image is too large')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('This image is too large')
+    ).not.toBeInTheDocument();
   });
 });
