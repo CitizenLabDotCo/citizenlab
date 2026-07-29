@@ -14,8 +14,8 @@ describe McpServer::LayoutWidgets do
 
     it 'partitions the widget specs exactly into documented, scaffold and explicitly undocumented widgets' do
       covered = described_class::DOCS.keys +
-        described_class::SCAFFOLD_WIDGETS +
-        described_class::UNDOCUMENTED_WIDGETS
+                described_class::SCAFFOLD_WIDGETS +
+                described_class::UNDOCUMENTED_WIDGETS
 
       expect(covered).to match_array(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys)
     end
