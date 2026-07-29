@@ -4,15 +4,14 @@ import { colors, media } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { injectIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-import { isAdmin } from 'utils/permissions/roles';
+import { usePermission } from 'utils/permissions';
 
 import messages from '../messages';
 
@@ -22,21 +21,33 @@ import messages from '../messages';
 
 interface Props {
   pageId: string;
+  projectId?: string | null;
 }
 
 const AdminCustomPageEditButton = ({
   pageId,
+  projectId,
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
-  const { data: authUser } = useAuthUser();
+  // Only fetched for project pages (hook disabled when id is nullish); passed
+  // as the rule's context to resolve moderator access.
+  const { data: project } = useProjectById(projectId);
 
-  const userCanEditPage = !isNilOrError(authUser) && isAdmin(authUser);
+  const userCanEditPage = usePermission({
+    item: { type: 'static_page' },
+    action: 'edit',
+    context: project?.data,
+  });
+
+  const editLink = projectId
+    ? { linkTo: `/admin/projects/${projectId}/pages/${pageId}` }
+    : adminCustomPageContentLink(pageId);
 
   return userCanEditPage ? (
     <PositionWrapper>
       <ButtonWithLink
         icon="edit"
-        {...adminCustomPageContentLink(pageId)}
+        {...editLink}
         buttonStyle="secondary"
         bgColor={colors.white}
         padding="5px 8px"

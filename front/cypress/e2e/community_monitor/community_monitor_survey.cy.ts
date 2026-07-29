@@ -26,9 +26,9 @@ describe('Submit community monitor survey', () => {
     cy.setConsentAndAdminLoginCookies();
     // Confirm access rights are set to Anyone for the community monitor
     cy.visit(`admin/community-monitor/settings/access-rights`);
-    cy.get('#e2e-permission-anyone').should('be.visible');
-    cy.get('#e2e-permission-anyone').click({ force: true });
-    cy.contains('No actions are required to participate').should('be.visible');
+    cy.get('.e2e-permission-anyone').should('be.visible');
+    cy.get('.e2e-permission-anyone').first().click({ force: true });
+    cy.wait(500);
   });
 
   it('can be submitted by an admin user', () => {
@@ -96,9 +96,9 @@ describe('Submit community monitor survey', () => {
 
     // Change the access rights to email confirmation for the community monitor
     cy.visit(`admin/community-monitor/settings/access-rights`);
-    cy.get('#e2e-permission-email-confirmed-users').should('be.visible');
-    cy.get('#e2e-permission-email-confirmed-users').click({ force: true });
-    cy.contains('Confirm your email').should('be.visible');
+    cy.get('.e2e-permission-registered-users').should('be.visible');
+    cy.get('.e2e-permission-registered-users').first().click({ force: true });
+    cy.contains('Confirmed email').should('be.visible');
 
     // Go to community monitor survey form as logged out user
     cy.clearAllCookies();

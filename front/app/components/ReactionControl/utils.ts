@@ -14,7 +14,10 @@ export const showIdeationReactions = (idea: IIdeaData) => {
   const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
   // hide like/dislike buttons if Reacting to inputs is disabled
   // and idea is in active phase (disabled_reason equals reacting_disabled)
-  if (!reactingActionDescriptor.enabled && reactingActionDescriptor .disabled_reason === 'reacting_disabled') {
+  if (
+    !reactingActionDescriptor.enabled &&
+    reactingActionDescriptor.disabled_reason === 'reacting_disabled'
+  ) {
     return null;
   }
 

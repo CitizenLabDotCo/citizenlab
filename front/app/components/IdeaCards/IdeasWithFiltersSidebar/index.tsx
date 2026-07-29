@@ -18,6 +18,7 @@ import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
+import { getSelectedView } from 'api/phases/utils';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
@@ -99,10 +100,15 @@ const IdeasWithFiltersSidebar = ({
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
 
+  const { data: phase } = usePhase(phaseId);
+
   // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.idea_map_id;
-  const selectedView =
-    searchParams.view ?? (selectedIdeaMarkerId ? 'map' : defaultView);
+  const selectedView = getSelectedView({
+    requestedView: searchParams.view,
+    availableViews: phase?.data.attributes.available_views,
+    defaultView: selectedIdeaMarkerId ? 'map' : defaultView,
+  });
 
   // Fetch ideas list & filter counts
   const {
@@ -113,8 +119,6 @@ const IdeasWithFiltersSidebar = ({
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteIdeas(ideaQueryParameters);
-
-  const { data: phase } = usePhase(phaseId);
 
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);

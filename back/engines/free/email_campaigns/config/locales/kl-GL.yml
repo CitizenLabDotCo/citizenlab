@@ -267,6 +267,7 @@ kl-GL:
       new_idea_for_admin_prescreening: Suliniut aqutaranni nutaaq akuerineqartussaq
       new_idea_for_admin_published: Suliniut nakkutigisanni saqqummiussaq nutaaq
       new_initiative_for_admin: Innuttaasup siunnersuutaa nutaaq
+      new_phone_confirmation: Oqarasuaatikkut uppernarsaatissaq nutaaq
       official_feedback_on_commented_idea: Isumassarsiamut oqaaseqarfigisimasannut siunnersuummik nutarterineq
       official_feedback_on_commented_initiative: Innuttaasup siunnersuutaanut oqaaseqarfigisimasannut nutarterineq
       official_feedback_on_idea_you_follow: Siunnersuummi malitanni nutaarsiassaq
@@ -285,6 +286,7 @@ kl-GL:
       project_review_state_change: Suliniut akuerineqarpoq
       proposal_expired_for_admin: Siunnersuut piffissaa qaangiuppoq taasinerit amerlassusissaat angunngitsoorlugu
       screening_digest: Sapaatip-akunneranut misissugassat pillugit eqqaasitsissut
+      sms_manual: SMS-it pisortatigoortut
       space_moderation_rights_received: Immikkoortortami aqutsisutut pisinnaatitaaffiit tiguneqarput
       status_change_of_commented_idea: Isumasssarsiap oqaaseqarfigisimasama killiffiani allanngorneq
       status_change_of_commented_initiative: Innuttaasumut isumassarsiap oqaaseqarfigisimasama klliffiani allanngorneq
@@ -772,6 +774,8 @@ kl-GL:
       main_header: '%{firstName}, platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiisoqarpoq'
       preheader: '%{authorName} platforminni innuttaasunut siunnersuummik nutaamik tamanut saqqummiivoq'
       subject: Innuttaasunut siunnersuummik platformimut %{organizationName}mi tamanut saqqummiisoqarpoq
+    new_phone_confirmation:
+      sms_body: Uppernarsaatissat tassaavoq %{code}.
     official_feedback_on_commented_idea:
       by_author: uannga %{authorName}
       cta_view: Isumassarsiamukarit

@@ -15,12 +15,12 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { CampaignFormValues } from 'api/campaigns/types';
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaign from 'api/campaigns/useSendCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
-import { isDraft } from 'api/campaigns/util';
+import { EmailCampaignFormValues } from 'api/campaigns/email/types';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
+import useSendEmailCampaign from 'api/campaigns/email/useSendEmailCampaign';
+import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
@@ -74,18 +74,18 @@ const Show = () => {
   };
 
   const { data: tenant } = useAppConfiguration();
-  const { data: campaign } = useCampaign(campaignId);
+  const { data: campaign } = useEmailCampaign(campaignId);
   const { data: project } = useProjectById(projectId);
 
   const {
     mutate: sendCampaign,
     isLoading: isSendingCampaign,
     error: apiSendErrors,
-  } = useSendCampaign();
+  } = useSendEmailCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
-    useSendCampaignPreview();
+    useSendEmailCampaignPreview();
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
-    useUpdateCampaign();
+    useUpdateEmailCampaign();
 
   const { data: sender } = useUserById(
     campaign?.data.relationships.author.data.id
@@ -118,7 +118,7 @@ const Show = () => {
     if (campaign?.data.attributes.scheduled_at) {
       updateCampaign({
         id: campaign.data.id,
-        campaign: { scheduled_at: null } as CampaignFormValues,
+        campaign: { scheduled_at: null } as EmailCampaignFormValues,
       });
     }
     sendCampaign(campaignId);
@@ -169,13 +169,13 @@ const Show = () => {
               <Title mr="12px">
                 <T value={campaign.data.attributes.subject_multiloc} />
               </Title>
-              {isDraft(campaign.data) && (
+              {isEmailCampaignDraft(campaign.data) && (
                 <StatusLabel
                   backgroundColor={colors.brown}
                   text={<FormattedMessage {...messages.draft} />}
                 />
               )}
-              {!isDraft(campaign.data) &&
+              {!isEmailCampaignDraft(campaign.data) &&
                 !campaign.data.attributes.scheduled_at && (
                   <StatusLabel
                     backgroundColor={colors.success}
@@ -196,7 +196,7 @@ const Show = () => {
                 </>
               )}
             </Box>
-            {(isDraft(campaign.data) ||
+            {(isEmailCampaignDraft(campaign.data) ||
               campaign.data.attributes.scheduled_at) && (
               <Buttons>
                 <ButtonWithLink
@@ -275,7 +275,7 @@ const Show = () => {
                 </span>
               </div>
             </FromTo>
-            {(isDraft(campaign.data) ||
+            {(isEmailCampaignDraft(campaign.data) ||
               campaign.data.attributes.scheduled_at) && (
               <Box>
                 <Button
@@ -298,7 +298,8 @@ const Show = () => {
             )}
           </Box>
 
-          {isDraft(campaign.data) || campaign.data.attributes.scheduled_at ? (
+          {isEmailCampaignDraft(campaign.data) ||
+          campaign.data.attributes.scheduled_at ? (
             <DraftCampaignDetails campaign={campaign.data} />
           ) : (
             <SentCampaignDetails campaignId={campaign.data.id} />

@@ -190,6 +190,7 @@ es-CL:
       new_email_confirmation: Nuevo código de confirmación del correo
       new_idea_for_admin_prescreening: Nuevo aporte que requiere aprobación en un proyecto que modero
       new_idea_for_admin_published: Nuevo aporte publicado en un proyecto que modero
+      new_phone_confirmation: Nuevo código de confirmación de teléfono
       official_feedback_on_idea_you_follow: Actualización de una idea que sigues
       password_reset: Restablecimiento de contraseña
       project_folder_moderation_rights_received: Derechos de administrador de carpetas recibidos
@@ -202,6 +203,7 @@ es-CL:
       project_review_state_change: Proyecto aprobado
       proposal_expired_for_admin: La propuesta ha caducado sin alcanzar el umbral de votación
       screening_digest: Recordatorio de evaluación semanal
+      sms_manual: Mensajes SMS oficiales
       space_moderation_rights_received: Permisos de gestor de espacio recibidos
       status_change_on_idea_you_follow: Cambio de estado de una idea que sigues
       survey_submitted: Encuesta enviada
@@ -534,6 +536,8 @@ es-CL:
       title: Se ha publicado una nuevo aporte en tu plataforma
       today: Hoy
       yesterday: Ayer
+    new_phone_confirmation:
+      sms_body: Tu código de confirmación es %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ir a esta entrada
       event_description: "%{feedback_author_name} dejó una respuesta oficial sobre %{input_title}'."

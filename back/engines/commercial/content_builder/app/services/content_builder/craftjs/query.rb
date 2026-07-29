@@ -25,6 +25,12 @@ module ContentBuilder
           (node['linkedNodes'] || {}).map { |slot, child_id| ["linkedNodes[#{slot}]", child_id] }
       end
 
+      # All child ids of a node, in child_references order.
+      # @return [Array<String>]
+      def child_ids(node)
+        child_references(node).map { |_via, child_id| child_id }
+      end
+
       # linkedNodes slot names in visual order: the widget's declared slots
       # (WidgetSpecs 'slots', in visual order) first, then any undeclared slots a
       # stored graph carries, so lenient readers still visit those.

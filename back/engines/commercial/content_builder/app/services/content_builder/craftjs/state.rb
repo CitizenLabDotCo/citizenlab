@@ -102,7 +102,7 @@ module ContentBuilder
           deleted_node = json.delete(id) { raise KeyError, "Node with id #{id} not found" }
           deleted_nodes[id] = deleted_node
 
-          ids_to_delete.concat(Query.child_references(deleted_node).map(&:last))
+          ids_to_delete.concat(Query.child_ids(deleted_node))
         end
 
         deleted_nodes

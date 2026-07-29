@@ -3,7 +3,7 @@
 # LLM-facing documentation for project page layout widgets (code 'project_page'). The
 # machine-readable rules these docs describe (slots, enums, multilocs) live in
 # ContentBuilder::Craftjs::WidgetSpecs; widgets present there but absent here
-# (Container, Box, the composite presets, the page scaffold) are structural or
+# (UNDOCUMENTED_WIDGETS and the page scaffold, SCAFFOLD_WIDGETS) are structural or
 # legacy-only — they validate inside graphs but are not advertised as insertable.
 #
 # The cheatsheet is generated from this hash, and a spec asserts every documented
@@ -24,6 +24,19 @@ class McpServer::LayoutWidgets
   SCAFFOLD_WIDGETS = %w[
     ProjectPageRoot ProjectBanner ProjectTitle ProjectPageBody
     ProjectDescriptionSection PhasesWidget EventsWidget
+  ].freeze
+
+  # WidgetSpecs widgets deliberately left out of DOCS: structural containers
+  # (only ever created as part of a documented widget's slot pattern), legacy-only
+  # composite presets, and the migrated-description RichTextMultiloc (edit-in-place
+  # only, see FORMAT_RULES). A spec asserts DOCS + this list + SCAFFOLD_WIDGETS
+  # covers the widget specs exactly, so a new widget forces an explicit decision here.
+  UNDOCUMENTED_WIDGETS = %w[
+    Container
+    Box
+    ImageTextCards
+    InfoWithAccordions
+    RichTextMultiloc
   ].freeze
 
   DOCS = {

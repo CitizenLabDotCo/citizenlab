@@ -102,6 +102,35 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
+  context '"posting_idea" with a confirmed phone number requirement' do
+    let(:phase) { create(:active_native_survey_phase, with_permissions: true) }
+    let(:service) { described_class.new(phase, user) }
+    let(:user) { create(:user) }
+
+    before do
+      SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' })
+      phase.permissions.find_by(action: 'posting_idea').update!(
+        permitted_by: 'users',
+        require_confirmed_phone_number: true
+      )
+    end
+
+    it 'denies a user without a confirmed phone number' do
+      user.update!(phone: nil, phone_confirmed_at: nil)
+      expect(service.denied_reason_for_action('posting_idea')).to eq 'user_missing_requirements'
+    end
+
+    it 'denies a user with an unconfirmed phone number' do
+      user.update!(phone: '+3212345678', phone_confirmed_at: nil)
+      expect(service.denied_reason_for_action('posting_idea')).to eq 'user_missing_requirements'
+    end
+
+    it 'permits a user with a confirmed phone number' do
+      user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
+      expect(service.denied_reason_for_action('posting_idea')).to be_nil
+    end
+  end
+
   context 'posting_idea denied_reason_for_action' do
     context 'community monitor project with everyone permissions and everyone_tracking enabled' do
       let!(:phase) do
@@ -193,6 +222,32 @@ describe Permissions::PhasePermissionsService do
           it 'returns "posting_limited_max_reached" if the cookie is malformed but has not expired' do
             expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'
           end
+        end
+      end
+    end
+
+    context 'native survey with allow_multiple_responses' do
+      let(:user) { create(:user) }
+      let(:service) { described_class.new(phase, user) }
+
+      before do
+        create(:idea_status_proposed)
+        create(:native_survey_response, author: user, project: phase.project, creation_phase: phase, phases: [phase])
+      end
+
+      context 'when disabled (default)' do
+        let(:phase) { create(:active_native_survey_phase, with_permissions: true, allow_multiple_responses: false) }
+
+        it 'blocks a second response' do
+          expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'
+        end
+      end
+
+      context 'when enabled' do
+        let(:phase) { create(:active_native_survey_phase, with_permissions: true, allow_multiple_responses: true) }
+
+        it 'allows a second response' do
+          expect(service.denied_reason_for_action('posting_idea')).to be_nil
         end
       end
     end

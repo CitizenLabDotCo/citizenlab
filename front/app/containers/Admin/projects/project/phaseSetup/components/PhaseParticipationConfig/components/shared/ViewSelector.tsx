@@ -86,7 +86,7 @@ const ViewSelector = ({
       description: messages.mapViewDescription,
       descriptionValues: { inputFormLink },
     },
-    // Feed view is hidden for voting phases, as it's only relevant for ideation and proposals
+    // Feed view is hidden for voting and proposals phases, as it's only relevant for ideation
     ...(ideaFeedEnabled && !hideFeed
       ? [
           {

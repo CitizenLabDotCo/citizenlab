@@ -17,8 +17,10 @@ export type Step =
   | 'invite:taken'
 
   // missing data (if signed in already)
-  | 'missing-data:built-in'
   | 'missing-data:email-confirmation'
+  | 'missing-data:phone'
+  | 'missing-data:phone-confirmation'
+  | 'missing-data:built-in'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'
 
@@ -28,10 +30,6 @@ export type Step =
   // verification only (for onboarding and re-verification)
   | 'verification-only'
   | 'verification-success'
-
-  // sso verification flow
-  | 'sso-verification:sso-providers'
-  | 'sso-verification:sso-providers-policies'
 
   // post-participation flow (sign up after participation)
   | 'post-participation:email';

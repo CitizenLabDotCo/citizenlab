@@ -75,11 +75,14 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         invite_status
         last_active_at
         new_email
+        new_phone
         onboarding
+        phone
+        phone_confirmed_at
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role state — deliberately not exported (privacy/security)
+      ] # auth/session/role/contact state — deliberately not exported (privacy/security)
     }.freeze
   end
 
@@ -231,6 +234,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         EmailCampaigns::Consent
         EmailCampaigns::Delivery
         EmailCampaigns::Example
+        EmailCampaigns::Sms::Delivery
         EmailCampaigns::UnsubscriptionToken
       ],
 
@@ -268,13 +272,22 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         UserCustomFields::Representativeness::RefDistribution
       ],
 
-      # Files engine — separate cross-resource attachments.
+      # Files engine — Preview/Transcript are derived artifacts, not content.
+      # File/FileAttachment/FilesProject ARE exported.
       files: %w[
-        Files::File
-        Files::FileAttachment
-        Files::FilesProject
         Files::Preview
         Files::Transcript
+      ],
+
+      # Legacy per-resource file models, fully migrated to the Files engine and now
+      # exported via Files::File / Files::FileAttachment / Files::FilesProject. Kept as
+      # AR models but no longer exported directly. (StaticPageFile / ProjectFolders::File
+      # are covered by the `pages` / `project_folders` groups.)
+      legacy_files: %w[
+        EventFile
+        IdeaFile
+        PhaseFile
+        ProjectFile
       ],
 
       # Polls anonymous responses — discardable, not exported.

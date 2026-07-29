@@ -57,6 +57,13 @@ resource 'AdminPublication' do
         expect(response_data.pluck(:id)).not_to include(hidden_project.admin_publication.id)
       end
 
+      example 'returns 400 when a filter param is a nested hash instead of a scalar', document: false do
+        # `?publication_statuses[x]=y` reaches `where(...)` as ActionController::Parameters,
+        # which raises "can't cast ActionController::Parameters" (previously a 500).
+        do_request(publication_statuses: { injected: 'x' })
+        expect(status).to eq(400)
+      end
+
       example 'List all top-level admin publications' do
         do_request(depth: 0)
         expect(response_data.size).to eq 7
@@ -380,6 +387,13 @@ resource 'AdminPublication' do
 
       example 'Returns empty data when no records are found', document: false do
         do_request(ids: ['not_an_admin_publication_id'])
+
+        expect(status).to eq(200)
+        expect(response_data).to be_empty
+      end
+
+      example 'Returns empty data when the ids param is missing', document: false do
+        do_request
 
         expect(status).to eq(200)
         expect(response_data).to be_empty

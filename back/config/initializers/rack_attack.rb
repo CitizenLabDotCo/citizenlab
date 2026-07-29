@@ -169,7 +169,7 @@ class Rack::Attack
 
   # Similar inputs responses by IP.
   throttle('similar_ideas/ip', limit: 5, period: 1.second) do |req|
-    if req.path == '/web_api/v1/ideas/similar_ideas'
+    if %r{\A/web_api/v1/phases/[^/]+/inputs/similar\z}.match?(req.path) && req.post?
       req.remote_ip
     end
   end

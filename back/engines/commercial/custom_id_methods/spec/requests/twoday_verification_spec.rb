@@ -160,7 +160,7 @@ context 'Twoday verification (BankID - Helsingborg)' do
       expect_user_to_be_verified_and_identified(user)
       expect(user.email).to be_nil
       expect(user.active?).to be(true)
-      expect(user.confirmation_required?).to be(false)
+      expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(0)
 
       headers = { 'Authorization' => authorization_header(user) }
@@ -169,7 +169,7 @@ context 'Twoday verification (BankID - Helsingborg)' do
       expect(response).to have_http_status(:ok)
       expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
       expect(user.confirmation_required?).to be(true)
-      expect(user.active?).to be(false)
+      expect(user.active?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(1)
 
       post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
@@ -190,7 +190,7 @@ context 'Twoday verification (BankID - Helsingborg)' do
       user = User.order(created_at: :asc).last
       expect_user_to_be_verified_and_identified(user)
       expect(user.email).to be_nil
-      expect(user.confirmation_required?).to be(false)
+      expect(user.confirmation_required?).to be(true)
       expect(user.active?).to be(true)
     end
 

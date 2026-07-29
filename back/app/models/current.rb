@@ -3,6 +3,10 @@
 class Current < ActiveSupport::CurrentAttributes
   attribute :tenant, :app_configuration
   attribute :location_headers
+
+  # Request origin ('mcp' during an MCP tool run, else nil). Read by LogActivityJob.
+  attribute :activity_channel
+
   private :tenant=, :app_configuration=
 
   def app_configuration

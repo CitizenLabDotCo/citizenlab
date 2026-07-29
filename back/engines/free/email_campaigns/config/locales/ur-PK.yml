@@ -190,6 +190,7 @@ ur-PK:
       new_email_confirmation: ای میل کی تصدیق کا نیا کوڈ
       new_idea_for_admin_prescreening: نئے ان پٹ کو ایک پروجیکٹ میں منظوری کی ضرورت ہوتی ہے جس میں میں اعتدال کرتا ہوں۔
       new_idea_for_admin_published: ایک پروجیکٹ میں نیا شائع شدہ ان پٹ جس میں میں معتدل ہوں۔
+      new_phone_confirmation: فون کی تصدیق کا نیا کوڈ
       official_feedback_on_idea_you_follow: ایک خیال پر اپ ڈیٹ کریں جس کی آپ پیروی کرتے ہیں۔
       password_reset: پاس ورڈ ری سیٹ
       project_folder_moderation_rights_received: فولڈر مینیجر کے حقوق موصول ہوئے۔
@@ -202,6 +203,7 @@ ur-PK:
       project_review_state_change: پروجیکٹ کی منظوری دی گئی۔
       proposal_expired_for_admin: ووٹنگ کی حد تک پہنچے بغیر تجویز کی میعاد ختم ہو گئی
       screening_digest: ہفتہ وار اسکریننگ کی یاد دہانی
+      sms_manual: سرکاری ایس ایم ایس پیغامات
       space_moderation_rights_received: اسپیس مینیجر کے اختیارات موصول ہو گئے
       status_change_on_idea_you_follow: کسی خیال کی حیثیت کی تبدیلی جس کی آپ پیروی کرتے ہیں۔
       survey_submitted: سروے جمع کرایا
@@ -534,6 +536,8 @@ ur-PK:
       title: آپ کے پلیٹ فارم پر ایک نیا ان پٹ شائع کیا گیا ہے۔
       today: آج
       yesterday: کل
+    new_phone_confirmation:
+      sms_body: آپ کی تصدیق کا کوڈ %{code} ہے۔
     official_feedback_on_idea_you_follow:
       cta_button: اس ان پٹ پر جائیں۔
       event_description: "%{feedback_author_name} نے '%{input_title}' پر ایک اپ ڈیٹ دیا۔"

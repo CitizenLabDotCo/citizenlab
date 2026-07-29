@@ -12,6 +12,12 @@ module ParticipationMethod
       Insights::ProposalsPhaseInsightsService
     end
 
+    # The feed view hides vote counts and progress towards the reacting threshold, so participants
+    # don't realise a proposal has to collect votes. It was never designed for this method.
+    def allowed_presentation_modes
+      %w[card map]
+    end
+
     def assign_defaults_for_phase
       super
       phase.reacting_dislike_enabled = false

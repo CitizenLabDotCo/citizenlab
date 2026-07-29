@@ -486,11 +486,10 @@ describe 'Rack::Attack' do
     end
     SettingsService.new.activate_feature! 'input_iq'
 
-    project_id = create(:project_with_active_ideation_phase).id
+    phase_id = create(:project_with_active_ideation_phase).phases.first.id
     params_proc = proc do |title|
       {
         idea: {
-          project_id: project_id,
           title_multiloc: {
             'en' => title
           }
@@ -500,7 +499,7 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do |i|
         post(
-          '/web_api/v1/ideas/similar_ideas',
+          "/web_api/v1/phases/#{phase_id}/inputs/similar",
           params: params_proc.call("Title #{i}"),
           headers: headers
         )
@@ -508,7 +507,7 @@ describe 'Rack::Attack' do
       expect(status).to eq 200 # OK
 
       post(
-        '/web_api/v1/ideas/similar_ideas',
+        "/web_api/v1/phases/#{phase_id}/inputs/similar",
         params: params_proc.call('Final idea'),
         headers: headers
       )

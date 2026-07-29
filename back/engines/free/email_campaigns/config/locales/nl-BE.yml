@@ -190,6 +190,7 @@ nl-BE:
       new_email_confirmation: Nieuwe e-mailbevestigingscode
       new_idea_for_admin_prescreening: Nieuwe bijdrage die goedkeuring vereist in een project dat ik modereer
       new_idea_for_admin_published: Nieuwe gepubliceerde contributie in een project dat ik modereer
+      new_phone_confirmation: Nieuwe telefoonbevestigingscode
       official_feedback_on_idea_you_follow: Update over een bijdrage dat je volgt
       password_reset: Herstel wachtwoord
       project_folder_moderation_rights_received: Mapbeheerdersrechten ontvangen
@@ -202,6 +203,7 @@ nl-BE:
       project_review_state_change: Project goedgekeurd
       proposal_expired_for_admin: Voorstel verlopen zonder de stemdrempel te bereiken
       screening_digest: Wekelijkse screeningherinnering
+      sms_manual: Officiële SMS-berichten
       space_moderation_rights_received: Ruimtebeheerdersrechten ontvangen
       status_change_on_idea_you_follow: Statuswijziging van een bijdrage dat je volgt
       survey_submitted: Vragenlijst ingediend
@@ -534,6 +536,8 @@ nl-BE:
       title: Er is een nieuwe bijdrage gepubliceerd op je platform
       today: Vandaag
       yesterday: Gisteren
+    new_phone_confirmation:
+      sms_body: Je bevestigingscode is %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ga naar deze bijdrage
       event_description: "%{feedback_author_name} gaf een update op %{input_title}'."

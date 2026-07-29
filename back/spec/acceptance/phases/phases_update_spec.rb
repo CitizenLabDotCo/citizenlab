@@ -117,6 +117,15 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
           expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
         end
+
+        context 'when the feed view is requested' do
+          let(:available_views) { %w[card feed] }
+
+          example_request '[error] Update a proposals phase to offer the feed view' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :available_views)).to be_present
+          end
+        end
       end
 
       describe 'voting phase' do

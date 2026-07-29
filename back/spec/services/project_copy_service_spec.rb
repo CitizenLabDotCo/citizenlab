@@ -363,6 +363,31 @@ describe ProjectCopyService do
       expect(template['models']['user'].map { |u| u['email'] }).to include(cosponsor.email)
     end
 
+    it 'includes Files engine files, their project join and attachments' do
+      idea = create(:idea)
+      project = idea.project
+      project_file = create(:file, name: 'proj.pdf', projects: [project])
+      create(:file_attachment, file: project_file, attachable: project)
+      idea_file = create(:file, name: 'idea.pdf', projects: [project])
+      create(:file_attachment, file: idea_file, attachable: idea)
+
+      # Imports into the same tenant, so anonymize users to avoid email collisions.
+      template = service.export project, include_ideas: true
+
+      expect(template['models']['files/file'].size).to eq 2
+      expect(template['models']['files/files_project'].size).to eq 2
+      expect(template['models']['files/file_attachment'].size).to eq 2
+
+      create(:idea_status_proposed) # the copied idea re-derives its (uncopied) status on import
+      copied_project = service.import template
+
+      expect(copied_project.files.pluck(:name)).to match_array(%w[proj.pdf idea.pdf])
+      expect(copied_project.file_attachments.count).to eq 1
+      expect(copied_project.ideas.first.file_attachments.count).to eq 1
+      # The uploader (unrelated to the idea graph) is pulled in so its ref resolves.
+      expect(copied_project.files.filter_map(&:uploader)).to be_present
+    end
+
     it 'includes phases with no end date' do
       project = create(:project_with_active_ideation_phase)
       project.phases.last.update!(end_at: nil)
@@ -515,6 +540,39 @@ describe ProjectCopyService do
         copied_project = service.import template, local_copy: false
 
         expect(copied_project.space_id).to be_nil
+      end
+    end
+
+    # A project can be copied onto a platform whose features differ from the source's.
+    # The prescreening_mode travels with the phase, but only takes effect where the
+    # target platform has the corresponding feature.
+    describe 'a phase with a prescreening_mode' do
+      let(:project) do
+        SettingsService.new.activate_feature!('prescreening_ideation')
+        create(:project).tap do |project|
+          create(:phase, project: project, prescreening_mode: 'all')
+        end
+      end
+
+      it 'copies the mode, without it taking effect where the target lacks the feature' do
+        template = service.export project, local_copy: false
+        SettingsService.new.deactivate_feature!('prescreening_ideation')
+
+        copied_project = service.import template, local_copy: false
+
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.prescreening_mode).to eq 'all'
+        expect(copied_phase.prescreening_all?).to be false
+      end
+
+      it 'copies the mode, and it takes effect where the target has the feature' do
+        template = service.export project, local_copy: false
+
+        copied_project = service.import template, local_copy: false
+
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.prescreening_mode).to eq 'all'
+        expect(copied_phase.prescreening_all?).to be true
       end
     end
   end

@@ -47,6 +47,10 @@ module MultiTenancy
               allowed: true,
               enabled: true
             },
+            project_static_pages: {
+              allowed: true,
+              enabled: true
+            },
             maps: {
               enabled: true,
               allowed: true,
@@ -423,6 +427,14 @@ module MultiTenancy
               allowed: true
             },
             html_block_in_content_builder: {
+              enabled: true,
+              allowed: true
+            },
+            sms: {
+              enabled: false,
+              allowed: false
+            },
+            decidim_importer: {
               enabled: true,
               allowed: true
             }
