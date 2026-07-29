@@ -12,30 +12,14 @@ class ProjectsFinderService
   # participatory phase in which the user can (probably) participate, ordered
   # by the end date of that phase, soonest first (nulls last).
   def participation_possible
-    candidates = @projects
-      .not_in_draft_folder
-      .where(admin_publication: AdminPublication.published)
-
-    # Secondary & ternary orderings prevent duplicates when paginating, when
-    # prior ordering involves equivalent values.
-    phases = Phase.current
-      .where.not(participation_method: 'information')
-      .joins(:project)
-      .where(project_id: candidates.select(:id))
-      .order(Arel.sql('phases.end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC'))
-      .preload(permissions: [:groups], project: :admin_publication)
-
-    # Checking the permissions is the expensive part, so we stop as soon as we
-    # have enough projects to serve the requested page.
-    pagination_limit = @page_size * @page_number
     project_ids = []
 
-    phases.each do |phase|
+    active_participatory_phases.each do |phase|
       next if project_ids.include?(phase.project_id)
       next if !participation_possible_for?(phase)
 
       project_ids << phase.project_id
-      break if project_ids.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
+      break if project_ids.size >= max_needed_projects
     end
 
     return Project.none if project_ids.empty?
@@ -151,6 +135,25 @@ class ProjectsFinderService
     ).action_descriptors
 
     Permissions::ActionDescriptorsService.new(action_descriptors).participation_possible?
+  end
+
+  def active_participatory_phases
+    candidates = @projects
+      .not_in_draft_folder
+      .where(admin_publication: AdminPublication.published)
+
+    Phase.current
+      .where.not(participation_method: 'information')
+      .joins(:project)
+      .where(project_id: candidates.select(:id))
+      .order(Arel.sql('phases.end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC'))
+      .preload(permissions: [:groups], project: :admin_publication)
+  end
+
+  # One more project than fits the requested page, so pagination can tell
+  # whether there is a next page.
+  def max_needed_projects
+    (@page_size * @page_number) + 1
   end
 
   def order_by_created_at_and_id_with_distinct_on(projects)

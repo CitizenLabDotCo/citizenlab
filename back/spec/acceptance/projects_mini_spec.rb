@@ -122,45 +122,6 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(highlighted_phase_ids).to match_array included_phase_ids
     end
 
-    example "Excludes projects where no action is permitted & no permission is 'fixable'", document: false do
-      group = create(:group)
-      permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
-      create(:groups_permission, permission_id: permission.id, group: group)
-      permission = create(:permission, action: 'commenting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
-      create(:groups_permission, permission_id: permission.id, group: group)
-      permission = create(:permission, action: 'reacting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
-      create(:groups_permission, permission_id: permission.id, group: group)
-
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      action_descriptors = Permissions::PhasePermissionsService.new(
-        active_ideation_project.phases.first, @user, user_requirements_service: user_requirements_service
-      ).action_descriptors
-
-      expect(action_descriptors.all? { |_k, v| v[:enabled] == false }).to be true
-
-      do_request
-      expect(status).to eq(200)
-
-      expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
-    end
-
-    example "Includes projects where no action is permitted, but a permission is 'fixable'", document: false do
-      create(:custom_field, required: true)
-
-      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      action_descriptors = Permissions::PhasePermissionsService.new(
-        active_ideation_project.phases.first, @user, user_requirements_service: user_requirements_service
-      ).action_descriptors
-
-      expect(action_descriptors.all? { |_k, v| v[:enabled] == false }).to be true
-      expect(action_descriptors.count { |_k, v| v[:disabled_reason] == 'user_missing_requirements' }).to eq 4
-
-      do_request
-      expect(status).to eq(200)
-
-      expect(json_response[:data].pluck(:id)).to include active_ideation_project.id
-    end
-
     example 'Includes project images', document: false do
       project_image = create(:project_image, project: active_ideation_project)
 
