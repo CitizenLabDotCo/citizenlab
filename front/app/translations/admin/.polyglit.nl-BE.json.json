@@ -21789,14 +21789,49 @@
     "verified_at": "2026-07-06T14:11:01.326987Z",
     "verified_by": "Luuc"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:11:52.611332Z",
+    "verified_by": "Luuc"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:11:52.611332Z",
+    "verified_by": "Luuc"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:11:52.611332Z",
+    "verified_by": "Luuc"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:11:52.611332Z",
+    "verified_by": "Luuc"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:11:52.611332Z",
+    "verified_by": "Luuc"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": {
     "state": "verified",
     "verified_at": "2026-07-06T14:11:01.326987Z",
     "verified_by": "Luuc"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.removeImage": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:11:52.611332Z",
+    "verified_by": "Luuc"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": {
     "state": "verified",
     "verified_at": "2026-07-06T14:11:01.326987Z",
+    "verified_by": "Luuc"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.uploadImageLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:11:52.611332Z",
     "verified_by": "Luuc"
   },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": {
