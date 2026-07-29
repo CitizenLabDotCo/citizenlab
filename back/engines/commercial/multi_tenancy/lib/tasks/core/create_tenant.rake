@@ -362,6 +362,10 @@ namespace :cl2_back do
         sms: {
           enabled: true,
           allowed: true
+        },
+        parallel_participation: {
+          enabled: true,
+          allowed: true
         }
       }
     )
