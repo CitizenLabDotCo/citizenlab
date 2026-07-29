@@ -432,7 +432,7 @@ module MultiTenancy
             },
             sms: {
               enabled: false,
-              allowed: false
+              allowed: false,
             },
             decidim_importer: {
               enabled: true,

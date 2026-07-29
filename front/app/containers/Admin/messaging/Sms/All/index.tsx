@@ -20,6 +20,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import messages from '../../messages';
 
 import NewSmsCampaignButton from './NewSmsCampaignButton';
+import SmsBalance from './SmsBalance';
 import SmsCampaignRow from './SmsCampaignRow';
 
 const SmsCampaigns = () => {
@@ -35,23 +36,26 @@ const SmsCampaigns = () => {
 
   if (campaigns.data.length === 0) {
     return (
-      <Box background={colors.white} p="40px">
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          padding="80px 0 100px"
-        >
-          <Icon name="email-2" width="80px" height="80px" />
-          <Title fontSize="xl" marginBottom="10px">
-            <FormattedMessage {...messages.noSmsCampaignsHeader} />
-          </Title>
-          <Text color="textSecondary" mb="30px" maxWidth="450px">
-            <FormattedMessage {...messages.noSmsCampaignsDescription} />
-          </Text>
-          <NewSmsCampaignButton />
+      <>
+        <SmsBalance mb="28px" />
+        <Box background={colors.white} p="40px">
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            padding="80px 0 100px"
+          >
+            <Icon name="email-2" width="80px" height="80px" />
+            <Title fontSize="xl" marginBottom="10px">
+              <FormattedMessage {...messages.noSmsCampaignsHeader} />
+            </Title>
+            <Text color="textSecondary" mb="30px" maxWidth="450px">
+              <FormattedMessage {...messages.noSmsCampaignsDescription} />
+            </Text>
+            <NewSmsCampaignButton />
+          </Box>
         </Box>
-      </Box>
+      </>
     );
   }
 
@@ -76,6 +80,8 @@ const SmsCampaigns = () => {
           <NewSmsCampaignButton />
         </ButtonWrapper>
       </Box>
+
+      <SmsBalance mb="28px" />
 
       <Box background={colors.white} p="40px">
         <List key={campaigns.data.map((c) => c.id).join()}>
