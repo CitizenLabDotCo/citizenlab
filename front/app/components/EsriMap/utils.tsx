@@ -784,11 +784,14 @@ export const showEsriFeaturePopup = async ({
       { initial: true }
     );
     // Stop watching once the popup closes, so the handles (and the placeholder
-    // map they close over) don't linger until the next popup opens.
+    // map they close over) don't linger until the next popup opens. Only a
+    // true -> false transition counts as closing: on the very first open the
+    // popup widget is created lazily and `visible` passes through a falsy
+    // value before turning true, which must not tear the watchers down.
     ctaPopupCloseWatchHandle = reactiveUtils.watch(
       () => mapView.popup?.visible,
-      (visible) => {
-        if (!visible) {
+      (visible, wasVisible) => {
+        if (wasVisible === true && !visible) {
           removeCtaWatchHandles();
         }
       }
