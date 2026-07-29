@@ -24,6 +24,11 @@ EmailCampaigns::Engine.routes.draw do
         end
       end
 
+      namespace :sms do
+        # Tenant-wide message balance, as opposed to the per-campaign sms_stats above.
+        get :balance, to: 'balance#show'
+      end
+
       resources :consents, only: %i[index update] do
         patch 'by_campaign_id/:campaign_id', action: 'update_by_campaign_id', on: :collection
       end
