@@ -27,7 +27,8 @@ describe('Project description builder language switch', () => {
       }).then((project) => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
+        cy.apiToggleProjectDescriptionBuilder({ projectId });
+        cy.apiResetProjectPageLayout({ projectId }).then(() => {
           cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
