@@ -3,8 +3,8 @@
 # LLM-facing documentation for project-description layout widgets. The
 # machine-readable rules these docs describe (slots, enums, multilocs) live in
 # ContentBuilder::Craftjs::WidgetSpecs; widgets present there but absent here
-# (Container, Box, the composite presets) are structural or legacy-only — they
-# validate inside graphs but are not advertised to clients.
+# (UNDOCUMENTED_WIDGETS) are structural or legacy-only — they validate inside
+# graphs but are not advertised to clients.
 #
 # The cheatsheet is generated from this hash, and a spec asserts every documented
 # widget exists in WidgetSpecs and that every enum and slot value appears in its
@@ -15,6 +15,17 @@
 # ids at any time; we include the current ids for visual parity in the editor, accepting
 # that stale ids degrade gracefully to the defaultMessage.
 class McpServer::LayoutWidgets
+  # WidgetSpecs widgets deliberately left out of DOCS: structural containers
+  # (only ever created as part of a documented widget's slot pattern) and
+  # legacy-only composite presets. A spec asserts DOCS + this list covers the
+  # widget specs exactly, so a new widget forces an explicit decision here.
+  UNDOCUMENTED_WIDGETS = %w[
+    Container
+    Box
+    ImageTextCards
+    InfoWithAccordions
+  ].freeze
+
   DOCS = {
     'TextMultiloc' => <<~DOC,
       TextMultiloc — rich text. props: {"text":{"<locale>":"<p>html</p> or <h2>html</h2>"}}

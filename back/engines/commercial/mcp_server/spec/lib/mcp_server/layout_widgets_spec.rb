@@ -12,6 +12,12 @@ describe McpServer::LayoutWidgets do
       expect(undeclared).to be_empty
     end
 
+    it 'partitions the widget specs exactly into documented and explicitly undocumented widgets' do
+      documented_or_excluded = described_class::DOCS.keys + described_class::UNDOCUMENTED_WIDGETS
+
+      expect(documented_or_excluded).to match_array(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys)
+    end
+
     it 'documents every enum value (except the legacy empty string) in the widget doc' do
       described_class::DOCS.each do |name, doc|
         enums = ContentBuilder::Craftjs::WidgetSpecs::SPECS.dig(name, 'enums') || {}

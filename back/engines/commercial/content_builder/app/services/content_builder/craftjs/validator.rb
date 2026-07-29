@@ -129,7 +129,7 @@ module ContentBuilder
           next if reachable.include?(id) || !@json.key?(id)
 
           reachable << id
-          queue.concat(Query.child_references(@json[id]).map(&:last))
+          queue.concat(Query.child_ids(@json[id]))
         end
 
         (@json.keys - reachable.to_a).map { |node_id| error(node_id, :unreachable, 'not reachable from ROOT') }
