@@ -26,8 +26,6 @@ describe McpServer::BaseTool do
   end
 
   describe 'error reporting to Sentry (Layer 3)' do
-    let(:tool_name) { McpServer::Tools::ListAreas.new.name }
-
     context 'when a tool raises an unexpected error' do
       before do
         allow_any_instance_of(McpServer::Tools::ListAreas::Runner)
@@ -36,9 +34,8 @@ describe McpServer::BaseTool do
 
       let(:error) { RuntimeError.new('boom') }
 
-      it 'reports it to Sentry with context and re-raises' do
-        expect(ErrorReporter).to receive(:report)
-          .with(error, extra: hash_including(mcp_tool: tool_name, user_id: current_user.id))
+      it 'reports it to Sentry and re-raises' do
+        expect(ErrorReporter).to receive(:report).with(error)
 
         expect { run_mcp_tool(McpServer::Tools::ListAreas, params: {}, current_user:) }
           .to raise_error(error)

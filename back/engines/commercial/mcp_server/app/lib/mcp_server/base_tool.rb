@@ -64,8 +64,10 @@ class McpServer::BaseTool
       runner.error(McpServer::BaseTool.unauthorized_message(e))
     rescue StandardError => e
       # Report genuine failures to Sentry, then re-raise (transport response unchanged).
-      # Expected user errors are skipped — see report_tool_error.
-      McpServer::BaseTool.report_tool_error(e, tool: definition.name, current_user: current_user)
+      # Expected user errors are skipped — see report_tool_error. Tenant/user/tool
+      # context travels via Sentry tags set on the request (see set_sentry_context
+      # in McpController and InternalMcpController).
+      McpServer::BaseTool.report_tool_error(e)
       raise
     ensure
       # Clear the tag so it can't leak to later work on this thread (e.g. across specs).
@@ -78,13 +80,9 @@ class McpServer::BaseTool
     "Not allowed: #{reason || 'authorization failed.'}"
   end
 
-  def self.report_tool_error(error, tool:, current_user:)
+  def self.report_tool_error(error)
     return if EXPECTED_ERRORS.any? { |klass| error.is_a?(klass) }
 
-    ErrorReporter.report(error, extra: {
-      mcp_tool: tool,
-      tenant_host: Tenant.safe_current&.host,
-      user_id: current_user&.id
-    })
+    ErrorReporter.report(error)
   end
 end

@@ -6,6 +6,8 @@ module McpServer
     rescue_from(Pundit::NotAuthorizedError) { head :forbidden }
 
     around_action :authorize_mcp_access
+    # Declared after authorize_mcp_access, so it only runs for authenticated requests.
+    before_action :set_sentry_context
 
     def create
       authorize(%i[mcp_server mcp])
@@ -18,6 +20,7 @@ module McpServer
       rescue StandardError
         @mcp_method = @mcp_tool = nil
       end
+      Sentry.set_tags(mcp_tool: @mcp_tool) if @mcp_tool
 
       server = MCP::Server.new(
         name: 'go_vocal',
@@ -50,6 +53,13 @@ module McpServer
     end
 
     private
+
+    # McpController skips ApplicationController, so it mirrors the tenant/user Sentry
+    # tagging from MultiTenancy::Patches::ApplicationController#set_sentry_context.
+    def set_sentry_context
+      Sentry.set_tags(tenant: Tenant.safe_current&.host)
+      Sentry.set_user(id: current_user.id) if current_user
+    end
 
     # McpController skips ApplicationController, so it adds tenant/user tagging itself.
     def append_info_to_payload(payload)
