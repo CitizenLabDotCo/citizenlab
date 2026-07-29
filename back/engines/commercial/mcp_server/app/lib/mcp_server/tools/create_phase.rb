@@ -2,7 +2,9 @@
 
 class McpServer::Tools::CreatePhase < McpServer::BaseTool
   # Mirrors the participation method picker in the admin UI.
-  # participation method value => feature flag name
+  # participation method value => feature flag name. The flags are checked at call
+  # time (PhaseFeatureGuard), not in the schema, so the definition stays
+  # tenant-agnostic.
   GATED_METHODS = {
     'common_ground' => 'common_ground',
     'document_annotation' => 'konveio_document_annotation',
@@ -55,7 +57,11 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
         participation_method: {
           type: 'string',
           enum: available_participation_methods,
-          description: "Participation method. Default: #{phase_default('participation_method')}."
+          description: <<~DESC.squish
+            Participation method. Default: #{phase_default('participation_method')}.
+            #{GATED_METHODS.map { |method, flag| "'#{method}' requires the '#{flag}' feature" }.join(', ')}
+            to be enabled on the platform.
+          DESC
         },
 
         # Participation toggles (apply to phases with inputs: ideation, proposals, voting, common_ground, native_survey)
@@ -139,16 +145,18 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
           DESC
         },
 
-        # Pre-screening (ideation, proposals; gated by the 'prescreening' /
-        # 'prescreening_ideation' / 'flag_inappropriate_content' feature flags)
+        # Pre-screening (ideation, proposals)
         prescreening_mode: {
           type: %w[string null],
-          enum: prescreening_mode_enum,
+          enum: [nil, 'all', 'flagged_only'],
           description: <<~DESC
             Which inputs require admin approval before publication:
             - 'all': every input
             - 'flagged_only': only inputs flagged by automated toxicity detection
             - null: none (disabled)
+
+            Requires the 'prescreening' or 'prescreening_ideation' feature on the platform;
+            'flagged_only' additionally requires 'flag_inappropriate_content'.
           DESC
         },
 
@@ -299,9 +307,14 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
+    include McpServer::PhaseFeatureGuard
+
     def run
       project = Project.find_by(id: params[:project_id])
       return not_found_error('Project', params[:project_id]) unless project
+
+      conflict = phase_feature_conflict(params)
+      return error(conflict) if conflict
 
       phase = Phase.new(**params)
       authorize_project!(project)
@@ -323,29 +336,16 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
   private
 
   def available_participation_methods
-    config = AppConfiguration.instance
-    enabled_gated = GATED_METHODS.select { |_, flag| config.feature_activated?(flag) }.keys
-    (UNGATED_METHODS + enabled_gated) & Phase::PARTICIPATION_METHODS
-  end
-
-  def prescreening_mode_enum
-    # TODO: It does not take the actual participation method into account.
-    config = AppConfiguration.instance
-    return [nil] unless config.feature_activated?('prescreening') || config.feature_activated?('prescreening_ideation')
-
-    modes = [nil, 'all']
-    modes << 'flagged_only' if config.feature_activated?('flag_inappropriate_content')
-    modes
+    (UNGATED_METHODS + GATED_METHODS.keys) & Phase::PARTICIPATION_METHODS
   end
 
   def disliking_fields
-    return {} unless AppConfiguration.instance.feature_activated?('disable_disliking')
-
     {
       reacting_dislike_enabled: {
         type: 'boolean',
         description: <<~DESC.squish
           Whether participants can dislike.
+          Requires the 'disable_disliking' feature on the platform.
           Default: #{phase_default('reacting_dislike_enabled')}.
         DESC
       },

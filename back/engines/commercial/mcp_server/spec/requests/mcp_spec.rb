@@ -124,16 +124,16 @@ describe McpServer::McpController do
 
     # Tool runners trust their input: the controller configures the server to validate
     # arguments against each tool's input_schema at dispatch. Pin that this actually
-    # rejects non-conforming input, using a feature-gated enum value (the Runners have
-    # no runtime flag checks, so schema validation is the only gate).
+    # rejects non-conforming input, using a value outside the enum. (Feature-gated
+    # values are no longer usable here: the schema advertises them on every tenant and
+    # the Runners reject them at call time instead — see PhaseFeatureGuard.)
     it 'rejects arguments that do not conform to the input schema' do
-      SettingsService.new.deactivate_feature!('polls')
       project = create(:project, :draft)
       arguments = {
         project_id: project.id,
         title_multiloc: { 'en' => 'P1' },
         start_at: '2026-07-01',
-        participation_method: 'poll'
+        participation_method: 'not_a_participation_method'
       }
 
       params = rpc('tools/call', { name: 'create_phase', arguments: })
