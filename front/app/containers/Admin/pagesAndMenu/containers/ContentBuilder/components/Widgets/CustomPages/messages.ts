@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle',
     defaultMessage: 'Custom pages',
   },
-  defaultTitle: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle',
-    defaultMessage: 'Explore by departments',
-  },
   withThisWidget: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3',
     defaultMessage:
@@ -21,6 +17,35 @@ export default defineMessages({
   cardIcon: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon',
     defaultMessage: 'Card icon',
+  },
+  emojiTab: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab',
+    defaultMessage: 'Emoji',
+  },
+  imageTab: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab',
+    defaultMessage: 'Image',
+  },
+  uploadImageLabel: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.uploadImageLabel',
+    defaultMessage: 'Upload image',
+  },
+  imageInstructions: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions',
+    defaultMessage:
+      'Use a square image (PNG or JPG). It is scaled to {size}x{size} pixels on the card, so avoid small details and text.',
+  },
+  removeImage: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.removeImage',
+    defaultMessage: 'Remove image',
+  },
+  imageUploadError: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError',
+    defaultMessage: 'Something went wrong while uploading this image.',
+  },
+  iconPreviewAltText: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText',
+    defaultMessage: 'Preview of the uploaded card icon',
   },
   noData: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData',

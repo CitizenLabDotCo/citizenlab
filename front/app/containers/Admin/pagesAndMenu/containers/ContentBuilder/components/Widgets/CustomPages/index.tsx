@@ -1,44 +1,44 @@
 import React from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
 
-import { ICustomPageData } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 
 import EmptyState from '../_shared/EmptyState';
-import useLocalizeWithFallback from '../_shared/useLocalizeWithFallback';
 
 import CustomPageCard from './CustomPageCard';
 import GridContainer, { Grid } from './GridContainer';
 import messages from './messages';
 import Settings from './Settings';
+import useLocalize from 'hooks/useLocalize';
+import { Multiloc } from 'typings';
+import { CustomPageItem } from './typings';
 
-interface Props {
-  titleMultiloc: Multiloc;
-  customPages: {
-    id: string;
-    icon?: string | null;
-  }[];
-}
+type CustomPagesProps = {
+  titleMultiloc?: Multiloc;
+  customPages: CustomPageItem[];
+};
 
-const CustomPages = ({ titleMultiloc, customPages }: Props) => {
-  const localizeWithFallback = useLocalizeWithFallback();
+const CustomPages = ({ titleMultiloc, customPages }: CustomPagesProps) => {
   const { data: customPagesData, isInitialLoading } = useCustomPages();
-  const title = localizeWithFallback(titleMultiloc, messages.defaultTitle);
+  const localize = useLocalize();
+  const title = localize(titleMultiloc);
 
   const pagesById = new Map(
     customPagesData?.data.map((page) => [page.id, page]) ?? []
   );
-  const selectedPages = customPages
-    .map((item) => {
-      const page = pagesById.get(item.id);
-      return page ? { page, icon: item.icon ?? null } : undefined;
-    })
-    .filter(
-      (entry): entry is { page: ICustomPageData; icon: string | null } =>
-        entry !== undefined
-    );
+  const selectedPages = customPages.flatMap((item) => {
+    const page = pagesById.get(item.id);
+    if (!page) return [];
+
+    return [
+      {
+        page,
+        icon: item.icon ?? null,
+        imageUrl: item.image?.imageUrl ?? null,
+      },
+    ];
+  });
 
   if (isInitialLoading) {
     return (
@@ -58,8 +58,13 @@ const CustomPages = ({ titleMultiloc, customPages }: Props) => {
         {title}
       </Title>
       <Grid>
-        {selectedPages.map(({ page, icon }) => (
-          <CustomPageCard key={page.id} page={page} emoji={icon} />
+        {selectedPages.map(({ page, icon, imageUrl }) => (
+          <CustomPageCard
+            key={page.id}
+            page={page}
+            emoji={icon}
+            imageUrl={imageUrl}
+          />
         ))}
       </Grid>
     </GridContainer>

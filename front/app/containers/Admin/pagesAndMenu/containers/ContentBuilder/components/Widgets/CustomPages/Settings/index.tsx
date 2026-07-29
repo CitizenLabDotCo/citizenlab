@@ -9,6 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import TitleMultilocInput from '../../_shared/TitleMultilocInput';
 import messages from '../messages';
+import { CustomPageIconImage, CustomPageItem } from '../typings';
 
 import CustomPageSearchInput from './CustomPageSearchInput';
 import CustomPagesList from './CustomPagesList';
@@ -18,50 +19,64 @@ const Settings = () => {
   const {
     actions: { setProp },
     customPages,
-  } = useNode((node) => ({
-    customPages: node.data.props.customPages,
-  }));
+  } = useNode<Pick<{ customPages: CustomPageItem[] }, 'customPages'>>(
+    (node) => ({
+      customPages: node.data.props.customPages,
+    })
+  );
 
   const handleAdd = (page?: ICustomPageData) => {
     if (!page) return;
 
-    setProp((props) => {
+    setProp((props: { customPages: CustomPageItem[] }) => {
       props.customPages = [...props.customPages, { id: page.id }];
     });
   };
 
   const handleReorder = (draggedItemId: string, targetIndex: number) => {
-    setProp((props) => {
+    setProp((props: { customPages: CustomPageItem[] }) => {
       const orderedIds = getNewIdsOnDrop(
-        props.customPages.map(
-          (item: { id: string; icon?: string | null }) => item.id
-        ),
+        props.customPages.map((item) => item.id),
         draggedItemId,
         targetIndex
       );
       const itemsById = new Map(
-        props.customPages.map((item: { id: string; icon?: string | null }) => [
-          item.id,
-          item,
-        ])
+        props.customPages.map((item) => [item.id, item])
       );
-      props.customPages = orderedIds.map((id) => itemsById.get(id));
+      props.customPages = orderedIds.flatMap((id) => {
+        const item = itemsById.get(id);
+        return item ? [item] : [];
+      });
     });
   };
 
   const handleDelete = (deletedId: string) => {
-    setProp((props) => {
+    setProp((props: { customPages: CustomPageItem[] }) => {
       props.customPages = props.customPages.filter(
-        (item: { id: string; icon?: string | null }) => item.id !== deletedId
+        (item) => item.id !== deletedId
       );
     });
   };
 
-  const handleSetIcon = (pageId: string, emoji: string | null) => {
-    setProp((props) => {
-      props.customPages = props.customPages.map(
-        (item: { id: string; icon?: string | null }) =>
-          item.id === pageId ? { ...item, icon: emoji } : item
+  // A card shows either an emoji or an uploaded image, so setting one clears
+  // the other.
+  const handleSetEmoji = (pageId: string, emoji: string | null) => {
+    setProp((props: { customPages: CustomPageItem[] }) => {
+      props.customPages = props.customPages.map((item) =>
+        item.id === pageId ? { ...item, icon: emoji, image: null } : item
+      );
+    });
+  };
+
+  const handleSetImage = (
+    pageId: string,
+    image: CustomPageIconImage | null
+  ) => {
+    setProp((props: { customPages: CustomPageItem[] }) => {
+      props.customPages = props.customPages.map((item) =>
+        item.id === pageId
+          ? { ...item, image, icon: image ? null : item.icon }
+          : item
       );
     });
   };
@@ -87,7 +102,8 @@ const Settings = () => {
         customPages={customPages}
         onReorder={handleReorder}
         onDelete={handleDelete}
-        onSetIcon={handleSetIcon}
+        onSetEmoji={handleSetEmoji}
+        onSetImage={handleSetImage}
       />
     </Box>
   );

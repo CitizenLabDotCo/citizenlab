@@ -48,7 +48,6 @@ import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
 import CustomPages, { customPagesTitle } from '../Widgets/CustomPages';
-import customPagesMessages from '../Widgets/CustomPages/messages';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -190,12 +189,7 @@ const HomepageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-custom-pages"
-          component={
-            <CustomPages
-              titleMultiloc={toMultiloc(customPagesMessages.defaultTitle)}
-              customPages={[]}
-            />
-          }
+          component={<CustomPages customPages={[]} />}
           icon="page"
           label={formatMessage(customPagesTitle)}
           labelSuffix={<NewLabel />}

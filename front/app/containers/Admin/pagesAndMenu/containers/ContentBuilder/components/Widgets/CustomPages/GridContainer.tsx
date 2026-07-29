@@ -7,17 +7,20 @@ import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/use
 
 import { DEFAULT_Y_PADDING } from '../constants';
 
+// minmax(0, ...) rather than a plain 1fr: the implicit minimum of a 1fr track is
+// the min-content of the card, which makes the grid overflow its container as
+// soon as a page title contains a word wider than the available column.
 export const Grid = styled.div`
   display: grid;
   gap: 14px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
   ${media.tablet`
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   `}
 
   ${media.phone`
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   `}
 `;
 

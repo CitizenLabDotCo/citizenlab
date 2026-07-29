@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Box,
   IconButton,
-  Label,
   Text,
   colors,
   Spinner,
@@ -16,12 +15,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
-import EmojiPickerInput from 'components/UI/EmojiPicker';
 
-import { useIntl } from 'utils/cl-intl';
+import { CustomPageIconImage, CustomPageItem } from '../typings';
 
-import messages from '../messages';
-
+import CardIconInput from './CardIconInput';
 import { getSelectedPages } from './utils';
 
 const StyledSortableRow = styled(SortableRow)`
@@ -29,37 +26,35 @@ const StyledSortableRow = styled(SortableRow)`
     padding: 0px !important;
     align-items: flex-start !important;
 
+    /* Indents the row content and lines it up with the drag handle icon,
+       which sits below the top of the row because of its own padding. */
     & > div:nth-child(2) {
       margin-left: 8px;
-    }
-    & p {
       margin-top: 16px;
     }
   }
 `;
 
 interface Props {
-  customPages: {
-    id: string;
-    icon?: string | null;
-  }[];
+  customPages: CustomPageItem[];
   onReorder: (draggedItemId: string, targetIndex: number) => void;
   onDelete: (id: string) => void;
-  onSetIcon: (pageId: string, emoji: string | null) => void;
+  onSetEmoji: (pageId: string, emoji: string | null) => void;
+  onSetImage: (pageId: string, image: CustomPageIconImage | null) => void;
 }
 
 const CustomPagesList = ({
   customPages,
   onReorder,
   onDelete,
-  onSetIcon,
+  onSetEmoji,
+  onSetImage,
 }: Props) => {
   const localize = useLocalize();
-  const { formatMessage } = useIntl();
   const { data: customPagesData, isLoading } = useCustomPages();
 
   const selectedIds = customPages.map((item) => item.id);
-  const iconByPageId = new Map(customPages.map((item) => [item.id, item.icon]));
+  const itemById = new Map(customPages.map((item) => [item.id, item]));
 
   const items = getSelectedPages(customPagesData?.data, selectedIds).map(
     (page, index) => ({
@@ -83,7 +78,13 @@ const CustomPagesList = ({
               dropRow={handleDropRow}
               disableNestedStyles
             >
-              <Box w="100%" display="flex" flexDirection="column" gap="20px">
+              <Box
+                w="100%"
+                display="flex"
+                flexDirection="column"
+                gap="20px"
+                pb="16px"
+              >
                 <Box
                   display="flex"
                   flexDirection="row"
@@ -100,16 +101,13 @@ const CustomPagesList = ({
                     a11y_buttonActionMessage=""
                   />
                 </Box>
-                <Box>
-                  <Label>{formatMessage(messages.cardIcon)}</Label>
-                  <Box mb="16px">
-                    <EmojiPickerInput
-                      value={iconByPageId.get(item.id) ?? null}
-                      onChange={(emoji) => onSetIcon(item.id, emoji)}
-                      placement="top"
-                    />
-                  </Box>
-                </Box>
+                <CardIconInput
+                  pageId={item.id}
+                  emoji={itemById.get(item.id)?.icon ?? null}
+                  image={itemById.get(item.id)?.image ?? null}
+                  onChangeEmoji={(emoji) => onSetEmoji(item.id, emoji)}
+                  onChangeImage={(image) => onSetImage(item.id, image)}
+                />
               </Box>
             </StyledSortableRow>
           ))}
