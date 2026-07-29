@@ -167,6 +167,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
 
       # Background-job / queue infrastructure.
       jobs: %w[
+        Export::ResultFile
         Jobs::Tracker
         Que::ActiveRecord::Model
       ],

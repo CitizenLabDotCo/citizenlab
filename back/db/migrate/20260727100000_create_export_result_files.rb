@@ -6,7 +6,7 @@
 class CreateExportResultFiles < ActiveRecord::Migration[7.2]
   def change
     create_table :export_result_files, id: :uuid do |t|
-      t.references :jobs_tracker, type: :uuid, null: false, foreign_key: { to_table: :jobs_trackers }, index: true
+      t.references :jobs_tracker, type: :uuid, null: false, foreign_key: { to_table: :jobs_trackers }
       t.string :name, null: false
       t.string :content
       t.datetime :expires_at, null: false, index: true

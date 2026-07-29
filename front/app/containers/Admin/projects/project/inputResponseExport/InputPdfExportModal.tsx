@@ -63,7 +63,7 @@ const InputPdfExportModal = ({
   const [jobFailed, setJobFailed] = useState(false);
   // Newest job id at Generate-click time: the started job is adopted as the
   // first different id, even if it is first observed already completed.
-  const awaitingJobAfterRef = useRef<{ prevJobId: string | null } | null>(null);
+  const awaitingJobRef = useRef<{ prevJobId: string | null } | null>(null);
 
   const latestJob = jobs?.data[0];
   const jobInProgress =
@@ -81,10 +81,10 @@ const InputPdfExportModal = ({
   useEffect(() => {
     if (!latestJob) return;
 
-    const awaiting = awaitingJobAfterRef.current;
+    const awaiting = awaitingJobRef.current;
     if (awaiting) {
       if (latestJob.id !== awaiting.prevJobId) {
-        awaitingJobAfterRef.current = null;
+        awaitingJobRef.current = null;
         setTrackedJobId(latestJob.id);
       }
       return;
@@ -127,11 +127,11 @@ const InputPdfExportModal = ({
     redactedFieldKeys: string[];
   }) => {
     setJobFailed(false);
-    awaitingJobAfterRef.current = { prevJobId: latestJob?.id ?? null };
+    awaitingJobRef.current = { prevJobId: latestJob?.id ?? null };
     try {
       await generatePdf({ phaseId, cover, redactedFieldKeys });
     } catch (error) {
-      awaitingJobAfterRef.current = null;
+      awaitingJobRef.current = null;
       // An export is already running; the invalidated poll surfaces it instead.
       if (!isExportInProgressError(error)) throw error;
     }

@@ -115,8 +115,8 @@ services:
     image: gotenberg/gotenberg:8.21
     restart: always
     # Big renders (e.g. the input responses PDF) can take minutes; keep in sync
-    # with GotenbergClient::TIMEOUT_SECONDS. Production Gotenberg needs the same
-    # flag in its own deploy config.
+    # with GotenbergClient::JOB_TIMEOUT_SECONDS. Production Gotenberg needs the
+    # same flag in its own deploy config.
     command: ["gotenberg", "--api-timeout=600s"]
 
   # Fake OIDC provider used by the `fake_sso` verification/auth method.

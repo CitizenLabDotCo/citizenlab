@@ -126,14 +126,13 @@ class WebApi::V1::PhasesController < ApplicationController
   def input_responses_pdf
     return input_responses_pdf_cover_preview if ActiveModel::Type::Boolean.new.cast(params[:cover_only])
 
-    tracker = nil
-    begin
-      # Makes the in-progress check + enqueue atomic across concurrent requests.
+    # The lock makes the in-progress check + enqueue atomic across concurrent requests.
+    tracker = begin
       CitizenLab::LockManager.try_with_transaction_lock("input_responses_pdf/#{@phase.id}") do
-        tracker = enqueue_input_responses_pdf_job.tracker unless in_progress_input_responses_pdf_tracker
+        enqueue_input_responses_pdf_job.tracker unless in_progress_input_responses_pdf_tracker
       end
     rescue CitizenLab::LockManager::FailedToLock
-      tracker = nil
+      nil
     end
 
     if tracker
