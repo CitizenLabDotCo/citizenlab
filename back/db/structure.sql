@@ -1172,7 +1172,8 @@ CREATE TABLE public.activities (
     user_id uuid,
     acted_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    project_id uuid
+    project_id uuid,
+    channel character varying
 );
 
 
@@ -9496,6 +9497,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260727100000'),
+('20260727000000'),
 ('20260713000000'),
 ('20260707190000'),
 ('20260707185000'),
