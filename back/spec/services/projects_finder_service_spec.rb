@@ -116,6 +116,38 @@ describe ProjectsFinderService do
       expect(result.size).to eq 2
       expect(result.map(&:id)).to include(active_ideation_project.id, annotation_project.id)
     end
+
+    it 'includes projects whose only active phase is a standalone phase' do
+      standalone_project = create(:project)
+      create(:phase, project: standalone_project, start_at: 2.months.ago, end_at: 1.month.ago)
+      create(:phase, :standalone, project: standalone_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include standalone_project.id
+    end
+
+    it 'returns a project with multiple active phases only once' do
+      create(:phase, :standalone, project: active_ideation_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id).count(active_ideation_project.id)).to eq 1
+    end
+
+    it 'includes a project when its timeline phase denies participation but an active standalone phase allows it' do
+      group = create(:group)
+      %w[posting_idea commenting_idea reacting_idea].each do |action|
+        permission = create(:permission, action:, permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+        create(:groups_permission, permission_id: permission.id, group: group)
+      end
+      create(:phase, :standalone, project: active_ideation_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include active_ideation_project.id
+    end
+
+    it 'includes a project whose active timeline phase is information when a standalone phase is active' do
+      info_project = create(:project_with_past_ideation_and_current_information_phase)
+      create(:phase, :standalone, project: info_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include info_project.id
+    end
   end
 
   describe 'followed_by_user' do
