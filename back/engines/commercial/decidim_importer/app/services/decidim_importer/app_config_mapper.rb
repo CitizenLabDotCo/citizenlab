@@ -54,7 +54,7 @@ module DecidimImporter
       put(core, 'locales', mapped_locales)
       put(core, 'timezone', mapped_timezone)
       put(core, 'organization_site', present_value(@row['official_url']))
-      put(core, 'from_email', smtp_from_email)
+      put(core, 'reply_to_email', smtp_reply_to_email)
       core
     end
 
@@ -80,7 +80,10 @@ module DecidimImporter
       ordered.map { |code| @locale_mapper.map(code) }.uniq.select { |locale| supported.include?(locale) }
     end
 
-    def smtp_from_email
+    # Decidim's SMTP `from_email` becomes Go Vocal's *reply-to* (not `from_email`): the `from_email`
+    # only works once the customer has made DNS changes, whereas reply-to routes replies to the org
+    # safely without that setup.
+    def smtp_reply_to_email
       smtp = parse_json(@row['smtp_settings'])
       smtp.is_a?(Hash) ? present_value(smtp['from_email']) : nil
     end
