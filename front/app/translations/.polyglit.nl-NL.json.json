@@ -9894,6 +9894,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.containers.NewAuthModal.changeYourEmail": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:12:43.019036Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.NewAuthModal.completeYourProfile": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
