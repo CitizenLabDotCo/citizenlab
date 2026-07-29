@@ -43,8 +43,8 @@ const project: ProjectMiniAdminData = {
   id: 'project-1',
   type: 'project_mini_admin',
   attributes: {
-    current_phase_start_date: null,
-    current_phase_end_date: null,
+    active_phases_start_date: null,
+    active_phases_end_date: null,
     first_phase_start_date: null,
     first_published_at: null,
     folder_title_multiloc: { en: 'Test folder' },
