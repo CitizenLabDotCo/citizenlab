@@ -552,7 +552,7 @@ de-AT:
       subject: '%{organizationName}: Passwort zurücksetzen'
       title: Neues Passwort wählen
     phone_confirmation:
-      sms_body: Ihr Bestätigungscode lautet %{code}.
+      sms_body: Der Bestätigungscode lautet %{code}.
     preview_data:
       author_display_name: Erika Mustermann
       author_first_name: Erika
