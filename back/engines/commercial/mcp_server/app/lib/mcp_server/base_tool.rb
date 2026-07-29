@@ -51,19 +51,15 @@ class McpServer::BaseTool
       annotations: definition.annotations
     ) do |**kwargs|
       server_context = kwargs.delete(:server_context)
-
-      runner = runner_class.new(
-        params: kwargs,
-        server_context: server_context,
-        current_user: current_user,
-        token_scopes: token_scopes
-      )
+      params = ReadonlyStrip.strip_readonly(kwargs, definition.input_schema)
+      runner = runner_class.new(params:, server_context:, current_user:, token_scopes:)
 
       # Tag activities from this tool run as MCP-originated (LogActivityJob reads this).
       # Set here, not in McpController, so the run_mcp_tool spec helper hits the same path.
       Current.activity_channel = 'mcp'
 
-      runner.run
+      locale_error = McpServer::LocaleGuard.error_message(kwargs)
+      locale_error ? runner.error(locale_error) : runner.run
     rescue Pundit::NotAuthorizedError => e
       runner.error(McpServer::BaseTool.unauthorized_message(e))
     rescue StandardError => e
@@ -79,7 +75,7 @@ class McpServer::BaseTool
 
   def self.unauthorized_message(error)
     reason = error.try(:reason)
-    "Not allowed: #{reason || 'authorization failed'}."
+    "Not allowed: #{reason || 'authorization failed.'}"
   end
 
   def self.report_tool_error(error, tool:, current_user:)
