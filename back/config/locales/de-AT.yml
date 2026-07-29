@@ -16,8 +16,8 @@ de-AT:
       the_link_is_valid_for: Dieser Link ist 24 Stunden lang gültig. Wenn der Link abgelaufen ist, können Sie unter <a href="%{link}">einen neuen Code anfordern</a>.
   content_builder:
     project_page:
-      details_placeholder: <p>Nutzen Sie diesen Space für weitere Details – zum Hintergrund, was mit dem Beitrag passiert oder an wen man sich wenden kann.</p>
-      intro_placeholder: <p>Fügen Sie hier eine kurze Einleitung hinzu – erklären Sie den Einwohner:innen, worum es in diesem Projekt geht und wie sie teilnehmen können.</p>
+      details_placeholder: <p>Nutzen Sie diesen Block für weitere Details – zum Hintergrund, was mit dem Beitrag passiert oder an wen man sich wenden kann.</p>
+      intro_placeholder: <p>Fügen Sie hier eine kurze Einleitung hinzu – erklären Sie den menschen, worum es in diesem Projekt geht und wie sie teilnehmen können.</p>
   custom_field_options:
     domicile:
       outside: Anderer Ort
