@@ -9,12 +9,13 @@ import {
 import { snakeCase } from 'lodash-es';
 import { FormProvider } from 'react-hook-form';
 
+import useGenerateInputResponsesPdf from 'api/input_responses_pdf/useGenerateInputResponsesPdf';
+import useInputResponsesPdfJob from 'api/input_responses_pdf/useInputResponsesPdfJob';
 import {
   downloadInputResponsesPdfResult,
   isExportInProgressError,
-} from 'api/input_responses_pdf/generateInputResponsesPdf';
-import useGenerateInputResponsesPdf from 'api/input_responses_pdf/useGenerateInputResponsesPdf';
-import useInputResponsesPdfJob from 'api/input_responses_pdf/useInputResponsesPdfJob';
+  isPdfExportInProgress,
+} from 'api/input_responses_pdf/util';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 
@@ -66,8 +67,7 @@ const InputPdfExportModal = ({
   const awaitingJobRef = useRef<{ prevJobId: string | null } | null>(null);
 
   const latestJob = jobs?.data[0];
-  const jobInProgress =
-    !!latestJob && latestJob.attributes.completed_at === null;
+  const jobInProgress = isPdfExportInProgress(latestJob);
 
   const phaseTitle = phase
     ? localize(phase.data.attributes.title_multiloc)

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useForm, useWatch, UseFormReturn } from 'react-hook-form';
 
-import { InputPdfCover } from 'api/input_responses_pdf/generateInputResponsesPdf';
+import { InputPdfCover } from 'api/input_responses_pdf/types';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';

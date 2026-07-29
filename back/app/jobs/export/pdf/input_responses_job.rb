@@ -9,6 +9,9 @@ module Export
     # Progress is reported through the +Jobs::Tracker+ of the job: one unit per
     # input processed, plus one reserved unit for the (slow, opaque) Gotenberg
     # render itself so the bar does not sit at 100% while Chromium works.
+    #
+    # Always enqueue via +with_tracking+: the result is only reachable through
+    # the tracker, so an untracked run fails when storing it.
     class InputResponsesJob < ApplicationJob
       include Jobs::TrackableJob
 
@@ -22,7 +25,7 @@ module Export
 
       def perform(phase, cover:, redacted_field_keys:, locale:)
         # A retry starts over; don't stack progress on the first attempt's.
-        tracker.update!(progress: 0, error_count: 0) if tracked?
+        tracker.update!(progress: 0, error_count: 0)
 
         pdf = I18n.with_locale(locale) do
           Export::Pdf::InputResponsesGenerator.new(

@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import { IJob } from 'api/copy_inputs/types';
+import { IJob } from 'api/jobs/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { InputPdfCover } from './generateInputResponsesPdf';
 import inputResponsesPdfJobKeys from './keys';
+import { InputPdfCover } from './types';
 
 type GenerateParams = {
   phaseId: string;

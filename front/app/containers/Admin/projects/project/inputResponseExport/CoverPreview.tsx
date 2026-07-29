@@ -10,10 +10,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { pdfjs, Document, Page } from 'react-pdf';
 
-import {
-  fetchCoverPreviewPdf,
-  InputPdfCover,
-} from 'api/input_responses_pdf/generateInputResponsesPdf';
+import { InputPdfCover } from 'api/input_responses_pdf/types';
+import { fetchCoverPreviewPdf } from 'api/input_responses_pdf/util';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 

@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import { IJob } from 'api/copy_inputs/types';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
+import { IJob } from 'api/jobs/types';
 import usePhase from 'api/phases/usePhase';
 
 import Modal from 'components/UI/Modal';

@@ -2,9 +2,11 @@
 
 class GotenbergClient
   # Web-request callers must fail fast (not pin Puma workers); only background
-  # jobs pass JOB_TIMEOUT_SECONDS (= Gotenberg's --api-timeout, see docker-compose.yml).
+  # jobs pass JOB_TIMEOUT_SECONDS. It sits slightly above Gotenberg's
+  # --api-timeout of 600s (see docker-compose.yml) so that when a render takes
+  # too long we get Gotenberg's 503 rather than a client-side timeout.
   DEFAULT_TIMEOUT_SECONDS = 60
-  JOB_TIMEOUT_SECONDS = 600
+  JOB_TIMEOUT_SECONDS = 630
   OPEN_TIMEOUT_SECONDS = 10
 
   class Error < StandardError; end

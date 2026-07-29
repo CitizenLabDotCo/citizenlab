@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import { IJobs } from 'api/copy_inputs/types';
+import { IJobs } from 'api/jobs/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import inputResponsesPdfJobKeys from './keys';
+import { isPdfExportInProgress } from './util';
 
 export const PDF_EXPORT_JOB_TYPE = 'Export::Pdf::InputResponsesJob';
 
@@ -38,11 +39,11 @@ const useInputResponsesPdfJob = (phaseId: string) => {
         return false;
       }
 
-      // Poll only for the newest tracker (all the UI reads): an orphaned old
-      // tracker must not keep the poll running forever.
-      const jobInProgress = data.data[0].attributes.completed_at === null;
-      // 1s so progress is actually observed — collection only takes seconds.
-      return jobInProgress ? 1000 : false;
+      // Poll only for the newest tracker (all the UI reads), and treat stale
+      // trackers as done: an orphaned tracker must not keep the poll running
+      // forever. 1s so progress is actually observed — collection only takes
+      // seconds.
+      return isPdfExportInProgress(data.data[0]) ? 1000 : false;
     },
   });
 };

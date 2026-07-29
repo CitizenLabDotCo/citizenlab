@@ -1,18 +1,25 @@
 import { saveAs } from 'file-saver';
 import { CLErrorsWrapper } from 'typings';
 
+import { IJobData } from 'api/jobs/types';
+
 import { API_PATH } from 'containers/App/constants';
 
 import { requestBlob } from 'utils/requestBlob';
 
-export type InputPdfCover = {
-  include: boolean;
-  title: string;
-  subtitle: string;
-  date: string;
-  preparedBy: string;
-  notes: string;
-};
+import { InputPdfCover } from './types';
+
+// Mirrors the backend's safety valve (see PhasesController): a job whose
+// tracker never completes (e.g. the worker died) stops blocking new exports
+// after an hour.
+const STALE_JOB_AGE_MS = 60 * 60 * 1000;
+
+export const isPdfExportInProgress = (
+  job: IJobData | undefined
+): job is IJobData =>
+  !!job &&
+  job.attributes.completed_at === null &&
+  Date.now() - new Date(job.attributes.created_at).getTime() < STALE_JOB_AGE_MS;
 
 // Downloads the PDF of a completed export job; the backend only serves it to
 // the user who started the job (it reflects their redaction choices).
