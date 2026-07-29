@@ -1368,6 +1368,7 @@ function apiCreatePhase({
   presentation_mode,
   reacting_dislike_enabled,
   available_views = ['card', 'map'],
+  placementType,
 }: {
   projectId: string;
   title: string;
@@ -1391,6 +1392,9 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
   reacting_dislike_enabled?: boolean;
+  // Only settable on creation: 'standalone' phases are extra surveys that run
+  // in parallel with the timeline.
+  placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -1428,6 +1432,7 @@ function apiCreatePhase({
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
           native_survey_title_multiloc: nativeSurveyTitleMultiloc,
           reacting_dislike_enabled,
+          placement_type: placementType,
         },
       },
     });
@@ -1669,7 +1674,11 @@ function apiRemoveAllReports() {
 
 type ApiSetPermissionTypeProps = {
   phaseId: string;
-  permissionBody?: Partial<IPermissionUpdate>;
+  // Rails auto-wraps flat scalar attributes in `permission`, but array
+  // attributes like group_ids only arrive when wrapped explicitly.
+  permissionBody?:
+    | Partial<IPermissionUpdate>
+    | { permission: Partial<IPermissionUpdate> };
   action: IPhasePermissionAction;
 };
 function apiSetPhasePermission({
@@ -2118,6 +2127,7 @@ function apiCreateNativeSurveyPhase({
   nativeSurveyTitleMultiloc = { en: 'Survey' },
   allow_anonymous_participation,
   presentation_mode,
+  placementType,
 }: {
   projectId: string;
   title: string;
@@ -2131,6 +2141,7 @@ function apiCreateNativeSurveyPhase({
   nativeSurveyTitleMultiloc?: Multiloc;
   allow_anonymous_participation?: boolean;
   presentation_mode?: 'card' | 'map';
+  placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiCreatePhase({
     projectId,
@@ -2146,6 +2157,7 @@ function apiCreateNativeSurveyPhase({
     nativeSurveyTitleMultiloc,
     allow_anonymous_participation,
     presentation_mode,
+    placementType,
   });
 }
 
