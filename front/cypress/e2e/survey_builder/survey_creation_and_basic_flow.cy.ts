@@ -153,13 +153,6 @@ describe('Survey Builder - Creation and Basic Flow', () => {
   });
 
   it('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/access-rights`);
-
-    cy.get('.e2e-action-accordion-posting_idea').click();
-    cy.get('.e2e-action-form-posting_idea').within(() => {
-      cy.get('.e2e-permission-registered-users').click();
-    });
-
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
@@ -206,13 +199,6 @@ describe('Survey Builder - Creation and Basic Flow', () => {
     const email = randomEmail();
     const password = randomString();
 
-    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/access-rights`);
-
-    cy.get('.e2e-action-accordion-posting_idea').click();
-    cy.get('.e2e-action-form-posting_idea').within(() => {
-      cy.get('.e2e-permission-registered-users').click();
-    });
-
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/survey-form`);
     cy.dataCy('e2e-edit-survey-form').click();
     waitForCustomFormFields();
@@ -251,11 +237,8 @@ describe('Survey Builder - Creation and Basic Flow', () => {
     cy.dataCy('e2e-page-number-2').should('exist');
     cy.dataCy('e2e-after-submission').should('exist');
 
-    cy.intercept('GET', `**/projects/${projectId}/files`).as('getFiles');
-
     // Try filling in the survey again
     cy.visit(`/projects/${projectSlug}`);
-    cy.wait('@getFiles');
     cy.get('.e2e-idea-button')
       .first()
       .find('button')

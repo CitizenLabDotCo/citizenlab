@@ -1,4 +1,3 @@
-import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
 import {
   updatePermission,
@@ -28,8 +27,7 @@ describe('Ideation permitted by: users', () => {
       phaseId = data.phaseId;
       fieldName = data.fieldName;
 
-      // Temporarily set permission to everyone_confirmed_email
-      // to make sure we clear out the global settings
+      // Set single custom field
       return cy
         .apiLogin('admin@govocal.com', 'democracy2.0')
         .then((response) => {
@@ -38,20 +36,13 @@ describe('Ideation permitted by: users', () => {
           return updatePermission({
             adminJwt,
             phaseId,
-            permitted_by: 'everyone_confirmed_email',
+            global_custom_fields: false,
           }).then(() => {
             // Add one permissions custom field
             return addPermissionsCustomField({
               adminJwt,
               phaseId,
               customFieldId,
-            }).then(() => {
-              // Set permission back to users
-              return updatePermission({
-                adminJwt,
-                phaseId,
-                permitted_by: 'users',
-              });
             });
           });
         });
@@ -122,7 +113,7 @@ describe('Ideation permitted by: users', () => {
         inRegFlow();
 
         // Intercept submit request
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitIdea');
 
         // Submit form
         cy.dataCy('e2e-submit-form').click();
@@ -166,7 +157,7 @@ describe('Ideation permitted by: users', () => {
         cy.get('#e2e-continue-anonymous-participation-btn').click();
 
         // Intercept submit request
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitIdea');
 
         // Submit idea
         cy.dataCy('e2e-submit-form').click();
@@ -252,7 +243,7 @@ describe('Ideation permitted by: users', () => {
         cy.get('form').find('input').first().type(answer);
 
         // Intercept submit request
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitIdea');
 
         // Submit survey
         cy.dataCy('e2e-submit-form').click();
@@ -281,7 +272,7 @@ describe('Ideation permitted by: users', () => {
         cy.get('#e2e-continue-anonymous-participation-btn').click();
 
         // Intercept submit request
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitIdea');
 
         // Submit survey
         cy.dataCy('e2e-submit-form').click();

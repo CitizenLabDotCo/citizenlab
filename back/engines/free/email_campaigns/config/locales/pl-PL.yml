@@ -190,6 +190,7 @@ pl-PL:
       new_email_confirmation: Nowy kod potwierdzający adres e-mail
       new_idea_for_admin_prescreening: Nowe dane wejściowe wymagające zatwierdzenia w projekcie I moderate
       new_idea_for_admin_published: Nowy opublikowany wkład w projekt, który moderuję
+      new_phone_confirmation: Nowy kod potwierdzający numer telefonu
       official_feedback_on_idea_you_follow: Zaktualizuj pomysł, który śledzisz
       password_reset: Zmiana hasła
       project_folder_moderation_rights_received: Przydzielono uprawnienia menedżera folderów
@@ -202,6 +203,7 @@ pl-PL:
       project_review_state_change: Projekt zatwierdzony
       proposal_expired_for_admin: Propozycja wygasła bez osiągnięcia progu głosowania
       screening_digest: Cotygodniowe przypomnienie o badaniu przesiewowym
+      sms_manual: Oficjalne wiadomości SMS
       space_moderation_rights_received: Otrzymano uprawnienia menedżera obszaru
       status_change_on_idea_you_follow: Zmiana statusu pomysłu, za którym podążasz
       survey_submitted: Przesłana ankieta
@@ -534,6 +536,8 @@ pl-PL:
       title: Nowe dane wejściowe zostały opublikowane na Twojej platformie
       today: Dzisiaj
       yesterday: Wczoraj
+    new_phone_confirmation:
+      sms_body: Twój kod potwierdzający to %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Przejdź do tego wejścia
       event_description: '%{feedback_author_name} przedstawił aktualizację na stronie "%{input_title}".'

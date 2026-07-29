@@ -8208,7 +8208,7 @@ models:
       permission_scope_ref: *charliesIdeation_phase
     - &1113
       action: commenting_idea
-      permitted_by: everyone_confirmed_email
+      permitted_by: users
       permission_scope_ref: *charliesIdeation_phase
     - &1114
       action: voting

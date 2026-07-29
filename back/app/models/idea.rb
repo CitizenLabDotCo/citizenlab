@@ -344,6 +344,10 @@ class Idea < ApplicationRecord
     creation_phase || phases.first || project.phases.where(participation_method: 'ideation').first || project.phases.first
   end
 
+  def active_phase
+    [*phases, creation_phase].compact.uniq.find(&:active?)
+  end
+
   def custom_form
     consultation_context.custom_form || CustomForm.new(participation_context: consultation_context)
   end

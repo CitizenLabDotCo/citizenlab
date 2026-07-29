@@ -13,6 +13,7 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import Row from './Row';
 
 let mockAuthUserRoles: TRole[] = [];
+let mockSpacesEnabled = true;
 
 jest.mock('api/me/useAuthUser', () => () => ({
   data: {
@@ -33,6 +34,11 @@ jest.mock('api/project_images/useProjectImage', () => () => ({
   data: undefined,
 }));
 
+// usePermission() reads the app configuration; use the standard manual mock.
+jest.mock('api/app_configuration/useAppConfiguration');
+
+jest.mock('hooks/useFeatureFlag', () => () => mockSpacesEnabled);
+
 const project: ProjectMiniAdminData = {
   id: 'project-1',
   type: 'project_mini_admin',
@@ -42,6 +48,7 @@ const project: ProjectMiniAdminData = {
     first_phase_start_date: null,
     first_published_at: null,
     folder_title_multiloc: { en: 'Test folder' },
+    space_title_multiloc: { en: 'Test space' },
     last_phase_end_date: null,
     listed: true,
     publication_status: 'published',
@@ -74,6 +81,7 @@ const findRowLink = () =>
 describe('Projects table Row — folder link', () => {
   beforeEach(() => {
     mockAuthUserRoles = [];
+    mockSpacesEnabled = true;
   });
 
   it('does not link to the folder when the user cannot moderate it', async () => {
@@ -151,5 +159,65 @@ describe('Projects table Row — folder link', () => {
     expect(findRowLink().getAttribute('href')).not.toContain(
       'folders/folder-1'
     );
+  });
+});
+
+describe('Projects table Row — space link', () => {
+  beforeEach(() => {
+    mockAuthUserRoles = [];
+    mockSpacesEnabled = true;
+  });
+
+  it('does not link to the space when the user cannot moderate it', async () => {
+    mockAuthUserRoles = [];
+    renderRow();
+
+    await userEvent.hover(screen.getByText('Test space'));
+
+    expect(findRowLink()).toHaveAttribute(
+      'href',
+      expect.stringContaining(`/admin/projects/${project.id}`)
+    );
+    expect(findRowLink().getAttribute('href')).not.toContain('spaces/space-1');
+  });
+
+  it('links to the space when the user is a space moderator of that space', async () => {
+    mockAuthUserRoles = [{ type: 'space_moderator', space_id: 'space-1' }];
+    renderRow();
+
+    await userEvent.hover(screen.getByText('Test space'));
+
+    expect(findRowLink()).toHaveAttribute(
+      'href',
+      expect.stringContaining('/admin/projects/spaces/space-1')
+    );
+  });
+
+  it('links to the space when the user is an admin', async () => {
+    mockAuthUserRoles = [{ type: 'admin' }];
+    renderRow();
+
+    await userEvent.hover(screen.getByText('Test space'));
+
+    expect(findRowLink()).toHaveAttribute(
+      'href',
+      expect.stringContaining('/admin/projects/spaces/space-1')
+    );
+  });
+
+  it('does not link to the space for a moderator of a different space', async () => {
+    mockAuthUserRoles = [{ type: 'space_moderator', space_id: 'other-space' }];
+    renderRow();
+
+    await userEvent.hover(screen.getByText('Test space'));
+
+    expect(findRowLink().getAttribute('href')).not.toContain('spaces/space-1');
+  });
+
+  it('does not show the space when the spaces feature flag is disabled', () => {
+    mockSpacesEnabled = false;
+    renderRow();
+
+    expect(screen.queryByText('Test space')).not.toBeInTheDocument();
   });
 });

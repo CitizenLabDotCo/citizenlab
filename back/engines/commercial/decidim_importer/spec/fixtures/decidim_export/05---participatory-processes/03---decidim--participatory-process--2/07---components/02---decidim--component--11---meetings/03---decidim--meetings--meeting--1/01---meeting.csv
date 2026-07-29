@@ -1,0 +1,2 @@
+uid,author,title,description,location,address,latitude,longitude,online_meeting_url,start_time,end_time,published_at,withdrawn,created_at,updated_at
+decidim--meetings--meeting--1,decidim--organization--1,"{""fr"":""Atelier de quartier""}","{""fr"":""<p>Venez discuter des espaces verts</p>""}","{""fr"":""Salle du Conseil""}","10 av Paul Doumer, 94110 Arcueil",48.80633,2.33714,,2024-04-25 18:30:00 +0200,2024-04-25 20:00:00 +0200,2024-04-18 15:27:45 +0200,false,2024-04-18 15:27:28 +0200,2024-04-18 15:27:45 +0200

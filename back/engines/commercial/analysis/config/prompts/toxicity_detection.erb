@@ -1,4 +1,4 @@
-A human user is writing a public message on a forum run by a local government, where residents discuss local policy making. Here is what the user wrote:
+A human user is participating in an online engagement organised by a local government. <% if parent_post_title.present? && project_title.present? %>They wrote a comment in the discussion on "<%= parent_post_title %>" within the participation project "<%= project_title %>".<% elsif parent_post_title.present? %>They wrote a comment on a post by another participant.<% elsif project_title.present? %>They submitted a contribution to the participation project "<%= project_title %>".<% else %>They submitted a contribution to a participation project.<% end %> Here is what the user wrote:
 <content>
   <%= text %>
 </content>
@@ -18,3 +18,4 @@ The platform has defined additional participation guidelines. They are rules to 
 
 Only answer (F) when the message violates these guidelines and none of the categories (A) to (D) apply.
 <% end %>
+Note that many legitimate contributions are short or specific: a brief idea title, a map pin describing a location or a defect, a one-line answer to a question. Brevity, low detail or an unusual format is not spam. Only answer (D) for clearly promotional or commercial content, repeated mass postings, or attempts to lure readers to other services.

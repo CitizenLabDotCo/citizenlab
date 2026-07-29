@@ -10,6 +10,10 @@ import { ICustomPage } from './types';
 
 type AddCustomPage = {
   title_multiloc: Multiloc;
+  project_id?: string; // Set to scope the page to a project, otherwise global
+  top_info_section_multiloc?: Multiloc;
+  top_info_section_enabled?: boolean;
+  files_section_enabled?: boolean;
 };
 
 const addCustomPage = async (requestBody: AddCustomPage) =>
@@ -24,7 +28,8 @@ const useAddCustomPage = () => {
   return useMutation<ICustomPage, CLErrors, AddCustomPage>({
     mutationFn: addCustomPage,
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: customPagesKeys.lists() });
+      // `all()` so project-scoped lists are also invalidated.
+      queryClient.invalidateQueries({ queryKey: customPagesKeys.all() });
       queryClient.invalidateQueries({ queryKey: navbarKeys.lists() });
     },
   });

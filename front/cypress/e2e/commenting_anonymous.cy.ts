@@ -43,10 +43,9 @@ describe('Idea with anonymous commenting allowed', () => {
         .then((phase) => {
           return cy
             .apiCreateIdea({
-              projectId,
+              phaseId: phase.body.data.id,
               ideaTitle,
               ideaContent,
-              phaseIds: [phase.body.data.id],
             })
             .then((idea) => {
               ideaId = idea.body.data.id;

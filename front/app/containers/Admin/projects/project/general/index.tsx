@@ -64,7 +64,10 @@ const General = () => {
     <Box p="8px 24px 24px 24px">
       <Box background={colors.white}>
         <Box position="sticky" top="0" background={colors.white} zIndex="1">
-          <NavigationTabs position="relative">
+          <NavigationTabs
+            className="intercom-product-tour-project-general-tabs"
+            position="relative"
+          >
             {tabs.map(({ url, label, className }) => (
               <Tab
                 label={label}

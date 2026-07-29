@@ -23,7 +23,7 @@ interface Props {
 
 const Emoji: React.FC<Props> = ({ emoji, size = '1em', className }) => {
   // In production, TWEMOJI_BASE_URL points at a content-hashed prefix on the
-  // CDN (set at build time, see .circleci/config.yml) so the immutable SVGs can
+  // CDN (set at build time, see .circleci/config.yml) so immutable SVGs can
   // be cached aggressively. Locally it's unset and Vite serves them from
   // app/public/twemoji/ at /twemoji/.
   const parsed = twemoji.parse(emoji, {

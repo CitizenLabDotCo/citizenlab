@@ -192,6 +192,7 @@ lb-LU:
       new_email_confirmation: Neie Bestätegungscode fir d'E-Mail
       new_idea_for_admin_prescreening: Nei Input, deen an engem Projet, deen ech moderéieren, Genehmegung brauch
       new_idea_for_admin_published: Nei publizéiert Input an engem Projet, deen ech moderéieren
+      new_phone_confirmation: Neie Bestätegungscode fir d'Telefonsnummer
       official_feedback_on_idea_you_follow: Update op eng Iddi déi Dir verfollegt
       password_reset: Passwuert zerécksetzen
       project_folder_moderation_rights_received: Administratorrechter fir Dossier'en kritt
@@ -204,6 +205,7 @@ lb-LU:
       project_review_state_change: Projet guttgeheescht
       proposal_expired_for_admin: Propositioun ofgelaf, ouni d'Mindestzuel u Stëmmen ze erreechen
       screening_digest: Wëchentlech Screening-Erënnerung
+      sms_manual: Offiziell SMS-Messagen
       space_moderation_rights_received: Space-Manager-Rechter kritt
       status_change_on_idea_you_follow: Status Ännerung vun enger Iddi déi Dir verfollegt
       survey_submitted: Ëmfro presentéiert
@@ -536,6 +538,8 @@ lb-LU:
       title: En neien Input gouf op Ärer Plattform publizéiert
       today: Haut
       yesterday: Gëschter
+    new_phone_confirmation:
+      sms_body: Däi Bestätegungscode ass %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Gitt op dësen Input
       event_description: "%{feedback_author_name} huet en Update zu '%{input_title}' ginn."

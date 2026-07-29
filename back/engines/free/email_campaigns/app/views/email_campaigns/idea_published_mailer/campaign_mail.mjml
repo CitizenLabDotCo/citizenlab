@@ -22,7 +22,7 @@
       </tr>
 
       <!-- (Conditional) Action item 1: Add an idea image -->
-      <% if event.idea_images.empty? %>
+      <% if event.image_field_presence && event.idea_images.empty? %>
         <tr>
           <td style="width:22px; padding-bottom:15px">
             <img style="vertical-align: middle; height: 22px;"

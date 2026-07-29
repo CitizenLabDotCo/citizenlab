@@ -16,7 +16,7 @@ class WebApi::V1::ActivitiesController < ApplicationController
     when nil
       activities
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
 
     paginated_activities = paginate activities

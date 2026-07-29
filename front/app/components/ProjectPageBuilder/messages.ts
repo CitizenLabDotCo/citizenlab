@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  projectPageHeading: {
-    id: 'app.containers.ProjectPageBuilder.projectPageHeading',
-    defaultMessage: 'Project page',
+  projectHomepage: {
+    id: 'app.containers.ProjectPageBuilder.projectHomepage',
+    defaultMessage: 'Project homepage',
   },
   saveError: {
     id: 'app.containers.ProjectPageBuilder.saveError',

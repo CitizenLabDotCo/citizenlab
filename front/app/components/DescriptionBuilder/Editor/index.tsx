@@ -12,21 +12,22 @@ import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/Accordion
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
+import FolderFiles from 'components/DescriptionBuilder/Widgets/FolderFiles';
+import FolderTitle from 'components/DescriptionBuilder/Widgets/FolderTitle';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import FolderFiles from 'components/DescriptionBuilder/Widgets/FolderFiles';
-import FolderTitle from 'components/DescriptionBuilder/Widgets/FolderTitle';
-import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
-import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 
 import InfoWithAccordions from '.././Widgets/InfoWithAccordions';
 
 import BaseEditor from './Editor';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
+import RichTextMultiloc from 'components/DescriptionBuilder/Widgets/RichTextMultiloc';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -50,6 +51,7 @@ const Editor: React.FC<EditorProps> = ({
         ImageMultiloc,
         IframeMultiloc,
         FileAttachment,
+        PageLink,
         AboutBox,
         AccordionMultiloc,
         WhiteSpace,

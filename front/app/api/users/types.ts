@@ -63,6 +63,9 @@ export interface IUserAttributes {
   followings_count: number;
   last_active_at?: string | null;
   new_email?: string | null;
+  phone?: string | null;
+  phone_confirmed_at?: string | null;
+  new_phone?: string | null;
 }
 
 export interface IUserData {
@@ -101,6 +104,7 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  phone?: string;
 }
 
 export interface IChangePassword {

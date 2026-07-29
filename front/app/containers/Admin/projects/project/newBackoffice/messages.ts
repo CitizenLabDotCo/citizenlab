@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  projectPageNav: {
-    id: 'app.containers.Admin.projects.project.projectPageNav',
-    defaultMessage: 'Project page',
+  projectHomepage: {
+    id: 'app.containers.Admin.projects.project.projectHomepage',
+    defaultMessage: 'Project homepage',
   },
   settingsNav: {
     id: 'app.containers.Admin.projects.project.settingsNav',

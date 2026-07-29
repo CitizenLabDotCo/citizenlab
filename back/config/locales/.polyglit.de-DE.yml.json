@@ -939,6 +939,41 @@
     "verified_at": "2026-03-18T15:41:17.432455Z",
     "verified_by": "Admin"
   },
+  "pdf_export.input_responses.date": {
+    "state": "verified",
+    "verified_at": "2026-07-23T10:05:13.809437Z",
+    "verified_by": "Jelena"
+  },
+  "pdf_export.input_responses.no_answer": {
+    "state": "verified",
+    "verified_at": "2026-07-23T10:05:13.809437Z",
+    "verified_by": "Jelena"
+  },
+  "pdf_export.input_responses.prepared_by": {
+    "state": "verified",
+    "verified_at": "2026-07-23T10:05:13.809437Z",
+    "verified_by": "Jelena"
+  },
+  "pdf_export.input_responses.report_label": {
+    "state": "verified",
+    "verified_at": "2026-07-23T10:05:13.809437Z",
+    "verified_by": "Jelena"
+  },
+  "pdf_export.input_responses.respondent": {
+    "state": "verified",
+    "verified_at": "2026-07-23T10:05:13.809437Z",
+    "verified_by": "Jelena"
+  },
+  "pdf_export.input_responses.response_count.one": {
+    "state": "verified",
+    "verified_at": "2026-07-23T10:05:13.809437Z",
+    "verified_by": "Jelena"
+  },
+  "pdf_export.input_responses.response_count.other": {
+    "state": "verified",
+    "verified_at": "2026-07-23T10:05:13.809437Z",
+    "verified_by": "Jelena"
+  },
   "pdf_export.survey_responses.date": {
     "state": "verified",
     "verified_at": "2026-07-16T09:55:32.870404Z",

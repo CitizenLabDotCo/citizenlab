@@ -99,9 +99,11 @@ const AddToSpaceModal = ({ spaceId, addableNodes, opened, onClose }: Props) => {
                   : messages.foldersPlaceholder
               )}
               onChange={(option) => setSelectedId(option.value ?? null)}
+              disabled={candidateOptions.length === 0}
             />
           </Box>
         </Box>
+
         <Box display="flex" justifyContent="flex-end" gap="12px">
           <Button buttonStyle="secondary-outlined" onClick={handleClose}>
             {formatMessage(messages.cancel)}
