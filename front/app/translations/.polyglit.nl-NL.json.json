@@ -3149,6 +3149,21 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.QuillEditor.imageTooLarge": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:13:08.157668Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.QuillEditor.imageTooLargeConfirm": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:13:08.157668Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.QuillEditor.imageTooLargeTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:13:08.157668Z",
+    "verified_by": "Luuc"
+  },
   "app.components.QuillEditor.italic": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
