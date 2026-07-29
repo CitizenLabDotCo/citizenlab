@@ -357,7 +357,8 @@ namespace :cl2_back do
         sms: {
           enabled: true,
           allowed: true,
-          use_test_mode: true
+          use_test_mode: true,
+          messages_purchased: 10_000
         },
         sms_login: {
           enabled: true,
