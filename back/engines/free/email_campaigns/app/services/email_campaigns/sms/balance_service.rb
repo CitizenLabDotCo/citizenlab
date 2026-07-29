@@ -3,12 +3,6 @@
 module EmailCampaigns
   module Sms
     # Computes how many of the tenant's purchased SMS messages are left.
-    #
-    # There is no ledger: the balance is derived on the fly from the cumulative
-    # `sms.messages_purchased` setting minus every SMS this platform has ever
-    # handed to the provider (see Delivery::BILLABLE_STATUSES). That means
-    # `messages_purchased` must be topped up cumulatively — selling a second
-    # bundle means adding to the number, not overwriting it.
     class BalanceService
       # Sends not attributable to one of the two SMS campaign types — today only
       # previews/test sends, which are dispatched with `campaign_id: nil` but are
