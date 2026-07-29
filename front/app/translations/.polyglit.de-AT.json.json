@@ -3164,6 +3164,21 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.QuillEditor.imageTooLarge": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:59:19.636283Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.QuillEditor.imageTooLargeConfirm": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:59:19.636283Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.QuillEditor.imageTooLargeTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:59:19.636283Z",
+    "verified_by": "Jelena"
+  },
   "app.components.QuillEditor.italic": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
