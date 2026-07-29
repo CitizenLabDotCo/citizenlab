@@ -1,4 +1,60 @@
+import { randomString } from '../../support/commands';
+import moment = require('moment');
+import {
+  IPermissionUpdate,
+  IPhasePermissionAction,
+} from '../../../app/api/phase_permissions/types';
+
 export const FAKE_SSO_ORIGIN = 'http://host.docker.internal:8081';
+
+/**
+ * Creates a published project with a single `native_survey` phase and sets a
+ * permission on it. This is a very common setup in the auth e2e tests, where we
+ * need a survey the user has to sign up / verify for before they can respond.
+ *
+ * Yields `{ projectId, phaseId }` so the caller can clean up the project
+ * afterwards and (re)set the phase permission in nested `before` hooks.
+ */
+export const createNativeSurveyProjectWithPermission = ({
+  projectTitle,
+  permissionBody,
+  action = 'posting_idea',
+}: {
+  projectTitle: string;
+  permissionBody?: Partial<IPermissionUpdate>;
+  action?: IPhasePermissionAction;
+}) => {
+  return cy
+    .apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: randomString(),
+      description: randomString(),
+      publicationStatus: 'published',
+    })
+    .then((project) => {
+      const projectId = project.body.data.id;
+
+      return cy
+        .apiCreatePhase({
+          projectId,
+          title: 'firstPhaseTitle',
+          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+          participationMethod: 'native_survey',
+          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+          nativeSurveyTitleMultiloc: { en: 'Survey' },
+          canPost: true,
+          canComment: true,
+          canReact: true,
+        })
+        .then((phase) => {
+          const phaseId = phase.body.data.id;
+
+          return cy
+            .apiSetPhasePermission({ phaseId, permissionBody, action })
+            .then(() => ({ projectId, phaseId }));
+        });
+    });
+};
 
 // See https://github.com/CitizenLabDotCo/fake_sso/blob/main/utils/profiles.js
 export type ProfileName =

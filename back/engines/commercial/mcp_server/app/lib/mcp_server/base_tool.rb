@@ -47,15 +47,11 @@ class McpServer::BaseTool
       annotations: definition.annotations
     ) do |**kwargs|
       server_context = kwargs.delete(:server_context)
+      params = ReadonlyStrip.strip_readonly(kwargs, definition.input_schema)
+      runner = runner_class.new(params:, server_context:, current_user:, token_scopes:)
 
-      runner = runner_class.new(
-        params: kwargs,
-        server_context: server_context,
-        current_user: current_user,
-        token_scopes: token_scopes
-      )
-
-      runner.run
+      locale_error = McpServer::LocaleGuard.error_message(kwargs)
+      locale_error ? runner.error(locale_error) : runner.run
     rescue Pundit::NotAuthorizedError => e
       runner.error(McpServer::BaseTool.unauthorized_message(e))
     end
@@ -63,6 +59,6 @@ class McpServer::BaseTool
 
   def self.unauthorized_message(error)
     reason = error.try(:reason)
-    "Not allowed: #{reason || 'authorization failed'}."
+    "Not allowed: #{reason || 'authorization failed.'}"
   end
 end

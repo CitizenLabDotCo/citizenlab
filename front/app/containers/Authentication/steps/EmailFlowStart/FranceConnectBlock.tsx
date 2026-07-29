@@ -2,7 +2,7 @@ import React from 'react';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
 
-import useAuthMethodNames from 'hooks/useAuthMethodNames';
+import useIdMethodNames from 'hooks/useIdMethodNames';
 
 import oldMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
@@ -17,12 +17,12 @@ interface Props {
 // FranceConnect is a verification-capable method with its own branded button.
 const FranceConnectBlock = ({ onClick }: Props) => {
   const { formatMessage } = useIntl();
-  const names = useAuthMethodNames();
+  const idMethodNames = useIdMethodNames();
 
   return (
     <FranceConnectButton
       logoAlt={formatMessage(oldMessages.signUpButtonAltText, {
-        loginMechanismName: names.franceconnect,
+        loginMechanismName: idMethodNames.franceconnect,
       })}
       onClick={() => onClick('franceconnect')}
     />

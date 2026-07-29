@@ -44,7 +44,7 @@ describe('Idea card component', () => {
       .then((user) => {
         userId = user.body.data.id;
         return cy.apiCreateIdea({
-          projectId,
+          phaseId,
           ideaTitle,
           ideaContent,
         });
@@ -159,7 +159,7 @@ describe('Idea card component', () => {
         })
         .then((user) => {
           return cy.apiCreateIdea({
-            projectId,
+            phaseId,
             ideaTitle,
             ideaContent,
           });

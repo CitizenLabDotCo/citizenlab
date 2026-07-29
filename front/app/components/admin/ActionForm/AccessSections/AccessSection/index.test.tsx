@@ -7,15 +7,18 @@ import { render, screen, within, userEvent } from 'utils/testUtils/rtl';
 import AccessSection from '.';
 
 // ---- Controllable data hooks ------------------------------------------------
-// The two things this section reacts to: whether password login is on, and
-// whether an identity-verification method is configured.
+// The three things this section reacts to: whether password login is on,
+// whether SMS is on, and whether an identity-verification method is configured.
 let mockPasswordLoginEnabled = true;
+let mockSmsEnabled = true;
 let mockVerificationMethodConfigured = true;
 
 jest.mock('hooks/useFeatureFlag', () =>
-  jest.fn(({ name }: { name: string }) =>
-    name === 'password_login' ? mockPasswordLoginEnabled : false
-  )
+  jest.fn(({ name }: { name: string }) => {
+    if (name === 'password_login') return mockPasswordLoginEnabled;
+    if (name === 'sms') return mockSmsEnabled;
+    return false;
+  })
 );
 
 jest.mock('api/id_methods/useVerificationMethod', () =>
@@ -32,8 +35,8 @@ jest.mock(
   () => () => null
 );
 jest.mock(
-  'components/admin/ActionForm/AccessSections/VerificationFieldsModal',
-  () => () => null
+  'components/admin/ActionForm/AccessSections/IdMethodsModal/Trigger',
+  () => () => <div data-testid="id-method-fields-trigger" />
 );
 
 const buildPermission = (
@@ -77,6 +80,7 @@ const renderSection = (
 
 beforeEach(() => {
   mockPasswordLoginEnabled = true;
+  mockSmsEnabled = true;
   mockVerificationMethodConfigured = true;
 });
 
@@ -87,10 +91,11 @@ describe('<AccessSection />', () => {
   });
 
   describe('when an account is required (permitted_by: users)', () => {
-    it('shows both authentication method rows with their descriptions when available', () => {
+    it('shows the authentication method rows with their descriptions when available', () => {
       renderSection();
 
       expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+      expect(screen.getByText('Confirmed phone number')).toBeInTheDocument();
       expect(screen.getByText('Identity verification')).toBeInTheDocument();
       expect(
         screen.getByText(
@@ -99,9 +104,26 @@ describe('<AccessSection />', () => {
       ).toBeInTheDocument();
       expect(
         screen.getByText(
+          'Participant confirms a phone number with a one-time code sent by SMS.'
+        )
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
           'Participant proves their identity through an external register.'
         )
       ).toBeInTheDocument();
+    });
+
+    it('hides the phone method row when SMS is off', () => {
+      mockSmsEnabled = false;
+      renderSection();
+
+      expect(
+        screen.queryByText('Confirmed phone number')
+      ).not.toBeInTheDocument();
+      // The other methods are unaffected.
+      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+      expect(screen.getByText('Identity verification')).toBeInTheDocument();
     });
 
     it('marks the email method unavailable when password login is off', () => {
@@ -132,15 +154,6 @@ describe('<AccessSection />', () => {
       ).toBeInTheDocument();
     });
 
-    it('shows the "pick at least one" hint when no method is enabled', () => {
-      renderSection({
-        require_confirmed_email: false,
-        require_verification: false,
-      });
-
-      expect(screen.getByText(/Pick at least one method/i)).toBeInTheDocument();
-    });
-
     it('locks the last remaining enabled method and explains why in a tooltip', async () => {
       // Only confirmed email enabled -> it is the last one, so it is locked.
       renderSection({
@@ -167,6 +180,13 @@ describe('<AccessSection />', () => {
       expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
       expect(
         screen.queryByText('Identity verification')
+      ).not.toBeInTheDocument();
+    });
+
+    it('does not offer the identification-methods trigger', () => {
+      renderSection({ permitted_by: 'everyone' });
+      expect(
+        screen.queryByTestId('id-method-fields-trigger')
       ).not.toBeInTheDocument();
     });
   });

@@ -5,7 +5,6 @@
 // writes are expressed as `Changes` for `onChange`.
 import { FormatMessage } from 'typings';
 
-import { IdMethod } from 'api/id_methods/types';
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import {
   IPhasePermissionData,
@@ -47,17 +46,13 @@ export const getGroupIds = (permission: IPhasePermissionData): string[] =>
 export const requiresAccount = (permission: IPhasePermissionData): boolean =>
   permission.attributes.permitted_by === 'users';
 
-/** With an account required, has the user actually picked a method yet? */
-export const hasEnabledMethod = (permission: IPhasePermissionData): boolean =>
-  permission.attributes.require_confirmed_email ||
-  permission.attributes.require_verification;
-
 export interface SummaryChip {
   key: string;
   label: string;
   icon:
     | 'user-circle'
     | 'email'
+    | 'tablet'
     | 'comment'
     | 'shield-checkered'
     | 'group'
@@ -116,6 +111,7 @@ export const buildSummary = (
   const chips: SummaryChip[] = [];
   const methodIcon: Record<AuthMethodKey, SummaryChip['icon']> = {
     email: 'email',
+    phone: 'tablet',
     verification: 'shield-checkered',
   };
   (Object.keys(METHOD_FIELDS) as AuthMethodKey[]).forEach((key) => {
@@ -128,16 +124,6 @@ export const buildSummary = (
       });
     }
   });
-
-  // Account required but no method chosen yet.
-  if (!hasEnabledMethod(permission)) {
-    chips.push({
-      key: 'account',
-      label: formatMessage(messages.signInRequired),
-      icon: 'user-circle',
-      tone: 'access',
-    });
-  }
 
   const groupIds = getGroupIds(permission);
   if (groupIds.length > 0) {
@@ -183,7 +169,7 @@ export const buildSummary = (
   return chips;
 };
 
-// Summary for the SSO variant: the sign-in method is fixed, so the per-method
+// Summary for the SSO variant: the identification method is fixed, so the per-method
 // chips are replaced by a single SSO chip.
 export const buildSummarySSO = (
   permission: IPhasePermissionData,
@@ -256,10 +242,6 @@ export const buildSummarySSO = (
   return chips;
 };
 
-/** Readable name of the fixed SSO sign-in method */
-export const ssoMethodName = (authenticationMethod?: IdMethod): string =>
-  authenticationMethod?.data.attributes.method_metadata?.name ?? '';
-
 // ---- One-line summaries shown on the collapsed setting rows ----
 export const groupsSummary = (
   permission: IPhasePermissionData,
@@ -278,8 +260,9 @@ export const piiSummary = (
   showPassword = true
 ): string => {
   const parts: string[] = [];
-  if (permission.attributes.require_name)
+  if (permission.attributes.require_name) {
     parts.push(formatMessage(messages.name));
+  }
   if (showPassword && permission.attributes.require_password) {
     parts.push(formatMessage(messages.password));
   }

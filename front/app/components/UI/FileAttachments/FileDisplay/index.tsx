@@ -9,15 +9,11 @@ import {
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
-import { IEventFileData } from 'api/event_files/types';
-import { IIdeaFileData } from 'api/idea_files/types';
-import { IPageFileData } from 'api/page_files/types';
-import { IPhaseFileData } from 'api/phase_files/types';
-import { IProjectFileData } from 'api/project_files/types';
-
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
+
+import { IAttachedFileData } from '../types';
 
 import messages from './messages';
 
@@ -75,12 +71,7 @@ const FileSize = styled.span`
 `;
 
 interface Props {
-  file:
-    | IProjectFileData
-    | IPhaseFileData
-    | IPageFileData
-    | IEventFileData
-    | IIdeaFileData;
+  file: IAttachedFileData;
   className?: string;
 }
 

@@ -102,9 +102,9 @@ describe('New timeline project with active ideation phase', () => {
           canReact: true,
         });
       })
-      .then(() => {
+      .then((phase) => {
         return cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle,
           ideaContent,
         });
@@ -219,8 +219,12 @@ describe('Archived timeline project with ideation phase', () => {
           canReact: true,
         });
       })
-      .then(() => {
-        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
+      .then((phase) => {
+        return cy.apiCreateIdea({
+          phaseId: phase.body.data.id,
+          ideaTitle,
+          ideaContent,
+        });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
@@ -373,10 +377,9 @@ describe('Ideation CTA bar', () => {
           .then((phase) => {
             firstPhaseId = phase.body.data.id;
             return cy.apiCreateIdea({
-              projectId,
+              phaseId: firstPhaseId,
               ideaTitle,
               ideaContent,
-              phaseIds: [firstPhaseId],
             });
           })
           .then((idea) => {
@@ -406,12 +409,11 @@ describe('Ideation CTA bar', () => {
               votingMaxTotal: 100,
             });
           })
-          .then((anotherPhase) => {
+          .then(() => {
             return cy.apiCreateIdea({
-              projectId,
+              phaseId: firstPhaseId,
               ideaTitle,
               ideaContent,
-              phaseIds: [firstPhaseId],
             });
           })
           .then((idea) => {

@@ -117,6 +117,9 @@ resource 'Phases' do
         # in parallel and are not subject to the no-overlap rule.
         let(:timeline_phase) { phases.first }
         let(:placement_type) { 'standalone' }
+        let(:participation_method) { 'native_survey' }
+        let(:native_survey_title_multiloc) { { 'en' => 'Survey' } }
+        let(:native_survey_button_multiloc) { { 'en' => 'Take the survey' } }
         let(:start_at) { timeline_phase.start_at }
         let(:end_at) { timeline_phase.end_at }
 
@@ -126,6 +129,15 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :start_at)).to eq timeline_phase.start_at.as_json
           expect(json_response.dig(:data, :attributes, :end_at)).to eq timeline_phase.end_at.as_json
           expect(Phase.find(json_response.dig(:data, :id)).placement_type).to eq 'standalone'
+        end
+
+        context 'with a participation method that does not support standalone placement' do
+          let(:participation_method) { 'ideation' }
+
+          example_request '[error] Create a standalone ideation phase' do
+            assert_status 422
+            expect(json_response).to include_response_error(:participation_method, 'not_supported_in_standalone_phase')
+          end
         end
       end
 

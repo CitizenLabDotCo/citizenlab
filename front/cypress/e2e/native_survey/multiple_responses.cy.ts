@@ -71,7 +71,7 @@ describe('Native survey: multiple responses per user', () => {
       `/en/projects/${projectSlug}/surveys/new`
     );
 
-    cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+    cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
     cy.dataCy('e2e-submit-form').click();
     cy.wait('@submitSurvey').its('response.statusCode').should('eq', 201);
     cy.dataCy('e2e-after-submission').should('exist');

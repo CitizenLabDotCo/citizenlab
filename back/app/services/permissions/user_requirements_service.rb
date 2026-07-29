@@ -136,24 +136,27 @@ class Permissions::UserRequirementsService
 
   # The attributes a user needs to provide, derived from the permission's
   # require_* flags. An email (and thus an account) is always required for a
-  # non-"everyone" permission; the name, confirmation and password are only
-  # required when their respective flag is set.
+  # non-"everyone" permission; the name, confirmation, password and phone number
+  # (with its confirmation) are only required when their respective flag is set.
   def base_missing_user_attributes(permission)
     attributes = %i[first_name last_name email confirmation password]
     attributes -= %i[first_name last_name] unless permission.require_name
     attributes.delete(:confirmation) unless permission.require_confirmed_email
     attributes.delete(:password) unless permission.require_password
+    attributes += %i[phone phone_confirmation] if permission.require_confirmed_phone_number
+
     attributes
   end
 
   def mark_satisfied_requirements!(requirements, permission, user)
     return requirements unless user
 
-    requirements[:authentication][:missing_user_attributes].excluding(%i[confirmation password])&.each do |attribute|
+    requirements[:authentication][:missing_user_attributes].excluding(%i[confirmation password phone_confirmation])&.each do |attribute|
       requirements[:authentication][:missing_user_attributes].delete(attribute) unless user.send(attribute).nil?
     end
     requirements[:authentication][:missing_user_attributes].delete(:password) unless user.password_digest.nil?
     requirements[:authentication][:missing_user_attributes].delete(:confirmation) unless permission.require_confirmed_email && user.confirmation_required?
+    requirements[:authentication][:missing_user_attributes].delete(:phone_confirmation) unless user.phone_confirmed_at.nil?
 
     requirements[:custom_fields]&.each_key do |key|
       requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key)

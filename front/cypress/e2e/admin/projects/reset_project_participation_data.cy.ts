@@ -31,8 +31,7 @@ describe('Admin reset project participation data', () => {
         canReact: true,
       }).then((phase) => {
         cy.apiCreateIdea({
-          projectId,
-          phaseIds: [phase.body.data.id],
+          phaseId: phase.body.data.id,
           ideaTitle: ideationIdeaTitle,
           ideaContent: randomString(),
         });
@@ -50,8 +49,7 @@ describe('Admin reset project participation data', () => {
         canReact: true,
       }).then((phase) => {
         cy.apiCreateIdea({
-          projectId,
-          phaseIds: [phase.body.data.id],
+          phaseId: phase.body.data.id,
           ideaTitle: votingIdeaTitle,
           ideaContent: randomString(),
         });

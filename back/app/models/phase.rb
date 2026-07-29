@@ -119,6 +119,7 @@ class Phase < ApplicationRecord
   validate :validate_duration
   validate :validate_previous_phase_can_be_closed # see also Phase#close_previous_open_phase
   validate :validate_no_other_overlapping_phases
+  validate :validate_standalone_participation_method
   validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
   # therefore updated manually by calling update_manual_votes_count! through the idea sidefx service.
@@ -237,6 +238,11 @@ class Phase < ApplicationRecord
 
   def complete?
     ends_before?(Time.zone.now)
+  end
+
+  def active?(time = Time.now)
+    time = time.in_time_zone
+    start_at <= time && (end_at.nil? || time < end_at)
   end
 
   def permission_scope
@@ -514,6 +520,13 @@ class Phase < ApplicationRecord
   # Delegate any rules specific to a method to the participation method itself
   def validate_phase_participation_method
     pmethod.validate_phase
+  end
+
+  def validate_standalone_participation_method
+    return if placement_strategy.sequential?
+    return if pmethod.supports_standalone_placement?
+
+    errors.add(:participation_method, :not_supported_in_standalone_phase, message: 'is not supported in standalone phases')
   end
 
   def sanitize_html_multiloc(multiloc)
