@@ -653,8 +653,17 @@ const createFullTitleNode = (title: string) => {
 // entries go away with the graphics themselves.
 const originalPopupTemplates = new WeakMap<Graphic, PopupTemplate>();
 
-// One popup open at a time; replaced on each open (see showEsriFeaturePopup).
+// One popup open at a time; replaced on each open and removed when the popup
+// closes (see showEsriFeaturePopup).
 let ctaFeatureWatchHandle: IHandle | null = null;
+let ctaPopupCloseWatchHandle: IHandle | null = null;
+
+const removeCtaWatchHandles = () => {
+  ctaFeatureWatchHandle?.remove();
+  ctaFeatureWatchHandle = null;
+  ctaPopupCloseWatchHandle?.remove();
+  ctaPopupCloseWatchHandle = null;
+};
 
 // buildFeaturePopupTemplate
 // Description: Returns a copy of a feature's ArcGIS popup template with:
@@ -762,7 +771,7 @@ export const showEsriFeaturePopup = async ({
   // Re-parent the CTA into the paged-to feature. `initial: true` covers the
   // first feature once the popup opens.
   if (prependContentNode && ctaPlaceholders.size > 0) {
-    ctaFeatureWatchHandle?.remove();
+    removeCtaWatchHandles();
     ctaFeatureWatchHandle = reactiveUtils.watch(
       () => mapView.popup?.selectedFeature,
       (selectedFeature) => {
@@ -773,6 +782,16 @@ export const showEsriFeaturePopup = async ({
         }
       },
       { initial: true }
+    );
+    // Stop watching once the popup closes, so the handles (and the placeholder
+    // map they close over) don't linger until the next popup opens.
+    ctaPopupCloseWatchHandle = reactiveUtils.watch(
+      () => mapView.popup?.visible,
+      (visible) => {
+        if (!visible) {
+          removeCtaWatchHandles();
+        }
+      }
     );
   }
 
