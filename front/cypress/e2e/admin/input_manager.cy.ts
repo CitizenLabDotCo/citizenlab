@@ -59,10 +59,9 @@ describe('Input manager', () => {
             const ideaContent = randomString();
 
             cy.apiCreateIdea({
-              projectId,
+              phaseId: phase.body.data.id,
               ideaTitle,
               ideaContent,
-              phaseIds: [phase.body.data.id],
             });
 
             // do a refresh for the new idea to appear
@@ -116,10 +115,9 @@ describe('Input manager', () => {
 
             // Create one idea with official feedback
             cy.apiCreateIdea({
-              projectId,
+              phaseId: phase.body.data.id,
               ideaTitle: ideaTitle1,
               ideaContent: ideaContent1,
-              phaseIds: [phase.body.data.id],
             }).then((idea) => {
               const ideaId = idea.body.data.id;
               const officialFeedbackContent = randomString();
@@ -132,7 +130,7 @@ describe('Input manager', () => {
 
               // Create one idea without official feedback
               cy.apiCreateIdea({
-                projectId,
+                phaseId: phase.body.data.id,
                 ideaTitle: ideaTitle2,
                 ideaContent: ideaContent2,
               }).then(() => {
@@ -209,10 +207,9 @@ describe('Input manager', () => {
             const ideaContent = randomString();
 
             cy.apiCreateIdea({
-              projectId,
+              phaseId: phase.body.data.id,
               ideaTitle,
               ideaContent,
-              phaseIds: [phase.body.data.id],
             }).then((_idea) => {
               cy.visit('/admin/ideas/');
               // click on title of first idea

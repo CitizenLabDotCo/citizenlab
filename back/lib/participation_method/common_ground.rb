@@ -21,6 +21,13 @@ module ParticipationMethod
       phase.input_term = 'contribution'
     end
 
+    # Common ground renders its own card interface, and the phase form offers it no view selector.
+    # The feed page opens on the views alone, so leaving the feed allowed here would let it render
+    # common ground contributions as ideas.
+    def allowed_presentation_modes
+      %w[card]
+    end
+
     def assign_defaults(input)
       # The common ground participation method does not use the idea status, but all
       # inputs must have one. We are using the same default as for ideation.

@@ -138,6 +138,15 @@ export function randomEmail() {
     .toLowerCase()}.com`;
 }
 
+export function randomPhoneNumber() {
+  // NANP toll-free number: +1 800 NXX-XXXX. libphonenumber (and therefore
+  // Phonelib, used by the backend to validate) requires the exchange code
+  // (the digit right after 800) to be 2-9 — a leading 0 or 1 is invalid.
+  // So the 7-digit block must start with 2-9: range 2000000..9999999.
+  const randomDigits = Math.floor(Math.random() * 8000000) + 2000000;
+  return `+1800${randomDigits}`; // Returns the number in E.164 format
+}
+
 function unregisterServiceWorkers() {
   if (navigator.serviceWorker) {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
@@ -677,7 +686,7 @@ function apiCreateInputTopic({
 }
 
 type IdeaType = {
-  projectId: string;
+  phaseId: string;
   ideaTitle: string;
   ideaContent: string;
   locationGeoJSON?: { type: string; coordinates: number[] };
@@ -685,12 +694,11 @@ type IdeaType = {
   jwt?: string;
   budget?: number;
   anonymous?: boolean;
-  phaseIds?: string[];
   topicIds?: string[];
 };
 
 function apiCreateIdea({
-  projectId,
+  phaseId,
   ideaTitle,
   ideaContent,
   locationGeoJSON,
@@ -698,7 +706,6 @@ function apiCreateIdea({
   jwt,
   budget,
   anonymous,
-  phaseIds,
   topicIds,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
@@ -708,10 +715,9 @@ function apiCreateIdea({
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/ideas',
+      url: `web_api/v1/phases/${phaseId}/inputs`,
       body: {
         idea: {
-          project_id: projectId,
           publication_status: 'published',
           title_multiloc: {
             en: ideaTitle,
@@ -725,7 +731,6 @@ function apiCreateIdea({
           location_description: locationDescription,
           budget,
           anonymous,
-          phase_ids: phaseIds,
           topic_ids: topicIds,
         },
       },
@@ -1941,12 +1946,12 @@ function apiCreateSurveyResponse(
   {
     email,
     password,
-    project_id,
+    phase_id,
     fields,
   }: {
     email?: string;
     password?: string;
-    project_id: string;
+    phase_id: string;
     fields: Record<string, any>;
   },
   jwt?: any
@@ -1958,21 +1963,11 @@ function apiCreateSurveyResponse(
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/ideas',
+      url: `web_api/v1/phases/${phase_id}/inputs`,
       body: {
         idea: {
           publication_status: 'published',
-          project_id,
           ...fields,
-        },
-        method: 'POST',
-        url: 'web_api/v1/ideas',
-        body: {
-          idea: {
-            publication_status: 'published',
-            project_id,
-            ...fields,
-          },
         },
       },
     });

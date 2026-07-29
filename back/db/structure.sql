@@ -1167,7 +1167,8 @@ CREATE TABLE public.activities (
     user_id uuid,
     acted_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    project_id uuid
+    project_id uuid,
+    channel character varying
 );
 
 
@@ -1864,8 +1865,8 @@ CREATE TABLE public.phases (
     prescreening_mode character varying,
     available_views character varying[] DEFAULT '{card}'::character varying[] NOT NULL,
     draft_description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    allow_multiple_responses boolean DEFAULT false NOT NULL,
-    placement_type character varying DEFAULT 'on_timeline'::character varying NOT NULL
+    placement_type character varying DEFAULT 'on_timeline'::character varying NOT NULL,
+    allow_multiple_responses boolean DEFAULT false NOT NULL
 );
 
 
@@ -3400,7 +3401,9 @@ CREATE TABLE public.permissions (
     confirmed_email_expiry integer,
     require_name boolean DEFAULT true NOT NULL,
     require_password boolean DEFAULT true NOT NULL,
-    require_verification boolean DEFAULT false NOT NULL
+    require_verification boolean DEFAULT false NOT NULL,
+    require_confirmed_phone_number boolean DEFAULT false NOT NULL,
+    confirmed_phone_number_expiry integer
 );
 
 
@@ -9443,7 +9446,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20260623120000'),
+('20260727000000'),
+('20260713000000'),
 ('20260707190000'),
 ('20260707185000'),
 ('20260707171133'),
@@ -9453,6 +9457,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260701113056'),
 ('20260630140754'),
 ('20260625093937'),
+('20260623120000'),
 ('20260622120000'),
 ('20260618120100'),
 ('20260618120000'),

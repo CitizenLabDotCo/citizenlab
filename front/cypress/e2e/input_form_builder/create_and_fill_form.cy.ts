@@ -140,7 +140,7 @@ describe('Input form builder', () => {
 
   it('can create input form with custom field, save form and user can respond to the form created', () => {
     // Intercept for the form submission
-    cy.intercept('POST', '**/web_api/v1/ideas').as('ideaSubmission');
+    cy.intercept('POST', '**/web_api/v1/phases/*/inputs').as('ideaSubmission');
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();

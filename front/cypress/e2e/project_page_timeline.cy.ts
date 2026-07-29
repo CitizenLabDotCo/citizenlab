@@ -142,7 +142,7 @@ describe('New timeline project', () => {
       .find('.currentPhase')
       .should('have.class', 'selectedPhase')
       .contains(phaseCurrentTitle);
-    cy.get('.e2e-project-process-page').contains(phaseLongDescription);
+    cy.get('.e2e-phase-description').contains(phaseLongDescription);
   });
 
   // Temporarily disables on April 15 2025 - can verify this works locally
@@ -152,7 +152,7 @@ describe('New timeline project', () => {
       .find('.currentPhase')
       .should('have.class', 'selectedPhase')
       .contains(phaseCurrentTitle);
-    cy.get('.e2e-project-process-page').contains(phaseLongDescription);
+    cy.get('.e2e-phase-description').contains(phaseLongDescription);
 
     // Verify that the description is collapsed by default
     cy.get('[id*="see-less-button"]').should('not.exist');
@@ -191,9 +191,7 @@ describe('New timeline project', () => {
       .find('.selectedPhase')
       .should('have.class', 'first')
       .contains(phasePastTitle);
-    cy.get('.e2e-project-process-page').contains(
-      `description ${phasePastTitle}`
-    );
+    cy.get('.e2e-phase-description').contains(`description ${phasePastTitle}`);
   });
 
   it('shows the next phase', () => {
@@ -212,7 +210,7 @@ describe('New timeline project', () => {
       .find('.selectedPhase')
       .should('have.class', 'last')
       .contains(phaseFutureTitle);
-    cy.get('.e2e-project-process-page').contains(
+    cy.get('.e2e-phase-description').contains(
       `description ${phaseFutureTitle}`
     );
   });

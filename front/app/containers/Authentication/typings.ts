@@ -10,6 +10,7 @@ import { getStepConfig } from './useSteps/stepConfig';
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
+  | 'wrong_phone_confirmation_code'
   | 'sign_in_failed'
   | 'requirements_fetching_failed'
   | 'invitation_error'
@@ -38,6 +39,7 @@ export interface State {
   } | null;
   ssoProvider: SSOProvider | null;
   claimTokens: string[] | null;
+  phone: string | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;

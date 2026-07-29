@@ -1,9 +1,17 @@
 import React from 'react';
 
-import * as fileUtils from 'utils/fileUtils';
+import { getBase64FromFile } from 'utils/fileUtils';
 import { screen, render, waitFor, fireEvent } from 'utils/testUtils/rtl';
 
 import HeaderBgUploader from './';
+
+// `jest.spyOn` on a module namespace does not work here, as the transformer
+// emits ES module exports as non-configurable getters.
+jest.mock('utils/fileUtils', () => ({
+  __esModule: true,
+  ...jest.requireActual('utils/fileUtils'),
+  getBase64FromFile: jest.fn(),
+}));
 
 const mockBase64 =
   'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBEEhEAxEAPwCwAB//2Q==';
@@ -14,7 +22,7 @@ const file = new File(['file'], 'file.jpeg', {
 
 describe('HeaderBgUploader', () => {
   beforeEach(() => {
-    jest.spyOn(fileUtils, 'getBase64FromFile').mockResolvedValue(mockBase64);
+    (getBase64FromFile as jest.Mock).mockResolvedValue(mockBase64);
   });
 
   afterEach(() => {
