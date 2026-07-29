@@ -437,6 +437,10 @@ module MultiTenancy
             decidim_importer: {
               enabled: true,
               allowed: true
+            },
+            parallel_participation: {
+              enabled: true,
+              allowed: true
             }
           })
         )
