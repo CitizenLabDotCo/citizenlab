@@ -4157,7 +4157,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Šiame valdiklyje rodomi projektai, susiję su naudotojo sekamomis sritimis. Atkreipkite dėmesį, kad jūsų platformoje gali būti naudojamas kitoks \"sričių\" pavadinimas - žr. platformos nustatymų skirtuką \"Sritys\". Jei naudotojas dar neseka jokių sričių, valdiklyje bus rodomos galimos sritys, kurias galima sekti. Šiuo atveju valdiklyje bus rodoma ne daugiau kaip 100 sričių.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Kortelės piktograma",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Pasirinktiniai puslapiai",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Naršyti pagal skyrius",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Nepasirinkta jokių puslapių",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": "Pasirinkti pasirinktinius puslapius",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": "Šis valdiklis leidžia pasirinkti pasirinktinius puslapius, kiekvienam pridėti piktogramas ir suskirstyti juos į skiltis, kad būtų lengviau naršyti.",

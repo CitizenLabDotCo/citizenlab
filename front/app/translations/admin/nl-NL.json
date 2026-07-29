@@ -4157,7 +4157,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Deze widget toont projecten die geassocieerd zijn met de \"gebieden\" die de gebruiker volgt. Wees er bewust van dat jouw platform een andere naam kan gebruiken voor \"gebieden\" - zie de \"Gebieden\" tab in de platform instellingen. Als de gebruiker nog geen gebieden volgt, toont de widget de beschikbare gebieden om te volgen. In dit geval zal de widget maximaal 100 gebieden tonen.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Kaarticoon",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Aanpasbare pagina's",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Ontdek per departement",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Geen pagina's geselecteerd",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": "Selecteer aanpasbare pagina's",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": "Met deze widget kun je aanpasbare pagina's selecteren, aan elke pagina een icoon toevoegen en ze in secties indelen om ze makkelijk leesbaar te maken.",

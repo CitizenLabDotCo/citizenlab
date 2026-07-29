@@ -4157,7 +4157,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Bu widget, kullanıcının takip ettiği \"alanlar\" ile ilişkili projeleri gösterir. Platformunuzun \"alanlar\" için farklı bir ad kullanabileceğini unutmayın - platform ayarlarındaki \"Alanlar\" sekmesine bakın. Kullanıcı henüz herhangi bir alanı takip etmiyorsa, widget takip edilebilecek mevcut alanları gösterecektir. Bu durumda widget maksimum 100 alan gösterecektir.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Kart simgesi",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Özel sayfalar",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Departmanlara göre keşfedin",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Hiçbir sayfa seçilmedi",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": "Özel sayfaları seçin",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": "Bu araç; özel sayfalar seçmenize, her birine simge eklemenize ve kolayca keşfedilebilmeleri için bunları bölümler halinde düzenlemenize olanak tanır.",

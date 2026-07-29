@@ -4157,7 +4157,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thisWidgetShows2": "Ten widżet pokazuje projekty powiązane z \"obszarami\", które śledzi użytkownik. Pamiętaj, że Twoja platforma może używać innej nazwy dla \"obszarów\" - zobacz zakładkę \"Obszary\" w ustawieniach platformy. Jeśli użytkownik nie obserwuje jeszcze żadnych obszarów, widżet pokaże dostępne obszary do obserwowania. W tym przypadku widżet pokaże maksymalnie 100 obszarów.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": "Ikona karty",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Strony niestandardowe",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": "Przeglądaj według wydziałów",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Nie wybrano żadnych stron",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": "Wybierz strony niestandardowe",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": "Ten widżet pozwala wybrać strony niestandardowe, dodać do każdej z nich ikony i uporządkować je w sekcje, aby ułatwić przeglądanie.",
