@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, StatusLabel, colors } from '@citizenlab/cl2-component-library';
+import { Box, StatusLabel } from '@citizenlab/cl2-component-library';
 
 import { ISmsDeliveryData } from 'api/campaigns/sms/deliveries/types';
 import useSmsCampaignDeliveries from 'api/campaigns/sms/deliveries/useSmsCampaignDeliveries';
@@ -14,23 +14,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import { getFullName } from 'utils/textUtils';
 
-import messages from '../../messages';
-
-const statusColorMapping: {
-  [k in ISmsDeliveryData['attributes']['status']]: string;
-} = {
-  pending: colors.grey200,
-  queued: colors.grey300,
-  sent: colors.blue500,
-  delivered: colors.success,
-  undelivered: colors.orange500,
-  failed: colors.red600,
-};
+import { smsStatusGroupByStatus } from './statusGroups';
 
 const TableRow = ({ delivery }: { delivery: ISmsDeliveryData }) => {
   const userId = delivery.relationships.user.data.id;
   const { data: user } = useUserById(userId);
   if (!user) return null;
+
+  const group = smsStatusGroupByStatus[delivery.attributes.status];
 
   return (
     <Row>
@@ -39,12 +30,8 @@ const TableRow = ({ delivery }: { delivery: ISmsDeliveryData }) => {
       </TextCell>
       <TextCell className="expand">{getFullName(user.data)}</TextCell>
       <StatusLabel
-        backgroundColor={statusColorMapping[delivery.attributes.status]}
-        text={
-          <FormattedMessage
-            {...messages[`smsDeliveryStatus_${delivery.attributes.status}`]}
-          />
-        }
+        backgroundColor={group.color}
+        text={<FormattedMessage {...group.message} />}
       />
     </Row>
   );
