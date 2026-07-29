@@ -41,6 +41,18 @@ module EmailCampaigns
       # callback may move it (e.g. a stray `failed` must not overwrite `delivered`).
       TERMINAL_STATUSES = %w[delivered undelivered failed errored].freeze
 
+      # Statuses meaning the message was actually handed to the provider, and so
+      # consumes one of the tenant's purchased messages. Deliberately NOT just
+      # `delivered`: the provider bills on submission, `delivered` only ever
+      # arrives via a status callback (many carriers never send one, leaving the
+      # message on `sent`), and `undelivered`/`failed` are billed too. The two
+      # statuses left out are the ones that never reached the provider —
+      # `pending` (not sent yet) and `errored` (rejected before the API call,
+      # e.g. a blocked country or an unusable number).
+      BILLABLE_STATUSES = (STATUSES - %w[pending errored]).freeze
+
+      scope :billable, -> { where(status: BILLABLE_STATUSES) }
+
       belongs_to :user, optional: true
       # The campaign that triggered this SMS, when sent as part of one.
       belongs_to :campaign, class_name: 'EmailCampaigns::Campaign', optional: true

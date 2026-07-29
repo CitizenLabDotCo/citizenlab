@@ -1576,6 +1576,14 @@
             "description": "The Twilio Messaging Service SID used to send phone confirmation codes.",
             "private": true
           },
+          "messages_purchased": {
+            "type": "integer",
+            "title": "SMS messages purchased (cumulative, all time)",
+            "description": "The total number of SMS messages the tenant has EVER purchased. Cumulative: when a new bundle is sold, ADD it to this number, never replace it. The remaining balance shown to admins is this number minus every SMS handed to the provider since the platform started.",
+            "minimum": 0,
+            "default": 0,
+            "private": true
+          },
           <% sms_country_codes = CountryCodesService.new %>
           "allowed_country_codes": {
             "title": "Allowed SMS country codes",

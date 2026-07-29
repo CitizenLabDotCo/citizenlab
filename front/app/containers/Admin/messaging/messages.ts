@@ -453,4 +453,38 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.smsDeliveryStatus_failed',
     defaultMessage: 'Failed',
   },
+  smsBalanceTitle: {
+    id: 'app.containers.Admin.messaging.smsBalanceTitle',
+    defaultMessage: 'SMS messages remaining',
+  },
+  smsBalanceOfPurchased: {
+    id: 'app.containers.Admin.messaging.smsBalanceOfPurchased',
+    defaultMessage: 'of {purchased, number} purchased',
+  },
+  smsBalanceLowWarning: {
+    id: 'app.containers.Admin.messaging.smsBalanceLowWarning',
+    defaultMessage:
+      'You are running low on SMS messages. To purchase more messages, contact your GovSuccess Manager.',
+  },
+  smsBalancePurchaseHint: {
+    id: 'app.containers.Admin.messaging.smsBalancePurchaseHint',
+    defaultMessage:
+      'To purchase more messages, contact your GovSuccess Manager.',
+  },
+  smsBalanceUsedOtp: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedOtp',
+    defaultMessage: 'Verification codes',
+  },
+  smsBalanceUsedManual: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedManual',
+    defaultMessage: 'SMS campaigns',
+  },
+  smsBalanceUsedOther: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedOther',
+    defaultMessage: 'Test messages',
+  },
+  smsBalanceUsedTotal: {
+    id: 'app.containers.Admin.messaging.smsBalanceUsedTotal',
+    defaultMessage: 'Total sent',
+  },
 });
