@@ -165,10 +165,10 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(page.enabled).to be(true)
       expect(page.craftjs_json.dig('ROOT', 'type', 'resolvedName')).to eq('ProjectPageRoot')
 
-      # The imported description was injected into the page's description section.
-      section = page.craftjs_json.values
-        .find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'ProjectDescriptionSection' }
-      expect(section['nodes']).not_to be_empty
+      # The imported description was injected into the page body.
+      body = page.craftjs_json['PROJECT_PAGE_BODY']
+      description_ids = body['nodes'] - %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
+      expect(description_ids).not_to be_empty
     end
 
     it 'imports an accountability component as an ideation phase, with its results as ideas carrying a progress line' do
