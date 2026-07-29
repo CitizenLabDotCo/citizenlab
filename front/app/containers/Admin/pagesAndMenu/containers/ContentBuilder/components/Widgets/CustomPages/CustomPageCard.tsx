@@ -42,11 +42,12 @@ const CustomPageCard = ({ page, emoji, imageUrl }: Props) => {
   const iconSize = `${CARD_ICON_SIZE}px`;
 
   // An uploaded image and an emoji are mutually exclusive, but the image takes
-  // precedence if both somehow ended up being set.
+  // precedence if both somehow ended up being set. Either way the icon only
+  // repeats what the page title already says, so it is decorative.
   const icon = imageUrl ? (
     <Image src={imageUrl} alt="" w="100%" h="100%" objectFit="contain" />
   ) : emoji ? (
-    <Emoji emoji={emoji} size={iconSize} />
+    <Emoji emoji={emoji} size={iconSize} decorative />
   ) : null;
 
   return (
