@@ -21849,14 +21849,49 @@
     "verified_at": "2026-07-03T09:23:24.663073Z",
     "verified_by": "Jelena"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:26:40.559510Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:26:40.559510Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:26:40.559510Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:26:40.559510Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:26:40.559510Z",
+    "verified_by": "Jelena"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": {
     "state": "verified",
     "verified_at": "2026-07-03T09:23:24.663073Z",
     "verified_by": "Jelena"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.removeImage": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:26:40.559510Z",
+    "verified_by": "Jelena"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": {
     "state": "verified",
     "verified_at": "2026-07-03T09:23:24.663073Z",
+    "verified_by": "Jelena"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.uploadImageLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-29T14:26:40.559510Z",
     "verified_by": "Jelena"
   },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": {
