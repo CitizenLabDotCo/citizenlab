@@ -21,7 +21,8 @@ describe('Project description builder Two Column component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
+        cy.apiToggleProjectDescriptionBuilder({ projectId });
+        cy.apiResetProjectPageLayout({ projectId }).then(() => {
           cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
