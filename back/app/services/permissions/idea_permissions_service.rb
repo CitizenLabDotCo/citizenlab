@@ -134,7 +134,7 @@ module Permissions
     end
 
     def standalone_input?
-      idea.creation_phase && !idea.creation_phase.placement_strategy.sequential?
+      idea.creation_phase && !idea.creation_phase.on_timeline?
     end
 
     def moderator?
