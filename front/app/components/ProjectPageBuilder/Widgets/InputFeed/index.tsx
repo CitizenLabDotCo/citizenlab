@@ -13,11 +13,10 @@ import { usePermission } from 'utils/permissions';
 import { useParams } from 'utils/router';
 
 import EditModeHeightCap from '../EditModeHeightCap';
+import EmptyParticipationPreview from '../EmptyState/EmptyParticipationPreview';
 import SectionBackground from '../SectionBackground';
 import useIsPageBodyChild from '../useIsPageBodyChild';
 import useWidgetProjectId from '../useWidgetProjectId';
-
-import EmptyInputFeed from './EmptyInputFeed';
 
 const PublicInputContent = React.lazy(() => import('./PublicInputContent'));
 
@@ -65,7 +64,7 @@ const InputFeedSection = ({ colored }: Props) => {
             </SectionBackground>
           </EditModeHeightCap>
         ) : canModerate ? (
-          <EmptyInputFeed />
+          <EmptyParticipationPreview />
         ) : null)}
     </Box>
   );

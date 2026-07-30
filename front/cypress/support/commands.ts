@@ -77,6 +77,7 @@ declare global {
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
+      apiResetProjectPageLayout: typeof apiResetProjectPageLayout;
       apiCreateReportBuilder: typeof apiCreateReportBuilder;
       apiRemoveReportBuilder: typeof apiRemoveReportBuilder;
       apiRemoveAllReports: typeof apiRemoveAllReports;
@@ -1601,6 +1602,65 @@ function apiToggleProjectDescriptionBuilder({
   });
 }
 
+// Overwrites the project page layout with the canonical empty shape, removing
+// the content seeded for new projects so widget specs start from a blank body.
+function apiResetProjectPageLayout({ projectId }: { projectId: string }) {
+  const widget = (
+    resolvedName: string,
+    parent: string | null,
+    override: Record<string, any> = {}
+  ) => ({
+    type: { resolvedName },
+    nodes: [],
+    props: {},
+    custom: {},
+    hidden: false,
+    parent,
+    isCanvas: false,
+    displayName: resolvedName,
+    linkedNodes: {},
+    ...override,
+  });
+
+  const craftjs_json = {
+    ROOT: widget('ProjectPageRoot', null, {
+      isCanvas: true,
+      custom: { region: true },
+      nodes: ['PROJECT_PAGE_BANNER', 'PROJECT_PAGE_TITLE', 'PROJECT_PAGE_BODY'],
+    }),
+    PROJECT_PAGE_BANNER: widget('ProjectBanner', 'ROOT', {
+      props: { image: {}, alt: {} },
+    }),
+    PROJECT_PAGE_TITLE: widget('ProjectTitle', 'ROOT'),
+    PROJECT_PAGE_BODY: widget('ProjectPageBody', 'ROOT', {
+      isCanvas: true,
+      custom: { region: true },
+      nodes: ['PROJECT_PAGE_PHASES', 'PROJECT_PAGE_EVENTS'],
+    }),
+    PROJECT_PAGE_PHASES: widget('PhasesWidget', 'PROJECT_PAGE_BODY'),
+    PROJECT_PAGE_EVENTS: widget('EventsWidget', 'PROJECT_PAGE_BODY'),
+  };
+
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_page/upsert`,
+      body: {
+        content_builder_layout: {
+          enabled: true,
+          craftjs_json,
+        },
+      },
+    });
+  });
+}
+
 function apiCreateReportBuilder(phaseId?: string, visible: boolean = true) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -2445,6 +2505,7 @@ Cypress.Commands.add(
   'apiToggleProjectDescriptionBuilder',
   apiToggleProjectDescriptionBuilder
 );
+Cypress.Commands.add('apiResetProjectPageLayout', apiResetProjectPageLayout);
 Cypress.Commands.add('apiCreateReportBuilder', apiCreateReportBuilder);
 Cypress.Commands.add('apiRemoveReportBuilder', apiRemoveReportBuilder);
 Cypress.Commands.add('apiRemoveAllReports', apiRemoveAllReports);
