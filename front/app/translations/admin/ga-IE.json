@@ -4157,7 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Leathanaigh saincheaptha",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "Straoiseog",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "Réamhamharc ar dheilbhín an chárta uaslódáilte",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Bain úsáid as íomhá chearnach (SVG, PNG nó JPG). Déantar í a scálú go {size}x{size} picteilín ar an gcárta, mar sin seachain mionsonraí agus téacs beag.",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Úsáid íomhá chearnach (SVG, PNG nó JPG). Déantar í a scálú go {size}x{size} picteilín ar an gcárta, mar sin seachain mionsonraí agus téacs.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "Íomhá",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "Tharla earráid agus an íomhá seo á huaslódáil.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Níl aon leathanach roghnaithe",

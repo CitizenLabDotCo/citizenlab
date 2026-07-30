@@ -4157,7 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Strony niestandardowe",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "Emoji",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "Podgląd przesłanej ikony karty",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Użyj kwadratowego obrazu (SVG, PNG lub JPG). Zostanie on przeskalowany do rozmiaru {size}x{size} pikseli na karcie, więc unikaj drobnych szczegółów i tekstu.",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Użyj kwadratowego obrazu (SVG, PNG lub JPG). Zostanie on przeskalowany do rozmiaru {size}x{size} pikseli na karcie, więc unikaj małych detali i tekstu.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "Obraz",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "Coś poszło nie tak podczas przesyłania tego obrazu.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Nie wybrano żadnych stron",

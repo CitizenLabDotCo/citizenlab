@@ -4157,7 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Pasirinktiniai puslapiai",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "Jaustukas",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "Įkeltos kortelės piktogramos peržiūra",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Naudokite kvadratinį paveikslėlį (SVG, PNG arba JPG). Kortelėje jo dydis keičiamas į {size}x{size} pikselių, todėl venkite smulkių detalių ir teksto.",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Naudokite kvadratinį paveikslėlį (SVG, PNG arba JPG). Kortelėje jo dydis bus pakeistas į {size}x{size} pikselių, todėl venkite smulkių detalių ir teksto.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "Paveikslėlis",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "Įkeliant šį paveikslėlį įvyko klaida.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Nepasirinkta jokių puslapių",

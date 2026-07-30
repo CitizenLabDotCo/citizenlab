@@ -4157,7 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Mukautetut sivut",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "Emoji",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "Ladatun korttikuvakkeen esikatselu",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Käytä neliönmuotoista kuvaa (SVG, PNG tai JPG). Se skaalataan kortilla kokoon {size}x{size} pikseliä, joten vältä pieniä yksityiskohtia ja tekstiä.",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Käytä neliön muotoista kuvaa (SVG, PNG tai JPG). Se skaalataan kortilla kokoon {size}x{size} pikseliä, joten vältä pieniä yksityiskohtia ja tekstiä.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "Kuva",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "Jotain meni vikaan kuvaa ladattaessa.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Sivuja ei ole valittu",
