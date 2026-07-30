@@ -78,6 +78,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Confirm that I can post idea
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.acceptCookies();
+    cy.dockProjectCtaBar();
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.location('pathname').should(
@@ -108,6 +109,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Confirm that I can post idea
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.acceptCookies();
+    cy.dockProjectCtaBar();
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.location('pathname').should(

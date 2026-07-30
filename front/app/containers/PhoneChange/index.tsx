@@ -15,6 +15,7 @@ import { ERROR_CODE_MESSAGES } from 'containers/Authentication/messageUtils';
 import PhoneConfirmation from 'containers/Authentication/steps/PhoneConfirmation';
 import { ErrorCode } from 'containers/Authentication/typings';
 
+import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
 import { StyledContentContainer } from 'components/smallForm';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -44,7 +45,11 @@ const PhoneChange = () => {
   const [updateCancelled, setUpdateCancelled] = useState(false);
 
   const schema = object({
-    phone: string().required(formatMessage(messages.phoneEmptyError)),
+    phone: string()
+      .required(formatMessage(messages.phoneEmptyError))
+      .test('is-valid-phone', formatMessage(messages.phoneInvalid), (value) =>
+        value ? isValidPhoneNumber(value) : false
+      ),
   });
 
   const methods = useForm<FormValues>({

@@ -22,9 +22,7 @@ describe('Project description builder HtmlBlock component', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -42,12 +40,9 @@ describe('Project description builder HtmlBlock component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.get('#e2e-draggable-html-block').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
-    );
+    cy.get('#e2e-draggable-html-block').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
 
     cy.get('div.e2e-html-block').click();
     cy.get('#html-block-textarea-en').type('<p>Html paragraph</p>', {
@@ -65,7 +60,7 @@ describe('Project description builder HtmlBlock component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
     cy.get('.e2e-html-block').click();
     cy.get('#e2e-delete-button').click();

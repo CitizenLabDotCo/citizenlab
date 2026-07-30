@@ -12,6 +12,7 @@ import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlock
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
@@ -23,8 +24,8 @@ import {
   ProjectPageRoot,
   ProjectPageBody,
 } from 'components/ProjectPageBuilder/regions';
-import ProjectDescriptionSection from 'components/ProjectPageBuilder/Widgets/DescriptionSection';
 import EventsWidget from 'components/ProjectPageBuilder/Widgets/Events';
+import ExtraSurveysWidget from 'components/ProjectPageBuilder/Widgets/ExtraSurveys';
 import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
 import ProjectBanner from 'components/ProjectPageBuilder/Widgets/ProjectBanner';
 import ProjectTitle from 'components/ProjectPageBuilder/Widgets/ProjectTitle';
@@ -55,11 +56,12 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
         HtmlBlockMultiloc,
         ImageTextCards,
         ButtonMultiloc,
+        PageLink,
         PhasesWidget,
         EventsWidget,
+        ExtraSurveysWidget,
         ProjectBanner,
         ProjectTitle,
-        ProjectDescriptionSection,
         ProjectPageRoot,
         ProjectPageBody,
       }}
