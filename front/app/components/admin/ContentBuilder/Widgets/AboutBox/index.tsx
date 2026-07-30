@@ -71,12 +71,10 @@ const AboutBoxSettings = () => {
     hideParticipationAvatars,
     hiddenOptionIds,
     collapsedButtonTitleMultiloc,
-  } = useNode((node) => ({
+  } = useNode<AboutBoxProps & { hiddenOptionIds: string[] }>((node) => ({
     hideParticipationAvatars: node.data.props.hideParticipationAvatars,
-    hiddenOptionIds: (node.data.props.hiddenOptionIds ?? []) as string[],
-    collapsedButtonTitleMultiloc: node.data.props
-      .collapsedButtonTitleMultiloc as Multiloc | undefined,
-    id: node.id,
+    hiddenOptionIds: node.data.props.hiddenOptionIds ?? [],
+    collapsedButtonTitleMultiloc: node.data.props.collapsedButtonTitleMultiloc,
   }));
 
   const projectId = useWidgetProjectId();
@@ -120,7 +118,7 @@ const AboutBoxSettings = () => {
       gap="24px"
     >
       <Toggle
-        checked={hideParticipationAvatars}
+        checked={!!hideParticipationAvatars}
         onChange={() => {
           setProp(
             (props: AboutBoxProps) =>
