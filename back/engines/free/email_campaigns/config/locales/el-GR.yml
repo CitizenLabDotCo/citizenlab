@@ -193,6 +193,7 @@ el-GR:
       new_phone_confirmation: Νέος κωδικός επιβεβαίωσης τηλεφώνου
       official_feedback_on_idea_you_follow: Ενημέρωση για μια ιδέα που ακολουθείτε
       password_reset: Επαναφορά κωδικού πρόσβασης
+      phone_confirmation: Κωδικός επιβεβαίωσης τηλεφώνου
       project_folder_moderation_rights_received: Δικαιώματα διαχειριστή φακέλων
       project_manager_rights_received: Λήφθηκαν δικαιώματα διαχειριστή έργου
       project_moderation_rights_received: Δικαιώματα συντονισμού έργου που ελήφθησαν
@@ -550,6 +551,8 @@ el-GR:
       preheader: Επαναφορά του κωδικού πρόσβασής σας για το %{organizationName}
       subject: '%{organizationName}: Επαναφορά του κωδικού πρόσβασής σας'
       title: Επιλέξτε έναν νέο κωδικό πρόσβασης
+    phone_confirmation:
+      sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

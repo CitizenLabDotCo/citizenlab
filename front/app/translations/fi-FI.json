@@ -1982,6 +1982,7 @@
   "app.containers.Navbar.verified": "Vahvistettu",
   "app.containers.NewAuthModal.beforeYouFollow": "Ennen kuin seuraat",
   "app.containers.NewAuthModal.beforeYouParticipate": "Ennen kuin osallistut",
+  "app.containers.NewAuthModal.changeYourEmail": "Vaihda sähköpostiosoitteesi",
   "app.containers.NewAuthModal.completeYourProfile": "Täytä profiilisi",
   "app.containers.NewAuthModal.confirmYourEmail": "vahvista sähköpostiosoitteesi",
   "app.containers.NewAuthModal.logIn": "Kirjaudu sisään",
