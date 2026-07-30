@@ -59,7 +59,7 @@ class TimelineService
       .where.not(id: phase.id)
       .where(project_id: phase.project_id)
       .on_timeline
-      .where('start_at < ?', phase.start_at)
+      .where(start_at: ...phase.start_at)
       .order(start_at: :desc)
       .first
   end
