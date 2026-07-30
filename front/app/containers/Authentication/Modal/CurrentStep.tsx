@@ -8,7 +8,7 @@ import AccessDenied from '../steps/AccessDenied';
 import BuiltInFields from '../steps/BuiltInFields';
 import ChangeEmail from '../steps/ChangeEmail';
 import EmailConfirmation from '../steps/EmailConfirmation';
-import EmailFlowStart from '../steps/EmailFlowStart';
+import FlowStart from '../steps/FlowStart';
 import Invitation from '../steps/Invitation';
 import InviteSignUp from '../steps/InviteSignUp';
 import InviteTaken from '../steps/InviteTaken';
@@ -73,7 +73,7 @@ const CurrentStep = ({
     case 'pre-auth:start':
     case 'post-participation:email':
       return (
-        <EmailFlowStart
+        <FlowStart
           loading={loading}
           setError={setError}
           authenticationData={authenticationData}
