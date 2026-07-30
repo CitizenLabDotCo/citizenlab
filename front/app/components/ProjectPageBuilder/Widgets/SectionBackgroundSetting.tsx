@@ -19,10 +19,8 @@ const SectionBackgroundSetting = () => {
   const {
     actions: { setProp },
     sectionBackground,
-  } = useNode((node) => ({
-    sectionBackground: node.data.props.sectionBackground as
-      | SectionBackgroundChoice
-      | undefined,
+  } = useNode<WidgetProps>((node) => ({
+    sectionBackground: node.data.props.sectionBackground,
   }));
 
   const defaultBackground = useDefaultSectionBackground();
