@@ -88,6 +88,18 @@ describe McpServer::Tools::UpdatePhase do
       expect(response).not_to be_error
       expect(phase.reload.participation_method).to eq('information')
     end
+
+    # The feature gates shared with create_phase (PhaseFeatureGuard) also cover updates.
+    it 'rejects reacting_dislike_* fields when the disable_disliking feature is off' do
+      SettingsService.new.deactivate_feature!('disable_disliking')
+
+      response = nil
+      expect { response = run(phase_id: phase.id, reacting_dislike_enabled: true) }
+        .not_to change { phase.reload.updated_at }
+
+      expect(response).to be_error
+      expect(response.content.first[:text]).to include("'disable_disliking' feature")
+    end
   end
 
   context 'when the project is published' do
