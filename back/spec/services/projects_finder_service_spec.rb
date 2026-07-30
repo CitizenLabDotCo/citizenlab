@@ -49,10 +49,14 @@ describe ProjectsFinderService do
       active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
       active_project3 = create(:project_with_active_ideation_phase)
       active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
+      open_ended_project = create(:project_with_active_ideation_phase)
+      open_ended_project.phases.first.update!(end_at: nil)
 
-      expect(Project.count).to eq 5
-      expect(result.size).to eq 3
-      expect(result.map(&:id)).to eq [active_ideation_project.id, active_project2.id, active_project3.id]
+      expect(Project.count).to eq 6
+      expect(result.size).to eq 4
+      expect(result.map(&:id)).to eq [
+        active_ideation_project.id, active_project2.id, active_project3.id, open_ended_project.id
+      ]
     end
 
     # Without the created_at and id tiebreaks, projects would repeat across pages.
