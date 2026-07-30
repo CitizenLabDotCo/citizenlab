@@ -10054,6 +10054,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.NewAuthModal.changeYourEmail": {
+    "state": "verified",
+    "verified_at": "2026-07-29T07:06:15.389415Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.NewAuthModal.completeYourProfile": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",

@@ -1982,6 +1982,7 @@
   "app.containers.Navbar.verified": "Wedi'i wirio",
   "app.containers.NewAuthModal.beforeYouFollow": "Cyn i chi ddilyn",
   "app.containers.NewAuthModal.beforeYouParticipate": "Cyn i chi gymryd rhan",
+  "app.containers.NewAuthModal.changeYourEmail": "Newid eich e-bost",
   "app.containers.NewAuthModal.completeYourProfile": "Cwblhewch eich proffil",
   "app.containers.NewAuthModal.confirmYourEmail": "Cadarnhewch eich e-bost",
   "app.containers.NewAuthModal.logIn": "Mewngofnodi",

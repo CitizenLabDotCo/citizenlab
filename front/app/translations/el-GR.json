@@ -1982,6 +1982,7 @@
   "app.containers.Navbar.verified": "Επαληθευμένος",
   "app.containers.NewAuthModal.beforeYouFollow": "Πριν ακολουθήσετε",
   "app.containers.NewAuthModal.beforeYouParticipate": "Πριν από τη συμμετοχή σας",
+  "app.containers.NewAuthModal.changeYourEmail": "Αλλαγή του email σας",
   "app.containers.NewAuthModal.completeYourProfile": "Συμπληρώστε το προφίλ σας",
   "app.containers.NewAuthModal.confirmYourEmail": "Επιβεβαιώστε το email σας",
   "app.containers.NewAuthModal.logIn": "Συνδεθείτε",

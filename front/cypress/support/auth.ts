@@ -24,6 +24,11 @@ export const confirmEmail = (cy: Cypress.Chainable) => {
   cy.get('#e2e-verify-email-button > button').click({ force: true });
 };
 
+export const confirmPhone = (cy: Cypress.Chainable) => {
+  cy.dataCy('phone-code-input').find('input').type('1234');
+  cy.dataCy('phone-confirm-button').click();
+};
+
 export const signUp = (
   cy: Cypress.Chainable,
   email: string = randomEmail()

@@ -22,27 +22,34 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'email:policies': messages.beforeYouParticipate,
   'email:password': messages.logIn,
   'email:sso-policies': messages.signUp,
-  'email:confirmation': messages.confirmYourEmail,
+  'email:unauthenticated-confirmation': messages.confirmYourEmail,
+
+  // confirmation steps (code entry for email / phone)
+  'confirmation:reconfirm-email': messages.confirmYourEmail,
+  'confirmation:new_email': messages.confirmYourEmail,
+  'confirmation:reconfirm-phone': messages.confirmYourPhoneNumber,
+  'confirmation:new_phone': messages.confirmYourPhoneNumber,
 
   // invite flow
   'invite:email-password': messages.signUp,
   'invite:code': messages.signUp,
   'invite:taken': messages.signUp,
 
-  // missing data flow
-  'missing-data:email-confirmation': messages.confirmYourEmail,
-  'missing-data:phone': messages.enterYourPhoneNumber,
-  'missing-data:phone-confirmation': messages.confirmYourPhoneNumber,
+  // missing data (if signed in already)
+  'missing-data:change-new-email': messages.changeYourEmail,
+  'missing-data:new_phone': messages.enterYourPhoneNumber,
   'missing-data:built-in': messages.completeYourProfile,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
+
+  // missing data (if signed in already) for onboarding
   'missing-data:onboarding': messages.whatAreYouInterestedIn,
 
-  // verification only
+  // verification only (for onboarding and re-verification)
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
 
-  // post-participation flow
+  // post-participation flow (sign up after participation)
   'post-participation:email': messages.signUpOrLogIn,
 };
 
