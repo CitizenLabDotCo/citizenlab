@@ -20,9 +20,12 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // pre-auth steps
   'pre-auth:start': messages.beforeYouParticipate,
   'pre-auth:policies': messages.beforeYouParticipate,
+  'pre-auth:phone-policies': messages.beforeYouParticipate,
   'pre-auth:password': messages.logIn,
   'pre-auth:sso-policies': messages.signUp,
   'pre-auth:unauthenticated-confirmation': messages.confirmYourEmail,
+  'pre-auth:unauthenticated-phone-confirmation':
+    messages.confirmYourPhoneNumber,
 
   // confirmation steps (code entry for email / phone)
   'confirmation:reconfirm-email': messages.confirmYourEmail,
@@ -59,9 +62,12 @@ export const getHeaderMessage = (
 ) => {
   if (
     action === 'following' &&
-    ['pre-auth:start', 'pre-auth:policies', 'pre-auth:sso-policies'].includes(
-      step
-    )
+    [
+      'pre-auth:start',
+      'pre-auth:policies',
+      'pre-auth:phone-policies',
+      'pre-auth:sso-policies',
+    ].includes(step)
   ) {
     return messages.beforeYouFollow;
   }

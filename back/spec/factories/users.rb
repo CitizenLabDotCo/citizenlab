@@ -52,12 +52,21 @@ FactoryBot.define do
     end
   end
 
-  # Represents a user who verified a phone number through the confirmation flow.
-  # phone is only ever populated together with phone_confirmed_at,
+  # Represents a user who verified a phone number through the confirmation flow,
   # so SMS campaigns (which target confirmed numbers) reach this user.
   trait :with_confirmed_phone do
     sequence(:phone) { |n| "+1#{4_155_552_000 + n}" }
     phone_confirmed_at { Time.zone.now }
+  end
+
+  # This is the phone equivalent of :unconfirmed_user: the state a user is in
+  # after entering their phone number, while they have not yet confirmed it and
+  # have not yet filled out any other fields.
+  factory :unconfirmed_phone_user, class: 'User' do
+    first_name { nil }
+    last_name { nil }
+    sequence(:phone) { |n| "+1#{4_155_553_000 + n}" }
+    locale { 'en' }
   end
 
   # This is an unconfirmed user. This is basically the state that a user is in

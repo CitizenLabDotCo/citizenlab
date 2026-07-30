@@ -521,7 +521,7 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do |i|
         post(
-          '/web_api/v1/users/check',
+          '/web_api/v1/users/check_email',
           params: "{ \"user\": { \"email\": \"user#{i}@test.com\" } }",
           headers: headers
         )
@@ -529,7 +529,7 @@ describe 'Rack::Attack' do
       expect(status).to eq(200) # ok
 
       post(
-        '/web_api/v1/users/check',
+        '/web_api/v1/users/check_email',
         params: '{ "user": { "email": "user6@test.com" } }',
         headers: headers
       )
@@ -538,7 +538,7 @@ describe 'Rack::Attack' do
 
     travel_to(2.minutes.from_now) do
       post(
-        '/web_api/v1/users/check',
+        '/web_api/v1/users/check_email',
         params: '{ "user": { "email": "user7@test.com" } }',
         headers: headers
       )
@@ -551,7 +551,7 @@ describe 'Rack::Attack' do
       5.times do |i|
         headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i}" }
         post(
-          '/web_api/v1/users/check',
+          '/web_api/v1/users/check_email',
           params: '{ "user": { "email": "user@test.com" } }',
           headers: headers
         )
@@ -560,7 +560,7 @@ describe 'Rack::Attack' do
 
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.7' }
       post(
-        '/web_api/v1/users/check',
+        '/web_api/v1/users/check_email',
         params: '{ "user": { "email": "user@test.com" } }',
         headers: headers
       )
@@ -570,7 +570,7 @@ describe 'Rack::Attack' do
     travel_to(5.minutes.from_now) do
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.8' }
       post(
-        '/web_api/v1/users/check',
+        '/web_api/v1/users/check_email',
         params: '{ "user": { "email": "user@test.com" } }',
         headers: headers
       )

@@ -70,6 +70,13 @@ class Rack::Attack
     end
   end
 
+  # Account creation with a phone number by IP.
+  throttle('signup_phone/ip', limit: 10, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/users/create_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
   # Password reset by IP.
   throttle('password_reset/ip', limit: 10, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/users/reset_password' && req.post?
@@ -117,9 +124,22 @@ class Rack::Attack
     end
   end
 
+  # Resend phone code by IP.
+  throttle('request_code_phone/ip', limit: 10, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/user/request_code_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
   # Confirm by IP.
   throttle('confirm_code_email/ip', limit: 5, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/user/confirm_code_email' && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('confirm_code_phone/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user/confirm_code_phone' && req.post?
       req.remote_ip
     end
   end
@@ -136,17 +156,33 @@ class Rack::Attack
     end
   end
 
-  # User check endpoint
+  # User check endpoints
   throttle('user_check/ip', limit: 5, period: 2.minutes) do |req|
-    if req.path == '/web_api/v1/users/check' && req.post?
+    if req.path == '/web_api/v1/users/check_email' && req.post?
       req.remote_ip
     end
   end
 
   throttle('user_check/email', limit: 5, period: 5.minutes) do |req|
-    if req.path == '/web_api/v1/users/check' && req.post?
+    if req.path == '/web_api/v1/users/check_email' && req.post?
       begin
         JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
+        # do nothing
+      end
+    end
+  end
+
+  throttle('user_check_phone/ip', limit: 5, period: 2.minutes) do |req|
+    if req.path == '/web_api/v1/users/check_phone' && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('user_check_phone/phone', limit: 5, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/users/check_phone' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('user', 'phone')&.to_s&.gsub(/\s+/, '')&.presence
       rescue JSON::ParserError
         # do nothing
       end

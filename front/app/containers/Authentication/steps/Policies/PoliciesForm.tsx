@@ -9,7 +9,7 @@ import authProvidersMessages from 'containers/Authentication/steps/_components/A
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, MessageDescriptor } from 'utils/cl-intl';
 
 import sharedMessages from '../messages';
 
@@ -26,10 +26,16 @@ const isTruthy = (value?: boolean) => !!value;
 interface Props {
   loading: boolean;
   showByContinuingText?: boolean;
+  byContinuingMessage?: MessageDescriptor;
   onSubmit: () => void;
 }
 
-const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
+const PoliciesForm = ({
+  loading,
+  showByContinuingText,
+  byContinuingMessage,
+  onSubmit,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
@@ -57,7 +63,10 @@ const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
         <Text mt="0px" mb="32px">
           {formatMessage(messages.reviewTheTerms)}
         </Text>
-        <PoliciesMarkup showByContinuingText={showByContinuingText} />
+        <PoliciesMarkup
+          showByContinuingText={showByContinuingText}
+          byContinuingMessage={byContinuingMessage}
+        />
         <ButtonWithLink
           id="e2e-policies-continue"
           mt="32px"

@@ -14,13 +14,17 @@ module AuthToken
     private
 
     def authenticate
-      block_because_requires_confirmation = entity.try(:confirmation_required?)
-
       return if entity.present? &&
                 entity.authenticate(auth_params[secret_param]) &&
-                !block_because_requires_confirmation
+                !blocked_by_confirmation?
 
       raise ActiveRecord::RecordNotFound
+    end
+
+    # Whether the entity still has to confirm the identifier it is logging in
+    # with. Subclasses override this when the identifier is not the email.
+    def blocked_by_confirmation?
+      entity.try(:confirmation_required?)
     end
 
     def auth_token

@@ -8,13 +8,17 @@ import getAuthUser from '../auth_user/getAuthUser';
 
 import signOut from './signOut';
 
-interface Parameters {
-  email: string;
+// Users sign in with either their email address or their phone number.
+type Identifier =
+  | { email: string; phone?: never }
+  | { phone: string; email?: never };
+
+type Parameters = Identifier & {
   password: string;
   rememberMe?: boolean;
   tokenLifetime?: number;
   claimTokens?: string[];
-}
+};
 
 export default async function signIn(parameters: Parameters) {
   try {
@@ -33,6 +37,7 @@ export default async function signIn(parameters: Parameters) {
 
 async function getAndSetToken({
   email,
+  phone,
   password,
   rememberMe = false,
   tokenLifetime,
@@ -40,7 +45,7 @@ async function getAndSetToken({
 }: Parameters) {
   const bodyData = {
     auth: {
-      email,
+      ...(phone ? { phone } : { email }),
       password,
       remember_me: rememberMe,
       claim_tokens: claimTokens,

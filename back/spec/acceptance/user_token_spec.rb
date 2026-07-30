@@ -266,5 +266,83 @@ resource 'User Token' do
         end
       end
     end
+
+    context 'when logging in with a phone number' do
+      include_context 'with sms feature enabled'
+
+      parameter :phone, 'Phone number, as an alternative to the email', scope: :auth
+
+      let(:password) { '12345678' }
+      let(:phone) { '+14155552671' }
+
+      context 'when the phone number is confirmed' do
+        let!(:user) { create(:user, :with_confirmed_phone, phone: '+14155552671', password: password) }
+
+        example_request 'Creates a JWT token' do
+          assert_status 201
+
+          jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+          expect(jwt['sub']).to eq(user.id)
+        end
+
+        context 'when the number is submitted in a different format' do
+          let(:phone) { '+1 (415) 555-2671' }
+
+          example_request 'Creates a JWT token', document: false do
+            assert_status 201
+            expect(JWT.decode(json_response_body[:jwt], nil, false).first['sub']).to eq(user.id)
+          end
+        end
+
+        example '[error] no JWT token is returned with an invalid password', document: false do
+          do_request(auth: { phone: phone, password: 'wrongpassword' })
+          assert_status 404
+        end
+
+        context 'when the sms feature is disabled' do
+          before { SettingsService.new.deactivate_feature! 'sms' }
+
+          example_request '[error] no JWT token is returned', document: false do
+            assert_status 404
+          end
+        end
+      end
+
+      context 'when the phone number is not confirmed' do
+        let!(:user) { create(:user, phone: '+14155552671', password: password) }
+
+        example_request '[error] no JWT token is returned' do
+          expect(user.phone_confirmed_at).to be_nil
+          assert_status 404
+        end
+      end
+
+      # Passwordless users authenticate with an empty password. They log in
+      # through confirm_code_phone, never here.
+      context 'when the user has no password' do
+        let!(:user) { create(:unconfirmed_phone_user, phone: '+14155552671') }
+        let(:password) { '' }
+
+        before { user.phone_confirmation.confirm! }
+
+        example_request '[error] no JWT token is returned' do
+          assert_status 404
+        end
+      end
+
+      context 'when no user has that phone number' do
+        example_request '[error] no JWT token is returned', document: false do
+          assert_status 404
+        end
+      end
+
+      context 'when the phone number is invalid' do
+        let(:phone) { 'not-a-number' }
+
+        example_request '[error] no JWT token is returned', document: false do
+          assert_status 404
+        end
+      end
+    end
   end
 end

@@ -72,6 +72,39 @@ describe SideFxUserService do
       end
     end
 
+    context 'when a user is created with a phone number' do
+      let(:phone_user) { create(:unconfirmed_phone_user) }
+
+      it 'sends a confirmation code by SMS' do
+        expect(RequestPhoneConfirmationCodeJob).to receive(:perform_now).with(phone_user)
+        expect(RequestEmailConfirmationCodeJob).not_to receive(:perform_now)
+        expect(RequestNewEmailConfirmationCodeJob).not_to receive(:perform_now)
+
+        service.after_create(phone_user, current_user)
+      end
+
+      it "logs a 'created' action job with flow: 'phone_confirmation'" do
+        allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
+
+        expect { service.after_create(phone_user, phone_user) }
+          .to enqueue_job(LogActivityJob)
+          .with(phone_user, 'created', phone_user, phone_user.created_at.to_i, payload: { flow: 'phone_confirmation' })
+          .exactly(1).times
+      end
+
+      it 'does not send a code when the phone number is already confirmed' do
+        confirmed = create(:user, :with_confirmed_phone)
+
+        expect(RequestPhoneConfirmationCodeJob).not_to receive(:perform_now)
+        service.after_create(confirmed, current_user)
+      end
+    end
+
+    it 'does not send an SMS code for a user without a phone number' do
+      expect(RequestPhoneConfirmationCodeJob).not_to receive(:perform_now)
+      service.after_create(user, current_user)
+    end
+
     describe 'claim_tokens' do
       let!(:claim_token) { create(:claim_token) }
       let(:idea) { claim_token.item }

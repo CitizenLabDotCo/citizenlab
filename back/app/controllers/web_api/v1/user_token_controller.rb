@@ -13,6 +13,27 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   private
 
+  # Logging in with a phone number requires a password. Passwordless users
+  # authenticate with an empty password (see User#authenticate) and would
+  # otherwise be handed a token without presenting anything at all: their
+  # confirmation_required flag stays true forever, because it only ever tracks
+  # the email. They log in through confirm_code_phone instead.
+  def authenticate
+    raise ActiveRecord::RecordNotFound if phone_login? && entity&.no_password?
+
+    super
+  end
+
+  def blocked_by_confirmation?
+    return super unless phone_login?
+
+    entity.phone_confirmed_at.nil?
+  end
+
+  def phone_login?
+    auth_params[:phone].present?
+  end
+
   def auth_token
     payload = entity.to_token_payload
 
@@ -24,7 +45,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   end
 
   def extra_params
-    [:remember_me, { claim_tokens: [] }]
+    [:phone, :remember_me, { claim_tokens: [] }]
   end
 
   def email_param

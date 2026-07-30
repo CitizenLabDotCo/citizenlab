@@ -7,7 +7,7 @@ import authProvidersMessages from 'containers/Authentication/steps/_components/A
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 
-import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
@@ -37,9 +37,13 @@ export const ConsentText = styled.div`
 
 interface Props {
   showByContinuingText?: boolean;
+  byContinuingMessage?: MessageDescriptor;
 }
 
-const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
+const PoliciesMarkup = ({
+  showByContinuingText = true,
+  byContinuingMessage = messages.byContinuing,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -106,7 +110,7 @@ const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
           fontSize="s"
           color="tenantText"
         >
-          {formatMessage(messages.byContinuing)}
+          {formatMessage(byContinuingMessage)}
         </Text>
       )}
     </>

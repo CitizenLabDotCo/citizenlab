@@ -17,16 +17,17 @@ import { useIntl } from 'utils/cl-intl';
 import sharedMessages from '../messages';
 
 import AdminSignInLink from './AdminSignInLink';
-import EmailForm from './EmailForm';
 import FranceConnectBlock from './FranceConnectBlock';
 import messages from './messages';
 import SSOButton from './SSOButtonsExceptFC/SSOButton';
+import StartForm from './StartForm';
 import VerificationWarning from './VerificationWarning';
 
 interface Props {
   loading: boolean;
   setError: SetError;
-  onSubmit: (email: string) => void;
+  onSubmitEmail: (email: string) => void;
+  onSubmitPhone: (phone: string) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 
@@ -40,7 +41,8 @@ interface Props {
 const VerificationVariant = ({
   loading,
   setError,
-  onSubmit,
+  onSubmitEmail,
+  onSubmitPhone,
   onSwitchToSSO,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -99,11 +101,12 @@ const VerificationVariant = ({
           </Text>
           {passwordLoginEnabled && (
             <>
-              <EmailForm
+              <StartForm
                 loading={loading}
                 topText={sharedMessages.enterYourEmailAddress}
                 setError={setError}
-                onSubmit={onSubmit}
+                onSubmitEmail={onSubmitEmail}
+                onSubmitPhone={onSubmitPhone}
               />
               {authenticationOnlyMethodsExceptFC.length > 0 && (
                 <Box mt="24px">

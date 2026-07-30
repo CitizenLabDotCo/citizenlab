@@ -68,4 +68,49 @@ RSpec.describe RequestCodePolicy do
       end
     end
   end
+
+  describe '#request_code_phone?' do
+    include_context 'with sms feature enabled'
+
+    context 'without an authenticated user' do
+      it 'permits requesting a code for an existing account' do
+        record = create(:unconfirmed_phone_user)
+        expect(described_class.new(nil, record)).to permit(:request_code_phone)
+      end
+
+      it 'does not permit when no account matches the phone number' do
+        expect(described_class.new(nil, nil)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit when the account has no phone number' do
+        record = create(:user)
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit once the code_reset_count limit is reached' do
+        record = create(:unconfirmed_phone_user)
+        record.phone_confirmation.update!(code_reset_count: 4)
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
+
+      it 'does not permit when the sms feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms')
+        record = create(:unconfirmed_phone_user)
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
+    end
+
+    context 'with an authenticated user' do
+      it 'permits requesting a code for their own account (record == user)' do
+        user = create(:user, :with_confirmed_phone)
+        expect(described_class.new(user, user)).to permit(:request_code_phone)
+      end
+
+      it 'does not permit requesting a code for a different account' do
+        requester = create(:user, :with_confirmed_phone)
+        other_user = create(:user, :with_confirmed_phone)
+        expect(described_class.new(requester, other_user)).not_to permit(:request_code_phone)
+      end
+    end
+  end
 end

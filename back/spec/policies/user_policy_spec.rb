@@ -237,4 +237,47 @@ describe UserPolicy do
       expect(scope.resolve.ids).to contain_exactly(participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id)
     end
   end
+
+  describe 'phone signup' do
+    let(:current_user) { nil }
+    let(:subject_user) { build(:user) }
+
+    context 'when the sms and password_login features are enabled' do
+      include_context 'with sms feature enabled'
+
+      before { SettingsService.new.activate_feature! 'password_login' }
+
+      it { is_expected.to permit(:check_phone) }
+      it { is_expected.to permit(:create_phone) }
+    end
+
+    context 'when the sms feature is disabled' do
+      before { SettingsService.new.activate_feature! 'password_login' }
+
+      it { is_expected.not_to permit(:check_phone) }
+      it { is_expected.not_to permit(:create_phone) }
+      it { is_expected.to permit(:check_email) }
+      it { is_expected.to permit(:create) }
+    end
+
+    context 'when password_login is disabled' do
+      include_context 'with sms feature enabled'
+
+      before { SettingsService.new.deactivate_feature! 'password_login' }
+
+      it { is_expected.not_to permit(:check_phone) }
+      it { is_expected.not_to permit(:create_phone) }
+    end
+
+    context 'when signup is disabled' do
+      include_context 'with sms feature enabled'
+
+      before do
+        SettingsService.new.activate_feature!('password_login', settings: { 'enable_signup' => false })
+      end
+
+      it { is_expected.to permit(:check_phone) }
+      it { is_expected.not_to permit(:create_phone) }
+    end
+  end
 end

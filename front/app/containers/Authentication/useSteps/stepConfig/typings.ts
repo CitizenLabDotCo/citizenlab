@@ -7,9 +7,11 @@ export type Step =
   // pre-auth steps
   | 'pre-auth:start'
   | 'pre-auth:policies'
+  | 'pre-auth:phone-policies'
   | 'pre-auth:password'
   | 'pre-auth:sso-policies'
   | 'pre-auth:unauthenticated-confirmation'
+  | 'pre-auth:unauthenticated-phone-confirmation'
 
   // confirmation steps (code entry for email / phone)
   | 'confirmation:reconfirm-email'
