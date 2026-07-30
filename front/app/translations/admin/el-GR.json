@@ -4157,6 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Προσαρμοσμένες σελίδες",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "Emoji",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "Προεπισκόπηση του μεταφορτωμένου εικονιδίου κάρτας",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Χρησιμοποιήστε μια τετράγωνη εικόνα (SVG, PNG ή JPG). Προσαρμόζεται σε {size}x{size} pixel στην κάρτα, επομένως αποφύγετε τις μικρές λεπτομέρειες και το κείμενο.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "Εικόνα",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "Κάτι πήγε στραβά κατά τη μεταφόρτωση αυτής της εικόνας.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Δεν έχουν επιλεγεί σελίδες",

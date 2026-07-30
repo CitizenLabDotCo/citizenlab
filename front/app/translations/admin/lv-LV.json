@@ -4157,6 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Pielāgotas lapas",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "Emocijzīme",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "Augšupielādētās kartītes ikonas priekšskatījums",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Izmantojiet kvadrātveida attēlu (SVG, PNG vai JPG). Kartītē tas tiek mērogots līdz {size}x{size} pikseļiem, tāpēc izvairieties no sīkām detaļām un teksta.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "Attēls",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "Augšupielādējot šo attēlu, radās kļūda.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Nav atlasīta neviena lapa",

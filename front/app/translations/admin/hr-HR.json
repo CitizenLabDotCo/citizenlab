@@ -4157,6 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Prilagođene stranice",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "Emoji",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "Pregled učitane ikone kartice",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Upotrijebite kvadratnu sliku (SVG, PNG ili JPG). Skalira se na {size}x{size} piksela na kartici, stoga izbjegavajte sitne detalje i tekst.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "Slika",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "Došlo je do pogreške prilikom učitavanja ove slike.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Nema odabranih stranica",

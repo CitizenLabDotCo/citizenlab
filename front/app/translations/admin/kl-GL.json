@@ -4157,6 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "Quppernerit nammineq pilersitat",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "Emoji",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "Kortip ilisarnaataata ikkunneqartup isikkussaa",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "Assiliaq eqqasigissoq atuguk (SVG, PNG imaluunniit JPG). Kortimi {size}x{size} pixelinut naleqqussarneqassaaq, taamaattumik mikisunik akunnilerneqarnaveersaarlunilu oqaasertaqarnaveersaassaaq.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "Assiliaq",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "Assiliap ikkunnerani kukkusoqarpoq.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "Quppernernik toqqaasoqanngilaq",

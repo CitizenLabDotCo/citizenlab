@@ -4157,6 +4157,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "ਕਸਟਮ ਪੇਜ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "ਇਮੋਜੀ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "ਅੱਪਲੋਡ ਕੀਤੇ ਕਾਰਡ ਆਈਕਨ ਦੀ ਪੂਰਵ-ਝਲਕ",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": "ਇੱਕ ਵਰਗਾਕਾਰ ਚਿੱਤਰ (SVG, PNG ਜਾਂ JPG) ਦੀ ਵਰਤੋਂ ਕਰੋ। ਇਹ ਕਾਰਡ ਉੱਤੇ {size}x{size} ਪਿਕਸਲ ਤੱਕ ਸਕੇਲ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, ਇਸ ਲਈ ਬਾਰੀਕ ਵੇਰਵਿਆਂ ਅਤੇ ਟੈਕਸਟ ਤੋਂ ਬਚੋ।",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "ਚਿੱਤਰ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "ਇਸ ਚਿੱਤਰ ਨੂੰ ਅੱਪਲੋਡ ਕਰਨ ਵੇਲੇ ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ।",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "ਕੋਈ ਪੇਜ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ",
