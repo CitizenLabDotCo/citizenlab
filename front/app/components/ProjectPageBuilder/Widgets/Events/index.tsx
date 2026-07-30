@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { UserComponent, useEditor } from '@craftjs/core';
@@ -11,6 +11,7 @@ import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/use
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import sharedMessages from 'utils/messages';
 import { useParams } from 'utils/router';
 
 import EditModeHeightCap from '../EditModeHeightCap';
@@ -24,12 +25,10 @@ import useIsPageBodyChild from '../useIsPageBodyChild';
 import useWidgetProjectId from '../useWidgetProjectId';
 
 import EmptyEvents from './EmptyEvents';
-import EventsList from './EventsList';
+import EventsSection from './EventsSection';
 
 const PUBLICATION_STATUSES = ['published', 'draft', 'archived'] as const;
-// The widget shows every event of the project; no project realistically has
-// more than this.
-const PAGE_SIZE = 100;
+const PAGE_SIZE = 15;
 
 type Props = {
   sectionBackground?: SectionBackgroundChoice;
@@ -45,17 +44,19 @@ const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
   const { enabled: inEditor } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
+  const [upcomingPage, setUpcomingPage] = useState(1);
+  const [pastPage, setPastPage] = useState(1);
   const eventsParams = {
     projectIds: projectId ? [projectId] : [],
     projectPublicationStatuses: [...PUBLICATION_STATUSES],
     pageSize: PAGE_SIZE,
   };
   const { data: upcomingEvents } = useEvents(
-    { ...eventsParams, currentAndFutureOnly: true },
+    { ...eventsParams, currentAndFutureOnly: true, pageNumber: upcomingPage },
     { enabled: !!projectId }
   );
   const { data: pastEvents } = useEvents(
-    { ...eventsParams, pastOnly: true },
+    { ...eventsParams, pastOnly: true, pageNumber: pastPage },
     { enabled: !!projectId }
   );
 
@@ -83,10 +84,20 @@ const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
           <Title variant="h2" color="tenantText" m="0" mb="24px">
             <FormattedMessage {...messages.eventsWidgetTitle} />
           </Title>
-          <EventsList
-            upcomingEvents={upcomingEvents.data}
-            pastEvents={pastEvents.data}
-          />
+          <Box display="flex" flexDirection="column" gap="48px">
+            <EventsSection
+              title={sharedMessages.upcomingAndOngoingEvents}
+              events={upcomingEvents}
+              currentPage={upcomingPage}
+              onPageChange={setUpcomingPage}
+            />
+            <EventsSection
+              title={sharedMessages.pastEvents}
+              events={pastEvents}
+              currentPage={pastPage}
+              onPageChange={setPastPage}
+            />
+          </Box>
         </Box>
       </SectionBackground>
     </EditModeHeightCap>
