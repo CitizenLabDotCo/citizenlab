@@ -312,6 +312,40 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'limits email change code requests from same IP to 1 in 5 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      post('/web_api/v1/user/request_code_email_change', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      post('/web_api/v1/user/request_code_email_change', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      post('/web_api/v1/user/request_code_email_change', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits phone change code requests from same IP to 1 in 5 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      post('/web_api/v1/user/request_code_phone_change', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      post('/web_api/v1/user/request_code_phone_change', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      post('/web_api/v1/user/request_code_phone_change', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
   it 'limits unauthenticated confirmation requests from same IP to 5 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
