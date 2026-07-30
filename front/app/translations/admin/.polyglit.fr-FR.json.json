@@ -19999,9 +19999,29 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpen": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:39:31.258982Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpenDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:39:31.258982Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.admin.ContentBuilder.participationOptionsTimeline": {
     "state": "verified",
     "verified_at": "2026-07-30T14:10:37.906143Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:39:31.258982Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsUpcomingDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:39:31.258982Z",
     "verified_by": "Adrien"
   },
   "app.containers.admin.ContentBuilder.selectFile2": {
