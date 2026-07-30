@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Čia rodomas aktyvaus etapo dalyvavimo turinys. Jo turinys nustatomas pagal etapo metodą {projectEditorLink} – čia tik pasirenkate jo vietą puslapyje.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Prisegta puslapio viršuje – redaguojama, bet negalima perkelti ar pašalinti.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Tai matyti gali tik šio projekto administratoriai ir projektų vadovai",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Praėję",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Etapai",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Etapai",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "projekto redaktorius",

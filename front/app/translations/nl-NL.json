@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Dit toont de participatie-inhoud voor de actieve fase. De inhoud wordt bepaald door de methode van de fase in de {projectEditorLink} — hier kies je alleen waar deze op de pagina staat.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Vastgezet bovenaan de pagina — bewerkbaar, maar kan niet worden verplaatst of verwijderd.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Alleen platformbeheerders en projectbeheerders van dit project kunnen dit zien",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Afgelopen",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Fasen",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Fasen",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "projecteditor",

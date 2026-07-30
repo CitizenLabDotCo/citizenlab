@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "یہ فعال مرحلے کے لیے شرکت کا مواد دکھاتا ہے۔ اس کا مواد {projectEditorLink} میں مرحلے کے طریقہ کار کے ذریعے طے کیا جاتا ہے — یہاں آپ صرف یہ منتخب کرتے ہیں کہ یہ صفحہ پر کہاں واقع ہوگا۔",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "صفحے کے اوپری حصے میں پن کیا گیا ہے — قابلِ ترمیم ہے، لیکن اسے منتقل یا ختم نہیں کیا جا سکتا۔",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "صرف اس پروجیکٹ کے ایڈمنز اور پروجیکٹ مینیجرز ہی اسے دیکھ سکتے ہیں۔",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "گزشتہ",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "مراحل",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "مراحل",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "پراجیکٹ ایڈیٹر",
