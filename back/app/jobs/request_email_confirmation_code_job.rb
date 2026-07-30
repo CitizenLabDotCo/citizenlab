@@ -7,7 +7,7 @@ class RequestEmailConfirmationCodeJob < ApplicationJob
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: nil })
 
     ActiveRecord::Base.transaction do
-      confirmation = user.email_confirmation
+      confirmation = user.find_or_create_confirmation(:email_confirmation)
       confirmation.reset_code!
       campaign = EmailCampaigns::Campaigns::EmailConfirmation.first_or_create!
       EmailCampaigns::DeliveryService.new.send_now_to_user(campaign, user, { code: confirmation.code })

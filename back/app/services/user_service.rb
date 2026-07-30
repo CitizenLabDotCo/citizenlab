@@ -66,7 +66,7 @@ class UserService
       #
       # If the user's email came from/matches the authver one, and the provider
       # says it was confirmed: we mark the user's email as confirmed.
-      user.email_confirmation.confirm! if confirm_user
+      user.find_or_create_confirmation(:email_confirmation).confirm! if confirm_user
       user.assign_attributes(user_params.merge(invite_status: 'accepted'))
       user
     end
@@ -125,8 +125,8 @@ class UserService
     end
 
     # In-memory equivalent of the old `user.confirm` from UserConfirmation concern.
-    # Used by build-then-save flows that can't call EmailConfirmation#confirm!
-    # because the email_confirmation row doesn't exist until after_create.
+    # Used by build-then-save flows, where the user isn't persisted yet so there is
+    # nothing to hang an EmailConfirmation#confirm! on.
     def build_user_confirmation(user)
       user.email_confirmed_at = Time.zone.now
       user.confirmation_required = false
