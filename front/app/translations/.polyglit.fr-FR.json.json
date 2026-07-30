@@ -11204,6 +11204,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.openNowInTotal": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:52:42.304173Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Projects.options": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -11448,6 +11453,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.waysToParticipate": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:52:42.304173Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Projects.whatsAppMessage": {
     "state": "verified",
