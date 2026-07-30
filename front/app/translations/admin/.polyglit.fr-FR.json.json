@@ -20014,6 +20014,11 @@
     "verified_at": "2026-07-30T14:10:37.906143Z",
     "verified_by": "Adrien"
   },
+  "app.containers.admin.ContentBuilder.participationOptionsTimelineDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:44:27.969336Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.admin.ContentBuilder.participationOptionsUpcoming": {
     "state": "verified",
     "verified_at": "2026-07-30T14:39:31.258982Z",

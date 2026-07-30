@@ -3858,7 +3858,7 @@
   "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpen": "En cours",
   "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpenDescription": "Les enquêtes actuellement ouvertes à la participation.",
   "app.containers.admin.ContentBuilder.participationOptionsTimeline": "Ligne du temps",
-  "app.containers.admin.ContentBuilder.participationOptionsTimelineDescription": "Suit le calendrier du projet et se met à jour automatiquement.",
+  "app.containers.admin.ContentBuilder.participationOptionsTimelineDescription": "La phase en cours du projet selon la ligne du temps, mise à jour automatiquement.",
   "app.containers.admin.ContentBuilder.participationOptionsUpcoming": "À venir",
   "app.containers.admin.ContentBuilder.participationOptionsUpcomingDescription": "Les futures enquêtes.",
   "app.containers.admin.ContentBuilder.projectPageLink": "Lien vers la page du projet",

@@ -19969,6 +19969,11 @@
     "verified_at": "2026-07-30T14:10:38.085804Z",
     "verified_by": "Adrien"
   },
+  "app.containers.admin.ContentBuilder.participationOptionsTimelineDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:44:28.153689Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.admin.ContentBuilder.participationOptionsUpcoming": {
     "state": "verified",
     "verified_at": "2026-07-30T14:39:35.394876Z",
