@@ -102,7 +102,7 @@ const emailActionStep = (
 ): Step | null => {
   switch (requirements.authentication.email_action_required) {
     case 'confirm_email':
-      return 'email:unauthenticated-confirmation';
+      return 'pre-auth:unauthenticated-confirmation';
     case 'confirm_new_email':
       return 'confirmation:new_email';
     case 'reconfirm_email':
@@ -199,17 +199,17 @@ export const handleSubmitEmail = async (
 
     if (action === 'terms') {
       updateState({ flow: 'signup' });
-      setCurrentStep('email:policies');
+      setCurrentStep('pre-auth:policies');
     }
 
     if (action === 'password') {
       updateState({ flow: 'signin' });
-      setCurrentStep('email:password');
+      setCurrentStep('pre-auth:password');
     }
 
     if (action === 'confirm') {
       updateState({ flow: 'signin' });
-      setCurrentStep('email:unauthenticated-confirmation');
+      setCurrentStep('pre-auth:unauthenticated-confirmation');
     }
   } catch (e) {
     if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
@@ -260,7 +260,7 @@ export const handleSSOClick = async (
       );
     } else {
       updateState({ ssoProvider });
-      setCurrentStep('email:sso-policies');
+      setCurrentStep('pre-auth:sso-policies');
     }
   }
 };

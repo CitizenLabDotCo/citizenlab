@@ -4,12 +4,12 @@ export type Step =
   | 'success'
   | 'access-denied'
 
-  // email flow
-  | 'email:start'
-  | 'email:policies'
-  | 'email:password'
-  | 'email:sso-policies'
-  | 'email:unauthenticated-confirmation'
+  // pre-auth steps
+  | 'pre-auth:start'
+  | 'pre-auth:policies'
+  | 'pre-auth:password'
+  | 'pre-auth:sso-policies'
+  | 'pre-auth:unauthenticated-confirmation'
 
   // confirmation steps (code entry for email / phone)
   | 'confirmation:reconfirm-email'
