@@ -441,10 +441,6 @@ export default defineMessages({
     id: 'app.containers.Admin.messaging.smsDeliveryStatus_pending',
     defaultMessage: 'Pending',
   },
-  smsDeliveryStatus_queued: {
-    id: 'app.containers.Admin.messaging.smsDeliveryStatus_queued',
-    defaultMessage: 'Queued',
-  },
   smsDeliveryStatus_sent: {
     id: 'app.containers.Admin.messaging.smsDeliveryStatus_sent',
     defaultMessage: 'Sent',
@@ -452,10 +448,6 @@ export default defineMessages({
   smsDeliveryStatus_delivered: {
     id: 'app.containers.Admin.messaging.smsDeliveryStatus_delivered',
     defaultMessage: 'Delivered',
-  },
-  smsDeliveryStatus_undelivered: {
-    id: 'app.containers.Admin.messaging.smsDeliveryStatus_undelivered',
-    defaultMessage: 'Undelivered',
   },
   smsDeliveryStatus_failed: {
     id: 'app.containers.Admin.messaging.smsDeliveryStatus_failed',

@@ -6659,6 +6659,11 @@
     "verified_at": "2026-07-21T19:53:38.940387Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:15:23.254354Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -10622,6 +10627,11 @@
   "app.containers.PhoneChange.phoneUnknownError": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:42.057992Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.phoneUnsupportedCountry": {
+    "state": "verified",
+    "verified_at": "2026-07-23T19:52:14.304523Z",
     "verified_by": "Luuc"
   },
   "app.containers.PhoneChange.phoneUpdateCancelled": {

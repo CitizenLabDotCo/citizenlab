@@ -6674,6 +6674,11 @@
     "verified_at": "2026-07-21T07:18:56.038873Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:23:15.710223Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -10637,6 +10642,11 @@
   "app.containers.PhoneChange.phoneUnknownError": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.phoneUnsupportedCountry": {
+    "state": "verified",
+    "verified_at": "2026-07-24T07:31:08.472758Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.PhoneChange.phoneUpdateCancelled": {
