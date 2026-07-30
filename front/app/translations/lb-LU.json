@@ -1982,6 +1982,7 @@
   "app.containers.Navbar.verified": "Iwwerpréift",
   "app.containers.NewAuthModal.beforeYouFollow": "Ier Dir verfollegt",
   "app.containers.NewAuthModal.beforeYouParticipate": "Virun datt Dir deelhuelt",
+  "app.containers.NewAuthModal.changeYourEmail": "Är E-Mail-Adress änneren",
   "app.containers.NewAuthModal.completeYourProfile": "Fëllt Äre Profil aus",
   "app.containers.NewAuthModal.confirmYourEmail": "Bestätegt Är E-Mail",
   "app.containers.NewAuthModal.logIn": "Aloggen",

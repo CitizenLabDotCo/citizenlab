@@ -1982,6 +1982,7 @@
   "app.containers.Navbar.verified": "تصدیق شدہ",
   "app.containers.NewAuthModal.beforeYouFollow": "اس سے پہلے کہ آپ پیروی کریں۔",
   "app.containers.NewAuthModal.beforeYouParticipate": "اس سے پہلے کہ آپ شرکت کریں۔",
+  "app.containers.NewAuthModal.changeYourEmail": "اپنا ای میل تبدیل کریں",
   "app.containers.NewAuthModal.completeYourProfile": "اپنا پروفائل مکمل کریں۔",
   "app.containers.NewAuthModal.confirmYourEmail": "اپنے ای میل کی تصدیق کریں۔",
   "app.containers.NewAuthModal.logIn": "لاگ ان کریں۔",
