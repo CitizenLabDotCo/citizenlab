@@ -3857,7 +3857,7 @@
   "app.containers.admin.ContentBuilder.participationBox": "Boîte de participation",
   "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpen": "Ouvert actuellement",
   "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpenDescription": "Les sondages ouverts apparaissent ici.",
-  "app.containers.admin.ContentBuilder.participationOptionsTimeline": "Calendrier",
+  "app.containers.admin.ContentBuilder.participationOptionsTimeline": "Ligne du temps",
   "app.containers.admin.ContentBuilder.participationOptionsTimelineDescription": "Suit le calendrier du projet et se met à jour automatiquement.",
   "app.containers.admin.ContentBuilder.participationOptionsUpcoming": "À venir",
   "app.containers.admin.ContentBuilder.participationOptionsUpcomingDescription": "Les futurs sondages apparaîtront ici.",
