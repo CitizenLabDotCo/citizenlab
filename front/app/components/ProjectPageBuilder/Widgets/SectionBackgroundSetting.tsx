@@ -15,7 +15,11 @@ type WidgetProps = {
   sectionBackground?: SectionBackgroundChoice;
 };
 
-const SectionBackgroundSetting = () => {
+type Props = {
+  defaultValue?: SectionBackgroundChoice;
+};
+
+const SectionBackgroundSetting = ({ defaultValue }: Props) => {
   const {
     actions: { setProp },
     sectionBackground,
@@ -24,7 +28,7 @@ const SectionBackgroundSetting = () => {
   }));
 
   const defaultBackground = useDefaultSectionBackground();
-  const currentValue = sectionBackground ?? defaultBackground;
+  const currentValue = sectionBackground ?? defaultValue ?? defaultBackground;
   const handleChange = (value: SectionBackgroundChoice) => {
     setProp((props: WidgetProps) => (props.sectionBackground = value));
   };

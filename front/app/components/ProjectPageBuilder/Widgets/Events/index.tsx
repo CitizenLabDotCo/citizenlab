@@ -18,7 +18,6 @@ import EditModeHeightCap from '../EditModeHeightCap';
 import messages from '../messages';
 import SectionBackground, {
   SectionBackgroundChoice,
-  useDefaultSectionBackground,
 } from '../SectionBackground';
 import SectionBackgroundSetting from '../SectionBackgroundSetting';
 import useIsPageBodyChild from '../useIsPageBodyChild';
@@ -35,8 +34,7 @@ type Props = {
 };
 
 const EventsWidget: UserComponent<Props> = ({ sectionBackground }) => {
-  const defaultBackground = useDefaultSectionBackground();
-  const colored = (sectionBackground ?? defaultBackground) === 'colored';
+  const colored = (sectionBackground ?? 'white') === 'colored';
   const projectId = useWidgetProjectId();
   const { slug } = useParams({ strict: false }) as { slug?: string };
   const isPageBodyChild = useIsPageBodyChild();
@@ -109,7 +107,7 @@ const EventsSettings = () => {
 
   return (
     <Box my="20px">
-      <SectionBackgroundSetting />
+      <SectionBackgroundSetting defaultValue="white" />
       <Text color="textSecondary" fontSize="s">
         <FormattedMessage
           {...messages.eventsManagedNote}
