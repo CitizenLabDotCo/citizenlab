@@ -123,7 +123,8 @@ describe ContentBuilder::LayoutImageService do
       expect(output).to eq expected_json
     end
 
-    it 'stores the icon images nested in a CustomPages element' do
+    it 'removes the imageUrl from the icon images nested in a CustomPages element' do
+      layout_image = create(:layout_image)
       craftjs_json = {
         'ROOT' => {
           'type' => 'div',
@@ -141,7 +142,10 @@ describe ContentBuilder::LayoutImageService do
               { 'id' => 'a1c4e9a5-1a1a-4a1a-9a1a-1a1a1a1a1a1a', 'icon' => '🎉' },
               {
                 'id' => 'b2c4e9a5-1a1a-4a1a-9a1a-1a1a1a1a1a1a',
-                'image' => { 'imageUrl' => create(:layout_image).image.url }
+                'image' => {
+                  'imageUrl' => layout_image.image.url,
+                  'dataCode' => layout_image.code
+                }
               },
               { 'id' => 'c3c4e9a5-1a1a-4a1a-9a1a-1a1a1a1a1a1a', 'image' => nil }
             ]
@@ -156,8 +160,7 @@ describe ContentBuilder::LayoutImageService do
       pages = output.dig('nt24xY6COf', 'props', 'customPages')
 
       expect(pages[0]).to eq({ 'id' => 'a1c4e9a5-1a1a-4a1a-9a1a-1a1a1a1a1a1a', 'icon' => '🎉' })
-      expect(pages[1]['image'].keys).to eq ['dataCode']
-      expect(ContentBuilder::LayoutImage.find_by(code: pages[1]['image']['dataCode'])).to be_present
+      expect(pages[1]['image']).to eq({ 'dataCode' => layout_image.code })
       expect(pages[2]).to eq({ 'id' => 'c3c4e9a5-1a1a-4a1a-9a1a-1a1a1a1a1a1a', 'image' => nil })
     end
   end

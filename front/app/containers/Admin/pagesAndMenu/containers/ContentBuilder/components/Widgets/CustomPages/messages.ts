@@ -31,9 +31,9 @@ export default defineMessages({
     defaultMessage: 'Upload image',
   },
   imageInstructions: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions',
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2',
     defaultMessage:
-      'Use a square image (PNG or JPG). It is scaled to {size}x{size} pixels on the card, so avoid small details and text.',
+      'Use a square image (SVG, PNG or JPG). It is scaled to {size}x{size} pixels on the card, so avoid small details and text.',
   },
   removeImage: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.removeImage',

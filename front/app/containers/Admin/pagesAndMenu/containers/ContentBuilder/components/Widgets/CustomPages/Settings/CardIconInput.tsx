@@ -139,7 +139,7 @@ const CardIconInput = ({
         maxImagePreviewWidth={IMAGE_BOX_SIZE}
         objectFit="contain"
         label={formatMessage(messages.uploadImageLabel)}
-        acceptedFileTypes={{ 'image/*': ['.png', '.jpg', '.jpeg'] }}
+        acceptedFileTypes={{ 'image/*': ['.svg', '.png', '.jpg', '.jpeg'] }}
         onAdd={handleAddImage}
         onRemove={() => onChangeImage(null)}
       />
