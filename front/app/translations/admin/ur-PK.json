@@ -4157,7 +4157,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": "مخصوص صفحات",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": "ایموجی",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": "اپ لوڈ کردہ کارڈ آئیکن کا پیش نظارہ",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions": "ایک مربع تصویر (PNG یا JPG) استعمال کریں۔ کارڈ پر اس کا سائز {size}x{size} پکسلز کر دیا جاتا ہے، اس لیے چھوٹی تفصیلات اور متن سے پرہیز کریں۔",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": "تصویر",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": "اس تصویر کو اپ لوڈ کرتے وقت کچھ غلط ہو گیا۔",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": "کوئی صفحات منتخب نہیں کیے گئے",
