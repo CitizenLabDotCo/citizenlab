@@ -9,6 +9,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -39,11 +40,19 @@ const StyledProjectActionButtons = styled(ProjectActionButtons)`
 interface Props {
   projectId: string;
   hideParticipationAvatars?: boolean;
+  hiddenOptionIds?: string[];
+  collapsedButtonTitleMultiloc?: Multiloc;
   className?: string;
 }
 
 const ProjectInfoSideBar = memo<Props>(
-  ({ projectId, className, hideParticipationAvatars = false }) => {
+  ({
+    projectId,
+    className,
+    hideParticipationAvatars = false,
+    hiddenOptionIds,
+    collapsedButtonTitleMultiloc,
+  }) => {
     const { data: authUser } = useAuthUser();
     const { data: project } = useProjectById(projectId, !isAdmin(authUser));
     const { data: phases } = usePhases(projectId);
@@ -70,7 +79,11 @@ const ProjectInfoSideBar = memo<Props>(
 
       return (
         <Box id="e2e-project-sidebar" className={className || ''} w="100%">
-          <StyledProjectActionButtons projectId={projectId} />
+          <StyledProjectActionButtons
+            projectId={projectId}
+            hiddenOptionIds={hiddenOptionIds}
+            collapsedButtonTitleMultiloc={collapsedButtonTitleMultiloc}
+          />
           {!hideParticipationAvatars && userAvatarsEnabled && (
             <Box
               display="flex"

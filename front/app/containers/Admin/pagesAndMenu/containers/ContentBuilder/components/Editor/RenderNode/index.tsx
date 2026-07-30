@@ -128,7 +128,6 @@ const RenderNode = ({ render }) => {
       position="relative"
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
       minHeight={id === ROOT_NODE ? '160px' : '0px'}
-      background="#fff"
       borderWidth="1px"
       borderColor={
         hasError
