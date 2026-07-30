@@ -10,6 +10,8 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
         recipient: recipient,
         event_payload: {
           phase_title_multiloc: { 'en' => 'Example phase title' },
+          phase_start_at: Date.new(2026, 8, 15),
+          phase_end_at: Date.new(2026, 9, 30),
           phase_url: 'https://govocal.com/phases/1',
           project_title_multiloc: { 'en' => 'Example project title' },
           project_description_preview_multiloc: { 'en' => 'Example project description preview' }
@@ -28,7 +30,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
     include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
-      expect(mail.subject).to eq('Get everything set up for the new phase of Example project title')
+      expect(mail.subject).to eq("Example project title: 'Example phase title' starts on August 15, 2026")
     end
 
     it 'renders the receiver email' do
@@ -42,10 +44,10 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
     it 'includes the header' do
       expect(body).to have_tag('div') do
         with_tag 'h1' do
-          with_text(/Remy, a project will enter a new phase soon/)
+          with_text(/Remy, 'Example phase title' starts on August 15, 2026/)
         end
         with_tag 'p' do
-          with_text(/The project 'Example project title' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description?/)
+          with_text(/'Example phase title' in the project 'Example project title' starts on August 15, 2026/)
         end
       end
     end
@@ -60,7 +62,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
 
     it 'includes the CTA' do
       expect(body).to have_tag('a', with: { href: 'https://govocal.com/phases/1' }) do
-        with_text(/Set this new phase up/)
+        with_text(/Review the setup/)
       end
     end
 

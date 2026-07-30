@@ -22,6 +22,8 @@ module EmailCampaigns
         recipient: recipient,
         event_payload: {
           phase_title_multiloc: data.phase.title_multiloc,
+          phase_start_at: Time.zone.today,
+          phase_end_at: 3.weeks.from_now.to_date,
           phase_url: data.phase.url,
           project_title_multiloc: data.project.title_multiloc,
           project_description_preview_multiloc: data.project.description_preview_multiloc,

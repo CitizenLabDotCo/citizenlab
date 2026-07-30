@@ -25,7 +25,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     include_examples 'campaign delivery tracking'
 
     it 'renders the subject' do
-      expect(mail.subject).to end_with('entered a new phase')
+      expect(mail.subject).to eq("'Idea phase' has started in Renew West Parc")
     end
 
     it 'renders the sender email' do
@@ -39,17 +39,17 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
     it 'includes the header' do
       expect(mail_body(mail)).to have_tag('div') do
         with_tag 'h1' do
-          with_text(/A new phase started for project 'Renew West Parc'/)
+          with_text(/There's something new in 'Renew West Parc'/)
         end
         with_tag 'p' do
-          with_text(/This project entered a new phase on the platform of Liege. Click on the link below to learn more!/)
+          with_text(/You can now take part in 'Idea phase' on the platform of Liege./)
         end
       end
     end
 
     it 'includes the CTA' do
       expect(mail_body(mail)).to have_tag('a', with: { href: "http://example.org/en/projects/#{project.slug}/1" }) do
-        with_text(/Discover this new phase/)
+        with_text(/See what's new/)
       end
     end
 
@@ -94,7 +94,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
               with_text(/NEW TITLE FOR Idea phase/)
             end
             with_tag 'p' do
-              with_text(/This project entered a new phase on the platform of Liege. Click on the link below to learn more!/)
+              with_text(/You can now take part in 'Idea phase' on the platform of Liege./)
             end
           end
         end

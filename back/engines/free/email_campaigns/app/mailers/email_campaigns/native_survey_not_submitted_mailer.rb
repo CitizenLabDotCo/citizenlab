@@ -39,7 +39,7 @@ module EmailCampaigns
       end_at = event.phase_end_at.in_time_zone
 
       if end_at.seconds_since_midnight.zero?
-        date = I18n.l(end_at.to_date - 1.day, format: :long, locale: locale.locale_sym)
+        date = localize_date_for_recipient(end_at.to_date - 1.day)
         format_message('submissions_close_on_date', values: { date: date })
       else
         datetime = I18n.l(end_at, format: :long, locale: locale.locale_sym)
