@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Mae hyn yn dangos y cynnwys cyfranogi ar gyfer y cyfnod gweithredol. Mae ei gynnwys wedi'i osod gan ddull y cyfnod yn y {projectEditorLink} — yma dim ond dewis ble mae'n cael ei leoli ar y dudalen yr ydych chi.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Wedi'i binio i frig y dudalen — gellir ei golygu, ond ni ellir ei symud na'i thynnu.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Dim ond gweinyddwyr a rheolwyr prosiect y prosiect hwn sy'n gallu gweld hyn",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Gorffennol",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Cyfnodau",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Cyfnodau",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "golygydd prosiect",

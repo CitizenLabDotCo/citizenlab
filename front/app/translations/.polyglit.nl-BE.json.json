@@ -6799,6 +6799,11 @@
     "verified_at": "2026-07-21T19:53:38.940387Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:15:23.254354Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",

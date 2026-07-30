@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "يعرض هذا محتوى المشاركة للمرحلة النشطة. يتم تحديد محتواه من خلال طريقة المرحلة في {projectEditorLink} — هنا تختار فقط موقعه على الصفحة.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "مثبت في أعلى الصفحة — يمكن تعديله، ولكن لا يمكن نقله أو حذفه.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "وحدهم المسؤولون ومديرو هذا المشروع يمكنهم رؤية هذا",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "سابق",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "المراحل",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "المراحل",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "محرر المشروع",

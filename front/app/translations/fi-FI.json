@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Tämä näyttää aktiivisen vaiheen osallistumissisällön. Sisältö määritetään vaiheen menetelmän mukaan kohdassa {projectEditorLink} – tässä valitset vain sen sijainnin sivulla.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Kiinnitetty sivun yläreunaan – muokattavissa, mutta ei voi siirtää tai poistaa.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Vain tämän projektin ylläpitäjät ja projektipäälliköt näkevät tämän.",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Menneet",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Vaiheet",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Vaiheet",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "hankkeen muokkaustyökalu",

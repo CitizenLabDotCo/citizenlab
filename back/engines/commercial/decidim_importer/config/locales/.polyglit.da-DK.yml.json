@@ -1,0 +1,32 @@
+{
+  "decidim_importer.accountability_progress": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:23:15.905748Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "decidim_importer.accountability_status": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:23:15.905748Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "decidim_importer.assemblies": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:23:15.905748Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "decidim_importer.blog": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:23:15.905748Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "decidim_importer.consultations": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:23:15.905748Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "decidim_importer.documents_to_consult": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:23:15.905748Z",
+    "verified_by": "kielgast@govocal.com"
+  }
+}
