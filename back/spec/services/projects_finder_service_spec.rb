@@ -55,6 +55,19 @@ describe ProjectsFinderService do
       expect(result.map(&:id)).to eq [active_ideation_project.id, active_project2.id, active_project3.id]
     end
 
+    # Without the created_at and id tiebreaks, projects would repeat across pages.
+    it 'orders projects by id when active phase end dates and creation dates are the same' do
+      projects = [active_ideation_project, *create_list(:project_with_active_ideation_phase, 3)]
+      end_at = 1.week.from_now
+      created_at = 1.day.ago
+      projects.each do |project|
+        project.phases.first.update!(end_at: end_at)
+        project.update!(created_at: created_at)
+      end
+
+      expect(result.map(&:id)).to eq Project.where(id: projects).order(:id).pluck(:id)
+    end
+
     it "excludes projects where no action is permitted & no permission is 'fixable'" do
       group = create(:group)
       permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
@@ -354,6 +367,20 @@ describe ProjectsFinderService do
         expect(finished_project2.phases[1].end_at).to be_after(finished_project3.phases[1].end_at)
 
         expect(result).to eq [endless_project, finished_project2, finished_project3, finished_project1]
+      end
+
+      # Identical creation dates are possible when tenant templates are applied.
+      # Without the id tiebreak, projects would repeat across pages.
+      it 'orders projects by id when last phase end dates and creation dates are the same' do
+        projects = [finished_project1, *create_list(:project_with_two_past_ideation_phases, 3)]
+        end_at = 20.days.ago
+        created_at = 1.day.ago
+        projects.each do |project|
+          project.phases.last.update!(end_at: end_at)
+          project.update!(created_at: created_at)
+        end
+
+        expect(result.map(&:id)).to eq Project.where(id: projects).order(:id).pluck(:id)
       end
     end
 

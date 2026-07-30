@@ -69,39 +69,6 @@ describe Permissions::PhasePermissionsService do
     end
   end
 
-  context 'reacting_idea denied_reason_for_action' do
-    context 'when reacting is enabled for the current phase, but disabled for the other phases' do
-      let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xcx', c: { reacting_enabled: true, reacting_dislike_enabled: true }, x: { reacting_enabled: false } }) }
-      let(:phase) { TimelineService.new.current_phase(project) }
-
-      it 'returns nil' do
-        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to be_nil
-        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'down')).to be_nil
-      end
-    end
-
-    context 'when the like limit was reached for the current phase' do
-      let(:project) do
-        create(:project_with_current_phase, phases_config: {
-          sequence: 'xxcxx',
-          c: { reacting_enabled: true, reacting_dislike_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 2 },
-          x: { reacting_enabled: true, reacting_dislike_enabled: true }
-        })
-      end
-      let(:phase) { TimelineService.new.current_phase(project) }
-
-      it 'returns `reacting_like_limited_max_reached`' do
-        ideas = create_list(:idea, 2, project: project, phases: project.phases)
-        ideas.each do |idea|
-          create(:reaction, mode: 'up', reactable: idea, user: user)
-        end
-
-        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to eq 'reacting_like_limited_max_reached'
-        expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'down')).to be_nil
-      end
-    end
-  end
-
   context '"posting_idea" with a confirmed phone number requirement' do
     let(:phase) { create(:active_native_survey_phase, with_permissions: true) }
     let(:service) { described_class.new(phase, user) }

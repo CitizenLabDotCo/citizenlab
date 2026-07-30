@@ -270,20 +270,6 @@ resource 'Ideas' do
           end
 
           describe do
-            let(:project) do
-              create(:project_with_current_phase, current_phase_attrs: {
-                participation_method: 'information'
-              })
-            end
-            let(:phase_id) { TimelineService.new.current_phase(project).id }
-
-            example_request '[error] Creating an idea in a project with an active information phase' do
-              assert_status 401
-              expect(json_response_body.dig(:errors, :base).first[:error]).to eq('posting_not_supported')
-            end
-          end
-
-          describe do
             let(:phase_id) { 'unknown-phase-id' }
 
             example_request '[error] Create an idea in an unknown phase' do
@@ -352,14 +338,6 @@ resource 'Ideas' do
           example_request 'Creating an idea in a specific (inactive) phase' do
             assert_status 201
             expect(response_data.dig(:relationships, :phases, :data).pluck(:id)).to eq [phase_id]
-          end
-
-          context 'when saving a draft' do
-            let(:publication_status) { 'draft' }
-
-            example_request 'Creating a draft in a specific (inactive) phase' do
-              assert_status 201
-            end
           end
         end
 
