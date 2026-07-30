@@ -20,11 +20,13 @@ import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Tabs from 'components/UI/Tabs';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
 import { CARD_ICON_SIZE } from '../constants';
 import messages from '../messages';
+import tracks from '../tracks';
 import { CustomPageIconImage } from '../typings';
 
 // Square, so that it also communicates the expected proportions of the image.
@@ -57,6 +59,16 @@ const CardIconInput = ({
   // they have to be scoped to the page.
   const tabName = (type: IconType) => `${type}-icon-${pageId}`;
 
+  // The picker reports clearing the emoji as a change too, which is not a
+  // selection.
+  const handleSelectEmoji = (selected: string | null) => {
+    if (selected) {
+      trackEventByName(tracks.cardEmojiSelected);
+    }
+
+    onChangeEmoji(selected);
+  };
+
   const handleAddImage = async (uploadedFiles: UploadFile[]) => {
     setUploadFailed(false);
     setIsUploading(true);
@@ -69,6 +81,9 @@ const CardIconInput = ({
       onChangeImage({
         dataCode: response.data.attributes.code,
         imageUrl: response.data.attributes.image_url,
+      });
+      trackEventByName(tracks.cardImageSelected, {
+        fileType: uploadedFiles[0].type,
       });
     } catch {
       setUploadFailed(true);
@@ -172,7 +187,7 @@ const CardIconInput = ({
       {iconType === 'emoji' ? (
         <EmojiPickerInput
           value={emoji}
-          onChange={onChangeEmoji}
+          onChange={handleSelectEmoji}
           placement="top"
         />
       ) : (
