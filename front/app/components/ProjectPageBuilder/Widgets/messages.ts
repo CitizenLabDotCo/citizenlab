@@ -96,10 +96,6 @@ export default defineMessages({
     id: 'app.components.ProjectPageBuilder.Widgets.sectionBackgroundWhite',
     defaultMessage: 'White',
   },
-  pastEventBadge: {
-    id: 'app.components.ProjectPageBuilder.Widgets.pastEventBadge',
-    defaultMessage: 'Past',
-  },
   eventsEmptyMessage: {
     id: 'app.components.ProjectPageBuilder.Widgets.eventsEmptyMessage',
     defaultMessage:

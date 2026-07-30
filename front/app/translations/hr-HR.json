@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Ovdje se prikazuje sadržaj za sudjelovanje u aktivnoj fazi. Sadržaj se postavlja putem metode faze u {projectEditorLink} — ovdje birate samo gdje će se nalaziti na stranici.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Prikvačeno na vrh stranice — može se uređivati, ali se ne može premjestiti niti ukloniti.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Samo administratori i voditelji ovog projekta mogu ovo vidjeti",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Prošlo",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Faze",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Faze",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "uređivač projekta",

@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Uani immikkoortup ingerlasup peqataaffigineqarsinnaanera takutinneqarpoq. Imaa {projectEditorLink}-imi immikkoortup periaasia atorlugu aalajangerneqartarput — uani quppernerup iluani sumi inissisimanissaa taamaallaat toqqassavat.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Quppernerup qulaanut ivertitaavoq — aaqqinneqarsinnaavoq, kisianni nuunneqarsinnaanngilaq peerneqarsinnaananiluunniit.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Suliniummi uani aqutsisut suliniutinillu aqutsisut taamaallaat una takusinnaavaat.",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Qaangiuttut",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Immikkoortut",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Immikkoortut",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "pilersaarummik aaqqissuisarfik",

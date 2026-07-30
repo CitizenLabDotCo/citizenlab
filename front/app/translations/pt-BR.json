@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Isso mostra o conteúdo de participação para a fase ativa. Seu conteúdo é definido pelo método da fase no {projectEditorLink} — aqui você apenas escolhe onde ele fica na página.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Fixado no topo da página — editável, mas não pode ser movido ou removido.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Apenas administradores e gerentes deste projeto podem ver isso",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Passadas",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Fases",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Fases",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "editor do projeto",

@@ -9,7 +9,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { Multiloc } from 'typings';
 
 import usePhases from 'api/phases/usePhases';
 
@@ -36,12 +35,16 @@ const Settings = () => {
     buttonFormat,
     buttonStyle,
     buttonText,
-  } = useNode((node) => ({
-    surveyPhaseId: node.data.props.surveyPhaseId as string | undefined,
-    buttonFormat: (node.data.props.buttonFormat ??
-      'card') as SurveyButtonFormat,
-    buttonStyle: (node.data.props.buttonStyle ?? 'primary') as ButtonStyles,
-    buttonText: node.data.props.buttonText as Multiloc | undefined,
+  } = useNode<
+    ExtraSurveysProps & {
+      buttonFormat: SurveyButtonFormat;
+      buttonStyle: ButtonStyles;
+    }
+  >((node) => ({
+    surveyPhaseId: node.data.props.surveyPhaseId,
+    buttonFormat: node.data.props.buttonFormat ?? 'card',
+    buttonStyle: node.data.props.buttonStyle ?? 'primary',
+    buttonText: node.data.props.buttonText,
   }));
 
   const { formatMessage } = useIntl();

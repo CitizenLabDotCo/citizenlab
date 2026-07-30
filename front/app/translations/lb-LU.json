@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Dëst weist de Participatiounsinhalt fir déi aktiv Phas un. Den Inhalt gëtt iwwer d'Method vun der Phas am {projectEditorLink} festgeluecht – hei wielt Dir nëmmen aus, wou en op der Säit steet.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Uewen op der Säit ugepecht – kann editéiert ginn, awer net verréckelt oder geläscht ginn.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Nëmmen Administrateuren a Projetsmanagere vun dësem Projet kënnen dat hei gesinn.",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Vergaangen",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Phasen",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Phasen",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "Projets-Editor",

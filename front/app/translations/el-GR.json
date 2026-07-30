@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Εδώ εμφανίζεται το περιεχόμενο συμμετοχής για την ενεργή φάση. Το περιεχόμενό του ορίζεται από τη μέθοδο της φάσης στο {projectEditorLink} — εδώ επιλέγετε μόνο τη θέση του στη σελίδα.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Καρφιτσωμένο στην κορυφή της σελίδας — επεξεργάσιμο, αλλά δεν μπορεί να μετακινηθεί ή να αφαιρεθεί.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Μόνο οι διαχειριστές και οι υπεύθυνοι αυτού του έργου μπορούν να το δουν αυτό",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Προηγούμενα",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Φάσεις",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Φάσεις",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "πρόγραμμα επεξεργασίας έργου",

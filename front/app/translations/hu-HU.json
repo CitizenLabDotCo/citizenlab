@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Ez az aktív szakasz részvételi tartalmát mutatja. A tartalom a szakasz módszerénél állítható be a {projectEditorLink} menüpontban – itt csak azt választhatja ki, hol helyezkedjen el az oldalon.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Az oldal tetejére rögzítve – szerkeszthető, de nem mozgatható és nem távolítható el.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Ezt csak a projekt adminisztrátorai és projektmenedzserei láthatják",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Korábbi",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Szakaszok",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Szakaszok",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "projektszerkesztő",

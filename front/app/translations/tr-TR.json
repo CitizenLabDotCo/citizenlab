@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Bu, aktif aşama için katılım içeriğini gösterir. İçeriği, {projectEditorLink} içindeki aşama yöntemiyle belirlenir — burada sadece sayfadaki konumunu seçersiniz.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Sayfanın üst kısmına sabitlendi — düzenlenebilir ancak taşınamaz veya kaldırılamaz.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Bunu yalnızca bu projenin yöneticileri ve proje yöneticileri görebilir",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Geçmiş",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Aşamalar",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Aşamalar",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "proje düzenleyici",

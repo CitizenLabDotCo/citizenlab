@@ -9549,7 +9549,6 @@
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
   },
-
   "app.containers.Admin.projects.project.projectHomepage": {
     "state": "verified",
     "verified_at": "2026-07-22T09:18:14.104367Z",
@@ -19785,6 +19784,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ContentBuilder.collapsedButtonTitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:47:18.812071Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.admin.ContentBuilder.delete": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -19954,6 +19958,36 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpen": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:39:35.394876Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpenDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:39:35.394876Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsTimeline": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:10:38.085804Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsTimelineDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:44:28.153689Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:39:35.394876Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsUpcomingDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-30T14:39:35.394876Z",
+    "verified_by": "Adrien"
   },
   "app.containers.admin.ContentBuilder.selectFile2": {
     "state": "verified",
@@ -21245,7 +21279,6 @@
     "verified_at": "2026-07-08T07:34:36.237452Z",
     "verified_by": "Cindy EB"
   },
-
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhoneNumber": {
     "state": "verified",
     "verified_at": "2026-07-22T11:55:54.024646Z",
@@ -21291,7 +21324,6 @@
     "verified_at": "2026-07-08T07:34:36.237452Z",
     "verified_by": "Cindy EB"
   },
-
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.phoneMethodDescription": {
     "state": "verified",
     "verified_at": "2026-07-22T12:00:49.993496Z",

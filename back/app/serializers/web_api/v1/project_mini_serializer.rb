@@ -3,28 +3,22 @@
 class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :slug
 
-  attribute :starts_days_from_now do |object|
-    first_phase = object.phases.first
-    now = Time.now
-
-    if first_phase && first_phase.start_at > now
-      ((first_phase.start_at - now) / 1.day).floor
-    end
+  attribute :participation_status do |project|
+    HighlightedPhaseService.new(project).participation_status
   end
 
-  attribute :ended_days_ago do |object|
-    last_phase = object.phases.last
-    now = Time.now
+  attribute :days_until_start do |project|
+    HighlightedPhaseService.new(project).days_until_start
+  end
 
-    if last_phase&.end_at && last_phase.end_at < now
-      ((now - last_phase.end_at) / 1.day).floor
-    end
+  attribute :days_since_end do |project|
+    HighlightedPhaseService.new(project).days_since_end
   end
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 
-  has_one :current_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |project|
-    phase = TimelineService.new.current_phase(project)
+  has_one :highlighted_phase, serializer: WebApi::V1::PhaseMiniSerializer, record_type: :phase do |project|
+    phase = HighlightedPhaseService.new(project).highlighted_phase
     phase.project = project if phase # Performance optimization (keep preloaded relationships)
     phase
   end

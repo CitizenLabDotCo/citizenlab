@@ -14,6 +14,10 @@ lv-LV:
       subject: Apstipriniet savu e-pasta adresi %{organizationName} līdzdalības platformai
       thanks_for_signing_up1: 'Paldies par dalību. Lūdzu, ievadiet šo apstiprinājuma kodu %{organizationName}platformas logā:'
       the_link_is_valid_for: Šī saite ir derīga 24 stundas. Ja saites derīguma termiņš ir beidzies, varat <a href="%{link}">pieprasīt jaunu kodu</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Izmantojiet šo vietu plašākai informācijai — priekšvēsturei, tam, kas notiks ar sniegto informāciju, vai informācijai par to, ar ko sazināties.</p>
+      intro_placeholder: <p>Pievienojiet šeit īsu ievadu — pastāstiet iedzīvotājiem, par ko ir šis projekts un kā viņi var tajā piedalīties.</p>
   custom_field_options:
     domicile:
       outside: Kaut kur citur

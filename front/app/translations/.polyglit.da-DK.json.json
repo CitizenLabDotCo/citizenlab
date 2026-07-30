@@ -6814,6 +6814,11 @@
     "verified_at": "2026-07-21T07:18:56.038873Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Authentication.phoneConfirmationCodeInvalid": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:23:15.710223Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Authentication.signUpOrLogIn": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",

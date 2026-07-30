@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Això mostra el contingut de participació de la fase activa. El seu contingut es defineix mitjançant el mètode de la fase a l'{projectEditorLink}; aquí només n'has de triar la ubicació a la pàgina.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Fixat a la part superior de la pàgina: es pot editar, però no es pot moure ni eliminar.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Només els administradors i els gestors d'aquest projecte poden veure-ho",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Anteriors",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Fases",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Fases",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "editor del projecte",

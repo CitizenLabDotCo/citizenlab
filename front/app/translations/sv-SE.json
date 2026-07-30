@@ -622,7 +622,6 @@
   "app.components.ProjectPageBuilder.Widgets.inputFeedManagedNote": "Detta visar deltagandeinnehållet för den aktiva fasen. Innehållet ställs in via fasens metod i {projectEditorLink} – här väljer du bara var det ska placeras på sidan.",
   "app.components.ProjectPageBuilder.Widgets.lockedHeaderNote": "Fastnålad högst upp på sidan – redigerbar, men kan inte flyttas eller tas bort.",
   "app.components.ProjectPageBuilder.Widgets.onlyAdminsAndManagersSeeThis": "Endast administratörer och projektledare för det här projektet kan se detta",
-  "app.components.ProjectPageBuilder.Widgets.pastEventBadge": "Tidigare",
   "app.components.ProjectPageBuilder.Widgets.phasesHeading": "Faser",
   "app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle": "Faser",
   "app.components.ProjectPageBuilder.Widgets.projectEditorLinkText": "projektverktyget",

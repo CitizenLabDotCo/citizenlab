@@ -5,12 +5,17 @@ import { UserComponent, useNode } from '@craftjs/core';
 import { Multiloc, UploadFile } from 'typings';
 
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
+import {
+  PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH,
+  PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT,
+} from 'api/projects/constants';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { IMAGE_UPLOADING_EVENT } from 'components/admin/ContentBuilder/constants';
 import imageMessages from 'components/admin/ContentBuilder/Widgets/ImageMultiloc/messages';
+import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import {
   HeaderImage,
   HeaderImageContainer,
@@ -124,6 +129,23 @@ const ProjectBannerSettings = () => {
     }
   };
 
+  const handleCrop = async (croppedBase64: string) => {
+    eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
+    try {
+      const response = await addContentBuilderImage(croppedBase64);
+      setProp((props: Props) => {
+        props.image = {
+          dataCode: response.data.attributes.code,
+          imageUrl: response.data.attributes.image_url,
+        };
+      });
+    } catch {
+      // Keep the previously uploaded image on failure.
+    } finally {
+      eventEmitter.emit(IMAGE_UPLOADING_EVENT, false);
+    }
+  };
+
   const handleRemove = () => {
     setImageFiles([]);
     setProp((props: Props) => {
@@ -144,15 +166,26 @@ const ProjectBannerSettings = () => {
 
   return (
     <Box my="20px" display="flex" flexDirection="column" gap="16px">
-      <ImagesDropzone
-        images={imageFiles}
-        imagePreviewRatio={1 / 2}
-        maxImagePreviewWidth="360px"
-        objectFit="contain"
-        acceptedFileTypes={{ 'image/*': ['.jpg', '.jpeg', '.png'] }}
-        onAdd={handleAdd}
-        onRemove={handleRemove}
-      />
+      {imageFiles.length > 0 ? (
+        <ImageCropperContainer
+          image={imageFiles[0]}
+          onComplete={handleCrop}
+          aspectRatioWidth={PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH}
+          aspectRatioHeight={PROJECTABLE_HEADER_BG_ASPECT_RATIO_HEIGHT}
+          onRemove={handleRemove}
+          show3x1MobileCropLines
+        />
+      ) : (
+        <ImagesDropzone
+          images={imageFiles}
+          imagePreviewRatio={1 / 2}
+          maxImagePreviewWidth="360px"
+          objectFit="contain"
+          acceptedFileTypes={{ 'image/*': ['.jpg', '.jpeg', '.png'] }}
+          onAdd={handleAdd}
+          onRemove={handleRemove}
+        />
+      )}
       <Box>
         <Label>
           {formatMessage(imageMessages.imageMultilocAltTextLabel)}
