@@ -39,15 +39,17 @@ Building blocks used along the way:
 | `proposals` components                                 | ideation phases + ideas (+ comments, comment votes, endorsements, followers)     |
 | `surveys` components                                   | native-survey phases + responses                                                 |
 | `accountability` components                            | results → ideas                                                                  |
+| `debates` components                                   | ideation phases + ideas (+ comments, followers)                                  |
 | `budgets` components                                   | voting (budgeting) phases + baskets                                              |
 | `pages` components                                     | project-level static pages                                                       |
 | `blogs` components                                     | project-level static pages, linked in a "Blog" section of the description layout |
 | `meetings` components                                  | project events (with map pin + attachments)                                      |
 | attachments (space + proposal + meeting)               | files                                                                            |
 
-`debates` and `awesome_iframe` (fullscreen-iframe / awesome-map) components have no extractor and are currently
-ignored. Meeting comments, registration form answers and poll answers have no Go Vocal
-event equivalent and are not imported.
+`awesome_iframe` (fullscreen-iframe / awesome-map) components have no extractor and are currently
+ignored. A debate's `instructions`/`information_updates`/`conclusions` are folded into the idea body;
+its scheduled window, closed state and endorsements have no equivalent and are dropped. Meeting comments,
+registration form answers and poll answers have no Go Vocal event equivalent and are not imported.
 
 ### The rake tasks
 

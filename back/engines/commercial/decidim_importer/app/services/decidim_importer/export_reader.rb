@@ -52,6 +52,7 @@ module DecidimImporter
     BUDGETS_COMPONENT = 'budgets'
     MEETINGS_COMPONENT = 'meetings'
     BLOGS_COMPONENT = 'blogs'
+    DEBATES_COMPONENT = 'debates'
 
     # A budgets component nests one directory per budget (`NN---decidim--budgets--budget--N/`) holding
     # the budget CSV plus its projects/orders/followers — unlike other components' flat sidecars.
@@ -74,7 +75,7 @@ module DecidimImporter
 
     # The sibling CSVs read for each consumed component type, as `type => [[glob, acc-key], ...]`. Budgets
     # and meetings instead nest per-record subdirectories (see {#read_budgets}/{#read_meetings}); other
-    # types (awesome_iframe, debates, …) have no consumed sidecar — only their manifest is recorded. A
+    # types (awesome_iframe, …) have no consumed sidecar — only their manifest is recorded. A
     # proposals component's `*--attachments.csv` (per-proposal) differs from the container-level one read
     # by {#read_container}.
     COMPONENT_SIDECARS = {
@@ -83,7 +84,11 @@ module DecidimImporter
         ['*--endorsements.csv', :endorsements], ['*--attachments.csv', :proposal_attachments]],
       SURVEYS_COMPONENT => [['*--answers.csv', :survey_answers]],
       ACCOUNTABILITY_COMPONENT => [['*--statuses.csv', :accountability_statuses], ['*--results.csv', :results]],
-      BLOGS_COMPONENT => [['*--posts.csv', :blog_posts]]
+      BLOGS_COMPONENT => [['*--posts.csv', :blog_posts]],
+      # Debates → ideas in an ideation phase; their comments/followers reuse the shared streams (identical
+      # columns to proposals'), so the existing extractors handle them once a debate is registered as an idea.
+      DEBATES_COMPONENT => [['*--debates.csv', :debates], ['*--comments.csv', :comments],
+        ['*--followers.csv', :followers]]
     }.freeze
 
     module_function
@@ -111,7 +116,7 @@ module DecidimImporter
               comments: [], comment_votes: [], followers: [], endorsements: [], proposal_attachments: [],
               results: [], accountability_statuses: [], components: [], survey_answers: [],
               budgets: [], budget_projects: [], orders: [], blog_posts: [],
-              meetings: [], meeting_attachments: [] }
+              meetings: [], meeting_attachments: [], debates: [] }
       CONTAINERS.each do |container|
         container_dirs(root, container).each { |dir| read_container(dir, container, acc) }
       end
