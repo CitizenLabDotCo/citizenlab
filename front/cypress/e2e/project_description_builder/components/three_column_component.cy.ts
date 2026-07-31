@@ -22,9 +22,7 @@ describe('Project description builder Three Column component', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -43,7 +41,7 @@ describe('Project description builder Three Column component', () => {
       'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-three-column').dragAndDrop(
-      '#e2e-content-builder-frame',
+      '#e2e-project-page-body',
       {
         position: 'inside',
       }
@@ -74,7 +72,7 @@ describe('Project description builder Three Column component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
     cy.get('.e2e-three-column').should('be.visible');
 
     cy.get('.e2e-three-column').click('top');
