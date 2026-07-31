@@ -268,7 +268,10 @@ jobs:
     parallelism: 8
     environment:
       RAILS_ENV: test
-      COVERAGE: ON
+      # COVERAGE intentionally unset: SimpleCov's reports were written inside
+      # each of the 8 containers and discarded with them -- there is no
+      # store_artifacts step, and each shard only sees 1/8 of the specs, so the
+      # reports were partial anyway. Set COVERAGE=ON locally when you want them.
     steps:
       - wait-for-postgres
       # Experiment diagnostics: confirm the cluster really is on the RAM disk

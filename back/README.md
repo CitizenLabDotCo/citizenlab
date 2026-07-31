@@ -241,7 +241,11 @@ The test cluster is deliberately configured for speed over durability. Both
 [Postgres non-durability docs](https://www.postgresql.org/docs/current/non-durability.html)).
 Never reuse these settings anywhere the data matters.
 
-On CI, the `cl2-back` executor also takes a `pgdata` parameter. The `back-test`
-job points it at a path under `/dev/shm` so the whole cluster lives in RAM.
-Jobs that create many tenant schemas -- `back-test-tenant-templates` in
-particular -- keep the default on-disk location, because they will not fit.
+On CI, the `cl2-back` executor also takes a `pgdata` parameter, which the
+`back-test` job points at a path under `/dev/shm` so the cluster lives in RAM.
+
+Measured, this makes no meaningful difference: `back-test` went from 5m46s to
+5m27s, which is within run-to-run noise. That is the expected result, since
+`fsync=off` already keeps the disk off the critical path -- the storage medium
+is not what `back-test` spends its time on. Don't reach for a RAM disk here
+again without first showing that the job is I/O bound.
