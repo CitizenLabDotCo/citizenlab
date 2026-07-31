@@ -16,8 +16,13 @@ module McpServer
     before_action :authenticate_request
     around_action :switch_tenant
     before_action :require_feature_and_acting_user
+    # Declared after switch_tenant/require_feature_and_acting_user, so the tenant is
+    # switched and the acting user resolved by the time the tags are set.
+    before_action :set_sentry_context
 
     def create
+      Sentry.set_tags(mcp_tool: params.dig(:params, :name)) if params[:method] == 'tools/call'
+
       server = MCP::Server.new(
         name: 'go_vocal_internal',
         title: "Go Vocal internal (#{AppConfiguration.instance.host})",
@@ -45,6 +50,15 @@ module McpServer
     end
 
     private
+
+    # Mirrors the tenant/user Sentry tagging from
+    # MultiTenancy::Patches::ApplicationController#set_sentry_context. The user tag is
+    # the acting user — the real staff identity is only known via X-Acting-Staff and is
+    # recorded in the activity log instead.
+    def set_sentry_context
+      Sentry.set_tags(tenant: Tenant.safe_current&.host)
+      Sentry.set_user(id: acting_user.id) if acting_user
+    end
 
     def authenticate_request
       expected = ENV.fetch('ADMIN_API_TOKEN', nil)

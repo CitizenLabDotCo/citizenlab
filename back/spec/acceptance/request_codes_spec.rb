@@ -15,7 +15,7 @@ resource 'Request codes' do
     allow(EmailCampaigns::DeliveryService).to receive(:new).and_return(delivery_service)
   end
 
-  post 'web_api/v1/user/request_code_unauthenticated' do
+  post 'web_api/v1/user/request_code_email' do
     with_options scope: :request_code do
       parameter :email, 'The email of the user requesting a confirmation code.', required: true
     end
@@ -45,12 +45,56 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
 
-    example 'does not work if user has password and has email confirmed' do
+    example 'works if user has password and has email confirmed (can be necessary for re-confirmation)' do
       user = create(:user, email: 'test@test.com')
       expect(user.password_digest).not_to be_nil
       expect(user.confirmation_required?).to be false
 
       do_request(request_code: { email: user.email })
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
+    end
+
+    # Re-confirmation: an authenticated user whose confirmed email has aged past
+    # confirmed_email_expiry requests a fresh code for their own email. This is
+    # the same "full account" (password set + confirmed) that is rejected for
+    # unauthenticated callers above, but allowed here because they are the owner.
+    example 'works for an authenticated user requesting a code for their own email' do
+      user = create(:user, email: 'test@test.com')
+      expect(user.password_digest).not_to be_nil
+      expect(user.confirmation_required?).to be false
+      header_token_for(user)
+
+      do_request(request_code: { email: user.email })
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
+    end
+
+    # An authenticated user must not be able to request an in-place confirmation
+    # code for a *different* existing account's email; the owner check is on the
+    # record, not merely on being logged in.
+    example 'does not work for an authenticated user requesting a code for a different confirmed account' do
+      other_user = create(:user, email: 'other@test.com')
+      requester = create(:user, email: 'requester@test.com')
+      header_token_for(requester)
+
+      do_request(request_code: { email: other_user.email })
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # The ownership check does not depend on the target account being a "full"
+    # account: an authenticated user may not request a code for any email other
+    # than their own, even an unconfirmed one.
+    example 'does not work for an authenticated user requesting a code for a different unconfirmed account' do
+      other_user = create(:unconfirmed_user, email: 'other@test.com')
+      requester = create(:user, email: 'requester@test.com')
+      header_token_for(requester)
+
+      do_request(request_code: { email: other_user.email })
       expect(response_status).to eq 401
       expect(delivery_service).not_to have_received(:send_now_to_user)
     end
@@ -91,9 +135,46 @@ resource 'Request codes' do
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
     end
+
+    # only_if_first_time: idempotent auto-send used when the flow lands an authenticated
+    # user on the confirmation step (re-confirmation after confirmed_email_expiry).
+    example 'with only_if_first_time, sends when no code is outstanding' do
+      user = create(:user, email: 'test@test.com')
+      user.email_confirmation.clear_code!
+      header_token_for(user)
+
+      do_request(request_code: { email: user.email, only_if_first_time: true })
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
+    end
+
+    example 'with only_if_first_time, does not resend when a code is already outstanding' do
+      user = create(:user, email: 'test@test.com')
+      header_token_for(user)
+      RequestEmailConfirmationCodeJob.perform_now(user) # one code sent in setup
+      expect(user.email_confirmation.reload.code).to be_present
+
+      do_request(request_code: { email: user.email, only_if_first_time: true })
+      expect(response_status).to eq 200
+      # Only the setup send happened; the only_if_first_time request was a no-op.
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
+    end
+
+    example 'an authenticated user can omit the email (uses current_user)' do
+      user = create(:user, email: 'test@test.com')
+      user.email_confirmation.clear_code!
+      header_token_for(user)
+
+      do_request(request_code: { only_if_first_time: true })
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::EmailConfirmation), user, hash_including(:code)).once
+    end
   end
 
-  post 'web_api/v1/user/request_code_email_change' do
+  post 'web_api/v1/user/request_code_new_email' do
     with_options scope: :request_code do
       parameter :new_email, 'The email of the user requesting a confirmation code.', required: false
     end
@@ -157,7 +238,89 @@ resource 'Request codes' do
     end
   end
 
-  post 'web_api/v1/user/request_code_phone_change' do
+  post 'web_api/v1/user/request_code_phone' do
+    with_options scope: :request_code do
+      parameter :only_if_first_time, 'Only send a code if none is currently outstanding.', required: false
+    end
+
+    include_context 'with sms feature enabled'
+
+    example 'It works for an authenticated user with a phone number' do
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+    end
+
+    example 'It does not work for an unauthenticated user' do
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # There is no number in the request, so the code can only go to user.phone.
+    example 'It does not work if the user has no phone number' do
+      user = create(:user)
+      expect(user.phone).to be_nil
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It does not work if the user reached code_reset_count' do
+      user = create(:user, :with_confirmed_phone)
+      user.phone_confirmation.update!(code_reset_count: 4)
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It does not work if the SMS feature is disabled' do
+      SettingsService.new.deactivate_feature!('sms')
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+
+      do_request(request_code: {})
+      expect(response_status).to eq 401
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    # only_if_first_time: idempotent auto-send used when the flow lands an authenticated
+    # user on the phone confirmation step (re-confirmation after the phone confirmation
+    # aged out).
+    example 'with only_if_first_time, sends when no code is outstanding' do
+      user = create(:user, :with_confirmed_phone)
+      expect(user.phone_confirmation.code_outstanding?).to be false
+      header_token_for(user)
+
+      do_request(request_code: { only_if_first_time: true })
+      expect(response_status).to eq 200
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+    end
+
+    example 'with only_if_first_time, does not resend when a code is already outstanding' do
+      user = create(:user, :with_confirmed_phone)
+      header_token_for(user)
+      RequestPhoneConfirmationCodeJob.perform_now(user) # one code sent in setup
+      expect(user.phone_confirmation.reload.code).to be_present
+
+      do_request(request_code: { only_if_first_time: true })
+      expect(response_status).to eq 200
+      # Only the setup send happened; the only_if_first_time request was a no-op.
+      expect(delivery_service).to have_received(:send_now_to_user)
+        .with(an_instance_of(EmailCampaigns::Campaigns::PhoneConfirmation), user, hash_including(:code)).once
+    end
+  end
+
+  post 'web_api/v1/user/request_code_new_phone' do
     with_options scope: :request_code do
       parameter :new_phone, 'The phone number the user wants to verify.', required: true
     end
@@ -197,6 +360,25 @@ resource 'Request codes' do
       do_request(request_code: { new_phone: '+14155552671' })
       expect(response_status).to eq 422
       expect(json_response_body).to include_response_error(:new_phone, 'taken')
+    end
+
+    example 'It does not work if the phone number is in a country that is not allowed' do
+      SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+14155552671' }) # US number
+      expect(response_status).to eq 422
+      expect(json_response_body).to include_response_error(:new_phone, 'unsupported_country')
+      expect(delivery_service).not_to have_received(:send_now_to_user)
+    end
+
+    example 'It works if the phone number is in an allowed country' do
+      SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['US'] })
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+14155552671' })
+      expect(response_status).to eq 200
+      expect(user.reload.new_phone).to eq '+14155552671'
     end
 
     example 'It does not work if the user reached code_reset_count' do

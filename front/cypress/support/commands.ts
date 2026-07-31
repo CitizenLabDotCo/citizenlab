@@ -20,6 +20,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       dataCy: typeof dataCy;
+      dockProjectCtaBar: typeof dockProjectCtaBar;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       signUp: typeof signUp;
@@ -252,7 +253,7 @@ function emailConfirmation(email: string) {
       'Content-Type': 'application/json',
     },
     method: 'POST',
-    url: 'web_api/v1/user/confirm_code_unauthenticated',
+    url: 'web_api/v1/user/confirm_code_email',
     body: {
       confirmation: { email, code: '1234' },
     },
@@ -913,9 +914,9 @@ function aboutBoxNode(parent: string) {
   };
 }
 
-// Appends the participation AboutBox to the description section of a project's
-// project_page layout, so its page renders the sidebar/CTAs. Idempotent — a no-op if
-// the AboutBox is already there.
+// Appends the participation AboutBox to a project's project_page layout, so its
+// page renders the sidebar/CTAs. Idempotent — a no-op if the AboutBox is already
+// there.
 function apiAddAboutBox(projectId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const authHeaders = {
@@ -933,18 +934,21 @@ function apiAddAboutBox(projectId: string) {
         );
         if (hasAboutBox) return;
 
-        const sectionId = Object.keys(craftjs).find(
-          (id) =>
-            craftjs[id]?.type?.resolvedName === 'ProjectDescriptionSection'
-        );
-        if (!sectionId) {
+        const parentId = ['ProjectDescriptionSection', 'ProjectPageBody']
+          .map((name) =>
+            Object.keys(craftjs).find(
+              (id) => craftjs[id]?.type?.resolvedName === name
+            )
+          )
+          .find((id) => id !== undefined);
+        if (!parentId) {
           throw new Error(
-            `project_page layout of project ${projectId} has no description section`
+            `project_page layout of project ${projectId} has no page body`
           );
         }
 
-        craftjs.aboutBox = aboutBoxNode(sectionId);
-        craftjs[sectionId].nodes = [...craftjs[sectionId].nodes, 'aboutBox'];
+        craftjs.aboutBox = aboutBoxNode(parentId);
+        craftjs[parentId].nodes = [...craftjs[parentId].nodes, 'aboutBox'];
 
         return cy.request({
           headers: authHeaders,
@@ -2293,6 +2297,22 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`[data-cy="${dataCyValue}"]`);
 }
 
+function dockProjectCtaBar() {
+  const scrollUntilDocked = () =>
+    cy.get('[data-project-page-phases]').should(($phases) => {
+      const el = $phases[0];
+      el.scrollIntoView();
+      expect(
+        el.ownerDocument.querySelector('[data-cy="project-cta-bar-top"]'),
+        'docked CTA bar'
+      ).to.exist;
+    });
+
+  scrollUntilDocked();
+  cy.wait(500);
+  return scrollUntilDocked();
+}
+
 function deleteEventAttendances(
   email: string,
   password: string,
@@ -2357,6 +2377,7 @@ function apiRemoveIdeas(projectId?: string) {
 }
 
 Cypress.Commands.add('dataCy', dataCy);
+Cypress.Commands.add('dockProjectCtaBar', dockProjectCtaBar);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('signUp', signUp);

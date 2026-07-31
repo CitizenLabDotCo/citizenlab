@@ -187,13 +187,11 @@ resource 'ContentBuilderLayouts' do
             expect(json_response.dig(:data, :attributes, :enabled)).to be true
 
             craftjs_json = json_response.dig(:data, :attributes, :craftjs_json)
-            expect(craftjs_json.keys).to include(
-              :ROOT, :PROJECT_PAGE_BODY, :PROJECT_PAGE_DESCRIPTION
-            )
+            expect(craftjs_json.keys).to include(:ROOT, :PROJECT_PAGE_BODY)
 
-            description_ids = craftjs_json.dig(:PROJECT_PAGE_DESCRIPTION, :nodes)
-            expect(description_ids).not_to be_empty
-            expect(craftjs_json.dig(description_ids.first.to_sym, :props, :text)).to match(
+            body_ids = craftjs_json.dig(:PROJECT_PAGE_BODY, :nodes)
+            expect(body_ids).not_to be_empty
+            expect(craftjs_json.dig(body_ids.first.to_sym, :props, :text)).to match(
               hash_including(en: project.description_multiloc['en'])
             )
           end
