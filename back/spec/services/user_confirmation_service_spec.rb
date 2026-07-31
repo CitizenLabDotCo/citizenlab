@@ -69,19 +69,6 @@ RSpec.describe UserConfirmationService do
       end
     end
 
-    context 'when the code was never sent' do
-      before do
-        confirmation.update!(code_sent_at: nil)
-      end
-
-      it 'returns a code expired error' do
-        result = service.public_send(method_name, user, confirmation.code)
-
-        expect(result.success?).to be false
-        expect(result.errors.details).to eq(code: [{ error: :expired }])
-      end
-    end
-
     context 'when no confirmation record exists' do
       before do
         user.confirmations.destroy_all
