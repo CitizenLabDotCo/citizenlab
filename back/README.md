@@ -232,3 +232,16 @@ If the license is unknown to rubygems, you can directly approve a gem.
 docker-compose run web license_finder approvals add some_awesome_new_gem
 ```
 Only approve a license or gem if you're sure there are no compatibility issues. License_finder stores its information in `doc/dependency_decisions.yml`
+
+## Test database performance
+
+The test cluster is deliberately configured for speed over durability. Both
+`docker-compose.yml` and the `cl2-back` CircleCI executor start Postgres with
+`fsync=off`, `synchronous_commit=off` and `full_page_writes=off` (see the
+[Postgres non-durability docs](https://www.postgresql.org/docs/current/non-durability.html)).
+Never reuse these settings anywhere the data matters.
+
+On CI, the `cl2-back` executor also takes a `pgdata` parameter. The `back-test`
+job points it at a path under `/dev/shm` so the whole cluster lives in RAM.
+Jobs that create many tenant schemas -- `back-test-tenant-templates` in
+particular -- keep the default on-disk location, because they will not fit.
