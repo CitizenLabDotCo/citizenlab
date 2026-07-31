@@ -39,7 +39,7 @@ describe ContentBuilder::DescriptionLayoutService do
       expect(node['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
     end
 
-    it 'also creates an enabled project_page layout with the description in its section' do
+    it 'also creates an enabled project_page layout with the description in its body' do
       project = create(:project, description_multiloc: { 'en' => '<p>Carried over</p>' })
 
       service.provision_for(project)
@@ -48,8 +48,8 @@ describe ContentBuilder::DescriptionLayoutService do
       expect(layout).to be_present
       expect(layout.enabled).to be(true)
       expect(layout.content_buildable_type).to eq('Project')
-      section_children = layout.craftjs_json['PROJECT_PAGE_DESCRIPTION']['nodes']
-      expect(layout.craftjs_json[section_children.first]['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
+      body_children = layout.craftjs_json['PROJECT_PAGE_BODY']['nodes']
+      expect(layout.craftjs_json[body_children.first]['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
     end
 
     it 'creates the default folder layout (title + published projects) for a folder' do

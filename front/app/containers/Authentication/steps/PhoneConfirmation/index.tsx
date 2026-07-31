@@ -13,14 +13,14 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import { SetError, State } from '../../typings';
+import { SetError } from '../../typings';
 
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  state: Partial<State>;
+  phone: string | null;
   loading: boolean;
   setError: SetError;
   onConfirm: (code: string) => void | Promise<void>;
@@ -41,7 +41,7 @@ const isWrongConfirmationCodeError = (e: any) => {
 };
 
 const PhoneConfirmation = ({
-  state: { phone },
+  phone,
   loading,
   setError,
   onConfirm,

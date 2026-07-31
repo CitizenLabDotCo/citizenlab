@@ -298,16 +298,16 @@ describe 'Rack::Attack' do
 
     freeze_time do
       10.times do
-        post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+        post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       end
       expect(status).to eq(401) # Unauthorized
 
-      post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(5.minutes.from_now) do
-      post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_email', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(401) # Unauthorized
     end
   end
@@ -352,7 +352,7 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do
         post(
-          '/web_api/v1/user/confirm_code_unauthenticated',
+          '/web_api/v1/user/confirm_code_email',
           params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
           headers: headers
         )
@@ -360,7 +360,7 @@ describe 'Rack::Attack' do
       expect(status).to eq(422)
 
       post(
-        '/web_api/v1/user/confirm_code_unauthenticated',
+        '/web_api/v1/user/confirm_code_email',
         params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
@@ -369,7 +369,7 @@ describe 'Rack::Attack' do
 
     travel_to(20.seconds.from_now) do
       post(
-        '/web_api/v1/user/confirm_code_unauthenticated',
+        '/web_api/v1/user/confirm_code_email',
         params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )

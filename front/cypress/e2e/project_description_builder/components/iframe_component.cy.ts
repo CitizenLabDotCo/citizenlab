@@ -22,16 +22,14 @@ describe('Project description builder Iframe component', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
   });
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
   });
 
   after(() => {
@@ -43,7 +41,7 @@ describe('Project description builder Iframe component', () => {
       'saveProjectDescriptionBuilder'
     );
     // Add iframe with valid url
-    cy.get('#e2e-draggable-iframe').dragAndDrop('#e2e-content-builder-frame', {
+    cy.get('#e2e-draggable-iframe').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
     cy.get('#e2e-content-builder-iframe-url-input').type(
@@ -62,7 +60,7 @@ describe('Project description builder Iframe component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
     cy.get('.e2e-content-builder-iframe-component').wait(1000).click('center', {
       force: true,
     });
@@ -76,8 +74,9 @@ describe('Project description builder Iframe component', () => {
     // Check that save is disabled
     cy.contains('Save').should('have.attr', 'aria-disabled', 'true');
     // Check that red border is present
-    cy.get('.e2e-render-node')
-      .last()
+    cy.get('.e2e-content-builder-iframe-component')
+      .parents('.e2e-render-node')
+      .first()
       .should('have.css', 'border-color', 'rgb(214, 22, 7)');
 
     // Type valid URL
@@ -88,8 +87,9 @@ describe('Project description builder Iframe component', () => {
     // Check that save is enabled
     cy.contains('Save').should('be.enabled');
     // Check that red border is gone
-    cy.get('.e2e-render-node')
-      .last()
+    cy.get('.e2e-content-builder-iframe-component')
+      .parents('.e2e-render-node')
+      .first()
       .should('have.css', 'border-color', 'rgb(4, 77, 108)');
   });
 

@@ -28,9 +28,7 @@ describe('Project description builder language switch', () => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -53,7 +51,7 @@ describe('Project description builder language switch', () => {
     );
 
     // EN
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
     cy.get('.e2e-text-box').click('center');
@@ -80,7 +78,7 @@ describe('Project description builder language switch', () => {
       'saveProjectDescriptionBuilder'
     );
 
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
     // Delete content
     cy.get('.e2e-text-box').wait(1000).click({ force: true });

@@ -31,6 +31,8 @@ export type ErrorCode =
 export interface State {
   flow: 'signup' | 'signin';
   email: string | null;
+  new_email: string | null;
+  new_phone: string | null;
   token: string | null;
   prefilledBuiltInFields: {
     first_name?: string;
@@ -39,7 +41,6 @@ export interface State {
   } | null;
   ssoProvider: SSOProvider | null;
   claimTokens: string[] | null;
-  phone: string | null;
 }
 
 export type UpdateState = (state: Partial<State>) => void;
