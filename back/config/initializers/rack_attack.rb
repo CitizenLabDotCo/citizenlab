@@ -118,15 +118,22 @@ class Rack::Attack
   end
 
   # Email change code request by IP.
-  throttle('request_code_email_change/ip', limit: 1, period: 5.seconds) do |req|
-    if req.path == '/web_api/v1/user/request_code_email_change' && req.post?
+  throttle('request_code_new_email/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_email' && req.post?
+      req.remote_ip
+    end
+  end
+
+  # Phone re-confirmation code request by IP.
+  throttle('request_code_phone/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_phone' && req.post?
       req.remote_ip
     end
   end
 
   # Phone change code request by IP.
-  throttle('request_code_phone_change/ip', limit: 1, period: 5.seconds) do |req|
-    if req.path == '/web_api/v1/user/request_code_phone_change' && req.post?
+  throttle('request_code_new_phone/ip', limit: 1, period: 5.seconds) do |req|
+    if req.path == '/web_api/v1/user/request_code_new_phone' && req.post?
       req.remote_ip
     end
   end

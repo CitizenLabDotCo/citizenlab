@@ -316,15 +316,32 @@ describe 'Rack::Attack' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do
-      post('/web_api/v1/user/request_code_email_change', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(401) # Unauthorized
 
-      post('/web_api/v1/user/request_code_email_change', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_email_change', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      post('/web_api/v1/user/request_code_new_email', params: '{ "request_code": { "new_email": "coolemail@example.org" } }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+    end
+  end
+
+  it 'limits phone re-confirmation code requests from same IP to 1 in 5 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: headers)
+      expect(status).to eq(401) # Unauthorized
+
+      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: headers)
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.seconds.from_now) do
+      post('/web_api/v1/user/request_code_phone', params: '{ "request_code": {} }', headers: headers)
       expect(status).to eq(401) # Unauthorized
     end
   end
@@ -333,15 +350,15 @@ describe 'Rack::Attack' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do
-      post('/web_api/v1/user/request_code_phone_change', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
       expect(status).to eq(401) # Unauthorized
 
-      post('/web_api/v1/user/request_code_phone_change', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(5.seconds.from_now) do
-      post('/web_api/v1/user/request_code_phone_change', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
+      post('/web_api/v1/user/request_code_new_phone', params: '{ "request_code": { "new_phone": "+32470123456" } }', headers: headers)
       expect(status).to eq(401) # Unauthorized
     end
   end
