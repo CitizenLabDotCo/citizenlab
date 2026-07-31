@@ -35,8 +35,9 @@ describe('SSO: user with unconfirmed email', () => {
     const newEmail = randomEmail();
     cy.get('#e2e-authentication-modal')
       .get('input[type="email"]')
+      .clear()
       .type(newEmail);
-    cy.get('#e2e-built-in-fields-submit-button').click();
+    cy.get('#e2e-change-email-submit-button').click();
 
     // Confirm email with the new code (which is always the same in the e2e env)
     confirmEmail(cy);
@@ -77,6 +78,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Confirm that I can post idea
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.acceptCookies();
+    cy.dockProjectCtaBar();
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.location('pathname').should(
@@ -107,6 +109,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Confirm that I can post idea
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.acceptCookies();
+    cy.dockProjectCtaBar();
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.location('pathname').should(

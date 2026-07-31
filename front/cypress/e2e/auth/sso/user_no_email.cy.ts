@@ -66,8 +66,9 @@ describe('SSO: user without email', () => {
     const newEmail = randomEmail();
     cy.get('#e2e-authentication-modal')
       .get('input[type="email"]')
+      .clear()
       .type(newEmail);
-    cy.get('#e2e-built-in-fields-submit-button').click();
+    cy.get('#e2e-change-email-submit-button').click();
 
     // Confirm email with the new code (which is always the same in the e2e env)
     confirmEmail(cy);

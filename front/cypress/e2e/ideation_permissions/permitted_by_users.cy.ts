@@ -86,6 +86,8 @@ describe('Ideation permitted by: users', () => {
     const inRegFlow = () => {
       cy.visit(`/projects/${projectSlug}`);
 
+      cy.dockProjectCtaBar();
+
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       // Modal should show demographic question
@@ -210,6 +212,7 @@ describe('Ideation permitted by: users', () => {
 
     const inForm = () => {
       cy.visit(`/projects/${projectSlug}`);
+      cy.dockProjectCtaBar();
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       const title = randomString(11);

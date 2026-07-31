@@ -50,8 +50,8 @@ describe('Settings panel options', () => {
   });
 
   it('handles close button click correctly', () => {
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
 
