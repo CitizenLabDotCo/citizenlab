@@ -259,27 +259,95 @@ RSpec.describe User do
     end
   end
 
-  describe 'authentication without password' do
-    it 'is allowed if the user has no password and confirmation is required' do
-      u = described_class.new(email: 'bob@citizenlab.co')
-      expect(!!u.authenticate('')).to be(true)
+  describe '#authenticate' do
+    # Authentication ALWAYS requires a non-blank password matching the stored digest.
+    # A user without a password (email-only, SSO or invited account) has no credential to log
+    # in with, and a blank password is not a credential. These specs must never be relaxed:
+    # every case below has to stay `false`, whatever the confirmation state of the user.
+    describe 'authentication without a password' do
+      # Anything that is not an actual password supplied by the requester.
+      blank_secrets = ['', ' ', "\t", nil]
+
+      it 'is NOT allowed for a user with no password who requires confirmation' do
+        user = create(:unconfirmed_user)
+        expect(user.password_digest).to be_nil
+        expect(user.confirmation_required?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for a user with no password who does not require confirmation' do
+        user = create(:unconfirmed_user)
+        user.email_confirmation.confirm!
+        expect(user.reload.confirmation_required?).to be false
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for an unpersisted user with no password' do
+        user = described_class.new(email: 'bob@citizenlab.co', locale: 'en')
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for an SSO user who never set a password' do
+        user = create(:unconfirmed_user)
+        user.identities << create(:facebook_identity, user: user)
+        user.email_confirmation.confirm!
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
+
+      it 'is NOT allowed for an invited user who has not accepted their invite' do
+        user = create(:invited_user)
+        expect(user.password_digest).to be_nil
+        expect(user.invite_pending?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for a super admin with no password' do
+        user = create(:unconfirmed_user, email: 'hello@citizenlab.co', roles: [{ type: 'admin' }])
+        expect(user.super_admin?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
+
+      it 'is NOT allowed for a user who does have a password' do
+        user = create(:user, password: 'democracy2.0')
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
     end
 
-    it 'is not allowed if a password has been supplied in the request' do
-      u = described_class.new(email: 'bob@citizenlab.co')
-      expect(!!u.authenticate('any_string')).to be(false)
-    end
+    describe 'authentication with a password' do
+      let(:user) { create(:user, password: 'democracy2.0') }
 
-    it 'is not allowed if a password has been set' do
-      u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
-      expect(!!u.authenticate('')).to be(false)
-    end
+      it 'returns the user when the password matches' do
+        expect(user.authenticate('democracy2.0')).to eq user
+      end
 
-    it 'is not allowed if confirmation is not required' do
-      u = described_class.new(email: 'bob@citizenlab.co', locale: 'en')
-      u.save!
-      u.email_confirmation.confirm!
-      expect(!!u.authenticate('')).to be(false)
+      it 'returns false when the password does not match' do
+        expect(user.authenticate('democracy2.1')).to be(false)
+      end
     end
   end
 
