@@ -10,7 +10,7 @@ describe McpServer::Tools::GetProjectLayout do
     project_page_craftjs(
       'T1' => craftjs_node(
         'TextMultiloc',
-        parent: 'PROJECT_PAGE_DESCRIPTION',
+        parent: 'PROJECT_PAGE_BODY',
         props: { 'text' => { 'en' => '<p>Hello</p>' } }
       )
     )
@@ -28,20 +28,25 @@ describe McpServer::Tools::GetProjectLayout do
       expect(structured[:enabled]).to eq(layout.enabled)
       expect(structured[:outline].pluck(:id)).to eq(%w[
         ROOT PROJECT_PAGE_BANNER PROJECT_PAGE_TITLE PROJECT_PAGE_BODY
-        PROJECT_PAGE_DESCRIPTION T1 PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS
+        T1 PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS
       ])
       expect(structured[:craftjs_json]).to eq(layout.craftjs_json)
     end
 
-    it 'marks the scaffold nodes as locked in the outline, but not the content' do
+    it 'marks the scaffold nodes as locked in the outline, but not the content or the widgets' do
       response = run_mcp_tool(described_class, params: { project_id: project.id }, current_user:)
 
       locked = response.structured_content[:outline].to_h { |entry| [entry[:id], entry[:locked]] }
       expect(locked['PROJECT_PAGE_BANNER']).to be(true)
-      expect(locked['PROJECT_PAGE_DESCRIPTION']).to be(true)
+      expect(locked['PROJECT_PAGE_BODY']).to be(true)
+      expect(locked['PROJECT_PAGE_PHASES']).to be_nil
+      expect(locked['PROJECT_PAGE_EVENTS']).to be_nil
       expect(locked['T1']).to be_nil
     end
   end
+
+  # Stale custom.locked markers on pre-unlock pages are covered where the rule lives, in
+  # McpServer::Serializers::LayoutOutline.
 
   context 'when the project has no page layout (provisioning anomaly)' do
     it 'returns an error instead of synthesizing one' do

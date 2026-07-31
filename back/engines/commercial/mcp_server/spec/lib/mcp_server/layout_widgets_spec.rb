@@ -67,13 +67,16 @@ describe McpServer::LayoutWidgets do
       end
     end
 
-    it 'matches the canonical nodes the backend seeds' do
+    it 'covers the canonical nodes the backend seeds, minus the movable widgets' do
       seeded = ContentBuilder::ProjectPageLayoutService.new
         .from_description_multiloc({})
         .values
         .map { |node| node.dig('type', 'resolvedName') }
 
-      expect(seeded).to match_array(described_class::SCAFFOLD_WIDGETS)
+      # The seed also places the phases and events widgets. They are ordinary widgets an
+      # editor may reorder or remove, so they are documented as insertable, not scaffold.
+      expect(seeded).to match_array(described_class::SCAFFOLD_WIDGETS + %w[PhasesWidget EventsWidget])
+      expect(described_class::DOCS).to include('PhasesWidget', 'EventsWidget')
     end
   end
 

@@ -20,13 +20,15 @@ module CraftjsNodeHelpers
   end
 
   # A project page graph in its persisted shape: the canonical scaffold (as seeded by
-  # ContentBuilder::ProjectPageLayoutService) plus the given content nodes. Content
-  # nodes whose parent is the description section are listed as its children.
+  # ContentBuilder::ProjectPageLayoutService) plus the given content nodes. Content nodes
+  # whose parent is the page body are listed as its children, before the seeded phases
+  # and events widgets.
   def project_page_craftjs(content = {})
     scaffold = ContentBuilder::ProjectPageLayoutService.new.from_description_multiloc({})
-    section_id = ContentBuilder::ProjectPageLayoutService::DESCRIPTION_ID
-    top_level = content.select { |_id, node| node['parent'] == section_id }.keys
-    scaffold[section_id] = scaffold[section_id].merge('nodes' => top_level)
+    body_id = ContentBuilder::ProjectPageLayoutService::BODY_ID
+    body = scaffold[body_id]
+    top_level = content.select { |_id, node| node['parent'] == body_id }.keys
+    scaffold[body_id] = body.merge('nodes' => top_level + body['nodes'])
     scaffold.merge(content)
   end
 

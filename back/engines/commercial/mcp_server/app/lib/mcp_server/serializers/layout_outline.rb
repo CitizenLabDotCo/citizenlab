@@ -17,7 +17,7 @@ class McpServer::Serializers::LayoutOutline
         parent: { type: 'string', description: 'Absent on ROOT.' },
         depth: { type: 'integer' },
         canvas: { type: 'boolean', description: 'Present (true) when children can be placed inside this node.' },
-        locked: { type: 'boolean', description: 'Present (true) on canonical page-scaffold nodes that must not be added, moved, deleted or edited.' },
+        locked: { type: 'boolean', description: 'Present (true) on page-scaffold nodes that must not be added, moved, deleted or edited.' },
         slot: { type: 'string', description: "The parent's linkedNodes slot this node fills (e.g. left, accordion-content)." },
         text: { type: 'string', description: 'Plain-text snippet of the node text or title.' }
       },
@@ -44,23 +44,25 @@ class McpServer::Serializers::LayoutOutline
   private
 
   def entry(id, node, depth, slot)
+    widget = ContentBuilder::Craftjs::Query.resolved_name(node)
     {
       id: id,
-      widget: ContentBuilder::Craftjs::Query.resolved_name(node),
+      widget: widget,
       parent: node['parent'],
       depth: depth,
       canvas: node['isCanvas'] ? true : nil,
-      locked: locked?(node) ? true : nil,
+      locked: locked?(widget) ? true : nil,
       slot: slot,
       text: text_snippet(node)
     }.compact
   end
 
-  # The FE marks the fixed page-scaffold nodes with custom.locked (widgets pinned in
-  # place) or custom.region (structural canvases); both are off-limits to edits.
-  def locked?(node)
-    custom = node['custom']
-    custom.is_a?(Hash) && (custom['locked'] || custom['region']) ? true : false
+  # Deliberately the widget type, not the stored custom.locked/custom.region markers:
+  # pages seeded before the page builder was unlocked carry custom.locked on their
+  # phases and events widgets, which are ordinary, movable widgets now. Reading the
+  # markers would report those as untouchable and contradict what the tools enforce.
+  def locked?(widget)
+    McpServer::LayoutWidgets::SCAFFOLD_WIDGETS.include?(widget)
   end
 
   def text_snippet(node)
