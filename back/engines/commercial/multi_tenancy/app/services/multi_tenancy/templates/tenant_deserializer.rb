@@ -19,7 +19,13 @@ module MultiTenancy
         @save_temp_remote_urls = save_temp_remote_urls
       end
 
-      def deserialize(template, validate: true, max_time: nil, local_copy: false)
+      # @param reuse_by [Hash{String=>#call}] optional per-model matchers, `model_name => ->(restored_attributes,
+      #   model_class) { existing_record_or_nil }`. When a matcher returns an existing record, that record is
+      #   *reused* — its id (and its nested `*_attributes` submodels' ids) are registered for `*_ref`
+      #   resolution and no new row is created — instead of inserting a duplicate. Lets a supplemental
+      #   import reference already-imported records (e.g. users by `unique_code`). Empty by default, so a
+      #   normal (fresh-tenant) apply is unaffected.
+      def deserialize(template, validate: true, max_time: nil, local_copy: false, reuse_by: {})
         # To ensure that `CurrentAttributes` is not unexpectedly reset during the
         # application of a template, we need to make sure that the template is wrapped by
         # the executor before setting the `CurrentAttributes` value. This is because
@@ -34,7 +40,7 @@ module MultiTenancy
         # Note: It's safe to call wrap multiple times because the executor is re-entrant.
         ::Rails.application.executor.wrap do
           Current.set(loading_tenant_template: true) do
-            _deserialize(template, validate, max_time, local_copy)
+            _deserialize(template, validate, max_time, local_copy, reuse_by)
           end
         end
 
@@ -43,7 +49,7 @@ module MultiTenancy
 
       private
 
-      def _deserialize(template, validate, max_time, local_copy)
+      def _deserialize(template, validate, max_time, local_copy, reuse_by = {})
         t1 = Time.zone.now
         obj_to_id_and_class = {}.compare_by_identity
         created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
@@ -72,6 +78,12 @@ module MultiTenancy
               AppConfiguration.instance.settings,
               model_class: model_class
             )
+
+            # Reuse an already-existing record instead of inserting a duplicate (opt-in via `reuse_by`).
+            if (existing = reusable_record(reuse_by, model_class, restored_attributes))
+              register_reused_record(existing, attributes, obj_to_id_and_class)
+              next
+            end
 
             remote_image_attributes, restored_attributes = restored_attributes.partition do |field_name, _field_value|
               field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
@@ -118,6 +130,24 @@ module MultiTenancy
         end
 
         created_objects_ids
+      end
+
+      # The already-existing record a `reuse_by` matcher points this template row at, or nil to create it.
+      def reusable_record(reuse_by, model_class, restored_attributes)
+        reuse_by[model_class.name]&.call(restored_attributes, model_class)
+      end
+
+      # Maps a reused existing record's id — and each of its nested `*_attributes` submodels' ids — into
+      # the ref table (keyed by the template hashes' object identity), so `*_ref`/`*_attributes_ref`s
+      # pointing at this row resolve to the existing record. Mirrors the creation-time registration.
+      def register_reused_record(existing, attributes, obj_to_id_and_class)
+        obj_to_id_and_class[attributes] = [existing.id, existing.class]
+        attributes.each do |field_name, field_value|
+          next unless field_name.end_with?('_attributes') && field_value.is_a?(Hash)
+
+          submodel = existing.public_send(field_name.chomp('_attributes'))
+          obj_to_id_and_class[field_value] = [submodel.id, submodel.class] if submodel
+        end
       end
 
       def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)

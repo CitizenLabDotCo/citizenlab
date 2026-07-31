@@ -12,6 +12,7 @@ require 'csv'
 #
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR]
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
+#   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,true,false,decidim--process--14]  # only that space + refs
 #   rake decidim_importer:update_app_config[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
@@ -24,15 +25,18 @@ require 'csv'
 # arg disables image fetching (for templates whose `remote_*_url`s point at an unreachable host).
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
-  task :create_template, %i[path primary_locale production include_source_url] => [:environment] do |_t, args|
+  task :create_template, %i[path primary_locale production include_source_url container_ids] => [:environment] do |_t, args|
     path = args.fetch(:path)
     # `production=true` keeps real user names/emails; otherwise they're anonymised.
     production = args[:production].to_s.strip.downcase == 'true'
     # `include_source_url=true` prepends a link back to each project's original Decidim URL.
     include_source_url = args[:include_source_url].to_s.strip.downcase == 'true'
+    # `container_ids` (process/assembly uids, `+`-separated) narrows the template to those spaces plus the
+    # users/folders they reference — a supplemental import. Blank means the whole export.
+    container_ids = args[:container_ids].to_s.split(/[+\s]+/).compact_blank.presence
     creator = build_creator(
       path, primary_locale: args[:primary_locale] || 'fr-FR', anonymize_users: !production,
-      include_source_url: include_source_url
+      include_source_url: include_source_url, container_ids: container_ids
     )
     builder = creator.build_template
 
@@ -68,15 +72,18 @@ namespace :decidim_importer do
        'post-import finishing (link correction + Consultations/Assemblies folder structure). Unions the ' \
        'export\'s locales into the tenant (additive) so the template deserializes; run `update_app_config` ' \
        'for the rest of the app config (locale replace, branding, reply-to).'
-  task :import, %i[file host import_uploads] => [:environment] do |_t, args|
+  task :import, %i[file host import_uploads reuse_existing] => [:environment] do |_t, args|
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
     file = args.fetch(:file)
     import_uploads = args[:import_uploads].to_s.downcase != 'false'
+    # `reuse_existing=true` reuses already-imported users/folders instead of duplicating them — for a
+    # supplemental import (a scoped template) into a tenant that already holds an earlier import.
+    reuse_existing = args[:reuse_existing].to_s.strip.downcase == 'true'
 
     ensure_import_enabled!(tenant)
 
     with_report_log(log_path(file, 'import')) do
-      report_line "Decidim import → tenant=#{tenant.host} file=#{file} import_uploads=#{import_uploads}"
+      report_line "Decidim import → tenant=#{tenant.host} file=#{file} import_uploads=#{import_uploads} reuse_existing=#{reuse_existing}"
       broken = []
       tenant.switch do
         # Ensure the tenant has every locale the template's multilocs reference (additive union), so
@@ -84,7 +91,9 @@ namespace :decidim_importer do
         added = DecidimImporter::Importer.merge_app_config_locales_file(app_config_sibling(file))
         report_line "  added locales #{added.join(', ')}" if added.any?
 
-        created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
+        created = DecidimImporter::Importer.apply_template_file(
+          file, import_uploads: import_uploads, reuse_existing: reuse_existing
+        )
         created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
 
         broken = finalize_import!(file)

@@ -10,18 +10,23 @@ module DecidimImporter
   #   DecidimImporter::TemplateCreator.from_zip('tmp/example.com.zip').import
   class TemplateCreator
     # Build from a Decidim export zip: extract to a tempdir, parse every CSV, tear the tempdir down.
-    def self.from_zip(zip_path, **)
+    # @param container_ids [Array<String>, nil] when given, narrow the export to those process/assembly
+    #   uids and the users/folders they reference (see {RowScoper}) — a supplemental single-project import.
+    def self.from_zip(zip_path, container_ids: nil, **)
       raise ArgumentError, "file not found: #{zip_path}" unless File.file?(zip_path)
 
       Dir.mktmpdir('decidim_import_') do |tmp|
         ZipExtractor.extract(zip_path, tmp)
-        from_directory(ZipExtractor.detect_csv_root(tmp), **)
+        from_directory(ZipExtractor.detect_csv_root(tmp), container_ids: container_ids, **)
       end
     end
 
     # Build by scanning a directory that *directly* contains the export's CSV files (see {ExportReader}).
-    def self.from_directory(path, **)
-      new(ExportReader.read(path), **)
+    # @param container_ids [Array<String>, nil] see {.from_zip}.
+    def self.from_directory(path, container_ids: nil, **)
+      rows = ExportReader.read(path)
+      rows = RowScoper.scope(rows, container_ids) if container_ids.present?
+      new(rows, **)
     end
 
     # @param rows_by_model [Hash{Symbol=>Array<Hash>}] parsed CSV rows keyed by model. Missing keys mean

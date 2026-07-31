@@ -36,6 +36,23 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe '.apply_template with reuse_existing (supplemental import)' do
+    it 'reuses an already-imported user instead of duplicating it, resolving authors to it' do
+      existing = create(:user)
+      existing.update_columns(unique_code: 'decidim-user-1') # the same Decidim id the template carries
+      template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
+
+      described_class.apply_template(template, import_uploads: false, reuse_existing: true)
+
+      # not duplicated — the pre-existing user is reused
+      expect(User.where(unique_code: 'decidim-user-1').count).to eq(1)
+      expect(User.find_by(unique_code: 'decidim-user-1')).to eq(existing)
+      # and the proposal authored by decidim-user-1 resolves to that existing user
+      accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+      expect(accepted.author).to eq(existing)
+    end
+  end
+
   describe '.resolve_area_orderings!' do
     it "offsets imported area orderings past the tenant's existing areas" do
       create(:area)

@@ -9,20 +9,42 @@ module DecidimImporter
     # created-ids hash. Moderator roles (`RoleAssigner`) aren't applied here — that needs the in-memory
     # ref map, so it only runs in {TemplateCreator#import}.
     #
+    # Matchers that reuse an already-imported record (keyed by its stable Decidim identity) rather than
+    # inserting a duplicate — enabled with `reuse_existing:` for a supplemental import into a tenant that
+    # already holds an earlier import. Users match on `unique_code` (the Decidim uid; stable across
+    # exports, unlike anonymised emails); process-group folders on the slug their title generates (the
+    # only slugify — {Slug.sanitize}); user custom fields on `key`.
+    REUSE_MATCHERS = {
+      'User' => lambda { |attrs, klass|
+        code = attrs['unique_code']
+        klass.find_by(unique_code: code) if code.present?
+      },
+      'CustomField' => lambda { |attrs, klass|
+        key = attrs['key']
+        klass.find_by(key: key) if key.present?
+      },
+      'ProjectFolders::Folder' => lambda { |attrs, klass|
+        slug = Slug.sanitize((attrs['title_multiloc'] || {}).values.find(&:present?))
+        klass.find_by(slug: slug) if slug
+      }
+    }.freeze
+
     # @param import_uploads [Boolean] when false, every `remote_*_url` (images *and* file attachments) is
     #   stripped before deserialize — no external HTTP — e.g. for exports whose upload URLs are unreachable.
-    def self.apply_template_file(path, import_uploads: true)
+    # @param reuse_existing [Boolean] when true, reuse already-imported users/folders/custom-fields instead
+    #   of duplicating them (a supplemental import into a tenant that already holds an earlier import).
+    def self.apply_template_file(path, import_uploads: true, reuse_existing: false)
       # Parsing a large, anchor-heavy template is a silent single-threaded pause before the first DB
       # query — bracket it so the log shows progress rather than an apparent hang.
       Rails.logger.info "Loading template #{path} (#{File.size(path) / 1_048_576} MB)…"
       template = YAML.load_file(path, aliases: true)
       Rails.logger.info 'Template loaded, resolving idea statuses…'
-      apply_template(template, import_uploads: import_uploads)
+      apply_template(template, import_uploads: import_uploads, reuse_existing: reuse_existing)
     end
 
     # Deserializes an in-memory template into the current tenant and runs the post-import passes. Shared
     # by {.apply_template_file} and {TemplateCreator#import}. Returns the deserializer's created-ids hash.
-    def self.apply_template(template, import_uploads: true, validate: true)
+    def self.apply_template(template, import_uploads: true, validate: true, reuse_existing: false)
       IdeaStatuses.resolve!(template)
       resolve_area_orderings!(template)
       TemplateCleaner.prepare_uploads!(template, import_uploads: import_uploads)
@@ -30,7 +52,9 @@ module DecidimImporter
       TemplateCleaner.prune_imageless_project_images!(template)
       # Suppress `touch: true` callbacks during the bulk load so imported records keep their template dates.
       created = ActiveRecord::Base.no_touching do
-        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template, validate: validate)
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(
+          template, validate: validate, reuse_by: reuse_existing ? REUSE_MATCHERS : {}
+        )
       end
       recompute_voting_counts!(created)
       restore_update_timestamps(template, created)

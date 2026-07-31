@@ -53,7 +53,7 @@ registration form answers and poll answers have no Go Vocal event equivalent and
 
 ### The rake tasks
 
-#### `create_template[path, primary_locale, production, include_source_url]`
+#### `create_template[path, primary_locale, production, include_source_url, container_ids]`
 
 **Export → artifacts; touches no tenant.** Reads the export (`from_zip` / `from_directory`), runs the
 extractors in dependency order so cross-record refs resolve (users → scopes → folders → projects →
@@ -67,6 +67,14 @@ counts and every skipped record):
 - **`<base>.url_mapping.csv`** — old-Decidim-URL → new-target map for links embedded in descriptions,
   applied post-import.
 
+**Supplemental (scoped) import** — pass `container_ids` (process/assembly uids, `+`-separated) to narrow
+the template to just those spaces plus the **users** and **process-group folders** they reference
+([`RowScoper`](app/services/decidim_importer/row_scoper.rb)); everything else global (scopes → areas, the
+organization → app config) is dropped, since a supplemental import reuses what the tenant already holds.
+Use this to add a new project to a tenant that was already imported, then apply it with `import`'s
+`reuse_existing=true` (below), which reuses those already-imported users/folders rather than duplicating
+them.
+
 #### `update_app_config[file, host, import_uploads]`
 
 Applies the **full** `<base>.app_config.json` to the tenant, deep-merging its settings: the locale set
@@ -75,7 +83,7 @@ org's SMTP email becomes the tenant's **reply-to** (not `from` — that needs DN
 and separate from `import`; run it when you want the tenant to match the export. Logs to
 `<base>.app_config.log`.
 
-#### `import[file, host, import_uploads]`
+#### `import[file, host, import_uploads, reuse_existing]`
 
 **Template → tenant, in one tenant switch.** First unions the export's locales into the tenant's
 `core.locales` (additive — never dropping the tenant's own) so the template's multilocs always have the
@@ -89,6 +97,12 @@ folder gathering ungrouped projects, standard folder layouts + homepage previews
 to Home + Consultations + Assemblies. The post-import pass is idempotent; the deserialize is **not**
 transactional, so a mid-run failure leaves partial data — always import into a fresh tenant. Logs
 created counts to `<base>.import.log`.
+
+**`reuse_existing=true`** — for a **supplemental** import into a tenant that already holds an earlier
+import: instead of duplicating records that already exist, reuse them and resolve the new project's refs
+to them. Matched on stable Decidim identity — users by `unique_code`, process-group folders by the slug
+their title generates, user custom fields by `key` (`Importer::REUSE_MATCHERS`). Pair with a scoped
+`create_template` (`container_ids`). Off by default, so a normal import is unaffected.
 
 #### `verify[file, locales, import_uploads]`
 
