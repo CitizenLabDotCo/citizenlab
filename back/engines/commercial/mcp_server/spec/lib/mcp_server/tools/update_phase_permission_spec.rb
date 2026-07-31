@@ -45,6 +45,8 @@ describe McpServer::Tools::UpdatePhasePermission do
         confirmed_email_expiry: permission.confirmed_email_expiry,
         require_verification: permission.require_verification,
         verification_expiry: nil,
+        confirmed_phone_number_expiry: permission.confirmed_phone_number_expiry,
+        require_confirmed_phone_number: permission.require_confirmed_phone_number,
         access_denied_explanation_multiloc: permission.access_denied_explanation_multiloc
       )
     end

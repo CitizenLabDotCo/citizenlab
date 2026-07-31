@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.newPhaseTitle',
     defaultMessage: 'New Phase',
   },
+  newSurveyTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.newSurveyTitle',
+    defaultMessage: 'New survey',
+  },
   titleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.titleLabel',
     defaultMessage: 'Title',
