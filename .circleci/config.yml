@@ -67,6 +67,14 @@ executors:
     parameters:
       image-tag:
         type: string
+      # Location of the Postgres data directory. Defaults to the image's own
+      # on-disk location. Jobs with a small, short-lived database can pass a
+      # path under `/dev/shm` (a tmpfs present in every container) to keep the
+      # whole cluster in RAM. Do NOT do this for jobs that create many tenant
+      # schemas -- they will not fit.
+      pgdata:
+        type: string
+        default: /var/lib/postgresql/data
     docker:
       - image: citizenlabdotco/back-ee:<< parameters.image-tag >>
         auth:
@@ -80,6 +88,7 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          PGDATA: << parameters.pgdata >>
         command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off
 
 commands:
@@ -253,6 +262,8 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
+      # Experiment: keep the test cluster in RAM. See the `pgdata` parameter.
+      pgdata: /dev/shm/pgdata/data
     working_directory: /citizenlab/back
     parallelism: 8
     environment:
@@ -260,7 +271,21 @@ jobs:
       COVERAGE: ON
     steps:
       - wait-for-postgres
+      # Experiment diagnostics: confirm the cluster really is on the RAM disk
+      # and that there is room to spare. Remove once the experiment concludes.
+      - run:
+          name: Report Postgres data directory and RAM disk size
+          command: |
+            df -h /dev/shm || true
+            PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -d postgres \
+              -c "SHOW data_directory;" || true
       - run: bin/rails db:create db:schema:load
+      - run:
+          name: Report database size and remaining RAM disk space
+          command: |
+            df -h /dev/shm || true
+            PGPASSWORD=$POSTGRES_PASSWORD psql -h $POSTGRES_HOST -U $POSTGRES_USER -d postgres \
+              -c "SELECT pg_size_pretty(pg_database_size('cl2_back_test'));" || true
       - run: |
           circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" \
             | circleci tests run --command="xargs bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml" --verbose --split-by=timings
