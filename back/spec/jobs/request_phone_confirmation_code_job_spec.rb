@@ -30,10 +30,25 @@ RSpec.describe RequestPhoneConfirmationCodeJob do
   end
 
   it 'sets the code delivery timestamp and resets the retry count' do
-    user.phone_confirmation.update!(code_retry_count: 3)
+    user.find_or_create_confirmation(:phone_confirmation).update!(code_retry_count: 3)
     expect { job.perform(user) }
       .to change { user.phone_confirmation.reload.code_sent_at }
     expect(user.phone_confirmation.reload.code_retry_count).to eq 0
+  end
+
+  it 'creates the phone confirmation on demand' do
+    expect(user.phone_confirmation).to be_nil
+
+    expect { job.perform(user) }.to change(PhoneConfirmation, :count).by(1)
+    expect(user.reload.phone_confirmation.code_sent_at).to be_present
+  end
+
+  it 'reuses an existing phone confirmation instead of replacing it' do
+    confirmation = user.find_or_create_confirmation(:phone_confirmation)
+
+    expect { job.perform(user) }.not_to change(PhoneConfirmation, :count)
+    expect(user.reload.phone_confirmation.id).to eq confirmation.id
+    expect(user.phone_confirmation.code_reset_count).to eq 1
   end
 
   it 'enqueues a code expiration job' do

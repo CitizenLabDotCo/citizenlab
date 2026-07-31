@@ -6,12 +6,13 @@ class RequestEmailConfirmationCodeJob < ApplicationJob
   def run(user)
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: nil })
 
+    confirmation = user.find_or_create_confirmation(:email_confirmation)
+
     # Issue (and commit) the code before delivering it. Delivery renders and sends
     # an email, which can take a while; holding the row lock across it would make
     # a concurrent confirm attempt read the pre-reset code (and count a retry
     # against the user) for a code that is on its way to them.
     ActiveRecord::Base.transaction do
-      confirmation = user.find_or_create_confirmation(:email_confirmation)
       confirmation.reset_code!
       confirmation.update!(code_sent_at: Time.zone.now)
     end

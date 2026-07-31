@@ -140,7 +140,7 @@ resource 'Request codes' do
     # user on the confirmation step (re-confirmation after confirmed_email_expiry).
     example 'with only_if_first_time, sends when no code is outstanding' do
       user = create(:user, email: 'test@test.com')
-      user.email_confirmation.clear_code!
+      # No confirmation row exists yet, so no code is outstanding.
       header_token_for(user)
 
       do_request(request_code: { email: user.email, only_if_first_time: true })
@@ -164,7 +164,7 @@ resource 'Request codes' do
 
     example 'an authenticated user can omit the email (uses current_user)' do
       user = create(:user, email: 'test@test.com')
-      user.email_confirmation.clear_code!
+      # No confirmation row exists yet, so no code is outstanding.
       header_token_for(user)
 
       do_request(request_code: { only_if_first_time: true })
@@ -274,7 +274,7 @@ resource 'Request codes' do
 
     example 'It does not work if the user reached code_reset_count' do
       user = create(:user, :with_confirmed_phone)
-      user.phone_confirmation.update!(code_reset_count: 4)
+      user.find_or_create_confirmation(:phone_confirmation).update!(code_reset_count: 4)
       header_token_for(user)
 
       do_request(request_code: {})
@@ -297,7 +297,7 @@ resource 'Request codes' do
     # aged out).
     example 'with only_if_first_time, sends when no code is outstanding' do
       user = create(:user, :with_confirmed_phone)
-      expect(user.phone_confirmation.code_outstanding?).to be false
+      expect(user.phone_confirmation).to be_nil
       header_token_for(user)
 
       do_request(request_code: { only_if_first_time: true })

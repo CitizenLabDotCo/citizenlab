@@ -53,7 +53,7 @@ class RequestCodePolicy < ApplicationPolicy
     return false unless app_configuration.feature_activated?('sms')
     return false if user.nil?
     return false if user.phone.blank?
-    return false if user.phone_confirmation.code_reset_count >= max_retries - 1
+    return false if code_reset_count(user.phone_confirmation) >= max_retries - 1
 
     true
   end
