@@ -92,6 +92,8 @@ describe('Native survey permissions', () => {
     it('lets you participate if you enter correct custom field value', () => {
       cy.visit(`/projects/${projectSlug}`);
 
+      cy.dockProjectCtaBar();
+
       // Auth modal opens correctly
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
       cy.get('#e2e-authentication-modal').should('exist');
@@ -125,6 +127,8 @@ describe('Native survey permissions', () => {
 
     it('does not let you participate if you enter incorrect custom field value', () => {
       cy.visit(`/projects/${projectSlug}`);
+
+      cy.dockProjectCtaBar();
 
       // Auth modal opens correctly
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });

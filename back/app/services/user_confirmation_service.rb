@@ -5,7 +5,7 @@
 #
 # @example
 #   service = UserConfirmationService.new
-#   result = service.validate_and_confirm_unauthenticated!(user, '1234')
+#   result = service.validate_and_confirm_email!(user, '1234')
 #
 #   if result.success?
 #     # User confirmed successfully
@@ -34,9 +34,9 @@ class UserConfirmationService
     end
   end
 
-  def validate_and_confirm_unauthenticated!(user, code)
+  def validate_and_confirm_email!(user, code)
     # Ensure that password login (i.e. 'normal', non-SSO login)
-    # feature is enabled for unauthenticated confirmation
+    # feature is enabled for email confirmation
     validate_password_login_enabled!
     validate_user!(user)
     validate_email!(user.email)
@@ -48,7 +48,7 @@ class UserConfirmationService
     failure_result(e)
   end
 
-  def validate_and_confirm_email_change!(user, code)
+  def validate_and_confirm_new_email!(user, code)
     validate_user!(user)
     validate_email!(user.new_email)
     validate_and_confirm!(user.new_email_confirmation, code)
@@ -59,9 +59,22 @@ class UserConfirmationService
     failure_result(e)
   end
 
+  def validate_and_confirm_phone!(user, code)
+    # Ensure that password login (i.e. 'normal', non-SSO login)
+    # feature is enabled for phone confirmation
+    validate_password_login_enabled!
+    validate_user!(user)
+    validate_phone!(user.phone)
+    validate_and_confirm!(user.phone_confirmation, code)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
   # Confirms a pending phone-number change for an authenticated user.
   # On success, NewPhoneConfirmation#confirm! promotes new_phone -> phone.
-  def validate_and_confirm_phone_change!(user, code)
+  def validate_and_confirm_new_phone!(user, code)
     validate_user!(user)
     validate_phone!(user.new_phone)
     validate_and_confirm!(user.new_phone_confirmation, code)

@@ -8,7 +8,6 @@ module ContentBuilder
     BANNER_ID = 'PROJECT_PAGE_BANNER'
     TITLE_ID = 'PROJECT_PAGE_TITLE'
     BODY_ID = 'PROJECT_PAGE_BODY'
-    DESCRIPTION_ID = 'PROJECT_PAGE_DESCRIPTION'
     PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
 
@@ -91,7 +90,7 @@ module ContentBuilder
       end
       node_id = "#{INJECTED_ID_PREFIX}#{SecureRandom.alphanumeric(10)}"
 
-      canonical_nodes([node_id]).merge(node_id => node.merge('parent' => DESCRIPTION_ID))
+      canonical_nodes([node_id]).merge(node_id => node.merge('parent' => BODY_ID))
     end
 
     private
@@ -116,7 +115,7 @@ module ContentBuilder
         .reject { |id| unsupported.include?(id) }
         .filter_map { |id| id_map[id] }
 
-      top_level_ids.each { |id| nodes[id]['parent'] = DESCRIPTION_ID }
+      top_level_ids.each { |id| nodes[id]['parent'] = BODY_ID }
 
       [nodes, top_level_ids]
     end
@@ -293,7 +292,7 @@ module ContentBuilder
         },
         BODY_ID => {
           'type' => { 'resolvedName' => 'ProjectPageBody' },
-          'nodes' => [DESCRIPTION_ID, PHASES_ID, EVENTS_ID],
+          'nodes' => description_ids + [PHASES_ID, EVENTS_ID],
           'props' => {},
           'custom' => { 'region' => true },
           'hidden' => false,
@@ -302,27 +301,12 @@ module ContentBuilder
           'displayName' => 'ProjectPageBody',
           'linkedNodes' => {}
         },
-        DESCRIPTION_ID => {
-          'type' => { 'resolvedName' => 'ProjectDescriptionSection' },
-          'nodes' => description_ids,
-          'props' => {},
-          'custom' => {
-            'title' => message('app.components.ProjectPageBuilder.Widgets.descriptionSectionTitle', 'Description'),
-            'locked' => true
-          },
-          'hidden' => false,
-          'parent' => BODY_ID,
-          'isCanvas' => true,
-          'displayName' => 'ProjectDescriptionSection',
-          'linkedNodes' => {}
-        },
         PHASES_ID => {
           'type' => { 'resolvedName' => 'PhasesWidget' },
           'nodes' => [],
           'props' => {},
           'custom' => {
             'title' => message('app.components.ProjectPageBuilder.Widgets.phasesWidgetTitle', 'Phases'),
-            'locked' => true,
             'noPointerEvents' => true
           },
           'hidden' => false,
@@ -337,7 +321,6 @@ module ContentBuilder
           'props' => {},
           'custom' => {
             'title' => message('app.components.ProjectPageBuilder.Widgets.eventsWidgetTitle', 'Events'),
-            'locked' => true,
             'noPointerEvents' => true
           },
           'hidden' => false,
