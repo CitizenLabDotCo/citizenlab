@@ -170,8 +170,6 @@ RSpec.describe UserConfirmationService do
     include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at
 
     context 'when the code is correct' do
-      # Phone is a signup identifier of its own, so tokens marked as pending
-      # during the phone signup are claimed here (as they are for email).
       it 'completes pending claim tokens' do
         claim_token = create(:claim_token)
         ClaimTokenService.mark(user, [claim_token.token])
