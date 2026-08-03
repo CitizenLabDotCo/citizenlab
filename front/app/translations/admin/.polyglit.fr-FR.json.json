@@ -21484,6 +21484,11 @@
     "verified_at": "2026-08-03T07:46:44.802948Z",
     "verified_by": "Adrien"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": {
+    "state": "verified",
+    "verified_at": "2026-08-03T08:09:11.578741Z",
+    "verified_by": "Adrien"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": {
     "state": "verified",
     "verified_at": "2026-08-03T08:06:43.152369Z",
