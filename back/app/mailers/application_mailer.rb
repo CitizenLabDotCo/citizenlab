@@ -89,7 +89,7 @@ class ApplicationMailer < ActionMailer::Base
   def localize_date_for_recipient(date, format: :long)
     return if date.blank?
 
-    I18n.l(date, format: format, locale: locale.locale_sym)
+    I18n.l(date.to_date, format: format, locale: locale.locale_sym)
   end
 
   def count_from(value)

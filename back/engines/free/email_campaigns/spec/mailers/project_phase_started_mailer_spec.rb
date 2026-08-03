@@ -5,8 +5,10 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
   describe 'campaign_mail' do
     let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:project) { create(:project_with_phases) }
-    let_it_be(:phase) { project.phases.first }
+    let_it_be(:project) { create(:project) }
+    let_it_be(:phase) do
+      create(:phase, project: project, start_at: Date.new(2026, 7, 15), end_at: Date.new(2026, 9, 30))
+    end
     let_it_be(:notification) { create(:project_phase_started, recipient: recipient, project: project, phase: phase) }
 
     let(:campaign) { create(:project_phase_started_campaign) }
@@ -43,6 +45,20 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
         end
         with_tag 'p' do
           with_text(/You can now take part in 'Idea phase' on the platform of Liege./)
+        end
+      end
+    end
+
+    it 'includes the phase box' do
+      expect(mail_body(mail)).to have_tag('table') do
+        with_tag 'h2' do
+          with_text(/Idea phase/)
+        end
+        with_tag 'p' do
+          with_text(/From July 15, 2026 to September 30, 2026/)
+        end
+        with_tag 'p' do
+          with_text(/In this phase we gather ideas/)
         end
       end
     end

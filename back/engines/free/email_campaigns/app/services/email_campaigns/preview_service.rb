@@ -30,6 +30,7 @@ module EmailCampaigns
         phase: PreviewContentItem.new(
           id: SecureRandom.uuid,
           title_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.phase_title'),
+          description_multiloc: multiloc_service.i18n_to_multiloc('email_campaigns.preview_data.phase_description'),
           url: "/#{recipient.locale}/phase/example-project/example-phase"
         ),
         folder: PreviewContentItem.new(

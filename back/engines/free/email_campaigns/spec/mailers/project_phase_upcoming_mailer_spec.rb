@@ -10,11 +10,11 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
         recipient: recipient,
         event_payload: {
           phase_title_multiloc: { 'en' => 'Example phase title' },
-          phase_start_at: Date.new(2026, 8, 15),
-          phase_end_at: Date.new(2026, 9, 30),
+          phase_start_at: Time.zone.local(2026, 8, 15),
+          phase_end_at: Time.zone.local(2026, 9, 30),
+          phase_description_multiloc: { 'en' => '<p>Example phase description</p>' },
           phase_url: 'https://govocal.com/phases/1',
-          project_title_multiloc: { 'en' => 'Example project title' },
-          project_description_preview_multiloc: { 'en' => 'Example project description preview' }
+          project_title_multiloc: { 'en' => 'Example project title' }
         },
         delay: 8.hours.to_i
       }
@@ -52,10 +52,16 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
       end
     end
 
-    it 'includes the info box' do
+    it 'includes the phase box' do
       expect(body).to have_tag('table') do
-        with_tag 'div' do
-          with_text(/The project will enter the phase 'Example phase title'/)
+        with_tag 'h2' do
+          with_text(/Example phase title/)
+        end
+        with_tag 'p' do
+          with_text(/From August 15, 2026 to September 30, 2026/)
+        end
+        with_tag 'p' do
+          with_text(/Example phase description/)
         end
       end
     end
@@ -63,17 +69,6 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
     it 'includes the CTA' do
       expect(body).to have_tag('a', with: { href: 'https://govocal.com/phases/1' }) do
         with_text(/Review the setup/)
-      end
-    end
-
-    it 'includes the project box' do
-      expect(body).to have_tag('table') do
-        with_tag 'h2' do
-          with_text(/About 'Example project title'/)
-        end
-        with_tag 'p' do
-          with_text(/Example project description preview/)
-        end
       end
     end
 

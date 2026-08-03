@@ -45,6 +45,7 @@ en:
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
+      phase_dates: 'From %{startDate} to %{endDate}'
       cta_goto_idea: 'Go to this idea'
       cta_goto_input: 'Go to this input'
       cta_goto_proposal: 'Go to this proposal'
@@ -352,16 +353,12 @@ en:
       cta_button: 'See what''s new'
       event_description: 'You can now take part in ''%{phaseTitle}'' on the platform of %{organizationName}.'
       title: 'There''s something new in ''%{projectName}'''
-      subtitle: 'About ''%{projectName}'''
-      new_phase: 'This project entered the phase ''%{phaseTitle}'''
       subject: '''%{phaseTitle}'' has started in %{projectName}'
       preheader: 'You can now take part in ''%{phaseTitle}'''
     project_phase_upcoming:
       cta_button: 'Review the setup'
       event_description: '''%{phaseTitle}'' in the project ''%{projectName}'' starts on %{startDate}. Take a moment to check that everything is ready: Is the description complete? Are the dates correct? Do you want to inform your community through a custom email campaign?'
       title: '%{firstName}, ''%{phaseTitle}'' starts on %{startDate}'
-      subtitle: 'About ''%{projectName}'''
-      new_phase: 'The project will enter the phase ''%{phaseTitle}'''
       subject: '%{projectName}: ''%{phaseTitle}'' starts on %{startDate}'
       preheader: 'Make sure everything is ready before %{startDate}'
     project_published:
