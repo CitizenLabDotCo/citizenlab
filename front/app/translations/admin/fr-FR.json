@@ -1201,7 +1201,7 @@
   "app.containers.Admin.messaging.editSmsCampaignTitle": "Modifier le SMS",
   "app.containers.Admin.messaging.fieldSmsBody": "Message",
   "app.containers.Admin.messaging.fieldSmsBodyError": "Renseignez un message dans toutes les langues",
-  "app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError": "Limitez chaque message à {maxSegments} SMS ou moins",
+  "app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError": "Un message ne peut pas faire plus de {maxSegments} SMS.",
   "app.containers.Admin.messaging.fieldSmsLabel": "Nom",
   "app.containers.Admin.messaging.fieldSmsLabelError": "Renseignez un nom dans toutes les langues",
   "app.containers.Admin.messaging.fieldSmsLabelTooltip": "Un nom interne pour identifier cette campagne. Il n'est pas visible par les destinataires.",

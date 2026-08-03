@@ -6314,6 +6314,11 @@
     "verified_at": "2026-07-16T20:17:14.984859Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.fieldSmsBodyTooManySegmentsError": {
+    "state": "verified",
+    "verified_at": "2026-08-03T11:48:04.921983Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.fieldSmsLabel": {
     "state": "verified",
     "verified_at": "2026-07-16T20:14:04.664795Z",
