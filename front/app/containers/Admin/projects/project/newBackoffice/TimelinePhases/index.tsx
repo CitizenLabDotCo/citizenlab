@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -19,12 +18,15 @@ import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import {
+  Connector,
   PHASE_TAB_ROUTES,
   PhaseDot,
   Row,
   formatDateRange,
   phaseStatus,
 } from '../phaseRowUtils';
+
+import EmptyState from './EmptyState';
 
 const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: methodMessages.ideation,
@@ -39,19 +41,6 @@ const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   common_ground: methodMessages.commonGround,
   document_annotation: methodMessages.documentAnnotation,
 };
-
-const DOT_CENTER = 16;
-
-const Connector = styled.div<{ isFirst: boolean; isLast: boolean }>`
-  position: absolute;
-  left: 13px; /* 8px row padding + 5px (half the 10px dot) */
-  width: 2px;
-  margin-left: -1px;
-  top: ${({ isFirst }) => (isFirst ? `${DOT_CENTER}px` : '0')};
-  bottom: ${({ isLast }) => (isLast ? 'auto' : '0')};
-  height: ${({ isLast }) => (isLast ? `${DOT_CENTER}px` : 'auto')};
-  background: ${colors.coolGrey300};
-`;
 
 interface Props {
   projectId: string;
@@ -87,6 +76,8 @@ const TimelinePhases = ({ projectId }: Props) => {
       >
         {formatMessage(messages.timeline)}
       </Text>
+
+      {sortedPhases.length === 0 && <EmptyState />}
 
       <Box display="flex" flexDirection="column">
         {sortedPhases.map((phase, index) => {
