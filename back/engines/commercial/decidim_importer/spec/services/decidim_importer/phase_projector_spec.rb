@@ -103,40 +103,63 @@ RSpec.describe DecidimImporter::PhaseProjector do
     expect(ref_map.fetch('c1').attributes).not_to have_key('description_multiloc')
   end
 
-  it 'orders phases by component weight and fits the dates to that order' do
+  it 'orders timeline phases by component weight and fits the dates to that order' do
     # c1 has the higher weight but earlier dates; the lower-weight c2 must come first, and c1 is then
     # pushed after it (keeping its 9-day length).
     c1 = component('c1', weight: '2', published_at: '2023-01-01', end_dates: %w[2023-01-10])
-    c2 = component('c2', method: 'native_survey', weight: '1', published_at: '2023-06-01', end_dates: %w[2023-06-05])
+    c2 = component('c2', method: 'voting', weight: '1', published_at: '2023-06-01', end_dates: %w[2023-06-05])
     projector.run(participation_components: [c1, c2])
 
     expect(phases).to eq([
-      %w[native_survey 2023-06-01 2023-06-05],
+      %w[voting 2023-06-01 2023-06-05],
       %w[ideation 2023-06-05 2023-06-14]
     ])
   end
 
   it 'keeps the real dates when the weight order already matches the chronology' do
     c1 = component('c1', weight: '1', published_at: '2023-01-01', end_dates: %w[2023-01-20])
-    c2 = component('c2', method: 'native_survey', weight: '2', published_at: '2023-02-01', end_dates: %w[2023-02-10])
+    c2 = component('c2', method: 'voting', weight: '2', published_at: '2023-02-01', end_dates: %w[2023-02-10])
     projector.run(participation_components: [c2, c1])
 
     expect(phases).to eq([
       %w[ideation 2023-01-01 2023-01-20],
-      %w[native_survey 2023-02-01 2023-02-10]
+      %w[voting 2023-02-01 2023-02-10]
     ])
   end
 
-  it 'pushes an overlapping later phase forward so phases never overlap (ties break by start date)' do
+  it 'pushes an overlapping later timeline phase forward so phases never overlap (ties break by start date)' do
     c1 = component('c1', weight: '1', published_at: '2023-01-01', end_dates: %w[2023-01-20])
-    c2 = component('c2', method: 'native_survey', weight: '1', published_at: '2023-01-10', end_dates: %w[2023-01-25])
+    c2 = component('c2', method: 'voting', weight: '1', published_at: '2023-01-10', end_dates: %w[2023-01-25])
     projector.run(participation_components: [c2, c1])
 
     # Same weight → ordered by start (c1 then c2); c2 overlapped, so it's pushed to start at c1's end,
     # keeping its 15-day length.
     expect(phases).to eq([
       %w[ideation 2023-01-01 2023-01-20],
-      %w[native_survey 2023-01-20 2023-02-04]
+      %w[voting 2023-01-20 2023-02-04]
     ])
+  end
+
+  it 'places a survey phase standalone (parallel), keeping its own natural window' do
+    survey = component('c1', method: 'native_survey', published_at: '2023-04-01', end_dates: %w[2023-04-20])
+    projector.run(participation_components: [survey])
+
+    phase = ref_map.fetch('c1').attributes
+    expect(phase['placement_type']).to eq('standalone')
+    expect([phase['start_at'], phase['end_at']]).to eq(%w[2023-04-01 2023-04-20])
+  end
+
+  it 'runs a survey parallel to the timeline phases, shifting neither’s dates' do
+    ideation = component('c1', weight: '1', published_at: '2023-01-01', end_dates: %w[2023-01-20])
+    survey = component('c2', method: 'native_survey', weight: '2', published_at: '2023-01-05', end_dates: %w[2023-01-25])
+    projector.run(participation_components: [ideation, survey])
+
+    # The survey overlaps the ideation phase, but being standalone neither is pushed — both keep natural dates.
+    expect(phases).to contain_exactly(
+      %w[ideation 2023-01-01 2023-01-20],
+      %w[native_survey 2023-01-05 2023-01-25]
+    )
+    expect(ref_map.fetch('c1').attributes).not_to have_key('placement_type') # on_timeline (the default)
+    expect(ref_map.fetch('c2').attributes['placement_type']).to eq('standalone')
   end
 end

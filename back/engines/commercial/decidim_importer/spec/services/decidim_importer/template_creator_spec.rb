@@ -212,15 +212,19 @@ RSpec.describe DecidimImporter::TemplateCreator do
 
       let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Espaces verts'") }
 
-      it 'lays out the proposals and survey components as phases ordered by component weight' do
-        # Steps are dropped; only proposals (ideation) and survey (native_survey) become phases. They're
-        # ordered by component weight (proposals weight 0, survey weight 7), and the survey — which
-        # overlapped — is pushed after the proposals to fit. (The page component becomes a static page.)
-        methods = project.phases.order(:start_at).pluck(:participation_method)
-        expect(methods).to eq(%w[ideation native_survey])
-        # Sequential, non-overlapping: each phase starts on/after the previous one's end.
-        starts_ends = project.phases.order(:start_at).pluck(:start_at, :end_at)
-        starts_ends.each_cons(2) { |(_, prev_end), (next_start, _)| expect(next_start).to be >= prev_end }
+      it 'lays out the proposals component on the timeline and the survey as a standalone (parallel) phase' do
+        # Steps are dropped; only proposals (ideation) and survey (native_survey) become phases.
+        # (The page component becomes a static page.)
+        ideation = project.phases.find_by(participation_method: 'ideation')
+        survey = project.phases.find_by(participation_method: 'native_survey')
+
+        # The proposals phase sits on the timeline, dated from the component to its last proposal.
+        expect(ideation.placement_type).to eq('on_timeline')
+        expect([ideation.start_at.to_date.iso8601, ideation.end_at.to_date.iso8601]).to eq(%w[2023-01-05 2023-02-25])
+        # The survey runs standalone (parallel), keeping its own window instead of being pushed after the
+        # proposals — so it overlaps them rather than distorting the timeline.
+        expect(survey.placement_type).to eq('standalone')
+        expect(survey.start_at).to be < ideation.end_at
       end
 
       it 'imports a Decidim page as a project-scoped static page carrying the page body' do
