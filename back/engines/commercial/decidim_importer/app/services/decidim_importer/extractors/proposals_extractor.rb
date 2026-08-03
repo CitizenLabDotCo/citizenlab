@@ -20,6 +20,9 @@ module DecidimImporter
         category: 'category',
         title: 'title',
         body: 'body',
+        address: 'address',
+        latitude: 'latitude',
+        longitude: 'longitude',
         answer: 'answer',
         answered_at: 'answered_at',
         state_token: 'state_token',
@@ -60,7 +63,7 @@ module DecidimImporter
         # The export only dates a proposal by its publication; use that for created/submitted too, so the
         # imported idea isn't stamped with today's date.
         published = timestamp(row[COLUMNS[:published_at]])
-        {
+        attributes = {
           'title_multiloc' => multiloc(row[COLUMNS[:title]]),
           'body_multiloc' => multiloc(row[COLUMNS[:body]]),
           'publication_status' => 'published',
@@ -69,6 +72,17 @@ module DecidimImporter
           'submitted_at' => published,
           'idea_status_code' => IdeaStatuses.code_for_state_token(row[COLUMNS[:state_token]])
         }
+        add_location(attributes, row)
+        attributes
+      end
+
+      # Proposals can carry a geocoded address (`address` + `latitude`/`longitude`). Map the free-text
+      # address to `location_description` and the coordinates to the idea's map pin, when present.
+      def add_location(attributes, row)
+        address = present_value(row[COLUMNS[:address]])
+        attributes['location_description'] = address if address
+        point = location_point_geojson(row[COLUMNS[:latitude]], row[COLUMNS[:longitude]])
+        attributes['location_point_geojson'] = point if point
       end
 
       # Decidim `authors` is a JSON array of uids; keep the first resolving to an imported user. Non-user

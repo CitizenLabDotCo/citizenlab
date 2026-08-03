@@ -421,6 +421,14 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(note.created_at.to_date.iso8601).to eq('2023-02-13')
       end
 
+      it 'imports the proposal’s geocoded address as a location description and map pin' do
+        accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+
+        expect(accepted.location_description).to eq('12 avenue Roger Salengro')
+        expect(accepted.location_point.x).to be_within(0.00001).of(4.880)  # longitude
+        expect(accepted.location_point.y).to be_within(0.00001).of(45.766) # latitude
+      end
+
       it 'dates imported content from the export, not the import run' do
         accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
 
@@ -460,6 +468,9 @@ RSpec.describe DecidimImporter::TemplateCreator do
 
         expect(aire.budget).to eq(30_000)
         expect(aire.location_description).to eq('12 rue des Écoles')
+        # The budget project's coordinates become the idea's map pin ([lon, lat]).
+        expect(aire.location_point.x).to be_within(0.00001).of(4.889)
+        expect(aire.location_point.y).to be_within(0.00001).of(45.771)
         expect(aire.phases).to include(phase)
         expect(fontaine.budget).to eq(20_000)
       end
