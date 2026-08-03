@@ -43,8 +43,6 @@ const CustomPageCard = ({ page, emoji, imageUrl }: Props) => {
       borderRadius="12px"
       padding="20px"
       justify="left"
-      display="flex"
-      alignItems="center"
       whiteSpace="normal"
       width="100%"
       height="100%"
