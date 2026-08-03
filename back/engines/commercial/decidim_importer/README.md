@@ -36,7 +36,7 @@ Building blocks used along the way:
 | participatory processes                                | projects (Consultations folder)                                                  |
 | assemblies                                             | projects (Assemblies folder)                                                     |
 | participatory process groups                           | folders                                                                          |
-| `proposals` components                                 | ideation phases + ideas (+ comments, comment votes, endorsements, followers, proposal notes → internal comments) |
+| `proposals` components                                 | ideation phases + ideas (+ comments, comment votes, endorsements, followers, proposal notes → internal comments); a component whose proposals were voted on becomes a single-voting phase instead, its votes → baskets |
 | `surveys` components                                   | native-survey phases + responses                                                 |
 | `accountability` components                            | results → ideas                                                                  |
 | `debates` components                                   | ideation phases + ideas (+ comments, followers)                                  |

@@ -119,11 +119,14 @@ module DecidimImporter
         attributes['native_survey_title_multiloc'] = title
         attributes['native_survey_button_multiloc'] = native_survey_button_multiloc(title.keys)
       end
-      # Voting phases carry the voting method + the budget cap the budgeting method validates as present
-      # (`voting_min_total` keeps its schema default of 0).
+      # Voting phases carry the voting method + its per-user cap (`voting_max_total`): the budget cap for
+      # budgeting, the vote limit for single-voting (nil = Decidim's "unlimited", leaving the phase
+      # uncapped). Single-voting also pins `voting_max_votes_per_idea` to 1 (one vote per option).
+      # `voting_min_total`/`voting_min_selected_options` keep their schema defaults (0 / 1).
       if method == 'voting'
         attributes['voting_method'] = component[:voting_method]
-        attributes['voting_max_total'] = component[:voting_max_total]
+        attributes['voting_max_total'] = component[:voting_max_total] if component[:voting_max_total]
+        attributes['voting_max_votes_per_idea'] = component[:voting_max_votes_per_idea] if component[:voting_max_votes_per_idea]
       end
 
       record = Record.new('phase', attributes)

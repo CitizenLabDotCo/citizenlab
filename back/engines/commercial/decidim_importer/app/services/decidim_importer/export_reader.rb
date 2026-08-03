@@ -84,7 +84,7 @@ module DecidimImporter
       PROPOSALS_COMPONENT => [['*--proposals.csv', :proposals], ['*--comments.csv', :comments],
         ['*--comment{s,}-votes.csv', :comment_votes], ['*--followers.csv', :followers],
         ['*--endorsements.csv', :endorsements], ['*--attachments.csv', :proposal_attachments],
-        ['*--proposal-notes.csv', :proposal_notes]],
+        ['*--proposal-notes.csv', :proposal_notes], ['*--proposal-votes.csv', :proposal_votes]],
       SURVEYS_COMPONENT => [['*--answers.csv', :survey_answers]],
       ACCOUNTABILITY_COMPONENT => [['*--statuses.csv', :accountability_statuses], ['*--results.csv', :results]],
       BLOGS_COMPONENT => [['*--posts.csv', :blog_posts]],
@@ -117,8 +117,8 @@ module DecidimImporter
     def read_containers(root)
       acc = { projects: [], attachments: [], attachment_collections: [], categories: [], proposals: [],
               comments: [], comment_votes: [], followers: [], endorsements: [], proposal_attachments: [],
-              proposal_notes: [], results: [], accountability_statuses: [], components: [], survey_answers: [],
-              budgets: [], budget_projects: [], orders: [], blog_posts: [],
+              proposal_notes: [], proposal_votes: [], results: [], accountability_statuses: [], components: [],
+              survey_answers: [], budgets: [], budget_projects: [], orders: [], blog_posts: [],
               meetings: [], meeting_attachments: [], debates: [] }
       CONTAINERS.each do |container|
         container_dirs(root, container).each { |dir| read_container(dir, container, acc) }

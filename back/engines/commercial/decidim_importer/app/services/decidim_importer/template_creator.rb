@@ -65,6 +65,7 @@ module DecidimImporter
       run_followers
       run_endorsements
       run_orders
+      run_proposal_votes
       run_proposal_attachments
       run_surveys
       run_survey_responses
@@ -196,6 +197,12 @@ module DecidimImporter
       @orders_extractor&.skipped || []
     end
 
+    # Proposal votes that couldn't be imported as baskets (component isn't a voting phase / no imported
+    # proposal among the voter's picks).
+    def skipped_proposal_votes
+      @proposal_votes_extractor&.skipped || []
+    end
+
     # Surveys/questions that couldn't be imported (e.g. an unsupported question type).
     def skipped_surveys
       @surveys_extractor&.skipped || []
@@ -298,6 +305,14 @@ module DecidimImporter
       return unless @rows_by_model.key?(:orders)
 
       (@orders_extractor = build_extractor(Extractors::OrdersExtractor, :orders)).run
+    end
+
+    # Decidim proposal votes → `Basket`s (+ `BasketsIdea`s) in a proposals component's single-voting phase.
+    # Runs after the proposals extractor (ideas exist) and users (voters resolve).
+    def run_proposal_votes
+      return unless @rows_by_model.key?(:proposal_votes)
+
+      (@proposal_votes_extractor = build_extractor(Extractors::ProposalVotesExtractor, :proposal_votes)).run
     end
 
     # Decidim comment votes → up/down `Reaction`s on the imported comments (comment + author resolved).
@@ -525,14 +540,34 @@ module DecidimImporter
         .transform_values { |budgets| budgets.sum { |budget| budget['total_budget'].to_i } }
     end
 
+    # Proposals components → `ideation` phases, *except* those whose proposals were voted on, which become
+    # `single_voting` voting phases (one vote per option) so the votes import as baskets (see
+    # {Extractors::ProposalVotesExtractor}). A voted component's phase also spans its votes' dates.
     def proposal_components
       dates_by_component = rows_for(:proposals).group_by { |row| row['decidim_component'] }
+      votes_by_component = rows_for(:proposal_votes).group_by { |row| row['decidim_component'] }
       proposal_component_rows.map do |row|
-        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
-          name: row['name'], weight: row['weight'], method: 'ideation',
-          published_at: row['published_at'], previously_published: row['previously_published'],
-          end_dates: (dates_by_component[row['uid']] || []).pluck('published_at') }
+        uid = row['uid']
+        proposal_dates = (dates_by_component[uid] || []).pluck('published_at')
+        votes = votes_by_component[uid] || []
+        base = { process_uid: row['decidim_participatory_process'], component_uid: uid,
+                 name: row['name'], weight: row['weight'],
+                 published_at: row['published_at'], previously_published: row['previously_published'] }
+        if votes.any?
+          base.merge(method: 'voting', voting_method: 'single_voting', voting_max_votes_per_idea: 1,
+            voting_max_total: proposal_vote_limit(row), end_dates: proposal_dates + votes.pluck('created_at'))
+        else
+          base.merge(method: 'ideation', end_dates: proposal_dates)
+        end
       end
+    end
+
+    # A proposals component's per-user vote cap from its `vote_limit` setting; nil when 0 (Decidim's
+    # "unlimited"), which leaves the Go Vocal single-voting phase uncapped.
+    def proposal_vote_limit(component_row)
+      settings = Parsing.parse_json(component_row['settings'])
+      limit = settings.is_a?(Hash) ? settings.dig('global', 'vote_limit').to_i : 0
+      limit.positive? ? limit : nil
     end
 
     def survey_phase_components

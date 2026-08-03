@@ -501,6 +501,47 @@ RSpec.describe DecidimImporter::TemplateCreator do
       end
     end
 
+    context 'with a proposals component whose proposals were voted on' do
+      before { described_class.from_directory(export_root, import_uploads: false).import }
+
+      let(:project) { Project.find_by("title_multiloc->>'fr-FR' = 'Budget des rues'") }
+      let(:phase) { project.phases.sole }
+      let(:rue_a) { Idea.find_by(title_multiloc: { 'fr-FR' => 'Rénover la rue A' }) }
+      let(:rue_b) { Idea.find_by(title_multiloc: { 'fr-FR' => 'Rénover la rue B' }) }
+
+      it 'imports the component as a single-voting phase respecting the vote limit' do
+        expect(phase.participation_method).to eq('voting')
+        expect(phase.voting_method).to eq('single_voting')
+        expect(phase.voting_max_votes_per_idea).to eq(1) # one vote per option
+        expect(phase.voting_max_total).to eq(2) # the component's vote_limit
+      end
+
+      it 'imports the voted proposals as ideas in the voting phase' do
+        expect(rue_a.phases).to include(phase)
+        expect(rue_b.phases).to include(phase)
+        # The proposals keep their Decidim status (resolved to an ideation idea_status), as for any proposal.
+        expect(rue_a.idea_status.code).to eq('accepted')
+      end
+
+      it 'imports each voter’s votes as one submitted basket, a single vote per picked idea' do
+        user1 = User.find_by(unique_code: 'decidim-user-1')
+        basket = Basket.find_by(phase: phase, user: user1)
+
+        # user-1 voted for both streets; the basket is dated by the last vote and holds one vote per idea.
+        expect(basket.submitted_at).to eq(Time.zone.parse('2022-09-03 10:30:00 +0200'))
+        expect(basket.ideas).to contain_exactly(rue_a, rue_b)
+        expect(basket.baskets_ideas.pluck(:votes)).to eq([1, 1])
+      end
+
+      it 'recomputes the phase and idea vote counts from the submitted baskets' do
+        # Three voters (user-1/2/3), so three submitted baskets and five votes (3 for rue A, 2 for rue B).
+        expect(phase.reload.baskets_count).to eq(3)
+        expect(phase.votes_count).to eq(5)
+        expect(rue_a.reload.votes_count).to eq(3)
+        expect(rue_b.reload.votes_count).to eq(2)
+      end
+    end
+
     context 'with processes that have meetings and blogs components' do
       before { described_class.from_directory(export_root, import_uploads: false).import }
 

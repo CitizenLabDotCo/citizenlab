@@ -1,0 +1,6 @@
+uid,proposal,author,created_at,updated_at,weight,temporary
+decidim--proposals--proposal-vote--100,decidim--proposals--proposal--100,decidim-user-1,2022-09-03 10:00:00 +0200,2022-09-03 10:00:00 +0200,,false
+decidim--proposals--proposal-vote--101,decidim--proposals--proposal--101,decidim-user-1,2022-09-03 10:30:00 +0200,2022-09-03 10:30:00 +0200,,false
+decidim--proposals--proposal-vote--102,decidim--proposals--proposal--100,decidim-user-2,2022-09-04 11:00:00 +0200,2022-09-04 11:00:00 +0200,,false
+decidim--proposals--proposal-vote--103,decidim--proposals--proposal--100,decidim-user-3,2022-09-05 12:00:00 +0200,2022-09-05 12:00:00 +0200,,false
+decidim--proposals--proposal-vote--104,decidim--proposals--proposal--101,decidim-user-3,2022-09-05 12:05:00 +0200,2022-09-05 12:05:00 +0200,,false

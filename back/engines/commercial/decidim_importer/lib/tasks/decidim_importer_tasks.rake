@@ -52,6 +52,7 @@ namespace :decidim_importer do
       creator.skipped_proposal_notes.each { |s| report_warn "  skipped proposal note #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_budget_projects.each { |s| report_warn "  skipped budget project #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_orders.each { |s| report_warn "  skipped order #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_proposal_votes.each { |s| report_warn "  skipped proposal vote #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_proposal_attachments.each { |s| report_warn "  skipped attachment #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_surveys.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_survey_responses.each { |s| report_warn "  skipped response #{s[:uid]}: #{s[:reason]}" }
