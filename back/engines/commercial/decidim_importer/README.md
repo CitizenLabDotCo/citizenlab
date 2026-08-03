@@ -153,7 +153,7 @@ procedure below runs it as a standalone `docker run` on a host (the same way pro
 it can be run locally / on staging. It writes three files that `import` consumes — all sharing one base name:
 
 - `<base>.template.yml` — the graph to deserialize
-- `<base>.app_config.json` — applied first (locales/branding)
+- `<base>.app_config.json` — optional app-config patch (locales/branding/reply-to); apply via `update_app_config` (and `import` uses it only to union locales)
 - `<base>.url_mapping.csv` — post-import link correction
 
 **2. Copy the three artifacts onto the Docker host.** They must land in one directory, keeping their shared
