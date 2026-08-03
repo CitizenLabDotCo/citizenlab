@@ -494,10 +494,11 @@ RSpec.describe DecidimImporter::TemplateCreator do
         aire = Idea.find_by(title_multiloc: { 'fr-FR' => 'Terrain multisport' })
         fontaine = Idea.find_by(title_multiloc: { 'fr-FR' => 'Fontaine à boire' })
 
-        # Two submitted baskets (the pending order is created but excluded from counts).
+        # Only the two submitted (finished) orders become baskets; the pending order is not imported at all.
+        expect(phase.baskets.count).to eq(2)
         expect(phase.reload.baskets_count).to eq(2)
         expect(phase.votes_count).to eq(80_000) # 50000 + 30000
-        # Aire de jeux is picked in both submitted baskets; Fontaine only in one (the other pick is pending).
+        # Aire de jeux is picked in both submitted baskets; Fontaine only in one (its other pick was pending).
         expect(aire.reload.baskets_count).to eq(2)
         expect(aire.votes_count).to eq(60_000)
         expect(fontaine.reload.baskets_count).to eq(1)
@@ -558,6 +559,7 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(event.address_1).to eq('10 av Paul Doumer, 94110 Arcueil')
         expect(event.start_at).to eq(Time.zone.parse('2024-04-25 18:30:00 +0200'))
         expect(event.end_at).to eq(Time.zone.parse('2024-04-25 20:00:00 +0200'))
+        expect(event.attendees_count).to eq(42)
         # The map pin is set from the meeting's lat/lng (GeoJSON is longitude-first).
         expect(event.location_point.x).to be_within(0.00001).of(2.33714)  # longitude
         expect(event.location_point.y).to be_within(0.00001).of(48.80633) # latitude

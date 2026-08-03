@@ -24,7 +24,7 @@ RSpec.describe DecidimImporter::Extractors::OrdersExtractor do
   def row(overrides = {})
     {
       'uid' => 'decidim--budgets--order--1', 'decidim_component' => 'decidim--component--63',
-      'user' => 'decidim--user--882',
+      'user' => 'decidim--user--882', 'status' => 'finished',
       'projects' => '["decidim--budgets--project--1","decidim--budgets--project--7"]',
       'checked_out_at' => '2024-06-03 12:45:21 +0200', 'created_at' => '2024-06-03 12:05:51 +0200',
       'updated_at' => '2024-06-03 12:45:21 +0200'
@@ -47,9 +47,18 @@ RSpec.describe DecidimImporter::Extractors::OrdersExtractor do
     expect(ref_map.fetch('decidim--budgets--order--1-decidim--budgets--project--7').attributes['votes']).to eq(15_000)
   end
 
-  it 'keeps a pending order (blank checkout) as an unsubmitted basket' do
-    basket = extract([row('checked_out_at' => '')]).run.first
-    expect(basket.attributes['submitted_at']).to be_nil
+  it 'skips a pending (never submitted) order' do
+    extractor = extract([row('status' => 'pending', 'checked_out_at' => '')])
+    expect(extractor.run).to be_empty
+    expect(extractor.skipped.first).to include(uid: 'decidim--budgets--order--1', reason: 'order not submitted')
+  end
+
+  it 'falls back to the checkout timestamp when the export omits the status column' do
+    submitted = extract([row('uid' => 'o-1', 'status' => nil)]).run
+    skipped = extract([row('uid' => 'o-2', 'status' => nil, 'checked_out_at' => '')])
+    expect(submitted.size).to eq(1)
+    expect(skipped.run).to be_empty
+    expect(skipped.skipped.first[:reason]).to eq('order not submitted')
   end
 
   it 'keeps an order by a non-imported user, user-less' do

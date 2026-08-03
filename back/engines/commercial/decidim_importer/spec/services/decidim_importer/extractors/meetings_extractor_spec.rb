@@ -18,7 +18,7 @@ RSpec.describe DecidimImporter::Extractors::MeetingsExtractor do
       'uid' => 'decidim--meetings--meeting--1', 'title' => '{"fr":"Atelier de quartier"}',
       'description' => '{"fr":"<p>Venez discuter</p>"}', 'location' => '{"fr":"Salle du Conseil"}',
       'address' => '10 av Paul Doumer, 94110 Arcueil', 'latitude' => '48.80633', 'longitude' => '2.33714',
-      'online_meeting_url' => '', 'start_time' => '2024-04-25 18:30:00 +0200',
+      'online_meeting_url' => '', 'attendees_count' => '42', 'start_time' => '2024-04-25 18:30:00 +0200',
       'end_time' => '2024-04-25 20:00:00 +0200', 'published_at' => '2024-04-18 15:27:45 +0200',
       'withdrawn' => 'false', 'created_at' => '2024-04-18 15:27:28 +0200',
       'updated_at' => '2024-04-18 15:27:45 +0200', 'decidim_participatory_process' => 'decidim--process--2'
@@ -37,6 +37,13 @@ RSpec.describe DecidimImporter::Extractors::MeetingsExtractor do
     expect(event.attributes['start_at']).to eq('2024-04-25 18:30:00 +0200')
     expect(event.attributes['end_at']).to eq('2024-04-25 20:00:00 +0200')
     expect(ref_map.fetch('decidim--meetings--meeting--1')).to eq(event)
+  end
+
+  it 'carries the meeting attendee count onto the event' do
+    expect(extract([row]).run.first.attributes['attendees_count']).to eq(42)
+    # No count value → left unset (the model defaults it to 0).
+    blank = extract([row('uid' => 'm-blank', 'attendees_count' => '')]).run.first
+    expect(blank.attributes).not_to have_key('attendees_count')
   end
 
   it 'sets the map pin as GeoJSON with longitude first' do
