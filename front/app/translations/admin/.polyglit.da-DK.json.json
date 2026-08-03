@@ -7949,6 +7949,11 @@
     "verified_at": "2026-06-30T13:46:50.775933Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.project.extras": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:31:04.340976Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -8944,6 +8949,16 @@
     "verified_at": "2026-06-30T13:46:50.775933Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.project.newSurvey": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:31:04.340976Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.project.notOnProjectPage": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:31:04.340976Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -9268,6 +9283,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.ongoing": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:31:04.340976Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.project.participation.comments": {
     "state": "verified",
@@ -16109,6 +16129,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectTimeline.newSurveyTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-21T07:31:04.340976Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.ProjectTimeline.noEndDateDescription": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -20019,6 +20044,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ContentBuilder.collapsedButtonTitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.068796Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.admin.ContentBuilder.delete": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -20218,6 +20248,36 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpen": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.068796Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsCurrentlyOpenDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.068796Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsTimeline": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.068796Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsTimelineDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.068796Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.068796Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.admin.ContentBuilder.participationOptionsUpcomingDescription": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:10:50.068796Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.admin.ContentBuilder.projectPageLink": {
     "state": "verified",

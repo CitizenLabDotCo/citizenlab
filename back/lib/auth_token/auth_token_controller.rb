@@ -14,6 +14,11 @@ module AuthToken
     private
 
     def authenticate
+      # A blank secret is never a valid credential. The entity is expected to reject it as
+      # well, but we refuse it here too so that no entity implementation can ever hand out a
+      # token to a request that did not supply a password/secret.
+      raise ActiveRecord::RecordNotFound if auth_params[secret_param].blank?
+
       block_because_requires_confirmation = entity.try(:confirmation_required?)
 
       return if entity.present? &&
