@@ -27,6 +27,9 @@ const ProjectPhaseStartedNotification = memo<Props>((props) => {
       <FormattedMessage
         {...messages.projectPhaseStarted}
         values={{
+          phaseTitle: (
+            <T value={notification.attributes.phase_title_multiloc} />
+          ),
           projectTitle: (
             <T value={notification.attributes.project_title_multiloc} />
           ),

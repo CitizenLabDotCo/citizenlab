@@ -30,6 +30,12 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
       expect(mail.subject).to eq("'Idea phase' has started in Renew West Parc")
     end
 
+    it 'includes the preheader' do
+      expect(mail_body(mail)).to have_tag('div') do
+        with_text(/You can now take part in 'Idea phase'/)
+      end
+    end
+
     it 'renders the sender email' do
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
@@ -71,6 +77,27 @@ RSpec.describe EmailCampaigns::ProjectPhaseStartedMailer do
 
     it 'includes the unfollow url' do
       expect(mail_body(mail)).to match(Frontend::UrlService.new.unfollow_url(Follower.new(followable: project, user: recipient)))
+    end
+
+    context 'when the phase has no end date and a long description' do
+      before do
+        notification.phase.update!(
+          end_at: nil,
+          description_multiloc: { 'en' => "<p>#{'Tell us how you get around. ' * 10}This tail is truncated away.</p>" }
+        )
+      end
+
+      it 'omits the dates and truncates the description' do
+        body = mail_body(mail)
+
+        expect(body).to have_tag('table') do
+          with_tag 'p' do
+            with_text(/Tell us how you get around\./)
+          end
+        end
+        expect(body).not_to match(/From \w+ \d+, \d{4}/)
+        expect(body).not_to include('This tail is truncated away')
+      end
     end
 
     context 'with custom text' do

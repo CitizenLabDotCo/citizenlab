@@ -33,6 +33,12 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
       expect(mail.subject).to eq("Example project title: 'Example phase title' starts on August 15, 2026")
     end
 
+    it 'includes the preheader' do
+      expect(body).to have_tag('div') do
+        with_text(/Make sure everything is ready before August 15, 2026/)
+      end
+    end
+
     it 'renders the receiver email' do
       expect(mail.to).to eq([recipient.email])
     end

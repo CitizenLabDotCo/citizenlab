@@ -26,8 +26,8 @@ en:
       "project_manager_rights_received": Project manager rights received
       "project_folder_moderation_rights_received": Project folder moderation rights received
       "space_moderation_rights_received": Space manager rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
+      "project_phase_started": Phase started
+      "project_phase_upcoming": Phase starting soon
       "project_published": Project published
       "status_change_on_idea_you_follow": Status change of an input that you follow
       "threshold_reached_for_admin": Proposal reached the voting threshold
@@ -597,7 +597,7 @@ en:
         new_input_is_published: 'New input is published'
         new_input_awaits_screening: 'New input awaits screening'
         new_proposal_is_posted: 'New proposal is posted'
-        project_phase_changes: 'Project phase changes'
+        phase_starts: 'A phase starts'
         project_published: 'Project published'
         proposal_gets_reported_as_spam: 'Proposal gets reported as spam'
         proposal_is_assigned_to_admin: 'Proposal is assigned to admin'
@@ -622,4 +622,4 @@ en:
         voting_phase_ended: 'Voting phase ended'
         voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 days after invite is sent'
-        7_days_before_the_project_changes_phase: '7 days before the project changes phase'
+        7_days_before_phase_starts: '7 days before a phase starts'
