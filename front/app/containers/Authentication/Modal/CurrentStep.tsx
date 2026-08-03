@@ -129,7 +129,7 @@ const CurrentStep = ({
     case 'pre-auth:unauthenticated-confirmation':
       return (
         <EmailConfirmation
-          email={state.email ?? authUser?.data.attributes.email ?? null}
+          email={state.email ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
@@ -141,7 +141,7 @@ const CurrentStep = ({
     case 'pre-auth:unauthenticated-phone-confirmation':
       return (
         <PhoneConfirmation
-          phone={state.phone ?? authUser?.data.attributes.phone ?? null}
+          phone={state.phone ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
