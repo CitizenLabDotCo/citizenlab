@@ -4,9 +4,9 @@ Imports a Decidim platform into Go Vocal from a **Decidim export** — a zip (or
 of flat CSV files, one per model type and one per component (users, participatory processes,
 assemblies, proposals, surveys, budgets, …).
 
-Rather than creating records directly, the engine transforms the CSV rows into Tenant templates and 
+Rather than creating records directly, the engine transforms the CSV rows into Tenant templates and
 mainly reuses `MultiTenancy::Templates::TenantDeserializer`. Around the template import, some additional
-functionality is needed to backfill what the deserializer bypasses (voting counts, permissions, fixing links etc). 
+functionality is needed to backfill what the deserializer bypasses (voting counts, permissions, fixing links etc).
 It also updates the nav bar to look similar to the Decidim source ("Consultations" & "Assemblies" folders).
 
 ## How it works
@@ -153,7 +153,7 @@ procedure below runs it as a standalone `docker run` on a host (the same way pro
 it can be run locally / on staging. It writes three files that `import` consumes — all sharing one base name:
 
 - `<base>.template.yml` — the graph to deserialize
-- `<base>.app_config.json` — applied first (locales/branding)
+- `<base>.app_config.json` — optional app-config patch (locales/branding/reply-to); apply via `update_app_config` (and `import` uses it only to union locales)
 - `<base>.url_mapping.csv` — post-import link correction
 
 **2. Copy the three artifacts onto the Docker host.** They must land in one directory, keeping their shared
@@ -182,10 +182,10 @@ docker run \
   --env-file cl2-deployment/<env_file> \
   -v /home/ubuntu/import:/home/ubuntu/import \
   citizenlabdotco/back-ee:<tag> \
-  bin/rake "decidim_importer:import[/data/import/<base>.template.yml,<host>]"
+  bin/rake "decidim_importer:import[/home/ubuntu/import/<base>.template.yml,<host>]"
 ```
 
-**5. Afterwards:** copy the logs and delete the artifacts from the box (`rm /home/ubuntu/imports/<base>.*`) — they can carry tenant real user PII 
+**5. Afterwards:** copy the logs and delete the artifacts from the box (`rm /home/ubuntu/import/<base>.*`) — they can carry tenant real user PII
 if `create_template` ran with `production=true`.
 
 Things to keep in mind:
