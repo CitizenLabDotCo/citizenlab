@@ -61,6 +61,7 @@ module DecidimImporter
       run_budget_projects
       run_comments
       run_comment_votes
+      run_proposal_notes
       run_followers
       run_endorsements
       run_orders
@@ -178,6 +179,11 @@ module DecidimImporter
     # Comment votes that couldn't be imported (voted comment not imported / unknown value / duplicate).
     def skipped_comment_votes
       @comment_votes_extractor&.skipped || []
+    end
+
+    # Proposal notes that couldn't be imported as internal comments (noted proposal not imported / blank body).
+    def skipped_proposal_notes
+      @proposal_notes_extractor&.skipped || []
     end
 
     # Budget projects that couldn't be imported as ideas (no owning project/voting phase).
@@ -299,6 +305,14 @@ module DecidimImporter
       return unless @rows_by_model.key?(:comment_votes)
 
       (@comment_votes_extractor = build_extractor(Extractors::CommentVotesExtractor, :comment_votes)).run
+    end
+
+    # Decidim proposal notes → private `InternalComment`s on the imported ideas (idea + author resolved).
+    # Runs after the proposals extractor so each note's idea resolves.
+    def run_proposal_notes
+      return unless @rows_by_model.key?(:proposal_notes)
+
+      (@proposal_notes_extractor = build_extractor(Extractors::ProposalNotesExtractor, :proposal_notes)).run
     end
 
     # Decidim proposal follows → `Follower`s on the imported ideas (idea + user resolved).

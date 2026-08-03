@@ -102,6 +102,32 @@ RSpec.describe DecidimImporter::ExportReader do
       expect(votes.first).to include('uid' => 'vote-1', 'comment' => 'comment-37', 'value' => 'up',
         'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
     end
+
+    it 'also reads the singular `comment-votes.csv` variant some exports emit' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-61', %({"fr":"Idées"})])
+      write_csv("#{comp}/08---comment-votes.csv", # singular "comment", not "comments"
+        %w[uid comment author value], %w[vote-9 comment-1 user-1 down])
+
+      votes = described_class.read(root)[:comment_votes]
+
+      expect(votes.first).to include('uid' => 'vote-9', 'comment' => 'comment-1',
+        'decidim_component' => 'comp-61')
+    end
+
+    it 'reads a proposals component’s proposal-notes sidecar, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-61', %({"fr":"Idées"})])
+      write_csv("#{comp}/10---proposal-notes.csv",
+        %w[uid proposal author body], %w[note-1 proposal-3 user-8 Confidential])
+
+      notes = described_class.read(root)[:proposal_notes]
+
+      expect(notes.first).to include('uid' => 'note-1', 'proposal' => 'proposal-3', 'body' => 'Confidential',
+        'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
+    end
   end
 
   describe 'budgets' do
