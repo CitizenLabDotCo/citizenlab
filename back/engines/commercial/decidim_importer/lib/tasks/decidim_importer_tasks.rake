@@ -2,24 +2,26 @@
 
 require 'csv'
 
-# Two-step workflow: `create_template` reads a Decidim export (zip or dir) and writes the artifacts
-# (`.template.yml` + `.app_config.json` + `.url_mapping.csv`) — it never touches a tenant; `import`
-# applies them to the tenant matching `host`. `verify` dry-runs a dumped template on a throwaway tenant.
-# Each of `create_template`/`import` also tees its summary (counts, skips, broken links) to a run log
-# beside the artifacts: `<base>.create.log` / `<base>.import.log`.
+# Workflow: `create_template` reads a Decidim export (zip or dir) and writes the artifacts
+# (`.template.yml` + `.app_config.json` + `.url_mapping.csv`) — it never touches a tenant. `import`
+# applies the template to the tenant matching `host` (unioning in the export's locales so it
+# deserializes). `update_app_config` applies the *full* `.app_config.json` (replaces locales, branding,
+# reply-to) — optional, run only when you want the tenant to match the export. `verify` dry-runs a
+# template on a throwaway tenant. Each of `create_template`/`import`/`update_app_config` tees its summary
+# to a run log beside the artifacts: `<base>.create.log` / `<base>.import.log` / `<base>.app_config.log`.
 #
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR]
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
+#   rake decidim_importer:update_app_config[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
 #   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]
 #
-# `import` refuses to run unless the `decidim_importer` feature is enabled for the target host (a
-# per-tenant safety gate, off by default — enable it in admin HQ). It applies the `.app_config.json`
-# (locales/branding) first, deserializes the template, then finishes by rewriting embedded Decidim
-# links via the `.url_mapping.csv` (unresolved ones → `<base>.broken_links.csv`) and building the
-# Consultations/Assemblies folder structure. The 3rd arg disables image fetching (for templates whose
-# `remote_*_url`s point at an unreachable host).
+# `import` and `update_app_config` refuse to run unless the `decidim_importer` feature is enabled for the
+# target host (a per-tenant safety gate, off by default — enable it in admin HQ). `import` deserializes
+# the template, then finishes by rewriting embedded Decidim links via the `.url_mapping.csv` (unresolved
+# ones → `<base>.broken_links.csv`) and building the Consultations/Assemblies folder structure. The 3rd
+# arg disables image fetching (for templates whose `remote_*_url`s point at an unreachable host).
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
   task :create_template, %i[path primary_locale production include_source_url] => [:environment] do |_t, args|
@@ -43,9 +45,11 @@ namespace :decidim_importer do
       creator.skipped_categories.each { |s| report_warn "  skipped category #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_participation.each { |s| report_warn "  skipped #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_results.each { |s| report_warn "  skipped result #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_debates.each { |s| report_warn "  skipped debate #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_followers.each { |s| report_warn "  skipped follow #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_endorsements.each { |s| report_warn "  skipped endorsement #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_comment_votes.each { |s| report_warn "  skipped comment vote #{s[:uid]}: #{s[:reason]}" }
+      creator.skipped_proposal_notes.each { |s| report_warn "  skipped proposal note #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_budget_projects.each { |s| report_warn "  skipped budget project #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_orders.each { |s| report_warn "  skipped order #{s[:uid]}: #{s[:reason]}" }
       creator.skipped_proposal_attachments.each { |s| report_warn "  skipped attachment #{s[:uid]}: #{s[:reason]}" }
@@ -62,8 +66,39 @@ namespace :decidim_importer do
   end
 
   desc 'Imports a dumped tenant-template YAML file into the tenant matching `host`, then runs the ' \
-       'post-import finishing (link correction + Consultations/Assemblies folder structure).'
+       'post-import finishing (link correction + Consultations/Assemblies folder structure). Unions the ' \
+       'export\'s locales into the tenant (additive) so the template deserializes; run `update_app_config` ' \
+       'for the rest of the app config (locale replace, branding, reply-to).'
   task :import, %i[file host import_uploads] => [:environment] do |_t, args|
+    tenant = Tenant.find_by!(host: args[:host] || 'localhost')
+    file = args.fetch(:file)
+    import_uploads = args[:import_uploads].to_s.downcase != 'false'
+
+    ensure_import_enabled!(tenant)
+
+    with_report_log(log_path(file, 'import')) do
+      report_line "Decidim import → tenant=#{tenant.host} file=#{file} import_uploads=#{import_uploads}"
+      broken = []
+      tenant.switch do
+        # Ensure the tenant has every locale the template's multilocs reference (additive union), so
+        # deserialize doesn't fail on a missing locale. Full app config is `update_app_config`.
+        added = DecidimImporter::Importer.merge_app_config_locales_file(app_config_sibling(file))
+        report_line "  added locales #{added.join(', ')}" if added.any?
+
+        created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
+        created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
+
+        broken = finalize_import!(file)
+      end
+      write_broken_links_csv(url_mapping_path(file), broken)
+      report_line 'COMPLETE'
+    end
+  end
+
+  desc 'Applies the full dumped `.app_config.json` to the tenant matching `host`: **replaces** the ' \
+       'locale set (migrating stranded users), branding and reply-to. Optional — `import` already unions ' \
+       'the locales it needs; run this only when you want the tenant to match the export.'
+  task :update_app_config, %i[file host import_uploads] => [:environment] do |_t, args|
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
     file = args.fetch(:file)
     import_uploads = args[:import_uploads].to_s.downcase != 'false'
@@ -71,22 +106,15 @@ namespace :decidim_importer do
     ensure_import_enabled!(tenant)
     json = app_config_sibling(file)
 
-    with_report_log(log_path(file, 'import')) do
-      report_line "Decidim import → tenant=#{tenant.host} file=#{file} import_uploads=#{import_uploads}"
-      broken = []
+    with_report_log(log_path(file, 'app_config')) do
+      report_line "Decidim app-config update → tenant=#{tenant.host} file=#{json} import_uploads=#{import_uploads}"
       tenant.switch do
-        # App config first — it sets the tenant's locales, which the template's records rely on.
         if DecidimImporter::Importer.apply_app_config_file(json, import_uploads: import_uploads)
           report_line "  applied app config from #{json}"
         else
-          report_line "  no app-config JSON at #{json} → skipping"
+          report_line "  no app-config JSON at #{json} → nothing to apply"
         end
-        created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
-        created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
-
-        broken = finalize_import!(file)
       end
-      write_broken_links_csv(url_mapping_path(file), broken)
       report_line 'COMPLETE'
     end
   end
@@ -246,9 +274,9 @@ namespace :decidim_importer do
     path = mapping_path.sub(/\.url_mapping\.csv\z/i, '.broken_links.csv')
     path = "#{mapping_path}.broken_links.csv" if path == mapping_path
     CSV.open(path, 'w') do |csv|
-      csv << %w[old_url container_type container_id]
-      broken.uniq { |row| [row[:old_url], row[:container_id]] }
-        .each { |row| csv << [row[:old_url], row[:container_type], row[:container_id]] }
+      csv << %w[old_url container_type container_id container_url]
+      broken.uniq { |row| [row[:old_url], row[:container_type], row[:container_id]] }
+        .each { |row| csv << [row[:old_url], row[:container_type], row[:container_id], row[:container_url]] }
     end
     report_warn "Wrote #{path} (#{broken.size} broken link occurrence(s))"
   end

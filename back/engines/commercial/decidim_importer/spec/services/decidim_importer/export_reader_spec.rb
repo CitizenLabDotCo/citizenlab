@@ -102,6 +102,32 @@ RSpec.describe DecidimImporter::ExportReader do
       expect(votes.first).to include('uid' => 'vote-1', 'comment' => 'comment-37', 'value' => 'up',
         'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
     end
+
+    it 'also reads the singular `comment-votes.csv` variant some exports emit' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-61', %({"fr":"Idées"})])
+      write_csv("#{comp}/08---comment-votes.csv", # singular "comment", not "comments"
+        %w[uid comment author value], %w[vote-9 comment-1 user-1 down])
+
+      votes = described_class.read(root)[:comment_votes]
+
+      expect(votes.first).to include('uid' => 'vote-9', 'comment' => 'comment-1',
+        'decidim_component' => 'comp-61')
+    end
+
+    it 'reads a proposals component’s proposal-notes sidecar, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/01---decidim--component--61---proposals'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-61', %({"fr":"Idées"})])
+      write_csv("#{comp}/10---proposal-notes.csv",
+        %w[uid proposal author body], %w[note-1 proposal-3 user-8 Confidential])
+
+      notes = described_class.read(root)[:proposal_notes]
+
+      expect(notes.first).to include('uid' => 'note-1', 'proposal' => 'proposal-3', 'body' => 'Confidential',
+        'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-61')
+    end
   end
 
   describe 'budgets' do
@@ -157,6 +183,26 @@ RSpec.describe DecidimImporter::ExportReader do
 
       expect(posts.first).to include('uid' => 'post-1', 'decidim_participatory_process' => 'decidim--process--1',
         'decidim_component' => 'comp-14')
+    end
+  end
+
+  describe 'debates' do
+    it 'reads a debates component’s debates + comments + followers, stamped with process + component' do
+      write_process('decidim--process--1')
+      comp = '04---participatory-processes/01---decidim--participatory-process--1/07---components/06---decidim--component--62---debates'
+      write_csv("#{comp}/01---component.csv", %w[uid name], ['comp-62', %({"fr":"Débats"})])
+      write_csv("#{comp}/04---debates.csv", %w[uid title description], ['debate-1', %({"fr":"D"}), %({"fr":"<p>B</p>"})])
+      write_csv("#{comp}/05---comments.csv", %w[uid body root_commentable], ['c-1', %({"fr":"hi"}), 'debate-1'])
+      write_csv("#{comp}/08---followers.csv", %w[uid user followable], %w[f-1 user-1 debate-1])
+
+      rows = described_class.read(root)
+      stamp = { 'decidim_participatory_process' => 'decidim--process--1', 'decidim_component' => 'comp-62' }
+
+      expect(rows[:debates].first).to include('uid' => 'debate-1', **stamp)
+      # comments/followers reuse the shared streams (identical columns to proposals'), so the existing
+      # extractors handle them once the debate is registered as an idea.
+      expect(rows[:comments].first).to include('uid' => 'c-1', 'root_commentable' => 'debate-1', **stamp)
+      expect(rows[:followers].first).to include('uid' => 'f-1', 'followable' => 'debate-1', **stamp)
     end
   end
 end

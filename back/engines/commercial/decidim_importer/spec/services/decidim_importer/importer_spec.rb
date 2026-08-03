@@ -85,6 +85,40 @@ RSpec.describe DecidimImporter::Importer do
     end
   end
 
+  describe '.merge_app_config_locales_file' do
+    def app_config_json(locales)
+      file = Tempfile.new(['decidim', '.app_config.json'])
+      file.write({ 'settings' => { 'core' => { 'locales' => locales } } }.to_json)
+      file.close
+      file
+    end
+
+    it 'adds the export locales the tenant lacks, keeping its existing ones (additive union)' do
+      existing = AppConfiguration.instance.settings('core', 'locales')
+      missing = (CL2_SUPPORTED_LOCALES.map(&:to_s) - existing).first
+      file = app_config_json([missing] + existing) # order in the patch shouldn't drop the tenant's own
+
+      added = described_class.merge_app_config_locales_file(file.path)
+
+      expect(added).to eq([missing])
+      locales = AppConfiguration.instance.reload.settings('core', 'locales')
+      expect(locales).to include(*existing, missing) # existing kept, missing appended — nothing replaced
+    ensure
+      file&.unlink
+    end
+
+    it 'returns [] and changes nothing when the tenant already has every export locale' do
+      file = app_config_json([AppConfiguration.instance.settings('core', 'locales').first])
+      expect(described_class.merge_app_config_locales_file(file.path)).to eq([])
+    ensure
+      file&.unlink
+    end
+
+    it 'is a no-op returning [] when the file is absent' do
+      expect(described_class.merge_app_config_locales_file('/no/such.app_config.json')).to eq([])
+    end
+  end
+
   describe '.apply_app_config_file' do
     it 'deep-merges the patch settings into the tenant AppConfiguration' do
       file = Tempfile.new(['decidim', '.app_config.json'])
