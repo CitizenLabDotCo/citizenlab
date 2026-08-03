@@ -275,7 +275,7 @@ namespace :decidim_importer do
     path = "#{mapping_path}.broken_links.csv" if path == mapping_path
     CSV.open(path, 'w') do |csv|
       csv << %w[old_url container_type container_id container_url]
-      broken.uniq { |row| [row[:old_url], row[:container_id]] }
+      broken.uniq { |row| [row[:old_url], row[:container_type], row[:container_id]] }
         .each { |row| csv << [row[:old_url], row[:container_type], row[:container_id], row[:container_url]] }
     end
     report_warn "Wrote #{path} (#{broken.size} broken link occurrence(s))"
