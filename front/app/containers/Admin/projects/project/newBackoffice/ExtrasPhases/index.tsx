@@ -23,6 +23,7 @@ import {
   phaseStatus,
 } from '../phaseRowUtils';
 
+import EmptyState from './EmptyState';
 import { linkedSurveyPhaseIds } from './linkedSurveyPhaseIds';
 
 interface Props {
@@ -55,6 +56,8 @@ const ExtrasPhases = ({ projectId }: Props) => {
       >
         {formatMessage(messages.extras)}
       </Text>
+
+      {phases && sortedPhases.length === 0 && <EmptyState />}
 
       <Box display="flex" flexDirection="column">
         {sortedPhases.map((phase) => {
