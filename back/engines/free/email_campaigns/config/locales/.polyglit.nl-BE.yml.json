@@ -2774,11 +2774,6 @@
     "verified_at": "2026-03-18T11:49:32.624820Z",
     "verified_by": "Admin"
   },
-  "email_campaigns.project_phase_started.subject": {
-    "state": "verified",
-    "verified_at": "2026-03-18T11:49:32.624820Z",
-    "verified_by": "Admin"
-  },
   "email_campaigns.project_phase_started.subtitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.624820Z",
