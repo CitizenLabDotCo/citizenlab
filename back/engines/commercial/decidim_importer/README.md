@@ -4,9 +4,9 @@ Imports a Decidim platform into Go Vocal from a **Decidim export** — a zip (or
 of flat CSV files, one per model type and one per component (users, participatory processes,
 assemblies, proposals, surveys, budgets, …).
 
-Rather than creating records directly, the engine transforms the CSV rows into Tenant templates and 
+Rather than creating records directly, the engine transforms the CSV rows into Tenant templates and
 mainly reuses `MultiTenancy::Templates::TenantDeserializer`. Around the template import, some additional
-functionality is needed to backfill what the deserializer bypasses (voting counts, permissions, fixing links etc). 
+functionality is needed to backfill what the deserializer bypasses (voting counts, permissions, fixing links etc).
 It also updates the nav bar to look similar to the Decidim source ("Consultations" & "Assemblies" folders).
 
 ## How it works
