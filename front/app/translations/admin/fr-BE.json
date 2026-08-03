@@ -1353,7 +1353,7 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Contexte du projet",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Espace",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceOrFolderError": "Sélectionnez un espace ou un dossier pour ce projet.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Un dossier reste toujours dans son propre espace, donc choisir un dossier définit également l'espace. Changer l'espace efface le dossier sélectionné.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Chaque espace a ses propres dossiers. Changer d'espace efface le dossier sélectionné.",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Supprimer l'espace",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Aucun espace trouvé",
   "app.containers.Admin.projects.all.Spaces.Table.space": "Espace",

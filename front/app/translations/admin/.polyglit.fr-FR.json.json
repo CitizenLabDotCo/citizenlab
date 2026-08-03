@@ -7174,6 +7174,11 @@
     "verified_at": "2026-08-03T08:26:37.389195Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": {
+    "state": "verified",
+    "verified_at": "2026-08-03T09:08:41.462871Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
