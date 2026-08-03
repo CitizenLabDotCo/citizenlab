@@ -182,7 +182,7 @@ docker run \
   --env-file cl2-deployment/<env_file> \
   -v /home/ubuntu/import:/home/ubuntu/import \
   citizenlabdotco/back-ee:<tag> \
-  bin/rake "decidim_importer:import[/data/import/<base>.template.yml,<host>]"
+  bin/rake "decidim_importer:import[/home/ubuntu/import/<base>.template.yml,<host>]"
 ```
 
 **5. Afterwards:** copy the logs and delete the artifacts from the box (`rm /home/ubuntu/import/<base>.*`) — they can carry tenant real user PII
