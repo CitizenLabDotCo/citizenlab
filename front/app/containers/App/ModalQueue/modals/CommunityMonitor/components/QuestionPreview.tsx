@@ -44,12 +44,8 @@ const QuestionPreview = ({
   // Extract the first sentiment question from the UI Schema
   const fieldValue = methods.watch(firstSentimentLinearScale?.key || '');
 
-  // The redirect must happen exactly once. The modal stays mounted for a few
-  // renders after onClose(), and onClose is a new function on every render of
-  // the parent, so without this guard the effect re-fires after each render and
-  // pushes another (identical) entry onto the history stack. That both spins
-  // the CPU and leaves the user unable to get out of the survey: 'go back'
-  // then only moves them to the previous copy of the same page.
+  // onClose gets a new identity on every parent render, so without this guard
+  // the effect re-fires and pushes a duplicate history entry each time.
   const hasRedirected = useRef(false);
 
   // If the user has answered the question, redirect them to the full survey

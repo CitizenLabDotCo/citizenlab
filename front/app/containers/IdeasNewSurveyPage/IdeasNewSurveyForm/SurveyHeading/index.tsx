@@ -29,8 +29,6 @@ import { getLeaveFormDestination } from '../utils';
 
 import messages from './messages';
 
-// How long we give the browser to complete a back navigation before we assume
-// it did not happen and navigate away ourselves.
 const LEAVE_FALLBACK_TIMEOUT = 150;
 
 const StyledSurveyTitle = styled(Text)`
@@ -111,9 +109,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
           const hrefBeforeLeaving = window.location.href;
           clHistory.back();
 
-          // Going back is a silent no-op if the previous history entry turns
-          // out to be this same page. Leaving the form must always work, so
-          // fall back to the homepage when nothing moved.
+          // back() is a silent no-op if the previous entry is this same page.
           setTimeout(() => {
             if (window.location.href === hrefBeforeLeaving) {
               clHistory.push('/');

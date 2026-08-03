@@ -21,8 +21,7 @@ jest.mock('api/custom_fields/useCustomFields', () =>
   }))
 );
 
-// The real (lazily loaded) fields component only needs to stand in for
-// "the user answered the first question".
+// Stands in for "the user answered the first question".
 jest.mock('components/CustomFieldsForm/CustomFields', () => {
   return function CustomFieldsMock() {
     const { setValue } = useFormContext();
@@ -53,9 +52,8 @@ describe('QuestionPreview', () => {
   });
 
   it('only redirects once, even when the parent re-renders with a new onClose', async () => {
-    // A second redirect would push another copy of the survey onto the history
-    // stack, which is what previously left users unable to leave the form:
-    // 'go back' just moved them to the previous copy of the same page.
+    // Duplicate entries on the history stack are what left users unable to
+    // leave the form: 'go back' moved them to the previous copy of this page.
     const { rerender } = render(
       <QuestionPreview {...props} onClose={jest.fn()} />
     );
@@ -66,7 +64,6 @@ describe('QuestionPreview', () => {
       expect(clHistory.push).toHaveBeenCalledTimes(1);
     });
 
-    // The parent modal re-renders and hands down a fresh onClose callback.
     rerender(<QuestionPreview {...props} onClose={jest.fn()} />);
     rerender(<QuestionPreview {...props} onClose={jest.fn()} />);
 
