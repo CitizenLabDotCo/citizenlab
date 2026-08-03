@@ -6,4 +6,4 @@
   description: phase_description_preview
 } %>
 
-<%= render partial: 'application/cta_button', locals: { href: event.phase_url , message: cta_button_text } %>
+<%= render partial: 'application/cta_button', locals: { href: event.phase_setup_url , message: cta_button_text } %>

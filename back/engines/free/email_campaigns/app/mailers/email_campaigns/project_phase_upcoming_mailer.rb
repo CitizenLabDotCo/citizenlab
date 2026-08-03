@@ -28,7 +28,7 @@ module EmailCampaigns
           phase_start_at: 7.days.from_now.to_date,
           phase_end_at: 4.weeks.from_now.to_date,
           phase_description_multiloc: data.phase.description_multiloc,
-          phase_url: data.phase.url,
+          phase_setup_url: data.phase.url,
           project_title_multiloc: data.project.title_multiloc
         }
       }

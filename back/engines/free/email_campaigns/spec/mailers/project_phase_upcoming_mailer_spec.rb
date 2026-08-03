@@ -13,7 +13,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
           phase_start_at: Time.zone.local(2026, 8, 15),
           phase_end_at: Time.zone.local(2026, 9, 30),
           phase_description_multiloc: { 'en' => '<p>Example phase description</p>' },
-          phase_url: 'https://govocal.com/phases/1',
+          phase_setup_url: 'https://govocal.com/admin/projects/1/phases/1/setup',
           project_title_multiloc: { 'en' => 'Example project title' }
         },
         delay: 8.hours.to_i
@@ -67,7 +67,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
     end
 
     it 'includes the CTA' do
-      expect(body).to have_tag('a', with: { href: 'https://govocal.com/phases/1' }) do
+      expect(body).to have_tag('a', with: { href: 'https://govocal.com/admin/projects/1/phases/1/setup' }) do
         with_text(/Review the setup/)
       end
     end
@@ -106,7 +106,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
         end
 
         it 'includes the CTA' do
-          expect(body).to have_tag('a', with: { href: 'https://govocal.com/phases/1' }) do
+          expect(body).to have_tag('a', with: { href: 'https://govocal.com/admin/projects/1/phases/1/setup' }) do
             with_text(/CLICK THE GLOBAL BUTTON Remy/)
           end
         end
