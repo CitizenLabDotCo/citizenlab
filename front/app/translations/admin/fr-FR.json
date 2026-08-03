@@ -1220,7 +1220,7 @@
   "app.containers.Admin.messaging.smsRecipientsTitle": "Destinataires",
   "app.containers.Admin.messaging.smsSegmentCost": "{segmentCount, plural, one {Facturé comme # SMS pour chaque destinataire.} other {Facturé comme # SMS pour chaque destinataire.}}",
   "app.containers.Admin.messaging.smsSegmentCostOverLimit": "Ce message ne peut pas être envoyé : il correspond à {segmentCount} SMS, et le maximum est de {maxSegments} SMS.",
-  "app.containers.Admin.messaging.smsSegmentEncodingWarning": "{characters} a fait passer ce message au format Unicode, qui ne permet que {perSegment} caractères par message au lieu de {gsmPerSegment}.",
+  "app.containers.Admin.messaging.smsSegmentEncodingWarning": "L'utilisation de certains caractères ({characters}) réduit le nombre de caractères par SMS : {perSegment} au lieu de {gsmPerSegment}.",
   "app.containers.Admin.messaging.smsSegmentPill": "{segmentCount} SMS",
   "app.containers.Admin.messaging.smsStatsTitle": "Statistiques d'envoi",
   "app.containers.Admin.messaging.tabSms": "SMS",

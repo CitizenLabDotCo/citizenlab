@@ -6419,6 +6419,11 @@
     "verified_at": "2026-08-03T12:14:28.786714Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.smsSegmentEncodingWarning": {
+    "state": "verified",
+    "verified_at": "2026-08-03T12:19:42.027371Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.smsSegmentPill": {
     "state": "verified",
     "verified_at": "2026-07-22T22:26:12.291038Z",
