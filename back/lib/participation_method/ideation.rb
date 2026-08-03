@@ -28,9 +28,8 @@ module ParticipationMethod
       %w[trending random popular -new new comments_count]
     end
 
-    # Ideation is the only method the feed view was designed for. Voting inherits it here, even
-    # though the phase form has hidden the feed toggle for voting from the start, because existing
-    # voting phases may hold the view and could not drop it through the form.
+    # Ideation is the only method the feed view was designed for, and now the only one that allows
+    # it: every method inheriting from here narrows the list back down.
     def allowed_presentation_modes
       %w[card map feed]
     end

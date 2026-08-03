@@ -17,6 +17,13 @@ module ParticipationMethod
       %w[random]
     end
 
+    # Voting inherits ideation's views, but not its feed. The feed surfaces neither the vote count
+    # nor the controls to cast one, so a voting phase opening on it hides the only thing it asks
+    # participants to do. The phase form has never offered the toggle for this method.
+    def allowed_presentation_modes
+      %w[card map]
+    end
+
     def assign_defaults_for_phase
       super
       phase.ideas_order ||= 'random'
