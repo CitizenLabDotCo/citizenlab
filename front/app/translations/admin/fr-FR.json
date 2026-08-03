@@ -1219,7 +1219,7 @@
   "app.containers.Admin.messaging.smsPreviewSentConfirmation": "Un SMS de test a été envoyé à votre numéro de téléphone.",
   "app.containers.Admin.messaging.smsRecipientsTitle": "Destinataires",
   "app.containers.Admin.messaging.smsSegmentCost": "{segmentCount, plural, one {Envoyé en # message à chaque destinataire.} other {Envoyé en # messages à chaque destinataire. Chaque message est facturé séparément.}}",
-  "app.containers.Admin.messaging.smsSegmentCostOverLimit": "Ce message compte {segmentCount} SMS par destinataire. La limite est de {maxSegments}, ce message ne peut donc pas être envoyé.",
+  "app.containers.Admin.messaging.smsSegmentCostOverLimit": "Ce message ne peut pas être envoyé : il dépasse la limite de {maxSegments} SMS.",
   "app.containers.Admin.messaging.smsSegmentEncodingWarning": "{characters} a fait passer ce message au format Unicode, qui ne permet que {perSegment} caractères par message au lieu de {gsmPerSegment}.",
   "app.containers.Admin.messaging.smsSegmentPill": "{segmentCount} SMS",
   "app.containers.Admin.messaging.smsStatsTitle": "Statistiques d'envoi",
