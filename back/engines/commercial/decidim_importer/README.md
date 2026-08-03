@@ -185,7 +185,7 @@ docker run \
   bin/rake "decidim_importer:import[/data/import/<base>.template.yml,<host>]"
 ```
 
-**5. Afterwards:** copy the logs and delete the artifacts from the box (`rm /home/ubuntu/imports/<base>.*`) — they can carry tenant real user PII 
+**5. Afterwards:** copy the logs and delete the artifacts from the box (`rm /home/ubuntu/import/<base>.*`) — they can carry tenant real user PII
 if `create_template` ran with `production=true`.
 
 Things to keep in mind:
