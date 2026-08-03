@@ -104,6 +104,30 @@ module DecidimImporter
       Phase.where(id: ids, participation_method: 'voting').find_each { |phase| Basket.update_counts(phase) }
     end
 
+    # Additively unions the export's locales (from the app-config patch JSON) into the current tenant's
+    # `core.locales`, so the template's multilocs have every locale they reference — *without* replacing
+    # the tenant's own set (that's {.apply_app_config}'s job) and without touching branding/reply-to. Only
+    # adds, so no user is stranded and no `validate_locales` migration is needed. Returns the locales added
+    # (empty when the JSON is absent or adds nothing). Run before the template deserializes.
+    def self.merge_app_config_locales_file(path)
+      return [] unless path && File.file?(path)
+
+      incoming = JSON.parse(File.read(path)).dig('settings', 'core', 'locales')
+      return [] unless incoming.is_a?(Array)
+
+      config = AppConfiguration.instance
+      current = Array(config.settings('core', 'locales'))
+      added = incoming - current
+      return [] if added.empty?
+
+      settings = config.settings
+      settings['core'] ||= {}
+      settings['core']['locales'] = current + added
+      config.settings = settings
+      config.save!
+      added
+    end
+
     # Applies an AppConfiguration patch JSON (the companion artifact `create_template` writes) to the
     # current tenant: deep-merges `settings` and, with fetching on, sets remote logo/favicon URLs. Returns
     # false when `path` is nil/missing. Apply *before* the template so locales are in place for its records.

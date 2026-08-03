@@ -33,8 +33,11 @@ RSpec.describe DecidimImporter::Links::Rewriter do
     expect(layout_text(layout)).to include('/processes/gone')  # broken link left untouched
     expect(broken).to contain_exactly(
       { old_url: '/processes/gone', container_type: layout.content_buildable_type,
-        container_id: layout.content_buildable_id }
+        container_id: layout.content_buildable_id,
+        container_url: Frontend::UrlService.new.model_to_url(layout.content_buildable) }
     )
+    # the container_url is the buildable's public page, so a reviewer can open it and fix the link
+    expect(broken.first[:container_url]).to be_present
   end
 
   it 'resolves a file link to the imported file’s real content URL' do
@@ -56,6 +59,20 @@ RSpec.describe DecidimImporter::Links::Rewriter do
     described_class.new(map).run
 
     expect(page.reload.top_info_section_multiloc['en']).to include('/projects/a')
+  end
+
+  it 'reports a broken link in a static page with the page’s public URL as the container' do
+    page = create(:static_page, top_info_section_enabled: true,
+      top_info_section_multiloc: { 'en' => '<a href="/processes/gone">G</a>' })
+    map = DecidimImporter::Links::Map.new({}, {}, ['/processes/gone'])
+
+    broken = described_class.new(map).run
+
+    expect(broken).to contain_exactly(
+      { old_url: '/processes/gone', container_type: 'StaticPage', container_id: page.id,
+        container_url: Frontend::UrlService.new.model_to_url(page) }
+    )
+    expect(broken.first[:container_url]).to be_present
   end
 
   it 'counts the records it rewrote and leaves untouched ones out of the count' do
