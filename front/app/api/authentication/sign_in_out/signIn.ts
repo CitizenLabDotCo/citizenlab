@@ -43,6 +43,10 @@ async function getAndSetToken({
   tokenLifetime,
   claimTokens,
 }: Parameters) {
+  // Each identifier has its own endpoint: they look the account up differently
+  // and each one requires that identifier to have been confirmed.
+  const endpoint = phone ? 'user_token_phone' : 'user_token';
+
   const bodyData = {
     auth: {
       ...(phone ? { phone } : { email }),
@@ -53,7 +57,7 @@ async function getAndSetToken({
   };
 
   const jwt = getJwt();
-  return await fetch(`${API_PATH}/user_token`, {
+  return await fetch(`${API_PATH}/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

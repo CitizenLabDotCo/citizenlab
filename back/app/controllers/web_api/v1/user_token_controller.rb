@@ -1,41 +1,56 @@
 # frozen_string_literal: true
 
-class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
+# Exchanges credentials for a JWT. Logging in with an email address and logging in
+# with a phone number are two separate endpoints: each looks the user up by its own
+# identifier and only lets them in when they confirmed that same identifier.
+class WebApi::V1::UserTokenController < ActionController::API
   include EnforceUserSso
 
   before_action :sso_enforced?, only: %i[create]
 
+  # Email address + password.
   def create
-    ClaimTokenService.claim(entity, auth_params[:claim_tokens])
-    IdeaExposureTransferService.new.transfer_from_request(user: entity, request: request)
-    super
+    user = User.not_invited.find_by_cimail(auth_params[:email])
+
+    # `confirmation_required` is only ever cleared together with `email_confirmed_at`,
+    # so it tells us whether this email address was confirmed.
+    return head :not_found unless user && !user.confirmation_required? && password_correct?(user)
+
+    render_token_for user
+  end
+
+  # Phone number + password. Users who signed up with their phone number have no
+  # password until they set one; they log in through confirm_code_phone instead.
+  def create_phone
+    return head :not_found unless AppConfiguration.instance.feature_activated?('sms')
+
+    user = User.not_invited.find_by_phone_number(auth_params[:phone])
+
+    return head :not_found unless user&.phone_confirmed_at && password_correct?(user)
+
+    render_token_for user
   end
 
   private
 
-  # Logging in with a phone number requires a password. Passwordless users
-  # authenticate with an empty password (see User#authenticate) and would
-  # otherwise be handed a token without presenting anything at all: their
-  # confirmation_required flag stays true forever, because it only ever tracks
-  # the email. They log in through confirm_code_phone instead.
-  def authenticate
-    raise ActiveRecord::RecordNotFound if phone_login? && entity&.no_password?
+  def render_token_for(user)
+    ClaimTokenService.claim(user, auth_params[:claim_tokens])
+    IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
-    super
+    render json: auth_token(user), status: :created
   end
 
-  def blocked_by_confirmation?
-    return super unless phone_login?
+  # A blank password is never a valid credential. User#authenticate rejects it as
+  # well, but we refuse it here too so that a user without a password can never be
+  # handed a token without presenting anything at all.
+  def password_correct?(user)
+    password = auth_params[:password]
 
-    entity.phone_confirmed_at.nil?
+    password.present? && user.authenticate(password).present?
   end
 
-  def phone_login?
-    auth_params[:phone].present?
-  end
-
-  def auth_token
-    payload = entity.to_token_payload
+  def auth_token(user)
+    payload = user.to_token_payload
 
     unless auth_params[:remember_me] # default expiration is set in #to_token_payload and can also be used by 3rd party auth
       payload[:exp] = AuthToken::AuthToken::TOKEN_SHORT_LIFETIME.from_now.to_i
@@ -44,8 +59,8 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
     AuthToken::AuthToken.new payload: payload
   end
 
-  def extra_params
-    [:phone, :remember_me, { claim_tokens: [] }]
+  def auth_params
+    @auth_params ||= params.require(:auth).permit(:email, :phone, :password, :remember_me, claim_tokens: [])
   end
 
   def email_param

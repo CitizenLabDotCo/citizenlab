@@ -35,30 +35,22 @@ export const preAuthSteps = (
   updateState: UpdateState,
   state: State
 ) => {
-  // Shared by every step that ends with an authenticated user: moves the flow to
-  // whatever the user still has to do, and returns whether they are done (in
-  // which case the caller decides how to end the flow).
-  const resolveRemainingRequirements = async () => {
+  // Shared by every step that ends with an authenticated user: the step the user
+  // still has to go through before they can participate, or null when there is
+  // nothing left and the caller can end the flow.
+  const getRemainingRequirementStep = async (): Promise<Step | null> => {
     const { requirements } = await getRequirements();
-    const authenticationData = getAuthenticationData();
 
     const missingDataStep = await checkMissingData(
       requirements,
-      authenticationData,
+      getAuthenticationData(),
       state.flow
     );
 
-    if (missingDataStep) {
-      setCurrentStep(missingDataStep);
-      return false;
-    }
+    if (missingDataStep) return missingDataStep;
+    if (doesNotMeetGroupCriteria(requirements)) return 'access-denied';
 
-    if (doesNotMeetGroupCriteria(requirements)) {
-      setCurrentStep('access-denied');
-      return false;
-    }
-
-    return true;
+    return null;
   };
 
   return {
@@ -145,7 +137,12 @@ export const preAuthSteps = (
           claimTokens,
         });
 
-        if (!(await resolveRemainingRequirements())) return;
+        const remainingStep = await getRemainingRequirementStep();
+
+        if (remainingStep) {
+          setCurrentStep(remainingStep);
+          return;
+        }
 
         setCurrentStep('closed');
 
@@ -177,9 +174,7 @@ export const preAuthSteps = (
       SUBMIT_CODE: async (email: string, code: string) => {
         await confirmCodeEmail(email, code);
 
-        if (await resolveRemainingRequirements()) {
-          setCurrentStep('success');
-        }
+        setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
       },
       RESEND_CODE: async (email: string) => {
         await requestCodeEmail({ email });
@@ -194,9 +189,7 @@ export const preAuthSteps = (
       SUBMIT_CODE: async (code: string) => {
         await confirmCodePhone(code, state.phone ?? undefined);
 
-        if (await resolveRemainingRequirements()) {
-          setCurrentStep('success');
-        }
+        setCurrentStep((await getRemainingRequirementStep()) ?? 'success');
       },
       RESEND_CODE: async (phone: string) => {
         await requestCodePhone({ phone });

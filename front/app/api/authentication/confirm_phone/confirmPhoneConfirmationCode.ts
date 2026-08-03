@@ -1,29 +1,11 @@
 import requirementsKeys from 'api/authentication/authentication_requirements/keys';
+import { ConfirmCodeResponse } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import meKeys from 'api/me/keys';
-import { HighestRole } from 'api/users/types';
 
 import { setJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-
-type ConfirmPhoneResponse = {
-  data: {
-    type: 'create';
-    attributes: {
-      auth_token: {
-        payload: {
-          exp: number;
-          cluster: string;
-          highest_role: HighestRole;
-          sub: string;
-          tenant: string;
-        };
-        token: string;
-      };
-    };
-  };
-};
 
 // `phone` is only passed by unauthenticated callers (phone signup / passwordless
 // phone login), and that is also the only case where we adopt the token the
@@ -31,7 +13,7 @@ type ConfirmPhoneResponse = {
 // the (possibly longer lived) token they already have.
 export const confirmCodePhone = async (code: string, phone?: string) => {
   try {
-    const res = await fetcher<ConfirmPhoneResponse>({
+    const res = await fetcher<ConfirmCodeResponse>({
       path: `/user/confirm_code_phone`,
       action: 'post',
       body: {

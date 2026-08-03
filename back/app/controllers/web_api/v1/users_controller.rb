@@ -215,7 +215,13 @@ class WebApi::V1::UsersController < ApplicationController
 
     phone = params.dig(:user, :phone)
     parsed = Phonelib.parse(phone)
-    if parsed.valid? && !EmailCampaigns::Sms::AllowedCountries.allowed?(parsed.country)
+
+    if parsed.invalid?
+      render json: { errors: { phone: [{ error: 'invalid', value: phone }] } }, status: :unprocessable_entity
+      return
+    end
+
+    unless EmailCampaigns::Sms::AllowedCountries.allowed?(parsed.country)
       render json: { errors: { phone: [{ error: 'unsupported_country', value: phone }] } }, status: :unprocessable_entity
       return
     end

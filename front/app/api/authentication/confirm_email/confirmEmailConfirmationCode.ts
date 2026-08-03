@@ -7,7 +7,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-type Response = {
+// Returned by both confirm_code_email and confirm_code_phone.
+export type ConfirmCodeResponse = {
   data: {
     type: 'create';
     attributes: {
@@ -27,7 +28,7 @@ type Response = {
 
 export const confirmCodeEmail = async (email: string, code: string) => {
   try {
-    const res = await fetcher<Response>({
+    const res = await fetcher<ConfirmCodeResponse>({
       path: `/user/confirm_code_email`,
       action: 'post',
       body: {

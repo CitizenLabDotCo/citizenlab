@@ -157,24 +157,6 @@ class User < ApplicationRecord
       find_by(phone: normalized)
     end
 
-    # This method is used by knock to get the user.
-    # Default is by email, but we want to compare
-    # case insensitively and forbid login for
-    # invitees. A phone number can be used instead of an email, in which case
-    # it is matched on its canonical E.164 form.
-    def from_token_request(request)
-      auth = request.params['auth'] || {}
-      phone = auth['phone']
-
-      if phone.present?
-        return nil unless AppConfiguration.instance.feature_activated?('sms')
-
-        not_invited.find_by_phone_number(phone)
-      else
-        not_invited.find_by_cimail(auth['email'])
-      end
-    end
-
     def oldest_admin
       active.admin.order(:created_at).reject(&:super_admin?).first
     end

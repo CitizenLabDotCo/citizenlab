@@ -638,6 +638,37 @@ resource 'Users' do
           example_request '[error] Invalid phone number' do
             assert_status 422
             expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is not a real number' do
+          let(:phone) { '+1 000 000 0000' }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is blank' do
+          let(:phone) { '' }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is missing' do
+          let(:phone) { nil }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
           end
         end
 

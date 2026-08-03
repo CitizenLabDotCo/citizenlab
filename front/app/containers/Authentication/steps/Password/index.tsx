@@ -125,7 +125,13 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
             }}
           />
         </Text>
-        {email && <Input type="hidden" value={email} autocomplete="email" />}
+        {/* Not shown to anyone (hidden inputs are not exposed to assistive tech
+            either): it is what lets password managers pair the password below
+            with the account it belongs to, whether that is an email address or
+            a phone number. `username` is the autocomplete token for "the field
+            that identifies the account". */}
+        <Input type="hidden" value={account} autocomplete="username" />
+
         <Box>
           <PasswordInput
             id="e2e-password-input"
