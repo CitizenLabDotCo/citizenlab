@@ -3304,6 +3304,21 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.QuillEditor.imageTooLarge": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:31:18.213809Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.QuillEditor.imageTooLargeConfirm": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:31:18.213809Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.QuillEditor.imageTooLargeTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:31:18.213809Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.QuillEditor.italic": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
