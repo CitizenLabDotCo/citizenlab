@@ -6409,6 +6409,16 @@
     "verified_at": "2026-07-16T16:00:17.791260Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.messaging.smsSegmentCost": {
+    "state": "verified",
+    "verified_at": "2026-08-03T12:14:28.786714Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.messaging.smsSegmentCostOverLimit": {
+    "state": "verified",
+    "verified_at": "2026-08-03T12:14:28.786714Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.smsSegmentPill": {
     "state": "verified",
     "verified_at": "2026-07-22T22:26:12.291038Z",
