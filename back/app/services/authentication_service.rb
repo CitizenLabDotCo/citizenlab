@@ -25,9 +25,9 @@ class AuthenticationService
     # This endpoint is only used for the access rights interface.
     # here, we don't want to return employee-only methods.
     # In theory we could but it requires a redesign of the interface
-    # so for now we just hide the employee-only methods. 
+    # so for now we just hide the employee-only methods.
     active_methods(AppConfiguration.instance)
-      .reject { |method| method.employee_only? }
+      .reject(&:employee_only?)
       .first
   end
 

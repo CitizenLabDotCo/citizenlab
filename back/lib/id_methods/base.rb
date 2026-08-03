@@ -24,7 +24,7 @@ module IdMethods
     # so for now we just hide the employee-only methods.
     def employee_only?
       false
-    end 
+    end
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(_configuration, _env)
