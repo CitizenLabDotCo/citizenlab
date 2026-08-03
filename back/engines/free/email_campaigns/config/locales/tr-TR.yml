@@ -77,6 +77,7 @@ tr-TR:
         users_who_follow_the_proposal: Teklifi takip eden kullanıcılar
       trigger:
         7_days_after_invite_is_sent: Davetiye gönderildikten 7 gün sonra
+        7_days_before_phase_starts: Bir sürecin başlamasına 7 gün kala
         7_days_before_the_project_changes_phase: Proje değişiklik aşamasından 7 gün önce
         comment_is_deleted: Yorum silindi
         comment_is_flagged_as_spam: Yorum spam olarak işaretlendi
@@ -95,6 +96,7 @@ tr-TR:
         new_input_awaits_screening: Yeni girdiler taranmayı bekliyor
         new_input_is_published: Yeni girdi yayınlandı
         new_proposal_is_posted: Yeni teklif yayınlandı
+        phase_starts: Bir süreç başlıyor
         project_phase_changes: Proje aşaması değişiklikleri
         project_published: Proje yayınlandı
         project_review_request: Moderatör proje incelemesi talep etti
@@ -569,6 +571,7 @@ tr-TR:
       input_status_description: Bir girdi için durum örneği (örneğin kabul edildi, reddedildi, uygulandı...)
       input_status_title: Örnek Durum
       official_feedback_body: Örnek resmi geri bildirim
+      phase_description: Bu, e-posta içeriklerini önizlemek için kullanılan örnek bir süreç içeriğidir. Bu gerçek bir içerik değildir.
       phase_title: Örnek aşama
       project_description_preview: Bu, e-postaların içeriğini önizlemek için kullanılan bazı örnek faz içerikleridir. Bu gerçek içerik değildir.
       project_title: Örnek proje

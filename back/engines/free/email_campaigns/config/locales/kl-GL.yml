@@ -132,6 +132,7 @@ kl-GL:
         users_who_follow_the_proposal: Atuisut siunnersuummik malinnittut
       trigger:
         7_days_after_invite_is_sent: Qaaqqusissutip nassiunnerata kingorna ullut arfineq-marluk qaangiuttut
+        7_days_before_phase_starts: Ullut 7-it immikkoortup aallartinnissaa sioqqullugu
         7_days_before_the_project_changes_phase: Ullut 7-it suliniutip immikkoortumut allamut ikaannginnerani
         comment_is_deleted: Oqaaseqaat piiarneqarpoq
         comment_is_flagged_as_spam: Oqaaseqaat spam-itut nalunaarsorneqarpoq
@@ -150,6 +151,7 @@ kl-GL:
         new_input_awaits_screening: Saaffiginnissut nutaaq misissorneqartussanngorpoq
         new_input_is_published: Nutaamik ilanngussaq saqqummerpoq
         new_proposal_is_posted: Siunnersuut nutaaq saqqummiunneqarpoq
+        phase_starts: Immikkoortoq aallartippoq
         project_phase_changes: Suliniutip ingerlanerata allanngorneri
         project_published: Suliniut saqqummiunneqarpoq
         project_review_request: Akunnermuliuttup suliassap misissorneqarnissaa piumasaraa
@@ -854,6 +856,7 @@ kl-GL:
       input_status_description: Siunnersuutip inissisimaneranut assersuut (ass. akuerisaq, itigartitaq, piviusunngortitaq...)
       input_status_title: Inissisimanermut assersuut
       official_feedback_body: Pisortatigoortumik akissummut assersuut
+      phase_description: Una tassaavoq immikkoortup imarisaanut assersuut, e-mailit imarisaasa isikkussaanik takutitsinermut atorneqartoq. Una imariviunngilaq.
       phase_title: Immikkoortoq assersuut
       project_description_preview: Una tassaavoq immikkoortup imarisaanut assersuut e-mailit imarisaannik takunnissinnaanermut atorneqartoq. Una imarisaavinnik imaqanngilaq.
       project_title: Suliniut assersuut

@@ -77,6 +77,7 @@ ca-ES:
         users_who_follow_the_proposal: Usuaris que segueixen la proposta
       trigger:
         7_days_after_invite_is_sent: 7 dies després de l'enviament de la invitació
+        7_days_before_phase_starts: 7 dies abans que comenci una fase
         7_days_before_the_project_changes_phase: 7 dies abans del canvi de fase del projecte
         comment_is_deleted: S'ha suprimit el comentari
         comment_is_flagged_as_spam: El comentari està marcat com a correu brossa
@@ -95,6 +96,7 @@ ca-ES:
         new_input_awaits_screening: La nova entrada està a l'espera de la projecció
         new_input_is_published: Es publica una nova entrada
         new_proposal_is_posted: S'ha publicat una nova proposta
+        phase_starts: Comença una fase
         project_phase_changes: Canvis de fase del projecte
         project_published: Projecte publicat
         project_review_request: El moderador ha sol·licitat una revisió del projecte
@@ -569,6 +571,7 @@ ca-ES:
       input_status_description: Un exemple d'estat per a una entrada (per exemple, acceptat, rebutjat, implementat...)
       input_status_title: Estat de l'exemple
       official_feedback_body: Exemple de comentaris oficials
+      phase_description: Aquest és un exemple de contingut de la fase utilitzat per previsualitzar el contingut dels correus electrònics. No és contingut real.
       phase_title: Fase d'exemple
       project_description_preview: Aquest és un exemple de contingut de fase utilitzat per previsualitzar el contingut dels correus electrònics. Això no és contingut real.
       project_title: Projecte d'exemple
