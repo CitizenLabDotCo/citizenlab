@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 
 import { Spinner, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -44,9 +44,19 @@ const QuestionPreview = ({
   // Extract the first sentiment question from the UI Schema
   const fieldValue = methods.watch(firstSentimentLinearScale?.key || '');
 
+  // The redirect must happen exactly once. The modal stays mounted for a few
+  // renders after onClose(), and onClose is a new function on every render of
+  // the parent, so without this guard the effect re-fires after each render and
+  // pushes another (identical) entry onto the history stack. That both spins
+  // the CPU and leaves the user unable to get out of the survey: 'go back'
+  // then only moves them to the previous copy of the same page.
+  const hasRedirected = useRef(false);
+
   // If the user has answered the question, redirect them to the full survey
   useEffect(() => {
     const redirectToFullSurvey = () => {
+      hasRedirected.current = true;
+
       // Close the modal
       onClose();
 
@@ -59,7 +69,7 @@ const QuestionPreview = ({
         `/projects/${projectSlug}/surveys/new?phase_id=${phaseId}&go_back=true`
       );
     };
-    if (fieldValue) {
+    if (fieldValue && !hasRedirected.current) {
       redirectToFullSurvey();
     }
   }, [fieldValue, onClose, projectSlug, phaseId]);
