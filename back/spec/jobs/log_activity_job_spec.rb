@@ -172,6 +172,45 @@ RSpec.describe LogActivityJob do
     end
   end
 
+  describe 'logging of channel' do
+    let(:item) { create(:project) }
+    let(:user) { create(:user) }
+
+    context 'when Current.activity_channel is set' do
+      around do |example|
+        Current.activity_channel = 'mcp'
+        example.run
+      ensure
+        Current.activity_channel = nil
+      end
+
+      it 'stamps the created activity with the channel' do
+        described_class.perform_now(item, 'created', user)
+        expect(Activity.last.channel).to eq('mcp')
+      end
+
+      it 'bakes the channel into the options of the enqueued job' do
+        expect { described_class.perform_later(item, 'created', user) }
+          .to enqueue_job(described_class)
+          .with(item, 'created', user, nil, { project_id: item.id, channel: 'mcp' })
+      end
+
+      it 'does not override an explicitly passed channel' do
+        options = { channel: 'other', project_id: item.id }
+        expect { described_class.perform_later(item, 'created', user, nil, options) }
+          .to enqueue_job(described_class)
+          .with(item, 'created', user, nil, options)
+      end
+    end
+
+    context 'when Current.activity_channel is not set' do
+      it 'leaves the channel nil' do
+        described_class.perform_now(item, 'created', user)
+        expect(Activity.last.channel).to be_nil
+      end
+    end
+  end
+
   describe 'logging of project_id' do
     where(:model_class) do
       [

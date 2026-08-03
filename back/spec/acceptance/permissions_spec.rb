@@ -147,6 +147,8 @@ resource 'Permissions' do
         parameter :require_name, 'Whether a first and last name are required to take this action', required: false
         parameter :require_password, 'Whether a password is required to take this action', required: false
         parameter :require_verification, 'Whether identity verification is required to take this action', required: false
+        parameter :require_confirmed_phone_number, 'Whether a confirmed phone number is required to take this action', required: false
+        parameter :confirmed_phone_number_expiry, 'number of days before phone reconfirmation required - nil means never reconfirm', required: false
         parameter :access_denied_explanation_multiloc, 'Multiloc string for explaining why access is denied', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
@@ -183,6 +185,23 @@ resource 'Permissions' do
           expect(response_data.dig(:attributes, :require_confirmed_email)).to be true
           expect(response_data.dig(:attributes, :require_name)).to be false
           expect(response_data.dig(:attributes, :require_password)).to be false
+          expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'require_confirmed_phone_number' do
+        before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+        let(:permitted_by) { 'users' }
+        let(:require_confirmed_phone_number) { true }
+        let(:confirmed_phone_number_expiry) { 30 }
+
+        example_request 'Update a permission to require a confirmed phone number' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+          expect(response_data.dig(:attributes, :require_confirmed_phone_number)).to be true
+          expect(response_data.dig(:attributes, :confirmed_phone_number_expiry)).to eq confirmed_phone_number_expiry
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
@@ -274,7 +293,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'everyone',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},
@@ -318,7 +339,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: ['confirmation']
+                missing_user_attributes: [],
+                email_action_required: 'confirm_email',
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: { birthyear: 'required', extra_field: 'required' },
@@ -359,7 +382,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: %w[last_name password]
+                missing_user_attributes: %w[last_name password],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {
@@ -395,7 +420,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},

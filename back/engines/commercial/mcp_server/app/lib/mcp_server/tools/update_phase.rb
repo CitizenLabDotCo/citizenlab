@@ -34,9 +34,17 @@ class McpServer::Tools::UpdatePhase < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
+    include McpServer::PhaseFeatureGuard
+
     def run
       phase = Phase.find_by(id: params[:phase_id])
       return not_found_error('Phase', params[:phase_id]) unless phase
+
+      authorize_project!(phase.project)
+      authorize(phase, :update?)
+
+      conflict = phase_feature_conflict(params)
+      return error(conflict) if conflict
 
       attributes = params.except(:phase_id)
 

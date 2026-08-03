@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 
-import { trackEventByName } from 'utils/analytics';
+import { trackEventByName, trackVirtualPageView } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
@@ -154,10 +154,17 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
 
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
-  const handleIdeaSelect = useCallback((ideaId: string) => {
-    trackEventByName(tracks.ideaOpened);
-    updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
-  }, []);
+  const handleIdeaSelect = useCallback(
+    (ideaId: string) => {
+      trackEventByName(tracks.ideaOpened);
+      const ideaSlug =
+        orderedIdeas.find((idea) => idea.id === ideaId)?.attributes.slug ??
+        ideaId;
+      trackVirtualPageView(`${window.location.pathname}/idea/${ideaSlug}`);
+      updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
+    },
+    [orderedIdeas]
+  );
 
   const onScroll = useCallback(
     (e: React.UIEvent<HTMLElement>) => {

@@ -1,48 +1,23 @@
 import { enterUserInfo, signUpEmailConformation } from '../../support/auth';
 import { randomString } from '../../support/commands';
-import moment = require('moment');
-import { fakeSSOAuth } from './utils';
+import { createNativeSurveyProjectWithPermission, fakeSSOAuth } from './utils';
 
 describe('Sign up - verification required (bogus)', () => {
   let projectId = '';
   const projectTitle = randomString();
-  const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   let phaseId: string;
 
   before(() => {
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        return cy.apiCreatePhase({
-          projectId,
-          title: 'firstPhaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-
-        cy.apiSetPhasePermission({
-          phaseId,
-          permissionBody: {
-            permitted_by: 'users',
-            require_verification: true,
-          },
-          action: 'posting_idea',
-        });
-      });
+    createNativeSurveyProjectWithPermission({
+      projectTitle,
+      permissionBody: {
+        permitted_by: 'users',
+        require_verification: true,
+      },
+    }).then(({ projectId: id, phaseId: pId }) => {
+      projectId = id;
+      phaseId = pId;
+    });
   });
 
   after(() => {
@@ -159,43 +134,19 @@ describe('Sign up - verification required (bogus)', () => {
 describe('Sign up - verification required (SSO)', () => {
   let projectId = '';
   const projectTitle = randomString();
-  const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   let phaseId: string;
 
   before(() => {
-    cy.apiCreateProject({
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-    })
-      .then((project) => {
-        projectId = project.body.data.id;
-        return cy.apiCreatePhase({
-          projectId,
-          title: 'firstPhaseTitle',
-          startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canPost: true,
-          canComment: true,
-          canReact: true,
-        });
-      })
-      .then((phase) => {
-        phaseId = phase.body.data.id;
-
-        cy.apiSetPhasePermission({
-          phaseId,
-          permissionBody: {
-            permitted_by: 'users',
-            require_verification: true,
-          },
-          action: 'posting_idea',
-        });
-      });
+    createNativeSurveyProjectWithPermission({
+      projectTitle,
+      permissionBody: {
+        permitted_by: 'users',
+        require_verification: true,
+      },
+    }).then(({ projectId: id, phaseId: pId }) => {
+      projectId = id;
+      phaseId = pId;
+    });
   });
 
   after(() => {

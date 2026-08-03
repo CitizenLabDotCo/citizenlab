@@ -358,6 +358,11 @@ namespace :cl2_back do
         html_block_in_content_builder: {
           enabled: true,
           allowed: true
+        },
+        sms: {
+          enabled: true,
+          allowed: true,
+          use_test_mode: true
         }
       }
     )

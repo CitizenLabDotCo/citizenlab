@@ -28,9 +28,4 @@ export default defineMessages({
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.mustProveIdentity',
     defaultMessage: 'Must prove who they are first.',
   },
-  pickAtLeastOne: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.pickAtLeastOne',
-    defaultMessage:
-      'Pick at least one method, otherwise participants have no way to prove who they are.',
-  },
 });

@@ -1,0 +1,3 @@
+uid,reference,title,description,budget_amount,category,scope,address,latitude,longitude,comments_count,follows_count,created_at,updated_at,selected_at,budget,component,url
+decidim--budgets--project--90,REF-90,"{""fr"":""Terrain multisport""}","{""fr"":""<p>Un terrain multisport</p>""}",30000,,,12 rue des Écoles,,,0,0,2024-05-10,2024-05-10,,decidim--budgets--budget--1,decidim--component--90,https://example.decidim.org/processes/budget/f/90/budgets/1/projects/90
+decidim--budgets--project--91,REF-91,"{""fr"":""Fontaine à boire""}","{""fr"":""<p>Une fontaine</p>""}",20000,,,Place centrale,,,0,0,2024-05-11,2024-05-11,,decidim--budgets--budget--1,decidim--component--90,https://example.decidim.org/processes/budget/f/90/budgets/1/projects/91

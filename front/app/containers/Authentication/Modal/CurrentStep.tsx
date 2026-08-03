@@ -2,8 +2,11 @@ import React, { lazy, Suspense } from 'react';
 
 import { Spinner } from '@citizenlab/cl2-component-library';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import AccessDenied from '../steps/AccessDenied';
 import BuiltInFields from '../steps/BuiltInFields';
+import ChangeEmail from '../steps/ChangeEmail';
 import EmailConfirmation from '../steps/EmailConfirmation';
 import EmailFlowStart from '../steps/EmailFlowStart';
 import Invitation from '../steps/Invitation';
@@ -11,6 +14,8 @@ import InviteSignUp from '../steps/InviteSignUp';
 import InviteTaken from '../steps/InviteTaken';
 import Onboarding from '../steps/Onboarding';
 import Password from '../steps/Password';
+import Phone from '../steps/Phone';
+import PhoneConfirmation from '../steps/PhoneConfirmation';
 import EmailPolicies from '../steps/Policies/EmailPolicies';
 import SSOPolicies from '../steps/Policies/SSOPolicies';
 import Success from '../steps/Success';
@@ -40,7 +45,13 @@ const CurrentStep = ({
   transition,
   setError,
 }: Props) => {
+  const { data: authUser } = useAuthUser();
+
   switch (currentStep) {
+    // shared
+    case 'closed':
+      return null;
+
     case 'success':
       return (
         <Success
@@ -49,7 +60,16 @@ const CurrentStep = ({
         />
       );
 
+    case 'access-denied':
+      return (
+        <AccessDenied
+          authenticationData={authenticationData}
+          onClose={transition(currentStep, 'CLOSE')}
+        />
+      );
+
     // email flow
+    // ('post-participation:email' is grouped here because it shares this body)
     case 'email:start':
     case 'post-participation:email':
       return (
@@ -93,14 +113,61 @@ const CurrentStep = ({
         />
       );
 
-    case 'email:confirmation':
+    case 'email:unauthenticated-confirmation':
       return (
         <EmailConfirmation
-          state={state}
+          email={state.email ?? authUser?.data.attributes.email ?? null}
           loading={loading}
           setError={setError}
           onConfirm={transition(currentStep, 'SUBMIT_CODE')}
           onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    // confirmation steps (code entry for email / phone)
+    case 'confirmation:reconfirm-email':
+      return (
+        <EmailConfirmation
+          email={state.email ?? authUser?.data.attributes.email ?? null}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'confirmation:new_email':
+      return (
+        <EmailConfirmation
+          email={state.new_email ?? authUser?.data.attributes.new_email ?? null}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'confirmation:reconfirm-phone':
+      return (
+        <PhoneConfirmation
+          phone={authUser?.data.attributes.phone ?? null}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onResendCode={transition(currentStep, 'RESEND_CODE')}
+        />
+      );
+
+    case 'confirmation:new_phone':
+      return (
+        <PhoneConfirmation
+          phone={state.new_phone ?? authUser?.data.attributes.new_phone ?? null}
+          loading={loading}
+          setError={setError}
+          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
+          onChangePhone={transition(currentStep, 'CHANGE_PHONE')}
           onResendCode={transition(currentStep, 'RESEND_CODE')}
         />
       );
@@ -128,7 +195,27 @@ const CurrentStep = ({
     case 'invite:taken':
       return <InviteTaken state={state} />;
 
-    // missing data flow / shared
+    // missing data (if signed in already)
+    case 'missing-data:change-new-email':
+      return (
+        <ChangeEmail
+          state={state}
+          loading={loading}
+          setError={setError}
+          onSubmit={transition(currentStep, 'SUBMIT')}
+        />
+      );
+
+    case 'missing-data:new_phone':
+      return (
+        <Phone
+          state={state}
+          loading={loading}
+          setError={setError}
+          onSubmit={transition(currentStep, 'SUBMIT')}
+        />
+      );
+
     case 'missing-data:built-in':
       return (
         <BuiltInFields
@@ -139,18 +226,7 @@ const CurrentStep = ({
         />
       );
 
-    case 'missing-data:email-confirmation':
-      return (
-        <EmailConfirmation
-          state={state}
-          loading={loading}
-          setError={setError}
-          onConfirm={transition(currentStep, 'SUBMIT_CODE')}
-          onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
-          onResendCode={transition(currentStep, 'RESEND_CODE')}
-        />
-      );
-
+    // ('verification-only' is grouped here because it shares this body)
     case 'missing-data:verification':
     case 'verification-only':
       return (
@@ -174,6 +250,7 @@ const CurrentStep = ({
         </Suspense>
       );
 
+    // missing data (if signed in already) for onboarding
     case 'missing-data:onboarding':
       return (
         <Onboarding
@@ -183,20 +260,9 @@ const CurrentStep = ({
         />
       );
 
+    // verification only (for onboarding and re-verification)
     case 'verification-success':
       return <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />;
-
-    // other
-    case 'access-denied':
-      return (
-        <AccessDenied
-          authenticationData={authenticationData}
-          onClose={transition(currentStep, 'CLOSE')}
-        />
-      );
-
-    case 'closed':
-      return null;
 
     default: {
       const exhaustiveCheck: never = currentStep;

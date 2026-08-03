@@ -429,6 +429,14 @@ module MultiTenancy
             html_block_in_content_builder: {
               enabled: true,
               allowed: true
+            },
+            sms: {
+              enabled: false,
+              allowed: false
+            },
+            decidim_importer: {
+              enabled: true,
+              allowed: true
             }
           })
         )

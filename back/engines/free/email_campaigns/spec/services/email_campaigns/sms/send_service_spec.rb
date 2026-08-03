@@ -41,6 +41,24 @@ RSpec.describe EmailCampaigns::Sms::SendService do
 
       described_class.new.send(:provider)
     end
+
+    it 'uses the fake provider when test mode is enabled, even outside development with credentials configured' do
+      allow(Rails.env).to receive(:development?).and_return(false)
+      SettingsService.new.activate_feature!('sms', settings: { 'use_test_mode' => true })
+      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
+      expect(EmailCampaigns::Sms::Providers::Twilio).not_to receive(:new)
+
+      described_class.new.send(:provider)
+    end
+
+    it 'uses the fake provider when test mode is enabled in development' do
+      allow(Rails.env).to receive(:development?).and_return(true)
+      SettingsService.new.activate_feature!('sms', settings: { 'use_test_mode' => true })
+      expect(EmailCampaigns::Sms::Providers::Fake).to receive(:new)
+      expect(EmailCampaigns::Sms::Providers::Twilio).not_to receive(:new)
+
+      described_class.new.send(:provider)
+    end
   end
 
   describe '#create_delivery' do
@@ -81,18 +99,18 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       described_class.new.deliver(delivery, to: '1 (415) 555-2671')
     end
 
-    it 'marks the delivery failed and re-raises for an invalid destination without calling the provider' do
+    it 'marks the delivery errored and re-raises for an invalid destination without calling the provider' do
       expect(provider).not_to receive(:send)
 
       expect { described_class.new.deliver(delivery, to: 'not-a-phone') }
         .to raise_error(EmailCampaigns::Sms::Error, /Invalid phone number/)
-      expect(delivery.reload.status).to eq('failed')
+      expect(delivery.reload.status).to eq('errored')
     end
 
     it 'marks the delivery failed and re-raises when the provider fails' do
-      allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::Error, 'nope')
+      allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::ProviderError, 'nope')
 
-      expect { described_class.new.deliver(delivery, to: phone) }.to raise_error(EmailCampaigns::Sms::Error)
+      expect { described_class.new.deliver(delivery, to: phone) }.to raise_error(EmailCampaigns::Sms::ProviderError)
       expect(delivery.reload.status).to eq('failed')
     end
 
@@ -118,6 +136,36 @@ RSpec.describe EmailCampaigns::Sms::SendService do
 
       expect { described_class.new.deliver(delivery, to: phone) }.not_to raise_error
       expect(delivery.reload).to have_attributes(status: 'delivered', error_message: nil)
+    end
+
+    context 'with an allowed-country list configured' do
+      # +14155552671 is a US number.
+      it 'sends when the destination country is on the allow-list' do
+        SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['US'] })
+        allow(provider).to receive(:send).and_return(message_sid: 'SM_ok', status: 'queued')
+
+        described_class.new.deliver(delivery, to: phone)
+
+        expect(delivery.reload.status).to eq('queued')
+      end
+
+      it 'marks the delivery errored and re-raises when the destination country is not allowed' do
+        SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+        expect(provider).not_to receive(:send)
+
+        expect { described_class.new.deliver(delivery, to: phone) }
+          .to raise_error(EmailCampaigns::Sms::Error, /not allowed/)
+        expect(delivery.reload.status).to eq('errored')
+      end
+
+      it 'sends to any country when the allow-list is empty' do
+        SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => [] })
+        allow(provider).to receive(:send).and_return(message_sid: 'SM_ok', status: 'queued')
+
+        described_class.new.deliver(delivery, to: phone)
+
+        expect(delivery.reload.status).to eq('queued')
+      end
     end
   end
 end

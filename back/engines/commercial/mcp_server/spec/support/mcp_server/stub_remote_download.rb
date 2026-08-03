@@ -20,6 +20,13 @@ module McpServer
       stub_remote_download(url, fixture_path: fixture_path, content_type: content_type)
     end
 
+    def stub_failing_remote_download(url, status: 404)
+      allow_any_instance_of(ProcessableUriDownloader)
+        .to receive(:skip_ssrf_protection?).and_return(true)
+
+      stub_request(:get, url).to_return(status: status)
+    end
+
     private
 
     def stub_remote_download(url, fixture_path:, content_type:)
