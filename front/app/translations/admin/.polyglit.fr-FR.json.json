@@ -21489,15 +21489,30 @@
     "verified_at": "2026-08-03T07:46:44.802948Z",
     "verified_by": "Adrien"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": {
+    "state": "verified",
+    "verified_at": "2026-08-03T07:57:06.558705Z",
+    "verified_by": "Adrien"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": {
     "state": "verified",
     "verified_at": "2026-07-03T11:28:38.970601Z",
     "verified_by": "Cindy EB"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.removeImage": {
+    "state": "verified",
+    "verified_at": "2026-08-03T07:57:06.558705Z",
+    "verified_by": "Adrien"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": {
     "state": "verified",
     "verified_at": "2026-07-03T11:28:38.970601Z",
     "verified_by": "Cindy EB"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.uploadImageLabel": {
+    "state": "verified",
+    "verified_at": "2026-08-03T07:57:06.558705Z",
+    "verified_by": "Adrien"
   },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": {
     "state": "verified",
