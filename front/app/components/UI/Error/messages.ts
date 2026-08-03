@@ -89,6 +89,11 @@ export default defineMessages({
     id: 'app.errors.no_invites_specified',
     defaultMessage: 'Could not find any email addresses.',
   },
+  unexpected_invite_error: {
+    id: 'app.errors.unexpected_invite_error',
+    defaultMessage:
+      'Something went wrong while processing your invitations. Check the "All invitations" tab before trying again.',
+  },
   unknown_group: {
     id: 'app.errors.unknown_group',
     defaultMessage: 'The group {value} found in row {row} is not a known group',

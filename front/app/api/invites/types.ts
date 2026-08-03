@@ -69,6 +69,9 @@ export interface IInvitesImport {
     id: string;
     type: 'invites_import';
     attributes: {
+      // Null until a worker picks the job up. Distinguishes a queue that is not
+      // processing anything from a job that is running and taking a while.
+      started_at: string | null;
       completed_at: string | null;
       job_type: InvitesImportJobType;
       result: any; // NOTE: The structure of result can vary based on job_type

@@ -9,6 +9,7 @@
 #  importer_id  :uuid
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  started_at   :datetime
 #
 # Indexes
 #

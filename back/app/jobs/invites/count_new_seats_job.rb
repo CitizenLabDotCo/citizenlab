@@ -7,6 +7,7 @@ module Invites
 
     def perform(current_user, params, import_id, xlsx_import: false)
       import = InvitesImport.find(import_id)
+      import.update!(started_at: Time.current)
 
       seat_numbers = if xlsx_import
         count_new_seats_xlsx(current_user, params)
@@ -17,6 +18,16 @@ module Invites
       import.update!(result: seat_numbers, completed_at: Time.current)
     rescue Invites::FailedError => e
       import.update!(result: { errors: e.to_h }, completed_at: Time.current)
+    rescue StandardError => e
+      # Anything else (a DB error, a validation raised outside the invitee checks,
+      # a timeout) would otherwise leave the import pending forever: this job does
+      # not retry, so the front-end would keep polling a row that never completes.
+      # Record the failure so the admin sees an error, then re-raise to report it.
+      import&.update!(
+        result: { errors: [{ error: 'unexpected_invite_error' }] },
+        completed_at: Time.current
+      )
+      raise e
     end
 
     private

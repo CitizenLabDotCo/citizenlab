@@ -32,6 +32,7 @@ import seatsKeys from 'api/seats/keys';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useExceedsSeats from 'hooks/useExceedsSeats';
+import useTimeoutWhen from 'hooks/useTimeoutWhen';
 
 import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -58,6 +59,22 @@ const StyledTabs = styled(Tabs)`
 `;
 
 export type TInviteTabName = 'template' | 'manual';
+
+// Both the seat count and the invite creation run as background jobs, and the
+// form stays in its processing state until one of them reports back. If that
+// never happens — a stalled job queue, a worker that dies mid-run — nothing
+// else clears the state, so without a ceiling the form spins indefinitely with
+// no error.
+//
+// The cases need very different patience. A job that no worker has even started
+// is stalled regardless of how big the import is, so we can call it quickly. A
+// running job only gets a backstop generous enough never to fire on healthy
+// work — and how generous depends on the stage: the seat count does the same
+// work with side effects disabled and rolls it back, while the invite creation
+// saves up to 1000 invitees along with their records and side effects.
+const NOT_STARTED_TIMEOUT_MS = 120000; // 2 minutes
+const COUNT_RUNNING_TIMEOUT_MS = 300000; // 5 minutes
+const CREATE_RUNNING_TIMEOUT_MS = 1800000; // 30 minutes
 
 const Invitations = () => {
   const queryClient = useQueryClient();
@@ -96,6 +113,9 @@ const Invitations = () => {
   const [filetypeError, setFiletypeError] = useState<JSX.Element | null>(null);
   const [unknownError, setUnknownError] = useState<JSX.Element | null>(null);
   const [showModal, setShowModal] = useState(false);
+  // Whether the admin has confirmed the seats modal, i.e. the modal is still on
+  // screen but is no longer waiting on them.
+  const [modalConfirmed, setModalConfirmed] = useState(false);
   const [newSeatsResponse, setNewSeatsResponse] =
     useState<IInvitesImport | null>(null);
 
@@ -431,8 +451,49 @@ const Invitations = () => {
     resetQueryData();
   }, [invitesImport, resetQueryData, queryClient]);
 
+  // Watched whenever we are waiting on a background job. Only paused while the
+  // seats modal is waiting on the admin: once they confirm, the invite creation
+  // runs behind a modal that already declares success, so it needs watching more
+  // than the rest of the flow, not less.
+  const awaitingJob = processing && (!showModal || modalConfirmed);
+  const jobStarted = !!invitesImport?.data.attributes.started_at;
+  const runningTimeout = invitesImport?.data.attributes.job_type.includes(
+    'count_new_seats'
+  )
+    ? COUNT_RUNNING_TIMEOUT_MS
+    : CREATE_RUNNING_TIMEOUT_MS;
+
+  const giveUp = (error: JSX.Element) => {
+    setInvitesImportId(null);
+    setProcessing(false);
+    setProcessed(false);
+    setShowModal(false);
+    setModalConfirmed(false);
+    setUnknownError(error);
+    resetQueryData();
+  };
+
+  // Nothing has picked the job up. That is a stalled queue whatever the size of
+  // the import, so it does not need long to be conclusive.
+  useTimeoutWhen(
+    awaitingJob && !jobStarted,
+    NOT_STARTED_TIMEOUT_MS,
+    () => giveUp(<FormattedMessage {...messages.processingNotStartedError} />),
+    invitesImportId
+  );
+
+  // The job is running. Large imports legitimately take a long time, so this is
+  // only a backstop for a worker that died mid-run.
+  useTimeoutWhen(
+    awaitingJob && jobStarted,
+    runningTimeout,
+    () => giveUp(<FormattedMessage {...messages.processingTimeoutError} />),
+    invitesImportId
+  );
+
   const closeModal = () => {
     setShowModal(false);
+    setModalConfirmed(false);
     setProcessing(false);
     setNewSeatsResponse(null);
     resetQueryData();
@@ -671,6 +732,7 @@ const Invitations = () => {
         <Suspense fallback={null}>
           <InviteUsersWithSeatsModal
             inviteUsers={async () => {
+              setModalConfirmed(true);
               await onSubmit({ save: true }); // <-- add await here
             }}
             showModal={showModal}

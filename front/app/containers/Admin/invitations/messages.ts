@@ -186,6 +186,16 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
+  processingTimeoutError: {
+    id: 'app.containers.Admin.Invitations.processingTimeoutError',
+    defaultMessage:
+      'Something went wrong while processing your invitations. Check the "All invitations" tab before trying again.',
+  },
+  processingNotStartedError: {
+    id: 'app.containers.Admin.Invitations.processingNotStartedError',
+    defaultMessage:
+      'The system is busy and your invitations have not been processed yet. No invitations were sent. Please try again in a few minutes.',
+  },
   invitesSupportPageURL2: {
     id: 'app.containers.Admin.Invitations.invitesSupportPageURL2',
     defaultMessage: 'https://support.govocal.com/articles/527647',
