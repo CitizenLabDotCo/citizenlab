@@ -16,6 +16,10 @@ module CustomIdMethods::Keycloak
       true
     end
 
+    def employee_only?
+      config[:provider] == 'idporten'
+    end
+
     def profile_to_user_attrs(auth)
       {
         first_name: format_name(auth.info.first_name),
