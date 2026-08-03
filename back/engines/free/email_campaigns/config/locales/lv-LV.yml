@@ -571,7 +571,7 @@ lv-LV:
       input_status_description: Ievades statusa piemērs (piemēram, pieņemts, noraidīts, īstenots...)
       input_status_title: Piemērs Statuss
       official_feedback_body: Piemērs oficiālai atsauksmei
-      phase_description: Šis ir posma satura paraugs, ko izmanto e-pasta ziņojumu satura priekšskatīšanai. Šis nav īstais saturs.
+      phase_description: Šis ir posma satura paraugs, kas tiek izmantots e-pasta ziņojumu satura priekšskatīšanai. Šis nav īsts saturs.
       phase_title: Piemērs fāze
       project_description_preview: Šis ir daži fāzes satura piemēri, ko izmanto e-pasta vēstuļu satura priekšskatīšanai. Tas nav īsts saturs.
       project_title: Projekta piemērs

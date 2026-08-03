@@ -573,7 +573,7 @@ lb-LU:
       input_status_description: E Beispill vun engem Status fir en Input (z.B. akzeptéiert, refuséiert, ëmgesat...)
       input_status_title: Beispill Status
       official_feedback_body: Beispill vun offiziellem Feedback
-      phase_description: Dëst ass e Beispill fir den Inhalt vun enger Phas, dee benotzt gëtt fir d'Virschau vum Inhalt vun E-Mailen ze weisen. Dëst ass kee richtegen Inhalt.
+      phase_description: Dëst ass e Beispill-Inhalt vun enger Phas fir d'Virschau vum Inhalt vun E-Mailen. Dëst ass keen echte Contenu.
       phase_title: Beispillphase
       project_description_preview: Dëst ass e Beispill vun engem Phaseninhalt, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.
       project_title: Beispillprojet

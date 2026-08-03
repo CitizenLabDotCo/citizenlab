@@ -96,7 +96,7 @@ hr-HR:
         new_input_awaits_screening: Novi unos čeka provjeru
         new_input_is_published: Objavljen je novi unos
         new_proposal_is_posted: Novi prijedlog je objavljen
-        phase_starts: Faza počinje
+        phase_starts: Faza započinje
         project_phase_changes: Promjene faza projekta
         project_published: Projekt objavljen
         project_review_request: Moderator je zatražio pregled projekta
@@ -571,7 +571,7 @@ hr-HR:
       input_status_description: Primjer statusa za unos (npr. prihvaćeno, odbijeno, implementirano...)
       input_status_title: Primjer statusa
       official_feedback_body: Primjer službene povratne informacije
-      phase_description: Ovo je primjer sadržaja faze koji se koristi za pregled sadržaja e-poruka. Ovo nije stvarni sadržaj.
+      phase_description: Ovo je primjer sadržaja faze koji se koristi za pretpregled sadržaja e-poruka. Ovo nije stvarni sadržaj.
       phase_title: Primjer faze
       project_description_preview: Ovo je primjer faznog sadržaja koji se koristi za pregled sadržaja e-poruka. Ovo nije stvarni sadržaj.
       project_title: Primjer projekta

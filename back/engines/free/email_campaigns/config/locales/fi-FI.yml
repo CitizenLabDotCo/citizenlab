@@ -571,7 +571,7 @@ fi-FI:
       input_status_description: Esimerkki syötteen tilasta (esim. hyväksytty, hylätty, toteutettu...)
       input_status_title: Esimerkkitila
       official_feedback_body: Esimerkki virallisesta palautteesta
-      phase_description: Tämä on vaiheen esimerkkisisältöä sähköpostien esikatselua varten. Tämä ei ole oikeaa sisältöä.
+      phase_description: Tämä on vaiheen esimerkkisisältöä sähköpostien sisällön esikatselua varten. Tämä ei ole oikeaa sisältöä.
       phase_title: Esimerkkivaihe
       project_description_preview: Tämä on esimerkki sähköpostien sisällön esikatseluun käytettävästä vaihesisällöstä. Tämä ei ole oikeaa sisältöä.
       project_title: Esimerkkiprojekti

@@ -571,7 +571,7 @@ da-DK:
       input_status_description: Et eksempel på en status for et input (f.eks. accepteret, afvist, implementeret ...)
       input_status_title: Eksempel på status
       official_feedback_body: Eksempel på officiel feedback
-      phase_description: Dette er et eksempel på faseindhold, der bruges til at forhåndsvise indholdet af e-mails. Dette er ikke rigtigt indhold.
+      phase_description: Dette er eksempler på faseindhold, der bruges til at forhåndsvise indholdet af e-mails. Dette er ikke rigtigt indhold.
       phase_title: Eksempel på fase
       project_description_preview: Dette er et eksempel på faseindhold, der bruges til forhåndsvisning af indholdet i e-mails. Det er ikke rigtigt indhold.
       project_title: Eksempel på projekt

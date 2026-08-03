@@ -77,7 +77,7 @@ de-DE:
         users_who_follow_the_proposal: Nutzer*innen, die dem Vorschlag folgen
       trigger:
         7_days_after_invite_is_sent: 7 Tage nach Versand der 1. Einladung
-        7_days_before_phase_starts: 7 Tage bevor eine Phase beginnt
+        7_days_before_phase_starts: 7 Tage vor Beginn einer Phase
         7_days_before_the_project_changes_phase: 7 Tage bevor das Projekt die Phase wechselt
         comment_is_deleted: Kommentar wird gelöscht
         comment_is_flagged_as_spam: Kommentar wird als Spam markiert

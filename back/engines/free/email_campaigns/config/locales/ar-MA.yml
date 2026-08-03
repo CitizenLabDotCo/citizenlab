@@ -96,7 +96,7 @@ ar-MA:
         new_input_awaits_screening: مدخلات جديدة تنتظر الفحص
         new_input_is_published: تم نشر مدخلات جديدة
         new_proposal_is_posted: تم نشر اقتراح جديد
-        phase_starts: بداية مرحلة
+        phase_starts: تبدأ مرحلة
         project_phase_changes: تغييرات مرحلة المشروع
         project_published: تم نشر المشروع
         project_review_request: طلب المنسق مراجعة المشروع
@@ -571,7 +571,7 @@ ar-MA:
       input_status_description: مثال على حالة الإدخال (على سبيل المثال مقبول، مرفوض، تم تنفيذه...)
       input_status_title: حالة المثال
       official_feedback_body: مثال على التعليقات الرسمية
-      phase_description: هاد المحتوى هو مجرد مثال لمحتوى المرحلة، كيتستعمل لمعاينة محتوى الرسائل الإلكترونية. هاد المحتوى ماشي حقيقي.
+      phase_description: هذا مثال لمحتوى المرحلة يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقياً.
       phase_title: مرحلة المثال
       project_description_preview: هذا مثال على محتوى المرحلة المستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقيًا.
       project_title: مشروع مثال

@@ -77,7 +77,7 @@ ar-SA:
         users_who_follow_the_proposal: المستخدمون الذين يتابعون الاقتراح
       trigger:
         7_days_after_invite_is_sent: 7 أيام بعد إرسال الدعوة
-        7_days_before_phase_starts: قبل 7 أيام من بدء مرحلة
+        7_days_before_phase_starts: قبل 7 أيام من بدء المرحلة
         7_days_before_the_project_changes_phase: 7 أيام قبل مرحلة تغييرات المشروع
         comment_is_deleted: تم حذف التعليق
         comment_is_flagged_as_spam: تم وضع علامة على التعليق على أنه بريد عشوائي
@@ -571,7 +571,7 @@ ar-SA:
       input_status_description: مثال على حالة الإدخال (على سبيل المثال مقبول، مرفوض، تم تنفيذه...)
       input_status_title: حالة المثال
       official_feedback_body: مثال على التعليقات الرسمية
-      phase_description: هذا مثال لمحتوى مرحلة يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوىً حقيقياً.
+      phase_description: هذا مثال لمحتوى المرحلة يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقياً.
       phase_title: مرحلة المثال
       project_description_preview: هذا مثال على محتوى المرحلة المستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقيًا.
       project_title: مشروع مثال

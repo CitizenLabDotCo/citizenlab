@@ -571,7 +571,7 @@ sv-SE:
       input_status_description: Ett exempel på status för en inmatning (t.ex. accepterad, avvisad, implementerad...)
       input_status_title: Exempel Status
       official_feedback_body: Exempel på officiell feedback
-      phase_description: Detta är ett exempel på innehåll för en fas som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
+      phase_description: Detta är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
       phase_title: Exempel på fas
       project_description_preview: Det här är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Det här är inte riktigt innehåll.
       project_title: Exempel på projekt

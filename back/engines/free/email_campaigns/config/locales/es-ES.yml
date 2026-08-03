@@ -571,7 +571,7 @@ es-ES:
       input_status_description: Un ejemplo de estado de una entrada (por ejemplo, aceptada, rechazada, implementada...)
       input_status_title: Ejemplo de estado
       official_feedback_body: Ejemplo de respuesta oficial
-      phase_description: Este es un ejemplo de contenido de fase utilizado para previsualizar el contenido de los correos. Este no es contenido real.
+      phase_description: Este es un ejemplo de contenido de fase utilizado para la vista previa del contenido de los correos. No es contenido real.
       phase_title: Fase de ejemplo
       project_description_preview: Este es un contenido de fase de ejemplo utilizado para previsualizar el contenido de los correos electrónicos. No es contenido real.
       project_title: Ejemplo de proyecto
