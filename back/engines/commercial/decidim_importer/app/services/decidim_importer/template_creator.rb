@@ -57,9 +57,11 @@ module DecidimImporter
       run_phases
       run_proposals
       run_results
+      run_debates
       run_budget_projects
       run_comments
       run_comment_votes
+      run_proposal_notes
       run_followers
       run_endorsements
       run_orders
@@ -159,6 +161,11 @@ module DecidimImporter
       @results_extractor&.skipped || []
     end
 
+    # Debates that couldn't be imported as ideas (no owning project/phase / no title).
+    def skipped_debates
+      @debates_extractor&.skipped || []
+    end
+
     # Proposal follows that couldn't be imported (followed proposal or follower user not imported).
     def skipped_followers
       @followers_extractor&.skipped || []
@@ -172,6 +179,11 @@ module DecidimImporter
     # Comment votes that couldn't be imported (voted comment not imported / unknown value / duplicate).
     def skipped_comment_votes
       @comment_votes_extractor&.skipped || []
+    end
+
+    # Proposal notes that couldn't be imported as internal comments (noted proposal not imported / blank body).
+    def skipped_proposal_notes
+      @proposal_notes_extractor&.skipped || []
     end
 
     # Budget projects that couldn't be imported as ideas (no owning project/voting phase).
@@ -257,6 +269,14 @@ module DecidimImporter
       @results_extractor.run
     end
 
+    # Decidim debates → `Idea`s in the debates ideation phase. Runs after the phases (phase exists) and
+    # before comments/followers, which reference the debate as their idea.
+    def run_debates
+      return unless @rows_by_model.key?(:debates)
+
+      (@debates_extractor = build_extractor(Extractors::DebatesExtractor, :debates)).run
+    end
+
     def run_comments
       return unless @rows_by_model.key?(:comments)
 
@@ -285,6 +305,14 @@ module DecidimImporter
       return unless @rows_by_model.key?(:comment_votes)
 
       (@comment_votes_extractor = build_extractor(Extractors::CommentVotesExtractor, :comment_votes)).run
+    end
+
+    # Decidim proposal notes → private `InternalComment`s on the imported ideas (idea + author resolved).
+    # Runs after the proposals extractor so each note's idea resolves.
+    def run_proposal_notes
+      return unless @rows_by_model.key?(:proposal_notes)
+
+      (@proposal_notes_extractor = build_extractor(Extractors::ProposalNotesExtractor, :proposal_notes)).run
     end
 
     # Decidim proposal follows → `Follower`s on the imported ideas (idea + user resolved).
@@ -444,7 +472,8 @@ module DecidimImporter
     # → native_survey, budgets → voting. Each phase spans its component's `published_at` to its last
     # activity (budgets dated purely from orders; see {PhaseProjector}). Pages become static pages instead.
     def participation_components
-      proposal_components + survey_phase_components + accountability_components + budget_components
+      proposal_components + survey_phase_components + accountability_components + budget_components +
+        debate_components
     end
 
     def accountability_components
@@ -454,6 +483,21 @@ module DecidimImporter
           name: row['name'], weight: row['weight'], method: 'ideation',
           published_at: row['published_at'], previously_published: row['previously_published'],
           end_dates: (dates_by_component[row['uid']] || []).pluck('created_at') }
+      end
+    end
+
+    # Decidim debates → `ideation` phases (like proposals). Dated from the component's publication to its
+    # last activity — the debates' and their comments' `created_at` (a debate's life is its discussion).
+    def debate_components
+      debate_dates = rows_for(:debates).group_by { |row| row['decidim_component'] }
+      comment_dates = rows_for(:comments).group_by { |row| row['decidim_component'] }
+      debate_component_rows.map do |row|
+        ends = (debate_dates[row['uid']] || []).pluck('created_at') +
+               (comment_dates[row['uid']] || []).pluck('created_at')
+        { process_uid: row['decidim_participatory_process'], component_uid: row['uid'],
+          name: row['name'], weight: row['weight'], method: 'ideation',
+          published_at: row['published_at'], previously_published: row['previously_published'],
+          end_dates: ends }
       end
     end
 
@@ -513,6 +557,11 @@ module DecidimImporter
     # Component manifest rows whose type is `accountability` (their results live in a sibling CSV).
     def accountability_component_rows
       @accountability_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::ACCOUNTABILITY_COMPONENT }
+    end
+
+    # Component manifest rows whose type is `debates` (their debates live in a sibling CSV).
+    def debate_component_rows
+      @debate_component_rows ||= rows_for(:components).select { |row| row['type'] == ExportReader::DEBATES_COMPONENT }
     end
 
     # Component manifest rows whose type is `surveys` (their questionnaire lives in `specific_data`).

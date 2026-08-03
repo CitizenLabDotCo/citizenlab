@@ -17,6 +17,7 @@ import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
 
 import { configureQuill, setEmbeddedVideoTitle } from './configureQuill';
 import { createQuill } from './createQuill';
+import ImageTooLargeModal from './ImageTooLargeModal';
 import messages from './messages';
 import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
@@ -74,6 +75,8 @@ const QuillEditor = ({
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
   const [focussed, setFocussed] = useState(false);
+  const [imageTooLargeModalOpened, setImageTooLargeModalOpened] =
+    useState(false);
 
   const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -114,6 +117,7 @@ const QuillEditor = ({
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,
+      onImageTooLarge: () => setImageTooLargeModalOpened(true),
       altTextLabel: formatMessage(messages.altTextLabel),
       imageTitleLabel: formatMessage(messages.imageTitleLabel),
       ariaLabelledBy,
@@ -263,6 +267,10 @@ const QuillEditor = ({
       <div>
         <div ref={containerRef} />
       </div>
+      <ImageTooLargeModal
+        opened={imageTooLargeModalOpened}
+        close={() => setImageTooLargeModalOpened(false)}
+      />
       {(maxCharCount || minCharCount) && editor && (
         <Box
           display="flex"
