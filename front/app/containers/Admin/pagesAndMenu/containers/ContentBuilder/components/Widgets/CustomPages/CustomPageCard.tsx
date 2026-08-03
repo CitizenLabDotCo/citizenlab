@@ -9,24 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Emoji from 'components/UI/Emoji';
 
-import { typedStyled } from 'utils/cl-router/Link';
-
 import { CARD_ICON_SIZE } from './constants';
-
-const Tile = typedStyled(ButtonWithLink)`
-   .button {
-    align-items: flex-start;
-  }
-
-  /* The button label is a flex item that sizes itself to its content. Letting it
-     shrink below that and break long words keeps titles inside the card on
-     narrow screens. */
-  .buttonText {
-    width: 100%;
-    min-width: 0;
-    overflow-wrap: break-word;
-  }
-`;
 
 interface Props {
   page: ICustomPageData;
@@ -51,7 +34,7 @@ const CustomPageCard = ({ page, emoji, imageUrl }: Props) => {
   ) : null;
 
   return (
-    <Tile
+    <ButtonWithLink
       className="e2e-custom-page-card"
       linkTo={`/pages/${slug}`}
       buttonStyle="text"
@@ -60,6 +43,8 @@ const CustomPageCard = ({ page, emoji, imageUrl }: Props) => {
       borderRadius="12px"
       padding="20px"
       justify="left"
+      display="flex"
+      alignItems="center"
       whiteSpace="normal"
       width="100%"
       height="100%"
@@ -88,7 +73,7 @@ const CustomPageCard = ({ page, emoji, imageUrl }: Props) => {
           {title}
         </Title>
       </Box>
-    </Tile>
+    </ButtonWithLink>
   );
 };
 
