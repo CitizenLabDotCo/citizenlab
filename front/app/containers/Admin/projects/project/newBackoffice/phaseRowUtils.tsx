@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 import { format, isSameMonth } from 'date-fns';
 import styled from 'styled-components';
 
@@ -76,6 +76,49 @@ export const PhaseDot = ({ status }: { status: PhaseStatus }) => (
     />
   </Box>
 );
+
+export const ExampleRow = ({
+  withConnector = false,
+  isFirst = false,
+  isLast = false,
+  children,
+}: {
+  withConnector?: boolean;
+  isFirst?: boolean;
+  isLast?: boolean;
+  children: React.ReactNode;
+}) => (
+  <Box position="relative" display="flex" gap="10px" p="8px">
+    {withConnector && <Connector isFirst={isFirst} isLast={isLast} />}
+    <Box w="10px" flex="0 0 auto">
+      <Box
+        position="relative"
+        zIndex="1"
+        w="10px"
+        h="10px"
+        borderRadius="50%"
+        mt="3px"
+        background={colors.coolGrey300}
+      />
+    </Box>
+    <Text m="0" fontSize="s" color="textSecondary">
+      {children}
+    </Text>
+  </Box>
+);
+
+const DOT_CENTER = 16;
+
+export const Connector = styled.div<{ isFirst: boolean; isLast: boolean }>`
+  position: absolute;
+  left: 13px; /* 8px row padding + 5px (half the 10px dot) */
+  width: 2px;
+  margin-left: -1px;
+  top: ${({ isFirst }) => (isFirst ? `${DOT_CENTER}px` : '0')};
+  bottom: ${({ isLast }) => (isLast ? 'auto' : '0')};
+  height: ${({ isLast }) => (isLast ? `${DOT_CENTER}px` : 'auto')};
+  background: ${colors.coolGrey300};
+`;
 
 export const Row = styled.div<{ selected: boolean }>`
   position: relative;
