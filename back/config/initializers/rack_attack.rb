@@ -192,13 +192,6 @@ class Rack::Attack
     end
   end
 
-  # Confirm by user ID from JWT.
-  throttle('confirm_code_authenticated/id', limit: 10, period: 24.hours) do |req|
-    if req.path == '/web_api/v1/user/confirm_code_authenticated' && req.post?
-      USER_ID_FROM_JWT.call(req)
-    end
-  end
-
   # User check endpoint
   throttle('user_check/ip', limit: 5, period: 2.minutes) do |req|
     if req.path == '/web_api/v1/users/check' && req.post?
