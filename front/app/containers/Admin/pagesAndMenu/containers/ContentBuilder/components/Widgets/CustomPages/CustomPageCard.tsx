@@ -47,7 +47,7 @@ const CustomPageCard = ({ page, emoji, imageUrl }: Props) => {
       width="100%"
       height="100%"
     >
-      <Box display="flex" alignItems="center" gap="16px" w="100%">
+      <Box display="flex" alignItems="flex-end" gap="16px" w="100%">
         {icon && (
           <Box
             flex="0 0 auto"
@@ -67,6 +67,7 @@ const CustomPageCard = ({ page, emoji, imageUrl }: Props) => {
           p="0px"
           color="tenantText"
           fontWeight="semi-bold"
+          style={{ lineHeight: 1 }}
         >
           {title}
         </Title>
