@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-# Exchanges credentials for a JWT. Logging in with an email address and logging in
-# with a phone number are two separate endpoints: each looks the user up by its own
-# identifier and only lets them in when they confirmed that same identifier.
 class WebApi::V1::UserTokenController < ActionController::API
   include EnforceUserSso
 
   before_action :sso_enforced?, only: %i[create]
 
-  # Email address + password.
+  # Email address + password
   def create
     user = User.not_invited.find_by_cimail(auth_params[:email])
 
@@ -20,8 +17,7 @@ class WebApi::V1::UserTokenController < ActionController::API
     render json: auth_token(user), status: :created
   end
 
-  # Phone number + password. Users who signed up with their phone number have no
-  # password until they set one; they log in through confirm_code_phone instead.
+  # Phone number + password
   def create_phone
     return head :not_found unless AppConfiguration.instance.feature_activated?('sms')
 
@@ -40,9 +36,6 @@ class WebApi::V1::UserTokenController < ActionController::API
     IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
   end
 
-  # A blank password is never a valid credential. User#authenticate rejects it as
-  # well, but we refuse it here too so that a user without a password can never be
-  # handed a token without presenting anything at all.
   def password_correct?(user)
     password = auth_params[:password]
 

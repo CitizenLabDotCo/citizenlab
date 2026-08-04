@@ -315,9 +315,7 @@ resource 'User Token' do
       end
     end
 
-    # This endpoint only ever looks at the email address. A phone number is never
-    # accepted here, and a confirmed phone number does not stand in for an
-    # unconfirmed email address.
+    # This endpoint only allows authentication by email address
     context 'when the user confirmed their phone number but not their email address' do
       let(:email) { 'test@email.com' }
       let(:password) { '12345678' }
