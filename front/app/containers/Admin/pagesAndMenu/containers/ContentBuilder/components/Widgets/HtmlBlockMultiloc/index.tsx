@@ -15,7 +15,6 @@ interface Props {
 }
 
 const ContentWrapper = styled(Box)<{ $isEditing: boolean }>`
-  position: relative;
   /**
 * In edit mode, we disable pointer events for iframes contained within
 * the HTMLBlock. An iframe is a separate browsing context: clicks occurring
