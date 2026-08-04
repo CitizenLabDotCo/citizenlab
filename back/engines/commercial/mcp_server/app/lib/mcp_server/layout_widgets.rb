@@ -29,17 +29,14 @@ class McpServer::LayoutWidgets
 
   # WidgetSpecs widgets deliberately left out of DOCS: structural containers (only ever
   # created as part of a documented widget's slot pattern), legacy-only composite
-  # presets, the legacy node types (edit-in-place only, see FORMAT_RULES), and the
-  # phases and events widgets, which are seeded on every page and so never need
-  # inserting. A spec asserts DOCS + this list + the page scaffold covers the widget
-  # specs exactly, so a new widget forces an explicit decision here.
+  # presets, and the legacy node types (edit-in-place only, see FORMAT_RULES). A spec
+  # asserts DOCS + this list + the page scaffold covers the widget specs exactly, so a
+  # new widget forces an explicit decision here.
   UNDOCUMENTED_WIDGETS = (%w[
     Container
     Box
     ImageTextCards
     InfoWithAccordions
-    PhasesWidget
-    EventsWidget
   ] + ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS).freeze
 
   DOCS = {
@@ -110,24 +107,26 @@ class McpServer::LayoutWidgets
     ## Page scaffold (fixed — never add, move, delete or edit these nodes)
 
     Every project page has exactly one node of each scaffold type, in this tree:
-    ROOT (ProjectPageRoot) → ProjectBanner (header image), ProjectTitle, #{BODY_WIDGET}.
+    ROOT (ProjectPageRoot) → ProjectBanner (header image), ProjectTitle, #{BODY_WIDGET} →
+    PhasesWidget (phase timeline + input feed), EventsWidget.
 
     - The project title and header image are project attributes, not layout content: change
       them with the update_project tool (title_multiloc / remote_header_bg_url). The
       ProjectTitle/ProjectBanner widgets render from the project record.
+    - The phase timeline and the events list are already on every page. Never rebuild
+      phases or events as hand-made content. You may move them within the page (see
+      below), but not delete or edit them.
 
     ## Page content (yours to arrange)
 
     ALL content lives inside the #{BODY_WIDGET} node, whose `nodes` array is the page in
-    top-to-bottom order.
+    top-to-bottom order — including where the phases and events widgets sit.
 
     - To add, remove or reorder content at the top level, send the #{BODY_WIDGET} node
       itself with an updated `nodes` array. Everything else about that node — `parent`,
       `custom`, `props` — must come back exactly as get_project_layout returned it; only
-      `nodes` may change.
-    - Every page is seeded with a PhasesWidget (phase timeline + input feed) and an
-      EventsWidget in the body. They are ordinary widgets: reorder or remove them like any
-      other. Never rebuild phases or events as hand-made content.
+      `nodes` may change. Keep every id you were given in that array: dropping one
+      detaches the node instead of deleting it, and the update is rejected.
     - Legacy pages may hold their migrated description in a single RichTextMultiloc node
       (props: {"text":{"<locale>":"<html>"}}), or wrap their content in a
       ProjectDescriptionSection. Edit or delete those in place; creating new ones is

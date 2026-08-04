@@ -97,20 +97,19 @@ describe McpServer::Serializers::LayoutOutline do
         'PROJECT_PAGE_BANNER' => true,
         'PROJECT_PAGE_TITLE' => true,
         'PROJECT_PAGE_BODY' => true,
-        'PROJECT_PAGE_PHASES' => nil,
-        'PROJECT_PAGE_EVENTS' => nil,
+        'PROJECT_PAGE_PHASES' => true,
+        'PROJECT_PAGE_EVENTS' => true,
         'T1' => nil
       )
     end
 
-    # Pages seeded before the page builder was unlocked still carry these markers on
-    # widgets that are ordinary and movable now, so the outline must not read them.
-    it 'ignores stale custom.locked and custom.region markers' do
-      json['PROJECT_PAGE_PHASES']['custom'] = { 'locked' => true }
-      json['T1']['custom'] = { 'region' => true }
+    # The markers the FE writes are not the authority — the widget type is, so that the
+    # outline cannot disagree with what update_project_layout enforces.
+    it 'ignores custom.locked and custom.region markers on content' do
+      json['T1']['custom'] = { 'region' => true, 'locked' => true }
 
       locked = entries.to_h { |entry| [entry[:id], entry[:locked]] }
-      expect(locked).to include('PROJECT_PAGE_PHASES' => nil, 'T1' => nil)
+      expect(locked).to include('T1' => nil)
     end
   end
 

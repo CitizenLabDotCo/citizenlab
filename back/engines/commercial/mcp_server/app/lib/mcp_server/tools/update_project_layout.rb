@@ -55,10 +55,11 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       errors (with a widget reference) tell you what to fix.
 
       ALWAYS call get_project_layout first and copy the exact shape of existing nodes.
-      The page scaffold (root, banner, title, body) is fixed; ALL your content lives inside
-      the ProjectPageBody node. Add, remove or reorder top-level content by also sending
-      that node with its updated `nodes` array and nothing else about it changed. To change
-      the project title or header image use update_project instead.
+      The page scaffold (root, banner, title, body, phases, events) is fixed; ALL your
+      content lives inside the ProjectPageBody node. Add, remove or reorder top-level
+      content by also sending that node with its updated `nodes` array and nothing else
+      about it changed, keeping every id it already lists. To change the project title or
+      header image use update_project instead.
 
       Recipes: edit or replace = send just that node (no delete needed). Insert/move = send
       the node (with `parent` set) AND the parent with its updated `nodes` array (order =
@@ -70,8 +71,8 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       withDivider at strong breaks). Use TwoColumn/ThreeColumn for parallel content,
       AccordionMultiloc (body in its linked Container) for FAQs and concerns, ButtonMultiloc
       for calls to action, AboutBox last. Avoid all-text descriptions. The phase timeline
-      and the events list are already in the body (PhasesWidget, EventsWidget) — reorder
-      them like any other widget, but never rebuild them as hand-made content.
+      and the events list are already in the body (PhasesWidget, EventsWidget) — you may
+      move them within it, but never rebuild them as hand-made content.
     DESC
   end
 
@@ -227,13 +228,14 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     end
 
     # Legacy node types survive where a stored graph already has them — a patch may edit
-    # or delete those in place — but no patch may introduce a new one.
+    # or delete those in place — but no patch may introduce a new one. The exemption is
+    # per node and per type: reusing the id of some other node does not earn it, or a
+    # patch could smuggle a legacy type in by overwriting any content node.
     def protect_legacy_widgets!(stored)
       patch_nodes.each do |id, node|
-        next if stored.key?(id)
-
         widget = resolved_name(node)
         next if LEGACY_WIDGETS.exclude?(widget)
+        next if stored[id] && resolved_name(stored[id]) == widget
 
         raise PatchError, "node #{id}: #{widget} is a legacy node type kept only for pages that " \
                           'already contain one; new ones cannot be created — ' \
@@ -260,9 +262,9 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
                         'the page is fixed scaffold.'
     end
 
-    # nil for a patch id that is not in the stored graph. Anything else reaching this is
-    # a corrupt stored graph, and ProjectPageLayoutService.scaffold? raises on it rather
-    # than treating it as ordinary content.
+    # nil for a patch id that is not in the stored graph — the only case worth handling.
+    # A stored graph holding something that is not a node at all is corruption; it falls
+    # through as "not scaffold" and the Validator reports it properly a moment later.
     def scaffold?(node)
       !node.nil? && ContentBuilder::ProjectPageLayoutService.scaffold?(node)
     end

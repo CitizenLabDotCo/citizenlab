@@ -20,11 +20,18 @@ module ContentBuilder
     BODY_WIDGET = 'ProjectPageBody'
 
     # The fixed page scaffold: exactly one node of each of these types exists on every
-    # project page, in the tree #canonical_nodes seeds. Nothing may add, move, delete or
-    # edit them — the sole editable part is BODY_WIDGET's `nodes`. The other seeded
-    # nodes, the phases and events widgets, are NOT scaffold: they carry no locked
-    # marker and sit in the body alongside the rest of the content.
-    SCAFFOLD_WIDGETS = ['ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET].freeze
+    # project page, in the tree #canonical_nodes seeds. Nothing may add, delete or edit
+    # them — the sole editable part is BODY_WIDGET's `nodes`, which is the page content.
+    #
+    # The phases and events widgets are here as a deliberately conservative choice, not
+    # because the editor pins them: since the page builder was unlocked they carry no
+    # locked marker and the FE toolbox can drag them. Treating them as fixed keeps a
+    # client from deleting the phase timeline it has no documented way to rebuild.
+    # Unlocking them belongs with the work that documents them as insertable widgets.
+    SCAFFOLD_WIDGETS = [
+      'ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET,
+      'PhasesWidget', 'EventsWidget'
+    ].freeze
 
     # Scaffold widgets rendered from the project record rather than from their layout
     # props, so editing those props does nothing.

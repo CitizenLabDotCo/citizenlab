@@ -74,15 +74,13 @@ describe McpServer::LayoutWidgets do
       end
     end
 
-    # The seed also plants a phases and an events widget. Those are ordinary widgets, not
-    # scaffold: they carry no locked marker and a client may move or delete them.
     it 'matches the canonical nodes the backend seeds' do
       seeded = ContentBuilder::ProjectPageLayoutService.new
         .from_description_multiloc({})
         .values
         .map { |node| node.dig('type', 'resolvedName') }
 
-      expect(seeded).to match_array(scaffold_widgets + %w[PhasesWidget EventsWidget])
+      expect(seeded).to match_array(scaffold_widgets)
     end
   end
 

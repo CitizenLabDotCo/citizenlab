@@ -185,7 +185,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       describe 'scaffold protection' do
-        %w[ROOT PROJECT_PAGE_BODY PROJECT_PAGE_BANNER].each do |id|
+        %w[ROOT PROJECT_PAGE_BODY PROJECT_PAGE_BANNER PROJECT_PAGE_PHASES].each do |id|
           it "rejects deleting the scaffold node #{id}" do
             response = run_mcp_tool(
               described_class,
@@ -287,7 +287,8 @@ describe McpServer::Tools::UpdateProjectLayout do
         end
       end
 
-      # Seeded on every page, but ordinary widgets since the page builder was unlocked.
+      # Scaffold, so they cannot be added, deleted or edited (covered above) — but their
+      # place in the page is the body's `nodes` array, which a patch does own.
       describe 'the phases and events widgets' do
         it 'reorders them among the content' do
           response = run_mcp_tool(
@@ -303,18 +304,35 @@ describe McpServer::Tools::UpdateProjectLayout do
           expect(layout.reload.craftjs_json[body]['nodes']).to eq(%w[PROJECT_PAGE_EVENTS T1 PROJECT_PAGE_PHASES])
         end
 
-        it 'deletes one' do
+        it 'rejects editing one' do
+          phases = initial_graph['PROJECT_PAGE_PHASES'].merge('props' => { 'sectionBackground' => 'white' })
+
           response = run_mcp_tool(
             described_class,
-            params: { project_id: project.id, delete_node_ids: ['PROJECT_PAGE_PHASES'] },
+            params: { project_id: project.id, nodes: { 'PROJECT_PAGE_PHASES' => phases } },
             current_user:
           )
 
-          expect(response).not_to be_error
+          expect(response).to be_error
+          expect(response.content.first[:text]).to include('cannot be added or edited')
+          expect(layout.reload.craftjs_json).to eq(initial_graph)
+        end
 
-          layout.reload
-          expect(layout.craftjs_json).not_to have_key('PROJECT_PAGE_PHASES')
-          expect(layout.craftjs_json[body]['nodes']).to eq(%w[T1 PROJECT_PAGE_EVENTS])
+        # Dropping a scaffold id from the body's `nodes` detaches rather than deletes it;
+        # the Validator catches the orphan, so the page cannot lose them by omission.
+        it 'rejects a body patch that drops one from its nodes array' do
+          response = run_mcp_tool(
+            described_class,
+            params: {
+              project_id: project.id,
+              nodes: { body => initial_graph[body].merge('nodes' => %w[T1 PROJECT_PAGE_EVENTS]) }
+            },
+            current_user:
+          )
+
+          expect(response).to be_error
+          expect(response.content.first[:text]).to include('PROJECT_PAGE_PHASES')
+          expect(layout.reload.craftjs_json).to eq(initial_graph)
         end
       end
     end
@@ -401,6 +419,22 @@ describe McpServer::Tools::UpdateProjectLayout do
 
         expect(response).not_to be_error
         expect(layout.reload.craftjs_json).not_to have_key('LEG')
+      end
+
+      # Reusing an existing id must not be a way in: the exemption is for the legacy node
+      # that is already there, not for any id that happens to exist.
+      it 'rejects converting an existing content node into a legacy one' do
+        legacy = craftjs_node('RichTextMultiloc', parent: body, props: { 'text' => { 'en' => '<p>Smuggled</p>' } })
+
+        response = run_mcp_tool(
+          described_class,
+          params: { project_id: project.id, nodes: { 'T1' => legacy } },
+          current_user:
+        )
+
+        expect(response).to be_error
+        expect(response.content.first[:text]).to include('T1: RichTextMultiloc is a legacy node type')
+        expect(layout.reload.craftjs_json.dig('T1', 'type', 'resolvedName')).to eq('TextMultiloc')
       end
 
       ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS.each do |widget|

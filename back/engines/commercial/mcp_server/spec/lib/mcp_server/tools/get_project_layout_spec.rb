@@ -33,13 +33,13 @@ describe McpServer::Tools::GetProjectLayout do
       expect(structured[:craftjs_json]).to eq(layout.craftjs_json)
     end
 
-    it 'marks the scaffold nodes as locked in the outline, but not the widgets or content' do
+    it 'marks the scaffold nodes as locked in the outline, but not the content' do
       response = run_mcp_tool(described_class, params: { project_id: project.id }, current_user:)
 
       locked = response.structured_content[:outline].to_h { |entry| [entry[:id], entry[:locked]] }
       expect(locked['PROJECT_PAGE_BANNER']).to be(true)
       expect(locked['PROJECT_PAGE_BODY']).to be(true)
-      expect(locked['PROJECT_PAGE_PHASES']).to be_nil
+      expect(locked['PROJECT_PAGE_PHASES']).to be(true)
       expect(locked['T1']).to be_nil
     end
   end
