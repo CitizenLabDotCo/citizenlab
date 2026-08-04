@@ -63,7 +63,7 @@ const pagesAndMenuRoute = createRoute({
   path: 'pages-menu',
 });
 
-const PagesMenuIndexRedirect = () => <Navigate to="/admin/pages-menu/pages" />;
+const PagesMenuIndexRedirect = () => <Navigate to="/admin/pages-menu/menu" />;
 
 const pagesMenuIndexRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
