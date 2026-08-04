@@ -13,14 +13,13 @@ module MultiTenancy
           everyone_tracking_enabled
           global_custom_fields
           permitted_by
-          require_confirmed_email
+          email_and_phone_requirements
           require_name
           require_password
           require_verification
           user_data_collection
           user_fields_in_form
           verification_expiry
-          require_confirmed_phone_number
           confirmed_phone_number_expiry
         ]
       end

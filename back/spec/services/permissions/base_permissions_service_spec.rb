@@ -282,7 +282,7 @@ describe Permissions::BasePermissionsService do
       end
 
       context 'when a confirmed phone number is required' do
-        let(:permission) { create(:permission, permitted_by: 'users', require_confirmed_phone_number: true) }
+        let(:permission) { create(:permission, permitted_by: 'users', email_and_phone_requirements: 'both_email_and_phone') }
         let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
         before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }

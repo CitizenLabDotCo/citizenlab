@@ -19,6 +19,16 @@ export type IPhasePermissionAction =
 
 export type UserDataCollection = 'all_data' | 'demographics_only' | 'anonymous';
 
+// Which contact details a participant has to confirm before they can act.
+// 'either_email_or_phone' is satisfied by whichever of the two they have - the
+// reason this is one enum rather than two independent booleans.
+export type EmailAndPhoneRequirements =
+  | 'neither'
+  | 'email_only'
+  | 'phone_only'
+  | 'both_email_and_phone'
+  | 'either_email_or_phone';
+
 export type UserFieldsInFormExplanation =
   | 'user_fields_in_form_not_supported_for_action'
   | 'with_these_settings_cannot_ask_demographic_fields'
@@ -43,8 +53,7 @@ export interface IPhasePermissionData {
     global_custom_fields: boolean;
     permitted_by: PermittedBy;
     permitted_by_everyone_allowed: boolean;
-    require_confirmed_email: boolean;
-    require_confirmed_phone_number: boolean;
+    email_and_phone_requirements: EmailAndPhoneRequirements;
     confirmed_phone_number_expiry: number | null;
     require_name: boolean;
     require_password: boolean;
@@ -95,9 +104,8 @@ export interface IPermissionUpdate {
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
   everyone_tracking_enabled: boolean;
-  require_confirmed_email: boolean;
+  email_and_phone_requirements: EmailAndPhoneRequirements;
   confirmed_email_expiry: number | null;
-  require_confirmed_phone_number: boolean;
   confirmed_phone_number_expiry: number | null;
   require_name: boolean;
   require_password: boolean;

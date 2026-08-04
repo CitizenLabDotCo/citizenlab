@@ -621,7 +621,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'access_denied_explanation_multiloc' => p.access_denied_explanation_multiloc,
         'everyone_tracking_enabled' => p.everyone_tracking_enabled,
         'verification_expiry' => p.verification_expiry,
-        'require_confirmed_email' => p.require_confirmed_email,
+        'email_and_phone_requirements' => p.email_and_phone_requirements,
         'confirmed_email_expiry' => p.confirmed_email_expiry,
         'require_name' => p.require_name,
         'require_password' => p.require_password,
@@ -630,7 +630,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
         'user_fields_in_form' => p.user_fields_in_form,
         'user_data_collection' => p.user_data_collection,
-        'require_confirmed_phone_number' => p.require_confirmed_phone_number,
         'confirmed_phone_number_expiry' => p.confirmed_phone_number_expiry
       }
       store_ref yml_permission, p.id, :permission

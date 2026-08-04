@@ -1,6 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 
 import {
+  EmailAndPhoneRequirements,
   IPhasePermissionAction,
   IPhasePermissionData,
   PermittedBy,
@@ -26,8 +27,7 @@ export interface IGlobalPermissionData {
     global_custom_fields: boolean;
     permitted_by: PermittedBy;
     permitted_by_everyone_allowed: false;
-    require_confirmed_email: boolean;
-    require_confirmed_phone_number: boolean;
+    email_and_phone_requirements: EmailAndPhoneRequirements;
     confirmed_phone_number_expiry: number | null;
     require_name: boolean;
     require_password: boolean;
@@ -66,9 +66,8 @@ export interface PermissionUpdateParams {
   global_custom_fields: boolean;
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
-  require_confirmed_email: boolean;
+  email_and_phone_requirements: EmailAndPhoneRequirements;
   confirmed_email_expiry: number | null;
-  require_confirmed_phone_number: boolean;
   confirmed_phone_number_expiry: number | null;
   require_name: boolean;
   require_password: boolean;

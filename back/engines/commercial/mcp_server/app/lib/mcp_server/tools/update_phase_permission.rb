@@ -36,10 +36,10 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           description: <<~DESC
             - everyone: anyone, no sign-in or email needed.
             - users: must have an account (default). Combine with require_name, require_password,
-              require_confirmed_email, require_verification and require_confirmed_phone_number to
-              fine-tune what an account needs.
+              email_and_phone_requirements and require_verification to fine-tune what an account
+              needs.
             - admins_moderators: project admins/moderators only. When set, group_ids,
-              demographic_questions, and the require_* flags have no effect.
+              demographic_questions, and the account requirements have no effect.
           DESC
         },
         require_name: {
@@ -50,13 +50,23 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           type: 'boolean',
           description: 'Whether the participant must set a password. Only applies when permitted_by is "users". Defaults to true.'
         },
-        require_confirmed_email: {
-          type: 'boolean',
-          description: 'Whether the participant must confirm their email address. Only applies when permitted_by is "users". Requires the password_login feature (with signup) to be enabled. Defaults to true.'
+        email_and_phone_requirements: {
+          type: 'string',
+          enum: Permission::EMAIL_AND_PHONE_REQUIREMENTS,
+          description: <<~DESC
+            Which contact details the participant must confirm with a one-time code. Only applies
+            when permitted_by is "users". Defaults to "email_only".
+            - neither: no contact details are confirmed. Only allowed when require_verification is true.
+            - email_only: an email address. Requires the password_login feature (with signup) to be enabled.
+            - phone_only: a phone number. Requires the sms feature to be enabled.
+            - both_email_and_phone: both, one after the other.
+            - either_email_or_phone: whichever the participant has - confirming one is enough.
+              Requires both password_login (with signup) and sms to be enabled.
+          DESC
         },
         confirmed_email_expiry: {
           type: %w[integer null],
-          description: 'Number of days before email reconfirmation is required; null means never reconfirm.'
+          description: 'Number of days before email reconfirmation is required; null means never reconfirm. Only used when email_and_phone_requirements involves email.'
         },
         require_verification: {
           type: 'boolean',
@@ -100,13 +110,9 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
             - 30: within last 30 days
           DESC
         },
-        require_confirmed_phone_number: {
-          type: 'boolean',
-          description: 'Whether the participant must confirm a phone number by SMS. Only applies when permitted_by is "users". Requires the sms feature to be enabled. Defaults to false.'
-        },
         confirmed_phone_number_expiry: {
           type: %w[integer null],
-          description: 'Number of days before phone-number reconfirmation is required; null means never reconfirm. Only used when require_confirmed_phone_number is true.'
+          description: 'Number of days before phone-number reconfirmation is required; null means never reconfirm. Only used when email_and_phone_requirements involves phone.'
         },
         access_denied_explanation_multiloc: {
           **multiloc_schema,
@@ -142,11 +148,10 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
         :group_ids,
         :require_name,
         :require_password,
-        :require_confirmed_email,
+        :email_and_phone_requirements,
         :confirmed_email_expiry,
         :require_verification,
         :verification_expiry,
-        :require_confirmed_phone_number,
         :confirmed_phone_number_expiry,
         :access_denied_explanation_multiloc
       )

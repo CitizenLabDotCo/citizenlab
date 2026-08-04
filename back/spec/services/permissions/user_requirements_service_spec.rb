@@ -611,7 +611,7 @@ describe Permissions::UserRequirementsService do
           user.update!(unique_code: '1234abcd', email: nil, password: nil)
           requirements = service.requirements(verified_permission, user)
           # A verification-only permission requires neither name, password nor a
-          # confirmed email (require_confirmed_email is false), so no built-in
+          # confirmed email (the email channel is not in play), so no built-in
           # attributes and no email action are asked - verification is the only
           # outstanding requirement.
           expect(requirements[:authentication][:missing_user_attributes]).to eq []
@@ -636,7 +636,7 @@ describe Permissions::UserRequirementsService do
           it 'does not treat verification as satisfying an email requirement' do
             # Being verified does not stand in for a required confirmed email:
             # the still-missing email is asked for independently of verification.
-            verified_permission.update!(require_confirmed_email: true)
+            verified_permission.update!(email_and_phone_requirements: 'email_only')
             user.update!(unique_code: '1234abcd', email: nil, new_email: nil, password: nil)
             requirements = service.requirements(verified_permission, user)
             expect(requirements[:authentication][:email_action_required]).to eq :provide_new_email
@@ -711,7 +711,7 @@ describe Permissions::UserRequirementsService do
         let(:user) { create(:unconfirmed_user, verified: true) }
 
         it 'requires email confirmation' do
-          verified_permission.update!(require_confirmed_email: true)
+          verified_permission.update!(email_and_phone_requirements: 'email_only')
           expect(user.confirmation_required?).to be true
           requirements = service.requirements(verified_permission, user)
           expect(service.permitted?(requirements)).to be false
@@ -732,10 +732,9 @@ describe Permissions::UserRequirementsService do
           :permission,
           permitted_by: 'users',
           global_custom_fields: false,
-          require_confirmed_email: false,
+          email_and_phone_requirements: 'phone_only',
           require_name: false,
-          require_password: false,
-          require_confirmed_phone_number: true
+          require_password: false
         )
       end
 
@@ -774,8 +773,8 @@ describe Permissions::UserRequirementsService do
         expect(requirements[:authentication][:phone_action_required]).to be_nil
       end
 
-      it 'does not require a phone number when require_confirmed_phone_number is false' do
-        permission.update!(require_confirmed_email: true, require_confirmed_phone_number: false)
+      it 'does not require a phone number when the phone channel is not in play' do
+        permission.update!(email_and_phone_requirements: 'email_only')
         requirements = service.requirements(permission, user)
         expect(requirements[:authentication][:phone_action_required]).to be_nil
       end
@@ -787,7 +786,7 @@ describe Permissions::UserRequirementsService do
     # :reconfirm_email state here is the expiry window. Mirrors verification_expiry.
     context 'when a confirmed email is required with confirmed_email_expiry set' do
       let(:permission) do
-        create(:permission, permitted_by: 'users', require_confirmed_email: true)
+        create(:permission, permitted_by: 'users', email_and_phone_requirements: 'email_only')
       end
 
       it 'is satisfied and email_confirmed_at is set on the user' do
@@ -859,10 +858,9 @@ describe Permissions::UserRequirementsService do
           :permission,
           permitted_by: 'users',
           global_custom_fields: false,
-          require_confirmed_email: false,
+          email_and_phone_requirements: 'phone_only',
           require_name: false,
-          require_password: false,
-          require_confirmed_phone_number: true
+          require_password: false
         )
       end
 
@@ -911,6 +909,158 @@ describe Permissions::UserRequirementsService do
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
           end
+        end
+      end
+    end
+
+    # 'either_email_or_phone' is the value the two old booleans could not
+    # express: confirming *one* of the two channels is enough. The service
+    # therefore never asks about both at once - it asks about the channel the
+    # user already started, falling back to email - and stops asking entirely as
+    # soon as one of them is satisfied.
+    context 'when either a confirmed email or a confirmed phone number is required' do
+      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+      let(:permission) do
+        create(
+          :permission,
+          permitted_by: 'users',
+          global_custom_fields: false,
+          email_and_phone_requirements: 'either_email_or_phone',
+          require_name: false,
+          require_password: false
+        )
+      end
+
+      # The demographic questions are not what these specs are about, so every
+      # user here answers them - leaving the contact details as the only thing
+      # that can still block participation.
+      let(:answered_custom_fields) do
+        { 'gender' => 'female', 'birthyear' => 1975, 'extra_required_field' => false, 'extra_optional_field' => 29 }
+      end
+
+      # A user with nothing to be reached on: no email (nor a pending new_email),
+      # no phone. Identified by a unique_code, like an SSO sign-up that returned
+      # no email address.
+      let(:blank_user) do
+        create(:user, custom_field_values: answered_custom_fields).tap do |u|
+          u.update!(unique_code: '1234abcd', email: nil, new_email: nil, phone: nil, new_phone: nil, phone_confirmed_at: nil)
+        end
+      end
+
+      context 'when neither channel is satisfied' do
+        it 'asks a visitor for an email address only' do
+          requirements = service.requirements(permission, nil)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:email_action_required]).to eq :provide_email
+          expect(requirements[:authentication][:phone_action_required]).to be_nil
+        end
+
+        it 'asks a user with nothing for an email address only' do
+          requirements = service.requirements(permission, blank_user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:email_action_required]).to eq :provide_new_email
+          expect(requirements[:authentication][:phone_action_required]).to be_nil
+        end
+
+        it 'asks to confirm an unconfirmed email rather than to provide a phone number' do
+          unconfirmed = create(:unconfirmed_user, custom_field_values: answered_custom_fields)
+          unconfirmed.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
+          requirements = service.requirements(permission, unconfirmed)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
+          expect(requirements[:authentication][:phone_action_required]).to be_nil
+        end
+
+        # The tie-break that matters: a user halfway through the phone flow must
+        # not be bounced over to providing an email address.
+        it 'asks to confirm a pending new_phone rather than to provide an email address' do
+          blank_user.update!(new_phone: '+3212345678')
+          requirements = service.requirements(permission, blank_user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:email_action_required]).to be_nil
+          expect(requirements[:authentication][:phone_action_required]).to eq :confirm_new_phone
+        end
+
+        it 'asks to confirm an existing but unconfirmed phone number rather than to provide an email address' do
+          blank_user.update!(phone: '+3212345678', phone_confirmed_at: nil)
+          requirements = service.requirements(permission, blank_user)
+          expect(requirements[:authentication][:email_action_required]).to be_nil
+          expect(requirements[:authentication][:phone_action_required]).to eq :confirm_phone
+        end
+
+        # Both channels started: email wins the tie, and only one is ever asked.
+        it 'asks about email when both channels are awaiting confirmation' do
+          unconfirmed = create(:unconfirmed_user, custom_field_values: answered_custom_fields)
+          unconfirmed.update!(new_phone: '+3212345678', phone: nil, phone_confirmed_at: nil)
+          requirements = service.requirements(permission, unconfirmed)
+          expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
+          expect(requirements[:authentication][:phone_action_required]).to be_nil
+        end
+      end
+
+      context 'when one channel is satisfied' do
+        it 'asks nothing of a user with a confirmed email and no phone number' do
+          user.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements[:authentication][:email_action_required]).to be_nil
+          expect(requirements[:authentication][:phone_action_required]).to be_nil
+        end
+
+        it 'asks nothing of a user with a confirmed phone number and no email' do
+          blank_user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
+          requirements = service.requirements(permission, blank_user)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements[:authentication][:email_action_required]).to be_nil
+          expect(requirements[:authentication][:phone_action_required]).to be_nil
+        end
+
+        it 'asks nothing of a user with a confirmed phone number and an unconfirmed email' do
+          unconfirmed = create(:unconfirmed_user, custom_field_values: answered_custom_fields)
+          unconfirmed.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
+          requirements = service.requirements(permission, unconfirmed)
+          expect(service.permitted?(requirements)).to be true
+          expect(requirements[:authentication][:email_action_required]).to be_nil
+          expect(requirements[:authentication][:phone_action_required]).to be_nil
+        end
+      end
+
+      context 'with expiries set on both channels' do
+        before do
+          user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
+          permission.update!(confirmed_email_expiry: 30, confirmed_phone_number_expiry: 7)
+        end
+
+        it 'is satisfied by the phone number once the email confirmation has aged out' do
+          travel_to Time.now + 6.days do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:email_action_required]).to be_nil
+            expect(requirements[:authentication][:phone_action_required]).to be_nil
+          end
+        end
+
+        it 'asks for re-confirmation of one channel once both have aged out' do
+          travel_to Time.now + 31.days do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
+            expect(requirements[:authentication][:phone_action_required]).to be_nil
+          end
+        end
+      end
+
+      # The contrast that gives 'either' its meaning: with 'both', the same user
+      # is asked about the channel they are missing.
+      context 'compared with both_email_and_phone' do
+        it 'asks for a phone number where either would not' do
+          user.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
+          permission.update!(email_and_phone_requirements: 'both_email_and_phone')
+          requirements = service.requirements(permission, user)
+          expect(service.permitted?(requirements)).to be false
+          expect(requirements[:authentication][:email_action_required]).to be_nil
+          expect(requirements[:authentication][:phone_action_required]).to eq :provide_new_phone
         end
       end
     end
@@ -975,20 +1125,20 @@ describe Permissions::UserRequirementsService do
         expect(requirements[:authentication][:missing_user_attributes]).to include(:password)
       end
 
-      context 'and require_confirmed_email is disabled (verification then backs the account)' do
+      context 'and no contact details are required (verification then backs the account)' do
         before do
           # A 'users' permission must be backed by at least one authentication
           # method, so turning off confirmed email requires verification to be
           # enabled (otherwise the permission is invalid).
           AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
           AppConfiguration.instance.save!
-          permission.update!(require_verification: true, require_confirmed_email: false)
+          permission.update!(require_verification: true, email_and_phone_requirements: 'neither')
         end
 
         it 'leaves no missing authentication attributes at all - the SSO user is never prompted for a password' do
           requirements = service.requirements(permission, sso_user)
           # Why the list is empty:
-          # - :confirmation is dropped because require_confirmed_email is false
+          # - :confirmation is dropped because no contact details are required
           # - :first_name / :last_name / :email are provided by the SSO identity
           # - :password is dropped by the SSO exception, despite require_password
           # Nothing is left to ask, which is exactly why the require_password

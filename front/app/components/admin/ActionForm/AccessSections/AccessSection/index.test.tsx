@@ -53,8 +53,9 @@ const buildPermission = (
       access_denied_explanation_multiloc: {},
       everyone_tracking_enabled: false,
       user_data_collection: 'all_data',
-      require_confirmed_email: true,
+      email_and_phone_requirements: 'email_only',
       confirmed_email_expiry: null,
+      confirmed_phone_number_expiry: null,
       require_name: true,
       require_password: true,
       require_verification: false,
@@ -68,15 +69,22 @@ const buildPermission = (
   } as IPhasePermissionData);
 
 const renderSection = (
-  attributes?: Partial<IPhasePermissionData['attributes']>
-) =>
+  attributes?: Partial<IPhasePermissionData['attributes']>,
+  onChange = jest.fn()
+) => {
   render(
     <AccessSection
       permission={buildPermission(attributes)}
       showAnyone
-      onChange={jest.fn()}
+      onChange={onChange}
     />
   );
+  return onChange;
+};
+
+const openContactModal = async () => {
+  await userEvent.click(screen.getByText('Change'));
+};
 
 beforeEach(() => {
   mockPasswordLoginEnabled = true;
@@ -91,22 +99,15 @@ describe('<AccessSection />', () => {
   });
 
   describe('when an account is required (permitted_by: users)', () => {
-    it('shows the authentication method rows with their descriptions when available', () => {
+    it('shows the contact requirement trigger and the verification row', () => {
       renderSection();
 
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
-      expect(screen.getByText('Confirmed phone number')).toBeInTheDocument();
+      expect(
+        screen.getByText('Email and phone requirements')
+      ).toBeInTheDocument();
+      expect(screen.getByText('Email address')).toBeInTheDocument();
+      expect(screen.getByText('Confirmed by email')).toBeInTheDocument();
       expect(screen.getByText('Identity verification')).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          'Participant confirms an email address with a one-time code.'
-        )
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          'Participant confirms a phone number with a one-time code sent by SMS.'
-        )
-      ).toBeInTheDocument();
       expect(
         screen.getByText(
           'Participant proves their identity through an external register.'
@@ -114,33 +115,19 @@ describe('<AccessSection />', () => {
       ).toBeInTheDocument();
     });
 
-    it('hides the phone method row when SMS is off', () => {
-      mockSmsEnabled = false;
-      renderSection();
+    it.each([
+      ['neither', 'Nothing confirmed'],
+      ['email_only', 'Email address'],
+      ['phone_only', 'Phone number'],
+      ['both_email_and_phone', 'Email and phone number'],
+      ['either_email_or_phone', 'Email or phone number'],
+    ] as const)('summarises %s on the trigger', (requirement, title) => {
+      renderSection({
+        email_and_phone_requirements: requirement,
+        require_verification: requirement === 'neither',
+      });
 
-      expect(
-        screen.queryByText('Confirmed phone number')
-      ).not.toBeInTheDocument();
-      // The other methods are unaffected.
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
-      expect(screen.getByText('Identity verification')).toBeInTheDocument();
-    });
-
-    it('marks the email method unavailable when password login is off', () => {
-      mockPasswordLoginEnabled = false;
-      renderSection();
-
-      expect(
-        screen.getByText(
-          'Unavailable: password login is turned off for this platform.'
-        )
-      ).toBeInTheDocument();
-      // The verification method is still available.
-      expect(
-        screen.getByText(
-          'Participant proves their identity through an external register.'
-        )
-      ).toBeInTheDocument();
+      expect(screen.getByText(title)).toBeInTheDocument();
     });
 
     it('marks the verification method unavailable when none is configured', () => {
@@ -154,15 +141,17 @@ describe('<AccessSection />', () => {
       ).toBeInTheDocument();
     });
 
-    it('locks the last remaining enabled method and explains why in a tooltip', async () => {
-      // Only confirmed email enabled -> it is the last one, so it is locked.
+    it('locks verification on when nothing is confirmed and explains why', async () => {
       renderSection({
-        require_confirmed_email: true,
-        require_verification: false,
+        email_and_phone_requirements: 'neither',
+        require_verification: true,
       });
 
-      const emailRow = screen.getByText('Confirmed email').parentElement!;
-      const tooltip = within(emailRow).getByTestId('tooltip-icon-button');
+      const verificationRow = screen.getByText('Identity verification')
+        .parentElement!;
+      const tooltip = within(verificationRow).getByTestId(
+        'tooltip-icon-button'
+      );
       await userEvent.hover(tooltip);
 
       expect(
@@ -173,11 +162,111 @@ describe('<AccessSection />', () => {
     });
   });
 
+  describe('the contact requirement modal', () => {
+    it('emits the picked requirement', async () => {
+      const onChange = renderSection();
+      await openContactModal();
+
+      await userEvent.click(
+        screen.getByTestId('contact-option-either_email_or_phone')
+      );
+
+      expect(onChange).toHaveBeenCalledWith({
+        email_and_phone_requirements: 'either_email_or_phone',
+      });
+    });
+
+    it('disables the email options when password login is off', async () => {
+      mockPasswordLoginEnabled = false;
+      renderSection({ email_and_phone_requirements: 'phone_only' });
+      await openContactModal();
+
+      expect(screen.getByTestId('contact-option-email_only')).toBeDisabled();
+      expect(
+        screen.getByTestId('contact-option-either_email_or_phone')
+      ).toBeDisabled();
+      expect(screen.getByTestId('contact-option-phone_only')).toBeEnabled();
+    });
+
+    it('disables the phone options when SMS is off', async () => {
+      mockSmsEnabled = false;
+      renderSection();
+      await openContactModal();
+
+      expect(screen.getByTestId('contact-option-phone_only')).toBeDisabled();
+      expect(
+        screen.getByTestId('contact-option-both_email_and_phone')
+      ).toBeDisabled();
+      expect(screen.getByTestId('contact-option-email_only')).toBeEnabled();
+    });
+
+    // Mirrors the backend's authentication_method_required validation: the
+    // account must be backed by something.
+    it('only offers "nothing confirmed" when verification is required', async () => {
+      renderSection({ require_verification: false });
+      await openContactModal();
+      expect(screen.getByTestId('contact-option-neither')).toBeDisabled();
+
+      await userEvent.click(screen.getByText('Done'));
+
+      renderSection({ require_verification: true });
+      await openContactModal();
+      expect(screen.getByTestId('contact-option-neither')).toBeEnabled();
+    });
+
+    it('offers a recency control for the channel in play', async () => {
+      const onChange = renderSection({
+        email_and_phone_requirements: 'email_only',
+      });
+      await openContactModal();
+
+      await userEvent.click(
+        within(screen.getByTestId('contact-option-email_only')).getByText(
+          '+ Require recent confirmation'
+        )
+      );
+
+      expect(onChange).toHaveBeenCalledWith({ confirmed_email_expiry: 30 });
+    });
+
+    it('offers a recency control per channel when either one will do', async () => {
+      renderSection({
+        email_and_phone_requirements: 'either_email_or_phone',
+        confirmed_email_expiry: 30,
+        confirmed_phone_number_expiry: 7,
+      });
+      await openContactModal();
+
+      const card = within(
+        screen.getByTestId('contact-option-either_email_or_phone')
+      );
+      expect(card.getByText('Email address')).toBeInTheDocument();
+      expect(card.getByText('Phone number')).toBeInTheDocument();
+      expect(card.getAllByText('remove')).toHaveLength(2);
+    });
+
+    it('shows no recency control when nothing is confirmed', async () => {
+      renderSection({
+        email_and_phone_requirements: 'neither',
+        require_verification: true,
+      });
+      await openContactModal();
+
+      expect(
+        within(screen.getByTestId('contact-option-neither')).queryByText(
+          '+ Require recent confirmation'
+        )
+      ).not.toBeInTheDocument();
+    });
+  });
+
   describe('when no account is required (permitted_by: everyone)', () => {
-    it('does not show the authentication method rows', () => {
+    it('does not show the authentication methods', () => {
       renderSection({ permitted_by: 'everyone' });
 
-      expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
+      expect(
+        screen.queryByText('Email and phone requirements')
+      ).not.toBeInTheDocument();
       expect(
         screen.queryByText('Identity verification')
       ).not.toBeInTheDocument();

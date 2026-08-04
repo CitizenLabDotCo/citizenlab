@@ -13,7 +13,7 @@ describe('Sign up - phone only', () => {
       projectTitle,
       permissionBody: {
         permitted_by: 'users',
-        require_confirmed_phone_number: true,
+        email_and_phone_requirements: 'phone_only',
         confirmed_phone_number_expiry: 30,
       },
     }).then(({ projectId: id, phaseId: pid }) => {

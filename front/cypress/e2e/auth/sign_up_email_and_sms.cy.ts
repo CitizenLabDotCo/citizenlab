@@ -15,7 +15,7 @@ describe('Sign up - email and SMS (2FA)', () => {
       projectTitle,
       permissionBody: {
         permitted_by: 'users',
-        require_confirmed_phone_number: true,
+        email_and_phone_requirements: 'both_email_and_phone',
       },
     }).then(({ projectId: id }) => {
       projectId = id;
@@ -185,8 +185,7 @@ describe('Sign up - SSO and SMS (2FA)', () => {
       projectTitle,
       permissionBody: {
         permitted_by: 'users',
-        require_confirmed_phone_number: true,
-        require_confirmed_email: false,
+        email_and_phone_requirements: 'phone_only',
         require_verification: true,
       },
     }).then(({ projectId: id }) => {
