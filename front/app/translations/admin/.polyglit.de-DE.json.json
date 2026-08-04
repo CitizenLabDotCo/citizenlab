@@ -7114,6 +7114,16 @@
     "verified_at": "2026-08-04T09:33:41.860490Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": {
+    "state": "verified",
+    "verified_at": "2026-08-04T14:32:11.346761Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": {
+    "state": "verified",
+    "verified_at": "2026-08-04T14:32:11.346761Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": {
     "state": "verified",
     "verified_at": "2026-08-04T09:33:41.860490Z",
