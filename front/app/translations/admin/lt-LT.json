@@ -4158,7 +4158,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Tik darbuotojams",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": "Peržiūrėti metodo savybes",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Prisijunkite per sukonfigūruotą SSO paskyrą.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Nepasiekiama: prisijungimas slaptažodžiu šioje platformoje išjungtas.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Neprieinama: nesukonfigūruotas joks tapatybės patvirtinimo metodas.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Dalyvis patvirtina savo tapatybę per išorinį registrą.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Kas gali dalyvauti",

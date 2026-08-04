@@ -4158,7 +4158,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Begränsat till personal",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": "Se metodens egenskaper",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Logga in via det konfigurerade SSO-kontot.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Otillgängligt: lösenordsinloggning är avstängd för denna plattform.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Otillgänglig: ingen metod för identitetsverifiering har konfigurerats.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Deltagaren styrker sin identitet via ett externt register.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Vem kan delta",

@@ -4158,7 +4158,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "عملے تک محدود",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": "طریقے کی خصوصیات دیکھیں",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "کنفیگر کردہ SSO اکاؤنٹ کے ذریعے سائن ان کریں۔",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "دستیاب نہیں: اس پلیٹ فارم کے لیے پاس ورڈ لاگ ان بند کر دیا گیا ہے۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "دستیاب نہیں: شناخت کی تصدیق کا کوئی طریقہ ترتیب نہیں دیا گیا ہے۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "شریک ایک بیرونی رجسٹر کے ذریعے اپنی شناخت ثابت کرتا ہے۔",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "کون حصہ لے سکتا ہے",
