@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Nästa fas",
   "app.containers.Projects.noEndDate": "Inget slutdatum",
   "app.containers.Projects.noItems": "Du har inte valt några objekt än",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Det finns inga öppna sätt att delta just nu. Endast administratörer kan se det här meddelandet.",
   "app.containers.Projects.noPastEvents": "Inga tidigare evenemang att visa",
   "app.containers.Projects.noPhaseSelected": "Ingen fas har valts",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Inga kommande eller pågående evenemang är för närvarande schemalagda.",

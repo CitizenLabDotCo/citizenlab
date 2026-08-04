@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Phase suivante",
   "app.containers.Projects.noEndDate": "Pas de date de fin",
   "app.containers.Projects.noItems": "Vous n'avez encore rien sélectionné",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Il n'y a aucune modalité de participation ouverte pour le moment. Seuls les administrateurs peuvent voir ce message.",
   "app.containers.Projects.noPastEvents": "Aucun événement passé à afficher",
   "app.containers.Projects.noPhaseSelected": "Pas de phase sélectionnée",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Aucun événement à venir ou en cours n'est actuellement prévu.",
