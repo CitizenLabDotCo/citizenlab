@@ -6934,9 +6934,29 @@
     "verified_at": "2026-07-27T15:36:17.638404Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": {
+    "state": "verified",
+    "verified_at": "2026-08-04T09:33:42.033246Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": {
     "state": "verified",
     "verified_at": "2026-07-27T15:36:17.638404Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": {
+    "state": "verified",
+    "verified_at": "2026-08-04T09:33:42.033246Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": {
+    "state": "verified",
+    "verified_at": "2026-08-04T09:33:42.033246Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": {
+    "state": "verified",
+    "verified_at": "2026-08-04T09:33:42.033246Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folder": {
