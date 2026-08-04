@@ -49,6 +49,11 @@ const IdeasNewSurveyPage = () => {
     project?.data.relationships.current_phase?.data?.id;
   const { data: phase, isInitialLoading: phaseIsLoading } = usePhase(phaseId);
 
+  const participationMethod = phase?.data.attributes.participation_method;
+  const isSurveyPhase =
+    participationMethod === 'native_survey' ||
+    participationMethod === 'community_monitor_survey';
+
   /*
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewPage
   */
@@ -76,6 +81,15 @@ const IdeasNewSurveyPage = () => {
     });
 
   if (!hasEntered) {
+    // Only the survey participation methods have a survey to fill in here. A link
+    // to a phase that has since become something else (or to a project whose
+    // current phase is) would otherwise fall through to the authentication gate
+    // below, which offers a sign-in for a posting_idea permission that cannot
+    // exist on such a phase, and so dead-ends on a failed requirements fetch.
+    if (phase && !isSurveyPhase) {
+      return <SurveyNotActiveNotice project={project.data} />;
+    }
+
     if (disabledReason === 'posting_limited_max_reached' || hadIdeaIdOnMount) {
       return <SurveySubmittedNotice project={project.data} />;
     }
