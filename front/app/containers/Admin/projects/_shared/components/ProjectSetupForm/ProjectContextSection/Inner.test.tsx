@@ -182,6 +182,26 @@ describe('ProjectContextSection Inner', () => {
     });
   });
 
+  describe('when the project is already in a space or folder', () => {
+    it('tells a manager up front that they cannot move it out', () => {
+      mockAuthUser = buildUser('space_moderator', [
+        { type: 'space_moderator', space_id: 'space-1' },
+      ]);
+
+      renderInner({ spaceId: 'space-1', projectInRoot: false });
+
+      expect(
+        screen.getByText(/move this project out of its space or folder/)
+      ).toBeInTheDocument();
+    });
+
+    it('does not say it to an admin, who can move it out', () => {
+      renderInner({ spaceId: 'space-1', projectInRoot: false });
+
+      expect(screen.queryByText(/move this project out/)).toBeNull();
+    });
+  });
+
   describe('for a folder manager', () => {
     beforeEach(() => {
       mockAuthUser = folderManager();

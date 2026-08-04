@@ -153,6 +153,11 @@ const Inner = ({
   const showApprovalWarning =
     !userIsAdmin && projectInRoot && !spaceId && !folderId;
 
+  // The space or folder is what gives a manager access to this project, so they
+  // cannot take it out of both. Say so up front instead of only rejecting it on
+  // save — otherwise the rule only shows up as an error they did not expect.
+  const showCannotMoveOutHint = !userIsAdmin && !projectInRoot;
+
   return (
     <Box display="flex" flexDirection="column" gap="20px">
       {showSpaceSelect && (
@@ -189,6 +194,15 @@ const Inner = ({
             {...(showSpaceSelect
               ? messages.approvalNeededWithSpaces
               : messages.approvalNeededWithoutSpaces)}
+          />
+        </Warning>
+      )}
+      {showCannotMoveOutHint && (
+        <Warning>
+          <FormattedMessage
+            {...(showSpaceSelect
+              ? messages.cannotMoveOutOfSpaceOrFolder
+              : messages.cannotMoveOutOfFolder)}
           />
         </Warning>
       )}

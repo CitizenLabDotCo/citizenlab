@@ -38,14 +38,24 @@ export default defineMessages({
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2',
     defaultMessage: 'Select a folder for this project.',
   },
-  approvalNeededWithSpaces: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces',
+  cannotMoveOutOfSpaceOrFolder: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder',
     defaultMessage:
-      'This project will not be in a space or a folder. You will need approval from an admin to publish it.',
+      "You don't have permission to move this project out of its space or folder. An admin can do this for you.",
+  },
+  cannotMoveOutOfFolder: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder',
+    defaultMessage:
+      "You don't have permission to move this project out of its folder. An admin can do this for you.",
+  },
+  approvalNeededWithSpaces: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2',
+    defaultMessage:
+      'This project is not in a space or a folder. You will need approval from an admin to publish it.',
   },
   approvalNeededWithoutSpaces: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces',
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2',
     defaultMessage:
-      'This project will not be in a folder. You will need approval from an admin to publish it.',
+      'This project is not in a folder. You will need approval from an admin to publish it.',
   },
 });
