@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 
-import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useEvents from 'api/events/useEvents';
@@ -52,7 +52,6 @@ const ProjectActionButtons = memo<Props>(
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
-    const isSmallerThanTablet = useBreakpoint('tablet');
     const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
     const [modalOpened, setModalOpened] = useState(false);
     const { formatMessage } = useIntl();
@@ -216,11 +215,7 @@ const ProjectActionButtons = memo<Props>(
       !!currentPhase &&
       !!hiddenOptionIds?.includes(currentPhase.id);
 
-    const generalShowCTAButtonCondition =
-      !isSmallerThanTablet && publication_status !== 'archived';
-    const showBoxCTAs = isParallelParticipationEnabled
-      ? publication_status !== 'archived'
-      : generalShowCTAButtonCondition;
+    const showBoxCTAs = publication_status !== 'archived';
     const showSeeIdeasButton =
       participationMethod === 'ideation' &&
       typeof ideas_count === 'number' &&
@@ -238,7 +233,7 @@ const ProjectActionButtons = memo<Props>(
       participationMethod === 'native_survey';
     const showTakeSurveyButton =
       takingSurveyEnabled &&
-      !generalShowCTAButtonCondition &&
+      showBoxCTAs &&
       !currentPhaseHidden &&
       participationMethod === 'survey' &&
       !hasCurrentPhaseEnded;
