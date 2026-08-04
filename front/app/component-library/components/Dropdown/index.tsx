@@ -144,7 +144,7 @@ interface Props {
   right?: string;
   mobileRight?: string;
   content: JSX.Element;
-  footer?: JSX.Element;
+  footer?: React.ReactNode;
   zIndex?: string;
   onClickOutside?: (event: FormEvent) => void;
   id?: string;
