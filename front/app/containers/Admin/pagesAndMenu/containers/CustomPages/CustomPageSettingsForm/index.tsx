@@ -6,6 +6,7 @@ import {
   Label,
   colors,
   Tooltip,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -37,7 +38,6 @@ import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
 import Select from 'components/HookForm/Select';
 import SlugInput from 'components/HookForm/SlugInput';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
@@ -244,14 +244,14 @@ const CustomPageSettingsForm = ({
         <SectionFormWrapper
           stickyMenuContents={
             <Box display="flex">
-              <ButtonWithLink
+              <Button
                 data-cy="e2e-submit-custom-page"
                 type="submit"
                 processing={methods.formState.isSubmitting}
                 bgColor={colors.blue500}
               >
                 {formatMessage(messages.saveButton)}
-              </ButtonWithLink>
+              </Button>
             </Box>
           }
           flatTopBorder

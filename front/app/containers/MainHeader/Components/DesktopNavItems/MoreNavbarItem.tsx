@@ -9,6 +9,9 @@ import {
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import { INavbarItem } from 'api/navbar/types';
+import { getNavbarChildLink } from 'api/navbar/util';
+
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
@@ -75,9 +78,10 @@ const MoreIcon = styled(Icon)`
 `;
 
 interface NavbarItemProps extends TypedLinkProps {
-  linkTo?: string;
+  linkTo?: string | null;
   navigationItemTitle: Multiloc;
   onlyActiveOnIndex?: boolean;
+  navbarItem?: INavbarItem;
 }
 
 interface Props {
@@ -115,33 +119,59 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
         zIndex="9999"
         content={
           <>
-            {overflowItems.map((item, index) => (
-              <DropdownListItem
-                key={index}
-                to={
-                  (item.to ?? item.linkTo) as Parameters<
-                    typeof DropdownListItem
-                  >[0]['to']
-                }
-                params={
-                  item.params as Parameters<
-                    typeof DropdownListItem
-                  >[0]['params']
-                }
-                search={
-                  item.search as Parameters<
-                    typeof DropdownListItem
-                  >[0]['search']
-                }
-                onlyActiveOnIndex={item.onlyActiveOnIndex}
-                onClick={closeDropdown}
-                scrollToTop
-              >
-                <DropdownItemText>
-                  <T value={item.navigationItemTitle} />
-                </DropdownItemText>
-              </DropdownListItem>
-            ))}
+            {overflowItems.map((item, index) => {
+              // A dropdown item has no link of its own; flatten its children
+              // into the overflow list so they stay reachable.
+              if (item.navbarItem) {
+                const dropdownChildren =
+                  item.navbarItem.attributes.children ?? [];
+                return dropdownChildren.map((child) => {
+                  const link = getNavbarChildLink(child);
+                  if (!link) return null;
+                  return (
+                    <DropdownListItem
+                      key={child.id}
+                      to={link.to}
+                      params={link.params}
+                      onClick={closeDropdown}
+                      scrollToTop
+                    >
+                      <DropdownItemText>
+                        <T value={child.title_multiloc} />
+                      </DropdownItemText>
+                    </DropdownListItem>
+                  );
+                });
+              }
+
+              return (
+                <DropdownListItem
+                  key={index}
+                  to={
+                    (item.to ?? item.linkTo) as Parameters<
+                      typeof DropdownListItem
+                    >[0]['to']
+                  }
+                  params={
+                    item.params as Parameters<
+                      typeof DropdownListItem
+                    >[0]['params']
+                  }
+                  search={
+                    item.search as Parameters<
+                      typeof DropdownListItem
+                    >[0]['search']
+                  }
+                  onlyActiveOnIndex={item.onlyActiveOnIndex}
+                  onClick={closeDropdown}
+                  scrollToTop
+                >
+                  <DropdownItemText>
+                    <T value={item.navigationItemTitle} />
+                  </DropdownItemText>
+                </DropdownListItem>
+              );
+            })}
           </>
         }
       />

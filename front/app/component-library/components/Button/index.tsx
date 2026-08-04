@@ -19,6 +19,7 @@ import Box, {
   BoxPositionProps,
   BoxWidthProps,
   BoxHeightProps,
+  BoxFlexProps,
 } from '../Box';
 import Icon, { IconProps } from '../Icon';
 import Spinner from '../Spinner';
@@ -511,6 +512,7 @@ export type ButtonContainerProps = {
   BoxPositionProps &
   BoxWidthProps &
   BoxHeightProps &
+  BoxFlexProps &
   React.HTMLAttributes<HTMLDivElement> &
   React.HTMLAttributes<HTMLElement>;
 
