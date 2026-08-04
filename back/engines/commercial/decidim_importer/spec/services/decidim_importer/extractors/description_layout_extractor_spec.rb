@@ -261,7 +261,7 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
       craftjs = extract([row], attachments: attachments, attachment_collections: collections).first.attributes['craftjs_json']
 
       # The collection-less file sits at root; the collected file does not.
-      root_files = nodes_named(craftjs, 'FileAttachment').select { |n| n['parent'] == BODY }
+      root_files = nodes_named(craftjs, 'FileAttachment').select { |n| n['parent'] == body_id }
       expect(root_files.map { |n| n['props']['fileId'] }).to eq(['file-2'])
 
       # The accordion is a root child, titled with the (localized) collection name, nesting its content
