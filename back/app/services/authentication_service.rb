@@ -22,10 +22,13 @@ class AuthenticationService
   end
 
   def first_method_enabled
-    # Temporary hack: we never want to return vienna_employee,
-    # because in the places in the UI where this endpoint is used,
-    # we always want to show the `vienna_citizen` method instead.
-    active_methods(AppConfiguration.instance).reject { |method| method.name == 'vienna_employee' }.first
+    # This endpoint is only used for the access rights interface.
+    # here, we don't want to return employee-only methods.
+    # In theory we could but it requires a redesign of the interface
+    # so for now we just hide the employee-only methods.
+    active_methods(AppConfiguration.instance)
+      .reject(&:employee_only?)
+      .first
   end
 
   def logout_url(provider, user)

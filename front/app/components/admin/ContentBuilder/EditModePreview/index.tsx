@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 
-import { devicePreviewSizes } from './dimensions';
+import { DEVICE_FRAME_BORDER_WIDTH, devicePreviewSizes } from './dimensions';
 import DesktopButton from './ViewButtons/DesktopButton';
 import MobileButton from './ViewButtons/MobileButton';
 
@@ -86,7 +86,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
             <Box
               height={`${frameHeight}px`}
               border="solid black"
-              borderWidth="40px 20px 20px 20px"
+              borderWidth={DEVICE_FRAME_BORDER_WIDTH}
               zIndex="1"
               mb="12px"
               width={`${frameWidth}px`}

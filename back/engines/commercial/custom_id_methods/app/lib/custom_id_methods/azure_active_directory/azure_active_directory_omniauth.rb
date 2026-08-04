@@ -14,6 +14,10 @@ module CustomIdMethods::AzureActiveDirectory
       true
     end
 
+    def employee_only?
+      true
+    end
+
     def verification_method_type
       :omniauth
     end
