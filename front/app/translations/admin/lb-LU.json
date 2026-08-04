@@ -1349,7 +1349,7 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Dëse Projet ass net an engem Beräich oder Dossier. Dir braucht d'Zoustëmmung vun engem Admin, fir en ze publizéieren.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Dëse Projet ass net an engem Dossier. Dir braucht d'Zoustëmmung vun engem Admin, fir en ze publizéieren.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": "Dir kënnt dëse Projet nëmmen an en aneren Dossier verréckelen, deen Dir geréiert.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": "Dir kënnt dëse Projet nëmmen an en anere Raum oder Dossier verréckelen, deen Dir geréiert.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": "Dir kënnt dëse Projet nëmmen an en anere Space oder Dossier verréckelen, deen Dir geréiert.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Dossier",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Keen Dossier —",
