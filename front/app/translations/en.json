@@ -2584,6 +2584,7 @@
   "app.errors.emails_duplicate": "One or more duplicate values for the email address {value} were found in the following row(s): {rows}",
   "app.errors.extension_whitelist_error": "The format of the file you tried to upload is not supported.",
   "app.errors.file_extension_whitelist_error": "The format of the file you tried to upload is not supported.",
+  "app.errors.file_too_large": "\"{value}\" is too large. The maximum file size is {max_size_mb} MB. Please remove it and upload a smaller file.",
   "app.errors.first_name_blank": "This cannot be empty",
   "app.errors.generics.blank": "This cannot be empty.",
   "app.errors.generics.invalid": "This doesn't look like a valid value",
