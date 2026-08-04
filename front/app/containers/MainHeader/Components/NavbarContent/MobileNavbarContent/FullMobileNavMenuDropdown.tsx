@@ -24,6 +24,15 @@ const DropdownButton = styled.button`
   font-weight: 600;
 `;
 
+// min-width lets the title shrink past its longest word rather than push the
+// chevron out of the menu. 'anywhere' rather than 'break-word' so the break
+// opportunities also count towards min-content width — the menu sits in a flex
+// chain that otherwise grows to fit the longest word and gets clipped.
+const Title = styled.span`
+  min-width: 0;
+  overflow-wrap: anywhere;
+`;
+
 const ChevronIcon = styled(Icon)<{ $expanded: boolean }>`
   flex: 0 0 auto;
   fill: ${colors.textPrimary};
@@ -60,7 +69,7 @@ const FullMobileNavMenuDropdown = ({ title, children }: Props) => {
         aria-expanded={expanded}
         onClick={() => setExpanded((prev) => !prev)}
       >
-        {title}
+        <Title>{title}</Title>
         <ChevronIcon
           name="chevron-right"
           width="20px"
