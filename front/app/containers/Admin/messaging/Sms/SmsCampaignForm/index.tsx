@@ -23,6 +23,10 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from '../../messages';
+import { MAX_SMS_SEGMENTS } from '../utils/segments';
+import validateSmsBodyMultiloc from '../utils/validateSmsBodyMultiloc';
+
+import SegmentCounter from './SegmentCounter';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -57,8 +61,11 @@ const SmsCampaignForm = ({
     subject_multiloc: validateMultilocForEveryLocale(
       formatMessage(messages.fieldSmsLabelError)
     ),
-    body_multiloc: validateMultilocForEveryLocale(
-      formatMessage(messages.fieldSmsBodyError)
+    body_multiloc: validateSmsBodyMultiloc(
+      formatMessage(messages.fieldSmsBodyError),
+      formatMessage(messages.fieldSmsBodyTooManySegmentsError, {
+        maxSegments: MAX_SMS_SEGMENTS,
+      })
     ),
     group_ids: array().optional(),
   });
@@ -98,7 +105,6 @@ const SmsCampaignForm = ({
               labelTooltipText={
                 <FormattedMessage {...messages.fieldSmsLabelTooltip} />
               }
-              maxCharCount={80}
             />
           </StyledSectionField>
           <StyledSectionField>
@@ -120,7 +126,8 @@ const SmsCampaignForm = ({
             <TextAreaMultilocWithLocaleSwitcher
               name="body_multiloc"
               label={formatMessage(messages.fieldSmsBody)}
-              rows={5}
+              minRows={4}
+              renderCounter={(value) => <SegmentCounter body={value} />}
             />
           </SectionField>
         </StyledSection>
