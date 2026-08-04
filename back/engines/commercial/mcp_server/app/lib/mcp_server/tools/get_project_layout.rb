@@ -10,9 +10,8 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
       Reads a project's page layout (a craft.js node graph). Returns the raw craftjs_json
       plus an outline listing every node in visual order with its id, widget type, parent,
       slot and a text snippet — use the outline to find the node ids to target with
-      update_project_layout. Outline entries marked locked are the fixed page scaffold
-      (banner, title, phase timeline, events); the editable content is the subtree of the
-      ProjectDescriptionSection node.
+      update_project_layout. Outline entries marked locked are the fixed page scaffold;
+      the editable content is the subtree of the ProjectPageBody node.
     DESC
   end
 
@@ -46,8 +45,10 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
       )
 
       # Every project gets a page layout at creation (and a rake task backfilled older
-      # ones), so a missing layout is a data anomaly rather than a state to repair here.
+      # ones), so a missing layout is a data anomaly rather than a state to repair here
+      # — but one nobody would otherwise hear about.
       if layout.nil?
+        ErrorReporter.report_msg('Project page layout is missing', extra: { project_id: project.id })
         return error(
           "Project #{project.id} has no page layout. It should have been provisioned " \
           'at project creation; this needs fixing outside this tool.'

@@ -5,6 +5,8 @@ require 'rails_helper'
 # Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs), the
 # LLM-facing docs and the cheatsheet drifting apart.
 describe McpServer::LayoutWidgets do
+  let(:scaffold_widgets) { ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS }
+
   describe 'DOCS' do
     it 'documents only widgets that exist in the widget specs' do
       undeclared = described_class::DOCS.keys - ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys
@@ -13,9 +15,7 @@ describe McpServer::LayoutWidgets do
     end
 
     it 'partitions the widget specs exactly into documented, scaffold and explicitly undocumented widgets' do
-      covered = described_class::DOCS.keys +
-                described_class::SCAFFOLD_WIDGETS +
-                described_class::UNDOCUMENTED_WIDGETS
+      covered = described_class::DOCS.keys + scaffold_widgets + described_class::UNDOCUMENTED_WIDGETS
 
       expect(covered).to match_array(ContentBuilder::Craftjs::WidgetSpecs::SPECS.keys)
     end
@@ -58,22 +58,31 @@ describe McpServer::LayoutWidgets do
     end
   end
 
-  describe 'SCAFFOLD_WIDGETS' do
+  describe 'LEGACY_ALTERNATIVES' do
+    it 'names an alternative for every legacy node type' do
+      expect(described_class::LEGACY_ALTERNATIVES.keys)
+        .to match_array(ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS)
+    end
+  end
+
+  describe 'the page scaffold' do
     it 'are all registered widgets, without insertable docs' do
-      described_class::SCAFFOLD_WIDGETS.each do |name|
+      scaffold_widgets.each do |name|
         expect(ContentBuilder::Craftjs::WidgetSpecs::SPECS).to have_key(name)
         expect(described_class::DOCS).not_to have_key(name),
           "scaffold widget #{name} must not be advertised as insertable"
       end
     end
 
+    # The seed also plants a phases and an events widget. Those are ordinary widgets, not
+    # scaffold: they carry no locked marker and a client may move or delete them.
     it 'matches the canonical nodes the backend seeds' do
       seeded = ContentBuilder::ProjectPageLayoutService.new
         .from_description_multiloc({})
         .values
         .map { |node| node.dig('type', 'resolvedName') }
 
-      expect(seeded).to match_array(described_class::SCAFFOLD_WIDGETS)
+      expect(seeded).to match_array(scaffold_widgets + %w[PhasesWidget EventsWidget])
     end
   end
 
@@ -87,7 +96,7 @@ describe McpServer::LayoutWidgets do
     end
 
     it 'documents every scaffold widget' do
-      described_class::SCAFFOLD_WIDGETS.each do |name|
+      scaffold_widgets.each do |name|
         expect(described_class::CHEATSHEET).to include(name)
       end
     end

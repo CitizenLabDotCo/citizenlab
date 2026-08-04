@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 # LLM-facing documentation for project page layout widgets (code 'project_page'). The
-# machine-readable rules these docs describe (slots, enums, multilocs) live in
-# ContentBuilder::Craftjs::WidgetSpecs; widgets present there but absent here
-# (UNDOCUMENTED_WIDGETS and the page scaffold, SCAFFOLD_WIDGETS) are structural or
-# legacy-only — they validate inside graphs but are not advertised as insertable.
+# machine-readable rules these docs describe live in content_builder, where the API
+# layer can reuse them: widget conventions (slots, enums, multilocs) and the legacy
+# node types in ContentBuilder::Craftjs::WidgetSpecs, the fixed page scaffold in
+# ContentBuilder::ProjectPageLayoutService. Widgets declared there but absent here
+# (UNDOCUMENTED_WIDGETS and the scaffold) are structural or legacy-only — they
+# validate inside graphs but are not advertised as insertable.
 #
 # The cheatsheet is generated from this hash, and a spec asserts every documented
 # widget exists in WidgetSpecs and that every enum and slot value appears in its
@@ -15,29 +17,30 @@
 # ids at any time; we include the current ids for visual parity in the editor, accepting
 # that stale ids degrade gracefully to the defaultMessage.
 class McpServer::LayoutWidgets
-  # The `type` every project page ROOT node carries (Validator root_type).
-  ROOT_TYPE = { 'resolvedName' => 'ProjectPageRoot' }.freeze
+  BODY_WIDGET = ContentBuilder::ProjectPageLayoutService::BODY_WIDGET
 
-  # The fixed page scaffold: exactly one node of each of these types exists on every
-  # project page, locked in a fixed tree (see FORMAT_RULES). Patches may not add,
-  # move, delete or edit them — except ProjectDescriptionSection's `nodes`.
-  SCAFFOLD_WIDGETS = %w[
-    ProjectPageRoot ProjectBanner ProjectTitle ProjectPageBody
-    ProjectDescriptionSection PhasesWidget EventsWidget
-  ].freeze
+  # What to use instead of a legacy node type, for the error a patch that tries to
+  # create one gets back. The node types themselves are
+  # ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS; a spec keeps the two in step.
+  LEGACY_ALTERNATIVES = {
+    'RichTextMultiloc' => 'use TextMultiloc for rich text',
+    'ProjectDescriptionSection' => "put the content directly in the #{BODY_WIDGET} node"
+  }.freeze
 
-  # WidgetSpecs widgets deliberately left out of DOCS: structural containers
-  # (only ever created as part of a documented widget's slot pattern), legacy-only
-  # composite presets, and the migrated-description RichTextMultiloc (edit-in-place
-  # only, see FORMAT_RULES). A spec asserts DOCS + this list + SCAFFOLD_WIDGETS
-  # covers the widget specs exactly, so a new widget forces an explicit decision here.
-  UNDOCUMENTED_WIDGETS = %w[
+  # WidgetSpecs widgets deliberately left out of DOCS: structural containers (only ever
+  # created as part of a documented widget's slot pattern), legacy-only composite
+  # presets, the legacy node types (edit-in-place only, see FORMAT_RULES), and the
+  # phases and events widgets, which are seeded on every page and so never need
+  # inserting. A spec asserts DOCS + this list + the page scaffold covers the widget
+  # specs exactly, so a new widget forces an explicit decision here.
+  UNDOCUMENTED_WIDGETS = (%w[
     Container
     Box
     ImageTextCards
     InfoWithAccordions
-    RichTextMultiloc
-  ].freeze
+    PhasesWidget
+    EventsWidget
+  ] + ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS).freeze
 
   DOCS = {
     'TextMultiloc' => <<~DOC,
@@ -106,21 +109,29 @@ class McpServer::LayoutWidgets
 
     ## Page scaffold (fixed — never add, move, delete or edit these nodes)
 
-    Every project page contains exactly one node of each scaffold type, locked in this tree:
-    ROOT (ProjectPageRoot) → ProjectBanner (header image), ProjectTitle, ProjectPageBody →
-    ProjectDescriptionSection, PhasesWidget (phase timeline + input feed), EventsWidget.
+    Every project page has exactly one node of each scaffold type, in this tree:
+    ROOT (ProjectPageRoot) → ProjectBanner (header image), ProjectTitle, #{BODY_WIDGET}.
 
-    - ALL your content lives inside the ProjectDescriptionSection node. The one scaffold
-      change allowed is sending that node itself with an updated `nodes` array, to add,
-      remove or reorder your content at the top level.
     - The project title and header image are project attributes, not layout content: change
       them with the update_project tool (title_multiloc / remote_header_bg_url). The
       ProjectTitle/ProjectBanner widgets render from the project record.
-    - The phase timeline and the events list are already on the page (PhasesWidget,
-      EventsWidget) — do not rebuild phases or events as description content.
+
+    ## Page content (yours to arrange)
+
+    ALL content lives inside the #{BODY_WIDGET} node, whose `nodes` array is the page in
+    top-to-bottom order.
+
+    - To add, remove or reorder content at the top level, send the #{BODY_WIDGET} node
+      itself with an updated `nodes` array. Everything else about that node — `parent`,
+      `custom`, `props` — must come back exactly as get_project_layout returned it; only
+      `nodes` may change.
+    - Every page is seeded with a PhasesWidget (phase timeline + input feed) and an
+      EventsWidget in the body. They are ordinary widgets: reorder or remove them like any
+      other. Never rebuild phases or events as hand-made content.
     - Legacy pages may hold their migrated description in a single RichTextMultiloc node
-      (props: {"text":{"<locale>":"<html>"}}) inside the description section; edit it in
-      place or replace it with proper widgets, but never create new RichTextMultiloc nodes.
+      (props: {"text":{"<locale>":"<html>"}}), or wrap their content in a
+      ProjectDescriptionSection. Edit or delete those in place; creating new ones is
+      rejected — use TextMultiloc for rich text, and put content straight in the body.
   RULES
 
   CHEATSHEET = <<~CHEATSHEET.freeze
@@ -134,7 +145,7 @@ class McpServer::LayoutWidgets
       "medium" between sections, "small" within them; add "withDivider": true for a
       subtle horizontal rule at strong topic changes.
 
-    ## Widgets (insertable inside the description section)
+    ## Widgets (insertable anywhere inside the #{BODY_WIDGET} node)
 
     #{DOCS.values.join("\n")}
   CHEATSHEET

@@ -56,14 +56,6 @@ describe McpServer::Serializers::LayoutOutline do
         expect(by_id['TL'][:parent]).to eq('CL')
       end
 
-      it 'marks custom.locked and custom.region nodes with locked: true and omits the key elsewhere' do
-        json['TC']['custom'] = { 'locked' => true }
-        json['CL']['custom'] = { 'region' => true }
-
-        locked = entries.to_h { |entry| [entry[:id], entry[:locked]] }
-        expect(locked).to include('TC' => true, 'CL' => true, 'TL' => nil, 'ROOT' => nil)
-      end
-
       it 'omits slot on nodes that are ordinary children' do
         by_id = entries.index_by { |entry| entry[:id] }
         expect(by_id['TL']).not_to have_key(:slot)
@@ -89,6 +81,36 @@ describe McpServer::Serializers::LayoutOutline do
         expect(entries.pluck(:id)).to eq(%w[ROOT THREE C1 C2 C3])
         expect(entries.last(3).pluck(:slot)).to eq(%w[column1 column2 column3])
       end
+    end
+  end
+
+  describe 'locked' do
+    let(:json) do
+      project_page_craftjs('T1' => text_node(parent: 'PROJECT_PAGE_BODY', text: '<p>Hi</p>'))
+    end
+
+    it 'marks the page scaffold and nothing else' do
+      locked = entries.to_h { |entry| [entry[:id], entry[:locked]] }
+
+      expect(locked).to eq(
+        'ROOT' => true,
+        'PROJECT_PAGE_BANNER' => true,
+        'PROJECT_PAGE_TITLE' => true,
+        'PROJECT_PAGE_BODY' => true,
+        'PROJECT_PAGE_PHASES' => nil,
+        'PROJECT_PAGE_EVENTS' => nil,
+        'T1' => nil
+      )
+    end
+
+    # Pages seeded before the page builder was unlocked still carry these markers on
+    # widgets that are ordinary and movable now, so the outline must not read them.
+    it 'ignores stale custom.locked and custom.region markers' do
+      json['PROJECT_PAGE_PHASES']['custom'] = { 'locked' => true }
+      json['T1']['custom'] = { 'region' => true }
+
+      locked = entries.to_h { |entry| [entry[:id], entry[:locked]] }
+      expect(locked).to include('PROJECT_PAGE_PHASES' => nil, 'T1' => nil)
     end
   end
 
