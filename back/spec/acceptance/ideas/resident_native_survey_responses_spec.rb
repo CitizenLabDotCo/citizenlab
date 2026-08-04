@@ -151,6 +151,33 @@ resource 'Ideas' do
           )
         end
       end
+
+      context 'when a file exceeds the maximum upload size' do
+        # The limit is stubbed rather than posting a payload over the real 100 MB
+        # ceiling, which would make this spec unreasonably slow and memory-hungry.
+        before do
+          allow_any_instance_of(Files::FileUploader).to receive(:size_range).and_return((1.byte)..(100.bytes))
+        end
+
+        example_request '[error] Create a survey response with an oversized file' do
+          assert_status 422
+
+          # Both fields are oversized here, but only the first is reported, so the
+          # user is given one file to deal with at a time.
+          expect(json_response_body[:errors].keys).to eq [:custom_field_name1]
+
+          error = json_response_body.dig(:errors, :custom_field_name1, 0)
+          expect(error[:error]).to eq 'file_too_large'
+          expect(error[:value]).to eq filename1
+          expect(error[:payload]).to have_key(:max_size_mb)
+
+          # Nothing is written, so the user can swap the file out and resubmit
+          # successfully rather than being left with a half-saved response.
+          expect(project.reload.ideas).to be_empty
+          expect(Files::File.count).to eq 0
+          expect(Files::FileAttachment.count).to eq 0
+        end
+      end
     end
 
     context 'with two shapefile upload fields' do
