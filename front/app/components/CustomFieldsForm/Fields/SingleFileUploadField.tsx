@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { UploadFile } from 'typings';
 
 import { IIdeaFileData } from 'api/idea_files/types';
@@ -38,10 +38,12 @@ const SingleFileUploaderField = ({
     formState: { errors },
     control,
     trigger,
-    getValues,
   } = useFormContext();
 
-  const file = getValues(name);
+  // Subscribed rather than read via getValues: getValues doesn't re-render, so
+  // clearing the field in onFileRemove left the removed file on screen until an
+  // unrelated state change happened to re-render (hence needing a second click).
+  const file = useWatch({ control, name });
 
   useEffect(() => {
     let isMounted = true;
@@ -80,13 +82,16 @@ const SingleFileUploaderField = ({
   const errorMessage = get(errors, name)?.message as string | undefined;
 
   const onFileRemove = () => {
-    if (file.id && ideaId) {
+    if (file?.id && ideaId) {
       deleteIdeaFile({
         fileId: file.id,
         ideaId,
       });
     }
-    setValue(name, undefined, { shouldDirty: true });
+    // Cleared with null rather than undefined: React Hook Form does not
+    // propagate an undefined value to a mounted Controller, so the removed file
+    // stayed on screen and in the submitted payload.
+    setValue(name, null, { shouldDirty: true });
     trigger(name);
   };
 
@@ -106,31 +111,36 @@ const SingleFileUploaderField = ({
 
   return (
     <Box data-cy="e2e-idea-file-upload" width="100%">
-      {!file && (
-        <Controller
-          name={name}
-          control={control}
-          render={({ field: { ref: _ref, ...field } }) => {
-            return <SingleFileInput onAdd={onFileAdd} id={name} {...field} />;
-          }}
-        />
-      )}
+      {/*
+        The Controller stays mounted whether or not a file is selected. It used
+        to be rendered only when the field was empty, so removing a file
+        re-mounted it — and registering a field whose value is undefined makes
+        React Hook Form re-apply its defaultValue, silently restoring the file
+        the user had just deleted.
+      */}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { ref: _ref, ...field } }) =>
+          field.value ? (
+            <FileDisplay
+              key={field.value.name}
+              onDeleteClick={() => {
+                onFileRemove();
+              }}
+              file={field.value}
+            />
+          ) : (
+            <SingleFileInput onAdd={onFileAdd} id={name} {...field} />
+          )
+        }
+      />
       {errorMessage && (
         <Error
           marginTop="8px"
           marginBottom="8px"
           text={errorMessage}
           scrollIntoView={scrollErrorIntoView}
-        />
-      )}
-
-      {file && (
-        <FileDisplay
-          key={file.name}
-          onDeleteClick={() => {
-            onFileRemove();
-          }}
-          file={file}
         />
       )}
     </Box>

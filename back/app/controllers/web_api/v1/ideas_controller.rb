@@ -411,7 +411,10 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def update_file_upload_fields(input, custom_form, params)
     file_uploads_exist = false
-    params_for_file_upload_fields = extract_params_for_file_upload_fields custom_form, params
+    # A file field the user cleared arrives as nil — there is nothing to validate
+    # or attach for those, and indexing into them would raise.
+    params_for_file_upload_fields =
+      (extract_params_for_file_upload_fields custom_form, params).reject { |_key, value| value.blank? }
 
     # Checked for every field before any is written, so an oversized file in a later
     # field can't leave the files from earlier ones half-persisted.
