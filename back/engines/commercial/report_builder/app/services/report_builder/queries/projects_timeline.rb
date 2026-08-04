@@ -53,8 +53,8 @@ module ReportBuilder
 
     def build_timeline_items(projects_with_phases)
       projects_with_phases.map do |project|
-        phases_span = project.phases_span
-        active_span = project.active_span
+        phases_span = project.schedule.phases_span
+        active_span = project.schedule.active_span
 
         {
           id: project.id,

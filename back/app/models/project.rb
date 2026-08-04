@@ -310,16 +310,8 @@ class Project < ApplicationRecord
     )
   end
 
-  def active_phases(time = Time.now)
-    phases.select { |phase| phase.active?(time) }
-  end
-
-  def phases_span
-    span(phases)
-  end
-
-  def active_span(time = Time.now)
-    span(active_phases(time))
+  def schedule
+    @schedule ||= ProjectSchedule.new(self)
   end
 
   def refresh_preview_token
@@ -331,14 +323,6 @@ class Project < ApplicationRecord
   end
 
   private
-
-  def span(spanned_phases)
-    return if spanned_phases.empty?
-
-    start_date = spanned_phases.map(&:start_date).min
-    end_date = spanned_phases.map(&:end_date).max if spanned_phases.all?(&:end_at)
-    [start_date, end_date]
-  end
 
   def admin_publication_must_exist
     # Built-in presence validation does not work.

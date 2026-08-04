@@ -17,19 +17,19 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :first_phase_start_date do |object|
-    object.phases_span&.first
+    object.schedule.phases_span&.first
   end
 
   attribute :last_phase_end_date do |object|
-    object.phases_span&.last
+    object.schedule.phases_span&.last
   end
 
   attribute :active_phases_start_date do |object|
-    object.active_span&.first
+    object.schedule.active_span&.first
   end
 
   attribute :active_phases_end_date do |object|
-    object.active_span&.last
+    object.schedule.active_span&.last
   end
 
   attribute :folder_title_multiloc do |object|
