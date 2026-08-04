@@ -60,26 +60,6 @@ describe BulkImportIdeas::Importers::ProjectImporter do
     end
   end
 
-  describe '#s3_client' do
-    # The importer talks to the tenant bucket via the aws-sdk. It must honour
-    # AWS_S3_ENDPOINT so it works against S3-compatible providers (e.g. Scaleway).
-    before { stub_env('AWS_REGION' => 'eu-central-1', 'AWS_ACCESS_KEY_ID' => 'k', 'AWS_SECRET_ACCESS_KEY' => 's') }
-
-    it 'targets AWS S3 when AWS_S3_ENDPOINT is unset' do
-      stub_env('AWS_S3_ENDPOINT', nil)
-      client = service.send(:s3_client)
-      expect(client.config.endpoint.to_s).to eq('https://s3.eu-central-1.amazonaws.com')
-      expect(client.config.force_path_style).to be(false)
-    end
-
-    it 'targets the custom endpoint with path-style when AWS_S3_ENDPOINT is set' do
-      stub_env('AWS_S3_ENDPOINT', 'https://s3.fr-par.scw.cloud')
-      client = service.send(:s3_client)
-      expect(client.config.endpoint.to_s).to eq('https://s3.fr-par.scw.cloud')
-      expect(client.config.force_path_style).to be(true)
-    end
-  end
-
   describe '#find_or_create_phase' do
     let(:project) { create(:project, title_multiloc: { 'en' => 'Test Project' }, slug: 'test-project') }
     let(:phase_attributes) do

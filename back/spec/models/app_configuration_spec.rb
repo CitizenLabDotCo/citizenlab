@@ -80,20 +80,28 @@ RSpec.describe AppConfiguration do
 
     before { allow(Rails.env).to receive(:development?).and_return(true) }
 
-    it 'builds a virtual-host AWS host when no endpoint is set' do
+    it 'returns the AWS bucket URL when no endpoint is set' do
       stub_env(
-        'USE_AWS_S3_IN_DEV' => 'true', 'AWS_S3_BUCKET' => 'my-bucket',
-        'AWS_REGION' => 'eu-central-1', 'AWS_S3_ENDPOINT' => nil
+        'USE_AWS_S3_IN_DEV' => 'true',
+        'AWS_S3_BUCKET' => 'my-bucket',
+        'AWS_REGION' => 'eu-central-1',
+        'AWS_ENDPOINT_URL_S3' => nil
       )
-      expect(config.base_asset_host_uri).to eq('https://my-bucket.s3.eu-central-1.amazonaws.com')
+
+      expect(config.base_asset_host_uri)
+        .to eq('https://my-bucket.s3.eu-central-1.amazonaws.com')
     end
 
-    it 'builds a path-style host (bucket in the path) for a custom endpoint' do
+    it 'returns the bucket URL on the custom endpoint when AWS_ENDPOINT_URL_S3 is set' do
       stub_env(
-        'USE_AWS_S3_IN_DEV' => 'true', 'AWS_S3_BUCKET' => 'my-bucket',
-        'AWS_REGION' => 'eu-central-1', 'AWS_S3_ENDPOINT' => 'https://s3.fr-par.scw.cloud'
+        'USE_AWS_S3_IN_DEV' => 'true',
+        'AWS_S3_BUCKET' => 'my-bucket',
+        'AWS_REGION' => 'eu-central-1',
+        'AWS_ENDPOINT_URL_S3' => 'https://s3.fr-par.scw.cloud'
       )
-      expect(config.base_asset_host_uri).to eq('https://s3.fr-par.scw.cloud/my-bucket')
+
+      expect(config.base_asset_host_uri)
+        .to eq('https://my-bucket.s3.fr-par.scw.cloud')
     end
   end
 end

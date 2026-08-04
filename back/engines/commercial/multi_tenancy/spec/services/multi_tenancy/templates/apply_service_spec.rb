@@ -13,30 +13,6 @@ describe MultiTenancy::Templates::ApplyService do
     end
   end
 
-  describe 'tenant S3 client' do
-    subject(:client) { described_class.new.send(:instance_variable_get, :@tenant_s3_client) }
-
-    before { stub_env('AWS_REGION' => 'eu-central-1', 'AWS_ACCESS_KEY_ID' => 'k', 'AWS_SECRET_ACCESS_KEY' => 's') }
-
-    it 'defaults to an endpoint-aware client honouring AWS_S3_ENDPOINT' do
-      stub_env('AWS_S3_ENDPOINT', 'https://s3.fr-par.scw.cloud')
-      expect(client.config.endpoint.to_s).to eq('https://s3.fr-par.scw.cloud')
-      expect(client.config.force_path_style).to be(true)
-    end
-
-    it 'defaults to AWS S3 when AWS_S3_ENDPOINT is unset' do
-      stub_env('AWS_S3_ENDPOINT', nil)
-      expect(client.config.endpoint.to_s).to eq('https://s3.eu-central-1.amazonaws.com')
-      expect(client.config.force_path_style).to be(false)
-    end
-
-    it 'still lets an injected client win (dependency injection preserved)' do
-      injected = instance_double(Aws::S3::Client)
-      service = described_class.new(tenant_s3_client: injected)
-      expect(service.send(:instance_variable_get, :@tenant_s3_client)).to be(injected)
-    end
-  end
-
   describe '#apply' do
     MultiTenancy::Templates::Utils.new.internal_template_names.map do |template_name|
       it "successfully applies '#{template_name}' template" do

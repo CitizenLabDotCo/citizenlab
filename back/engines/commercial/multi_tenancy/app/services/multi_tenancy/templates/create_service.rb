@@ -27,8 +27,8 @@ module MultiTenancy
       def initialize(
         tenant_bucket: 'cl2-tenants-production-benelux',
         template_bucket: ENV.fetch('TEMPLATE_BUCKET'),
-        tenant_s3_client: Aws::S3::Utils.default_client,
-        templates_s3_client: Aws::S3::Client.new(region: 'eu-central-1')
+        tenant_s3_client: Aws::S3::Client.new,
+        templates_s3_client: MultiTenancy::Templates::Utils.s3_client
       )
         @template_bucket = template_bucket
         @tenant_bucket = tenant_bucket

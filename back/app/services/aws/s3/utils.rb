@@ -5,17 +5,6 @@ require 'parallel'
 module Aws
   module S3
     class Utils
-      # Builds an S3 client for the tenant bucket. Reads AWS_S3_ENDPOINT to support
-      # S3-compatible providers (e.g. Scaleway); when unset, targets AWS S3 unchanged.
-      def self.default_client
-        options = { region: ENV.fetch('AWS_REGION') }
-        if (endpoint = ENV['AWS_S3_ENDPOINT'].presence)
-          options[:endpoint] = endpoint
-          options[:force_path_style] = true
-        end
-        Aws::S3::Client.new(**options)
-      end
-
       # Returns an Enumerator that iterates over all the objects in an Amazon S3 bucket.
       # This method can handle any number of objects in the S3 bucket by automatically
       # paginating through results.

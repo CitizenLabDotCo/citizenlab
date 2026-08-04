@@ -486,7 +486,7 @@ module BulkImportIdeas::Importers
     end
 
     def s3_client
-      @s3_client ||= Aws::S3::Utils.default_client
+      @s3_client ||= Aws::S3::Client.new
     end
 
     def log(message)

@@ -180,14 +180,7 @@ class AppConfiguration < ApplicationRecord
 
   def base_asset_host_uri
     if Rails.env.development? && ENV['USE_AWS_S3_IN_DEV'] == 'true'
-      bucket = ENV.fetch('AWS_S3_BUCKET')
-      endpoint = ENV['AWS_S3_ENDPOINT'].presence
-      if endpoint
-        # S3-compatible provider (e.g. Scaleway): path-style, bucket in the path.
-        "#{endpoint}/#{bucket}"
-      else
-        "https://#{bucket}.s3.#{ENV.fetch('AWS_REGION')}.amazonaws.com"
-      end
+      Aws::S3::Bucket.new(ENV.fetch('AWS_S3_BUCKET'), client: Aws::S3::Client.new).url
     else
       # ASSET_HOST_URI env var can be used for:
       # - e2e tests (see e2e/docker-compose.yml)
