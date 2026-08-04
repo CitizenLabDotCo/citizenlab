@@ -67,7 +67,7 @@ describe('Project description builder preview', () => {
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
-    cy.get('div.e2e-text-box').last().click();
+    cy.get('div.e2e-text-box').first().click();
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Edited text.', { force: true });
 
