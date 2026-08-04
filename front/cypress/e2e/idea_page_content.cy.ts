@@ -59,7 +59,6 @@ describe('Idea Page', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
       })
         .then((project) => {
@@ -114,7 +113,6 @@ describe('Idea Page', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
       })
         .then((project) => {
@@ -176,7 +174,6 @@ describe('Idea Page', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
       })
         .then((project) => {
@@ -241,7 +238,6 @@ describe('Idea location', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {

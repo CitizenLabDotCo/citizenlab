@@ -9,11 +9,9 @@ describe('Admin: delete project', () => {
   it('deletes a published project', () => {
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       const projectId = project.body.data.id;

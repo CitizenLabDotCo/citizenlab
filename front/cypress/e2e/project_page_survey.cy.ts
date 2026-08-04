@@ -55,7 +55,6 @@ describe('New project with survey', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -135,7 +134,6 @@ describe('Timeline project with survey phase', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -194,7 +192,6 @@ describe('Timeline project with survey phase but not active', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -243,7 +240,6 @@ describe('Archived single phase project with survey', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'archived',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -290,7 +286,6 @@ describe('Embedded survey CTA', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

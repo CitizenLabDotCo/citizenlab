@@ -27,7 +27,6 @@ describe('Add a project or folder to a space', () => {
     const projectName = randomString(10);
     cy.apiCreateProject({
       title: projectName,
-      description: randomString(),
     }).then((response) => {
       createdProjectIds.push(response.body.data.id);
     });
@@ -48,7 +47,6 @@ describe('Add a project or folder to a space', () => {
     const folderName = randomString(10);
     cy.apiCreateFolder({
       title: folderName,
-      description: randomString(),
     }).then((response) => {
       createdFolderIds.push(response.body.data.id);
     });

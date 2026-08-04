@@ -47,7 +47,6 @@ describe('Existing Timeline project', () => {
 describe('New timeline project', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
 
   const phasePastTitle = randomString();
   const phaseCurrentTitle = randomString();
@@ -78,7 +77,6 @@ describe('New timeline project', () => {
       withAboutBox: true,
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;

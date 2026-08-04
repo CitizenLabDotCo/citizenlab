@@ -13,7 +13,6 @@ describe('Project description builder navigation', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
         assigneeId: userId,
       }).then((project) => {

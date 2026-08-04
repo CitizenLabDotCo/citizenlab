@@ -25,7 +25,6 @@ describe.skip('Demographics widget', () => {
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     })
       .then((project) => {

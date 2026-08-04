@@ -37,7 +37,6 @@ describe('Input manager', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
           assigneeId: userId,
         })
@@ -90,7 +89,6 @@ describe('Input manager', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
           assigneeId: userId,
         })
@@ -185,7 +183,6 @@ describe('Input manager', () => {
         cy.apiCreateProject({
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
           assigneeId: userId,
         })

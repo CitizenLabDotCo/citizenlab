@@ -15,15 +15,12 @@ describe('Project description builder Button component', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
-        });
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });
   });

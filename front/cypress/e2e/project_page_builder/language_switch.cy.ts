@@ -20,14 +20,12 @@ describe('Project description builder language switch', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
         // participationMethod: 'ideation',
         assigneeId: userId,
       }).then((project) => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
-        cy.apiToggleProjectDescriptionBuilder({ projectId });
         cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });

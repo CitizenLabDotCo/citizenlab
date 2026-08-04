@@ -15,7 +15,6 @@ describe.skip('Verified action', () => {
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     })
       .then((project) => {

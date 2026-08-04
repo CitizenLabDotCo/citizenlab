@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Project description builder Image Text Cards section', () => {
+describe('Project description builder Image component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -15,15 +15,12 @@ describe('Project description builder Image Text Cards section', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
-        });
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });
   });
@@ -35,64 +32,65 @@ describe('Project description builder Image Text Cards section', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles Image Text Cards section correctly', () => {
+  it('handles Image component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.get('#e2e-draggable-image-text-cards').dragAndDrop(
-      '#e2e-project-page-body',
-      {
-        position: 'inside',
-      }
-    );
 
-    // Edit a text component
-    cy.get('div.e2e-text-box').first().click();
-    cy.get('.ql-editor').click();
-    cy.get('.ql-editor').type('Edited text.', { force: true });
+    cy.get('#e2e-draggable-image').should('exist');
+    cy.get('#e2e-draggable-image').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
 
-    // Edit image components
-    cy.get('div.e2e-image').eq(0).parent().click();
+    cy.get('.e2e-image').should('exist');
+    cy.get('.e2e-image').parent().click();
+
     cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
+    cy.get('#imageAltTextInput')
+      .click()
+      .focus()
+      .clear()
+      .type('Image alt text.');
+
     cy.get('[alt="Image alt text."]').should('exist');
 
-    cy.get('div.e2e-image').eq(1).parent().click();
-    cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
-    cy.get('[alt="Image alt text."]').should('exist');
-
-    cy.get('div.e2e-image').eq(2).parent().click();
-    cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#imageAltTextInput').click().clear().type('Image alt text.');
-    cy.get('[alt="Image alt text."]').should('exist');
-
-    // Save
+    // Adding the image triggers an async re-fetch (convertUrlToUploadFile) that
+    // disables Save until it resolves. The button renders its disabled state via
+    // aria-disabled (not the native attribute), so wait on that rather than racing
+    // it with a fixed timeout.
+    cy.get('#e2e-content-builder-topbar-save')
+      .find('button')
+      .should('not.have.attr', 'aria-disabled', 'true');
     cy.get('#e2e-content-builder-topbar-save').click();
+
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.contains('Edited text.').should('be.visible');
     cy.get('[alt="Image alt text."]').should('exist');
   });
 
-  it('deletes Image Text Cards section correctly', () => {
+  it('deletes Image component correctly', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    cy.get('.e2e-two-column').first().click('top');
+    cy.get('.e2e-image').parent().click();
     cy.get('#e2e-delete-button').click();
-    cy.get('.e2e-two-column').first().click('top');
-    cy.get('#e2e-delete-button').click();
-    cy.get('.e2e-two-column').first().click('top');
-    cy.get('#e2e-delete-button').click();
+    // Wait for the deletion to be reflected in the editor tree.
+    cy.get('.e2e-image').should('not.exist');
+    // Selecting the image kicks off an async re-fetch of the existing image
+    // (convertUrlToUploadFile), which disables Save until it resolves. The button
+    // uses aria-disabled (not the native attribute), so wait on that before
+    // clicking — otherwise the click lands while Save is still disabled and the
+    // upsert never fires (flaky/consistent failure on slower CI).
+    cy.get('#e2e-content-builder-topbar-save')
+      .find('button')
+      .should('not.have.attr', 'aria-disabled', 'true');
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.contains('Edited text.').should('not.exist');
     cy.get('[alt="Image alt text."]').should('not.exist');
   });
 });
