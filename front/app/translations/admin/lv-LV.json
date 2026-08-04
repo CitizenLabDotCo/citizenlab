@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Jauns izvēlnes vienums",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "piem., Par mums",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Nav atlicis neviena šāda veida vienuma, ko pievienot.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Lapa",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Lapa",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projekts",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Noņemt vienumu",

@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Yeni menü öğesi",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "örn. Hakkımızda",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Eklenecek bu türde başka öge kalmadı.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Sayfa",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Sayfa",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Proje",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Ögeyi kaldır",

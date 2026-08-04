@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Nou element del menú",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "p. ex. Sobre nosaltres",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "No queden més elements d'aquest tipus per afegir.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Pàgina",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Pàgina",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projecte",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Elimina l'element",

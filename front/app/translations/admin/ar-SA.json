@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "عنصر قائمة جديد",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "على سبيل المثال: من نحن",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "لم يتبق أي عناصر من هذا النوع لإضافتها.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "صفحة",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "صفحة",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "مشروع",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "إزالة العنصر",

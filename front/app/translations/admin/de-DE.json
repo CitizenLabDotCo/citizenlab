@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Neuer Menüpunkt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "z. B. Über uns",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Es sind keine weiteren Elemente dieses Typs zum Hinzufügen vorhanden.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Seite",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Seite",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Element entfernen",

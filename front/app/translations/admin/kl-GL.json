@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Menu-miittoq nutaaq",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "assersuutigalugu Uagut pilluta",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Suussutsinit ukunannga ilanngutassaqanngilaq.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Qupperneq",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Qupperneq",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Suliniut",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Ilanngunneqartoq piiaruk",

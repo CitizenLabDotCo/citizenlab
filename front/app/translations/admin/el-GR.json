@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Νέο στοιχείο μενού",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "π.χ. Σχετικά με εμάς",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Δεν απομένουν άλλα στοιχεία αυτού του τύπου για προσθήκη.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Σελίδα",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Σελίδα",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Έργο",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Αφαίρεση στοιχείου",

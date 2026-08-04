@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Mír nua roghchláir",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "m.sh. Maidir linn",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Níl aon mhíreanna den chineál seo fágtha le cur leis.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Leathanach",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Leathanach",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Tionscadal",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Bain mír",

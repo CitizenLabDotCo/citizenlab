@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Uusi valikkokohde",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "esim. Tietoa meistä",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Tämän tyyppisiä kohteita ei ole enää lisättäväksi.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Sivu",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Sivu",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projekti",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Poista kohde",

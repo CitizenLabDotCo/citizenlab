@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Nouvel élément de menu",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "par ex. À propos de nous",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Il ne reste plus d'éléments de ce type à ajouter.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Page",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Page",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projet",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Supprimer l'élément",

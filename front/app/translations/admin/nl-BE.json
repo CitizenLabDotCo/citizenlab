@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Nieuw menu-item",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "bijv. Over ons",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Er zijn geen items van dit type meer om toe te voegen.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Pagina",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Pagina",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Project",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Item verwijderen",

@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Nytt menyalternativ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "t.ex. Om oss",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Det finns inga fler objekt av den här typen att lägga till.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Sida",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Sida",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Ta bort objekt",

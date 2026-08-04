@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Nuovo elemento del menu",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "ad es. Chi siamo",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Non ci sono altri elementi di questo tipo da aggiungere.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Pagina",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Pagina",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Progetto",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Rimuovi elemento",

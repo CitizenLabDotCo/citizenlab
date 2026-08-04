@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Nyt menupunkt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "f.eks. 'Om os'",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Der er ikke flere punkter af denne type tilbage at tilføje.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Side",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Side",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Fjern punkt",

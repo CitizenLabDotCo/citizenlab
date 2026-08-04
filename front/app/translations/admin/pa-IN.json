@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "ਨਵੀਂ ਮੀਨੂ ਆਈਟਮ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "ਉਦਾਹਰਨ ਲਈ, ਸਾਡੇ ਬਾਰੇ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "ਜੋੜਨ ਲਈ ਇਸ ਕਿਸਮ ਦੀ ਕੋਈ ਹੋਰ ਆਈਟਮ ਨਹੀਂ ਬਚੀ ਹੈ।",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "ਪੰਨਾ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "ਪੰਨਾ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "ਪ੍ਰੋਜੈਕਟ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "ਆਈਟਮ ਹਟਾਓ",

@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Új menüpont",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "pl. Rólunk",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Nincs több ilyen típusú elem, amit hozzá lehetne adni.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Oldal",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Oldal",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Elem eltávolítása",

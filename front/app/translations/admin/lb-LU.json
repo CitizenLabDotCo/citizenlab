@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Neit Menüelement",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "z. B. Iwwer eis",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Et si keng Elementer vun dësem Typ méi iwwereg fir derbäizesetzen.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Säit",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Säit",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projet",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Element ewechhuelen",

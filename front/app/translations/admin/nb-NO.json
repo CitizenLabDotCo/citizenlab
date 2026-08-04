@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Nytt menyelement",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "f.eks. Om oss",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Det er ingen flere elementer av denne typen å legge til.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Side",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Side",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Prosjekt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Fjern element",

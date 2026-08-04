@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "نیا مینو آئٹم",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "مثلاً ہمارے بارے میں",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "اس قسم کا کوئی آئٹم شامل کرنے کے لیے باقی نہیں ہے۔",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "صفحہ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "صفحہ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "پراجیکٹ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "آئٹم ہٹائیں",

@@ -1291,6 +1291,7 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.modalTitle": "Nova stavka izbornika",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.navbarItemNamePlaceholder": "npr. O nama",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.noItemsAvailable": "Nema više preostalih stavki ove vrste za dodavanje.",
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": "Stranica",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": "Stranica",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.projectTag": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.removeItem": "Ukloni stavku",
