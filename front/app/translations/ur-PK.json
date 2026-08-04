@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "ای میل ایڈریس {value} کے لیے ایک یا زیادہ ڈپلیکیٹ قدریں درج ذیل قطاروں میں پائی گئیں: {rows}",
   "app.errors.extension_whitelist_error": "آپ نے جس فائل کو اپ لوڈ کرنے کی کوشش کی ہے اس کا فارمیٹ تعاون یافتہ نہیں ہے۔",
   "app.errors.file_extension_whitelist_error": "آپ نے جس فائل کو اپ لوڈ کرنے کی کوشش کی ہے اس کا فارمیٹ تعاون یافتہ نہیں ہے۔",
+  "app.errors.file_too_large": "\"{value}\" بہت بڑا ہے۔ فائل کا زیادہ سے زیادہ سائز {max_size_mb} MB ہے۔ براہ کرم اسے ہٹائیں اور چھوٹی فائل اپ لوڈ کریں۔",
   "app.errors.first_name_blank": "یہ خالی نہیں ہو سکتا",
   "app.errors.generics.blank": "یہ خالی نہیں ہو سکتا۔",
   "app.errors.generics.invalid": "یہ ایک درست قدر کی طرح نہیں لگتا ہے۔",

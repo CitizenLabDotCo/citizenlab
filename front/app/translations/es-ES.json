@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "Uno o más valores duplicados para la dirección de correo electrónico {value} fueron encontrados en las siguientes filas: {rows}",
   "app.errors.extension_whitelist_error": "No se admite el formato del archivo que has intentado subir.",
   "app.errors.file_extension_whitelist_error": "No se admite el formato del archivo que has intentado subir.",
+  "app.errors.file_too_large": "\"{value}\" es demasiado grande. El tamaño máximo de archivo es de {max_size_mb} MB. Por favor, elimínalo y sube un archivo más pequeño.",
   "app.errors.first_name_blank": "Esto no puede estar vacío",
   "app.errors.generics.blank": "Esto no puede estar vacío",
   "app.errors.generics.invalid": "Esto no parece un valor válido",

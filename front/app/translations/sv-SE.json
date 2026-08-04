@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "Ett eller flera dubblettvärden för e-postadressen {value} hittades i följande rad(er): {rows}",
   "app.errors.extension_whitelist_error": "Formatet på filen som du försökte ladda upp stöds inte.",
   "app.errors.file_extension_whitelist_error": "Formatet på filen du försökte ladda upp stöds inte.",
+  "app.errors.file_too_large": "\"{value}\" är för stor. Den maximala filstorleken är {max_size_mb} MB. Ta bort den och ladda upp en mindre fil.",
   "app.errors.first_name_blank": "Det här får inte vara tomt",
   "app.errors.generics.blank": "Detta får inte vara tomt.",
   "app.errors.generics.invalid": "Det här verkar inte vara ett giltigt värde",

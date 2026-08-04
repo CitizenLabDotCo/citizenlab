@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "Μία ή περισσότερες διπλές τιμές για τη διεύθυνση email {value} βρέθηκαν στην/στις ακόλουθη/ες γραμμή/ες: {rows}",
   "app.errors.extension_whitelist_error": "Η μορφή του αρχείου που προσπαθήσατε να μεταφορτώσετε δεν υποστηρίζεται.",
   "app.errors.file_extension_whitelist_error": "Η μορφή του αρχείου που προσπαθήσατε να ανεβάσετε δεν υποστηρίζεται.",
+  "app.errors.file_too_large": "Το \"{value}\" είναι πολύ μεγάλο. Το μέγιστο μέγεθος αρχείου είναι {max_size_mb} MB. Παρακαλούμε αφαιρέστε το και μεταφορτώστε ένα μικρότερο αρχείο.",
   "app.errors.first_name_blank": "Αυτό δεν μπορεί να είναι κενό",
   "app.errors.generics.blank": "Αυτό δεν μπορεί να είναι κενό.",
   "app.errors.generics.invalid": "Αυτό δεν μοιάζει με έγκυρη τιμή",

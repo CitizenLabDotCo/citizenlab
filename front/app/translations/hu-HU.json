@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "A {value} e-mail cím egy vagy több ismétlődő értékét találtuk a következő sor(ok)ban: {rows}",
   "app.errors.extension_whitelist_error": "A feltölteni kívánt fájl formátuma nem támogatott.",
   "app.errors.file_extension_whitelist_error": "A feltölteni próbált fájl formátuma nem támogatott.",
+  "app.errors.file_too_large": "A(z) „{value}” túl nagy. A maximális fájlméret {max_size_mb} MB. Kérjük, távolítsa el, és töltsön fel egy kisebb fájlt.",
   "app.errors.first_name_blank": "Ez nem lehet üres",
   "app.errors.generics.blank": "Ez nem lehet üres.",
   "app.errors.generics.invalid": "Ez nem tűnik érvényes értéknek",

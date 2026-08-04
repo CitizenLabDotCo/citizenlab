@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "Een oder méi duebel Wäerter fir d’E-Mail-Adress {value} goufen an de(r) folgende(r) Rei(e) fonnt: {rows}",
   "app.errors.extension_whitelist_error": "De Format vun der Datei, déi Dir eropluede wollt, gëtt net ënnerstëtzt.",
   "app.errors.file_extension_whitelist_error": "De Format vun der Datei, déi Dir versicht hutt eropzelueden, gëtt net ënnerstëtzt.",
+  "app.errors.file_too_large": "\"{value}\" ass ze grouss. Déi maximal Dateigréisst ass {max_size_mb} MB. Wann ech gelift läscht dës an luet eng méi kleng Datei erop.",
   "app.errors.first_name_blank": "Dëst dierf net eidel sinn",
   "app.errors.generics.blank": "Dëst dierf net eidel sinn",
   "app.errors.generics.invalid": "Dëst gesäit net wéi e gëltege Wäert aus.",
