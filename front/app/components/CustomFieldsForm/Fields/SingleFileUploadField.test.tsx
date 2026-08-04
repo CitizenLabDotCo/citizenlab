@@ -2,9 +2,17 @@ import React from 'react';
 
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+import {
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'utils/testUtils/rtl';
 
-import SingleFileUploadField from './SingleFileUploadField';
+import SingleFileUploadField, {
+  MAX_FILE_SIZE_MB,
+} from './SingleFileUploadField';
 
 // Anonymous survey respondents have no idea id, so no remote files are fetched.
 jest.mock('api/idea_files/useIdeaFiles', () => () => ({ data: undefined }));
@@ -16,14 +24,16 @@ const FIELD = 'my_file';
 
 let latestValues: Record<string, unknown> = {};
 
-const Wrapper = () => {
+const Wrapper = ({ withFile = true }: { withFile?: boolean }) => {
   const methods = useForm({
     defaultValues: {
-      [FIELD]: {
-        content: 'data:image/png;base64,AAAA',
-        name: 'too-big.png',
-        id: null,
-      },
+      [FIELD]: withFile
+        ? {
+            content: 'data:image/png;base64,AAAA',
+            name: 'too-big.png',
+            id: null,
+          }
+        : null,
     },
   });
 
@@ -55,6 +65,31 @@ describe('SingleFileUploadField', () => {
     await waitFor(() =>
       expect(screen.queryByText('too-big.png')).not.toBeInTheDocument()
     );
+    expect(latestValues[FIELD]).toBeFalsy();
+  });
+
+  // Anonymous respondents send nothing until the final submit, so without a
+  // client-side check an oversized file is only rejected after the whole survey
+  // has been filled in and the file uploaded. Reject it at selection instead, so
+  // it never enters form state and there is nothing to remove afterwards.
+  it('rejects an oversized file at selection without adding it to the form', async () => {
+    render(<Wrapper withFile={false} />);
+
+    const oversized = new File(['x'], 'huge.png', { type: 'image/png' });
+    Object.defineProperty(oversized, 'size', {
+      value: (MAX_FILE_SIZE_MB + 1) * 1000000,
+    });
+
+    // fireEvent rather than userEvent.upload: the input's onClick resets
+    // `value` to null, which user-event's value tracking cannot handle.
+    fireEvent.change(screen.getByTestId('fileInput'), {
+      target: { files: [oversized] },
+    });
+
+    await waitFor(() =>
+      expect(screen.getByText(/are not permitted/i)).toBeInTheDocument()
+    );
+    expect(screen.queryByText('huge.png')).not.toBeInTheDocument();
     expect(latestValues[FIELD]).toBeFalsy();
   });
 });

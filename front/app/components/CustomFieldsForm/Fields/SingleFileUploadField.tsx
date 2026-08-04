@@ -16,6 +16,14 @@ import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
+// Mirrors the server-side limit in Files::FileUploader#size_range. The server
+// remains authoritative — this only spares the user uploading a file that is
+// going to be rejected anyway, which matters most in the anonymous survey flow
+// where nothing is sent until the final submit. SingleFileInput compares
+// against decimal MB while the server uses binary MiB, so this rejects
+// marginally earlier than the server would; erring that way is deliberate.
+export const MAX_FILE_SIZE_MB = 100;
+
 interface Props
   extends Omit<
     FileUploaderProps,
@@ -35,6 +43,7 @@ const SingleFileUploaderField = ({
   const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
   const {
     setValue,
+    setError,
     formState: { errors },
     control,
     trigger,
@@ -131,7 +140,13 @@ const SingleFileUploaderField = ({
               file={field.value}
             />
           ) : (
-            <SingleFileInput onAdd={onFileAdd} id={name} {...field} />
+            <SingleFileInput
+              onAdd={onFileAdd}
+              id={name}
+              {...field}
+              maxSizeMb={MAX_FILE_SIZE_MB}
+              onError={(message) => setError(name, { type: 'manual', message })}
+            />
           )
         }
       />
