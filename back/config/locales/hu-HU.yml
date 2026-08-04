@@ -14,6 +14,10 @@ hu-HU:
       subject: Erősítse meg e-mail címét %{organizationName}részvételi platformjához
       thanks_for_signing_up1: 'Köszönjük részvételét. Kérjük, írja be ezt a megerősítő kódot a %{organizationName}részvételi platformjának ablakába:'
       the_link_is_valid_for: Ez a link 24 óráig érvényes. Ha a link lejárt, <a href="%{link}">kérhet új kódot</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Használja ezt a helyet további részletekért — háttérinformációk, mi történik a beküldött hozzászólásokkal, vagy kivel lehet kapcsolatba lépni.</p>
+      intro_placeholder: <p>Írjon ide egy rövid bevezetőt — mondja el a lakosoknak, miről szól ez a projekt, és hogyan vehetnek részt benne.</p>
   custom_field_options:
     domicile:
       outside: Valahol máshol

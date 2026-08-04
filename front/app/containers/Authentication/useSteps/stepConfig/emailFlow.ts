@@ -1,7 +1,7 @@
 import { SupportedLocale } from 'typings';
 
-import { confirmEmailConfirmationCodeUnauthenticated } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
-import { requestEmailConfirmationCodeUnauthenticated } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { confirmCodeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
@@ -59,8 +59,6 @@ export const emailFlow = (
         locale: SupportedLocale,
         claimTokens?: string[]
       ) => {
-        updateState({ email });
-
         const result = await createEmailOnlyAccount({
           email,
           locale,
@@ -68,7 +66,7 @@ export const emailFlow = (
         });
 
         if (result === 'account_created_successfully') {
-          setCurrentStep('email:confirmation');
+          setCurrentStep('email:unauthenticated-confirmation');
         }
 
         if (result === 'email_taken') {
@@ -88,7 +86,6 @@ export const emailFlow = (
         tokenLifetime: number,
         claimTokens?: string[]
       ) => {
-        updateState({ email });
         await signIn({
           email,
           password,
@@ -100,11 +97,10 @@ export const emailFlow = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
-          state.flow,
-          true
+          state.flow
         );
 
         if (missingDataStep) {
@@ -126,21 +122,33 @@ export const emailFlow = (
       },
     },
 
-    'email:confirmation': {
+    'email:sso-policies': {
+      CLOSE: () => setCurrentStep('closed'),
+      ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
+        redirectToSSOProvider(
+          ssoProvider,
+          getAuthenticationData(),
+          true,
+          state.flow,
+          state.claimTokens ?? undefined
+        );
+      },
+    },
+
+    'email:unauthenticated-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
         setCurrentStep('email:start');
       },
       SUBMIT_CODE: async (email: string, code: string) => {
-        await confirmEmailConfirmationCodeUnauthenticated(email, code);
+        await confirmCodeEmail(email, code);
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
-          state.flow,
-          true
+          state.flow
         );
 
         if (missingDataStep) {
@@ -156,20 +164,7 @@ export const emailFlow = (
         setCurrentStep('success');
       },
       RESEND_CODE: async (email: string) => {
-        await requestEmailConfirmationCodeUnauthenticated(email);
-      },
-    },
-
-    'email:sso-policies': {
-      CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
-        redirectToSSOProvider(
-          ssoProvider,
-          getAuthenticationData(),
-          true,
-          state.flow,
-          state.claimTokens ?? undefined
-        );
+        await requestCodeEmail({ email });
       },
     },
   };

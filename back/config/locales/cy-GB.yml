@@ -14,6 +14,10 @@ cy-GB:
       subject: Cadarnhewch eich cyfeiriad e-bost ar gyfer llwyfan cyfranogiad %{organizationName}
       thanks_for_signing_up1: 'Diolch am gymryd rhan. Rhowch y côd cadarnhau hwn yn y ffenestr ar lwyfan cyfranogi %{organizationName}:'
       the_link_is_valid_for: "Mae'r ddolen hon yn ddilys am 24 awr. Os yw'r ddolen wedi dod i ben, gallwch <a href=\"%{link}\">ofyn am god newydd</a>."
+  content_builder:
+    project_page:
+      details_placeholder: "<p>Defnyddiwch y gofod hwn am fwy o fanylion — cefndir, beth sy'n digwydd i'r mewnbwn, neu gyda phwy i gysylltu.</p>"
+      intro_placeholder: <p>Ychwanegwch gyflwyniad byr yma — dywedwch wrth breswylwyr am beth mae'r prosiect hwn a sut y gallant gymryd rhan.</p>
   custom_field_options:
     domicile:
       outside: Rhywle arall

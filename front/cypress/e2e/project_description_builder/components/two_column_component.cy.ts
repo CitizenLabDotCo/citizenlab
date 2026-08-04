@@ -21,9 +21,8 @@ describe('Project description builder Two Column component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
-        });
+        cy.apiToggleProjectDescriptionBuilder({ projectId });
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });
   });
@@ -43,24 +42,30 @@ describe('Project description builder Two Column component', () => {
       position: 'inside',
     });
 
-    // Components added to all columns
-    cy.get('#e2e-draggable-text').dragAndDrop('div.e2e-single-column', {
-      position: 'inside',
-    });
-    cy.get('#e2e-draggable-about-box').dragAndDrop('div.e2e-single-column', {
-      position: 'inside',
-    });
+    // The seeded layout already contains two-column widgets, so scope
+    // everything to the dropped one.
+    cy.get('.e2e-two-column').should('have.length', 3);
 
-    cy.get('div.e2e-text-box').should('have.length', 2);
-    cy.get('div#e2e-about-box').should('have.length', 2);
+    // Components added to both columns of the dropped widget
+    cy.get('#e2e-draggable-text').dragAndDrop(
+      '.e2e-two-column:first div.e2e-single-column',
+      { position: 'inside' }
+    );
+    cy.get('#e2e-draggable-about-box').dragAndDrop(
+      '.e2e-two-column:first div.e2e-single-column',
+      { position: 'inside' }
+    );
+
+    cy.get('.e2e-two-column:first div.e2e-text-box').should('have.length', 2);
+    cy.get('.e2e-two-column:first div#e2e-about-box').should('have.length', 2);
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('.e2e-two-column').should('exist');
-    cy.get('div.e2e-text-box').should('have.length', 2);
-    cy.get('div#e2e-about-box').should('have.length', 2);
+    cy.get('.e2e-two-column').should('have.length', 3);
+    cy.get('.e2e-two-column:first div.e2e-text-box').should('have.length', 2);
+    cy.get('.e2e-two-column:first div#e2e-about-box').should('have.length', 2);
   });
 
   it('deletes Two Column component correctly', () => {
@@ -68,14 +73,16 @@ describe('Project description builder Two Column component', () => {
       'saveProjectDescriptionBuilder'
     );
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
-    cy.get('.e2e-two-column').should('be.visible');
+    cy.get('.e2e-two-column').should('have.length', 3);
 
-    cy.get('.e2e-two-column').click('top');
+    cy.get('.e2e-two-column:first').click('top');
     cy.get('#e2e-delete-button').click();
+    cy.get('.e2e-two-column').should('have.length', 2);
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('.e2e-two-column').should('not.exist');
+    cy.get('.e2e-two-column').should('have.length', 2);
+    cy.get('div#e2e-about-box').should('have.length', 1);
   });
 });

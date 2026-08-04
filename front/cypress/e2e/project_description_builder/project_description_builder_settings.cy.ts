@@ -55,7 +55,7 @@ describe('Settings panel options', () => {
       position: 'inside',
     });
 
-    cy.get('.e2e-text-box').click();
+    cy.get('.e2e-text-box').first().click();
     cy.get('.e2eBuilderSettingsClose').click();
 
     cy.get('#e2e-node-label').should('not.exist');

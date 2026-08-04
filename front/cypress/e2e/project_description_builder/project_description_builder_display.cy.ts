@@ -65,11 +65,12 @@ describe('Project description builder display', () => {
     cy.apiToggleProjectDescriptionBuilder({ projectId });
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    // Add the description as a text widget.
+    // Add the description as a text widget. The blank project starts with
+    // seeded text widgets, so target the one that was just dropped.
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
-    cy.get('div.e2e-text-box').click('center');
+    cy.get('div.e2e-text-box').first().click('center');
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type(projectDescription, { force: true });
 
