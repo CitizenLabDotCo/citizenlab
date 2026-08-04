@@ -1346,8 +1346,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "تظهر هذه الصورة في الجزء العلوي من صفحة المجلد. لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "زيارة مركز الدعم التابع لنا",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces": "هاد المشروع ما غاديش يكون ففضاء ولا فمجلد. غادي تحتاج لموافقة ديال المسؤول باش تنشرو.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": "هاد المشروع ما غاديش يكون فمجلد. غادي تحتاج لموافقة ديال المسؤول باش تنشرو.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2": "ختار مجلد لهاد المشروع.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "مجلد",

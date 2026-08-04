@@ -1346,8 +1346,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Šis vaizdas rodomas aplanko puslapio viršuje. Daugiau informacijos apie rekomenduojamą vaizdo skiriamąją gebą rasite {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "apsilankykite mūsų pagalbos centre",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces": "Šis projektas nebus nei erdvėje, nei aplanke. Norėdami jį paskelbti, turėsite gauti administratoriaus patvirtinimą.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": "Šis projektas nebus jokiame aplanke. Norėdami jį paskelbti, turėsite gauti administratoriaus patvirtinimą.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2": "Pasirinkite šio projekto aplanką.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Aplankas",

@@ -1346,8 +1346,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Deze afbeelding staat bovenaan de mappagina. Voor meer informatie over aanbevolen beeldresoluties, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "bekijk onze supportpagina",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces": "Dit project wordt niet in een ruimte of map geplaatst. Je hebt goedkeuring van een platformbeheerder nodig om het te publiceren.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": "Dit project wordt niet in een map geplaatst. Je hebt goedkeuring van een platformbeheerder nodig om het te publiceren.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2": "Selecteer een map voor dit project.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Map",

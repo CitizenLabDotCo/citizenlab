@@ -1346,8 +1346,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Dieses Bild wird oben auf der Ordnerseite angezeigt. Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "unserer Wissensdatenbank",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces": "Dieses Projekt wird sich weder in einem Space noch in einem Ordner befinden. Sie benötigen die Genehmigung eines Admins, um es zu veröffentlichen.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": "Dieses Projekt wird sich in keinem Ordner befinden. Sie benötigen die Genehmigung eines Admins, um es zu veröffentlichen.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2": "Wählen Sie einen Ordner für dieses Projekt aus.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Ordner",

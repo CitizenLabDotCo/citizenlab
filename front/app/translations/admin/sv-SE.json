@@ -1346,8 +1346,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Den här bilden visas högst upp på mappsidan. Mer information om rekommenderade bildupplösningar finns i {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "besök vårt supportcenter",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces": "Det här projektet kommer inte att ligga i en yta eller en mapp. Du behöver godkännande från en administratör för att publicera det.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": "Det här projektet kommer inte att ligga i en mapp. Du behöver godkännande från en administratör för att publicera det.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2": "Välj en mapp för det här projektet.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Mapp",

@@ -1346,8 +1346,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Dangosir y ddelwedd hon ar frig y dudalen ffolder. I gael rhagor o wybodaeth am y penderfyniadau delwedd a argymhellir, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "ymweld â'n canolfan gymorth",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces": "Ni fydd y prosiect hwn mewn gofod nac mewn ffolder. Bydd angen cymeradwyaeth gweinyddwr arnoch i'w gyhoeddi.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": "Ni fydd y prosiect hwn mewn ffolder. Bydd angen cymeradwyaeth gweinyddwr arnoch i'w gyhoeddi.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2": "Dewiswch ffolder ar gyfer y prosiect hwn.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Ffolder",
