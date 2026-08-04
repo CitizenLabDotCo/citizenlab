@@ -6,7 +6,7 @@ module AdminApi
     def project_description_layout_multiloc
       layout = ContentBuilder::Layout.find_by(
         content_buildable_id: params[:id],
-        code: 'project_description',
+        code: ContentBuilder::Layout::PROJECT_DESCRIPTION_CODE,
         enabled: true
       )
 

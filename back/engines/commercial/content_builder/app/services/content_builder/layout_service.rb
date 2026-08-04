@@ -13,7 +13,7 @@ module ContentBuilder
     end
 
     def clean_homepage_layout_when_publication_deleted(publication)
-      homepage_layout = ContentBuilder::Layout.find_by(code: 'homepage')
+      homepage_layout = ContentBuilder::Layout.find_by(code: ContentBuilder::Layout::HOMEPAGE_CODE)
       return unless homepage_layout
 
       remove_admin_publication_id_from_homepage_layout(publication, homepage_layout)

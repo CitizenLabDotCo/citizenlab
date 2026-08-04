@@ -31,6 +31,10 @@ module ContentBuilder
 
     INJECTED_ID_PREFIX = 'd_'
 
+    # Fully qualified: delegate defines the method via module_eval, where the
+    # `Craftjs::Query` relative lookup would not resolve.
+    delegate :resolved_name, to: :'ContentBuilder::Craftjs::Query', private: true
+
     def craftjs_json_for(project)
       description_layout = Layout.find_by(
         content_buildable: project,
@@ -179,11 +183,6 @@ module ContentBuilder
       end
 
       remapped
-    end
-
-    def resolved_name(node)
-      type = node['type']
-      type.is_a?(Hash) ? type['resolvedName'] : type
     end
 
     def find_node_id(json, name)

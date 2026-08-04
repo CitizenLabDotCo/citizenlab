@@ -25,6 +25,10 @@ module ContentBuilder
     # extraction as the native text widgets.
     TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc RichTextMultiloc HtmlBlockMultiloc].freeze
 
+    # Well-known values of `code`, identifying what a layout is used for.
+    PROJECT_DESCRIPTION_CODE = 'project_description'
+    HOMEPAGE_CODE = 'homepage'
+
     belongs_to :content_buildable, polymorphic: true, optional: true
 
     before_validation :swap_data_images, on: :create
@@ -84,11 +88,7 @@ module ContentBuilder
     private
 
     def file_attachment_widget?(node)
-      return false unless node.is_a?(Hash)
-
-      type = node['type']
-      resolved_name = type.is_a?(Hash) ? type['resolvedName'] : type
-      resolved_name == 'FileAttachment'
+      node.is_a?(Hash) && Craftjs::Query.resolved_name(node) == 'FileAttachment'
     end
 
     def validate_iframe_urls
@@ -107,7 +107,7 @@ module ContentBuilder
     end
 
     def set_craftjs_json
-      return if code != 'homepage' || craftjs_json.present?
+      return if code != HOMEPAGE_CODE || craftjs_json.present?
 
       craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
       json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
@@ -116,7 +116,7 @@ module ContentBuilder
 
     # This ensures we process image data in a homepage layout created from the internal templates
     def swap_data_images
-      return if code != 'homepage' || craftjs_json.blank?
+      return if code != HOMEPAGE_CODE || craftjs_json.blank?
 
       self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(craftjs_json)
     end
