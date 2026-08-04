@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Επόμενη φάση",
   "app.containers.Projects.noEndDate": "Δεν υπάρχει ημερομηνία λήξης",
   "app.containers.Projects.noItems": "Δεν έχετε επιλέξει κανένα στοιχείο ακόμα",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Δεν υπάρχουν ανοιχτοί τρόποι συμμετοχής αυτή τη στιγμή. Μόνο οι διαχειριστές μπορούν να δουν αυτό το μήνυμα.",
   "app.containers.Projects.noPastEvents": "Δεν υπάρχουν προηγούμενες εκδηλώσεις για εμφάνιση",
   "app.containers.Projects.noPhaseSelected": "Δεν έχει επιλεγεί φάση",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Προς το παρόν δεν έχουν προγραμματιστεί επερχόμενες ή τρέχουσες εκδηλώσεις.",

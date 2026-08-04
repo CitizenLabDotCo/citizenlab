@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Nākamais posms",
   "app.containers.Projects.noEndDate": "Beigu datums nav norādīts",
   "app.containers.Projects.noItems": "Jūs vēl neesat atlasījis nevienu vienumu",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Pašlaik nav atvērtu līdzdalības veidu. Šo ziņojumu redz tikai administratori.",
   "app.containers.Projects.noPastEvents": "Nav attēlojamu pagātnes notikumu",
   "app.containers.Projects.noPhaseSelected": "Nav izvēlēts neviens posms",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Šobrīd grafikā nav iekļauti gaidāmie vai aktuālie notikumi.",

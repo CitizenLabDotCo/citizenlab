@@ -14,6 +14,10 @@ fr-BE:
       subject: Confirmez votre adresse électronique pour la plateforme de participation de %{organizationName}
       thanks_for_signing_up1: 'Merci pour votre participation. Veuillez entrer ce code de confirmation sur la plateforme de participation de %{organizationName} :'
       the_link_is_valid_for: Ce lien est valable 24 heures. Si le lien a expiré, vous pouvez <a href="%{link}">demander un nouveau code</a>.
+  content_builder:
+    project_page:
+      details_placeholder: '<p>Utilisez cet espace pour donner plus de détails: le contexte, comment les contributions seront gérées ou qui contacter.</p>'
+      intro_placeholder: "<p>Ajoutez une courte introduction ici : expliquez aux participants l'objet de ce projet et comment ils peuvent y participer.</p>"
   custom_field_options:
     domicile:
       outside: Autre lieu

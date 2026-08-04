@@ -14,6 +14,10 @@ sv-SE:
       subject: Bekräfta din e-postadress för %{organizationName}s involveringsplattform
       thanks_for_signing_up1: 'Tack för din medverkan. Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}s involveringsplattform:'
       the_link_is_valid_for: Den här länken är giltig i 24 timmar. Om länken har upphört att gälla kan du <a href="%{link}">begära en ny kod</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Använd det här utrymmet för mer information — bakgrund, vad som händer med bidragen eller vem man kan kontakta.</p>
+      intro_placeholder: <p>Lägg till en kort introduktion här — berätta för invånarna vad projektet handlar om och hur de kan delta.</p>
   custom_field_options:
     domicile:
       outside: Någon annanstans

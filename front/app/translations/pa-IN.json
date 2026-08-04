@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "ਅਗਲਾ ਪੜਾਅ",
   "app.containers.Projects.noEndDate": "ਕੋਈ ਸਮਾਪਤੀ ਮਿਤੀ ਨਹੀਂ",
   "app.containers.Projects.noItems": "ਤੁਸੀਂ ਅਜੇ ਤੱਕ ਕੋਈ ਆਈਟਮਾਂ ਨਹੀਂ ਚੁਣੀਆਂ ਹਨ",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "ਇਸ ਸਮੇਂ ਭਾਗ ਲੈਣ ਦਾ ਕੋਈ ਖੁੱਲ੍ਹਾ ਤਰੀਕਾ ਨਹੀਂ ਹੈ। ਸਿਰਫ਼ ਪ੍ਰਸ਼ਾਸਕ ਹੀ ਇਹ ਸੁਨੇਹਾ ਦੇਖ ਸਕਦੇ ਹਨ।",
   "app.containers.Projects.noPastEvents": "ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਲਈ ਕੋਈ ਪਿਛਲੀਆਂ ਘਟਨਾਵਾਂ ਨਹੀਂ ਹਨ",
   "app.containers.Projects.noPhaseSelected": "ਕੋਈ ਪੜਾਅ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "ਵਰਤਮਾਨ ਵਿੱਚ ਕੋਈ ਆਗਾਮੀ ਜਾਂ ਚੱਲ ਰਹੇ ਸਮਾਗਮਾਂ ਦਾ ਸਮਾਂ ਨਿਯਤ ਨਹੀਂ ਕੀਤਾ ਗਿਆ ਹੈ।",

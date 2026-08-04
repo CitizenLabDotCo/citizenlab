@@ -14,6 +14,10 @@ tr-TR:
       subject: '%{organizationName} katılım platformu için e-posta adresinizi doğrulayın'
       thanks_for_signing_up1: "Katılımınız için teşekkür ederiz. Lütfen bu onay kodunu %{organizationName}'un katılım platformundaki pencereye girin:"
       the_link_is_valid_for: Bu bağlantı 24 saat geçerlidir. Bağlantının süresi dolarsa <a href="%{link}">yeni bir kod isteyebilirsiniz</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Daha fazla ayrıntı için bu alanı kullanın — arka plan bilgisi, görüşlerin nasıl değerlendirileceği veya kiminle iletişime geçileceği.</p>
+      intro_placeholder: <p>Buraya kısa bir giriş ekleyin — sakinlere bu projenin ne hakkında olduğunu ve nasıl katılabileceklerini anlatın.</p>
   custom_field_options:
     domicile:
       outside: Başka bir yer

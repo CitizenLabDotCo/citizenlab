@@ -14,6 +14,10 @@ da-DK:
       subject: Bekræft din e-mail-adresse til %{organizationName}'s inddragelsesplatform
       thanks_for_signing_up1: "Tak for din registrering på %{organizationName}'s inddragelsesplatform:"
       the_link_is_valid_for: Linket er gyldigt i 24 timer. Hvis linket er udløbet, kan du <a href="%{link}">bede om en ny kode</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Brug dette felt til flere detaljer — om baggrund, hvad der sker med inputtet, eller hvem man kan kontakte.</p>
+      intro_placeholder: <p>Tilføj en kort introduktion her — fortæl borgerne, hvad dette projekt handler om, og hvordan de kan deltage.</p>
   custom_field_options:
     domicile:
       outside: Et andet sted
