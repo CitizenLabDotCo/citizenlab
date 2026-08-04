@@ -16,6 +16,11 @@ const StyledLink = typedStyled(Link)`
   color: ${colors.coolGrey700};
   font-size: ${fontSizes.s}px;
   line-height: 150%;
+  /* 'anywhere' rather than 'break-word': the menu sits in a flex chain whose
+     items size to their content, so the break opportunities have to count
+     towards min-content width or the menu just grows past the viewport (and
+     gets clipped) instead of wrapping. */
+  overflow-wrap: anywhere;
   &:hover {
     color: ${colors.black};
   }
