@@ -61,12 +61,14 @@ export type TInviteTabName = 'template' | 'manual';
 
 // The seat count and the invite creation both run as background jobs. If one
 // never reports back — stalled queue, worker dies mid-run — nothing clears the
-// processing state, so the form spins forever with no error. A job nothing has
-// picked up is stalled whatever its size; a running one only gets a backstop
-// generous enough never to fire on healthy work.
-const NOT_STARTED_TIMEOUT_MS = 120000; // 2 minutes
-const COUNT_RUNNING_TIMEOUT_MS = 300000; // 5 minutes
-const CREATE_RUNNING_TIMEOUT_MS = 1800000; // 30 minutes
+// processing state, so the form spins forever with no error.
+//
+// The seat count does its work with side effects disabled and rolls it back, so
+// it is quick whatever the size of the import. The invite creation saves up to
+// 1000 invitees along with their records and side effects, so it only gets a
+// backstop generous enough never to fire on healthy work.
+const COUNT_TIMEOUT_MS = 120000; // 2 minutes
+const CREATE_TIMEOUT_MS = 1800000; // 30 minutes
 
 const Invitations = () => {
   const queryClient = useQueryClient();
@@ -444,14 +446,10 @@ const Invitations = () => {
   // then, so no import id is set. Once they confirm, the creation runs behind a
   // modal already declaring success, which needs watching more, not less.
   const awaitingJob = processing && (!!invitesImportId || !showModal);
-  const jobStarted = !!invitesImport?.data.attributes.started_at;
   // Undefined until the first poll returns, ~5 seconds in and so well before
   // either timeout can fire.
   const isCountStage =
     invitesImport?.data.attributes.job_type.includes('count_new_seats');
-  const runningTimeout = isCountStage
-    ? COUNT_RUNNING_TIMEOUT_MS
-    : CREATE_RUNNING_TIMEOUT_MS;
 
   // `invitesImportId` is a dependency so each stage gets a fresh budget. Depend
   // only on primitives: polling yields a new `invitesImport` object every 5
@@ -470,28 +468,22 @@ const Invitations = () => {
         setNewSeatsResponse(null);
         setUnknownError(
           <FormattedMessage
-            {...(!jobStarted && isCountStage
-              ? // Only the seat count can promise nothing was sent: it runs with
-                // side effects disabled. A creation job that has not started is
-                // still queued and may yet send, so it gets the vaguer message.
+            {...(isCountStage
+              ? // Only the seat count can promise nothing was sent: whatever
+                // state it is in, it runs with side effects disabled and rolls
+                // its work back. A creation job may yet run, so it gets the
+                // vaguer message.
                 messages.processingNotStartedError
               : messages.processingTimeoutError)}
           />
         );
         resetQueryData();
       },
-      jobStarted ? runningTimeout : NOT_STARTED_TIMEOUT_MS
+      isCountStage ? COUNT_TIMEOUT_MS : CREATE_TIMEOUT_MS
     );
 
     return () => clearTimeout(timer);
-  }, [
-    awaitingJob,
-    invitesImportId,
-    jobStarted,
-    isCountStage,
-    runningTimeout,
-    resetQueryData,
-  ]);
+  }, [awaitingJob, invitesImportId, isCountStage, resetQueryData]);
 
   const closeModal = () => {
     setShowModal(false);

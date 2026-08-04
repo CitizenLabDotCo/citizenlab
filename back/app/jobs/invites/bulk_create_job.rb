@@ -7,7 +7,6 @@ module Invites
 
     def perform(current_user, params, import_id, xlsx_import: false)
       import = InvitesImport.find(import_id)
-      import.update!(started_at: Time.current)
 
       seat_numbers = if xlsx_import
         bulk_create_xlsx(current_user, params)

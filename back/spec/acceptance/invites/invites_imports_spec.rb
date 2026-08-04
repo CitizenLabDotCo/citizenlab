@@ -52,7 +52,6 @@ resource 'InvitesImports' do
         newly_added_moderators_number: 0
       },
       job_type: 'count_new_seats_xlsx',
-      started_at: 1.minute.ago,
       completed_at: Time.zone.now
     )
   end
@@ -78,9 +77,6 @@ resource 'InvitesImports' do
         )
         expect(json_response.dig(:data, :attributes, :job_type)).to eq('count_new_seats_xlsx')
         expect { Time.iso8601(json_response.dig(:data, :attributes, :completed_at)) }.not_to raise_error
-        # The front-end waits far less patiently on a job it believes has not started,
-        # so dropping this attribute would silently cut every import short.
-        expect { Time.iso8601(json_response.dig(:data, :attributes, :started_at)) }.not_to raise_error
       end
     end
 

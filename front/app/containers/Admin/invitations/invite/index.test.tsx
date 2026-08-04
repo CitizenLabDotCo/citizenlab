@@ -4,25 +4,24 @@ import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import Invitations from '.';
 
-const NOT_STARTED_TIMEOUT_MS = 120000;
-const COUNT_RUNNING_TIMEOUT_MS = 300000;
+const COUNT_TIMEOUT_MS = 120000;
+const CREATE_TIMEOUT_MS = 1800000;
 
-const NOT_STARTED_MESSAGE = /The system is busy/;
+const NOT_SENT_MESSAGE = /The system is busy/;
 const TIMED_OUT_MESSAGE =
   /Something went wrong while processing your invitations/;
 
-const countImport = (startedAt: string | null) => ({
+const pendingCountImport = {
   data: {
     id: 'count-import-id',
     type: 'invites_import',
     attributes: {
       job_type: 'count_new_seats',
-      started_at: startedAt,
       completed_at: null,
       result: {},
     },
   },
-});
+};
 
 const completedCountImport = {
   data: {
@@ -30,7 +29,6 @@ const completedCountImport = {
     type: 'invites_import',
     attributes: {
       job_type: 'count_new_seats',
-      started_at: '2026-08-04T10:00:00Z',
       completed_at: '2026-08-04T10:00:05Z',
       result: {
         newly_added_admins_number: 0,
@@ -47,18 +45,17 @@ const secondCompletedCountImport = {
   data: { ...completedCountImport.data, id: 'count-import-id-2' },
 };
 
-const createImport = (startedAt: string | null) => ({
+const pendingCreateImport = {
   data: {
     id: 'create-import-id',
     type: 'invites_import',
     attributes: {
       job_type: 'bulk_create',
-      started_at: startedAt,
       completed_at: null,
       result: {},
     },
   },
-});
+};
 
 // Swapped between assertions to stand in for what the polling hook has last seen.
 let mockInvitesImport: any;
@@ -158,36 +155,24 @@ describe('Invitations timeout', () => {
     jest.useRealTimers();
   });
 
-  it('gives up when nothing picks the seat count up', async () => {
-    mockInvitesImport = countImport(null);
+  it('gives up when the seat count never completes', async () => {
+    mockInvitesImport = pendingCountImport;
     await submitManualInvite();
 
-    advance(NOT_STARTED_TIMEOUT_MS - 1000);
-    expect(screen.queryByText(NOT_STARTED_MESSAGE)).not.toBeInTheDocument();
+    advance(COUNT_TIMEOUT_MS - 1000);
+    expect(screen.queryByText(NOT_SENT_MESSAGE)).not.toBeInTheDocument();
 
     advance(1000);
-    expect(screen.getByText(NOT_STARTED_MESSAGE)).toBeInTheDocument();
+    expect(screen.getByText(NOT_SENT_MESSAGE)).toBeInTheDocument();
     // Polling stops and the form leaves its processing state.
     expect(
       screen.queryByText('Sending out invitations. Please wait...')
     ).not.toBeInTheDocument();
   });
 
-  it('waits longer once the seat count has started', async () => {
-    mockInvitesImport = countImport('2026-08-04T10:00:00Z');
-    await submitManualInvite();
-
-    advance(NOT_STARTED_TIMEOUT_MS);
-    expect(screen.queryByText(TIMED_OUT_MESSAGE)).not.toBeInTheDocument();
-    expect(screen.queryByText(NOT_STARTED_MESSAGE)).not.toBeInTheDocument();
-
-    advance(COUNT_RUNNING_TIMEOUT_MS - NOT_STARTED_TIMEOUT_MS);
-    expect(screen.getByText(TIMED_OUT_MESSAGE)).toBeInTheDocument();
-  });
-
-  // A queued creation job may still run and send the invitations, so the admin
-  // must not be told none were sent.
-  it('does not claim nothing was sent when the creation job has not started', async () => {
+  // The creation job gets a far longer budget, and it may yet run and send the
+  // invitations, so the admin must not be told none were sent.
+  it('waits longer for the creation job and does not claim nothing was sent', async () => {
     mockInvitesImport = undefined;
     const { rerender } = await submitManualInvite();
 
@@ -199,12 +184,15 @@ describe('Invitations timeout', () => {
     });
     expect(mockBulkInvite).toHaveBeenCalled();
 
-    mockInvitesImport = createImport(null);
+    mockInvitesImport = pendingCreateImport;
     rerender(<Invitations />);
 
-    advance(NOT_STARTED_TIMEOUT_MS);
+    advance(COUNT_TIMEOUT_MS);
+    expect(screen.queryByText(TIMED_OUT_MESSAGE)).not.toBeInTheDocument();
+
+    advance(CREATE_TIMEOUT_MS - COUNT_TIMEOUT_MS);
     expect(screen.getByText(TIMED_OUT_MESSAGE)).toBeInTheDocument();
-    expect(screen.queryByText(NOT_STARTED_MESSAGE)).not.toBeInTheDocument();
+    expect(screen.queryByText(NOT_SENT_MESSAGE)).not.toBeInTheDocument();
   });
 
   // Timing out has to unmount the seats modal, not just hide it: the modal
@@ -230,10 +218,10 @@ describe('Invitations timeout', () => {
     });
     expect(screen.getByText('ALL DONE')).toBeInTheDocument();
 
-    // Nothing ever picks the creation job up.
-    mockInvitesImport = createImport(null);
+    // The creation job never completes.
+    mockInvitesImport = pendingCreateImport;
     rerender(<Invitations />);
-    advance(NOT_STARTED_TIMEOUT_MS);
+    advance(CREATE_TIMEOUT_MS);
     expect(screen.getByText(TIMED_OUT_MESSAGE)).toBeInTheDocument();
 
     // Trying again must land on the confirmation step, not the stale success screen.

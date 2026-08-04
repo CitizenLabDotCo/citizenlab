@@ -3093,8 +3093,7 @@ CREATE TABLE public.invites_imports (
     completed_at timestamp(6) without time zone,
     importer_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    started_at timestamp(6) without time zone
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -9447,7 +9446,6 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20260803150000'),
 ('20260727000000'),
 ('20260713000000'),
 ('20260707190000'),

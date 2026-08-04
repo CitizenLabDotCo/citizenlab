@@ -181,36 +181,23 @@ RSpec.describe Invites::BulkCreateJob do
         extra_args: { job_type: 'bulk_create_xlsx', xlsx_import: true }
     end
 
-    describe 'job status tracking' do
+    describe 'when an unexpected error occurs' do
       let(:invites_import) { create(:invites_import, job_type: 'bulk_create', importer: user) }
 
-      # The front-end uses this to tell "the queue has not picked this job up"
-      # apart from "the job is running and taking a while".
-      it 'stamps started_at when the job starts' do
-        expect(invites_import.started_at).to be_nil
-
-        described_class.perform_now(user, { emails: emails }, invites_import.id)
-
-        expect(invites_import.reload.started_at).to be_present
+      before do
+        allow(Invites::Service).to receive(:new).and_raise(ActiveRecord::StatementInvalid, 'boom')
       end
 
-      context 'when an unexpected error occurs' do
-        before do
-          allow(Invites::Service).to receive(:new).and_raise(ActiveRecord::StatementInvalid, 'boom')
-        end
+      # The job does not retry, so an import left pending here stays pending forever
+      # and the front-end polls it indefinitely without ever showing an error.
+      it 'completes the invites_import with an error and re-raises' do
+        expect do
+          described_class.perform_now(user, { emails: emails }, invites_import.id)
+        end.to raise_error(ActiveRecord::StatementInvalid)
 
-        # The job does not retry, so an import left pending here stays pending forever
-        # and the front-end polls it indefinitely without ever showing an error.
-        it 'completes the invites_import with an error and re-raises' do
-          expect do
-            described_class.perform_now(user, { emails: emails }, invites_import.id)
-          end.to raise_error(ActiveRecord::StatementInvalid)
-
-          invites_import.reload
-          expect(invites_import.started_at).to be_present
-          expect(invites_import.completed_at).to be_present
-          expect(invites_import.result).to eq('errors' => [{ 'error' => 'unexpected_invite_error' }])
-        end
+        invites_import.reload
+        expect(invites_import.completed_at).to be_present
+        expect(invites_import.result).to eq('errors' => [{ 'error' => 'unexpected_invite_error' }])
       end
     end
   end

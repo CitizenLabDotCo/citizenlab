@@ -77,7 +77,6 @@ describe('InviteUsersWithSeatsModal', () => {
             type: 'invites_import',
             attributes: {
               job_type: 'count_new_seats',
-              started_at: null,
               completed_at: null,
               result: {
                 newly_added_admins_number: 1,
@@ -117,7 +116,6 @@ describe('InviteUsersWithSeatsModal', () => {
             type: 'invites_import',
             attributes: {
               job_type: 'count_new_seats',
-              started_at: null,
               completed_at: null,
               result: {
                 newly_added_admins_number: 0,
