@@ -18,10 +18,10 @@ module Invites
     rescue Invites::FailedError => e
       import.update!(result: { errors: e.to_h }, completed_at: Time.current)
     rescue StandardError
-      # Anything else (a DB error, a validation raised outside the invitee checks,
-      # a timeout) would otherwise leave the import pending forever: this job does
-      # not retry, so the front-end would keep polling a row that never completes.
-      # Record the failure so the admin sees an error, then re-raise to report it.
+      # Anything else (a DB error, a validation raised outside the invitee checks)
+      # would otherwise leave the import pending forever, since this job does not
+      # retry — the admin would wait out the front-end timeout instead of being
+      # shown the error. Record the failure, then re-raise so it is not swallowed.
       import&.update!(
         result: { errors: [{ error: 'unexpected_invite_error' }] },
         completed_at: Time.current

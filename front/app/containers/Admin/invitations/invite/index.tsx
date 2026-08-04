@@ -59,15 +59,10 @@ const StyledTabs = styled(Tabs)`
 
 export type TInviteTabName = 'template' | 'manual';
 
-// The seat count and the invite creation both run as background jobs. If one
-// never reports back — stalled queue, worker dies mid-run — nothing clears the
-// processing state, so the form spins forever with no error.
-//
-// The seat count does its work with side effects disabled and rolls it back, so
-// it is quick whatever the size of the import. The invite creation saves the
-// invitees along with their records and side effects, so it gets longer: a
-// 1000-row XLSX import, the largest the form accepts, was measured comfortably
-// inside five minutes on a production platform.
+// Both stages run as background jobs. If one never reports back — stalled queue,
+// worker dies mid-run — nothing clears the processing state and the form spins
+// forever with no error. A 1000-row XLSX, the largest import the form accepts,
+// was measured well inside 5 minutes in production.
 const COUNT_TIMEOUT_MS = 120000; // 2 minutes
 const CREATE_TIMEOUT_MS = 300000; // 5 minutes
 
@@ -443,18 +438,17 @@ const Invitations = () => {
     resetQueryData();
   }, [invitesImport, resetQueryData, queryClient]);
 
-  // Paused only while the seats modal waits on the admin — no job is in flight
-  // then, so no import id is set. Once they confirm, the creation runs behind a
-  // modal already declaring success, which needs watching more, not less.
+  // Paused only while the seats modal waits on the admin, when no import id is
+  // set. After they confirm, the creation runs behind a modal already declaring
+  // success, so it still needs watching.
   const awaitingJob = processing && (!!invitesImportId || !showModal);
-  // Undefined until the first poll returns, ~5 seconds in and so well before
-  // either timeout can fire.
+  // Undefined until the first poll, seconds before either timeout can fire.
   const isCountStage =
     invitesImport?.data.attributes.job_type.includes('count_new_seats');
 
-  // `invitesImportId` is a dependency so each stage gets a fresh budget. Depend
-  // only on primitives: polling yields a new `invitesImport` object every 5
-  // seconds, which would restart the timer forever.
+  // Keyed on `invitesImportId` so each stage gets a fresh budget. Deps must stay
+  // primitive: a new `invitesImport` arrives every 5s and would restart the timer
+  // forever.
   useEffect(() => {
     if (!awaitingJob) return;
 
@@ -464,16 +458,14 @@ const Invitations = () => {
         setProcessing(false);
         setProcessed(false);
         setShowModal(false);
-        // Also unmounts the seats modal, which would otherwise keep the success
-        // screen it switched to on confirmation and reopen straight onto it.
+        // Unmounts the seats modal too; hiding it alone keeps the success screen
+        // it switched to on confirmation.
         setNewSeatsResponse(null);
         setUnknownError(
           <FormattedMessage
             {...(isCountStage
-              ? // Only the seat count can promise nothing was sent: whatever
-                // state it is in, it runs with side effects disabled and rolls
-                // its work back. A creation job may yet run, so it gets the
-                // vaguer message.
+              ? // The count rolls its work back, so nothing was sent whatever
+                // state it is in. A creation job may yet run.
                 messages.processingNotStartedError
               : messages.processingTimeoutError)}
           />

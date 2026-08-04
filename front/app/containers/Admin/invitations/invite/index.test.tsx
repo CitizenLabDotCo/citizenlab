@@ -121,7 +121,7 @@ jest.mock('api/app_configuration/useAppConfiguration', () => () => ({
 }));
 jest.mock('api/id_methods/useIdMethods', () => () => ({ data: undefined }));
 
-// Submits a single manual invite and waits for the seat count to be requested.
+// Submits a single manual invite and flushes the resulting seat count request.
 const submitManualInvite = async () => {
   const { container, rerender } = render(<Invitations />);
 
@@ -164,13 +164,14 @@ describe('Invitations timeout', () => {
 
     advance(1000);
     expect(screen.getByText(NOT_SENT_MESSAGE)).toBeInTheDocument();
-    // Polling stops and the form leaves its processing state.
+    // Absent only when both `processing` and the import id are cleared, the
+    // latter being what stops the polling.
     expect(
       screen.queryByText('Sending out invitations. Please wait...')
     ).not.toBeInTheDocument();
   });
 
-  // The creation job gets a far longer budget, and it may yet run and send the
+  // The creation job gets a longer budget, and it may yet run and send the
   // invitations, so the admin must not be told none were sent.
   it('waits longer for the creation job and does not claim nothing was sent', async () => {
     mockInvitesImport = undefined;

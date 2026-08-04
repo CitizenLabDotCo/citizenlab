@@ -89,8 +89,9 @@ RSpec.describe Invites::CountNewSeatsJob do
         allow(Invites::Service).to receive(:new).and_raise(ActiveRecord::StatementInvalid, 'boom')
       end
 
-      # The job does not retry, so an import left pending here stays pending forever
-      # and the front-end polls it indefinitely without ever showing an error.
+      # Without this the import would stay pending forever — the job does not
+      # retry — and the admin would wait out the front-end timeout instead of
+      # being shown the error.
       it 'completes the invites_import with an error and re-raises' do
         expect do
           described_class.perform_now(user, { emails: emails }, invites_import.id)
