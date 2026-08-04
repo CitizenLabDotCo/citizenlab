@@ -314,6 +314,11 @@
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.7_days_before_phase_starts": {
+    "state": "verified",
+    "verified_at": "2026-08-04T08:36:21.445851Z",
+    "verified_by": "Sébastien"
+  },
   "email_campaigns.admin_labels.trigger.7_days_before_the_project_changes_phase": {
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
@@ -403,6 +408,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.trigger.phase_starts": {
+    "state": "verified",
+    "verified_at": "2026-08-04T08:36:21.445851Z",
+    "verified_by": "Sébastien"
   },
   "email_campaigns.admin_labels.trigger.project_phase_changes": {
     "state": "verified",
@@ -1489,6 +1499,11 @@
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.general.phase_dates": {
+    "state": "verified",
+    "verified_at": "2026-08-04T08:36:21.445851Z",
+    "verified_by": "Sébastien"
+  },
   "email_campaigns.idea_marked_as_spam.cta_button": {
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
@@ -2323,6 +2338,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:38:47.899840Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.preview_data.phase_description": {
+    "state": "verified",
+    "verified_at": "2026-08-04T08:36:21.445851Z",
+    "verified_by": "Sébastien"
   },
   "email_campaigns.preview_data.phase_title": {
     "state": "verified",
