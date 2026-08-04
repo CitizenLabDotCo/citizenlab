@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Fase següent",
   "app.containers.Projects.noEndDate": "Sense data de finalització",
   "app.containers.Projects.noItems": "Encara no heu seleccionat cap element",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Actualment no hi ha mètodes de participació oberts. Només els administradors poden veure aquest missatge.",
   "app.containers.Projects.noPastEvents": "No hi ha esdeveniments passats per mostrar",
   "app.containers.Projects.noPhaseSelected": "No s'ha seleccionat cap fase",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Actualment no hi ha esdeveniments propers o en curs programats.",

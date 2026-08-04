@@ -10,6 +10,7 @@ import Box, {
   BoxVisibilityProps,
   BoxDisplayProps,
   BoxZIndexProps,
+  BoxBorderProps,
 } from '../Box';
 import Icon, { IconNames } from '../Icon';
 
@@ -74,7 +75,8 @@ export type IconButtonProps = {
   BoxPaddingProps &
   BoxVisibilityProps &
   BoxDisplayProps &
-  BoxZIndexProps;
+  BoxZIndexProps &
+  BoxBorderProps;
 
 const IconButton = ({
   className,

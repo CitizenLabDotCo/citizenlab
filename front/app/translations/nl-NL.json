@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Volgende fase",
   "app.containers.Projects.noEndDate": "Geen einddatum",
   "app.containers.Projects.noItems": "Je hebt nog geen items geselecteerd",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Er zijn momenteel geen openstaande manieren om deel te nemen. Alleen platformbeheerders kunnen dit bericht zien.",
   "app.containers.Projects.noPastEvents": "Geen afgelopen activiteiten om te tonen",
   "app.containers.Projects.noPhaseSelected": "Geen fase geselecteerd",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Er zijn momenteel geen aankomende of gestarte activiteiten.",

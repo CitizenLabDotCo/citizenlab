@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "المرحلة التالية",
   "app.containers.Projects.noEndDate": "لا يوجد تاريخ انتهاء",
   "app.containers.Projects.noItems": "لم تحدد أي عناصر حتى الآن",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "لا توجد طرق مشاركة مفتوحة حالياً. يمكن للمسؤولين فقط رؤية هذه الرسالة.",
   "app.containers.Projects.noPastEvents": "لا توجد أي أحداث سابقة لعرضها",
   "app.containers.Projects.noPhaseSelected": "لم يتم تحديد مرحلة",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "لم تتم جدولة أي أحداث قادمة أو جارية حاليًا.",

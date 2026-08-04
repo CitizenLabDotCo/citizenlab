@@ -14,6 +14,10 @@ es-ES:
       subject: Confirma tu correo electrónico para participar en la plataforma de %{organizationName}
       thanks_for_signing_up1: Gracias por inscribirte en la plataforma de participación de %{organizationName}.
       the_link_is_valid_for: El enlace será valido durante 24 horas. Si el enlace ha caducado puedes <a href="%{link}">solicitar un nuevo código</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Utiliza este espacio para dar más detalles — contexto, qué se hará con las aportaciones o con quién ponerse en contacto.</p>
+      intro_placeholder: <p>Añade una breve introducción aquí — explica a los residentes de qué trata este proyecto y cómo pueden participar.</p>
   custom_field_options:
     domicile:
       outside: En algun otro lugar

@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Seuraava vaihe",
   "app.containers.Projects.noEndDate": "Ei lopetuspäivää",
   "app.containers.Projects.noItems": "Et ole vielä valinnut yhtään tuotetta",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Tällä hetkellä ei ole avoimia osallistumistapoja. Vain ylläpitäjät näkevät tämän viestin.",
   "app.containers.Projects.noPastEvents": "Ei näytettäviä menneitä tapahtumia",
   "app.containers.Projects.noPhaseSelected": "Vaihetta ei ole valittu",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Kalenterissa ei ole tällä hetkellä tapahtumia.",

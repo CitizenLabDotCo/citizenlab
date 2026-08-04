@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "An chéad chéim eile",
   "app.containers.Projects.noEndDate": "Gan dáta deiridh",
   "app.containers.Projects.noItems": "Níl aon mhír roghnaithe agat fós",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Níl aon bhealaí rannpháirtíochta oscailte faoi láthair. Ní féidir ach le riarthóirí an teachtaireacht seo a fheiceáil.",
   "app.containers.Projects.noPastEvents": "Gan aon imeachtaí san am atá thart le taispeáint",
   "app.containers.Projects.noPhaseSelected": "Níor roghnaíodh aon chéim",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Níl aon imeachtaí atá le teacht ná imeachtaí atá ar siúl sceidealaithe faoi láthair.",

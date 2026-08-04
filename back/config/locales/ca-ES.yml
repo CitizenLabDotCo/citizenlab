@@ -14,6 +14,10 @@ ca-ES:
       subject: Confirmeu la vostra adreça de correu electrònic per a la plataforma de participació de %{organizationName}
       thanks_for_signing_up1: 'Gràcies per la vostra participació. Introduïu aquest codi de confirmació a la finestra de la plataforma de participació de %{organizationName}:'
       the_link_is_valid_for: Aquest enllaç és vàlid durant 24 hores. Si l'enllaç ha caducat, podeu <a href="%{link}">sol·licitar un codi nou</a>.
+  content_builder:
+    project_page:
+      details_placeholder: '<p>Utilitzeu aquest espai per donar més detalls: context, què es farà amb les aportacions o amb qui es pot contactar.</p>'
+      intro_placeholder: '<p>Afegiu una breu introducció aquí: expliqueu als residents de què tracta aquest projecte i com hi poden participar.</p>'
   custom_field_options:
     domicile:
       outside: Algun altre lloc

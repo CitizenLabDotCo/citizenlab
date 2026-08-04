@@ -11,6 +11,16 @@ module ContentBuilder
     PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
 
+    INTRO_COLUMNS_ID = 'PROJECT_PAGE_INTRO_COLUMNS'
+    INTRO_LEFT_ID = 'PROJECT_PAGE_INTRO_LEFT'
+    INTRO_TEXT_ID = 'PROJECT_PAGE_INTRO_TEXT'
+    INTRO_RIGHT_ID = 'PROJECT_PAGE_INTRO_RIGHT'
+    PARTICIPATION_BOX_ID = 'PROJECT_PAGE_PARTICIPATION_BOX'
+    DETAILS_COLUMNS_ID = 'PROJECT_PAGE_DETAILS_COLUMNS'
+    DETAILS_LEFT_ID = 'PROJECT_PAGE_DETAILS_LEFT'
+    DETAILS_TEXT_ID = 'PROJECT_PAGE_DETAILS_TEXT'
+    DETAILS_RIGHT_ID = 'PROJECT_PAGE_DETAILS_RIGHT'
+
     UNSUPPORTED_WIDGETS = %w[
       FolderFiles
       FolderTitle
@@ -76,12 +86,14 @@ module ContentBuilder
 
     def from_description_craftjs(description_craftjs)
       injected_nodes, injected_top_level_ids = inject_description(description_craftjs || {})
+      return default_page_nodes if injected_top_level_ids.empty?
+
       canonical_nodes(injected_top_level_ids).merge(injected_nodes)
     end
 
     def from_description_multiloc(description_multiloc)
       description_service = DescriptionLayoutService.new
-      return canonical_nodes([]) if description_service.description_blank?(description_multiloc)
+      return default_page_nodes if description_service.description_blank?(description_multiloc)
 
       node = if description_service.description_has_media?(description_multiloc)
         description_service.bridge_node(description_multiloc)
@@ -244,6 +256,91 @@ module ContentBuilder
         'parent' => parent_id,
         'isCanvas' => true,
         'displayName' => 'Container',
+        'linkedNodes' => {}
+      }
+    end
+
+    # The layout new projects start from: an intro text next to the participation
+    # box, a details text next to an empty column, then phases and events. The
+    # text values are real, admin-editable content seeded in the tenant locales.
+    def default_page_nodes
+      multiloc_service = MultilocService.new
+      intro_multiloc = multiloc_service.i18n_to_multiloc('content_builder.project_page.intro_placeholder', raise_on_missing: false)
+      details_multiloc = multiloc_service.i18n_to_multiloc('content_builder.project_page.details_placeholder', raise_on_missing: false)
+
+      canonical_nodes([INTRO_COLUMNS_ID, DETAILS_COLUMNS_ID]).merge(
+        INTRO_COLUMNS_ID => columns_node(BODY_ID, left: INTRO_LEFT_ID, right: INTRO_RIGHT_ID),
+        INTRO_LEFT_ID => column_node(INTRO_COLUMNS_ID, [INTRO_TEXT_ID]),
+        INTRO_TEXT_ID => text_multiloc_node(intro_multiloc, INTRO_LEFT_ID),
+        INTRO_RIGHT_ID => column_node(INTRO_COLUMNS_ID, [PARTICIPATION_BOX_ID]),
+        PARTICIPATION_BOX_ID => participation_box_node(INTRO_RIGHT_ID),
+        DETAILS_COLUMNS_ID => columns_node(BODY_ID, left: DETAILS_LEFT_ID, right: DETAILS_RIGHT_ID),
+        DETAILS_LEFT_ID => column_node(DETAILS_COLUMNS_ID, [DETAILS_TEXT_ID]),
+        DETAILS_TEXT_ID => text_multiloc_node(details_multiloc, DETAILS_LEFT_ID),
+        DETAILS_RIGHT_ID => column_node(DETAILS_COLUMNS_ID, [])
+      )
+    end
+
+    def columns_node(parent_id, left:, right:)
+      {
+        'type' => { 'resolvedName' => 'TwoColumn' },
+        'nodes' => [],
+        'props' => { 'columnLayout' => '2-1' },
+        'custom' => {
+          'title' => message('app.containers.admin.ContentBuilder.twoColumnLayout', '2 column'),
+          'hasChildren' => true
+        },
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => false,
+        'displayName' => 'TwoColumn',
+        'linkedNodes' => { 'left' => left, 'right' => right }
+      }
+    end
+
+    def column_node(parent_id, child_ids)
+      {
+        'type' => { 'resolvedName' => 'Container' },
+        'nodes' => child_ids,
+        'props' => {},
+        'custom' => {},
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => true,
+        'displayName' => 'Container',
+        'linkedNodes' => {}
+      }
+    end
+
+    def text_multiloc_node(text_multiloc, parent_id)
+      {
+        'type' => { 'resolvedName' => 'TextMultiloc' },
+        'nodes' => [],
+        'props' => { 'text' => text_multiloc },
+        'custom' => {
+          'title' => message('app.containers.admin.ContentBuilder.textMultiloc', 'Text')
+        },
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => false,
+        'displayName' => 'TextMultiloc',
+        'linkedNodes' => {}
+      }
+    end
+
+    def participation_box_node(parent_id)
+      {
+        'type' => { 'resolvedName' => 'AboutBox' },
+        'nodes' => [],
+        'props' => {},
+        'custom' => {
+          'title' => message('app.containers.admin.ContentBuilder.participationBox', 'Participation Box'),
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => false,
+        'displayName' => 'AboutBox',
         'linkedNodes' => {}
       }
     end

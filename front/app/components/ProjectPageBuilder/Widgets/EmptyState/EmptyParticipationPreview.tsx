@@ -4,13 +4,14 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import AdminOnlyNote from '../EmptyState/AdminOnlyNote';
-import EmptyStateContainer from '../EmptyState/EmptyStateContainer';
-import SkeletonBar from '../EmptyState/SkeletonBar';
-import SkeletonDot from '../EmptyState/SkeletonDot';
 import messages from '../messages';
 
-const EmptyInputFeed = () => (
+import AdminOnlyNote from './AdminOnlyNote';
+import EmptyStateContainer from './EmptyStateContainer';
+import SkeletonBar from './SkeletonBar';
+import SkeletonDot from './SkeletonDot';
+
+const EmptyParticipationPreview = () => (
   <EmptyStateContainer>
     <Text m="0px" color="textSecondary" fontWeight="bold">
       <FormattedMessage {...messages.inputFeedEmptyTitle} />
@@ -28,4 +29,4 @@ const EmptyInputFeed = () => (
   </EmptyStateContainer>
 );
 
-export default EmptyInputFeed;
+export default EmptyParticipationPreview;
