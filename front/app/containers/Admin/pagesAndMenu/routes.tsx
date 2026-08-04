@@ -15,10 +15,8 @@ const FullScreenPreview = lazy(
   () => import('./containers/ContentBuilder/containers/FullscreenPreview')
 );
 const CustomPagesIndex = lazy(() => import('./containers/CustomPages'));
-const PagesAndMenuIndex = lazy(() => import('containers/Admin/pagesAndMenu'));
-const NavigationSettings = lazy(
-  () => import('./containers/NavigationSettings')
-);
+const PagesTab = lazy(() => import('./containers/PagesTab'));
+const MenuTab = lazy(() => import('./containers/MenuTab'));
 const EditNavbarItemForm = lazy(
   () => import('./containers/EditNavbarItemForm')
 );
@@ -60,29 +58,25 @@ export const adminCustomPageSettingsPath = (pageId: string) => {
   return `/admin/pages-menu/pages/${pageId}/settings`;
 };
 
-// pages-menu grouping route (no component — PagesAndMenuIndex only wraps the index)
 const pagesAndMenuRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: 'pages-menu',
 });
 
-// Layout route: PagesAndMenuIndex wraps the index content (NavigationSettings renders via Outlet)
-const pagesAndMenuLayoutRoute = createRoute({
+const PagesMenuIndexRedirect = () => <Navigate to="/admin/pages-menu/pages" />;
+
+const pagesMenuIndexRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
-  id: 'pages-menu-layout',
-  component: () => (
-    <PageLoading>
-      <PagesAndMenuIndex />
-    </PageLoading>
-  ),
+  path: '/',
+  component: PagesMenuIndexRedirect,
 });
 
-const navigationSettingsRoute = createRoute({
-  getParentRoute: () => pagesAndMenuLayoutRoute,
-  path: '/',
+const menuRoute = createRoute({
+  getParentRoute: () => pagesAndMenuRoute,
+  path: 'menu',
   component: () => (
     <PageLoading>
-      <NavigationSettings />
+      <MenuTab />
     </PageLoading>
   ),
 });
@@ -121,11 +115,20 @@ const homepageBuilderPreviewRoute = createRoute({
   ),
 });
 
-// pages layout route
 const pagesRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
   path: 'pages',
   component: () => <CustomPagesIndex />,
+});
+
+const pagesIndexRoute = createRoute({
+  getParentRoute: () => pagesRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <PagesTab />
+    </PageLoading>
+  ),
 });
 
 const pagesNewRoute = createRoute({
@@ -134,7 +137,6 @@ const pagesNewRoute = createRoute({
   component: () => <NewCustomPageIndex />,
 });
 
-// custom page edit layout
 const customPageRoute = createRoute({
   getParentRoute: () => pagesRoute,
   path: '$customPageId',
@@ -237,10 +239,12 @@ const navbarItemEditRoute = createRoute({
 
 const createAdminPagesAndMenuRoutes = () => {
   return pagesAndMenuRoute.addChildren([
-    pagesAndMenuLayoutRoute.addChildren([navigationSettingsRoute]),
+    pagesMenuIndexRoute,
+    menuRoute,
     homepageBuilderRoute,
     homepageBuilderPreviewRoute,
     pagesRoute.addChildren([
+      pagesIndexRoute,
       pagesNewRoute,
       customPageRoute.addChildren([
         customPageIndexRoute,
