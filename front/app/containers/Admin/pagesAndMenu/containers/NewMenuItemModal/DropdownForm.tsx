@@ -36,10 +36,7 @@ import { IItemNotInNavbar } from 'utils/navbar';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from './messages';
-import useAvailableItems, {
-  DROPDOWN_CHILD_TYPES,
-  MenuItemType,
-} from './useAvailableItems';
+import useAvailableItems, { MenuItemType } from './useAvailableItems';
 
 type ChildKind = 'page' | 'project' | 'folder';
 
@@ -105,7 +102,7 @@ const DropdownForm = ({ editItem, onSubmit, onCancel, processing }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const [selectedType, setSelectedType] = useState<MenuItemType>('custom_page');
+  const [selectedType, setSelectedType] = useState<MenuItemType>('page');
 
   const methods = useForm({
     mode: 'onBlur',
@@ -155,10 +152,10 @@ const DropdownForm = ({ editItem, onSubmit, onCancel, processing }: Props) => {
   });
 
   const typeOptions = [
-    { value: 'custom_page', label: formatMessage(messages.typeCustomPage) },
+    { value: 'page', label: formatMessage(messages.page) },
     { value: 'folder', label: formatMessage(messages.typeFolder) },
     { value: 'project', label: formatMessage(messages.typeProject) },
-  ].filter((o) => DROPDOWN_CHILD_TYPES.includes(o.value as MenuItemType));
+  ];
 
   const itemOptions = availableItems.map((item, index) => ({
     value: String(index),

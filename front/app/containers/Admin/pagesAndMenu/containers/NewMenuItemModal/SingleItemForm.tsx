@@ -36,7 +36,7 @@ const SingleItemForm = ({ onSubmit, onCancel, processing }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const [selectedType, setSelectedType] = useState<MenuItemType>('custom_page');
+  const [selectedType, setSelectedType] = useState<MenuItemType>('page');
 
   const methods = useForm({
     mode: 'onBlur',
@@ -55,7 +55,11 @@ const SingleItemForm = ({ onSubmit, onCancel, processing }: Props) => {
 
   const itemId = methods.watch('itemId');
 
-  const availableItems = useAvailableItems({ type: selectedType });
+  // Top-level items can point at a default page, unlike dropdown children.
+  const availableItems = useAvailableItems({
+    type: selectedType,
+    includeDefaultItems: true,
+  });
 
   // itemId holds the index into availableItems (as a string). Binding the
   // dropdown to the array index sidesteps any unreliable/duplicate data ids.
@@ -70,8 +74,7 @@ const SingleItemForm = ({ onSubmit, onCancel, processing }: Props) => {
   };
 
   const typeOptions = [
-    { value: 'custom_page', label: formatMessage(messages.typeCustomPage) },
-    { value: 'default_page', label: formatMessage(messages.typeDefaultPage) },
+    { value: 'page', label: formatMessage(messages.page) },
     { value: 'folder', label: formatMessage(messages.typeFolder) },
     { value: 'project', label: formatMessage(messages.typeProject) },
   ];

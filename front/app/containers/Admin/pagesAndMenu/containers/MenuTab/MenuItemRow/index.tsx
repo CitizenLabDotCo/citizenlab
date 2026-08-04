@@ -18,7 +18,6 @@ import { TextCell } from 'components/admin/ResourceList';
 import T from 'components/T';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
@@ -36,7 +35,6 @@ interface Props {
   isDefaultPage?: boolean;
   isDropdown?: boolean;
   dropdownChildren?: INavbarChild[];
-  viewButtonLink?: string;
   onClickEditButton: () => void;
   showRemoveButton?: boolean;
   onClickRemoveButton?: () => void;
@@ -47,7 +45,6 @@ const MenuItemRow = ({
   isDefaultPage,
   isDropdown,
   dropdownChildren,
-  viewButtonLink,
   onClickEditButton,
   showRemoveButton,
   onClickRemoveButton,
@@ -108,22 +105,6 @@ const MenuItemRow = ({
             borderRadius={stylingConsts.borderRadius}
             className="intercom-admin-pages-menu-edit-button"
           />
-
-          {viewButtonLink && (
-            <Link to={viewButtonLink} target="_blank">
-              <IconButton
-                iconName="eye"
-                onClick={() => {}}
-                a11y_buttonActionMessage={formatMessage(messages.viewItem)}
-                iconColor={colors.textSecondary}
-                iconColorOnHover={colors.primary}
-                p="4px"
-                border={`1px solid ${colors.borderLight}`}
-                borderRadius={stylingConsts.borderRadius}
-                className="intercom-admin-pages-menu-view-button"
-              />
-            </Link>
-          )}
 
           {showRemoveButton && (
             <Tooltip content={formatMessage(messages.removeFromMenuTooltip)}>

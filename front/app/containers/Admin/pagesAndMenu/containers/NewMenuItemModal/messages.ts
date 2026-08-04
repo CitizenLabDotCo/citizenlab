@@ -17,13 +17,9 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType',
     defaultMessage: 'Select type',
   },
-  typeCustomPage: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage',
-    defaultMessage: 'Custom page',
-  },
-  typeDefaultPage: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage',
-    defaultMessage: 'Default page',
+  page: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page',
+    defaultMessage: 'Page',
   },
   typeFolder: {
     id: 'app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder',

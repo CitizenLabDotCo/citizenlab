@@ -11,18 +11,9 @@ import useNavbarItems from 'api/navbar/useNavbarItems';
 
 import getItemsNotInNavbar, { IItemNotInNavbar } from 'utils/navbar';
 
-export type MenuItemType =
-  | 'custom_page'
-  | 'default_page'
-  | 'folder'
-  | 'project';
-
-// Types selectable as children of a dropdown item.
-export const DROPDOWN_CHILD_TYPES: MenuItemType[] = [
-  'custom_page',
-  'folder',
-  'project',
-];
+// 'page' covers both custom pages and the default pages (home, projects,
+// events, ...) — the distinction is meaningless to the admin picking one.
+export type MenuItemType = 'page' | 'folder' | 'project';
 
 // An option selectable in the item dropdown, paired with the IItemNotInNavbar
 // payload used to create the navbar item.
@@ -64,6 +55,8 @@ interface BuildParams {
   pages: ICustomPageData[];
   adminPublications: IAdminPublicationData[];
   usedPublicationIds: Set<string>;
+  // Default pages can only be top-level navbar items, never dropdown children.
+  includeDefaultItems: boolean;
   // Additional targets to hide (e.g. items already added to a dropdown locally).
   excludeStaticPageIds?: Set<string>;
   excludePublicationIds?: Set<string>;
@@ -84,6 +77,7 @@ const buildAvailableItems = ({
   pages,
   adminPublications,
   usedPublicationIds,
+  includeDefaultItems,
   excludeStaticPageIds,
   excludePublicationIds,
 }: BuildParams): AvailableItem[] => {
@@ -93,18 +87,13 @@ const buildAvailableItems = ({
     pages.filter(isNotFixedPage)
   );
 
-  if (type === 'custom_page') {
+  if (type === 'page') {
     return itemsNotInNavbar
       .filter(
-        (item): item is Extract<IItemNotInNavbar, { type: 'page' }> =>
-          item.type === 'page' && !excludeStaticPageIds?.has(item.pageId)
+        (item) =>
+          (item.type === 'page' && !excludeStaticPageIds?.has(item.pageId)) ||
+          (item.type === 'default_item' && includeDefaultItems)
       )
-      .map(toAvailableItem);
-  }
-
-  if (type === 'default_page') {
-    return itemsNotInNavbar
-      .filter((item) => item.type === 'default_item')
       .map(toAvailableItem);
   }
 
@@ -129,6 +118,9 @@ const buildAvailableItems = ({
 
 interface UseAvailableItemsParams {
   type: MenuItemType;
+  // Whether the 'page' list also offers the default pages. Off by default,
+  // since only top-level navbar items can point at one.
+  includeDefaultItems?: boolean;
   // When editing a dropdown, ignore its own children so that removing one
   // locally makes it addable again.
   editItem?: INavbarItem;
@@ -141,6 +133,7 @@ interface UseAvailableItemsParams {
 // the given type. Shared by the single-item and dropdown forms.
 const useAvailableItems = ({
   type,
+  includeDefaultItems = false,
   editItem,
   excludeStaticPageIds,
   excludePublicationIds,
@@ -172,11 +165,13 @@ const useAvailableItems = ({
       adminPublications:
         adminPublications?.pages.flatMap((page) => page.data) ?? [],
       usedPublicationIds: getUsedPublicationIds(navbarItemsForExclusion),
+      includeDefaultItems,
       excludeStaticPageIds,
       excludePublicationIds,
     });
   }, [
     type,
+    includeDefaultItems,
     editItem,
     navbarItems,
     removedDefaultItems,
