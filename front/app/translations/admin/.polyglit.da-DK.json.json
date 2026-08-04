@@ -6899,6 +6899,11 @@
     "verified_at": "2026-07-03T08:05:46.333374Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.page": {
+    "state": "verified",
+    "verified_at": "2026-08-04T12:48:10.084377Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.pageTag": {
     "state": "verified",
     "verified_at": "2026-07-03T08:05:46.333374Z",
