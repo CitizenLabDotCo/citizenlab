@@ -613,7 +613,7 @@ nl-BE:
       event_description: Dit project ging een nieuwe fase in op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!
       new_phase: "Het project ging de fase '%{phaseTitle}' in"
       preheader: Een nieuwe fase is gestart voor %{projectName}
-      subject: '%{projectName} ging een nieuwe fase in'
+      subject: "'%{phaseTitle}' is begonnen in %{projectName}"
       subtitle: "Over '%{projectName}'"
       title: "Een nieuwe fase is begonnen voor het project '%{projectName}'"
     project_phase_upcoming:
