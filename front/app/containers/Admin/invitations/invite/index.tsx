@@ -64,11 +64,12 @@ export type TInviteTabName = 'template' | 'manual';
 // processing state, so the form spins forever with no error.
 //
 // The seat count does its work with side effects disabled and rolls it back, so
-// it is quick whatever the size of the import. The invite creation saves up to
-// 1000 invitees along with their records and side effects, so it only gets a
-// backstop generous enough never to fire on healthy work.
+// it is quick whatever the size of the import. The invite creation saves the
+// invitees along with their records and side effects, so it gets longer: a
+// 1000-row XLSX import, the largest the form accepts, was measured comfortably
+// inside five minutes on a production platform.
 const COUNT_TIMEOUT_MS = 120000; // 2 minutes
-const CREATE_TIMEOUT_MS = 1800000; // 30 minutes
+const CREATE_TIMEOUT_MS = 300000; // 5 minutes
 
 const Invitations = () => {
   const queryClient = useQueryClient();

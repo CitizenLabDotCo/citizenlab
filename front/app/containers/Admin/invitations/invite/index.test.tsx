@@ -5,7 +5,7 @@ import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
 import Invitations from '.';
 
 const COUNT_TIMEOUT_MS = 120000;
-const CREATE_TIMEOUT_MS = 1800000;
+const CREATE_TIMEOUT_MS = 300000;
 
 const NOT_SENT_MESSAGE = /The system is busy/;
 const TIMED_OUT_MESSAGE =
