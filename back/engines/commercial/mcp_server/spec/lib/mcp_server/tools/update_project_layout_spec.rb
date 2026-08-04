@@ -106,6 +106,37 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(layout.reload.craftjs_json[body]['nodes']).to eq(%w[PROJECT_PAGE_EVENTS T1 PROJECT_PAGE_PHASES])
       end
 
+      # Editing these was rejected while they counted as scaffold; sectionBackground is
+      # the prop the unlock added, so this is the case the new enum exists for.
+      it 'edits the phases widget, which is no longer part of the scaffold' do
+        phases = initial_graph['PROJECT_PAGE_PHASES'].merge('props' => { 'sectionBackground' => 'white' })
+
+        response = patch(nodes: { 'PROJECT_PAGE_PHASES' => phases })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json.dig('PROJECT_PAGE_PHASES', 'props', 'sectionBackground')).to eq('white')
+      end
+
+      it 'rejects a sectionBackground outside its enum' do
+        phases = initial_graph['PROJECT_PAGE_PHASES'].merge('props' => { 'sectionBackground' => 'chartreuse' })
+
+        response = patch(nodes: { 'PROJECT_PAGE_PHASES' => phases })
+
+        expect(response).to be_error
+        expect(response.content.first[:text]).to include('must be one of: colored, white')
+        expect(layout.reload.craftjs_json).to eq(initial_graph)
+      end
+
+      it 'inserts a second phases widget, so a deleted one can be put back' do
+        response = patch(nodes: {
+          body => body_with(%w[T1 PH2]),
+          'PH2' => craftjs_node('PhasesWidget', parent: body, props: { 'sectionBackground' => 'colored' })
+        })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json).to have_key('PH2')
+      end
+
       it 'deletes the phases widget, which is no longer part of the scaffold' do
         response = patch(delete_node_ids: ['PROJECT_PAGE_PHASES'])
 

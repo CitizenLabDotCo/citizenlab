@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-# Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs), the
-# LLM-facing docs and the cheatsheet drifting apart.
+# Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs) and the
+# LLM-facing docs drifting apart.
 describe McpServer::LayoutWidgets do
   let(:scaffold_widgets) { ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS }
 

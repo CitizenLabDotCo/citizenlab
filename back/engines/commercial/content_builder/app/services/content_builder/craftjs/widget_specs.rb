@@ -16,9 +16,10 @@ module ContentBuilder
     # Allowlist = the FE project page toolbox (the description-builder widget set plus
     # HtmlBlockMultiloc, the phases/events/extra-surveys widgets and PageLink), the page
     # scaffold (ProjectPageLayoutService::SCAFFOLD_WIDGETS), and node types that occur
-    # inside existing graphs. Feature-flagged widgets (ExtraSurveysWidget, PageLink) are
-    # listed unconditionally: the flag decides whether they render, not whether a stored
-    # graph may hold them. The widgets the FE purges on read (FolderTitle, Published,
+    # inside existing graphs. ExtraSurveysWidget and PageLink sit behind feature flags but
+    # are listed unconditionally: those flags gate rendering (parallel_participation) or
+    # the FE toolbox (project_static_pages), never whether a stored graph may hold the
+    # node. The widgets the FE purges on read (FolderTitle, Published,
     # Selection, Spotlight, FolderFiles) are deliberately absent.
     #
     # The '' entries in enums: the FE craft.props defaults write empty strings for

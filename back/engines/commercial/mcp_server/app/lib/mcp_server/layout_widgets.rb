@@ -83,7 +83,8 @@ class McpServer::LayoutWidgets
       PageLink — link to one of the project's static pages. props: {"pageId":"<CustomPage id>","displayType":"link"|"preview"}
         "link" renders a single titled row; "preview" renders the title plus an excerpt of the page.
         custom: {"title":{"id":"app.containers.admin.ContentBuilder.projectPageLink","defaultMessage":"Project Page Link"},"noPointerEvents":true}
-        Only renders when the platform has the project_static_pages feature.
+        No tool here lists static pages, so only reuse a pageId already in this layout or one
+        the user gives you — never invent one. A pageId that resolves to nothing renders nothing.
     DOC
     'TwoColumn' => <<~DOC,
       TwoColumn — two side-by-side columns. props: {"columnLayout":"1-1"|"2-1"|"1-2"}
@@ -123,7 +124,8 @@ class McpServer::LayoutWidgets
         props: {"surveyPhaseId":"<phase id>","buttonFormat":"button"|"card","buttonStyle":"primary"|"secondary-outlined","buttonText":{"<locale>":"label"}}
         custom: {"title":{"id":"app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle","defaultMessage":"Extra surveys"},"noPointerEvents":true}
         surveyPhaseId must be a phase with placement_type "standalone" and participation_method
-        "native_survey" (list_phases). "card" shows title, dates and status; "button" is just the
+        "native_survey" (list_phases). No tool here creates one: if the project has none, leave
+        this widget out and say so. "card" shows title, dates and status; "button" is just the
         button. Defaults: buttonFormat "card", buttonStyle "primary". Only renders when the
         platform has the parallel_participation feature.
     DOC
