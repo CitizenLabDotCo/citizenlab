@@ -31,7 +31,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
   }.freeze
 
   def name = 'update_project_layout'
-  def title = 'Update project description layout'
+  def title = 'Update project page layout'
 
   def annotations
     {
@@ -43,21 +43,23 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
   end
 
   # Deliberately compact: MCP clients truncate long tool descriptions, so the
-  # widget/format reference travels in tool RESPONSES instead — the full cheatsheet
-  # once, when get_project_layout finds no layout, and only a targeted subset
-  # (format rules + docs for the offending widgets) on validation errors, so
-  # retries don't accumulate full copies in the client's context.
+  # widget/format reference travels in the validation-error responses of this tool
+  # instead — only a targeted subset (format rules + docs for the offending widgets),
+  # so retries don't accumulate full copies in the client's context.
   def description
     <<~DESC
-      Creates or updates a project's description-page layout (a craft.js node graph) with a
-      sparse patch: send ONLY the nodes you are adding or changing (each in its full final
-      form) in `nodes`, plus `delete_node_ids` for removals. Never re-send unchanged nodes.
-      The patch is merged into the stored graph and validated; on failure nothing is saved
-      and the errors (with a widget reference) tell you what to fix.
+      Updates a project's page layout (a craft.js node graph) with a sparse patch: send
+      ONLY the nodes you are adding or changing (each in its full final form) in `nodes`,
+      plus `delete_node_ids` for removals. Never re-send unchanged nodes. The patch is
+      merged into the stored graph and validated; on failure nothing is saved and the
+      errors (with a widget reference) tell you what to fix.
 
-      ALWAYS call get_project_layout first — to copy the exact shape of existing nodes, or,
-      when no layout exists, for the format reference to build the complete graph from
-      (pass enabled: true when creating).
+      ALWAYS call get_project_layout first and copy the exact shape of existing nodes.
+      The page scaffold (root, banner, title, body, phases, events) is fixed; ALL your
+      content lives inside the ProjectPageBody node. Add, remove or reorder top-level
+      content by also sending that node with its updated `nodes` array and nothing else
+      about it changed, keeping every id it already lists. To change the project title or
+      header image use update_project instead.
 
       Recipes: edit or replace = send just that node (no delete needed). Insert/move = send
       the node (with `parent` set) AND the parent with its updated `nodes` array (order =
@@ -68,7 +70,9 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       Design: separate sections with WhiteSpace nodes (medium between sections, small within,
       withDivider at strong breaks). Use TwoColumn/ThreeColumn for parallel content,
       AccordionMultiloc (body in its linked Container) for FAQs and concerns, ButtonMultiloc
-      for calls to action, AboutBox last. Avoid all-text pages.
+      for calls to action, AboutBox last. Avoid all-text descriptions. The phase timeline
+      and the events list are already in the body (PhasesWidget, EventsWidget) — you may
+      move them within it, but never rebuild them as hand-made content.
     DESC
   end
 
@@ -90,13 +94,6 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
           description: <<~DESC.squish
             Ids of nodes to delete. Subtrees and linked slot nodes are removed and detached
             automatically, so list only the topmost node of what you want gone.
-          DESC
-        },
-        enabled: {
-          type: 'boolean',
-          description: <<~DESC.squish
-            Whether the custom layout is shown on the project page. New layouts start
-            DISABLED — pass true when creating one, or it will not be visible.
           DESC
         }
       },
@@ -120,29 +117,55 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     # correctable error. Nothing is persisted when this is raised.
     PatchError = Class.new(StandardError)
 
+    # The page rules this tool enforces are defined in content_builder, alongside the
+    # rest of the craftjs rules, so nothing here is the MCP's private notion of what a
+    # project page is.
+    SCAFFOLD_WIDGETS = ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS
+    BODY_WIDGET = ContentBuilder::ProjectPageLayoutService::BODY_WIDGET
+    PROJECT_RECORD_WIDGETS = ContentBuilder::ProjectPageLayoutService::PROJECT_RECORD_WIDGETS
+    LEGACY_WIDGETS = ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS
+
+    # Fully qualified: delegate defines the method via module_eval, where the
+    # `Craftjs::Query` relative lookup would not resolve.
+    delegate :resolved_name, to: :'ContentBuilder::Craftjs::Query', private: true
+
     def run
       project = Project.find(params[:project_id])
       authorize_project!(project)
 
-      layout = ContentBuilder::Layout.find_or_initialize_by(
+      layout = ContentBuilder::Layout.find_by(
         content_buildable: project,
-        code: ContentBuilder::Layout::PROJECT_DESCRIPTION_CODE
+        code: ContentBuilder::ProjectPageLayoutService::CODE
       )
+      # Every project gets a page layout at creation (and a rake task backfilled older
+      # ones), so a missing layout is a data anomaly rather than a state to repair here
+      # — but one nobody would otherwise hear about.
+      if layout.nil?
+        ErrorReporter.report_msg('Project page layout is missing', extra: { project_id: project.id })
+        return error(
+          "Project #{project.id} has no page layout. It should have been provisioned " \
+          'at project creation; this needs fixing outside this tool.'
+        )
+      end
+
       # Before anything derived from the stored graph can flow into a response.
       authorize(layout, :update?)
 
-      graph = patched_graph(layout)
+      stored = layout.craftjs_json || {}
+      protect_scaffold!(stored)
+      protect_legacy_widgets!(stored)
+      graph = patched_graph(stored)
+      protect_content_placement!(graph)
       validate!(graph)
 
-      created = layout.new_record?
       layout.craftjs_json = graph
       # Again with the new graph assigned: the policy's file-attachment check must see
       # the fileIds the patch introduces, not the stored ones.
       authorize(layout, :update?)
-      save_layout(layout, created)
+      save_layout(layout)
 
       response(
-        "#{created ? 'Created' : 'Updated'} description layout for project #{project.id}",
+        "Updated page layout for project #{project.id}",
         structured: {
           enabled: layout.enabled,
           outline: McpServer::Serializers::LayoutOutline.new(layout.craftjs_json).entries
@@ -166,8 +189,88 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       @delete_node_ids ||= Array(params[:delete_node_ids]).map(&:to_s)
     end
 
-    def patched_graph(layout)
-      graph = (layout.craftjs_json || {}).deep_dup
+    # The scaffold contract: scaffold nodes may not be deleted, added or edited. The one
+    # exception is the body node, which a patch may re-send to update its `nodes` — that
+    # array IS the page's top-level content.
+    def protect_scaffold!(stored)
+      deleted = delete_node_ids.find { |id| scaffold?(stored[id]) }
+      if deleted
+        raise PatchError, "node #{deleted}: #{resolved_name(stored[deleted])} is part of the fixed " \
+                          'page scaffold and cannot be deleted.'
+      end
+
+      patch_nodes.each do |id, node|
+        names = [stored[id], node].compact.map { |n| resolved_name(n) }.uniq
+        next unless names.intersect?(SCAFFOLD_WIDGETS)
+
+        if names.intersect?(PROJECT_RECORD_WIDGETS)
+          raise PatchError, "node #{id}: the project title and header image are project attributes, " \
+                            'not layout content. Change them with the update_project tool ' \
+                            '(title_multiloc / remote_header_bg_url).'
+        end
+
+        unless stored.key?(id) && names == [BODY_WIDGET]
+          raise PatchError, "node #{id}: #{names.join('/')} is part of the fixed page scaffold and " \
+                            'cannot be added or edited. The only scaffold node a patch may send is ' \
+                            "the existing #{BODY_WIDGET} node, to update its `nodes`."
+        end
+
+        # Its `nodes` array is the page's top-level content; every other key — `parent`
+        # included, so this also rules out moving it, and `custom`, which carries the
+        # marker that keeps it locked in the editor — must come back unchanged.
+        changed = ((stored[id].keys | node.keys) - ['nodes']).reject { |key| stored[id][key] == node[key] }
+        next if changed.none?
+
+        raise PatchError, "node #{id}: only the `nodes` array of the #{BODY_WIDGET} node may " \
+                          "change, but this patch also changes: #{changed.join(', ')}. Re-send the " \
+                          'node exactly as get_project_layout returned it, with only `nodes` edited.'
+      end
+    end
+
+    # Legacy node types survive where a stored graph already has them — a patch may edit
+    # or delete those in place — but no patch may introduce a new one. The exemption is
+    # per node and per type: reusing the id of some other node does not earn it, or a
+    # patch could smuggle a legacy type in by overwriting any content node.
+    def protect_legacy_widgets!(stored)
+      patch_nodes.each do |id, node|
+        widget = resolved_name(node)
+        next if LEGACY_WIDGETS.exclude?(widget)
+        next if stored[id] && resolved_name(stored[id]) == widget
+
+        raise PatchError, "node #{id}: #{widget} is a legacy node type kept only for pages that " \
+                          'already contain one; new ones cannot be created — ' \
+                          "#{McpServer::LayoutWidgets::LEGACY_ALTERNATIVES[widget]}."
+      end
+    end
+
+    # Patched content must land inside the body: the rest of the page is fixed scaffold
+    # the FE will not render children of. One downward walk from the body covers content
+    # nested in a legacy ProjectDescriptionSection wrapper too.
+    def protect_content_placement!(graph)
+      body_id = graph.keys.find { |id| resolved_name(graph[id]) == BODY_WIDGET }
+      if body_id.nil?
+        raise PatchError, "The stored layout is missing its #{BODY_WIDGET} node; " \
+                          'this needs fixing outside this tool.'
+      end
+
+      inside = ContentBuilder::Craftjs::Query.subtree_ids(graph, body_id)
+      outside = patch_nodes.keys.reject { |id| inside.include?(id) || scaffold?(graph[id]) }
+      return if outside.none?
+
+      raise PatchError, "nodes #{outside.join(', ')}: content must live inside the page body — " \
+                        "the parent chain must reach #{body_id} (#{BODY_WIDGET}). The rest of " \
+                        'the page is fixed scaffold.'
+    end
+
+    # nil for a patch id that is not in the stored graph — the only case worth handling.
+    # A stored graph holding something that is not a node at all is corruption; it falls
+    # through as "not scaffold" and the Validator reports it properly a moment later.
+    def scaffold?(node)
+      !node.nil? && ContentBuilder::ProjectPageLayoutService.scaffold?(node)
+    end
+
+    def patched_graph(stored)
+      graph = stored.deep_dup
       apply_deletes!(graph)
       graph.merge!(patch_nodes)
       graph
@@ -175,11 +278,6 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
 
     def apply_deletes!(graph)
       return if delete_node_ids.empty?
-
-      if delete_node_ids.include?('ROOT')
-        raise PatchError, 'Cannot delete ROOT. To start over, send a complete new graph in `nodes` ' \
-                          "and list the current top-level nodes (ROOT's `nodes`) in `delete_node_ids`."
-      end
 
       overlap = delete_node_ids & patch_nodes.keys
       if overlap.any?
@@ -201,7 +299,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       end
     rescue KeyError => e
       raise PatchError, "The stored layout is inconsistent around a deleted node (#{e.message}). " \
-                        'Fix it by sending corrected nodes, or send a complete new graph.'
+                        'Fix it by sending corrected nodes.'
     end
 
     def validate!(graph)
@@ -213,6 +311,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       errors = ContentBuilder::Craftjs::Validator.new(
         graph,
         widget_specs: ContentBuilder::Craftjs::WidgetSpecs::SPECS,
+        root_type: ContentBuilder::ProjectPageLayoutService::ROOT_TYPE,
         # Widget conventions apply only to the nodes this patch touches, so legacy
         # widgets elsewhere in a stored graph cannot fail an unrelated update.
         convention_scope: patch_nodes.keys
@@ -233,9 +332,10 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       McpServer::LayoutWidgets.reference_for(widgets)
     end
 
-    def save_layout(layout, created)
-      layout.enabled = params[:enabled] unless params[:enabled].nil?
-
+    # No `enabled` write path: on a project page that flag hides the whole page — banner,
+    # title, phases and events included — from everyone but moderators, with nothing to
+    # fall back to and no admin UI to notice or undo it. Nothing an LLM should reach.
+    def save_layout(layout)
       # Same sequence as ContentBuilderLayoutsController, deliberately with NO
       # transaction: the before_ hooks download remote images (LayoutImage.create!
       # from imageUrl), which must not hold a DB connection for the duration of a
@@ -243,9 +343,9 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       # behind without a layout — the same tolerated state the FE flow produces by
       # uploading images before the layout is first saved.
       side_fx = ContentBuilder::SideFxLayoutService.new
-      created ? side_fx.before_create(layout, current_user) : side_fx.before_update(layout, current_user)
+      side_fx.before_update(layout, current_user)
       layout.save!
-      created ? side_fx.after_create(layout, current_user) : side_fx.after_update(layout, current_user)
+      side_fx.after_update(layout, current_user)
     end
 
     def image_import_error(record)

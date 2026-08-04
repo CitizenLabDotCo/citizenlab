@@ -17,6 +17,7 @@ class McpServer::Serializers::LayoutOutline
         parent: { type: 'string', description: 'Absent on ROOT.' },
         depth: { type: 'integer' },
         canvas: { type: 'boolean', description: 'Present (true) when children can be placed inside this node.' },
+        locked: { type: 'boolean', description: "Present (true) on the fixed page-scaffold nodes, which must not be added, moved, deleted or edited — except the body node's `nodes` array, which is the page content." },
         slot: { type: 'string', description: "The parent's linkedNodes slot this node fills (e.g. left, accordion-content)." },
         text: { type: 'string', description: 'Plain-text snippet of the node text or title.' }
       },
@@ -32,8 +33,8 @@ class McpServer::Serializers::LayoutOutline
   end
 
   # One entry per node, in visual order. Full entry shape (keys with nil values are
-  # omitted, so `parent`/`canvas`/`slot`/`text` are only present when meaningful):
-  #   { id:, widget:, parent:, depth:, canvas: true, slot:, text: }
+  # omitted, so `parent`/`canvas`/`locked`/`slot`/`text` are only present when meaningful):
+  #   { id:, widget:, parent:, depth:, canvas: true, locked: true, slot:, text: }
   def entries
     ContentBuilder::Craftjs::Query.each_visual(@json).map do |id, node, depth, slot|
       entry(id, node, depth, slot)
@@ -43,15 +44,25 @@ class McpServer::Serializers::LayoutOutline
   private
 
   def entry(id, node, depth, slot)
+    widget = ContentBuilder::Craftjs::Query.resolved_name(node)
     {
       id: id,
-      widget: ContentBuilder::Craftjs::Query.resolved_name(node),
+      widget: widget,
       parent: node['parent'],
       depth: depth,
       canvas: node['isCanvas'] ? true : nil,
+      locked: locked?(widget) ? true : nil,
       slot: slot,
       text: text_snippet(node)
     }.compact
+  end
+
+  # Deliberately the widget type, and not the stored custom.locked/custom.region markers
+  # the FE writes: those markers moved when the page builder was unlocked and differ
+  # between pages saved before and after, so reading them would make the outline
+  # disagree with what update_project_layout actually enforces.
+  def locked?(widget)
+    ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS.include?(widget)
   end
 
   def text_snippet(node)

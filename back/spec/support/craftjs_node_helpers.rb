@@ -19,6 +19,19 @@ module CraftjsNodeHelpers
     }.merge(overrides.transform_keys(&:to_s))
   end
 
+  # A project page graph in its persisted shape: the canonical scaffold (as seeded by
+  # ContentBuilder::ProjectPageLayoutService) plus the given content nodes. Content nodes
+  # whose parent is the page body are listed as its children, before the seeded phases
+  # and events widgets.
+  def project_page_craftjs(content = {})
+    scaffold = ContentBuilder::ProjectPageLayoutService.new.from_description_multiloc({})
+    body_id = ContentBuilder::ProjectPageLayoutService::BODY_ID
+    body = scaffold[body_id]
+    top_level = content.select { |_id, node| node['parent'] == body_id }.keys
+    scaffold[body_id] = body.merge('nodes' => top_level + body['nodes'])
+    scaffold.merge(content)
+  end
+
   # A widget node with the full canonical key set. `widget` is the resolvedName;
   # override any canonical key by its craftjs name (e.g. `isCanvas: true`,
   # `props: { 'text' => { 'en' => '<p>Hi</p>' } }`, `linkedNodes: { 'left' => 'C1' }`).
