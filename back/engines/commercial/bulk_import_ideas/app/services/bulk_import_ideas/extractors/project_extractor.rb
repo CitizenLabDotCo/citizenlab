@@ -44,7 +44,8 @@ module BulkImportIdeas::Extractors
         {
           id: id,
           title_multiloc: multiloc(title),
-          description_multiloc: multiloc(description_html),
+          # Not a project attribute — the importer puts it on the project page layout.
+          description: multiloc(description_html),
           slug: SlugService.new.slugify(title),
           thumbnail_url: thumbnail_url,
           banner_url: banner_url,

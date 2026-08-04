@@ -59,7 +59,8 @@ RSpec.describe DecidimImporter::Importer do
       ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
     end
 
-    it 'regenerates the page for imported projects and leaves non-imported ones untouched' do
+    it 'gives an imported project without a page a default one, leaving existing pages untouched' do
+      without_page = create(:project)
       imported = create(:project)
       other = create(:project) # e.g. a pre-existing demo project, not part of the import
       imported_page = ContentBuilder::Layout.create!(
@@ -69,12 +70,13 @@ RSpec.describe DecidimImporter::Importer do
         content_buildable: other, code: 'project_page', enabled: true, craftjs_json: stale
       )
 
-      described_class.provision_project_pages!('Project' => [imported.id])
+      described_class.provision_project_pages!('Project' => [without_page.id, imported.id])
 
-      # the imported project's stale page is dropped and rebuilt (a fresh record, real craftjs)
-      rebuilt = project_page(imported)
-      expect(rebuilt.id).not_to eq(imported_page.id)
-      expect(rebuilt.craftjs_json).not_to eq(stale)
+      # the project the extractor built no page for gets the canonical default one
+      expect(project_page(without_page).craftjs_json).to include('PROJECT_PAGE_BODY')
+      # the page the extractor imported is kept as-is
+      expect(project_page(imported)).to eq(imported_page)
+      expect(imported_page.reload.craftjs_json).to eq(stale)
       # the non-imported project is left exactly as it was
       expect(project_page(other)).to eq(other_page)
       expect(other_page.reload.craftjs_json).to eq(stale)

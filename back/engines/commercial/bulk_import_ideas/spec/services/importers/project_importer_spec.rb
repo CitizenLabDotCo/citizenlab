@@ -10,7 +10,7 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       {
         title_multiloc: { 'en' => 'Test Project' },
         slug: 'test-project',
-        description_multiloc: { 'en' => 'This is a test project.' },
+        description: { 'en' => 'This is a test project.' },
         admin_publication_attributes: { publication_status: 'published' }
       }
     end
@@ -36,26 +36,32 @@ describe BulkImportIdeas::Importers::ProjectImporter do
       expect(project).to be_nil
     end
 
-    describe 'when project description contains images' do
+    describe 'when the project description contains images' do
       let(:project_data) do
         {
           title_multiloc: { 'en' => 'Test Project' },
           slug: 'test-project',
-          description_multiloc: {
+          description: {
             'en' => html_with_base64_image
           },
           admin_publication_attributes: { publication_status: 'published' }
         }
       end
 
-      it 'creates a project with description containing images and processes text images' do
+      it 'carries the description into the project page and processes its text images' do
         project = service.send(:find_or_create_project, project_data)
         expect(project.title_multiloc['en']).to eq('Test Project')
-        expect(project.description_multiloc['en']).to include('<p>Some text</p><img alt="Red dot"')
 
-        text_image = TextImage.find_by(imageable_id: project.id, imageable_type: 'Project', imageable_field: 'description_multiloc')
+        layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
+        # HTML with inline media goes on the RichTextMultiloc bridge, whose images are extracted.
+        text = layout.craftjs_json.values.find do |n|
+          n.is_a?(Hash) && n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'RichTextMultiloc'
+        end
+
+        text_image = TextImage.find_by(imageable: project, imageable_field: 'craftjs_json')
         expect(text_image).to be_present
-        expect(project.description_multiloc['en']).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+        expect(text['props']['text']['en']).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
+        expect(text['props']['text']['en']).not_to include('base64')
       end
     end
   end
@@ -180,14 +186,24 @@ describe BulkImportIdeas::Importers::ProjectImporter do
     end
   end
 
-  describe '#create_description_content_builder_layout' do
+  describe '#create_project_page_layout' do
     let(:project) { create(:project) }
 
-    it 'creates a description builder layout for the project' do
-      service.send(:create_description_content_builder_layout, project)
+    it 'creates the project page layout carrying the description' do
+      service.send(:create_project_page_layout, project, { 'en' => '<p>Imported</p>' })
 
-      expect(ContentBuilder::Layout.count).to eq(1)
-      expect(ContentBuilder::Layout.first.content_buildable).to eq(project)
+      layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
+      expect(layout).to be_present
+      expect(layout.enabled).to be(true)
+      texts = layout.craftjs_json.values.filter_map { |n| n.dig('props', 'text', 'en') if n.is_a?(Hash) }
+      expect(texts).to include('<p>Imported</p>')
+    end
+
+    it 'falls back to the default page when there is no description' do
+      service.send(:create_project_page_layout, project, nil)
+
+      layout = ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
+      expect(layout.craftjs_json).to have_key('PROJECT_PAGE_BODY')
     end
   end
 end

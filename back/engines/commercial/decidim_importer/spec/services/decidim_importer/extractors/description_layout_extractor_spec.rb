@@ -45,11 +45,22 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
     craftjs.values.select { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == name }
   end
 
-  it 'builds an enabled project_description layout referencing the project' do
+  # The imported content is injected into the canonical project page body.
+  def body_id
+    ContentBuilder::ProjectPageLayoutService::BODY_ID
+  end
+
+  # The body's imported children, i.e. everything the extractor built (the phases and
+  # events widgets that close every project page are not part of the import).
+  def body_node_ids(craftjs)
+    craftjs[body_id]['nodes'] - %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
+  end
+
+  it 'builds an enabled project_page layout referencing the project' do
     layout = extract([row]).first
 
     expect(layout.model_name).to eq('content_builder/layout')
-    expect(layout.attributes).to include('code' => 'project_description', 'enabled' => true)
+    expect(layout.attributes).to include('code' => 'project_page', 'enabled' => true)
     expect(layout.attributes['content_buildable_ref']).to be(project.attributes)
     expect(ref_map.fetch("#{process_uid}-description-layout")).to be(layout)
   end
@@ -66,7 +77,7 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
 
     craftjs = extract([row]).first.attributes['craftjs_json']
 
-    root = craftjs['ROOT']['nodes'].map { |id| craftjs[id]['type'].is_a?(Hash) ? craftjs[id]['type']['resolvedName'] : craftjs[id]['type'] }
+    root = body_node_ids(craftjs).map { |id| craftjs[id]['type'].is_a?(Hash) ? craftjs[id]['type']['resolvedName'] : craftjs[id]['type'] }
     expect(root).to eq(%w[TwoColumn FileAttachment]) # two-column main section, then the file at root
 
     two_col = nodes_named(craftjs, 'TwoColumn').first
@@ -142,7 +153,7 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
     craftjs = extract([row]).first.attributes['craftjs_json']
 
     expect(nodes_named(craftjs, 'TwoColumn')).to be_empty
-    root = craftjs['ROOT']['nodes'].map { |id| craftjs[id]['type'].is_a?(Hash) ? craftjs[id]['type']['resolvedName'] : craftjs[id]['type'] }
+    root = body_node_ids(craftjs).map { |id| craftjs[id]['type'].is_a?(Hash) ? craftjs[id]['type']['resolvedName'] : craftjs[id]['type'] }
     expect(root).to eq(%w[TextMultiloc]) # the description, full width
   end
 
@@ -177,14 +188,14 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
       expect(right_page_ids).to eq(['page-uuid-1'])
 
       # The blog page is linked at root, under an <h2> "Blog" heading preceded by a WhiteSpace.
-      root = craftjs['ROOT']['nodes'].map { |id| craftjs[id] }
+      root = body_node_ids(craftjs).map { |id| craftjs[id] }
       heading_index = root.index { |n| n.dig('props', 'text', 'fr-FR').to_s.start_with?('<h2>') }
       expect(root[heading_index]['props']['text']['fr-FR'])
         .to eq("<h2>#{I18n.t('decidim_importer.blog', locale: 'fr-FR')}</h2>")
       expect(root[heading_index - 1]['type']['resolvedName']).to eq('WhiteSpace')
 
       blog_link = nodes_named(craftjs, 'PageLink').find { |n| n['props']['pageId'] == 'blog-uuid-1' }
-      expect(blog_link['parent']).to eq('ROOT')
+      expect(blog_link['parent']).to eq(body_id)
     end
 
     it 'adds no Blog section when the project has no blog pages' do
@@ -250,15 +261,15 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
       craftjs = extract([row], attachments: attachments, attachment_collections: collections).first.attributes['craftjs_json']
 
       # The collection-less file sits at root; the collected file does not.
-      root_files = nodes_named(craftjs, 'FileAttachment').select { |n| n['parent'] == 'ROOT' }
+      root_files = nodes_named(craftjs, 'FileAttachment').select { |n| n['parent'] == BODY }
       expect(root_files.map { |n| n['props']['fileId'] }).to eq(['file-2'])
 
       # The accordion is a root child, titled with the (localized) collection name, nesting its content
       # in a linked Container canvas.
       accordion = nodes_named(craftjs, 'AccordionMultiloc').first
-      expect(accordion['parent']).to eq('ROOT')
+      expect(accordion['parent']).to eq(body_id)
       expect(accordion['props']['title']).to eq('fr-FR' => 'Rapports')
-      expect(craftjs['ROOT']['nodes']).to include(craftjs.key(accordion))
+      expect(body_node_ids(craftjs)).to include(craftjs.key(accordion))
 
       canvas = craftjs[accordion['linkedNodes']['accordion-content']]
       expect(canvas['type']['resolvedName']).to eq('Container')
@@ -279,7 +290,7 @@ RSpec.describe DecidimImporter::Extractors::DescriptionLayoutExtractor do
         attachments: attachments,
         attachment_collections: [collection('coll-5', '{"fr":"Rapports"}', 0)]).first.attributes['craftjs_json']
 
-      root = craftjs['ROOT']['nodes'].map { |id| [id, craftjs[id]] }
+      root = body_node_ids(craftjs).map { |id| [id, craftjs[id]] }
       heading_index = root.index { |_id, node| node.dig('props', 'text', 'fr-FR').to_s.start_with?('<h2>') }
       accordion_index = root.index { |_id, node| node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'AccordionMultiloc' }
 
