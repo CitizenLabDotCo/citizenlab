@@ -41,8 +41,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'everyone',
               missing_user_attributes: [],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: {},
@@ -99,8 +98,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: :provide_email,
-              phone_action_required: nil
+              action_required_for_access: :authenticate
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
@@ -117,8 +115,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: :confirm_email,
-              phone_action_required: nil
+              action_required_for_access: :confirm_email
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
@@ -135,8 +132,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
@@ -153,8 +149,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: :confirm_email,
-              phone_action_required: nil
+              action_required_for_access: :confirm_email
             },
             verification: false,
             custom_fields: {},
@@ -170,8 +165,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: {},
@@ -189,8 +183,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: :confirm_email,
-              phone_action_required: nil
+              action_required_for_access: :confirm_email
             },
             verification: false,
             custom_fields: {},
@@ -207,8 +200,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: {},
@@ -229,8 +221,7 @@ describe Permissions::UserRequirementsService do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: [],
-                email_action_required: :provide_email,
-                phone_action_required: nil
+                action_required_for_access: :authenticate
               },
               verification: false,
               custom_fields: { 'birthyear' => 'optional' },
@@ -277,8 +268,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: %i[first_name last_name password],
-              email_action_required: :provide_email,
-              phone_action_required: nil
+              action_required_for_access: :authenticate
             },
             verification: false,
             custom_fields: {
@@ -300,8 +290,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: %i[first_name password],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: {
@@ -323,8 +312,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: :confirm_email,
-              phone_action_required: nil
+              action_required_for_access: :confirm_email
             },
             verification: false,
             custom_fields: {},
@@ -340,8 +328,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: {},
@@ -361,8 +348,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: {},
@@ -380,8 +366,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: :confirm_email,
-              phone_action_required: nil
+              action_required_for_access: :confirm_email
             },
             verification: false,
             custom_fields: {},
@@ -400,8 +385,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: {},
@@ -422,8 +406,7 @@ describe Permissions::UserRequirementsService do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: [],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {},
@@ -440,8 +423,7 @@ describe Permissions::UserRequirementsService do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: [],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {},
@@ -462,8 +444,7 @@ describe Permissions::UserRequirementsService do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: [],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {},
@@ -508,8 +489,7 @@ describe Permissions::UserRequirementsService do
             authentication: {
               permitted_by: 'users',
               missing_user_attributes: [],
-              email_action_required: nil,
-              phone_action_required: nil
+              action_required_for_access: nil
             },
             verification: false,
             custom_fields: {},
@@ -615,7 +595,7 @@ describe Permissions::UserRequirementsService do
           # attributes and no email action are asked - verification is the only
           # outstanding requirement.
           expect(requirements[:authentication][:missing_user_attributes]).to eq []
-          expect(requirements[:authentication][:email_action_required]).to be_nil
+          expect(requirements[:authentication][:action_required_for_access]).to be_nil
         end
       end
 
@@ -639,7 +619,7 @@ describe Permissions::UserRequirementsService do
             verified_permission.update!(email_and_phone_requirements: 'email_only')
             user.update!(unique_code: '1234abcd', email: nil, new_email: nil, password: nil)
             requirements = service.requirements(verified_permission, user)
-            expect(requirements[:authentication][:email_action_required]).to eq :provide_new_email
+            expect(requirements[:authentication][:action_required_for_access]).to eq :provide_new_email
           end
 
           it 'removes locked custom fields if verified' do
@@ -716,67 +696,74 @@ describe Permissions::UserRequirementsService do
           requirements = service.requirements(verified_permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements[:authentication][:missing_user_attributes]).to eq []
-          expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
+          expect(requirements[:authentication][:action_required_for_access]).to eq :confirm_email
         end
       end
     end
 
-    context 'when a confirmed phone number is required' do
+    # The top-level `user` already has a confirmed email, so the email half of
+    # 'both_email_and_phone' is satisfied and the phone half is what surfaces.
+    context 'when both a confirmed email and a confirmed phone number are required' do
       before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
-      # Only a confirmed phone number is required (no confirmed email), so the
-      # phone requirement is expressed entirely through :phone_action_required
-      # and no built-in attributes or email action are asked.
       let(:permission) do
         create(
           :permission,
           permitted_by: 'users',
           global_custom_fields: false,
-          email_and_phone_requirements: 'phone_only',
+          email_and_phone_requirements: 'both_email_and_phone',
           require_name: false,
           require_password: false
         )
       end
 
-      it 'requires a phone number to be provided when there is no user' do
+      it 'requires authentication when there is no user' do
         requirements = service.requirements(permission, nil)
         expect(service.permitted?(requirements)).to be false
         expect(requirements[:authentication][:missing_user_attributes]).to eq []
-        expect(requirements[:authentication][:phone_action_required]).to eq :provide_new_phone
+        expect(requirements[:authentication][:action_required_for_access]).to eq :authenticate
       end
 
       it 'requires a phone number to be provided for a user without a phone number' do
         user.update!(phone: nil, phone_confirmed_at: nil)
         requirements = service.requirements(permission, user)
         expect(service.permitted?(requirements)).to be false
-        expect(requirements[:authentication][:phone_action_required]).to eq :provide_new_phone
+        expect(requirements[:authentication][:action_required_for_access]).to eq :provide_new_phone
       end
 
       it 'requires confirmation of a pending new_phone' do
         user.update!(phone: nil, new_phone: '+3212345678', phone_confirmed_at: nil)
         requirements = service.requirements(permission, user)
         expect(service.permitted?(requirements)).to be false
-        expect(requirements[:authentication][:phone_action_required]).to eq :confirm_new_phone
+        expect(requirements[:authentication][:action_required_for_access]).to eq :confirm_new_phone
       end
 
-      it 'requires re-confirmation of an existing but unconfirmed phone number' do
+      it 'requires confirmation of an existing but unconfirmed phone number' do
         user.update!(phone: '+3212345678', phone_confirmed_at: nil)
         requirements = service.requirements(permission, user)
         expect(service.permitted?(requirements)).to be false
-        expect(requirements[:authentication][:phone_action_required]).to eq :confirm_phone
+        expect(requirements[:authentication][:action_required_for_access]).to eq :confirm_phone
       end
 
-      it 'is satisfied for a user with a confirmed phone number' do
+      it 'is satisfied for a user with a confirmed email and a confirmed phone number' do
         user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
         requirements = service.requirements(permission, user)
         expect(service.permitted?(requirements)).to be true
-        expect(requirements[:authentication][:phone_action_required]).to be_nil
+        expect(requirements[:authentication][:action_required_for_access]).to be_nil
+      end
+
+      it 'asks about the email before the phone number when neither is satisfied' do
+        unconfirmed = create(:unconfirmed_user)
+        unconfirmed.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
+        requirements = service.requirements(permission, unconfirmed)
+        expect(requirements[:authentication][:action_required_for_access]).to eq :confirm_email
       end
 
       it 'does not require a phone number when the phone channel is not in play' do
         permission.update!(email_and_phone_requirements: 'email_only')
+        user.update!(phone: nil, phone_confirmed_at: nil)
         requirements = service.requirements(permission, user)
-        expect(requirements[:authentication][:phone_action_required]).to be_nil
+        expect(requirements[:authentication][:action_required_for_access]).to be_nil
       end
     end
 
@@ -799,7 +786,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 10.years do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be true
-            expect(requirements[:authentication][:email_action_required]).to be_nil
+            expect(requirements[:authentication][:action_required_for_access]).to be_nil
           end
         end
       end
@@ -810,7 +797,7 @@ describe Permissions::UserRequirementsService do
         it 'does not require re-confirmation before 30 minutes' do
           travel_to Time.now + 15.minutes do
             requirements = service.requirements(permission, user)
-            expect(requirements[:authentication][:email_action_required]).to be_nil
+            expect(requirements[:authentication][:action_required_for_access]).to be_nil
           end
         end
 
@@ -819,7 +806,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 30.minutes + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
+            expect(requirements[:authentication][:action_required_for_access]).to eq :reconfirm_email
           end
         end
       end
@@ -830,7 +817,7 @@ describe Permissions::UserRequirementsService do
         it 'does not require re-confirmation before the expiry window' do
           travel_to Time.now + 29.days do
             requirements = service.requirements(permission, user)
-            expect(requirements[:authentication][:email_action_required]).to be_nil
+            expect(requirements[:authentication][:action_required_for_access]).to be_nil
           end
         end
 
@@ -839,7 +826,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 30.days + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
+            expect(requirements[:authentication][:action_required_for_access]).to eq :reconfirm_email
           end
         end
       end
@@ -858,7 +845,7 @@ describe Permissions::UserRequirementsService do
           :permission,
           permitted_by: 'users',
           global_custom_fields: false,
-          email_and_phone_requirements: 'phone_only',
+          email_and_phone_requirements: 'both_email_and_phone',
           require_name: false,
           require_password: false
         )
@@ -869,7 +856,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 10.years do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be true
-            expect(requirements[:authentication][:phone_action_required]).to be_nil
+            expect(requirements[:authentication][:action_required_for_access]).to be_nil
           end
         end
       end
@@ -880,7 +867,7 @@ describe Permissions::UserRequirementsService do
         it 'does not require re-confirmation before 30 minutes' do
           travel_to Time.now + 15.minutes do
             requirements = service.requirements(permission, user)
-            expect(requirements[:authentication][:phone_action_required]).to be_nil
+            expect(requirements[:authentication][:action_required_for_access]).to be_nil
           end
         end
 
@@ -888,7 +875,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 30.minutes + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
+            expect(requirements[:authentication][:action_required_for_access]).to eq :reconfirm_phone
           end
         end
       end
@@ -899,7 +886,7 @@ describe Permissions::UserRequirementsService do
         it 'does not require re-confirmation before the expiry window' do
           travel_to Time.now + 29.days do
             requirements = service.requirements(permission, user)
-            expect(requirements[:authentication][:phone_action_required]).to be_nil
+            expect(requirements[:authentication][:action_required_for_access]).to be_nil
           end
         end
 
@@ -907,17 +894,15 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 30.days + 1.second do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
+            expect(requirements[:authentication][:action_required_for_access]).to eq :reconfirm_phone
           end
         end
       end
     end
 
-    # 'either_email_or_phone' is the value the two old booleans could not
-    # express: confirming *one* of the two channels is enough. The service
-    # therefore never asks about both at once - it asks about the channel the
-    # user already started, falling back to email - and stops asking entirely as
-    # soon as one of them is satisfied.
+    # Confirming *one* of the two channels is enough, so the service never asks
+    # about both: it asks about the channel the user already started, falling
+    # back to email, and stops asking as soon as one of them is satisfied.
     context 'when either a confirmed email or a confirmed phone number is required' do
       before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
@@ -933,14 +918,12 @@ describe Permissions::UserRequirementsService do
       end
 
       # The demographic questions are not what these specs are about, so every
-      # user here answers them - leaving the contact details as the only thing
-      # that can still block participation.
+      # user here answers them.
       let(:answered_custom_fields) do
         { 'gender' => 'female', 'birthyear' => 1975, 'extra_required_field' => false, 'extra_optional_field' => 29 }
       end
 
-      # A user with nothing to be reached on: no email (nor a pending new_email),
-      # no phone. Identified by a unique_code, like an SSO sign-up that returned
+      # A user with nothing to be reached on, like an SSO sign-up that returned
       # no email address.
       let(:blank_user) do
         create(:user, custom_field_values: answered_custom_fields).tap do |u|
@@ -949,18 +932,16 @@ describe Permissions::UserRequirementsService do
       end
 
       context 'when neither channel is satisfied' do
-        it 'asks a visitor for an email address only' do
+        it 'asks a visitor to authenticate' do
           requirements = service.requirements(permission, nil)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:email_action_required]).to eq :provide_email
-          expect(requirements[:authentication][:phone_action_required]).to be_nil
+          expect(requirements[:authentication][:action_required_for_access]).to eq :authenticate
         end
 
-        it 'asks a user with nothing for an email address only' do
+        it 'asks a user with nothing for an email address' do
           requirements = service.requirements(permission, blank_user)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:email_action_required]).to eq :provide_new_email
-          expect(requirements[:authentication][:phone_action_required]).to be_nil
+          expect(requirements[:authentication][:action_required_for_access]).to eq :provide_new_email
         end
 
         it 'asks to confirm an unconfirmed email rather than to provide a phone number' do
@@ -968,8 +949,7 @@ describe Permissions::UserRequirementsService do
           unconfirmed.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
           requirements = service.requirements(permission, unconfirmed)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
-          expect(requirements[:authentication][:phone_action_required]).to be_nil
+          expect(requirements[:authentication][:action_required_for_access]).to eq :confirm_email
         end
 
         # The tie-break that matters: a user halfway through the phone flow must
@@ -978,24 +958,20 @@ describe Permissions::UserRequirementsService do
           blank_user.update!(new_phone: '+3212345678')
           requirements = service.requirements(permission, blank_user)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:email_action_required]).to be_nil
-          expect(requirements[:authentication][:phone_action_required]).to eq :confirm_new_phone
+          expect(requirements[:authentication][:action_required_for_access]).to eq :confirm_new_phone
         end
 
         it 'asks to confirm an existing but unconfirmed phone number rather than to provide an email address' do
           blank_user.update!(phone: '+3212345678', phone_confirmed_at: nil)
           requirements = service.requirements(permission, blank_user)
-          expect(requirements[:authentication][:email_action_required]).to be_nil
-          expect(requirements[:authentication][:phone_action_required]).to eq :confirm_phone
+          expect(requirements[:authentication][:action_required_for_access]).to eq :confirm_phone
         end
 
-        # Both channels started: email wins the tie, and only one is ever asked.
         it 'asks about email when both channels are awaiting confirmation' do
           unconfirmed = create(:unconfirmed_user, custom_field_values: answered_custom_fields)
           unconfirmed.update!(new_phone: '+3212345678', phone: nil, phone_confirmed_at: nil)
           requirements = service.requirements(permission, unconfirmed)
-          expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
-          expect(requirements[:authentication][:phone_action_required]).to be_nil
+          expect(requirements[:authentication][:action_required_for_access]).to eq :confirm_email
         end
       end
 
@@ -1004,16 +980,14 @@ describe Permissions::UserRequirementsService do
           user.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
-          expect(requirements[:authentication][:email_action_required]).to be_nil
-          expect(requirements[:authentication][:phone_action_required]).to be_nil
+          expect(requirements[:authentication][:action_required_for_access]).to be_nil
         end
 
         it 'asks nothing of a user with a confirmed phone number and no email' do
           blank_user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
           requirements = service.requirements(permission, blank_user)
           expect(service.permitted?(requirements)).to be true
-          expect(requirements[:authentication][:email_action_required]).to be_nil
-          expect(requirements[:authentication][:phone_action_required]).to be_nil
+          expect(requirements[:authentication][:action_required_for_access]).to be_nil
         end
 
         it 'asks nothing of a user with a confirmed phone number and an unconfirmed email' do
@@ -1021,8 +995,7 @@ describe Permissions::UserRequirementsService do
           unconfirmed.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
           requirements = service.requirements(permission, unconfirmed)
           expect(service.permitted?(requirements)).to be true
-          expect(requirements[:authentication][:email_action_required]).to be_nil
-          expect(requirements[:authentication][:phone_action_required]).to be_nil
+          expect(requirements[:authentication][:action_required_for_access]).to be_nil
         end
       end
 
@@ -1036,8 +1009,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 6.days do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be true
-            expect(requirements[:authentication][:email_action_required]).to be_nil
-            expect(requirements[:authentication][:phone_action_required]).to be_nil
+            expect(requirements[:authentication][:action_required_for_access]).to be_nil
           end
         end
 
@@ -1045,8 +1017,7 @@ describe Permissions::UserRequirementsService do
           travel_to Time.now + 31.days do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
-            expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
-            expect(requirements[:authentication][:phone_action_required]).to be_nil
+            expect(requirements[:authentication][:action_required_for_access]).to eq :reconfirm_email
           end
         end
       end
@@ -1059,8 +1030,7 @@ describe Permissions::UserRequirementsService do
           permission.update!(email_and_phone_requirements: 'both_email_and_phone')
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:email_action_required]).to be_nil
-          expect(requirements[:authentication][:phone_action_required]).to eq :provide_new_phone
+          expect(requirements[:authentication][:action_required_for_access]).to eq :provide_new_phone
         end
       end
     end

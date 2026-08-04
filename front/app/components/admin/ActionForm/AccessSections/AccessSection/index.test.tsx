@@ -118,7 +118,6 @@ describe('<AccessSection />', () => {
     it.each([
       ['neither', 'Nothing confirmed'],
       ['email_only', 'Email address'],
-      ['phone_only', 'Phone number'],
       ['both_email_and_phone', 'Email and phone number'],
       ['either_email_or_phone', 'Email or phone number'],
     ] as const)('summarises %s on the trigger', (requirement, title) => {
@@ -178,14 +177,19 @@ describe('<AccessSection />', () => {
 
     it('disables the email options when password login is off', async () => {
       mockPasswordLoginEnabled = false;
-      renderSection({ email_and_phone_requirements: 'phone_only' });
+      renderSection({
+        email_and_phone_requirements: 'neither',
+        require_verification: true,
+      });
       await openContactModal();
 
       expect(screen.getByTestId('contact-option-email_only')).toBeDisabled();
       expect(
+        screen.getByTestId('contact-option-both_email_and_phone')
+      ).toBeDisabled();
+      expect(
         screen.getByTestId('contact-option-either_email_or_phone')
       ).toBeDisabled();
-      expect(screen.getByTestId('contact-option-phone_only')).toBeEnabled();
     });
 
     it('disables the phone options when SMS is off', async () => {
@@ -193,24 +197,28 @@ describe('<AccessSection />', () => {
       renderSection();
       await openContactModal();
 
-      expect(screen.getByTestId('contact-option-phone_only')).toBeDisabled();
       expect(
         screen.getByTestId('contact-option-both_email_and_phone')
+      ).toBeDisabled();
+      expect(
+        screen.getByTestId('contact-option-either_email_or_phone')
       ).toBeDisabled();
       expect(screen.getByTestId('contact-option-email_only')).toBeEnabled();
     });
 
     // Mirrors the backend's authentication_method_required validation: the
     // account must be backed by something.
-    it('only offers "nothing confirmed" when verification is required', async () => {
+    it('does not offer "nothing confirmed" when verification is not required', async () => {
       renderSection({ require_verification: false });
       await openContactModal();
+
       expect(screen.getByTestId('contact-option-neither')).toBeDisabled();
+    });
 
-      await userEvent.click(screen.getByText('Done'));
-
+    it('offers "nothing confirmed" when verification is required', async () => {
       renderSection({ require_verification: true });
       await openContactModal();
+
       expect(screen.getByTestId('contact-option-neither')).toBeEnabled();
     });
 

@@ -185,7 +185,7 @@ describe('Sign up - SSO and SMS (2FA)', () => {
       projectTitle,
       permissionBody: {
         permitted_by: 'users',
-        email_and_phone_requirements: 'phone_only',
+        email_and_phone_requirements: 'both_email_and_phone',
         require_verification: true,
       },
     }).then(({ projectId: id }) => {

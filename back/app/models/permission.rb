@@ -48,17 +48,13 @@ class Permission < ApplicationRecord
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
   # Which contact details a participant has to confirm before they can act.
-  # 'either_email_or_phone' is satisfied by whichever of the two they have, and
-  # is the reason this is one enum rather than two booleans.
+  # 'either_email_or_phone' is satisfied by whichever of the two they have.
   EMAIL_AND_PHONE_REQUIREMENTS = %w[
     neither
     email_only
-    phone_only
     both_email_and_phone
     either_email_or_phone
   ].freeze
-  EMAIL_REQUIREMENTS = %w[email_only both_email_and_phone either_email_or_phone].freeze
-  PHONE_REQUIREMENTS = %w[phone_only both_email_and_phone either_email_or_phone].freeze
   # 'everyone' is only meaningful for the submission action of participation
   # methods that support it (see ParticipationMethod::Base#supports_permitted_by_everyone?).
   EVERYONE_PERMITTED_ACTIONS = %w[posting_idea taking_survey].freeze
@@ -120,20 +116,6 @@ class Permission < ApplicationRecord
     sql
   end
 
-  # Whether a channel plays a part in the requirement at all. Both are true for
-  # 'either_email_or_phone', where each on its own is enough to satisfy it.
-  def requires_email?
-    EMAIL_REQUIREMENTS.include?(email_and_phone_requirements)
-  end
-
-  def requires_phone?
-    PHONE_REQUIREMENTS.include?(email_and_phone_requirements)
-  end
-
-  def either_email_or_phone?
-    email_and_phone_requirements == 'either_email_or_phone'
-  end
-
   def verification_enabled?
     # Verification can be enabled by the require_verification attribute OR by a verification group
     return true if require_verification
@@ -179,10 +161,8 @@ class Permission < ApplicationRecord
   def set_permitted_by_and_global_custom_fields
     if permitted_by.nil?
       self.permitted_by = 'users'
-      # Following used to default to the 'everyone_confirmed_email' permitted_by.
-      # That value no longer exists, so we reproduce the same effect by dropping
-      # the name/password requirements; the column default of the contact
-      # requirement ('email_only') already asks for a confirmed email.
+      # Following used to default to the 'everyone_confirmed_email' permitted_by:
+      # a confirmed email (the column default) and nothing else.
       if action == 'following'
         self.require_name = false
         self.require_password = false
@@ -202,14 +182,12 @@ class Permission < ApplicationRecord
     )
   end
 
-  # A channel can only be part of the requirement when the platform can actually
-  # deliver a confirmation code over it. Only checked when the requirement
-  # itself changes, so an existing permission does not become invalid when a
-  # feature is later turned off.
+  # Only checked when the requirement itself changes, so an existing permission
+  # does not become invalid when a feature is later turned off.
   def validate_email_and_phone_requirements_available
     return unless email_and_phone_requirements_changed?
 
-    if requires_email? && !password_login_signup_enabled?
+    if email_and_phone_requirements != 'neither' && !password_login_signup_enabled?
       errors.add(
         :email_and_phone_requirements,
         :email_requirement_not_allowed,
@@ -217,7 +195,8 @@ class Permission < ApplicationRecord
       )
     end
 
-    return unless requires_phone? && !AppConfiguration.instance.feature_activated?('sms')
+    return unless %w[both_email_and_phone either_email_or_phone].include?(email_and_phone_requirements)
+    return if AppConfiguration.instance.feature_activated?('sms')
 
     errors.add(
       :email_and_phone_requirements,
@@ -260,7 +239,7 @@ class Permission < ApplicationRecord
 
   def validate_confirmed_email_expiry
     return if confirmed_email_expiry.nil?
-    return if requires_email? || !confirmed_email_expiry_changed?
+    return if email_and_phone_requirements != 'neither' || !confirmed_email_expiry_changed?
 
     errors.add(
       :confirmed_email_expiry,
@@ -271,7 +250,7 @@ class Permission < ApplicationRecord
 
   def validate_confirmed_phone_number_expiry
     return if confirmed_phone_number_expiry.nil?
-    return if requires_phone? || !confirmed_phone_number_expiry_changed?
+    return if %w[both_email_and_phone either_email_or_phone].include?(email_and_phone_requirements) || !confirmed_phone_number_expiry_changed?
 
     errors.add(
       :confirmed_phone_number_expiry,

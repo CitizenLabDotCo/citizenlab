@@ -189,11 +189,6 @@ RSpec.describe Permission do
       context 'when the sms feature is enabled' do
         before { SettingsService.new.activate_feature!('sms', settings: sms_settings) }
 
-        it 'can be required on its own' do
-          permission = create(:permission, :by_users, email_and_phone_requirements: 'phone_only')
-          expect(permission.reload.email_and_phone_requirements).to eq 'phone_only'
-        end
-
         it 'can be required alongside email' do
           permission = create(:permission, :by_users, email_and_phone_requirements: 'both_email_and_phone')
           expect(permission.reload.email_and_phone_requirements).to eq 'both_email_and_phone'
@@ -201,14 +196,10 @@ RSpec.describe Permission do
       end
 
       context 'when the sms feature is not enabled' do
-        it 'cannot be required on its own' do
-          permission = build(:permission, :by_users, email_and_phone_requirements: 'phone_only')
+        it 'cannot be required alongside email' do
+          permission = build(:permission, :by_users, email_and_phone_requirements: 'both_email_and_phone')
           expect(permission).not_to be_valid
           expect(permission.errors.details[:email_and_phone_requirements]).to include(error: :phone_requirement_not_allowed)
-        end
-
-        it 'cannot be required alongside email' do
-          expect { create(:permission, :by_users, email_and_phone_requirements: 'both_email_and_phone') }.to raise_error(ActiveRecord::RecordInvalid)
         end
       end
     end
@@ -232,28 +223,6 @@ RSpec.describe Permission do
         permission = build(:permission, :by_users, email_and_phone_requirements: 'either_email_or_phone')
         expect(permission).not_to be_valid
         expect(permission.errors.details[:email_and_phone_requirements]).to include(error: :email_requirement_not_allowed)
-      end
-    end
-
-    describe '#requires_email? / #requires_phone?' do
-      it 'reports which channels are in play' do
-        expectations = {
-          'neither' => [false, false],
-          'email_only' => [true, false],
-          'phone_only' => [false, true],
-          'both_email_and_phone' => [true, true],
-          'either_email_or_phone' => [true, true]
-        }
-
-        expectations.each do |value, (email, phone)|
-          permission = build(:permission, email_and_phone_requirements: value)
-          expect([permission.requires_email?, permission.requires_phone?]).to eq([email, phone]), "expected #{value} to be [#{email}, #{phone}]"
-        end
-      end
-
-      it 'only reports either_email_or_phone? for that value' do
-        expect(build(:permission, email_and_phone_requirements: 'either_email_or_phone').either_email_or_phone?).to be true
-        expect(build(:permission, email_and_phone_requirements: 'both_email_and_phone').either_email_or_phone?).to be false
       end
     end
   end
@@ -290,11 +259,6 @@ RSpec.describe Permission do
     context 'when the sms feature is enabled' do
       before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
-      it 'is valid when only a confirmed phone number is required' do
-        permission = build(:permission, :by_users, email_and_phone_requirements: 'phone_only', require_verification: false)
-        expect(permission).to be_valid
-      end
-
       it 'is valid when either channel will do' do
         permission = build(:permission, :by_users, email_and_phone_requirements: 'either_email_or_phone', require_verification: false)
         expect(permission).to be_valid
@@ -319,17 +283,20 @@ RSpec.describe Permission do
       expect(permission.confirmed_email_expiry).to eq(1)
     end
 
-    context 'when the sms feature is enabled' do
-      before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+    context 'when a verification method is enabled' do
+      before do
+        AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+        AppConfiguration.instance.save!
+      end
 
       it 'does not cause a problem if set and the email channel is later dropped' do
         permission = create(:permission, :by_users, email_and_phone_requirements: 'email_only', confirmed_email_expiry: 1)
-        permission.update!(email_and_phone_requirements: 'phone_only')
+        permission.update!(email_and_phone_requirements: 'neither', require_verification: true)
         expect(permission.confirmed_email_expiry).to eq(1)
       end
 
-      it 'cannot be set when a confirmed email is not required' do
-        expect { create(:permission, :by_users, email_and_phone_requirements: 'phone_only', confirmed_email_expiry: 1) }.to raise_error(ActiveRecord::RecordInvalid)
+      it 'cannot be set when no contact details are required' do
+        expect { create(:permission, :by_users, email_and_phone_requirements: 'neither', require_verification: true, confirmed_email_expiry: 1) }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
   end
@@ -339,7 +306,7 @@ RSpec.describe Permission do
       before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
       it 'can be set when a confirmed phone number is required' do
-        permission = create(:permission, :by_users, email_and_phone_requirements: 'phone_only', confirmed_phone_number_expiry: 1)
+        permission = create(:permission, :by_users, email_and_phone_requirements: 'both_email_and_phone', confirmed_phone_number_expiry: 1)
         expect(permission.confirmed_phone_number_expiry).to eq(1)
       end
 
@@ -349,7 +316,7 @@ RSpec.describe Permission do
       end
 
       it 'does not cause a problem if set and the phone channel is later dropped' do
-        permission = create(:permission, :by_users, email_and_phone_requirements: 'phone_only', confirmed_phone_number_expiry: 1)
+        permission = create(:permission, :by_users, email_and_phone_requirements: 'both_email_and_phone', confirmed_phone_number_expiry: 1)
         permission.update!(email_and_phone_requirements: 'email_only')
         expect(permission.confirmed_phone_number_expiry).to eq(1)
       end

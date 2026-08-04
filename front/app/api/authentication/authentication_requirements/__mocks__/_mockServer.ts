@@ -14,8 +14,7 @@ export const visitorResponse: AuthenticationRequirementsResponse = {
         authentication: {
           permitted_by: 'users',
           missing_user_attributes: ['first_name', 'last_name', 'password'],
-          email_action_required: 'provide_email',
-          phone_action_required: null,
+          action_required_for_access: 'authenticate',
         },
         verification: false,
         custom_fields: {},
@@ -36,8 +35,7 @@ export const phaseResponse: AuthenticationRequirementsResponse = {
         authentication: {
           permitted_by: 'users',
           missing_user_attributes: [],
-          email_action_required: 'confirm_email',
-          phone_action_required: null,
+          action_required_for_access: 'confirm_email',
         },
         verification: false,
         custom_fields: {},
@@ -58,8 +56,7 @@ export const ideaResponse: AuthenticationRequirementsResponse = {
         authentication: {
           permitted_by: 'users',
           missing_user_attributes: [],
-          email_action_required: null,
-          phone_action_required: null,
+          action_required_for_access: null,
         },
         verification: false,
         custom_fields: {},

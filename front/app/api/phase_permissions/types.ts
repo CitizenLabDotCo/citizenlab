@@ -20,12 +20,10 @@ export type IPhasePermissionAction =
 export type UserDataCollection = 'all_data' | 'demographics_only' | 'anonymous';
 
 // Which contact details a participant has to confirm before they can act.
-// 'either_email_or_phone' is satisfied by whichever of the two they have - the
-// reason this is one enum rather than two independent booleans.
+// 'either_email_or_phone' is satisfied by whichever of the two they have.
 export type EmailAndPhoneRequirements =
   | 'neither'
   | 'email_only'
-  | 'phone_only'
   | 'both_email_and_phone'
   | 'either_email_or_phone';
 

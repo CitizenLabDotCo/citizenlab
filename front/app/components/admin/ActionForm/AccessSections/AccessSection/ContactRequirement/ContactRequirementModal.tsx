@@ -28,23 +28,15 @@ import { CONTACT_OPTIONS, ContactOption, unavailableReason } from './constants';
 import IconCluster from './IconCluster';
 import messages from './messages';
 
-// Two per row, so the five options fit without the modal scrolling. "Either
-// one" is last and odd, so it takes the full width rather than sitting next to
-// a gap — which also gives the new capability the emphasis it deserves.
+// Two per row, so the options fit without the modal scrolling.
 const OptionGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   align-items: start;
-
-  & > :last-child {
-    grid-column: 1 / -1;
-  }
 `;
 
-// A card is a button, so hover/focus need real CSS — Box's inline styles can't
-// express them.
-const OptionCard = styled.button<{ selected: boolean; disabled: boolean }>`
+const OptionCard = styled.button<{ $selected: boolean; disabled: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -53,17 +45,17 @@ const OptionCard = styled.button<{ selected: boolean; disabled: boolean }>`
   padding: 12px;
   text-align: left;
   border-radius: 8px;
-  background: ${({ selected, disabled }) =>
-    disabled ? colors.grey50 : selected ? colors.teal50 : colors.white};
+  background: ${({ $selected, disabled }) =>
+    disabled ? colors.grey50 : $selected ? colors.teal50 : colors.white};
   border: 1px solid
-    ${({ selected, disabled }) =>
+    ${({ $selected, disabled }) =>
       disabled
         ? colors.borderLight
-        : selected
+        : $selected
         ? colors.teal400
         : colors.borderLight};
-  box-shadow: ${({ selected }) =>
-    selected ? `0 0 0 1px ${colors.teal400}` : 'none'};
+  box-shadow: ${({ $selected }) =>
+    $selected ? `0 0 0 1px ${colors.teal400}` : 'none'};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
   transition: border-color 120ms ease, background 120ms ease,
@@ -79,7 +71,6 @@ const OptionCard = styled.button<{ selected: boolean; disabled: boolean }>`
   }
 `;
 
-// The check on the right: a filled tick when picked, an empty ring otherwise.
 const SelectionMark = ({ selected }: { selected: boolean }) =>
   selected ? (
     <Icon
@@ -126,9 +117,8 @@ const ContactRequirementModal = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  // Rendered inside the selected card, so the recency of a channel sits with
-  // the choice that puts it in play. Stops click/keyboard events from reaching
-  // the card, which would re-select the option the control belongs to.
+  // Stops click/keyboard events from reaching the card, which would re-select
+  // the option the control belongs to.
   const renderRecency = (option: ContactOption) => {
     const channels = CHANNELS_IN_PLAY[option.key];
     if (channels.length === 0) return null;
@@ -200,7 +190,7 @@ const ContactRequirementModal = ({
                 key={option.key}
                 type="button"
                 data-testid={`contact-option-${option.key}`}
-                selected={selected}
+                $selected={selected}
                 disabled={disabled}
                 onClick={() => {
                   if (disabled) return;

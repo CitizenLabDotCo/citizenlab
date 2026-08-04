@@ -67,20 +67,6 @@ export default defineMessages({
       'Participants confirm an email address with a code. The most common choice.',
   },
 
-  phoneTitle: {
-    id: `${scope}.phoneTitle`,
-    defaultMessage: 'Phone number',
-  },
-  phoneSummary: {
-    id: `${scope}.phoneSummary`,
-    defaultMessage: 'Confirmed by SMS',
-  },
-  phoneDescription: {
-    id: `${scope}.phoneDescription`,
-    defaultMessage:
-      'Participants confirm a phone number by SMS. Harder to duplicate than an email address.',
-  },
-
   bothTitle: {
     id: `${scope}.bothTitle`,
     defaultMessage: 'Email and phone number',

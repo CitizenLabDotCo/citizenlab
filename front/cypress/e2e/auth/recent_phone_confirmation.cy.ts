@@ -3,7 +3,7 @@ import { randomString } from '../../support/commands';
 import { updatePermission } from '../../support/permitted_by_utils';
 import { createNativeSurveyProjectWithPermission } from './utils';
 
-describe('Sign up - phone only', () => {
+describe('Sign up - email and phone', () => {
   let projectId = '';
   let phaseId = '';
   const projectTitle = randomString();
@@ -13,7 +13,7 @@ describe('Sign up - phone only', () => {
       projectTitle,
       permissionBody: {
         permitted_by: 'users',
-        email_and_phone_requirements: 'phone_only',
+        email_and_phone_requirements: 'both_email_and_phone',
         confirmed_phone_number_expiry: 30,
       },
     }).then(({ projectId: id, phaseId: pid }) => {

@@ -97,7 +97,7 @@ export const missingDataFlow = (
       },
     },
 
-    // The user has a pending new_email (email_action_required is confirm_new_email)
+    // The user has a pending new_email (the required action is confirm_new_email)
     // but wants to enter a different one.
     // We cannot handle this by going back to missing-data:built-in because
     // the email is already marked by requirements API as provided,

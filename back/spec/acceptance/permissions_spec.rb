@@ -189,17 +189,17 @@ resource 'Permissions' do
         end
       end
 
-      context 'phone_only' do
+      context 'both_email_and_phone' do
         before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
         let(:permitted_by) { 'users' }
-        let(:email_and_phone_requirements) { 'phone_only' }
+        let(:email_and_phone_requirements) { 'both_email_and_phone' }
         let(:confirmed_phone_number_expiry) { 30 }
 
         example_request 'Update a permission to require a confirmed phone number' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
-          expect(response_data.dig(:attributes, :email_and_phone_requirements)).to eq 'phone_only'
+          expect(response_data.dig(:attributes, :email_and_phone_requirements)).to eq 'both_email_and_phone'
           expect(response_data.dig(:attributes, :confirmed_phone_number_expiry)).to eq confirmed_phone_number_expiry
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
@@ -315,8 +315,7 @@ resource 'Permissions' do
               authentication: {
                 permitted_by: 'everyone',
                 missing_user_attributes: [],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {},
@@ -361,8 +360,7 @@ resource 'Permissions' do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: [],
-                email_action_required: 'confirm_email',
-                phone_action_required: nil
+                action_required_for_access: 'confirm_email'
               },
               verification: false,
               custom_fields: { birthyear: 'required', extra_field: 'required' },
@@ -404,8 +402,7 @@ resource 'Permissions' do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: %w[last_name password],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {
@@ -442,8 +439,7 @@ resource 'Permissions' do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: [],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {},

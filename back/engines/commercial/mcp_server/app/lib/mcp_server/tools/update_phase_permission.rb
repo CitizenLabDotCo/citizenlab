@@ -58,10 +58,10 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
             when permitted_by is "users". Defaults to "email_only".
             - neither: no contact details are confirmed. Only allowed when require_verification is true.
             - email_only: an email address. Requires the password_login feature (with signup) to be enabled.
-            - phone_only: a phone number. Requires the sms feature to be enabled.
             - both_email_and_phone: both, one after the other.
             - either_email_or_phone: whichever the participant has - confirming one is enough.
-              Requires both password_login (with signup) and sms to be enabled.
+            Everything except "neither" requires password_login (with signup); the values
+            involving a phone number additionally require the sms feature.
           DESC
         },
         confirmed_email_expiry: {

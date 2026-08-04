@@ -11,12 +11,11 @@
 #   email  phone  ->  email_and_phone_requirements
 #   false  false      neither
 #   true   false      email_only
-#   false  true       phone_only
 #   true   true       both_email_and_phone
-#                     either_email_or_phone  (new; no boolean equivalent)
-#
-# The `confirmed_email_expiry` / `confirmed_phone_number_expiry` columns are
-# unaffected: they still say how recently each channel must have been confirmed.
+#   false  true       either_email_or_phone
+#                     (there is no phone-only value: the sign-up flow always
+#                      offers email. No such permission should exist anyway,
+#                      since the sms feature is still disabled everywhere.)
 class AddEmailAndPhoneRequirementsToPermissions < ActiveRecord::Migration[7.2]
   def up
     add_column :permissions, :email_and_phone_requirements, :string, null: false, default: 'email_only'
@@ -29,7 +28,7 @@ class AddEmailAndPhoneRequirementsToPermissions < ActiveRecord::Migration[7.2]
         SET email_and_phone_requirements = CASE
           WHEN require_confirmed_email AND require_confirmed_phone_number THEN 'both_email_and_phone'
           WHEN require_confirmed_email THEN 'email_only'
-          WHEN require_confirmed_phone_number THEN 'phone_only'
+          WHEN require_confirmed_phone_number THEN 'either_email_or_phone'
           ELSE 'neither'
         END;
       SQL
@@ -52,7 +51,7 @@ class AddEmailAndPhoneRequirementsToPermissions < ActiveRecord::Migration[7.2]
         SET require_confirmed_email = email_and_phone_requirements IN
               ('email_only', 'both_email_and_phone', 'either_email_or_phone'),
             require_confirmed_phone_number = email_and_phone_requirements IN
-              ('phone_only', 'both_email_and_phone', 'either_email_or_phone');
+              ('both_email_and_phone', 'either_email_or_phone');
       SQL
 
       remove_column :permissions, :email_and_phone_requirements

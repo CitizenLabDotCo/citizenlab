@@ -67,15 +67,17 @@ RSpec.describe AddEmailAndPhoneRequirementsToPermissions do
     it 'maps every combination of the two booleans' do
       neither = insert_permission(email: false, phone: false)
       email_only = insert_permission(email: true, phone: false)
-      phone_only = insert_permission(email: false, phone: true)
+      phone_without_email = insert_permission(email: false, phone: true)
       both = insert_permission(email: true, phone: true)
 
       migration.migrate(:up)
 
       expect(requirements_of(neither)).to eq('neither')
       expect(requirements_of(email_only)).to eq('email_only')
-      expect(requirements_of(phone_only)).to eq('phone_only')
       expect(requirements_of(both)).to eq('both_email_and_phone')
+      # There is no phone-only value. No such permission should exist anyway,
+      # since the sms feature is still disabled everywhere.
+      expect(requirements_of(phone_without_email)).to eq('either_email_or_phone')
     end
 
     it 'defaults new rows to email_only' do
@@ -112,7 +114,6 @@ RSpec.describe AddEmailAndPhoneRequirementsToPermissions do
       migration.migrate(:up)
       neither = insert_migrated_permission('neither')
       email_only = insert_migrated_permission('email_only')
-      phone_only = insert_migrated_permission('phone_only')
       both = insert_migrated_permission('both_email_and_phone')
 
       migration.migrate(:down)
@@ -120,7 +121,6 @@ RSpec.describe AddEmailAndPhoneRequirementsToPermissions do
       expect(connection.column_exists?(:permissions, :email_and_phone_requirements)).to be(false)
       expect(booleans_of(neither)).to eq([false, false])
       expect(booleans_of(email_only)).to eq([true, false])
-      expect(booleans_of(phone_only)).to eq([false, true])
       expect(booleans_of(both)).to eq([true, true])
     end
 

@@ -57,16 +57,14 @@ export const channelExpiryChange = (
   expiry: number | null
 ): Changes => ({ [CHANNEL_EXPIRY_FIELDS[channel]]: expiry });
 
-// Which channels a requirement puts in play. Both are listed for
-// 'either_email_or_phone': each one on its own satisfies it, so each one can
-// carry its own expiry.
+// Which channels a requirement puts in play, and so which ones can carry their
+// own confirmation expiry.
 export const CHANNELS_IN_PLAY: Record<
   EmailAndPhoneRequirements,
   ContactChannel[]
 > = {
   neither: [],
   email_only: ['email'],
-  phone_only: ['phone'],
   both_email_and_phone: ['email', 'phone'],
   either_email_or_phone: ['email', 'phone'],
 };
