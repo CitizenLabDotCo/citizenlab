@@ -445,9 +445,11 @@ const Invitations = () => {
   // modal already declaring success, which needs watching more, not less.
   const awaitingJob = processing && (!!invitesImportId || !showModal);
   const jobStarted = !!invitesImport?.data.attributes.started_at;
-  const runningTimeout = invitesImport?.data.attributes.job_type.includes(
-    'count_new_seats'
-  )
+  // Undefined until the first poll returns, ~5 seconds in and so well before
+  // either timeout can fire.
+  const isCountStage =
+    invitesImport?.data.attributes.job_type.includes('count_new_seats');
+  const runningTimeout = isCountStage
     ? COUNT_RUNNING_TIMEOUT_MS
     : CREATE_RUNNING_TIMEOUT_MS;
 
@@ -463,11 +465,17 @@ const Invitations = () => {
         setProcessing(false);
         setProcessed(false);
         setShowModal(false);
+        // Also unmounts the seats modal, which would otherwise keep the success
+        // screen it switched to on confirmation and reopen straight onto it.
+        setNewSeatsResponse(null);
         setUnknownError(
           <FormattedMessage
-            {...(jobStarted
-              ? messages.processingTimeoutError
-              : messages.processingNotStartedError)}
+            {...(!jobStarted && isCountStage
+              ? // Only the seat count can promise nothing was sent: it runs with
+                // side effects disabled. A creation job that has not started is
+                // still queued and may yet send, so it gets the vaguer message.
+                messages.processingNotStartedError
+              : messages.processingTimeoutError)}
           />
         );
         resetQueryData();
@@ -480,6 +488,7 @@ const Invitations = () => {
     awaitingJob,
     invitesImportId,
     jobStarted,
+    isCountStage,
     runningTimeout,
     resetQueryData,
   ]);
