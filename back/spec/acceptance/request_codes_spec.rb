@@ -140,7 +140,6 @@ resource 'Request codes' do
     # user on the confirmation step (re-confirmation after confirmed_email_expiry).
     example 'with only_if_first_time, sends when no code is outstanding' do
       user = create(:user, email: 'test@test.com')
-      # No confirmation row exists yet, so no code is outstanding.
       header_token_for(user)
 
       do_request(request_code: { email: user.email, only_if_first_time: true })
@@ -164,7 +163,6 @@ resource 'Request codes' do
 
     example 'an authenticated user can omit the email (uses current_user)' do
       user = create(:user, email: 'test@test.com')
-      # No confirmation row exists yet, so no code is outstanding.
       header_token_for(user)
 
       do_request(request_code: { only_if_first_time: true })
