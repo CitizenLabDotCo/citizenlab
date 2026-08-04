@@ -6,11 +6,7 @@ import { INavbarItem } from 'api/navbar/types';
 import useDeleteNavbarItem from 'api/navbar/useDeleteNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import useReorderNavbarItem from 'api/navbar/useReorderNavbarItems';
-import {
-  getNavbarItemSlug,
-  isNavbarDropdown,
-  MAX_NAVBAR_ITEMS,
-} from 'api/navbar/util';
+import { isNavbarDropdown, MAX_NAVBAR_ITEMS } from 'api/navbar/util';
 
 import PagesMenuTabs from 'containers/Admin/pagesAndMenu/components/PagesMenuTabs';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
