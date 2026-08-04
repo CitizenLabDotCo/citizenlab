@@ -321,6 +321,7 @@ const DropdownForm = ({ editItem, onSubmit, onCancel, processing }: Props) => {
               <Button
                 type="submit"
                 buttonStyle="admin-dark"
+                className="intercom-admin-pages-menu-add-to-menu-button"
                 processing={processing || methods.formState.isSubmitting}
               >
                 {formatMessage(

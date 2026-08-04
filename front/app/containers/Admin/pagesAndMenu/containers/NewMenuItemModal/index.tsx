@@ -63,32 +63,30 @@ const NewMenuItemModal = ({ opened, onClose, editItem }: Props) => {
       )}
     >
       <Box p="24px">
-        {!isEditing && (
-          <Box display="flex" width="100%">
-            <Button
-              flex="1"
-              buttonStyle={activeTab === 'single' ? 'admin-dark' : 'secondary'}
-              onClick={() => setActiveTab('single')}
-              data-cy="e2e-new-menu-item-single-tab"
-              borderRadius="4px 0 0 4px"
-            >
-              {formatMessage(messages.singleItem)}
-            </Button>
-            <Button
-              flex="1"
-              buttonStyle={
-                activeTab === 'dropdown' ? 'admin-dark' : 'secondary'
-              }
-              onClick={() => setActiveTab('dropdown')}
-              data-cy="e2e-new-menu-item-dropdown-tab"
-              borderRadius="0 4px 4px 0"
-            >
-              {formatMessage(messages.dropdown)}
-            </Button>
-          </Box>
-        )}
+        <Box display="flex" width="100%">
+          <Button
+            flex="1"
+            buttonStyle={activeTab === 'single' ? 'admin-dark' : 'secondary'}
+            onClick={() => setActiveTab('single')}
+            className="intercom-admin-pages-menu-single-item-tab"
+            data-cy="e2e-new-menu-item-single-tab"
+            borderRadius="4px 0 0 4px"
+          >
+            {formatMessage(messages.singleItem)}
+          </Button>
+          <Button
+            flex="1"
+            buttonStyle={activeTab === 'dropdown' ? 'admin-dark' : 'secondary'}
+            onClick={() => setActiveTab('dropdown')}
+            className="intercom-admin-pages-menu-dropdown-tab"
+            data-cy="e2e-new-menu-item-dropdown-tab"
+            borderRadius="0 4px 4px 0"
+          >
+            {formatMessage(messages.dropdown)}
+          </Button>
+        </Box>
 
-        {activeTab === 'single' && !isEditing ? (
+        {activeTab === 'single' ? (
           <SingleItemForm
             onSubmit={onSingleSubmit}
             onCancel={handleClose}

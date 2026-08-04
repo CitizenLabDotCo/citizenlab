@@ -36,6 +36,7 @@ const PagesMenuTabs = ({ activeTab, children }: Props) => {
             buttonStyle="text"
             p="0"
             m="0"
+            className="intercom-admin-pages-menu-pages-tab"
             textColor={activeTab === 'pages' ? colors.textPrimary : undefined}
             to={`${ADMIN_PAGES_MENU_PATH}/pages`}
           >
@@ -54,6 +55,7 @@ const PagesMenuTabs = ({ activeTab, children }: Props) => {
             buttonStyle="text"
             p="0"
             m="0"
+            className="intercom-admin-pages-menu-menu-tab"
             textColor={activeTab === 'menu' ? colors.textPrimary : undefined}
             to={`${ADMIN_PAGES_MENU_PATH}/menu`}
           >

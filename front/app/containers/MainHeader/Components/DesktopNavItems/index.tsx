@@ -183,6 +183,7 @@ const DesktopNavItems = () => {
 
   return (
     <Container
+      className="intercom-desktop-navbar"
       aria-label={formatMessage(messages.ariaLabel)}
       ref={containerRef}
     >
