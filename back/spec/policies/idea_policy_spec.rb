@@ -395,6 +395,47 @@ describe IdeaPolicy do
     end
   end
 
+  context 'on a draft native survey response' do
+    let(:phase) { create(:active_native_survey_phase, with_permissions: true) }
+    let(:project) { phase.project }
+    let(:idea) do
+      create(
+        :native_survey_response,
+        publication_status: 'draft',
+        project: project,
+        creation_phase: phase,
+        author: user
+      )
+    end
+
+    context 'for a visitor when posting requires sign-in' do
+      let(:user) { nil }
+
+      before do
+        phase.permissions.find_by(action: 'posting_idea').update!(permitted_by: 'users')
+      end
+
+      it { is_expected.to permit(:create) }
+    end
+
+    context 'for a resident when the project is not visible to them' do
+      let(:user) { create(:user) }
+
+      before { project.update!(visible_to: 'admins') }
+
+      it { is_expected.not_to permit(:create) }
+    end
+
+    context 'when the phase is over' do
+      let(:phase) { create(:native_survey_phase, start_at: 2.months.ago, end_at: 1.month.ago) }
+      let(:user) { create(:user) }
+
+      it 'raises with the context denied reason' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+      end
+    end
+  end
+
   context 'on idea in a private admins project' do
     let!(:space) { create(:space) }
     let(:project) { create(:private_admins_project, space: space) }

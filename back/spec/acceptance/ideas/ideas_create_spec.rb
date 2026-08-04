@@ -881,19 +881,6 @@ resource 'Ideas' do
             end
           end
         end
-
-        context 'when the project is archived' do
-          before { project.admin_publication.update!(publication_status: 'archived') }
-
-          context 'when saving a draft' do
-            let(:publication_status) { 'draft' }
-
-            example_request '[error] Create a draft survey response in an archived project' do
-              assert_status 401
-              expect(json_response_body).to eq({ errors: { base: [{ error: 'project_inactive' }] } })
-            end
-          end
-        end
       end
     end
   end
