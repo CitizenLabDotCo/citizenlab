@@ -72,7 +72,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectSerializer,
       params: project_serializer_params(instance_options),
-      include: %i[admin_publication project_images current_phase]
+      include: %i[admin_publication project_images current_phase highlighted_phase]
     )
   end
 
@@ -195,7 +195,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: jsonapi_serializer_params.merge(use_cache: params[:use_cache], request: request),
-      include: %i[admin_publication project_images current_phase avatars]
+      include: %i[admin_publication project_images current_phase highlighted_phase avatars]
     ).serializable_hash
   end
 
