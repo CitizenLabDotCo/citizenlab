@@ -70,7 +70,7 @@ const NavigationDropdownItem = styled.button`
       z-index: -1;
       background-color: ${({ theme }) =>
         theme.navbarActiveItemBackgroundColor ||
-        rgba(theme.colors.tenantPrimary, 0.05)};
+        theme.colors.tenantPrimaryLighten95};
       pointer-events: none;
     }
 

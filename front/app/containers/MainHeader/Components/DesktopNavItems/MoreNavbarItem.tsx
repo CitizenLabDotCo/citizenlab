@@ -125,14 +125,8 @@ const MoreNavbarItem = ({ overflowItems }: Props) => {
                   return (
                     <DropdownListItem
                       key={child.id}
-                      to={
-                        link.to as Parameters<typeof DropdownListItem>[0]['to']
-                      }
-                      params={
-                        link.params as Parameters<
-                          typeof DropdownListItem
-                        >[0]['params']
-                      }
+                      to={link.to}
+                      params={link.params}
                       onClick={closeDropdown}
                       scrollToTop
                     >

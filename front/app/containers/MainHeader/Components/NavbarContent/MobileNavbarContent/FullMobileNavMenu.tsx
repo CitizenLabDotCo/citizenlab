@@ -151,16 +151,8 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
                     return (
                       <FullMobileNavMenuDropdownItem
                         key={child.id}
-                        to={
-                          link.to as Parameters<
-                            typeof FullMobileNavMenuDropdownItem
-                          >[0]['to']
-                        }
-                        params={
-                          link.params as Parameters<
-                            typeof FullMobileNavMenuDropdownItem
-                          >[0]['params']
-                        }
+                        to={link.to}
+                        params={link.params}
                         navigationItemTitle={localize(child.title_multiloc)}
                         onClick={handleOnMenuItemClick(child.id)}
                         scrollToTop

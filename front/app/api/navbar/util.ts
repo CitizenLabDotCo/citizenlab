@@ -53,9 +53,18 @@ export function getNavbarItemSlug({
   return null;
 }
 
+// A navbar child always targets one of three typed routes, all of which take a
+// single `slug` param. Keeping the route literals in the type (rather than
+// widening `to` to `string`) is what lets Link callsites resolve `params`
+// against the route tree instead of casting.
+export type NavbarChildLink = {
+  to: '/pages/$slug' | '/projects/$slug' | '/folders/$slug';
+  params: { slug: string };
+};
+
 export function getNavbarChildLink(
   child: INavbarChild
-): { to: string; params: { slug: string } } | null {
+): NavbarChildLink | null {
   if (!child.slug) return null;
   if (child.static_page_id) {
     return { to: '/pages/$slug', params: { slug: child.slug } };
