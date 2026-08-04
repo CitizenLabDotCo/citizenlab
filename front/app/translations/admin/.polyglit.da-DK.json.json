@@ -21889,6 +21889,81 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.cardIcon": {
+    "state": "verified",
+    "verified_at": "2026-07-05T12:45:31.290282Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.clearIcon": {
+    "state": "verified",
+    "verified_at": "2026-07-05T12:45:31.290282Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.customPagesTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-05T12:45:31.290282Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.defaultTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-05T12:45:31.290282Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.emojiTab": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:29:36.479833Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.iconPreviewAltText": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:29:36.479833Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:29:36.479833Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageInstructions2": {
+    "state": "verified",
+    "verified_at": "2026-07-30T18:01:40.435438Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageTab": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:29:36.479833Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.imageUploadError": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:29:36.479833Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.noData": {
+    "state": "verified",
+    "verified_at": "2026-07-05T12:45:31.290282Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.removeImage": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:29:36.479833Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.selectPages": {
+    "state": "verified",
+    "verified_at": "2026-07-05T12:45:31.290282Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.uploadImageLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:29:36.479833Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.CustomPages.withThisWidget3": {
+    "state": "verified",
+    "verified_at": "2026-07-05T12:45:31.290282Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
