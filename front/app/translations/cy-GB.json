@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Cam nesaf",
   "app.containers.Projects.noEndDate": "Dim dyddiad gorffen",
   "app.containers.Projects.noItems": "Nid ydych wedi dewis unrhyw eitemau eto",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Nid oes unrhyw ffyrdd agored o gymryd rhan ar hyn o bryd. Dim ond gweinyddwyr sy'n gallu gweld y neges hon.",
   "app.containers.Projects.noPastEvents": "Dim digwyddiadau blaenorol i'w harddangos",
   "app.containers.Projects.noPhaseSelected": "Dim cam wedi'i ddewis",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Nid oes unrhyw ddigwyddiadau i ddod neu barhaus wedi'u hamserlennu ar hyn o bry.",

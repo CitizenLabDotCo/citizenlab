@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Nächst Phas",
   "app.containers.Projects.noEndDate": "Keen Enndatum",
   "app.containers.Projects.noItems": "Dir hutt nach näischt ausgewielt",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Et gëtt de Moment keng oppe Méiglechkeete fir matzemaachen. Nëmmen Administrateure kënnen dëse Message gesinn.",
   "app.containers.Projects.noPastEvents": "Keng vergaangen Evenementer fir unzeweisen",
   "app.containers.Projects.noPhaseSelected": "Keng Phas ausgewielt",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Aktuell si keng bevirstoend oder lafend Evenementer geplangt.",

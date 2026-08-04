@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "اگلا مرحلہ",
   "app.containers.Projects.noEndDate": "کوئی اختتامی تاریخ نہیں۔",
   "app.containers.Projects.noItems": "آپ نے ابھی تک کوئی آئٹم منتخب نہیں کیا ہے۔",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "فی الحال شرکت کے لیے کوئی طریقے دستیاب نہیں ہیں۔ صرف منتظمین ہی یہ پیغام دیکھ سکتے ہیں۔",
   "app.containers.Projects.noPastEvents": "ظاہر کرنے کے لیے کوئی ماضی کے واقعات نہیں ہیں۔",
   "app.containers.Projects.noPhaseSelected": "کوئی مرحلہ منتخب نہیں کیا گیا۔",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "کوئی آنے والا یا جاری ایونٹ فی الحال شیڈول نہیں ہے۔",

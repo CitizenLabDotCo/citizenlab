@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Sonraki aşama",
   "app.containers.Projects.noEndDate": "Bitiş tarihi yok",
   "app.containers.Projects.noItems": "Henüz hiçbir öğe seçmediniz",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Şu anda açık bir katılım yöntemi bulunmuyor. Bu mesajı yalnızca yöneticiler görebilir.",
   "app.containers.Projects.noPastEvents": "Görüntülenecek geçmiş etkinlik yok",
   "app.containers.Projects.noPhaseSelected": "Aşama seçilmedi",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Şu an için, planlanmış yaklaşan veya devam eden bir etkinlik yok.",
