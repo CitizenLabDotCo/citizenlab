@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Velg type",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Enkelt element",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Etikett",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Egendefinert side",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Standardside",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Mappe",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Prosjekt",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Slett side",

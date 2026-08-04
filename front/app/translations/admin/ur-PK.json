@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "قسم منتخب کریں",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "واحد آئٹم",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "لیبل",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "کسٹم صفحہ",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "ڈیفالٹ صفحہ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "فولڈر",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "پراجیکٹ",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "صفحہ حذف کریں",

@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Pasirinkite tipą",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Pavienis elementas",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Etiketė",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Pasirinktinis puslapis",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Numatytasis puslapis",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Aplankas",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Projektas",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Ištrinti puslapį",

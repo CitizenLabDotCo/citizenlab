@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Vælg type",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Enkelt punkt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Label",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Brugerdefineret side",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Standardside",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Mappe",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Slet side",

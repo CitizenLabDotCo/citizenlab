@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Typ auswählen",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Einzelnes Element",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Bezeichnung",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Eigene Seite",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Standardseite",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Ordner",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Seite löschen",

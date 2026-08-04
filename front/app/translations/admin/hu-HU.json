@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Típus kiválasztása",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Önálló elem",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Címke",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Egyedi oldal",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Alapértelmezett oldal",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Mappa",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Oldal törlése",

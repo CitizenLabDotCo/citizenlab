@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Välj typ",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Enskilt objekt",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Etikett",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Anpassad sida",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Standardsida",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Mapp",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Projekt",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Ta bort sida",

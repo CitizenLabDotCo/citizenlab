@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Tür seçin",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Tekli öğe",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Etiket",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Özel sayfa",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Varsayılan sayfa",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Klasör",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Proje",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Sayfayı sil",

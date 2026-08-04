@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Suussusia toqqaruk",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Ataasiakkaaq",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Taaguut",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Qupperneq nammineq aaqqitaq",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Qupperneq nalinginnaasoq",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Mappi",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Suliniut",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Qupperneq piiaruk",

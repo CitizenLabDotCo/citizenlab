@@ -1300,8 +1300,6 @@
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.selectType": "Typ auswielen",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItem": "Eenzelt Element",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.singleItemLabel": "Label",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeCustomPage": "Benotzerdefinéiert Säit",
-  "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeDefaultPage": "Standardsäit",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeFolder": "Dossier",
   "app.containers.Admin.pagesAndMenu.containers.NewMenuItemModal.typeProject": "Projet",
   "app.containers.Admin.pagesAndMenu.containers.PagesTab.deletePage": "Säit läschen",
