@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "besök vårt supportcenter",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Det här projektet ligger inte i en yta eller en mapp. Du behöver ett godkännande från en administratör för att publicera det.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Det här projektet ligger inte i en mapp. Du behöver ett godkännande från en administratör för att publicera det.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "Du har inte behörighet att flytta det här projektet ut ur dess mapp. En administratör kan göra detta åt dig.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "Du har inte behörighet att flytta det här projektet ut ur dess yta eller mapp. En administratör kan göra detta åt dig.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Mapp",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Ingen mapp —",

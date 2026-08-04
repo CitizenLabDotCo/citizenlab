@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "apsilankykite mūsų pagalbos centre",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Šis projektas nėra erdvėje ar aplanke. Norėdami jį paskelbti, turėsite gauti administratoriaus patvirtinimą.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Šis projektas nėra aplanke. Norėdami jį paskelbti, turėsite gauti administratoriaus patvirtinimą.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "Jūs neturite leidimo iškelti šio projekto iš jo aplanko. Administratorius gali tai padaryti už jus.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "Jūs neturite leidimo iškelti šio projekto iš jo erdvės ar aplanko. Administratorius gali tai padaryti už jus.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Aplankas",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Nėra aplanko —",

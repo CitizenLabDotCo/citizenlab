@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Suliniut una inissami mappimiluunniit inissisimanngilaq. Saqqummersissagukku aqutsisumit akuerineqarnissat pisariaqarpoq.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Suliniut una mappimiinngilaq. Saqqummersissagukku aqutsisumit akuerineqarnissat pisariaqarpoq.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "Suliniut una mappianit nuunnissaanut akuersissuteqanngilatit. Aqutsisup tamanna ilinnut suliarisinnaavaa.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "Suliniut una inissaanit mappianilluunniit nuunnissaanut akuersissuteqanngilatit. Aqutsisup tamanna ilinnut suliarisinnaavaa.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Mappa",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Mappaqanngilaq —",

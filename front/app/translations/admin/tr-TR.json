@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "destek merkezimizi ziyaret edin",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Bu proje bir alanda veya klasörde değil. Yayınlamak için bir yöneticiden onay almanız gerekecek.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Bu proje bir klasörde değil. Yayınlamak için bir yöneticiden onay almanız gerekecek.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "Bu projeyi klasöründen çıkarma yetkiniz yok. Bunu sizin yerinize bir yönetici yapabilir.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "Bu projeyi alanından veya klasöründen çıkarma yetkiniz yok. Bunu sizin yerinize bir yönetici yapabilir.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Klasör",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Klasör yok —",

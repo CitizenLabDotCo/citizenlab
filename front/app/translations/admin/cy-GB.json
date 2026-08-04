@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "ymweld â'n canolfan gymorth",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Nid yw'r prosiect hwn mewn gofod na ffolder. Bydd angen cymeradwyaeth gweinyddwr arnoch i'w gyhoeddi.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Nid yw'r prosiect hwn mewn ffolder. Bydd angen cymeradwyaeth gweinyddwr arnoch i'w gyhoeddi.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "Nid oes gennych ganiatâd i symud y prosiect hwn allan o'i ffolder. Gall gweinyddwr wneud hyn i chi.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "Nid oes gennych ganiatâd i symud y prosiect hwn allan o'i ofod neu ffolder. Gall gweinyddwr wneud hyn i chi.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Ffolder",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Dim ffolder —",

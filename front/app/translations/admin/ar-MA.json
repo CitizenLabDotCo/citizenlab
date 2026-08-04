@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "زيارة مركز الدعم التابع لنا",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "هاد المشروع ما كاين لا ففضاء ولا فمجلد. غادي تحتاج لموافقة من عند المسؤول باش تنشرو.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "هاد المشروع ما كاين فتا شي مجلد. غادي تحتاج لموافقة من عند المسؤول باش تنشرو.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "ما عندكش الصلاحية باش تنقل هاد المشروع من المجلد ديالو. المسؤول يقدر يدير هادشي فبلاصتك.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "ما عندكش الصلاحية باش تنقل هاد المشروع من الفضاء ولا المجلد ديالو. المسؤول يقدر يدير هادشي فبلاصتك.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "مجلد",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— بلا مجلد —",

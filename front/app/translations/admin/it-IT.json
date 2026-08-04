@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visita il nostro centro assistenza",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Questo progetto non si trova in uno spazio o in una cartella. Avrai bisogno dell'approvazione di un amministratore per pubblicarlo.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Questo progetto non si trova in una cartella. Avrai bisogno dell'approvazione di un amministratore per pubblicarlo.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "Non hai l'autorizzazione per spostare questo progetto fuori dalla sua cartella. Un amministratore può farlo per te.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "Non hai l'autorizzazione per spostare questo progetto fuori dal suo spazio o dalla sua cartella. Un amministratore può farlo per te.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Cartella",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Nessuna cartella —",

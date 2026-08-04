@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "besøk supportsenteret vårt",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Dette prosjektet ligger ikke i et område eller en mappe. Du trenger godkjenning fra en administrator for å publisere det.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Dette prosjektet ligger ikke i en mappe. Du trenger godkjenning fra en administrator for å publisere det.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "Du har ikke tillatelse til å flytte dette prosjektet ut av mappen sin. En administrator kan gjøre dette for deg.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "Du har ikke tillatelse til å flytte dette prosjektet ut av området eller mappen sin. En administrator kan gjøre dette for deg.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Mappe",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Ingen mappe —",

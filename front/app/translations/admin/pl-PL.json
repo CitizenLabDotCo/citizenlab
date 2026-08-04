@@ -1348,8 +1348,6 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "odwiedź nasze centrum wsparcia",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Ten projekt nie znajduje się w przestrzeni ani w folderze. Aby go opublikować, będziesz potrzebować zgody administratora.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Ten projekt nie znajduje się w folderze. Aby go opublikować, będziesz potrzebować zgody administratora.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder": "Nie masz uprawnień, aby przenieść ten projekt poza jego folder. Administrator może to zrobić za Ciebie.",
-  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder": "Nie masz uprawnień, aby przenieść ten projekt poza jego przestrzeń lub folder. Administrator może to zrobić za Ciebie.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Folder",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Brak folderu —",
