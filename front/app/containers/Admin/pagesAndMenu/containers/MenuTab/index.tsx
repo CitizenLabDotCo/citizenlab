@@ -80,12 +80,6 @@ const MenuTab = () => {
         );
   };
 
-  const getViewButtonLink = (navbarItem: Item) => {
-    // Dropdowns aren't links, so they have no view button.
-    if (isDropdownItem(navbarItem)) return undefined;
-    return getNavbarItemSlug(navbarItem as INavbarItem) || '/';
-  };
-
   const handleClickRemove = (navbarItemId: string) => () => {
     removeNavbarItem(navbarItemId);
   };
