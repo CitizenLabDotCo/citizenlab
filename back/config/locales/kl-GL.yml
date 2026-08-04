@@ -16,6 +16,10 @@ kl-GL:
       thanks_for_signing_up: Qujanaq, %{organizationName} peqataatitsinikkut nittartagaanut ilaasortanngoravit.
       thanks_for_signing_up1: 'Peqataaninnut qujanaq. Uppernarsaat una %{organizationName}-ip peqataatitsiviani igalaamut ikkuguk:'
       the_link_is_valid_for: Una linkeq nalunaaquttap akunneri 24-it atuutissaaq. <a href="%{link}"> qaangiuppat isissutissamik nutaamik qinusinnaavutit.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Inissaq una itisiliinermut atoruk — tunuliaqutaq, ilanngussat qanoq atorneqassanersut, imaluunniit kina attavigineqarsinnaanersoq.</p>
+      intro_placeholder: <p>Maannga naatsumik aallarniut ilannguguk — innuttaasunut oqaluttuariguk suliniut sunaunersoq qanorlu peqataasinnaanersut.</p>
   custom_field_options:
     domicile:
       outside: Allami

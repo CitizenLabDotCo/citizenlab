@@ -375,4 +375,16 @@ export default defineMessages({
     defaultMessage:
       "You're viewing real-time data. Participant counts are continuously updated for administrators. Please note that regular users see cached data, which may result in slight differences in the numbers.",
   },
+  participate: {
+    id: 'app.containers.Projects.participate',
+    defaultMessage: 'Participate',
+  },
+  waysToParticipate: {
+    id: 'app.containers.Projects.waysToParticipate',
+    defaultMessage: 'Ways to participate',
+  },
+  openNowInTotal: {
+    id: 'app.containers.Projects.openNowInTotal',
+    defaultMessage: '{openCount} open now · {totalCount} in total',
+  },
 });

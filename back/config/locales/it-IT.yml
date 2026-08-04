@@ -14,6 +14,10 @@ it-IT:
       subject: Conferma il tuo indirizzo email per la piattaforma partecipativa di %{organizationName}
       thanks_for_signing_up1: 'Grazie per la tua partecipazione. Inserisci questo codice di conferma nella finestra della piattaforma partecipativa di %{organizationName}:'
       the_link_is_valid_for: Questo link è valido per 24 ore. Se il link è scaduto, puoi <a href="%{link}">richiedere un nuovo codice</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Usa questo spazio per fornire maggiori dettagli — contesto, come verranno utilizzati i contributi o chi contattare.</p>
+      intro_placeholder: <p>Aggiungi qui una breve introduzione — spiega ai residenti di cosa tratta questo progetto e come possono partecipare.</p>
   custom_field_options:
     domicile:
       outside: Da qualche altra parte

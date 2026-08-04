@@ -14,6 +14,10 @@ lt-LT:
       subject: Patvirtinkite savo el. pašto adresą %{organizationName}dalyvavimo platformoje
       thanks_for_signing_up1: 'Dėkojame už dalyvavimą. Įveskite šį patvirtinimo kodą į %{organizationName}dalyvavimo platformos langą:'
       the_link_is_valid_for: Ši nuoroda galioja 24 valandas. Jei nuorodos galiojimas baigėsi, galite <a href="%{link}">paprašyti naujo kodo</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Šią erdvę naudokite išsamesnei informacijai – kontekstui, paaiškinimui, kas bus daroma su gautais pasiūlymais, arba nurodymui, su kuo susisiekti.</p>
+      intro_placeholder: <p>Čia pridėkite trumpą įžangą – papasakokite gyventojams, apie ką šis projektas ir kaip jie gali jame dalyvauti.</p>
   custom_field_options:
     domicile:
       outside: Kažkur kitur

@@ -193,6 +193,7 @@ lv-LV:
       new_phone_confirmation: Jauns tālruņa apstiprinājuma kods
       official_feedback_on_idea_you_follow: Atjaunināt ideju, kurai sekojat
       password_reset: Paroles atiestatīšana
+      phone_confirmation: Tālruņa apstiprinājuma kods
       project_folder_moderation_rights_received: Saņemtās mapju pārvaldnieka tiesības
       project_manager_rights_received: Saņemtas projekta pārvaldnieka tiesības
       project_moderation_rights_received: Saņemtās projekta moderēšanas tiesības
@@ -550,6 +551,8 @@ lv-LV:
       preheader: Atiestatiet savu %{organizationName} paroli
       subject: '%{organizationName}: Atiestatiet savu paroli'
       title: Izvēlieties jaunu paroli
+    phone_confirmation:
+      sms_body: Jūsu apstiprinājuma kods ir %{code}.
     preview_data:
       author_display_name: Džeina Doe
       author_first_name: Jane

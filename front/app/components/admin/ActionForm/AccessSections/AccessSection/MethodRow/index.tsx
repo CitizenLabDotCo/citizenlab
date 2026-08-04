@@ -82,13 +82,11 @@ const MethodRow = ({
           </Box>
         }
       />
-      {/* TODO: implement recency control for email (and phone numbers when available) */}
-      {enabled && methodKey === 'verification' && (
+      {enabled && (
         <Box ml="42px" mt="6px">
           <RecencyControl
             expiry={expiry}
-            // verb={methodKey === 'verification' ? 'Re-verify' : 'Re-confirm'}
-            verb={'Re-verify'}
+            verb={methodKey === 'verification' ? 'Re-verify' : 'Re-confirm'}
             onChange={(nextExpiry) =>
               onChange({ enabled: stateEnabled, expiry: nextExpiry })
             }
