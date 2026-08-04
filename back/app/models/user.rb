@@ -218,6 +218,7 @@ class User < ApplicationRecord
   has_many :confirmations, dependent: :destroy
   has_one :email_confirmation, dependent: :destroy
   has_one :new_email_confirmation, dependent: :destroy
+  has_one :phone_confirmation, dependent: :destroy
   has_one :new_phone_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   after_create :create_confirmations
@@ -328,15 +329,15 @@ class User < ApplicationRecord
     self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
+  # Authenticating ALWAYS requires a non-blank password that matches the stored digest.
+  # A user without a password digest (email-only, SSO or invited account) can never be
+  # authenticated here, no matter what is passed in - a blank password is not a valid
+  # credential and must never grant access.
   def authenticate(unencrypted_password)
-    if no_password?
-      # Allow authentication without password - but only if confirmation is required on the user
-      unencrypted_password.empty? && confirmation_required? ? self : false
-    else
-      return false unless AppConfiguration.instance.feature_activated?('password_login') || super_admin?
+    return false if password_digest.blank? || unencrypted_password.blank?
+    return false unless AppConfiguration.instance.feature_activated?('password_login') || super_admin?
 
-      BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
-    end
+    BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
   end
 
   # User has no password
@@ -546,6 +547,7 @@ class User < ApplicationRecord
   def create_confirmations
     EmailConfirmation.create!(user: self)
     NewEmailConfirmation.create!(user: self)
+    PhoneConfirmation.create!(user: self)
     NewPhoneConfirmation.create!(user: self)
   end
 

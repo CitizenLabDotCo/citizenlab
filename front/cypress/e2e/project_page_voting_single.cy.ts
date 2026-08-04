@@ -78,6 +78,7 @@ describe('Project with single voting phase', () => {
   it('can allocate votes to ideas and show how many votes are left', () => {
     cy.contains('Cast your vote');
     cy.contains('How to vote');
+    cy.dockProjectCtaBar();
     cy.dataCy('project-cta-bar-top').contains('5 out of 5 votes left');
 
     cy.get('#e2e-voting-submit-button')
@@ -102,6 +103,7 @@ describe('Project with single voting phase', () => {
     cy.intercept(`**/baskets/**`).as('basketRequest');
     cy.visit(`/en/projects/${projectSlug}`);
     cy.wait('@basketRequest');
+    cy.dockProjectCtaBar();
     cy.get('#e2e-voting-submit-button')
       .should('be.visible')
       .should('not.have.class', 'disabled');
@@ -117,6 +119,7 @@ describe('Project with single voting phase', () => {
   });
 
   it('can modify and remove the votes', () => {
+    cy.dockProjectCtaBar();
     cy.get('#e2e-modify-votes')
       .should('be.visible')
       .should('contain', 'Modify your submission')

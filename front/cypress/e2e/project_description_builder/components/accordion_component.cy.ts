@@ -25,9 +25,7 @@ describe('Project description builder Accordion component', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -43,12 +41,9 @@ describe('Project description builder Accordion component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.get('#e2e-draggable-accordion').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
-    );
+    cy.get('#e2e-draggable-accordion').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
 
     cy.get('.e2e-accordion').click({ force: true });
     cy.get('#accordionTitleId').type('Accordion title', { force: true });
@@ -76,14 +71,11 @@ describe('Project description builder Accordion component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    cy.get('#e2e-draggable-accordion').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
-    );
+    cy.get('#e2e-draggable-accordion').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
 
     // Open the accordion to show its content area
     cy.get('.e2e-accordion').click({ force: true });
@@ -110,15 +102,12 @@ describe('Project description builder Accordion component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
     // First, create an accordion to delete
-    cy.get('#e2e-draggable-accordion').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
-    );
+    cy.get('#e2e-draggable-accordion').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
 
     cy.get('.e2e-accordion').click({ force: true });
     cy.get('#accordionTitleId').type('Accordion to delete', { force: true });
@@ -145,7 +134,7 @@ describe('Project description builder Accordion component', () => {
     cy.contains('Accordion to delete').should('be.visible');
     cy.contains('Text to be deleted').should('be.visible');
 
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
     cy.wait(1000);
 
     // Now delete the accordion

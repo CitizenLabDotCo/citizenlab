@@ -597,7 +597,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 <FormattedMessage {...messages.folderDescription} />
               </SubSectionTitle>
               <Highlighter fragmentId="description-multiloc">
-                <DescriptionBuilderLink contentBuildableType="folder" />
+                <DescriptionBuilderLink />
               </Highlighter>
               <Error
                 fieldName="description_multiloc"

@@ -193,6 +193,7 @@ nl-NL:
       new_phone_confirmation: Nieuwe telefoonbevestigingscode
       official_feedback_on_idea_you_follow: Update over een bijdrage dat je volgt
       password_reset: Herstel wachtwoord
+      phone_confirmation: Telefonische bevestigingscode
       project_folder_moderation_rights_received: Mapbeheerdersrechten ontvangen
       project_manager_rights_received: Projectbeheerdersrechten ontvangen
       project_moderation_rights_received: Projectbeheerdersrechten ontvangen
@@ -550,6 +551,8 @@ nl-NL:
       preheader: Stel je wachtwoord voor %{organizationName} opnieuw in
       subject: '%{organizationName}: Stel je wachtwoord opnieuw in'
       title: Kies een nieuw wachtwoord
+    phone_confirmation:
+      sms_body: Je bevestigingscode is %{code}.
     preview_data:
       author_display_name: Emma de Vries
       author_first_name: Emma

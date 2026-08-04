@@ -130,6 +130,7 @@ describe('Timeline project with past and future phases', () => {
     cy.get('.e2e-poll-option').first().should('have.class', 'disabled');
 
     // The CTA bar refers to the current phase and navigates back to it
+    cy.dockProjectCtaBar();
     cy.get('#e2e-participation-cta-poll').click();
     cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
     cy.contains(currentPollQuestionTitle);

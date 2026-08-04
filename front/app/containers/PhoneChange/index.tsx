@@ -6,8 +6,8 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { object, string, boolean } from 'yup';
 
-import { confirmCodePhoneChange } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
-import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { confirmCodeNewPhone } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
+import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -15,6 +15,7 @@ import { ERROR_CODE_MESSAGES } from 'containers/Authentication/messageUtils';
 import PhoneConfirmation from 'containers/Authentication/steps/PhoneConfirmation';
 import { ErrorCode } from 'containers/Authentication/typings';
 
+import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
 import { StyledContentContainer } from 'components/smallForm';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -45,7 +46,11 @@ const PhoneChange = () => {
   const [updateCancelled, setUpdateCancelled] = useState(false);
 
   const schema = object({
-    phone: string().required(formatMessage(messages.phoneEmptyError)),
+    phone: string()
+      .required(formatMessage(messages.phoneEmptyError))
+      .test('is-valid-phone', formatMessage(messages.phoneInvalid), (value) =>
+        value ? isValidPhoneNumber(value) : false
+      ),
     smsManualCampaignConsent: boolean().default(false),
   });
 
@@ -66,7 +71,7 @@ const PhoneChange = () => {
 
     try {
       if (!phoneValue) return;
-      await confirmCodePhoneChange(code, smsManualCampaignConsent);
+      await confirmCodeNewPhone(code, smsManualCampaignConsent);
       await queryClient.invalidateQueries(meKeys.all());
       setConfirmationError(null);
       setOpenConfirmationModal(false);
@@ -139,11 +144,11 @@ const PhoneChange = () => {
               </Box>
             )}
             <PhoneConfirmation
-              state={{ phone: phoneValue }}
+              phone={phoneValue}
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onPhoneConfirmation}
-              onResendCode={() => requestCodePhoneChange(phoneValue)}
+              onResendCode={() => requestCodeNewPhone(phoneValue)}
             />
           </Box>
         </Modal>
