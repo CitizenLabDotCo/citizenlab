@@ -37,7 +37,6 @@ import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
 import Highlighter from 'components/Highlighter';
-import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -118,8 +117,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useState<boolean>(false);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
     useState<Multiloc | null>(null);
-  const [descriptionMultiloc, setDescriptionMultiloc] =
-    useState<Multiloc | null>(null);
   const [spaceId, setSpaceId] = useState<string | null>(null);
   const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
   const [headerImageAltText, setHeaderImageAltText] = useState<Multiloc>({});
@@ -156,9 +153,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.data.attributes.title_multiloc);
         setSlug(projectFolder.data.attributes.slug);
-        setDescriptionMultiloc(
-          projectFolder.data.attributes.description_multiloc
-        );
         setShortDescriptionMultiloc(
           projectFolder.data.attributes.description_preview_multiloc
         );
@@ -349,9 +343,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const projectFolder = await addProjectFolder({
               title_multiloc: titleMultiloc,
               slug,
-              ...(descriptionMultiloc && {
-                description_multiloc: descriptionMultiloc,
-              }),
               description_preview_multiloc: shortDescriptionMultiloc,
               header_bg: headerBgBase64,
               header_bg_alt_text_multiloc: headerImageAltText,
@@ -447,10 +438,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               titleMultiloc,
               projectFolder.data.attributes.title_multiloc
             );
-            const changedDescriptionMultiloc = !isEqual(
-              descriptionMultiloc,
-              projectFolder.data.attributes.description_multiloc
-            );
             const changedShortDescriptionMultiloc = !isEqual(
               shortDescriptionMultiloc,
               projectFolder.data.attributes.description_preview_multiloc
@@ -474,7 +461,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             if (
               changedTitleMultiloc ||
               changedSlug ||
-              changedDescriptionMultiloc ||
               changedShortDescriptionMultiloc ||
               changedHeaderBg ||
               changedPublicationStatus ||
@@ -486,10 +472,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   ? titleMultiloc
                   : undefined,
                 slug: changedSlug ? slug : undefined,
-                description_multiloc:
-                  changedDescriptionMultiloc && descriptionMultiloc
-                    ? descriptionMultiloc
-                    : undefined,
                 description_preview_multiloc: changedShortDescriptionMultiloc
                   ? shortDescriptionMultiloc
                   : undefined,
@@ -599,10 +581,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               <Highlighter fragmentId="description-multiloc">
                 <DescriptionBuilderLink />
               </Highlighter>
-              <Error
-                fieldName="description_multiloc"
-                apiErrors={errors.description_multiloc}
-              />
             </>
           )}
           <Box mt="35px" data-cy="e2e-project-folder-short-description">

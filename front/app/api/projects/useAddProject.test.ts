@@ -28,9 +28,6 @@ describe('useAddProject', () => {
         title_multiloc: {
           en: 'test',
         },
-        description_multiloc: {
-          en: 'test',
-        },
       });
     });
 
@@ -52,9 +49,6 @@ describe('useAddProject', () => {
     act(() => {
       result.current.mutate({
         title_multiloc: {
-          en: 'test',
-        },
-        description_multiloc: {
           en: 'test',
         },
       });
