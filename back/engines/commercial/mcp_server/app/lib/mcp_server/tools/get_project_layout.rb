@@ -11,7 +11,8 @@ class McpServer::Tools::GetProjectLayout < McpServer::BaseTool
       plus an outline listing every node in visual order with its id, widget type, parent,
       slot and a text snippet — use the outline to find the node ids to target with
       update_project_layout. Outline entries marked locked are the fixed page scaffold;
-      the editable content is the subtree of the ProjectPageBody node.
+      the editable content is the subtree of the ProjectPageBody node, whose own `nodes`
+      array is the page's top-level content.
     DESC
   end
 

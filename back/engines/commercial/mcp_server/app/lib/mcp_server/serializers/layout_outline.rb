@@ -57,10 +57,10 @@ class McpServer::Serializers::LayoutOutline
     }.compact
   end
 
-  # Deliberately the widget type, and not the stored custom.locked/custom.region markers
-  # the FE writes: those markers moved when the page builder was unlocked and differ
-  # between pages saved before and after, so reading them would make the outline
-  # disagree with what update_project_layout actually enforces.
+  # Deliberately the widget type, not the stored custom.locked/custom.region markers:
+  # pages seeded before the page builder was unlocked carry custom.locked on their
+  # phases and events widgets, which are ordinary, movable widgets now. Reading the
+  # markers would report those as untouchable and contradict what the tools enforce.
   def locked?(widget)
     ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS.include?(widget)
   end

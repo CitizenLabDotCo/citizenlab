@@ -55,11 +55,11 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       errors (with a widget reference) tell you what to fix.
 
       ALWAYS call get_project_layout first and copy the exact shape of existing nodes.
-      The page scaffold (root, banner, title, body, phases, events) is fixed; ALL your
-      content lives inside the ProjectPageBody node. Add, remove or reorder top-level
-      content by also sending that node with its updated `nodes` array and nothing else
-      about it changed, keeping every id it already lists. To change the project title or
-      header image use update_project instead.
+      The page scaffold (root, banner, title, body) is fixed; ALL your content lives inside
+      the ProjectPageBody node. Add, remove or reorder top-level content by also sending
+      that node with its updated `nodes` array and nothing else about it changed, keeping
+      every id you still want on the page. To change the project title or header image use
+      update_project instead.
 
       Recipes: edit or replace = send just that node (no delete needed). Insert/move = send
       the node (with `parent` set) AND the parent with its updated `nodes` array (order =
@@ -70,9 +70,9 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       Design: separate sections with WhiteSpace nodes (medium between sections, small within,
       withDivider at strong breaks). Use TwoColumn/ThreeColumn for parallel content,
       AccordionMultiloc (body in its linked Container) for FAQs and concerns, ButtonMultiloc
-      for calls to action, AboutBox last. Avoid all-text descriptions. The phase timeline
-      and the events list are already in the body (PhasesWidget, EventsWidget) — you may
-      move them within it, but never rebuild them as hand-made content.
+      for calls to action, AboutBox near the end. Avoid all-text pages. PhasesWidget and
+      EventsWidget render the project's phases and events wherever you place them in the
+      body — reorder or remove them, but never rebuild them as content.
     DESC
   end
 
@@ -123,11 +123,11 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     SCAFFOLD_WIDGETS = ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS
     BODY_WIDGET = ContentBuilder::ProjectPageLayoutService::BODY_WIDGET
     PROJECT_RECORD_WIDGETS = ContentBuilder::ProjectPageLayoutService::PROJECT_RECORD_WIDGETS
-    LEGACY_WIDGETS = ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS
 
-    # Fully qualified: delegate defines the method via module_eval, where the
-    # `Craftjs::Query` relative lookup would not resolve.
+    # Fully qualified: delegate defines the method via module_eval, where a relative
+    # constant lookup would not resolve.
     delegate :resolved_name, to: :'ContentBuilder::Craftjs::Query', private: true
+    delegate :scaffold?, to: :'ContentBuilder::ProjectPageLayoutService', private: true
 
     def run
       project = Project.find(params[:project_id])
@@ -218,7 +218,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
         # Its `nodes` array is the page's top-level content; every other key — `parent`
         # included, so this also rules out moving it, and `custom`, which carries the
         # marker that keeps it locked in the editor — must come back unchanged.
-        changed = ((stored[id].keys | node.keys) - ['nodes']).reject { |key| stored[id][key] == node[key] }
+        changed = (stored[id].keys | node.keys).excluding('nodes').reject { |key| stored[id][key] == node[key] }
         next if changed.none?
 
         raise PatchError, "node #{id}: only the `nodes` array of the #{BODY_WIDGET} node may " \
@@ -234,12 +234,12 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     def protect_legacy_widgets!(stored)
       patch_nodes.each do |id, node|
         widget = resolved_name(node)
-        next if LEGACY_WIDGETS.exclude?(widget)
+        alternative = McpServer::LayoutWidgets::LEGACY_ALTERNATIVES[widget]
+        next if alternative.nil?
         next if stored[id] && resolved_name(stored[id]) == widget
 
         raise PatchError, "node #{id}: #{widget} is a legacy node type kept only for pages that " \
-                          'already contain one; new ones cannot be created — ' \
-                          "#{McpServer::LayoutWidgets::LEGACY_ALTERNATIVES[widget]}."
+                          "already contain one; new ones cannot be created — #{alternative}."
       end
     end
 
@@ -260,13 +260,6 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       raise PatchError, "nodes #{outside.join(', ')}: content must live inside the page body — " \
                         "the parent chain must reach #{body_id} (#{BODY_WIDGET}). The rest of " \
                         'the page is fixed scaffold.'
-    end
-
-    # nil for a patch id that is not in the stored graph — the only case worth handling.
-    # A stored graph holding something that is not a node at all is corruption; it falls
-    # through as "not scaffold" and the Validator reports it properly a moment later.
-    def scaffold?(node)
-      !node.nil? && ContentBuilder::ProjectPageLayoutService.scaffold?(node)
     end
 
     def patched_graph(stored)
@@ -326,9 +319,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
     # Docs for just the widgets the errors point at — a full cheatsheet here would
     # add another complete copy to the client's context on every failed retry.
     def error_reference(errors, graph)
-      widgets = errors.filter_map do |e|
-        e.node_id && ContentBuilder::Craftjs::Query.resolved_name(graph[e.node_id] || {})
-      end
+      widgets = errors.filter_map { |e| e.node_id && resolved_name(graph[e.node_id] || {}) }
       McpServer::LayoutWidgets.reference_for(widgets)
     end
 

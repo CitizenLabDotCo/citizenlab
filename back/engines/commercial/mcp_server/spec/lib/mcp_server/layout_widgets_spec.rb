@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-# Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs), the
-# LLM-facing docs and the cheatsheet drifting apart.
+# Guards against the widget rules (ContentBuilder::Craftjs::WidgetSpecs) and the
+# LLM-facing docs drifting apart.
 describe McpServer::LayoutWidgets do
   let(:scaffold_widgets) { ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS }
 
@@ -74,33 +74,24 @@ describe McpServer::LayoutWidgets do
       end
     end
 
-    it 'matches the canonical nodes the backend seeds' do
+    it 'covers the canonical nodes the backend seeds, minus the movable widgets' do
       seeded = ContentBuilder::ProjectPageLayoutService.new
         .from_description_multiloc({})
         .values
         .map { |node| node.dig('type', 'resolvedName') }
 
-      expect(seeded).to match_array(scaffold_widgets)
+      # The seed also places the phases and events widgets. They are ordinary widgets an
+      # editor may reorder or remove, so they are documented as insertable, not scaffold.
+      expect(seeded).to match_array(scaffold_widgets + %w[PhasesWidget EventsWidget])
+      expect(described_class::DOCS).to include('PhasesWidget', 'EventsWidget')
     end
   end
 
-  describe 'CHEATSHEET' do
-    it 'includes the doc of every documented widget' do
-      described_class::DOCS.each do |name, doc|
-        expect(described_class::CHEATSHEET).to include(doc),
-          "expected the cheatsheet to include the #{name} doc"
-        expect(described_class::CHEATSHEET).to include(name)
-      end
-    end
-
-    it 'documents every scaffold widget' do
+  describe 'FORMAT_RULES' do
+    it 'names every scaffold widget, since they are documented nowhere else' do
       scaffold_widgets.each do |name|
-        expect(described_class::CHEATSHEET).to include(name)
+        expect(described_class::FORMAT_RULES).to include(name)
       end
-    end
-
-    it 'is frozen' do
-      expect(described_class::CHEATSHEET).to be_frozen
     end
   end
 end

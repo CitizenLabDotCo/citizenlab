@@ -23,25 +23,20 @@ module ContentBuilder
     # project page, in the tree #canonical_nodes seeds. Nothing may add, delete or edit
     # them — the sole editable part is BODY_WIDGET's `nodes`, which is the page content.
     #
-    # The phases and events widgets are here as a deliberately conservative choice, not
-    # because the editor pins them: since the page builder was unlocked they carry no
-    # locked marker and the FE toolbox can drag them. Treating them as fixed keeps a
-    # client from deleting the phase timeline it has no documented way to rebuild.
-    # Unlocking them belongs with the work that documents them as insertable widgets.
-    SCAFFOLD_WIDGETS = [
-      'ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET,
-      'PhasesWidget', 'EventsWidget'
-    ].freeze
+    # #canonical_nodes also seeds a phases and an events widget, deliberately absent
+    # here: since the page builder was unlocked they carry no locked marker and the FE
+    # toolbox can drag them, so they are ordinary widgets living in the body.
+    SCAFFOLD_WIDGETS = ['ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET].freeze
 
     # Scaffold widgets rendered from the project record rather than from their layout
     # props, so editing those props does nothing.
     PROJECT_RECORD_WIDGETS = %w[ProjectBanner ProjectTitle].freeze
 
-    # Whether a node is part of the fixed scaffold. Raises on anything that is not a
-    # node, deliberately: a graph holding something else is corruption, not a state to
-    # absorb quietly.
+    # Whether a node is part of the fixed scaffold. nil (an id absent from the graph)
+    # is not; a graph holding anything else that is not a node is corruption, and the
+    # Validator reports that properly rather than it being absorbed here.
     def self.scaffold?(node)
-      SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
+      !node.nil? && SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
     end
 
     UNSUPPORTED_WIDGETS = %w[
