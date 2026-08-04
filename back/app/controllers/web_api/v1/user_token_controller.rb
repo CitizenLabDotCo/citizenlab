@@ -16,7 +16,8 @@ class WebApi::V1::UserTokenController < ActionController::API
     # so it tells us whether this email address was confirmed.
     return head :not_found unless user && !user.confirmation_required? && password_correct?(user)
 
-    render_token_for user
+    handle_successful_authentication_sidefx(user)
+    render json: auth_token(user), status: :created
   end
 
   # Phone number + password. Users who signed up with their phone number have no
@@ -28,16 +29,15 @@ class WebApi::V1::UserTokenController < ActionController::API
 
     return head :not_found unless user&.phone_confirmed_at && password_correct?(user)
 
-    render_token_for user
+    handle_successful_authentication_sidefx(user)
+    render json: auth_token(user), status: :created
   end
 
   private
 
-  def render_token_for(user)
+  def handle_successful_authentication_sidefx(user)
     ClaimTokenService.claim(user, auth_params[:claim_tokens])
     IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
-
-    render json: auth_token(user), status: :created
   end
 
   # A blank password is never a valid credential. User#authenticate rejects it as
