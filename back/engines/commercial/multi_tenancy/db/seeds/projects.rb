@@ -22,7 +22,6 @@ module MultiTenancy
 
         project = Project.create!(
           title_multiloc: { 'en' => 'Mixed 3 methods project' },
-          description_multiloc: runner.rand_description_multiloc,
           slug: 'mixed-3-methods-project',
           header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open,
           space: space
@@ -83,7 +82,6 @@ module MultiTenancy
       def create_archived_project
         project = Project.create!(
           title_multiloc: { 'en' => 'Archived project' },
-          description_multiloc: runner.rand_description_multiloc,
           slug: 'archived-project',
           header_bg: Rails.root.join('spec/fixtures/image6.jpg').open,
           admin_publication_attributes: { publication_status: 'archived' }
@@ -110,7 +108,6 @@ module MultiTenancy
         (runner.num_projects - Project.count).times do
           project = Project.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.rand_description_multiloc,
             description_preview_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open,
             visible_to: %w[admins groups public public public][rand(5)],
@@ -152,7 +149,6 @@ module MultiTenancy
         rand(8).times do
           phase = project.phases.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-            description_multiloc: runner.rand_description_multiloc,
             start_at: start_at,
             # At least 2 days: a 1-day phase spanning a DST spring-forward is only
             # 23h, which is < Phase::MIN_DURATION (24h) and fails validation.

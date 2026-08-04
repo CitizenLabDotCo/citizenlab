@@ -797,9 +797,6 @@ models:
     title_multiloc:
       en: Some folder
       nl-BE: Some folder
-    description_multiloc:
-      en: "<p>That's a folder alright.</p>"
-      nl-BE: "<p>That's a folder alright.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
@@ -814,11 +811,6 @@ models:
     title_multiloc:
       en: Test project 1 timeline with file
       nl-BE: Test project 1 timeline with file
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
@@ -832,11 +824,6 @@ models:
     title_multiloc:
       en: Participatory Budgeting
       nl-BE: Participatory Budgeting
-    description_multiloc:
-      en: "<p> Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
@@ -849,11 +836,6 @@ models:
     title_multiloc:
       en: Charlie Participatory Budgeting
       nl-BE: Charlie Participatory Budgeting
-    description_multiloc:
-      en: "<p>Charlie only. Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
@@ -866,11 +848,6 @@ models:
     title_multiloc:
       en: Verified Participatory Budgeting
       nl-BE: Verified Participatory Budgeting
-    description_multiloc:
-      en: "<p>Verified users only. Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
@@ -883,11 +860,6 @@ models:
     title_multiloc:
       en: Test project 2 timeline
       nl-BE: Test project 2 timeline
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
@@ -899,7 +871,6 @@ models:
     updated_at: '2018-03-28 13:35:04'
   - &76
     title_multiloc: projects.open_idea_project_title
-    description_multiloc: projects.open_idea_project_description
     description_preview_multiloc: projects.open_idea_project_description_preview
     internal_role: open_idea_box
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
@@ -908,11 +879,6 @@ models:
     title_multiloc:
       en: Continuous ideation map
       nl-BE: Continuous ideation map
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -926,11 +892,6 @@ models:
     title_multiloc:
       en: Verified Charlie poeple project
       nl-BE: Verified Charlie poeple project
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -943,11 +904,6 @@ models:
     title_multiloc:
       en: Verified Ideation
       nl-BE: Verified Ideation
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -959,11 +915,6 @@ models:
     title_multiloc:
       en: Charlie Crew Ideation
       nl-BE: Charlie Crew Ideation
-    description_multiloc:
-      en: "<p>Test group permissions with meLet's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -975,11 +926,6 @@ models:
     title_multiloc:
       en: Continuous survey
       nl-BE: Continuous survey
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -993,11 +939,6 @@ models:
     title_multiloc:
       en: Verified survey
       nl-BE: Verified survey
-    description_multiloc:
-      en: "<p>Test verification permissions with me Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test verification permissions with me Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1010,11 +951,6 @@ models:
     title_multiloc:
       en: The big poll
       nl-BE: The big poll
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1026,11 +962,6 @@ models:
     title_multiloc:
       en: Verified poll
       nl-BE: Verified poll
-    description_multiloc:
-      en: "<p>Test verification permissions with me Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test verification permissions with me Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1042,11 +973,6 @@ models:
     title_multiloc:
       en: Charlie Crew survey
       nl-BE: Charlie Crew survey
-    description_multiloc:
-      en: "<p>Test group permissions with me Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test group permissions with me Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1059,11 +985,6 @@ models:
     title_multiloc:
       en: Charlie Crew poll
       nl-BE: Charlie Crew poll
-    description_multiloc:
-      en: "<p>Test group permissions with me Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test group permissions with me Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1076,11 +997,6 @@ models:
     title_multiloc:
       en: Timeline ideation map
       nl-BE: Timeline ideation map
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1093,11 +1009,6 @@ models:
     title_multiloc:
       en: Timeline ideation card
       nl-BE: Timeline ideation card
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1110,11 +1021,6 @@ models:
     title_multiloc:
       en: Archived project
       nl-BE: Archived project
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1126,11 +1032,6 @@ models:
     title_multiloc:
       en: Custom idea fields project
       nl-BE: Custom idea fields project
-    description_multiloc:
-      en: "<p>Test idea custom fields. Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Test idea custom fields. Let's renew the parc at the city border and make it an enjoyable place
         for young and old.

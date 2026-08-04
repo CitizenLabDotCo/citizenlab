@@ -176,9 +176,6 @@ models:
   - &3
     title_multiloc:
       en: Reducing Air Pollution in the City
-    description_multiloc:
-      en: |
-        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
 
         <p>You can support this innitiative by proposing your ideas on how to tackle this issue.</p>
 

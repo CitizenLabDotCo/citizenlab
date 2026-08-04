@@ -12,7 +12,6 @@ module MultiTenancy
             'nl-BE': 'Help mee als vrijwilliger',
             'fr-BE': 'Aider en tant que bénévole'
           },
-          description_multiloc: runner.rand_description_multiloc,
           description_preview_multiloc: {
             'en' => 'Every bit of help counts',
             'nl-BE' => 'Alle beetjes helpen',
@@ -32,7 +31,6 @@ module MultiTenancy
         volunteering_phase = Phase.create!({
           project: volunteering_project,
           title_multiloc: volunteering_project.title_multiloc,
-          description_multiloc: volunteering_project.description_multiloc,
           start_at: phase_start_at,
           # At least 2 days: `rand(150)` can be 0 (zero-length phase), and a 1-day
           # phase spanning a DST spring-forward is only 23h < Phase::MIN_DURATION.

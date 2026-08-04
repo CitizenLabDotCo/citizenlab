@@ -46,7 +46,7 @@ module ContentBuilder
           TEXT: {
             type: { resolvedName: 'TextMultiloc' },
             nodes: [],
-            props: { text: folder.description_multiloc || {} },
+            props: { text: {} },
             custom: {},
             hidden: false,
             parent: 'ROOT',

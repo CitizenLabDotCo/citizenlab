@@ -265,22 +265,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
     yml_project = {
       'title_multiloc' => new_title_multiloc || @project.title_multiloc,
-      'description_multiloc' => @project.description_multiloc,
       'created_at' => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
       'updated_at' => shift_timestamp(@project.updated_at, shift_timestamps)&.iso8601,
       'remote_header_bg_url' => @project.header_bg_url,
       'visible_to' => @project.visible_to,
       'description_preview_multiloc' => @project.description_preview_multiloc,
       'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
-      'text_images_attributes' => @project.text_images.map do |ti|
-        {
-          'imageable_field' => ti.imageable_field,
-          'remote_image_url' => ti.image_url,
-          'text_reference' => ti.text_reference,
-          'created_at' => ti.created_at.to_s,
-          'updated_at' => ti.updated_at.to_s
-        }
-      end,
       'include_all_areas' => @project.include_all_areas,
       'hidden' => @project.hidden,
       'live_auto_input_topics_enabled' => @project.live_auto_input_topics_enabled,
