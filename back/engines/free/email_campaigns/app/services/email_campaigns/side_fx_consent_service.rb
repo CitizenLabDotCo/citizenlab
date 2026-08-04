@@ -2,20 +2,21 @@
 
 module EmailCampaigns
   class SideFxConsentService < BaseSideFxService
-    def after_create(consent, user)
-      log_consent_change(consent, user)
-    end
-
     def after_update(consent, user)
       log_consent_change(consent, user)
     end
 
-    # Logs a consent event unconditionally, for flows where each affirmative
-    # action is itself an event we must store even when the stored `consented`
-    # value is unchanged - e.g. every phone-number submission to receive an SMS
-    # confirmation code (Twilio: "store evidence of each consent event").
-    def log_consent_event(consent, user)
-      log_activity(consent, user, Time.now.to_i)
+    def record_consent(user, campaign_class, consented:, log_if_unchanged: false)
+      consent = Consent.find_or_initialize_by(user_id: user.id, campaign_type: campaign_class.name)
+      consent.update!(consented: consented)
+
+      if log_if_unchanged
+        log_activity(consent, user, Time.now.to_i)
+      else
+        log_consent_change(consent, user)
+      end
+
+      consent
     end
 
     private

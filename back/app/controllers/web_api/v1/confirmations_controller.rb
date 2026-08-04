@@ -84,12 +84,11 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     manual_campaign_consent = parse_bool(confirm_code_phone_change_params[:sms_manual_campaign_consent])
     return if manual_campaign_consent.nil?
 
-    consent = EmailCampaigns::Consent.find_or_initialize_by(
-      user_id: current_user.id,
-      campaign_type: EmailCampaigns::Campaigns::SmsManual.name
+    EmailCampaigns::SideFxConsentService.new.record_consent(
+      current_user,
+      EmailCampaigns::Campaigns::SmsManual,
+      consented: manual_campaign_consent
     )
-    consent.update!(consented: manual_campaign_consent)
-    EmailCampaigns::SideFxConsentService.new.after_update(consent, current_user)
   end
 
   def user_confirmation_service
