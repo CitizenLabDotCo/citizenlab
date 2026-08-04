@@ -46,7 +46,7 @@ const IdeasNewSurveyPage = () => {
   const phaseIdFromSearchParams = searchParams.phase_id;
   const phaseId =
     phaseIdFromSearchParams ||
-    project?.data.relationships.current_phase?.data?.id;
+    project?.data.relationships.current_phase?.data?.id; // TODO: This can be deleted in a few months, as URLs now always include the phase_id.
   const { data: phase, isInitialLoading: phaseIsLoading } = usePhase(phaseId);
 
   /*
