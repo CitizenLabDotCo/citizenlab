@@ -7,6 +7,7 @@ import {
   IconButton,
   Badge,
   Tooltip,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
