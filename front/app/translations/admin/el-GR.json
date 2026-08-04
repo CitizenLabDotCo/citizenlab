@@ -1348,6 +1348,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Αυτό το έργο δεν βρίσκεται σε χώρο ή φάκελο. Θα χρειαστείτε έγκριση από έναν διαχειριστή για να το δημοσιεύσετε.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Αυτό το έργο δεν βρίσκεται σε φάκελο. Θα χρειαστείτε έγκριση από έναν διαχειριστή για να το δημοσιεύσετε.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": "Μπορείτε να μετακινήσετε αυτό το έργο μόνο σε έναν άλλο φάκελο που διαχειρίζεστε.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": "Μπορείτε να μετακινήσετε αυτό το έργο μόνο σε έναν άλλο χώρο ή φάκελο που διαχειρίζεστε.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Φάκελος",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Χωρίς φάκελο —",

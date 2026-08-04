@@ -1348,6 +1348,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "látogassa meg ügyfélszolgálati központunkat",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Ez a projekt nincs munkaterületen vagy mappában. A közzétételéhez egy adminisztrátor jóváhagyására lesz szüksége.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Ez a projekt nincs mappában. A közzétételéhez egy adminisztrátor jóváhagyására lesz szüksége.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": "Ezt a projektet csak egy másik olyan mappába helyezheti át, amelyet Ön kezel.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": "Ezt a projektet csak egy másik olyan térbe vagy mappába helyezheti át, amelyet Ön kezel.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Mappa",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Nincs mappa —",

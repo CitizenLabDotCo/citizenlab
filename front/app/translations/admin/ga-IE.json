@@ -1348,6 +1348,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "tabhair cuairt ar ár n-ionad tacaíochta",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": "Níl an tionscadal seo i spás ná i bhfillteán. Beidh faomhadh ó riarthóir de dhíth ort chun é a fhoilsiú.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": "Níl an tionscadal seo i bhfillteán. Beidh faomhadh ó riarthóir de dhíth ort chun é a fhoilsiú.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": "Ní féidir leat an tionscadal seo a bhogadh ach chuig fillteán eile a bhainistíonn tú.",
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": "Ní féidir leat an tionscadal seo a bhogadh ach chuig spás nó fillteán eile a bhainistíonn tú.",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": "{folderTitle} ({spaceTitle})",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": "Fillteán",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": "— Gan fillteán —",
