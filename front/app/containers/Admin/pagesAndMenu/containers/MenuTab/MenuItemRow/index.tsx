@@ -15,6 +15,7 @@ import { Multiloc } from 'typings';
 import { INavbarChild } from 'api/navbar/types';
 
 import { TextCell } from 'components/admin/ResourceList';
+import { DRAG_HANDLE_HEIGHT } from 'components/admin/ResourceList/SortableRow';
 import T from 'components/T';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -59,6 +60,11 @@ const MenuItemRow = ({
         alignItems="center"
         justifyContent="space-between"
         width="100%"
+        // Expanding the dropdown makes this row taller than the drag handle, so
+        // the row would no longer be centred against it. Holding the header to
+        // the handle's own height keeps the title on the same line as the
+        // handle whether the dropdown is open or closed.
+        minHeight={`${DRAG_HANDLE_HEIGHT}px`}
         data-testid="menu-item-row"
       >
         <TextCell className="expand">
