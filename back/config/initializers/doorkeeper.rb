@@ -283,9 +283,14 @@ Doorkeeper.configure do
   # #call can be used in order to allow conditional checks (to allow non-SSL
   # redirects to localhost for example).
   #
-  # force_ssl_in_redirect_uri !Rails.env.development?
-  #
-  # force_ssl_in_redirect_uri { |uri| uri.host != 'localhost' }
+  # Keep HTTPS enforced for real redirect URIs, but not for loopback callbacks.
+  # RFC 8252 allows non-HTTPS redirects to loopback addresses for native apps,
+  # which is what MCP clients (Claude Code) use for their OAuth
+  # callback during Dynamic Client Registration. Without this the
+  # default (force SSL outside development) rejects http://localhost:<port>/...
+  force_ssl_in_redirect_uri do |uri|
+    !Rails.env.development? && %w[localhost 127.0.0.1 ::1].exclude?(uri.host)
+  end
 
   # Specify what redirect URI's you want to block during Application creation.
   # Any redirect URI is allowed by default.

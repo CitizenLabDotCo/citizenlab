@@ -139,7 +139,6 @@ const MapIdeasList = memo<Props>(
         {!showFilters && (
           <IdeaMapCards
             ideaMarkers={ideaMarkers}
-            projectId={projectId}
             phaseId={phaseId}
             isFiltered={isFiltered}
             onSelectIdea={onSelectIdea}

@@ -5,7 +5,11 @@ require 'nanoid'
 module ContentBuilder
   module Craftjs
     class DefaultLayoutService
-      def default_layout(content_buildable)
+      def default_layout(content_buildable, code = nil)
+        if code == ProjectPageLayoutService::CODE
+          return ProjectPageLayoutService.new.craftjs_json_for(content_buildable)
+        end
+
         case content_buildable.class.name
         when 'ProjectFolders::Folder'
           folder_layout(content_buildable)

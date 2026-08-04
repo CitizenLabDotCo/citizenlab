@@ -119,7 +119,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
     when '-new', nil
       comments.order(created_at: :asc)
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
 

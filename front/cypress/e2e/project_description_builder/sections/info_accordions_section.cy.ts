@@ -25,9 +25,7 @@ describe('Project description builder Info & Accordions section', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -40,11 +38,11 @@ describe('Project description builder Info & Accordions section', () => {
   });
 
   it('handles Info & Accordions section correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
     cy.get('#e2e-draggable-info-accordions').dragAndDrop(
-      '#e2e-content-builder-frame',
+      '#e2e-project-page-body',
       {
         position: 'inside',
       }

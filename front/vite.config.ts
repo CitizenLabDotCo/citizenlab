@@ -40,7 +40,10 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
-    base: '/', // Base path for public assets
+    // Base path for built assets. CI sets ASSET_BASE_URL=/<git-sha>/ so every
+    // build's assets get immutable, per-build URLs (uploaded to a fresh S3
+    // prefix). Unset locally, so dev keeps serving everything from '/'.
+    base: process.env.ASSET_BASE_URL || '/',
     server: {
       port: USE_HTTPS ? 443 : Number(process.env.PORT) || 3000,
       host: '0.0.0.0',

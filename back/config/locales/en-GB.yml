@@ -14,6 +14,10 @@ en-GB:
       subject: Confirm your email address for %{organizationName}'s participation platform
       thanks_for_signing_up1: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
       the_link_is_valid_for: This link is valid for 24 hours. If the link has expired, you may <a href="%{link}">request a new code</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Use this space for more detail — background, what happens with the input, or who to get in touch with.</p>
+      intro_placeholder: <p>Add a short introduction here — tell residents what this project is about and how they can take part.</p>
   custom_field_options:
     domicile:
       outside: Somewhere else
@@ -270,6 +274,15 @@ en-GB:
     proposals:
       title: Proposals
   pdf_export:
+    input_responses:
+      date: Date
+      no_answer: (No answer)
+      prepared_by: Prepared by
+      report_label: Response report
+      respondent: Respondent %{number}
+      response_count:
+        one: '%{count} response'
+        other: '%{count} responses'
     survey_responses:
       date: Date
       no_answer: (No answer)

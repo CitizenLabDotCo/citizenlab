@@ -33,6 +33,7 @@ import TwoColumn, {
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import NewLabel from 'components/UI/NewLabel';
 
 import {
   useIntl,
@@ -46,6 +47,7 @@ import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from '../Widgets/CommunityMonitorCTA';
+import CustomPages, { customPagesTitle } from '../Widgets/CustomPages';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -74,6 +76,9 @@ import Spotlight, {
 } from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from '../Widgets/VideoEmbed';
+import HtmlBlockMultiloc, {
+  htmlBlockMultilocTitle,
+} from '../Widgets/HtmlBlockMultiloc';
 
 import { platformCreatedBeforeReleaseNewWidgets } from './utils';
 
@@ -84,7 +89,9 @@ const HomepageBuilderToolbox = () => {
   const appConfigurationLocales = useAppConfigurationLocales();
   const followEnabled = useFeatureFlag({ name: 'follow' });
   const communityMonitorEnabled = useFeatureFlag({ name: 'community_monitor' });
-
+  const isHtmlBlockMultilocEnabled = useFeatureFlag({
+    name: 'html_block_in_content_builder',
+  });
   const { data: appConfiguration } = useAppConfiguration();
 
   if (
@@ -181,6 +188,13 @@ const HomepageBuilderToolbox = () => {
           label={formatMessage(selectionTitle)}
         />
         <DraggableElement
+          id="e2e-draggable-custom-pages"
+          component={<CustomPages customPages={[]} />}
+          icon="page"
+          label={formatMessage(customPagesTitle)}
+          labelSuffix={<NewLabel />}
+        />
+        <DraggableElement
           id="e2e-draggable-published"
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
           icon="check-circle"
@@ -242,6 +256,14 @@ const HomepageBuilderToolbox = () => {
           icon="text"
           label={formatMessage(textMultilocTitle)}
         />
+        {isHtmlBlockMultilocEnabled && (
+          <DraggableElement
+            id="e2e-draggable-html-block-multiloc"
+            component={<HtmlBlockMultiloc html={{}} />}
+            icon="code"
+            label={formatMessage(htmlBlockMultilocTitle)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-white-space"
           component={<WhiteSpace size="small" />}

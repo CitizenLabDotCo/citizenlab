@@ -1,7 +1,10 @@
 import moment = require('moment');
 import { randomString } from './commands';
 import { ParticipationMethod } from '../../app/api/phases/types';
-import { IPhasePermissionAction } from '../../app/api/phase_permissions/types';
+import {
+  IPhasePermissionAction,
+  IPermissionUpdate,
+} from '../../app/api/phase_permissions/types';
 
 const withAdminJwt = (
   makeRequest: (adminJwt: string) => any,
@@ -89,18 +92,15 @@ export const setupProject = ({
 export const updatePermission = ({
   adminJwt,
   phaseId,
-  permitted_by,
-  user_fields_in_form,
-  user_data_collection,
   permission = 'posting_idea',
+  ...permissionBody
 }: {
   adminJwt?: string;
   phaseId: string;
-  permitted_by?: string;
   user_fields_in_form?: boolean;
   user_data_collection?: string;
   permission?: IPhasePermissionAction;
-}) => {
+} & Partial<IPermissionUpdate>) => {
   const makeRequest = (adminJwt: string) => {
     return cy.request({
       headers: {
@@ -110,9 +110,7 @@ export const updatePermission = ({
       method: 'PATCH',
       url: `web_api/v1/phases/${phaseId}/permissions/${permission}`,
       body: {
-        permitted_by,
-        user_fields_in_form,
-        user_data_collection,
+        ...permissionBody,
       },
     });
   };

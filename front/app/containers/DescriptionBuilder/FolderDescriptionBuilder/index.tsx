@@ -11,12 +11,10 @@ const FolderDescriptionBuilderPage = () => {
   const { data: folder } = useProjectFolderById(folderId);
 
   if (!folder) return null;
-  if (!folder.data.attributes.uses_content_builder) return null;
 
   return (
     <DescriptionBuilderPage
       contentBuildableId={folderId}
-      contentBuildableType="folder"
       backPath={`/admin/projects/folders/${folderId}/settings`}
       previewLink={{
         to: '/folders/$slug',

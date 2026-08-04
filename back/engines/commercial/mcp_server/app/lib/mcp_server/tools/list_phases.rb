@@ -17,17 +17,15 @@ class McpServer::Tools::ListPhases < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      project = Project.find(params[:project_id])
-      scope = project.phases.order(:start_at)
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
 
       paginated_response(
         'phases',
-        scope,
+        project.phases.order(:start_at),
         **params.slice(:page, :per_page),
         serializer: McpServer::Serializers::PhaseSummary
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Project not found: #{params[:project_id]}")
     end
   end
 end

@@ -19,13 +19,9 @@ const BASE_PROJECT = {
       en: 'My cool project',
     },
     slug: 'my-cool-project',
-    action_descriptors: {
-      posting_idea: { enabled: true },
-      reacting_idea: { enabled: false },
-      commenting_idea: { enabled: true },
-    },
-    starts_days_from_now: null,
-    ended_days_ago: null,
+    participation_status: 'active',
+    days_until_start: null,
+    days_since_end: null,
   },
   relationships: {
     project_images: {
@@ -36,7 +32,7 @@ const BASE_PROJECT = {
         },
       ],
     },
-    current_phase: {
+    highlighted_phase: {
       data: {
         id: '1',
       },
@@ -56,10 +52,8 @@ export const UpcomingProject: Story = {
       ...BASE_PROJECT,
       attributes: {
         ...BASE_PROJECT.attributes,
-        starts_days_from_now: 10,
-      },
-      relationships: {
-        project_images: BASE_PROJECT.relationships.project_images,
+        participation_status: 'upcoming',
+        days_until_start: 10,
       },
     } as any,
   },
@@ -71,10 +65,8 @@ export const FinishedProject: Story = {
       ...BASE_PROJECT,
       attributes: {
         ...BASE_PROJECT.attributes,
-        ended_days_ago: 15,
-      },
-      relationships: {
-        project_images: BASE_PROJECT.relationships.project_images,
+        participation_status: 'ended',
+        days_since_end: 15,
       },
     } as any,
   },

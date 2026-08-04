@@ -65,15 +65,6 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(included_image_ids).to include project_image.id
     end
 
-    example_request 'Includes current phase', document: false do
-      expect(status).to eq(200)
-
-      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
-      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
-
-      expect(current_phase_ids).to match included_phase_ids
-    end
-
     example 'Does not include unlisted projects' do
       unlisted_project = create(:project, listed: false)
       create(:follower, followable: unlisted_project, user: @user)
@@ -125,9 +116,13 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(project_ids).not_to include active_information_project.id
       expect(project_ids).not_to include past_project.id
       expect(project_ids).not_to include future_project.id
+
+      highlighted_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :highlighted_phase, :data, :id) }
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase_mini' }.pluck(:id)
+      expect(highlighted_phase_ids).to match_array included_phase_ids
     end
 
-    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'", document: false do
+    example "Excludes projects where no action is permitted & no permission is 'fixable'", document: false do
       group = create(:group)
       permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
       create(:groups_permission, permission_id: permission.id, group: group)
@@ -137,11 +132,11 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       create(:groups_permission, permission_id: permission.id, group: group)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      action_descriptors = Permissions::ProjectPermissionsService.new(
-        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      action_descriptors = Permissions::PhasePermissionsService.new(
+        active_ideation_project.phases.first, @user, user_requirements_service: user_requirements_service
       ).action_descriptors
 
-      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.all? { |_k, v| v[:enabled] == false }).to be true
 
       do_request
       expect(status).to eq(200)
@@ -149,16 +144,16 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
     end
 
-    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'", document: false do
+    example "Includes projects where no action is permitted, but a permission is 'fixable'", document: false do
       create(:custom_field, required: true)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      action_descriptors = Permissions::ProjectPermissionsService.new(
-        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      action_descriptors = Permissions::PhasePermissionsService.new(
+        active_ideation_project.phases.first, @user, user_requirements_service: user_requirements_service
       ).action_descriptors
 
-      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
-      expect(action_descriptors.except(:attending_event).count { |_k, v| v[:disabled_reason] == 'user_missing_requirements' }).to eq 4
+      expect(action_descriptors.all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.count { |_k, v| v[:disabled_reason] == 'user_missing_requirements' }).to eq 4
 
       do_request
       expect(status).to eq(200)
@@ -175,15 +170,6 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
 
       expect(included_image_ids).to include project_image.id
-    end
-
-    example_request 'Includes current phase', document: false do
-      expect(status).to eq(200)
-
-      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
-      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase_mini' }.pluck(:id)
-
-      expect(current_phase_ids).to match included_phase_ids
     end
 
     example 'Includes next page link in response when appropriate', document: false do
@@ -320,19 +306,6 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
         project_ids = json_response[:data].pluck(:id)
         expect(project_ids).to contain_exactly(archived_project.id, finished_project1.id, unfinished_project2.id)
-      end
-
-      example 'Includes correct ended_days_ago attribute value', document: false do
-        freeze_time do
-          finished_project1.phases[1].update!(start_at: 1.week.ago, end_at: 49.hours.ago)
-          finished_project1.phases[0].update!(start_at: 2.months.ago, end_at: 1.month.ago)
-
-          do_request({ filter_by: 'finished_and_archived' })
-          assert_status :ok
-        end
-
-        project = json_response[:data].find { |d| d[:id] == finished_project1.id }
-        expect(project[:attributes][:ended_days_ago]).to eq(2)
       end
 
       # Test to catch duplicates that can occur when created_at dates match, and no secondary sorting is applied.

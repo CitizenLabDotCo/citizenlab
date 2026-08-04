@@ -58,20 +58,19 @@ describe('Project description builder display', () => {
   });
 
   it('shows a description authored in the Content Builder on the project page', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
-    cy.visit(`admin/projects/${projectId}/general`);
-    cy.get('#e2e-project-description-builder-link')
-      .should('be.visible')
-      .click();
+    cy.apiToggleProjectDescriptionBuilder({ projectId });
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    // Add the description as a text widget.
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+    // Add the description as a text widget. The blank project starts with
+    // seeded text widgets, so target the one that was just dropped.
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
-    cy.get('div.e2e-text-box').click('center');
+    cy.get('div.e2e-text-box').first().click('center');
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type(projectDescription, { force: true });
 
@@ -83,51 +82,151 @@ describe('Project description builder display', () => {
     cy.contains(projectDescription).should('be.visible');
   });
 
-  it('shows attachments added to the project alongside the Content Builder description', () => {
-    cy.intercept(`**/files`).as('saveProjectFiles');
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
-      'saveProjectDescriptionBuilder'
-    );
+  it('shows a file attachment widget alongside the Content Builder description', () => {
+    cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      };
 
-    // Attach a project file
-    cy.visit(`admin/projects/${projectId}/general`);
-    // This 4s wait is necessary. I tried waiting in a number of other ways,
-    // but this was the only consistent solution.
-    cy.wait(4000);
-    cy.scrollTo('bottom');
-
-    // Open the file upload modal
-    cy.get('#e2e-open-file-upload-modal-button').should('exist');
-    cy.get('#e2e-open-file-upload-modal-button').click();
-    cy.get('#e2e-file-upload-input').should('exist');
-
-    cy.get('#e2e-file-upload-input').selectFile('cypress/fixtures/example.pdf');
-    cy.contains('example.pdf').should('exist');
-    cy.wait(2000);
-
-    // Submit project
-    cy.get('.e2e-submit-wrapper-button button').click();
-    cy.wait('@saveProjectFiles');
-    cy.contains('Your form has been saved!').should('be.visible');
-
-    // Add the description in the Content Builder via the "Edit description" link.
-    cy.get('#e2e-project-description-builder-link')
-      .should('be.visible')
-      .click();
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
-      position: 'inside',
+      // Upload a file to the project's file repository.
+      cy.fixture('example.pdf', 'base64')
+        .then((fileContent) => {
+          return cy.request({
+            headers,
+            method: 'POST',
+            url: 'web_api/v1/files',
+            body: {
+              file: {
+                name: 'example.pdf',
+                content: `data:application/pdf;base64,${fileContent}`,
+                project: projectId,
+              },
+            },
+          });
+        })
+        .then((fileResponse) => {
+          // Author a project page holding the description and a FileAttachment
+          // widget, as the project page builder does.
+          cy.request({
+            headers,
+            method: 'POST',
+            url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_page/upsert`,
+            body: {
+              content_builder_layout: {
+                enabled: true,
+                craftjs_json: projectPageLayoutWithFile(
+                  fileResponse.body.data.id
+                ),
+              },
+            },
+          });
+        });
     });
-    cy.get('div.e2e-text-box').click('center');
-    cy.get('.ql-editor').click();
-    cy.get('.ql-editor').type('Edited text.', { force: true });
-
-    cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
 
-    // Both the Content Builder description and the attachment are visible.
+    // The description and the attachment (in the two-column's wide column)
+    // are both visible.
     cy.contains('Edited text.').should('be.visible');
-    cy.contains('example.pdf').should('be.visible');
+    cy.get('.e2e-two-column #e2e-file-attachment')
+      .contains('example.pdf')
+      .should('be.visible');
   });
+});
+
+const node = (override: Record<string, unknown>) => ({
+  nodes: [],
+  props: {},
+  custom: {},
+  hidden: false,
+  isCanvas: false,
+  linkedNodes: {},
+  ...override,
+});
+
+const projectPageLayoutWithFile = (fileId: string) => ({
+  ROOT: node({
+    type: { resolvedName: 'ProjectPageRoot' },
+    nodes: ['PROJECT_PAGE_BANNER', 'PROJECT_PAGE_TITLE', 'PROJECT_PAGE_BODY'],
+    custom: { region: true },
+    isCanvas: true,
+    displayName: 'ProjectPageRoot',
+  }),
+  PROJECT_PAGE_BANNER: node({
+    type: { resolvedName: 'ProjectBanner' },
+    props: { image: {}, alt: {} },
+    parent: 'ROOT',
+    displayName: 'ProjectBanner',
+  }),
+  PROJECT_PAGE_TITLE: node({
+    type: { resolvedName: 'ProjectTitle' },
+    parent: 'ROOT',
+    displayName: 'ProjectTitle',
+  }),
+  PROJECT_PAGE_BODY: node({
+    type: { resolvedName: 'ProjectPageBody' },
+    nodes: [
+      'TEXT',
+      'SPACE',
+      'COLUMNS',
+      'PROJECT_PAGE_PHASES',
+      'PROJECT_PAGE_EVENTS',
+    ],
+    custom: { region: true },
+    parent: 'ROOT',
+    isCanvas: true,
+    displayName: 'ProjectPageBody',
+  }),
+  TEXT: node({
+    type: { resolvedName: 'TextMultiloc' },
+    props: { text: { en: '<p>Edited text.</p>' } },
+    parent: 'PROJECT_PAGE_BODY',
+    displayName: 'TextMultiloc',
+  }),
+  SPACE: node({
+    type: { resolvedName: 'WhiteSpace' },
+    props: { size: 'small' },
+    parent: 'PROJECT_PAGE_BODY',
+    displayName: 'WhiteSpace',
+  }),
+  COLUMNS: node({
+    type: { resolvedName: 'TwoColumn' },
+    nodes: ['LEFT', 'RIGHT'],
+    props: { columnLayout: '2-1' },
+    parent: 'PROJECT_PAGE_BODY',
+    displayName: 'TwoColumn',
+  }),
+  LEFT: node({
+    type: { resolvedName: 'Container' },
+    nodes: ['FILE'],
+    props: { id: 'left' },
+    parent: 'COLUMNS',
+    isCanvas: true,
+    displayName: 'Container',
+  }),
+  RIGHT: node({
+    type: { resolvedName: 'Container' },
+    props: { id: 'right' },
+    parent: 'COLUMNS',
+    isCanvas: true,
+    displayName: 'Container',
+  }),
+  FILE: node({
+    type: { resolvedName: 'FileAttachment' },
+    props: { fileId },
+    parent: 'LEFT',
+    displayName: 'FileAttachment',
+  }),
+  PROJECT_PAGE_PHASES: node({
+    type: { resolvedName: 'PhasesWidget' },
+    parent: 'PROJECT_PAGE_BODY',
+    displayName: 'PhasesWidget',
+  }),
+  PROJECT_PAGE_EVENTS: node({
+    type: { resolvedName: 'EventsWidget' },
+    parent: 'PROJECT_PAGE_BODY',
+    displayName: 'EventsWidget',
+  }),
 });

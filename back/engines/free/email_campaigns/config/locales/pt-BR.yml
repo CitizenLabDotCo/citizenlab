@@ -190,8 +190,10 @@ pt-BR:
       new_email_confirmation: Novo código de confirmação de e-mail
       new_idea_for_admin_prescreening: Nova entrada que requer aprovação em um projeto I moderado
       new_idea_for_admin_published: Nova entrada publicada em um projeto que eu moderei
+      new_phone_confirmation: Novo código de confirmação de telefone
       official_feedback_on_idea_you_follow: Atualizar uma ideia que você segue
       password_reset: Redefinir a senha
+      phone_confirmation: Código de confirmação de telefone
       project_folder_moderation_rights_received: Direitos de moderação da pasta de projetos recebidos
       project_manager_rights_received: Direitos de gerente de projeto recebidos
       project_moderation_rights_received: Direitos de moderação de projetos recebidos
@@ -202,6 +204,7 @@ pt-BR:
       project_review_state_change: Projeto aprovado
       proposal_expired_for_admin: Proposta expirou sem atingir o limiar de votação
       screening_digest: Lembrete semanal de triagem
+      sms_manual: Mensagens SMS oficiais
       space_moderation_rights_received: Direitos de gerente de espaço recebidos
       status_change_on_idea_you_follow: Mudança de status de uma ideia que você segue
       survey_submitted: Pesquisa enviada
@@ -534,6 +537,8 @@ pt-BR:
       title: Uma nova entrada foi publicada em sua plataforma
       today: Hoje
       yesterday: Ontem
+    new_phone_confirmation:
+      sms_body: Seu código de confirmação é %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ir para esta entrada
       event_description: "%{feedback_author_name} apresentou uma atualização sobre o '%{input_title}'."
@@ -546,6 +551,8 @@ pt-BR:
       preheader: Redefina sua senha para %{organizationName}
       subject: '%{organizationName}: Redefina sua senha'
       title: Escolha uma nova senha
+    phone_confirmation:
+      sms_body: Seu código de confirmação é %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

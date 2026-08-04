@@ -100,6 +100,28 @@ resource 'Events' do
       end
     end
 
+    context 'with malformed parameters' do
+      example 'returns 400 for an unsupported sort parameter', document: false do
+        do_request(sort: "start_at; WAITFOR DELAY '00:00:07'")
+        assert_status 400
+      end
+
+      example 'returns 400 for an unparseable ends_before_date', document: false do
+        do_request(ends_before_date: 'not-a-real-date')
+        assert_status 400
+      end
+
+      example 'returns 400 for an oversized ongoing_during value', document: false do
+        do_request(ongoing_during: "[#{'9' * 180},null]")
+        assert_status 400
+      end
+
+      example 'ignores a malformed nested page parameter instead of erroring', document: false do
+        do_request(page: { number: { injected: '1' } })
+        assert_status 200
+      end
+    end
+
     context 'when the user registered to some events' do
       before { header_token_for(user) }
 

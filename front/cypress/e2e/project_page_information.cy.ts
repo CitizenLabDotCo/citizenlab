@@ -47,7 +47,7 @@ describe('Information with events CTA', () => {
     cy.get('#e2e-project-see-events-button').should('not.exist');
     cy.get('#e2e-event-previews').should('not.exist');
     cy.get('#e2e-cta-bar-see-events').should('not.exist');
-    cy.get('#e2e-events-section-project-page').should('not.exist');
+    cy.get('#e2e-project-page-events').should('not.exist');
   });
 
   it('shows the CTA elements when visiting active information project with events', () => {
@@ -63,9 +63,10 @@ describe('Information with events CTA', () => {
       cy.visit(`/en/projects/${projectSlug}`);
 
       cy.get('#e2e-project-see-events-button').should('exist');
+      cy.dockProjectCtaBar();
       cy.get('#e2e-cta-bar-see-events').should('exist');
       cy.get('#e2e-event-previews').should('exist');
-      cy.get('#e2e-events-section-project-page').should('exist');
+      cy.get('#e2e-project-page-events').should('exist');
     });
   });
 

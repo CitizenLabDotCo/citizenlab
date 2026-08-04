@@ -29,18 +29,14 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      type = params[:type]
-      config = RESOURCES.fetch(type)
+      config = RESOURCES.fetch(params[:type])
+      record = config[:model].find_by(id: params[:id])
+      return not_found_error("Resource (#{params[:type]})", params[:id]) unless record
 
-      id = params[:id]
-      record = config[:model].find(id)
-
-      ok(
-        "#{type} #{id}",
+      response(
+        "#{params[:type]} #{params[:id]}",
         structured: config[:serializer].serialize(record, params: { current_user: })
       )
-    rescue ActiveRecord::RecordNotFound
-      error("#{type} not found: #{id}")
     end
   end
 end

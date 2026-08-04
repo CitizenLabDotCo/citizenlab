@@ -79,6 +79,7 @@ const AdminProjectsListNew = () => {
           alignItems="center"
           borderBottom={`1px solid ${colors.grey200}`}
           height="44px"
+          mt="36px"
         >
           <Tabs />
           {searchMessage && (

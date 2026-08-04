@@ -39,6 +39,11 @@ export default defineMessages({
     defaultMessage:
       'This password can be easily guessed. Please choose a stronger password.',
   },
+  too_weak: {
+    id: 'app.errors.too_weak',
+    defaultMessage:
+      'This password can be easily guessed. Please choose a stronger password, for example by making it longer or using several unrelated words.',
+  },
   confirmation_code_invalid: {
     id: 'app.errors.confirmation_code_invalid',
     defaultMessage:
@@ -418,5 +423,18 @@ export default defineMessages({
   duration_too_short: {
     id: 'app.errors.phase_too_short',
     defaultMessage: 'The phase is too short. It must be at least 24 hours.',
+  },
+  new_phone_blank: {
+    id: 'app.errors.new_phone_blank',
+    defaultMessage: 'Please enter your phone number.',
+  },
+  new_phone_invalid: {
+    id: 'app.errors.new_phone_invalid',
+    defaultMessage: 'Please enter a valid phone number.',
+  },
+  new_phone_taken: {
+    id: 'app.errors.new_phone_taken',
+    defaultMessage:
+      'This phone number is already taken. Please try another one.',
   },
 });

@@ -4,6 +4,17 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   skip_before_action :authenticate_user
   before_action :set_admin_publication, only: %i[reorder show]
 
+  # A nested query param where a scalar is expected (`?publication_statuses[x]=y`) makes
+  # ActiveRecord raise "can't cast ActionController::Parameters". That's bad input → 400,
+  # not a 500. Other TypeErrors are re-raised.
+  rescue_from TypeError do |exception|
+    raise exception unless exception.message.start_with?("can't cast ActionController::Parameters")
+
+    # Can't re-raise as ApiError here (rescue_from doesn't chain), so render its payload directly.
+    error = ApiError.new(:invalid_filter_parameter, status: 400)
+    render json: error.payload, status: error.status
+  end
+
   def index
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = apply_projects_listed_scope(admin_publications)
@@ -17,7 +28,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     when nil
       admin_publications.order('admin_publications.ordering ASC')
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
 
     @admin_publications = paginate admin_publications
@@ -35,7 +46,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id,
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       ),
       include: included
     )
@@ -45,7 +57,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   # Returns non-draft admin_publications for specified IDs, ordered by order of the specified IDs.
   # => [AdminPublication]
   def index_select_and_order_by_ids
-    ids = params[:ids]
+    # ids should be an explicit id array; anything else is an empty selection
+    ids = params[:ids].is_a?(Array) ? params[:ids].select { |id| id.is_a?(String) } : []
 
     visible_not_draft_admin_publications = policy_scope(AdminPublication.includes(:parent)).not_draft
     admin_publications = admin_publication_filterer.filter(visible_not_draft_admin_publications,
@@ -66,7 +79,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id,
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
       ),
       include: included_for_publications
     )
@@ -133,7 +147,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     admin_publications.includes(
       {
         publication: [
-          { phases: %i[report custom_form permissions] },
+          { phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }] },
           :admin_publication,
           :images,
           :project_images,

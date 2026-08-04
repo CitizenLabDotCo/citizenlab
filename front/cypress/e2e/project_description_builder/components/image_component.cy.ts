@@ -22,9 +22,7 @@ describe('Project description builder Image component', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -38,12 +36,12 @@ describe('Project description builder Image component', () => {
   });
 
   it('handles Image component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
     cy.get('#e2e-draggable-image').should('exist');
-    cy.get('#e2e-draggable-image').dragAndDrop('#e2e-content-builder-frame', {
+    cy.get('#e2e-draggable-image').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
 
@@ -75,10 +73,10 @@ describe('Project description builder Image component', () => {
   });
 
   it('deletes Image component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
     cy.get('.e2e-image').parent().click();
     cy.get('#e2e-delete-button').click();

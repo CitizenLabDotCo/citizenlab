@@ -42,6 +42,7 @@ import CallToAction, { callToActionTitle } from './CallToAction';
 import CommunityMonitorCTA, {
   communityMonitorCTATitle,
 } from './CommunityMonitorCTA';
+import CustomPages, { customPagesTitle } from './CustomPages';
 import Events, { eventsTitle } from './Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
@@ -59,6 +60,7 @@ import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
 import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 import VideoEmbed, { videoEmbedTitle } from './VideoEmbed';
+import HtmlBlockMultiloc, { htmlBlockMultilocTitle } from './HtmlBlockMultiloc';
 
 export const WIDGETS = {
   // Shared widgets
@@ -77,6 +79,7 @@ export const WIDGETS = {
   Areas,
   CallToAction,
   CommunityMonitorCTA,
+  CustomPages,
   Events,
   FollowedItems,
   FinishedOrArchived,
@@ -85,6 +88,7 @@ export const WIDGETS = {
   ProjectsAndFoldersLegacy,
   TextMultiloc,
   VideoEmbed,
+  HtmlBlockMultiloc,
 
   // RENAMED (TODO rename in migration)
   Highlight: CallToAction,
@@ -121,6 +125,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   Areas: areasTitle,
   CallToAction: callToActionTitle,
   CommunityMonitorCTA: communityMonitorCTATitle,
+  CustomPages: customPagesTitle,
   Events: eventsTitle,
   FollowedItems: followedItemsTitle,
   FinishedOrArchived: finishedOrArchivedTitle,
@@ -129,6 +134,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ProjectsAndFoldersLegacy: projectsAndFoldersLegacyTitle,
   TextMultiloc: textMultilocTitle,
   VideoEmbed: videoEmbedTitle,
+  HtmlBlockMultiloc: htmlBlockMultilocTitle,
 
   // RENAMED
   Highlight: callToActionTitle,
@@ -169,6 +175,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'Areas',
   'CallToAction',
   'CommunityMonitorCTA',
+  'CustomPages',
   'Events',
   'FollowedItems',
   'FinishedOrArchived',
@@ -186,7 +193,6 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'FolderFiles',
 
   // Project description builder widgets
-  'InfoWithAccordions',
   'AboutBox',
 ] satisfies WidgetName[]);
 

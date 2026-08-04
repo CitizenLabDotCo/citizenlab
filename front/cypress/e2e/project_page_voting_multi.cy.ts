@@ -37,10 +37,9 @@ describe('Multiple voting project', () => {
         projectSlug = project.body.data.attributes.slug;
         return cy
           .apiCreateIdea({
-            projectId,
+            phaseId: phase.body.data.id,
             ideaTitle,
             ideaContent,
-            phaseIds: [phase.body.data.id],
           })
           .then((idea) => {
             ideaId = idea.body.data.id;
@@ -80,6 +79,7 @@ describe('Multiple voting project', () => {
   it('can allocate the votes to ideas and show how many votes are left', () => {
     cy.contains('Cast your vote');
     cy.contains('How to vote');
+    cy.dockProjectCtaBar();
     cy.dataCy('project-cta-bar-top').contains('5 out of 5 votes left');
 
     cy.get('#e2e-voting-submit-button')
@@ -114,6 +114,7 @@ describe('Multiple voting project', () => {
     cy.intercept(`**/baskets/**`).as('basketRequest');
     cy.visit(`/en/projects/${projectSlug}`);
     cy.wait('@basketRequest');
+    cy.dockProjectCtaBar();
     cy.get('#e2e-voting-submit-button')
       .should('be.visible')
       .should('not.have.class', 'disabled');
@@ -134,6 +135,7 @@ describe('Multiple voting project', () => {
   });
 
   it('can modify and remove your votes', () => {
+    cy.dockProjectCtaBar();
     cy.get('#e2e-modify-votes')
       .should('be.visible')
       .should('contain', 'Modify your submission')

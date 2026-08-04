@@ -66,7 +66,9 @@ module ContentBuilder
         }, using: { tsearch: { prefix: true } }
 
         def uses_content_builder?
-          content_builder_layouts.any?(&:enabled)
+          content_builder_layouts.any? do |layout|
+            layout.enabled && layout.code != ProjectPageLayoutService::CODE
+          end
         end
       end
 

@@ -61,11 +61,10 @@ export const sharedSteps = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
-          flow,
-          true
+          flow
         );
 
         if (missingDataStep) {
@@ -85,12 +84,11 @@ export const sharedSteps = (
 
       // When the authentication flow is triggered by an action
       // done by the user
-      TRIGGER_AUTHENTICATION_FLOW: async (
-        flow: 'signup' | 'signin',
-        email: string | null = null
-      ) => {
+      TRIGGER_AUTHENTICATION_FLOW: async (flow: 'signup' | 'signin') => {
         updateState({
-          email,
+          email: null,
+          new_email: null,
+          new_phone: null,
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
@@ -101,8 +99,6 @@ export const sharedSteps = (
         const { requirements, disabled_reason } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const { permitted_by } = requirements.authentication;
-
         // This `disabled_reason === null` is a bit of a weird check,
         // because most of the times if there is no disabled reason,
         // you would never get into the authentication flow.
@@ -111,20 +107,11 @@ export const sharedSteps = (
         const signedIn =
           disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
-        const isVerifiedActionFlow = permitted_by === 'verified';
-        const userRequiresVerification = requirements.verification;
-
-        if (isVerifiedActionFlow && (!signedIn || userRequiresVerification)) {
-          setCurrentStep('sso-verification:sso-providers');
-          return;
-        }
-
         if (signedIn) {
-          const missingDataStep = checkMissingData(
+          const missingDataStep = await checkMissingData(
             requirements,
             authenticationData,
-            flow,
-            true
+            flow
           );
 
           if (missingDataStep) {

@@ -52,6 +52,34 @@ describe('Projects overview: admin (projects)', () => {
     cy.dataCy('projects-overview-filter-status').should('exist');
     cy.dataCy('projects-overview-filter-status').contains('Status: Published');
   });
+
+  it('shows only the tab-appropriate create button', () => {
+    cy.setAdminLoginCookie();
+
+    // Projects tab (default)
+    cy.visit('/admin/projects');
+    cy.dataCy('e2e-new-project-button').should('be.visible');
+    cy.dataCy('e2e-new-project-folder-button').should('not.exist');
+    cy.dataCy('e2e-new-space-button').should('not.exist');
+
+    // Folders tab
+    cy.dataCy('projects-overview-folders-tab').click();
+    cy.dataCy('e2e-new-project-folder-button').should('be.visible');
+    cy.dataCy('e2e-new-project-button').should('not.exist');
+    cy.dataCy('e2e-new-space-button').should('not.exist');
+
+    // Spaces tab
+    cy.dataCy('projects-overview-spaces-tab').click();
+    cy.dataCy('e2e-new-space-button').should('be.visible');
+    cy.dataCy('e2e-new-project-button').should('not.exist');
+    cy.dataCy('e2e-new-project-folder-button').should('not.exist');
+
+    // Calendar tab - no create button
+    cy.dataCy('projects-overview-calendar-tab').click();
+    cy.dataCy('e2e-new-project-button').should('not.exist');
+    cy.dataCy('e2e-new-project-folder-button').should('not.exist');
+    cy.dataCy('e2e-new-space-button').should('not.exist');
+  });
 });
 
 describe('Projects overview: admin (folders)', () => {

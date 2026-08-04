@@ -38,6 +38,17 @@ class Confirmation < ApplicationRecord
     code_sent_at + CODE_DURATION
   end
 
+  # Whether a code has been sent and not yet consumed. Used by the idempotent
+  # "send a code only if it's the first time this cycle" path (request_code_email /
+  # request_code_phone with only_if_first_time): a successful confirmation runs
+  # clear_code! (code -> nil), so an outstanding code means one was already sent for
+  # the current cycle and re-sending would both spam the user and invalidate the
+  # code they hold. Mirrors the code_sent_at.nil? guard in
+  # SideFxUserService#should_send_confirmation_email?.
+  def code_outstanding?
+    code.present?
+  end
+
   def reset_code!
     update!(
       code: self.class.generate_code,
@@ -55,7 +66,7 @@ class Confirmation < ApplicationRecord
   end
 
   def self.generate_code
-    Rails.env.development? ? '1234' : rand.to_s[2..5]
+    Rails.env.development? ? '1234' : format('%04d', rand(10_000))
   end
 
   protected
@@ -68,5 +79,15 @@ class Confirmation < ApplicationRecord
 
     User.where(id: other_user_ids).update_all(new_email: nil, updated_at: Time.zone.now)
     NewEmailConfirmation.where(user_id: other_user_ids).update_all(code: nil, updated_at: Time.zone.now)
+  end
+
+  # Cancel pending phone-change requests on OTHER users that target `phone`,
+  # so they don't end up with an invalid (now-taken) new_phone.
+  def cancel_other_users_pending_phone_change(phone)
+    other_user_ids = User.where(new_phone: phone).where.not(id: user_id).pluck(:id)
+    return if other_user_ids.empty?
+
+    User.where(id: other_user_ids).update_all(new_phone: nil, updated_at: Time.zone.now)
+    NewPhoneConfirmation.where(user_id: other_user_ids).update_all(code: nil, updated_at: Time.zone.now)
   end
 end

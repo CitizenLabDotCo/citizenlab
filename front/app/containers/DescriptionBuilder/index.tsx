@@ -5,11 +5,10 @@ import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { ContentBuildableType } from 'api/content_builder/types';
+import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
@@ -17,7 +16,7 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
 import DescriptionBuilderEditModePreview from 'components/DescriptionBuilder/DescriptionBuilderEditModePreview';
-import DescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox';
+import FolderDescriptionBuilderToolbox from 'components/DescriptionBuilder/DescriptionBuilderToolbox/FolderDescriptionBuilderToolbox';
 import DescriptionBuilderTopBar from 'components/DescriptionBuilder/DescriptionBuilderTopBar';
 import Editor from 'components/DescriptionBuilder/Editor';
 import ContentBuilderSettings from 'components/DescriptionBuilder/Settings';
@@ -28,7 +27,6 @@ import { useLocation } from 'utils/router';
 
 type Props = {
   contentBuildableId: string;
-  contentBuildableType: ContentBuildableType;
   backPath: string;
   previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
@@ -36,7 +34,6 @@ type Props = {
 
 const DescriptionBuilderPage = ({
   contentBuildableId,
-  contentBuildableType,
   backPath,
   previewLink,
   titleMultiloc,
@@ -49,23 +46,27 @@ const DescriptionBuilderPage = ({
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const featureEnabled = useFeatureFlag({
-    name: 'project_description_builder',
-  });
   const locales = useAppConfigurationLocales();
 
-  const { data: descriptionBuilderLayout } = useContentBuilderLayout(
-    contentBuildableType,
+  const { data: layout } = useContentBuilderLayout(
+    'folder',
     contentBuildableId
   );
+
+  const {
+    mutate: addContentBuilderLayout,
+    isLoading: isAddingLayout,
+    isError: isAddLayoutError,
+  } = useAddContentBuilderLayout();
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
   const [imageUploading, setImageUploading] = useState(false);
 
-  const descriptionBuilderVisible =
-    featureEnabled && pathname.includes('admin/description-builder');
+  const descriptionBuilderVisible = pathname.includes(
+    'admin/description-builder'
+  );
 
   // DO NOT REMOVE THESE useCallbacks, without them the content builder
   // becomes horribly slow
@@ -83,11 +84,7 @@ const DescriptionBuilderPage = ({
     });
   }, []);
 
-  if (
-    isNilOrError(locales) ||
-    !descriptionBuilderVisible ||
-    !descriptionBuilderLayout
-  ) {
+  if (isNilOrError(locales) || !descriptionBuilderVisible || !layout) {
     return null;
   }
 
@@ -95,12 +92,17 @@ const DescriptionBuilderPage = ({
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
     0;
 
-  const getEditorData = () => {
-    if (!isEmpty(descriptionBuilderLayout.data.attributes.craftjs_json)) {
-      return descriptionBuilderLayout.data.attributes.craftjs_json;
-    } else {
-      return undefined;
-    }
+  const editorData = isEmpty(layout.data.attributes.craftjs_json)
+    ? undefined
+    : layout.data.attributes.craftjs_json;
+
+  const handleSave = (nodes: SerializedNodes) => {
+    addContentBuilderLayout({
+      contentBuildableId,
+      contentBuildableType: 'folder',
+      enabled: true,
+      craftjs_json: nodes,
+    });
   };
 
   const handleEditorChange = (nodes: SerializedNodes) => {
@@ -131,7 +133,7 @@ const DescriptionBuilderPage = ({
   };
 
   return (
-    <ContentBuilderLayoutProvider layoutId={descriptionBuilderLayout.data.id}>
+    <ContentBuilderLayoutProvider layoutId={layout.data.id}>
       <FullscreenContentBuilder
         onErrors={handleErrors}
         onDeleteElement={handleDeleteElement}
@@ -145,26 +147,26 @@ const DescriptionBuilderPage = ({
             setPreviewEnabled={setPreviewEnabled}
             selectedLocale={selectedLocale}
             onSelectLocale={handleSelectedLocaleChange}
-            contentBuildableId={contentBuildableId}
-            contentBuildableType={contentBuildableType}
             backPath={backPath}
             previewLink={previewLink}
             titleMultiloc={titleMultiloc}
+            onSave={handleSave}
+            isSaving={isAddingLayout}
+            saveHasError={isAddLayoutError}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
             display={previewEnabled ? 'none' : 'flex'}
             id="e2e-project-description-content-builder-page"
           >
-            <DescriptionBuilderToolbox
-              contentBuildableType={contentBuildableType}
-              contentBuildableId={contentBuildableId}
+            <FolderDescriptionBuilderToolbox
               selectedLocale={selectedLocale}
+              folderId={contentBuildableId}
             />
             <DescriptionBuilderContent
               selectedLocale={selectedLocale}
               platformLocale={locale}
-              editorData={getEditorData()}
+              editorData={editorData}
             />
             <ContentBuilderSettings />
           </Box>
@@ -172,7 +174,6 @@ const DescriptionBuilderPage = ({
         <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
           <DescriptionBuilderEditModePreview
             contentBuildableId={contentBuildableId}
-            contentBuildableType={contentBuildableType}
             ref={iframeRef}
             selectedLocale={selectedLocale}
           />

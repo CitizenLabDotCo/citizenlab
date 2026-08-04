@@ -269,19 +269,19 @@ context 'federa verification' do
 
         expect(user.email).to be_nil
         expect(user.active?).to be(true)
-        expect(user.confirmation_required?).to be(false)
+        expect(user.confirmation_required?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(0)
 
-        post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
+        post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
         # Once they have actively requested to set an email, they must confirm it
-        # to become active again (their email is still nil, so confirmation_required).
+        # but in the meanwhile they will still be active
         expect(user.confirmation_required?).to be(true)
-        expect(user.active?).to be(false)
+        expect(user.active?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(1)
 
-        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
+        post '/web_api/v1/user/confirm_code_new_email', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
@@ -299,7 +299,6 @@ context 'federa verification' do
         user = User.order(created_at: :asc).last
         expect_user_to_be_verified_and_identified(user)
         expect(user.email).to be_nil
-        expect(user.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
       end
     end

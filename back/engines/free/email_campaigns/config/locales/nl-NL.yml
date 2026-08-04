@@ -190,8 +190,10 @@ nl-NL:
       new_email_confirmation: Nieuwe e-mailbevestigingscode
       new_idea_for_admin_prescreening: Nieuwe bijdrage die goedkeuring vereist in een project dat ik modereer
       new_idea_for_admin_published: Nieuwe gepubliceerde contributie in een project dat ik modereer
+      new_phone_confirmation: Nieuwe telefoonbevestigingscode
       official_feedback_on_idea_you_follow: Update over een bijdrage dat je volgt
       password_reset: Herstel wachtwoord
+      phone_confirmation: Telefonische bevestigingscode
       project_folder_moderation_rights_received: Mapbeheerdersrechten ontvangen
       project_manager_rights_received: Projectbeheerdersrechten ontvangen
       project_moderation_rights_received: Projectbeheerdersrechten ontvangen
@@ -202,6 +204,7 @@ nl-NL:
       project_review_state_change: Project goedgekeurd
       proposal_expired_for_admin: Voorstel verlopen zonder de stemdrempel te bereiken
       screening_digest: Wekelijkse screeningherinnering
+      sms_manual: Officiële SMS-berichten
       space_moderation_rights_received: Ruimtebeheerdersrechten ontvangen
       status_change_on_idea_you_follow: Statuswijziging van een bijdrage dat je volgt
       survey_submitted: Vragenlijst ingediend
@@ -534,6 +537,8 @@ nl-NL:
       title: Er is een nieuwe bijdrage gepubliceerd op je platform
       today: Vandaag
       yesterday: Gisteren
+    new_phone_confirmation:
+      sms_body: Je bevestigingscode is %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Ga naar deze bijdrage
       event_description: "%{feedback_author_name} gaf een update op %{input_title}'."
@@ -546,6 +551,8 @@ nl-NL:
       preheader: Stel je wachtwoord voor %{organizationName} opnieuw in
       subject: '%{organizationName}: Stel je wachtwoord opnieuw in'
       title: Kies een nieuw wachtwoord
+    phone_confirmation:
+      sms_body: Je bevestigingscode is %{code}.
     preview_data:
       author_display_name: Emma de Vries
       author_first_name: Emma

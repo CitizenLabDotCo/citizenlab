@@ -4,14 +4,11 @@ import { Text, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 import ErrorToast from 'components/ErrorToast';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import {
-  CTABarProps,
-  hasProjectEndedOrIsArchived,
-} from 'components/ParticipationCTABars/utils';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 import { useIntl } from 'utils/cl-intl';
 import useFormatCurrency from 'utils/currency/useFormatCurrency';
@@ -26,14 +23,10 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const formatCurrency = useFormatCurrency();
 
   const currentPhase = useMemo(() => {
-    return getCurrentPhase(phases) || getLastPhase(phases);
+    return getCurrentPhase(phases);
   }, [phases]);
 
   const { data: basket } = useBasket(basketId);
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
-    return null;
-  }
 
   const votingMethod = currentPhase?.attributes.voting_method;
   if (!votingMethod || numberOfVotesCast === undefined) {

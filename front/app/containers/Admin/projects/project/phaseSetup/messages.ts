@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.newPhaseTitle',
     defaultMessage: 'New Phase',
   },
+  newSurveyTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.newSurveyTitle',
+    defaultMessage: 'New survey',
+  },
   titleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.titleLabel',
     defaultMessage: 'Title',
@@ -28,6 +32,15 @@ export default defineMessages({
   previewSurveyCTALabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
     defaultMessage: 'Preview',
+  },
+  allowMultipleResponsesLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel',
+    defaultMessage: 'Allow multiple responses',
+  },
+  allowMultipleResponsesDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription',
+    defaultMessage:
+      'When enabled, a participant can submit this survey more than once. When disabled, each participant can only respond once.',
   },
   defaultSurveyTitleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel',

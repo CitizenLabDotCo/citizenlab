@@ -46,7 +46,10 @@ const TwoRowLayout = ({ pageData }: Props) => {
             alt=""
           />
         )}
-        <AdminCustomPageEditButton pageId={pageData.id} />
+        <AdminCustomPageEditButton
+          pageId={pageData.id}
+          projectId={pageData.attributes.project_id}
+        />
       </Box>
       <ContentContainer mode="page">
         <Container>

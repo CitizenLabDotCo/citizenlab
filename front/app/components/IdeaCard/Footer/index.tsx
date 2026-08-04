@@ -2,7 +2,6 @@ import React from 'react';
 
 import { IIdeaData } from 'api/ideas/types';
 import { ParticipationMethod } from 'api/phases/types';
-import useProjectById from 'api/projects/useProjectById';
 
 import IdeationFooter from './IdeationFooter';
 import ProposalFooter from './ProposalFooter';
@@ -15,12 +14,8 @@ interface Props {
 }
 
 const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
-  const { data: project } = useProjectById(idea.relationships.project.data.id);
-
-  if (!project) return null;
-
   const commentingEnabled =
-    project.data.attributes.action_descriptors.commenting_idea.enabled;
+    idea.attributes.action_descriptors.commenting_idea.enabled;
   const ideaHasComments = idea.attributes.comments_count > 0;
   const showCommentCount = commentingEnabled || ideaHasComments;
 

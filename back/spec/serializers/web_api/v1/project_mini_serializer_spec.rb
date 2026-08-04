@@ -4,118 +4,25 @@ describe WebApi::V1::ProjectMiniSerializer do
   let!(:project) { create(:project) }
   let!(:user) { create(:user) }
 
-  context 'starts_days_from_now' do
-    let(:starts_days_from_now) do
-      described_class
-        .new(project, params: { current_user: user })
-        .serializable_hash
-        .dig(:data, :attributes, :starts_days_from_now)
-    end
-
-    it 'returns the number of days before first phase starts' do
-      create(:phase, project: project, start_at: 27.hours.from_now)
-      expect(starts_days_from_now).to eq(1)
-    end
-
-    it 'returns 0 if first phase starts today' do
-      create(:phase, project: project, start_at: 2.hours.from_now)
-      expect(starts_days_from_now).to be_zero
-    end
-
-    it 'returns nil if first phase started in the past' do
-      create(:phase, project: project, start_at: 1.day.ago)
-      expect(starts_days_from_now).to be_nil
-    end
-
-    it 'returns nil if there are no phases' do
-      expect(starts_days_from_now).to be_nil
-    end
+  let(:serialized) do
+    described_class.new(project, params: { current_user: user }).serializable_hash
   end
 
-  context 'ended_days_ago' do
-    let(:ended_days_ago) do
-      described_class
-        .new(project, params: { current_user: user })
-        .serializable_hash
-        .dig(:data, :attributes, :ended_days_ago)
-    end
+  it 'serializes the highlighted phase and its day counts' do
+    create(:phase, project: project, start_at: 2.months.ago, end_at: 1.month.ago)
+    standalone_phase = create(:phase, :standalone, project: project, start_at: 27.hours.from_now, end_at: 1.week.from_now)
 
-    it 'returns the number of days since the last phase ended' do
-      create(:phase, project: project, end_at: 27.hours.ago)
-      expect(ended_days_ago).to eq(1)
-    end
-
-    it 'returns 0 if last phase just ended' do
-      create(:phase, project: project, end_at: 1.second.ago)
-      expect(ended_days_ago).to be_zero
-    end
-
-    it 'returns nil if last phase ends in the future' do
-      create(:phase, project: project, end_at: 2.days.from_now)
-      expect(ended_days_ago).to be_nil
-    end
-
-    it 'returns nil if there are no phases' do
-      expect(ended_days_ago).to be_nil
-    end
+    expect(serialized.dig(:data, :relationships, :highlighted_phase, :data, :id)).to eq standalone_phase.id
+    expect(serialized.dig(:data, :attributes, :participation_status)).to eq :upcoming
+    expect(serialized.dig(:data, :attributes, :days_until_start)).to eq 1
+    expect(serialized.dig(:data, :attributes, :days_since_end)).to be_nil
   end
 
-  context 'when action descriptors are not passed to serializer in params' do
-    it 'finds and returns the action descriptors' do
-      action_descriptors = described_class
-        .new(project, params: { current_user: user })
-        .serializable_hash
-        .dig(:data, :attributes, :action_descriptors)
+  it 'serializes the highlighted phase when all phases are past' do
+    phase = create(:phase, project: project, start_at: 2.months.ago, end_at: 75.hours.ago)
 
-      expect(action_descriptors).to be_a(Hash).and(include(
-        posting_idea: { enabled: false, disabled_reason: 'project_inactive', future_enabled_at: nil },
-        commenting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-        reacting_idea: {
-          enabled: false,
-          disabled_reason: 'project_inactive',
-          up: { enabled: false, disabled_reason: 'project_inactive' },
-          down: { enabled: false, disabled_reason: 'project_inactive' }
-        },
-        comment_reacting_idea: { enabled: false, disabled_reason: 'project_inactive' },
-        annotating_document: { enabled: false, disabled_reason: 'project_inactive' },
-        taking_survey: { enabled: false, disabled_reason: 'project_inactive' },
-        taking_poll: { enabled: false, disabled_reason: 'project_inactive' },
-        voting: { enabled: false, disabled_reason: 'project_inactive' },
-        attending_event: { enabled: true, disabled_reason: nil },
-        volunteering: { enabled: false, disabled_reason: 'project_inactive' }
-      ))
-    end
-  end
-
-  context 'when action descriptors are passed to serializer in params' do
-    it 'uses the provided action descriptors' do
-      expected_action_descriptors = {
-        posting_idea: { enabled: true, disabled_reason: nil, future_enabled_at: nil },
-        commenting_idea: { enabled: true, disabled_reason: nil },
-        reacting_idea: {
-          enabled: true,
-          disabled_reason: nil,
-          up: { enabled: true, disabled_reason: nil },
-          down: { enabled: true, disabled_reason: nil }
-        },
-        comment_reacting_idea: { enabled: true, disabled_reason: nil },
-        annotating_document: { enabled: false, disabled_reason: 'not_document_annotation' },
-        taking_survey: { enabled: false, disabled_reason: 'not_survey' },
-        taking_poll: { enabled: false, disabled_reason: 'not_poll' },
-        voting: { enabled: false, disabled_reason: 'not_voting' },
-        attending_event: { enabled: true, disabled_reason: nil },
-        volunteering: { enabled: false, disabled_reason: 'not_volunteering' }
-      }
-
-      action_descriptors = described_class
-        .new(
-          project,
-          params: { current_user: user, project_descriptor_pairs: { project.id.to_s => expected_action_descriptors } }
-        )
-        .serializable_hash
-        .dig(:data, :attributes, :action_descriptors)
-
-      expect(action_descriptors).to eq(expected_action_descriptors)
-    end
+    expect(serialized.dig(:data, :relationships, :highlighted_phase, :data, :id)).to eq phase.id
+    expect(serialized.dig(:data, :attributes, :participation_status)).to eq :ended
+    expect(serialized.dig(:data, :attributes, :days_since_end)).to eq 3
   end
 end

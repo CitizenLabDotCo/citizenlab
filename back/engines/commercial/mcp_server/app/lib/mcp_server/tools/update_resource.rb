@@ -52,8 +52,8 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
     intro = <<~DESC.squish
       Updates an existing resource. Partial update — only the fields you pass change.
       `*_multiloc` fields are deep-merged with the existing value, so pass every locale
-      you want to set. For field shapes and semantics, see the matching create_<type>
-      tool.
+      you want to set. Pass null for `remote_*_url` attributes to remove the attached file.
+      For field shapes and semantics, see the matching create_<type> tool.
     DESC
 
     allowed = RESOURCES.map do |type, config|
@@ -83,6 +83,11 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      return not_found_error("Resource (#{params[:type]})", params[:id]) unless record
+
+      authorize_project!(record.project)
+      authorize(record, :update?)
+
       attributes = params[:attributes].symbolize_keys
       rejected = attributes.keys - config[:attrs]
 
@@ -93,23 +98,24 @@ class McpServer::Tools::UpdateResource < McpServer::BaseTool
         ERROR
       end
 
+      attributes = clear_uploaders!(record, attributes)
       record.update!(merge_multilocs(record, attributes))
       side_fx.after_update(record, current_user)
 
-      ok(
+      response(
         "Updated #{params[:type]} #{record.id}",
         structured: config.fetch(:serializer).serialize(record, params: { current_user: })
       )
-    rescue ActiveRecord::RecordNotFound
-      error("#{params[:type]} not found: #{params[:id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
 
     private
 
     def record
-      @record ||= config.fetch(:model).find(params[:id])
+      return @record if defined?(@record)
+
+      @record = config.fetch(:model).find_by(id: params[:id])
     end
 
     def side_fx

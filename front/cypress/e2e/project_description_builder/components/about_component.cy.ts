@@ -22,9 +22,7 @@ describe('Project description builder About component', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -38,16 +36,13 @@ describe('Project description builder About component', () => {
   });
 
   it('handles About component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
-    cy.get('#e2e-draggable-about-box').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
-    );
+    cy.get('#e2e-draggable-about-box').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
@@ -56,10 +51,10 @@ describe('Project description builder About component', () => {
   });
 
   it('deletes About component correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
     cy.get('#e2e-about-box').click({ force: true });
     cy.get('#e2e-delete-button').click();

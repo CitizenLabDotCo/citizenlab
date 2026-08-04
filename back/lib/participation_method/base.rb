@@ -38,6 +38,13 @@ module ParticipationMethod
       []
     end
 
+    # Only consulted for methods that support public visibility, since that is the condition on the
+    # validation. Card is the default of both view columns, so every phase row satisfies it, and
+    # methods that show inputs publicly widen it to the views they actually offer.
+    def allowed_presentation_modes
+      %w[card]
+    end
+
     def assign_defaults(input)
       # Default is to do nothing.
     end
@@ -176,6 +183,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_standalone_placement?
+      false
+    end
+
     # Returns whether this participation method supports idea statuses?
     def supports_status?
       false
@@ -188,6 +199,14 @@ module ParticipationMethod
     end
 
     def supports_survey_form?
+      false
+    end
+
+    # Returns whether this method's input form responses can be exported as a PDF
+    # (branded cover page + one card per response). True for the survey and
+    # ideation families; excludes methods without a real input form (e.g.
+    # common_ground, voting).
+    def supports_input_pdf_export?
       false
     end
 

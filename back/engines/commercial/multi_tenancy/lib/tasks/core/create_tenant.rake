@@ -210,10 +210,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        project_description_builder: {
-          enabled: true,
-          allowed: true
-        },
         smart_groups: {
           enabled: true,
           allowed: true
@@ -358,6 +354,15 @@ namespace :cl2_back do
         mcp_server: {
           enabled: true,
           allowed: true
+        },
+        html_block_in_content_builder: {
+          enabled: true,
+          allowed: true
+        },
+        sms: {
+          enabled: true,
+          allowed: true,
+          use_test_mode: true
         }
       }
     )

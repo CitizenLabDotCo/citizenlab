@@ -54,7 +54,8 @@ const RenderNode = ({ render }) => {
       title:
         WIDGET_TITLES[name] ||
         (node.data.custom?.title as MessageDescriptor | undefined),
-      noPointerEvents: hasNoPointerEvents(name),
+      noPointerEvents:
+        hasNoPointerEvents(name) || node.data.custom?.noPointerEvents === true,
     };
   });
 
@@ -127,7 +128,6 @@ const RenderNode = ({ render }) => {
       position="relative"
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
       minHeight={id === ROOT_NODE ? '160px' : '0px'}
-      background="#fff"
       borderWidth="1px"
       borderColor={
         hasError
@@ -160,7 +160,21 @@ const RenderNode = ({ render }) => {
           )}
         </Box>
       )}
-      <Box pointerEvents={noPointerEvents ? 'none' : 'auto'} width="100%">
+      <Box
+        pointerEvents={noPointerEvents ? 'none' : 'auto'}
+        width="100%"
+        // `pointer-events: none` still leaves the preview content keyboard-
+        // focusable; `inert` removes it from the tab order too. React 18 has
+        // no `inert` prop, so the attribute is set on the element directly.
+        ref={(element: HTMLElement | null) => {
+          if (!element) return;
+          if (noPointerEvents) {
+            element.setAttribute('inert', '');
+          } else {
+            element.removeAttribute('inert');
+          }
+        }}
+      >
         {render}
       </Box>
     </StyledBox>

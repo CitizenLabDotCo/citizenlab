@@ -6,8 +6,6 @@ import {
   PermittedBy,
 } from 'api/phase_permissions/types';
 
-import newMessages from 'components/admin/ActionForm/messages';
-
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -24,14 +22,8 @@ export const getPartipationRequirementMessage = (
     case 'admins_moderators':
       participantMessage = messages.adminsAndManagers;
       break;
-    case 'everyone_confirmed_email':
-      participantMessage = messages.usersWithConfirmedEmail;
-      break;
     case 'everyone':
       participantMessage = messages.everyone;
-      break;
-    case 'verified':
-      participantMessage = newMessages.ssoVerification;
       break;
   }
   return formatMessage(participantMessage);

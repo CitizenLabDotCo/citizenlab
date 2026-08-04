@@ -50,12 +50,12 @@ describe('Settings panel options', () => {
   });
 
   it('handles close button click correctly', () => {
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
 
-    cy.get('.e2e-text-box').click();
+    cy.get('.e2e-text-box').first().click();
     cy.get('.e2eBuilderSettingsClose').click();
 
     cy.get('#e2e-node-label').should('not.exist');

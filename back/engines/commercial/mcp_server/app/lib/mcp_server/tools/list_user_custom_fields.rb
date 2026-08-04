@@ -12,7 +12,7 @@ class McpServer::Tools::ListUserCustomFields < McpServer::BaseTool
         'user custom fields',
         CustomField.registration.enabled.not_hidden.order(:ordering),
         **params.slice(:page, :per_page),
-        only: %i[id title_multiloc input_type code required]
+        serializer: McpServer::Serializers::UserCustomField
       )
     end
   end

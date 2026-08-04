@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
@@ -33,20 +33,6 @@ const ProgressBar = ({ formCompletionPercentage = 0 }: Props) => {
           style={{ transition: 'width 0.3s ease-in-out' }}
         />
       </Box>
-      <Text
-        m="0"
-        fontSize="s"
-        color="textSecondary"
-        position="absolute"
-        top="4px"
-        left="0"
-        right="0"
-        textAlign="center"
-      >
-        {formatMessage(messages.progressPercentage, {
-          percentage: roundedPercentage,
-        })}
-      </Text>
     </Box>
   );
 };

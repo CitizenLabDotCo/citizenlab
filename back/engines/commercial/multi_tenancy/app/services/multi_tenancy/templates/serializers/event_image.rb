@@ -6,7 +6,7 @@ module MultiTenancy
       class EventImage < Base
         ref_attribute :event
         upload_attribute :image
-        attribute :ordering
+        attributes %i[ordering alt_text_multiloc]
       end
     end
   end

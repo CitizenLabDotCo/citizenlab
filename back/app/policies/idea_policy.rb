@@ -54,15 +54,27 @@ class IdeaPolicy < ApplicationPolicy
 
   def create?
     return false if user&.blocked?
-    return true if record.draft?
     return true if active? && UserRoleService.new.can_moderate_project?(record.project, user)
+
+    phase = record.creation_phase_with_fallback
+    return false if !phase
+
+    if record.draft?
+      # Drafts only require the phase to be open. The user permission checks
+      # are deferred to publication, as the user may still become permitted
+      # while filling in the form.
+      reason = Permissions::PhasePermissionsService.new(phase, user).context_denied_reason
+      raise_not_authorized(reason) if reason
+      return true
+    end
+
     return false if !active? && !record.participation_method_on_creation.supports_inputs_without_author?
 
-    reason = Permissions::ProjectPermissionsService.new(
-      record.project,
+    reason = Permissions::PhasePermissionsService.new(
+      phase,
       user,
       request: record.request # Only present if pmethod.everyone_tracking_enabled? is true
-    ).denied_reason_for_action 'posting_idea'
+    ).denied_reason_for_action('posting_idea')
     raise_not_authorized(reason) if reason
 
     (!user || owner?) && policy_for(record.project).show?
@@ -101,7 +113,7 @@ class IdeaPolicy < ApplicationPolicy
     posting_denied_reason = Permissions::IdeaPermissionsService.new(record, user).denied_reason_for_action permission_action
     raise_not_authorized(posting_denied_reason) if posting_denied_reason
 
-    true
+    policy_for(record.project).show?
   end
 
   def destroy?

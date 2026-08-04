@@ -7,11 +7,11 @@ import {
   SSOProviderWithoutVienna,
 } from '../../typings';
 
+import { confirmationSteps } from './confirmationSteps';
 import { emailFlow } from './emailFlow';
 import { inviteFlow } from './inviteFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
-import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
 import { handleSubmitEmail, handleSSOClick } from './utils';
 
@@ -29,6 +29,13 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
+      state
+    ),
+
+    ...confirmationSteps(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
       state
     ),
 
@@ -52,13 +59,6 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       setError,
-      updateState
-    ),
-
-    ...ssoVerificationFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
       updateState
     ),
 

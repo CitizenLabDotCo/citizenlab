@@ -9,7 +9,13 @@ export type Step =
   | 'email:policies'
   | 'email:password'
   | 'email:sso-policies'
-  | 'email:confirmation'
+  | 'email:unauthenticated-confirmation'
+
+  // confirmation steps (code entry for email / phone)
+  | 'confirmation:reconfirm-email'
+  | 'confirmation:new_email'
+  | 'confirmation:reconfirm-phone'
+  | 'confirmation:new_phone'
 
   // invite flow
   | 'invite:email-password'
@@ -17,8 +23,9 @@ export type Step =
   | 'invite:taken'
 
   // missing data (if signed in already)
+  | 'missing-data:change-new-email'
+  | 'missing-data:new_phone'
   | 'missing-data:built-in'
-  | 'missing-data:email-confirmation'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'
 
@@ -28,10 +35,6 @@ export type Step =
   // verification only (for onboarding and re-verification)
   | 'verification-only'
   | 'verification-success'
-
-  // sso verification flow
-  | 'sso-verification:sso-providers'
-  | 'sso-verification:sso-providers-policies'
 
   // post-participation flow (sign up after participation)
   | 'post-participation:email';

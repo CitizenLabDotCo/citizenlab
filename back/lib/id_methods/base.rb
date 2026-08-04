@@ -17,6 +17,15 @@ module IdMethods
       raise NotImplementedError
     end
 
+    # True if this method is only available to employees.
+    # If true, method will be hidden in the access rights interface for
+    # platforms that have a SSO-only setup with more than 1 authentication method.
+    # In theory we could show both but requires a redesign of the whole interface,
+    # so for now we just hide the employee-only methods.
+    def employee_only?
+      false
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(_configuration, _env)
       raise 'Subclass must implement this method'

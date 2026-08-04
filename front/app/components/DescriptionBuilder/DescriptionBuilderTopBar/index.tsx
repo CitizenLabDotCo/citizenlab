@@ -4,9 +4,6 @@ import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { Multiloc, SupportedLocale } from 'typings';
 
-import { ContentBuildableType } from 'api/content_builder/types';
-import useAddContentBuilderLayout from 'api/content_builder/useAddContentBuilderLayout';
-
 import useLocalize from 'hooks/useLocalize';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
@@ -32,11 +29,12 @@ type DescriptionBuilderTopBarProps = {
     locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => void;
-  contentBuildableId: string;
-  contentBuildableType: ContentBuildableType;
   backPath: string;
   previewLink: TypedLinkProps;
   titleMultiloc: Multiloc;
+  onSave: (nodes: SerializedNodes) => void;
+  isSaving: boolean;
+  saveHasError: boolean;
 };
 
 const DescriptionBuilderTopBar = ({
@@ -46,19 +44,15 @@ const DescriptionBuilderTopBar = ({
   onSelectLocale,
   hasError,
   hasPendingState,
-  contentBuildableId,
-  contentBuildableType,
   backPath,
   previewLink,
   titleMultiloc,
+  onSave,
+  isSaving,
+  saveHasError,
 }: DescriptionBuilderTopBarProps) => {
   const { query } = useEditor();
   const localize = useLocalize();
-  const {
-    mutate: addContentBuilderLayout,
-    isLoading,
-    isError,
-  } = useAddContentBuilderLayout();
 
   const disableSave = !!hasError || !!hasPendingState;
 
@@ -66,16 +60,8 @@ const DescriptionBuilderTopBar = ({
     clHistory.push(backPath);
   };
 
-  const handleSave = async () => {
-    // Always enable the layout on save: descriptions are edited exclusively in
-    // the Content Builder, so saving a description makes it the live one. This
-    // also self-heals any buildable that somehow has no enabled layout yet.
-    addContentBuilderLayout({
-      contentBuildableId,
-      contentBuildableType,
-      enabled: true,
-      craftjs_json: query.getSerializedNodes(),
-    });
+  const handleSave = () => {
+    onSave(query.getSerializedNodes());
   };
 
   const handleSelectLocale = (locale: SupportedLocale) => {
@@ -93,11 +79,7 @@ const DescriptionBuilderTopBar = ({
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <Title variant="h3" as="h1" mb="0px" mt="0px">
-            <FormattedMessage
-              {...(contentBuildableType === 'project'
-                ? messages.descriptionProjectHeading
-                : messages.descriptionFolderHeading)}
-            />
+            <FormattedMessage {...messages.descriptionFolderHeading} />
           </Title>
           <Text m="0" color="textSecondary">
             {localize(titleMultiloc)}
@@ -124,10 +106,10 @@ const DescriptionBuilderTopBar = ({
         />
         <SaveButton
           isDisabled={disableSave}
-          isLoading={isLoading}
+          isLoading={isSaving}
           onSave={handleSave}
         />
-        {isError && (
+        {saveHasError && (
           <Text
             color="error"
             ml="20px"

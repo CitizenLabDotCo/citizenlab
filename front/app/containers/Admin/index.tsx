@@ -61,6 +61,10 @@ export const RightColumn = styled.div`
     max-width: none;
   }
 
+  &.projectPage {
+    min-width: 0;
+  }
+
   &.noPadding {
     padding: 0;
     max-width: none;
@@ -120,10 +124,14 @@ const AdminPage = memo<Props>(({ className }) => {
   const isDescriptionBuilderRoute = pathname.match(
     /\/admin\/description-builder/
   );
+  const isProjectPageBuilderRoute = pathname.match(
+    /\/admin\/project-page-builder/
+  );
 
   const sidebarRendered =
     !isHomePageBuilderRoute &&
     !isDescriptionBuilderRoute &&
+    !isProjectPageBuilderRoute &&
     !isReportBuilderEditorRoute;
 
   const projectsExceptNewAndFoldersAndSpaces =
@@ -159,8 +167,9 @@ const AdminPage = memo<Props>(({ className }) => {
       {sidebarRendered && <Sidebar />}
       <RightColumn
         className={`
-          ${fullWidth ? 'fullWidth' : ''} 
+          ${fullWidth ? 'fullWidth' : ''}
           ${noPadding ? 'noPadding' : ''}
+          ${isProjectPage ? 'projectPage' : ''}
         `}
       >
         <RouterOutlet />

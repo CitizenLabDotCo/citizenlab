@@ -43,6 +43,22 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
+    it 'round-trips a custom field with its matrix statements into a new tenant' do
+      create(:custom_field_matrix_linear_scale, :for_custom_form)
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        matrix_field = CustomField.find_by(input_type: 'matrix_linear_scale')
+        expect(matrix_field).to be_present
+        statements = matrix_field.matrix_statements.order(:ordering)
+        expect(statements.pluck(:key)).to eq(%w[send_more_animals_to_space ride_bicycles_more_often])
+        expect(statements.first.title_multiloc).to eq('en' => 'We should send more animals into space')
+      end
+    end
+
     it "doesn't include title_multiloc for NavBarItems without custom copy" do
       create(:nav_bar_item, code: 'home', title_multiloc: nil)
       template = tenant_serializer.run(deserializer_format: true)
@@ -148,6 +164,94 @@ describe MultiTenancy::Templates::TenantSerializer do
         cosponsorship = Cosponsorship.first
         expect(cosponsorship.user.email).to eq user.email
         expect(cosponsorship.idea.title_multiloc).to eq proposal.title_multiloc
+      end
+    end
+
+    it 'successfully copies over Files engine files, projects and attachments' do
+      project = create(:single_phase_ideation_project)
+      phase = project.phases.first
+      idea = create(:idea, project: project, phases: [phase])
+
+      project_file = create(:file, name: 'project.pdf', projects: [project])
+      create(:file_attachment, file: project_file, attachable: project)
+      phase_file = create(:file, name: 'phase.pdf', projects: [project])
+      create(:file_attachment, file: phase_file, attachable: phase)
+      idea_file = create(:file, name: 'idea.pdf', projects: [project])
+      create(:file_attachment, file: idea_file, attachable: idea)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        new_project = Project.sole
+        expect(new_project.files.pluck(:name)).to match_array(%w[project.pdf phase.pdf idea.pdf])
+        expect(new_project.attached_files.sole.content.file).to be_present
+
+        expect(new_project.file_attachments.count).to eq 1
+        expect(new_project.phases.sole.file_attachments.count).to eq 1
+        expect(Idea.sole.file_attachments.count).to eq 1
+      end
+    end
+
+    it 'successfully copies over project global topics' do
+      project = create(:project)
+      global_topic = create(:global_topic)
+      project.global_topics << global_topic
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        new_project = Project.first
+        expect(new_project.global_topics.map(&:title_multiloc)).to eq [global_topic.title_multiloc]
+      end
+    end
+
+    it 'successfully copies over a project-scoped static page with its project link' do
+      project = create(:project)
+      create(:static_page, :project_scoped, project: project, title_multiloc: { 'en' => 'Project about' },
+        top_info_section_multiloc: { 'en' => '<p>About this project</p>' })
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        page = StaticPage.find_by("title_multiloc->>'en' = 'Project about'")
+        expect(page).to be_present
+        expect(page.project).to eq Project.first
+        expect(page.top_info_section_multiloc['en']).to include('About this project')
+      end
+    end
+
+    it 'successfully copies over email campaign consents and campaign groups' do
+      campaign = create(:manual_campaign)
+      group = create(:group)
+      create(:campaigns_group, campaign: campaign, group: group)
+      consent_user = create(:user, email: 'consenter@example.com')
+      create(:consent, user: consent_user, campaign_type: 'EmailCampaigns::Campaigns::Manual', consented: false)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(EmailCampaigns::CampaignsGroup.count).to be 1
+        campaigns_group = EmailCampaigns::CampaignsGroup.first
+        expect(campaigns_group.campaign.subject_multiloc).to eq campaign.subject_multiloc
+        expect(campaigns_group.group.title_multiloc).to eq group.title_multiloc
+
+        consent = EmailCampaigns::Consent.find_by(user: User.find_by(email: consent_user.email))
+        expect(consent.campaign_type).to eq 'EmailCampaigns::Campaigns::Manual'
+        expect(consent.consented).to be false
       end
     end
 

@@ -190,8 +190,10 @@ da-DK:
       new_email_confirmation: Ny bekræftelseskode til e-mail
       new_idea_for_admin_prescreening: Nyt input, der kræver godkendelse i et projekt jeg modererer
       new_idea_for_admin_published: Nyt offentliggjort input i et projekt jeg modererer
+      new_phone_confirmation: Ny bekræftelseskode til telefon
       official_feedback_on_idea_you_follow: Opdatering af en idé, som du følger
       password_reset: Nulstilling af adgangskode
+      phone_confirmation: Bekræftelseskode til telefon
       project_folder_moderation_rights_received: Projekt-mappens moderationsrettigheder modtaget
       project_manager_rights_received: Projektlederrettigheder modtaget
       project_moderation_rights_received: Rettigheder til projektmoderering modtaget
@@ -202,6 +204,7 @@ da-DK:
       project_review_state_change: Projekt godkendt
       proposal_expired_for_admin: Forslag udløbet uden at have nået stemmetærsklen
       screening_digest: Ugentlig påmindelse om screening
+      sms_manual: Officielle SMS-beskeder
       space_moderation_rights_received: Rettigheder som områdeprojektleder modtaget
       status_change_on_idea_you_follow: Statusændring af en idé, som du følger
       survey_submitted: Undersøgelse indsendt
@@ -534,6 +537,8 @@ da-DK:
       title: der er blevet offentliggjort et nyt input på jeres platform
       today: I dag
       yesterday: I går
+    new_phone_confirmation:
+      sms_body: Din bekræftelseskode er %{code}.
     official_feedback_on_idea_you_follow:
       cta_button: Gå til dette input
       event_description: "%{feedback_author_name} kom med en officiel opdatering på %{input_title}'."
@@ -546,6 +551,8 @@ da-DK:
       preheader: Nulstil din adgangskode til %{organizationName}
       subject: '%{organizationName}: Nulstil din adgangskode'
       title: Vælg en ny adgangskode
+    phone_confirmation:
+      sms_body: Din bekræftelseskode er %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

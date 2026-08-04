@@ -63,6 +63,7 @@ interface Props {
   apiErrors: CLErrors | null;
   onChange: (arg: IUpdatedPhaseProperties) => void;
   setValidationErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
+  hideMethodPicker?: boolean;
 }
 
 const MAX_VOTES_PER_VOTING_METHOD: Record<VotingMethod, number> = {
@@ -80,6 +81,7 @@ const PhaseParticipationConfig = ({
   apiErrors,
   onChange,
   setValidationErrors,
+  hideMethodPicker,
 }: Props) => {
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
   const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
@@ -413,6 +415,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleAllowMultipleResponsesChange = (value: boolean) => {
+    updateFormData((state) => ({
+      ...state,
+      allow_multiple_responses: value,
+    }));
+  };
+
   const handleSimilarityEnabledChange = (value: boolean) => {
     updateFormData((state) => ({
       ...state,
@@ -488,12 +497,16 @@ const PhaseParticipationConfig = ({
   return (
     <Container>
       <StyledSection>
-        <ParticipationMethodPicker
-          participation_method={participation_method}
-          showSurveys={showSurveys}
-          apiErrors={apiErrors}
-          handleParticipationMethodOnChange={handleParticipationMethodOnChange}
-        />
+        {!hideMethodPicker && (
+          <ParticipationMethodPicker
+            participation_method={participation_method}
+            showSurveys={showSurveys}
+            apiErrors={apiErrors}
+            handleParticipationMethodOnChange={
+              handleParticipationMethodOnChange
+            }
+          />
+        )}
         {project_library_enabled && (
           <Box mb="20px" width="750px">
             <FeatureCallout
@@ -719,6 +732,9 @@ const PhaseParticipationConfig = ({
             formData={formData}
             handleSurveyTitleChange={handleSurveyTitleChange}
             handleSurveyCTAChange={handleSurveyCTAChange}
+            handleAllowMultipleResponsesChange={
+              handleAllowMultipleResponsesChange
+            }
           />
         )}
         {participation_method === 'survey' && (

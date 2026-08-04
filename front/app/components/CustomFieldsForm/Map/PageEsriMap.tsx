@@ -38,6 +38,7 @@ const PageEsriMap = ({
           center: mapConfig?.data.attributes.center_geojson,
         }}
         webMapId={mapConfig?.data.attributes.esri_web_map_id}
+        esriFeaturePopupsEnabled
         height="100%"
       />
     </Box>

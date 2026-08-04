@@ -31,7 +31,9 @@ const CharacterLimitSettings = ({
   // we need to convert it to a number to calculate the min value for the max characters input
   // and then convert it again in a string to set the min value for the max characters input
   const minChars = Number(watch(minCharactersName));
-  const maxMin = String(Number.isFinite(minChars) && minChars > 0 ? minChars + 1 : 1)
+  const maxMin = String(
+    Number.isFinite(minChars) && minChars > 0 ? minChars + 1 : 1
+  );
 
   return (
     <Box mb="24px">

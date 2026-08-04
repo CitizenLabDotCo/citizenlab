@@ -45,6 +45,12 @@ RSpec.describe ContentBuilder::Concerns::ContentBuildable do
             another_layout.destroy!
             expect(buildable.uses_content_builder?).to be false
           end
+
+          it 'ignores the project_page layout, which every project has' do
+            layout.update!(enabled: false)
+            create(:layout, content_buildable: buildable, code: 'project_page', enabled: true)
+            expect(buildable.uses_content_builder?).to be false
+          end
         end
       end
 

@@ -1,10 +1,10 @@
 import { randomEmail } from '../../../support/commands';
-import { fakeSSOSignup } from './utils';
+import { fakeSSOGlobalSignup } from './utils';
 import { confirmEmail, enterEmail } from '../../../support/auth';
 
 describe('SSO: user with unconfirmed email', () => {
   it('signs the user in after a round-trip through the fake OIDC provider', () => {
-    fakeSSOSignup(cy, 'tracy_smith');
+    fakeSSOGlobalSignup(cy, 'tracy_smith');
 
     // Expect to be on email confirmation step
     confirmEmail(cy);
@@ -15,7 +15,7 @@ describe('SSO: user with unconfirmed email', () => {
   });
 
   it('allows user to re-request a code', () => {
-    fakeSSOSignup(cy, 'tracy_smith');
+    fakeSSOGlobalSignup(cy, 'tracy_smith');
 
     // Re-request code
     cy.dataCy('resend-code').click();
@@ -26,7 +26,7 @@ describe('SSO: user with unconfirmed email', () => {
   });
 
   it('allows user to change email', () => {
-    fakeSSOSignup(cy, 'tracy_smith');
+    fakeSSOGlobalSignup(cy, 'tracy_smith');
 
     // Go to change email screen
     cy.get('#e2e-go-to-change-email').click();
@@ -35,8 +35,9 @@ describe('SSO: user with unconfirmed email', () => {
     const newEmail = randomEmail();
     cy.get('#e2e-authentication-modal')
       .get('input[type="email"]')
+      .clear()
       .type(newEmail);
-    cy.get('#e2e-built-in-fields-submit-button').click();
+    cy.get('#e2e-change-email-submit-button').click();
 
     // Confirm email with the new code (which is always the same in the e2e env)
     confirmEmail(cy);
@@ -69,7 +70,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.clearCookies();
 
     // Sign up through Fake SSO (return confirmed email)
-    fakeSSOSignup(cy, 'john_doe', { email });
+    fakeSSOGlobalSignup(cy, 'john_doe', { email });
 
     // We expect to arrive on the success message
     cy.get('#e2e-sign-up-success-modal').should('exist');
@@ -77,6 +78,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Confirm that I can post idea
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.acceptCookies();
+    cy.dockProjectCtaBar();
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.location('pathname').should(
@@ -96,7 +98,7 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     cy.clearCookies();
 
     // Sign up through Fake SSO (return unconfirmed email)
-    fakeSSOSignup(cy, 'tracy_smith', { email });
+    fakeSSOGlobalSignup(cy, 'tracy_smith', { email });
 
     // Confirm email
     confirmEmail(cy);
@@ -107,11 +109,30 @@ describe('SSO: user with unconfirmed email - edge cases', () => {
     // Confirm that I can post idea
     cy.visit('/projects/an-idea-bring-it-to-your-council');
     cy.acceptCookies();
+    cy.dockProjectCtaBar();
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.location('pathname').should(
       'eq',
       '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
     );
+  });
+
+  it('allows user to sign up, exit flow, and then return to the flow and confirm email', () => {
+    fakeSSOGlobalSignup(cy, 'tracy_smith');
+
+    // Exit flow
+    cy.get('.e2e-modal-close-button').click();
+
+    // Re-enter flow
+    cy.get('#e2e-user-menu-container').click();
+    cy.get('#e2e-confirm-email-link > button').click();
+
+    // Confirm email
+    confirmEmail(cy);
+
+    // After confirming email, we expect to arrive on the success message
+    cy.get('#e2e-authentication-modal').should('exist');
+    cy.get('#e2e-sign-up-success-modal').should('exist');
   });
 });

@@ -7,16 +7,25 @@ module FlagInappropriateContent
       'B' => 'harmful',
       'C' => 'sexually_explicit',
       'D' => 'spam',
-      'E' => nil
+      'E' => nil,
+      'F' => 'guideline_violation'
     }
     FLAGGABLE_TO_DEFAULT_ATTRIBUTES = {
       'Idea' => %i[title_multiloc body_multiloc location_description],
       'Comment' => %i[body_multiloc]
     }
+    # location_description has no entry: an address or map pin is not
+    # classifiable on its own and was the main source of spam false positives.
+    ATTRIBUTE_TO_FIELD_CODE = {
+      title_multiloc: 'title_multiloc',
+      body_multiloc: 'body_multiloc'
+    }.freeze
 
     def initialize
-      region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
-      @llm = Analysis::LLM::Claude3Haiku.new(region: region) if region
+      # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
+      return if ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil).blank?
+
+      @llm = LLMSelector.new.llm_class_for_use_case('toxicity_detection').new
     end
 
     # @return [InappropriateContentFlag, nil] The flag if one was created, nil otherwise
@@ -38,10 +47,10 @@ module FlagInappropriateContent
 
     def check_toxicity(flaggable, attributes: nil)
       attributes ||= default_attributes(flaggable)
-      texts = extract_texts flaggable, attributes
-      return if texts.blank?
+      text = flaggable_to_text(flaggable, attributes)
+      return if text.blank?
 
-      texts.filter_map { |text| classify_toxicity(text) }.first
+      classify_toxicity(text, flaggable)
     end
 
     private
@@ -50,33 +59,87 @@ module FlagInappropriateContent
       FLAGGABLE_TO_DEFAULT_ATTRIBUTES[flaggable.class.name]
     end
 
-    def extract_texts(flaggable, attributes)
-      texts = []
-      attributes.each do |atr|
-        next if flaggable[atr].blank?
-
-        texts += if atr.to_s.ends_with? '_multiloc'
-          flaggable[atr].values
-        else
-          [flaggable[atr]]
-        end
+    def flaggable_to_text(flaggable, attributes)
+      case flaggable
+      when Idea then idea_to_text(flaggable, attributes)
+      when Comment then comment_to_text(flaggable)
       end
-      texts.compact! # until nil values in multilocs is fixed
-      texts
     end
 
-    def classify_toxicity(text)
+    # Serialize the input with the same mechanics the analysis engine uses for
+    # its prompts, so the model sees each answer below the form question it
+    # responds to.
+    def idea_to_text(idea, attributes)
+      codes = attributes.filter_map { |attribute| ATTRIBUTE_TO_FIELD_CODE[attribute.to_sym] }
+      return '' if codes.empty?
+
+      fields = IdeaCustomFieldsService.new(idea.custom_form).all_fields.select { |field| codes.include?(field.code) }
+      Analysis::InputToText.new(fields).formatted(idea)
+    end
+
+    def comment_to_text(comment)
+      body = multiloc_service.t(comment.body_multiloc)
+      body = MentionService.new.remove_expanded_mentions(body)
+      ActionController::Base.helpers.strip_tags(body)
+    end
+
+    def classify_toxicity(text, flaggable)
       return if !@llm # Some clusters (e.g. Canada) are not allowed to send data to the US or Europe.
 
-      prompt = Analysis::LLM::Prompt.new.fetch('claude_toxicity_detection', text: text)
-      response = @llm.chat(prompt, assistant_prefix: 'My answer is (').strip
-      toxicity_label = MAP_TOXICITY_LABEL.find do |class_id, _|
-        response.starts_with? "#{class_id})"
-      end&.last
-      if toxicity_label
-        ai_reason = response[2, response.length].strip
-        { toxicity_label: toxicity_label, ai_reason: ai_reason }
-      end
+      prompt = Analysis::LLM::Prompt.new.fetch(
+        'toxicity_detection',
+        text:,
+        project_title: project_title(flaggable),
+        parent_post_title: parent_post_title(flaggable),
+        custom_guidelines:
+      )
+      response = @llm.chat(prompt, response_schema:)
+      toxicity_label = MAP_TOXICITY_LABEL[response['category']]
+      return if !toxicity_label
+
+      { toxicity_label:, ai_reason: response['reason'] }
+    end
+
+    def project_title(flaggable)
+      project = flaggable.is_a?(Comment) ? flaggable.idea&.project : flaggable.project
+      multiloc_service.t(project&.title_multiloc).presence
+    end
+
+    def parent_post_title(flaggable)
+      return unless flaggable.is_a?(Comment)
+
+      multiloc_service.t(flaggable.idea&.title_multiloc).presence
+    end
+
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new
+    end
+
+    def custom_guidelines
+      return @custom_guidelines if defined? @custom_guidelines
+
+      @custom_guidelines = AppConfiguration.instance.settings('flag_inappropriate_content', 'custom_guidelines').presence
+    end
+
+    def response_schema
+      categories = MAP_TOXICITY_LABEL.keys
+      categories -= ['F'] if custom_guidelines.blank?
+      {
+        type: 'object',
+        additionalProperties: false,
+        required: %w[category reason],
+        properties: {
+          category: {
+            type: 'string',
+            enum: categories,
+            description: 'The category that best describes the message'
+          },
+          reason: {
+            type: 'string',
+            description: 'A short explanation of why the chosen category applies'
+          }
+        }
+      }
     end
   end
 end

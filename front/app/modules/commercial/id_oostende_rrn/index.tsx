@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { IdMethodName } from 'api/id_methods/types';
-import { isLastIdMethod } from 'api/id_methods/util';
+import { isLastIdMethod } from 'api/id_methods/utils';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 

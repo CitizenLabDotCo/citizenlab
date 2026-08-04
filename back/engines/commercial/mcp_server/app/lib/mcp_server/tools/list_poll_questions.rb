@@ -18,7 +18,8 @@ class McpServer::Tools::ListPollQuestions < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      phase = Phase.find(params[:phase_id])
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
       return wrong_method_error(phase) unless phase.poll?
 
       scope = Polls::Question
@@ -32,8 +33,6 @@ class McpServer::Tools::ListPollQuestions < McpServer::BaseTool
         **params.slice(:page, :per_page),
         serializer: McpServer::Serializers::PollQuestion
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Phase not found: #{params[:phase_id]}")
     end
 
     private

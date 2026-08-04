@@ -5,6 +5,7 @@ import { SupportedLocale } from 'typings';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
 import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
@@ -18,6 +19,7 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
@@ -50,6 +52,9 @@ const FolderDescriptionBuilderToolbox = ({
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
+  const isHtmlBlockMultilocEnabled = useFeatureFlag({
+    name: 'html_block_in_content_builder',
+  });
 
   if (!appConfigurationLocales || !formatMessageWithLocale) {
     return null;
@@ -156,6 +161,14 @@ const FolderDescriptionBuilderToolbox = ({
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
         />
+        {isHtmlBlockMultilocEnabled && (
+          <DraggableElement
+            id="e2e-draggable-html-block"
+            component={<HtmlBlockMultiloc />}
+            icon="code"
+            label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-button"
           component={

@@ -18,6 +18,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
+import projectCardMessages from 'components/ProjectCard/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { truncate } from 'utils/textUtils';
@@ -66,6 +67,7 @@ export const AdminPublicationCard = ({
     visible_children_count,
     publication_title_multiloc,
     publication_description_preview_multiloc,
+    publication_status,
   } = adminPublication.attributes;
 
   const { type } = adminPublication.relationships.publication.data;
@@ -79,6 +81,18 @@ export const AdminPublicationCard = ({
     >
       <CardContainer w={`${cardWidth}px`} ml={ml} mr={mr} display="block">
         <CardImage imageUrl={imageUrl} alt={imageAltText} />
+        {publication_status === 'archived' && (
+          <Text
+            mt="8px"
+            mb="0px"
+            color="textSecondary"
+            fontSize="s"
+            fontWeight="semi-bold"
+            style={{ textTransform: 'uppercase' }}
+          >
+            {formatMessage(projectCardMessages.archived)}
+          </Text>
+        )}
         <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
           {localize(publication_title_multiloc)}
         </Title>

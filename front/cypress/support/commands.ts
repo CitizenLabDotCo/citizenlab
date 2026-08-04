@@ -11,11 +11,16 @@ import { Multiloc } from '../../app/typings';
 
 import { jwtDecode } from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
+import {
+  IPermissionUpdate,
+  IPhasePermissionAction,
+} from '../../app/api/phase_permissions/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       dataCy: typeof dataCy;
+      dockProjectCtaBar: typeof dockProjectCtaBar;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
       signUp: typeof signUp;
@@ -68,6 +73,7 @@ declare global {
       apiCreateCustomFieldOption: typeof apiCreateCustomFieldOption;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
+      apiCreateCause: typeof apiCreateCause;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       apiToggleProjectDescriptionBuilder: typeof apiToggleProjectDescriptionBuilder;
@@ -131,6 +137,15 @@ export function randomEmail() {
     .toString(36)
     .substr(2, 12)
     .toLowerCase()}.com`;
+}
+
+export function randomPhoneNumber() {
+  // NANP toll-free number: +1 800 NXX-XXXX. libphonenumber (and therefore
+  // Phonelib, used by the backend to validate) requires the exchange code
+  // (the digit right after 800) to be 2-9 — a leading 0 or 1 is invalid.
+  // So the 7-digit block must start with 2-9: range 2000000..9999999.
+  const randomDigits = Math.floor(Math.random() * 8000000) + 2000000;
+  return `+1800${randomDigits}`; // Returns the number in E.164 format
 }
 
 function unregisterServiceWorkers() {
@@ -238,7 +253,7 @@ function emailConfirmation(email: string) {
       'Content-Type': 'application/json',
     },
     method: 'POST',
-    url: 'web_api/v1/user/confirm_code_unauthenticated',
+    url: 'web_api/v1/user/confirm_code_email',
     body: {
       confirmation: { email, code: '1234' },
     },
@@ -672,7 +687,7 @@ function apiCreateInputTopic({
 }
 
 type IdeaType = {
-  projectId: string;
+  phaseId: string;
   ideaTitle: string;
   ideaContent: string;
   locationGeoJSON?: { type: string; coordinates: number[] };
@@ -680,12 +695,11 @@ type IdeaType = {
   jwt?: string;
   budget?: number;
   anonymous?: boolean;
-  phaseIds?: string[];
   topicIds?: string[];
 };
 
 function apiCreateIdea({
-  projectId,
+  phaseId,
   ideaTitle,
   ideaContent,
   locationGeoJSON,
@@ -693,7 +707,6 @@ function apiCreateIdea({
   jwt,
   budget,
   anonymous,
-  phaseIds,
   topicIds,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
@@ -703,10 +716,9 @@ function apiCreateIdea({
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/ideas',
+      url: `web_api/v1/phases/${phaseId}/inputs`,
       body: {
         idea: {
-          project_id: projectId,
           publication_status: 'published',
           title_multiloc: {
             en: ideaTitle,
@@ -720,7 +732,6 @@ function apiCreateIdea({
           location_description: locationDescription,
           budget,
           anonymous,
-          phase_ids: phaseIds,
           topic_ids: topicIds,
         },
       },
@@ -883,7 +894,7 @@ function apiRemoveComment(commentId: string) {
 
 // The participation AboutBox widget node, serialised as the Content Builder editor
 // produces it. It renders the project sidebar (action buttons / "see ideas" etc).
-function aboutBoxNode() {
+function aboutBoxNode(parent: string) {
   return {
     type: { resolvedName: 'AboutBox' },
     isCanvas: false,
@@ -896,23 +907,23 @@ function aboutBoxNode() {
       },
       noPointerEvents: true,
     },
-    parent: 'ROOT',
+    parent,
     hidden: false,
     nodes: [],
     linkedNodes: {},
   };
 }
 
-// Appends the participation AboutBox to a project's existing Content Builder
-// description layout, so its page renders the sidebar/CTAs. Idempotent — a no-op if
-// the AboutBox is already there.
+// Appends the participation AboutBox to a project's project_page layout, so its
+// page renders the sidebar/CTAs. Idempotent — a no-op if the AboutBox is already
+// there.
 function apiAddAboutBox(projectId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const authHeaders = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${response.body.jwt}`,
     };
-    const layoutPath = `web_api/v1/projects/${projectId}/content_builder_layouts/project_description`;
+    const layoutPath = `web_api/v1/projects/${projectId}/content_builder_layouts/project_page`;
 
     return cy
       .request({ headers: authHeaders, method: 'GET', url: layoutPath })
@@ -923,8 +934,21 @@ function apiAddAboutBox(projectId: string) {
         );
         if (hasAboutBox) return;
 
-        craftjs.aboutBox = aboutBoxNode();
-        craftjs.ROOT.nodes = [...craftjs.ROOT.nodes, 'aboutBox'];
+        const parentId = ['ProjectDescriptionSection', 'ProjectPageBody']
+          .map((name) =>
+            Object.keys(craftjs).find(
+              (id) => craftjs[id]?.type?.resolvedName === name
+            )
+          )
+          .find((id) => id !== undefined);
+        if (!parentId) {
+          throw new Error(
+            `project_page layout of project ${projectId} has no page body`
+          );
+        }
+
+        craftjs.aboutBox = aboutBoxNode(parentId);
+        craftjs[parentId].nodes = [...craftjs[parentId].nodes, 'aboutBox'];
 
         return cy.request({
           headers: authHeaders,
@@ -1299,6 +1323,28 @@ function apiAddPoll(
   });
 }
 
+function apiCreateCause(phaseId: string, title: string) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: 'web_api/v1/causes',
+      body: {
+        cause: {
+          phase_id: phaseId,
+          title_multiloc: { en: title },
+          description_multiloc: { en: title },
+        },
+      },
+    });
+  });
+}
+
 function apiCreatePhase({
   projectId,
   title,
@@ -1313,6 +1359,7 @@ function apiCreatePhase({
   surveyService,
   votingMaxTotal,
   allow_anonymous_participation,
+  allow_multiple_responses,
   votingMethod,
   votingMaxVotesPerIdea,
   votingMinTotal,
@@ -1337,6 +1384,7 @@ function apiCreatePhase({
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
+  allow_multiple_responses?: boolean;
   votingMethod?: VotingMethod;
   votingMaxVotesPerIdea?: number;
   votingMinTotal?: number;
@@ -1374,6 +1422,7 @@ function apiCreatePhase({
           survey_service: surveyService,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
+          allow_multiple_responses: allow_multiple_responses,
           voting_max_votes_per_idea: votingMaxVotesPerIdea,
           voting_min_total: votingMinTotal,
           native_survey_button_multiloc: nativeSurveyButtonMultiloc,
@@ -1618,19 +1667,9 @@ function apiRemoveAllReports() {
   });
 }
 
-type IPhasePermissionAction =
-  | 'posting_idea'
-  | 'reacting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'voting'
-  | 'annotating_document'
-  | 'attending_event';
-
 type ApiSetPermissionTypeProps = {
   phaseId: string;
-  permissionBody?: any;
+  permissionBody?: Partial<IPermissionUpdate>;
   action: IPhasePermissionAction;
 };
 function apiSetPhasePermission({
@@ -1911,12 +1950,12 @@ function apiCreateSurveyResponse(
   {
     email,
     password,
-    project_id,
+    phase_id,
     fields,
   }: {
     email?: string;
     password?: string;
-    project_id: string;
+    phase_id: string;
     fields: Record<string, any>;
   },
   jwt?: any
@@ -1928,21 +1967,11 @@ function apiCreateSurveyResponse(
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: 'web_api/v1/ideas',
+      url: `web_api/v1/phases/${phase_id}/inputs`,
       body: {
         idea: {
           publication_status: 'published',
-          project_id,
           ...fields,
-        },
-        method: 'POST',
-        url: 'web_api/v1/ideas',
-        body: {
-          idea: {
-            publication_status: 'published',
-            project_id,
-            ...fields,
-          },
         },
       },
     });
@@ -2268,6 +2297,22 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
   return cy.get(`[data-cy="${dataCyValue}"]`);
 }
 
+function dockProjectCtaBar() {
+  const scrollUntilDocked = () =>
+    cy.get('[data-project-page-phases]').should(($phases) => {
+      const el = $phases[0];
+      el.scrollIntoView();
+      expect(
+        el.ownerDocument.querySelector('[data-cy="project-cta-bar-top"]'),
+        'docked CTA bar'
+      ).to.exist;
+    });
+
+  scrollUntilDocked();
+  cy.wait(500);
+  return scrollUntilDocked();
+}
+
 function deleteEventAttendances(
   email: string,
   password: string,
@@ -2332,6 +2377,7 @@ function apiRemoveIdeas(projectId?: string) {
 }
 
 Cypress.Commands.add('dataCy', dataCy);
+Cypress.Commands.add('dockProjectCtaBar', dockProjectCtaBar);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
 Cypress.Commands.add('signUp', signUp);
@@ -2384,6 +2430,7 @@ Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiCreateCustomFieldOption', apiCreateCustomFieldOption);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
 Cypress.Commands.add('apiAddPoll', apiAddPoll);
+Cypress.Commands.add('apiCreateCause', apiCreateCause);
 Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setModeratorLoginCookie', setModeratorLoginCookie);
 Cypress.Commands.add(

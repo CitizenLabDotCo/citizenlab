@@ -27,11 +27,8 @@ describe('Project description builder language switch', () => {
       }).then((project) => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
-        });
+        cy.apiToggleProjectDescriptionBuilder({ projectId });
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });
   });
@@ -48,15 +45,17 @@ describe('Project description builder language switch', () => {
   });
 
   it('handles language specific content correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
     // EN
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
-    cy.get('.e2e-text-box').click('center');
+    // The seeded layout already contains text widgets, so target the dropped one.
+    cy.get('.e2e-text-box').should('have.length', 3);
+    cy.get('.e2e-text-box').first().click('center');
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Language 1 text.', { force: true });
     cy.wait(1000);
@@ -76,14 +75,17 @@ describe('Project description builder language switch', () => {
   });
 
   it('deletes language specific content correctly', () => {
-    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
 
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    // Delete content
-    cy.get('.e2e-text-box').wait(1000).click({ force: true });
+    // Delete content. The widget renders in the platform locale, so match the
+    // text typed for either language.
+    cy.contains('.e2e-text-box', /Language \d text\./)
+      .wait(1000)
+      .click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
 
     // Confirm correct content on live page

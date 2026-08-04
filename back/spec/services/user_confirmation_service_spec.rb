@@ -5,14 +5,14 @@ require 'rails_helper'
 RSpec.describe UserConfirmationService do
   subject(:service) { described_class.new }
 
-  shared_examples 'validation and confirmation' do |method_name, confirmation_assoc|
+  shared_examples 'validation and confirmation' do |method_name, confirmation_assoc, confirmed_at_attr|
     let(:confirmation) { user.send(confirmation_assoc) }
 
     context 'when the code is correct' do
       it 'returns success' do
         result = service.public_send(method_name, user, confirmation.code)
         expect(result.success?).to be true
-        expect(user.reload.confirmation_required?).to be false
+        expect(user.reload.public_send(confirmed_at_attr)).to be_present
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe UserConfirmationService do
     end
   end
 
-  describe '#validate_and_confirm_unauthenticated!' do
+  describe '#validate_and_confirm_email!' do
     let(:user) { create(:unconfirmed_user) }
 
     before do
@@ -90,7 +90,7 @@ RSpec.describe UserConfirmationService do
       expect(user.confirmation_required?).to be false
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_unauthenticated!, :email_confirmation
+    include_examples 'validation and confirmation', :validate_and_confirm_email!, :email_confirmation, :email_confirmed_at
 
     context 'when password_login is disabled' do
       before do
@@ -98,7 +98,7 @@ RSpec.describe UserConfirmationService do
       end
 
       it 'returns a password login feature disabled error' do
-        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation.code)
+        result = service.validate_and_confirm_email!(user, user.email_confirmation.code)
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(base: [{ error: :password_login_feature_disabled }])
@@ -111,7 +111,7 @@ RSpec.describe UserConfirmationService do
       it 'returns a user has password error' do
         expect(user.confirmation_required?).to be true
         expect(user.password_digest).not_to be_nil
-        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation.code)
+        result = service.validate_and_confirm_email!(user, user.email_confirmation.code)
         expect(result.success?).to be true
         expect(user.reload.confirmation_required?).to be false
       end
@@ -124,7 +124,7 @@ RSpec.describe UserConfirmationService do
       it 'completes pending claim tokens on successful confirmation' do
         expect(idea.author_id).to be_nil
 
-        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation.code)
+        result = service.validate_and_confirm_email!(user, user.email_confirmation.code)
 
         expect(result.success?).to be true
         expect(idea.reload.author_id).to eq(user.id)
@@ -133,14 +133,14 @@ RSpec.describe UserConfirmationService do
     end
   end
 
-  describe '#validate_and_confirm_email_change!' do
+  describe '#validate_and_confirm_new_email!' do
     let(:user) { create(:user, new_email: 'new@email.com') }
 
     before do
       RequestNewEmailConfirmationCodeJob.perform_now(user, new_email: user.new_email)
     end
 
-    include_examples 'validation and confirmation', :validate_and_confirm_email_change!, :new_email_confirmation
+    include_examples 'validation and confirmation', :validate_and_confirm_new_email!, :new_email_confirmation, :email_confirmed_at
 
     context 'when the new email is blank' do
       before do
@@ -148,10 +148,97 @@ RSpec.describe UserConfirmationService do
       end
 
       it 'returns a no email error' do
-        result = service.validate_and_confirm_email_change!(user, user.new_email_confirmation.code)
+        result = service.validate_and_confirm_new_email!(user, user.new_email_confirmation.code)
 
         expect(result.success?).to be false
         expect(result.errors.details).to eq(user: [{ error: :no_email }])
+      end
+    end
+  end
+
+  describe '#validate_and_confirm_phone!' do
+    let(:user) { create(:user, phone: '+14155552671') }
+
+    # The code request sends the OTP synchronously, so the provider is invoked.
+    include_context 'with stubbed SMS provider'
+
+    before do
+      SettingsService.new.activate_feature! 'password_login'
+      RequestPhoneConfirmationCodeJob.perform_now(user)
+    end
+
+    include_examples 'validation and confirmation', :validate_and_confirm_phone!, :phone_confirmation, :phone_confirmed_at
+
+    context 'when the code is correct' do
+      it 'does not complete pending claim tokens (an email/signup concern)' do
+        expect(ClaimTokenService).not_to receive(:complete)
+        service.validate_and_confirm_phone!(user, confirmation.code)
+      end
+    end
+
+    context 'when password_login is disabled' do
+      before do
+        SettingsService.new.deactivate_feature! 'password_login'
+      end
+
+      it 'returns a password login feature disabled error' do
+        result = service.validate_and_confirm_phone!(user, user.phone_confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(base: [{ error: :password_login_feature_disabled }])
+      end
+    end
+
+    context 'when the phone number is blank' do
+      before { user.update_columns(phone: nil) }
+
+      it 'returns a no phone error' do
+        result = service.validate_and_confirm_phone!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :no_phone }])
+      end
+    end
+  end
+
+  describe '#validate_and_confirm_new_phone!' do
+    let(:user) { create(:user) }
+    let(:new_phone) { '+14155552671' }
+
+    # The code request sends the OTP synchronously, so the provider is invoked.
+    include_context 'with stubbed SMS provider'
+
+    before do
+      RequestNewPhoneConfirmationCodeJob.perform_now(user, new_phone: new_phone)
+    end
+
+    include_examples 'validation and confirmation', :validate_and_confirm_new_phone!, :new_phone_confirmation, :phone_confirmed_at
+
+    context 'when the code is correct' do
+      it 'promotes new_phone to phone and stamps it confirmed' do
+        result = service.validate_and_confirm_new_phone!(user, confirmation.code)
+
+        expect(result.success?).to be true
+        user.reload
+        expect(user.phone).to eq(new_phone)
+        expect(user.new_phone).to be_nil
+        expect(user.phone_confirmed_at).to be_present
+      end
+
+      it 'does not complete pending claim tokens (an email/signup concern)' do
+        expect(ClaimTokenService).not_to receive(:complete)
+        service.validate_and_confirm_new_phone!(user, confirmation.code)
+      end
+    end
+
+    context 'when the new phone number is blank' do
+      before { user.update_columns(new_phone: nil) }
+
+      it 'returns a no phone error' do
+        result = service.validate_and_confirm_new_phone!(user, confirmation.code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :no_phone }])
       end
     end
   end

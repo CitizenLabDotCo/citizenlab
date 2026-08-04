@@ -35,11 +35,32 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           enum: Permission::PERMITTED_BIES.sort,
           description: <<~DESC
             - everyone: anyone, no sign-in or email needed.
-            - everyone_confirmed_email: must confirm an email address (no account required).
-            - users: must have an account (default).
-            - verified: must have completed identity verification. Requires a verification method to be configured.
-            - admins_moderators: project admins/moderators only. When set, group_ids, demographic_questions, and verification_expiry have no effect.
+            - users: must have an account (default). Combine with require_name, require_password,
+              require_confirmed_email, require_verification and require_confirmed_phone_number to
+              fine-tune what an account needs.
+            - admins_moderators: project admins/moderators only. When set, group_ids,
+              demographic_questions, and the require_* flags have no effect.
           DESC
+        },
+        require_name: {
+          type: 'boolean',
+          description: 'Whether the participant must provide a first and last name. Only applies when permitted_by is "users". Defaults to true.'
+        },
+        require_password: {
+          type: 'boolean',
+          description: 'Whether the participant must set a password. Only applies when permitted_by is "users". Defaults to true.'
+        },
+        require_confirmed_email: {
+          type: 'boolean',
+          description: 'Whether the participant must confirm their email address. Only applies when permitted_by is "users". Requires the password_login feature (with signup) to be enabled. Defaults to true.'
+        },
+        confirmed_email_expiry: {
+          type: %w[integer null],
+          description: 'Number of days before email reconfirmation is required; null means never reconfirm.'
+        },
+        require_verification: {
+          type: 'boolean',
+          description: 'Whether the participant must complete identity verification. Only applies when permitted_by is "users". Requires a verification method to be configured. Defaults to false.'
         },
         group_ids: {
           type: 'array',
@@ -72,16 +93,30 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           type: %w[integer null],
           enum: [nil, 0, 7, 30],
           description: <<~DESC
-            Only used when permitted_by is "verified". How recent verification must be:
+            Only used when require_verification is true. How recent verification must be:
             - null: verify once, never expires
             - 0: re-verify if older than 30 minutes
             - 7: within last 7 days
             - 30: within last 30 days
           DESC
         },
+        require_confirmed_phone_number: {
+          type: 'boolean',
+          description: 'Whether the participant must confirm a phone number by SMS. Only applies when permitted_by is "users". Requires the sms feature to be enabled. Defaults to false.'
+        },
+        confirmed_phone_number_expiry: {
+          type: %w[integer null],
+          description: 'Number of days before phone-number reconfirmation is required; null means never reconfirm. Only used when require_confirmed_phone_number is true.'
+        },
         access_denied_explanation_multiloc: {
           **multiloc_schema,
-          description: 'Custom message shown to denied users (e.g. "You must be 18 or older to vote").'
+          type: %w[object null],
+          description: <<~DESC.squish
+            Custom message shown to denied users (e.g. "You must be 18 or older to vote").
+            Merged per locale: locales in the payload are overwritten, absent locales
+            keep their current value. Pass null to remove the custom message
+            (participants then see the default explanation).
+          DESC
         }
       },
       required: %w[phase_id action permitted_by]
@@ -90,34 +125,43 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      phase = Phase.find(params[:phase_id])
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
+
       authorize_project!(phase.project)
 
       permission = phase.permissions.find_by(action: params[:action])
-      return invalid_action_response(phase, params[:action]) if permission.nil?
+      return invalid_action_response(phase, params[:action]) unless permission
 
       authorize(permission, :update?)
 
-      attributes = {
-        permitted_by: params[:permitted_by],
-        group_ids: params[:group_ids],
-        verification_expiry: params[:verification_expiry],
-        access_denied_explanation_multiloc: params[:access_denied_explanation_multiloc]
-      }.compact
+      # slice keeps explicit nulls
+      # (an absent key leaves the field unchanged)
+      attributes = params.slice(
+        :permitted_by,
+        :group_ids,
+        :require_name,
+        :require_password,
+        :require_confirmed_email,
+        :confirmed_email_expiry,
+        :require_verification,
+        :verification_expiry,
+        :require_confirmed_phone_number,
+        :confirmed_phone_number_expiry,
+        :access_denied_explanation_multiloc
+      )
 
       ActiveRecord::Base.transaction do
-        permission.update!(attributes)
+        permission.update!(merge_multilocs(permission, attributes))
         replace_demographic_questions(permission, params[:demographic_questions]) if params.key?(:demographic_questions)
       end
 
-      ok(
+      response(
         "Updated #{params[:action]} permission on phase #{phase.id}",
         structured: McpServer::Serializers::Permission.serialize(permission.reload)
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      validation_error_response(e.record)
+      invalid_record_error(e.record)
     end
 
     private
@@ -128,10 +172,6 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
         "Action '#{action}' does not apply to this phase (participation_method: '#{phase.participation_method}'). " \
         "Valid actions: #{valid_actions.join(', ')}."
       )
-    end
-
-    def validation_error_response(record)
-      error("Validation failed: #{record.errors.full_messages.join(', ')}")
     end
 
     # Sets global_custom_fields and the permissions_custom_fields rows on the permission.

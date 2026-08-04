@@ -129,7 +129,9 @@ describe WebApi::V1::IdeaSerializer do
     before do
       create(:baskets_idea, basket: create(:basket, phase: phase), idea: input, votes: 1)
       create(:baskets_idea, basket: create(:basket, phase: phase), idea: input, votes: 1)
-      phase.update!(end_at: phase.start_at + 1.day)
+      # 2 days, not 1: a 1-day phase whose start lands on a DST spring-forward day is
+      # only 23h, which is < MIN_DURATION (24h) and fails validation.
+      phase.update!(end_at: phase.start_at + 2.days)
       other_phase = create(:budgeting_phase, project: phase.project, start_at: phase.end_at + 1.day, end_at: phase.end_at + 10.days)
       create(:baskets_idea, basket: create(:basket, phase: other_phase), idea: input, votes: 1)
       Basket.update_counts(phase)

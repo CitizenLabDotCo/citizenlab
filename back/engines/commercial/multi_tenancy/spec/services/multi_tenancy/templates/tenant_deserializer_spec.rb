@@ -126,5 +126,54 @@ describe MultiTenancy::Templates::TenantDeserializer do
         expect(idea.body_multiloc.keys).to contain_exactly('nl-BE')
       end
     end
+
+    # Templates carry model data but no feature flags (AppConfiguration is not serialized),
+    # so a template derived from a platform with screening enabled records a
+    # `prescreening_mode` that the target platform may have no feature for. Applying it
+    # must succeed regardless; the mode simply has no effect where the feature is off.
+    describe 'a phase with a prescreening_mode' do
+      let(:template) do
+        YAML.load(<<~YAML, permitted_classes: [Time], aliases: true)
+          models:
+            project:
+              - &project
+                title_multiloc:
+                  en: Project
+            admin_publication:
+              - publication_ref: *project
+                publication_status: published
+            phase:
+              - project_ref: *project
+                title_multiloc:
+                  en: Ideation phase
+                participation_method: ideation
+                start_at: '2026-01-01'
+                end_at: '2026-12-31'
+                prescreening_mode: all
+        YAML
+      end
+
+      context 'when the target platform does not have the prescreening feature' do
+        it 'applies the template, storing the mode but leaving it without effect' do
+          expect { service.deserialize(template) }.not_to raise_error
+
+          phase = Phase.first
+          expect(phase.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be false
+        end
+      end
+
+      context 'when the target platform has the prescreening feature' do
+        before { SettingsService.new.activate_feature!('prescreening_ideation') }
+
+        it 'applies the template, and the mode takes effect' do
+          service.deserialize(template)
+
+          phase = Phase.first
+          expect(phase.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be true
+        end
+      end
+    end
   end
 end

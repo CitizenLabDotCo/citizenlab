@@ -904,6 +904,11 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.campaign_type_description.new_phone_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.239849Z",
+    "verified_by": "eva@govocal.com"
+  },
   "email_campaigns.campaign_type_description.official_feedback_on_idea_you_follow": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
@@ -913,6 +918,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.phone_confirmation": {
+    "state": "verified",
+    "verified_at": "2026-07-29T07:06:15.485714Z",
+    "verified_by": "Jelena"
   },
   "email_campaigns.campaign_type_description.project_folder_moderation_rights_received": {
     "state": "verified",
@@ -963,6 +973,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.campaign_type_description.sms_manual": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.239849Z",
+    "verified_by": "eva@govocal.com"
   },
   "email_campaigns.campaign_type_description.space_moderation_rights_received": {
     "state": "verified",
@@ -2434,6 +2449,11 @@
     "verified_at": "2026-03-18T15:41:17.450605Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.new_phone_confirmation.sms_body": {
+    "state": "verified",
+    "verified_at": "2026-07-16T09:49:20.239849Z",
+    "verified_by": "eva@govocal.com"
+  },
   "email_campaigns.official_feedback_on_idea_you_follow.cta_button": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.450605Z",
@@ -2482,6 +2502,11 @@
   "email_campaigns.password_reset.title": {
     "state": "verified",
     "verified_at": "2026-06-09T15:22:55.021091Z",
+    "verified_by": "Jelena"
+  },
+  "email_campaigns.phone_confirmation.sms_body": {
+    "state": "verified",
+    "verified_at": "2026-07-29T07:06:15.485714Z",
     "verified_by": "Jelena"
   },
   "email_campaigns.preview_data.author_display_name": {

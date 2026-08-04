@@ -56,7 +56,7 @@ describe McpServer::Tools::AttachFile do
       expect(attachment.file).to eq(existing_file)
     end
 
-    it "refuses when the file is not one of the resource's project files" do
+    it "returns a not-found error when the file is not one of the resource's project files" do
       file = create(:file)
 
       response = run_mcp_tool(
@@ -66,8 +66,22 @@ describe McpServer::Tools::AttachFile do
       )
 
       expect(response).to be_error
-      expect(response.content.first[:text]).to match(/not one of the resource's project files/)
+      expect(response.content.first[:text]).to include('File not found')
     end
+  end
+
+  it 'returns an error when the download fails' do
+    failing_url = 'https://example.com/missing.pdf'
+    stub_failing_remote_download(failing_url)
+
+    response = run_mcp_tool(
+      described_class,
+      params: { resource_type: 'project', resource_id: project.id, name: 'doc.pdf', remote_url: failing_url },
+      current_user:
+    )
+
+    expect(response).to be_error
+    expect(Files::FileAttachment.where(attachable: project).count).to eq(0)
   end
 
   it 'refuses when the project is published' do
@@ -91,6 +105,6 @@ describe McpServer::Tools::AttachFile do
     )
 
     expect(response).to be_error
-    expect(response.content.first[:text]).to match(/Couldn't find Project/)
+    expect(response.content.first[:text]).to include('Resource (project) not found')
   end
 end

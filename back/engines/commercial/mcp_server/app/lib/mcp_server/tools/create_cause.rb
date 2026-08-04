@@ -39,7 +39,9 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
-      phase = Phase.find(params[:phase_id])
+      phase = Phase.find_by(id: params[:phase_id])
+      return not_found_error('Phase', params[:phase_id]) unless phase
+
       authorize_project!(phase.project)
 
       attributes = params.except(:phase_id)
@@ -50,14 +52,12 @@ class McpServer::Tools::CreateCause < McpServer::BaseTool
       cause.save!
       Volunteering::SideFxCauseService.new.after_create(cause, current_user)
 
-      ok(
+      response(
         "Created cause #{cause.id}",
         structured: McpServer::Serializers::Cause.serialize(cause, params: { current_user: current_user })
       )
-    rescue ActiveRecord::RecordNotFound
-      error("Phase not found: #{params[:phase_id]}")
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 end

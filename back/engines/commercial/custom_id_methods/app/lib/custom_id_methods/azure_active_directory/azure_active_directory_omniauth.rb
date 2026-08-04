@@ -14,6 +14,10 @@ module CustomIdMethods::AzureActiveDirectory
       true
     end
 
+    def employee_only?
+      true
+    end
+
     def verification_method_type
       :omniauth
     end
@@ -95,7 +99,7 @@ module CustomIdMethods::AzureActiveDirectory
     end
 
     def enforced_email_domains
-      # Called on every login attempt (via AuthenticationService.sso_enforced_for_email?),
+      # Called on every login attempt (via AuthenticationService.new.sso_enforced_for_email?),
       # including on tenants that have no verification configured. Guard before
       # reading #config, which assumes the verification setting is present.
       return [] unless IdMethodService.new.configured?(AppConfiguration.instance, name)

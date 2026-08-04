@@ -49,19 +49,22 @@ class McpServer::Tools::CreateEvent < McpServer::BaseTool
 
   class Runner < McpServer::BaseTool::Runner
     def run
+      project = Project.find_by(id: params[:project_id])
+      return not_found_error('Project', params[:project_id]) unless project
+
       event = Event.new(**params)
-      authorize_project!(event.project)
+      authorize_project!(project)
       authorize(event, :create?)
 
       event.save!
       SideFxEventService.new.after_create(event, current_user)
 
-      ok(
+      response(
         "Created event #{event.id}",
         structured: McpServer::Serializers::Event.serialize(event, params: { current_user: })
       )
     rescue ActiveRecord::RecordInvalid => e
-      error("Validation failed: #{e.record.errors.full_messages.join(', ')}")
+      invalid_record_error(e.record)
     end
   end
 end

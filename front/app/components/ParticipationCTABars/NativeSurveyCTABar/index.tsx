@@ -6,14 +6,11 @@ import { useTheme } from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase, getLastPhase } from 'api/phases/utils';
+import { getCurrentPhase } from 'api/phases/utils';
 
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import {
-  CTABarProps,
-  hasProjectEndedOrIsArchived,
-} from 'components/ParticipationCTABars/utils';
+import { CTABarProps } from 'components/ParticipationCTABars/utils';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 
@@ -25,9 +22,7 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
 
   useEffect(() => {
-    setCurrentPhase(
-      getCurrentPhase(phases?.data) || getLastPhase(phases?.data)
-    );
+    setCurrentPhase(getCurrentPhase(phases?.data));
   }, [phases, project]);
 
   const { disabledReason } = getIdeaPostingRules({
@@ -36,10 +31,6 @@ const NativeSurveyCTABar = ({ project }: CTABarProps) => {
     authUser: authUser?.data,
   });
   const hasUserParticipated = disabledReason === 'posting_limited_max_reached';
-
-  if (hasProjectEndedOrIsArchived(project, currentPhase)) {
-    return null;
-  }
 
   return (
     <ParticipationCTAContent

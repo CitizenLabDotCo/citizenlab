@@ -14,6 +14,7 @@ import useProjectFolderImage from 'api/project_folder_images/useProjectFolderIma
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
 import { IUserData } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import FolderMoreActionsMenu from 'containers/Admin/projects/projectFolders/components/ProjectFolderRow/FolderMoreActionsMenu';
@@ -23,10 +24,12 @@ import GanttItemIconBar from 'components/UI/GanttChart/components/GanttItemIconB
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { usePermission } from 'utils/permissions';
 
 import { PUBLICATION_STATUS_LABELS } from '../../_shared/constants';
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import RowImage from '../../_shared/RowImage';
+import RowLabel from '../../_shared/RowLabel';
 import { getStatusColor } from '../../_shared/utils';
 
 import messages from './messages';
@@ -48,7 +51,9 @@ interface Props {
 const Row = ({ folder, moderatorsById }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
+  const [hoveringSpace, setHoveringSpace] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const { data: folderImage } = useProjectFolderImage({
@@ -63,7 +68,14 @@ const Row = ({ folder, moderatorsById }: Props) => {
     ? moderatorIds.map((id) => moderatorsById[id])
     : [];
 
-  const { publication_status } = folder.attributes;
+  const { publication_status, space_id, space_title_multiloc } =
+    folder.attributes;
+  const canModerateThisSpace = usePermission({
+    item: 'space',
+    action: 'manage_projects_and_folders',
+    context: { spaceId: space_id },
+  });
+  const showSpace = spacesEnabled && !!space_title_multiloc && !!space_id;
 
   return (
     <Tr dataCy="projects-overview-folder-table-row">
@@ -83,15 +95,49 @@ const Row = ({ folder, moderatorsById }: Props) => {
               m="0"
               fontSize="s"
               color="black"
-              className="project-table-row-title"
+              // Suspend the Td-hover underline while the space label is
+              // hovered, so only the actual click target is underlined.
+              className={hoveringSpace ? undefined : 'project-table-row-title'}
             >
               {localize(folder.attributes.title_multiloc)}
             </Text>
-            <Text m="0" fontSize="xs" color="textSecondary">
-              {formatMessage(messages.numberOfProjects, {
-                numberOfProjects: folder.attributes.visible_projects_count,
-              })}
-            </Text>
+            <Box
+              display="flex"
+              alignItems="center"
+              flexWrap="wrap"
+              gap="2px 4px"
+            >
+              {showSpace && (
+                <>
+                  <RowLabel
+                    iconName="spaces"
+                    titleMultiloc={space_title_multiloc}
+                    underline={hoveringSpace}
+                    onHoverChange={
+                      canModerateThisSpace ? setHoveringSpace : undefined
+                    }
+                    onClick={
+                      canModerateThisSpace
+                        ? (event) => {
+                            event.stopPropagation();
+                            clHistory.push(
+                              `/admin/projects/spaces/${space_id}`
+                            );
+                          }
+                        : undefined
+                    }
+                  />
+                  <Text m="0" fontSize="xs" color="textSecondary">
+                    ·
+                  </Text>
+                </>
+              )}
+              <Text m="0" fontSize="xs" color="textSecondary">
+                {formatMessage(messages.numberOfProjects, {
+                  numberOfProjects: folder.attributes.visible_projects_count,
+                })}
+              </Text>
+            </Box>
           </Box>
           {isBeingDeleted && (
             <Box ml="16px">

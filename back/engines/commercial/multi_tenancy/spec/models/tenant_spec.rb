@@ -164,6 +164,41 @@ RSpec.describe Tenant do
       t.destroy
     end
 
+    it 'deletes the tenant que_jobs on destroy' do
+      tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
+      tenant_job = create(:que_job, tenant_schema_name: tenant.schema_name)
+      other_job = create(:que_job, tenant_schema_name: described_class.current.schema_name)
+
+      expect { tenant.destroy! }.to change(QueJob, :count).by(-1)
+
+      expect(QueJob.exists?(tenant_job.id)).to be false
+      expect(QueJob.exists?(other_job.id)).to be true
+    end
+
+    # Both +delete_apartment_tenant+ and +delete_que_jobs+ are +after_destroy+ callbacks, so they
+    # run inside the transaction opened by +destroy!+, on the same connection. Postgres DDL is
+    # transactional, so rolling that transaction back must restore the schema *and* the que_jobs
+    # rows. This is what makes the relative order of the two callbacks irrelevant: no other
+    # connection can observe a dropped schema whose jobs are still queued.
+    it 'rolls back the schema drop and the que_jobs deletion together' do
+      tenant = create(:tenant, host: 'something.else-than-the-default-test-tenant')
+      job = create(:que_job, tenant_schema_name: tenant.schema_name)
+
+      ActiveRecord::Base.transaction(requires_new: true) do
+        tenant.destroy!
+
+        # Inside the transaction, both effects are already visible to this connection.
+        expect(Apartment.connection.schema_exists?(tenant.schema_name)).to be false
+        expect(QueJob.exists?(job.id)).to be false
+
+        raise ActiveRecord::Rollback
+      end
+
+      expect(Apartment.connection.schema_exists?(tenant.schema_name)).to be true
+      expect(QueJob.exists?(job.id)).to be true
+      expect(described_class.exists?(tenant.id)).to be true
+    end
+
     it 'fails on a duplicate hostname' do
       create(:tenant)
       expect(build(:tenant, host: described_class.current.host)).to be_invalid

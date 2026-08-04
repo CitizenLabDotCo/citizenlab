@@ -19,6 +19,7 @@ export interface ICampaignConsentAttributes {
   content_type_ordering: number;
   campaign_type_description_multiloc: Multiloc;
   content_type_multiloc: Multiloc;
+  channel: 'email' | 'sms';
   consented: boolean;
 }
 
