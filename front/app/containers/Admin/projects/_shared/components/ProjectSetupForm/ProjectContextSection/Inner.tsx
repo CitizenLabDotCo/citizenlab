@@ -180,8 +180,8 @@ const Inner = ({
         <Error
           text={formatMessage(
             showSpaceSelect
-              ? messages.cannotMoveOutOfSpaceOrFolder
-              : messages.cannotMoveOutOfFolder
+              ? messages.canOnlyMoveToManagedSpaceOrFolder
+              : messages.canOnlyMoveToManagedFolder
           )}
         />
       )}

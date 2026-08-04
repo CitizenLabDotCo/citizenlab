@@ -183,11 +183,11 @@ describe('ProjectContextSection Inner', () => {
   });
 
   describe('the validation error', () => {
-    it('explains that the manager cannot move the project out', () => {
+    it('says where the manager can still move the project', () => {
       renderInner({ error: true });
 
       expect(
-        screen.getByText(/move this project out of its space or folder/)
+        screen.getByText(/to another space or folder you manage/)
       ).toBeInTheDocument();
     });
 
@@ -197,14 +197,14 @@ describe('ProjectContextSection Inner', () => {
       renderInner({ error: true });
 
       expect(
-        screen.getByText(/move this project out of its folder/)
+        screen.getByText(/to another folder you manage/)
       ).toBeInTheDocument();
     });
 
     it('says nothing until the form is submitted', () => {
       renderInner({ spaceId: null, folderId: null, projectInRoot: false });
 
-      expect(screen.queryByText(/move this project out/)).toBeNull();
+      expect(screen.queryByText(/you can only move this project/i)).toBeNull();
     });
   });
 

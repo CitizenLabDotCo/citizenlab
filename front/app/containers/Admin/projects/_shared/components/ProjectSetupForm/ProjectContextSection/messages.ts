@@ -30,15 +30,15 @@ export default defineMessages({
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption',
     defaultMessage: '{folderTitle} ({spaceTitle})',
   },
-  cannotMoveOutOfSpaceOrFolder: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder',
+  canOnlyMoveToManagedSpaceOrFolder: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder',
     defaultMessage:
-      "You don't have permission to move this project out of its space or folder. An admin can do this for you.",
+      'You can only move this project to another space or folder you manage.',
   },
-  cannotMoveOutOfFolder: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfFolder',
+  canOnlyMoveToManagedFolder: {
+    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder',
     defaultMessage:
-      "You don't have permission to move this project out of its folder. An admin can do this for you.",
+      'You can only move this project to another folder you manage.',
   },
   approvalNeededWithSpaces: {
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2',
