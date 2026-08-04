@@ -30,14 +30,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption',
     defaultMessage: '{folderTitle} ({spaceTitle})',
   },
-  spaceOrFolderError: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceOrFolderError',
-    defaultMessage: 'Select a space or a folder for this project.',
-  },
-  folderError: {
-    id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2',
-    defaultMessage: 'Select a folder for this project.',
-  },
   cannotMoveOutOfSpaceOrFolder: {
     id: 'app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.cannotMoveOutOfSpaceOrFolder',
     defaultMessage:

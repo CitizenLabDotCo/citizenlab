@@ -182,21 +182,27 @@ describe('ProjectContextSection Inner', () => {
     });
   });
 
-  describe('when the project is already in a space or folder', () => {
-    it('tells a manager up front that they cannot move it out', () => {
-      mockAuthUser = buildUser('space_moderator', [
-        { type: 'space_moderator', space_id: 'space-1' },
-      ]);
-
-      renderInner({ spaceId: 'space-1', projectInRoot: false });
+  describe('the validation error', () => {
+    it('explains that the manager cannot move the project out', () => {
+      renderInner({ error: true });
 
       expect(
         screen.getByText(/move this project out of its space or folder/)
       ).toBeInTheDocument();
     });
 
-    it('does not say it to an admin, who can move it out', () => {
-      renderInner({ spaceId: 'space-1', projectInRoot: false });
+    it('only mentions folders when there is no space select', () => {
+      mockAuthUser = folderManager();
+
+      renderInner({ error: true });
+
+      expect(
+        screen.getByText(/move this project out of its folder/)
+      ).toBeInTheDocument();
+    });
+
+    it('says nothing until the form is submitted', () => {
+      renderInner({ spaceId: null, folderId: null, projectInRoot: false });
 
       expect(screen.queryByText(/move this project out/)).toBeNull();
     });
