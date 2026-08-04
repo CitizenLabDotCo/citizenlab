@@ -416,9 +416,8 @@ const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
 
-  // MapView needs WebGL2, which the prerenderer does not have. Consumers that
-  // can skip loading Esri altogether should also check isPrerender() above
-  // their React.lazy boundary; this is the catch-all for the ones that don't.
+  // Catch-all: MapView needs WebGL2, which the prerenderer lacks. Consumers
+  // that can skip loading Esri entirely gate above their own lazy boundary.
   if (isPrerender()) return null;
 
   return (

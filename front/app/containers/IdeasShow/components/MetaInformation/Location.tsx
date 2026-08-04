@@ -26,7 +26,7 @@ import { isPrerender } from 'utils/prerender';
 
 import messages from './messages';
 
-// Lazy so the ArcGIS bundle is only fetched when the map is actually rendered.
+// Lazy so the ArcGIS bundle is only fetched when the map renders.
 const IdeaLocationMap = React.lazy(() => import('./IdeaLocationMap'));
 
 const Container = styled.div`
@@ -60,9 +60,7 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
   const { data: idea } = useIdeaById(ideaId);
   const isTabletOrSmaller = useBreakpoint('tablet');
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const point = idea?.data.attributes?.location_point_geojson;
+  const point = idea?.data.attributes.location_point_geojson;
 
   const address = !isNilOrError(idea)
     ? getAddressOrFallbackDMS(
@@ -85,9 +83,7 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
                   p="0px"
                   fontSize="m"
                   buttonStyle="text"
-                  // TODO: Fix this the next time the file is edited.
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  linkTo={`https://www.google.com/maps/search/?api=1&query=${point?.coordinates[1]},${point?.coordinates[0]}`}
+                  linkTo={`https://www.google.com/maps/search/?api=1&query=${point.coordinates[1]},${point.coordinates[0]}`}
                   openLinkInNewTab={isTabletOrSmaller ? false : true} // On tablet/mobile devices, this will open the app instead
                   pl="0px"
                   style={{
@@ -111,11 +107,7 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
               {!compact && !isPrerender() && (
                 <Box width="100%" mt="8px" id="e2e-location-map">
                   <Suspense fallback={null}>
-                    <IdeaLocationMap
-                      // TODO: Fix this the next time the file is edited.
-                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                      location={idea?.data.attributes?.location_point_geojson}
-                    />
+                    <IdeaLocationMap location={point} />
                   </Suspense>
                 </Box>
               )}
