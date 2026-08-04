@@ -116,8 +116,10 @@ describe('<ActionForm />', () => {
   describe('which access section is rendered', () => {
     it('renders the password-login access section when password login is enabled', () => {
       renderForm();
-      // The email/verification method rows are unique to the password-login variant.
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+      // The contact requirement control is unique to the password-login variant.
+      expect(
+        screen.getByText('Email and phone requirements')
+      ).toBeInTheDocument();
       expect(
         screen.queryByText(/Participants sign in with/)
       ).not.toBeInTheDocument();
@@ -129,7 +131,9 @@ describe('<ActionForm />', () => {
       expect(
         screen.getByText('Participants sign in with ItsMe.')
       ).toBeInTheDocument();
-      expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
+      expect(
+        screen.queryByText('Email and phone requirements')
+      ).not.toBeInTheDocument();
     });
   });
 
