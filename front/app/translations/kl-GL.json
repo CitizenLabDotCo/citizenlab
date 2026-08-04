@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "E-mailadressimut uunga {value} assingusut duplikatværdit ataaseq arlallilluunniit titarnerni quleriiaani ukunani nassaarineqarput(r): {rows}",
   "app.errors.extension_whitelist_error": "The format of the file you tried to upload is not supported.",
   "app.errors.file_extension_whitelist_error": "Filip ikkunniakkavit formatia atorneqarsinnaanngilaq.",
+  "app.errors.file_too_large": "\"{value}\" angivallaarpoq. Fiilip angissusia annerpaaffissaa tassaavoq {max_size_mb} MB. Peeruk fiililu mikinerusoq nassiuguk.",
   "app.errors.first_name_blank": "Una allassimasoqassaaq",
   "app.errors.generics.blank": "Una allassimasoqassaaq",
   "app.errors.generics.invalid": "Taanna atorsinnaanngitsutut isikkoqarpoq",

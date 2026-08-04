@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "Aşağıdaki satırlarda {value} e-posta adresi için bir veya daha fazla yinelenen değer bulundu: {rows}",
   "app.errors.extension_whitelist_error": "Yüklemeye çalıştığınız dosyanın biçimi desteklenmiyor.",
   "app.errors.file_extension_whitelist_error": "Yüklemeye çalıştığınız dosyanın biçimi desteklenmiyor.",
+  "app.errors.file_too_large": "\"{value}\" çok büyük. Maksimum dosya boyutu {max_size_mb} MB. Lütfen bu dosyayı kaldırın ve daha küçük bir dosya yükleyin.",
   "app.errors.first_name_blank": "Bu boş olamaz",
   "app.errors.generics.blank": "Bu boş olamaz.",
   "app.errors.generics.invalid": "Bu geçerli bir değer olmayabilir",

@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "Canfuwyd un neu fwy o werthoedd dyblyg ar gyfer y cyfeiriad e-bost {value} yn y rhes(au) canlynol: {rows}",
   "app.errors.extension_whitelist_error": "Ni chefnogir fformat y ffeil y ceisiasoch ei huwchlwytho.",
   "app.errors.file_extension_whitelist_error": "Ni chefnogir fformat y ffeil y ceisioch ei uwchlwytho.",
+  "app.errors.file_too_large": "Mae \"{value}\" yn rhy fawr. {max_size_mb} MB yw'r maint ffeil mwyaf. Tynnwch hi a llwythwch ffeil lai i fyny.",
   "app.errors.first_name_blank": "Ni all hwn fod yn wag",
   "app.errors.generics.blank": "Ni all hwn fod yn wag.",
   "app.errors.generics.invalid": "Nid yw hyn yn edrych fel gwerth dilys",

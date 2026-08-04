@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "En eller flere duplikatværdier for e-mailadressen {value} blev fundet i følgende række(r): {rows}",
   "app.errors.extension_whitelist_error": "Formatet på den fil du prøvede at overføre er ikke understøttet.",
   "app.errors.file_extension_whitelist_error": "Formatet på den fil du prøvede at overføre er ikke understøttet.",
+  "app.errors.file_too_large": "\"{value}\" er for stor. Den maksimale filstørrelse er {max_size_mb} MB. Fjern den venligst, og upload en mindre fil.",
   "app.errors.first_name_blank": "Dette kan ikke være tomt",
   "app.errors.generics.blank": "Dette kan ikke være tomt",
   "app.errors.generics.invalid": "Dette ligner ikke en gyldig værdi",

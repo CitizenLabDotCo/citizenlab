@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "Jedna ili više dvostrukih adrese e-pošte {value} pronađena je u sljedećim redovima: {rows}",
   "app.errors.extension_whitelist_error": "Format datoteke koju ste pokušali prenijeti nije podržan.",
   "app.errors.file_extension_whitelist_error": "Format datoteke koji ste pokušali prenijeti nije podržan.",
+  "app.errors.file_too_large": "\"{value}\" je prevelika. Maksimalna veličina datoteke je {max_size_mb} MB. Uklonite je i učitajte manju datoteku.",
   "app.errors.first_name_blank": "Ovo ne može biti prazno",
   "app.errors.generics.blank": "Ovo ne može biti prazno.",
   "app.errors.generics.invalid": "Ovo ne izgleda kao valjana vrijednost",

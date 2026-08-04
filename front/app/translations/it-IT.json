@@ -2583,6 +2583,7 @@
   "app.errors.emails_duplicate": "Uno o più valori duplicati per l'indirizzo e-mail {value} sono stati trovati nelle seguenti righe: {rows}",
   "app.errors.extension_whitelist_error": "Il formato del file che hai cercato di caricare non è supportato.",
   "app.errors.file_extension_whitelist_error": "Il formato del file che hai cercato di caricare non è supportato.",
+  "app.errors.file_too_large": "\"{value}\" è troppo grande. La dimensione massima del file è di {max_size_mb} MB. Rimuovilo e carica un file più piccolo.",
   "app.errors.first_name_blank": "Questo campo non può essere vuoto",
   "app.errors.generics.blank": "Questo campo non può essere vuoto.",
   "app.errors.generics.invalid": "Questo non sembra un valore valido",
