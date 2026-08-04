@@ -193,6 +193,7 @@ pa-IN:
       new_phone_confirmation: ਨਵਾਂ ਫ਼ੋਨ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ
       official_feedback_on_idea_you_follow: ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
       password_reset: ਪਾਸਵਰਡ ਰੀਸੈੱਟ
+      phone_confirmation: ਫ਼ੋਨ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ
       project_folder_moderation_rights_received: ਫੋਲਡਰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       project_manager_rights_received: ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       project_moderation_rights_received: ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
@@ -550,6 +551,8 @@ pa-IN:
       preheader: '%{organizationName} ਲਈ ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ'
       subject: '%{organizationName}: ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ'
       title: ਇੱਕ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ
+    phone_confirmation:
+      sms_body: ਤੁਹਾਡਾ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ %{code} ਹੈ।
     preview_data:
       author_display_name: ਜੇਨ ਡੋ
       author_first_name: ਜੇਨ

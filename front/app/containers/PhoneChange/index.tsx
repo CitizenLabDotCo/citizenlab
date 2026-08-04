@@ -6,8 +6,8 @@ import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 
-import { confirmCodePhoneChange } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
-import { requestCodePhoneChange } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { confirmCodeNewPhone } from 'api/authentication/confirm_phone/confirmPhoneConfirmationCode';
+import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -67,7 +67,7 @@ const PhoneChange = () => {
 
     try {
       if (!phoneValue) return;
-      await confirmCodePhoneChange(code);
+      await confirmCodeNewPhone(code);
       await queryClient.invalidateQueries(meKeys.all());
       setConfirmationError(null);
       setOpenConfirmationModal(false);
@@ -137,11 +137,11 @@ const PhoneChange = () => {
               </Box>
             )}
             <PhoneConfirmation
-              state={{ phone: phoneValue }}
+              phone={phoneValue}
               loading={loading}
               setError={setConfirmationError}
               onConfirm={onPhoneConfirmation}
-              onResendCode={() => requestCodePhoneChange(phoneValue)}
+              onResendCode={() => requestCodeNewPhone(phoneValue)}
             />
           </Box>
         </Modal>

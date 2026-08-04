@@ -28,7 +28,9 @@ RSpec.describe DecidimImporter::AppConfigMapper do
     expect(core['locales']).to eq(%w[fr-FR en]) # default first, mapped, deduped
     expect(core['timezone']).to eq('Europe/Paris')
     expect(core['organization_site']).to eq('https://acme.example')
-    expect(core['from_email']).to eq('hello@acme.example')
+    # The Decidim SMTP from-email becomes Go Vocal's reply-to (not `from_email`, which needs DNS setup).
+    expect(core).not_to have_key('from_email')
+    expect(core['reply_to_email']).to eq('hello@acme.example')
   end
 
   it "maps Decidim's friendly time zone onto a Go Vocal IANA identifier, omitting unsupported ones" do
@@ -86,7 +88,7 @@ RSpec.describe DecidimImporter::AppConfigMapper do
       core = patch['settings']['core']
       expect(core['organization_name']).to include('en' => 'Raynor, Heathcote and Moen')
       expect(core['locales']).to eq(%w[fr-FR en])
-      expect(core['from_email']).to eq('glennis.tillman@schimmel.example')
+      expect(core['reply_to_email']).to eq('glennis.tillman@schimmel.example')
       expect(patch['remote_logo_url']).to start_with('http://localhost/rails/active_storage')
     end
   end

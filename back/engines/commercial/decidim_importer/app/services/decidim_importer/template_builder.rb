@@ -33,6 +33,7 @@ module DecidimImporter
       ideas_input_topic
       comment
       official_feedback
+      internal_comment
       follower
       reaction
       basket
