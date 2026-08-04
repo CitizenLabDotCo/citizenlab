@@ -6,7 +6,6 @@ import {
   colors,
   IconButton,
   Badge,
-  stylingConsts,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
