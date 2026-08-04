@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 
-import { useBreakpoint, Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useEvents from 'api/events/useEvents';
@@ -24,6 +24,7 @@ import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrol
 import messages from 'containers/ProjectsShowPage/messages';
 
 import IdeaButton from 'components/IdeaButton';
+import EmptyParticipationPreview from 'components/ProjectPageBuilder/Widgets/EmptyState/EmptyParticipationPreview';
 import ExtraSurveyActionButton from 'components/ProjectPageBuilder/Widgets/ExtraSurveys/ActionButton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -51,7 +52,6 @@ const ProjectActionButtons = memo<Props>(
     const { data: project } = useProjectById(projectId);
     const { data: phases } = usePhases(projectId);
     const { data: authUser } = useAuthUser();
-    const isSmallerThanTablet = useBreakpoint('tablet');
     const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
     const [modalOpened, setModalOpened] = useState(false);
     const { formatMessage } = useIntl();
@@ -215,11 +215,7 @@ const ProjectActionButtons = memo<Props>(
       !!currentPhase &&
       !!hiddenOptionIds?.includes(currentPhase.id);
 
-    const generalShowCTAButtonCondition =
-      !isSmallerThanTablet && publication_status !== 'archived';
-    const showBoxCTAs = isParallelParticipationEnabled
-      ? publication_status !== 'archived'
-      : generalShowCTAButtonCondition;
+    const showBoxCTAs = publication_status !== 'archived';
     const showSeeIdeasButton =
       participationMethod === 'ideation' &&
       typeof ideas_count === 'number' &&
@@ -237,7 +233,7 @@ const ProjectActionButtons = memo<Props>(
       participationMethod === 'native_survey';
     const showTakeSurveyButton =
       takingSurveyEnabled &&
-      !generalShowCTAButtonCondition &&
+      showBoxCTAs &&
       !currentPhaseHidden &&
       participationMethod === 'survey' &&
       !hasCurrentPhaseEnded;
@@ -370,11 +366,7 @@ const ProjectActionButtons = memo<Props>(
             ))}
           </>
         )}
-        {showAdminEmptyState && (
-          <Text m="0px" color="textSecondary" fontSize="s" textAlign="center">
-            <FormattedMessage {...messages.noOpenParticipationAdminMessage} />
-          </Text>
-        )}
+        {showAdminEmptyState && <EmptyParticipationPreview />}
         {showSeeIdeasButton ? (
           <ButtonWithLink
             id="e2e-project-see-ideas-button"

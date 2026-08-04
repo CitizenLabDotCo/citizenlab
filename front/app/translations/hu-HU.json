@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Következő fázis",
   "app.containers.Projects.noEndDate": "Nincs befejezési dátum",
   "app.containers.Projects.noItems": "Még nem választott ki elemeket",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Jelenleg nincsenek nyitott részvételi lehetőségek. Csak az adminisztrátorok látják ezt az üzenetet.",
   "app.containers.Projects.noPastEvents": "Nincsenek megjeleníthető múltbeli események",
   "app.containers.Projects.noPhaseSelected": "Nincs kiválasztva fázis",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Jelenleg nincsenek betervezve közelgő vagy folyamatban lévő események.",

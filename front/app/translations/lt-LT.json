@@ -2211,7 +2211,6 @@
   "app.containers.Projects.nextPhase": "Kitas etapas",
   "app.containers.Projects.noEndDate": "Galutinė data nenurodyta",
   "app.containers.Projects.noItems": "Dar nepasirinkote jokių elementų",
-  "app.containers.Projects.noOpenParticipationAdminMessage": "Šiuo metu nėra aktyvių dalyvavimo būdų. Tik administratoriai mato šį pranešimą.",
   "app.containers.Projects.noPastEvents": "Nėra rodomų praeities įvykių",
   "app.containers.Projects.noPhaseSelected": "Fazė nepasirinkta",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Šiuo metu neplanuojama jokių būsimų ar vykstančių renginių.",
