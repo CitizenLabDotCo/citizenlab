@@ -87,23 +87,11 @@ describe McpServer::LayoutWidgets do
     end
   end
 
-  describe 'CHEATSHEET' do
-    it 'includes the doc of every documented widget' do
-      described_class::DOCS.each do |name, doc|
-        expect(described_class::CHEATSHEET).to include(doc),
-          "expected the cheatsheet to include the #{name} doc"
-        expect(described_class::CHEATSHEET).to include(name)
-      end
-    end
-
-    it 'documents every scaffold widget' do
+  describe 'FORMAT_RULES' do
+    it 'names every scaffold widget, since they are documented nowhere else' do
       scaffold_widgets.each do |name|
-        expect(described_class::CHEATSHEET).to include(name)
+        expect(described_class::FORMAT_RULES).to include(name)
       end
-    end
-
-    it 'is frozen' do
-      expect(described_class::CHEATSHEET).to be_frozen
     end
   end
 end

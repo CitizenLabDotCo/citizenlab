@@ -7,6 +7,11 @@ describe McpServer::Tools::UpdateProjectLayout do
 
   def body = 'PROJECT_PAGE_BODY'
 
+  # Every example patches the same project as the same user; only the patch itself varies.
+  def patch(user: current_user, **params)
+    run_mcp_tool(described_class, params: { project_id: project.id, **params }, current_user: user)
+  end
+
   # Ordinary widgets now, but a patch re-sending the body's `nodes` must still list them.
   def seeded_widget_ids = project_page_craftjs[body]['nodes']
 
@@ -49,11 +54,7 @@ describe McpServer::Tools::UpdateProjectLayout do
 
     context 'when the project has no page layout (provisioning anomaly)' do
       it 'returns an error instead of creating one' do
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, nodes: { 'T2' => text_node } },
-          current_user:
-        )
+        response = patch(nodes: { 'T2' => text_node })
 
         expect(response).to be_error
         expect(response.content.first[:text]).to include('has no page layout')
@@ -79,11 +80,7 @@ describe McpServer::Tools::UpdateProjectLayout do
           linkedNodes: {}
         }
 
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, nodes: { 'T1' => updated_node } },
-          current_user:
-        )
+        response = patch(nodes: { 'T1' => updated_node })
 
         expect(response).not_to be_error
 
@@ -93,14 +90,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'inserts a new node by also sending the page body with its updated nodes array' do
-        response = run_mcp_tool(
-          described_class,
-          params: {
-            project_id: project.id,
-            nodes: { body => body_with(%w[T1 T2]), 'T2' => text_node(text: { 'en' => '<p>New</p>' }) }
-          },
-          current_user:
-        )
+        response = patch(nodes: { body => body_with(%w[T1 T2]), 'T2' => text_node(text: { 'en' => '<p>New</p>' }) })
 
         expect(response).not_to be_error
 
@@ -110,25 +100,14 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'reorders the phases and events widgets among the content' do
-        response = run_mcp_tool(
-          described_class,
-          params: {
-            project_id: project.id,
-            nodes: { body => initial_graph[body].merge('nodes' => %w[PROJECT_PAGE_EVENTS T1 PROJECT_PAGE_PHASES]) }
-          },
-          current_user:
-        )
+        response = patch(nodes: { body => initial_graph[body].merge('nodes' => %w[PROJECT_PAGE_EVENTS T1 PROJECT_PAGE_PHASES]) })
 
         expect(response).not_to be_error
         expect(layout.reload.craftjs_json[body]['nodes']).to eq(%w[PROJECT_PAGE_EVENTS T1 PROJECT_PAGE_PHASES])
       end
 
       it 'deletes the phases widget, which is no longer part of the scaffold' do
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, delete_node_ids: ['PROJECT_PAGE_PHASES'] },
-          current_user:
-        )
+        response = patch(delete_node_ids: ['PROJECT_PAGE_PHASES'])
 
         expect(response).not_to be_error
 
@@ -138,11 +117,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'deletes a content node and detaches it from the page body' do
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, delete_node_ids: ['T1'] },
-          current_user:
-        )
+        response = patch(delete_node_ids: ['T1'])
 
         expect(response).not_to be_error
 
@@ -157,11 +132,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       it 'offers no way to disable the layout' do
         expect(described_class.new.input_schema[:properties]).not_to have_key(:enabled)
 
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, enabled: false },
-          current_user:
-        )
+        response = patch(enabled: false)
 
         expect(response).not_to be_error
         expect(layout.reload.enabled).to be(true)
@@ -170,11 +141,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       it 'rejects a patch that leaves a node unreferenced, returning a reference for just the offending widgets' do
         original_json = layout.craftjs_json.deep_dup
 
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, nodes: { 'T3' => text_node } },
-          current_user:
-        )
+        response = patch(nodes: { 'T3' => text_node })
 
         expect(response).to be_error
         text = response.content.first[:text]
@@ -186,11 +153,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'returns an error naming the id when delete_node_ids references an unknown node' do
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, delete_node_ids: ['does-not-exist'] },
-          current_user:
-        )
+        response = patch(delete_node_ids: ['does-not-exist'])
 
         expect(response).to be_error
         expect(response.content.first[:text]).to include('do not exist in the layout: does-not-exist')
@@ -198,15 +161,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'rejects an id listed in both delete_node_ids and nodes' do
-        response = run_mcp_tool(
-          described_class,
-          params: {
-            project_id: project.id,
-            nodes: { 'T1' => text_node(text: { 'en' => '<p>Replaced</p>' }) },
-            delete_node_ids: ['T1']
-          },
-          current_user:
-        )
+        response = patch(nodes: { 'T1' => text_node(text: { 'en' => '<p>Replaced</p>' }) }, delete_node_ids: ['T1'])
 
         expect(response).to be_error
         expect(response.content.first[:text]).to include('both delete_node_ids and nodes')
@@ -215,14 +170,7 @@ describe McpServer::Tools::UpdateProjectLayout do
 
       it 'rejects creating any legacy node type, naming what to use instead' do
         McpServer::LayoutWidgets::LEGACY_ALTERNATIVES.each do |widget, alternative|
-          response = run_mcp_tool(
-            described_class,
-            params: {
-              project_id: project.id,
-              nodes: { body => body_with(%w[T1 NEW]), 'NEW' => craftjs_node(widget, parent: body) }
-            },
-            current_user:
-          )
+          response = patch(nodes: { body => body_with(%w[T1 NEW]), 'NEW' => craftjs_node(widget, parent: body) })
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include(alternative)
@@ -233,11 +181,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       describe 'scaffold protection' do
         it 'rejects deleting a scaffold node' do
           ['ROOT', body, 'PROJECT_PAGE_BANNER'].each do |id|
-            response = run_mcp_tool(
-              described_class,
-              params: { project_id: project.id, delete_node_ids: [id] },
-              current_user:
-            )
+            response = patch(delete_node_ids: [id])
 
             expect(response).to be_error
             expect(response.content.first[:text]).to include('fixed page scaffold')
@@ -248,11 +192,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         it 'rejects editing a scaffold node other than the body' do
           root = initial_graph['ROOT'].merge('nodes' => %w[PROJECT_PAGE_TITLE PROJECT_PAGE_BANNER PROJECT_PAGE_BODY])
 
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: { 'ROOT' => root } },
-            current_user:
-          )
+          response = patch(nodes: { 'ROOT' => root })
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include('cannot be added or edited')
@@ -260,17 +200,10 @@ describe McpServer::Tools::UpdateProjectLayout do
         end
 
         it 'rejects adding a second node of a scaffold type' do
-          response = run_mcp_tool(
-            described_class,
-            params: {
-              project_id: project.id,
-              nodes: {
-                body => body_with(%w[T1 BODY2]),
-                'BODY2' => craftjs_node('ProjectPageBody', parent: body, isCanvas: true)
-              }
-            },
-            current_user:
-          )
+          response = patch(nodes: {
+            body => body_with(%w[T1 BODY2]),
+            'BODY2' => craftjs_node('ProjectPageBody', parent: body, isCanvas: true)
+          })
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include('cannot be added or edited')
@@ -279,11 +212,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         it 'redirects title and banner edits to update_project' do
           banner = initial_graph['PROJECT_PAGE_BANNER'].merge('props' => { 'alt' => { 'en' => 'New alt' } })
 
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: { 'PROJECT_PAGE_BANNER' => banner } },
-            current_user:
-          )
+          response = patch(nodes: { 'PROJECT_PAGE_BANNER' => banner })
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include('update_project')
@@ -292,11 +221,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         it 'rejects moving the page body' do
           moved = initial_graph[body].merge('parent' => 'PROJECT_PAGE_TITLE')
 
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: { body => moved } },
-            current_user:
-          )
+          response = patch(nodes: { body => moved })
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include('also changes: parent')
@@ -308,11 +233,7 @@ describe McpServer::Tools::UpdateProjectLayout do
           it "rejects a body patch that changes #{key}" do
             tampered = initial_graph[body].merge(key => key == 'custom' ? {} : 'tampered')
 
-            response = run_mcp_tool(
-              described_class,
-              params: { project_id: project.id, nodes: { body => tampered } },
-              current_user:
-            )
+            response = patch(nodes: { body => tampered })
 
             expect(response).to be_error
             expect(response.content.first[:text]).to include("also changes: #{key}")
@@ -321,11 +242,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         end
 
         it 'rejects content placed outside the page body' do
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: { 'T9' => text_node(parent: 'ROOT') } },
-            current_user:
-          )
+          response = patch(nodes: { 'T9' => text_node(parent: 'ROOT') })
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include('inside the page body')
@@ -341,11 +258,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it "deletes the accordion's slot container and detaches the linkedNodes reference" do
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, delete_node_ids: ['CONT1'] },
-          current_user:
-        )
+        response = patch(delete_node_ids: ['CONT1'])
 
         expect(response).not_to be_error
 
@@ -355,11 +268,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'tolerates delete_node_ids listing both an ancestor and its descendant' do
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, delete_node_ids: %w[ACC1 TXT1] },
-          current_user:
-        )
+        response = patch(delete_node_ids: %w[ACC1 TXT1])
 
         expect(response).not_to be_error
 
@@ -378,14 +287,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'accepts a sparse edit that does not touch the legacy node' do
-        response = run_mcp_tool(
-          described_class,
-          params: {
-            project_id: project.id,
-            nodes: { 'T1' => text_node(text: { 'en' => '<p>Updated</p>' }) }
-          },
-          current_user:
-        )
+        response = patch(nodes: { 'T1' => text_node(text: { 'en' => '<p>Updated</p>' }) })
 
         expect(response).not_to be_error
 
@@ -397,22 +299,14 @@ describe McpServer::Tools::UpdateProjectLayout do
       it 'edits the legacy node in place' do
         edited = craftjs_node('RichTextMultiloc', parent: body, props: { 'text' => { 'en' => '<p>New</p>' } })
 
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, nodes: { 'LEG' => edited } },
-          current_user:
-        )
+        response = patch(nodes: { 'LEG' => edited })
 
         expect(response).not_to be_error
         expect(layout.reload.craftjs_json.dig('LEG', 'props', 'text', 'en')).to eq('<p>New</p>')
       end
 
       it 'deletes the legacy node' do
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, delete_node_ids: ['LEG'] },
-          current_user:
-        )
+        response = patch(delete_node_ids: ['LEG'])
 
         expect(response).not_to be_error
         expect(layout.reload.craftjs_json).not_to have_key('LEG')
@@ -423,11 +317,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       it 'rejects converting an existing content node into a legacy one' do
         legacy = craftjs_node('RichTextMultiloc', parent: body, props: { 'text' => { 'en' => '<p>Smuggled</p>' } })
 
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, nodes: { 'T1' => legacy } },
-          current_user:
-        )
+        response = patch(nodes: { 'T1' => legacy })
 
         expect(response).to be_error
         expect(response.content.first[:text]).to include('T1: RichTextMultiloc is a legacy node type')
@@ -436,17 +326,10 @@ describe McpServer::Tools::UpdateProjectLayout do
 
       ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS.each do |widget|
         it "rejects creating a new #{widget} node" do
-          response = run_mcp_tool(
-            described_class,
-            params: {
-              project_id: project.id,
-              nodes: {
-                body => body_with(%w[T1 LEG NEW]),
-                'NEW' => craftjs_node(widget, parent: body, props: { 'text' => { 'en' => '<p>New</p>' } })
-              }
-            },
-            current_user:
-          )
+          response = patch(nodes: {
+            body => body_with(%w[T1 LEG NEW]),
+            'NEW' => craftjs_node(widget, parent: body, props: { 'text' => { 'en' => '<p>New</p>' } })
+          })
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include(
@@ -472,17 +355,10 @@ describe McpServer::Tools::UpdateProjectLayout do
       let!(:layout) { create(:layout, project: project, code: 'project_page', craftjs_json: legacy_graph) }
 
       it 'adds content inside the wrapper' do
-        response = run_mcp_tool(
-          described_class,
-          params: {
-            project_id: project.id,
-            nodes: {
-              'SEC1' => legacy_graph['SEC1'].merge('nodes' => %w[T1 T2]),
-              'T2' => text_node(parent: 'SEC1', text: { 'en' => '<p>New</p>' })
-            }
-          },
-          current_user:
-        )
+        response = patch(nodes: {
+          'SEC1' => legacy_graph['SEC1'].merge('nodes' => %w[T1 T2]),
+          'T2' => text_node(parent: 'SEC1', text: { 'en' => '<p>New</p>' })
+        })
 
         expect(response).not_to be_error
 
@@ -492,11 +368,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'lets the wrapper be emptied out and deleted' do
-        response = run_mcp_tool(
-          described_class,
-          params: { project_id: project.id, delete_node_ids: ['SEC1'] },
-          current_user:
-        )
+        response = patch(delete_node_ids: ['SEC1'])
 
         expect(response).not_to be_error
 
@@ -533,11 +405,7 @@ describe McpServer::Tools::UpdateProjectLayout do
             headers: { 'Content-Type' => 'image/png' }
           )
 
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: image_patch },
-            current_user:
-          )
+          response = patch(nodes: image_patch)
 
           expect(response).not_to be_error
           expect(ContentBuilder::LayoutImage.count).to eq(1)
@@ -550,11 +418,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         it 'returns an image import error and saves nothing when the download fails' do
           stub_request(:get, image_url).to_return(status: 404)
 
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: image_patch },
-            current_user:
-          )
+          response = patch(nodes: image_patch)
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include('Image import failed')
@@ -574,11 +438,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         it 'accepts a graph with exactly the maximum number of nodes' do
           patch = patch_with_children(described_class::MAX_NODES - seeded_ids.size)
 
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: patch },
-            current_user:
-          )
+          response = patch(nodes: patch)
 
           expect(response).not_to be_error
           expect(layout.reload.craftjs_json.size).to eq(described_class::MAX_NODES)
@@ -587,11 +447,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         it 'rejects a graph one node above the cap' do
           patch = patch_with_children(described_class::MAX_NODES - seeded_ids.size + 1)
 
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: patch },
-            current_user:
-          )
+          response = patch(nodes: patch)
 
           expect(response).to be_error
           expect(response.content.first[:text]).to include('maximum')
@@ -606,11 +462,7 @@ describe McpServer::Tools::UpdateProjectLayout do
     let!(:layout) { create(:layout, project: project, code: 'project_page', craftjs_json: initial_graph) }
 
     it 'refuses to edit the layout' do
-      response = run_mcp_tool(
-        described_class,
-        params: { project_id: project.id, nodes: { 'T1' => text_node(text: { 'en' => '<p>Updated</p>' }) } },
-        current_user:
-      )
+      response = patch(nodes: { 'T1' => text_node(text: { 'en' => '<p>Updated</p>' }) })
 
       expect(response).to be_unauthorized_project
       expect(layout.reload.craftjs_json).to eq(initial_graph)
@@ -623,11 +475,7 @@ describe McpServer::Tools::UpdateProjectLayout do
     let(:regular_user) { create(:user) }
 
     it 'refuses to save the layout' do
-      response = run_mcp_tool(
-        described_class,
-        params: { project_id: project.id, nodes: { 'T1' => text_node(text: { 'en' => '<p>Hacked</p>' }) } },
-        current_user: regular_user
-      )
+      response = patch(nodes: { 'T1' => text_node(text: { 'en' => '<p>Hacked</p>' }) }, user: regular_user)
 
       expect(response).to be_unauthorized
       expect(layout.reload.craftjs_json).to eq(initial_graph)
@@ -636,11 +484,7 @@ describe McpServer::Tools::UpdateProjectLayout do
     it 'reports the authorization error even when the patch itself is invalid' do
       # An unreferenced orphan node: validation would reject it, but authorization
       # runs first and its error is the one returned.
-      response = run_mcp_tool(
-        described_class,
-        params: { project_id: project.id, nodes: { 'T9' => text_node } },
-        current_user: regular_user
-      )
+      response = patch(nodes: { 'T9' => text_node }, user: regular_user)
 
       expect(response).to be_unauthorized
       expect(response.content.first[:text]).not_to include('Layout NOT saved')

@@ -8,9 +8,8 @@
 # (UNDOCUMENTED_WIDGETS and the scaffold) are structural or legacy-only — they
 # validate inside graphs but are not advertised as insertable.
 #
-# The cheatsheet is generated from this hash, and a spec asserts every documented
-# widget exists in WidgetSpecs and that every enum and slot value appears in its
-# widget's doc, so rules and documentation cannot drift.
+# A spec asserts every documented widget exists in WidgetSpecs and that every enum and
+# slot value appears in its widget's doc, so rules and documentation cannot drift.
 #
 # NOTE: the custom.title values embed FE react-intl message ids. They are display-only
 # metadata for the editor sidebar (nodes without them render fine) and the FE may rename
@@ -110,6 +109,8 @@ class McpServer::LayoutWidgets
         Renders entirely from the project's phases, which are managed with create_phase/update_phase.
         Keep one on the page unless the project has no participation at all. sectionBackground
         defaults to "colored" as a direct child of ProjectPageBody, "white" when nested deeper.
+        This and EventsWidget paint a full-width band: alternate their sectionBackground with
+        the plain content around them rather than stacking two "colored" bands together.
     DOC
     'EventsWidget' => <<~DOC,
       EventsWidget — the project's upcoming and past events. props: {"sectionBackground":"colored"|"white"}
@@ -161,29 +162,10 @@ class McpServer::LayoutWidgets
     - Ignore any custom.locked marker on a stored node — this document is what may be edited.
   RULES
 
-  CHEATSHEET = <<~CHEATSHEET.freeze
-    #{FORMAT_RULES}
-    Design tips — a page of only text blocks reads as a wall of text; vary the widgets:
-    - Recommended shape: intro text → TwoColumn or ThreeColumn for parallel content
-      (process stages, "why / what you influence") → ButtonMultiloc for the main call to
-      action → PhasesWidget → AccordionMultiloc per FAQ/concern → AboutBox → EventsWidget.
-    - Place a WhiteSpace widget between sections (after the intro, before each heading,
-      around column blocks) — it is what gives layouts a clean, uncrowded look. Use
-      "medium" between sections, "small" within them; add "withDivider": true for a
-      subtle horizontal rule at strong topic changes.
-    - PhasesWidget and EventsWidget paint a full-width band; alternate their
-      sectionBackground with the plain content around them rather than stacking two
-      "colored" bands next to each other.
-
-    ## Widgets (insertable anywhere inside the #{BODY_WIDGET} node)
-
-    #{DOCS.values.join("\n")}
-  CHEATSHEET
-
-  # The compact reference for a validation-failure response: the format rules plus
-  # docs for just the given widgets. Deliberately NOT the full cheatsheet — every
-  # failed attempt puts its reference into the client's context, so full copies
-  # would accumulate across retries.
+  # The compact reference for a validation-failure response: the format rules plus docs
+  # for just the given widgets. Deliberately targeted — every failed attempt puts its
+  # reference into the client's context, so full copies would accumulate across retries.
+  # (`reference_for(DOCS.keys)` is the full cheatsheet, if a caller ever wants one.)
   def self.reference_for(widget_names)
     [FORMAT_RULES, *DOCS.values_at(*widget_names.uniq).compact].join("\n")
   end

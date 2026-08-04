@@ -32,10 +32,11 @@ module ContentBuilder
     # props, so editing those props does nothing.
     PROJECT_RECORD_WIDGETS = %w[ProjectBanner ProjectTitle].freeze
 
-    # Whether a node is part of the fixed scaffold. Expects a node: a graph holding
-    # anything else is corruption, and the Validator reports that properly.
+    # Whether a node is part of the fixed scaffold. nil (an id absent from the graph)
+    # is not; a graph holding anything else that is not a node is corruption, and the
+    # Validator reports that properly rather than it being absorbed here.
     def self.scaffold?(node)
-      SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
+      !node.nil? && SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
     end
 
     UNSUPPORTED_WIDGETS = %w[
