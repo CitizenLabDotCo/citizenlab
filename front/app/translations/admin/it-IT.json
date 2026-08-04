@@ -4158,7 +4158,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Riservato al personale",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": "Vedi le proprietà del metodo",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Accedi tramite l'account SSO configurato.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Non disponibile: l'accesso tramite password è disattivato per questa piattaforma.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Non disponibile: nessun metodo di verifica dell'identità configurato.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Il partecipante dimostra la propria identità tramite un registro esterno.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Chi può partecipare",

@@ -4158,7 +4158,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "مقتصر على الموظفين",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": "اطلع على خصائص الوسيلة",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "تسجيل الدخول عبر حساب SSO الذي تم إعداده.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "غير متاح: تم إيقاف تسجيل الدخول بكلمة المرور لهذه المنصة.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "غير متاح: لم يتم إعداد أي طريقة للتحقق من الهوية.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "يثبت المشارك هويته من خلال سجل خارجي.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "من يمكنه المشاركة",

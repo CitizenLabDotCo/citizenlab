@@ -4158,7 +4158,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Limité au personnel",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": "Voir les propriétés de la méthode",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Connectez-vous via le compte SSO configuré.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Indisponible : la connexion par mot de passe est désactivée pour cette plateforme.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Indisponible : aucune méthode de vérification d'identité n'est configurée.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Le participant prouve son identité via un registre externe.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Qui peut participer",

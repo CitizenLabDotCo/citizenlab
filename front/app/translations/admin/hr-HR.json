@@ -4158,7 +4158,6 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.restrictedToStaff": "Ograničeno na osoblje",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.seeMethodProperties": "Pogledajte svojstva metode",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.signInViaSSO": "Prijavite se putem konfiguriranog SSO računa.",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailablePasswordLogin": "Nedostupno: prijava lozinkom isključena je za ovu platformu.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification": "Nedostupno: nije konfigurirana nijedna metoda provjere identiteta.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription": "Sudionik dokazuje svoj identitet putem vanjskog registra.",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate": "Tko može sudjelovati",
