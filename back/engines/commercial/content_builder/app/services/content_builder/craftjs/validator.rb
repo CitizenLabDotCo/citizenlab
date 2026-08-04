@@ -44,8 +44,9 @@ module ContentBuilder
         end
       end
 
-      # root_type is the literal `type` value the ROOT node must carry: 'div' for
-      # description layouts, { 'resolvedName' => 'ProjectPageRoot' } for project pages.
+      # @param [String, Hash] root_type the literal `type` value the ROOT node must carry:
+      #   'div' for description layouts, { 'resolvedName' => 'ProjectPageRoot' } for
+      #   project pages.
       def initialize(craftjs_json, widget_specs: nil, convention_scope: nil, root_type: 'div')
         @json = craftjs_json
         @widget_specs = widget_specs

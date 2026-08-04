@@ -17,7 +17,7 @@ class McpServer::Serializers::LayoutOutline
         parent: { type: 'string', description: 'Absent on ROOT.' },
         depth: { type: 'integer' },
         canvas: { type: 'boolean', description: 'Present (true) when children can be placed inside this node.' },
-        locked: { type: 'boolean', description: 'Present (true) on page-scaffold nodes that must not be added, moved, deleted or edited.' },
+        locked: { type: 'boolean', description: "Present (true) on the fixed page-scaffold nodes, which must not be added, moved, deleted or edited — except the body node's `nodes` array, which is the page content." },
         slot: { type: 'string', description: "The parent's linkedNodes slot this node fills (e.g. left, accordion-content)." },
         text: { type: 'string', description: 'Plain-text snippet of the node text or title.' }
       },
@@ -62,7 +62,7 @@ class McpServer::Serializers::LayoutOutline
   # phases and events widgets, which are ordinary, movable widgets now. Reading the
   # markers would report those as untouchable and contradict what the tools enforce.
   def locked?(widget)
-    McpServer::LayoutWidgets::SCAFFOLD_WIDGETS.include?(widget)
+    ContentBuilder::ProjectPageLayoutService::SCAFFOLD_WIDGETS.include?(widget)
   end
 
   def text_snippet(node)

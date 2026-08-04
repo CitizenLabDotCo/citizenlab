@@ -151,8 +151,11 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(layout.craftjs_json[body]['nodes']).to eq(seeded_widget_ids)
       end
 
-      it 'toggles the enabled flag without touching the graph' do
-        expect(layout.enabled).to be(true)
+      # Disabling a project page layout hides the whole page — banner, title, phases and
+      # events included — from everyone but moderators, with nothing to fall back to and
+      # no admin UI to undo it, so the tool has no write path for it.
+      it 'offers no way to disable the layout' do
+        expect(described_class.new.input_schema[:properties]).not_to have_key(:enabled)
 
         response = run_mcp_tool(
           described_class,
@@ -161,9 +164,7 @@ describe McpServer::Tools::UpdateProjectLayout do
         )
 
         expect(response).not_to be_error
-        layout.reload
-        expect(layout.enabled).to be(false)
-        expect(layout.craftjs_json.keys).to match_array(seeded_ids + ['T1'])
+        expect(layout.reload.enabled).to be(true)
       end
 
       it 'rejects a patch that leaves a node unreferenced, returning a reference for just the offending widgets' do
@@ -213,7 +214,7 @@ describe McpServer::Tools::UpdateProjectLayout do
       end
 
       it 'rejects creating any legacy node type, naming what to use instead' do
-        McpServer::LayoutWidgets::LEGACY_WIDGETS.each do |widget, alternative|
+        McpServer::LayoutWidgets::LEGACY_ALTERNATIVES.each do |widget, alternative|
           response = run_mcp_tool(
             described_class,
             params: {
@@ -301,18 +302,22 @@ describe McpServer::Tools::UpdateProjectLayout do
           expect(response.content.first[:text]).to include('also changes: parent')
         end
 
-        it 'rejects a page body patch that changes anything but its nodes' do
-          stripped = body_with(['T1']).merge('custom' => {})
+        # `nodes` is the only part of the body node a patch owns; the rest of it
+        # (custom.region, isCanvas, hidden) is what keeps the node locked in the editor.
+        %w[custom isCanvas hidden displayName].each do |key|
+          it "rejects a body patch that changes #{key}" do
+            tampered = initial_graph[body].merge(key => key == 'custom' ? {} : 'tampered')
 
-          response = run_mcp_tool(
-            described_class,
-            params: { project_id: project.id, nodes: { body => stripped } },
-            current_user:
-          )
+            response = run_mcp_tool(
+              described_class,
+              params: { project_id: project.id, nodes: { body => tampered } },
+              current_user:
+            )
 
-          expect(response).to be_error
-          expect(response.content.first[:text]).to include('also changes: custom')
-          expect(layout.reload.craftjs_json).to eq(initial_graph)
+            expect(response).to be_error
+            expect(response.content.first[:text]).to include("also changes: #{key}")
+            expect(layout.reload.craftjs_json).to eq(initial_graph)
+          end
         end
 
         it 'rejects content placed outside the page body' do
@@ -387,6 +392,69 @@ describe McpServer::Tools::UpdateProjectLayout do
         layout.reload
         expect(layout.craftjs_json.dig('T1', 'props', 'text', 'en')).to eq('<p>Updated</p>')
         expect(layout.craftjs_json.dig('LEG', 'type', 'resolvedName')).to eq('RichTextMultiloc')
+      end
+
+      it 'edits the legacy node in place' do
+        edited = craftjs_node('RichTextMultiloc', parent: body, props: { 'text' => { 'en' => '<p>New</p>' } })
+
+        response = run_mcp_tool(
+          described_class,
+          params: { project_id: project.id, nodes: { 'LEG' => edited } },
+          current_user:
+        )
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json.dig('LEG', 'props', 'text', 'en')).to eq('<p>New</p>')
+      end
+
+      it 'deletes the legacy node' do
+        response = run_mcp_tool(
+          described_class,
+          params: { project_id: project.id, delete_node_ids: ['LEG'] },
+          current_user:
+        )
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json).not_to have_key('LEG')
+      end
+
+      # Reusing an existing id must not be a way in: the exemption is for the legacy node
+      # that is already there, not for any id that happens to exist.
+      it 'rejects converting an existing content node into a legacy one' do
+        legacy = craftjs_node('RichTextMultiloc', parent: body, props: { 'text' => { 'en' => '<p>Smuggled</p>' } })
+
+        response = run_mcp_tool(
+          described_class,
+          params: { project_id: project.id, nodes: { 'T1' => legacy } },
+          current_user:
+        )
+
+        expect(response).to be_error
+        expect(response.content.first[:text]).to include('T1: RichTextMultiloc is a legacy node type')
+        expect(layout.reload.craftjs_json.dig('T1', 'type', 'resolvedName')).to eq('TextMultiloc')
+      end
+
+      ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS.each do |widget|
+        it "rejects creating a new #{widget} node" do
+          response = run_mcp_tool(
+            described_class,
+            params: {
+              project_id: project.id,
+              nodes: {
+                body => body_with(%w[T1 LEG NEW]),
+                'NEW' => craftjs_node(widget, parent: body, props: { 'text' => { 'en' => '<p>New</p>' } })
+              }
+            },
+            current_user:
+          )
+
+          expect(response).to be_error
+          expect(response.content.first[:text]).to include(
+            "NEW: #{widget} is a legacy node type",
+            McpServer::LayoutWidgets::LEGACY_ALTERNATIVES[widget]
+          )
+          expect(layout.reload.craftjs_json).not_to have_key('NEW')
+        end
       end
     end
 
@@ -540,12 +608,12 @@ describe McpServer::Tools::UpdateProjectLayout do
     it 'refuses to edit the layout' do
       response = run_mcp_tool(
         described_class,
-        params: { project_id: project.id, enabled: false },
+        params: { project_id: project.id, nodes: { 'T1' => text_node(text: { 'en' => '<p>Updated</p>' }) } },
         current_user:
       )
 
       expect(response).to be_unauthorized_project
-      expect(layout.reload.enabled).to be(true)
+      expect(layout.reload.craftjs_json).to eq(initial_graph)
     end
   end
 

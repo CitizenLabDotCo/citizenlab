@@ -11,6 +11,33 @@ module ContentBuilder
     PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
 
+    # The `type` the ROOT node of a project page carries, as Craftjs::Validator's
+    # root_type (description and folder layouts use a plain 'div').
+    ROOT_TYPE = { 'resolvedName' => 'ProjectPageRoot' }.freeze
+
+    # The scaffold node that holds the page content: everything else a page shows lives
+    # in its subtree, and its `nodes` array is the top-level order.
+    BODY_WIDGET = 'ProjectPageBody'
+
+    # The fixed page scaffold: exactly one node of each of these types exists on every
+    # project page, in the tree #canonical_nodes seeds. Nothing may add, delete or edit
+    # them — the sole editable part is BODY_WIDGET's `nodes`, which is the page content.
+    #
+    # #canonical_nodes also seeds a phases and an events widget, deliberately absent
+    # here: since the page builder was unlocked they carry no locked marker and the FE
+    # toolbox can drag them, so they are ordinary widgets living in the body.
+    SCAFFOLD_WIDGETS = ['ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET].freeze
+
+    # Scaffold widgets rendered from the project record rather than from their layout
+    # props, so editing those props does nothing.
+    PROJECT_RECORD_WIDGETS = %w[ProjectBanner ProjectTitle].freeze
+
+    # Whether a node is part of the fixed scaffold. Expects a node: a graph holding
+    # anything else is corruption, and the Validator reports that properly.
+    def self.scaffold?(node)
+      SCAFFOLD_WIDGETS.include?(Craftjs::Query.resolved_name(node))
+    end
+
     UNSUPPORTED_WIDGETS = %w[
       FolderFiles
       FolderTitle
@@ -47,7 +74,7 @@ module ContentBuilder
       return craftjs_json if attachments.empty?
 
       json = craftjs_json.deep_dup
-      parent_id = find_node_id(json, 'ProjectDescriptionSection') || find_node_id(json, 'ProjectPageBody')
+      parent_id = find_node_id(json, 'ProjectDescriptionSection') || find_node_id(json, BODY_WIDGET)
       return craftjs_json unless parent_id
 
       referenced_file_ids = json.each_value.filter_map do |node|

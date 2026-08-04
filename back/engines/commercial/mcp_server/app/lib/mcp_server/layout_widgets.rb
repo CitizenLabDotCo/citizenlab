@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 # LLM-facing documentation for project page layout widgets (code 'project_page'). The
-# machine-readable rules these docs describe (slots, enums, multilocs) live in
-# ContentBuilder::Craftjs::WidgetSpecs; widgets present there but absent here
-# (UNDOCUMENTED_WIDGETS and the page scaffold, SCAFFOLD_WIDGETS) are structural or
-# legacy-only — they validate inside graphs but are not advertised as insertable.
+# machine-readable rules these docs describe live in content_builder, where the API
+# layer can reuse them: widget conventions (slots, enums, multilocs) and the legacy
+# node types in ContentBuilder::Craftjs::WidgetSpecs, the fixed page scaffold in
+# ContentBuilder::ProjectPageLayoutService. Widgets declared there but absent here
+# (UNDOCUMENTED_WIDGETS and the scaffold) are structural or legacy-only — they
+# validate inside graphs but are not advertised as insertable.
 #
 # The cheatsheet is generated from this hash, and a spec asserts every documented
 # widget exists in WidgetSpecs and that every enum and slot value appears in its
@@ -15,42 +17,28 @@
 # ids at any time; we include the current ids for visual parity in the editor, accepting
 # that stale ids degrade gracefully to the defaultMessage.
 class McpServer::LayoutWidgets
-  # The `type` every project page ROOT node carries (Validator root_type).
-  ROOT_TYPE = { 'resolvedName' => 'ProjectPageRoot' }.freeze
+  BODY_WIDGET = ContentBuilder::ProjectPageLayoutService::BODY_WIDGET
 
-  # The scaffold node holding the page content: the only one a patch may re-send, and
-  # then only to update its `nodes`.
-  BODY_WIDGET = 'ProjectPageBody'
-
-  # The page scaffold: exactly one node of each of these types exists on every project
-  # page, in a fixed tree (see FORMAT_RULES). Patches may not add, move, delete or edit
-  # them — except BODY_WIDGET's `nodes`, which is the page's content.
-  #
-  # This list, not the stored custom.locked/custom.region markers, is what the MCP layer
-  # treats as scaffold: pages seeded before the page builder was unlocked carry
-  # custom.locked on their phases and events widgets, which are ordinary widgets now.
-  SCAFFOLD_WIDGETS = ['ProjectPageRoot', 'ProjectBanner', 'ProjectTitle', BODY_WIDGET].freeze
-
-  # Node types a stored graph may still hold but a patch may not introduce, mapped to what
-  # to reach for instead: the bridge node carrying a migrated description, and the wrapper
-  # that used to hold all page content. Both validate and render fine where they already
-  # sit, so they are edited in place and never created — a rule the update tool enforces,
-  # not just documents.
-  LEGACY_WIDGETS = {
+  # What to use instead of a legacy node type, for the error a patch that tries to
+  # create one gets back: the bridge node carrying a migrated description, and the
+  # wrapper that used to hold all page content. The node types themselves are
+  # ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS; a spec keeps the two in step.
+  LEGACY_ALTERNATIVES = {
     'RichTextMultiloc' => 'use TextMultiloc for rich text',
     'ProjectDescriptionSection' => "put the content directly in the #{BODY_WIDGET} node"
   }.freeze
 
   # WidgetSpecs widgets deliberately left out of DOCS: structural containers (only ever
-  # created as part of a documented widget's slot pattern), legacy-only composite presets,
-  # and the LEGACY_WIDGETS. A spec asserts DOCS + this list + SCAFFOLD_WIDGETS covers the
-  # widget specs exactly, so a new widget forces an explicit decision here.
+  # created as part of a documented widget's slot pattern), legacy-only composite
+  # presets, and the legacy node types (edit-in-place only, see FORMAT_RULES). A spec
+  # asserts DOCS + this list + the page scaffold covers the widget specs exactly, so a
+  # new widget forces an explicit decision here.
   UNDOCUMENTED_WIDGETS = (%w[
     Container
     Box
     ImageTextCards
     InfoWithAccordions
-  ] + LEGACY_WIDGETS.keys).freeze
+  ] + ContentBuilder::Craftjs::WidgetSpecs::LEGACY_WIDGETS).freeze
 
   DOCS = {
     'TextMultiloc' => <<~DOC,
@@ -153,8 +141,11 @@ class McpServer::LayoutWidgets
     ROOT (ProjectPageRoot) → ProjectBanner (header image), ProjectTitle, #{BODY_WIDGET}.
 
     - The one scaffold change allowed is sending the #{BODY_WIDGET} node itself with an
-      updated `nodes` array — and everything else about it exactly as get_project_layout
-      returned it — to add, remove or reorder the page's top-level content.
+      updated `nodes` array, to add, remove or reorder the page's top-level content.
+      Everything else about that node — `parent`, `custom`, `props` — must come back
+      exactly as get_project_layout returned it; only `nodes` may change. Keep every id
+      you still want on the page: dropping one detaches the node instead of deleting it,
+      and the update is rejected. Use delete_node_ids to remove things.
     - The project title and header image are project attributes, not layout content: change
       them with the update_project tool (title_multiloc / remote_header_bg_url). The
       ProjectTitle/ProjectBanner widgets render from the project record.
@@ -184,7 +175,7 @@ class McpServer::LayoutWidgets
       sectionBackground with the plain content around them rather than stacking two
       "colored" bands next to each other.
 
-    ## Widgets (insertable inside the page body)
+    ## Widgets (insertable anywhere inside the #{BODY_WIDGET} node)
 
     #{DOCS.values.join("\n")}
   CHEATSHEET
