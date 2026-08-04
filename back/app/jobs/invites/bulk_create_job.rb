@@ -18,14 +18,14 @@ module Invites
       import.update!(result: seat_numbers, completed_at: Time.current)
     rescue Invites::FailedError => e
       import.update!(result: { errors: e.to_h }, completed_at: Time.current)
-    rescue StandardError => e
+    rescue StandardError
       # Same reasoning as in CountNewSeatsJob: without this the import stays
       # pending forever, since the job does not retry.
       import&.update!(
         result: { errors: [{ error: 'unexpected_invite_error' }] },
         completed_at: Time.current
       )
-      raise e
+      raise
     end
 
     private

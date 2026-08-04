@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
@@ -33,11 +35,12 @@ const useInvitesImport = (queryParams: QueryParams) => {
     enabled: queryParams.enabled,
   });
 
-  // Reset the invite data as well, preventing stale data when revisiting the component
-  const resetQueryData = () => {
+  // Reset the invite data as well, preventing stale data when revisiting the component.
+  // Memoized so callers can depend on it without re-running effects every render.
+  const resetQueryData = useCallback(() => {
     queryClient.resetQueries({ queryKey: invitesImportKeys.all() });
     queryClient.resetQueries({ queryKey: invitesKeys.lists() });
-  };
+  }, [queryClient]);
 
   return {
     ...result,
