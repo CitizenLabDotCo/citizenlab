@@ -5,7 +5,6 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   attributes :id,
     :title,
-    :description_html,
     :description_preview,
     :ideas_count,
     :href,
@@ -14,10 +13,6 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   def title
     @@multiloc_service.t(object.title_multiloc)
-  end
-
-  def description_html
-    @@multiloc_service.t(object.description_multiloc)
   end
 
   def description_preview

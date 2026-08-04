@@ -17,7 +17,6 @@ module PublicApi
 
         multiloc_attributes(
           :title_multiloc,
-          :description_multiloc,
           :description_preview_multiloc
         )
       end

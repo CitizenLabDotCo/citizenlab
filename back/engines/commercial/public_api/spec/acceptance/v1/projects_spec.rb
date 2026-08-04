@@ -49,7 +49,6 @@ resource 'Projects' do
         expect(json_response[:project]).to match({
           id: id,
           title: 'Renew West Parc',
-          description_html: '<p>Let\'s renew the parc at the city border and make it an enjoyable place for young and old.</p>',
           description_preview: 'Let\'s renew the parc at the city border and make it an enjoyable place for young and old.',
           map_center_geojson: { coordinates: [an_instance_of(Float), an_instance_of(Float)], type: 'Point' },
           href: "http://example.org/projects/#{project.slug}",
