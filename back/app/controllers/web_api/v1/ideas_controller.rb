@@ -411,13 +411,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def update_file_upload_fields(input, custom_form, params)
     file_uploads_exist = false
-    # A file field the user cleared arrives as nil — there is nothing to validate
-    # or attach for those, and indexing into them would raise.
+    # A file field the user cleared arrives as null; indexing into it would raise.
     params_for_file_upload_fields =
       (extract_params_for_file_upload_fields custom_form, params).compact_blank
 
-    # Checked for every field before any is written, so an oversized file in a later
-    # field can't leave the files from earlier ones half-persisted.
+    # Validated up front so the file reported is the first one in the form, and so
+    # nothing is written before we know every file is acceptable.
     params_for_file_upload_fields.each do |key, params_for_files_field|
       validate_file_size! params_for_files_field, key
     end
@@ -456,17 +455,15 @@ class WebApi::V1::IdeasController < ApplicationController
       .map { |file_params| file_params.fetch(:file_by_content) }
   end
 
-  # `Files::FileAttachment#file` is a plain `belongs_to` with no `autosave: true`, so
-  # Rails persists the associated file with `save` (not `save!`) and ignores the result.
-  # A file that fails the uploader's size validation is therefore dropped silently, and
-  # the attachment insert then trips the `file_id` NOT NULL constraint — surfacing as a
-  # 500 the user can't act on. Reject it here instead, naming the file, before any write.
+  # `Files::FileAttachment#file` is a `belongs_to` without `autosave`, so Rails saves the
+  # file with `save` and ignores the result: one failing the uploader's size validation is
+  # dropped silently and the insert then trips the `file_id` NOT NULL constraint, giving a
+  # 500 the user can't act on. Reject it here instead, naming the file.
   def validate_file_size!(file_params, field_key)
     content = file_params['content']
     return if content.blank?
 
-    # Read the limit off the uploader itself so this can't drift from the validation
-    # that would otherwise reject the file.
+    # From the uploader, so it can't drift from the validation this mirrors.
     max_size = Files::FileUploader.new.size_range.max
     return if base64_byte_size(content) <= max_size
 
@@ -484,8 +481,8 @@ class WebApi::V1::IdeasController < ApplicationController
     )
   end
 
-  # Decoded size of a base64 data URI, derived from the encoded length rather than by
-  # decoding it — the encoded form of a file at the limit is already ~133 MB.
+  # Decoded size of a base64 data URI, from the encoded length — decoding would mean
+  # materialising ~133 MB for a file at the limit.
   def base64_byte_size(content)
     encoded = content.to_s.split(',', 2).last.to_s
     padding = encoded.length - encoded.chomp('==').chomp('=').length

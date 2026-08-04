@@ -16,12 +16,9 @@ import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
-// Mirrors the server-side limit in Files::FileUploader#size_range. The server
-// remains authoritative — this only spares the user uploading a file that is
-// going to be rejected anyway, which matters most in the anonymous survey flow
-// where nothing is sent until the final submit. SingleFileInput compares
-// against decimal MB while the server uses binary MiB, so this rejects
-// marginally earlier than the server would; erring that way is deliberate.
+// Mirrors Files::FileUploader#size_range, which stays authoritative. Compared
+// against decimal MB here but binary MiB server-side, so this rejects marginally
+// earlier — the safe direction.
 export const MAX_FILE_SIZE_MB = 100;
 
 interface Props
@@ -49,9 +46,8 @@ const SingleFileUploaderField = ({
     trigger,
   } = useFormContext();
 
-  // Subscribed rather than read via getValues: getValues doesn't re-render, so
-  // clearing the field in onFileRemove left the removed file on screen until an
-  // unrelated state change happened to re-render (hence needing a second click).
+  // useWatch, not getValues: getValues doesn't subscribe, so removing a file
+  // didn't re-render and the trash icon needed two clicks.
   const file = useWatch({ control, name });
 
   useEffect(() => {
@@ -97,9 +93,8 @@ const SingleFileUploaderField = ({
         ideaId,
       });
     }
-    // Cleared with null rather than undefined: React Hook Form does not
-    // propagate an undefined value to a mounted Controller, so the removed file
-    // stayed on screen and in the submitted payload.
+    // null, not undefined: React Hook Form doesn't propagate undefined to the
+    // Controller, leaving the removed file on screen and in the payload.
     setValue(name, null, { shouldDirty: true });
     trigger(name);
   };
@@ -120,13 +115,6 @@ const SingleFileUploaderField = ({
 
   return (
     <Box data-cy="e2e-idea-file-upload" width="100%">
-      {/*
-        The Controller stays mounted whether or not a file is selected. It used
-        to be rendered only when the field was empty, so removing a file
-        re-mounted it — and registering a field whose value is undefined makes
-        React Hook Form re-apply its defaultValue, silently restoring the file
-        the user had just deleted.
-      */}
       <Controller
         name={name}
         control={control}

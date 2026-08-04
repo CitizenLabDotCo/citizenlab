@@ -47,12 +47,9 @@ const Wrapper = ({ withFile = true }: { withFile?: boolean }) => {
 };
 
 describe('SingleFileUploadField', () => {
-  // Regression test: the field previously read its value with `getValues`,
-  // which does not subscribe to form state. Clearing the field in onFileRemove
-  // updated React Hook Form but rendered nothing, so the removed file stayed on
-  // screen and only disappeared once an unrelated re-render happened — the user
-  // had to click the trash icon twice, and a file they believed was gone was
-  // still submitted.
+  // Regression test: reading the value with `getValues` meant removal didn't
+  // re-render (two clicks needed), and clearing it with `undefined` didn't reach
+  // the Controller, so a file the user had deleted was still submitted.
   it('removes the file from the UI and the form on a single click', async () => {
     const user = userEvent.setup();
 
@@ -68,10 +65,8 @@ describe('SingleFileUploadField', () => {
     expect(latestValues[FIELD]).toBeFalsy();
   });
 
-  // Anonymous respondents send nothing until the final submit, so without a
-  // client-side check an oversized file is only rejected after the whole survey
-  // has been filled in and the file uploaded. Reject it at selection instead, so
-  // it never enters form state and there is nothing to remove afterwards.
+  // Anonymous respondents send nothing until the final submit, so without this
+  // an oversized file is only rejected after the whole survey has been filled in.
   it('rejects an oversized file at selection without adding it to the form', async () => {
     render(<Wrapper withFile={false} />);
 
