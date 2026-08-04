@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, Suspense } from 'react';
 
 import {
   Box,
@@ -22,9 +22,12 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { getAddressOrFallbackDMS } from 'utils/map';
+import { isPrerender } from 'utils/prerender';
 
-import IdeaLocationMap from './IdeaLocationMap';
 import messages from './messages';
+
+// Lazy so the ArcGIS bundle is only fetched when the map is actually rendered.
+const IdeaLocationMap = React.lazy(() => import('./IdeaLocationMap'));
 
 const Container = styled.div`
   display: flex;
@@ -105,13 +108,15 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
                 </ButtonWithLink>
               </Box>
 
-              {!compact && (
+              {!compact && !isPrerender() && (
                 <Box width="100%" mt="8px" id="e2e-location-map">
-                  <IdeaLocationMap
-                    // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    location={idea?.data.attributes?.location_point_geojson}
-                  />
+                  <Suspense fallback={null}>
+                    <IdeaLocationMap
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                      location={idea?.data.attributes?.location_point_geojson}
+                    />
+                  </Suspense>
                 </Box>
               )}
             </Box>
