@@ -22,7 +22,7 @@ import { useIntl } from 'utils/cl-intl';
 import { ContactChannel } from '../../../types';
 
 import { getOption } from './constants';
-import ContactRequirementModal from './ContactRequirementModal';
+import EmailAndPhoneRequirementsModal from './EmailAndPhoneRequirementsModal';
 import IconCluster from './IconCluster';
 import messages from './messages';
 
@@ -63,7 +63,7 @@ interface Props {
   onChangeExpiry: (channel: ContactChannel, expiry: number | null) => void;
 }
 
-const ContactRequirementControl = ({
+const EmailAndPhoneRequirementsControl = ({
   value,
   available,
   verificationRequired,
@@ -128,7 +128,7 @@ const ContactRequirementControl = ({
         </Box>
       </Trigger>
 
-      <ContactRequirementModal
+      <EmailAndPhoneRequirementsModal
         opened={modalOpen}
         value={value}
         available={available}
@@ -142,4 +142,4 @@ const ContactRequirementControl = ({
   );
 };
 
-export default ContactRequirementControl;
+export default EmailAndPhoneRequirementsControl;

@@ -105,7 +105,7 @@ interface Props {
   onClose: () => void;
 }
 
-const ContactRequirementModal = ({
+const EmailAndPhoneRequirementsModal = ({
   opened,
   value,
   available,
@@ -247,4 +247,4 @@ const ContactRequirementModal = ({
   );
 };
 
-export default ContactRequirementModal;
+export default EmailAndPhoneRequirementsModal;

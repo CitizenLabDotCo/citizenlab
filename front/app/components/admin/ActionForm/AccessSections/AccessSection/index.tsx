@@ -24,7 +24,7 @@ import IdMethodsModalTrigger from '../IdMethodsModal/Trigger';
 import ModeCards from '../ModeCards';
 import { AccessSectionProps } from '../shared';
 
-import ContactRequirementControl from './ContactRequirement';
+import EmailAndPhoneRequirementsControl from './EmailAndPhoneRequirements';
 import messages from './messages';
 import MethodRow from './MethodRow';
 
@@ -77,7 +77,7 @@ const AccessSection = ({
               Email and phone are one choice; verification is a different kind
               of proof, so it stays a toggle of its own. */}
           <Box>
-            <ContactRequirementControl
+            <EmailAndPhoneRequirementsControl
               value={contactRequirement}
               available={{ email: passwordLoginEnabled, phone: smsEnabled }}
               verificationRequired={verification.enabled}
