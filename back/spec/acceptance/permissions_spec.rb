@@ -355,7 +355,7 @@ resource 'Permissions' do
           assert_status 200
           expect(response_data[:attributes]).to eq({
             permitted: false,
-            disabled_reason: 'user_missing_requirements',
+            disabled_reason: 'user_not_active',
             requirements: {
               authentication: {
                 permitted_by: 'users',
@@ -498,7 +498,7 @@ resource 'Permissions' do
           assert_status 200
           attributes = response_data[:attributes]
           expect(attributes[:permitted]).to eq false
-          expect(attributes[:disabled_reason]).to eq 'user_missing_requirements'
+          expect(attributes[:disabled_reason]).to eq 'user_not_active'
           expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq 'provide_new_email'
         end
       end
