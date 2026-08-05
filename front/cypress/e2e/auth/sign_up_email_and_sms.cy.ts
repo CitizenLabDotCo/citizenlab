@@ -35,7 +35,9 @@ describe('Sign up - email and SMS (2FA)', () => {
     signUpEmailConformation(cy);
 
     // Enter phone number
-    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(randomPhoneNumber());
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
@@ -62,7 +64,9 @@ describe('Sign up - email and SMS (2FA)', () => {
     signUpEmailConformation(cy);
 
     // Enter phone number
-    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(randomPhoneNumber());
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
@@ -84,7 +88,9 @@ describe('Sign up - email and SMS (2FA)', () => {
     signUpEmailConformation(cy);
 
     // Enter phone number
-    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(randomPhoneNumber());
     cy.dataCy('phone-continue-button').click();
 
     // Refresh page
@@ -165,7 +171,9 @@ describe('Sign up - email and SMS (2FA)', () => {
       signUpEmailConformation(cy);
 
       // Enter phone number
-      cy.dataCy('phone-number-input').find('input').type(phoneNumber);
+      cy.dataCy('phone-number-input')
+        .find('input[type="tel"]')
+        .type(phoneNumber);
       cy.dataCy('phone-continue-button').click();
 
       // Assert error
@@ -207,7 +215,9 @@ describe('Sign up - SSO and SMS (2FA)', () => {
     fakeSSOAuth(cy, 'john_doe');
 
     // Enter phone number
-    cy.dataCy('phone-number-input').find('input').type(randomPhoneNumber());
+    cy.dataCy('phone-number-input')
+      .find('input[type="tel"]')
+      .type(randomPhoneNumber());
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number

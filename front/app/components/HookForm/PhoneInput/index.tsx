@@ -80,13 +80,15 @@ const PhoneInput = ({
         render={({ field }) => (
           <IntlTelInput
             separateDialCode
+            countrySelectorMode="DROPDOWN"
             // The utils library is heavy, so we code-split it out of the main bundle.
             // The validator imports the same 'intl-tel-input/utils' module,
             // so it ends up bundled only once.
             loadUtils={() => import('intl-tel-input/utils')}
             countrySearch={showSearch}
-            onlyCountries={countries?.map(toIso2)}
-            initialCountry={defaultCountry && toIso2(defaultCountry)}
+            // intl-tel-input warns on undefined, so we fall back to its own "unset" values.
+            onlyCountries={countries ? countries.map(toIso2) : null}
+            initialCountry={defaultCountry ? toIso2(defaultCountry) : ''}
             value={field.value}
             onChangeNumber={(number) => field.onChange(number)}
             inputProps={{
