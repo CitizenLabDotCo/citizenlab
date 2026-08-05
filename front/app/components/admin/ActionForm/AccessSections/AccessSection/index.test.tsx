@@ -155,7 +155,7 @@ describe('<AccessSection />', () => {
 
       expect(
         await screen.findByText(
-          /At least one authentication method must stay enabled/i
+          /If nothing is required for email or phone, this method must stay enabled/i
         )
       ).toBeInTheDocument();
     });
