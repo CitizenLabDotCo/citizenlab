@@ -191,8 +191,8 @@ en:
       password_reset: Password reset
       project_folder_moderation_rights_received: Folder manager rights received
       project_manager_rights_received: Project manager rights received
-      project_phase_started: Phase started TEST
-      project_phase_upcoming: Phase starting soon TEST
+      project_phase_started: Phase started
+      project_phase_upcoming: Phase starting soon
       project_published: Project published
       project_review_request: Project review request
       project_review_state_change: Project approved
@@ -565,7 +565,7 @@ en:
       official_feedback_body: Example official feedback
       phase_description: This is some example phase content used for previewing the content of emails. This is not real content.
       phase_title: Example phase
-      project_description_preview: This is some example project content used for previewing the content of emails. This is not real content. TEST
+      project_description_preview: This is some example project content used for previewing the content of emails. This is not real content.
       project_title: Example project
       proposal_title: Example Proposal
       space_title: Example space
@@ -600,17 +600,17 @@ en:
       title_what_can_you_do_moderator: What can you do as a project manager?
       x_ideas: '%{numberOfIdeas} ideas'
     project_phase_started:
-      cta_button: See what's new TEST
-      event_description: "You can now take part in '%{phaseTitle}' on the platform of %{organizationName}. TEST"
-      preheader: "You can now take part in '%{phaseTitle}' TEST"
-      subject: "'%{phaseTitle}' has started in %{projectName} TEST"
-      title: "There's something new in '%{projectName}' TEST"
+      cta_button: See what's new
+      event_description: "You can now take part in '%{phaseTitle}' on the platform of %{organizationName}."
+      preheader: "You can now take part in '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' has started in %{projectName}"
+      title: "There's something new in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Review the setup TEST
-      event_description: "'%{phaseTitle}' in the project '%{projectName}' starts on %{startDate}. Take a moment to check that everything is ready: Is the description complete? Are the dates correct? Do you want to inform your community through a custom email campaign? TEST"
-      preheader: Make sure everything is ready before %{startDate} TEST
-      subject: "%{projectName}: '%{phaseTitle}' starts on %{startDate} TEST"
-      title: "%{firstName}, '%{phaseTitle}' starts on %{startDate} TEST"
+      cta_button: Review the setup
+      event_description: "'%{phaseTitle}' in the project '%{projectName}' starts on %{startDate}. Take a moment to check that everything is ready: Is the description complete? Are the dates correct? Do you want to inform your community through a custom email campaign?"
+      preheader: Make sure everything is ready before %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' starts on %{startDate}"
+      title: "%{firstName}, '%{phaseTitle}' starts on %{startDate}"
     project_published:
       cta_button: Go to this project
       event_description: 'The participation platform of %{organizationName} just published the following project:'
