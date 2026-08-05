@@ -198,8 +198,8 @@ es-CL:
       project_folder_moderation_rights_received: Derechos de administrador de carpetas recibidos
       project_manager_rights_received: Permisos de gestor de proyecto recibidos
       project_moderation_rights_received: Derechos de moderación del proyecto recibidos
-      project_phase_started: Nueva fase del proyecto
-      project_phase_upcoming: Próxima nueva fase del proyecto
+      project_phase_started: Fase iniciada TEST
+      project_phase_upcoming: La fase comenzará pronto TEST
       project_published: Proyecto publicado
       project_review_request: Solicitud de revisión del proyecto
       project_review_state_change: Proyecto aprobado
@@ -573,7 +573,7 @@ es-CL:
       official_feedback_body: Ejemplo de respuesta oficial
       phase_description: Este es un ejemplo de contenido de fase utilizado para la vista previa del contenido de los correos. No es contenido real.
       phase_title: Fase de ejemplo
-      project_description_preview: Este es un contenido de fase de ejemplo utilizado para previsualizar el contenido de los correos electrónicos. No es contenido real.
+      project_description_preview: Este es un ejemplo de contenido de proyecto utilizado para la vista previa del contenido de los correos electrónicos. No es contenido real. TEST
       project_title: Ejemplo de proyecto
       proposal_title: Ejemplo de propuesta
       space_title: Espacio de ejemplo
@@ -608,21 +608,21 @@ es-CL:
       title_what_can_you_do_moderator: ¿Qué puedes hacer como moderador del proyecto?
       x_ideas: '%{numberOfIdeas} ideas'
     project_phase_started:
-      cta_button: Descubre esta nueva fase
-      event_description: Este proyecto entró en una nueva fase en la plataforma %{organizationName}. Haga clic en el siguiente enlace para obtener más información!
+      cta_button: Ver novedades TEST
+      event_description: "Ya puedes participar en '%{phaseTitle}' en la plataforma de %{organizationName}. TEST"
       new_phase: "Este proyecto entró en la fase '%{phaseTitle}'"
-      preheader: Se ha iniciado una nueva fase para %{projectName}
-      subject: '%{projectName} entró en una nueva fase'
+      preheader: "Ya puedes participar en '%{phaseTitle}' TEST"
+      subject: "'%{phaseTitle}' ha comenzado en %{projectName} TEST"
       subtitle: "Acerca de '%{projectName}'"
-      title: "Se ha iniciado una nueva fase para el proyecto '%{projectName}'"
+      title: "Hay novedades en '%{projectName}' TEST"
     project_phase_upcoming:
-      cta_button: Configura esta nueva fase
-      event_description: "El proyecto '%{projectName}' entrará pronto en una nueva fase. Asegúrese de que todo esté preparado para esta fase: ¿Existe una descripción adecuada? ¿Se transfieren las ideas retenidas a esta fase? ¿Quiere informar a sus usuarios sobre los detalles de esta fase a través de una campaña de correo electrónico personalizada?"
+      cta_button: Revisar la configuración TEST
+      event_description: "'%{phaseTitle}' en el proyecto '%{projectName}' comienza el %{startDate}. Tómate un momento para comprobar que todo esté listo: ¿está completa la descripción?, ¿son correctas las fechas?, ¿quieres informar a tu comunidad a través de una campaña de correo electrónico personalizada? TEST"
       new_phase: "El proyecto entrará en fase '%{phaseTitle}'"
-      preheader: Próximamente se iniciará una nueva fase para %{projectName}
-      subject: Prepara todo para la nueva fase de %{projectName}
+      preheader: Asegúrate de que todo esté listo antes del %{startDate} TEST
+      subject: "%{projectName}: '%{phaseTitle}' comienza el %{startDate} TEST"
       subtitle: "Acerca de '%{projectName}'"
-      title: '%{firstName}, un proyecto entrará pronto en una nueva fase'
+      title: "%{firstName}, '%{phaseTitle}' comienza el %{startDate} TEST"
     project_published:
       cta_button: Ir a este proyecto
       event_description: 'La plataforma de participación de %{organizationName} acaba de publicar el siguiente proyecto:'

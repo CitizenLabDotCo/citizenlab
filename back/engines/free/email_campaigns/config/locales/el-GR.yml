@@ -198,8 +198,8 @@ el-GR:
       project_folder_moderation_rights_received: Δικαιώματα διαχειριστή φακέλων
       project_manager_rights_received: Λήφθηκαν δικαιώματα διαχειριστή έργου
       project_moderation_rights_received: Δικαιώματα συντονισμού έργου που ελήφθησαν
-      project_phase_started: Νέα φάση του έργου
-      project_phase_upcoming: Επόμενη νέα φάση έργου
+      project_phase_started: Η φάση ξεκίνησε TEST
+      project_phase_upcoming: Η φάση ξεκινά σύντομα TEST
       project_published: Δημοσιευμένο έργο
       project_review_request: Αίτημα αξιολόγησης του έργου
       project_review_state_change: Το έργο εγκρίθηκε
@@ -573,7 +573,7 @@ el-GR:
       official_feedback_body: Παράδειγμα επίσημης ανατροφοδότησης
       phase_description: Αυτό είναι ένα παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των email. Αυτό δεν είναι πραγματικό περιεχόμενο.
       phase_title: Παράδειγμα φάσης
-      project_description_preview: Αυτό είναι κάποιο παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.
+      project_description_preview: Αυτό είναι ένα παράδειγμα περιεχομένου έργου που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των email. Αυτό δεν είναι πραγματικό περιεχόμενο. TEST
       project_title: Παράδειγμα έργου
       proposal_title: Παράδειγμα πρότασης
       space_title: Παράδειγμα χώρου
@@ -608,21 +608,21 @@ el-GR:
       title_what_can_you_do_moderator: Τι μπορείτε να κάνετε ως διαχειριστής έργων;
       x_ideas: '%{numberOfIdeas} ιδέες'
     project_phase_started:
-      cta_button: Ανακαλύψτε αυτή τη νέα φάση
-      event_description: Το έργο αυτό εισήλθε σε νέα φάση με την πλατφόρμα %{organizationName}. Κάντε κλικ στον παρακάτω σύνδεσμο για να μάθετε περισσότερα!
+      cta_button: Δείτε τι νέο υπάρχει TEST
+      event_description: "Μπορείτε πλέον να συμμετάσχετε στο '%{phaseTitle}' στην πλατφόρμα του %{organizationName}. TEST"
       new_phase: "Το έργο αυτό εισήλθε στη φάση '%{phaseTitle}'"
-      preheader: Μια νέα φάση έχει ξεκινήσει για το %{projectName}
-      subject: '%{projectName} εισήλθε σε νέα φάση'
+      preheader: "Μπορείτε πλέον να συμμετάσχετε στο '%{phaseTitle}' TEST"
+      subject: "Το '%{phaseTitle}' ξεκίνησε στο %{projectName} TEST"
       subtitle: "Σχετικά με '%{projectName}'"
-      title: "Μια νέα φάση ξεκίνησε για το έργο '%{projectName}'"
+      title: "Υπάρχει κάτι νέο στο '%{projectName}' TEST"
     project_phase_upcoming:
-      cta_button: Ορίστε αυτή τη νέα φάση
-      event_description: "Το έργο '%{projectName}' θα εισέλθει σύντομα σε μια νέα φάση. Βεβαιωθείτε ότι όλα είναι έτοιμα για αυτή τη φάση: Υπάρχει επαρκής περιγραφή; Μεταφέρονται επιλεγμένες ιδέες σε αυτή τη φάση; Θέλετε να ενημερώσετε τους πολίτες σας για τις ιδιαιτερότητες αυτής της φάσης μέσω μιας προσαρμοσμένης εκστρατείας ηλεκτρονικού ταχυδρομείου;"
+      cta_button: Ελέγξτε τη διαμόρφωση TEST
+      event_description: "Το '%{phaseTitle}' στο έργο '%{projectName}' ξεκινά στις %{startDate}. Αφιερώστε λίγο χρόνο για να ελέγξετε ότι όλα είναι έτοιμα: Είναι η περιγραφή πλήρης; Είναι οι ημερομηνίες σωστές; Θέλετε να ενημερώσετε την κοινότητά σας μέσω μιας προσαρμοσμένης καμπάνιας email; TEST"
       new_phase: Το έργο θα εισέλθει στη φάση "%{phaseTitle}".
-      preheader: Μια νέα φάση θα ξεκινήσει σύντομα για το %{projectName}
-      subject: Ετοιμάστε τα πάντα για τη νέα φάση του %{projectName}
+      preheader: Βεβαιωθείτε ότι όλα είναι έτοιμα πριν από τις %{startDate} TEST
+      subject: "%{projectName}: Το '%{phaseTitle}' ξεκινά στις %{startDate} TEST"
       subtitle: "Σχετικά με '%{projectName}'"
-      title: '%{firstName}, ένα έργο θα εισέλθει σύντομα σε νέα φάση'
+      title: "%{firstName}, το '%{phaseTitle}' ξεκινά στις %{startDate} TEST"
     project_published:
       cta_button: Πηγαίνετε σε αυτό το έργο
       event_description: 'Η πλατφόρμα συμμετοχής του %{organizationName} μόλις δημοσίευσε το ακόλουθο έργο:'

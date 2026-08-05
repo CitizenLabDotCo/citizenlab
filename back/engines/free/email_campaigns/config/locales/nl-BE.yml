@@ -198,8 +198,8 @@ nl-BE:
       project_folder_moderation_rights_received: Mapbeheerdersrechten ontvangen
       project_manager_rights_received: Projectbeheerdersrechten ontvangen
       project_moderation_rights_received: Projectbeheerdersrechten ontvangen
-      project_phase_started: Nieuwe projectfase
-      project_phase_upcoming: Opkomende nieuwe projectfase
+      project_phase_started: Fase gestart TEST
+      project_phase_upcoming: Fase start binnenkort TEST
       project_published: Project gepubliceerd
       project_review_request: Projectbeoordelingsverzoek
       project_review_state_change: Project goedgekeurd
@@ -573,7 +573,7 @@ nl-BE:
       official_feedback_body: Voorbeeld update
       phase_description: Dit is voorbeeldinhoud voor een fase die wordt gebruikt voor een voorbeeldweergave van de inhoud van e-mails. Dit is geen echte inhoud.
       phase_title: Voorbeeldfase
-      project_description_preview: Dit is een voorbeeld van fase-inhoud die wordt gebruikt om de inhoud van e-mails te bekijken. Dit is geen echte inhoud.
+      project_description_preview: Dit is voorbeeldinhoud voor een project die wordt gebruikt om de inhoud van e-mails te bekijken. Dit is geen echte inhoud. TEST
       project_title: Voorbeeldproject
       proposal_title: Voorbeeldvoorstel
       space_title: Voorbeeldruimte
@@ -609,21 +609,21 @@ nl-BE:
       title_what_can_you_do_moderator: Wat kan je doen als projectbeheerder?
       x_ideas: '%{numberOfIdeas} ideeën'
     project_phase_started:
-      cta_button: Ontdek deze nieuwe fase
+      cta_button: Bekijk wat er nieuw is TEST
       event_description: Dit project ging een nieuwe fase in op het platform van %{organizationName}. Klik op de link hieronder om meer te weten te komen!
       new_phase: "Het project ging de fase '%{phaseTitle}' in"
-      preheader: Een nieuwe fase is gestart voor %{projectName}
-      subject: "'%{phaseTitle}' is begonnen in %{projectName}"
+      preheader: "Je kunt nu deelnemen aan '%{phaseTitle}' TEST"
+      subject: "'%{phaseTitle}' is gestart in %{projectName} TEST"
       subtitle: "Over '%{projectName}'"
-      title: "Een nieuwe fase is begonnen voor het project '%{projectName}'"
+      title: "Er is iets nieuws in '%{projectName}' TEST"
     project_phase_upcoming:
-      cta_button: Stel deze nieuwe fase in
+      cta_button: Controleer de configuratie TEST
       event_description: "Het project '%{projectName}' gaat binnenkort een nieuwe fase in. Zorg ervoor dat alles klaar staat: Is er een goede beschrijving? Werden geselecteerde ideeën al naar deze fase overgeplaatst? Wil je je burgers nog informeren over bepaalde zaken via een e-mailcampagne?"
       new_phase: "Het project gaat de fase '%{phaseTitle}' in"
-      preheader: Een nieuwe fase gaat binnenkort van start voor %{projectName}
-      subject: Zet alles klaar voor de nieuwe fase van %{projectName}
+      preheader: Zorg ervoor dat alles klaarstaat voor %{startDate} TEST
+      subject: "%{projectName}: '%{phaseTitle}' start op %{startDate} TEST"
       subtitle: "Over '%{projectName}'"
-      title: '%{firstName}, een project gaat binnenkort een nieuwe fase in'
+      title: "%{firstName}, '%{phaseTitle}' start op %{startDate} TEST"
     project_published:
       cta_button: Ga naar dit project
       event_description: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'

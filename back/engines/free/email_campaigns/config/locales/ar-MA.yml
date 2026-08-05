@@ -198,8 +198,8 @@ ar-MA:
       project_folder_moderation_rights_received: تم استلام حقوق الإشراف على مجلد المشروع
       project_manager_rights_received: تم استلام صلاحيات مسير مشروع
       project_moderation_rights_received: تم استلام حقوق الإشراف على المشروع
-      project_phase_started: مرحلة مشروع جديدة
-      project_phase_upcoming: مرحلة مشروع جديدة قادمة
+      project_phase_started: بدات المرحلة TEST
+      project_phase_upcoming: المرحلة غتبدا قريب TEST
       project_published: تم نشر المشروع
       project_review_request: طلب مراجعة المشروع
       project_review_state_change: تمت الموافقة على المشروع
@@ -573,7 +573,7 @@ ar-MA:
       official_feedback_body: مثال على التعليقات الرسمية
       phase_description: هذا مثال لمحتوى المرحلة يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقياً.
       phase_title: مرحلة المثال
-      project_description_preview: هذا مثال على محتوى المرحلة المستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقيًا.
+      project_description_preview: هذا غير مثال ديال محتوى المشروع كيستعمل لمعاينة محتوى الإيميلات. هذا ماشي محتوى حقيقي. TEST
       project_title: مشروع مثال
       proposal_title: مثال على الاقتراح
       space_title: فضاء تجريبي
@@ -608,21 +608,21 @@ ar-MA:
       title_what_can_you_do_moderator: ما الذي يمكنك القيام به بصفتك مدير المشروع؟
       x_ideas: '%{numberOfIdeas} أفكار'
     project_phase_started:
-      cta_button: اكتشف هذه المرحلة الجديدة
-      event_description: دخل هذا المشروع مرحلة جديدة على المنصة الخاصة بـ %{organizationName}. انقر على الرابط أدناه لمعرفة المزيد!
+      cta_button: شوف شنو الجديد TEST
+      event_description: "دابا تقدر تشارك ف '%{phaseTitle}' ف المنصة ديال %{organizationName}. TEST"
       new_phase: "دخل هذا المشروع المرحلة '%{phaseTitle}'"
-      preheader: بدأت مرحلة جديدة لـ %{projectName}
-      subject: دخل %{projectName} مرحلة جديدة
+      preheader: "دابا تقدر تشارك ف '%{phaseTitle}' TEST"
+      subject: "'%{phaseTitle}' بدات ف %{projectName} TEST"
       subtitle: "'%{projectName}' حول"
-      title: "بدأت مرحلة جديدة للمشروع '%{projectName}'"
+      title: "كاين جديد ف '%{projectName}' TEST"
     project_phase_upcoming:
-      cta_button: إعداد هذه المرحلة الجديدة
-      event_description: "سيدخل المشروع '%{projectName}' مرحلة جديدة عمّا قريب. تأكد من إعداد كل شيء في هذه المرحلة: هل الوصف كافٍ؟ هل تم نقل الأفكار المحدّدة إلى هذه المرحلة؟ هل ترغب في إعلام المواطنين بتفاصيل هذه المرحلة عبر حملة بريد إلكتروني مخصصة؟"
+      cta_button: راجع الإعدادات TEST
+      event_description: "'%{phaseTitle}' ف المشروع '%{projectName}' غتبدا نهار %{startDate}. خد شوية د الوقت باش تأكد بلي كلشي واجد: واش الوصف كامل؟ واش التواريخ صحيحة؟ واش بغيتي تعلم المجتمع ديالك عبر حملة إيميلات مخصصة؟ TEST"
       new_phase: "سيدخل المشروع المرحلة '%{phaseTitle}'"
-      preheader: قريبًا ستبدأ مرحلة جديدة لـ %{projectName}
-      subject: قم بإعداد كل شيء للمرحلة الجديدة الخاصة بـ %{projectName}
+      preheader: تأكد بلي كلشي واجد قبل %{startDate} TEST
+      subject: "%{projectName}: '%{phaseTitle}' غتبدا نهار %{startDate} TEST"
       subtitle: "'%{projectName}' حول"
-      title: '%{firstName}، سيدخل المشروع مرحلة جديدة قريبًا'
+      title: "%{firstName}، '%{phaseTitle}' غتبدا نهار %{startDate} TEST"
     project_published:
       cta_button: انتقل إلى هذا المشروع
       event_description: 'لقد نشرت منصة المشاركة %{organizationName} للتو المشروع التالي:'
