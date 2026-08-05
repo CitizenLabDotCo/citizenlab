@@ -377,7 +377,7 @@ resource 'Permissions' do
         before do
           @permission = @phase.permissions.first
           @permission.update!(
-            permitted_by: 'users', 
+            permitted_by: 'users',
             email_and_phone_requirements: 'both_email_and_phone',
             require_name: true,
             require_password: false
@@ -399,7 +399,7 @@ resource 'Permissions' do
         example_request 'If user has only confirmed email: require phone number' do
           assert_status 200
           attributes = response_data[:attributes]
-          expect(attributes[:permitted]).to eq false
+          expect(attributes[:permitted]).to be false
           expect(attributes[:disabled_reason]).to eq 'user_missing_requirements'
           expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq 'provide_new_phone'
         end
@@ -415,7 +415,7 @@ resource 'Permissions' do
           do_request
           assert_status 200
           attributes = response_data[:attributes]
-          expect(attributes[:permitted]).to eq false
+          expect(attributes[:permitted]).to be false
           expect(attributes[:disabled_reason]).to eq 'user_missing_requirements'
           expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq 'provide_new_email'
         end
@@ -428,9 +428,9 @@ resource 'Permissions' do
           do_request
           assert_status 200
           attributes = response_data[:attributes]
-          expect(attributes[:permitted]).to eq true
-          expect(attributes[:disabled_reason]).to eq nil
-          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq nil
+          expect(attributes[:permitted]).to be true
+          expect(attributes[:disabled_reason]).to be_nil
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to be_nil
         end
       end
 
@@ -440,7 +440,7 @@ resource 'Permissions' do
         before do
           @permission = @phase.permissions.first
           @permission.update!(
-            permitted_by: 'users', 
+            permitted_by: 'users',
             email_and_phone_requirements: 'either_email_or_phone',
             require_name: true,
             require_password: false
@@ -462,9 +462,9 @@ resource 'Permissions' do
         example_request 'If user has only confirmed email: allow participation' do
           assert_status 200
           attributes = response_data[:attributes]
-          expect(attributes[:permitted]).to eq true
-          expect(attributes[:disabled_reason]).to eq nil
-          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq nil
+          expect(attributes[:permitted]).to be true
+          expect(attributes[:disabled_reason]).to be_nil
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to be_nil
         end
 
         example 'If user has only confirmed phone number: allow participation' do
@@ -478,9 +478,9 @@ resource 'Permissions' do
           do_request
           assert_status 200
           attributes = response_data[:attributes]
-          expect(attributes[:permitted]).to eq true
-          expect(attributes[:disabled_reason]).to eq nil
-          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq nil
+          expect(attributes[:permitted]).to be true
+          expect(attributes[:disabled_reason]).to be_nil
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to be_nil
         end
 
         example 'If user does not have either confirmed email or phone number: require one of them' do
@@ -497,7 +497,7 @@ resource 'Permissions' do
           do_request
           assert_status 200
           attributes = response_data[:attributes]
-          expect(attributes[:permitted]).to eq false
+          expect(attributes[:permitted]).to be false
           expect(attributes[:disabled_reason]).to eq 'user_not_active'
           expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq 'provide_new_email'
         end

@@ -311,6 +311,7 @@ describe Permissions::BasePermissionsService do
 
         context 'when the user has only confirmed email' do
           before { user.update!(phone: nil, phone_confirmed_at: nil) }
+
           it { expect(denied_reason).to be_nil }
         end
 
@@ -320,7 +321,7 @@ describe Permissions::BasePermissionsService do
               email: nil,
               email_confirmed_at: nil,
               confirmation_required: true,
-              phone: '+3212345678', 
+              phone: '+3212345678',
               phone_confirmed_at: Time.now
             )
           end
@@ -334,7 +335,7 @@ describe Permissions::BasePermissionsService do
               email: nil,
               email_confirmed_at: nil,
               confirmation_required: true,
-              phone: nil, 
+              phone: nil,
               phone_confirmed_at: nil
             )
           end
