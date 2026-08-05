@@ -283,7 +283,7 @@ describe Permissions::BasePermissionsService do
         end
       end
 
-      context 'when a confirmed phone number is required' do
+      context 'when both email and phone are required' do
         let(:permission) { create(:permission, permitted_by: 'users', email_and_phone_requirements: 'both_email_and_phone') }
         let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
