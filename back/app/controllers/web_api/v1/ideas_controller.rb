@@ -455,10 +455,10 @@ class WebApi::V1::IdeasController < ApplicationController
       .map { |file_params| file_params.fetch(:file_by_content) }
   end
 
-  # `Files::FileAttachment#file` is a `belongs_to` without `autosave`, so Rails saves the
-  # file with `save` and ignores the result: one failing the uploader's size validation is
-  # dropped silently and the insert then trips the `file_id` NOT NULL constraint, giving a
-  # 500 the user can't act on. Reject it here instead, naming the file.
+  # Checked before building the `Files::File`: the uploader's `size_range` only fires
+  # after the base64 has been decoded into memory and copied to disk. Reading the encoded
+  # length skips both, so keep this even if `Files::FileAttachment` gains `autosave`
+  # (which would fix the silent drop that makes the failure a 500, but not the cost).
   def validate_file_size!(file_params, field_key)
     content = file_params['content']
     return if content.blank?
