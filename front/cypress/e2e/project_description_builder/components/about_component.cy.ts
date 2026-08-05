@@ -1,4 +1,5 @@
 import { randomString } from '../../../support/commands';
+import moment = require('moment');
 
 describe('Project description builder About component', () => {
   let projectId = '';
@@ -63,5 +64,56 @@ describe('Project description builder About component', () => {
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-about-box').should('not.exist');
+  });
+
+  it('displays Take the Survey button on mobile view with native survey phase', () => {
+    cy.intercept('**/content_builder_layouts/project_page/upsert').as(
+      'saveProjectDescriptionBuilder'
+    );
+
+    // Creat a native survey phase for the project
+    cy.apiCreateNativeSurveyPhase({
+      projectId: projectId,
+      title: 'Survey Phase',
+      description: 'Survey Phase Description',
+      startAt: moment().subtract(1, 'month').format('DD/MM/YYYY'),
+      endAt: moment().add(3, 'month').format('DD/MM/YYYY'),
+      canPost: true,
+      canComment: true,
+      canReact: true,
+    }).then((survey) => {
+      const phaseId = survey.body.data.id;
+      cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+
+      // Add about component to the project page
+      cy.get('#e2e-draggable-about-box').dragAndDrop('#e2e-project-page-body', {
+        position: 'inside',
+      });
+
+      cy.get('#e2e-content-builder-topbar-save').click();
+      cy.wait('@saveProjectDescriptionBuilder');
+      // Check about component is present with take the survey button in project page
+      cy.visit(`/projects/${projectSlug}`);
+      cy.get('#e2e-about-box').should('exist');
+      cy.get('#e2e-about-box').within(() => {
+        cy.get('#project-survey-button').should('be.visible');
+      });
+      // Check about component is present with take the survey button in mobile view
+      cy.viewport(375, 667);
+      cy.get('#e2e-about-box').should('exist');
+      cy.get('#e2e-about-box').within(() => {
+        cy.get('#project-survey-button').should('be.visible');
+      });
+      // back to desktop view
+      cy.viewport(1280, 720);
+      // Delete about box
+      cy.visit(`/admin/project-page-builder/projects/${projectId}`);
+      cy.get('#e2e-about-box').click({ force: true });
+      cy.get('#e2e-delete-button').click();
+      cy.get('#e2e-content-builder-topbar-save').click();
+      cy.wait('@saveProjectDescriptionBuilder');
+      // Delete native survey phase
+      cy.apiRemovePhase(phaseId);
+    });
   });
 });
