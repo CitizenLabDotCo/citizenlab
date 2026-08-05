@@ -34,9 +34,11 @@
 # reading `pmethod.allowed_presentation_modes` — a one-off repair of a known state, which should
 # keep describing that state even if the rule later moves.
 #
-# Every affected phase is printed with its project and whether it is finished, active or still to
-# come, so the scale of the change is visible at a glance and an individual phase can be traced back
-# to its project if anyone asks about it. The report carries the same rows, with full multilocs.
+# `TenantScript` owns the dry run, the tenant loop and the report; what is left here is the
+# migration itself and the summary, which prints every affected phase with its project and whether
+# it is finished, active or still to come, so the scale of the change is visible at a glance and an
+# individual phase can be traced back to its project if anyone asks about it. The report carries the
+# same rows, with full multilocs.
 #
 # Analyses without writing unless passed 'execute'; a host limits the run to one tenant:
 #
@@ -46,11 +48,7 @@
 namespace :single_use do
   desc "Move voting phases off the feed view, back to cards. Dry run unless passed 'execute'."
   task :migrate_voting_phases_off_feed_view, %i[execute host] => [:environment] do |_t, args|
-    execute = args[:execute] == 'execute'
-    host = args[:host]
-
-    reporter = ScriptReporter.new
-    totals = Hash.new(0)
+    # The report carries the full multilocs; these are the rows a human needs on screen.
     affected = []
 
     # TimelineService classifies a whole project, not a phase, so this composes the phase's own two
@@ -62,79 +60,10 @@ namespace :single_use do
       phase.complete? ? 'finished' : 'active'
     end
 
-    if execute
-      puts '🚀 MIGRATION MODE: moving voting phases off the feed view.'
-      puts '⚠️  THIS WILL MODIFY THE DATABASE'
-    else
-      puts '🔍 DRY RUN MODE: analysing without writing.'
-      puts '⚠️  NO DATABASE WRITES WILL BE PERFORMED'
-    end
-    puts '=' * 80
+    summary = lambda do |_script|
+      by_host = affected.group_by { |row| row[:host] }
+      next if by_host.empty?
 
-    # Deliberately not `safe_switch_each`: it also skips tenants whose creation never finalized, and
-    # those are on their way to being live, so their phases have to satisfy the new rule too.
-    # Deleted tenants are skipped, though: nothing un-deletes one, no request or job switches into
-    # one, and its schema is being dropped, so no phase of theirs is ever saved against the rule.
-    tenants = host ? Tenant.not_deleted.where(host: host) : Tenant.not_deleted
-
-    tenants.each do |tenant|
-      next unless ActiveRecord::Base.connection.schema_exists?(tenant.schema_name)
-
-      reporter.add_processed_tenant(tenant)
-
-      tenant.switch do
-        phases = Phase
-          .where(participation_method: 'voting')
-          .where("presentation_mode = 'feed' OR 'feed' = ANY(available_views)")
-
-        multiloc_service = MultilocService.new
-
-        phases.each do |phase|
-          new_mode = phase.presentation_mode == 'feed' ? 'card' : phase.presentation_mode
-          new_views = ((phase.available_views || []) - ['feed']) | ['card'] | [new_mode]
-
-          reporter.add_change(
-            { presentation_mode: phase.presentation_mode, available_views: phase.available_views },
-            { presentation_mode: new_mode, available_views: new_views },
-            context: {
-              tenant: tenant.host,
-              phase_id: phase.id,
-              phase_title: phase.title_multiloc,
-              phase_timing: phase_timing.call(phase),
-              project_id: phase.project_id,
-              project_title: phase.project.title_multiloc,
-              project_slug: phase.project.slug
-            }
-          )
-
-          # The report carries the full multilocs; this is only what a human needs on screen.
-          affected << {
-            host: tenant.host,
-            timing: phase_timing.call(phase),
-            phase_id: phase.id,
-            phase_title: multiloc_service.t(phase.title_multiloc),
-            project_id: phase.project_id,
-            project_title: multiloc_service.t(phase.project.title_multiloc)
-          }
-
-          # `update_columns` because we migrate *to* a valid state. `update!` would re-run every
-          # other validation on a phase we have not audited, and could fail for a second reason.
-          phase.update_columns(presentation_mode: new_mode, available_views: new_views) if execute
-          totals[:migrated] += 1
-        end
-      end
-    rescue StandardError => e
-      # One unreachable tenant must not abort the run.
-      reporter.add_error("#{e.class}: #{e.message}", context: { tenant: tenant.host })
-    end
-
-    puts "\n#{'=' * 80}"
-    puts(execute ? '📊 MIGRATION SUMMARY:' : '📊 DRY RUN SUMMARY:')
-    by_host = affected.group_by { |row| row[:host] }
-    puts "   #{execute ? 'Migrated' : 'Would migrate'}: #{totals[:migrated]} phase(s) across #{by_host.size} tenant(s)"
-    puts "   Errors: #{reporter.errors.size}"
-
-    if by_host.any?
       puts "\n   👥 Tenants with migrated phases:"
       by_host.each do |affected_host, rows|
         puts "\n      #{affected_host}"
@@ -145,8 +74,54 @@ namespace :single_use do
       end
     end
 
-    report_file = execute ? 'migrate_voting_phases_off_feed_view.json' : 'migrate_voting_phases_off_feed_view_dry_run.json'
-    reporter.report!(report_file)
-    puts "\n   📝 Per-phase report: #{report_file}"
+    TenantScript.run(
+      'migrate_voting_phases_off_feed_view',
+      args: args,
+      description: 'moving voting phases off the feed view, back to cards',
+      # Deliberately not the default scope: it skips tenants whose creation never finalized, and
+      # those are on their way to being live, so their phases have to satisfy the new rule too.
+      # Deleted tenants are still skipped: nothing un-deletes one, no request or job switches into
+      # one, and its schema is being dropped, so no phase of theirs is ever saved against the rule.
+      tenants: Tenant.not_deleted,
+      summary: summary
+    ) do |tenant, script|
+      phases = Phase
+        .where(participation_method: 'voting')
+        .where("presentation_mode = 'feed' OR 'feed' = ANY(available_views)")
+
+      multiloc_service = MultilocService.new
+
+      phases.each do |phase|
+        new_mode = phase.presentation_mode == 'feed' ? 'card' : phase.presentation_mode
+        new_views = ((phase.available_views || []) - ['feed']) | ['card'] | [new_mode]
+
+        script.reporter.add_change(
+          { presentation_mode: phase.presentation_mode, available_views: phase.available_views },
+          { presentation_mode: new_mode, available_views: new_views },
+          context: {
+            tenant: tenant.host,
+            phase_id: phase.id,
+            phase_title: phase.title_multiloc,
+            phase_timing: phase_timing.call(phase),
+            project_id: phase.project_id,
+            project_title: phase.project.title_multiloc,
+            project_slug: phase.project.slug
+          }
+        )
+
+        affected << {
+          host: tenant.host,
+          timing: phase_timing.call(phase),
+          phase_id: phase.id,
+          phase_title: multiloc_service.t(phase.title_multiloc),
+          project_id: phase.project_id,
+          project_title: multiloc_service.t(phase.project.title_multiloc)
+        }
+
+        # `update_columns` because we migrate *to* a valid state. `update!` would re-run every
+        # other validation on a phase we have not audited, and could fail for a second reason.
+        phase.update_columns(presentation_mode: new_mode, available_views: new_views) if script.execute?
+      end
+    end
   end
 end
