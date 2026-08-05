@@ -4164,7 +4164,7 @@
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ContactRequirement.noneTitle": "Nothing confirmed",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ContactRequirement.or": "or",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ContactRequirement.phoneRecency": "Phone number",
-  "front.app.components.admin.ActionForm.AccessSections.AccessSection.ContactRequirement.unavailable": "Unavailable",
+  "front.app.components.admin.ActionForm.AccessSections.AccessSection.ContactRequirement.unavailableReason": "Unavailable - {reason}",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.ContactRequirement.whatMustParticipantsConfirm": "What must participants confirm?",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.adminManagersOnly": "Admin & managers only",
   "front.app.components.admin.ActionForm.AccessSections.AccessSection.anyone": "Anyone",
