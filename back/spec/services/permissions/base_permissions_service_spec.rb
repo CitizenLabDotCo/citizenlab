@@ -68,112 +68,114 @@ describe Permissions::BasePermissionsService do
       let(:permission) { create(:permission, permitted_by: 'users') }
       let(:denied_reason) { service.send(:user_denied_reason, permission) }
 
-      context 'when not signed in' do
-        let(:user) { nil }
+      context 'default permission settings' do
+        context 'when not signed in' do
+          let(:user) { nil }
 
-        it { expect(denied_reason).to eq 'user_not_signed_in' }
-      end
-
-      context 'when confirmed resident without any other attributes' do
-        let(:user) do
-          u = create(:unconfirmed_user)
-          RequestEmailConfirmationCodeJob.perform_now(u)
-          u.email_confirmation.confirm!
-          u
+          it { expect(denied_reason).to eq 'user_not_signed_in' }
         end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
+        context 'when confirmed resident without any other attributes' do
+          let(:user) do
+            u = create(:unconfirmed_user)
+            RequestEmailConfirmationCodeJob.perform_now(u)
+            u.email_confirmation.confirm!
+            u
+          end
 
-        it 'works if name, password and custom field requirements are disabled' do
-          permission = create(
-            :permission,
-            permitted_by: 'users',
-            require_name: false,
-            require_password: false,
-            global_custom_fields: false
-          )
-          permission.update!(global_custom_fields: false)
-          permission.permissions_custom_fields.destroy_all
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
 
-          denied_reason = service.send(:user_denied_reason, permission)
-          expect(denied_reason).to be_nil
+          it 'works if name, password and custom field requirements are disabled' do
+            permission = create(
+              :permission,
+              permitted_by: 'users',
+              require_name: false,
+              require_password: false,
+              global_custom_fields: false
+            )
+            permission.update!(global_custom_fields: false)
+            permission.permissions_custom_fields.destroy_all
+
+            denied_reason = service.send(:user_denied_reason, permission)
+            expect(denied_reason).to be_nil
+          end
+
+          it 'does not work if name not required but password required, custom field requirements disabled' do
+            permission = create(
+              :permission,
+              permitted_by: 'users',
+              require_name: false,
+              require_password: true
+            )
+            permission.update!(global_custom_fields: false)
+            permission.permissions_custom_fields.destroy_all
+
+            denied_reason = service.send(:user_denied_reason, permission)
+            expect(denied_reason).to eq 'user_missing_requirements'
+          end
+
+          it 'does not work if neither name nor password required, but there is a required custom field' do
+            permission = create(
+              :permission,
+              permitted_by: 'users',
+              require_name: false,
+              require_password: false
+            )
+
+            denied_reason = service.send(:user_denied_reason, permission)
+            expect(denied_reason).to eq 'user_missing_requirements'
+          end
         end
 
-        it 'does not work if name not required but password required, custom field requirements disabled' do
-          permission = create(
-            :permission,
-            permitted_by: 'users',
-            require_name: false,
-            require_password: true
-          )
-          permission.update!(global_custom_fields: false)
-          permission.permissions_custom_fields.destroy_all
+        context 'when fully registered unconfirmed resident' do
+          before do
+            user.update!(confirmation_required: true, email_confirmed_at: nil)
+          end
 
-          denied_reason = service.send(:user_denied_reason, permission)
-          expect(denied_reason).to eq 'user_missing_requirements'
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
         end
 
-        it 'does not work if neither name nor password required, but there is a required custom field' do
-          permission = create(
-            :permission,
-            permitted_by: 'users',
-            require_name: false,
-            require_password: false
-          )
-
-          denied_reason = service.send(:user_denied_reason, permission)
-          expect(denied_reason).to eq 'user_missing_requirements'
-        end
-      end
-
-      context 'when fully registered unconfirmed resident' do
-        before do
-          user.update!(confirmation_required: true, email_confirmed_at: nil)
+        context 'when fully registered confirmed resident' do
+          it { expect(denied_reason).to be_nil }
         end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
-      end
+        context 'when fully registered sso user' do
+          before do
+            facebook_identity = create(:facebook_identity)
+            user.identities << facebook_identity
+            user.update!(password_digest: nil)
+            user.save!
+          end
 
-      context 'when fully registered confirmed resident' do
-        it { expect(denied_reason).to be_nil }
-      end
-
-      context 'when fully registered sso user' do
-        before do
-          facebook_identity = create(:facebook_identity)
-          user.identities << facebook_identity
-          user.update!(password_digest: nil)
-          user.save!
+          it { expect(denied_reason).to be_nil }
         end
 
-        it { expect(denied_reason).to be_nil }
-      end
+        context 'when fully registered confirmed inactive resident' do
+          before { user.update!(registration_completed_at: nil) }
 
-      context 'when fully registered confirmed inactive resident' do
-        before { user.update!(registration_completed_at: nil) }
-
-        it { expect(denied_reason).to eq 'user_not_active' }
-      end
-
-      context 'when unconfirmed admin' do
-        before do
-          user.update!(confirmation_required: true, email_confirmed_at: nil)
-          user.update!(roles: [{ type: 'admin' }])
+          it { expect(denied_reason).to eq 'user_not_active' }
         end
 
-        it { expect(denied_reason).to eq 'user_missing_requirements' }
-      end
+        context 'when unconfirmed admin' do
+          before do
+            user.update!(confirmation_required: true, email_confirmed_at: nil)
+            user.update!(roles: [{ type: 'admin' }])
+          end
 
-      context 'when confirmed admin' do
-        before { user.update!(roles: [{ type: 'admin' }]) }
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
 
-        it { expect(denied_reason).to be_nil }
-      end
+        context 'when confirmed admin' do
+          before { user.update!(roles: [{ type: 'admin' }]) }
 
-      context 'when confirmed inactive admin' do
-        before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+          it { expect(denied_reason).to be_nil }
+        end
 
-        it { expect(denied_reason).to eq 'user_not_active' }
+        context 'when confirmed inactive admin' do
+          before { user.update!(roles: [{ type: 'admin' }], registration_completed_at: nil) }
+
+          it { expect(denied_reason).to eq 'user_not_active' }
+        end
       end
 
       context 'group membership' do
