@@ -314,6 +314,46 @@ describe Permissions::BasePermissionsService do
         end
       end
 
+      context 'when either email or phone is required' do
+        let(:permission) { create(:permission, permitted_by: 'users', email_and_phone_requirements: 'either_email_or_phone') }
+        let(:denied_reason) { service.send(:user_denied_reason, permission) }
+
+        before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+        context 'when the user has only confirmed email' do
+          before { user.update!(phone: nil, phone_confirmed_at: nil) }
+          it { expect(denied_reason).to be_nil }
+        end
+
+        context 'when the user has only confirmed phone number' do
+          before do
+            user.update!(
+              email: nil,
+              email_confirmed_at: nil,
+              confirmation_required: true,
+              phone: '+3212345678', 
+              phone_confirmed_at: Time.now
+            )
+          end
+
+          it { expect(denied_reason).to be_nil }
+        end
+
+        context 'when the user has neither confirmed email nor confirmed phone number' do
+          before do
+            user.update!(
+              email: nil,
+              email_confirmed_at: nil,
+              confirmation_required: true,
+              phone: nil, 
+              phone_confirmed_at: nil
+            )
+          end
+
+          it { expect(denied_reason).to eq 'user_missing_requirements' }
+        end
+      end
+
       context 'when verification is required' do
         let(:permission) { create(:permission, permitted_by: 'users', require_verification: true) }
 
