@@ -61,8 +61,7 @@ export type TInviteTabName = 'template' | 'manual';
 
 // Both stages run as background jobs. If one never reports back — stalled queue,
 // worker dies mid-run — nothing clears the processing state and the form spins
-// forever with no error. A 1000-row XLSX, the largest import the form accepts,
-// was measured well inside 5 minutes in production.
+// forever with no error.
 const COUNT_TIMEOUT_MS = 120000; // 2 minutes
 const CREATE_TIMEOUT_MS = 300000; // 5 minutes
 
