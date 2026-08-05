@@ -20,6 +20,8 @@ module DecidimImporter
         description: 'description',
         budget_amount: 'budget_amount',
         address: 'address',
+        latitude: 'latitude',
+        longitude: 'longitude',
         created_at: 'created_at',
         updated_at: 'updated_at'
       }.freeze
@@ -63,6 +65,8 @@ module DecidimImporter
         attributes['budget'] = budget.to_i if budget
         address = present_value(row[COLUMNS[:address]])
         attributes['location_description'] = address if address
+        point = location_point_geojson(row[COLUMNS[:latitude]], row[COLUMNS[:longitude]])
+        attributes['location_point_geojson'] = point if point
         attributes
       end
     end

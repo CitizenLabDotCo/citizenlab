@@ -22,6 +22,17 @@ RSpec.describe DecidimImporter::Extractors::ProjectsExtractor do
     expect(attrs['slug']).to eq('collectifsdequartiers')
   end
 
+  it 'falls back to the explicit slug column on older exports that carry no URL' do
+    attrs = extract([{ 'uid' => 'p1', 'title' => '{"fr":"P"}', 'slug' => 'ccpsprive' }]).first.attributes
+    expect(attrs['slug']).to eq('ccpsprive')
+  end
+
+  it 'prefers the URL slug over the slug column when both are present' do
+    attrs = extract([{ 'uid' => 'p1', 'title' => '{"fr":"P"}', 'slug' => 'from-column',
+                       'url' => 'https://x.fr/processes/from-url' }]).first.attributes
+    expect(attrs['slug']).to eq('from-url')
+  end
+
   it 'sanitizes a Decidim slug that Go Vocal would reject (uppercase runs, double hyphens)' do
     attrs = extract([{ 'uid' => 'a1', 'title' => '{"fr":"A"}',
                        'url' => 'https://x.fr/assemblies/Assemblee--Citoyenne' }]).first.attributes

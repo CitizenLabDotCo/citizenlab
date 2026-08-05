@@ -6,23 +6,28 @@ module DecidimImporter
     # per picked project.
     #
     # An order maps onto a basket in the component's voting phase (registered under the component uid by
-    # {PhaseProjector}). `checked_out_at` becomes the basket's `submitted_at` (blank for a pending order,
-    # which the phase's basket/vote counts then ignore). Each project uid in the `projects` JSON array
-    # becomes a `BasketsIdea` whose `votes` is that idea's `budget`.
+    # {PhaseProjector}). Only *submitted* orders are imported — Decidim marks a checked-out order
+    # `finished` (a `pending` one was never submitted); `checked_out_at` becomes the basket's
+    # `submitted_at`. Each project uid in the `projects` JSON array becomes a `BasketsIdea` whose `votes`
+    # is that idea's `budget`.
     #
-    # `Basket#user` is optional, so an order by a non-imported user is kept user-less. Skipped when the
-    # phase wasn't imported, or it duplicates an earlier (user, phase) basket (unique per user + phase).
+    # `Basket#user` is optional, so an order by a non-imported user is kept user-less. Skipped when it
+    # wasn't submitted, the phase wasn't imported, or it duplicates an earlier (user, phase) basket.
     class OrdersExtractor < BaseExtractor
       COLUMNS = {
         uid: 'uid',
         process: 'decidim_participatory_process',
         component: 'decidim_component',
         user: 'user',
+        status: 'status',
         projects: 'projects',
         checked_out_at: 'checked_out_at',
         created_at: 'created_at',
         updated_at: 'updated_at'
       }.freeze
+
+      # Decidim's order status for a checked-out (submitted) order; `pending` orders were never submitted.
+      SUBMITTED_STATUS = 'finished'
 
       def initialize(*args, **kwargs)
         super
@@ -38,6 +43,8 @@ module DecidimImporter
       def build_basket(row)
         uid = present_value(row[COLUMNS[:uid]])
         return nil if uid.nil?
+
+        return skip(uid, 'order not submitted') unless submitted?(row)
 
         phase = ref_map.fetch(present_value(row[COLUMNS[:component]]))
         return skip(uid, 'no phase for order') unless phase&.model_name == 'phase'
@@ -80,6 +87,15 @@ module DecidimImporter
 
       def project_uids(row)
         Array(Parsing.parse_json(row[COLUMNS[:projects]])).filter_map { |value| present_value(value) }
+      end
+
+      # Whether the order was submitted (checked out). Uses Decidim's `status` when present; older exports
+      # without that column fall back to whether the order carries a checkout timestamp.
+      def submitted?(row)
+        status = present_value(row[COLUMNS[:status]])
+        return status == SUBMITTED_STATUS if status
+
+        present_value(row[COLUMNS[:checked_out_at]]).present?
       end
     end
   end
