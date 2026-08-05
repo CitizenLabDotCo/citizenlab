@@ -134,15 +134,17 @@ const EmailAndPhoneRequirementsModal = ({
         {channels.map((channel) => (
           <Box key={channel} display="flex" alignItems="center">
             {channels.length > 1 && (
-              <Icon
-                name={CHANNEL_ICONS[channel]}
-                width="16px"
-                height="16px"
-                mr="8px"
-                fill={colors.coolGrey600}
-                ariaHidden={false}
-                title={formatMessage(CHANNEL_LABELS[channel])}
-              />
+              <Box minWidth="24px">
+                <Icon
+                  name={CHANNEL_ICONS[channel]}
+                  width="16px"
+                  height="16px"
+                  mr="8px"
+                  fill={colors.coolGrey600}
+                  ariaHidden={false}
+                  title={formatMessage(CHANNEL_LABELS[channel])}
+                />
+              </Box>
             )}
             <Box flex="1 1 auto" minWidth="0">
               <RecencyControl
