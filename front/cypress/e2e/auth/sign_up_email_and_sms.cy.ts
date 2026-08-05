@@ -37,7 +37,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     // Enter phone number
     cy.dataCy('phone-number-input')
       .find('input[type="tel"]')
-      .type(randomPhoneNumber());
+      .type(randomPhoneNumber().national);
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
@@ -66,7 +66,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     // Enter phone number
     cy.dataCy('phone-number-input')
       .find('input[type="tel"]')
-      .type(randomPhoneNumber());
+      .type(randomPhoneNumber().national);
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
@@ -90,7 +90,7 @@ describe('Sign up - email and SMS (2FA)', () => {
     // Enter phone number
     cy.dataCy('phone-number-input')
       .find('input[type="tel"]')
-      .type(randomPhoneNumber());
+      .type(randomPhoneNumber().national);
     cy.dataCy('phone-continue-button').click();
 
     // Refresh page
@@ -137,7 +137,7 @@ describe('Sign up - email and SMS (2FA)', () => {
                 method: 'POST',
                 url: `web_api/v1/user/request_code_new_phone`,
                 body: {
-                  request_code: { new_phone: phoneNumber },
+                  request_code: { new_phone: phoneNumber.e164 },
                 },
               })
               .then(() => {
@@ -173,7 +173,7 @@ describe('Sign up - email and SMS (2FA)', () => {
       // Enter phone number
       cy.dataCy('phone-number-input')
         .find('input[type="tel"]')
-        .type(phoneNumber);
+        .type(phoneNumber.national);
       cy.dataCy('phone-continue-button').click();
 
       // Assert error
@@ -217,7 +217,7 @@ describe('Sign up - SSO and SMS (2FA)', () => {
     // Enter phone number
     cy.dataCy('phone-number-input')
       .find('input[type="tel"]')
-      .type(randomPhoneNumber());
+      .type(randomPhoneNumber().national);
     cy.dataCy('phone-continue-button').click();
 
     // Confirm phone number
