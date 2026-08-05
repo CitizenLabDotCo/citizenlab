@@ -7934,6 +7934,21 @@
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.examplePhaseCollectIdeas": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:28:59.316810Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.examplePhaseShareWhatWeHeard": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:28:59.316810Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.examplePhaseVoteOnShortlist": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:28:59.316810Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.extras": {
     "state": "verified",
     "verified_at": "2026-07-22T19:53:51.413054Z",
@@ -9943,6 +9958,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.timelineEmptyDescription": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:28:59.316810Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.traffic.selectPeriod": {
     "state": "verified",
