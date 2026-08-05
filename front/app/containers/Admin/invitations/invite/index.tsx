@@ -147,8 +147,10 @@ const Invitations = () => {
 
   const [savedInviteOptions, setSavedInviteOptions] = useState<any>(null);
 
+  // Resolves to whether the request was accepted, so the seats modal only
+  // claims success once it knows the work was queued.
   const onSubmitTemplateTab = useCallback(
-    async (bulkInvite: INewBulkInvite, save: boolean) => {
+    async (bulkInvite: INewBulkInvite, save: boolean): Promise<boolean> => {
       // If we're saving and have saved options from a previous count operation
       if (save && savedInviteOptions) {
         try {
@@ -164,8 +166,12 @@ const Invitations = () => {
             !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
           );
           setProcessing(false);
+          // Take the seats modal down so the error is not left behind it.
+          setShowModal(false);
+          setNewSeatsResponse(null);
+          return false;
         }
-        return; // Exit early, don't continue with validation checks
+        return true; // Exit early, don't continue with validation checks
       }
 
       const hasCorrectSelection = isString(selectedFileBase64);
@@ -201,8 +207,12 @@ const Invitations = () => {
             !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
           );
           setProcessing(false);
+          return false;
         }
+        return true;
       }
+
+      return false;
     },
     [
       selectedFileBase64,
@@ -222,7 +232,7 @@ const Invitations = () => {
   const [savedEmailOptions, setSavedEmailOptions] = useState<any>(null);
 
   const onSubmitManualTab = useCallback(
-    async (bulkInvite: INewBulkInvite, save: boolean) => {
+    async (bulkInvite: INewBulkInvite, save: boolean): Promise<boolean> => {
       // If we're saving and have saved options from a previous count operation
       if (save && savedEmailOptions) {
         try {
@@ -238,8 +248,12 @@ const Invitations = () => {
             !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
           );
           setProcessing(false);
+          // Take the seats modal down so the error is not left behind it.
+          setShowModal(false);
+          setNewSeatsResponse(null);
+          return false;
         }
-        return; // Exit early, don't continue with validation checks
+        return true; // Exit early, don't continue with validation checks
       }
 
       const hasCorrectSelection = isString(selectedEmails);
@@ -274,8 +288,12 @@ const Invitations = () => {
             !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
           );
           setProcessing(false);
+          return false;
         }
+        return true;
       }
+
+      return false;
     },
     [
       selectedEmails,
@@ -307,12 +325,10 @@ const Invitations = () => {
       };
 
       if (selectedView === 'template') {
-        await onSubmitTemplateTab(bulkInvite, save);
+        return onSubmitTemplateTab(bulkInvite, save);
       }
 
-      if (selectedView === 'manual') {
-        await onSubmitManualTab(bulkInvite, save);
-      }
+      return onSubmitManualTab(bulkInvite, save);
     },
     [
       selectedLocale,
@@ -728,9 +744,7 @@ const Invitations = () => {
       {newSeatsResponse && (
         <Suspense fallback={null}>
           <InviteUsersWithSeatsModal
-            inviteUsers={async () => {
-              await onSubmit({ save: true }); // <-- add await here
-            }}
+            inviteUsers={() => onSubmit({ save: true })}
             showModal={showModal}
             closeModal={closeModal}
             newSeatsResponse={newSeatsResponse}

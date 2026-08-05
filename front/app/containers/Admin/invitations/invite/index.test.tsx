@@ -310,4 +310,31 @@ describe('Invitations timeout', () => {
     ).toBeInTheDocument();
     expect(screen.queryByText('ALL DONE')).not.toBeInTheDocument();
   });
+
+  // The job reporting an error is one way to fail; the request never being
+  // accepted is the other, and it must not reach the success screen either.
+  it('does not claim success when the creation request is rejected', async () => {
+    mockSeatsExceeded = true;
+    mockInvitesImport = undefined;
+    const { rerender } = await submitManualInvite();
+
+    mockInvitesImport = completedCountImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+
+    mockBulkInvite.mockRejectedValueOnce({
+      errors: [{ error: 'no_invites_specified' }],
+    });
+    await act(async () => {
+      fireEvent.click(await screen.findByTestId('confirm-button-text'));
+    });
+
+    expect(screen.queryByText('ALL DONE')).not.toBeInTheDocument();
+    // The whole modal has to go, or the error is only in the DOM behind it.
+    expect(screen.queryByTestId('confirm-button-text')).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Could not find any email addresses.')
+    ).toBeInTheDocument();
+  });
 });
