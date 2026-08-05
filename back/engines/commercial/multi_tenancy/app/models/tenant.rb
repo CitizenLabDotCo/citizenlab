@@ -79,8 +79,12 @@ class Tenant < ApplicationRecord
       tenants.sort_by { |tenant| ordered_ids.index(tenant[:id]) }
     end
 
-    def safe_switch_each(scope: nil)
+    # `host` narrows whichever scope is in play, which `scope` cannot: passing a scope replaces the
+    # default, so a caller limiting a run to one host through it drops the guarantees the default
+    # carries. It takes a list as readily as a single host.
+    def safe_switch_each(scope: nil, host: nil)
       scope ||= not_deleted.where.not(creation_finalized_at: nil)
+      scope = scope.where(host: host) if host
       prioritize(scope).each do |tenant|
         next if !Tenant.exists?(id: tenant.id)
 

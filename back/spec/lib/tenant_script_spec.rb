@@ -45,6 +45,20 @@ RSpec.describe TenantScript do
       expect(processed).to eq [other.host]
     end
 
+    it 'refuses to start when the host matches no tenant' do
+      expect { run_script(args: task_args(execute: 'execute', host: 'not.a.tenant.com')) { nil } }
+        .to raise_error ArgumentError, /no tenant matches host "not\.a\.tenant\.com"/
+    end
+
+    # The host narrows the scope; it does not replace it. Reaching a tenant the script deliberately
+    # left out would be a wider run than the one it asked for, not a narrower one.
+    it 'refuses a host outside the scope the script asked for' do
+      unfinalized = create(:tenant)
+
+      expect { run_script(args: task_args(host: unfinalized.host)) { nil } }
+        .to raise_error ArgumentError, /no tenant matches host/
+    end
+
     it 'skips a tenant whose creation never finalized' do
       create(:tenant)
       processed = []

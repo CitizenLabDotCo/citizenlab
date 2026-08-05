@@ -1,8 +1,11 @@
 namespace :embeddings do
   desc 'Populate embeddings for the ideas and proposals.'
   task :populate_ideas, %i[host project_slug] => [:environment] do |_t, args|
-    scope = args[:host] ? Tenant.where(host: args[:host]) : Tenant.with_lifecycle('active')
-    Tenant.safe_switch_each(scope: scope) do
+    # Naming a host means that tenant whatever its lifecycle; without one, only active tenants are
+    # worth the embedding cost. Narrowing through `host` rather than through the scope keeps the
+    # deleted and half-created tenants out either way.
+    scope = args[:host] ? nil : Tenant.with_lifecycle('active')
+    Tenant.safe_switch_each(scope: scope, host: args[:host]) do
       ideas_scope = if args[:project_slug]
         Project.find_by!(slug: args[:project_slug]).ideas
       else

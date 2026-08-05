@@ -286,5 +286,49 @@ RSpec.describe Tenant do
       end.not_to raise_error
       expect(collected_hosts).to eq(%w[tenant1.example.com])
     end
+
+    it 'limits the run to the given host' do
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: 'tenant1.example.com') { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+
+    it 'limits the run to the given hosts' do
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'active', creation_finalized_at: Time.zone.now)
+      create(:tenant, host: 'tenant2.example.com', lifecycle: 'demo', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: %w[tenant1.example.com tenant2.example.com]) do |tenant|
+        collected_hosts << tenant.host
+      end
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com tenant2.example.com])
+    end
+
+    # The point of the parameter: narrowing to one tenant must not also drop the protections the
+    # scope carries, which is what passing a `scope` built around the host does instead.
+    it 'still skips a host that the scope in play excludes' do
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: nil)
+      collected_hosts = []
+
+      described_class.safe_switch_each(host: 'tenant1.example.com') { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to be_empty
+    end
+
+    it 'narrows an explicit scope rather than replacing it' do
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'churned', creation_finalized_at: Time.zone.now)
+      create(:tenant, host: 'tenant2.example.com', lifecycle: 'churned', creation_finalized_at: Time.zone.now)
+      collected_hosts = []
+
+      described_class.safe_switch_each(scope: described_class.with_lifecycle('churned'), host: 'tenant1.example.com') do |tenant|
+        collected_hosts << tenant.host
+      end
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
   end
 end

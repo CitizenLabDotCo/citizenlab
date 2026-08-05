@@ -107,10 +107,7 @@ class TenantScript
   #
   # The lifecycle ordering goes with it: no data repair depends on the order it visits tenants in.
   def each_tenant
-    scope = @tenants || self.class.default_tenants
-    scope = scope.where(host: host) if host
-
-    scope.each do |tenant|
+    tenant_scope.each do |tenant|
       # A run over every tenant is long enough to outlive one of them, so the record is re-read
       # rather than trusted from the scope. The schema is checked before switching into it, because
       # `switch` raises `Apartment::TenantNotFound` when it is missing, and raises it before the
@@ -125,6 +122,23 @@ class TenantScript
       puts "❌ ERROR on #{tenant.host}: #{e.class}: #{e.message}"
       reporter.add_error("#{e.class}: #{e.message}", context: { tenant: tenant.host })
     end
+  end
+
+  # `host` narrows the scope rather than replacing it, so limiting a run to one tenant cannot also
+  # widen it past whatever the script asked for.
+  def tenant_scope
+    scope = @tenants || self.class.default_tenants
+    return scope unless host
+
+    narrowed = scope.where(host: host)
+    if narrowed.empty?
+      # Otherwise a mistyped host, or one whose tenant has since been deleted, reads as a clean run
+      # over nothing: no changes, no errors, "Nothing to do". Refusing to start is the only honest
+      # answer, since a run aimed at one tenant that reached none did not do what it was asked.
+      raise ArgumentError, "no tenant matches host #{host.inspect}"
+    end
+
+    narrowed
   end
 
   def print_banner
