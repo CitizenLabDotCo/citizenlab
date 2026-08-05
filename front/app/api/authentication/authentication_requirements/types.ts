@@ -39,8 +39,6 @@ type UserAttribute = 'first_name' | 'last_name' | 'password';
 // The single step the user must still complete before they can act (or null when
 // there is nothing to do). Mirrors the backend
 // Permissions::UserRequirementsService#action_required_for_access.
-// The reconfirm actions resolve to the same screen as their confirm counterparts;
-// the distinct value only says that no code was auto-sent, so one must be requested.
 export type ActionRequiredForAccess =
   | 'authenticate'
   | 'confirm_email'
