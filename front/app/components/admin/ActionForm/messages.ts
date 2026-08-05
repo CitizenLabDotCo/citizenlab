@@ -10,6 +10,11 @@ export default defineMessages({
     defaultMessage:
       '{nQuestions, plural, one {1 question} other {{nQuestions} questions}}',
   },
+  // Connects the two glyphs on the "either email or phone" summary chip.
+  or: {
+    id: 'app.components.admin.ActionForm.or',
+    defaultMessage: 'or',
+  },
   confirmedEmailOrPhoneNumber: {
     id: 'app.components.admin.ActionForm.confirmedEmailOrPhoneNumber',
     defaultMessage: 'Confirmed email or phone number',

@@ -77,18 +77,26 @@ export const getGroupIds = (permission: IPhasePermissionData): string[] =>
 export const requiresAccount = (permission: IPhasePermissionData): boolean =>
   permission.attributes.permitted_by === 'users';
 
+type ChipIcon =
+  | 'user-circle'
+  | 'email'
+  | 'tablet'
+  | 'comment'
+  | 'shield-checkered'
+  | 'group'
+  | 'lock'
+  | 'user-data';
+
 export interface SummaryChip {
   key: string;
   label: string;
-  icon:
-    | 'user-circle'
-    | 'email'
-    | 'tablet'
-    | 'comment'
-    | 'shield-checkered'
-    | 'group'
-    | 'lock'
-    | 'user-data';
+  icon: ChipIcon;
+  /**
+   * A second glyph, joined to the first by "or". Only the either/or contact
+   * requirement uses it, so the chip reads like the IconCluster on the
+   * contact-details control instead of showing just one of the two channels.
+   */
+  altIcon?: ChipIcon;
   tone: 'access' | 'data' | 'open';
 }
 
@@ -149,6 +157,7 @@ export const buildSummary = (
       key: 'email_or_phone',
       label: formatMessage(messages.confirmedEmailOrPhoneNumber),
       icon: 'email',
+      altIcon: 'tablet',
       tone: 'access',
     });
   } else {
