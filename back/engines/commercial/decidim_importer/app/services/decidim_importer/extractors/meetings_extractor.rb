@@ -4,9 +4,9 @@ module DecidimImporter
   module Extractors
     # Decidim `meetings` components (one meeting per subdirectory) ──▶ Go Vocal project-level `Event`.
     #
-    # A meeting's title, description, time window and location (address + lat/lng) map onto an `Event`
-    # scoped to the process's project. The map pin travels as `location_point_geojson` (a GeoJSON Hash),
-    # mass-assigned by the deserializer through `GeoJsonHelpers`, exactly as `Idea` does.
+    # A meeting's title, description, time window, location (address + lat/lng) and attendee count map
+    # onto an `Event` scoped to the process's project. The map pin travels as `location_point_geojson`
+    # (a GeoJSON Hash), mass-assigned by the deserializer through `GeoJsonHelpers`, exactly as `Idea` does.
     #
     # Unpublished (Decidim draft) and withdrawn meetings are skipped — events are always live. A
     # meeting's comments/followers/registration/poll data has no event equivalent and isn't imported;
@@ -21,6 +21,7 @@ module DecidimImporter
         latitude: 'latitude',
         longitude: 'longitude',
         online_meeting_url: 'online_meeting_url',
+        attendees_count: 'attendees_count',
         start_time: 'start_time',
         end_time: 'end_time',
         published_at: 'published_at',
@@ -67,6 +68,8 @@ module DecidimImporter
         attributes['address_1'] = address if address
         online_link = online_link_for(row)
         attributes['online_link'] = online_link if online_link
+        attendees = present_value(row[COLUMNS[:attendees_count]])
+        attributes['attendees_count'] = attendees.to_i if attendees
         point = location_point_geojson(row)
         attributes['location_point_geojson'] = point if point
         attributes
