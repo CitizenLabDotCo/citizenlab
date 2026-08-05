@@ -7,7 +7,6 @@ import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPho
 import { IUser } from 'api/users/types';
 
 import PhoneInput from 'components/HookForm/PhoneInput';
-import usePhoneInputCountries from 'components/HookForm/PhoneInput/usePhoneInputCountries';
 import {
   Title,
   StyledButton,
@@ -50,7 +49,6 @@ const UpdatePhoneForm = ({
   user,
 }: UpdatePhoneFormProps) => {
   const { formatMessage } = useIntl();
-  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
   const [error, setError] = useState<FormError | undefined>(undefined);
   const currentPhone = user.data.attributes.phone;
 
@@ -104,8 +102,6 @@ const UpdatePhoneForm = ({
         </LabelContainer>
         <PhoneInput
           name="phone"
-          countries={allowedCountries}
-          defaultCountry={defaultCountry}
           onBlur={() => {
             setError(undefined);
           }}

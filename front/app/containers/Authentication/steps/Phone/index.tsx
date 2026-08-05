@@ -11,7 +11,6 @@ import { SetError, State } from 'containers/Authentication/typings';
 
 import PhoneInput from 'components/HookForm/PhoneInput';
 import isValidPhoneNumber from 'components/HookForm/PhoneInput/isValidPhoneNumber';
-import usePhoneInputCountries from 'components/HookForm/PhoneInput/usePhoneInputCountries';
 import ManualCampaignConsent from 'components/SmsConsent/ManualCampaignConsent';
 import PhoneConfirmationConsent from 'components/SmsConsent/PhoneConfirmationConsent';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -37,7 +36,6 @@ interface Props {
 const Phone = ({ state, loading, setError, onSubmit }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const { allowedCountries, defaultCountry } = usePhoneInputCountries();
 
   const schema = useMemo(
     () =>
@@ -94,11 +92,7 @@ const Phone = ({ state, loading, setError, onSubmit }: Props) => {
               labelMessage={messages.phoneNumber}
               htmlFor="new_phone"
             />
-            <PhoneInput
-              name="new_phone"
-              countries={allowedCountries}
-              defaultCountry={defaultCountry}
-            />
+            <PhoneInput name="new_phone" />
           </Box>
           <ManualCampaignConsent />
           <Box w="100%" display="flex" mt="32px">
