@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Número de telèfon",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Indiqueu un número de telèfon en el format correcte, per exemple +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Indiqueu un número de telèfon",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Activa/desactiva totes les notificacions de {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notificacions d'aquesta categoria",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Quin tipus de notificacions per correu electrònic vols rebre?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Notificacions per correu electrònic",

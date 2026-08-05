@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Numero di telefono",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Inserisci un numero di telefono nel formato corretto, ad esempio +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Inserisci un numero di telefono",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Attiva/disattiva tutte le notifiche di {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Notifiche in questa categoria",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Quali tipi di notifiche email desideri ricevere?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Notifiche email",

@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "رقم الهاتف",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "يرجى تقديم رقم هاتف بالتنسيق الصحيح، على سبيل المثال +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "يرجى تقديم رقم هاتف",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "تبديل جميع إشعارات {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "الإشعارات في هذه الفئة",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "ما هي أنواع إشعارات البريد الإلكتروني التي ترغب في تلقيها؟",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "إشعارات البريد الإلكتروني",
