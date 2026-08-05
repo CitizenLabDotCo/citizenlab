@@ -144,7 +144,10 @@ A big tenant produces a big template — a large export can be a **36 MB** `.tem
 - **Time is the real cost** — with upload fetching on (default), the run is **I/O-bound**,
   downloading every image and file attachment serially (low CPU, long runtime — tens of minutes to hours
   for an upload-heavy tenant). 
-- **Don't run on the swarm leader** - best on one of the other nodes.
+- **Run it on the swarm leader.** That's the only box carrying the deployment env files
+  (`cl2-deployment/<env_file>`) the container needs, so the import has to run there — the same place prod
+  migrations run. It won't disturb orchestration: the task is light on CPU and modest on memory
+  (I/O-bound, ~0.75 GB steady), so it sits comfortably beside the running stack.
 - **Best on its own container (`docker run`), instead of `docker exec` into a live Puma worker.** Not for memory
   (~0.75 GB is easily absorbed) but because the run is **long** — you don't want a multi-hour task tied to
   the lifecycle of a web worker that may be restarted or redeployed under it.
@@ -154,8 +157,8 @@ A big tenant produces a big template — a large export can be a **36 MB** `.tem
 ### Step by step
 
 Only the `import` step needs to run on production, and it needs just the one `<base>.template.zip` bundle — not
-the source Decidim export. The procedure below runs it as a standalone `docker run` on a host (the same
-way prod migrations run).
+the source Decidim export. The procedure below runs it as a standalone `docker run` on the **swarm leader**
+(the box that holds the deployment env files), the same way prod migrations run.
 
 **1. Build the bundle off-production.** `create_template` reads the source export but never touches a
 tenant, so it can be run locally / on staging. It produces the loose artifacts and bundles them into a
@@ -166,10 +169,10 @@ single `<base>.template.zip` — the only file `import` needs. Inside the bundle
 - `<base>.url_mapping.csv` — post-import link correction
 - `<base>.moderators.csv` — post-import project-moderator assignment (present only when the export has process admins)
 
-**2. Copy the bundle onto the Docker host** (one file):
+**2. Copy the bundle onto the swarm leader** (one file):
 
 ```bash
-scp <base>.template.zip <docker-host>:/home/ubuntu/import/
+scp <base>.template.zip <swarm-leader>:/home/ubuntu/import/
 ```
 
 **3. Find the deployed image tag.** Use the *same* image the running app is on, so the import matches
@@ -179,8 +182,9 @@ the code and DB schema (it should be `master` or `production` depending on the c
 docker ps --format '{{.Names}}\t{{.Image}}' | grep back-ee   # take the tag after `back-ee:`
 ```
 
-**4. Run the import** as its own container, mounting the import dir (writable — the task unpacks the
-bundle to a tempdir and writes its `.import.log`/`.broken_links.csv` back beside the zip).
+**4. Run the import on the swarm leader** as its own container, mounting the import dir (writable — the
+task unpacks the bundle to a tempdir and writes its `.import.log`/`.broken_links.csv` back beside the
+zip). The `--env-file` lives on the leader, which is why the import runs there:
 
 ```bash
 docker run \
@@ -193,8 +197,8 @@ docker run \
 **5. Afterwards:** copy the logs and broken links CSV from the box:
 
 ```bash
-scp <docker-host>:/home/ubuntu/import/<base>.import.log .
-scp <docker-host>:/home/ubuntu/import/<base>.broken_links.csv .
+scp <swarm-leader>:/home/ubuntu/import/<base>.import.log .
+scp <swarm-leader>:/home/ubuntu/import/<base>.broken_links.csv .
 ```
 
 **6. Delete the artifacts from the box** (`rm /home/ubuntu/import/<base>.*`) — they can carry tenant real user PII
