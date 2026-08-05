@@ -11,52 +11,47 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
-import { AuthMethodKey } from '../../../types';
-import { METHOD_META, AUTH_METHOD_LABELS } from '../../constants';
+import { AUTH_METHOD_LABELS } from '../../constants';
 import RecencyControl from '../../RecencyControl';
 
 import messages from './messages';
 
 interface Props {
-  methodKey: AuthMethodKey;
   enabled: boolean;
   expiry: number | null;
+  // Whether the platform has a verification method configured at all.
   available: boolean;
-  unavailableReason: string;
-  // Locked on because it is the only method still enabled — a permission must
+  // Locked on because it is the only proof still enabled — a permission must
   // always keep at least one. The toggle is disabled and explains why.
   locked?: boolean;
   onChange: (next: { enabled: boolean; expiry: number | null }) => void;
 }
 
-const MethodRow = ({
-  methodKey,
-  enabled: stateEnabled,
+const VerificationToggle = ({
+  enabled,
   expiry,
   available,
-  unavailableReason,
   locked = false,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const meta = METHOD_META[methodKey];
-  const enabled = available && stateEnabled;
+  const on = available && enabled;
 
   return (
     <Box py="10px">
       <Toggle
-        checked={enabled}
+        checked={on}
         disabled={!available || locked}
-        onChange={() => onChange({ enabled: !stateEnabled, expiry })}
+        onChange={() => onChange({ enabled: !enabled, expiry })}
         size="small"
         label={
           <Box ml="8px">
             <Box display="flex" alignItems="center" gap="6px">
               <Icon
-                name={meta.icon}
+                name="shield-checkered"
                 width="16px"
                 height="16px"
-                fill={enabled ? colors.teal500 : colors.coolGrey500}
+                fill={on ? colors.teal500 : colors.coolGrey500}
               />
               <Text
                 as="span"
@@ -65,7 +60,7 @@ const MethodRow = ({
                 fontWeight="semi-bold"
                 color={available ? 'primary' : 'coolGrey500'}
               >
-                {formatMessage(AUTH_METHOD_LABELS[methodKey])}
+                {formatMessage(AUTH_METHOD_LABELS.verification)}
               </Text>
               {locked && (
                 <IconTooltip
@@ -77,19 +72,21 @@ const MethodRow = ({
               )}
             </Box>
             <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-              {available ? formatMessage(meta.description) : unavailableReason}
+              {formatMessage(
+                available
+                  ? messages.verificationMethodDescription
+                  : messages.unavailableVerification
+              )}
             </Text>
           </Box>
         }
       />
-      {enabled && (
+      {on && (
         <Box ml="42px" mt="6px">
           <RecencyControl
             expiry={expiry}
-            verb={methodKey === 'verification' ? 'Re-verify' : 'Re-confirm'}
-            onChange={(nextExpiry) =>
-              onChange({ enabled: stateEnabled, expiry: nextExpiry })
-            }
+            verb="Re-verify"
+            onChange={(nextExpiry) => onChange({ enabled, expiry: nextExpiry })}
           />
         </Box>
       )}
@@ -97,4 +94,4 @@ const MethodRow = ({
   );
 };
 
-export default MethodRow;
+export default VerificationToggle;

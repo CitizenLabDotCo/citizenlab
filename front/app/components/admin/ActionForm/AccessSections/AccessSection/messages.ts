@@ -1,11 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  unavailableVerification: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.unavailableVerification',
-    defaultMessage:
-      'Unavailable: no identity verification method is configured.',
-  },
   whoCanParticipate: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.whoCanParticipate',
     defaultMessage: 'Who can participate',

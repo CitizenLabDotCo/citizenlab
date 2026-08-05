@@ -26,7 +26,7 @@ import { AccessSectionProps } from '../shared';
 
 import EmailAndPhoneRequirementsControl from './EmailAndPhoneRequirements';
 import messages from './messages';
-import MethodRow from './MethodRow';
+import VerificationToggle from './VerificationToggle';
 
 const AccessSection = ({
   permission,
@@ -93,14 +93,10 @@ const AccessSection = ({
               }
             />
 
-            <MethodRow
-              methodKey="verification"
+            <VerificationToggle
               enabled={verification.enabled}
               expiry={verification.expiry}
               available={verificationAvailable}
-              unavailableReason={formatMessage(
-                messages.unavailableVerification
-              )}
               locked={verificationLocked}
               onChange={(next) => onChange(verificationChange(next))}
             />
