@@ -37,8 +37,8 @@ import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 import Error from 'components/UI/Error';
-// The creation timeout and a creation job that errors mean the same thing to the
-// admin, so they share one string rather than keeping two identical copies.
+// A creation that times out and one that errors say the same thing to the admin,
+// so they share a string instead of keeping two identical ones.
 import errorMessages from 'components/UI/Error/messages';
 import Tabs from 'components/UI/Tabs';
 import Warning from 'components/UI/Warning';
@@ -63,8 +63,7 @@ const StyledTabs = styled(Tabs)`
 export type TInviteTabName = 'template' | 'manual';
 
 // Both stages run as background jobs. If one never reports back — stalled queue,
-// worker dies mid-run — nothing clears the processing state and the form spins
-// forever with no error.
+// worker killed — nothing else clears the processing state.
 // Exported so the tests advance the clock by the real budgets.
 export const COUNT_TIMEOUT_MS = 120000; // 2 minutes
 export const CREATE_TIMEOUT_MS = 300000; // 5 minutes
@@ -111,10 +110,9 @@ const Invitations = () => {
 
   // Variables to poll for import job status
   const [invitesImportId, setInvitesImportId] = useState<string | null>(null);
-  // Which job the form is waiting on, set where that job is submitted. Not read
-  // back off the polled import: the import id is cleared before the seat count
-  // is acted on, and the polling query is keyed on that id, so by then there is
-  // nothing left to read.
+  // Which job the form is waiting on, set where that job is submitted. Do not
+  // derive it from the polled import: the id is cleared before the seat count is
+  // acted on, and the query is keyed on that id, so the data is already gone.
   const [jobStage, setJobStage] = useState<'count' | 'create' | null>(null);
   const { data: invitesImport, resetQueryData } = useInvitesImport({
     importId: invitesImportId,
@@ -151,8 +149,8 @@ const Invitations = () => {
 
   const [savedInviteOptions, setSavedInviteOptions] = useState<any>(null);
 
-  // Resolves to whether the request was accepted, so the seats modal only
-  // claims success once it knows the work was queued.
+  // Resolves to whether the request was accepted; the seats modal waits on it
+  // before claiming success.
   const onSubmitTemplateTab = useCallback(
     async (bulkInvite: INewBulkInvite, save: boolean): Promise<boolean> => {
       // If we're saving and have saved options from a previous count operation
@@ -445,9 +443,8 @@ const Invitations = () => {
       setApiErrors(invitesImport.data.attributes.result.errors);
       setProcessing(false);
       setProcessed(false);
-      // Take the seats modal down rather than just hiding it: it switched to its
-      // success screen the moment the admin confirmed, and would otherwise sit
-      // on top of the error — and keep that screen for the next invite.
+      // Take the seats modal down, not just hide it: it switched to its success
+      // screen on confirmation and would otherwise sit on top of this error.
       setShowModal(false);
       setNewSeatsResponse(null);
     } else {
@@ -471,15 +468,14 @@ const Invitations = () => {
     resetQueryData();
   }, [invitesImport, resetQueryData, queryClient]);
 
-  // Paused only while the seats modal waits on the admin, when no import id is
-  // set. After they confirm, the creation runs behind a modal already declaring
+  // Paused only while the seats modal waits on the admin: no import id, modal
+  // open. After they confirm, the creation runs behind a modal already declaring
   // success, so it still needs watching.
   const awaitingJob = processing && (!!invitesImportId || !showModal);
   const isCountStage = jobStage === 'count';
 
-  // Keyed on `invitesImportId` so each stage gets a fresh budget. Deps must stay
-  // primitive: a new `invitesImport` arrives every 5s and would restart the timer
-  // forever.
+  // Keyed on `invitesImportId` so each stage gets a fresh budget. Keep the deps
+  // primitive — the polled import changes every 5s and would restart the timer.
   useEffect(() => {
     if (!awaitingJob) return;
 
@@ -489,14 +485,14 @@ const Invitations = () => {
         setProcessing(false);
         setProcessed(false);
         setShowModal(false);
-        // Unmounts the seats modal too; hiding it alone keeps the success screen
-        // it switched to on confirmation.
+        // Unmounts the seats modal; hiding it alone keeps the success screen it
+        // switched to on confirmation.
         setNewSeatsResponse(null);
         setUnknownError(
           <FormattedMessage
             {...(isCountStage
-              ? // The count rolls its work back, so nothing was sent whatever
-                // state it is in. A creation job may yet run.
+              ? // The count rolls its work back, so nothing was sent. A creation
+                // job may yet run.
                 messages.processingNotStartedError
               : errorMessages.unexpected_invite_error)}
           />

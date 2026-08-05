@@ -28,9 +28,7 @@ RSpec.describe Invites::ImportRunner do
       )
     end
 
-    # Without this the import would stay pending forever — neither invites job
-    # retries — and the admin would wait out the front-end timeout instead of
-    # being shown the error.
+    # Neither invites job retries, so the import would otherwise stay pending forever.
     it 'completes the import with an error and re-raises anything else' do
       expect { runner.run { raise ActiveRecord::StatementInvalid, 'boom' } }
         .to raise_error(ActiveRecord::StatementInvalid)

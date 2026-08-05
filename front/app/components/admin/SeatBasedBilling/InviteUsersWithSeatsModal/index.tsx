@@ -53,8 +53,8 @@ const InviteUsersWithSeatsModal = ({
   });
 
   const handleConfirmClick = async () => {
-    // Only claim success once the request has been accepted. A rejected one
-    // shows its error on the form, and takes this modal down with it.
+    // Only claim success once the request has been accepted. A rejected one shows
+    // its error on the form, and takes this modal down with it.
     const submitted = await inviteUsers();
     if (submitted) {
       setShowSuccess(true);

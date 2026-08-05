@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
-# Runs the work of an invites job and records its outcome on the InvitesImport
-# row. The front end polls that row, so every path has to end in a completed
-# import — otherwise it waits on a job that will never report back.
+# Runs the work of an invites job and records its outcome on the InvitesImport row.
+# The front end polls that row, so every path has to end in a completed import.
 class Invites::ImportRunner
   def initialize(import_id)
     @import_id = import_id
@@ -15,11 +14,9 @@ class Invites::ImportRunner
   rescue Invites::FailedError => e
     import.update!(result: { errors: e.to_h }, completed_at: Time.current)
   rescue StandardError
-    # Anything else (a DB error, a validation raised outside the invitee checks)
-    # would otherwise leave the import pending forever, since neither invites job
-    # retries — the admin would wait out the front-end timeout instead of being
-    # shown the error. Record the failure, then re-raise so it is not swallowed.
-    # A killed worker leaves nothing to rescue; that case is the timeout's alone.
+    # Neither invites job retries, so without this the import stays pending forever.
+    # Re-raise so Que and Sentry still see it. A killed worker leaves nothing to
+    # rescue; only the front-end timeout covers that.
     import&.update!(
       result: { errors: [{ error: error_key(import) }] },
       completed_at: Time.current
@@ -29,9 +26,8 @@ class Invites::ImportRunner
 
   private
 
-  # A failed count created nothing and sent nothing, so the admin can simply try
-  # again. A failed creation may have got part way, so they have to look before
-  # retrying. Different advice, different keys.
+  # A failed count sent nothing, so the admin can just retry. A failed creation may
+  # have got part way, so they are told to look first.
   def error_key(import)
     if import.job_type.include?('count_new_seats')
       'unexpected_seats_count_error'

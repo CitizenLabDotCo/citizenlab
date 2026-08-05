@@ -143,8 +143,8 @@ describe('InviteUsersWithSeatsModal', () => {
     expect(confirmButton).toBeInTheDocument();
   });
 
-  // Confirming used to switch to the success screen without waiting to hear
-  // whether the request had even been accepted.
+  // The container also takes this modal down on failure, so both halves need
+  // pinning separately — either one alone satisfies a container-level test.
   describe('on confirmation', () => {
     const renderModal = (inviteUsers: () => Promise<boolean>) =>
       render(

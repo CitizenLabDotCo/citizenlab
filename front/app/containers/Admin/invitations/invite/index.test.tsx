@@ -70,8 +70,8 @@ const failedCreateImport = {
 let mockInvitesImport: any;
 
 // The real hook keys its query on the import id, so clearing that id leaves it
-// with no cached entry to return. Modelling that matters: the container reads
-// the job type back off this data to decide which stage it is waiting on.
+// with nothing to return. Mirrored here so the mock cannot serve data the
+// container could not actually see.
 jest.mock('api/invites/useInvitesImport', () => (params: any) => ({
   data: params.importId ? mockInvitesImport : undefined,
   resetQueryData: jest.fn(),
@@ -197,8 +197,7 @@ describe('Invitations timeout', () => {
     mockInvitesImport = undefined;
     const { rerender } = await submitManualInvite();
 
-    // The seat count comes back complete, so the creation job is submitted in
-    // its place.
+    // A completed seat count makes the container submit the creation job.
     mockInvitesImport = completedCountImport;
     await act(async () => {
       rerender(<Invitations />);
@@ -233,7 +232,6 @@ describe('Invitations timeout', () => {
       await screen.findByTestId('confirm-button-text')
     ).toBeInTheDocument();
 
-    // Confirming submits the creation job and shows the success screen.
     await act(async () => {
       fireEvent.click(screen.getByTestId('confirm-button-text'));
     });
@@ -261,9 +259,8 @@ describe('Invitations timeout', () => {
     expect(screen.queryByText('ALL DONE')).not.toBeInTheDocument();
   });
 
-  // When the seats data has not loaded, `checkNewSeatsResponse` returns early
-  // without submitting anything, leaving `processing` set with no import id.
-  // Nothing ran, so this is the seat count budget and the seat count message.
+  // With the seats data unloaded, `checkNewSeatsResponse` returns early without
+  // submitting anything, leaving `processing` set with no import id.
   it('treats a bailed-out seats check as the seat count stage', async () => {
     mockSeatsCheckLoading = true;
     mockInvitesImport = pendingCountImport;
@@ -280,9 +277,8 @@ describe('Invitations timeout', () => {
     expect(screen.queryByText(TIMED_OUT_MESSAGE)).not.toBeInTheDocument();
   });
 
-  // The modal switches itself to a success screen the moment the admin
-  // confirms, so a creation job that comes back with errors has to take it
-  // down — otherwise the error lands on the form behind an "all done" screen.
+  // The modal switches to its success screen the moment the admin confirms, so a
+  // creation job that comes back with errors has to take it down.
   it('closes the success modal when the creation job reports an error', async () => {
     mockSeatsExceeded = true;
     mockInvitesImport = undefined;
