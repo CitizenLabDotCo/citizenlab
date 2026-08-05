@@ -7059,9 +7059,29 @@
     "verified_at": "2026-08-03T08:33:05.967750Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": {
+    "state": "verified",
+    "verified_at": "2026-08-05T10:23:32.661502Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": {
     "state": "verified",
     "verified_at": "2026-08-03T08:33:05.967750Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": {
+    "state": "verified",
+    "verified_at": "2026-08-05T10:23:32.661502Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": {
+    "state": "verified",
+    "verified_at": "2026-08-05T10:23:32.661502Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": {
+    "state": "verified",
+    "verified_at": "2026-08-05T10:23:32.661502Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folder": {
