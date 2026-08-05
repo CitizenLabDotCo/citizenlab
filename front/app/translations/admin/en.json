@@ -198,6 +198,7 @@
   "app.components.admin.ActionForm.name": "Name",
   "app.components.admin.ActionForm.none": "None",
   "app.components.admin.ActionForm.nothingExtra": "Nothing extra",
+  "app.components.admin.ActionForm.or": "or",
   "app.components.admin.ActionForm.password": "Password",
   "app.components.admin.ActionForm.piiExcluded": "PII excluded",
   "app.components.admin.ActionForm.piiExcludedFromResults": "PII excluded from results",
