@@ -64,9 +64,7 @@ const VerificationToggle = ({
               </Text>
               {locked && (
                 <IconTooltip
-                  content={formatMessage(
-                    messages.atLeastOneMethodMustStayEnabled
-                  )}
+                  content={formatMessage(messages.thisMustStayEnabled)}
                   iconSize="14px"
                 />
               )}

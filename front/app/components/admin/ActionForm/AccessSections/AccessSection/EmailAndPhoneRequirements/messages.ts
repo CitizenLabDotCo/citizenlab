@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Email and phone requirements',
   },
   contactDetailsTooltip: {
-    id: `${scope}.contactDetailsTooltip`,
+    id: `${scope}.contactDetailsTooltip2`,
     defaultMessage:
-      'Which contact details a participant has to confirm before they can take part. Confirming means entering a code we send them, which proves the address or number is really theirs.',
+      'Which contact details a participant has to confirm before they can take part. Confirming means entering a code we send them, which proves the email address or phone number is really theirs.',
   },
   change: {
     id: `${scope}.change`,

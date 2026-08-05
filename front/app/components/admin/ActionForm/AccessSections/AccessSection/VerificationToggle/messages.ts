@@ -1,10 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  atLeastOneMethodMustStayEnabled: {
-    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.atLeastOneMethodMustStayEnabled',
+  thisMustStayEnabled: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.thisMustStayEnabled',
     defaultMessage:
-      'At least one authentication method must stay enabled, so this one can’t be turned off.',
+      'If nothing is required for email or phone, this method must stay enabled. If you want to disable Identity verification, first choose a different option under "Email and phone requirements".',
   },
   verificationMethodDescription: {
     id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verificationMethodDescription',
