@@ -10,7 +10,6 @@ import {
 } from 'api/project_images/useProjectImages';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
-import { IUser } from 'api/users/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
@@ -50,16 +49,11 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 import ProjectContextSection from '../_shared/components/ProjectSetupForm/ProjectContextSection';
-import { ProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/types';
-import { validateProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/utils';
+import { useValidateProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
 import useSyncProjectImages from '../_shared/useSyncProjectImages';
 
-interface Props {
-  authUser: IUser;
-}
-
-const ProjectSetupForm = ({ authUser }: Props) => {
+const ProjectSetupForm = () => {
   const { formatMessage } = useIntl();
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -96,13 +90,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
     string | null
   >(null);
 
-  const { highest_role } = authUser.data.attributes;
-
-  const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
-    if (highest_role === 'space_moderator') return 'space';
-    if (highest_role === 'project_folder_moderator') return 'folder';
-    return 'root';
-  });
+  const validateProjectContext = useValidateProjectContext();
 
   const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
     (
@@ -231,7 +219,13 @@ const ProjectSetupForm = ({ authUser }: Props) => {
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
 
-    if (!validateProjectContext(projectContext, projectAttrs)) {
+    if (
+      !validateProjectContext({
+        spaceId: projectAttrs.space_id,
+        folderId: projectAttrs.folder_id,
+        projectInRoot: true,
+      })
+    ) {
       setProjectContextError(true);
       return false;
     }
@@ -299,24 +293,11 @@ const ProjectSetupForm = ({ authUser }: Props) => {
           />
 
           <ProjectContextSection
-            projectContext={projectContext}
-            space_id={projectAttrs.space_id}
-            folder_id={projectAttrs.folder_id}
-            formSituation="creating"
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
+            projectInRoot
             error={projectContextError}
-            onSetContext={(context) => {
-              handleProjectAttributeDiffOnChange({
-                space_id: null,
-                folder_id: null,
-              });
-              setProjectContext(context);
-              setProjectContextError(false);
-            }}
-            onChangeSpace={(spaceAndFolderId) => {
-              handleProjectAttributeDiffOnChange(spaceAndFolderId);
-              setProjectContextError(false);
-            }}
-            onChangeFolder={(spaceAndFolderId) => {
+            onChange={(spaceAndFolderId) => {
               handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
