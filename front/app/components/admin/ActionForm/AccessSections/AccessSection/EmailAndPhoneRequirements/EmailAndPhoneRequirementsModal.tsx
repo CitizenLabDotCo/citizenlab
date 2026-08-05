@@ -5,6 +5,7 @@ import {
   Title,
   Text,
   Icon,
+  IconNames,
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -85,6 +86,15 @@ const SelectionMark = ({ selected }: { selected: boolean }) =>
     />
   );
 
+// The channel each recency row belongs to is shown as its glyph rather than a
+// label on its own line - the same glyphs the IconCluster uses, so the row
+// reads as "<email> + require recent confirmation" and stays on one line.
+const CHANNEL_ICONS: Record<ContactChannel, IconNames> = {
+  email: 'email',
+  phone: 'tablet',
+};
+
+// Kept as the icon's accessible name, since the glyph replaces the visible label.
 const CHANNEL_LABELS = {
   email: messages.emailRecency,
   phone: messages.phoneRecency,
@@ -131,23 +141,26 @@ const EmailAndPhoneRequirementsModal = ({
         onKeyDown={(event) => event.stopPropagation()}
       >
         {channels.map((channel) => (
-          <Box key={channel}>
+          <Box key={channel} display="flex" alignItems="center">
             {channels.length > 1 && (
-              <Text
-                as="span"
-                m="0"
-                fontSize="xs"
-                fontWeight="semi-bold"
-                color="coolGrey700"
-              >
-                {formatMessage(CHANNEL_LABELS[channel])}
-              </Text>
+              <Icon
+                name={CHANNEL_ICONS[channel]}
+                width="16px"
+                height="16px"
+                mr="8px"
+                flexShrink={0}
+                fill={colors.coolGrey600}
+                ariaHidden={false}
+                title={formatMessage(CHANNEL_LABELS[channel])}
+              />
             )}
-            <RecencyControl
-              expiry={expiries[channel]}
-              verb="Re-confirm"
-              onChange={(expiry) => onChangeExpiry(channel, expiry)}
-            />
+            <Box flex="1 1 auto" minWidth="0">
+              <RecencyControl
+                expiry={expiries[channel]}
+                verb="Re-confirm"
+                onChange={(expiry) => onChangeExpiry(channel, expiry)}
+              />
+            </Box>
           </Box>
         ))}
       </Box>
