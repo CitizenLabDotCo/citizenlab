@@ -6,7 +6,7 @@ class RequestNewEmailConfirmationCodeJob < ApplicationJob
   def run(user, new_email:)
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
 
-    confirmation = user.new_email_confirmation
+    confirmation = user.find_or_create_confirmation(:new_email_confirmation)
 
     # Issue (and commit) the code before delivering it - see
     # RequestEmailConfirmationCodeJob for why delivery stays out of the transaction.

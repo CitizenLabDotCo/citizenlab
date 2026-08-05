@@ -220,9 +220,10 @@ describe('Space moderator: permissions', () => {
     const projectName = randomString();
     enterProjectName(projectName);
 
-    // Select folder
-    cy.dataCy('project-context-folder-radio').click();
+    // Select folder. The space follows from the folder, so it is not selected
+    // separately here.
     cy.dataCy('project-folder-select').select(folderId);
+    cy.dataCy('space-select').should('have.value', spaceId);
 
     // Submit
     cy.get('.e2e-submit-wrapper-button button').click();
@@ -249,8 +250,9 @@ describe('Space moderator: permissions', () => {
     const projectName = randomString();
     enterProjectName(projectName);
 
-    // Select root
-    cy.dataCy('project-context-root-radio').click();
+    // Leave both selects empty: no space, no folder.
+    cy.dataCy('space-select').should('have.value', '/');
+    cy.dataCy('project-folder-select').should('have.value', '/');
 
     // Submit
     cy.get('.e2e-submit-wrapper-button button').click();

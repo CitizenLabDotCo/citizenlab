@@ -77,7 +77,7 @@ module BulkImportIdeas::Importers
               )
 
               # Assume all imported users are confirmed and change date to created_at if it exists
-              user.email_confirmation.confirm!
+              user.find_or_create_confirmation(:email_confirmation).confirm!
               user.update!(email_confirmed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now)
 
               # Ensure the user can unsubscribe
@@ -510,7 +510,7 @@ module BulkImportIdeas::Importers
     end
 
     def s3_client
-      @s3_client ||= Aws::S3::Client.new(region: ENV.fetch('AWS_REGION'))
+      @s3_client ||= Aws::S3::Client.new
     end
 
     def log(message)

@@ -87,6 +87,8 @@ class UserConfirmationService
   private
 
   def validate_and_confirm!(confirmation, code)
+    raise ValidationError.new(:code, :invalid) if confirmation.nil?
+
     validate_retry_count!(confirmation, code)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
@@ -129,7 +131,8 @@ class UserConfirmationService
   end
 
   def validate_code_expiration!(confirmation)
-    return unless confirmation.expiration_at < Time.zone.now
+    # A code that was never sent (no code_sent_at, so no expiration_at) can't be confirmed.
+    return if confirmation.expiration_at && confirmation.expiration_at >= Time.zone.now
 
     raise ValidationError.new(:code, :expired)
   end

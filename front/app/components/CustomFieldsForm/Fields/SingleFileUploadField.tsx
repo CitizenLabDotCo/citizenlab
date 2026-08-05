@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { UploadFile } from 'typings';
 
 import { IIdeaFileData } from 'api/idea_files/types';
@@ -15,6 +15,11 @@ import FileDisplay from 'components/UI/FileUploader/FileDisplay';
 import SingleFileInput from 'components/UI/SingleFileUploader/FileInput';
 
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+
+// Mirrors Files::FileUploader#size_range, which stays authoritative. Compared
+// against decimal MB here but binary MiB server-side, so this rejects marginally
+// earlier — the safe direction.
+export const MAX_FILE_SIZE_MB = 100;
 
 interface Props
   extends Omit<
@@ -35,13 +40,15 @@ const SingleFileUploaderField = ({
   const { mutate: deleteIdeaFile } = useDeleteIdeaFile();
   const {
     setValue,
+    setError,
     formState: { errors },
     control,
     trigger,
-    getValues,
   } = useFormContext();
 
-  const file = getValues(name);
+  // useWatch, not getValues: getValues doesn't subscribe, so removing a file
+  // didn't re-render and the trash icon needed two clicks.
+  const file = useWatch({ control, name });
 
   useEffect(() => {
     let isMounted = true;
@@ -80,13 +87,15 @@ const SingleFileUploaderField = ({
   const errorMessage = get(errors, name)?.message as string | undefined;
 
   const onFileRemove = () => {
-    if (file.id && ideaId) {
+    if (file?.id && ideaId) {
       deleteIdeaFile({
         fileId: file.id,
         ideaId,
       });
     }
-    setValue(name, undefined, { shouldDirty: true });
+    // null, not undefined: React Hook Form doesn't propagate undefined to the
+    // Controller, leaving the removed file on screen and in the payload.
+    setValue(name, null, { shouldDirty: true });
     trigger(name);
   };
 
@@ -106,31 +115,35 @@ const SingleFileUploaderField = ({
 
   return (
     <Box data-cy="e2e-idea-file-upload" width="100%">
-      {!file && (
-        <Controller
-          name={name}
-          control={control}
-          render={({ field: { ref: _ref, ...field } }) => {
-            return <SingleFileInput onAdd={onFileAdd} id={name} {...field} />;
-          }}
-        />
-      )}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { ref: _ref, ...field } }) =>
+          field.value ? (
+            <FileDisplay
+              key={field.value.name}
+              onDeleteClick={() => {
+                onFileRemove();
+              }}
+              file={field.value}
+            />
+          ) : (
+            <SingleFileInput
+              onAdd={onFileAdd}
+              id={name}
+              {...field}
+              maxSizeMb={MAX_FILE_SIZE_MB}
+              onError={(message) => setError(name, { type: 'manual', message })}
+            />
+          )
+        }
+      />
       {errorMessage && (
         <Error
           marginTop="8px"
           marginBottom="8px"
           text={errorMessage}
           scrollIntoView={scrollErrorIntoView}
-        />
-      )}
-
-      {file && (
-        <FileDisplay
-          key={file.name}
-          onDeleteClick={() => {
-            onFileRemove();
-          }}
-          file={file}
         />
       )}
     </Box>

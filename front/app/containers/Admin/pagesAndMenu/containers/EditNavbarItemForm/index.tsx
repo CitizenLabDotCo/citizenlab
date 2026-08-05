@@ -6,8 +6,8 @@ import useUpdateNavbarItem from 'api/navbar/useUpdateNavbarItem';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLink,
+  menuBreadcrumb,
+  menuBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import SectionFormWrapper from 'containers/Admin/pagesAndMenu/components/SectionFormWrapper';
 
@@ -24,7 +24,9 @@ const EditNavbarItemForm = () => {
     navbarItemId: string;
   };
   const { formatMessage } = useIntl();
-  const { data: navbarItems } = useNavbarItems();
+  // Edits the stored title, so it must read the full (untruncated) title —
+  // otherwise submitting would persist the navbar-display-truncated version.
+  const { data: navbarItems } = useNavbarItems({ truncateTitles: false });
   const { mutateAsync: updateNavbarItem } = useUpdateNavbarItem();
 
   const navbarItem = navbarItems?.data.find((item) => item.id === navbarItemId);
@@ -47,8 +49,8 @@ const EditNavbarItemForm = () => {
       title={localize(navbarItem.attributes.title_multiloc)}
       breadcrumbs={[
         {
-          label: formatMessage(pagesAndMenuBreadcrumb.label),
-          link: pagesAndMenuBreadcrumbLink,
+          label: formatMessage(menuBreadcrumb.label),
+          link: menuBreadcrumbLink,
         },
         {
           label: localize(navbarItem.attributes.title_multiloc),
