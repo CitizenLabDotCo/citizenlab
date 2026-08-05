@@ -8,6 +8,7 @@ import {
   BODY_NODE_ID,
   PHASES_NODE_ID,
   EVENTS_NODE_ID,
+  SEEDED_CONTENT_NODE_IDS,
 } from './defaultLayout';
 import widgetMessages from './Widgets/messages';
 
@@ -28,6 +29,7 @@ const textNode = (parent: string) =>
 
 const flatLayout = (): SerializedNodes => {
   const layout = defaultProjectPageLayout();
+  SEEDED_CONTENT_NODE_IDS.forEach((id) => delete layout[id]);
   layout[BODY_NODE_ID] = {
     ...layout[BODY_NODE_ID],
     nodes: ['txt1', PHASES_NODE_ID, EVENTS_NODE_ID],
@@ -38,6 +40,7 @@ const flatLayout = (): SerializedNodes => {
 
 const legacyLayout = (): SerializedNodes => {
   const layout = defaultProjectPageLayout();
+  SEEDED_CONTENT_NODE_IDS.forEach((id) => delete layout[id]);
   layout[BODY_NODE_ID] = {
     ...layout[BODY_NODE_ID],
     nodes: [DESCRIPTION_NODE_ID, PHASES_NODE_ID, EVENTS_NODE_ID],
@@ -58,7 +61,7 @@ const legacyLayout = (): SerializedNodes => {
 };
 
 describe('defaultProjectPageLayout', () => {
-  it('places phases and events directly in the body', () => {
+  it('places the seeded content, phases and events directly in the body', () => {
     const layout = defaultProjectPageLayout();
 
     expect(layout.ROOT.nodes).toEqual([
@@ -67,9 +70,39 @@ describe('defaultProjectPageLayout', () => {
       BODY_NODE_ID,
     ]);
     expect(layout[BODY_NODE_ID].nodes).toEqual([
+      'PROJECT_PAGE_INTRO_COLUMNS',
+      'PROJECT_PAGE_DETAILS_COLUMNS',
       PHASES_NODE_ID,
       EVENTS_NODE_ID,
     ]);
+  });
+
+  it('seeds an empty intro text next to the participation box', () => {
+    const layout = defaultProjectPageLayout();
+
+    expect(layout.PROJECT_PAGE_INTRO_COLUMNS.linkedNodes).toEqual({
+      left: 'PROJECT_PAGE_INTRO_LEFT',
+      right: 'PROJECT_PAGE_INTRO_RIGHT',
+    });
+    expect(layout.PROJECT_PAGE_INTRO_LEFT.nodes).toEqual([
+      'PROJECT_PAGE_INTRO_TEXT',
+    ]);
+    expect(layout.PROJECT_PAGE_INTRO_TEXT.props).toEqual({ text: {} });
+    expect(layout.PROJECT_PAGE_INTRO_RIGHT.nodes).toEqual([
+      'PROJECT_PAGE_PARTICIPATION_BOX',
+    ]);
+    expect(layout.PROJECT_PAGE_PARTICIPATION_BOX.type).toEqual({
+      resolvedName: 'AboutBox',
+    });
+  });
+
+  it('seeds the details text next to an empty column', () => {
+    const layout = defaultProjectPageLayout();
+
+    expect(layout.PROJECT_PAGE_DETAILS_LEFT.nodes).toEqual([
+      'PROJECT_PAGE_DETAILS_TEXT',
+    ]);
+    expect(layout.PROJECT_PAGE_DETAILS_RIGHT.nodes).toEqual([]);
   });
 });
 

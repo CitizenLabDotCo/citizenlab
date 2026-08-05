@@ -14,6 +14,10 @@ ar-MA:
       subject: قم بتأكيد عنوان البريد الإلكتروني لمنصة المشاركة الخاصة بمؤسسة %{organizationName}
       thanks_for_signing_up1: 'أشكركم على مشاركتكم. الرجاء إدخال رمز التأكيد هذا في نافذة منصة المشاركة %{organizationName}:'
       the_link_is_valid_for: تستمر صلاحية هذا الرابط لمدة 24 ساعة. إذا انتهت صلاحية الرابط، فبإمكانك <a href="%{link}">طلب رمز جديد</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>استعمل هاد المساحة باش تعطي تفاصيل كتر — السياق، شنو غايوقع بالمساهمات، ولا مع من يمكن التواصل.</p>
+      intro_placeholder: <p>ضيف تقديم قصير هنا — وضح للسكان علاش كيهضر هاد المشروع وكيفاش يقدروا يشاركوا فيه.</p>
   custom_field_options:
     domicile:
       outside: في مكان آخر

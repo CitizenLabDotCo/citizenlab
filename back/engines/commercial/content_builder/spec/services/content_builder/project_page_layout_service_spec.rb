@@ -124,10 +124,12 @@ describe ContentBuilder::ProjectPageLayoutService do
       expect(result).not_to have_key('d_pub1')
     end
 
-    it 'produces the full canonical structure for an empty description' do
+    it 'seeds the default page content for an empty description' do
       result = build(empty_description)
 
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(project_widgets)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
+        %w[PROJECT_PAGE_INTRO_COLUMNS PROJECT_PAGE_DETAILS_COLUMNS] + project_widgets
+      )
       canonical_names.each { |name| expect(resolved_names(result)).to include(name) }
     end
 
@@ -171,10 +173,44 @@ describe ContentBuilder::ProjectPageLayoutService do
       expect(content['type']).to eq({ 'resolvedName' => 'RichTextMultiloc' })
     end
 
-    it 'leaves the body without content for a blank description' do
+    it 'seeds the intro text and participation box columns for a blank description' do
       result = service.from_description_multiloc({ 'en' => '<p></p>' })
 
-      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(project_widgets)
+      expect(result['PROJECT_PAGE_BODY']['nodes']).to eq(
+        %w[PROJECT_PAGE_INTRO_COLUMNS PROJECT_PAGE_DETAILS_COLUMNS] + project_widgets
+      )
+      expect(result['PROJECT_PAGE_INTRO_COLUMNS']).to include(
+        'type' => { 'resolvedName' => 'TwoColumn' },
+        'props' => { 'columnLayout' => '2-1' },
+        'linkedNodes' => {
+          'left' => 'PROJECT_PAGE_INTRO_LEFT',
+          'right' => 'PROJECT_PAGE_INTRO_RIGHT'
+        },
+        'parent' => 'PROJECT_PAGE_BODY'
+      )
+      intro_text = result['PROJECT_PAGE_INTRO_TEXT']
+      expect(intro_text['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
+      expect(intro_text['props']['text']['en']).to eq(I18n.t('content_builder.project_page.intro_placeholder'))
+      expect(result['PROJECT_PAGE_INTRO_RIGHT']['nodes']).to eq(['PROJECT_PAGE_PARTICIPATION_BOX'])
+      expect(result['PROJECT_PAGE_PARTICIPATION_BOX']['type']).to eq({ 'resolvedName' => 'AboutBox' })
+    end
+
+    it 'seeds the details text next to an empty column' do
+      result = service.from_description_multiloc({})
+
+      details_text = result['PROJECT_PAGE_DETAILS_TEXT']
+      expect(details_text['type']).to eq({ 'resolvedName' => 'TextMultiloc' })
+      expect(details_text['props']['text']['en']).to eq(I18n.t('content_builder.project_page.details_placeholder'))
+      expect(result['PROJECT_PAGE_DETAILS_LEFT']['nodes']).to eq(['PROJECT_PAGE_DETAILS_TEXT'])
+      expect(result['PROJECT_PAGE_DETAILS_RIGHT']['nodes']).to eq([])
+    end
+
+    it 'seeds the text values in every tenant locale' do
+      result = service.from_description_multiloc({})
+
+      locales = AppConfiguration.instance.settings('core', 'locales')
+      expect(result['PROJECT_PAGE_INTRO_TEXT']['props']['text'].keys).to match_array(locales)
+      expect(result['PROJECT_PAGE_DETAILS_TEXT']['props']['text'].keys).to match_array(locales)
     end
   end
 

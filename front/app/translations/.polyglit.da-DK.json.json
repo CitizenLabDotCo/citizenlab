@@ -3304,6 +3304,21 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.QuillEditor.imageTooLarge": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:31:18.213809Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.QuillEditor.imageTooLargeConfirm": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:31:18.213809Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.components.QuillEditor.imageTooLargeTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-30T07:31:18.213809Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.QuillEditor.italic": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -3548,6 +3563,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.EmojiPicker.clear": {
+    "state": "verified",
+    "verified_at": "2026-07-07T16:00:17.873218Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
@@ -10805,9 +10825,29 @@
     "verified_at": "2026-07-14T16:35:52.394338Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.PhoneChange.privacyLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:20:55.645325Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.smsConfirmationDisclosure2": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:20:55.645325Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:20:55.645325Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.termsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:20:55.645325Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.PhoneChange.titleAddPhone": {

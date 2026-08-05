@@ -3289,6 +3289,21 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.QuillEditor.imageTooLarge": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:13:08.157668Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.QuillEditor.imageTooLargeConfirm": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:13:08.157668Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.QuillEditor.imageTooLargeTitle": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:13:08.157668Z",
+    "verified_by": "Luuc"
+  },
   "app.components.QuillEditor.italic": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -3533,6 +3548,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.EmojiPicker.clear": {
+    "state": "verified",
+    "verified_at": "2026-07-07T14:52:42.215163Z",
+    "verified_by": "Luuc"
   },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
@@ -10790,9 +10810,29 @@
     "verified_at": "2026-07-14T17:01:41.815022Z",
     "verified_by": "Luuc"
   },
+  "app.containers.PhoneChange.privacyLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:12:29.735950Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.smsConfirmationDisclosure2": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:12:29.735950Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:12:29.735950Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-14T17:01:41.815022Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.PhoneChange.termsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:12:29.735950Z",
     "verified_by": "Luuc"
   },
   "app.containers.PhoneChange.titleAddPhone": {
