@@ -231,7 +231,7 @@ const ProjectActionButtons = memo<Props>(
       (participationMethod === 'ideation' ||
         participationMethod === 'proposals');
     const showTakeNativeSurveyButton =
-      showBoxCTAs &&
+      publication_status !== 'archived' &&
       !currentPhaseHidden &&
       !hasCurrentPhaseEnded &&
       participationMethod === 'native_survey';
