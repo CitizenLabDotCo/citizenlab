@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Numer telefonu",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Podaj numer telefonu w poprawnym formacie, na przykład +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Podaj numer telefonu",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Przełącz wszystkie powiadomienia {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Powiadomienia w tej kategorii",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Jakiego rodzaju powiadomienia e-mail chcesz otrzymywać?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "Powiadomienia e-mail",

@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefoonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Geef een telefoonnummer op in het juiste formaat, bijvoorbeeld +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Geef een telefoonnummer op",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Alle {contentType}-meldingen in-/uitschakelen",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Meldingen in deze categorie",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Welke soorten e-mailmeldingen wil je ontvangen?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-mailmeldingen",
