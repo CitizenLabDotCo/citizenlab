@@ -108,6 +108,13 @@ class WebApi::V1::RequestCodesController < ApplicationController
       return
     end
 
+    consent = EmailCampaigns::ConsentService.new.record!(
+      current_user,
+      EmailCampaigns::Campaigns::NewPhoneConfirmation,
+      consented: true
+    )
+    EmailCampaigns::SideFxConsentService.new.after_grant(consent, current_user)
+
     RequestNewPhoneConfirmationCodeJob.perform_now(current_user, new_phone: normalized)
 
     head :ok

@@ -337,6 +337,57 @@ resource 'Request codes' do
         .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
     end
 
+    example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
+      user = create(:user)
+      header_token_for(user)
+      expect { do_request(request_code: { new_phone: '+1 415 555 2671' }) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(
+          an_instance_of(EmailCampaigns::Consent),
+          'consent_given',
+          user,
+          kind_of(Integer),
+          payload: { campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name }
+        )
+      expect(response_status).to eq 200
+
+      consent = EmailCampaigns::Consent.find_by(
+        user_id: user.id,
+        campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name
+      )
+      expect(consent.consented).to be true
+    end
+
+    example 'It logs a consent event on every submission, keeping a single consent record' do
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+1 415 555 2671' })
+      expect(response_status).to eq 200
+
+      expect { do_request(request_code: { new_phone: '+1 415 555 2680' }) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(
+          an_instance_of(EmailCampaigns::Consent),
+          'consent_given',
+          user,
+          kind_of(Integer),
+          payload: { campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name }
+        )
+      expect(response_status).to eq 200
+
+      expect(EmailCampaigns::Consent.where(
+        user_id: user.id, campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name
+      ).count).to eq 1
+    end
+
+    example 'It does not record consent when the phone number is rejected' do
+      user = create(:user)
+      header_token_for(user)
+      expect { do_request(request_code: { new_phone: 'not-a-number' }) }
+        .not_to change(EmailCampaigns::Consent, :count)
+      expect(response_status).to eq 422
+    end
+
     example 'It does not work if new_phone is blank' do
       user = create(:user)
       header_token_for(user)
