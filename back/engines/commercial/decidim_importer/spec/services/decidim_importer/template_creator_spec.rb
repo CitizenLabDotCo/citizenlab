@@ -410,6 +410,17 @@ RSpec.describe DecidimImporter::TemplateCreator do
         expect(rejected.comments.first.author).to be_nil
       end
 
+      it 'imports proposal notes as private internal comments on the idea' do
+        accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+
+        note = accepted.internal_comments.first
+        expect(note.body).to include('Needs legal review')
+        expect(note.publication_status).to eq('published')
+        expect(note.author).to eq(User.find_by(unique_code: 'decidim-user-2'))
+        # Dated from the export, not the import run.
+        expect(note.created_at.to_date.iso8601).to eq('2023-02-13')
+      end
+
       it 'dates imported content from the export, not the import run' do
         accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
 

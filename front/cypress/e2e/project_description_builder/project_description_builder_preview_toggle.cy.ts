@@ -67,7 +67,7 @@ describe('Project description builder preview', () => {
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
-    cy.get('div.e2e-text-box').click();
+    cy.get('div.e2e-text-box').first().click();
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Edited text.', { force: true });
 
@@ -87,7 +87,7 @@ describe('Project description builder preview', () => {
     cy.visit(`/admin/project-page-builder/projects/${projectId}`);
     cy.get('div#ROOT');
     cy.get('div.e2e-text-box').should('exist');
-    cy.get('div.e2e-text-box').first().click();
+    cy.contains('div.e2e-text-box', 'Edited text.').click();
     cy.wait(5000);
 
     cy.get('.ql-editor').click();

@@ -14,6 +14,10 @@ lb-LU:
       subject: Iwwerpréiwt Är E-Mail-Adress fir d'participativ Plattform %{organizationName}
       thanks_for_signing_up1: 'Merci fir Är Participatioun. Gitt w. e. g. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vun %{organizationName}:'
       the_link_is_valid_for: De Link ass 24 Stonne gëlteg. Wann de Link ofgelaf ass, kënnt Dir <a href="%{link}">en neie Code ufroen</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Notzt dëse Raum fir méi Detailer — den Hannergrond, wat mat de Bäiträg geschitt oder mat wiem ee Kontakt ophuele kann.</p>
+      intro_placeholder: <p>Füügt hei eng kuerz Aféierung bäi — sot den Awunner, ëm wat et an dësem Projet geet a wéi si matmaache kënnen.</p>
   custom_field_options:
     domicile:
       outside: Anzwousch anescht

@@ -1,6 +1,13 @@
 import Quill, { Range } from 'quill';
+import Uploader from 'quill/modules/uploader';
 
 import type Toolbar from 'quill/modules/toolbar';
+
+// Matches the limit used by ImagesDropzone and our file uploaders. Note that
+// Quill inlines images as base64 data URLs, which adds roughly a third to the
+// payload that eventually gets sent to the server.
+export const MAX_IMAGE_SIZE_MB = 10;
+const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1000000;
 
 interface Params {
   id: string;
@@ -13,6 +20,7 @@ interface Params {
   noLinks: boolean;
   withGifSupport?: boolean;
   onBlur?: () => void;
+  onImageTooLarge?: () => void;
   altTextLabel?: string;
   imageTitleLabel?: string;
   ariaLabelledBy?: string;
@@ -31,6 +39,7 @@ export const createQuill = (
     withGifSupport,
     withCTAButton,
     onBlur,
+    onImageTooLarge,
     altTextLabel,
     imageTitleLabel,
     ariaLabelledBy,
@@ -90,11 +99,32 @@ export const createQuill = (
           },
         },
       },
-      ...(withGifSupport && {
-        uploader: {
-          mimetypes: ['image/png', 'image/jpeg', 'image/gif'],
+      uploader: {
+        mimetypes: withGifSupport
+          ? ['image/png', 'image/jpeg', 'image/gif']
+          : ['image/png', 'image/jpeg'],
+        // Every upload path (toolbar button, drag & drop, paste) goes through
+        // Uploader.upload(), which calls this handler. Filtering here is the
+        // single place that catches oversized images before Quill inlines them
+        // as base64 data URLs.
+        handler(this: { quill: Quill }, range: Range, files: File[]) {
+          // With images disabled the image format isn't registered, so there
+          // is nothing to insert and nothing to warn about.
+          if (noImages) return;
+
+          const allowedFiles = files.filter(
+            (file) => file.size <= MAX_IMAGE_SIZE_BYTES
+          );
+
+          if (allowedFiles.length < files.length) {
+            onImageTooLarge?.();
+          }
+
+          if (allowedFiles.length > 0) {
+            Uploader.DEFAULTS.handler.call(this, range, allowedFiles);
+          }
         },
-      }),
+      },
       clipboard: {
         matchVisual: false,
       },

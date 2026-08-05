@@ -1,5 +1,9 @@
 import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
+import aboutBoxMessages from 'components/admin/ContentBuilder/Widgets/AboutBox/messages';
+import textMultilocMessages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
+import twoColumnMessages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
+
 import widgetMessages from './Widgets/messages';
 
 export const BANNER_NODE_ID = 'PROJECT_PAGE_BANNER';
@@ -7,6 +11,28 @@ export const TITLE_NODE_ID = 'PROJECT_PAGE_TITLE';
 export const BODY_NODE_ID = 'PROJECT_PAGE_BODY';
 export const PHASES_NODE_ID = 'PROJECT_PAGE_PHASES';
 export const EVENTS_NODE_ID = 'PROJECT_PAGE_EVENTS';
+
+const INTRO_COLUMNS_NODE_ID = 'PROJECT_PAGE_INTRO_COLUMNS';
+const INTRO_LEFT_NODE_ID = 'PROJECT_PAGE_INTRO_LEFT';
+const INTRO_TEXT_NODE_ID = 'PROJECT_PAGE_INTRO_TEXT';
+const INTRO_RIGHT_NODE_ID = 'PROJECT_PAGE_INTRO_RIGHT';
+const PARTICIPATION_BOX_NODE_ID = 'PROJECT_PAGE_PARTICIPATION_BOX';
+const DETAILS_COLUMNS_NODE_ID = 'PROJECT_PAGE_DETAILS_COLUMNS';
+const DETAILS_LEFT_NODE_ID = 'PROJECT_PAGE_DETAILS_LEFT';
+const DETAILS_TEXT_NODE_ID = 'PROJECT_PAGE_DETAILS_TEXT';
+const DETAILS_RIGHT_NODE_ID = 'PROJECT_PAGE_DETAILS_RIGHT';
+
+export const SEEDED_CONTENT_NODE_IDS = [
+  INTRO_COLUMNS_NODE_ID,
+  INTRO_LEFT_NODE_ID,
+  INTRO_TEXT_NODE_ID,
+  INTRO_RIGHT_NODE_ID,
+  PARTICIPATION_BOX_NODE_ID,
+  DETAILS_COLUMNS_NODE_ID,
+  DETAILS_LEFT_NODE_ID,
+  DETAILS_TEXT_NODE_ID,
+  DETAILS_RIGHT_NODE_ID,
+];
 
 const ROOT_ID = 'ROOT';
 
@@ -89,6 +115,65 @@ const eventsNode = (parentId: string): SerializedNode => ({
   linkedNodes: {},
 });
 
+// Craft.js serializes TwoColumn's columns as linked nodes keyed left/right
+// (not as canvas children), and the column containers carry no props.
+const columnsNode = (
+  parentId: string,
+  linked: { left: string; right: string }
+): SerializedNode => ({
+  type: { resolvedName: 'TwoColumn' },
+  nodes: [],
+  props: { columnLayout: '2-1' },
+  custom: {
+    title: twoColumnMessages.twoColumn,
+    hasChildren: true,
+  },
+  hidden: false,
+  parent: parentId,
+  isCanvas: false,
+  displayName: 'TwoColumn',
+  linkedNodes: linked,
+});
+
+const columnNode = (parentId: string, childIds: string[]): SerializedNode => ({
+  type: { resolvedName: 'Container' },
+  nodes: childIds,
+  props: {},
+  custom: {},
+  hidden: false,
+  parent: parentId,
+  isCanvas: true,
+  displayName: 'Container',
+  linkedNodes: {},
+});
+
+const textNode = (parentId: string): SerializedNode => ({
+  type: { resolvedName: 'TextMultiloc' },
+  nodes: [],
+  props: { text: {} },
+  custom: { title: textMultilocMessages.textMultiloc },
+  hidden: false,
+  parent: parentId,
+  isCanvas: false,
+  displayName: 'TextMultiloc',
+  linkedNodes: {},
+});
+
+const participationBoxNode = (parentId: string): SerializedNode => ({
+  type: { resolvedName: 'AboutBox' },
+  nodes: [],
+  props: {},
+  custom: {
+    title: aboutBoxMessages.participationBox,
+    noPointerEvents: true,
+  },
+  hidden: false,
+  parent: parentId,
+  isCanvas: false,
+  displayName: 'AboutBox',
+  linkedNodes: {},
+});
+
 const rootNode = (childIds: string[]): SerializedNode => ({
   type: { resolvedName: 'ProjectPageRoot' },
   nodes: childIds,
@@ -105,7 +190,31 @@ export const defaultProjectPageLayout = (): SerializedNodes => ({
   [ROOT_ID]: rootNode([BANNER_NODE_ID, TITLE_NODE_ID, BODY_NODE_ID]),
   [BANNER_NODE_ID]: bannerNode(),
   [TITLE_NODE_ID]: titleNode(),
-  [BODY_NODE_ID]: bodyNode([PHASES_NODE_ID, EVENTS_NODE_ID]),
+  [BODY_NODE_ID]: bodyNode([
+    INTRO_COLUMNS_NODE_ID,
+    DETAILS_COLUMNS_NODE_ID,
+    PHASES_NODE_ID,
+    EVENTS_NODE_ID,
+  ]),
+  [INTRO_COLUMNS_NODE_ID]: columnsNode(BODY_NODE_ID, {
+    left: INTRO_LEFT_NODE_ID,
+    right: INTRO_RIGHT_NODE_ID,
+  }),
+  [INTRO_LEFT_NODE_ID]: columnNode(INTRO_COLUMNS_NODE_ID, [INTRO_TEXT_NODE_ID]),
+  [INTRO_TEXT_NODE_ID]: textNode(INTRO_LEFT_NODE_ID),
+  [INTRO_RIGHT_NODE_ID]: columnNode(INTRO_COLUMNS_NODE_ID, [
+    PARTICIPATION_BOX_NODE_ID,
+  ]),
+  [PARTICIPATION_BOX_NODE_ID]: participationBoxNode(INTRO_RIGHT_NODE_ID),
+  [DETAILS_COLUMNS_NODE_ID]: columnsNode(BODY_NODE_ID, {
+    left: DETAILS_LEFT_NODE_ID,
+    right: DETAILS_RIGHT_NODE_ID,
+  }),
+  [DETAILS_LEFT_NODE_ID]: columnNode(DETAILS_COLUMNS_NODE_ID, [
+    DETAILS_TEXT_NODE_ID,
+  ]),
+  [DETAILS_TEXT_NODE_ID]: textNode(DETAILS_LEFT_NODE_ID),
+  [DETAILS_RIGHT_NODE_ID]: columnNode(DETAILS_COLUMNS_NODE_ID, []),
   [PHASES_NODE_ID]: phasesNode(BODY_NODE_ID),
   [EVENTS_NODE_ID]: eventsNode(BODY_NODE_ID),
 });

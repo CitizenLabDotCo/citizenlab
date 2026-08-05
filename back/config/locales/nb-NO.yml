@@ -14,6 +14,10 @@ nb-NO:
       subject: Bekreft e-postadressen din for %{organizationName} sin medvirkningsplattform
       thanks_for_signing_up1: 'Takk for at du deltar. Vennligst skriv inn denne bekreftelseskoden i vinduet på %{organizationName}:'
       the_link_is_valid_for: Denne lenken er gyldig i 24 timer. Hvis lenken har utløpt, kan du be om <a href="%{link}">en ny kode</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Bruk dette feltet for mer utfyllende informasjon – bakgrunn, hva som skjer med innspillene, eller hvem man kan kontakte.</p>
+      intro_placeholder: <p>Legg til en kort introduksjon her – fortell innbyggerne hva dette prosjektet handler om og hvordan de kan delta.</p>
   custom_field_options:
     domicile:
       outside: Et annet sted

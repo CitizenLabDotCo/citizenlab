@@ -74,4 +74,34 @@ RSpec.describe AppConfiguration do
       expect(config).not_to be_valid
     end
   end
+
+  describe '#base_asset_host_uri (dev S3 branch)' do
+    let(:config) { described_class.instance }
+
+    before { allow(Rails.env).to receive(:development?).and_return(true) }
+
+    it 'returns the AWS bucket URL when no endpoint is set' do
+      stub_env(
+        'USE_AWS_S3_IN_DEV' => 'true',
+        'AWS_S3_BUCKET' => 'my-bucket',
+        'AWS_REGION' => 'eu-central-1',
+        'AWS_ENDPOINT_URL_S3' => nil
+      )
+
+      expect(config.base_asset_host_uri)
+        .to eq('https://my-bucket.s3.eu-central-1.amazonaws.com')
+    end
+
+    it 'returns the bucket URL on the custom endpoint when AWS_ENDPOINT_URL_S3 is set' do
+      stub_env(
+        'USE_AWS_S3_IN_DEV' => 'true',
+        'AWS_S3_BUCKET' => 'my-bucket',
+        'AWS_REGION' => 'eu-central-1',
+        'AWS_ENDPOINT_URL_S3' => 'https://s3.fr-par.scw.cloud'
+      )
+
+      expect(config.base_asset_host_uri)
+        .to eq('https://my-bucket.s3.fr-par.scw.cloud')
+    end
+  end
 end

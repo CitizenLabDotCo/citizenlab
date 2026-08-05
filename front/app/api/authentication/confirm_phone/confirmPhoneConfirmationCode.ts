@@ -8,17 +8,28 @@ export const confirmCodePhone = (code: string) => {
   return confirmCode('confirm_code_phone', code);
 };
 
-export const confirmCodeNewPhone = async (code: string) => {
-  return confirmCode('confirm_code_new_phone', code);
+export const confirmCodeNewPhone = async (
+  code: string,
+  sms_manual_campaign_consent?: boolean
+) => {
+  return confirmCode(
+    'confirm_code_new_phone',
+    code,
+    sms_manual_campaign_consent
+  );
 };
 
-export const confirmCode = async (endpoint: string, code: string) => {
+export const confirmCode = async (
+  endpoint: string,
+  code: string,
+  sms_manual_campaign_consent?: boolean
+) => {
   try {
     await fetcher({
       path: `/user/${endpoint}`,
       action: 'post',
       body: {
-        confirmation: { code },
+        confirmation: { code, sms_manual_campaign_consent },
       },
     });
 

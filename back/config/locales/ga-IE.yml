@@ -14,6 +14,10 @@ ga-IE:
       subject: Deimhnigh do sheoladh ríomhphoist le haghaidh ardán rannpháirtíochta %{organizationName}
       thanks_for_signing_up1: 'Go raibh maith agat as do rannpháirtíocht. Cuir isteach an cód deimhnithe seo sa fhuinneog ar ardán rannpháirtíochta %{organizationName}le do thoil:'
       the_link_is_valid_for: Tá an nasc seo bailí ar feadh 24 uair an chloig. Má tá an nasc imithe in éag, féadfaidh tú <a href="%{link}">cód nua a iarraidh</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Bain úsáid as an spás seo le haghaidh tuilleadh sonraí — cúlra, cad a tharlaíonn leis an ionchur, nó cé leis ar chóir dul i dteagmháil.</p>
+      intro_placeholder: <p>Cuir réamhrá gearr leis anseo — inis do chónaitheoirí cad faoi atá an tionscadal seo agus conas is féidir leo páirt a ghlacadh.</p>
   custom_field_options:
     domicile:
       outside: Áit éigin eile
