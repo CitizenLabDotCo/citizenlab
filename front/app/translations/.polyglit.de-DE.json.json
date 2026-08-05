@@ -3564,6 +3564,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.UI.EmojiPicker.clear": {
+    "state": "verified",
+    "verified_at": "2026-07-07T07:11:38.305285Z",
+    "verified_by": "Jelena"
+  },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
     "verified_at": "2026-05-12T13:10:35.984484Z",
@@ -10820,10 +10825,30 @@
     "verified_at": "2026-07-16T09:49:20.055315Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.PhoneChange.privacyLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.830967Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.PhoneChange.smsConfirmationDisclosure2": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.830967Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.830967Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.055315Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.termsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.830967Z",
+    "verified_by": "Jelena"
   },
   "app.containers.PhoneChange.titleAddPhone": {
     "state": "verified",

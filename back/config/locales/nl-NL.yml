@@ -14,6 +14,10 @@ nl-NL:
       subject: Bevestig je e-mailadres voor het participatieplatform van %{organizationName}
       thanks_for_signing_up1: 'Bedankt voor je deelname. Voer deze bevestigingscode in het venster op het participatieplatform van %{organizationName} in:'
       the_link_is_valid_for: Deze link is 24 uur geldig. Als de link is verlopen, kan je <a href="%{link}">een nieuwe code aanvragen</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Gebruik deze ruimte voor meer informatie — achtergrond, wat er met de bijdrage gebeurt, of met wie er contact kan worden opgenomen.</p>
+      intro_placeholder: <p>Voeg hier een korte inleiding toe — vertel inwoners waar dit project over gaat en hoe ze kunnen deelnemen.</p>
   custom_field_options:
     domicile:
       outside: Ergens anders

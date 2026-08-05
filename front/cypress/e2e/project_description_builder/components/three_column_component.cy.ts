@@ -21,9 +21,8 @@ describe('Project description builder Three Column component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
-        });
+        cy.apiToggleProjectDescriptionBuilder({ projectId });
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });
   });
@@ -47,16 +46,19 @@ describe('Project description builder Three Column component', () => {
       }
     );
 
-    // Components added to all columns
-    cy.get('#e2e-draggable-about-box').dragAndDrop('div.e2e-single-column', {
-      position: 'inside',
-    });
-    cy.get('#e2e-draggable-text').dragAndDrop('div.e2e-single-column', {
-      position: 'inside',
-    });
+    // Components added to all columns. The seeded layout has its own columns
+    // and widgets, so scope everything to the dropped three-column.
+    cy.get('#e2e-draggable-about-box').dragAndDrop(
+      '.e2e-three-column div.e2e-single-column',
+      { position: 'inside' }
+    );
+    cy.get('#e2e-draggable-text').dragAndDrop(
+      '.e2e-three-column div.e2e-single-column',
+      { position: 'inside' }
+    );
 
-    cy.get('div.e2e-text-box').should('have.length', 3);
-    cy.get('div#e2e-about-box').should('have.length', 3);
+    cy.get('.e2e-three-column div.e2e-text-box').should('have.length', 3);
+    cy.get('.e2e-three-column div#e2e-about-box').should('have.length', 3);
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
@@ -64,8 +66,8 @@ describe('Project description builder Three Column component', () => {
     // Check column and elements exist on page
     cy.visit(`/projects/${projectSlug}`);
     cy.get('.e2e-three-column').should('exist');
-    cy.get('div.e2e-text-box').should('have.length', 3);
-    cy.get('div#e2e-about-box').should('have.length', 3);
+    cy.get('.e2e-three-column div.e2e-text-box').should('have.length', 3);
+    cy.get('.e2e-three-column div#e2e-about-box').should('have.length', 3);
   });
 
   it('deletes Three Column component correctly', () => {
