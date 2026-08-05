@@ -1525,7 +1525,7 @@
   "app.containers.Admin.projects.project.exampleSurveyMobilityCheckIn": "Point sur la mobilité",
   "app.containers.Admin.projects.project.exampleSurveySchoolRunTravel": "Enquête sur les trajets scolaires",
   "app.containers.Admin.projects.project.extras": "Extras",
-  "app.containers.Admin.projects.project.extrasEmptyDescription": "Des sondages qui se déroulent en dehors de votre calendrier — par exemple :",
+  "app.containers.Admin.projects.project.extrasEmptyDescription": "Des enquêtes menées en parallèle du calendrier du projet, par exemple :",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": "Puisqu'un dossier a été sélectionné, vous ne pouvez pas ajouter ce projet à un espace. Le projet sera dans le même espace que le dossier.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Veuillez sélectionner un espace.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Espace",

@@ -7949,9 +7949,24 @@
     "verified_at": "2026-08-05T13:28:59.316810Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.exampleSurveyMobilityCheckIn": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:53:13.775492Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.exampleSurveySchoolRunTravel": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:53:13.775492Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.extras": {
     "state": "verified",
     "verified_at": "2026-07-22T19:53:51.413054Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.extrasEmptyDescription": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:53:13.775492Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.disabledTooltip": {
