@@ -193,6 +193,7 @@ ga-IE:
       new_phone_confirmation: Cód deimhnithe gutháin nua
       official_feedback_on_idea_you_follow: Nuashonrú ar ionchur a leanann tú
       password_reset: Athshocrú pasfhocail
+      phone_confirmation: Cód deimhnithe gutháin
       project_folder_moderation_rights_received: Fuarthas cearta bainisteoir fillteán
       project_manager_rights_received: Cearta bainisteora tionscadail faighte
       project_moderation_rights_received: Cearta modhnóireachta tionscadail faighte
@@ -550,6 +551,8 @@ ga-IE:
       preheader: Athshocraigh do phasfhocal do %{organizationName}
       subject: '%{organizationName}: Athshocraigh do phasfhocal'
       title: Roghnaigh pasfhocal nua
+    phone_confirmation:
+      sms_body: Is é do chód deimhnithe ná %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

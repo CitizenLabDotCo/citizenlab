@@ -77,6 +77,7 @@ class Permission < ApplicationRecord
   validate :validate_require_confirmed_phone_number
   validate :validate_authentication_method_present
   validate :validate_verification_expiry
+  validate :validate_confirmed_email_expiry
   validate :validate_confirmed_phone_number_expiry
   validate :validate_permitted_by_everyone
   validates :user_data_collection, inclusion: { in: %w[all_data demographics_only anonymous] }
@@ -227,6 +228,17 @@ class Permission < ApplicationRecord
       :verification_expiry,
       :verification_expiry_cannot_be_set,
       message: 'Verification expiry can only be set when verification is required.'
+    )
+  end
+
+  def validate_confirmed_email_expiry
+    return if confirmed_email_expiry.nil?
+    return if require_confirmed_email || !confirmed_email_expiry_changed?
+
+    errors.add(
+      :confirmed_email_expiry,
+      :confirmed_email_expiry_cannot_be_set,
+      message: 'Confirmed email expiry can only be set when a confirmed email is required.'
     )
   end
 

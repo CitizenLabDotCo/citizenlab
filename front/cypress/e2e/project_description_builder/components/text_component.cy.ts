@@ -21,11 +21,8 @@ describe('Project description builder Text component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
-        });
+        cy.apiToggleProjectDescriptionBuilder({ projectId });
+        cy.visit(`/admin/project-page-builder/projects/${projectId}`);
       });
     });
   });
@@ -42,11 +39,13 @@ describe('Project description builder Text component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-project-page-body', {
       position: 'inside',
     });
 
-    cy.get('div.e2e-text-box').click();
+    // The seeded layout already contains text widgets, so target the dropped one.
+    cy.get('div.e2e-text-box').should('have.length', 3);
+    cy.get('div.e2e-text-box').first().click();
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Edited text.', { force: true });
 
@@ -61,9 +60,9 @@ describe('Project description builder Text component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
-    cy.get('.e2e-text-box').click();
+    cy.contains('.e2e-text-box', 'Edited text.').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');

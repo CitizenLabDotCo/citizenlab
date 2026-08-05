@@ -293,7 +293,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'everyone',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},
@@ -337,7 +339,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: ['confirmation']
+                missing_user_attributes: [],
+                email_action_required: 'confirm_email',
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: { birthyear: 'required', extra_field: 'required' },
@@ -378,7 +382,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: %w[last_name password]
+                missing_user_attributes: %w[last_name password],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {
@@ -414,7 +420,9 @@ resource 'Permissions' do
             requirements: {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},

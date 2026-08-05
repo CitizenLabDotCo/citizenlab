@@ -224,14 +224,14 @@ context 'clave_unica verification' do
 
         headers = { 'Authorization' => authorization_header(user) }
 
-        post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
+        post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
         expect(user.active?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(1)
 
-        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
+        post '/web_api/v1/user/confirm_code_new_email', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
@@ -246,15 +246,15 @@ context 'clave_unica verification' do
         user = User.order(created_at: :asc).last
         headers = { 'Authorization' => authorization_header(user) }
 
-        post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: '1@example.org' } }, headers: headers
+        post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: '1@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: '1@example.org' })
 
-        post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: '2@example.org' } }, headers: headers
+        post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: '2@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: '2@example.org' })
 
-        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
+        post '/web_api/v1/user/confirm_code_new_email', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
         expect(user).to have_attributes({ email: '2@example.org' })

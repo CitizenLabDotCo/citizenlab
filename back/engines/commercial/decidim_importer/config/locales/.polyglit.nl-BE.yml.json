@@ -1,0 +1,32 @@
+{
+  "decidim_importer.accountability_progress": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:15:23.494383Z",
+    "verified_by": "Luuc"
+  },
+  "decidim_importer.accountability_status": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:15:23.494383Z",
+    "verified_by": "Luuc"
+  },
+  "decidim_importer.assemblies": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:15:23.494383Z",
+    "verified_by": "Luuc"
+  },
+  "decidim_importer.blog": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:15:23.494383Z",
+    "verified_by": "Luuc"
+  },
+  "decidim_importer.consultations": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:15:23.494383Z",
+    "verified_by": "Luuc"
+  },
+  "decidim_importer.documents_to_consult": {
+    "state": "verified",
+    "verified_at": "2026-07-29T21:15:23.494383Z",
+    "verified_by": "Luuc"
+  }
+}

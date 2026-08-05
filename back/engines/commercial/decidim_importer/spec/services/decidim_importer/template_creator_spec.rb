@@ -165,10 +165,10 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(page.enabled).to be(true)
       expect(page.craftjs_json.dig('ROOT', 'type', 'resolvedName')).to eq('ProjectPageRoot')
 
-      # The imported description was injected into the page's description section.
-      section = page.craftjs_json.values
-        .find { |n| n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'ProjectDescriptionSection' }
-      expect(section['nodes']).not_to be_empty
+      # The imported description was injected into the page body.
+      body = page.craftjs_json['PROJECT_PAGE_BODY']
+      description_ids = body['nodes'] - %w[PROJECT_PAGE_PHASES PROJECT_PAGE_EVENTS]
+      expect(description_ids).not_to be_empty
     end
 
     it 'imports an accountability component as an ideation phase, with its results as ideas carrying a progress line' do
@@ -408,6 +408,17 @@ RSpec.describe DecidimImporter::TemplateCreator do
         # A comment whose Decidim author was filtered out is imported author-less.
         rejected = Idea.find_by(title_multiloc: { 'fr-FR' => 'Pistes cyclables' })
         expect(rejected.comments.first.author).to be_nil
+      end
+
+      it 'imports proposal notes as private internal comments on the idea' do
+        accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+
+        note = accepted.internal_comments.first
+        expect(note.body).to include('Needs legal review')
+        expect(note.publication_status).to eq('published')
+        expect(note.author).to eq(User.find_by(unique_code: 'decidim-user-2'))
+        # Dated from the export, not the import run.
+        expect(note.created_at.to_date.iso8601).to eq('2023-02-13')
       end
 
       it 'dates imported content from the export, not the import run' do

@@ -22,9 +22,7 @@ describe('Project description builder White space component', () => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
-          cy.visit(
-            `/admin/description-builder/projects/${projectId}/description`
-          );
+          cy.visit(`/admin/project-page-builder/projects/${projectId}`);
         });
       });
     });
@@ -42,12 +40,9 @@ describe('Project description builder White space component', () => {
       'saveProjectDescriptionBuilder'
     );
 
-    cy.get('#e2e-draggable-white-space').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
-    );
+    cy.get('#e2e-draggable-white-space').dragAndDrop('#e2e-project-page-body', {
+      position: 'inside',
+    });
     cy.get('#e2e-white-space-divider-toggle').wait(1000).click({ force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
@@ -64,7 +59,7 @@ describe('Project description builder White space component', () => {
     cy.intercept('**/content_builder_layouts/project_page/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
+    cy.visit(`/admin/project-page-builder/projects/${projectId}`);
 
     cy.get('.e2e-white-space').wait(1000).click({
       force: true,

@@ -88,6 +88,7 @@ describe('Budgeting project', () => {
   });
 
   it('can allocate the budget to ideas and show how much budget is left', () => {
+    cy.dockProjectCtaBar();
     cy.contains('Submit your budget');
     cy.contains('How to participate');
     // EUR is the default currency in E2E seed data
@@ -118,6 +119,7 @@ describe('Budgeting project', () => {
   });
 
   it('can submit the budget', () => {
+    cy.dockProjectCtaBar();
     cy.get('#e2e-voting-submit-button').should('be.visible');
     cy.wait(4000);
     cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
@@ -132,6 +134,7 @@ describe('Budgeting project', () => {
   });
 
   it('can modify the budget and remove an option', () => {
+    cy.dockProjectCtaBar();
     cy.get('#e2e-modify-votes')
       .should('be.visible')
       .should('contain', 'Modify your submission');

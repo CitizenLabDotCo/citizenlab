@@ -361,7 +361,8 @@ namespace :cl2_back do
         },
         sms: {
           enabled: true,
-          allowed: true
+          allowed: true,
+          use_test_mode: true
         }
       }
     )

@@ -5,7 +5,6 @@ import { SupportedLocale } from 'typings';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
@@ -20,6 +19,7 @@ import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableE
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
@@ -27,8 +27,6 @@ import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
-
 import FolderFiles, {
   folderFilesTitle,
 } from 'components/DescriptionBuilder/Widgets/FolderFiles';

@@ -65,6 +65,7 @@ module EmailCampaigns
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
         if AppConfiguration.instance.feature_activated?('sms')
           classes << Campaigns::SmsManual
+          classes << Campaigns::PhoneConfirmation
           classes << Campaigns::NewPhoneConfirmation
         end
         classes
@@ -88,7 +89,9 @@ module EmailCampaigns
     def consentable_campaign_types_for(user)
       consentable_types = Consentable.consentable_campaign_types(campaign_classes, user, self)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
-      consentable_types - disabled_types
+      # Transactional campaigns (e.g. the phone-confirmation OTP) record consent for
+      # audit but are never user-managed, so they stay out of the consent list.
+      consentable_types - disabled_types - hidden_from_admin_campaign_types
     end
 
     # called every hour

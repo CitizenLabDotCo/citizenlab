@@ -193,6 +193,7 @@ pt-BR:
       new_phone_confirmation: Novo código de confirmação de telefone
       official_feedback_on_idea_you_follow: Atualizar uma ideia que você segue
       password_reset: Redefinir a senha
+      phone_confirmation: Código de confirmação de telefone
       project_folder_moderation_rights_received: Direitos de moderação da pasta de projetos recebidos
       project_manager_rights_received: Direitos de gerente de projeto recebidos
       project_moderation_rights_received: Direitos de moderação de projetos recebidos
@@ -550,6 +551,8 @@ pt-BR:
       preheader: Redefina sua senha para %{organizationName}
       subject: '%{organizationName}: Redefina sua senha'
       title: Escolha uma nova senha
+    phone_confirmation:
+      sms_body: Seu código de confirmação é %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane

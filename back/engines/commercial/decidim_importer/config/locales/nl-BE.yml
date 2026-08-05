@@ -2,7 +2,10 @@ nl-BE:
   decidim_importer:
     accountability_progress: Voortgang
     accountability_status: Status
-    assemblies: Vergaderingen
+    assemblies: Bijeenkomsten
     blog: Blog
     consultations: Raadplegingen
+    debate_conclusions: Conclusies
+    debate_information_updates: Informatie-updates
+    debate_instructions: Instructies
     documents_to_consult: Raadplegingsdocumenten

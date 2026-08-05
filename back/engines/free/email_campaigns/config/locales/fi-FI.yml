@@ -193,6 +193,7 @@ fi-FI:
       new_phone_confirmation: Uusi puhelinnumeron vahvistuskoodi
       official_feedback_on_idea_you_follow: Päivitä ajatus, jota seuraat
       password_reset: Salasanan nollaus
+      phone_confirmation: Puhelimen vahvistuskoodi
       project_folder_moderation_rights_received: Kansionhallintaoikeudet vastaanotettu
       project_manager_rights_received: Projektipäällikön oikeudet vastaanotettu
       project_moderation_rights_received: Projektin moderointioikeudet saatu
@@ -550,6 +551,8 @@ fi-FI:
       preheader: Nollaa salasanasi organisaatiolle %{organizationName}
       subject: '%{organizationName}: Nollaa salasanasi'
       title: Valitse uusi salasana
+    phone_confirmation:
+      sms_body: Vahvistuskoodisi on %{code}.
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
