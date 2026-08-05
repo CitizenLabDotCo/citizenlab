@@ -693,6 +693,7 @@
   "app.components.Sharing.shareViaMessenger": "Messenger ile paylaş",
   "app.components.Sharing.shareViaWhatsApp": "WhatsApp ile paylaş",
   "app.components.SideModal.closeButtonAria": "Kapat",
+  "app.components.SmsConsent.smsConfirmationDisclosure": "Telefon numaranızı sağlayarak, belirtilen numaraya SMS ile tek seferlik bir onay kodu almayı kabul etmiş olursunuz. Mesaj ve veri ücretleri uygulanabilir. {termsLink} ve {privacyLink} sayfalarını görüntüleyin.",
   "app.components.StatusModule.futurePhase": "Henüz başlamamış bir aşamayı görüntülüyorsunuz. Aşama başladığında katılabileceksiniz.",
   "app.components.StatusModule.modifyYourSubmission1": "Gönderinizi değiştirin",
   "app.components.StatusModule.submittedUntil3": "Oyunuzu şu tarihe kadar verebilirsiniz",

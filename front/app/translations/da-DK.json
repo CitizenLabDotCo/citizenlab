@@ -693,6 +693,7 @@
   "app.components.Sharing.shareViaMessenger": "Del via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Del med WhatsApp",
   "app.components.SideModal.closeButtonAria": "Luk",
+  "app.components.SmsConsent.smsConfirmationDisclosure": "Ved at oplyse dit telefonnummer accepterer du at modtage en engangsbekræftelseskode via SMS på det oplyste nummer. Besked- og datatakster kan forekomme. Se {termsLink} og {privacyLink}.",
   "app.components.StatusModule.futurePhase": "Du ser på en fase, der ikke er startet endnu. Du vil kunne deltage, når fasen starter.",
   "app.components.StatusModule.modifyYourSubmission1": "Ændr din indsendelse",
   "app.components.StatusModule.submittedUntil3": "Din stemme kan afgives indtil",

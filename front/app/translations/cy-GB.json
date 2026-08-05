@@ -693,6 +693,7 @@
   "app.components.Sharing.shareViaMessenger": "Rhannu trwy Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Rhannu trwy WhatsApp",
   "app.components.SideModal.closeButtonAria": "Cau",
+  "app.components.SmsConsent.smsConfirmationDisclosure": "Drwy ddarparu eich rhif ffôn, rydych chi'n cytuno i dderbyn cod cadarnhau un tro trwy SMS i'r rhif a ddarparwyd. Gall cyfraddau negeseuon a data fod yn berthnasol. Gweld {termsLink} a {privacyLink}.",
   "app.components.StatusModule.futurePhase": "Rydych yn edrych ar gyfnod nad yw wedi dechrau eto. Byddwch yn gallu cymryd rhan pan fydd y cyfnod yn dechrau.",
   "app.components.StatusModule.modifyYourSubmission1": "Addasu eich cyflwyniad",
   "app.components.StatusModule.submittedUntil3": "Efallai y bydd eich pleidlais yn cael ei chyflwyno tan",

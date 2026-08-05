@@ -693,6 +693,7 @@
   "app.components.Sharing.shareViaMessenger": "Udostępnij za pomocą Messengera",
   "app.components.Sharing.shareViaWhatsApp": "Udostępniaj przez WhatsApp",
   "app.components.SideModal.closeButtonAria": "Zamknij",
+  "app.components.SmsConsent.smsConfirmationDisclosure": "Podając swój numer telefonu, wyrażasz zgodę na otrzymanie jednorazowego kodu potwierdzającego SMS-em na podany numer. Mogą obowiązywać opłaty za wiadomości i przesyłanie danych. Zobacz {termsLink} i {privacyLink}.",
   "app.components.StatusModule.futurePhase": "Oglądasz fazę, która jeszcze się nie rozpoczęła. Będziesz mógł wziąć w niej udział po jej rozpoczęciu.",
   "app.components.StatusModule.modifyYourSubmission1": "Zmodyfikuj swoje zgłoszenie",
   "app.components.StatusModule.submittedUntil3": "Twój głos może zostać oddany do",

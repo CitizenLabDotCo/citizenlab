@@ -693,6 +693,7 @@
   "app.components.Sharing.shareViaMessenger": "میسنجر کے ذریعے شیئر کریں۔",
   "app.components.Sharing.shareViaWhatsApp": "واٹس ایپ کے ذریعے شیئر کریں۔",
   "app.components.SideModal.closeButtonAria": "بند",
+  "app.components.SmsConsent.smsConfirmationDisclosure": "اپنا فون نمبر فراہم کر کے، آپ فراہم کردہ نمبر پر بذریعہ ایس ایم ایس ایک بار استعمال ہونے والا تصدیقی کوڈ وصول کرنے پر اتفاق کرتے ہیں۔ میسج اور ڈیٹا کے چارجز لاگو ہو سکتے ہیں۔ {termsLink} اور {privacyLink} دیکھیں۔",
   "app.components.StatusModule.futurePhase": "آپ ایک ایسا مرحلہ دیکھ رہے ہیں جو ابھی شروع نہیں ہوا ہے۔ مرحلہ شروع ہونے پر آپ شرکت کر سکیں گے۔",
   "app.components.StatusModule.modifyYourSubmission1": "اپنی جمع کرانے میں ترمیم کریں۔",
   "app.components.StatusModule.submittedUntil3": "آپ کا ووٹ تک جمع کرایا جا سکتا ہے۔",

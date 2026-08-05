@@ -693,6 +693,7 @@
   "app.components.Sharing.shareViaMessenger": "Per Meddenger deelen",
   "app.components.Sharing.shareViaWhatsApp": "Per WhatsApp deelen",
   "app.components.SideModal.closeButtonAria": "Zoumaachen",
+  "app.components.SmsConsent.smsConfirmationDisclosure": "Andeem Dir Är Telefonsnummer ugitt, erkläert Dir Iech averstanen, en eemolege Bestätegungscode per SMS op déi uginn Nummer ze kréien. Et kënne Käschte fir SMSen an Daten ufalen. Kuckt d'{termsLink} an d'{privacyLink}.",
   "app.components.StatusModule.futurePhase": "Dir kuckt eng Phase déi nach net ugefaang huet. Dir kënnt matmaachen wann d'Phase ufänkt.",
   "app.components.StatusModule.modifyYourSubmission1": "Ännert Är Soumissioun",
   "app.components.StatusModule.submittedUntil3": "Dir kënnt wielen bis den",

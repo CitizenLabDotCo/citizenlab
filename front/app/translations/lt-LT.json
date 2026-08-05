@@ -693,6 +693,7 @@
   "app.components.Sharing.shareViaMessenger": "Dalytis per \"Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Dalytis per \"WhatsApp",
   "app.components.SideModal.closeButtonAria": "Uždaryti",
+  "app.components.SmsConsent.smsConfirmationDisclosure": "Pateikdami savo telefono numerį, sutinkate nurodytu numeriu gauti vienkartinį patvirtinimo kodą SMS žinute. Gali būti taikomi mokesčiai už žinutes ir duomenų perdavimą. Peržiūrėkite {termsLink} ir {privacyLink}.",
   "app.components.StatusModule.futurePhase": "Peržiūrite dar neprasidėjusį etapą. Galėsite dalyvauti, kai etapas prasidės.",
   "app.components.StatusModule.modifyYourSubmission1": "Pakeiskite pateiktą informaciją",
   "app.components.StatusModule.submittedUntil3": "Jūsų balsas gali būti pateiktas iki",

@@ -693,6 +693,7 @@
   "app.components.Sharing.shareViaMessenger": "Condividi via Messenger",
   "app.components.Sharing.shareViaWhatsApp": "Condividi via WhatsApp",
   "app.components.SideModal.closeButtonAria": "Chiudere",
+  "app.components.SmsConsent.smsConfirmationDisclosure": "Fornendo il tuo numero di telefono, accetti di ricevere un codice di conferma monouso via SMS al numero indicato. Potrebbero essere applicati i costi previsti per messaggi e dati. Consulta i {termsLink} e l'{privacyLink}.",
   "app.components.StatusModule.futurePhase": "Stai visualizzando una fase che non è ancora iniziata. Potrai partecipare quando la fase inizierà.",
   "app.components.StatusModule.modifyYourSubmission1": "Modifica il tuo voto",
   "app.components.StatusModule.submittedUntil3": "Il tuo voto può essere inviato fino al",
