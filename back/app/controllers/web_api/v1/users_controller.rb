@@ -391,7 +391,7 @@ class WebApi::V1::UsersController < ApplicationController
     # automatically resend the code, because otherwise we
     # might too easily reach the retry limit. So they will
     # have to request it themselves
-    if user.email_confirmation.code_reset_count == 0
+    if (user.email_confirmation&.code_reset_count || 0) == 0
       RequestEmailConfirmationCodeJob.perform_now(user)
     end
   end

@@ -63,7 +63,7 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
   context 'confirmed users with no password' do
     let(:user) do
       user = create(:unconfirmed_user)
-      user.email_confirmation.confirm!
+      user.find_or_create_confirmation(:email_confirmation).confirm!
       user
     end
 

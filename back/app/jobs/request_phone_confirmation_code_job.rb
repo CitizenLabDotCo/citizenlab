@@ -6,12 +6,11 @@ class RequestPhoneConfirmationCodeJob < ApplicationJob
   def run(user)
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_phone: nil })
 
-    confirmation = user.phone_confirmation
+    confirmation = user.find_or_create_confirmation(:phone_confirmation)
 
     # Issue (and commit) the code before delivering it - see
     # RequestEmailConfirmationCodeJob for why delivery stays out of the transaction.
     ActiveRecord::Base.transaction do
-      confirmation ||= user.create_phone_confirmation!
       confirmation.reset_code!
       confirmation.update!(code_sent_at: Time.zone.now)
     end
