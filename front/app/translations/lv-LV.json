@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Tālruņa numura atjaunināšana ir atcelta.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Lai atjauninātu savu tālruņa numuru, lūdzu, sāciet procesu no jauna.",
   "app.containers.PhoneChange.privacyLinkText": "Privātuma politika",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Noklikšķinot uz Iesniegt, jūs piekrītat saņemt vienreizēju apstiprinājuma kodu ar SMS uz norādīto numuru. Var tikt piemērota maksa par ziņojumiem un datu pārraidi. Skatīt {termsLink} un {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Es vēlos saņemt arī jaunumus un kampaņu ziņojumus ar SMS starpniecību. Jūs varat atteikties jebkurā laikā.",
   "app.containers.PhoneChange.submitButton": "Iesniegt",
   "app.containers.PhoneChange.termsLinkText": "Lietošanas noteikumi",

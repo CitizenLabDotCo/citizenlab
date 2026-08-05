@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "تم إلغاء تحديث نمرة التيليفون.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "باش تحدّث نمرة التيليفون ديالك، عفاك عاود العملية من اللول.",
   "app.containers.PhoneChange.privacyLinkText": "سياسة الخصوصية",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "بالضغط على \"إرسال\"، فإنك توافق على تلقي رمز تأكيد لمرة واحدة عبر رسالة نصية (SMS) على الرقم المقدم. قد تُطبق رسوم على الرسائل والبيانات. اطلع على {termsLink} و {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "أرغب أيضاً في تلقي المستجدات ورسائل الحملات عبر الرسائل النصية (SMS). يمكنك إلغاء الاشتراك في أي وقت.",
   "app.containers.PhoneChange.submitButton": "إرسال",
   "app.containers.PhoneChange.termsLinkText": "الشروط",

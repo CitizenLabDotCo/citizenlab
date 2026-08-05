@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "D'Aktualiséierung vun der Telefonsnummer gouf ofgebrach.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Fir Är Telefonsnummer ze aktualiséieren, start wgl. de Prozess nei.",
   "app.containers.PhoneChange.privacyLinkText": "Dateschutzbestëmmungen",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Andeems Dir op „Abschécken“ klickt, sidd Dir averstanen, en eemolege Bestätegungscode iwwer SMS op déi uginn Nummer ze kréien. Et kënne Käschte fir SMSen an Dateniwwerdroung ufalen. Kuckt d' {termsLink} an d' {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Ech wëll och gären Updates a Campagnemeldungen iwwer SMS kréien. Dir kënnt Iech zu all Moment ofmellen.",
   "app.containers.PhoneChange.submitButton": "Ofschécken",
   "app.containers.PhoneChange.termsLinkText": "Notzungsbedéngungen",

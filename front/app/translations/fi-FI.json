@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Puhelinnumeron päivitys on peruttu.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Päivittääksesi puhelinnumerosi, aloita prosessi alusta.",
   "app.containers.PhoneChange.privacyLinkText": "Tietosuojaseloste",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Napsauttamalla Lähetä hyväksyt, että sinulle lähetetään kertakäyttöinen vahvistuskoodi tekstiviestillä annettuun numeroon. Viesti- ja tiedonsiirtomaksuja saatetaan periä. Lue {termsLink} ja {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Haluaisin myös vastaanottaa päivityksiä ja kampanjaviestejä tekstiviestitse. Voit perua suostumuksesi milloin tahansa.",
   "app.containers.PhoneChange.submitButton": "Lähetä",
   "app.containers.PhoneChange.termsLinkText": "Käyttöehdot",

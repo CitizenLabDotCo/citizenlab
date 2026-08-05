@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Se ha cancelado la actualización del número de teléfono.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Para actualizar tu número de teléfono, reinicia el proceso.",
   "app.containers.PhoneChange.privacyLinkText": "Política de privacidad",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Al hacer clic en Enviar, aceptas recibir un código de confirmación único por SMS en el número proporcionado. Se pueden aplicar tarifas de mensajes y datos. Consulta las {termsLink} y la {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "También me gustaría recibir actualizaciones y mensajes de campaña por SMS. Puedes darte de baja en cualquier momento.",
   "app.containers.PhoneChange.submitButton": "Enviar",
   "app.containers.PhoneChange.termsLinkText": "Condiciones",

@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Cealaíodh nuashonrú na huimhreach teileafóin.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Chun d'uimhir theileafóin a nuashonrú, atosaigh an próiseas le do thoil.",
   "app.containers.PhoneChange.privacyLinkText": "Polasaí Príobháideachais",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Trí chliceáil ar Cuir isteach, aontaíonn tú cód deimhnithe aonuaire a fháil trí SMS ag an uimhir a cuireadh ar fáil. D’fhéadfadh rátaí teachtaireachtaí agus sonraí a bheith i gceist. Féach ar {termsLink} agus {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Ba mhaith liom nuashonruithe agus teachtaireachtaí feachtais a fháil trí SMS freisin. Is féidir leat tarraingt siar am ar bith.",
   "app.containers.PhoneChange.submitButton": "Cuir isteach",
   "app.containers.PhoneChange.termsLinkText": "Téarmaí",

@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Opdatering af telefonnummer er blevet annulleret.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "For at opdatere dit telefonnummer skal du starte processen forfra.",
   "app.containers.PhoneChange.privacyLinkText": "Privatlivspolitik",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Ved at klikke på Indsend accepterer du at modtage en engangsbekræftelseskode via SMS på det angivne nummer. Takster for beskeder og data kan forekomme. Se {termsLink} og {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Jeg vil også gerne modtage opdateringer og kampagnebeskeder via SMS. Du kan til enhver tid afmelde dig.",
   "app.containers.PhoneChange.submitButton": "Indsend",
   "app.containers.PhoneChange.termsLinkText": "Vilkår",

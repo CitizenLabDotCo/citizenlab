@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "A telefonszám frissítése megszakítva.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "A telefonszám frissítéséhez indítsd újra a folyamatot.",
   "app.containers.PhoneChange.privacyLinkText": "Adatvédelmi irányelvek",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "A Küldés gombra kattintva elfogadja, hogy a megadott telefonszámra egyszeri megerősítő kódot kapjon SMS-ben. Üzenet- és adatforgalmi díjak merülhetnek fel. Tekintse meg a {termsLink} és {privacyLink} oldalakat.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Szeretnék frissítéseket és kampányüzeneteket is kapni SMS-ben. Bármikor leiratkozhat.",
   "app.containers.PhoneChange.submitButton": "Beküldés",
   "app.containers.PhoneChange.termsLinkText": "Felhasználási feltételek",

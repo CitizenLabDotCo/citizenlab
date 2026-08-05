@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Aktualizacja numeru telefonu została anulowana.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Aby zaktualizować numer telefonu, uruchom proces ponownie.",
   "app.containers.PhoneChange.privacyLinkText": "Polityka prywatności",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Klikając Wyślij, wyrażasz zgodę na otrzymanie jednorazowego kodu potwierdzającego SMS-em na podany numer. Mogą obowiązywać opłaty za przesyłanie wiadomości i danych. Zobacz {termsLink} i {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Chcę również otrzymywać aktualizacje i wiadomości dotyczące kampanii przez SMS. Możesz zrezygnować w dowolnym momencie.",
   "app.containers.PhoneChange.submitButton": "Wyślij",
   "app.containers.PhoneChange.termsLinkText": "Regulamin",

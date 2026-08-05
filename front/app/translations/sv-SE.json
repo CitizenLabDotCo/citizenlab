@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Uppdateringen av telefonnumret har avbrutits.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "För att uppdatera ditt telefonnummer, vänligen starta om processen.",
   "app.containers.PhoneChange.privacyLinkText": "Integritetspolicy",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Genom att klicka på Skicka godkänner du att ta emot en engångskod via SMS till det angivna numret. Meddelande- och dataavgifter kan tillkomma. Se {termsLink} och {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Jag vill även få uppdateringar och kampanjmeddelanden via SMS. Du kan avbryta när som helst.",
   "app.containers.PhoneChange.submitButton": "Skicka",
   "app.containers.PhoneChange.termsLinkText": "Villkor",

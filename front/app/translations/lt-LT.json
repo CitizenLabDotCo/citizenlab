@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Telefono numerio atnaujinimas atšauktas.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Norėdami atnaujinti telefono numerį, pradėkite procesą iš naujo.",
   "app.containers.PhoneChange.privacyLinkText": "Privatumo politika",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Spustelėdami „Pateikti“, sutinkate gauti vienkartinį patvirtinimo kodą SMS žinute nurodytu numeriu. Gali būti taikomi pranešimų ir duomenų perdavimo tarifai. Peržiūrėkite {termsLink} ir {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Taip pat norėčiau gauti naujienas ir kampanijų pranešimus SMS žinutėmis. Galite bet kada atsisakyti.",
   "app.containers.PhoneChange.submitButton": "Pateikti",
   "app.containers.PhoneChange.termsLinkText": "Sąlygos",

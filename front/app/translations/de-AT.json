@@ -2136,7 +2136,6 @@
   "app.containers.PhoneChange.phoneUpdateCancelled": "Die Aktualisierung der Telefonnummer wurde abgebrochen.",
   "app.containers.PhoneChange.phoneUpdateCancelledDescription": "Um deine Telefonnummer zu aktualisieren, starte den Vorgang bitte erneut.",
   "app.containers.PhoneChange.privacyLinkText": "Datenschutzerklärung",
-  "app.containers.PhoneChange.smsConfirmationDisclosure2": "Indem du auf „Absenden“ klickst, erklärst du dich damit einverstanden, einen einmaligen Bestätigungscode per SMS an die angegebene Nummer zu erhalten. Es können Gebühren für Nachrichten und Daten anfallen. Siehe {termsLink} und {privacyLink}.",
   "app.containers.PhoneChange.smsManualCampaignConsentLabel": "Ich möchte außerdem Aktualisierungen und Kampagnennachrichten per SMS erhalten. Du kannst dich jederzeit wieder abmelden.",
   "app.containers.PhoneChange.submitButton": "Absenden",
   "app.containers.PhoneChange.termsLinkText": "Nutzungsbedingungen",
