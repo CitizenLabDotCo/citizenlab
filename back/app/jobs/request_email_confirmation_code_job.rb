@@ -6,7 +6,7 @@ class RequestEmailConfirmationCodeJob < ApplicationJob
   def run(user)
     LogActivityJob.perform_later(user, 'requested_confirmation_code', user, Time.now.to_i, payload: { new_email: nil })
 
-    confirmation = user.email_confirmation
+    confirmation = user.find_or_create_confirmation(:email_confirmation)
 
     # Issue (and commit) the code before delivering it. Delivery renders and sends
     # an email, which can take a while; holding the row lock across it would make
