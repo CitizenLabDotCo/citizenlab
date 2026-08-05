@@ -85,13 +85,11 @@ export const doesNotMeetGroupCriteria = (
   return requirements.group_membership;
 };
 
-// The screen that resolves each action. `provide_new_email` is null because the
-// email input lives on the built-in step (see requiredBuiltInFields).
 const ACTION_STEPS: Record<ActionRequiredForAccess, Step | null> = {
   authenticate: 'pre-auth:start',
   confirm_email: 'pre-auth:unauthenticated-confirmation',
   reconfirm_email: 'confirmation:reconfirm-email',
-  provide_new_email: null,
+  provide_new_email: 'missing-data:built-in',
   confirm_new_email: 'confirmation:new_email',
   confirm_phone: 'confirmation:reconfirm-phone',
   reconfirm_phone: 'confirmation:reconfirm-phone',
