@@ -21,9 +21,22 @@ class Invites::ImportRunner
     # shown the error. Record the failure, then re-raise so it is not swallowed.
     # A killed worker leaves nothing to rescue; that case is the timeout's alone.
     import&.update!(
-      result: { errors: [{ error: 'unexpected_invite_error' }] },
+      result: { errors: [{ error: error_key(import) }] },
       completed_at: Time.current
     )
     raise
+  end
+
+  private
+
+  # A failed count created nothing and sent nothing, so the admin can simply try
+  # again. A failed creation may have got part way, so they have to look before
+  # retrying. Different advice, different keys.
+  def error_key(import)
+    if import.job_type.include?('count_new_seats')
+      'unexpected_seats_count_error'
+    else
+      'unexpected_invite_error'
+    end
   end
 end

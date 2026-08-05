@@ -99,7 +99,7 @@ RSpec.describe Invites::CountNewSeatsJob do
 
         invites_import.reload
         expect(invites_import.completed_at).to be_present
-        expect(invites_import.result).to eq('errors' => [{ 'error' => 'unexpected_invite_error' }])
+        expect(invites_import.result).to eq('errors' => [{ 'error' => 'unexpected_seats_count_error' }])
       end
     end
   end

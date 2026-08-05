@@ -37,6 +37,9 @@ import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 import Error from 'components/UI/Error';
+// The creation timeout and a creation job that errors mean the same thing to the
+// admin, so they share one string rather than keeping two identical copies.
+import errorMessages from 'components/UI/Error/messages';
 import Tabs from 'components/UI/Tabs';
 import Warning from 'components/UI/Warning';
 
@@ -495,7 +498,7 @@ const Invitations = () => {
               ? // The count rolls its work back, so nothing was sent whatever
                 // state it is in. A creation job may yet run.
                 messages.processingNotStartedError
-              : messages.processingTimeoutError)}
+              : errorMessages.unexpected_invite_error)}
           />
         );
         resetQueryData();

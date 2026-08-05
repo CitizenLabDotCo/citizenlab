@@ -186,11 +186,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
-  processingTimeoutError: {
-    id: 'app.containers.Admin.Invitations.processingTimeoutError',
-    defaultMessage:
-      'Something went wrong while processing your invitations. Check the "All invitations" tab before trying again.',
-  },
   processingNotStartedError: {
     id: 'app.containers.Admin.Invitations.processingNotStartedError',
     defaultMessage:

@@ -37,7 +37,18 @@ RSpec.describe Invites::ImportRunner do
 
       invites_import.reload
       expect(invites_import.completed_at).to be_present
-      expect(invites_import.result).to eq('errors' => [{ 'error' => 'unexpected_invite_error' }])
+      # A count creates and sends nothing, so the admin can just try again.
+      expect(invites_import.result).to eq('errors' => [{ 'error' => 'unexpected_seats_count_error' }])
+    end
+
+    # A creation may have got part way, so the admin is told to look before retrying.
+    it 'reports a failed creation under its own error key' do
+      create_import = create(:invites_import, job_type: 'bulk_create', importer: create(:admin))
+
+      expect { described_class.new(create_import.id).run { raise ActiveRecord::StatementInvalid, 'boom' } }
+        .to raise_error(ActiveRecord::StatementInvalid)
+
+      expect(create_import.reload.result).to eq('errors' => [{ 'error' => 'unexpected_invite_error' }])
     end
 
     it 'raises when the import no longer exists' do
