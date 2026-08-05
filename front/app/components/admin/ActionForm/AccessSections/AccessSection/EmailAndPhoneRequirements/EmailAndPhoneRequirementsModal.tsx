@@ -148,7 +148,6 @@ const EmailAndPhoneRequirementsModal = ({
                 width="16px"
                 height="16px"
                 mr="8px"
-                flexShrink={0}
                 fill={colors.coolGrey600}
                 ariaHidden={false}
                 title={formatMessage(CHANNEL_LABELS[channel])}
