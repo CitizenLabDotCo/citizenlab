@@ -57,11 +57,26 @@ const pendingCreateImport = {
   },
 };
 
+const failedCreateImport = {
+  data: {
+    id: 'create-import-id',
+    type: 'invites_import',
+    attributes: {
+      job_type: 'bulk_create',
+      completed_at: '2026-08-04T10:05:00Z',
+      result: { errors: [{ error: 'no_invites_specified' }] },
+    },
+  },
+};
+
 // Swapped between assertions to stand in for what the polling hook has last seen.
 let mockInvitesImport: any;
 
-jest.mock('api/invites/useInvitesImport', () => () => ({
-  data: mockInvitesImport,
+// The real hook keys its query on the import id, so clearing that id leaves it
+// with no cached entry to return. Modelling that matters: the container reads
+// the job type back off this data to decide which stage it is waiting on.
+jest.mock('api/invites/useInvitesImport', () => (params: any) => ({
+  data: params.importId ? mockInvitesImport : undefined,
   resetQueryData: jest.fn(),
 }));
 
@@ -88,16 +103,23 @@ jest.mock('api/invites/useBulkInviteXLSX', () => () => ({
 jest.mock('hooks/useAppConfigurationLocales', () => () => ['en']);
 
 let mockSeatsExceeded = false;
+let mockSeatsCheckLoading = false;
 
-jest.mock('hooks/useExceedsSeats', () => () => ({
-  loading: false,
-  checkIfSeatsExceeded: () => ({
-    admin: mockSeatsExceeded,
-    moderator: false,
-    any: mockSeatsExceeded,
-    all: false,
-  }),
-}));
+jest.mock(
+  'hooks/useExceedsSeats',
+  () => () =>
+    mockSeatsCheckLoading
+      ? { loading: true }
+      : {
+          loading: false,
+          checkIfSeatsExceeded: () => ({
+            admin: mockSeatsExceeded,
+            moderator: false,
+            any: mockSeatsExceeded,
+            all: false,
+          }),
+        }
+);
 
 // The seats modal's contents are not under test here, only which of its two
 // screens it opens on.
@@ -149,6 +171,7 @@ describe('Invitations timeout', () => {
     jest.useFakeTimers();
     jest.clearAllMocks();
     mockSeatsExceeded = false;
+    mockSeatsCheckLoading = false;
   });
 
   afterEach(() => {
@@ -238,6 +261,53 @@ describe('Invitations timeout', () => {
     });
 
     expect(screen.getByTestId('confirm-button-text')).toBeInTheDocument();
+    expect(screen.queryByText('ALL DONE')).not.toBeInTheDocument();
+  });
+
+  // When the seats data has not loaded, `checkNewSeatsResponse` returns early
+  // without submitting anything, leaving `processing` set with no import id.
+  // Nothing ran, so this is the seat count budget and the seat count message.
+  it('treats a bailed-out seats check as the seat count stage', async () => {
+    mockSeatsCheckLoading = true;
+    mockInvitesImport = pendingCountImport;
+    const { rerender } = await submitManualInvite();
+
+    mockInvitesImport = completedCountImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+    expect(mockBulkInvite).not.toHaveBeenCalled();
+
+    advance(COUNT_TIMEOUT_MS);
+    expect(screen.getByText(NOT_SENT_MESSAGE)).toBeInTheDocument();
+    expect(screen.queryByText(TIMED_OUT_MESSAGE)).not.toBeInTheDocument();
+  });
+
+  // The modal switches itself to a success screen the moment the admin
+  // confirms, so a creation job that comes back with errors has to take it
+  // down — otherwise the error lands on the form behind an "all done" screen.
+  it('closes the success modal when the creation job reports an error', async () => {
+    mockSeatsExceeded = true;
+    mockInvitesImport = undefined;
+    const { rerender } = await submitManualInvite();
+
+    mockInvitesImport = completedCountImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+    await act(async () => {
+      fireEvent.click(await screen.findByTestId('confirm-button-text'));
+    });
+    expect(screen.getByText('ALL DONE')).toBeInTheDocument();
+
+    mockInvitesImport = failedCreateImport;
+    await act(async () => {
+      rerender(<Invitations />);
+    });
+
+    expect(
+      screen.getByText('Could not find any email addresses.')
+    ).toBeInTheDocument();
     expect(screen.queryByText('ALL DONE')).not.toBeInTheDocument();
   });
 });

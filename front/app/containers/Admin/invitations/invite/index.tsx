@@ -107,6 +107,11 @@ const Invitations = () => {
 
   // Variables to poll for import job status
   const [invitesImportId, setInvitesImportId] = useState<string | null>(null);
+  // Which job the form is waiting on, set where that job is submitted. Not read
+  // back off the polled import: the import id is cleared before the seat count
+  // is acted on, and the polling query is keyed on that id, so by then there is
+  // nothing left to read.
+  const [jobStage, setJobStage] = useState<'count' | 'create' | null>(null);
   const { data: invitesImport, resetQueryData } = useInvitesImport({
     importId: invitesImportId,
     enabled: !!invitesImportId,
@@ -148,6 +153,7 @@ const Invitations = () => {
       if (save && savedInviteOptions) {
         try {
           setProcessing(true);
+          setJobStage('create');
           const createJob = await bulkInviteXLSX(savedInviteOptions);
           setInvitesImportId(createJob.data.id);
           setSavedInviteOptions(null);
@@ -183,6 +189,7 @@ const Invitations = () => {
             // Save options for later use when creating invites after modal confirmation
             setSavedInviteOptions(inviteOptions);
 
+            setJobStage('count');
             const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
             setInvitesImportId(newSeats.data.id);
           }
@@ -220,6 +227,7 @@ const Invitations = () => {
       if (save && savedEmailOptions) {
         try {
           setProcessing(true);
+          setJobStage('create');
           const createJob = await bulkInviteEmails(savedEmailOptions);
           setInvitesImportId(createJob.data.id);
           setSavedEmailOptions(null);
@@ -255,6 +263,7 @@ const Invitations = () => {
             // Save options for later use when creating invites after modal confirmation
             setSavedEmailOptions(inviteOptions);
 
+            setJobStage('count');
             const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
             setInvitesImportId(newSeats.data.id);
           }
@@ -416,6 +425,11 @@ const Invitations = () => {
       setApiErrors(invitesImport.data.attributes.result.errors);
       setProcessing(false);
       setProcessed(false);
+      // Take the seats modal down rather than just hiding it: it switched to its
+      // success screen the moment the admin confirmed, and would otherwise sit
+      // on top of the error — and keep that screen for the next invite.
+      setShowModal(false);
+      setNewSeatsResponse(null);
     } else {
       // Success - reset UI state
       if (fileInputElement.current) {
@@ -441,9 +455,7 @@ const Invitations = () => {
   // set. After they confirm, the creation runs behind a modal already declaring
   // success, so it still needs watching.
   const awaitingJob = processing && (!!invitesImportId || !showModal);
-  // Undefined until the first poll, seconds before either timeout can fire.
-  const isCountStage =
-    invitesImport?.data.attributes.job_type.includes('count_new_seats');
+  const isCountStage = jobStage === 'count';
 
   // Keyed on `invitesImportId` so each stage gets a fresh budget. Deps must stay
   // primitive: a new `invitesImport` arrives every 5s and would restart the timer
