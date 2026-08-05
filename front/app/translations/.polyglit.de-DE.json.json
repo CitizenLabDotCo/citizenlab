@@ -10825,10 +10825,30 @@
     "verified_at": "2026-07-16T09:49:20.055315Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.PhoneChange.privacyLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.830967Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.PhoneChange.smsConfirmationDisclosure2": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.830967Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.830967Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-16T09:49:20.055315Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.PhoneChange.termsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-28T14:14:21.830967Z",
+    "verified_by": "Jelena"
   },
   "app.containers.PhoneChange.titleAddPhone": {
     "state": "verified",

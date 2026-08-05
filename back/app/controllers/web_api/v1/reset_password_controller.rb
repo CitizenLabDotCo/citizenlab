@@ -32,7 +32,7 @@ class WebApi::V1::ResetPasswordController < ApplicationController
 
       # Resetting the password also proves that the user has access to the email,
       # so we can confirm the user if they were pending confirmation.
-      @user.email_confirmation.confirm! if @user.confirmation_required?
+      @user.find_or_create_confirmation(:email_confirmation).confirm! if @user.confirmation_required?
 
       if @user.save
         render json: WebApi::V1::UserSerializer.new(

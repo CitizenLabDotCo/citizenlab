@@ -33,7 +33,7 @@ class RequestCodePolicy < ApplicationPolicy
     # An authenticated caller may only request a code for their own email.
     return false if user && user != record
 
-    return false if record.email_confirmation.code_reset_count >= max_retries - 1
+    return false if code_reset_count(record.email_confirmation) >= max_retries - 1
 
     true
   end
@@ -41,7 +41,7 @@ class RequestCodePolicy < ApplicationPolicy
   # For authenticated users changing their email
   def request_code_new_email?
     return false if user.nil?
-    return false if user.new_email_confirmation.code_reset_count >= max_retries - 1
+    return false if code_reset_count(user.new_email_confirmation) >= max_retries - 1
 
     true
   end
@@ -53,7 +53,7 @@ class RequestCodePolicy < ApplicationPolicy
     return false unless app_configuration.feature_activated?('sms')
     return false if user.nil?
     return false if user.phone.blank?
-    return false if user.phone_confirmation.code_reset_count >= max_retries - 1
+    return false if code_reset_count(user.phone_confirmation) >= max_retries - 1
 
     true
   end
@@ -62,12 +62,16 @@ class RequestCodePolicy < ApplicationPolicy
   def request_code_new_phone?
     return false unless app_configuration.feature_activated?('sms')
     return false if user.nil?
-    return false if user.new_phone_confirmation.code_reset_count >= max_retries - 1
+    return false if code_reset_count(user.new_phone_confirmation) >= max_retries - 1
 
     true
   end
 
   private
+
+  def code_reset_count(confirmation)
+    confirmation&.code_reset_count || 0
+  end
 
   def app_configuration
     @app_configuration ||= AppConfiguration.instance

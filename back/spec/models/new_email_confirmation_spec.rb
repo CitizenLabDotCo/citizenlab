@@ -11,7 +11,7 @@ RSpec.describe NewEmailConfirmation do
       user.save!
 
       expect(user.confirmation_required?).to be true
-      user.new_email_confirmation.confirm!
+      user.find_or_create_confirmation(:new_email_confirmation).confirm!
       expect(user.confirmation_required?).to be false
       expect(user.email).to eq('test@email.com')
     end
@@ -20,7 +20,7 @@ RSpec.describe NewEmailConfirmation do
       email = 'test@email.com'
       user = create(:unconfirmed_user, email: email, new_email: email)
       expect(user.confirmation_required?).to be true
-      user.new_email_confirmation.confirm!
+      user.find_or_create_confirmation(:new_email_confirmation).confirm!
       expect(user.confirmation_required?).to be false
       expect(user.email).to eq(email)
     end

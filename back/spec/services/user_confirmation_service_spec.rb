@@ -68,6 +68,20 @@ RSpec.describe UserConfirmationService do
         expect(result.errors.details).to eq(code: [{ error: :invalid }])
       end
     end
+
+    context 'when no confirmation record exists' do
+      before do
+        user.confirmations.destroy_all
+        user.reload
+      end
+
+      it 'returns a code invalid error' do
+        result = service.public_send(method_name, user, '1234')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+    end
   end
 
   describe '#validate_and_confirm_email!' do
@@ -83,10 +97,10 @@ RSpec.describe UserConfirmationService do
     end
 
     it 'works when the user is already confirmed' do
-      user.email_confirmation.confirm!
+      user.find_or_create_confirmation(:email_confirmation).confirm!
       expect(user.confirmation_required?).to be false
       RequestEmailConfirmationCodeJob.perform_now(user)
-      user.reload.email_confirmation.confirm!
+      user.reload.find_or_create_confirmation(:email_confirmation).confirm!
       expect(user.confirmation_required?).to be false
     end
 

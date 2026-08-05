@@ -221,7 +221,6 @@ class User < ApplicationRecord
   has_one :phone_confirmation, dependent: :destroy
   has_one :new_phone_confirmation, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
-  after_create :create_confirmations
   before_destroy :destroy_baskets
 
   has_many :scheduled_admin_publications, class_name: 'AdminPublication', foreign_key: :scheduled_by_id, dependent: :nullify
@@ -379,7 +378,19 @@ class User < ApplicationRecord
       cosponsorships.exists?(status: 'accepted')
   end
 
+  def find_or_create_confirmation(association_name)
+    public_send(association_name) || create_confirmation!(association_name)
+  end
+
   private
+
+  # Concurrent requests race here; the savepoint lets the caller's transaction survive the losing insert.
+  def create_confirmation!(association_name)
+    transaction(requires_new: true) { public_send(:"create_#{association_name}!") }
+  rescue ActiveRecord::RecordNotUnique
+    association(association_name).reload
+    public_send(association_name)
+  end
 
   def validate_not_duplicate_new_email
     return unless new_email
@@ -542,13 +553,6 @@ class User < ApplicationRecord
     self.email_confirmed_at = Time.zone.now
     self.confirmation_required = false
     email_confirmation&.clear_code!
-  end
-
-  def create_confirmations
-    EmailConfirmation.create!(user: self)
-    NewEmailConfirmation.create!(user: self)
-    PhoneConfirmation.create!(user: self)
-    NewPhoneConfirmation.create!(user: self)
   end
 
   def remove_initiated_notifications
