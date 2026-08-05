@@ -96,9 +96,9 @@ export default defineMessages({
   },
 
   // ---- Availability ----
-  unavailable: {
-    id: `${scope}.unavailable`,
-    defaultMessage: 'Unavailable',
+  unavailableReason: {
+    id: `${scope}.unavailableReason`,
+    defaultMessage: 'Unavailable - {reason}',
   },
   needsPasswordLogin: {
     id: `${scope}.needsPasswordLogin`,

@@ -220,9 +220,9 @@ const EmailAndPhoneRequirementsModal = ({
                   </Text>
                   <Text as="span" m="0" fontSize="xs" color="coolGrey600">
                     {disabled
-                      ? `${formatMessage(
-                          messages.unavailable
-                        )} — ${formatMessage(reason)}`
+                      ? formatMessage(messages.unavailableReason, {
+                          reason: formatMessage(reason),
+                        })
                       : formatMessage(option.description)}
                   </Text>
                 </Box>
