@@ -434,9 +434,74 @@ resource 'Permissions' do
         end
       end
 
-      # context "'users' permission requiring a confirmed email OR a confirmed phone number" do
-        # TODO
-      # end
+      context "'users' permission requiring a confirmed email OR a confirmed phone number" do
+        include_context 'with stubbed SMS provider'
+
+        before do
+          @permission = @phase.permissions.first
+          @permission.update!(
+            permitted_by: 'users', 
+            email_and_phone_requirements: 'either_email_or_phone',
+            require_name: true,
+            require_password: false
+          )
+          create(:custom_field_gender, required: true)
+
+          @user = create(:user)
+          @user.update!(
+            first_name: 'Jack',
+            last_name: 'Doe',
+            password_digest: nil,
+            custom_field_values: { 'gender' => 'male' }
+          )
+          header_token_for @user
+        end
+
+        let(:action) { @permission.action }
+
+        example_request 'If user has only confirmed email: allow participation' do
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to eq true
+          expect(attributes[:disabled_reason]).to eq nil
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq nil
+        end
+
+        example 'If user has only confirmed phone number: allow participation' do
+          @user.update!(
+            email: nil,
+            email_confirmed_at: nil,
+            confirmation_required: true,
+            phone: '+14155678900',
+            phone_confirmed_at: Time.now
+          )
+          do_request
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to eq true
+          expect(attributes[:disabled_reason]).to eq nil
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq nil
+        end
+
+        example 'If user does not have either confirmed email or phone number: require one of them' do
+          @user.update!(
+            email: nil,
+            email_confirmed_at: nil,
+            confirmation_required: true
+          )
+
+          # This can only happen if user signs in with some kind of SSO method
+          # so to make the test a bit more realistic we add an identity
+          @user.identities << create(:facebook_identity, user: @user)
+
+          do_request
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to eq false
+          expect(attributes[:disabled_reason]).to eq 'user_missing_requirements'
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq 'provide_new_email'
+        end
+      end
     end
 
     get 'web_api/v1/permissions/:action/requirements' do
