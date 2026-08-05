@@ -32,7 +32,6 @@ export const checkMissingData = async (
     // duplicate it. Awaited on purpose: the code only exists once this resolves,
     // so returning earlier would show the code input for a code that hasn't been
     // generated yet, and a code submitted in that window is rejected as invalid.
-    // Failures are swallowed - the user falls back to the resend button.
     if (action === 'reconfirm_email') {
       await requestCodeEmail({ onlyIfFirstTime: true });
     }
