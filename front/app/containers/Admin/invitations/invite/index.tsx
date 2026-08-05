@@ -161,6 +161,7 @@ const Invitations = () => {
           const createJob = await bulkInviteXLSX(savedInviteOptions);
           setInvitesImportId(createJob.data.id);
           setSavedInviteOptions(null);
+          return true;
         } catch (errors) {
           const apiErrors = errors.errors;
           setApiErrors(apiErrors);
@@ -173,48 +174,39 @@ const Invitations = () => {
           setNewSeatsResponse(null);
           return false;
         }
-        return true; // Exit early, don't continue with validation checks
       }
 
-      const hasCorrectSelection = isString(selectedFileBase64);
+      if (!isString(selectedFileBase64)) return false;
 
-      if (hasCorrectSelection) {
-        try {
-          setProcessing(true);
-          setProcessed(false);
-          setApiErrors(null);
-          setFiletypeError(null);
-          setUnknownError(null);
+      try {
+        setProcessing(true);
+        setProcessed(false);
+        setApiErrors(null);
+        setFiletypeError(null);
+        setUnknownError(null);
 
-          if (isString(selectedFileBase64)) {
-            setSavedInviteOptions(null);
+        const inviteOptions = {
+          xlsx: selectedFileBase64,
+          ...bulkInvite,
+        };
 
-            const inviteOptions = {
-              xlsx: selectedFileBase64,
-              ...bulkInvite,
-            };
+        // Save options for later use when creating invites after modal confirmation
+        setSavedInviteOptions(inviteOptions);
 
-            // Save options for later use when creating invites after modal confirmation
-            setSavedInviteOptions(inviteOptions);
-
-            setJobStage('count');
-            const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
-            setInvitesImportId(newSeats.data.id);
-          }
-        } catch (errors) {
-          const apiErrors = errors.errors;
-
-          setApiErrors(apiErrors);
-          setUnknownError(
-            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-          );
-          setProcessing(false);
-          return false;
-        }
+        setJobStage('count');
+        const newSeats = await bulkInviteCountNewSeatsXLSX(inviteOptions);
+        setInvitesImportId(newSeats.data.id);
         return true;
-      }
+      } catch (errors) {
+        const apiErrors = errors.errors;
 
-      return false;
+        setApiErrors(apiErrors);
+        setUnknownError(
+          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+        );
+        setProcessing(false);
+        return false;
+      }
     },
     [
       selectedFileBase64,
@@ -243,6 +235,7 @@ const Invitations = () => {
           const createJob = await bulkInviteEmails(savedEmailOptions);
           setInvitesImportId(createJob.data.id);
           setSavedEmailOptions(null);
+          return true;
         } catch (errors) {
           const apiErrors = errors.errors;
           setApiErrors(apiErrors);
@@ -255,47 +248,38 @@ const Invitations = () => {
           setNewSeatsResponse(null);
           return false;
         }
-        return true; // Exit early, don't continue with validation checks
       }
 
-      const hasCorrectSelection = isString(selectedEmails);
+      if (selectedView !== 'manual' || !isString(selectedEmails)) return false;
 
-      if (hasCorrectSelection) {
-        try {
-          setProcessing(true);
-          setProcessed(false);
-          setApiErrors(null);
-          setFiletypeError(null);
-          setUnknownError(null);
+      try {
+        setProcessing(true);
+        setProcessed(false);
+        setApiErrors(null);
+        setFiletypeError(null);
+        setUnknownError(null);
 
-          if (selectedView === 'manual' && isString(selectedEmails)) {
-            setSavedEmailOptions(null);
+        const inviteOptions = {
+          emails: selectedEmails.split(',').map((item) => item.trim()),
+          ...bulkInvite,
+        };
 
-            const inviteOptions = {
-              emails: selectedEmails.split(',').map((item) => item.trim()),
-              ...bulkInvite,
-            };
+        // Save options for later use when creating invites after modal confirmation
+        setSavedEmailOptions(inviteOptions);
 
-            // Save options for later use when creating invites after modal confirmation
-            setSavedEmailOptions(inviteOptions);
-
-            setJobStage('count');
-            const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
-            setInvitesImportId(newSeats.data.id);
-          }
-        } catch (errors) {
-          const apiErrors = errors.errors;
-          setApiErrors(apiErrors);
-          setUnknownError(
-            !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
-          );
-          setProcessing(false);
-          return false;
-        }
+        setJobStage('count');
+        const newSeats = await bulkInviteCountNewSeatsEmails(inviteOptions);
+        setInvitesImportId(newSeats.data.id);
         return true;
+      } catch (errors) {
+        const apiErrors = errors.errors;
+        setApiErrors(apiErrors);
+        setUnknownError(
+          !apiErrors ? <FormattedMessage {...messages.unknownError} /> : null
+        );
+        setProcessing(false);
+        return false;
       }
-
-      return false;
     },
     [
       selectedEmails,
