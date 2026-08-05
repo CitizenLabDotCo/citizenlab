@@ -7,7 +7,6 @@ import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
-// Shown wherever a user submits a phone number that will receive a confirmation code by SMS.
 const PhoneConfirmationConsent = () => (
   <Text
     fontSize="s"

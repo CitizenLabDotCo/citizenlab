@@ -8,7 +8,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-// Opt-in to non-transactional SMS. Expects a `smsManualCampaignConsent` boolean on the enclosing form.
 const ManualCampaignConsent = () => {
   const { formatMessage } = useIntl();
 

@@ -1,6 +1,5 @@
 import { defineMessages } from 'react-intl';
 
-// The unchanged strings keep their original PhoneChange ids so their translations apply.
 export default defineMessages({
   smsConfirmationDisclosure: {
     id: 'app.components.SmsConsent.smsConfirmationDisclosure',

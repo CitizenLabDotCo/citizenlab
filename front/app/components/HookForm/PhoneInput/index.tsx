@@ -86,7 +86,6 @@ const PhoneInput = ({
             // so it ends up bundled only once.
             loadUtils={() => import('intl-tel-input/utils')}
             countrySearch={showSearch}
-            // intl-tel-input warns on undefined, so we fall back to its own "unset" values.
             onlyCountries={countries ? countries.map(toIso2) : null}
             initialCountry={defaultCountry ? toIso2(defaultCountry) : ''}
             value={field.value}
