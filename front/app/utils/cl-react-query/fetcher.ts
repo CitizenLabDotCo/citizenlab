@@ -151,6 +151,12 @@ async function fetcher({
       return null;
     }
 
+    // A bodyless 404 is a valid answer, not an unexpected response. Callers still
+    // get a rejection, but there's nothing here worth reporting.
+    if (response.status === 404) {
+      throw new Error('Not found');
+    }
+
     reportError('Unsupported case. No valid JSON.');
     throw new Error('Unsupported case. No valid JSON.');
   }

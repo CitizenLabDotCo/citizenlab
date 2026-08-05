@@ -8,6 +8,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import {
   isActionNotSupported,
   isFixableByAuthentication,
+  isIdeaNotInCurrentPhase,
 } from 'utils/actionDescriptors';
 
 import useLocalize from './useLocalize';
@@ -46,11 +47,14 @@ export default function useCustomAccessDeniedMessage({
   // group). Only fetch in that case — otherwise we'd issue a request (and an
   // extra re-render once it resolves) for every enabled button on the page.
   // Unsupported actions have no permission to explain, and asking for one 404s.
+  // Same for an idea outside the current phase: the phase we'd ask about isn't
+  // the one the reason came from.
   const enabled =
     !!phaseId &&
     !!disabledReason &&
     !isFixableByAuthentication(disabledReason) &&
-    !isActionNotSupported(disabledReason);
+    !isActionNotSupported(disabledReason) &&
+    !isIdeaNotInCurrentPhase(disabledReason);
 
   const { data: accessDenied } = useAccessDeniedExplanation(
     {

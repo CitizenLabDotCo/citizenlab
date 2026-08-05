@@ -1,6 +1,9 @@
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { reportError } from 'utils/loggingUtils';
 
 import fetcher from './fetcher';
+
+jest.mock('utils/loggingUtils', () => ({ reportError: jest.fn() }));
 
 const baseDataArray = {
   data: [
@@ -96,6 +99,25 @@ describe('fetcher', () => {
       }
 
       expect(thrownError).toEqual(baseErrorObject);
+    });
+
+    it('throws without reporting when a 404 has no body', async () => {
+      const originalFetch = global.fetch;
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          status: 404,
+          statusText: 'Not Found',
+          ok: false,
+          json: () => Promise.reject(new Error('Unexpected end of JSON input')),
+        } as unknown as Response)
+      );
+
+      await expect(fetcher({ path: '/path', action: 'get' })).rejects.toThrow(
+        'Not found'
+      );
+      expect(reportError).not.toHaveBeenCalled();
+
+      global.fetch = originalFetch;
     });
   });
   describe('POST', () => {

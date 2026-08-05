@@ -114,7 +114,14 @@ class WebApi::V1::PermissionsController < ApplicationController
   end
 
   def set_permission
-    @permission = authorize Permission.find_by!(action: permission_action, permission_scope: permission_scope)
+    permission = Permission.find_by(action: permission_action, permission_scope: permission_scope)
+    # Actions the scope's participation method doesn't support have no Permission
+    # record (see Permission::ACTIONS). Answer with a bare 404 rather than letting
+    # RecordNotFound render its message: the frontend reports 404 bodies it can't
+    # parse as errors to Sentry, and a missing permission isn't worth reporting.
+    return send_not_found if !permission
+
+    @permission = authorize permission
   end
 
   def permission_scope
