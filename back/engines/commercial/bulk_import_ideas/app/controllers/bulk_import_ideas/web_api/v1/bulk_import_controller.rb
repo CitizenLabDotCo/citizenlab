@@ -35,8 +35,8 @@ module BulkImportIdeas
 
       sidefx.after_success current_user, @phase, params[:model], params[:format], [], []
 
-      render json: ::WebApi::V1::BackgroundJobSerializer.new(
-        QueJob.where(id: job.que_job.id),
+      render json: ::WebApi::V1::Jobs::TrackerSerializer.new(
+        job.tracker,
         params: jsonapi_serializer_params
       ).serializable_hash
     rescue BulkImportIdeas::Error => e

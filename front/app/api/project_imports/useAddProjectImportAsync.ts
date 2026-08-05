@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CLErrors, ILinks, SupportedLocale } from 'typings';
-
-import { IBackgroundJobData } from 'api/background_jobs/types';
+import { CLErrors, SupportedLocale } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -13,17 +11,23 @@ interface RequestParams {
   preview?: boolean;
 }
 
-interface JobIdResponse {
-  data: IBackgroundJobData[];
-  links: ILinks;
+export interface IBulkImportProjectsResponse {
+  data: {
+    id: string;
+    type: 'bulk_import_projects';
+    attributes: {
+      num_imports: number;
+      preview: boolean;
+    };
+  };
 }
 
 const addProjectImport = async ({
   file,
   locale,
   preview = false,
-}: RequestParams): Promise<JobIdResponse> =>
-  fetcher<JobIdResponse>({
+}: RequestParams): Promise<IBulkImportProjectsResponse> =>
+  fetcher<IBulkImportProjectsResponse>({
     path: `/importer/bulk_create_async/projects/`,
     action: 'post',
     body: { import: { file, locale, preview } },
@@ -32,7 +36,7 @@ const addProjectImport = async ({
 const useAddProjectImportAsync = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<JobIdResponse, CLErrors, RequestParams>({
+  return useMutation<IBulkImportProjectsResponse, CLErrors, RequestParams>({
     mutationFn: addProjectImport,
     onSuccess: (_) => {
       queryClient.invalidateQueries({

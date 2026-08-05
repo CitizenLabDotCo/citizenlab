@@ -115,7 +115,6 @@ Rails.application.routes.draw do
         resources :exposures, controller: 'idea_exposures', only: %i[create]
       end
 
-      resources :background_jobs, only: %i[index]
       resources :jobs, only: %i[index show]
 
       resources :idea_statuses do

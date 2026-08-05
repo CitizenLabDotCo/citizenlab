@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import { IJob } from 'api/copy_inputs/types';
+import { IJob } from 'api/background_jobs/types';
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import usePhase from 'api/phases/usePhase';
 

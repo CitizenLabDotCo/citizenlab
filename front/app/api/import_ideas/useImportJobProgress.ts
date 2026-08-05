@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import { IJobs } from 'api/copy_inputs/types';
+import { IJobs } from 'api/background_jobs/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 

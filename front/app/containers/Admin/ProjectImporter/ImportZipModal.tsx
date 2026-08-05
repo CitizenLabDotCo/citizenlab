@@ -12,8 +12,9 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { SupportedLocale } from 'typings';
 import { object, mixed, boolean } from 'yup';
 
-import { IBackgroundJobData } from 'api/background_jobs/types';
-import useAddProjectImportAsync from 'api/project_imports/useAddProjectImportAsync';
+import useAddProjectImportAsync, {
+  IBulkImportProjectsResponse,
+} from 'api/project_imports/useAddProjectImportAsync';
 
 import useLocale from 'hooks/useLocale';
 
@@ -38,7 +39,7 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
-  onImport: (jobs: IBackgroundJobData[]) => void;
+  onImport: (data: IBulkImportProjectsResponse['data']) => void;
 }
 
 const ImportZipModal = ({ open, onClose, onImport }: Props) => {
