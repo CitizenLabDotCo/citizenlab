@@ -28,8 +28,8 @@ module ParticipationMethod
       %w[trending random popular -new new comments_count]
     end
 
-    # Ideation is the only method the feed view was designed for, and the only
-    # one that allows it: every method inheriting from here narrows the list down.
+    # The feed view was designed for ideation, and only ideation allows it: both methods
+    # inheriting from here narrow the list down.
     def allowed_presentation_modes
       %w[card map feed]
     end

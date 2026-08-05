@@ -263,8 +263,7 @@ RSpec.describe Phase do
         expect(phase).to be_valid
       end
 
-      # As above for proposals: the views do not change on a method switch, so the method itself has
-      # to be part of the guard. The ideas order goes in the same write because voting allows only
+      # As above for proposals. The ideas order goes in the same write because voting allows only
       # 'random'; without it the switch is rejected on that instead.
       it 'is invalid when an ideation phase offering the feed view is switched to voting' do
         phase = create(:phase, presentation_mode: 'feed', available_views: %w[card feed])

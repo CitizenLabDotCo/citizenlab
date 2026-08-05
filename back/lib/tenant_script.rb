@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
 # Runs a data script across tenants, so that a rake task in `lib/tasks/single_use` only has to
-# express what it does to one tenant's data.
-#
-# Almost every one of those tasks repeats the same frame by hand: read an `execute` argument to
-# decide whether this is a dry run, announce the mode, loop over the tenants, guard the loop so one
-# unreachable tenant cannot abort the rest, collect everything into a ScriptReporter, print a
-# summary and write the report to a JSON file named after the task. This owns that frame.
+# express what it does to one tenant's data. It owns the frame those tasks otherwise repeat by
+# hand: the dry run switch, the tenant loop, the ScriptReporter, the summary and the JSON report.
 #
 #     namespace :single_use do
 #       task :nullify_bad_thing, %i[execute host] => [:environment] do |_t, args|
@@ -19,25 +15,17 @@
 #       end
 #     end
 #
-# The task must declare an `execute` argument, and may declare a `host` one to limit a run to a
-# single tenant. Nothing is written unless the task is passed 'execute': the dry run deliberately
-# stays the default, and enforcing it remains the task's own job — this only hands it `execute?`.
-# Doing more (rolling back a transaction, say) would silence writes the task never told us about.
-#
 #     rake single_use:nullify_bad_thing                     # dry run, all tenants
 #     rake 'single_use:nullify_bad_thing[execute]'          # write, all tenants
 #     rake 'single_use:nullify_bad_thing[execute,foo.com]'  # write, one tenant
 #
-# Two things stay with the task, because they are where these scripts genuinely differ:
-#
-# - **Which tenants.** `Tenant.safe_switch_each`'s scope is the default, but it is not always right:
-#   it skips tenants whose creation never finalized, and a task preparing data for a stricter rule
-#   has to reach those too, since they are on their way to being live. Pass `tenants:` for that.
-# - **What the summary says.** The counts below are all this can know. A task that wants to print
-#   the affected records, or group them, passes `summary:` and prints its own detail after them.
+# The task declares the `execute` argument, and `host` if a run should be limitable to one tenant.
+# Enforcing the dry run stays with the task, which alone knows which of its work writes: guard with
+# `script.execute?`. Pass `tenants:` where `safe_switch_each`'s scope is the wrong one — it skips
+# tenants whose creation never finalized, which a task preparing data for a stricter rule still has
+# to reach — and `summary:` to print more than the counts.
 class TenantScript
-  # What `Tenant.safe_switch_each` iterates when given no scope: a tenant whose creation never
-  # finalized is half-built and a deleted one is on its way out, so a script has to opt in to either.
+  # What `Tenant.safe_switch_each` iterates when given no scope.
   def self.default_tenants
     Tenant.creation_finalized
   end
@@ -66,8 +54,8 @@ class TenantScript
     !@execute
   end
 
-  # Yields each tenant, switched into, together with this script. Returns the reporter, so a caller
-  # that wants to assert on what happened does not have to reach for the JSON.
+  # Yields each tenant, switched into, with this script. Returns the reporter, so that asserting on
+  # a run does not mean reading the JSON back.
   def run(summary: nil)
     print_banner
     each_tenant { |tenant| yield tenant, self }
@@ -82,14 +70,12 @@ class TenantScript
 
   private
 
-  # These scripts are run by hand at a terminal, where their output is the whole point. Rails.logger
-  # would send it to a file in production that nobody watching the run is reading, so every task
-  # this replaces printed to stdout, and so does this.
+  # These scripts are run by hand at a terminal, where the output is the point; Rails.logger would
+  # send it to a production file nobody watching the run is reading.
   # rubocop:disable Rails/Output
 
-  # `safe_switch_each` skips a tenant that was deleted since the scope was read, and one it cannot
-  # rank — which is any it cannot reach — so all that is left here is the bookkeeping and making
-  # sure one failing tenant costs only itself.
+  # `safe_switch_each` skips tenants deleted since the scope was read and tenants whose schema is
+  # gone, leaving the bookkeeping and keeping one failing tenant from costing the run.
   def each_tenant
     check_host!
 
@@ -103,10 +89,8 @@ class TenantScript
     end
   end
 
-  # `host` narrows the scope rather than replacing it, so limiting a run to one tenant cannot also
-  # widen it past whatever the script asked for — and a host that narrows it to nothing is a
-  # mistake, not a run. Left alone, a mistyped host, or one whose tenant has since been deleted,
-  # reads as a clean run over nothing: no changes, no errors, "Nothing to do".
+  # `host` narrows the scope, never widens it, and narrowing it to nothing is a mistake rather than
+  # a run: left alone, a mistyped host reads as a clean pass over nothing.
   def check_host!
     return if host.blank?
     return if (@tenants || self.class.default_tenants).exists?(host: host)

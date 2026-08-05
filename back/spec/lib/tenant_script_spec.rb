@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe TenantScript do
   after { FileUtils.rm_f(Dir['a_script*.json'] + Dir['nullify_the_bad_thing*.json']) }
 
-  # The real thing a rake task hands over, so that reading an argument the task never declared keeps
-  # returning nil here the way it does in production.
+  # The real thing a rake task hands over, so an argument the task never declared keeps reading as
+  # nil here the way it does in production.
   def task_args(execute: nil, host: nil)
     Rake::TaskArguments.new(%i[execute host], [execute, host])
   end
@@ -50,8 +50,8 @@ RSpec.describe TenantScript do
         .to raise_error ArgumentError, /no tenant matches host "not\.a\.tenant\.com"/
     end
 
-    # The host narrows the scope; it does not replace it. Reaching a tenant the script deliberately
-    # left out would be a wider run than the one it asked for, not a narrower one.
+    # The host narrows the scope, it does not replace it: reaching a tenant the script left out
+    # would be a wider run than the one it asked for.
     it 'refuses a host outside the scope the script asked for' do
       unfinalized = create(:tenant)
 
@@ -77,8 +77,8 @@ RSpec.describe TenantScript do
       expect(processed).to include unfinalized.host
     end
 
-    # `Tenant.not_deleted` reaches tenants that have no schema to switch into, and switching into a
-    # missing one raises before the script's own block ever runs.
+    # `Tenant.not_deleted` reaches tenants with no schema to switch into. `safe_switch_each` drops
+    # them; this is here because switching into one raises where no block of ours could catch it.
     it 'skips a tenant that has no schema' do
       schemaless = create(:tenant, creation_finalized_at: Time.zone.now)
       Apartment::Tenant.drop(schemaless.schema_name)

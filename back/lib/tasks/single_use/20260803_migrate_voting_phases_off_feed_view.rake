@@ -2,43 +2,32 @@
 
 # Moves voting phases off the feed view (called "Perspectives" in the UI), back to cards.
 #
-# A phase offers a set of views (`available_views`) and opens on one of them (`presentation_mode`).
-# The feed view was offered on every method that shows inputs publicly, with no per-method
-# restriction — not because it suited them all, but to keep the admin interface consistent.
-#
-# It does not suit voting. The feed surfaces neither the vote count of an input nor the controls to
+# The feed suits voting badly: it surfaces neither the vote count of an input nor the controls to
 # cast a vote, so a voting phase opening on it hides the only thing it asks participants to do. The
-# phase form has in fact never offered the toggle for this method — but the model accepted it, so
-# the REST API, the MCP tools and phases predating the form's rule could all still set it.
-#
-# This is the same withdrawal already applied to proposals in
-# `20260721_migrate_proposals_phases_off_feed_view.rake`, and the feed now belongs to ideation
-# alone. This task migrates the voting phases still holding it:
+# phase form has never offered the toggle for this method, but the model accepted it, so the REST
+# API, the MCP tools and phases predating the form's rule could all still set it. The same
+# withdrawal was applied to proposals in `20260721_migrate_proposals_phases_off_feed_view.rake`;
+# the feed now belongs to ideation alone. This task migrates the voting phases still holding it:
 #
 #     presentation_mode: 'feed', available_views: ['card', 'feed']  ->  'card', ['card']
 #     presentation_mode: 'card', available_views: ['card', 'feed']  ->  'card', ['card']
 #     presentation_mode: 'map',  available_views: ['card', 'map']   ->  untouched, no feed
 #
-# `presentation_mode` is only rewritten when it is 'feed' itself: a phase that merely offered the
-# feed alongside cards keeps opening on whichever view the admin chose. Both 'card' and the
-# retained mode are unioned back into the views, because the model requires each of them
-# independently, so a phase that had drifted out of that state would otherwise be written back
-# still invalid, and reported as migrated. The writes bypass validation, so this is the only thing
-# standing between drifted data and a silently invalid row.
+# `presentation_mode` is only rewritten when it is 'feed' itself, so a phase that merely offered the
+# feed keeps opening on whichever view the admin chose. Both 'card' and the retained mode are
+# unioned back into the views, which the model requires independently: since the writes bypass
+# validation, this is all that stands between drifted data and a silently invalid row. The
+# migration is a subtraction, so re-running it is a no-op.
 #
-# The migration is a subtraction, so re-running the task is a no-op.
+# Unlike its predecessor this ships alongside the rule rather than ahead of it — the admin UI cannot
+# produce the state, so no fresh bad row can appear between the two. It still names the method and
+# the view literally rather than reading `pmethod.allowed_presentation_modes`: a one-off repair of a
+# known state should keep describing that state even if the rule later moves.
 #
-# Unlike its proposals predecessor, this ships alongside the code that rejects the view rather than
-# ahead of it: the admin UI cannot produce this state, so there is no window in which a fresh bad
-# row could appear between the two. It still names the method and the view literally rather than
-# reading `pmethod.allowed_presentation_modes` — a one-off repair of a known state, which should
-# keep describing that state even if the rule later moves.
-#
-# `TenantScript` owns the dry run, the tenant loop and the report; what is left here is the
-# migration itself and the summary, which prints every affected phase with its project and whether
-# it is finished, active or still to come, so the scale of the change is visible at a glance and an
-# individual phase can be traced back to its project if anyone asks about it. The report carries the
-# same rows, with full multilocs.
+# `TenantScript` owns the dry run, the tenant loop and the report. What is left is the migration and
+# the summary, which prints each affected phase with its project and whether it is finished, active
+# or still to come, so the scale of the change is visible at a glance and a phase can be traced back
+# to its project. The report carries the same rows, with full multilocs.
 #
 # Analyses without writing unless passed 'execute'; a host limits the run to one tenant:
 #
@@ -52,7 +41,7 @@ namespace :single_use do
     affected = []
 
     # TimelineService classifies a whole project, not a phase, so this composes the phase's own two
-    # predicates. `started?` reads `start_at` without a nil check, hence the guard: it is nullable.
+    # predicates. `started?` reads the nullable `start_at` without a nil check, hence the guard.
     phase_timing = lambda do |phase|
       next 'unscheduled' if phase.start_at.nil?
       next 'future' unless phase.started?
@@ -80,8 +69,7 @@ namespace :single_use do
       description: 'moving voting phases off the feed view, back to cards',
       # Deliberately not the default scope: it skips tenants whose creation never finalized, and
       # those are on their way to being live, so their phases have to satisfy the new rule too.
-      # Deleted tenants are still skipped: nothing un-deletes one, no request or job switches into
-      # one, and its schema is being dropped, so no phase of theirs is ever saved against the rule.
+      # Deleted tenants stay out — nothing un-deletes one and its schema is being dropped.
       tenants: Tenant.not_deleted,
       summary: summary
     ) do |tenant, script|

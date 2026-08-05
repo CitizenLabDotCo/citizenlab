@@ -287,8 +287,8 @@ RSpec.describe Tenant do
       expect(collected_hosts).to eq(%w[tenant1.example.com])
     end
 
-    # Ranking the tenants means reading a table out of every schema in the scope, so a tenant that
-    # cannot be ranked used to abort the run before it visited anyone.
+    # Ranking reads a table out of every schema in the scope, so a tenant that could not be ranked
+    # used to abort the run before it visited anyone.
     it 'skips a tenant whose schema is missing rather than failing the whole run' do
       described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
       create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now)
@@ -334,8 +334,8 @@ RSpec.describe Tenant do
       expect(collected_hosts).to eq(%w[tenant1.example.com tenant2.example.com])
     end
 
-    # The point of the parameter: narrowing to one tenant must not also drop the protections the
-    # scope carries, which is what passing a `scope` built around the host does instead.
+    # The point of the parameter: narrowing to one tenant must not drop the protections the scope
+    # carries, as passing a `scope` built around the host does.
     it 'still skips a host that the scope in play excludes' do
       create(:tenant, host: 'tenant1.example.com', creation_finalized_at: nil)
       collected_hosts = []
