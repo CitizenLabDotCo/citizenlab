@@ -281,8 +281,8 @@ kl-GL:
       project_folder_moderation_rights_received: Mappinut aqutsisutut pisinnaatitaaffeqalerpoq
       project_manager_rights_received: Suliniutinik aqutsisutut pisinnaatitaaffiit tiguneqarput
       project_moderation_rights_received: Suliniummik ingerlataqarsinnaasutut pisinnaatitaaffiit tiguneqarput
-      project_phase_started: Immikkoortoq aallartippoq TEST
-      project_phase_upcoming: Immikkoortoq aallartilerpoq TEST
+      project_phase_started: Immikkoortoq aallartippoq
+      project_phase_upcoming: Immikkoortoq aallartilerpoq
       project_published: Suliniut saqqummiunneqarpoq
       project_review_request: Suliniutip misissorneqarnissaanik kissaat
       project_review_state_change: Suliniut akuerineqarpoq
@@ -858,7 +858,7 @@ kl-GL:
       official_feedback_body: Pisortatigoortumik akissummut assersuut
       phase_description: Una tassaavoq immikkoortumut imarisatut assersuut e-mailit imarisaannik takutitseqqaarnermut atorneqartoq. Una imarivippianngilaq.
       phase_title: Immikkoortoq assersuut
-      project_description_preview: Una pilersaarummut assersuutaavoq e-mailit imarisaannik takutitsissut. Una piviusuunngilaq. TEST
+      project_description_preview: Una suliniutip imarisaanut siulittuutitut atorneqarpoq e-mailit imarisaat takuniarlugit. Una imarivianngilaa.
       project_title: Suliniut assersuut
       proposal_title: Siunnersuut assersuut
       space_title: Immikkoortortaq assersuut
@@ -899,25 +899,25 @@ kl-GL:
       title_you_became_moderator: Aqutsisunngorputit
       x_ideas: '%{numberOfIdeas} isumassarsiat'
     project_phase_started:
-      cta_button: Nutaat takukkit TEST
+      cta_button: Nutaat takukkit
       cta_view_phase: Fase nutaaq paasiuk
-      event_description: "Maanna '%{phaseTitle}'-mut %{organizationName}-p nittartagaani peqataasinnaavutit. TEST"
+      event_description: "Maanna '%{phaseTitle}'-mi %{organizationName}-p platformiani peqataasinnaavutit."
       main_header: '"%{projectName}"mi fase nutaaq aallartippoq'
       new_phase: Suliniut fasemut "%{phaseTitle}" killippoq
-      preheader: "Maanna '%{phaseTitle}'-mut peqataasinnaavutit TEST"
-      subject: "'%{phaseTitle}' %{projectName}-mi aallartippoq TEST"
+      preheader: "Maanna '%{phaseTitle}'-mi peqataasinnaavutit"
+      subject: "'%{phaseTitle}' %{projectName}-mi aallartippoq"
       subtitle: "About '%{projectName}'"
-      title: "'%{projectName}'-mi nutaamik pisoqarpoq TEST"
+      title: "'%{projectName}'-mi nutaamik pisoqarpoq"
     project_phase_upcoming:
-      cta_button: Aaqqissuunnera misissoruk TEST
+      cta_button: Aaqqissuussineq misissuguk
       cta_view_phase: Fase una nutaaq inissititeruk
-      event_description: "'%{phaseTitle}' pilersaarummi '%{projectName}'-mi %{startDate} aallartissaaq. Piareersimanersusi misissulaariuk: nassuiaat naammassiva? Ulloq aallartiffissaq eqqortuua? Innuttaasut e-mailikkut ilisimatikkusuppigit? TEST"
+      event_description: "'%{phaseTitle}' suliniummi '%{projectName}'-mi %{startDate} aallartissaaq. Misissulaariuk tamarmik piareersimanersut: Nassuiaat naammassiva? Ullut eqqortuuppat? Innuttaasut e-mailikkut immikkut ittumik ilisimatikkusuppigit?"
       main_header: '%{firstName}, suliniut ullut XXX qaangiuppata fasemut nutaamut pissaaq'
       new_phase: "Suliniut fasemut '%{phaseTitle}' pivoq"
-      preheader: '%{startDate} nallertinnagu tamarmik piareersimanersut qulakkeeruk TEST'
-      subject: "%{projectName}: '%{phaseTitle}' %{startDate} aallartissaaq TEST"
+      preheader: Misissukkit tamarmik piareersimanersut %{startDate} nallertinnagu
+      subject: "%{projectName}: '%{phaseTitle}' %{startDate} aallartissaaq"
       subtitle: "About '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' %{startDate} aallartissaaq TEST"
+      title: "%{firstName}, '%{phaseTitle}' %{startDate} aallartissaaq"
     project_published:
       cta_button: Suliniummut uunga iserit
       event_description: '%{organizationName}-p peqataatitsinermut platformia suliniut una saqqummersippaa:'

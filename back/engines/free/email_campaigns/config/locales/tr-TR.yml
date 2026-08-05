@@ -198,8 +198,8 @@ tr-TR:
       project_folder_moderation_rights_received: Klasör yöneticisi hakları alındı
       project_manager_rights_received: Proje yöneticisi yetkileri alındı
       project_moderation_rights_received: Proje moderasyon hakları alındı
-      project_phase_started: Aşama başladı TEST
-      project_phase_upcoming: Aşama yakında başlıyor TEST
+      project_phase_started: Aşama başladı
+      project_phase_upcoming: Aşama yakında başlıyor
       project_published: Proje yayınlandı
       project_review_request: Proje inceleme talebi
       project_review_state_change: Proje onaylandı
@@ -573,7 +573,7 @@ tr-TR:
       official_feedback_body: Örnek resmi geri bildirim
       phase_description: Bu, e-posta içeriklerini önizlemek için kullanılan örnek bir aşama içeriğidir. Gerçek bir içerik değildir.
       phase_title: Örnek aşama
-      project_description_preview: Bu, e-postaların içeriğini önizlemek için kullanılan örnek bir proje içeriğidir. Gerçek bir içerik değildir. TEST
+      project_description_preview: Bu, e-postaların içeriğini önizlemek için kullanılan örnek bir proje içeriğidir. Gerçek bir içerik değildir.
       project_title: Örnek proje
       proposal_title: Örnek Teklif
       space_title: Örnek alan
@@ -608,21 +608,21 @@ tr-TR:
       title_what_can_you_do_moderator: Proje yöneticisi olarak neler yapabilirsiniz?
       x_ideas: '%{numberOfIdeas} fikir'
     project_phase_started:
-      cta_button: Yenilikleri görün TEST
-      event_description: "Artık %{organizationName} platformunda '%{phaseTitle}' aşamasına katılabilirsiniz. TEST"
+      cta_button: Yenilikleri görün
+      event_description: "Artık %{organizationName} platformunda '%{phaseTitle}' aşamasına katılabilirsiniz."
       new_phase: "Bu proje '%{phaseTitle}' aşamasına geçti"
-      preheader: "Artık '%{phaseTitle}' aşamasına katılabilirsiniz TEST"
-      subject: "'%{phaseTitle}', %{projectName} projesinde başladı TEST"
+      preheader: "Artık '%{phaseTitle}' aşamasına katılabilirsiniz"
+      subject: "'%{projectName}' projesinde '%{phaseTitle}' başladı"
       subtitle: "Hakkında '%{projectName}'"
-      title: "'%{projectName}' projesinde yeni bir gelişme var TEST"
+      title: "'%{projectName}' projesinde yeni bir gelişme var"
     project_phase_upcoming:
-      cta_button: Kurulumu gözden geçirin TEST
-      event_description: "'%{projectName}' projesindeki '%{phaseTitle}' aşaması %{startDate} tarihinde başlıyor. Her şeyin hazır olduğunu kontrol etmek için bir dakikanızı ayırın: Açıklama tamam mı? Tarihler doğru mu? Topluluğunuzu özel bir e-posta kampanyasıyla bilgilendirmek ister misiniz? TEST"
+      cta_button: Kurulumu gözden geçirin
+      event_description: "'%{projectName}' projesindeki '%{phaseTitle}' aşaması %{startDate} tarihinde başlıyor. Her şeyin hazır olduğundan emin olmak için bir dakikanızı ayırın: Açıklama tamam mı? Tarihler doğru mu? Topluluğunuzu özel bir e-posta kampanyasıyla bilgilendirmek ister misiniz?"
       new_phase: "Proje '%{phaseTitle}' aşamasına geçecek"
-      preheader: '%{startDate} tarihinden önce her şeyin hazır olduğundan emin olun TEST'
-      subject: "%{projectName}: '%{phaseTitle}' %{startDate} tarihinde başlıyor TEST"
+      preheader: '%{startDate} tarihinden önce her şeyin hazır olduğundan emin olun'
+      subject: "%{projectName}: '%{phaseTitle}' %{startDate} tarihinde başlıyor"
       subtitle: "Hakkında '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' %{startDate} tarihinde başlıyor TEST"
+      title: "%{firstName}, '%{phaseTitle}' %{startDate} tarihinde başlıyor"
     project_published:
       cta_button: Bu projeye gidin
       event_description: '%{organizationName} katılım platformu aşağıdaki projeyi yayınladı:'

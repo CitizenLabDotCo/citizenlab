@@ -200,8 +200,8 @@ lb-LU:
       project_folder_moderation_rights_received: Administratorrechter fir Dossier'en kritt
       project_manager_rights_received: Projet-Manager-Rechter kritt
       project_moderation_rights_received: Moderatiounsrechter fir Projete kritt
-      project_phase_started: Phase huet ugefaangen TEST
-      project_phase_upcoming: Phase fänkt geschwënn un TEST
+      project_phase_started: Phas huet ugefaangen
+      project_phase_upcoming: Phas fänkt geschwënn un
       project_published: Projet publizéiert
       project_review_request: Projet review Ufro
       project_review_state_change: Projet guttgeheescht
@@ -575,7 +575,7 @@ lb-LU:
       official_feedback_body: Beispill vun offiziellem Feedback
       phase_description: Dëst ass e Beispill-Inhalt vun enger Phas fir d'Virschau vum Inhalt vun E-Mailen. Dëst ass keen echte Contenu.
       phase_title: Beispillphase
-      project_description_preview: Dëst ass e Beispill vun engem Projet-Inhalt fir d'Virschau vun E-Mailen. Dëst ass keen echte Contenu. TEST
+      project_description_preview: Dëst ass e Beispill fir de Projet-Inhalt, dee fir d'Virschau vum Inhalt vun E-Maile benotzt gëtt. Dëst ass keen echte Contenu.
       project_title: Beispillprojet
       proposal_title: Beispillvirschlag
       space_title: Beispill-Space
@@ -612,21 +612,21 @@ lb-LU:
       title_what_can_you_do_moderator: Wat kënnt Dir als Projetsmanager maachen?
       x_ideas: '%{numberOfIdeas} Iddien'
     project_phase_started:
-      cta_button: Kuckt wat et Neies gëtt TEST
-      event_description: "Dir kënnt elo un '%{phaseTitle}' op der Plattform vun %{organizationName} deelhuelen. TEST"
+      cta_button: Kuckt wat nei ass
+      event_description: "Dir kënnt elo un '%{phaseTitle}' op der Plattform vun %{organizationName} deelhuelen."
       new_phase: "Dëse Projet ass an d’Phas '%{phaseTitle}' gaangen"
-      preheader: "Dir kënnt elo un '%{phaseTitle}' deelhuelen TEST"
-      subject: "'%{phaseTitle}' huet an %{projectName} ugefaangen TEST"
+      preheader: "Dir kënnt elo un '%{phaseTitle}' deelhuelen"
+      subject: "'%{phaseTitle}' huet an %{projectName} ugefaangen"
       subtitle: "Iwwer '%{projectName}'"
-      title: "Et gëtt eppes Neies an '%{projectName}' TEST"
+      title: "Et gëtt eppes Neies an '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Iwwerpréift de Setup TEST
-      event_description: "'%{phaseTitle}' am Projet '%{projectName}' fänkt den %{startDate} un. Huelt Iech ee Moment fir ze kontrolléieren, ob alles prett ass: Ass d'Beschreiwung komplett? Sinn d'Datumer korrekt? Wëllt Dir Är Communautéit iwwer eng personaliséiert E-Mail-Campagne informéieren? TEST"
+      cta_button: Iwwerpréift de Setup
+      event_description: "'%{phaseTitle}' am Projet '%{projectName}' fänkt den %{startDate} un. Huelt Iech e Moment fir ze kontrolléieren, ob alles prett ass: Ass d'Beschreiwung komplett? Sinn d'Datumer korrekt? Wëllt Dir Är Communautéit iwwer eng personaliséiert E-Mail-Campagne informéieren?"
       new_phase: "De Projet geet an d’Phas '%{phaseTitle}'"
-      preheader: Vergewëssert Iech, datt alles virum %{startDate} prett ass TEST
-      subject: "%{projectName}: '%{phaseTitle}' fänkt den %{startDate} un TEST"
+      preheader: Vergewëssert Iech, datt alles virum %{startDate} prett ass
+      subject: "%{projectName}: '%{phaseTitle}' fänkt den %{startDate} un"
       subtitle: "Iwwer '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' fänkt den %{startDate} un TEST"
+      title: "%{firstName}, '%{phaseTitle}' fänkt den %{startDate} un"
     project_published:
       cta_button: Gitt op dëst Projet
       event_description: "D'Participatiounsplattform vun %{organizationName} huet just folgend Projet publizéiert:"

@@ -198,8 +198,8 @@ lv-LV:
       project_folder_moderation_rights_received: Saņemtās mapju pārvaldnieka tiesības
       project_manager_rights_received: Saņemtas projekta pārvaldnieka tiesības
       project_moderation_rights_received: Saņemtās projekta moderēšanas tiesības
-      project_phase_started: Posms ir sācies TEST
-      project_phase_upcoming: Posms drīz sāksies TEST
+      project_phase_started: Posms ir sācies
+      project_phase_upcoming: Posms drīz sāksies
       project_published: Publicēts projekts
       project_review_request: Projekta pārskatīšanas pieprasījums
       project_review_state_change: Projekts apstiprināts
@@ -573,7 +573,7 @@ lv-LV:
       official_feedback_body: Piemērs oficiālai atsauksmei
       phase_description: Šis ir posma satura paraugs, kas tiek izmantots e-pasta ziņojumu satura priekšskatīšanai. Šis nav īsts saturs.
       phase_title: Piemērs fāze
-      project_description_preview: Šis ir projekta satura piemērs, ko izmanto e-pasta ziņojumu satura priekšskatīšanai. Šis nav īsts saturs. TEST
+      project_description_preview: Šis ir projekta satura piemērs, ko izmanto e-pasta ziņojumu satura priekšskatīšanai. Šis nav īsts saturs.
       project_title: Projekta piemērs
       proposal_title: Priekšlikuma piemērs
       space_title: Piemēra telpa
@@ -608,21 +608,21 @@ lv-LV:
       title_what_can_you_do_moderator: Ko jūs varat darīt kā projektu vadītājs?
       x_ideas: '%{numberOfIdeas} idejas'
     project_phase_started:
-      cta_button: Skatīt jaunumus TEST
-      event_description: "Tagad varat piedalīties posmā '%{phaseTitle}' organizācijas %{organizationName} platformā. TEST"
+      cta_button: Skatīt jaunumus
+      event_description: "Tagad varat piedalīties posmā '%{phaseTitle}' %{organizationName} platformā."
       new_phase: "Šim projektam ir sācies '%{phaseTitle}' posms."
-      preheader: "Tagad varat piedalīties posmā '%{phaseTitle}' TEST"
-      subject: "'%{phaseTitle}' ir sācies projektā %{projectName} TEST"
+      preheader: "Tagad varat piedalīties posmā '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' ir sācies projektā %{projectName}"
       subtitle: "Par '%{projectName}'"
-      title: "Projektā '%{projectName}' ir jaunumi TEST"
+      title: "Projektā '%{projectName}' ir jaunumi"
     project_phase_upcoming:
-      cta_button: Pārskatīt iestatījumus TEST
-      event_description: "'%{phaseTitle}' projektā '%{projectName}' sākas %{startDate}. Veltiet brīdi, lai pārbaudītu, vai viss ir gatavs: vai apraksts ir pilnīgs? Vai datumi ir pareizi? Vai vēlaties informēt savu kopienu, izmantojot pielāgotu e-pasta kampaņu? TEST"
+      cta_button: Pārskatīt iestatījumus
+      event_description: "'%{phaseTitle}' projektā '%{projectName}' sākas %{startDate}. Veltiet brīdi, lai pārbaudītu, vai viss ir gatavs: vai apraksts ir pilnīgs? Vai datumi ir pareizi? Vai vēlaties informēt savu kopienu, izmantojot pielāgotu e-pasta kampaņu?"
       new_phase: "Projektam sāksies '%{phaseTitle}' posms."
-      preheader: Pārliecinieties, ka viss ir gatavs līdz %{startDate} TEST
-      subject: "%{projectName}: '%{phaseTitle}' sākas %{startDate} TEST"
+      preheader: Pārliecinieties, vai viss ir gatavs līdz %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' sākas %{startDate}"
       subtitle: "Par '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' sākas %{startDate} TEST"
+      title: "%{firstName}, '%{phaseTitle}' sākas %{startDate}"
     project_published:
       cta_button: Dodieties uz šo projektu
       event_description: 'Dalības platformā %{organizationName} tikko publicēts šāds projekts:'

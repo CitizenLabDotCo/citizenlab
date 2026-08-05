@@ -198,8 +198,8 @@ hu-HU:
       project_folder_moderation_rights_received: Mappakezelői jogok megérkeztek
       project_manager_rights_received: Projektmenedzseri jogosultságok megadva
       project_moderation_rights_received: A projekt moderálási jogai megkapták
-      project_phase_started: A szakasz elkezdődött TEST
-      project_phase_upcoming: A szakasz hamarosan kezdődik TEST
+      project_phase_started: A szakasz elindult
+      project_phase_upcoming: Hamarosan kezdődő szakasz
       project_published: A projekt megjelent
       project_review_request: Projekt felülvizsgálati kérelem
       project_review_state_change: Projekt jóváhagyva
@@ -573,7 +573,7 @@ hu-HU:
       official_feedback_body: Példa hivatalos visszajelzésre
       phase_description: Ez egy példa szakasztartalom, amely az e-mailek tartalmának előnézetéhez használható. Ez nem valódi tartalom.
       phase_title: Példa fázis
-      project_description_preview: Ez egy példa projekttartalom az e-mailek tartalmának előnézetéhez. Ez nem valódi tartalom. TEST
+      project_description_preview: Ez egy példa projekttartalom az e-mailek tartalmának előnézetéhez. Ez nem valódi tartalom.
       project_title: Példaprojekt
       proposal_title: Példaajánlat
       space_title: Példa tér
@@ -608,21 +608,21 @@ hu-HU:
       title_what_can_you_do_moderator: Mit tehet projektmenedzserként?
       x_ideas: '%{numberOfIdeas} ötletek'
     project_phase_started:
-      cta_button: Nézze meg az újdonságokat TEST
-      event_description: "Most már részt vehet a(z) '%{phaseTitle}' szakaszban %{organizationName} platformján. TEST"
+      cta_button: Megnézem az újdonságokat
+      event_description: Most már részt vehet a(z) „%{phaseTitle}” szakaszban a(z) %{organizationName} platformján.
       new_phase: "Ez a projekt a '%{phaseTitle}' fázisba lépett"
-      preheader: "Most már részt vehet a(z) '%{phaseTitle}' szakaszban TEST"
-      subject: "A(z) '%{phaseTitle}' elkezdődött a(z) %{projectName} projektben TEST"
+      preheader: Most már részt vehet a(z) „%{phaseTitle}” szakaszban
+      subject: A(z) „%{phaseTitle}” szakasz elindult a(z) %{projectName} projektben
       subtitle: "Körülbelül '%{projectName}'"
-      title: "Újdonság érhető el a(z) '%{projectName}' projektben TEST"
+      title: Újdonság történt a(z) „%{projectName}” projektben
     project_phase_upcoming:
-      cta_button: A beállítások áttekintése TEST
-      event_description: "A(z) '%{phaseTitle}' szakasz a(z) '%{projectName}' projektben %{startDate} napon kezdődik. Szánjon egy percet annak ellenőrzésére, hogy minden készen áll-e: Teljes a leírás? Helyesek a dátumok? Szeretné tájékoztatni a közösségét egy egyedi e-mail kampányon keresztül? TEST"
+      cta_button: Beállítások áttekintése
+      event_description: 'A(z) „%{projectName}” projekt „%{phaseTitle}” szakasza %{startDate} napon kezdődik. Kérjük, ellenőrizze, hogy minden készen áll-e: Teljes a leírás? Helyesek a dátumok? Szeretné tájékoztatni a közösséget egy egyedi e-mail kampányon keresztül?'
       new_phase: "A projekt a '%{phaseTitle}' fázisba lép"
-      preheader: Győződjön meg róla, hogy minden készen áll %{startDate} előtt TEST
-      subject: "%{projectName}: a(z) '%{phaseTitle}' %{startDate} napon kezdődik TEST"
+      preheader: Győződjön meg róla, hogy minden készen áll %{startDate} előtt
+      subject: '%{projectName}: a(z) „%{phaseTitle}” szakasz %{startDate} napon kezdődik'
       subtitle: "Körülbelül '%{projectName}'"
-      title: "%{firstName}, a(z) '%{phaseTitle}' %{startDate} napon kezdődik TEST"
+      title: '%{firstName}, a(z) „%{phaseTitle}” szakasz %{startDate} napon kezdődik'
     project_published:
       cta_button: Ugrás erre a projektre
       event_description: 'A %{organizationName} részvételi platformja nemrég tette közzé a következő projektet:'

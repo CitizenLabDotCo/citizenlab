@@ -198,8 +198,8 @@ ur-PK:
       project_folder_moderation_rights_received: فولڈر مینیجر کے حقوق موصول ہوئے۔
       project_manager_rights_received: پروجیکٹ مینیجر کے اختیارات موصول ہو گئے
       project_moderation_rights_received: پروجیکٹ کے اعتدال کے حقوق موصول ہوئے۔
-      project_phase_started: مرحلہ شروع ہو گیا TEST
-      project_phase_upcoming: مرحلہ جلد شروع ہو رہا ہے TEST
+      project_phase_started: مرحلہ شروع ہو گیا
+      project_phase_upcoming: مرحلہ جلد شروع ہو رہا ہے
       project_published: پروجیکٹ شائع ہوا۔
       project_review_request: پروجیکٹ کا جائزہ لینے کی درخواست
       project_review_state_change: پروجیکٹ کی منظوری دی گئی۔
@@ -573,7 +573,7 @@ ur-PK:
       official_feedback_body: سرکاری تاثرات کی مثال
       phase_description: یہ مرحلے کے مواد کی ایک مثال ہے جو ای میلز کے مواد کا پیش نظارہ کرنے کے لیے استعمال ہوتی ہے۔ یہ اصل مواد نہیں ہے۔
       phase_title: مثال کا مرحلہ
-      project_description_preview: یہ پروجیکٹ کا کچھ نمونہ مواد ہے جو ای میلز کے مواد کا پیش نظارہ کرنے کے لیے استعمال ہوتا ہے۔ یہ اصل مواد نہیں ہے۔ TEST
+      project_description_preview: یہ پروجیکٹ کے مواد کی ایک مثال ہے جو ای میلز کے مواد کا پیش نظارہ کرنے کے لیے استعمال ہوتی ہے۔ یہ اصل مواد نہیں ہے۔
       project_title: مثال پروجیکٹ
       proposal_title: مثال کی تجویز
       space_title: مثالی اسپیس
@@ -608,21 +608,21 @@ ur-PK:
       title_what_can_you_do_moderator: پروجیکٹ مینیجر کے طور پر آپ کیا کر سکتے ہیں؟
       x_ideas: '%{numberOfIdeas} خیالات'
     project_phase_started:
-      cta_button: دیکھیں کہ نیا کیا ہے TEST
-      event_description: "اب آپ %{organizationName} کے پلیٹ فارم پر '%{phaseTitle}' میں حصہ لے سکتے ہیں۔ TEST"
+      cta_button: دیکھیں کہ نیا کیا ہے
+      event_description: "اب آپ %{organizationName} کے پلیٹ فارم پر '%{phaseTitle}' میں حصہ لے سکتے ہیں۔"
       new_phase: "یہ پروجیکٹ '%{phaseTitle}' مرحلے میں داخل ہو گیا ہے۔"
-      preheader: "اب آپ '%{phaseTitle}' میں حصہ لے سکتے ہیں TEST"
-      subject: "%{projectName} میں '%{phaseTitle}' شروع ہو چکا ہے TEST"
+      preheader: "اب آپ '%{phaseTitle}' میں حصہ لے سکتے ہیں"
+      subject: "%{projectName} میں '%{phaseTitle}' شروع ہو چکا ہے"
       subtitle: "'%{projectName}' کے بارے میں"
-      title: "'%{projectName}' میں کچھ نیا ہے TEST"
+      title: "'%{projectName}' میں کچھ نیا ہے"
     project_phase_upcoming:
-      cta_button: سیٹ اپ کا جائزہ لیں TEST
-      event_description: "پروجیکٹ '%{projectName}' میں '%{phaseTitle}' کا آغاز %{startDate} کو ہوگا۔ ایک لمحہ نکال کر چیک کریں کہ کیا سب کچھ تیار ہے: کیا تفصیل مکمل ہے؟ کیا تاریخیں درست ہیں؟ کیا آپ اپنی کمیونٹی کو اپنی مرضی کی ای میل مہم کے ذریعے مطلع کرنا چاہتے ہیں؟ TEST"
+      cta_button: سیٹ اپ کا جائزہ لیں
+      event_description: "پروجیکٹ '%{projectName}' میں '%{phaseTitle}' کا آغاز %{startDate} کو ہوگا۔ یہ چیک کرنے کے لیے تھوڑا وقت نکالیں کہ آیا سب کچھ تیار ہے: کیا تفصیل مکمل ہے؟ کیا تاریخیں درست ہیں؟ کیا آپ اپنی کمیونٹی کو ای میل کی ایک مخصوص مہم کے ذریعے مطلع کرنا چاہتے ہیں؟"
       new_phase: "پروجیکٹ '%{phaseTitle}' مرحلے میں داخل ہو جائے گا۔"
-      preheader: یقینی بنائیں کہ %{startDate} سے پہلے سب کچھ تیار ہے TEST
-      subject: "%{projectName}: '%{phaseTitle}' کا آغاز %{startDate} کو ہوگا TEST"
+      preheader: یقینی بنائیں کہ %{startDate} سے پہلے سب کچھ تیار ہے
+      subject: "%{projectName}: '%{phaseTitle}' کا آغاز %{startDate} کو ہوگا"
       subtitle: "'%{projectName}' کے بارے میں"
-      title: "%{firstName}، '%{phaseTitle}' کا آغاز %{startDate} کو ہوگا TEST"
+      title: "%{firstName}، '%{phaseTitle}' کا آغاز %{startDate} کو ہوگا"
     project_published:
       cta_button: اس پروجیکٹ پر جائیں۔
       event_description: '%{organizationName} کے شرکت کے پلیٹ فارم نے ابھی درج ذیل پروجیکٹ کو شائع کیا ہے:'

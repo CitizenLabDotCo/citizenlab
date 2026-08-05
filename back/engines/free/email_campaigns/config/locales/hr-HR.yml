@@ -198,8 +198,8 @@ hr-HR:
       project_folder_moderation_rights_received: Primljena prava upravitelja mape
       project_manager_rights_received: Primljena prava voditelja projekta
       project_moderation_rights_received: Dodjela prava za moderiranje projekta
-      project_phase_started: Faza je započela TEST
-      project_phase_upcoming: Faza uskoro počinje TEST
+      project_phase_started: Faza je započela
+      project_phase_upcoming: Faza uskoro počinje
       project_published: Projekt objavljen
       project_review_request: Zahtjev za pregled projekta
       project_review_state_change: Projekt odobren
@@ -573,7 +573,7 @@ hr-HR:
       official_feedback_body: Primjer službene povratne informacije
       phase_description: Ovo je primjer sadržaja faze koji se koristi za pretpregled sadržaja e-poruka. Ovo nije stvarni sadržaj.
       phase_title: Primjer faze
-      project_description_preview: Ovo je primjer sadržaja projekta koji se koristi za pregled sadržaja e-pošte. Ovo nije stvarni sadržaj. TEST
+      project_description_preview: Ovo je primjer sadržaja projekta koji se koristi za pregled sadržaja e-pošte. Ovo nije stvarni sadržaj.
       project_title: Primjer projekta
       proposal_title: Primjer prijedloga
       space_title: Primjer prostora
@@ -608,21 +608,21 @@ hr-HR:
       title_what_can_you_do_moderator: Što možete učiniti kao voditelj projekta?
       x_ideas: '%{numberOfIdeas} ideja'
     project_phase_started:
-      cta_button: Pogledajte što je novo TEST
-      event_description: "Sada možete sudjelovati u fazi '%{phaseTitle}' na platformi %{organizationName}. TEST"
+      cta_button: Pogledajte što je novo
+      event_description: "Sada možete sudjelovati u fazi '%{phaseTitle}' na platformi %{organizationName}."
       new_phase: "Ovaj projekt je ušao u fazu '%{phaseTitle}'"
-      preheader: "Sada možete sudjelovati u fazi '%{phaseTitle}' TEST"
-      subject: "Faza '%{phaseTitle}' je započela u projektu %{projectName} TEST"
+      preheader: "Sada možete sudjelovati u fazi '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' je započeo u projektu %{projectName}"
       subtitle: "O '%{projectName}'"
-      title: "Ima nešto novo u projektu '%{projectName}' TEST"
+      title: "Ima nešto novo u projektu '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Pregledajte postavke TEST
-      event_description: "'%{phaseTitle}' u projektu '%{projectName}' počinje %{startDate}. Odvojite trenutak i provjerite je li sve spremno: Je li opis potpun? Jesu li datumi točni? Želite li obavijestiti svoju zajednicu putem prilagođene kampanje e-poštom? TEST"
+      cta_button: Pregledajte postavke
+      event_description: "'%{phaseTitle}' u projektu '%{projectName}' počinje %{startDate}. Odvojite trenutak i provjerite je li sve spremno: Je li opis potpun? Jesu li datumi točni? Želite li obavijestiti svoju zajednicu putem prilagođene kampanje e-poštom?"
       new_phase: "Projekt će ući u fazu '%{phaseTitle}'"
-      preheader: Provjerite je li sve spremno prije %{startDate} TEST
-      subject: "%{projectName}: '%{phaseTitle}' počinje %{startDate} TEST"
+      preheader: Provjerite je li sve spremno prije %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' počinje %{startDate}"
       subtitle: "O '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' počinje %{startDate} TEST"
+      title: "%{firstName}, '%{phaseTitle}' počinje %{startDate}"
     project_published:
       cta_button: Idi na ovaj projekt
       event_description: 'Platforma za sudjelovanje %{organizationName} upravo je objavila sljedeći projekt:'

@@ -198,8 +198,8 @@ cy-GB:
       project_folder_moderation_rights_received: Hawliau rheolwr ffolder wedi'u derbyn
       project_manager_rights_received: Hawliau rheolwr prosiect wedi'u derbyn
       project_moderation_rights_received: Hawliau cymedroli prosiect wedi'u derbyn
-      project_phase_started: Cam wedi dechrau TEST
-      project_phase_upcoming: Cam yn dechrau cyn bo hir TEST
+      project_phase_started: Cam wedi dechrau
+      project_phase_upcoming: Cam yn dechrau yn fuan
       project_published: Cyhoeddi'r prosiect
       project_review_request: Cais am adolygiad prosiect
       project_review_state_change: Prosiect wedi'i gymeradwyo
@@ -573,7 +573,7 @@ cy-GB:
       official_feedback_body: Enghraifft o adborth swyddogol
       phase_description: Dyma rywfaint o gynnwys cyfnod enghreifftiol a ddefnyddir i gael rhagolwg o gynnwys e-byst. Nid yw hwn yn gynnwys go iawn.
       phase_title: Cyfnod enghreifftiol
-      project_description_preview: Dyma rywfaint o gynnwys prosiect enghreifftiol a ddefnyddir i gael rhagolwg o gynnwys e-byst. Nid yw hwn yn gynnwys go iawn. TEST
+      project_description_preview: Dyma rywfaint o gynnwys prosiect enghreifftiol a ddefnyddir ar gyfer rhagolwg cynnwys e-byst. Nid yw hwn yn gynnwys go iawn.
       project_title: Prosiect enghreifftiol
       proposal_title: Cynnig Enghraifft
       space_title: Gofod enghreifftiol
@@ -608,21 +608,21 @@ cy-GB:
       title_what_can_you_do_moderator: Beth allwch chi ei wneud fel rheolwr prosiect?
       x_ideas: '%{numberOfIdeas} syniadau'
     project_phase_started:
-      cta_button: Gweld beth sy'n newydd TEST
-      event_description: "Gallwch nawr gymryd rhan yn '%{phaseTitle}' ar blatfform %{organizationName}. TEST"
+      cta_button: Gweld beth sy'n newydd
+      event_description: "Gallwch nawr gymryd rhan yn '%{phaseTitle}' ar blatfform %{organizationName}."
       new_phase: "Dechreuodd y prosiect hwn y cam '%{phaseTitle}'"
-      preheader: "Gallwch nawr gymryd rhan yn '%{phaseTitle}' TEST"
-      subject: "Mae '%{phaseTitle}' wedi dechrau yn %{projectName} TEST"
+      preheader: "Gallwch nawr gymryd rhan yn '%{phaseTitle}'"
+      subject: "Mae '%{phaseTitle}' wedi dechrau yn %{projectName}"
       subtitle: "Ynglŷn â '%{projectName}'"
-      title: "Mae rhywbeth newydd yn '%{projectName}' TEST"
+      title: "Mae rhywbeth newydd yn '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Adolygu'r gosodiad TEST
-      event_description: "Mae '%{phaseTitle}' yn y prosiect '%{projectName}' yn dechrau ar %{startDate}. Cymerwch eiliad i wirio bod popeth yn barod: A yw'r disgrifiad yn gyflawn? A yw'r dyddiadau'n gywir? A ydych am hysbysu eich cymuned trwy ymgyrch e-bost bwrpasol? TEST"
+      cta_button: Adolygu'r gosodiad
+      event_description: "Mae '%{phaseTitle}' yn y prosiect '%{projectName}' yn dechrau ar %{startDate}. Cymerwch eiliad i wirio bod popeth yn barod: A yw'r disgrifiad yn gyflawn? A yw'r dyddiadau'n gywir? A ydych am hysbysu eich cymuned drwy ymgyrch e-bost bwrpasol?"
       new_phase: "Bydd y prosiect yn dechrau ar y cam '%{phaseTitle}'"
-      preheader: Gwnewch yn siŵr bod popeth yn barod cyn %{startDate} TEST
-      subject: "%{projectName}: mae '%{phaseTitle}' yn dechrau ar %{startDate} TEST"
+      preheader: Gwnewch yn siŵr bod popeth yn barod cyn %{startDate}
+      subject: "%{projectName}: mae '%{phaseTitle}' yn dechrau ar %{startDate}"
       subtitle: "Ynglŷn â '%{projectName}'"
-      title: "%{firstName}, mae '%{phaseTitle}' yn dechrau ar %{startDate} TEST"
+      title: "%{firstName}, mae '%{phaseTitle}' yn dechrau ar %{startDate}"
     project_published:
       cta_button: Ewch i'r prosiect hwn
       event_description: "Mae platfform cyfranogiad %{organizationName} newydd gyhoeddi'r prosiect canlynol:"

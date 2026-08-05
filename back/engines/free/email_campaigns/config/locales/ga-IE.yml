@@ -198,8 +198,8 @@ ga-IE:
       project_folder_moderation_rights_received: Fuarthas cearta bainisteoir fillteán
       project_manager_rights_received: Cearta bainisteora tionscadail faighte
       project_moderation_rights_received: Cearta modhnóireachta tionscadail faighte
-      project_phase_started: Céim tosaithe TEST
-      project_phase_upcoming: Céim ag tosú go luath TEST
+      project_phase_started: Céim tosaithe
+      project_phase_upcoming: Céim ag tosú go luath
       project_published: Tionscadal foilsithe
       project_review_request: Iarratas ar athbhreithniú tionscadail
       project_review_state_change: Tionscadal ceadaithe
@@ -573,7 +573,7 @@ ga-IE:
       official_feedback_body: Aiseolas oifigiúil samplach
       phase_description: Is sampla é seo d'inneachar céime a úsáidtear chun réamhamharc a dhéanamh ar inneachar ríomhphost. Ní fíor-inneachar é seo.
       phase_title: Céim shamplach
-      project_description_preview: Is sampla é seo d’inneachar tionscadail a úsáidtear chun réamhamharc a dhéanamh ar inneachar ríomhphoist. Ní fíorinneachar é seo. TEST
+      project_description_preview: Is sampla d'ábhar tionscadail é seo a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.
       project_title: Tionscadal samplach
       proposal_title: Togra Samplach
       space_title: Spás samplach
@@ -608,21 +608,21 @@ ga-IE:
       title_what_can_you_do_moderator: Cad is féidir leat a dhéanamh mar bhainisteoir tionscadail?
       x_ideas: '%{numberOfIdeas} ideas'
     project_phase_started:
-      cta_button: Féach cad atá nua TEST
-      event_description: "Is féidir leat páirt a ghlacadh i '%{phaseTitle}' anois ar ardán %{organizationName}. TEST"
+      cta_button: Féach cad atá nua
+      event_description: "Is féidir leat páirt a ghlacadh in '%{phaseTitle}' anois ar ardán %{organizationName}."
       new_phase: "Chuaigh an tionscadal seo isteach sa chéim '%{phaseTitle}'"
-      preheader: "Is féidir leat páirt a ghlacadh i '%{phaseTitle}' anois TEST"
-      subject: "Tá '%{phaseTitle}' tosaithe i %{projectName} TEST"
+      preheader: "Is féidir leat páirt a ghlacadh in '%{phaseTitle}' anois"
+      subject: "Tá '%{phaseTitle}' tosaithe in %{projectName}"
       subtitle: "Maidir le '%{projectName}'"
-      title: "Tá rud éigin nua i '%{projectName}' TEST"
+      title: "Tá rud éigin nua in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Déan athbhreithniú ar an socrú TEST
-      event_description: "Tosaíonn '%{phaseTitle}' sa tionscadal '%{projectName}' ar %{startDate}. Tóg nóiméad chun a chinntiú go bhfuil gach rud réidh: An bhfuil an cur síos iomlán? An bhfuil na dátaí ceart? Ar mhaith leat do phobal a chur ar an eolas trí fheachtas ríomhphoist saincheaptha? TEST"
+      cta_button: Athbhreithnigh an socrú
+      event_description: "Tosaíonn '%{phaseTitle}' sa tionscadal '%{projectName}' ar %{startDate}. Tóg nóiméad le deimhniú go bhfuil gach rud réidh: An bhfuil an cur síos iomlán? An bhfuil na dátaí ceart? Ar mhaith leat do phobal a chur ar an eolas trí fheachtas ríomhphoist saincheaptha?"
       new_phase: "Rachaidh an tionscadal isteach sa chéim '%{phaseTitle}'"
-      preheader: Déan cinnte go bhfuil gach rud réidh roimh %{startDate} TEST
-      subject: "%{projectName}: tosaíonn '%{phaseTitle}' ar %{startDate} TEST"
+      preheader: Déan cinnte go bhfuil gach rud réidh roimh %{startDate}
+      subject: "%{projectName}: tosaíonn '%{phaseTitle}' ar %{startDate}"
       subtitle: "Maidir le '%{projectName}'"
-      title: "%{firstName}, tosaíonn '%{phaseTitle}' ar %{startDate} TEST"
+      title: "%{firstName}, tosaíonn '%{phaseTitle}' ar %{startDate}"
     project_published:
       cta_button: Téigh chuig an tionscadal seo
       event_description: 'D’fhoilsigh ardán rannpháirtíochta %{organizationName} an tionscadal seo a leanas díreach:'

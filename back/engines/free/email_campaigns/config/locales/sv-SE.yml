@@ -198,8 +198,8 @@ sv-SE:
       project_folder_moderation_rights_received: Rättigheter som mapphanterare har erhållits
       project_manager_rights_received: Rättigheter som projektledare mottagna
       project_moderation_rights_received: Rättigheter för projektmoderering har erhållits
-      project_phase_started: Fasen har startat TEST
-      project_phase_upcoming: Fasen startar snart TEST
+      project_phase_started: Fasen har startat
+      project_phase_upcoming: Fasen startar snart
       project_published: Projekt publicerat
       project_review_request: Begäran om projektgranskning
       project_review_state_change: Projekt godkänt
@@ -573,7 +573,7 @@ sv-SE:
       official_feedback_body: Exempel på officiell feedback
       phase_description: Detta är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
       phase_title: Exempel på fas
-      project_description_preview: Detta är exempel på projektinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll. TEST
+      project_description_preview: Detta är exempel på projektinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
       project_title: Exempel på projekt
       proposal_title: Exempel på förslag
       space_title: Exempel-space
@@ -608,21 +608,21 @@ sv-SE:
       title_what_can_you_do_moderator: Vad kan du göra som projektledare?
       x_ideas: '%{numberOfIdeas} idéer'
     project_phase_started:
-      cta_button: Se vad som är nytt TEST
-      event_description: "Du kan nu delta i '%{phaseTitle}' på %{organizationName}s plattform. TEST"
+      cta_button: Se vad som är nytt
+      event_description: "Du kan nu delta i '%{phaseTitle}' på %{organizationName}s plattform."
       new_phase: Det här projektet gick in i fasen %{phaseTitle}
-      preheader: "Du kan nu delta i '%{phaseTitle}' TEST"
-      subject: "'%{phaseTitle}' har startat i %{projectName} TEST"
+      preheader: "Du kan nu delta i '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' har startat i %{projectName}"
       subtitle: "Om '%{projectName}'"
-      title: "Det finns något nytt i '%{projectName}' TEST"
+      title: "Det finns något nytt i '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Granska inställningarna TEST
-      event_description: "'%{phaseTitle}' i projektet '%{projectName}' startar den %{startDate}. Ta en stund för att kontrollera att allt är klart: Är beskrivningen fullständig? Stämmer datumen? Vill du informera ditt lokalsamhälle genom en anpassad e-postkampanj? TEST"
+      cta_button: Granska inställningarna
+      event_description: "'%{phaseTitle}' i projektet '%{projectName}' startar den %{startDate}. Ta en stund för att kontrollera att allt är klart: Är beskrivningen fullständig? Stämmer datumen? Vill du informera ditt community genom en anpassad e-postkampanj?"
       new_phase: Projektet går in i fasen %{phaseTitle}
-      preheader: Se till att allt är klart före %{startDate} TEST
-      subject: "%{projectName}: '%{phaseTitle}' startar den %{startDate} TEST"
+      preheader: Se till att allt är klart före %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' startar den %{startDate}"
       subtitle: "Om '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' startar den %{startDate} TEST"
+      title: "%{firstName}, '%{phaseTitle}' startar den %{startDate}"
     project_published:
       cta_button: Gå till detta projekt
       event_description: 'Deltagarplattformen på %{organizationName} har just publicerat följande projekt:'

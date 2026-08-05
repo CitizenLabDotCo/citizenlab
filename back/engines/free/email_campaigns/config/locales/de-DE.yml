@@ -198,8 +198,8 @@ de-DE:
       project_folder_moderation_rights_received: Ordnermanagementrechte erhalten
       project_manager_rights_received: Projekt-Manager*innen-Rechte erhalten
       project_moderation_rights_received: Projektmanagementrechte erhalten
-      project_phase_started: Phase gestartet TEST
-      project_phase_upcoming: Phase beginnt bald TEST
+      project_phase_started: Phase gestartet
+      project_phase_upcoming: Phase beginnt bald
       project_published: Projekt veröffentlicht
       project_review_request: Antrag auf Projektfreigabe
       project_review_state_change: Projekt freigegeben
@@ -573,7 +573,7 @@ de-DE:
       official_feedback_body: Beispiel für ein offizielles Update
       phase_description: Dies ist ein Beispielinhalt für eine Phase, der zur Vorschau von E-Mails verwendet wird. Dies ist kein echter Inhalt.
       phase_title: Beispielphase
-      project_description_preview: Dies ist ein Beispiel für Projektinhalte zur Vorschau von E-Mail-Inhalten. Dies ist kein echter Inhalt. TEST
+      project_description_preview: Dies ist ein Beispiel für Projektinhalte zur Vorschau von E-Mail-Inhalten. Dies ist kein echter Inhalt.
       project_title: Beispielprojekt
       proposal_title: Beispiel-Vorschlag
       space_title: Beispiel-Space
@@ -608,21 +608,21 @@ de-DE:
       title_what_can_you_do_moderator: Was können Sie als Projektmanager*in tun?
       x_ideas: '%{numberOfIdeas} Ideen'
     project_phase_started:
-      cta_button: Neuigkeiten ansehen TEST
-      event_description: "Sie können jetzt an '%{phaseTitle}' auf der Plattform von %{organizationName} teilnehmen. TEST"
+      cta_button: Sehen Sie, was es Neues gibt
+      event_description: "Sie können jetzt an '%{phaseTitle}' auf der Plattform von %{organizationName} teilnehmen."
       new_phase: "Dieses Projekt ist nun in der Phase '%{phaseTitle}'"
-      preheader: "Sie können jetzt an '%{phaseTitle}' teilnehmen TEST"
-      subject: "'%{phaseTitle}' hat in %{projectName} begonnen TEST"
+      preheader: "Sie können jetzt an '%{phaseTitle}' teilnehmen"
+      subject: "'%{phaseTitle}' hat in %{projectName} begonnen"
       subtitle: "Über '%{projectName}'"
-      title: "Es gibt Neuigkeiten in '%{projectName}' TEST"
+      title: "Es gibt etwas Neues in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Konfiguration überprüfen TEST
-      event_description: "'%{phaseTitle}' im Projekt '%{projectName}' beginnt am %{startDate}. Nehmen Sie sich einen Moment Zeit, um zu prüfen, ob alles bereit ist: Ist die Beschreibung vollständig? Sind die Daten korrekt? Möchten Sie Ihre Community über eine benutzerdefinierte E-Mail-Kampagne informieren? TEST"
+      cta_button: Konfiguration überprüfen
+      event_description: "'%{phaseTitle}' im Projekt '%{projectName}' beginnt am %{startDate}. Nehmen Sie sich einen Moment Zeit, um zu prüfen, ob alles bereit ist: Ist die Beschreibung vollständig? Sind die Daten korrekt? Möchten Sie Ihre Community über eine benutzerdefinierte E-Mail-Kampagne informieren?"
       new_phase: Das Projekt geht in die Phase "%{phaseTitle}"
-      preheader: Stellen Sie sicher, dass vor dem %{startDate} alles bereit ist TEST
-      subject: "%{projectName}: '%{phaseTitle}' beginnt am %{startDate} TEST"
+      preheader: Stellen Sie sicher, dass vor dem %{startDate} alles bereit ist
+      subject: "%{projectName}: '%{phaseTitle}' beginnt am %{startDate}"
       subtitle: "Über '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' beginnt am %{startDate} TEST"
+      title: "%{firstName}, '%{phaseTitle}' beginnt am %{startDate}"
     project_published:
       cta_button: Zum Projekt
       event_description: 'Die Beteiligungsplattform von %{organizationName} hat gerade das folgende Projekt veröffentlicht:'

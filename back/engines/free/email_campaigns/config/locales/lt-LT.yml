@@ -198,8 +198,8 @@ lt-LT:
       project_folder_moderation_rights_received: Gautos aplankų tvarkytojo teisės
       project_manager_rights_received: Suteiktos projekto valdytojo teisės
       project_moderation_rights_received: Gautos projekto moderavimo teisės
-      project_phase_started: Etapas prasidėjo TEST
-      project_phase_upcoming: Etapas netrukus prasidės TEST
+      project_phase_started: Etapas prasidėjo
+      project_phase_upcoming: Etapas netrukus prasidės
       project_published: Paskelbtas projektas
       project_review_request: Projekto peržiūros prašymas
       project_review_state_change: Patvirtintas projektas
@@ -573,7 +573,7 @@ lt-LT:
       official_feedback_body: Oficialių atsiliepimų pavyzdys
       phase_description: Tai yra pavyzdinis etapo turinys, naudojamas el. laiškų turinio peržiūrai. Tai nėra tikras turinys.
       phase_title: Pavyzdys fazė
-      project_description_preview: Tai pavyzdinis projekto turinys, skirtas el. laiškų peržiūrai. Tai nėra tikras turinys. TEST
+      project_description_preview: Tai yra pavyzdinis projekto turinys, skirtas el. laiškų peržiūrai. Tai nėra tikras turinys.
       project_title: Projekto pavyzdys
       proposal_title: Pasiūlymo pavyzdys
       space_title: Pavyzdinė erdvė
@@ -608,21 +608,21 @@ lt-LT:
       title_what_can_you_do_moderator: Ką galite padaryti kaip projektų vadovas?
       x_ideas: '%{numberOfIdeas} idėjos'
     project_phase_started:
-      cta_button: Žiūrėti naujienas TEST
-      event_description: Dabar galite dalyvauti etape „%{phaseTitle}“ %{organizationName} platformoje. TEST
+      cta_button: Sužinokite, kas naujo
+      event_description: Dabar galite dalyvauti etape „%{phaseTitle}“ %{organizationName} platformoje.
       new_phase: "Šis projektas perėjo į etapą '%{phaseTitle}'"
-      preheader: Dabar galite dalyvauti etape „%{phaseTitle}“ TEST
-      subject: „%{phaseTitle}“ prasidėjo projekte %{projectName} TEST
+      preheader: Dabar galite dalyvauti etape „%{phaseTitle}“
+      subject: „%{phaseTitle}“ prasidėjo projekte %{projectName}
       subtitle: "Apie '%{projectName}'"
-      title: Projekte „%{projectName}“ yra naujienų TEST
+      title: Projekte „%{projectName}“ yra naujienų
     project_phase_upcoming:
-      cta_button: Peržiūrėti nustatymus TEST
-      event_description: '„%{phaseTitle}“ projekte „%{projectName}“ prasideda %{startDate}. Skirkite akimirką patikrinti, ar viskas paruošta: ar aprašymas išsamus? Ar datos teisingos? Ar norite informuoti savo bendruomenę naudodami pritaikytą el. pašto kampaniją? TEST'
+      cta_button: Peržiūrėkite sąranką
+      event_description: '„%{phaseTitle}“ projekte „%{projectName}“ prasideda %{startDate}. Skirkite akimirką ir patikrinkite, ar viskas paruošta: ar aprašymas išsamus? Ar datos teisingos? Ar norite informuoti savo bendruomenę naudodami pritaikytą el. pašto kampaniją?'
       new_phase: Projektas pereis į etapą "%{phaseTitle}".
-      preheader: Įsitikinkite, kad viskas paruošta iki %{startDate} TEST
-      subject: '%{projectName}: „%{phaseTitle}“ prasideda %{startDate} TEST'
+      preheader: Įsitikinkite, kad viskas paruošta iki %{startDate}
+      subject: '%{projectName}: „%{phaseTitle}“ prasideda %{startDate}'
       subtitle: "Apie '%{projectName}'"
-      title: '%{firstName}, „%{phaseTitle}“ prasideda %{startDate} TEST'
+      title: '%{firstName}, „%{phaseTitle}“ prasideda %{startDate}'
     project_published:
       cta_button: Eikite į šį projektą
       event_description: 'Dalyvavimo platformoje %{organizationName} ką tik paskelbtas šis projektas:'

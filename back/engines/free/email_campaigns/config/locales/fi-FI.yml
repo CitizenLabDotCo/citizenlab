@@ -198,8 +198,8 @@ fi-FI:
       project_folder_moderation_rights_received: Kansionhallintaoikeudet vastaanotettu
       project_manager_rights_received: Projektipäällikön oikeudet vastaanotettu
       project_moderation_rights_received: Projektin moderointioikeudet saatu
-      project_phase_started: Vaihe on alkanut TEST
-      project_phase_upcoming: Vaihe alkaa pian TEST
+      project_phase_started: Vaihe on alkanut
+      project_phase_upcoming: Vaihe alkaa pian
       project_published: Projekti julkaistu
       project_review_request: Hankearviointipyyntö
       project_review_state_change: Projekti hyväksytty
@@ -573,7 +573,7 @@ fi-FI:
       official_feedback_body: Esimerkki virallisesta palautteesta
       phase_description: Tämä on vaiheen esimerkkisisältöä sähköpostien sisällön esikatselua varten. Tämä ei ole oikeaa sisältöä.
       phase_title: Esimerkkivaihe
-      project_description_preview: Tämä on esimerkkisisältöä, jota käytetään sähköpostien sisällön esikatseluun. Tämä ei ole oikeaa sisältöä. TEST
+      project_description_preview: Tämä on esimerkkisisältöä, jota käytetään sähköpostien sisällön esikatseluun. Tämä ei ole oikeaa sisältöä.
       project_title: Esimerkkiprojekti
       proposal_title: Esimerkkiehdotus
       space_title: Esimerkkitila
@@ -608,21 +608,21 @@ fi-FI:
       title_what_can_you_do_moderator: Mitä voit tehdä projektipäällikkönä?
       x_ideas: '%{numberOfIdeas} ideoita'
     project_phase_started:
-      cta_button: Katso mitä uutta TEST
-      event_description: "Voit nyt osallistua vaiheeseen '%{phaseTitle}' organisaation %{organizationName} alustalla. TEST"
+      cta_button: Katso mitä uutta
+      event_description: "Voit nyt osallistua vaiheeseen '%{phaseTitle}' organisaation %{organizationName} alustalla."
       new_phase: Tämä projekti siirtyi vaiheeseen%{phaseTitle}
-      preheader: "Voit nyt osallistua vaiheeseen '%{phaseTitle}' TEST"
-      subject: "'%{phaseTitle}' on alkanut projektissa %{projectName} TEST"
+      preheader: "Voit nyt osallistua vaiheeseen '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' on alkanut hankkeessa %{projectName}"
       subtitle: "Tietoja '%{projectName}'"
-      title: "Projektissa '%{projectName}' on jotain uutta TEST"
+      title: "Hankkeessa '%{projectName}' on jotain uutta"
     project_phase_upcoming:
-      cta_button: Tarkista asetukset TEST
-      event_description: "'%{phaseTitle}' projektissa '%{projectName}' alkaa %{startDate}. Tarkista vielä, että kaikki on valmista: Onko kuvaus valmis? Ovatko päivämäärät oikein? Haluatko tiedottaa yhteisöllesi mukautetulla sähköpostikampanjalla? TEST"
+      cta_button: Tarkista asetukset
+      event_description: "'%{phaseTitle}' hankkeessa '%{projectName}' alkaa %{startDate}. Tarkista vielä, että kaikki on valmista: Onko kuvaus valmis? Ovatko päivämäärät oikein? Haluatko tiedottaa yhteisöäsi mukautetulla sähköpostikampanjalla?"
       new_phase: Projekti siirtyy vaiheeseen%{phaseTitle}
-      preheader: Varmista, että kaikki on valmista ennen päivämäärää %{startDate} TEST
-      subject: "%{projectName}: '%{phaseTitle}' alkaa %{startDate} TEST"
+      preheader: Varmista, että kaikki on valmista ennen %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' alkaa %{startDate}"
       subtitle: "Tietoja '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' alkaa %{startDate} TEST"
+      title: "%{firstName}, '%{phaseTitle}' alkaa %{startDate}"
     project_published:
       cta_button: Siirry tähän projektiin
       event_description: '%{organizationName} :n osallistumisalusta julkaisi juuri seuraavan projektin:'

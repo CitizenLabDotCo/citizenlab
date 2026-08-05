@@ -198,8 +198,8 @@ ca-ES:
       project_folder_moderation_rights_received: S'han rebut els drets del gestor de carpetes
       project_manager_rights_received: Drets de gestor de projectes rebuts
       project_moderation_rights_received: S'han rebut els drets de moderació del projecte
-      project_phase_started: Fase iniciada TEST
-      project_phase_upcoming: La fase començarà aviat TEST
+      project_phase_started: Fase iniciada
+      project_phase_upcoming: La fase començarà aviat
       project_published: Projecte publicat
       project_review_request: Sol·licitud de revisió del projecte
       project_review_state_change: Projecte aprovat
@@ -573,7 +573,7 @@ ca-ES:
       official_feedback_body: Exemple de comentaris oficials
       phase_description: Aquest és un exemple de contingut d'etapa utilitzat per previsualitzar el contingut dels correus electrònics. Aquest no és contingut real.
       phase_title: Fase d'exemple
-      project_description_preview: Aquest és un exemple de contingut de projecte utilitzat per previsualitzar el contingut dels correus electrònics. No és contingut real. TEST
+      project_description_preview: Aquest és un exemple de contingut de projecte utilitzat per previsualitzar el contingut dels correus electrònics. No és contingut real.
       project_title: Projecte d'exemple
       proposal_title: Proposta d'exemple
       space_title: Espai d'exemple
@@ -608,21 +608,21 @@ ca-ES:
       title_what_can_you_do_moderator: Què pots fer com a gestor de projectes?
       x_ideas: '%{numberOfIdeas} idees'
     project_phase_started:
-      cta_button: Mira què hi ha de nou TEST
-      event_description: "Ara ja pots participar a '%{phaseTitle}' a la plataforma de %{organizationName}. TEST"
+      cta_button: Mira què hi ha de nou
+      event_description: "Ara ja pots participar a '%{phaseTitle}' a la plataforma de %{organizationName}."
       new_phase: "Aquest projecte va entrar a la fase '%{phaseTitle}'"
-      preheader: "Ara ja pots participar a '%{phaseTitle}' TEST"
-      subject: "'%{phaseTitle}' ha començat a %{projectName} TEST"
+      preheader: "Ara ja pots participar a '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' ha començat a %{projectName}"
       subtitle: "Sobre '%{projectName}'"
-      title: "Hi ha novetats a '%{projectName}' TEST"
+      title: "Hi ha novetats a '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Revisa la configuració TEST
-      event_description: "'%{phaseTitle}' al projecte '%{projectName}' comença el %{startDate}. Dedica un moment a comprovar que tot estigui a punt: La descripció és completa? Les dates són correctes? Vols informar la teva comunitat mitjançant una campanya de correu electrònic personalitzada? TEST"
+      cta_button: Revisa la configuració
+      event_description: "'%{phaseTitle}' al projecte '%{projectName}' comença el %{startDate}. Dedica un moment a comprovar que tot estigui a punt: la descripció és completa? Les dates són correctes? Vols informar la teva comunitat mitjançant una campanya de correu electrònic personalitzada?"
       new_phase: "El projecte entrarà a la fase '%{phaseTitle}'"
-      preheader: Assegura't que tot estigui a punt abans del %{startDate} TEST
-      subject: "%{projectName}: '%{phaseTitle}' comença el %{startDate} TEST"
+      preheader: Assegura't que tot estigui a punt abans del %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' comença el %{startDate}"
       subtitle: "Sobre '%{projectName}'"
-      title: "%{firstName}, '%{phaseTitle}' comença el %{startDate} TEST"
+      title: "%{firstName}, '%{phaseTitle}' comença el %{startDate}"
     project_published:
       cta_button: Ves a aquest projecte
       event_description: 'La plataforma de participació de %{organizationName} acaba de publicar el següent projecte:'
