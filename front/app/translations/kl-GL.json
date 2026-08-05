@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Oqarasuaatip normua",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Oqarasuaatip normua ilusissaa eqqortoq atorlugu allaguk, soorlu +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Oqarasuaatip normua allaguk",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "{contentType} nalunaarutit tamarmik allanngortikkit",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Kalerrisaarutit suussusermi uaniittut",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "E-mailikkut kalerrisaarutit suut tiguarusuppigit?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-mailikkut kalerrisaarutit",

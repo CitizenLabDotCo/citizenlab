@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefon numarası",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Telefon numarasını doğru formatta girin, örneğin +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Bir telefon numarası girin",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Tüm {contentType} bildirimlerini aç/kapat",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Bu kategorideki bildirimler",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Ne tür e-posta bildirimleri almak istersiniz?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-posta bildirimleri",

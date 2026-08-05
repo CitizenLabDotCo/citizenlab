@@ -54,6 +54,19 @@ parameters:
     type: boolean
     default: false
 
+  # Optional comma-separated Cypress spec path(s) for the manually-e2e-tests
+  # workflow, e.g. "cypress/e2e/router_history.cy.ts". Empty runs the full
+  # suite. When set, also pass e2e_parallelism: 1 — every parallel node runs
+  # the given spec(s) in full.
+  e2e_spec:
+    type: string
+    default: ""
+
+  # Parallelism for the manually-e2e-tests workflow.
+  e2e_parallelism:
+    type: integer
+    default: 16
+
   templates:
     type: boolean
     default: false
@@ -906,8 +919,11 @@ jobs:
           name: Run cypress
           command: |
             cd front
-            TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
-            COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+            COMMA_SEPARATED_TESTFILES="<< pipeline.parameters.e2e_spec >>"
+            if [ -z "$COMMA_SEPARATED_TESTFILES" ]; then
+              TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
+              COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+            fi
             echo $COMMA_SEPARATED_TESTFILES
             cd ../e2e
             docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
@@ -1413,7 +1429,7 @@ workflows:
             - docker-hub-access
             - lastpass
       - e2e-tests:
-          parallelism: 16
+          parallelism: << pipeline.parameters.e2e_parallelism >>
           context:
             - docker-hub-access
           requires:

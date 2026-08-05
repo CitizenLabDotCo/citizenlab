@@ -1367,6 +1367,7 @@
   "app.containers.Authentication.steps.Phone.phoneNumber": "Telefonnummer",
   "app.containers.Authentication.steps.Phone.phoneNumberFormatError": "Ange ett telefonnummer i rätt format, till exempel +32 470 12 34 56",
   "app.containers.Authentication.steps.Phone.phoneNumberMissingError": "Ange ett telefonnummer",
+  "app.containers.CampaignsConsentForm.a11y_toggleAllInCategory": "Slå på/av alla aviseringar för {contentType}",
   "app.containers.CampaignsConsentForm.ally_categoryLabel2": "Aviseringar i denna kategori",
   "app.containers.CampaignsConsentForm.emailNotificationsSubTitle": "Vilka typer av e-postaviseringar vill du få?",
   "app.containers.CampaignsConsentForm.emailNotificationsTitle": "E-postaviseringar",
