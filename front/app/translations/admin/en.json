@@ -681,7 +681,6 @@
   "app.containers.Admin.Invitations.name": "Name",
   "app.containers.Admin.Invitations.processing": "Sending out invitations. Please wait...",
   "app.containers.Admin.Invitations.processingNotStartedError": "The system is busy and your invitations have not been processed yet. No invitations were sent. Please try again in a few minutes.",
-  "app.containers.Admin.Invitations.processingTimeoutError": "Something went wrong while processing your invitations. Check the \"All invitations\" tab before trying again.",
   "app.containers.Admin.Invitations.projectSelectorPlaceholder": "No project(s) selected",
   "app.containers.Admin.Invitations.save": "Send out invitations",
   "app.containers.Admin.Invitations.saveErrorMessage": "One or more errors occurred and the invitations were not sent out. Please correct the error(s) listed below and try again.",
