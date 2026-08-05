@@ -218,4 +218,20 @@ RSpec.describe DecidimImporter::ExportReader do
       expect(rows[:followers].first).to include('uid' => 'f-1', 'followable' => 'debate-1', **stamp)
     end
   end
+
+  describe 'process user roles' do
+    it 'reads a process’s users.csv into :process_roles, stamped with the process uid' do
+      write_process('decidim--process--1')
+      write_csv('04---participatory-processes/01---decidim--participatory-process--1/06---users.csv',
+        %w[uid role], %w[decidim--user--8 admin], %w[decidim--user--9 private_user])
+
+      roles = described_class.read(root)[:process_roles]
+
+      expect(roles).to contain_exactly(
+        { 'uid' => 'decidim--user--8', 'role' => 'admin', 'decidim_participatory_process' => 'decidim--process--1' },
+        { 'uid' => 'decidim--user--9', 'role' => 'private_user',
+          'decidim_participatory_process' => 'decidim--process--1' }
+      )
+    end
+  end
 end

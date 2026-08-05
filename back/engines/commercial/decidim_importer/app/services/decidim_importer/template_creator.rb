@@ -138,12 +138,12 @@ module DecidimImporter
     delegate :to_yaml, to: :build_template
 
     # Builds the template and applies it to the current tenant in one shot, then assigns the deferred
-    # moderator roles (which need the in-memory ref map). Returns the deserializer's created-ids hash.
+    # project-moderator roles by natural key. Returns the deserializer's created-ids hash.
     def import(validate: true)
       # Round-trip through YAML to exercise the actual artifact the deserializer consumes.
       template = YAML.load(build_template.to_yaml, aliases: true)
       created = Importer.apply_template(template, import_uploads: @import_uploads, validate: validate)
-      RoleAssigner.new(ref_map).assign(created, role_assignments)
+      ModeratorAssigner.new.assign(moderator_assignments)
       created
     end
 
@@ -246,6 +246,22 @@ module DecidimImporter
     # Categories that couldn't be imported as input topics (no owning project / no name).
     def skipped_categories
       @categories_extractor&.skipped || []
+    end
+
+    # Natural-key project-moderator tuples for {ModeratorAssigner} (`{ 'user_unique_code' =>,
+    # 'project_slug' => }`), resolved against the built ref map — call after {#build_template}. Memoised
+    # so {#skipped_roles} reflects the same run.
+    def moderator_assignments
+      return [] unless @rows_by_model.key?(:process_roles)
+
+      @moderator_assignments ||=
+        (@process_roles_extractor = build_extractor(Extractors::ProcessRolesExtractor, :process_roles)).run
+    end
+
+    # Process user-roles that couldn't be turned into a moderator assignment (user/process not imported,
+    # or project without a slug). Reflects the last {#moderator_assignments} run.
+    def skipped_roles
+      @process_roles_extractor&.skipped || []
     end
 
     private
@@ -646,14 +662,6 @@ module DecidimImporter
     # Instantiates an extractor for a model with the shared ref map + locale settings.
     def build_extractor(klass, model)
       klass.new(rows_for(model), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale)
-    end
-
-    def role_assignments
-      return [] unless @rows_by_model.key?(:process_roles)
-
-      Extractors::ProcessRolesExtractor.new(
-        rows_for(:process_roles), ref_map, locale_mapper: @locale_mapper, primary_locale: @primary_locale
-      ).run
     end
 
     def rows_for(model)

@@ -1,27 +1,27 @@
 # frozen_string_literal: true
 
 require 'csv'
+require 'tmpdir'
 
-# Workflow: `create_template` reads a Decidim export (zip or dir) and writes the artifacts
-# (`.template.yml` + `.app_config.json` + `.url_mapping.csv`) — it never touches a tenant. `import`
-# applies the template to the tenant matching `host` (unioning in the export's locales so it
-# deserializes). `update_app_config` applies the *full* `.app_config.json` (replaces locales, branding,
-# reply-to) — optional, run only when you want the tenant to match the export. `verify` dry-runs a
-# template on a throwaway tenant. Each of `create_template`/`import`/`update_app_config` tees its summary
-# to a run log beside the artifacts: `<base>.create.log` / `<base>.import.log` / `<base>.app_config.log`.
+# Workflow: `create_template` reads a Decidim export (zip or dir) and writes the loose artifacts
+# (`.template.yml` + `.app_config.json` + `.url_mapping.csv` + `.moderators.csv`), then bundles them into
+# a single `<base>.template.zip` — it never touches a tenant. `import` takes that bundle, unpacks it and
+# applies the template to the tenant matching `host`, first applying the `.app_config.json` patch (union
+# in the export's locales + turn on the import's feature flags). `verify` dry-runs a template on a
+# throwaway tenant. `create_template`/`import` each tee their summary to a run log beside the artifacts:
+# `<base>.create.log` / `<base>.import.log`.
 #
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR]
 #   rake decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false,true]  # include_source_url
-#   rake decidim_importer:update_app_config[tmp/import_files/example.com.template.yml,localhost]
-#   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]
-#   rake decidim_importer:import[tmp/import_files/example.com.template.yml,localhost,false]  # skip image fetches
+#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost]
+#   rake decidim_importer:import[tmp/import_files/example.com.template.zip,localhost,false]  # skip image fetches
 #   rake decidim_importer:verify[tmp/import_files/example.com.template.yml,fr-FR,en]
 #
-# `import` and `update_app_config` refuse to run unless the `decidim_importer` feature is enabled for the
-# target host (a per-tenant safety gate, off by default — enable it in admin HQ). `import` deserializes
-# the template, then finishes by rewriting embedded Decidim links via the `.url_mapping.csv` (unresolved
-# ones → `<base>.broken_links.csv`) and building the Consultations/Assemblies folder structure. The 3rd
-# arg disables image fetching (for templates whose `remote_*_url`s point at an unreachable host).
+# `import` refuses to run unless the `decidim_importer` feature is enabled for the target host (a
+# per-tenant safety gate, off by default — enable it in admin HQ). `import` deserializes the template,
+# then finishes by rewriting embedded Decidim links via the `.url_mapping.csv` (unresolved ones →
+# `<base>.broken_links.csv`) and building the Consultations/Assemblies folder structure. The 3rd arg
+# disables image fetching (for templates whose `remote_*_url`s point at an unreachable host).
 namespace :decidim_importer do
   desc 'Builds the tenant-template YAML (+ app-config JSON) from a Decidim export (zip or dir). No import.'
   task :create_template, %i[path primary_locale production include_source_url] => [:environment] do |_t, args|
@@ -63,59 +63,49 @@ namespace :decidim_importer do
       creator.skipped_files.each { |s| report_warn "  skipped file #{s[:uid]}: #{s[:reason]}" }
       write_app_config_json(creator, path)
       write_url_mapping_csv(creator, path)
+      # Evaluates the moderator assignments (and so populates `skipped_roles`), hence logged after.
+      write_moderators_csv(creator, path)
+      creator.skipped_roles.each { |s| report_warn "  skipped role #{s[:uid]}: #{s[:reason]}" }
+      write_template_zip(path)
     end
   end
 
-  desc 'Imports a dumped tenant-template YAML file into the tenant matching `host`, then runs the ' \
-       'post-import finishing (link correction + Consultations/Assemblies folder structure). Unions the ' \
-       'export\'s locales into the tenant (additive) so the template deserializes; run `update_app_config` ' \
-       'for the rest of the app config (locale replace, branding, reply-to).'
+  desc 'Imports a `<base>.template.zip` bundle (from `create_template`) into the tenant matching `host`: ' \
+       'applies the app-config patch (union in the export\'s locales + enable the import\'s feature ' \
+       'flags), deserializes the template, then runs the post-import finishing (link correction + ' \
+       'Consultations/Assemblies folder structure + project-moderator roles).'
   task :import, %i[file host import_uploads] => [:environment] do |_t, args|
     tenant = Tenant.find_by!(host: args[:host] || 'localhost')
-    file = args.fetch(:file)
+    zip = args.fetch(:file)
     import_uploads = args[:import_uploads].to_s.downcase != 'false'
 
+    abort "Expected a `<base>.template.zip` bundle (from create_template), got: #{zip}" \
+      unless zip.downcase.end_with?('.zip')
     ensure_import_enabled!(tenant)
 
-    with_report_log(log_path(file, 'import')) do
-      report_line "Decidim import → tenant=#{tenant.host} file=#{file} import_uploads=#{import_uploads}"
+    # Logs and the broken-links report land beside the zip; the artifacts themselves are read from a
+    # tempdir the bundle is unpacked into.
+    with_report_log(log_path(zip, 'import')) do
+      report_line "Decidim import → tenant=#{tenant.host} file=#{zip} import_uploads=#{import_uploads}"
       broken = []
-      tenant.switch do
-        # Ensure the tenant has every locale the template's multilocs reference (additive union), so
-        # deserialize doesn't fail on a missing locale. Full app config is `update_app_config`.
-        added = DecidimImporter::Importer.merge_app_config_locales_file(app_config_sibling(file))
-        report_line "  added locales #{added.join(', ')}" if added.any?
+      Dir.mktmpdir('decidim_import_') do |tmp|
+        DecidimImporter::ZipExtractor.extract(zip, tmp)
+        file = Dir.glob(File.join(tmp, '*.template.yml')).first
+        raise "no .template.yml found in #{zip}" unless file
 
-        created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
-        created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
+        tenant.switch do
+          # Apply the import's app-config patch: union in the export's locales (so deserialize doesn't
+          # fail on a missing locale) and turn on the feature flags the imported projects/pages need.
+          added = DecidimImporter::Importer.apply_import_app_config_file(app_config_sibling(file))
+          report_line "  added locales #{added.join(', ')}" if added.any?
 
-        broken = finalize_import!(file)
-      end
-      write_broken_links_csv(url_mapping_path(file), broken)
-      report_line 'COMPLETE'
-    end
-  end
+          created = DecidimImporter::Importer.apply_template_file(file, import_uploads: import_uploads)
+          created.each { |klass, ids| report_line "  created #{ids.size} #{klass}" }
 
-  desc 'Applies the full dumped `.app_config.json` to the tenant matching `host`: **replaces** the ' \
-       'locale set (migrating stranded users), branding and reply-to. Optional — `import` already unions ' \
-       'the locales it needs; run this only when you want the tenant to match the export.'
-  task :update_app_config, %i[file host import_uploads] => [:environment] do |_t, args|
-    tenant = Tenant.find_by!(host: args[:host] || 'localhost')
-    file = args.fetch(:file)
-    import_uploads = args[:import_uploads].to_s.downcase != 'false'
-
-    ensure_import_enabled!(tenant)
-    json = app_config_sibling(file)
-
-    with_report_log(log_path(file, 'app_config')) do
-      report_line "Decidim app-config update → tenant=#{tenant.host} file=#{json} import_uploads=#{import_uploads}"
-      tenant.switch do
-        if DecidimImporter::Importer.apply_app_config_file(json, import_uploads: import_uploads)
-          report_line "  applied app config from #{json}"
-        else
-          report_line "  no app-config JSON at #{json} → nothing to apply"
+          broken = finalize_import!(file)
         end
       end
+      write_broken_links_csv("#{artifact_base(zip)}.broken_links.csv", broken)
       report_line 'COMPLETE'
     end
   end
@@ -178,7 +168,24 @@ namespace :decidim_importer do
     consultations = DecidimImporter::ConsultationsFolder.new.run
     report_line "  Consultations folder #{consultations[:folder].slug}: " \
                 "moved #{consultations[:moved_projects].size} project(s) in"
+
+    assign_moderators!(file)
     broken
+  end
+
+  # Post-import (in the tenant): grant the project-moderator roles from the sibling `<base>.moderators.csv`
+  # (user `unique_code` + project `slug`). The deserializer can't carry them (a `project_id` inside the
+  # user's JSONB `roles`), so they're applied here by natural-key lookup. No-op when the CSV is absent.
+  def assign_moderators!(file)
+    path = moderators_path(file)
+    unless File.exist?(path)
+      report_line "  no moderators CSV at #{path} → skipping moderator roles"
+      return
+    end
+
+    assignments = CSV.read(path, headers: true).map(&:to_h)
+    applied = DecidimImporter::ModeratorAssigner.new.assign(assignments)
+    report_line "  assigned #{applied} project-moderator role(s)"
   end
 
   # Logs the record counts the built template will create: overall, then per project, then a shared
@@ -229,16 +236,11 @@ namespace :decidim_importer do
     end
   end
 
-  # Writes the app-config patch as `<base>.app_config.json` (skipped when the export has no org file).
+  # Writes the app-config patch (the export's locales + the import's feature flags) as
+  # `<base>.app_config.json`, which `import` applies before deserializing.
   def write_app_config_json(creator, input_path)
-    patch = creator.app_config_patch
-    if patch.empty?
-      report_line '  no organization data → skipping app-config JSON'
-      return
-    end
-
     json_path = output_path(input_path, 'app_config.json')
-    File.write(json_path, JSON.pretty_generate(patch))
+    File.write(json_path, JSON.pretty_generate(creator.app_config_patch))
     report_line "Wrote #{json_path}"
   end
 
@@ -265,15 +267,50 @@ namespace :decidim_importer do
     candidate == arg ? arg.sub(/\.ya?ml\z/i, '.url_mapping.csv') : candidate
   end
 
-  # Writes the unresolved links as `<base>.broken_links.csv` (no-op when there are none).
-  def write_broken_links_csv(mapping_path, broken)
+  # Writes the project-moderator assignments as `<base>.moderators.csv` (skipped when there are none),
+  # applied to the tenant during `import`'s finishing by {DecidimImporter::ModeratorAssigner}.
+  def write_moderators_csv(creator, input_path)
+    assignments = creator.moderator_assignments
+    if assignments.empty?
+      report_line '  no project-moderator roles → skipping moderators CSV'
+      return
+    end
+
+    csv_path = output_path(input_path, 'moderators.csv')
+    CSV.open(csv_path, 'w') do |csv|
+      csv << %w[user_unique_code project_slug]
+      assignments.each { |a| csv << [a['user_unique_code'], a['project_slug']] }
+    end
+    report_line "Wrote #{csv_path} (#{assignments.size} moderator role(s))"
+  end
+
+  # `<base>.moderators.csv` beside the template (its `.template.yml`/`.yml` suffix swapped).
+  def moderators_path(file)
+    candidate = file.sub(/\.template\.yml\z/i, '.moderators.csv')
+    candidate == file ? file.sub(/\.ya?ml\z/i, '.moderators.csv') : candidate
+  end
+
+  # Bundles the artifacts `create_template` just wrote into a single `<base>.template.zip` — the one file
+  # `import` consumes (unpacking it to a tempdir first). Includes whichever of the expected artifacts were
+  # actually produced (the app-config/link/moderator ones are skipped when empty). The `.create.log` is
+  # still being written, so it's left beside the zip rather than bundled.
+  def write_template_zip(input_path)
+    # Derive members via `output_path` — the same function that wrote them — so the shared base always
+    # matches, and the bundle unpacks back to the exact filenames the sibling lookups expect.
+    members = %w[template.yml app_config.json url_mapping.csv moderators.csv]
+      .map { |suffix| output_path(input_path, suffix) }.select { |member| File.exist?(member) }
+    zip_path = output_path(input_path, 'template.zip')
+    DecidimImporter::ZipExtractor.compress(members, zip_path)
+    report_line "Wrote #{zip_path} (#{members.size} file(s))"
+  end
+
+  # Writes the unresolved links to `path` (no-op when there are none).
+  def write_broken_links_csv(path, broken)
     if broken.empty?
       report_line '  no broken links'
       return
     end
 
-    path = mapping_path.sub(/\.url_mapping\.csv\z/i, '.broken_links.csv')
-    path = "#{mapping_path}.broken_links.csv" if path == mapping_path
     CSV.open(path, 'w') do |csv|
       csv << %w[old_url container_type container_id container_url]
       broken.uniq { |row| [row[:old_url], row[:container_type], row[:container_id]] }
@@ -291,12 +328,23 @@ namespace :decidim_importer do
     File.join(parent, "#{base}.#{suffix}")
   end
 
-  # `<base>.<kind>.log` beside the input, e.g. `participer.arcueil.fr.20260721.import.log`. Strips the
-  # export (`.zip`) or template (`.template.yml`/`.yml`) suffix so both tasks share one base name.
+  # `<base>.<kind>.log` beside the input, e.g. `participer.arcueil.fr.20260721.import.log` — every task
+  # shares one base name whatever it was handed (export zip/dir, `.template.zip` bundle, or template YAML).
   def log_path(input, kind)
-    normalized = input.chomp('/')
-    base = File.basename(normalized).sub(/\.template\.yml\z/i, '').sub(/\.ya?ml\z/i, '').sub(/\.zip\z/i, '')
-    File.join(File.dirname(normalized), "#{base}.#{kind}.log")
+    "#{artifact_base(input)}.#{kind}.log"
+  end
+
+  # The shared base path (parent dir + base name, suffix stripped) an import bundle and its loose
+  # artifacts hang off: `<dir>/<base>.template.zip` and `<dir>/<base>.broken_links.csv` both reduce to
+  # `<dir>/<base>`. Handles a source export (`.zip`/dir), the bundle (`.template.zip`) and a template YAML.
+  def artifact_base(path)
+    normalized = path.chomp('/')
+    base = File.basename(normalized)
+      .sub(/\.template\.zip\z/i, '')
+      .sub(/\.template\.ya?ml\z/i, '')
+      .sub(/\.ya?ml\z/i, '')
+      .sub(/\.zip\z/i, '')
+    File.join(File.dirname(normalized), base)
   end
 
   # Tees the task's summary lines (via `report_line`/`report_warn`) to `path` as well as the Rails log, so

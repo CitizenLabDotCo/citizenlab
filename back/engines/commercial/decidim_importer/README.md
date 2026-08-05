@@ -33,6 +33,7 @@ Building blocks used along the way:
 | Decidim source                                         | Go Vocal target                                                                  |
 |--------------------------------------------------------|----------------------------------------------------------------------------------|
 | organization / users / followers / scopes / categories | app config, users, followers, topics                                             |
+| per-process user roles (`NN---users.csv`)              | project moderators (Decidim `admin`/`collaborator`/`moderator` → `project_moderator`; `private_user` ignored) |
 | participatory processes                                | projects (Consultations folder)                                                  |
 | assemblies                                             | projects (Assemblies folder)                                                     |
 | participatory process groups                           | folders                                                                          |
@@ -58,35 +59,40 @@ registration form answers and poll answers have no Go Vocal event equivalent and
 **Export → artifacts; touches no tenant.** Reads the export (`from_zip` / `from_directory`), runs the
 extractors in dependency order so cross-record refs resolve (users → scopes → folders → projects →
 categories → phases → proposals → … → description layouts), absolutizes root-relative `<img>` srcs onto
-the source domain, then writes three artifacts beside the export (plus a `.create.log` of per-model
+the source domain, then writes these artifacts beside the export (plus a `.create.log` of per-model
 counts and every skipped record):
 
 - **`<base>.template.yml`** — the record graph, the main artifact.
-- **`<base>.app_config.json`** — the `AppConfiguration` patch (locales, branding, reply-to) derived from
-  `01--organization.csv`; skipped when the export has no organization file.
+- **`<base>.app_config.json`** — the small `AppConfiguration` patch the import applies: just the export's
+  locales (from `01--organization.csv`) plus the feature flags the import turns on
+  (`project_static_pages`, `parallel_participation`). Nothing else from the org row is mapped.
 - **`<base>.url_mapping.csv`** — old-Decidim-URL → new-target map for links embedded in descriptions,
   applied post-import.
+- **`<base>.moderators.csv`** — project-moderator assignments (user `unique_code` → project `slug`),
+  applied post-import. Skipped when the export defines no process admins.
 
-#### `update_app_config[file, host, import_uploads]`
-
-Applies the **full** `<base>.app_config.json` to the tenant, deep-merging its settings: the locale set
-is **replaced** (a user on a dropped locale migrates to the first new one), branding is set, and the
-org's SMTP email becomes the tenant's **reply-to** (not `from` — that needs DNS work first). Optional
-and separate from `import`; run it when you want the tenant to match the export. Logs to
-`<base>.app_config.log`.
+Finally it bundles the above into a single **`<base>.template.zip`** — the one file `import` consumes
+(it unpacks the bundle to a tempdir), so the whole import is one artifact to move around. The loose files
+stay beside it for `verify`, which still takes the plain `.template.yml`.
 
 #### `import[file, host, import_uploads]`
 
-**Template → tenant, in one tenant switch.** First unions the export's locales into the tenant's
-`core.locales` (additive — never dropping the tenant's own) so the template's multilocs always have the
-locales they reference. Then deserializes the template — resolving idea statuses and area orderings,
+**Bundle → tenant, in one tenant switch.** `file` is the `<base>.template.zip` bundle from
+`create_template`; `import` unpacks it to a tempdir and reads the template + its sibling artifacts from
+there (its own `.import.log`/`.broken_links.csv` are written beside the zip). First applies the
+`<base>.app_config.json` patch: unions the export's locales into the tenant's `core.locales` (additive —
+never dropping the tenant's own, so the template's multilocs have every locale they reference) and
+allows+enables the import's feature flags (`project_static_pages`, `parallel_participation`), leaving the
+rest of the tenant's app config untouched. Then deserializes the template — resolving idea statuses and area orderings,
 letting **TemplateCleaner** drop uploads it can't fetch (and the file/image/craftjs nodes they'd
 orphan), then bulk-inserting under `no_touching` so source dates survive — and backfills
 what the deserializer bypasses (voting counts, permissions, each project's `project_page` layout). It
 then runs the **post-import pass**: rewrite embedded Decidim links from `<base>.url_mapping.csv`
 (unresolved ones → `<base>.broken_links.csv`), then build the folder/nav structure — a **Consultations**
 folder gathering ungrouped projects, standard folder layouts + homepage previews, and a nav bar trimmed
-to Home + Consultations + Assemblies. The post-import pass is idempotent; the deserialize is **not**
+to Home + Consultations + Assemblies — and finally grant **project-moderator** roles from
+`<base>.moderators.csv` (matching users by `unique_code` and projects by `slug`, since the role can't
+travel in the template). The post-import pass is idempotent; the deserialize is **not**
 transactional, so a mid-run failure leaves partial data — always import into a fresh tenant. Logs
 created counts to `<base>.import.log`.
 
@@ -101,27 +107,23 @@ applies the template (uploads skipped unless `import_uploads=true`), then destro
 # 1. (optional) clean local tenant - always works best on an empty tenant
 docker compose run --rm web "bin/rails db:reset"
 
-# 2. Build the template artifacts from the export (.template.yml, .app_config.json, .url_mapping.csv) + .create.log,
+# 2. Build the artifacts from the export — the loose files (.template.yml, .app_config.json,
+#    .url_mapping.csv, .moderators.csv) plus the .template.zip bundle that `import` consumes — and .create.log.
 #    Args: path, primary_locale=fr-FR, production=false (anonymise users), include_source_url=false (show original Decidim link in project page)
 docker compose run --rm web "bin/rails decidim_importer:create_template[tmp/import_files/example.com.zip,fr-FR,false,true]"
 
 # 3. (optional) Verify the template without touching a real tenant (creates a throwaway tenant, applies, then destroys it).
-#    Args: path
+#    Args: path (the loose .template.yml, not the bundle)
 docker compose run --rm web "bin/rails decidim_importer:verify[tmp/import_files/example.com.template.yml]"
 
-# 4. (optional) Apply the full app config (replaces locales, sets branding + reply-to). `import` already
-#    unions in the locales it needs, so this is only for matching the tenant's branding/config to the export.
-#    Args: path, host=localhost
-docker compose run --rm web "bin/rails decidim_importer:update_app_config[tmp/import_files/example.com.template.yml,localhost]"
-
-# 5. Deserialize the template into the tenant matching the host, then run the post-import finalisation steps (link correction etc)
-#    Args: path, host=localhost, import_uploads=true (fetch images/files - dev setting only)
-docker compose run --rm web "bin/rails decidim_importer:import[tmp/import_files/example.com.template.yml,localhost]"
+# 4. Deserialize the bundle into the tenant matching the host (applying the app-config patch: locales +
+#    feature flags), then run the post-import finalisation steps (link correction etc)
+#    Args: path (the .template.zip bundle), host=localhost, import_uploads=true (fetch images/files - dev setting only)
+docker compose run --rm web "bin/rails decidim_importer:import[tmp/import_files/example.com.template.zip,localhost]"
 ```
 
-`create_template` never touches a tenant — it only reads the export and writes files. `update_app_config`
-and `import` operate on the tenant named by `host` (default `localhost`); `import` finishes with the
-post-import steps in the same run.
+`create_template` never touches a tenant — it only reads the export and writes files. `import` operates on
+the tenant named by `host` (default `localhost`) and finishes with the post-import steps in the same run.
 
 ### Safety gate
 
@@ -143,28 +145,31 @@ A big tenant produces a big template — a large export can be a **36 MB** `.tem
   downloading every image and file attachment serially (low CPU, long runtime — tens of minutes to hours
   for an upload-heavy tenant). 
 - **Don't run on the swarm leader** - best on one of the other nodes.
+- **Best on its own container (`docker run`), instead of `docker exec` into a live Puma worker.** Not for memory
+  (~0.75 GB is easily absorbed) but because the run is **long** — you don't want a multi-hour task tied to
+  the lifecycle of a web worker that may be restarted or redeployed under it.
+- **Freeze deploys and migrations for the window.** The standalone container survives an app redeploy (it
+  isn't part of the service) and new *code* alone is harmless — but a **migration** running mid-import may cause issues.
 
 ### Step by step
 
-Only the `import` step runs on production, and it needs just the template artifacts — not the zip. The
-procedure below runs it as a standalone `docker run` on a host (the same way prod migrations run).
+Only the `import` step needs to run on production, and it needs just the one `<base>.template.zip` bundle — not
+the source Decidim export. The procedure below runs it as a standalone `docker run` on a host (the same
+way prod migrations run).
 
-**1. Build the artifacts off-production.** `create_template` reads the zip but never touches a tenant, so
-it can be run locally / on staging. It writes three files that `import` consumes — all sharing one base name:
+**1. Build the bundle off-production.** `create_template` reads the source export but never touches a
+tenant, so it can be run locally / on staging. It produces the loose artifacts and bundles them into a
+single `<base>.template.zip` — the only file `import` needs. Inside the bundle:
 
 - `<base>.template.yml` — the graph to deserialize
-- `<base>.app_config.json` — optional app-config patch (locales/branding/reply-to); apply via `update_app_config` (and `import` uses it only to union locales)
+- `<base>.app_config.json` — app-config patch `import` applies first: the export's locales (unioned in) + the feature flags it enables (`project_static_pages`, `parallel_participation`)
 - `<base>.url_mapping.csv` — post-import link correction
+- `<base>.moderators.csv` — post-import project-moderator assignment (present only when the export has process admins)
 
-**2. Copy the three artifacts onto the Docker host.** They must land in one directory, keeping their shared
-base name:
+**2. Copy the bundle onto the Docker host** (one file):
 
 ```bash
-# scp (simplest if you have SSH to the host) …
-scp <base>.template.yml \
-    <base>.app_config.json \
-    <base>.url_mapping.csv \
-    <docker-host>:/home/ubuntu/import/
+scp <base>.template.zip <docker-host>:/home/ubuntu/import/
 ```
 
 **3. Find the deployed image tag.** Use the *same* image the running app is on, so the import matches
@@ -174,28 +179,24 @@ the code and DB schema (it should be `master` or `production` depending on the c
 docker ps --format '{{.Names}}\t{{.Image}}' | grep back-ee   # take the tag after `back-ee:`
 ```
 
-**4. Run the import** as its own container, mounting the artifacts dir (writable — the task writes
-logs back into it). 
+**4. Run the import** as its own container, mounting the import dir (writable — the task unpacks the
+bundle to a tempdir and writes its `.import.log`/`.broken_links.csv` back beside the zip).
 
 ```bash
 docker run \
   --env-file cl2-deployment/<env_file> \
-  -v /home/ubuntu/import:/home/ubuntu/import \
+  -v /home/ubuntu/import:/data \
   citizenlabdotco/back-ee:<tag> \
-  bin/rake "decidim_importer:import[/home/ubuntu/import/<base>.template.yml,<host>]"
+  bin/rake "decidim_importer:import[/data/<base>.template.zip,<host>]"
 ```
 
-**5. Afterwards:** copy the logs and delete the artifacts from the box (`rm /home/ubuntu/import/<base>.*`) — they can carry tenant real user PII
+**5. Afterwards:** copy the logs and broken links CSV from the box:
+
+```bash
+scp <docker-host>:/home/ubuntu/import/<base>.import.log .
+scp <docker-host>:/home/ubuntu/import/<base>.broken_links.csv .
+```
+
+**6. Delete the artifacts from the box** (`rm /home/ubuntu/import/<base>.*`) — they can carry tenant real user PII
 if `create_template` ran with `production=true`.
 
-Things to keep in mind:
-
-- **Its own container (`docker run`), never `docker exec` into a live Puma worker.** Not for memory
-  (~0.75 GB is easily absorbed) but because the run is **long** — you don't want a multi-hour task tied to
-  the lifecycle of a web worker that may be restarted or redeployed under it.
-- **No tight `--memory` cap.** ~0.75 GB is the steady state, but a 512 MB limit would OOM during the
-  parse. Leave it uncapped (the node's RAM is the ceiling); a 4 GB node is plenty.
-- **Import into a fresh/empty tenant.** The deserialize is **not** wrapped in a DB transaction, so a
-  failure mid-run leaves partial data that must be cleared before retrying.
-- **Freeze deploys and migrations for the window.** The standalone container survives an app redeploy (it
-  isn't part of the service) and new *code* alone is harmless — but a **migration** running mid-import may cause issues.

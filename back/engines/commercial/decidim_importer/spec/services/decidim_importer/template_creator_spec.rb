@@ -38,10 +38,10 @@ RSpec.describe DecidimImporter::TemplateCreator do
       expect(phone).to include('resource_type' => 'User', 'input_type' => 'text')
     end
 
-    it 'builds the app-config patch from the organization CSV' do
+    it 'builds the app-config patch (locales + feature flags) from the organization CSV' do
       patch = described_class.from_directory(export_root).app_config_patch
       expect(patch.dig('settings', 'core', 'locales')).to eq(%w[fr-FR en])
-      expect(patch.dig('settings', 'core', 'organization_name')).to include('en' => 'Raynor, Heathcote and Moen')
+      expect(patch.dig('settings', 'parallel_participation')).to eq('allowed' => true, 'enabled' => true)
     end
 
     it 'imports a process\'s attachments as Files engine files owned by (but not attached to) the project' do

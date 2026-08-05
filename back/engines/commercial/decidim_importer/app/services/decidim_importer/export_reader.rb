@@ -119,7 +119,7 @@ module DecidimImporter
               comments: [], comment_votes: [], followers: [], endorsements: [], proposal_attachments: [],
               proposal_notes: [], proposal_votes: [], results: [], accountability_statuses: [], components: [],
               survey_answers: [], budgets: [], budget_projects: [], orders: [], blog_posts: [],
-              meetings: [], meeting_attachments: [], debates: [] }
+              meetings: [], meeting_attachments: [], debates: [], process_roles: [] }
       CONTAINERS.each do |container|
         container_dirs(root, container).each { |dir| read_container(dir, container, acc) }
       end
@@ -127,9 +127,9 @@ module DecidimImporter
     end
 
     # Reads one process/assembly directory: its rows into `:projects` (stamped with `project_stamp`),
-    # then its attachment/collection/category sidecars and component subtree (all stamped with the
-    # container uid as `decidim_participatory_process`, so downstream extractors resolve the project the
-    # same way for both kinds).
+    # then its attachment/collection/category/user-role sidecars and component subtree (all stamped with
+    # the container uid as `decidim_participatory_process`, so downstream extractors resolve the project
+    # the same way for both kinds).
     def read_container(dir, container, acc)
       file = Dir.glob(File.join(dir, container[:file_glob])).first
       return unless file
@@ -142,6 +142,9 @@ module DecidimImporter
       read_into(dir, '*--attachments.csv', columns, acc, :attachments)
       read_into(dir, '*--attachment_collections.csv', columns, acc, :attachment_collections)
       read_into(dir, '*--categories.csv', columns, acc, :categories)
+      # The per-process `NN---users.csv` lists the space's user roles (`uid,role`) — its `admin` rows
+      # become project moderators. Stamped with the process uid, which the CSV itself doesn't carry.
+      read_into(dir, '*--users.csv', columns, acc, :process_roles)
       read_components(dir, uid, acc)
     end
 

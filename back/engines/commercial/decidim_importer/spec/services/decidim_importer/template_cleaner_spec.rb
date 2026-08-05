@@ -20,8 +20,8 @@ RSpec.describe DecidimImporter::TemplateCleaner do
 
   describe '.prune_unreachable_embedded_images!' do
     it 'drops only the embedded images whose source is unreachable, keeping the rest and the text' do
-      allow(described_class).to receive(:image_importable?).with('http://live/ok.png').and_return(true)
-      allow(described_class).to receive(:image_importable?).with('http://dead/gone.png').and_return(false)
+      allow(described_class).to receive(:image_prune_reason).with('http://live/ok.png').and_return(nil)
+      allow(described_class).to receive(:image_prune_reason).with('http://dead/gone.png').and_return('it could not be found')
       template = { 'models' => { 'idea' => [{
         'body_multiloc' => { 'fr-FR' => '<p>A</p><img src="http://live/ok.png"><img src="http://dead/gone.png"><p>B</p>' }
       }] } }
@@ -33,7 +33,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
     end
 
     it 'leaves base64 images untouched and probes each distinct url only once' do
-      allow(described_class).to receive(:image_importable?).and_return(true)
+      allow(described_class).to receive(:image_prune_reason).and_return(nil)
       template = { 'models' => { 'idea' => [
         { 'body_multiloc' => { 'fr-FR' => '<img src="http://x/a.png"><img src="data:image/png;base64,AAAA">' } },
         { 'body_multiloc' => { 'en' => '<img src="http://x/a.png">' } }
@@ -42,7 +42,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
       described_class.prune_unreachable_embedded_images!(template)
 
       expect(template['models']['idea'].first['body_multiloc']['fr-FR']).to include('data:image/png;base64,AAAA')
-      expect(described_class).to have_received(:image_importable?).once # memoised across records/locales
+      expect(described_class).to have_received(:image_prune_reason).once # memoised across records/locales
     end
 
     it 'drops a non-fetchable (root-relative) img but keeps a reachable absolute one and inline data' do
@@ -50,7 +50,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
       template = { 'models' => { 'phase' => [{ 'description_multiloc' => { 'fr-FR' => html } }] } }
 
       # Pre-seed reachability so no real HTTP request is made for the absolute src.
-      described_class.prune_unreachable_embedded_images!(template, { 'https://ok.fr/y.png' => true })
+      described_class.prune_unreachable_embedded_images!(template, { 'https://ok.fr/y.png' => nil })
 
       result = template['models']['phase'][0]['description_multiloc']['fr-FR']
       expect(result).not_to include('/rails/x.png') # non-fetchable → dropped
@@ -118,7 +118,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
     end
   end
 
-  describe '.image_importable?' do
+  describe '.image_prune_reason' do
     # PNG / JPEG magic bytes for sniffing the real content type.
     let(:png_bytes) { "\x89PNG\r\n\x1a\n\x00\x00\x00\x0DIHDR".b }
     let(:jpeg_bytes) { "\xFF\xD8\xFF\xE0\x00\x10JFIF\x00\x01".b }
@@ -128,7 +128,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
       stub_request(:head, 'https://s3.example/file.pdf').to_return(status: 403)
       stub_request(:get, 'https://s3.example/file.pdf').to_return(status: 200)
 
-      expect(described_class.image_importable?('https://s3.example/file.pdf')).to be(true)
+      expect(described_class.image_prune_reason('https://s3.example/file.pdf')).to be_nil
     end
 
     it 'follows redirects to the underlying blob (206 Partial Content counts as reachable)' do
@@ -136,39 +136,41 @@ RSpec.describe DecidimImporter::TemplateCleaner do
         .to_return(status: 302, headers: { 'Location' => 'https://s3.example/blob.pdf' })
       stub_request(:get, 'https://s3.example/blob.pdf').to_return(status: 206)
 
-      expect(described_class.image_importable?('https://app.example/redirect/file.pdf')).to be(true)
+      expect(described_class.image_prune_reason('https://app.example/redirect/file.pdf')).to be_nil
     end
 
-    it 'is false for a genuinely missing file' do
+    it 'reports a genuinely missing file as not found' do
       stub_request(:get, 'https://s3.example/gone.pdf').to_return(status: 404)
 
-      expect(described_class.image_importable?('https://s3.example/gone.pdf')).to be(false)
+      expect(described_class.image_prune_reason('https://s3.example/gone.pdf')).to eq('it could not be found')
     end
 
     it 'keeps an image whose content matches its extension' do
       stub_request(:get, 'https://s3.example/logo.png').to_return(status: 200, body: png_bytes)
 
-      expect(described_class.image_importable?('https://s3.example/logo.png')).to be(true)
+      expect(described_class.image_prune_reason('https://s3.example/logo.png')).to be_nil
     end
 
-    it 'drops a reachable image whose content type disagrees with its extension (JPEG named .png)' do
-      # This is exactly what aborts the import at exif-stripping time, so it must be pruned beforehand.
+    it 'reports a reachable image whose content type disagrees with its extension as a conflict (JPEG named .png)' do
+      # This is exactly what aborts the import at exif-stripping time, so it must be pruned beforehand — but
+      # for a different reason than an unreachable one, which the log must keep apart.
       stub_request(:get, 'https://s3.example/logo.png').to_return(status: 200, body: jpeg_bytes)
 
-      expect(described_class.image_importable?('https://s3.example/logo.png')).to be(false)
+      expect(described_class.image_prune_reason('https://s3.example/logo.png'))
+        .to eq('its content conflicts with its extension')
     end
 
     it 'treats .jpg and .jpeg as the same format (no false conflict)' do
       stub_request(:get, 'https://s3.example/photo.jpg').to_return(status: 200, body: jpeg_bytes)
 
-      expect(described_class.image_importable?('https://s3.example/photo.jpg')).to be(true)
+      expect(described_class.image_prune_reason('https://s3.example/photo.jpg')).to be_nil
     end
   end
 
   describe '.prune_unreachable_remote_urls!' do
     it 'drops only the remote_*_url attachments that are unreachable' do
-      allow(described_class).to receive(:image_importable?).with('http://live/a.png').and_return(true)
-      allow(described_class).to receive(:image_importable?).with('http://dead/b.png').and_return(false)
+      allow(described_class).to receive(:image_prune_reason).with('http://live/a.png').and_return(nil)
+      allow(described_class).to receive(:image_prune_reason).with('http://dead/b.png').and_return('it could not be found')
       template = { 'models' => {
         'user' => [{ 'email' => 'a@b.co', 'remote_avatar_url' => 'http://dead/b.png' }],
         'project' => [{ 'remote_header_bg_url' => 'http://live/a.png' }]
@@ -180,13 +182,30 @@ RSpec.describe DecidimImporter::TemplateCleaner do
       expect(template['models']['project'].first['remote_header_bg_url']).to eq('http://live/a.png')
     end
 
+    it 'logs a not-found attachment distinctly from one dropped for a format conflict' do
+      allow(Rails.logger).to receive(:warn)
+      allow(described_class).to receive(:image_prune_reason)
+        .with('http://dead/gone.png').and_return('it could not be found')
+      allow(described_class).to receive(:image_prune_reason)
+        .with('http://x/mislabelled.png').and_return('its content conflicts with its extension')
+      template = { 'models' => { 'project_image' => [
+        { 'remote_image_url' => 'http://dead/gone.png' },
+        { 'remote_image_url' => 'http://x/mislabelled.png' }
+      ] } }
+
+      described_class.prune_unreachable_remote_urls!(template)
+
+      expect(Rails.logger).to have_received(:warn).with(%r{could not be found.*http://dead/gone\.png})
+      expect(Rails.logger).to have_received(:warn).with(%r{conflicts with its extension.*http://x/mislabelled\.png})
+    end
+
     context 'with a file whose extension is not on the upload allowlist' do
       # Decidim serves attachments in formats Go Vocal won't store (here a Windows metafile). CarrierWave
       # rejects them on save and the deserializer re-raises, aborting the whole import — so drop them here.
       let(:emf_url) { 'https://participez.example/rails/active_storage/blobs/redirect/abc/Nicolas%20Garnier.emf' }
 
       it 'drops the content url without probing the network' do
-        expect(described_class).not_to receive(:image_importable?)
+        expect(described_class).not_to receive(:image_prune_reason)
         template = { 'models' => { 'files/file' => [
           { 'name' => 'Nicolas Garnier.emf', 'remote_content_url' => emf_url }
         ] } }
@@ -209,7 +228,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
       end
 
       it 'keeps files whose extension is allowlisted and reachable' do
-        allow(described_class).to receive(:image_importable?).and_return(true)
+        allow(described_class).to receive(:image_prune_reason).and_return(nil)
         template = { 'models' => { 'files/file' => [
           { 'name' => 'rapport.pdf', 'remote_content_url' => 'https://x/rapport.pdf' },
           { 'name' => 'plan.DOCX', 'remote_content_url' => 'https://x/plan.DOCX' }
@@ -222,7 +241,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
       end
 
       it 'drops a content url that has no extension at all' do
-        allow(described_class).to receive(:image_importable?).and_return(true)
+        allow(described_class).to receive(:image_prune_reason).and_return(nil)
         template = { 'models' => { 'files/file' => [
           { 'name' => 'mystery', 'remote_content_url' => 'https://x/blobs/redirect/abc' }
         ] } }
@@ -235,7 +254,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
       it 'leaves non-file uploads to the reachability check, whatever their extension' do
         # `remote_content_url` is the only upload going through the file allowlist; an image with an odd
         # extension is still governed by whether it is fetchable and self-consistent.
-        allow(described_class).to receive(:image_importable?).with('https://x/hero.emf').and_return(true)
+        allow(described_class).to receive(:image_prune_reason).with('https://x/hero.emf').and_return(nil)
         template = { 'models' => { 'project_image' => [{ 'remote_image_url' => 'https://x/hero.emf' }] } }
 
         described_class.prune_unreachable_remote_urls!(template)
@@ -248,7 +267,7 @@ RSpec.describe DecidimImporter::TemplateCleaner do
         # exactly as they would for an unreachable one — which is what keeps the import alive.
         emf = { 'id' => 'f-emf', 'name' => 'Nicolas Garnier.emf', 'remote_content_url' => emf_url }
         pdf = { 'id' => 'f-pdf', 'name' => 'rapport.pdf', 'remote_content_url' => 'https://x/rapport.pdf' }
-        allow(described_class).to receive(:image_importable?).and_return(true)
+        allow(described_class).to receive(:image_prune_reason).and_return(nil)
         craftjs = {
           'ROOT' => { 'type' => 'div', 'nodes' => %w[file0 file1] },
           'file0' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'f-emf' } },
