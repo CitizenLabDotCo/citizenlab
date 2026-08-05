@@ -354,6 +354,11 @@
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.admin_labels.trigger.7_days_before_phase_starts": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:00:26.633211Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.admin_labels.trigger.7_days_before_the_project_changes_phase": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
@@ -443,6 +448,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.admin_labels.trigger.phase_starts": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:00:26.633211Z",
+    "verified_by": "Adrien"
   },
   "email_campaigns.admin_labels.trigger.project_phase_changes": {
     "state": "verified",
@@ -2588,6 +2598,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
+  },
+  "email_campaigns.preview_data.phase_description": {
+    "state": "verified",
+    "verified_at": "2026-08-05T13:00:26.633211Z",
+    "verified_by": "Adrien"
   },
   "email_campaigns.preview_data.phase_title": {
     "state": "verified",
