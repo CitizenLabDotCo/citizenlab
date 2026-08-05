@@ -15,8 +15,9 @@ import {
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import { AUTH_METHOD_LABELS } from './AccessSections/constants';
+import { CHANNEL_EXPIRY_FIELDS, CHANNEL_ICONS } from './constants';
 import messages from './messages';
-import { CHANNEL_EXPIRY_FIELDS, ContactChannel, Changes } from './types';
+import { ContactChannel, Changes } from './types';
 
 /** The enabled flag + expiry (in days, `null` = "once, ever") for verification. */
 export const getVerification = (
@@ -156,20 +157,16 @@ export const buildSummary = (
     chips.push({
       key: 'email_or_phone',
       label: formatMessage(messages.confirmedEmailOrPhoneNumber),
-      icon: 'email',
-      altIcon: 'tablet',
+      icon: CHANNEL_ICONS.email,
+      altIcon: CHANNEL_ICONS.phone,
       tone: 'access',
     });
   } else {
-    const channelIcon: Record<ContactChannel, SummaryChip['icon']> = {
-      email: 'email',
-      phone: 'tablet',
-    };
     CHANNELS_IN_PLAY[requirement].forEach((channel) => {
       chips.push({
         key: channel,
         label: formatMessage(AUTH_METHOD_LABELS[channel]),
-        icon: channelIcon[channel],
+        icon: CHANNEL_ICONS[channel],
         tone: 'access',
       });
     });

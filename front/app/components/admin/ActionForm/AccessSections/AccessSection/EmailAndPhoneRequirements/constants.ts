@@ -4,6 +4,7 @@ import { EmailAndPhoneRequirements } from 'api/phase_permissions/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
+import { CHANNEL_ICONS } from '../../../constants';
 import { ContactChannel } from '../../../types';
 
 import messages from './messages';
@@ -31,7 +32,7 @@ export const CONTACT_OPTIONS: ContactOption[] = [
   },
   {
     key: 'email_only',
-    icons: ['email'],
+    icons: [CHANNEL_ICONS.email],
     title: messages.emailTitle,
     summary: messages.emailSummary,
     description: messages.emailDescription,
@@ -39,7 +40,7 @@ export const CONTACT_OPTIONS: ContactOption[] = [
   },
   {
     key: 'both_email_and_phone',
-    icons: ['email', 'tablet'],
+    icons: [CHANNEL_ICONS.email, CHANNEL_ICONS.phone],
     connector: 'plus',
     title: messages.bothTitle,
     summary: messages.bothSummary,
@@ -48,7 +49,7 @@ export const CONTACT_OPTIONS: ContactOption[] = [
   },
   {
     key: 'either_email_or_phone',
-    icons: ['email', 'tablet'],
+    icons: [CHANNEL_ICONS.email, CHANNEL_ICONS.phone],
     connector: 'or',
     title: messages.eitherTitle,
     summary: messages.eitherSummary,

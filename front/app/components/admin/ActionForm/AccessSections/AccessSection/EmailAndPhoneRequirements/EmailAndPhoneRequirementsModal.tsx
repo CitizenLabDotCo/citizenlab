@@ -5,7 +5,6 @@ import {
   Title,
   Text,
   Icon,
-  IconNames,
   Button,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -17,6 +16,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { CHANNEL_ICONS } from '../../../constants';
 import { CHANNELS_IN_PLAY } from '../../../logic';
 import { ContactChannel } from '../../../types';
 import RecencyControl from '../../RecencyControl';
@@ -86,15 +86,6 @@ const SelectionMark = ({ selected }: { selected: boolean }) =>
     />
   );
 
-// The channel each recency row belongs to is shown as its glyph rather than a
-// label on its own line - the same glyphs the IconCluster uses, so the row
-// reads as "<email> + require recent confirmation" and stays on one line.
-const CHANNEL_ICONS: Record<ContactChannel, IconNames> = {
-  email: 'email',
-  phone: 'tablet',
-};
-
-// Kept as the icon's accessible name, since the glyph replaces the visible label.
 const CHANNEL_LABELS = {
   email: messages.emailRecency,
   phone: messages.phoneRecency,

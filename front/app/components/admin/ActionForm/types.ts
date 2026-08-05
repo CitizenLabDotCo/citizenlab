@@ -44,10 +44,3 @@ export type AuthMethodKey = 'email' | 'phone' | 'verification';
 
 // The contact channels, which are the two halves of `email_and_phone_requirements`.
 export type ContactChannel = 'email' | 'phone';
-
-// The permission attribute (and matching change key) holding each channel's
-// "how recently must this have been confirmed" window.
-export const CHANNEL_EXPIRY_FIELDS = {
-  email: 'confirmed_email_expiry',
-  phone: 'confirmed_phone_number_expiry',
-} as const;

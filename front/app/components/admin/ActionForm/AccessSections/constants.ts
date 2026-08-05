@@ -2,6 +2,7 @@ import { IconNames } from '@citizenlab/cl2-component-library';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
+import { CHANNEL_ICONS } from '../constants';
 import { AuthMethodKey } from '../types';
 
 import messages from './messages';
@@ -17,11 +18,11 @@ export const METHOD_META: Record<
   { icon: IconNames; description: MessageDescriptor }
 > = {
   email: {
-    icon: 'email',
+    icon: CHANNEL_ICONS.email,
     description: messages.emailMethodDescription,
   },
   phone: {
-    icon: 'tablet',
+    icon: CHANNEL_ICONS.phone,
     description: messages.phoneMethodDescription,
   },
   verification: {
