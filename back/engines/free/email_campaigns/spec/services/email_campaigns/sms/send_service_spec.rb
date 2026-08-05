@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe EmailCampaigns::Sms::SendService do
   let(:provider) { instance_double(EmailCampaigns::Sms::Providers::Twilio) }
   let(:phone) { '+14155552671' }
+  let(:use_case) { EmailCampaigns::Sms::UseCase::MANUAL_CAMPAIGNS }
 
   include_context 'with sms feature enabled'
 
@@ -14,7 +15,12 @@ RSpec.describe EmailCampaigns::Sms::SendService do
 
   describe '#provider' do
     let(:blank_credentials) do
-      { 'twilio_account_sid' => '', 'twilio_auth_token' => '', 'twilio_messaging_service_sid' => '' }
+      {
+        'twilio_account_sid' => '',
+        'twilio_auth_token' => '',
+        'twilio_manual_campaigns_messaging_service_sid' => '',
+        'twilio_confirmation_codes_messaging_service_sid' => ''
+      }
     end
 
     it 'uses the fake provider in development when Twilio credentials are missing' do
@@ -86,23 +92,31 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     it 'sends an already-created delivery through the provider and stores the status' do
       allow(provider).to receive(:send).and_return(message_sid: 'SM_d', status: 'queued')
 
-      described_class.new.deliver(delivery, to: phone)
+      described_class.new.deliver(delivery, to: phone, use_case: use_case)
 
       expect(delivery.reload).to have_attributes(status: 'queued', message_sid: 'SM_d')
     end
 
     it 'normalizes the destination to E.164 before sending' do
       expect(provider).to receive(:send)
-        .with(to: phone, body: 'hi')
+        .with(to: phone, body: 'hi', use_case: use_case)
         .and_return(message_sid: 'SM_1', status: 'queued')
 
-      described_class.new.deliver(delivery, to: '1 (415) 555-2671')
+      described_class.new.deliver(delivery, to: '1 (415) 555-2671', use_case: use_case)
+    end
+
+    it 'sends on the use case it was given' do
+      expect(provider).to receive(:send)
+        .with(to: phone, body: 'hi', use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
+        .and_return(message_sid: 'SM_2', status: 'queued')
+
+      described_class.new.deliver(delivery, to: phone, use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
     end
 
     it 'marks the delivery errored and re-raises for an invalid destination without calling the provider' do
       expect(provider).not_to receive(:send)
 
-      expect { described_class.new.deliver(delivery, to: 'not-a-phone') }
+      expect { described_class.new.deliver(delivery, to: 'not-a-phone', use_case: use_case) }
         .to raise_error(EmailCampaigns::Sms::Error, /Invalid phone number/)
       expect(delivery.reload.status).to eq('errored')
     end
@@ -110,14 +124,14 @@ RSpec.describe EmailCampaigns::Sms::SendService do
     it 'marks the delivery failed and re-raises when the provider fails' do
       allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::ProviderError, 'nope')
 
-      expect { described_class.new.deliver(delivery, to: phone) }.to raise_error(EmailCampaigns::Sms::ProviderError)
+      expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }.to raise_error(EmailCampaigns::Sms::ProviderError)
       expect(delivery.reload.status).to eq('failed')
     end
 
     it 'leaves the delivery pending and re-raises on a transient error so the job can retry it' do
       allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::ProviderError::RateLimit, 'slow down')
 
-      expect { described_class.new.deliver(delivery, to: phone) }
+      expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }
         .to raise_error(EmailCampaigns::Sms::ProviderError::RateLimit)
       expect(delivery.reload.status).to eq('pending')
     end
@@ -126,7 +140,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       delivery.update!(status: 'sent', message_sid: 'SM_existing')
       expect(provider).not_to receive(:send)
 
-      expect { described_class.new.deliver(delivery, to: phone) }.not_to raise_error
+      expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }.not_to raise_error
       expect(delivery.reload).to have_attributes(status: 'sent', message_sid: 'SM_existing', error_message: nil)
     end
 
@@ -134,7 +148,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       delivery.update!(status: 'delivered', message_sid: 'SM_final')
       expect(provider).not_to receive(:send)
 
-      expect { described_class.new.deliver(delivery, to: phone) }.not_to raise_error
+      expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }.not_to raise_error
       expect(delivery.reload).to have_attributes(status: 'delivered', error_message: nil)
     end
 
@@ -144,7 +158,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
         SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['US'] })
         allow(provider).to receive(:send).and_return(message_sid: 'SM_ok', status: 'queued')
 
-        described_class.new.deliver(delivery, to: phone)
+        described_class.new.deliver(delivery, to: phone, use_case: use_case)
 
         expect(delivery.reload.status).to eq('queued')
       end
@@ -153,7 +167,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
         SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
         expect(provider).not_to receive(:send)
 
-        expect { described_class.new.deliver(delivery, to: phone) }
+        expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }
           .to raise_error(EmailCampaigns::Sms::Error, /not allowed/)
         expect(delivery.reload.status).to eq('errored')
       end
@@ -162,7 +176,7 @@ RSpec.describe EmailCampaigns::Sms::SendService do
         SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => [] })
         allow(provider).to receive(:send).and_return(message_sid: 'SM_ok', status: 'queued')
 
-        described_class.new.deliver(delivery, to: phone)
+        described_class.new.deliver(delivery, to: phone, use_case: use_case)
 
         expect(delivery.reload.status).to eq('queued')
       end

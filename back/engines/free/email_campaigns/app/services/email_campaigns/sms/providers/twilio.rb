@@ -16,9 +16,14 @@ module EmailCampaigns
           'failed' => 'failed'
         }.freeze
 
-        def send(to:, body:)
+        MESSAGING_SERVICE_SID_SETTINGS = {
+          UseCase::MANUAL_CAMPAIGNS => 'twilio_manual_campaigns_messaging_service_sid',
+          UseCase::CONFIRMATION_CODES => 'twilio_confirmation_codes_messaging_service_sid'
+        }.freeze
+
+        def send(to:, body:, use_case:)
           message = client.api.v2010.messages.create(
-            **from_params,
+            **from_params(use_case),
             to: to,
             body: body,
             status_callback: callback_url
@@ -76,9 +81,10 @@ module EmailCampaigns
         end
 
         # SMS is always sent through a Twilio Messaging Service, identified by its SID.
-        def from_params
-          messaging_service_sid = config['twilio_messaging_service_sid'].presence
-          raise Error, 'No Twilio messaging service SID configured' unless messaging_service_sid
+        # `fetch` raises for a use case we don't have a messaging service for.
+        def from_params(use_case)
+          messaging_service_sid = config[MESSAGING_SERVICE_SID_SETTINGS.fetch(use_case)].presence
+          raise Error, "No Twilio messaging service SID configured for #{use_case}" unless messaging_service_sid
 
           { messaging_service_sid: messaging_service_sid }
         end

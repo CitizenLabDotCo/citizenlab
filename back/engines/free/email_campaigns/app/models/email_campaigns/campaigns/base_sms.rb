@@ -46,6 +46,10 @@ module EmailCampaigns
       'sms'
     end
 
+    def self.sms_use_case
+      raise NotImplementedError, "#{self} must implement .sms_use_case"
+    end
+
     def deliver_now(command)
       dispatch_sms(command, campaign_id: id, synchronous: true)
     end
@@ -96,6 +100,8 @@ module EmailCampaigns
     # the OTP) passes the destination explicitly because it may target a number
     # that isn't the recipient's confirmed `phone` yet (the pending new_phone).
     # An async send omits it and lets the job resolve the recipient's phone.
+    # The use case travels with the job because a preview send leaves campaign_id
+    # nil, so the job can't recover it from the delivery.
     def dispatch_sms(command, campaign_id:, synchronous:)
       destination = sms_destination(command)
       return if destination.blank? || sms_body(command).blank?
@@ -105,10 +111,11 @@ module EmailCampaigns
         user_id: command[:recipient].id,
         campaign_id: campaign_id
       )
+      use_case = self.class.sms_use_case
       if synchronous
-        EmailCampaigns::Sms::SendJob.perform_now(delivery.id, to: destination)
+        EmailCampaigns::Sms::SendJob.perform_now(delivery.id, use_case: use_case, to: destination)
       else
-        EmailCampaigns::Sms::SendJob.perform_later(delivery.id)
+        EmailCampaigns::Sms::SendJob.perform_later(delivery.id, use_case: use_case)
       end
       delivery
     end

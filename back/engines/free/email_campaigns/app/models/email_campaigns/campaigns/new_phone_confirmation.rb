@@ -39,6 +39,10 @@ module EmailCampaigns
 
     filter :exclude_from_send_pipeline
 
+    def self.sms_use_case
+      Sms::UseCase::CONFIRMATION_CODES
+    end
+
     # Opt-in: consent is recorded when the user submits their number. The OTP
     # itself bypasses the consent recipient filter (sent via send_now_to_user),
     # and hidden_from_admin? keeps this out of the user-facing consent list.
