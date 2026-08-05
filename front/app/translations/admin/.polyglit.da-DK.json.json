@@ -7329,6 +7329,36 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithSpaces2": {
+    "state": "verified",
+    "verified_at": "2026-08-04T09:50:58.278415Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.approvalNeededWithoutSpaces2": {
+    "state": "verified",
+    "verified_at": "2026-08-04T09:50:58.278415Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedFolder": {
+    "state": "verified",
+    "verified_at": "2026-08-04T09:50:58.278415Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.canOnlyMoveToManagedSpaceOrFolder": {
+    "state": "verified",
+    "verified_at": "2026-08-04T09:50:58.278415Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folder": {
     "state": "verified",
     "verified_at": "2026-05-01T08:27:35.647344Z",
@@ -7342,6 +7372,31 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError": {
     "state": "verified",
     "verified_at": "2026-05-01T08:27:35.647344Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderError2": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderInSpaceOption": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.folderLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noFolder": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.noSpace": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": {
@@ -7387,6 +7442,21 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceError": {
     "state": "verified",
     "verified_at": "2026-05-01T08:27:35.647344Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceOrFolderError": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": {
@@ -8258,6 +8328,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.general.components.SpaceSelectSection.tooltip3": {
+    "state": "verified",
+    "verified_at": "2026-07-28T10:12:59.677382Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.project.general.components.UnlistedInput.emailNotifications": {
     "state": "verified",
