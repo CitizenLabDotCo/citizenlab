@@ -287,6 +287,32 @@ RSpec.describe Tenant do
       expect(collected_hosts).to eq(%w[tenant1.example.com])
     end
 
+    # Ranking the tenants means reading a table out of every schema in the scope, so a tenant that
+    # cannot be ranked used to abort the run before it visited anyone.
+    it 'skips a tenant whose schema is missing rather than failing the whole run' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now)
+      schemaless = create(:tenant, host: 'tenant2.example.com', creation_finalized_at: Time.zone.now)
+      Apartment::Tenant.drop(schemaless.schema_name)
+      collected_hosts = []
+
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com])
+    end
+
+    it 'visits a tenant whose configuration is missing last rather than failing the whole run' do
+      described_class.find_by(host: 'example.org').update!(creation_finalized_at: nil)
+      create(:tenant, host: 'tenant1.example.com', lifecycle: 'active', creation_finalized_at: Time.zone.now)
+      configless = create(:tenant, host: 'tenant2.example.com', creation_finalized_at: Time.zone.now)
+      configless.switch { AppConfiguration.instance.delete }
+      collected_hosts = []
+
+      described_class.safe_switch_each { |tenant| collected_hosts << tenant.host }
+
+      expect(collected_hosts).to eq(%w[tenant1.example.com tenant2.example.com])
+    end
+
     it 'limits the run to the given host' do
       create(:tenant, host: 'tenant1.example.com', creation_finalized_at: Time.zone.now)
       collected_hosts = []

@@ -33,14 +33,13 @@
 # - **Which tenants.** `Tenant.safe_switch_each`'s scope is the default, but it is not always right:
 #   it skips tenants whose creation never finalized, and a task preparing data for a stricter rule
 #   has to reach those too, since they are on their way to being live. Pass `tenants:` for that.
-#   The loop below is this class's own rather than `safe_switch_each` itself; see `each_tenant`.
 # - **What the summary says.** The counts below are all this can know. A task that wants to print
 #   the affected records, or group them, passes `summary:` and prints its own detail after them.
 class TenantScript
-  # `Tenant.safe_switch_each`'s default scope. A tenant whose creation never finalized is half-built
-  # and a deleted one is on its way out, so a script has to opt in to either.
+  # What `Tenant.safe_switch_each` iterates when given no scope: a tenant whose creation never
+  # finalized is half-built and a deleted one is on its way out, so a script has to opt in to either.
   def self.default_tenants
-    Tenant.not_deleted.where.not(creation_finalized_at: nil)
+    Tenant.creation_finalized
   end
 
   # `name` names both the task and the report file it writes.
@@ -88,35 +87,15 @@ class TenantScript
   # this replaces printed to stdout, and so does this.
   # rubocop:disable Rails/Output
 
-  # This repeats most of `Tenant.safe_switch_each` on purpose, and not because that method fixes its
-  # scope — it takes one. It is that it prioritizes the scope first, and `Tenant.prioritize` reads
-  # `app_configurations` out of every schema in the scope by name in a single UNION, then indexes
-  # the result back against the tenant list. Neither step is defensive: a tenant in the scope with
-  # no schema raises `ActiveRecord::StatementInvalid` there, and one whose schema holds no
-  # app_configuration row raises `ArgumentError` from the sort — both before the first tenant is
-  # visited, taking the whole run with them rather than that one tenant.
-  #
-  # Neither state should exist. `MultiTenancy::TenantService#initialize_tenant` saves the tenant and
-  # its configuration in one transaction, and nothing else creates a tenant, so the narrow default
-  # scope has never had to defend against either. But these scripts run against data that has
-  # already drifted out of states the code calls impossible, over hundreds of tenants, unattended.
-  # The guard below is one cheap query, it is what the tasks this replaces already do
-  # (`20260709_fix_phase_available_views.rake` and the predecessor of the task that prompted this,
-  # `20260721_migrate_proposals_phases_off_feed_view.rake`), and it costs a skipped tenant where
-  # delegating would cost the run.
-  #
-  # The lifecycle ordering goes with it: no data repair depends on the order it visits tenants in.
+  # `safe_switch_each` skips a tenant that was deleted since the scope was read, and one it cannot
+  # rank — which is any it cannot reach — so all that is left here is the bookkeeping and making
+  # sure one failing tenant costs only itself.
   def each_tenant
-    tenant_scope.each do |tenant|
-      # A run over every tenant is long enough to outlive one of them, so the record is re-read
-      # rather than trusted from the scope. The schema is checked before switching into it, because
-      # `switch` raises `Apartment::TenantNotFound` when it is missing, and raises it before the
-      # block, where nothing this class hands the script could catch it.
-      next unless Tenant.exists?(id: tenant.id)
-      next unless ActiveRecord::Base.connection.schema_exists?(tenant.schema_name)
+    check_host!
 
+    Tenant.safe_switch_each(scope: @tenants, host: host) do |tenant|
       reporter.add_processed_tenant(tenant)
-      tenant.switch { yield tenant }
+      yield tenant
     rescue StandardError => e
       # One failing tenant must not abort the run, but it must be impossible to miss.
       puts "❌ ERROR on #{tenant.host}: #{e.class}: #{e.message}"
@@ -125,20 +104,14 @@ class TenantScript
   end
 
   # `host` narrows the scope rather than replacing it, so limiting a run to one tenant cannot also
-  # widen it past whatever the script asked for.
-  def tenant_scope
-    scope = @tenants || self.class.default_tenants
-    return scope unless host
+  # widen it past whatever the script asked for — and a host that narrows it to nothing is a
+  # mistake, not a run. Left alone, a mistyped host, or one whose tenant has since been deleted,
+  # reads as a clean run over nothing: no changes, no errors, "Nothing to do".
+  def check_host!
+    return if host.blank?
+    return if (@tenants || self.class.default_tenants).exists?(host: host)
 
-    narrowed = scope.where(host: host)
-    if narrowed.empty?
-      # Otherwise a mistyped host, or one whose tenant has since been deleted, reads as a clean run
-      # over nothing: no changes, no errors, "Nothing to do". Refusing to start is the only honest
-      # answer, since a run aimed at one tenant that reached none did not do what it was asked.
-      raise ArgumentError, "no tenant matches host #{host.inspect}"
-    end
-
-    narrowed
+    raise ArgumentError, "no tenant matches host #{host.inspect}"
   end
 
   def print_banner
