@@ -1,9 +1,3 @@
-// Replaces the separate "confirmed email" and "confirmed phone" toggles with a
-// single choice. Two booleans can express three of the four combinations an
-// admin might want, but not the important fourth one — "either an email address
-// or a phone number, whichever they have" — so the two toggles become one
-// select-like control with five states.
-
 import React, { useState } from 'react';
 
 import {

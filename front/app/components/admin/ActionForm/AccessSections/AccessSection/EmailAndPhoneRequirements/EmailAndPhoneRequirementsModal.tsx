@@ -1,7 +1,3 @@
-// The picker itself: five cards, one per combination. The selected card also
-// carries the "how recently must this have been confirmed" control for each
-// channel it puts in play, so every contact setting lives in one place.
-
 import React from 'react';
 
 import {

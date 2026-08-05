@@ -1,8 +1,3 @@
-// The little glyph that stands for a contact requirement: one or two icons,
-// joined by a "+" (both are needed) or an "or" (either one will do). It is what
-// makes the five options tellable apart at a glance, on the trigger and on the
-// cards alike, so it lives in one place and is used by both.
-
 import React from 'react';
 
 import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';

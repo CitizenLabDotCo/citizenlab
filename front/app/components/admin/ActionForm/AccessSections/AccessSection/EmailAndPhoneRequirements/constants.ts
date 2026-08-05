@@ -1,5 +1,3 @@
-// The values of the permission's `email_and_phone_requirements`.
-
 import { IconNames } from '@citizenlab/cl2-component-library';
 
 import { EmailAndPhoneRequirements } from 'api/phase_permissions/types';
