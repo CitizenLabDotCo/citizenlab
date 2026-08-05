@@ -77,6 +77,7 @@ ur-PK:
         users_who_follow_the_proposal: وہ صارفین جو تجویز کی پیروی کرتے ہیں۔
       trigger:
         7_days_after_invite_is_sent: دعوت نامہ بھیجنے کے 7 دن بعد
+        7_days_before_phase_starts: مرحلہ شروع ہونے سے 7 دن پہلے
         7_days_before_the_project_changes_phase: منصوبے کے مرحلے میں تبدیلی سے 7 دن پہلے
         comment_is_deleted: تبصرہ حذف کر دیا گیا ہے۔
         comment_is_flagged_as_spam: تبصرہ سپیم کے طور پر جھنڈا لگایا گیا ہے۔
@@ -95,6 +96,7 @@ ur-PK:
         new_input_awaits_screening: نیا ان پٹ اسکریننگ کا منتظر ہے۔
         new_input_is_published: نیا ان پٹ شائع ہوا ہے۔
         new_proposal_is_posted: نئی تجویز پوسٹ کی گئی ہے۔
+        phase_starts: ایک مرحلہ شروع ہوتا ہے
         project_phase_changes: پروجیکٹ کے مرحلے میں تبدیلیاں
         project_published: پروجیکٹ شائع ہوا۔
         project_review_request: ماڈریٹر نے پروجیکٹ کے جائزے کی درخواست کی۔
@@ -359,6 +361,7 @@ ur-PK:
         story: اپنی کہانی پر جائیں۔
         suggestion: اپنی تجویز پر جائیں۔
         topic: اپنے موضوع پر جائیں۔
+      phase_dates: '%{startDate} سے %{endDate} تک'
     idea_marked_as_spam:
       cta_button: جائزہ لیں
       preheader: اس سپیم رپورٹ پر کارروائی کریں۔
@@ -571,6 +574,7 @@ ur-PK:
       input_status_description: ان پٹ کی حیثیت کی ایک مثال (مثلاً قبول، مسترد، لاگو...)
       input_status_title: مثال کی حیثیت
       official_feedback_body: سرکاری تاثرات کی مثال
+      phase_description: یہ مرحلے کے مواد کی ایک مثال ہے جو ای میلز کے مواد کا پیش نظارہ کرنے کے لیے استعمال ہوتی ہے۔ یہ اصل مواد نہیں ہے۔
       phase_title: مثال کا مرحلہ
       project_description_preview: ای میلز کے مواد کا پیش نظارہ کرنے کے لیے استعمال ہونے والا یہ کچھ مثالی فیز مواد ہے۔ یہ حقیقی مواد نہیں ہے۔
       project_title: مثال پروجیکٹ

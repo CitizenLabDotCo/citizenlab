@@ -75,7 +75,7 @@ en:
         users_who_follow_or_participated: Users who follow the project or have participated
       trigger:
         7_days_after_invite_is_sent: 7 days after invite is sent
-        7_days_before_the_project_changes_phase: 7 days before the project changes phase
+        7_days_before_phase_starts: 7 days before a phase starts
         comment_is_deleted: Comment is deleted
         comment_is_flagged_as_spam: Comment is flagged as spam
         content_gets_flagged_as_innapropiate: Content gets flagged as innapropiate
@@ -93,7 +93,7 @@ en:
         new_input_awaits_screening: New input awaits screening
         new_input_is_published: New input is published
         new_proposal_is_posted: New proposal is posted
-        project_phase_changes: Project phase changes
+        phase_starts: A phase starts
         project_published: Project published
         project_review_request: Moderator requested a project review
         project_review_state_change: Reviewer approved the project
@@ -192,8 +192,8 @@ en:
       phone_confirmation: Phone confirmation code
       project_folder_moderation_rights_received: Folder manager rights received
       project_manager_rights_received: Project manager rights received
-      project_phase_started: New project phase
-      project_phase_upcoming: Upcoming new project phase
+      project_phase_started: Phase started
+      project_phase_upcoming: Phase starting soon
       project_published: Project published
       project_review_request: Project review request
       project_review_state_change: Project approved
@@ -354,6 +354,7 @@ en:
         story: Go to your story
         suggestion: Go to your suggestion
         topic: Go to your topic
+      phase_dates: From %{startDate} to %{endDate}
     idea_marked_as_spam:
       cta_button: Review
       preheader: Act upon this spam report
@@ -557,8 +558,9 @@ en:
       input_status_description: An example of a status for an input (e.g. accepted, rejected, implemented...)
       input_status_title: Example Status
       official_feedback_body: Example official feedback
+      phase_description: This is some example phase content used for previewing the content of emails. This is not real content.
       phase_title: Example phase
-      project_description_preview: This is some example phase content used for previewing the content of emails. This is not real content.
+      project_description_preview: This is some example project content used for previewing the content of emails. This is not real content.
       project_title: Example project
       proposal_title: Example Proposal
       space_title: Example space
@@ -601,21 +603,17 @@ en:
       title_what_can_you_do_moderator: What can you do as a project manager?
       x_ideas: '%{numberOfIdeas} ideas'
     project_phase_started:
-      cta_button: Discover this new phase
-      event_description: This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!
-      new_phase: "This project entered the phase '%{phaseTitle}'"
-      preheader: A new phase has been started for %{projectName}
-      subject: '%{projectName} entered a new phase'
-      subtitle: "About '%{projectName}'"
-      title: "A new phase started for project '%{projectName}'"
+      cta_button: See what's new
+      event_description: You can now take part in '%{phaseTitle}' on the platform of %{organizationName}.
+      preheader: You can now take part in '%{phaseTitle}'
+      subject: "'%{phaseTitle}' has started in %{projectName}"
+      title: "There's something new in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Set this new phase up
-      event_description: "The project '%{projectName}' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?"
-      new_phase: "The project will enter the phase '%{phaseTitle}'"
-      preheader: A new phase will start soon for %{projectName}
-      subject: Get everything set up for the new phase of %{projectName}
-      subtitle: "About '%{projectName}'"
-      title: '%{firstName}, a project will enter a new phase soon'
+      cta_button: Review the setup
+      event_description: "'%{phaseTitle}' in the project '%{projectName}' starts on %{startDate}. Take a moment to check that everything is ready: Is the description complete? Are the dates correct? Do you want to inform your community through a custom email campaign?"
+      preheader: Make sure everything is ready before %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' starts on %{startDate}"
+      title: "%{firstName}, '%{phaseTitle}' starts on %{startDate}"
     project_published:
       cta_button: Go to this project
       event_description: 'The participation platform of %{organizationName} just published the following project:'

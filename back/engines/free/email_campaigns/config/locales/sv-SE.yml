@@ -77,6 +77,7 @@ sv-SE:
         users_who_follow_the_proposal: Användare som följer förslaget
       trigger:
         7_days_after_invite_is_sent: 7 dagar efter att inbjudan skickats
+        7_days_before_phase_starts: 7 dagar innan en fas startar
         7_days_before_the_project_changes_phase: 7 dagar innan projektet byter fas
         comment_is_deleted: Kommentaren tas bort.
         comment_is_flagged_as_spam: Kommentaren flaggas som skräppost
@@ -95,6 +96,7 @@ sv-SE:
         new_input_awaits_screening: Mitt bidrag väntar på bedömning
         new_input_is_published: Ny input publiceras
         new_proposal_is_posted: Ett nytt förslag har lagts fram.
+        phase_starts: En fas startar
         project_phase_changes: Förändringar i projektfas
         project_published: Projekt publicerat
         project_review_request: Moderator begärde en projektgenomgång
@@ -359,6 +361,7 @@ sv-SE:
         story: Gå till din berättelse
         suggestion: Gå till ditt förslag
         topic: Gå till ditt ämne
+      phase_dates: Från %{startDate} till %{endDate}
     idea_marked_as_spam:
       cta_button: Granskning
       preheader: Agera på den här skräppostrapporten
@@ -571,6 +574,7 @@ sv-SE:
       input_status_description: Ett exempel på status för en inmatning (t.ex. accepterad, avvisad, implementerad...)
       input_status_title: Exempel Status
       official_feedback_body: Exempel på officiell feedback
+      phase_description: Detta är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
       phase_title: Exempel på fas
       project_description_preview: Det här är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Det här är inte riktigt innehåll.
       project_title: Exempel på projekt

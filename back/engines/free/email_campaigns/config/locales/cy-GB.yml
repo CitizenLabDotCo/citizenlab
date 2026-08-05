@@ -77,6 +77,7 @@ cy-GB:
         users_who_follow_the_proposal: Defnyddwyr sy'n dilyn y cynnig
       trigger:
         7_days_after_invite_is_sent: 7 diwrnod ar ôl anfon gwahoddiad
+        7_days_before_phase_starts: 7 diwrnod cyn i gyfnod ddechrau
         7_days_before_the_project_changes_phase: 7 diwrnod cyn i'r prosiect newid cyfnod
         comment_is_deleted: Sylw yn cael ei ddileu
         comment_is_flagged_as_spam: Sylw yn cael ei fflagio fel sbam
@@ -95,6 +96,7 @@ cy-GB:
         new_input_awaits_screening: Mae mewnbwn newydd yn aros am sgrinio
         new_input_is_published: Mewnbwn newydd yn cael ei gyhoeddi
         new_proposal_is_posted: Cynnig newydd yn cael ei bostio
+        phase_starts: Cyfnod yn dechrau
         project_phase_changes: Newidiadau cyfnod y prosiect
         project_published: Cyhoeddi'r prosiect
         project_review_request: Gofynnodd y safonwr am adolygiad o'r prosiect
@@ -359,6 +361,7 @@ cy-GB:
         story: Ewch i'ch stori
         suggestion: Ewch i'ch awgrym
         topic: Ewch i'ch pwnc
+      phase_dates: O %{startDate} i %{endDate}
     idea_marked_as_spam:
       cta_button: Adolygiad
       preheader: Gweithredu ar yr adroddiad sbam hwn
@@ -571,6 +574,7 @@ cy-GB:
       input_status_description: Enghraifft o statws ar gyfer mewnbwn (e.e. derbyniwyd, gwrthodwyd, gweithredwyd...)
       input_status_title: Statws Enghraifft
       official_feedback_body: Enghraifft o adborth swyddogol
+      phase_description: Dyma rywfaint o gynnwys cyfnod enghreifftiol a ddefnyddir i gael rhagolwg o gynnwys e-byst. Nid yw hwn yn gynnwys go iawn.
       phase_title: Cyfnod enghreifftiol
       project_description_preview: Dyma rai enghreifftiau o gynnwys cyfnod a ddefnyddir ar gyfer rhagolwg cynnwys negeseuon e-bost. Nid cynnwys go iawn yw hwn.
       project_title: Prosiect enghreifftiol

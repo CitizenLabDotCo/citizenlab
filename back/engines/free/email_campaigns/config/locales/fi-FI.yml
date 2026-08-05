@@ -77,6 +77,7 @@ fi-FI:
         users_who_follow_the_proposal: Käyttäjät, jotka seuraavat ehdotusta
       trigger:
         7_days_after_invite_is_sent: 7 päivää kutsun lähettämisen jälkeen
+        7_days_before_phase_starts: 7 päivää ennen vaiheen alkua
         7_days_before_the_project_changes_phase: 7 päivää ennen projektin muutosvaihetta
         comment_is_deleted: Kommentti on poistettu
         comment_is_flagged_as_spam: Kommentti on merkitty roskapostiksi
@@ -95,6 +96,7 @@ fi-FI:
         new_input_awaits_screening: Uusi tulo odottaa näyttöä
         new_input_is_published: Uusi syöte on julkaistu
         new_proposal_is_posted: Uusi ehdotus on julkaistu
+        phase_starts: Vaihe alkaa
         project_phase_changes: Projektivaiheen muutokset
         project_published: Projekti julkaistu
         project_review_request: Moderaattori pyysi projektin tarkistusta
@@ -359,6 +361,7 @@ fi-FI:
         story: Siirry omaan tarinaasi
         suggestion: Siirry ehdotukseesi
         topic: Siirry aiheeseesi
+      phase_dates: Välillä %{startDate}–%{endDate}
     idea_marked_as_spam:
       cta_button: Arvostelu
       preheader: Toimi tämän roskapostiraportin mukaan
@@ -571,6 +574,7 @@ fi-FI:
       input_status_description: Esimerkki syötteen tilasta (esim. hyväksytty, hylätty, toteutettu...)
       input_status_title: Esimerkkitila
       official_feedback_body: Esimerkki virallisesta palautteesta
+      phase_description: Tämä on vaiheen esimerkkisisältöä sähköpostien sisällön esikatselua varten. Tämä ei ole oikeaa sisältöä.
       phase_title: Esimerkkivaihe
       project_description_preview: Tämä on esimerkki sähköpostien sisällön esikatseluun käytettävästä vaihesisällöstä. Tämä ei ole oikeaa sisältöä.
       project_title: Esimerkkiprojekti

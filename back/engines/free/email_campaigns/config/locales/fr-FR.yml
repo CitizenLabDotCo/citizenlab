@@ -77,6 +77,7 @@ fr-FR:
         users_who_follow_the_proposal: Les utilisateurs qui suivent la proposition
       trigger:
         7_days_after_invite_is_sent: "7 jours après l'envoi de l'invitation"
+        7_days_before_phase_starts: 7 jours avant le début d'une phase
         7_days_before_the_project_changes_phase: 7 jours avant le changement de phase du projet
         comment_is_deleted: Suppression d'un commentaire
         comment_is_flagged_as_spam: Commentaire marqué comme spam
@@ -95,6 +96,7 @@ fr-FR:
         new_input_awaits_screening: Nouvelle contribution en attente de validation
         new_input_is_published: Une nouvelle contribution a été postée
         new_proposal_is_posted: Publication d'une nouvelle proposition
+        phase_starts: Une phase commence
         project_phase_changes: Changements de phase du projet
         project_published: Publication d'un projet
         project_review_request: Demande d'approbation pour publier un projet
@@ -362,6 +364,7 @@ fr-FR:
         story: Voir votre témoignage
         suggestion: Voir votre suggestion
         topic: Voir votre thème
+      phase_dates: Du %{startDate} au %{endDate}
     idea_marked_as_spam:
       cta_button: Vérifier
       preheader: Agir sur ce rapport de spam
@@ -574,6 +577,7 @@ fr-FR:
       input_status_description: Exemple de statut pour une contribution (par ex. accepté, rejeté, mis en œuvre...)
       input_status_title: Exemple de statut
       official_feedback_body: Exemple de retour officiel
+      phase_description: "Exemple de description de phase, utilisé uniquement pour l'aperçu des e-mails. Ce n'est pas du contenu réel."
       phase_title: Exemple de phase
       project_description_preview: Ce contenu est juste un exemple et sert à prévisualiser le rendu des e-mails. Il ne s'agit pas de contenu réel.
       project_title: Exemple de projet

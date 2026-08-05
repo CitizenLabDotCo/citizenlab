@@ -77,6 +77,7 @@ pl-PL:
         users_who_follow_the_proposal: Użytkownicy, którzy śledzą propozycję
       trigger:
         7_days_after_invite_is_sent: 7 dni po wysłaniu zaproszenia
+        7_days_before_phase_starts: 7 dni przed rozpoczęciem fazy
         7_days_before_the_project_changes_phase: 7 dni przed zmianą fazy projektu
         comment_is_deleted: Komentarz został usunięty.
         comment_is_flagged_as_spam: Komentarz został oznaczony jako spam
@@ -95,6 +96,7 @@ pl-PL:
         new_input_awaits_screening: Nowy wkład czeka na ekranizację
         new_input_is_published: Nowy wkład jest publikowany
         new_proposal_is_posted: Nowa propozycja została opublikowana
+        phase_starts: Rozpoczyna się faza
         project_phase_changes: Zmiany fazy projektu
         project_published: Projekt opublikowany
         project_review_request: Moderator zażądał przeglądu projektu
@@ -359,6 +361,7 @@ pl-PL:
         story: Przejdź do swojej historii
         suggestion: Przejdź do swojej sugestii
         topic: Przejdź do swojego tematu
+      phase_dates: Od %{startDate} do %{endDate}
     idea_marked_as_spam:
       cta_button: Recenzja
       preheader: Podejmij działanie w związku ze zgłoszeniem spamu
@@ -571,6 +574,7 @@ pl-PL:
       input_status_description: Przykład statusu wejścia (np. zaakceptowane, odrzucone, zaimplementowane...)
       input_status_title: Przykładowy status
       official_feedback_body: Przykład oficjalnej informacji zwrotnej
+      phase_description: To jest przykładowa treść fazy używana do podglądu treści wiadomości e-mail. To nie jest prawdziwa treść.
       phase_title: Przykładowa faza
       project_description_preview: Jest to przykładowa zawartość fazowa używana do podglądu treści wiadomości e-mail. Nie jest to prawdziwa treść.
       project_title: Przykładowy projekt

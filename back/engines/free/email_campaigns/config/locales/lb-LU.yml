@@ -77,6 +77,7 @@ lb-LU:
         users_who_follow_the_proposal: Benotzer déi d'Propositioun verfollegen
       trigger:
         7_days_after_invite_is_sent: 7 Deeg no der Invitatioun geschéckt
+        7_days_before_phase_starts: 7 Deeg ier eng Phas ufänkt
         7_days_before_the_project_changes_phase: 7 Deeg virum Projet Ännerungen Phas
         comment_is_deleted: Commentaire geläscht
         comment_is_flagged_as_spam: Kommentar gëtt als Spam markéiert
@@ -95,6 +96,7 @@ lb-LU:
         new_input_awaits_screening: Neien Input waart op Screening
         new_input_is_published: Neien Input gëtt publizéiert
         new_proposal_is_posted: Nei Propositioun ass gepost
+        phase_starts: Eng Phas fänkt un
         project_phase_changes: Projet Phase Ännerungen
         project_published: Projet publizéiert
         project_review_request: Moderator gefrot e Projet review
@@ -361,6 +363,7 @@ lb-LU:
         story: Gitt op Är Geschicht
         suggestion: Gitt op Är Suggestioun
         topic: Gitt op Äert Thema
+      phase_dates: Vun %{startDate} bis %{endDate}
     idea_marked_as_spam:
       cta_button: Iwwerpréiwung
       preheader: Reagéiert op dës Spammeldung
@@ -573,6 +576,7 @@ lb-LU:
       input_status_description: E Beispill vun engem Status fir en Input (z.B. akzeptéiert, refuséiert, ëmgesat...)
       input_status_title: Beispill Status
       official_feedback_body: Beispill vun offiziellem Feedback
+      phase_description: Dëst ass e Beispill-Inhalt vun enger Phas fir d'Virschau vum Inhalt vun E-Mailen. Dëst ass keen echte Contenu.
       phase_title: Beispillphase
       project_description_preview: Dëst ass e Beispill vun engem Phaseninhalt, deen benotzt gëtt fir den Inhalt vun E-Maile virzekucken. Dëst ass keen echten Inhalt.
       project_title: Beispillprojet

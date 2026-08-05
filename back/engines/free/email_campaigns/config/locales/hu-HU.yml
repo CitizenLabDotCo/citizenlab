@@ -77,6 +77,7 @@ hu-HU:
         users_who_follow_the_proposal: A javaslatot követő felhasználók
       trigger:
         7_days_after_invite_is_sent: 7 nappal a meghívó elküldése után
+        7_days_before_phase_starts: 7 nappal egy szakasz kezdete előtt
         7_days_before_the_project_changes_phase: 7 nappal a projektváltási szakasz előtt
         comment_is_deleted: A megjegyzés törölve
         comment_is_flagged_as_spam: A megjegyzés spamként van megjelölve
@@ -95,6 +96,7 @@ hu-HU:
         new_input_awaits_screening: Új bemenet vár a vetítésre
         new_input_is_published: Megjelent az új bemenet
         new_proposal_is_posted: Új ajánlatot tettek közzé
+        phase_starts: Szakasz kezdődik
         project_phase_changes: Változások a projekt fázisában
         project_published: A projekt megjelent
         project_review_request: A moderátor a projekt felülvizsgálatát kérte
@@ -359,6 +361,7 @@ hu-HU:
         story: Menj a történetedhez
         suggestion: Ugrás a javaslatodra
         topic: Menj a témádhoz
+      phase_dates: '%{startDate} és %{endDate} között'
     idea_marked_as_spam:
       cta_button: Véleményezés
       preheader: Cselekedjen a spamjelentés alapján
@@ -571,6 +574,7 @@ hu-HU:
       input_status_description: Példa egy bemenet állapotára (pl. elfogadva, elutasítva, megvalósítva...)
       input_status_title: Példa állapot
       official_feedback_body: Példa hivatalos visszajelzésre
+      phase_description: Ez egy példa szakasztartalom, amely az e-mailek tartalmának előnézetéhez használható. Ez nem valódi tartalom.
       phase_title: Példa fázis
       project_description_preview: Ez egy példa egy fázistartalomra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valódi tartalom.
       project_title: Példaprojekt

@@ -77,6 +77,7 @@ ga-IE:
         users_who_follow_the_proposal: Úsáideoirí a leanann an togra
       trigger:
         7_days_after_invite_is_sent: 7 lá tar éis an cuireadh a sheoladh
+        7_days_before_phase_starts: 7 lá sula dtosaíonn céim
         7_days_before_the_project_changes_phase: 7 lá sula n-athraíonn an tionscadal céim
         comment_is_deleted: Scriosadh an trácht
         comment_is_flagged_as_spam: Tá an trácht marcáilte mar thurscar
@@ -95,6 +96,7 @@ ga-IE:
         new_input_awaits_screening: Tá ionchur nua ag fanacht le scagadh
         new_input_is_published: Tá ionchur nua foilsithe
         new_proposal_is_posted: Tá togra nua foilsithe
+        phase_starts: Tosaíonn céim
         project_phase_changes: Athruithe céime tionscadail
         project_published: Tionscadal foilsithe
         project_review_request: D'iarr an modhnóir athbhreithniú tionscadail
@@ -359,6 +361,7 @@ ga-IE:
         story: Téigh chuig do scéal
         suggestion: Téigh chuig do mholadh
         topic: Téigh chuig do thopaic
+      phase_dates: Ó %{startDate} go %{endDate}
     idea_marked_as_spam:
       cta_button: Athbhreithniú
       preheader: Gníomhaigh ar an tuairisc turscair seo
@@ -571,6 +574,7 @@ ga-IE:
       input_status_description: Sampla de stádas ionchuir (m.sh. glactha, diúltaithe, curtha i bhfeidhm...)
       input_status_title: Stádas Samplach
       official_feedback_body: Aiseolas oifigiúil samplach
+      phase_description: Is sampla é seo d'inneachar céime a úsáidtear chun réamhamharc a dhéanamh ar inneachar ríomhphost. Ní fíor-inneachar é seo.
       phase_title: Céim shamplach
       project_description_preview: Seo sampla d'ábhar céime a úsáidtear chun réamhamharc a dhéanamh ar ábhar ríomhphoist. Ní fíor-ábhar é seo.
       project_title: Tionscadal samplach

@@ -77,6 +77,7 @@ el-GR:
         users_who_follow_the_proposal: Χρήστες που ακολουθούν την πρόταση
       trigger:
         7_days_after_invite_is_sent: 7 ημέρες μετά την αποστολή της πρόσκλησης
+        7_days_before_phase_starts: 7 ημέρες πριν την έναρξη μιας φάσης
         7_days_before_the_project_changes_phase: 7 ημέρες πριν από τη φάση αλλαγής του έργου
         comment_is_deleted: Το σχόλιο διαγράφεται
         comment_is_flagged_as_spam: Το σχόλιο επισημαίνεται ως spam
@@ -95,6 +96,7 @@ el-GR:
         new_input_awaits_screening: Η νέα εισροή αναμένει την προβολή
         new_input_is_published: Δημοσιεύονται νέες εισροές
         new_proposal_is_posted: Αναρτήθηκε νέα πρόταση
+        phase_starts: Μια φάση ξεκινά
         project_phase_changes: Αλλαγές φάσης έργου
         project_published: Δημοσιευμένο έργο
         project_review_request: Ο συντονιστής ζήτησε επανεξέταση του έργου
@@ -359,6 +361,7 @@ el-GR:
         story: Πηγαίνετε στην ιστορία σας
         suggestion: Πηγαίνετε στην πρότασή σας
         topic: Πηγαίνετε στο θέμα σας
+      phase_dates: Από %{startDate} έως %{endDate}
     idea_marked_as_spam:
       cta_button: Ανασκόπηση
       preheader: Ενεργήστε βάσει αυτής της έκθεσης spam
@@ -571,6 +574,7 @@ el-GR:
       input_status_description: Ένα παράδειγμα κατάστασης για μια είσοδο (π.χ. αποδεκτή, απορριφθείσα, υλοποιημένη...)
       input_status_title: Παράδειγμα Κατάσταση
       official_feedback_body: Παράδειγμα επίσημης ανατροφοδότησης
+      phase_description: Αυτό είναι ένα παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των email. Αυτό δεν είναι πραγματικό περιεχόμενο.
       phase_title: Παράδειγμα φάσης
       project_description_preview: Αυτό είναι κάποιο παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.
       project_title: Παράδειγμα έργου
