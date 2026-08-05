@@ -19,6 +19,7 @@ class Invites::ImportRunner
     # would otherwise leave the import pending forever, since neither invites job
     # retries — the admin would wait out the front-end timeout instead of being
     # shown the error. Record the failure, then re-raise so it is not swallowed.
+    # A killed worker leaves nothing to rescue; that case is the timeout's alone.
     import&.update!(
       result: { errors: [{ error: 'unexpected_invite_error' }] },
       completed_at: Time.current

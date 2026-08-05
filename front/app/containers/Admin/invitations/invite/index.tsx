@@ -62,8 +62,9 @@ export type TInviteTabName = 'template' | 'manual';
 // Both stages run as background jobs. If one never reports back — stalled queue,
 // worker dies mid-run — nothing clears the processing state and the form spins
 // forever with no error.
-const COUNT_TIMEOUT_MS = 120000; // 2 minutes
-const CREATE_TIMEOUT_MS = 300000; // 5 minutes
+// Exported so the tests advance the clock by the real budgets.
+export const COUNT_TIMEOUT_MS = 120000; // 2 minutes
+export const CREATE_TIMEOUT_MS = 300000; // 5 minutes
 
 const Invitations = () => {
   const queryClient = useQueryClient();

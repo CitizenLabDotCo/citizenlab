@@ -2,10 +2,7 @@ import React from 'react';
 
 import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
 
-import Invitations from '.';
-
-const COUNT_TIMEOUT_MS = 120000;
-const CREATE_TIMEOUT_MS = 300000;
+import Invitations, { COUNT_TIMEOUT_MS, CREATE_TIMEOUT_MS } from '.';
 
 const NOT_SENT_MESSAGE = /The system is busy/;
 const TIMED_OUT_MESSAGE =
