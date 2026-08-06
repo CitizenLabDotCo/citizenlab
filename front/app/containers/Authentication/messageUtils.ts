@@ -17,12 +17,12 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   success: null,
   'access-denied': messages.youCantParticipate,
 
-  // email flow
-  'email:start': messages.beforeYouParticipate,
-  'email:policies': messages.beforeYouParticipate,
-  'email:password': messages.logIn,
-  'email:sso-policies': messages.signUp,
-  'email:unauthenticated-confirmation': messages.confirmYourEmail,
+  // pre-auth steps
+  'pre-auth:start': messages.beforeYouParticipate,
+  'pre-auth:policies': messages.beforeYouParticipate,
+  'pre-auth:password': messages.logIn,
+  'pre-auth:sso-policies': messages.signUp,
+  'pre-auth:unauthenticated-confirmation': messages.confirmYourEmail,
 
   // confirmation steps (code entry for email / phone)
   'confirmation:reconfirm-email': messages.confirmYourEmail,
@@ -59,7 +59,9 @@ export const getHeaderMessage = (
 ) => {
   if (
     action === 'following' &&
-    ['email:start', 'emailemail-policies', 'email:sso-policies'].includes(step)
+    ['pre-auth:start', 'pre-auth:policies', 'pre-auth:sso-policies'].includes(
+      step
+    )
   ) {
     return messages.beforeYouFollow;
   }
@@ -95,8 +97,8 @@ type HelperTextKey =
   | 'custom_fields_signup_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'email:start': 'enter_email_helper_text',
-  'email:password': 'enter_password_helper_text',
+  'pre-auth:start': 'enter_email_helper_text',
+  'pre-auth:password': 'enter_password_helper_text',
   'missing-data:built-in': 'complete_your_profile_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };

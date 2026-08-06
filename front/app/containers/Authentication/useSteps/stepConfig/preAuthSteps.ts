@@ -24,7 +24,7 @@ import {
   handleSSOClick,
 } from './utils';
 
-export const emailFlow = (
+export const preAuthSteps = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
@@ -32,7 +32,7 @@ export const emailFlow = (
   state: State
 ) => {
   return {
-    'email:start': {
+    'pre-auth:start': {
       CLOSE: () => setCurrentStep('closed'),
 
       SUBMIT_EMAIL: async (email: string) => {
@@ -52,7 +52,7 @@ export const emailFlow = (
       },
     },
 
-    'email:policies': {
+    'pre-auth:policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: async (
         email: string,
@@ -66,19 +66,19 @@ export const emailFlow = (
         });
 
         if (result === 'account_created_successfully') {
-          setCurrentStep('email:unauthenticated-confirmation');
+          setCurrentStep('pre-auth:unauthenticated-confirmation');
         }
 
         if (result === 'email_taken') {
-          setCurrentStep('email:password');
+          setCurrentStep('pre-auth:password');
         }
       },
-      GO_BACK: () => setCurrentStep('email:start'),
+      GO_BACK: () => setCurrentStep('pre-auth:start'),
     },
 
-    'email:password': {
+    'pre-auth:password': {
       CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => setCurrentStep('email:start'),
+      GO_BACK: () => setCurrentStep('pre-auth:start'),
       SUBMIT_PASSWORD: async (
         email: string,
         password: string,
@@ -122,7 +122,7 @@ export const emailFlow = (
       },
     },
 
-    'email:sso-policies': {
+    'pre-auth:sso-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
         redirectToSSOProvider(
@@ -135,10 +135,10 @@ export const emailFlow = (
       },
     },
 
-    'email:unauthenticated-confirmation': {
+    'pre-auth:unauthenticated-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        setCurrentStep('email:start');
+        setCurrentStep('pre-auth:start');
       },
       SUBMIT_CODE: async (email: string, code: string) => {
         await confirmCodeEmail(email, code);
