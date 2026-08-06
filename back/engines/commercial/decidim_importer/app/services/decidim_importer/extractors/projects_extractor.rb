@@ -19,7 +19,8 @@ module DecidimImporter
         published_at: 'published_at',
         created_at: 'created_at',
         updated_at: 'updated_at',
-        url: 'url'
+        url: 'url',
+        slug: 'slug'
       }.freeze
 
       def initialize(*args, **kwargs)
@@ -69,11 +70,13 @@ module DecidimImporter
         ref_map.register("#{uid}-card-image", image)
       end
 
-      # The Decidim slug from the container URL (`…/processes/<slug>` or `…/assemblies/<slug>`),
-      # sanitized to a valid Go Vocal slug — nil when there's no such URL or nothing slug-worthy remains.
+      # The Decidim slug: taken from the container URL (`…/processes/<slug>` or `…/assemblies/<slug>`),
+      # falling back to the explicit `slug` column that older exports carry instead of a `url`. Sanitized
+      # to a valid Go Vocal slug — nil when neither is present or nothing slug-worthy remains.
       def decidim_slug(row)
         url = present_value(row[COLUMNS[:url]])
         raw = url && url[%r{/(?:processes|assemblies)/([^/?#]+)}, 1]
+        raw ||= present_value(row[COLUMNS[:slug]])
         Slug.sanitize(raw)
       end
 

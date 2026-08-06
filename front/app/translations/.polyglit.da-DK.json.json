@@ -10825,9 +10825,29 @@
     "verified_at": "2026-07-14T16:35:52.394338Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.PhoneChange.privacyLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:20:55.645325Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.smsConfirmationDisclosure2": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:20:55.645325Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.smsManualCampaignConsentLabel": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:20:55.645325Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.PhoneChange.submitButton": {
     "state": "verified",
     "verified_at": "2026-07-14T16:35:52.394338Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.PhoneChange.termsLinkText": {
+    "state": "verified",
+    "verified_at": "2026-07-30T08:20:55.645325Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.PhoneChange.titleAddPhone": {

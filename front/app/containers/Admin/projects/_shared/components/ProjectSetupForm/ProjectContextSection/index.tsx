@@ -10,13 +10,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import Inner from './Inner';
 import messages from './messages';
-import { Props, FormSituation } from './types';
+import { Props } from './types';
 
-const ProjectContextSection = (
-  props: Props & {
-    formSituation: FormSituation;
-  }
-) => {
+const ProjectContextSection = (props: Props) => {
   const { data: authUser } = useAuthUser();
 
   if (!authUser) return null;
