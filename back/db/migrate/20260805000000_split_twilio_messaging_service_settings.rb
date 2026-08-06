@@ -3,7 +3,7 @@
 # Splits the single Twilio messaging service SID setting into one per SMS use case.
 # The configured SID becomes the manual campaigns one; confirmation codes are left
 # unset so they only start sending once their own messaging service is configured.
-class SplitTwilioMessagingServiceSettings < ActiveRecord::Migration[7.1]
+class SplitTwilioMessagingServiceSettings < ActiveRecord::Migration[7.2]
   OLD_KEY = 'twilio_messaging_service_sid'
   MANUAL_KEY = 'twilio_manual_campaigns_messaging_service_sid'
   CONFIRMATION_KEY = 'twilio_confirmation_codes_messaging_service_sid'
