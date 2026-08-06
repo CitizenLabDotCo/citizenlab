@@ -250,9 +250,26 @@ RSpec.describe Phase do
         expect(phase.reload.update(title_multiloc: { 'en' => 'New title' })).to be true
       end
 
-      it 'is valid when a voting phase offers the feed view' do
+      # The feed shows neither the vote count nor the controls to cast one. The phase form has never
+      # offered the toggle for voting, so this closes the API's side of that door.
+      it 'is invalid when a voting phase offers the feed view' do
         phase = build(:single_voting_phase, presentation_mode: 'card', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('feed not available for the voting method')
+      end
+
+      it 'is valid when a voting phase offers the card and map views' do
+        phase = build(:budgeting_phase, presentation_mode: 'map', available_views: %w[card map])
         expect(phase).to be_valid
+      end
+
+      # As above for proposals. The ideas order goes in the same write because voting allows only
+      # 'random'; without it the switch is rejected on that instead.
+      it 'is invalid when an ideation phase offering the feed view is switched to voting' do
+        phase = create(:phase, presentation_mode: 'feed', available_views: %w[card feed])
+
+        expect(phase.update(participation_method: 'voting', voting_method: 'single_voting', ideas_order: 'random')).to be false
+        expect(phase.errors[:available_views].first).to include('feed not available for the voting method')
       end
 
       # Common ground is the other method the rule applies to. It has its own interface and no view
