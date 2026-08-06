@@ -169,8 +169,7 @@ describe 'cl2back:replace_de_DE_with_de_AT rake task' do
     let!(:project) do
       create(:project, title_multiloc: { 'en' => 'Hello', 'de-DE' => 'Hallo' })
     end
-
-    let_it_be(:idea_status, reload: true) do
+    let!(:idea_status) do
       create(
         :idea_status,
         title_multiloc: { 'en' => 'Status', 'de-DE' => 'Status DE' },
@@ -200,7 +199,7 @@ describe 'cl2back:replace_de_DE_with_de_AT rake task' do
 
     # The de-DE multiloc sits seven levels below the craftjs_json root,
     # reached through both nested hashes and an array.
-    let_it_be(:layout, reload: true) do
+    let!(:layout) do
       create(
         :layout,
         craftjs_json: {
@@ -306,7 +305,7 @@ describe 'cl2back:replace_de_DE_with_de_AT rake task' do
     # them — that would falsify history.
     before { configure_locales(%w[en de-DE]) }
 
-    let_it_be(:activity, reload: true) do
+    let!(:activity) do
       create(
         :changed_title_activity,
         payload: { 'change' => [{ 'en' => 'old', 'de-DE' => 'alt' }, { 'en' => 'new', 'de-DE' => 'neu' }] }
@@ -330,8 +329,8 @@ describe 'cl2back:replace_de_DE_with_de_AT rake task' do
   context 'User.locale migration' do
     before { configure_locales(%w[en de-DE]) }
 
-    let_it_be(:de_de_user, reload: true) { create(:user, locale: 'de-DE') }
-    let_it_be(:en_user, reload: true) { create(:user, locale: 'en') }
+    let!(:de_de_user) { create(:user, locale: 'de-DE') }
+    let!(:en_user) { create(:user, locale: 'en') }
 
     context 'in dry run mode' do
       it 'does not change any user locale' do

@@ -11,18 +11,17 @@ RSpec.describe ReportBuilder::Queries::Demographics do
 
   describe '#run_query' do
     context 'select field' do
-      before_all do
+      before do
         @group = create(:group)
         @custom_field = create(:custom_field_select)
         @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
         @project = create(:project_with_active_ideation_phase)
-      end
 
-      before do
         travel_to(start_at - 1.day) do
           user1 = create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
           create(:idea, author: user1, project: @project)
         end
+
         travel_to(start_at + 4.days) do
           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
           create(:user, custom_field_values: { @custom_field.key => @option2.key }, manual_groups: [@group])
@@ -30,9 +29,11 @@ RSpec.describe ReportBuilder::Queries::Demographics do
           user2 = create(:user, custom_field_values: { @custom_field.key => @option3.key })
           create(:idea, author: user2, project: @project)
         end
+
         travel_to(end_at + 1.day) do
           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
+
         AppConfiguration.instance.update!(
           created_at: Date.new(2020, 1, 1),
           platform_start_at: Date.new(2020, 1, 1)
@@ -94,12 +95,9 @@ RSpec.describe ReportBuilder::Queries::Demographics do
       end
 
       context 'user fields stored in ideas' do
-        before_all do
-          create(:idea_status_proposed)
-          create(:native_survey_phase, project: @project, with_permissions: true)
-        end
-
         before do
+          create(:idea_status_proposed)
+          phase = create(:native_survey_phase, project: @project, with_permissions: true)
           phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
           create(:native_survey_response, project: @project, creation_phase: phase, author: nil, created_at: now - 1.year, custom_field_values: { "u_#{@custom_field.key}" => @option1.key })
           create(:native_survey_response, project: @project, creation_phase: phase, author: nil, custom_field_values: { "u_#{@custom_field.key}" => @option2.key })

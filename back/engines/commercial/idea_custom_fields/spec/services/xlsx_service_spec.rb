@@ -7,12 +7,10 @@ describe XlsxService do
   let(:service) { described_class.new }
 
   describe 'generate_ideas_xlsx' do
-    before_all do
+    before do
       @project = create(:project)
       @form = create(:custom_form, participation_context: @project)
-    end
 
-    before do
       create(
         :custom_field,
         :for_custom_form,
@@ -22,6 +20,7 @@ describe XlsxService do
         key: 'number_field',
         title_multiloc: { 'en' => 'How many times did it rain this year?' }
       )
+
       create(
         :custom_field,
         :for_custom_form,
@@ -31,6 +30,7 @@ describe XlsxService do
         key: 'date_field',
         title_multiloc: { 'en' => 'When was the last time it rained?' }
       )
+
       select_field = create(
         :custom_field_select,
         :for_custom_form,
@@ -51,6 +51,7 @@ describe XlsxService do
         key: 'fruitfly',
         title_multiloc: { 'en' => 'Fruit fly' }
       )
+
       multiselect_field = create(
         :custom_field_multiselect,
         :for_custom_form,
@@ -71,6 +72,7 @@ describe XlsxService do
         key: 'option2',
         title_multiloc: { 'en' => 'Option 2' }
       )
+
       fields1 = { 'number_field' => 9, 'multiselect_field' => %w[option1 option2] }
       fields2 = { 'number_field' => 22, 'date_field' => '19-05-2022', 'select_field' => 'hippopotamus' }
       fields3 = { 'select_field' => 'fruitfly', 'multiselect_field' => %w[option1] }
@@ -147,7 +149,7 @@ describe XlsxService do
     end
 
     context 'when a project has no custom form - and therefore no fields' do
-      before_all do
+      before do
         @project_no_form = create(:project)
         @idea = create(:idea, project: @project_no_form)
       end
@@ -167,13 +169,10 @@ describe XlsxService do
     end
 
     context 'when there is a mix of projects with custom fields and without' do
-      before_all do
+      before do
         @project_no_form = create(:project)
         @project_with_form = create(:project)
         @form = create(:custom_form, participation_context: @project_with_form)
-      end
-
-      before do
         create(
           :custom_field,
           :for_custom_form,

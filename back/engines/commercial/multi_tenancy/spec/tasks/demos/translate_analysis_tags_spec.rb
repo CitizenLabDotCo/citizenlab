@@ -16,9 +16,9 @@ describe 'demos:translate_analysis_tags rake task' do
     Rake::Task['demos:translate_analysis_tags'].invoke(host, locale, execute ? 'execute' : nil)
   end
 
-  let_it_be(:project, reload: true) { create(:single_phase_ideation_project) }
-  let_it_be(:custom_form, reload: true) { create(:custom_form, :with_default_fields, participation_context: project) }
-  let_it_be(:analysis, reload: true) do
+  let(:project) { create(:single_phase_ideation_project) }
+  let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+  let(:analysis) do
     create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
   end
 

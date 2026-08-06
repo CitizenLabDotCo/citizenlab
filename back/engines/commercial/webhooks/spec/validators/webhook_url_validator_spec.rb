@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe WebhookUrlValidator do
-  let_it_be(:subscription, reload: true) { Webhooks::Subscription.new(name: 'Test', events: ['idea.created']) }
+  let(:subscription) { Webhooks::Subscription.new(name: 'Test', events: ['idea.created']) }
 
   describe 'URL validation' do
     it 'accepts valid HTTPS URLs' do

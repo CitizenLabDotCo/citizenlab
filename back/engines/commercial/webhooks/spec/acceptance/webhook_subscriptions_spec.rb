@@ -20,7 +20,7 @@ resource 'Webhook Subscriptions' do
     end
 
     context 'as an admin' do
-      before_all do
+      before do
         @subscriptions = create_list(:webhook_subscription, 3)
       end
 
@@ -42,11 +42,8 @@ resource 'Webhook Subscriptions' do
     end
 
     context 'as a regular user' do
-      before_all do
-        @user = create(:user)
-      end
-
       before do
+        @user = create(:user)
         header_token_for(@user)
         create(:webhook_subscription)
       end
@@ -107,7 +104,7 @@ resource 'Webhook Subscriptions' do
     end
 
     context 'with project scoping' do
-      let_it_be(:project, reload: true) { create(:project) }
+      let(:project) { create(:project) }
       let(:project_id) { project.id }
 
       example 'Creates subscription scoped to project' do

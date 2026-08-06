@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::ProjectPhaseStarted do
-  let_it_be(:campaign, reload: true) { create(:project_phase_started_campaign) }
+  let(:campaign) { create(:project_phase_started_campaign) }
 
   describe 'ProjectPhaseStarted Campaign default factory' do
     it { expect(campaign).to be_valid }
@@ -45,7 +45,7 @@ RSpec.describe EmailCampaigns::Campaigns::ProjectPhaseStarted do
   end
 
   describe 'send_on_activity' do
-    let_it_be(:global_campaign, reload: true) { create(:project_phase_started_campaign) }
+    let!(:global_campaign) { create(:project_phase_started_campaign) }
     let!(:context_campaign) { create(:project_phase_started_campaign, context: create(:phase)) }
     let(:service) { EmailCampaigns::DeliveryService.new }
     let(:phase) { create(:ideation_phase) }

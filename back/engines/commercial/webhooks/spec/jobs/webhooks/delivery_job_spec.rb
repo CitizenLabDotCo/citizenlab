@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Webhooks::DeliveryJob do
-  let_it_be(:subscription, reload: true) { create(:webhook_subscription, url: 'https://webhook.example.com/receive') }
-  let_it_be(:activity, reload: true) { create(:idea_created_activity) }
-  let_it_be(:delivery, reload: true) { create(:webhook_delivery, subscription: subscription, activity: activity) }
+  let(:subscription) { create(:webhook_subscription, url: 'https://webhook.example.com/receive') }
+  let(:activity) { create(:idea_created_activity) }
+  let(:delivery) { create(:webhook_delivery, subscription: subscription, activity: activity) }
 
   before do
     allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Analysis::QAndAMethod do
   describe 'OnePassLLM q_and_a' do
-    let_it_be(:analysis, reload: true) do
+    let(:analysis) do
       create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
@@ -12,9 +12,9 @@ RSpec.describe Analysis::QAndAMethod do
         key: 'title_multiloc'
       ))
     end
-    let_it_be(:question, reload: true) { create(:analysis_question, q_and_a_method: 'one_pass_llm', question: 'What is the most popular theme?', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
-    let_it_be(:q_and_a_task, reload: true) { create(:q_and_a_task, analysis: analysis, state: 'queued', question: question) }
-    let_it_be(:inputs, reload: true) do
+    let(:question) { create(:analysis_question, q_and_a_method: 'one_pass_llm', question: 'What is the most popular theme?', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
+    let(:q_and_a_task) { create(:q_and_a_task, analysis: analysis, state: 'queued', question: question) }
+    let(:inputs) do
       with_options project: analysis.project do
         [
           create(:idea, comments_count: 0),

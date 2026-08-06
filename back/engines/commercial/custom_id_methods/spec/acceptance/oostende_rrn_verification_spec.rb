@@ -7,11 +7,8 @@ require 'savon/mock/spec_helper'
 resource 'Verifications' do
   explanation 'A Verifications is an attempt from a user to get verified'
 
-  before_all do
-    @user = create(:user)
-  end
-
   before do
+    @user = create(:user)
     header_token_for @user
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
@@ -132,11 +129,8 @@ resource 'Verifications' do
     end
 
     describe do
-      before_all do
-        create(:user)
-      end
-
       before do
+        other_user = create(:user)
         @rrn = '85102317223'
         stub_request(:get, "https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => true,

@@ -31,19 +31,20 @@ context 'federa verification' do
       }
     end
 
-    before_all do
-      @user = create(:user, first_name: 'Mario', last_name: 'Rossi')
-    end
-
     before do
+      @user = create(:user, first_name: 'Mario', last_name: 'Rossi')
       @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
+
       # Create user custom fields that will be filled by the auth hash
       create(:custom_field, key: 'birthyear', resource_type: 'User')
       create(:custom_field, key: 'municipality_code', resource_type: 'User')
+
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
+
       configuration = AppConfiguration.instance
       settings = configuration.settings
+
       settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -207,7 +208,7 @@ context 'federa verification' do
         OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
       end
 
-      let_it_be(:new_user, reload: true) do
+      let!(:new_user) do
         User.order(created_at: :asc).last.tap do |user|
           expect_user_to_be_verified_and_identified(user)
         end

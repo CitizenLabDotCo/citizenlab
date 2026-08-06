@@ -5,8 +5,8 @@ require 'rails_helper'
 describe McpServer::Tools::UpdatePhase do
   let_it_be(:current_user) { create(:super_admin) }
 
-  let_it_be(:project, reload: true) { create(:project, :draft) }
-  let_it_be(:phase, reload: true) { create(:phase, project:) }
+  let(:project) { create(:project, :draft) }
+  let(:phase) { create(:phase, project:) }
 
   def run(params)
     run_mcp_tool(described_class, params:, current_user:)

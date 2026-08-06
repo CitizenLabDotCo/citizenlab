@@ -4,11 +4,8 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Projects' do
-  before_all do
-    PublicApi::ApiClient.create
-  end
-
   before do
+    api_token = PublicApi::ApiClient.create
     token = AuthToken::AuthToken.new(payload: api_token.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
@@ -16,7 +13,7 @@ resource 'Projects' do
   explanation 'Projects are participation scopes defined by the city. They define a context and set time and input expectations towards the citizens, stimulating them to engage in a the scoped debate. Citizens can post ideas in projects.'
 
   route '/api/v1/projects', 'Projects: Listing projects' do
-    let_it_be(:projects, reload: true) { create_list(:project, 5) }
+    let!(:projects) { create_list(:project, 5) }
 
     get 'Retrieve a listing of projects' do
       parameter :page_size, 'The number of projects that should be returned in one response. Defaults to 12, max 24', required: false, type: 'integer'
@@ -42,8 +39,8 @@ resource 'Projects' do
 
   route '/api/v1/projects/:id', 'Projects: Retrieve one project' do
     get 'Retrieve one project' do
-      let_it_be(:project, reload: true) { create(:project) }
-      let_it_be(:map_config, reload: true) { create(:map_config, :with_positioning, project: project) }
+      let(:project) { create(:project) }
+      let!(:map_config) { create(:map_config, :with_positioning, project: project) }
       let(:id) { project.id }
 
       example_request 'Get one project by id' do

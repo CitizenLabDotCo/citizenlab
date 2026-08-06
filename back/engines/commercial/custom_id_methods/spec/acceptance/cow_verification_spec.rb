@@ -8,11 +8,8 @@ resource 'Verifications' do
   explanation 'A Verifications is an attempt from a user to get verified'
   include Savon::SpecHelper
 
-  before_all do
-    @user = create(:user)
-  end
-
   before do
+    @user = create(:user)
     header_token_for @user
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
@@ -165,16 +162,14 @@ resource 'Verifications' do
     end
 
     describe do
-      before_all do
-        create(:user)
-      end
-
       before do
+        other_user = create(:user)
         @run = '12.025.365-6'
         @id_serial = 'A001529382'
         savon.expects(:get_data_document)
           .with(message: :any)
           .returns(File.read('engines/commercial/custom_id_methods/spec/fixtures/get_data_document_match.xml'))
+
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: 'cow',

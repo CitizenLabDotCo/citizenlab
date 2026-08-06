@@ -13,7 +13,7 @@ resource 'Webhook Deliveries' do
     admin_header_token
   end
 
-  let_it_be(:subscription, reload: true) { create(:webhook_subscription) }
+  let(:subscription) { create(:webhook_subscription) }
   let(:webhook_subscription_id) { subscription.id }
 
   get 'web_api/v1/webhook_subscriptions/:webhook_subscription_id/webhook_deliveries' do
@@ -64,11 +64,8 @@ resource 'Webhook Deliveries' do
     end
 
     context 'as a regular user' do
-      before_all do
-        @user = create(:user)
-      end
-
       before do
+        @user = create(:user)
         header_token_for(@user)
         create(:webhook_delivery, subscription: subscription, activity: create(:idea_created_activity))
       end
@@ -159,7 +156,7 @@ resource 'Webhook Deliveries' do
 
   context 'cross-subscription isolation' do
     get 'web_api/v1/webhook_subscriptions/:webhook_subscription_id/webhook_deliveries' do
-      let_it_be(:other_subscription, reload: true) { create(:webhook_subscription) }
+      let(:other_subscription) { create(:webhook_subscription) }
       let(:activity) { create(:idea_created_activity) }
 
       before do

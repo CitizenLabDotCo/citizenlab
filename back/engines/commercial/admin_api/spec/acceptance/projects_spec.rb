@@ -231,9 +231,9 @@ resource 'Project', admin_api: true do
       parameter :user_id, 'The id of the user that triggered the import', required: true
     end
 
-    let_it_be(:tenant, reload: true) { create(:tenant) }
-    let_it_be(:folder, reload: true) { tenant.switch { create(:project_folder) } }
-    let_it_be(:user, reload: true) { tenant.switch { create(:admin) } }
+    let(:tenant) { create(:tenant) }
+    let(:folder) { tenant.switch { create(:project_folder) } }
+    let(:user) { tenant.switch { create(:admin) } }
     let(:template) do
       create(:tenant).switch do
         project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0) # no images nor files because URL's will not be available

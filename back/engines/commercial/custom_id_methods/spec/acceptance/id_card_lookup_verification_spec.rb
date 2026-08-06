@@ -4,11 +4,8 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Verifications' do
-  before_all do
-    @user = create(:user)
-  end
-
   before do
+    @user = create(:user)
     header_token_for @user
     header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
@@ -68,11 +65,8 @@ resource 'Verifications' do
     end
 
     describe do
-      before_all do
-        create(:user)
-      end
-
       before do
+        other_user = create(:user)
         @card_id = '123.46234-78B'
         create(:id_id_card_lookup_id_card, card_id: @card_id)
         Verification::VerificationService.new.verify_sync(

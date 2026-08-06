@@ -123,12 +123,9 @@ resource 'Analytics', use_transactional_fixtures: false do
     end
 
     context 'when moderator' do
-      before_all do
+      before do
         @project = create(:project)
         @moderator = create(:project_moderator, projects: [@project])
-      end
-
-      before do
         header_token_for @moderator
       end
 

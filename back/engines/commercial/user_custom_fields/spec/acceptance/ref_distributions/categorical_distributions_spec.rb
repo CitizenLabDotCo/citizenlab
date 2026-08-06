@@ -18,7 +18,7 @@ resource 'Categorical reference distributions' do
     DESC
 
     let(:custom_field_id) { custom_field.id }
-    let_it_be(:custom_field, reload: true) do
+    let(:custom_field) do
       create(:custom_field_select, resource_type: 'User').tap do |custom_field|
         create_list(:custom_field_option, 2, custom_field: custom_field)
       end
@@ -56,7 +56,7 @@ resource 'Categorical reference distributions' do
       end
 
       context 'when the custom field already has a distribution' do
-        let_it_be(:previous_distribution, reload: true) { create(:categorical_distribution, custom_field: custom_field) }
+        let!(:previous_distribution) { create(:categorical_distribution, custom_field: custom_field) }
 
         example_request 'replaces the existing distribution' do
           expect(status).to eq(201)

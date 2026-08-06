@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Webhooks::EnqueueService do
-  let_it_be(:user, reload: true) { create(:user) }
-  let_it_be(:project, reload: true) { create(:project) }
-  let_it_be(:idea, reload: true) { create(:idea, author: user, project: project) }
+  let(:user) { create(:user) }
+  let(:project) { create(:project) }
+  let(:idea) { create(:idea, author: user, project: project) }
 
   before do
     allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
@@ -48,8 +48,8 @@ RSpec.describe Webhooks::EnqueueService do
     end
 
     context 'with multiple matching subscriptions' do
-      let_it_be(:sub1, reload: true) { create(:webhook_subscription, events: ['idea.created']) }
-      let_it_be(:sub2, reload: true) { create(:webhook_subscription, events: ['idea.created', 'idea.published']) }
+      let!(:sub1) { create(:webhook_subscription, events: ['idea.created']) }
+      let!(:sub2) { create(:webhook_subscription, events: ['idea.created', 'idea.published']) }
       let(:activity) { create(:idea_created_activity, item: idea, user: user) }
 
       it 'enqueues jobs for each subscription' do
@@ -65,10 +65,10 @@ RSpec.describe Webhooks::EnqueueService do
     end
 
     context 'with project filtering' do
-      let_it_be(:other_project, reload: true) { create(:project) }
-      let_it_be(:project_sub, reload: true) { create(:webhook_subscription, events: ['idea.created'], project: project) }
-      let_it_be(:other_project_sub, reload: true) { create(:webhook_subscription, events: ['idea.created'], project: other_project) }
-      let_it_be(:global_sub, reload: true) { create(:webhook_subscription, events: ['idea.created'], project: nil) }
+      let(:other_project) { create(:project) }
+      let!(:project_sub) { create(:webhook_subscription, events: ['idea.created'], project: project) }
+      let!(:other_project_sub) { create(:webhook_subscription, events: ['idea.created'], project: other_project) }
+      let!(:global_sub) { create(:webhook_subscription, events: ['idea.created'], project: nil) }
 
       it 'delivers to subscription matching project' do
         activity = create(:idea_created_activity, item: idea, project_id: project.id)
@@ -90,8 +90,8 @@ RSpec.describe Webhooks::EnqueueService do
     end
 
     context 'with disabled subscriptions' do
-      let_it_be(:enabled_sub, reload: true) { create(:webhook_subscription, events: ['idea.created'], enabled: true) }
-      let_it_be(:disabled_sub, reload: true) { create(:webhook_subscription, events: ['idea.created'], enabled: false) }
+      let!(:enabled_sub) { create(:webhook_subscription, events: ['idea.created'], enabled: true) }
+      let!(:disabled_sub) { create(:webhook_subscription, events: ['idea.created'], enabled: false) }
       let(:activity) { create(:idea_created_activity, item: idea, user: user) }
 
       it 'only creates deliveries for enabled subscriptions' do

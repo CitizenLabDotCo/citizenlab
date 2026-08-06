@@ -4,11 +4,8 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Phases' do
-  before_all do
-    PublicApi::ApiClient.create
-  end
-
   before do
+    api_token = PublicApi::ApiClient.create
     token = AuthToken::AuthToken.new(payload: api_token.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
@@ -17,7 +14,7 @@ resource 'Phases' do
 
   route '/api/v1/projects/:project_id/phases', 'Phases: Listing the phases of a project' do
     let!(:project) { create(:project_with_phases) }
-    let_it_be(:other_project, reload: true) { create(:project_with_phases) }
+    let!(:other_project) { create(:project_with_phases) }
     let(:project_id) { project.id }
 
     get 'Retrieve a list of project phases' do

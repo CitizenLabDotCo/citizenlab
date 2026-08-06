@@ -43,7 +43,7 @@ RSpec.describe Analysis::SummarizationMethod do
   end
 
   describe 'OnePassLLM summarization' do
-    let_it_be(:analysis, reload: true) do
+    let(:analysis) do
       create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
@@ -51,9 +51,9 @@ RSpec.describe Analysis::SummarizationMethod do
         key: 'title_multiloc'
       ))
     end
-    let_it_be(:summary, reload: true) { create(:summary, summary: nil, summarization_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
-    let_it_be(:summarization_task, reload: true) { create(:summarization_task, analysis: analysis, state: 'queued', summary: summary) }
-    let_it_be(:inputs, reload: true) do
+    let(:summary) { create(:summary, summary: nil, summarization_method: 'one_pass_llm', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
+    let(:summarization_task) { create(:summarization_task, analysis: analysis, state: 'queued', summary: summary) }
+    let(:inputs) do
       with_options project: analysis.project do
         [
           create(:idea, comments_count: 0),

@@ -8,11 +8,11 @@ RSpec.describe Webhooks::CleanupDeliveriesJob do
       allow(Resolv).to receive(:getaddresses).with(a_string_matching(/webhook.example.com.*/)).and_return(['93.184.216.34'])
     end
 
-    let_it_be(:subscription, reload: true) { create(:webhook_subscription) }
-    let_it_be(:activity, reload: true) { create(:idea_created_activity) }
+    let(:subscription) { create(:webhook_subscription) }
+    let(:activity) { create(:idea_created_activity) }
 
     context 'with pending deliveries' do
-      let_it_be(:old_pending, reload: true) do
+      let!(:old_pending) do
         create(:webhook_delivery,
           subscription: subscription,
           activity: activity,

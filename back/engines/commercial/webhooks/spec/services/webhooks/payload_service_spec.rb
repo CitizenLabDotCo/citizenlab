@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Webhooks::PayloadService do
-  let_it_be(:user, reload: true) { create(:user) }
-  let_it_be(:project, reload: true) { create(:project) }
-  let_it_be(:idea, reload: true) { create(:idea, author: user, project: project) }
-  let_it_be(:activity, reload: true) do
+  let(:user) { create(:user) }
+  let(:project) { create(:project) }
+  let(:idea) { create(:idea, author: user, project: project) }
+  let(:activity) do
     create(:idea_created_activity,
       item: idea,
       user: user,

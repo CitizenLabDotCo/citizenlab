@@ -4,6 +4,12 @@ require 'rails_helper'
 
 describe SmartGroups::RulesService do
   let(:service) { described_class.new }
+  let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
+
+  let(:cf1) { create(:custom_field) }
+  let(:cf2) { create(:custom_field) }
+  let(:cf3) { create(:custom_field_select) }
+  let(:options) { create_list(:custom_field_option, 3, custom_field: cf3) }
   let!(:users) do
     users = build_list(:admin, 4)
     users[0].custom_field_values[cf1.key] = 'one'
@@ -24,6 +30,7 @@ describe SmartGroups::RulesService do
 
     users.each(&:save)
   end
+
   let(:rules) do
     [
       { 'ruleType' => 'custom_field_text', 'customFieldId' => cf1.id, 'predicate' => 'is', 'value' => 'three' },
@@ -32,13 +39,6 @@ describe SmartGroups::RulesService do
       { 'ruleType' => 'role', 'predicate' => 'is_admin' }
     ]
   end
-  let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
-
-  let(:cf1) { create(:custom_field) }
-
-  let_it_be(:cf2, reload: true) { create(:custom_field) }
-  let_it_be(:cf3, reload: true) { create(:custom_field_select) }
-  let_it_be(:options, reload: true) { create_list(:custom_field_option, 3, custom_field: cf3) }
 
   describe 'generate_rules_json_schema' do
     let!(:cf1) { create(:custom_field) }
@@ -83,8 +83,8 @@ describe SmartGroups::RulesService do
     end
 
     context 'voting' do
-      let_it_be(:project1, reload: true) { create(:single_voting_phase, :ongoing).project }
-      let_it_be(:project2, reload: true) { create(:single_voting_phase, :ongoing).project }
+      let(:project1) { create(:single_voting_phase, :ongoing).project }
+      let(:project2) { create(:single_voting_phase, :ongoing).project }
 
       let(:rules) do
         [
@@ -113,8 +113,7 @@ describe SmartGroups::RulesService do
     let!(:group1) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'is', value: 'me@test.com' }]) }
     let!(:group2) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'contains', value: 'me' }]) }
     let!(:group3) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'is', value: 'you@test.org' }]) }
-
-    let_it_be(:user, reload: true) { create(:user, email: 'me@test.com') }
+    let!(:user) { create(:user, email: 'me@test.com') }
 
     it 'returns only the rules groups the user is part of' do
       groups = service.groups_for_user(user)

@@ -65,14 +65,13 @@ context 'keycloak verification (Rheinbahn)' do
     }
   end
 
-  before_all do
-    @user = create(:user, first_name: 'EXISTING', last_name: 'USER')
-  end
-
   before do
+    @user = create(:user, first_name: 'EXISTING', last_name: 'USER')
     @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
+
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:keycloak] = OmniAuth::AuthHash.new(auth_hash)
+
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['id_config'] = {
@@ -147,7 +146,7 @@ context 'keycloak verification (Rheinbahn)' do
       follow_redirect!
     end
 
-    let_it_be(:sso_user, reload: true) do
+    let!(:sso_user) do
       User.order(created_at: :asc).last.tap do |user|
         expect(user).to have_attributes({ email: 'test@govocal.com' })
         expect_user_to_be_identified_not_verified(user)

@@ -80,11 +80,8 @@ resource 'Verifications' do
     end
 
     describe do
-      before_all do
-        create(:user)
-      end
-
       before do
+        other_user = create(:user)
         Verification::VerificationService.new.verify_sync(
           user: other_user,
           method_name: 'bogus',

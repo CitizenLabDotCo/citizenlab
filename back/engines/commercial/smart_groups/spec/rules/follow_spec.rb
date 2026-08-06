@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::Follow do
-  let_it_be(:valid_json_rule, reload: true) do
+  let(:valid_json_rule) do
     {
       'ruleType' => 'follow',
       'predicate' => 'is_one_of_projects',
@@ -165,42 +165,42 @@ describe SmartGroups::Rules::Follow do
   end
 
   describe 'description_multiloc' do
-    let_it_be(:project, reload: true) do
+    let(:project) do
       create(:project, title_multiloc: {
         'en' => 'My project',
         'fr-FR' => 'Mon projet',
         'nl-NL' => 'Mijn project'
       })
     end
-    let_it_be(:folder, reload: true) do
+    let(:folder) do
       create(:project_folder, title_multiloc: {
         'en' => 'My folder',
         'fr-FR' => 'Mon dossier',
         'nl-NL' => 'Mijn folder'
       })
     end
-    let_it_be(:idea1, reload: true) do
+    let(:idea1) do
       create(:idea, title_multiloc: {
         'en' => 'My idea',
         'fr-FR' => 'Mon idée',
         'nl-NL' => 'Mijn idee'
       })
     end
-    let_it_be(:idea2, reload: true) do
+    let(:idea2) do
       create(:idea, title_multiloc: {
         'en' => 'Their idea',
         'fr-FR' => 'Leurs idée',
         'nl-NL' => 'Hun idee'
       })
     end
-    let_it_be(:topic, reload: true) do
+    let(:topic) do
       create(:topic, title_multiloc: {
         'en' => 'My topic',
         'fr-FR' => 'Mon sujet',
         'nl-NL' => 'Mijn onderwerp'
       })
     end
-    let_it_be(:area, reload: true) do
+    let(:area) do
       create(:area, title_multiloc: {
         'en' => 'My area',
         'fr-FR' => 'Ma zone',

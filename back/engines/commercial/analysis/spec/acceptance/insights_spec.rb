@@ -12,10 +12,10 @@ resource 'Insights' do
   end
 
   get 'web_api/v1/analyses/:analysis_id/insights' do
-    let_it_be(:analysis, reload: true) { create(:analysis) }
+    let(:analysis) { create(:analysis) }
     let(:analysis_id) { analysis.id }
     let!(:summary) { create(:summary, insight_attributes: { analysis: analysis }) }
-    let_it_be(:question, reload: true) { create(:analysis_question, insight_attributes: { analysis: analysis }) }
+    let!(:question) { create(:analysis_question, insight_attributes: { analysis: analysis }) }
     let!(:other_summary) { create(:summary) }
 
     example_request 'List all insights of an analysis' do

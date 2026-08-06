@@ -19,8 +19,7 @@ RSpec.describe Analytics::MatomoDataImporter do
     let(:max_nb_batches) { 2 }
     let(:batch_size) { 3 }
     let(:options) { { max_nb_batches: max_nb_batches, batch_size: batch_size } }
-
-    let_it_be(:dimension_date, reload: true) { create(:dimension_date, date: start_time.to_date) }
+    let(:dimension_date) { create(:dimension_date, date: start_time.to_date) }
 
     around do |example|
       cassette_library_dir = Analytics::Engine.root / 'spec' / 'fixtures' / 'vcr_cassettes'
