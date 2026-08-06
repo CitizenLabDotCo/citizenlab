@@ -20,6 +20,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 import { useIntl } from 'utils/cl-intl';
+import { isPrerender } from 'utils/prerender';
 
 import { configureMapView } from './config';
 import { InitialData, DefaultBasemapType } from './types';
@@ -414,6 +415,10 @@ const EsriMap = ({
 const EsriMapWrapper = (props: Omit<EsriMapProps, 'globalMapSettings'>) => {
   const { data: appConfig } = useAppConfiguration();
   const globalMapSettings = appConfig?.data.attributes.settings.maps;
+
+  // Catch-all: MapView needs WebGL2, which the prerenderer lacks. Consumers
+  // that can skip loading Esri entirely gate above their own lazy boundary.
+  if (isPrerender()) return null;
 
   return (
     <>

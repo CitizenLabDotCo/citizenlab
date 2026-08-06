@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -9,11 +9,14 @@ import { IdeaSortMethod } from 'api/phases/types';
 
 import StickyNotesPile from 'containers/IdeasFeedPage/StickyNotes/StickyNotesPile';
 
-import IdeasMap from 'components/IdeasMap';
+import { isPrerender } from 'utils/prerender';
 
 import { InputFiltersProps } from '../../IdeasWithFiltersSidebar/InputFilters';
 
 import IdeasList from './IdeasList';
+
+// Lazy so the ArcGIS bundle is only fetched when the map view is selected.
+const IdeasMap = React.lazy(() => import('components/IdeasMap'));
 
 interface Props {
   view: 'card' | 'map' | 'feed';
@@ -81,15 +84,17 @@ const IdeasView = ({
           hasFilterSidebar={hasFilterSidebar}
         />
       )}
-      {view === 'map' && projectId && (
+      {view === 'map' && projectId && !isPrerender() && (
         <Box id={'view-panel-2'}>
-          <IdeasMap
-            projectId={projectId}
-            phaseId={phaseId}
-            mapConfig={mapConfig}
-            ideaMarkers={ideaMarkers}
-            inputFiltersProps={inputFiltersProps}
-          />
+          <Suspense fallback={<Spinner />}>
+            <IdeasMap
+              projectId={projectId}
+              phaseId={phaseId}
+              mapConfig={mapConfig}
+              ideaMarkers={ideaMarkers}
+              inputFiltersProps={inputFiltersProps}
+            />
+          </Suspense>
         </Box>
       )}
       {view === 'feed' && phaseId && projectSlug && (
