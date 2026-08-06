@@ -1158,7 +1158,7 @@ function apiCreateFolder({
   spaceId,
 }: {
   title: string;
-  descriptionPreview: string;
+  descriptionPreview?: string;
   publicationStatus?: 'draft' | 'published' | 'archived';
   spaceId?: string;
 }) {
