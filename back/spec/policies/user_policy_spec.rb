@@ -242,6 +242,8 @@ describe UserPolicy do
     let(:current_user) { nil }
     let(:subject_user) { build(:user) }
 
+    before { SettingsService.new.activate_feature! 'sms_login' }
+
     context 'when the sms and password_login features are enabled' do
       include_context 'with sms feature enabled'
 
@@ -278,6 +280,25 @@ describe UserPolicy do
 
       it { is_expected.to permit(:check_phone) }
       it { is_expected.not_to permit(:create_phone) }
+    end
+
+    context 'when the sms_login feature is disabled' do
+      include_context 'with sms feature enabled'
+
+      before do
+        SettingsService.new.activate_feature! 'password_login'
+        SettingsService.new.deactivate_feature! 'sms_login'
+      end
+
+      it { is_expected.not_to permit(:check_phone) }
+      it { is_expected.not_to permit(:create_phone) }
+
+      context 'with an authenticated user' do
+        let(:current_user) { create(:admin) }
+
+        it { is_expected.to permit(:check_phone) }
+        it { is_expected.to permit(:create_phone) }
+      end
     end
   end
 end

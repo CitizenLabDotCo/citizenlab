@@ -666,6 +666,8 @@ describe 'Rack::Attack' do
     context 'when the sms feature is enabled' do
       include_context 'with sms feature enabled'
 
+      before { SettingsService.new.activate_feature!('sms_login') }
+
       # A different valid number for each request, to avoid testing the limit by phone number
       def check_phone_params(index)
         %({ "user": { "phone": "+141555526#{format('%02d', index)}" } })

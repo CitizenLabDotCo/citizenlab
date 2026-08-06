@@ -317,7 +317,10 @@ resource 'Users' do
       context 'when the sms and password_login features are turned on' do
         include_context 'with sms feature enabled'
 
-        before { SettingsService.new.activate_feature! 'password_login' }
+        before do
+          SettingsService.new.activate_feature! 'password_login'
+          SettingsService.new.activate_feature! 'sms_login'
+        end
 
         context 'when a user does not exist' do
           let(:phone) { '+1 415 555 2671' }
@@ -597,6 +600,7 @@ resource 'Users' do
 
         before do
           SettingsService.new.activate_feature! 'password_login'
+          SettingsService.new.activate_feature! 'sms_login'
           allow(RequestPhoneConfirmationCodeJob).to receive(:perform_now)
         end
 
