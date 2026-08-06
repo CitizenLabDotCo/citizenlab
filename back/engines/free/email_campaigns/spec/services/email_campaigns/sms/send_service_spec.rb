@@ -152,6 +152,45 @@ RSpec.describe EmailCampaigns::Sms::SendService do
       expect(delivery.reload).to have_attributes(status: 'delivered', error_message: nil)
     end
 
+    context 'when the recipient opted out at the provider' do
+      let(:user) { create(:user, :with_confirmed_phone) }
+      let(:delivery) { EmailCampaigns::Sms::Delivery.create!(body: 'hi', status: 'pending', user: user) }
+
+      before do
+        allow(provider).to receive(:send).and_raise(EmailCampaigns::Sms::ProviderError::RecipientOptedOut, 'unsubscribed')
+      end
+
+      it 'withdraws the manual campaigns consent and marks the delivery failed' do
+        create(:consent, :sms_manual, user: user, consented: true)
+
+        expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }
+          .to raise_error(EmailCampaigns::Sms::ProviderError::RecipientOptedOut)
+
+        consent = EmailCampaigns::Consent.find_by(user: user, campaign_type: EmailCampaigns::Campaigns::SmsManual.name)
+        expect(consent.consented).to be false
+        expect(delivery.reload.status).to eq('failed')
+      end
+
+      it 'records a withdrawn consent for a recipient that never had one' do
+        expect { described_class.new.deliver(delivery, to: phone, use_case: use_case) }
+          .to raise_error(EmailCampaigns::Sms::ProviderError::RecipientOptedOut)
+
+        consent = EmailCampaigns::Consent.find_by(user: user, campaign_type: EmailCampaigns::Campaigns::SmsManual.name)
+        expect(consent.consented).to be false
+      end
+
+      it 'leaves the manual campaigns consent alone when the opt-out is on another use case' do
+        create(:consent, :sms_manual, user: user, consented: true)
+
+        expect do
+          described_class.new.deliver(delivery, to: phone, use_case: EmailCampaigns::Sms::UseCase::CONFIRMATION_CODES)
+        end.to raise_error(EmailCampaigns::Sms::ProviderError::RecipientOptedOut)
+
+        consent = EmailCampaigns::Consent.find_by(user: user, campaign_type: EmailCampaigns::Campaigns::SmsManual.name)
+        expect(consent.consented).to be true
+      end
+    end
+
     context 'with an allowed-country list configured' do
       # +14155552671 is a US number.
       it 'sends when the destination country is on the allow-list' do
