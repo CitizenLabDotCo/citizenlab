@@ -118,7 +118,7 @@ const ProjectFolderShowPageWrapper = () => {
   return (
     <>
       <ProjectFolderShowPageMeta projectFolder={projectFolder.data} />
-      <ProjectFolderShowPage projectFolder={projectFolder.data} />;
+      <ProjectFolderShowPage projectFolder={projectFolder.data} />
     </>
   );
 };
