@@ -509,7 +509,7 @@ resource 'Permissions' do
           @permission.update!(
             permitted_by: 'users',
             require_verification: true,
-            require_confirmed_email: false
+            email_and_phone_requirements: 'neither'
           )
         end
 
