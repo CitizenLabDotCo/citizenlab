@@ -56,6 +56,31 @@ RSpec.describe EmailCampaigns::IdeaMarkedAsSpamMailer do
       expect(mail_body(mail)).to include(idea_url)
     end
 
+    context 'when the free-text reason contains markup' do
+      let(:injected) { %(because'"><img src='https://example.com/beacon?x='>) }
+      let(:command) do
+        {
+          recipient: recipient,
+          event_payload: {
+            initiating_user_first_name: initiating_user.first_name,
+            initiating_user_last_name: initiating_user.last_name,
+            idea_created_at: idea.created_at.iso8601,
+            idea_title_multiloc: idea.title_multiloc,
+            idea_author_name: idea.author_name,
+            idea_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
+            spam_report_reason_code: 'other',
+            spam_report_other_reason: injected
+          }
+        }
+      end
+      let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      it 'escapes it instead of rendering it as HTML' do
+        expect(mail_body(mail)).not_to include(injected)
+        expect(mail_body(mail)).to include('&lt;img src=')
+      end
+    end
+
     context 'with custom text' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
