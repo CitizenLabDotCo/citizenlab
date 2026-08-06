@@ -34,6 +34,9 @@ module ProjectFolders
 
     belongs_to :space, optional: true
 
+    # Inline images of RichTextMultiloc bridge widgets in the folder's layouts
+    has_many :text_images, as: :imageable, dependent: :destroy
+
     has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
     has_one :nav_bar_item, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'
     accepts_nested_attributes_for :admin_publication, update_only: true
