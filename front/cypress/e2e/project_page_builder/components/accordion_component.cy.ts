@@ -12,7 +12,6 @@ describe('Project description builder Accordion component', () => {
     cy.getAdminAuthUser().then((user) => {
       const projectTitle = randomString();
       const projectDescriptionPreview = randomString();
-      const projectDescription = 'Original project description.';
       const userId = user.body.data.id;
 
       cy.apiCreateProject({
