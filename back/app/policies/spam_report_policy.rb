@@ -14,15 +14,21 @@ class SpamReportPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && (record.user_id == user.id || user&.admin?)
+    return false unless active?
+    return false unless record.user_id == user.id || user.admin?
+    # The reportable is looked up from the URL, so it may not exist. Bail out
+    # before Pundit is asked for a policy on nil.
+    return false if record.spam_reportable.blank?
+
+    policy_for(record.spam_reportable).show?
   end
 
   def show?
-    user&.active? && (record.user_id == user.id || user&.admin?)
+    active? && (record.user_id == user.id || user&.admin?)
   end
 
   def update?
-    user&.active? && (record.user_id == user.id || user&.admin?)
+    active? && (record.user_id == user.id || user&.admin?)
   end
 
   def destroy?
