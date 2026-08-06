@@ -13,7 +13,10 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { SummaryChip } from './logic';
+import messages from './messages';
 
 /** A muted, all-caps section label with an icon and optional helper tooltip. */
 export const SectionHeader = ({
@@ -49,6 +52,7 @@ const CHIP_TONES: Record<SummaryChip['tone'], { bg: string; fg: string }> = {
 
 /** A compact pill used in the collapsed summary row. */
 export const Chip = ({ chip }: { chip: SummaryChip }) => {
+  const { formatMessage } = useIntl();
   const tone = CHIP_TONES[chip.tone];
   return (
     <Box
@@ -61,6 +65,25 @@ export const Chip = ({ chip }: { chip: SummaryChip }) => {
       bgColor={tone.bg}
     >
       <Icon name={chip.icon} width="12px" height="12px" fill={tone.fg} />
+      {chip.altIcon && (
+        <>
+          <Text
+            as="span"
+            m="0"
+            fontWeight="bold"
+            style={{
+              color: tone.fg,
+              lineHeight: 1,
+              fontSize: '9px',
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {formatMessage(messages.or)}
+          </Text>
+          <Icon name={chip.altIcon} width="12px" height="12px" fill={tone.fg} />
+        </>
+      )}
       <Text
         as="span"
         m="0"

@@ -24,7 +24,7 @@ FactoryBot.define do
     # represented as a 'users' permission that only requires a confirmed email.
     trait :by_everyone_confirmed_email do
       permitted_by { 'users' }
-      require_confirmed_email { true }
+      email_and_phone_requirements { 'email_only' }
       require_name { false }
       require_password { false }
     end
@@ -34,7 +34,7 @@ FactoryBot.define do
     trait :by_verified do
       permitted_by { 'users' }
       require_verification { true }
-      require_confirmed_email { false }
+      email_and_phone_requirements { 'neither' }
       require_name { false }
       require_password { false }
     end

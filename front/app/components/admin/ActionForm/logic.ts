@@ -7,6 +7,7 @@ import { FormatMessage } from 'typings';
 
 import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import {
+  EmailAndPhoneRequirements,
   IPhasePermissionData,
   UserDataCollection,
 } from 'api/phase_permissions/types';
@@ -14,28 +15,59 @@ import {
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import { AUTH_METHOD_LABELS } from './AccessSections/constants';
+import { CHANNEL_EXPIRY_FIELDS, CHANNEL_ICONS } from './constants';
 import messages from './messages';
-import { AuthMethodKey, Changes, METHOD_FIELDS } from './types';
+import { ContactChannel, Changes } from './types';
 
-/** The enabled flag + expiry (in days, `null` = "once, ever") for a method. */
-export const getMethod = (
+/** The enabled flag + expiry (in days, `null` = "once, ever") for verification. */
+export const getVerification = (
+  permission: IPhasePermissionData
+): { enabled: boolean; expiry: number | null } => ({
+  enabled: permission.attributes.require_verification,
+  expiry: permission.attributes.verification_expiry,
+});
+
+/** The change to emit when verification's toggle / recency is edited. */
+export const verificationChange = ({
+  enabled,
+  expiry,
+}: {
+  enabled: boolean;
+  expiry: number | null;
+}): Changes => ({
+  require_verification: enabled,
+  verification_expiry: expiry,
+});
+
+/** Which contact details participants must confirm. */
+export const getContactRequirement = (permission: IPhasePermissionData) =>
+  permission.attributes.email_and_phone_requirements;
+
+/**
+ * How recently a channel must have been confirmed (in days, `0` = every 30
+ * minutes, `null` = confirm once, ever).
+ */
+export const getChannelExpiry = (
   permission: IPhasePermissionData,
-  key: AuthMethodKey
-): { enabled: boolean; expiry: number | null } => {
-  const fields = METHOD_FIELDS[key];
-  return {
-    enabled: permission.attributes[fields.enabled],
-    expiry: permission.attributes[fields.expiry],
-  };
-};
+  channel: ContactChannel
+): number | null => permission.attributes[CHANNEL_EXPIRY_FIELDS[channel]];
 
-/** The change to emit when a method's toggle / recency is edited. */
-export const methodChange = (
-  key: AuthMethodKey,
-  { enabled, expiry }: { enabled: boolean; expiry: number | null }
-): Changes => {
-  const fields = METHOD_FIELDS[key];
-  return { [fields.enabled]: enabled, [fields.expiry]: expiry } as Changes;
+/** The change to emit when a channel's recency is edited. */
+export const channelExpiryChange = (
+  channel: ContactChannel,
+  expiry: number | null
+): Changes => ({ [CHANNEL_EXPIRY_FIELDS[channel]]: expiry });
+
+// Which channels a requirement puts in play, and so which ones can carry their
+// own confirmation expiry.
+export const CHANNELS_IN_PLAY: Record<
+  EmailAndPhoneRequirements,
+  ContactChannel[]
+> = {
+  neither: [],
+  email_only: ['email'],
+  both_email_and_phone: ['email', 'phone'],
+  either_email_or_phone: ['email', 'phone'],
 };
 
 /** Group ids the action is limited to (OR semantics). */
@@ -46,18 +78,26 @@ export const getGroupIds = (permission: IPhasePermissionData): string[] =>
 export const requiresAccount = (permission: IPhasePermissionData): boolean =>
   permission.attributes.permitted_by === 'users';
 
+type ChipIcon =
+  | 'user-circle'
+  | 'email'
+  | 'tablet'
+  | 'comment'
+  | 'shield-checkered'
+  | 'group'
+  | 'lock'
+  | 'user-data';
+
 export interface SummaryChip {
   key: string;
   label: string;
-  icon:
-    | 'user-circle'
-    | 'email'
-    | 'tablet'
-    | 'comment'
-    | 'shield-checkered'
-    | 'group'
-    | 'lock'
-    | 'user-data';
+  icon: ChipIcon;
+  /**
+   * A second glyph, joined to the first by "or". Only the either/or contact
+   * requirement uses it, so the chip reads like the IconCluster on the
+   * contact-details control instead of showing just one of the two channels.
+   */
+  altIcon?: ChipIcon;
   tone: 'access' | 'data' | 'open';
 }
 
@@ -109,21 +149,37 @@ export const buildSummary = (
   }
 
   const chips: SummaryChip[] = [];
-  const methodIcon: Record<AuthMethodKey, SummaryChip['icon']> = {
-    email: 'email',
-    phone: 'tablet',
-    verification: 'shield-checkered',
-  };
-  (Object.keys(METHOD_FIELDS) as AuthMethodKey[]).forEach((key) => {
-    if (getMethod(permission, key).enabled) {
+
+  // 'either_email_or_phone' is one requirement, not two, so it gets one chip -
+  // otherwise it would read exactly like requiring both.
+  const requirement = getContactRequirement(permission);
+  if (requirement === 'either_email_or_phone') {
+    chips.push({
+      key: 'email_or_phone',
+      label: formatMessage(messages.confirmedEmailOrPhoneNumber),
+      icon: CHANNEL_ICONS.email,
+      altIcon: CHANNEL_ICONS.phone,
+      tone: 'access',
+    });
+  } else {
+    CHANNELS_IN_PLAY[requirement].forEach((channel) => {
       chips.push({
-        key,
-        label: formatMessage(AUTH_METHOD_LABELS[key]),
-        icon: methodIcon[key],
+        key: channel,
+        label: formatMessage(AUTH_METHOD_LABELS[channel]),
+        icon: CHANNEL_ICONS[channel],
         tone: 'access',
       });
-    }
-  });
+    });
+  }
+
+  if (getVerification(permission).enabled) {
+    chips.push({
+      key: 'verification',
+      label: formatMessage(AUTH_METHOD_LABELS.verification),
+      icon: 'shield-checkered',
+      tone: 'access',
+    });
+  }
 
   const groupIds = getGroupIds(permission);
   if (groupIds.length > 0) {

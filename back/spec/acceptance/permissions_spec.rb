@@ -142,12 +142,11 @@ resource 'Permissions' do
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
-        parameter :require_confirmed_email, 'Whether a confirmed email is required to take this action', required: false
+        parameter :email_and_phone_requirements, "Which contact details must be confirmed to take this action, one of #{Permission::EMAIL_AND_PHONE_REQUIREMENTS.join(',')}.", required: false
         parameter :confirmed_email_expiry, 'number of days before email reconfirmation required - nil means never reconfirm', required: false
         parameter :require_name, 'Whether a first and last name are required to take this action', required: false
         parameter :require_password, 'Whether a password is required to take this action', required: false
         parameter :require_verification, 'Whether identity verification is required to take this action', required: false
-        parameter :require_confirmed_phone_number, 'Whether a confirmed phone number is required to take this action', required: false
         parameter :confirmed_phone_number_expiry, 'number of days before phone reconfirmation required - nil means never reconfirm', required: false
         parameter :access_denied_explanation_multiloc, 'Multiloc string for explaining why access is denied', required: false
       end
@@ -173,16 +172,16 @@ resource 'Permissions' do
         end
       end
 
-      context 'require_confirmed_email only' do
+      context 'email_only' do
         let(:permitted_by) { 'users' }
-        let(:require_confirmed_email) { true }
+        let(:email_and_phone_requirements) { 'email_only' }
         let(:require_name) { false }
         let(:require_password) { false }
 
         example_request 'Update group IDs for a users permission that only requires a confirmed email' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
-          expect(response_data.dig(:attributes, :require_confirmed_email)).to be true
+          expect(response_data.dig(:attributes, :email_and_phone_requirements)).to eq 'email_only'
           expect(response_data.dig(:attributes, :require_name)).to be false
           expect(response_data.dig(:attributes, :require_password)).to be false
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
@@ -190,20 +189,42 @@ resource 'Permissions' do
         end
       end
 
-      context 'require_confirmed_phone_number' do
+      context 'both_email_and_phone' do
         before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
 
         let(:permitted_by) { 'users' }
-        let(:require_confirmed_phone_number) { true }
+        let(:email_and_phone_requirements) { 'both_email_and_phone' }
         let(:confirmed_phone_number_expiry) { 30 }
 
         example_request 'Update a permission to require a confirmed phone number' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
-          expect(response_data.dig(:attributes, :require_confirmed_phone_number)).to be true
+          expect(response_data.dig(:attributes, :email_and_phone_requirements)).to eq 'both_email_and_phone'
           expect(response_data.dig(:attributes, :confirmed_phone_number_expiry)).to eq confirmed_phone_number_expiry
           expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'either_email_or_phone' do
+        before { SettingsService.new.activate_feature!('sms', settings: { 'twilio_account_sid' => 'fake_sid', 'twilio_auth_token' => 'fake_token', 'twilio_messaging_service_sid' => 'fake_service_sid' }) }
+
+        let(:permitted_by) { 'users' }
+        let(:email_and_phone_requirements) { 'either_email_or_phone' }
+
+        example_request 'Update a permission to accept either a confirmed email or a confirmed phone number' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :email_and_phone_requirements)).to eq 'either_email_or_phone'
+        end
+      end
+
+      context 'either_email_or_phone without the sms feature' do
+        let(:permitted_by) { 'users' }
+        let(:email_and_phone_requirements) { 'either_email_or_phone' }
+
+        example_request 'Cannot accept a phone number when the sms feature is disabled' do
+          assert_status 422
+          expect(json_parse(response_body).dig(:errors, :email_and_phone_requirements, 0, :error)).to eq 'phone_requirement_not_allowed'
         end
       end
 
@@ -294,8 +315,7 @@ resource 'Permissions' do
               authentication: {
                 permitted_by: 'everyone',
                 missing_user_attributes: [],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {},
@@ -313,7 +333,7 @@ resource 'Permissions' do
           @user = create(:unconfirmed_user)
           header_token_for @user
           @permission = @phase.permissions.first
-          @permission.update!(permitted_by: 'users', require_confirmed_email: true, require_name: false, require_password: false)
+          @permission.update!(permitted_by: 'users', email_and_phone_requirements: 'email_only', require_name: false, require_password: false)
           create(:custom_field_birthyear, required: true)
           create(:custom_field_gender, required: false)
           create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
@@ -340,8 +360,7 @@ resource 'Permissions' do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: [],
-                email_action_required: 'confirm_email',
-                phone_action_required: nil
+                action_required_for_access: 'confirm_email'
               },
               verification: false,
               custom_fields: { birthyear: 'required', extra_field: 'required' },
@@ -352,13 +371,145 @@ resource 'Permissions' do
         end
       end
 
+      context "'users' permission requiring a confirmed email AND a confirmed phone number" do
+        include_context 'with stubbed SMS provider'
+
+        before do
+          @permission = @phase.permissions.first
+          @permission.update!(
+            permitted_by: 'users',
+            email_and_phone_requirements: 'both_email_and_phone',
+            require_name: true,
+            require_password: false
+          )
+          create(:custom_field_gender, required: true)
+
+          @user = create(:user)
+          @user.update!(
+            first_name: 'Jack',
+            last_name: 'Doe',
+            password_digest: nil,
+            custom_field_values: { 'gender' => 'male' }
+          )
+          header_token_for @user
+        end
+
+        let(:action) { @permission.action }
+
+        example_request 'If user has only confirmed email: require phone number' do
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to be false
+          expect(attributes[:disabled_reason]).to eq 'user_missing_requirements'
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq 'provide_new_phone'
+        end
+
+        example 'If user has only confirmed phone number: require email' do
+          @user.update!(
+            email: nil,
+            email_confirmed_at: nil,
+            confirmation_required: true,
+            phone: '+14155678900',
+            phone_confirmed_at: Time.now
+          )
+          do_request
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to be false
+          expect(attributes[:disabled_reason]).to eq 'user_missing_requirements'
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq 'provide_new_email'
+        end
+
+        example 'If user has both confirmed email and phone number: permitted' do
+          @user.update!(
+            phone: '+14155678900',
+            phone_confirmed_at: Time.now
+          )
+          do_request
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to be true
+          expect(attributes[:disabled_reason]).to be_nil
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to be_nil
+        end
+      end
+
+      context "'users' permission requiring a confirmed email OR a confirmed phone number" do
+        include_context 'with stubbed SMS provider'
+
+        before do
+          @permission = @phase.permissions.first
+          @permission.update!(
+            permitted_by: 'users',
+            email_and_phone_requirements: 'either_email_or_phone',
+            require_name: true,
+            require_password: false
+          )
+          create(:custom_field_gender, required: true)
+
+          @user = create(:user)
+          @user.update!(
+            first_name: 'Jack',
+            last_name: 'Doe',
+            password_digest: nil,
+            custom_field_values: { 'gender' => 'male' }
+          )
+          header_token_for @user
+        end
+
+        let(:action) { @permission.action }
+
+        example_request 'If user has only confirmed email: allow participation' do
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to be true
+          expect(attributes[:disabled_reason]).to be_nil
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to be_nil
+        end
+
+        example 'If user has only confirmed phone number: allow participation' do
+          @user.update!(
+            email: nil,
+            email_confirmed_at: nil,
+            confirmation_required: true,
+            phone: '+14155678900',
+            phone_confirmed_at: Time.now
+          )
+          do_request
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to be true
+          expect(attributes[:disabled_reason]).to be_nil
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to be_nil
+        end
+
+        example 'If user does not have either confirmed email or phone number: require one of them' do
+          @user.update!(
+            email: nil,
+            email_confirmed_at: nil,
+            confirmation_required: true
+          )
+
+          # This can only happen if user signs in with some kind of SSO method
+          # so to make the test a bit more realistic we add an identity
+          @user.identities << create(:facebook_identity, user: @user)
+
+          do_request
+          assert_status 200
+          attributes = response_data[:attributes]
+          expect(attributes[:permitted]).to be false
+          expect(attributes[:disabled_reason]).to eq 'user_not_active'
+          expect(attributes[:requirements][:authentication][:action_required_for_access]).to eq 'provide_new_email'
+        end
+      end
+
       context "'users' permission with verification enabled but email disabled" do
         before do
           @permission = @phase.permissions.first
           @permission.update!(
             permitted_by: 'users',
             require_verification: true,
-            require_confirmed_email: false
+            email_and_phone_requirements: 'neither'
           )
         end
 
@@ -437,8 +588,7 @@ resource 'Permissions' do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: %w[last_name password],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {
@@ -475,8 +625,7 @@ resource 'Permissions' do
               authentication: {
                 permitted_by: 'users',
                 missing_user_attributes: [],
-                email_action_required: nil,
-                phone_action_required: nil
+                action_required_for_access: nil
               },
               verification: false,
               custom_fields: {},

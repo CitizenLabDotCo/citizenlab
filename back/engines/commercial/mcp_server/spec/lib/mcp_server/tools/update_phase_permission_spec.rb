@@ -41,12 +41,11 @@ describe McpServer::Tools::UpdatePhasePermission do
         demographic_questions: [],
         require_name: permission.require_name,
         require_password: permission.require_password,
-        require_confirmed_email: permission.require_confirmed_email,
+        email_and_phone_requirements: permission.email_and_phone_requirements,
         confirmed_email_expiry: permission.confirmed_email_expiry,
         require_verification: permission.require_verification,
         verification_expiry: nil,
         confirmed_phone_number_expiry: permission.confirmed_phone_number_expiry,
-        require_confirmed_phone_number: permission.require_confirmed_phone_number,
         access_denied_explanation_multiloc: permission.access_denied_explanation_multiloc
       )
     end

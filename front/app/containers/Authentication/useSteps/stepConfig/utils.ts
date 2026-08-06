@@ -1,4 +1,7 @@
-import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+import {
+  ActionRequiredForAccess,
+  AuthenticationRequirements,
+} from 'api/authentication/authentication_requirements/types';
 import { requestCodeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { requestCodePhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
@@ -19,34 +22,23 @@ export const checkMissingData = async (
   { context }: AuthenticationData,
   flow: 'signup' | 'signin'
 ) => {
-  // The email/phone action encodes both the step and the request/confirm
-  // endpoint pair the user needs (provide vs confirm, own email vs new_email).
-  const emailStep = emailActionStep(requirements);
-  if (emailStep) {
-    // Re-confirmation (confirmed_email_expiry elapsed) lands the user on the
-    // confirmation step without a code having been auto-sent, so request one.
-    // The call is idempotent (onlyIfFirstTime) and authenticated (backend uses
-    // current_user), so no email is passed and reopening the flow won't
-    // duplicate. Awaited on purpose: the code only exists once this resolves, so
-    // returning earlier would show the code input for a code that hasn't been
+  const action = requirements.authentication.action_required_for_access;
+  const actionStep = action ? ACTION_STEPS[action] : null;
+
+  if (actionStep) {
+    // These actions land the user on a confirmation step without a code having
+    // been auto-sent, so request one. The call is idempotent (onlyIfFirstTime)
+    // and authenticated (backend uses current_user), so reopening the flow won't
+    // duplicate it. Awaited on purpose: the code only exists once this resolves,
+    // so returning earlier would show the code input for a code that hasn't been
     // generated yet, and a code submitted in that window is rejected as invalid.
-    // Failures are swallowed - the user falls back to the resend button.
-    if (
-      requirements.authentication.email_action_required === 'reconfirm_email'
-    ) {
+    if (action === 'reconfirm_email') {
       await requestCodeEmail({ onlyIfFirstTime: true });
     }
-    return emailStep;
-  }
-
-  const phoneStep = phoneActionStep(requirements);
-  if (phoneStep) {
-    if (
-      requirements.authentication.phone_action_required === 'reconfirm_phone'
-    ) {
+    if (action === 'reconfirm_phone' || action === 'confirm_phone') {
       await requestCodePhone({ onlyIfFirstTime: true });
     }
-    return phoneStep;
+    return actionStep;
   }
 
   // The remaining built-in fields (name/password) plus providing an email are
@@ -93,40 +85,16 @@ export const doesNotMeetGroupCriteria = (
   return requirements.group_membership;
 };
 
-// Maps email_action_required to the step that resolves it. The provide actions
-// return null here because the email input lives on the built-in step (see
-// requiredBuiltInFields); confirm_email uses the unauthenticated in-place
-// confirmation, confirm_new_email the authenticated new_email confirmation.
-const emailActionStep = (
-  requirements: AuthenticationRequirements['requirements']
-): Step | null => {
-  switch (requirements.authentication.email_action_required) {
-    case 'confirm_email':
-      return 'pre-auth:unauthenticated-confirmation';
-    case 'confirm_new_email':
-      return 'confirmation:new_email';
-    case 'reconfirm_email':
-      return 'confirmation:reconfirm-email';
-    default:
-      return null;
-  }
-};
-
-// Maps phone_action_required to its step. Both provide actions collect the
-// number on the phone step; confirm_new_phone jumps straight to confirmation.
-const phoneActionStep = (
-  requirements: AuthenticationRequirements['requirements']
-): Step | null => {
-  switch (requirements.authentication.phone_action_required) {
-    case 'provide_new_phone':
-      return 'missing-data:new_phone';
-    case 'confirm_new_phone':
-      return 'confirmation:new_phone';
-    case 'reconfirm_phone':
-      return 'confirmation:reconfirm-phone';
-    default:
-      return null;
-  }
+const ACTION_STEPS: Record<ActionRequiredForAccess, Step | null> = {
+  authenticate: 'pre-auth:start',
+  confirm_email: 'pre-auth:unauthenticated-confirmation',
+  reconfirm_email: 'confirmation:reconfirm-email',
+  provide_new_email: 'missing-data:built-in',
+  confirm_new_email: 'confirmation:new_email',
+  confirm_phone: 'confirmation:reconfirm-phone',
+  reconfirm_phone: 'confirmation:reconfirm-phone',
+  provide_new_phone: 'missing-data:new_phone',
+  confirm_new_phone: 'confirmation:new_phone',
 };
 
 export const showOnboarding = (
@@ -156,18 +124,11 @@ const requiredCustomFields = (
   return false;
 };
 
-// Whether the user should provide an email as part of the built-in step. This
-// is a "provide" action (the value gets stored in email/new_email and confirmed
-// afterwards) - the confirm actions are handled by emailActionStep instead.
 export const askEmailOnBuiltInStep = (
   requirements: AuthenticationRequirements['requirements']
-) => {
-  const { email_action_required } = requirements.authentication;
-  return (
-    email_action_required === 'provide_email' ||
-    email_action_required === 'provide_new_email'
-  );
-};
+) =>
+  requirements.authentication.action_required_for_access ===
+  'provide_new_email';
 
 const requiredBuiltInFields = (
   requirements: AuthenticationRequirements['requirements']

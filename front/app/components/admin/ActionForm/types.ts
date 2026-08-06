@@ -1,30 +1,19 @@
-// Data model for the "Participation requirements" panel.
-//
-// The panel is a *stateless*, controlled view: it receives an
-// `IPhasePermissionData` and emits granular `Changes` through `onChange`; the
-// parent owns the state and persists it. The demographic questions are not
-// passed in — they are read straight from `usePermissionsPhaseCustomFields`
-// (and mutated through its sibling hooks).
-
 import { ReactNode } from 'react';
 
 import { Multiloc } from 'typings';
 
 import {
+  EmailAndPhoneRequirements,
   IPhasePermissionData,
   PermittedBy,
   UserDataCollection,
 } from 'api/phase_permissions/types';
 
-// The set of edits the panel can emit. A superset of `ActionForm`'s `Changes`,
-// extended with the composable `require_*` / `*_expiry` fields this design edits
-// directly (the old form bundled these into the `permitted_by` enum instead).
 export type Changes = {
   permitted_by?: PermittedBy;
   group_ids?: string[];
-  require_confirmed_email?: boolean;
+  email_and_phone_requirements?: EmailAndPhoneRequirements;
   confirmed_email_expiry?: number | null;
-  require_confirmed_phone_number?: boolean;
   confirmed_phone_number_expiry?: number | null;
   require_verification?: boolean;
   verification_expiry?: number | null;
@@ -47,23 +36,11 @@ export type Props = {
   onReset: () => void;
 };
 
-// The authentication methods on offer: each one maps onto a `require_*` boolean
-// + `*_expiry` pair on the permission.
+// The ways a participant can prove who they are. Email and phone are one
+// choice on the permission (`email_and_phone_requirements`) rather than two
+// independent toggles, but they still each have a label, an icon and an expiry
+// of their own, so they stay separate keys here.
 export type AuthMethodKey = 'email' | 'phone' | 'verification';
 
-// Maps an auth method onto the permission attributes (and matching change keys)
-// that back it. Keeping this in one place lets the UI stay generic over methods.
-export const METHOD_FIELDS = {
-  email: {
-    enabled: 'require_confirmed_email',
-    expiry: 'confirmed_email_expiry',
-  },
-  phone: {
-    enabled: 'require_confirmed_phone_number',
-    expiry: 'confirmed_phone_number_expiry',
-  },
-  verification: {
-    enabled: 'require_verification',
-    expiry: 'verification_expiry',
-  },
-} as const;
+// The contact channels, which are the two halves of `email_and_phone_requirements`.
+export type ContactChannel = 'email' | 'phone';

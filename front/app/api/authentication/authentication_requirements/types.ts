@@ -36,24 +36,16 @@ export type AuthenticationContext =
 
 type UserAttribute = 'first_name' | 'last_name' | 'password';
 
-// The email step the user must still complete for this permission (or null when
+// The single step the user must still complete before they can act (or null when
 // there is nothing to do). Mirrors the backend
-// Permissions::UserRequirementsService#email_action_required.
-export type EmailAction =
-  | 'provide_email'
+// Permissions::UserRequirementsService#action_required_for_access.
+export type ActionRequiredForAccess =
+  | 'authenticate'
   | 'confirm_email'
-  // `email` was confirmed before but has aged past confirmed_email_expiry. Same
-  // step as confirm_email, but no code was auto-sent, so the frontend requests one.
   | 'reconfirm_email'
   | 'provide_new_email'
-  | 'confirm_new_email';
-
-// The phone step the user must still complete (or null). Mirrors the backend
-// #phone_action_required. `provide_phone` is reserved for a not-yet-built flow.
-export type PhoneAction =
-  | 'provide_phone'
+  | 'confirm_new_email'
   | 'confirm_phone'
-  // `phone` was confirmed before but has aged past confirmed_phone_number_expiry.
   | 'reconfirm_phone'
   | 'provide_new_phone'
   | 'confirm_new_phone';
@@ -68,8 +60,7 @@ export interface AuthenticationRequirementsResponse {
         authentication: {
           permitted_by: PermittedBy;
           missing_user_attributes: UserAttribute[];
-          email_action_required: EmailAction | null;
-          phone_action_required: PhoneAction | null;
+          action_required_for_access: ActionRequiredForAccess | null;
         };
         verification: boolean;
         custom_fields: Record<string, 'required' | 'optional'>;

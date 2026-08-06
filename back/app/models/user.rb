@@ -386,6 +386,30 @@ class User < ApplicationRecord
     public_send(association_name) || create_confirmation!(association_name)
   end
 
+  # Whether a confirmation flow still has to happen. Whether it does depends
+  # entirely on the user's own state, never on the confirmations row (which only
+  # carries the code), so these hold even before the row is created lazily by
+  # #find_or_create_confirmation.
+  def confirmation_pending?(association_name)
+    public_send(:"#{association_name}_pending?")
+  end
+
+  def email_confirmation_pending?
+    confirmation_required?
+  end
+
+  def phone_confirmation_pending?
+    phone.present? && phone_confirmed_at.nil?
+  end
+
+  def new_email_confirmation_pending?
+    new_email.present?
+  end
+
+  def new_phone_confirmation_pending?
+    new_phone.present?
+  end
+
   private
 
   # Concurrent requests race here; the savepoint lets the caller's transaction survive the losing insert.

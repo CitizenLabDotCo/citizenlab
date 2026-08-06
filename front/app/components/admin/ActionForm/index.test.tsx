@@ -74,8 +74,9 @@ const buildPermission = (
       access_denied_explanation_multiloc: {},
       everyone_tracking_enabled: false,
       user_data_collection: 'all_data',
-      require_confirmed_email: true,
+      email_and_phone_requirements: 'email_only',
       confirmed_email_expiry: null,
+      confirmed_phone_number_expiry: null,
       require_name: true,
       require_password: true,
       require_verification: false,
@@ -115,8 +116,10 @@ describe('<ActionForm />', () => {
   describe('which access section is rendered', () => {
     it('renders the password-login access section when password login is enabled', () => {
       renderForm();
-      // The email/verification method rows are unique to the password-login variant.
-      expect(screen.getByText('Confirmed email')).toBeInTheDocument();
+      // The contact requirement control is unique to the password-login variant.
+      expect(
+        screen.getByText('Email and phone requirements')
+      ).toBeInTheDocument();
       expect(
         screen.queryByText(/Participants sign in with/)
       ).not.toBeInTheDocument();
@@ -128,7 +131,9 @@ describe('<ActionForm />', () => {
       expect(
         screen.getByText('Participants sign in with ItsMe.')
       ).toBeInTheDocument();
-      expect(screen.queryByText('Confirmed email')).not.toBeInTheDocument();
+      expect(
+        screen.queryByText('Email and phone requirements')
+      ).not.toBeInTheDocument();
     });
   });
 

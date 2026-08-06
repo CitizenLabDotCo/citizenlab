@@ -10,25 +10,23 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { getMethod, methodChange, requiresAccount } from '../../logic';
-import { AuthMethodKey } from '../../types';
+import {
+  channelExpiryChange,
+  getChannelExpiry,
+  getContactRequirement,
+  getVerification,
+  requiresAccount,
+  verificationChange,
+} from '../../logic';
 import { SectionHeader } from '../../ui';
 import GroupsSection from '../GroupsSection';
 import IdMethodsModalTrigger from '../IdMethodsModal/Trigger';
 import ModeCards from '../ModeCards';
 import { AccessSectionProps } from '../shared';
 
+import EmailAndPhoneRequirementsControl from './EmailAndPhoneRequirements';
 import messages from './messages';
-import MethodRow from './MethodRow';
-
-const METHOD_KEYS: AuthMethodKey[] = ['email', 'phone', 'verification'];
-
-// Phone is hidden entirely when SMS is off (see below), so it never renders in
-// an unavailable state — only email and verification do.
-const unavailableReason = (key: AuthMethodKey) =>
-  key === 'email'
-    ? messages.unavailablePasswordLogin
-    : messages.unavailableVerification;
+import VerificationToggle from './VerificationToggle';
 
 const AccessSection = ({
   permission,
@@ -44,24 +42,18 @@ const AccessSection = ({
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const smsEnabled = useFeatureFlag({ name: 'sms' });
   const { data: verificationMethod } = useVerificationMethod();
-  const verificationMetadata =
-    verificationMethod?.data.attributes.method_metadata;
+  const verificationAvailable =
+    !!verificationMethod?.data.attributes.method_metadata;
 
-  const isAvailable: Record<AuthMethodKey, boolean> = {
-    email: passwordLoginEnabled,
-    phone: smsEnabled,
-    verification: !!verificationMetadata,
-  };
+  const contactRequirement = getContactRequirement(permission);
+  const verification = getVerification(permission);
 
-  // The phone method is hidden entirely when SMS is off, rather than shown as
-  // unavailable (email and verification keep their "unavailable" state).
-  const visibleMethodKeys = METHOD_KEYS.filter(
-    (key) => key !== 'phone' || smsEnabled
-  );
-
-  const enabledMethodCount = visibleMethodKeys.filter(
-    (key) => getMethod(permission, key).enabled
-  ).length;
+  // A permission must keep at least one form of proof: if nothing is confirmed,
+  // verification can't be switched off either. (The mirror of this rule — not
+  // being able to pick "nothing confirmed" without verification — lives in the
+  // contact requirement modal.)
+  const verificationLocked =
+    verification.enabled && contactRequirement === 'neither';
 
   return (
     <Box>
@@ -81,26 +73,33 @@ const AccessSection = ({
 
       {hasAccount && (
         <>
-          {/* Authentication methods (the primary decision — always shown) */}
+          {/* Authentication methods (the primary decision — always shown).
+              Email and phone are one choice; verification is a different kind
+              of proof, so it stays a toggle of its own. */}
           <Box>
-            {visibleMethodKeys.map((key) => {
-              const { enabled, expiry } = getMethod(permission, key);
-              // Don't let the last enabled method be turned off: a permission
-              // must always keep at least one (mirrors the backend validation).
-              const locked = enabled && enabledMethodCount === 1;
-              return (
-                <MethodRow
-                  key={key}
-                  methodKey={key}
-                  enabled={enabled}
-                  expiry={expiry}
-                  available={isAvailable[key]}
-                  unavailableReason={formatMessage(unavailableReason(key))}
-                  locked={locked}
-                  onChange={(next) => onChange(methodChange(key, next))}
-                />
-              );
-            })}
+            <EmailAndPhoneRequirementsControl
+              value={contactRequirement}
+              available={{ email: passwordLoginEnabled, phone: smsEnabled }}
+              verificationRequired={verification.enabled}
+              expiries={{
+                email: getChannelExpiry(permission, 'email'),
+                phone: getChannelExpiry(permission, 'phone'),
+              }}
+              onChange={(email_and_phone_requirements) =>
+                onChange({ email_and_phone_requirements })
+              }
+              onChangeExpiry={(channel, expiry) =>
+                onChange(channelExpiryChange(channel, expiry))
+              }
+            />
+
+            <VerificationToggle
+              enabled={verification.enabled}
+              expiry={verification.expiry}
+              available={verificationAvailable}
+              locked={verificationLocked}
+              onChange={(next) => onChange(verificationChange(next))}
+            />
           </Box>
           <IdMethodsModalTrigger />
           <GroupsSection permission={permission} onChange={onChange} />

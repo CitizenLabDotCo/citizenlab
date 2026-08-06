@@ -161,7 +161,7 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    render_check_action(@user, @user&.email_confirmation, RequestEmailConfirmationCodeJob)
+    render_check_action(@user, :email_confirmation, RequestEmailConfirmationCodeJob)
   end
 
   # The phone counterpart of check_email: validates a phone number without
@@ -184,7 +184,7 @@ class WebApi::V1::UsersController < ApplicationController
 
     @user = User.find_by_phone_number(parsed.e164)
 
-    render_check_action(@user, @user&.phone_confirmation, RequestPhoneConfirmationCodeJob)
+    render_check_action(@user, :phone_confirmation, RequestPhoneConfirmationCodeJob)
   end
 
   def create
@@ -423,33 +423,33 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   # Shared by check_email and check_phone: given the account that owns the
-  # submitted identifier (nil when there is none) and the confirmation that
-  # covers that identifier, tell the frontend which step to go to next. Users
+  # submitted identifier (nil when there is none) and the name of the confirmation
+  # that covers that identifier, tell the frontend which step to go to next. Users
   # who still have to confirm, and users without a password, get a code sent.
-  def render_check_action(user, confirmation, code_job)
+  def render_check_action(user, confirmation_name, code_job)
     if user.nil?
       render json: raw_json({ action: 'terms' })
       return
     end
 
-    if !confirmation.pending? && !user.no_password?
+    if !user.confirmation_pending?(confirmation_name) && !user.no_password?
       render json: raw_json({ action: 'password' })
       return
     end
 
-    request_code_if_first_time(confirmation, code_job)
+    request_code_if_first_time(user, confirmation_name, code_job)
     render json: raw_json({ action: 'confirm' })
   end
 
-  def request_code_if_first_time(confirmation, code_job)
+  def request_code_if_first_time(user, confirmation_name, code_job)
     # If users already have a code_reset_count > 0,
     # they tried to log in previously and failed. In this case, we don't
     # automatically resend the code, because otherwise we
     # might too easily reach the retry limit. So they will
     # have to request it themselves
-    reset_count = confirmation&.code_reset_count || 0
+    reset_count = user.public_send(confirmation_name)&.code_reset_count || 0
     if reset_count == 0
-      code_job.perform_now(confirmation.user)
+      code_job.perform_now(user)
     end
   end
 end

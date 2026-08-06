@@ -450,7 +450,7 @@ resource 'User Token' do
     context 'when the user has no email address' do
       let!(:user) do
         create(:unconfirmed_phone_user, phone: '+14155552671').tap do |u|
-          u.phone_confirmation.confirm!
+          u.find_or_create_confirmation(:phone_confirmation).confirm!
           u.update!(password: password)
         end
       end
@@ -469,7 +469,7 @@ resource 'User Token' do
       let!(:user) { create(:unconfirmed_phone_user, phone: '+14155552671') }
       let(:password) { '' }
 
-      before { user.phone_confirmation.confirm! }
+      before { user.find_or_create_confirmation(:phone_confirmation).confirm! }
 
       example_request '[error] no JWT token is returned' do
         assert_status 404

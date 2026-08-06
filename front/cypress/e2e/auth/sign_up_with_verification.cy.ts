@@ -240,7 +240,7 @@ describe('Sign up - verification required (SSO)', () => {
           require_name: false,
           require_password: false,
           require_verification: true,
-          require_confirmed_email: false,
+          email_and_phone_requirements: 'neither',
         },
         action: 'posting_idea',
       });

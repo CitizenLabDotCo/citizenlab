@@ -33,7 +33,7 @@ interface Props {
 }
 
 // A minimal, email-only form for when the user has a pending new_email
-// (email_action_required is confirm_new_email) but wants to enter a different
+// (the required action is confirm_new_email) but wants to enter a different
 // one. It is deliberately separate from the built-in-fields step: that step is
 // driven by the requirements, which here say "confirm", not "provide".
 const ChangeEmail = ({ state, loading, setError, onSubmit }: Props) => {
