@@ -73,6 +73,8 @@ RSpec.describe RequestCodePolicy do
     include_context 'with sms feature enabled'
 
     context 'without an authenticated user' do
+      before { SettingsService.new.activate_feature!('sms_login') }
+
       it 'permits requesting a code for an existing account' do
         record = create(:unconfirmed_phone_user)
         expect(described_class.new(nil, record)).to permit(:request_code_phone)
@@ -98,10 +100,22 @@ RSpec.describe RequestCodePolicy do
         record = create(:unconfirmed_phone_user)
         expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
       end
+
+      it 'does not permit when the sms_login feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms_login')
+        record = create(:unconfirmed_phone_user)
+        expect(described_class.new(nil, record)).not_to permit(:request_code_phone)
+      end
     end
 
     context 'with an authenticated user' do
       it 'permits requesting a code for their own account (record == user)' do
+        user = create(:user, :with_confirmed_phone)
+        expect(described_class.new(user, user)).to permit(:request_code_phone)
+      end
+
+      it 'permits when the sms_login feature is disabled' do
+        SettingsService.new.deactivate_feature!('sms_login')
         user = create(:user, :with_confirmed_phone)
         expect(described_class.new(user, user)).to permit(:request_code_phone)
       end

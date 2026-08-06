@@ -255,6 +255,7 @@ resource 'Request codes' do
     end
 
     example 'It works for an unauthenticated user that submits a phone number' do
+      SettingsService.new.activate_feature!('sms_login')
       user = create(:unconfirmed_phone_user, phone: '+14155552671')
 
       do_request(request_code: { phone: '+1 (415) 555-2671' })
