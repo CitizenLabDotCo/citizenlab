@@ -13,7 +13,7 @@ resource 'Analysis users' do
 
   get 'web_api/v1/analyses/:analysis_id/users/:id' do
     let(:analysis_id) { analysis.id }
-    let(:user) { create(:user) }
+    let(:user) { create(:user, :with_avatar) }
     let(:id) { user.id }
 
     context 'when private attributes are turned on' do

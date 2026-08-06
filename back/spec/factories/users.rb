@@ -16,10 +16,15 @@ FactoryBot.define do
     roles { [] }
     locale { 'en' }
     registration_completed_at { Time.now }
-    # Although the avatar is not part of the minimal model, generating it
-    # really slows down the tests, so we fix it here
-    avatar { Rails.root.join('spec/fixtures/robot.jpg').open }
     invite_status { nil }
+
+    # Mounting an avatar copies the fixture once per uploader version, which costs
+    # more than everything else about building a user put together. The vast majority
+    # of specs never look at the avatar, so it is opt-in: use `:with_avatar` in the
+    # specs that actually exercise avatar behaviour.
+    trait :with_avatar do
+      avatar { Rails.root.join('spec/fixtures/robot.jpg').open }
+    end
 
     after(:build) do |user|
       user.email_confirmed_at = Time.zone.now

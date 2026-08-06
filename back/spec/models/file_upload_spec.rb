@@ -28,7 +28,7 @@ RSpec.describe FileUpload do
     let(:file_upload) { create(:file_upload) }
 
     it 'is the location on disk in the "idea_file" directory' do
-      expected_path = Regexp.new('/citizenlab/back/public/uploads/.+/idea_file/file/.+/afvalkalender.pdf')
+      expected_path = Regexp.new("#{Regexp.escape(CarrierWave::Uploader::Base.root.to_s)}/uploads/.+/idea_file/file/.+/afvalkalender.pdf")
       expect(file_upload.file.path).to match expected_path
     end
   end

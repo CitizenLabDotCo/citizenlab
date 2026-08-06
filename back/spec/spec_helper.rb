@@ -269,3 +269,18 @@ end
 silence_warnings do
   BCrypt::Engine::DEFAULT_COST = BCrypt::Engine::MIN_COST
 end
+
+# Even at the minimum cost, bcrypt is deliberately slow, and the suite hashes the
+# same handful of literal passwords (`democracy2.0` and friends) once per user
+# factory - tens of thousands of times per run. A digest is a pure function of
+# (secret, options), so returning the one we already computed for a given secret is
+# indistinguishable from computing it again, except that it no longer costs anything.
+# Only the salt ends up shared, which nothing in the suite asserts on.
+module BCryptDigestMemo
+  def create(secret, options = {})
+    @digests ||= {}
+    digest = (@digests[[secret.to_s, options]] ||= super)
+    digest.dup # callers get their own object, as they would from a real hash
+  end
+end
+BCrypt::Password.singleton_class.prepend(BCryptDigestMemo)
