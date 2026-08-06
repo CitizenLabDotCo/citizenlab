@@ -176,11 +176,7 @@ models:
   - &3
     title_multiloc:
       en: Reducing Air Pollution in the City
-
-        <p>You can support this innitiative by proposing your ideas on how to tackle this issue.</p>
-
-        <p><em>Let&#39;s do this!</em></p>
-    remote_header_bg_url: 
+    remote_header_bg_url:
   project_image:
   - remote_image_url: http://static.tvtropes.org/pmwiki/pub/images/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
     project_ref: *3
