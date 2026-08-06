@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Success } from '@citizenlab/cl2-component-library';
+import { Box, Success, Text } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
 import { IUser } from 'api/users/types';
 
+import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import PhoneInput from 'components/HookForm/PhoneInput';
 import usePhoneInputCountries from 'components/HookForm/PhoneInput/usePhoneInputCountries';
 import {
@@ -18,7 +19,8 @@ import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 import messages from './messages';
@@ -111,6 +113,13 @@ const UpdatePhoneForm = ({
         {error && (
           <Error marginTop="4px" text={formatMessage(ERROR_MESSAGES[error])} />
         )}
+        <Box mt="20px" mb="8px">
+          <CheckboxWithLabel
+            name="smsManualCampaignConsent"
+            label={formatMessage(messages.smsManualCampaignConsentLabel)}
+            dataTestId="sms-manual-campaign-consent"
+          />
+        </Box>
         <StyledButton
           type="submit"
           size="m"
@@ -119,6 +128,35 @@ const UpdatePhoneForm = ({
           text={formatMessage(messages.submitButton)}
           dataCy="change-phone-submit-button"
         />
+        <Text
+          fontSize="s"
+          color="tenantText"
+          data-testid="sms-confirmation-disclosure"
+        >
+          <FormattedMessage
+            {...messages.smsConfirmationDisclosure}
+            values={{
+              termsLink: (
+                <Link
+                  target="_blank"
+                  to="/pages/$slug"
+                  params={{ slug: 'terms-and-conditions' }}
+                >
+                  <FormattedMessage {...messages.termsLinkText} />
+                </Link>
+              ),
+              privacyLink: (
+                <Link
+                  target="_blank"
+                  to="/pages/$slug"
+                  params={{ slug: 'privacy-policy' }}
+                >
+                  <FormattedMessage {...messages.privacyLinkText} />
+                </Link>
+              ),
+            }}
+          />
+        </Text>
       </Form>
       <Box display="flex" justifyContent="center">
         {updateSuccessful && (

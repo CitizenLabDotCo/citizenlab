@@ -184,7 +184,7 @@ class WebApi::V1::UsersController < ApplicationController
 
     @user = User.find_by_phone_number(parsed.e164)
 
-    render_check_action(@user, phone_confirmation_of(@user), RequestPhoneConfirmationCodeJob)
+    render_check_action(@user, @user&.phone_confirmation, RequestPhoneConfirmationCodeJob)
   end
 
   def create
@@ -447,17 +447,9 @@ class WebApi::V1::UsersController < ApplicationController
     # automatically resend the code, because otherwise we
     # might too easily reach the retry limit. So they will
     # have to request it themselves
-    if confirmation.code_reset_count == 0
+    reset_count = confirmation&.code_reset_count || 0
+    if reset_count == 0
       code_job.perform_now(confirmation.user)
     end
-  end
-
-  # Users created before phone confirmations existed have no PhoneConfirmation
-  # row. An unsaved one behaves identically here (it delegates pending? to the
-  # user), and RequestPhoneConfirmationCodeJob creates the real record.
-  def phone_confirmation_of(user)
-    return nil if user.nil?
-
-    user.phone_confirmation || user.build_phone_confirmation
   end
 end

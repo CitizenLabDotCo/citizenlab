@@ -25,6 +25,7 @@ module EmailCampaigns
       @consent.assign_attributes consent_params
       authorize @consent
       if @consent.save
+        SideFxConsentService.new.after_update(@consent, pundit_user)
         render json: WebApi::V1::ConsentSerializer.new(@consent, params: jsonapi_serializer_params).serializable_hash, status: :ok
       else
         render json: { errors: @consent.errors.details }, status: :unprocessable_entity

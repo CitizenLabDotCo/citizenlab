@@ -11,13 +11,17 @@ import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 // phone login), and that is also the only case where we adopt the token the
 // backend returns: an authenticated user re-confirming their own number keeps
 // the (possibly longer lived) token they already have.
-export const confirmCodePhone = async (code: string, phone?: string) => {
+export const confirmCodePhone = async (
+  code: string,
+  phone?: string,
+  sms_manual_campaign_consent?: boolean
+) => {
   try {
     const res = await fetcher<ConfirmCodeResponse>({
       path: `/user/confirm_code_phone`,
       action: 'post',
       body: {
-        confirmation: { phone, code },
+        confirmation: { phone, code, sms_manual_campaign_consent },
       },
     });
 
@@ -35,13 +39,16 @@ export const confirmCodePhone = async (code: string, phone?: string) => {
   }
 };
 
-export const confirmCodeNewPhone = async (code: string) => {
+export const confirmCodeNewPhone = async (
+  code: string,
+  sms_manual_campaign_consent?: boolean
+) => {
   try {
     await fetcher({
       path: `/user/confirm_code_new_phone`,
       action: 'post',
       body: {
-        confirmation: { code },
+        confirmation: { code, sms_manual_campaign_consent },
       },
     });
 

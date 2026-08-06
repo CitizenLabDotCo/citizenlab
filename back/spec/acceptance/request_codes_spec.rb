@@ -22,7 +22,7 @@ resource 'Request codes' do
 
     example 'works if user has no password and has email confirmed' do
       user = create(:unconfirmed_user, email: 'test@test.com')
-      user.email_confirmation.confirm!
+      user.find_or_create_confirmation(:email_confirmation).confirm!
       expect(user.password_digest).to be_nil
       expect(user.confirmation_required?).to be false
 
@@ -114,7 +114,7 @@ resource 'Request codes' do
 
     example 'It does not work if user reached code_reset_count' do
       user = create(:unconfirmed_user)
-      user.email_confirmation.update!(code_reset_count: 4)
+      user.find_or_create_confirmation(:email_confirmation).update!(code_reset_count: 4)
 
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
@@ -140,7 +140,6 @@ resource 'Request codes' do
     # user on the confirmation step (re-confirmation after confirmed_email_expiry).
     example 'with only_if_first_time, sends when no code is outstanding' do
       user = create(:user, email: 'test@test.com')
-      user.email_confirmation.clear_code!
       header_token_for(user)
 
       do_request(request_code: { email: user.email, only_if_first_time: true })
@@ -164,7 +163,6 @@ resource 'Request codes' do
 
     example 'an authenticated user can omit the email (uses current_user)' do
       user = create(:user, email: 'test@test.com')
-      user.email_confirmation.clear_code!
       header_token_for(user)
 
       do_request(request_code: { only_if_first_time: true })
@@ -220,7 +218,7 @@ resource 'Request codes' do
 
     example 'It does not work if user reached code_reset_count' do
       user = create(:user)
-      user.new_email_confirmation.update!(code_reset_count: 4)
+      user.find_or_create_confirmation(:new_email_confirmation).update!(code_reset_count: 4)
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
       expect(response_status).to eq 401
@@ -300,7 +298,7 @@ resource 'Request codes' do
 
     example 'It does not work if the user reached code_reset_count' do
       user = create(:user, :with_confirmed_phone)
-      user.phone_confirmation.update!(code_reset_count: 4)
+      user.find_or_create_confirmation(:phone_confirmation).update!(code_reset_count: 4)
       header_token_for(user)
 
       do_request(request_code: {})
@@ -323,7 +321,7 @@ resource 'Request codes' do
     # aged out).
     example 'with only_if_first_time, sends when no code is outstanding' do
       user = create(:user, :with_confirmed_phone)
-      expect(user.phone_confirmation.code_outstanding?).to be false
+      expect(user.phone_confirmation).to be_nil
       header_token_for(user)
 
       do_request(request_code: { only_if_first_time: true })
@@ -361,6 +359,57 @@ resource 'Request codes' do
       expect(user.reload.new_phone).to eq '+14155552671'
       expect(delivery_service).to have_received(:send_now_to_user)
         .with(an_instance_of(EmailCampaigns::Campaigns::NewPhoneConfirmation), user, hash_including(:code)).once
+    end
+
+    example 'It records the consent to receive a confirmation code by SMS and logs the activity' do
+      user = create(:user)
+      header_token_for(user)
+      expect { do_request(request_code: { new_phone: '+1 415 555 2671' }) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(
+          an_instance_of(EmailCampaigns::Consent),
+          'consent_given',
+          user,
+          kind_of(Integer),
+          payload: { campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name }
+        )
+      expect(response_status).to eq 200
+
+      consent = EmailCampaigns::Consent.find_by(
+        user_id: user.id,
+        campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name
+      )
+      expect(consent.consented).to be true
+    end
+
+    example 'It logs a consent event on every submission, keeping a single consent record' do
+      user = create(:user)
+      header_token_for(user)
+      do_request(request_code: { new_phone: '+1 415 555 2671' })
+      expect(response_status).to eq 200
+
+      expect { do_request(request_code: { new_phone: '+1 415 555 2680' }) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(
+          an_instance_of(EmailCampaigns::Consent),
+          'consent_given',
+          user,
+          kind_of(Integer),
+          payload: { campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name }
+        )
+      expect(response_status).to eq 200
+
+      expect(EmailCampaigns::Consent.where(
+        user_id: user.id, campaign_type: EmailCampaigns::Campaigns::NewPhoneConfirmation.name
+      ).count).to eq 1
+    end
+
+    example 'It does not record consent when the phone number is rejected' do
+      user = create(:user)
+      header_token_for(user)
+      expect { do_request(request_code: { new_phone: 'not-a-number' }) }
+        .not_to change(EmailCampaigns::Consent, :count)
+      expect(response_status).to eq 422
     end
 
     example 'It does not work if new_phone is blank' do
@@ -409,7 +458,7 @@ resource 'Request codes' do
 
     example 'It does not work if the user reached code_reset_count' do
       user = create(:user)
-      user.new_phone_confirmation.update!(code_reset_count: 4)
+      user.find_or_create_confirmation(:new_phone_confirmation).update!(code_reset_count: 4)
       header_token_for(user)
       do_request(request_code: { new_phone: '+14155552671' })
       expect(response_status).to eq 401

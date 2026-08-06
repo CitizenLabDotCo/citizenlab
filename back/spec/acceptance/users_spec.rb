@@ -112,7 +112,7 @@ resource 'Users' do
           context 'when the user has not requested any codes yet' do
             before do
               @user = create(:unconfirmed_user, email: 'test@test.com')
-              @user.email_confirmation.confirm!
+              @user.find_or_create_confirmation(:email_confirmation).confirm!
 
               allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
             end
@@ -541,7 +541,7 @@ resource 'Users' do
           context 'when there is an existing user that has no password' do
             example 'email taken error is returned and confirmation requirement is not reset' do
               existing_user = create(:unconfirmed_user, email: email)
-              existing_user.email_confirmation.confirm!
+              existing_user.find_or_create_confirmation(:email_confirmation).confirm!
 
               do_request
               assert_status 422
@@ -554,7 +554,7 @@ resource 'Users' do
 
               example 'email taken error is returned and confirmation requirement is not reset' do
                 existing_user = create(:unconfirmed_user, email: email)
-                existing_user.email_confirmation.confirm!
+                existing_user.find_or_create_confirmation(:email_confirmation).confirm!
 
                 do_request
                 assert_status 422

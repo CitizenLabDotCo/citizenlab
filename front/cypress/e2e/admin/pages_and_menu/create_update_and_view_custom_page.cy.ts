@@ -3,7 +3,7 @@ import { randomString } from '../../../support/commands';
 describe('Admin: can', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/pages-menu/');
+    cy.visit('/admin/pages-menu/pages');
   });
 
   describe('create', () => {
@@ -19,7 +19,7 @@ describe('Admin: can', () => {
     it('and view a custom page successfully', () => {
       cy.intercept('POST', '**/static_pages').as('createCustomPage');
 
-      cy.visit('/admin/pages-menu/');
+      cy.visit('/admin/pages-menu/pages');
 
       // go to custom page creation form
       cy.get('#create-custom-page').click();
