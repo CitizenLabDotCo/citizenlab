@@ -165,7 +165,11 @@ const ProjectAndFolderCardsInner = ({
         />
       )}
 
-      {!loadingInitial && hasPublications && (
+      {/* Rendered under the same condition as the Topbar tabs (the list is
+          empty while loading), so the tab panels the tabs' aria-controls
+          point to always exist — axe flags aria-controls referencing a missing
+          id as an aria-valid-attr-value violation during the load window. */}
+      {!noAdminPublicationsAtAll && (
         <PublicationStatusTabs
           currentTab={currentTab}
           availableTabs={availableTabs}
