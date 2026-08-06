@@ -50,7 +50,6 @@ describe('Idea Page', () => {
     let ideaId: string = null as any;
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     const ideaTitle = randomString();
     const ideaContent = randomString();
     const phaseTitle = randomString();
@@ -104,7 +103,6 @@ describe('Idea Page', () => {
     let ideaId: string = null as any;
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     const ideaTitle = randomString();
     const ideaContent = randomString();
     const phaseTitle = randomString();
@@ -169,7 +167,6 @@ describe('Idea Page', () => {
 
     before(() => {
       const projectDescriptionPreview = randomString();
-      const projectDescription = randomString();
 
       cy.apiCreateProject({
         title: projectTitle,
@@ -223,7 +220,6 @@ describe('Idea location', () => {
   let phaseId: string;
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   const ideaNoLocationPointTitle = randomString();
   const ideaWithLocationPointTitle = randomString();
   const ideaContent = randomString();
