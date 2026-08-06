@@ -50,6 +50,10 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
+  # Inline images of RichTextMultiloc bridge widgets in the project's layouts
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
+
   belongs_to :space, optional: true
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
